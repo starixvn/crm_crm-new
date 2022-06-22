@@ -90,11 +90,11 @@
                 &:first-child{
                     padding: 2px 23px 2px 11px;
                     float: left;
-                    background: url('../../../css/images/br-arrow-ico.png') right 8px no-repeat;
+                    background: url('../../css/images/br-arrow-ico.png') right 8px no-repeat;
                 }
 
                 &:not(:last-child){
-                    background: url('../../../css/images/br-arrow-ico.png') right 8px no-repeat;
+                    background: url('../../css/images/br-arrow-ico.png') right 8px no-repeat;
                 }
 
                 &:last-child{
@@ -131,8 +131,8 @@
 
         .timezone{
             padding-left: 20px;
+            padding-right: 10px;
             color: #bbbbbb;
-            margin: 7px 10px 0 0;
         }
     }
     

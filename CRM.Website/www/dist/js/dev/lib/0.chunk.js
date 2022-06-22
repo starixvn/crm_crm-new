@@ -914,9 +914,10 @@ class CreateCommunicationLog extends react__WEBPACK_IMPORTED_MODULE_0__["Compone
       const {
         allSettings
       } = this.state;
+      const currentClientTime = document.getElementById('currentClientTime').value;
       const remarkDuplicated = '<div><font color=\"#ff0000\">This is a duplicated entry</font></div>\n\n';
-      const startTime = new Date(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_14__["default"].toShortDateTimeFormat(new Date(window.currentClientTime)));
-      const endTime = new Date(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_14__["default"].toShortDateTimeFormat(new Date(window.currentClientTime)));
+      const startTime = new Date(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_14__["default"].toShortDateTimeFormat(new Date(currentClientTime)));
+      const endTime = new Date(_jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_14__["default"].toShortDateTimeFormat(new Date(currentClientTime)));
       endTime.setMinutes(endTime.getMinutes() + 1);
       const initTools = this.getInitDataTool(options, allSettings);
       const initSite = this.getInitDataSite(options);
@@ -3283,6 +3284,7 @@ __webpack_require__.r(__webpack_exports__);
 
 class RenderCollapse extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
+    const currentUsername = document.getElementById('currentUsername').value;
     const {
       values,
       errors,
@@ -3329,7 +3331,7 @@ class RenderCollapse extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       id: "collapse-expand-remark"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ckeditor_index__WEBPACK_IMPORTED_MODULE_3__["default"], {
       data: values.remark,
-      username: window.currentUsername,
+      username: currentUsername,
       isInvalid: touched.remark && errors.remark,
       onChange: value => setFieldValue('remark', value)
     })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -3349,7 +3351,7 @@ class RenderCollapse extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       id: "collapse-expand-solution"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ckeditor_index__WEBPACK_IMPORTED_MODULE_3__["default"], {
       data: values.solution,
-      username: window.currentUsername,
+      username: currentUsername,
       isInvalid: touched.solution && errors.solution,
       onChange: value => setFieldValue('solution', value)
     })))), isEdit && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -3372,7 +3374,7 @@ class RenderCollapse extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       className: "panel-content"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ckeditor_index__WEBPACK_IMPORTED_MODULE_3__["default"], {
       data: values.review,
-      username: window.currentUsername,
+      username: currentUsername,
       isInvalid: touched.review && errors.review,
       onChange: value => setFieldValue('review', value)
     })))));
@@ -3401,35 +3403,31 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const getCustomerRemarks = params => async dispatch => {
-  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].blockUI();
   const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl(`Dashboard/GetCustomerRemarks`);
   await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_0__["default"].getDataAsync(url, params).then(response => {
     dispatch(Object(_dashboardSlice__WEBPACK_IMPORTED_MODULE_2__["setCustomerRemarks"])(response.data));
-  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
+  });
 };
 
 const getRedemptionLogs = params => async dispatch => {
-  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].blockUI();
   const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl(`Dashboard/GetRedemptionLogs`);
   await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_0__["default"].getDataAsync(url, params).then(response => {
     dispatch(Object(_dashboardSlice__WEBPACK_IMPORTED_MODULE_2__["setRedemptionLogs"])(response.data));
-  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
+  });
 };
 
 const getCommunicationLogs = params => async dispatch => {
-  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].blockUI();
   const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('Dashboard/GetCommunicationLogs');
   await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_0__["default"].getDataAsync(url, params).then(response => {
     dispatch(Object(_dashboardSlice__WEBPACK_IMPORTED_MODULE_2__["setCommunicationLogs"])(response.data));
-  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
+  });
 };
 
 const getCustomerInfoVerify = params => async dispatch => {
-  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].blockUI();
   const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('Dashboard/GetCustomerInfoVerify');
   await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_0__["default"].getDataAsync(url, params).then(response => {
     dispatch(Object(_dashboardSlice__WEBPACK_IMPORTED_MODULE_2__["setCustomerInfoVerify"])(response.data));
-  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
+  });
 };
 
 const editCustomerVerify = params => async () => {
@@ -4697,11 +4695,10 @@ const store = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__["configureSto
 class index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   render() {
     const location = this.props.location;
-    const custId = this.props.location.state !== null ? location.state.id : this.props.custId;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__["Provider"], {
       store: store
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      custId: !custId ? null : custId.toString()
+      custId: !location.state ? null : location.state.toString()
     }));
   }
 
@@ -5143,7 +5140,7 @@ class CreateEditForm extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ckeditor_index__WEBPACK_IMPORTED_MODULE_2__["default"], {
       isInvalid: touched.remark && errors.remark,
       data: values.remark,
-      username: window.currentUsername,
+      username: document.getElementById('currentUsername').value,
       onChange: value => setFieldValue('remark', value)
     }))));
   }

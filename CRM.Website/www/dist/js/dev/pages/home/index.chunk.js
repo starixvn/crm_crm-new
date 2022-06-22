@@ -261,7 +261,7 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push([0,4]);
+/******/ 	deferredModules.push([0,"vendor"]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
@@ -526,13 +526,14 @@ class DateTimeService {
   }
 
   static toClientDateTime(date) {
+    const ClientTimezone = document.getElementById('clientTimezone').value;
     date = moment__WEBPACK_IMPORTED_MODULE_0___default()(date, LongDateTimeFormat);
-    return moment__WEBPACK_IMPORTED_MODULE_0___default.a.utc(date).utcOffset(window.clientTimezone);
+    return moment__WEBPACK_IMPORTED_MODULE_0___default.a.utc(date).utcOffset(ClientTimezone);
   }
 
   static toServerDateTime(date) {
     date = moment__WEBPACK_IMPORTED_MODULE_0___default()(date, LongDateTimeFormat);
-    return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).utc().utcOffset(window.serverTimezone);
+    return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).utc().utcOffset(ClientTimezone);
   }
 
   static toShortDateFormat(date) {
@@ -1415,423 +1416,6 @@ const functions = {
 
 /***/ }),
 
-/***/ "./www/sources/js/components/layout-container/components/AppContainer.jsx":
-/*!********************************************************************************!*\
-  !*** ./www/sources/js/components/layout-container/components/AppContainer.jsx ***!
-  \********************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AppContainer; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filter */ "./www/sources/js/components/layout-container/components/Filter.jsx");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/lib/index.js");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_toastify__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Header */ "./www/sources/js/components/layout-container/components/Header.jsx");
-/* harmony import */ var _DataGrid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DataGrid */ "./www/sources/js/components/layout-container/components/DataGrid.jsx");
-/* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
-/* harmony import */ var _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/common/dataService */ "./www/sources/js/common/dataService.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-
-
-const NotificationListComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e(4), __webpack_require__.e("common"), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-list/index */ "./www/sources/js/pages/notification-list/index.js")));
-const NotificationTemplateComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e(4), __webpack_require__.e("common"), __webpack_require__.e(2)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-template/index */ "./www/sources/js/pages/notification-template/index.js")));
-const NotificationTypeComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e(4), __webpack_require__.e("common"), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-type/index */ "./www/sources/js/pages/notification-type/index.js")));
-const DashboardComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e(4), __webpack_require__.e("common"), __webpack_require__.e(0)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/dashboard/index */ "./www/sources/js/pages/dashboard/index.js")));
-class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-  constructor(props) {
-    super(props);
-
-    _defineProperty(this, "getInitInfo", async () => {
-      await this.getSetting();
-      await this.getSessionData();
-      await this.getCurrentCustomer();
-    });
-
-    _defineProperty(this, "getAntiForgeryToken", async () => {
-      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
-      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Antiforgery/GenerateAntiForgeryTokens');
-      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
-        document.getElementById('xsrfToken').value = response.data.requestToken;
-      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
-    });
-
-    _defineProperty(this, "getSetting", async () => {
-      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
-      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetSettings');
-      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
-        this.setState({
-          settings: response.data
-        });
-      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
-    });
-
-    _defineProperty(this, "getSessionData", async () => {
-      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
-      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Home/GetSessionData');
-      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
-        const data = response.data;
-        this.setState(_objectSpread(_objectSpread({}, this.state.sessionData), {}, {
-          currentUsername: data.currentUsername,
-          currentClientTime: data.currentClientTime,
-          clientTimezone: data.clientTimezone,
-          serverTimezone: data.clientTimezone,
-          hasCreateFeedbackPermission: data.hasCreateFeedbackPermission
-        }));
-        this.initDataMenu(data.menus);
-      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
-    });
-
-    _defineProperty(this, "getCurrentCustomer", async () => {
-      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetCurrentCustomerInfo');
-      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
-        const data = response.data;
-
-        if (data !== undefined && data !== null) {
-          this.setState({
-            username: data.name,
-            isGuest: data.isGuest
-          }, () => {
-            this.getCustomerInfo();
-          });
-        }
-      });
-    });
-
-    _defineProperty(this, "initDataMenu", menus => {
-      const presentMenus = menus.filter(item => item.parentName === '');
-      presentMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
-      presentMenus.forEach(item => item.subMenus = this.getSubMenus(item, menus));
-      presentMenus.forEach(item => item.subMenus.forEach(element => element.subMenus = this.getSubMenus(element, menus)));
-      this.setState({
-        menus: presentMenus
-      });
-    });
-
-    _defineProperty(this, "getSubMenus", (menuItem, menus) => {
-      const subMenus = menus.filter(item => item.parentName !== '' && item.parentId === menuItem.id);
-      subMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
-      return subMenus;
-    });
-
-    _defineProperty(this, "handleChange", event => {
-      const target = event.target;
-      const value = target.type === 'checkbox' ? target.checked : target.value;
-      const name = target.name;
-      this.setState({
-        [name]: value
-      });
-    });
-
-    _defineProperty(this, "handleGetCustomerIsGuest", () => {
-      this.setState({
-        isGuest: true
-      });
-      this.handleCloseEmptyConfirm();
-      const params = this.getParams();
-      this.getDataGrid(params);
-    });
-
-    _defineProperty(this, "getParams", () => {
-      return {
-        username: this.state.username,
-        isGuest: this.state.isGuest
-      };
-    });
-
-    _defineProperty(this, "setGridParams", gridParams => {
-      this.setState({
-        gridParams
-      });
-    });
-
-    _defineProperty(this, "setUserName", username => {
-      this.setState({
-        username
-      });
-    });
-
-    _defineProperty(this, "handleCloseEmptyConfirm", () => {
-      this.setState({
-        showEmptyConfirmPopup: false
-      });
-    });
-
-    _defineProperty(this, "handleCloseEmptyCustomerInfoPopup", () => {
-      this.setState({
-        showEmptyCustomerInfoPopup: false
-      });
-    });
-
-    _defineProperty(this, "handleChangeSuggestion", value => {
-      this.setState({
-        username: value
-      });
-    });
-
-    _defineProperty(this, "debounceUserNameInputChange", _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].debounce(searchText => {
-      this.setState({
-        username: searchText
-      }, async () => {
-        if (searchText.length >= 2) {
-          const params = this.getParams();
-          const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetCustomerAutoSuggestion');
-          await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].postDataAsync(url, params, this.state.antiToken).then(response => {
-            this.setState({
-              customerSuggestions: response.data
-            });
-          });
-        } else {
-          this.setState({
-            customerSuggestions: []
-          });
-        }
-      });
-    }));
-
-    _defineProperty(this, "handleCloseEditCustomerInfoPopup", () => {
-      this.setState({
-        editCustomerInfoPopup: {
-          show: false
-        }
-      });
-    });
-
-    _defineProperty(this, "getDataGrid", async () => {
-      await this.getCustomerInfo();
-      await this.getSetting();
-    });
-
-    _defineProperty(this, "getCustomerInfo", async () => {
-      const params = this.getParams();
-      this.setState({
-        gridParams: params
-      });
-      this.handleSetStorage(true);
-      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
-      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetCustomerInfo');
-      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].postDataAsync(url, params, this.state.antiToken).then(response => {
-        this.setState({
-          customerInfo: response.data
-        });
-
-        if (response.data === null && !this.state.isGuest) {
-          this.setState({
-            showEmptyConfirmPopup: true
-          });
-        } else if (response.data === null) {
-          this.setState({
-            showEmptyCustomerInfoPopup: true
-          });
-        }
-      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
-    });
-
-    _defineProperty(this, "handleCollapseExpandLayout", event => {
-      event.preventDefault();
-
-      if (!this.state.customerInfo) {
-        return;
-      }
-
-      this.setState(prevState => ({
-        isShowingLeftPanel: !prevState.isShowingLeftPanel
-      }), () => {
-        this.handleSetStorage(this.state.isShowingLeftPanel);
-        window.dispatchEvent(new Event('resize'));
-      });
-    });
-
-    _defineProperty(this, "handleSetStorage", isShowLeft => {
-      window.localStorage.setItem('isShowingLeftPanel', isShowLeft);
-      window.localStorage.setItem('isKeepLeftPanel', isShowLeft);
-    });
-
-    _defineProperty(this, "renderMenuComponent", () => {
-      var _this$state$customerI;
-
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Suspense"], {
-        fallback: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading...")
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Routes"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
-        exact: true,
-        path: "/"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
-        path: "/NotificationList",
-        element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationListComponent, null)
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
-        path: "/NotificationTemplate",
-        element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTemplateComponent, null)
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
-        path: "/NotificationType",
-        element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTypeComponent, null)
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
-        path: "/Dashboard",
-        element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DashboardComponent, {
-          custId: (_this$state$customerI = this.state.customerInfo) === null || _this$state$customerI === void 0 ? void 0 : _this$state$customerI.custId
-        })
-      })));
-    });
-
-    _defineProperty(this, "renderLeftRightContent", customerInfo => {
-      const {
-        settings,
-        gridParams
-      } = this.state;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "d-flex"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        id: customerInfo !== null ? 'left-row-container' : 'left-row-hidden'
-      }, customerInfo !== null && settings !== null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DataGrid__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        customerInfo: customerInfo,
-        settings: settings,
-        gridParams: gridParams,
-        setGridParams: this.setGridParams,
-        setUserName: this.setUserName,
-        getCustomerInfo: this.getCustomerInfo,
-        handleCloseEditCustomerInfoPopup: this.handleCloseEditCustomerInfoPopup
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        id: "right-row-container",
-        style: {
-          width: customerInfo !== null ? '78%' : '100%'
-        }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        id: "child-app-container"
-      }, this.renderMenuComponent())));
-    });
-
-    _defineProperty(this, "renderFullWidthContent", () => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        id: "left-row-container",
-        style: {
-          width: 0
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        id: "right-row-container",
-        style: {
-          width: '100%'
-        }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        id: "child-app-container"
-      }, this.renderMenuComponent())));
-    });
-
-    this.state = {
-      menus: [],
-      username: null,
-      isGuest: false,
-      customerInfo: null,
-      settings: null,
-      gridParams: {
-        username: null,
-        isGuest: false
-      },
-      sessionData: {
-        currentUsername: '',
-        currentClientTime: new Date(),
-        clientTimezone: 0,
-        serverTimezone: 0,
-        hasCreateFeedbackPermission: false
-      },
-      showEmptyConfirmPopup: false,
-      showEmptyCustomerInfoPopup: false,
-      customerSuggestions: [],
-      editCustomerInfoPopup: {
-        show: false
-      },
-      isShowingLeftPanel: true
-    };
-  }
-
-  async componentDidMount() {
-    const storage = window.localStorage;
-    this.getInitInfo();
-    const isShowingLeftPanel = storage.getItem('isShowingLeftPanel');
-    const isKeepLeftPanel = storage.getItem('isKeepLeftPanel');
-
-    if (isKeepLeftPanel !== null) {
-      this.setState({
-        isShowingLeftPanel: JSON.parse(isKeepLeftPanel)
-      });
-    }
-
-    if (isShowingLeftPanel !== null) {
-      storage.removeItem('isShowingLeftPanel');
-    }
-
-    this.getAntiForgeryToken();
-  }
-
-  render() {
-    const {
-      customerInfo,
-      isGuest,
-      customerSuggestions,
-      showEmptyConfirmPopup,
-      username,
-      showEmptyCustomerInfoPopup,
-      menus,
-      isShowingLeftPanel
-    } = this.state;
-
-    if (menus.length <= 0) {
-      return null;
-    }
-
-    const hasCreateFeedbackPermission = this.state.sessionData.hasCreateFeedbackPermission;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["BrowserRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "fix-header-menu"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      menus: menus,
-      handleCollapseExpandLayout: this.handleCollapseExpandLayout
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Filter__WEBPACK_IMPORTED_MODULE_1__["default"], {
-      isHost: hasCreateFeedbackPermission,
-      getDataGrid: this.getDataGrid,
-      isGuest: isGuest,
-      username: username,
-      menus: menus,
-      customerInfo: customerInfo,
-      customerSuggestions: customerSuggestions,
-      handleChange: this.handleChange,
-      handleChangeSuggestion: this.handleChangeSuggestion,
-      showEmptyCustomerInfoPopup: showEmptyCustomerInfoPopup,
-      handleCloseEmptyCustomerInfoPopup: this.handleCloseEmptyCustomerInfoPopup,
-      showEmptyConfirmPopup: showEmptyConfirmPopup,
-      handleGetCustomerIsGuest: this.handleGetCustomerIsGuest,
-      handleCloseEmptyConfirm: this.handleCloseEmptyConfirm,
-      debounceUserNameInputChange: this.debounceUserNameInputChange
-    })), !showEmptyCustomerInfoPopup && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "row-content"
-    }, isShowingLeftPanel && customerInfo !== null ? this.renderLeftRightContent(customerInfo) : this.renderFullWidthContent()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_toastify__WEBPACK_IMPORTED_MODULE_2__["ToastContainer"], {
-      limit: 1,
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      transition: react_toastify__WEBPACK_IMPORTED_MODULE_2__["Slide"],
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: false
-    })));
-  }
-
-}
-
-/***/ }),
-
 /***/ "./www/sources/js/components/layout-container/components/BreadcrumbTime.jsx":
 /*!**********************************************************************************!*\
   !*** ./www/sources/js/components/layout-container/components/BreadcrumbTime.jsx ***!
@@ -2538,6 +2122,8 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   }
 
   render() {
+    console.log('datagrid');
+
     if (!this.props.customerInfo) {
       return null;
     }
@@ -2651,15 +2237,7 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         return;
       }
 
-      this.props.getDataGrid().then(() => {
-        if (this.props.customerInfo !== null) {
-          this.props.navigate('/Dashboard', {
-            state: {
-              id: this.props.customerInfo.custId
-            }
-          });
-        }
-      });
+      this.props.getDataGrid();
     });
 
     _defineProperty(this, "renderRightContainer", () => {
@@ -2776,7 +2354,11 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     _defineProperty(this, "handleMenuDashboardClick", event => {
       event.preventDefault();
-      window.location = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Dashboard/Index');
+      this.props.navigate('/Dashboard', {
+        state: {
+          id: this.props.customerInfo.custId
+        }
+      });
     });
 
     _defineProperty(this, "handleConcatMenu", menus => {
@@ -2812,6 +2394,7 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       return null;
     }
 
+    console.log('filter');
     const {
       username,
       customerSuggestions,
@@ -2911,7 +2494,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+class Header extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   constructor(props) {
     super(props);
 
@@ -2930,6 +2513,7 @@ class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         className: "menu-title"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         to: item.url !== '' ? _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl(item.url.slice(1)) : '',
+        state: this.props.custId,
         className: "title"
       }, item.name), item.subMenus.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "fa fa-caret-down icon"
@@ -2958,11 +2542,13 @@ class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       menus,
       handleCollapseExpandLayout
     } = this.props;
+    console.log('header');
 
     if (!menus || menus.length <= 0) {
       return null;
     }
 
+    const currentUsername = document.getElementById('currentUsername').value;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "header"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -2986,7 +2572,7 @@ class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       className: "welcome"
     }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Welcome'), " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
       className: "username"
-    }, window.currentUsername)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    }, currentUsername)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
       src: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl('css/images/icon/icon-logout.png')
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
       className: "sign-out",
@@ -2999,6 +2585,410 @@ class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 /***/ }),
 
+/***/ "./www/sources/js/components/layout-container/components/Layout.jsx":
+/*!**************************************************************************!*\
+  !*** ./www/sources/js/components/layout-container/components/Layout.jsx ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filter */ "./www/sources/js/components/layout-container/components/Filter.jsx");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/lib/index.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_toastify__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Header */ "./www/sources/js/components/layout-container/components/Header.jsx");
+/* harmony import */ var _DataGrid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DataGrid */ "./www/sources/js/components/layout-container/components/DataGrid.jsx");
+/* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
+/* harmony import */ var _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/common/dataService */ "./www/sources/js/common/dataService.js");
+/* harmony import */ var _WithNavigation__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../WithNavigation */ "./www/sources/js/components/WithNavigation.jsx");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+
+
+
+class Layout extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  constructor(props) {
+    super(props);
+
+    _defineProperty(this, "getInitInfo", async () => {
+      await this.getSetting();
+      await this.getSessionData();
+    });
+
+    _defineProperty(this, "getAntiForgeryToken", async () => {
+      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
+      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Antiforgery/GenerateAntiForgeryTokens');
+      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
+        document.getElementById('xsrfToken').value = response.data.requestToken;
+      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
+    });
+
+    _defineProperty(this, "getSetting", async () => {
+      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
+      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetSettings');
+      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
+        this.setState({
+          settings: response.data
+        });
+      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
+    });
+
+    _defineProperty(this, "getSessionData", async () => {
+      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
+      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('Home/GetSessionData');
+      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].getDataAsync(url).then(response => {
+        if (response || response !== null) {
+          const data = response.data;
+          this.setDataToElementId(data);
+          this.setState(state => ({
+            sessionData: _objectSpread(_objectSpread({}, state.sessionData), {}, {
+              currentUsername: data.currentUsername,
+              currentClientTime: data.currentClientTime,
+              clientTimezone: data.clientTimezone,
+              serverTimezone: data.clientTimezone,
+              hasCreateFeedbackPermission: data.hasCreateFeedbackPermission
+            })
+          }));
+          this.setCurrentCustomer(data.currentCustomer);
+          this.initDataMenu(data.menus);
+        }
+      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
+    });
+
+    _defineProperty(this, "setDataToElementId", data => {
+      document.getElementById('currentUsername').value = data.currentUsername;
+      document.getElementById('currentClientTime').value = data.currentClientTime;
+      document.getElementById('clientTimezone').value = data.clientTimezone;
+      document.getElementById('serverTimezone').value = data.serverTimezone;
+      document.getElementById('hasCreateFeedbackPermission').value = data.hasCreateFeedbackPermission;
+    });
+
+    _defineProperty(this, "setCurrentCustomer", currentCustomer => {
+      if (currentCustomer !== undefined && currentCustomer !== null) {
+        this.setState({
+          username: currentCustomer.name,
+          isGuest: currentCustomer.isGuest
+        }, () => {
+          this.getCustomerInfo();
+        });
+      }
+    });
+
+    _defineProperty(this, "initDataMenu", menus => {
+      const presentMenus = menus.filter(item => item.parentName === '');
+      presentMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
+      presentMenus.forEach(item => item.subMenus = this.getSubMenus(item, menus));
+      presentMenus.forEach(item => item.subMenus.forEach(element => element.subMenus = this.getSubMenus(element, menus)));
+      this.setState({
+        menus: presentMenus
+      });
+    });
+
+    _defineProperty(this, "getSubMenus", (menuItem, menus) => {
+      const subMenus = menus.filter(item => item.parentName !== '' && item.parentId === menuItem.id);
+      subMenus.sort((firstItem, secondItem) => firstItem.displayOrder - secondItem.displayOrder);
+      return subMenus;
+    });
+
+    _defineProperty(this, "handleChange", event => {
+      const target = event.target;
+      const value = target.type === 'checkbox' ? target.checked : target.value;
+      const name = target.name;
+      this.setState({
+        [name]: value
+      });
+    });
+
+    _defineProperty(this, "handleGetCustomerIsGuest", () => {
+      this.setState({
+        isGuest: true
+      });
+      this.handleCloseEmptyConfirm();
+      const params = this.getParams();
+      this.getDataGrid(params);
+    });
+
+    _defineProperty(this, "getParams", () => {
+      return {
+        username: this.state.username,
+        isGuest: this.state.isGuest
+      };
+    });
+
+    _defineProperty(this, "setGridParams", gridParams => {
+      this.setState({
+        gridParams
+      });
+    });
+
+    _defineProperty(this, "setUserName", username => {
+      this.setState({
+        username
+      });
+    });
+
+    _defineProperty(this, "handleCloseEmptyConfirm", () => {
+      this.setState({
+        showEmptyConfirmPopup: false
+      });
+    });
+
+    _defineProperty(this, "handleCloseEmptyCustomerInfoPopup", () => {
+      this.setState({
+        showEmptyCustomerInfoPopup: false
+      });
+    });
+
+    _defineProperty(this, "handleChangeSuggestion", value => {
+      this.setState({
+        username: value
+      });
+    });
+
+    _defineProperty(this, "debounceUserNameInputChange", _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].debounce(searchText => {
+      this.setState({
+        username: searchText
+      }, async () => {
+        if (searchText.length >= 2) {
+          const params = this.getParams();
+          const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetCustomerAutoSuggestion');
+          await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].postDataAsync(url, params, this.state.antiToken).then(response => {
+            this.setState({
+              customerSuggestions: response.data
+            });
+          });
+        } else {
+          this.setState({
+            customerSuggestions: []
+          });
+        }
+      });
+    }));
+
+    _defineProperty(this, "handleCloseEditCustomerInfoPopup", () => {
+      this.setState({
+        editCustomerInfoPopup: {
+          show: false
+        }
+      });
+    });
+
+    _defineProperty(this, "getDataGrid", async () => {
+      await this.getCustomerInfo();
+      await this.getSetting();
+    });
+
+    _defineProperty(this, "getCustomerInfo", async () => {
+      const params = this.getParams();
+      this.setState({
+        gridParams: params
+      });
+      this.handleSetStorage(true);
+      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].blockUI();
+      const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetCustomerInfo');
+      await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].postDataAsync(url, params, this.state.antiToken).then(response => {
+        if (response.data !== null) {
+          this.setState({
+            customerInfo: response.data
+          }, () => {
+            this.props.navigate('/Dashboard', {
+              state: response.data.custId
+            });
+          });
+        } else if (response.data === null && !this.state.isGuest) {
+          this.setState({
+            showEmptyConfirmPopup: true
+          });
+        } else if (response.data === null) {
+          this.setState({
+            showEmptyCustomerInfoPopup: true
+          });
+        }
+      }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].unblockUI());
+    });
+
+    _defineProperty(this, "handleCollapseExpandLayout", event => {
+      event.preventDefault();
+
+      if (!this.state.customerInfo) {
+        return;
+      }
+
+      this.setState(prevState => ({
+        isShowingLeftPanel: !prevState.isShowingLeftPanel
+      }), () => {
+        this.handleSetStorage(this.state.isShowingLeftPanel);
+        window.dispatchEvent(new Event('resize'));
+      });
+    });
+
+    _defineProperty(this, "handleSetStorage", isShowLeft => {
+      window.localStorage.setItem('isShowingLeftPanel', isShowLeft);
+      window.localStorage.setItem('isKeepLeftPanel', isShowLeft);
+    });
+
+    _defineProperty(this, "renderLeftRightContent", customerInfo => {
+      const {
+        settings,
+        gridParams
+      } = this.state;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "d-flex"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: customerInfo !== null ? 'left-row-container' : 'left-row-hidden'
+      }, customerInfo !== null && settings !== null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DataGrid__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        customerInfo: customerInfo,
+        settings: settings,
+        gridParams: gridParams,
+        setGridParams: this.setGridParams,
+        setUserName: this.setUserName,
+        getCustomerInfo: this.getCustomerInfo,
+        handleCloseEditCustomerInfoPopup: this.handleCloseEditCustomerInfoPopup
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "right-row-container",
+        style: {
+          width: customerInfo !== null ? '78%' : '100%'
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "child-app-container"
+      }, this.props.children)));
+    });
+
+    _defineProperty(this, "renderFullWidthContent", () => {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "left-row-container",
+        style: {
+          width: 0
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "right-row-container",
+        style: {
+          width: '100%'
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "child-app-container"
+      }, this.props.children)));
+    });
+
+    this.state = {
+      menus: [],
+      username: null,
+      isGuest: false,
+      customerInfo: null,
+      settings: null,
+      gridParams: {
+        username: null,
+        isGuest: false
+      },
+      sessionData: {
+        currentUsername: '',
+        currentClientTime: new Date(),
+        clientTimezone: 0,
+        serverTimezone: 0,
+        hasCreateFeedbackPermission: false
+      },
+      showEmptyConfirmPopup: false,
+      showEmptyCustomerInfoPopup: false,
+      customerSuggestions: [],
+      editCustomerInfoPopup: {
+        show: false
+      },
+      isShowingLeftPanel: true
+    };
+  }
+
+  async componentDidMount() {
+    const storage = window.localStorage;
+    this.getInitInfo();
+    const isShowingLeftPanel = storage.getItem('isShowingLeftPanel');
+    const isKeepLeftPanel = storage.getItem('isKeepLeftPanel');
+
+    if (isKeepLeftPanel !== null) {
+      this.setState({
+        isShowingLeftPanel: JSON.parse(isKeepLeftPanel)
+      });
+    }
+
+    if (isShowingLeftPanel !== null) {
+      storage.removeItem('isShowingLeftPanel');
+    }
+
+    this.getAntiForgeryToken();
+  }
+
+  render() {
+    const {
+      customerInfo,
+      isGuest,
+      customerSuggestions,
+      showEmptyConfirmPopup,
+      username,
+      showEmptyCustomerInfoPopup,
+      menus,
+      isShowingLeftPanel
+    } = this.state;
+
+    if (menus.length <= 0) {
+      return null;
+    }
+
+    const hasCreateFeedbackPermission = this.state.sessionData.hasCreateFeedbackPermission;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "fix-header-menu"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      menus: menus,
+      custId: customerInfo === null || customerInfo === void 0 ? void 0 : customerInfo.custId,
+      handleCollapseExpandLayout: this.handleCollapseExpandLayout
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Filter__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      isHost: hasCreateFeedbackPermission,
+      getDataGrid: this.getDataGrid,
+      isGuest: isGuest,
+      username: username,
+      menus: menus,
+      customerInfo: customerInfo,
+      customerSuggestions: customerSuggestions,
+      handleChange: this.handleChange,
+      handleChangeSuggestion: this.handleChangeSuggestion,
+      showEmptyCustomerInfoPopup: showEmptyCustomerInfoPopup,
+      handleCloseEmptyCustomerInfoPopup: this.handleCloseEmptyCustomerInfoPopup,
+      showEmptyConfirmPopup: showEmptyConfirmPopup,
+      handleGetCustomerIsGuest: this.handleGetCustomerIsGuest,
+      handleCloseEmptyConfirm: this.handleCloseEmptyConfirm,
+      debounceUserNameInputChange: this.debounceUserNameInputChange
+    })), !showEmptyCustomerInfoPopup && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "row-content"
+    }, isShowingLeftPanel && customerInfo !== null ? this.renderLeftRightContent(customerInfo) : this.renderFullWidthContent()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_toastify__WEBPACK_IMPORTED_MODULE_2__["ToastContainer"], {
+      limit: 1,
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      transition: react_toastify__WEBPACK_IMPORTED_MODULE_2__["Slide"],
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: false
+    }));
+  }
+
+}
+
+const FunctionBarWithNavigation = Object(_WithNavigation__WEBPACK_IMPORTED_MODULE_7__["default"])(Layout);
+/* harmony default export */ __webpack_exports__["default"] = (FunctionBarWithNavigation);
+
+/***/ }),
+
 /***/ "./www/sources/js/components/layout-container/index.js":
 /*!*************************************************************!*\
   !*** ./www/sources/js/components/layout-container/index.js ***!
@@ -3008,17 +2998,37 @@ class Header extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Layout; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Index; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_AppContainer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/AppContainer */ "./www/sources/js/components/layout-container/components/AppContainer.jsx");
+/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Layout */ "./www/sources/js/components/layout-container/components/Layout.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
 
 
-class Layout extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
+
+const NotificationListComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-list/index */ "./www/sources/js/pages/notification-list/index.js")));
+const NotificationTemplateComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(2)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-template/index */ "./www/sources/js/pages/notification-template/index.js")));
+const NotificationTypeComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-type/index */ "./www/sources/js/pages/notification-type/index.js")));
+const DashboardComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(0)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/dashboard/index */ "./www/sources/js/pages/dashboard/index.js")));
+class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   render() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_1__["default"], {
-      children: this.props.children
-    });
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Layout__WEBPACK_IMPORTED_MODULE_1__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Suspense"], {
+      fallback: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading...")
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Routes"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/NotificationList",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationListComponent, null)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/NotificationTemplate",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTemplateComponent, null)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/NotificationType",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTypeComponent, null)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/Dashboard",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DashboardComponent, null)
+    })))));
   }
 
 }

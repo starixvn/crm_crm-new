@@ -1,22 +1,13 @@
-import React, { Component, lazy, Suspense  } from "react";
+import React, { Component } from "react";
 import Filter from './Filter';
 import { ToastContainer, Slide } from 'react-toastify';
 import Header from './Header';
 import DataGrid from './DataGrid';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route
-} from "react-router-dom";
+import WithNavigation from '../../WithNavigation';
 
-const NotificationListComponent  = lazy(() => import('@jsroot/pages/notification-list/index'));
-const NotificationTemplateComponent = lazy(() => import('@jsroot/pages/notification-template/index'));
-const NotificationTypeComponent = lazy(() => import('@jsroot/pages/notification-type/index'));
-const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
-
-export default class AppContainer extends Component {
+class Layout extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -62,7 +53,6 @@ export default class AppContainer extends Component {
     getInitInfo = async () =>{
         await this.getSetting();
         await this.getSessionData();
-        await this.getCurrentCustomer();
     }
 
     getAntiForgeryToken = async () =>{
@@ -98,6 +88,7 @@ export default class AppContainer extends Component {
                         hasCreateFeedbackPermission: data.hasCreateFeedbackPermission
                     }
                 }));
+                this.setCurrentCustomer(data.currentCustomer);
                 this.initDataMenu(data.menus);
             }
         }).then(() => Site.unblockUI());
@@ -106,20 +97,17 @@ export default class AppContainer extends Component {
     setDataToElementId = data =>{
         document.getElementById('currentUsername').value = data.currentUsername;
         document.getElementById('currentClientTime').value = data.currentClientTime;
+        document.getElementById('clientTimezone').value = data.clientTimezone;
         document.getElementById('serverTimezone').value = data.serverTimezone;
         document.getElementById('hasCreateFeedbackPermission').value = data.hasCreateFeedbackPermission;
     }
 
-    getCurrentCustomer = async () =>{
-        const url = Site.resolveClientUrl('CustomerInfo/GetCurrentCustomerInfo');
-        await DataService.getDataAsync(url).then(response => {
-            const data = response.data;
-            if(data !== undefined && data !== null){
-                this.setState({username: data.name, isGuest: data.isGuest} , () =>{
-                    this.getCustomerInfo();
-                });
-            }
-        });
+    setCurrentCustomer = currentCustomer =>{
+        if(currentCustomer !== undefined && currentCustomer !== null){
+            this.setState({username: currentCustomer.name, isGuest: currentCustomer.isGuest} , () =>{
+                this.getCustomerInfo();
+            });
+        }
     };
 
     initDataMenu = menus => {
@@ -216,8 +204,11 @@ export default class AppContainer extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
         await DataService.postDataAsync(url,params, this.state.antiToken).then(response => {
-            this.setState({customerInfo: response.data});
-            if (response.data === null && !this.state.isGuest) {
+            if(response.data !== null){
+                this.setState({customerInfo: response.data}, () =>{
+                    this.props.navigate('/Dashboard', {state: response.data.custId});
+                });
+            }else if (response.data === null && !this.state.isGuest) {
                 this.setState({
                     showEmptyConfirmPopup: true
                 });
@@ -246,20 +237,6 @@ export default class AppContainer extends Component {
         window.localStorage.setItem('isKeepLeftPanel', isShowLeft);
     }
 
-    renderMenuComponent = () =>{
-        return (
-            <Suspense fallback={<div>Loading...</div>}>
-                <Routes>
-                    <Route exact path="/" />
-                    <Route path="/NotificationList" element={<NotificationListComponent />} />
-                    <Route path="/NotificationTemplate" element={<NotificationTemplateComponent />} />
-                    <Route path="/NotificationType" element={<NotificationTypeComponent />} />
-                    <Route path="/Dashboard" element={<DashboardComponent custId={this.state.customerInfo?.custId}/>} />
-                </Routes>
-            </Suspense>
-        );
-    }
-
     renderLeftRightContent = customerInfo =>{
         const {settings, gridParams} = this.state;
         return (
@@ -275,7 +252,7 @@ export default class AppContainer extends Component {
                 </div>
                 <div id='right-row-container' style={{width: customerInfo !== null ? '78%' : '100%'}}>
                     <div id='child-app-container'>
-                        {this.renderMenuComponent()}
+                        {this.props.children}
                     </div>
                 </div>
             </div>
@@ -288,7 +265,7 @@ export default class AppContainer extends Component {
                 <div id='left-row-container' style={{width:0}} />
                 <div id='right-row-container' style={{width:'100%'}}>
                     <div id='child-app-container'>
-                    {this.renderMenuComponent()}
+                    {this.props.children}
                     </div>
                 </div> 
             </div>
@@ -304,40 +281,41 @@ export default class AppContainer extends Component {
         const hasCreateFeedbackPermission = this.state.sessionData.hasCreateFeedbackPermission;
         return (
             <div>
-                <Router>
-                    <div className='fix-header-menu'>
-                        <Header menus={menus} handleCollapseExpandLayout={this.handleCollapseExpandLayout}/>
-                        <Filter
-                            isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
-                            customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
-                            showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
-                            showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
-                            handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
-                        />
-                    </div>
-                    {
-                        !showEmptyCustomerInfoPopup &&
-                        <div className='row-content'>
-                            {
-                                isShowingLeftPanel && customerInfo !== null ?
-                                this.renderLeftRightContent(customerInfo) :
-                                this.renderFullWidthContent()
-                            }
-                        </div>
-                    }
-                    
-                    <ToastContainer
-                        limit={1}
-                        position='top-center'
-                        autoClose={3000}
-                        hideProgressBar={false}
-                        transition={Slide}
-                        closeOnClick={false}
-                        pauseOnHover
-                        draggable={false}
+                <div className='fix-header-menu'>
+                    <Header menus={menus} custId={customerInfo?.custId} handleCollapseExpandLayout={this.handleCollapseExpandLayout} />
+                    <Filter
+                        isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
+                        customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
+                        showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
+                        showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
+                        handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
                     />
-                </Router>
+                </div>
+                {
+                    !showEmptyCustomerInfoPopup &&
+                    <div className='row-content'>
+                        {
+                            isShowingLeftPanel && customerInfo !== null ?
+                            this.renderLeftRightContent(customerInfo) :
+                            this.renderFullWidthContent()
+                        }
+                    </div>
+                }
+                
+                <ToastContainer
+                    limit={1}
+                    position='top-center'
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    transition={Slide}
+                    closeOnClick={false}
+                    pauseOnHover
+                    draggable={false}
+                />
             </div>
         );
     }
 }
+
+const FunctionBarWithNavigation = WithNavigation(Layout);
+export default FunctionBarWithNavigation;

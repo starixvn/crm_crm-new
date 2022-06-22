@@ -50,28 +50,22 @@
 
         public IActionResult GetSessionData()
         {
-            IEnumerable<MenuItem> menus = new List<MenuItem>();
             var currentUsername = napSession.UserName;
             var currentClientTime = commonService.ConvertToClientDateTime(DateTime.Now);
             var clientTimezone = appSettings.ClientTimezone;
             var serverTimezone = appSettings.ServerTimezone;
             var permission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo);
             var hasCreateFeedbackPermission = permission > 0;
-            if (sessionService.MenuItems != null)
-            {
-                menus = sessionService.MenuItems.ToList();
-            }
-            else
-            {
-                menus = userService.GetMenuItem(napSession.UserId, napSettings.SiteId, napSettings.Environment, true).ToList();
-            }
+            var menus = sessionService.MenuItems ?? userService.GetMenuItem(napSession.UserId, napSettings.SiteId, napSettings.Environment, true);
+            
             return Json(new {
+                currentCustomer = sessionService.CurrentCustomer,
                 currentUsername,
                 currentClientTime,
                 clientTimezone,
                 serverTimezone,
                 hasCreateFeedbackPermission,
-                menus
+                menus = menus
             });
         }
     }

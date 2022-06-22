@@ -207,9 +207,9 @@ class Table extends Component {
     }
 
     _getUpdatedColumnLayout() {
-        const { width, autoWidth, containerPadding } = this.props;
+        const { width, shouldUseMaxWidth , autoWidth, containerPadding } = this.props;
         const widthRemain = this._calculateWidth();
-        let sumOfColumnWidth = autoWidth ? this.state.maxWidth : width;
+        let sumOfColumnWidth = autoWidth || shouldUseMaxWidth ? this.state.maxWidth : width;
         sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH - DEFAULT_PADDING - widthRemain;
 
         const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth =>
@@ -221,7 +221,7 @@ class Table extends Component {
     _calculateWidth = () =>{
         const isFullWidthClient = this.props.width === clientWidth;
         const leftRowContainer = document.getElementById('left-row-container');
-        const leftContainerWidth = window.customerInfo !== null && leftRowContainer !== null  ? leftRowContainer.width + DEFAULT_PADDING : DEFAULT_PADDING;
+        const leftContainerWidth = leftRowContainer !== null  ? leftRowContainer.clientWidth + DEFAULT_PADDING : DEFAULT_PADDING;
         const widthRemain = isFullWidthClient ? leftContainerWidth : 0;
         return widthRemain;
     }

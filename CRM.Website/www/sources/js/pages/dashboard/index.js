@@ -14,10 +14,9 @@ import '@cssroot/pages/dashboard/index.scss';
 class index extends PureComponent {
     render(){
         const location = this.props.location;
-        const custId = this.props.location.state !== null ? location.state.id : this.props.custId;
         return(
             <Provider store={store}>
-                <AppContainer custId={!custId ? null : custId.toString()}/>
+                <AppContainer custId={!location.state ? null : location.state.toString()}/>
             </Provider>
         );
     }

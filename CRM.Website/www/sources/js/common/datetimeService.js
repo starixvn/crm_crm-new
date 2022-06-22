@@ -55,13 +55,14 @@ export default class DateTimeService {
     }
 
     static toClientDateTime(date) {
+        const ClientTimezone = document.getElementById('clientTimezone').value;
         date = moment(date, LongDateTimeFormat);
-        return moment.utc(date).utcOffset(document.getElementById('clientTimezone').value);
+        return moment.utc(date).utcOffset(ClientTimezone);
     }
 
     static toServerDateTime(date) {
         date = moment(date, LongDateTimeFormat);
-        return moment(date).utc().utcOffset(document.getElementById('serverTimezone').value);
+        return moment(date).utc().utcOffset(ClientTimezone);
     }
 
     static toShortDateFormat(date) {

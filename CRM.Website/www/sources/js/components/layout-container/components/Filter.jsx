@@ -16,11 +16,7 @@ class Filter extends Component {
             toast.error(`${LangHelper.getResource('PleaseInputUsername')}`);
             return;
         }
-        this.props.getDataGrid().then(()=>{
-            if(this.props.customerInfo !== null){
-                this.props.navigate('/Dashboard', {state: {id: this.props.customerInfo.custId}});
-            }
-        });
+        this.props.getDataGrid();
     };
 
     renderRightContainer = () =>{
@@ -143,7 +139,7 @@ class Filter extends Component {
 
     handleMenuDashboardClick = event =>{
         event.preventDefault();
-        window.location = Site.resolveClientUrl('Dashboard/Index');
+        this.props.navigate('/Dashboard', {state: {id: this.props.customerInfo.custId}});
     }
 
     handleConcatMenu = menus => {
@@ -174,6 +170,8 @@ class Filter extends Component {
         if(!this.props.menus || this.props.menus.length === 0) {
             return null;
         }
+
+        console.log('filter');
         
         const {username, customerSuggestions, isGuest, handleChange, showEmptyCustomerInfoPopup, debounceUserNameInputChange, handleChangeSuggestion,
             handleCloseEmptyCustomerInfoPopup, showEmptyConfirmPopup, handleGetCustomerIsGuest, handleCloseEmptyConfirm} = this.props;

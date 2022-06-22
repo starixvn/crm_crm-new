@@ -100,7 +100,7 @@ export class DataGrid extends Component {
                 <div className='table-title'>{LangHelper.getResource( 'NotificationTemplate' )}</div>
                 <Table
                     minWidth={720}
-                    maxWidth={document.getElementById( 'app-container' ).clientWidth}
+                    maxWidth={document.getElementById('app-container').clientWidth}
                     autoWidth
                     header={this.buildGridHeader( isHost )}
                     body={this.buildGridBody( isHost )}

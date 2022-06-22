@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import {
     Link
 } from "react-router-dom";
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
 
-export class Header extends Component {
+export class Header extends PureComponent {
     constructor(props) {
         super(props);
     }
@@ -21,7 +21,13 @@ export class Header extends Component {
         return (
             <li key={index + item.id} className='menu-item'>
                 <div className='menu-title'>
-                <Link to={item.url !== '' ? Site.resolveClientUrl(item.url.slice(1)) : ''} className='title'>{item.name}</Link>
+                <Link 
+                    to={item.url !== '' ? Site.resolveClientUrl(item.url.slice(1)) : ''}
+                    state={this.props.custId}
+                    className='title'
+                >
+                    {item.name}
+                </Link>
                     {
                         item.subMenus.length > 0 && <span className='fa fa-caret-down icon' />
                     }
@@ -61,6 +67,7 @@ export class Header extends Component {
 
     render() {
         const { menus, handleCollapseExpandLayout } = this.props;
+        console.log('header');
         if (!menus || menus.length <= 0) {
             return null;
         }

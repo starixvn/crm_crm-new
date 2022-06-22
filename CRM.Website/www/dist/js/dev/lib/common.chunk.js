@@ -858,7 +858,7 @@ class Table extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     _defineProperty(this, "_calculateWidth", () => {
       const isFullWidthClient = this.props.width === clientWidth;
       const leftRowContainer = document.getElementById('left-row-container');
-      const leftContainerWidth = window.customerInfo !== null && leftRowContainer !== null ? leftRowContainer.width + _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"] : _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"];
+      const leftContainerWidth = leftRowContainer !== null ? leftRowContainer.clientWidth + _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"] : _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"];
       const widthRemain = isFullWidthClient ? leftContainerWidth : 0;
       return widthRemain;
     });
@@ -1042,13 +1042,14 @@ class Table extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   _getUpdatedColumnLayout() {
     const {
       width,
+      shouldUseMaxWidth,
       autoWidth,
       containerPadding
     } = this.props;
 
     const widthRemain = this._calculateWidth();
 
-    let sumOfColumnWidth = autoWidth ? this.state.maxWidth : width;
+    let sumOfColumnWidth = autoWidth || shouldUseMaxWidth ? this.state.maxWidth : width;
     sumOfColumnWidth = sumOfColumnWidth - containerPadding - _constants__WEBPACK_IMPORTED_MODULE_4__["SCROLLBAR_WIDTH"] - _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"] - widthRemain;
     const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth => sumOfColumnWidth / this.columnWidthSum * cellWidth);
     return newColumnsWidth;
