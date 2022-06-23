@@ -178,7 +178,16 @@
 
             foreach (var feedback in feedbackStatistic)
             {
+                var totalDays = feedback.ResolutionDate - feedback.FeedbackDate;
+
+                feedback.DurationTime = string.Format( "{0}:{1}:{2}:{3}",
+                                                        totalDays.Days,
+                                                        totalDays.Hours,
+                                                        totalDays.Minutes,
+                                                        totalDays.Seconds);
                 feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
+                feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
+                feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
             }
 
             return feedbackStatistic;

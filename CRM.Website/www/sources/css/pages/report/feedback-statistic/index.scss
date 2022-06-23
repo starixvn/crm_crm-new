@@ -101,7 +101,7 @@
 
 .feedback-detail .modal-content{
     width: 1200px;
-    max-height: 875px;
+    max-height: 900px;
 
     .table-container{
         max-height: 875px !important;
@@ -144,7 +144,7 @@
         }
     
         .break-word{
-            word-break: break-all;
+            word-break: break-word;
         }
     }
 }
