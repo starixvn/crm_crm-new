@@ -1,9 +1,6 @@
 ﻿import React from 'react';
-import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-
-import Layout from '@jsroot/components/layout-container/index';
 import communicationsettingReducer from './communicationsettingSlice';
 import AppContainer from './components/AppContainer';
 
@@ -11,12 +8,17 @@ const store = configureStore({
     reducer: communicationsettingReducer
 });
 
-const isHost = document.getElementById('IsHost').checked;
+import '@cssroot/pages/admin-tool/communication-setting/index.scss';
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Layout>
-            <AppContainer isHost={isHost} />
-        </Layout>
-    </Provider>,
-    document.getElementById('app-container'));
+const isHost = true;
+export default class index extends React.Component {
+    render(){
+        return(
+            <Provider store={store}>
+                <div className='communication-setting'>
+                    <AppContainer isHost={isHost} />
+                </div>
+            </Provider>
+        );
+    }
+}

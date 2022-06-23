@@ -525,8 +525,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filter */ "./www/sources/js/pages/chat-type-mapping/components/Filter.jsx");
 /* harmony import */ var _DataGrid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DataGrid */ "./www/sources/js/pages/chat-type-mapping/components/DataGrid.jsx");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _jsroot_common_store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jsroot/common/store */ "./www/sources/js/common/store.js");
-/* harmony import */ var _reducers_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reducers/index */ "./www/sources/js/pages/chat-type-mapping/reducers/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _actions_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../actions/index */ "./www/sources/js/pages/chat-type-mapping/actions/index.js");
 /* harmony import */ var _cssroot_pages_chat_type_mapping_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @cssroot/pages/chat-type-mapping/index.scss */ "./www/sources/css/pages/chat-type-mapping/index.scss");
 /* harmony import */ var _cssroot_pages_chat_type_mapping_index_scss__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_cssroot_pages_chat_type_mapping_index_scss__WEBPACK_IMPORTED_MODULE_6__);
 
@@ -536,43 +536,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const store = _jsroot_common_store__WEBPACK_IMPORTED_MODULE_4__["default"].createStore(_reducers_index__WEBPACK_IMPORTED_MODULE_5__["default"], {
-  gridData: {
-    data: null,
-    totalItems: 0
-  },
-  updateActiveStatusResult: null,
-  insertPersonalMappingData: {
-    isShow: false
-  },
-  insertPersonalMappingResult: null,
-  updatePersonalMappingData: {
-    isShow: false,
-    data: null
-  },
-  updatePersonalMappingResult: null,
-  updateGroupMappingData: {
-    isShow: false,
-    data: null
-  },
-  updateGroupMappingResult: null,
-  recipients: [],
-  groupHeadline: [],
-  letstalkVerification: {
-    isBotRemoved: false,
-    recipients: []
-  }
-});
 class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
     this.isHost = document.getElementById('is-host') ? document.getElementById('is-host').checked : false;
-  }
+  } // componentWillUnmount(){
+  //     this.props.resetState();
+  // }
+
 
   render() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_3__["Provider"], {
-      store: store
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Filter__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Filter__WEBPACK_IMPORTED_MODULE_1__["default"], {
       isHost: this.isHost
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DataGrid__WEBPACK_IMPORTED_MODULE_2__["default"], {
       isHost: this.isHost
@@ -580,7 +554,12 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   }
 
 }
-/* harmony default export */ __webpack_exports__["default"] = (AppContainer);
+
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_4__["bindActionCreators"])(_actions_index__WEBPACK_IMPORTED_MODULE_5__["ActionCreators"], dispatch);
+
+const mapStateToProps = state => null;
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["connect"])(mapStateToProps, mapDispatchToProps)(AppContainer));
 
 /***/ }),
 
@@ -862,9 +841,8 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       header: this.buildHeader(isHost),
       body: this.buildChatTypeMappingBody(isHost),
       autoWidth: true,
-      maxWidth: document.getElementById('app-container').clientWidth,
+      maxWidth: document.getElementById('right-row-container').clientWidth,
       onPaging: this.onPaging,
-      containerPadding: 0,
       shouldResetScrollPosition: false,
       pageOption: pagingOptions
     }), this.props.updateActiveStatusPopup.isShowPopup && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ConfirmPopup__WEBPACK_IMPORTED_MODULE_10__["default"], {
@@ -2896,7 +2874,9 @@ class index extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__["Provider"], {
       store: store
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_3__["default"], null));
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "chat-type-mapping"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_3__["default"], null)));
   }
 
 }

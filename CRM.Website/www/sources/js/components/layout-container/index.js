@@ -10,6 +10,18 @@ const NotificationListComponent  = lazy(() => import('@jsroot/pages/notification
 const NotificationTemplateComponent = lazy(() => import('@jsroot/pages/notification-template/index'));
 const ChatTypeMappingComponent = lazy(() => import('@jsroot/pages/chat-type-mapping/index'));
 const NotificationTypeComponent = lazy(() => import('@jsroot/pages/notification-type/index'));
+
+const ManagementComponent  = lazy(() => import('@jsroot/pages/pic-and-headline/management/index'));
+const PicAssignmentComponent  = lazy(() => import('@jsroot/pages/pic-and-headline/pic-assignment/index'));
+const ChangesLogManagementComponent  = lazy(() => import('@jsroot/pages/pic-and-headline/changes-log/index'));
+
+const CommunicationSettingComponent  = lazy(() => import('@jsroot/pages/admin-tool/communication-setting/index'));
+const FeedbackSubjectComponent  = lazy(() => import('@jsroot/pages/admin-tool/feedback-subject/index'));
+const SettingLogComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-log/index'));
+const SettingManagementComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-management/index'));
+const SettingRelationComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-relation/index'));
+
+
 const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
 
 export default class Index extends PureComponent {
@@ -24,6 +36,19 @@ export default class Index extends PureComponent {
                             <Route path="/NotificationTemplate" element={<NotificationTemplateComponent />} />
                             <Route path="/ChatTypeMapping" element={<ChatTypeMappingComponent />} />
                             <Route path="/NotificationType" element={<NotificationTypeComponent />} />
+                            
+                            <Route path="/PicManagement" element={<ManagementComponent />} />
+                            <Route path="/PicOfHeadline" element={<PicAssignmentComponent />} />
+                            <Route path="/ChangesLog" element={<ChangesLogManagementComponent />} />
+
+                            <Route path="/CommunicationSetting">
+                                <Route path="Index" element={<CommunicationSettingComponent />} />
+                            </Route>
+                            <Route path="/FeedbackSubjectManagement/Index" element={<FeedbackSubjectComponent />} />
+                            <Route path="/ActionLog/SettingLog" element={<SettingLogComponent />} />
+                            <Route path="/SettingManagement/Index" element={<SettingManagementComponent />} />
+                            <Route path="/SettingRelation/Index" element={<SettingRelationComponent />} />
+
                             <Route path="/Dashboard" element={<DashboardComponent />} />
                         </Routes>
                     </Suspense>

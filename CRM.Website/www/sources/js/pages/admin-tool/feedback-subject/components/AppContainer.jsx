@@ -43,6 +43,10 @@ export class AppContainer extends Component {
         this.props.getAllActiveFeedbackSubject();
     }
 
+    componentWillUnmount(){
+        this.props.resetState();
+    }
+
     handleCloseCreatePopup = () => {
         this.props.setCreateFeedbackSubjectPopup({ show: false });
         this.props.setCreateFeedbackSubjectResult(null);

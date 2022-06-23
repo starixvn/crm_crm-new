@@ -27,12 +27,12 @@ namespace CRM.Controllers.AdminTool
             this.actionLogService = actionLogService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.SettingLog, Policy = Policy.Read)]
-        [Route("ActionLog/SettingLog")]
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //[CrmPermission(FunctionKey = FunctionKey.SettingLog, Policy = Policy.Read)]
+        //[Route("ActionLog/SettingLog")]
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
         public async Task<IActionResult> GetActionLog()
         {

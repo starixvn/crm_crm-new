@@ -7,68 +7,70 @@
 @import '../../../components/tables';
 @import '../../../components/react-select';
 
-.table-container{
-    .body-content {
-        .parent-level-0 td{
-            cursor: pointer;
-            background-color: rgb(227, 227, 227) !important;
-        }
-        .table {
-            tbody {
-                tr:hover td {
-                    background-color: #E0FFFF !important;
+.setting-relation{
+    .table-container{
+        .body-content {
+            .parent-level-0 td{
+                cursor: pointer;
+                background-color: rgb(227, 227, 227) !important;
+            }
+            .table {
+                tbody {
+                    tr:hover td {
+                        background-color: #E0FFFF !important;
+                    }
                 }
             }
         }
     }
-}
-
-.table-title{
-    max-width: 700px;
-}
-
-.update-setting-relation{
-    .modal-content{
-        width: 660px !important;
-        height: 660px !important;
-
-        .table-container .body-content{
-            max-height: 350px !important;
-        }
-        .modal-footer{
-            justify-content: flex-start !important;
-        }
-
-        .filter-relation{
-            display: flex;
-            flex-wrap: wrap;
-            border: 1px solid rgb(183, 183, 183);
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: rgb(232, 232, 232);
-        }
-
-        .checkbox-cell-style {
-            width: 13px;
-            height: 13px;
-            margin: auto;
-            cursor: pointer;
-        }
     
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        /* Firefox */
-        input[type=number] {
-            -moz-appearance: textfield;
-            text-align: center;
-        }
-
-        .table-container .body-content{
-            td{
-                background-color: #fff !important;
+    .table-title{
+        max-width: 700px;
+    }
+    
+    .update-setting-relation{
+        .modal-content{
+            width: 660px !important;
+            height: 660px !important;
+    
+            .table-container .body-content{
+                max-height: 350px !important;
+            }
+            .modal-footer{
+                justify-content: flex-start !important;
+            }
+    
+            .filter-relation{
+                display: flex;
+                flex-wrap: wrap;
+                border: 1px solid rgb(183, 183, 183);
+                margin-bottom: 10px;
+                padding: 10px;
+                background-color: rgb(232, 232, 232);
+            }
+    
+            .checkbox-cell-style {
+                width: 13px;
+                height: 13px;
+                margin: auto;
+                cursor: pointer;
+            }
+        
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            /* Firefox */
+            input[type=number] {
+                -moz-appearance: textfield;
+                text-align: center;
+            }
+    
+            .table-container .body-content{
+                td{
+                    background-color: #fff !important;
+                }
             }
         }
     }

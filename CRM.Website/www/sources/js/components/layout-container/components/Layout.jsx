@@ -36,9 +36,8 @@ class Layout extends Component {
     }
 
     async componentDidMount() {
-        const storage = window.localStorage;
         this.getInitInfo();
-
+        const storage = window.localStorage;
         const isShowingLeftPanel = storage.getItem('isShowingLeftPanel');
         const isKeepLeftPanel = storage.getItem('isKeepLeftPanel');
         if(isKeepLeftPanel !== null){
@@ -206,6 +205,7 @@ class Layout extends Component {
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
         await DataService.postDataAsync(url,params, this.state.antiToken).then(response => {
             if(response.data !== null){
+                document.getElementById('currentCustId').value = response.data.custId;
                 this.setState({customerInfo: response.data}, () =>{
                     this.props.navigate('/Dashboard', {state: response.data.custId});
                 });

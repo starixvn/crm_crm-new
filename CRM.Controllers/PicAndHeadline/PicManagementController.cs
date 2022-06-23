@@ -42,11 +42,11 @@
             this.excelService = excelService;
         }
 
-        public IActionResult Index()
-        {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Host);
-            return View(isHost);
-        }
+        //public IActionResult Index()
+        //{
+        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Host);
+        //    return View(isHost);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> GetReport([FromBody] GetReportCriteria criteria)

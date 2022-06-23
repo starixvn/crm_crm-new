@@ -1,30 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+    gridParams: {
+        userName: null,
+        editBy: null,
+        actionTypeIds: '',
+        fromDate: null,
+        toDate: null,
+        pageIndex: 1,
+        pageSize: 100
+    },
+    gridParamsPic: {
+        picName: null,
+        editBy: null,
+        fromDate: null,
+        toDate: null,
+        pageIndex: 1,
+        pageSize: 100
+    },
+    headlineDA: null,
+    picReport: null,
+    actionType: null
+};
+
 const picManagementSlice = createSlice({
     name: 'ChangesLog',
-    initialState: {
-        gridParams: {
-            userName: null,
-            editBy: null,
-            actionTypeIds: '',
-            fromDate: null,
-            toDate: null,
-            pageIndex: 1,
-            pageSize: 100
-        },
-        gridParamsPic: {
-            picName: null,
-            editBy: null,
-            fromDate: null,
-            toDate: null,
-            pageIndex: 1,
-            pageSize: 100
-        },
-        headlineDA: null,
-        picReport: null,
-        actionType: null
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
@@ -46,6 +49,7 @@ const picManagementSlice = createSlice({
 const { actions, reducer } = picManagementSlice;
 
 export const {
+    resetState,
     setGridParams,
     setGridParamsPic,
     setHeadlineDA,

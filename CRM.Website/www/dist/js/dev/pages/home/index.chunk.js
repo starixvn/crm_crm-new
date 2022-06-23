@@ -103,7 +103,7 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"0":1,"1":1,"2":1,"3":1,"4":1};
+/******/ 		var cssChunks = {"0":1,"1":1,"2":1,"3":1,"4":1,"5":1,"6":1,"7":1,"8":1,"9":1,"10":1,"11":1,"12":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
@@ -2122,8 +2122,6 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   }
 
   render() {
-    console.log('datagrid');
-
     if (!this.props.customerInfo) {
       return null;
     }
@@ -2394,7 +2392,6 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       return null;
     }
 
-    console.log('filter');
     const {
       username,
       customerSuggestions,
@@ -2542,7 +2539,6 @@ class Header extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
       menus,
       handleCollapseExpandLayout
     } = this.props;
-    console.log('header');
 
     if (!menus || menus.length <= 0) {
       return null;
@@ -2804,6 +2800,7 @@ class Layout extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_5__["default"].resolveClientUrl('CustomerInfo/GetCustomerInfo');
       await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_6__["default"].postDataAsync(url, params, this.state.antiToken).then(response => {
         if (response.data !== null) {
+          document.getElementById('currentCustId').value = response.data.custId;
           this.setState({
             customerInfo: response.data
           }, () => {
@@ -2914,8 +2911,8 @@ class Layout extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   }
 
   async componentDidMount() {
-    const storage = window.localStorage;
     this.getInitInfo();
+    const storage = window.localStorage;
     const isShowingLeftPanel = storage.getItem('isShowingLeftPanel');
     const isKeepLeftPanel = storage.getItem('isKeepLeftPanel');
 
@@ -3010,9 +3007,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const NotificationListComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(2)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-list/index */ "./www/sources/js/pages/notification-list/index.js")));
-const NotificationTemplateComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-template/index */ "./www/sources/js/pages/notification-template/index.js")));
+const NotificationTemplateComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(6)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-template/index */ "./www/sources/js/pages/notification-template/index.js")));
 const ChatTypeMappingComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/chat-type-mapping/index */ "./www/sources/js/pages/chat-type-mapping/index.js")));
-const NotificationTypeComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(4)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-type/index */ "./www/sources/js/pages/notification-type/index.js")));
+const NotificationTypeComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(7)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-type/index */ "./www/sources/js/pages/notification-type/index.js")));
+const ManagementComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/pic-and-headline/management/index */ "./www/sources/js/pages/pic-and-headline/management/index.js")));
+const PicAssignmentComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/pic-and-headline/pic-assignment/index */ "./www/sources/js/pages/pic-and-headline/pic-assignment/index.js")));
+const ChangesLogManagementComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(8)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/pic-and-headline/changes-log/index */ "./www/sources/js/pages/pic-and-headline/changes-log/index.js")));
+const CommunicationSettingComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(4)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/admin-tool/communication-setting/index */ "./www/sources/js/pages/admin-tool/communication-setting/index.js")));
+const FeedbackSubjectComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/admin-tool/feedback-subject/index */ "./www/sources/js/pages/admin-tool/feedback-subject/index.js")));
+const SettingLogComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/admin-tool/setting-log/index */ "./www/sources/js/pages/admin-tool/setting-log/index.js")));
+const SettingManagementComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/admin-tool/setting-management/index */ "./www/sources/js/pages/admin-tool/setting-management/index.js")));
+const SettingRelationComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/admin-tool/setting-relation/index */ "./www/sources/js/pages/admin-tool/setting-relation/index.js")));
 const DashboardComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(0)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/dashboard/index */ "./www/sources/js/pages/dashboard/index.js")));
 class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   render() {
@@ -3032,6 +3037,32 @@ class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
       path: "/NotificationType",
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTypeComponent, null)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/PicManagement",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ManagementComponent, null)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/PicOfHeadline",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(PicAssignmentComponent, null)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/ChangesLog",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ChangesLogManagementComponent, null)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/CommunicationSetting"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "Index",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CommunicationSettingComponent, null)
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/FeedbackSubjectManagement/Index",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(FeedbackSubjectComponent, null)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/ActionLog/SettingLog",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SettingLogComponent, null)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/SettingManagement/Index",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SettingManagementComponent, null)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/SettingRelation/Index",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SettingRelationComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
       path: "/Dashboard",
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DashboardComponent, null)

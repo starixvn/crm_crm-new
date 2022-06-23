@@ -952,16 +952,24 @@ class Table extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         shouldUseMaxWidth
       } = this.props;
       const showingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
-      const minWidthContainer = 1485;
-      const calWidth = document.body.clientWidth < minWidthContainer ? minWidthContainer : document.body.clientWidth;
+      const rightRowContainer = document.getElementById('right-row-container').clientWidth;
+      const clientWidth = document.body.clientWidth;
+      const calWidth = clientWidth < _constants__WEBPACK_IMPORTED_MODULE_4__["MIN_WIDTH_CONTAINER"] ? _constants__WEBPACK_IMPORTED_MODULE_4__["MIN_WIDTH_CONTAINER"] : clientWidth;
 
       if (showingLeftPanel !== null) {
         this.setState({
-          maxWidth
+          maxWidth: shouldUseMaxWidth ? maxWidth : rightRowContainer
         });
         window.localStorage.removeItem('isShowingLeftPanel');
       } else {
-        const maxWidthCal = shouldUseMaxWidth ? maxWidth : calWidth - this.diffWidth;
+        const currentSearchCustId = document.getElementById('currentCustId').value;
+        let maxWidthCal = 0;
+
+        if (!currentSearchCustId) {
+          maxWidthCal = shouldUseMaxWidth ? maxWidth : calWidth - this.diffWidth;
+        } else {
+          maxWidthCal = shouldUseMaxWidth ? maxWidth : rightRowContainer;
+        }
 
         if (this.state.maxWidth !== maxWidthCal) {
           this.setState({
@@ -969,15 +977,6 @@ class Table extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
           });
         }
       }
-    });
-
-    _defineProperty(this, "_calculateWidth", () => {
-      const isFullWidthClient = this.props.width === clientWidth;
-      const leftRowContainer = document.getElementById('left-row-container');
-      const currentCustId = document.getElementById('currentCustId').value;
-      const leftContainerWidth = currentCustId !== undefined && leftRowContainer !== null ? leftRowContainer.clientWidth + _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"] : _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"];
-      const widthRemain = isFullWidthClient ? leftContainerWidth : 0;
-      return widthRemain;
     });
 
     _defineProperty(this, "renderFixColumn", fixProps => {
@@ -1163,11 +1162,8 @@ class Table extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       autoWidth,
       containerPadding
     } = this.props;
-
-    const widthRemain = this._calculateWidth();
-
     let sumOfColumnWidth = autoWidth || shouldUseMaxWidth ? this.state.maxWidth : width;
-    sumOfColumnWidth = sumOfColumnWidth - containerPadding - _constants__WEBPACK_IMPORTED_MODULE_4__["SCROLLBAR_WIDTH"] - _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"] - widthRemain;
+    sumOfColumnWidth = sumOfColumnWidth - containerPadding - _constants__WEBPACK_IMPORTED_MODULE_4__["SCROLLBAR_WIDTH"] - 1;
     const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth => sumOfColumnWidth / this.columnWidthSum * cellWidth);
     return newColumnsWidth;
   }
@@ -1187,13 +1183,8 @@ class Table extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       shouldUseMaxWidth,
       isFixColumn
     } = this.props;
-
-    const widthRemain = this._calculateWidth();
-
-    const maxWidthRemain = shouldUseMaxWidth ? 0 : widthRemain;
-    const maxWidth = this.state.maxWidth - containerPadding - maxWidthRemain;
-    console.log(maxWidth);
-    const actualWidth = width - containerPadding - widthRemain;
+    const maxWidth = this.state.maxWidth - containerPadding;
+    const actualWidth = width - containerPadding;
     const newColumnLayout = this.columnWidthSum && this.columnWidthSum !== actualWidth ? this._getUpdatedColumnLayout() : this.state.columnsWidth;
 
     if (!newColumnLayout) {
@@ -1283,7 +1274,7 @@ _defineProperty(Table, "defaultProps", {
   adjustedHeight: 0,
   bodyHeight: 0,
   autoHeight: true,
-  containerPadding: 30,
+  containerPadding: 31,
   shouldResetScrollPosition: true,
   shouldUseMaxWidth: false
 });
@@ -1454,7 +1445,7 @@ const createTableSection = (extendedContainerProps, extendedTableProps) => {
 /*!***********************************************************!*\
   !*** ./www/sources/js/components/react-grid/constants.js ***!
   \***********************************************************/
-/*! exports provided: SCROLLBAR_WIDTH, GUTTER, DEFAULT_COLUMN_WIDTH, DEFAULT_PADDING */
+/*! exports provided: SCROLLBAR_WIDTH, GUTTER, DEFAULT_COLUMN_WIDTH, DEFAULT_PADDING, MIN_WIDTH_CONTAINER */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1463,10 +1454,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GUTTER", function() { return GUTTER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_COLUMN_WIDTH", function() { return DEFAULT_COLUMN_WIDTH; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_PADDING", function() { return DEFAULT_PADDING; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MIN_WIDTH_CONTAINER", function() { return MIN_WIDTH_CONTAINER; });
 const SCROLLBAR_WIDTH = 19;
 const GUTTER = 15;
 const DEFAULT_COLUMN_WIDTH = 100;
 const DEFAULT_PADDING = 31;
+const MIN_WIDTH_CONTAINER = 1485;
 
 /***/ }),
 

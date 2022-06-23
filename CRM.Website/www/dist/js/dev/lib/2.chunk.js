@@ -890,14 +890,13 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       className: "d-flex table-title justify-content-between align-items-center"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('NotificationList')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AutoRefresh__WEBPACK_IMPORTED_MODULE_9__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Table"], {
       minWidth: 960,
-      maxWidth: document.getElementById('app-container').clientWidth,
+      maxWidth: document.getElementById('right-row-container').clientWidth,
       autoWidth: true,
       header: this.buildNotificationListHeader(isHost),
       body: this.buildNotificationListBody(isHost),
       isPaging: true,
       pageOption: pagingOption,
       onPaging: this.onPaging,
-      containerPadding: 0,
       shouldResetScrollPosition: this.props.resendOptions.shouldResetScrollPosition
     }));
   }
@@ -1819,7 +1818,9 @@ class index extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__["Provider"], {
       store: store
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_3__["default"], null));
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "notification-list"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_3__["default"], null)));
   }
 
 }

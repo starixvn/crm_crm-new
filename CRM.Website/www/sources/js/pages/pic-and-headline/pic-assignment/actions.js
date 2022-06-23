@@ -1,6 +1,7 @@
 ﻿import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import {
+    resetState,
     setGridParams,
     setGridData,
     setRemoveOptions,
@@ -15,14 +16,13 @@ import {
 } from './picAssignmentSlice';
 
 const getSettings = () => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('PicAssignment/AllSetting');
     await DataService.postDataAsync(url).then(response => {
         if(!response || !response.data){
             return;
         }
         dispatch(setSettings(response.data));
-    }).then(() => Site.unblockUI());
+    });
 };
 
 const getGridData = (params, callback) => async dispatch => {
@@ -46,6 +46,7 @@ const validateAssignPic = params => async dispatch => {
 };
 
 export const ActionCreators = {
+    resetState,
     setGridParams,
     setGridData,
     setSettings,

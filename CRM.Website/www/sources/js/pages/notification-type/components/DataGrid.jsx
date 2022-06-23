@@ -96,14 +96,13 @@ export class DataGrid extends Component {
                 <div className='table-title'>{LangHelper.getResource('NotificationType')}</div>
                 <Table
                     minWidth={960}
-                    maxWidth={document.getElementById('app-container').clientWidth}
+                    maxWidth={document.getElementById('right-row-container').clientWidth}
                     autoWidth
                     header={this.buildNotificationTypeHeader(isHost)}
                     body={this.buildNotificationTypeBody(isHost)}
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
-                    containerPadding={0}
                     adjustedHeight={10}
                 />
             </Fragment>

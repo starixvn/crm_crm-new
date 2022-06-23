@@ -1,26 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+    mainSettings: null,
+    parents: null,
+    settingType: null,
+    licensees: null,
+    licenseesMapping: null,
+    licenseesManager: [],
+    gridParams: {
+        settingName: ''
+    },
+    editStatusPopup: {show: false},
+    insertNewSettingPopup: {show: false, settingName: ''},
+    licenseeMappingPopup: {show: false},
+    insertNewSettingResult: null,
+    editPopup: {show: false, data: null},
+    editNewSettingResult: null,
+    confirmCancelPopup: {show: false, setting: '', settingId: 0}
+};
+
 const settingManagementSlice = createSlice({
     name: 'settingManagement',
-    initialState: {
-        mainSettings: null,
-        parents: null,
-        settingType: null,
-        licensees: null,
-        licenseesMapping: null,
-        licenseesManager: [],
-        gridParams: {
-            settingName: ''
-        },
-        editStatusPopup: {show: false},
-        insertNewSettingPopup: {show: false, settingName: ''},
-        licenseeMappingPopup: {show: false},
-        insertNewSettingResult: null,
-        editPopup: {show: false, data: null},
-        editNewSettingResult: null,
-        confirmCancelPopup: {show: false, setting: '', settingId: 0}
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setMainSettings: (state, action) => {
             state.mainSettings = action.payload;
         },
@@ -69,6 +72,7 @@ const settingManagementSlice = createSlice({
 const { actions, reducer } = settingManagementSlice;
 
 export const {
+    resetState,
     setMainSettings,
     setParentSettings,
     setSettingTypes,

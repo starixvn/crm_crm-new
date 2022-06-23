@@ -1,31 +1,34 @@
 ﻿import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+    settings: {
+        communicationTools: [],
+        mainCategories: [],
+        subCategories: []
+    },
+    gridParamsCommunication: {
+        username: '',
+        categoryIds: '',
+        subCategoryIds: '',
+        isDisableCategorySubCategory: '',
+        pageIndex: 1,
+        pageSize: 50
+    },
+    gridDataCommunication: null,
+    selectCommunication: null,
+    createCommunicationPopup: { show: false },
+    createCommunicationResult: null,
+    editCommunicationPopup: { show: false },
+    editCommunicationResult: null,
+    deleteCommunicationPopup: { show: false },
+    deleteCommunicationResult: null
+};
+
 const communicationSettingSlice = createSlice({
     name: 'communicationsetting',
-    initialState: {
-        settings: {
-            communicationTools: [],
-            mainCategories: [],
-            subCategories: []
-        },
-        gridParamsCommunication: {
-            username: '',
-            categoryIds: '',
-            subCategoryIds: '',
-            isDisableCategorySubCategory: '',
-            pageIndex: 1,
-            pageSize: 50
-        },
-        gridDataCommunication: null,
-        selectCommunication: null,
-        createCommunicationPopup: { show: false },
-        createCommunicationResult: null,
-        editCommunicationPopup: { show: false },
-        editCommunicationResult: null,
-        deleteCommunicationPopup: { show: false },
-        deleteCommunicationResult: null
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setAllSettings: (state, action) => {
             state.settings = action.payload;
         },
@@ -62,6 +65,7 @@ const communicationSettingSlice = createSlice({
 const { actions, reducer } = communicationSettingSlice;
 
 export const {
+    resetState,
     setAllSettings,
     setGridParamsCommunication,
     setGridCommunicationSetting,

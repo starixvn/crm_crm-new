@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import RowLayout from './RowLayout';
 import PropTypes from 'prop-types';
 import createTableSection from './tableSection';
-import { DEFAULT_COLUMN_WIDTH, SCROLLBAR_WIDTH, DEFAULT_PADDING } from '../constants';
+import { DEFAULT_COLUMN_WIDTH, SCROLLBAR_WIDTH, DEFAULT_PADDING, MIN_WIDTH_CONTAINER } from '../constants';
 import Pager from './Pager';
 import functions from '../functions';
 import Site from '@jsroot/common/site';
@@ -42,7 +42,7 @@ class Table extends Component {
         adjustedHeight: 0,
         bodyHeight: 0,
         autoHeight: true,
-        containerPadding: 30,
+        containerPadding: 31,
         shouldResetScrollPosition: true,
         shouldUseMaxWidth: false
     };
@@ -185,13 +185,20 @@ class Table extends Component {
         }
         const { maxWidth, shouldUseMaxWidth} = this.props;
         const showingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
-        const minWidthContainer = 1485;
-        const calWidth = document.body.clientWidth < minWidthContainer ? minWidthContainer : document.body.clientWidth;
+        const rightRowContainer = document.getElementById('right-row-container').clientWidth;
+        const clientWidth = document.body.clientWidth;
+        const calWidth =  clientWidth < MIN_WIDTH_CONTAINER ? MIN_WIDTH_CONTAINER : clientWidth;
         if(showingLeftPanel !== null){
-            this.setState({ maxWidth });
+            this.setState({ maxWidth:  shouldUseMaxWidth ? maxWidth : rightRowContainer});
             window.localStorage.removeItem('isShowingLeftPanel');
         }else{
-            const maxWidthCal = shouldUseMaxWidth ? maxWidth : calWidth - this.diffWidth;
+            const currentSearchCustId = document.getElementById('currentCustId').value;
+            let maxWidthCal = 0;
+            if(!currentSearchCustId){
+                maxWidthCal = shouldUseMaxWidth ? maxWidth : calWidth - this.diffWidth;
+            }else{
+                maxWidthCal = shouldUseMaxWidth ? maxWidth : rightRowContainer;
+            }
             if (this.state.maxWidth !== maxWidthCal) {
                 this.setState({ maxWidth: maxWidthCal });
             }
@@ -208,23 +215,13 @@ class Table extends Component {
 
     _getUpdatedColumnLayout() {
         const { width, shouldUseMaxWidth , autoWidth, containerPadding } = this.props;
-        const widthRemain = this._calculateWidth();
         let sumOfColumnWidth = autoWidth || shouldUseMaxWidth ? this.state.maxWidth : width;
-        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH - DEFAULT_PADDING - widthRemain;
+        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH - 1;
 
         const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth =>
             sumOfColumnWidth / this.columnWidthSum * cellWidth);
 
         return newColumnsWidth;
-    }
-
-    _calculateWidth = () =>{
-        const isFullWidthClient = this.props.width === clientWidth;
-        const leftRowContainer = document.getElementById('left-row-container');
-        const currentCustId = document.getElementById('currentCustId').value;
-        const leftContainerWidth = currentCustId !== undefined && leftRowContainer !== null  ? leftRowContainer.clientWidth + DEFAULT_PADDING : DEFAULT_PADDING;
-        const widthRemain = isFullWidthClient ? leftContainerWidth : 0;
-        return widthRemain;
     }
 
     renderFixColumn = fixProps =>{
@@ -274,11 +271,8 @@ class Table extends Component {
 
     render() {
         const { width, autoWidth, minWidth, header, body, footer, isPaging, pageOption, onPaging, containerPadding, shouldUseMaxWidth, isFixColumn } = this.props;
-        const widthRemain = this._calculateWidth();
-        const maxWidthRemain = shouldUseMaxWidth ? 0 : widthRemain;
-        const maxWidth = this.state.maxWidth - containerPadding - maxWidthRemain;
-        console.log(maxWidth);
-        const actualWidth = width - containerPadding - widthRemain;
+        const maxWidth = this.state.maxWidth - containerPadding;
+        const actualWidth = width - containerPadding;
         const newColumnLayout = this.columnWidthSum && this.columnWidthSum !== actualWidth ?
             this._getUpdatedColumnLayout() :
             this.state.columnsWidth;

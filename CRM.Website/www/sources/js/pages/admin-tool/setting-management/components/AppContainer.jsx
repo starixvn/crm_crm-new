@@ -16,25 +16,35 @@ export class AppContainer extends Component {
   componentDidMount() {
       this.props.getMainSettings();
   }
+
+  componentWillUnmount(){
+    this.props.resetState();
+  }
+
   handleCloseInsertNewSetting = () =>{
       this.props.setOpenInsertNewSettingPopup({ show: false, settingName: '' });
   };
+
   handleSuccessInsertNewSetting = () =>{
       this.handleCloseInsertNewSetting();
       this.handleGetSettingType();
       this.props.setInsertNewSettingResult(null);
   };
+
   handleGetSettingType = () =>{
       this.props.getSettingTypes(this.props.gridParams);
   };
+
   handleCloseEdit = () =>{
       this.props.setOpenEdiPopup({ show: false, data: null });
   };
+
   handleSuccessEdit = () =>{
       this.handleCloseEdit();
       this.handleGetSettingType();
       this.props.setEditNewSettingResult(null);
   };
+
   handleCloseLicenseeMapping = () =>{
       this.props.setOpenLicenseeMappingPopup({ show: false});
   };
@@ -45,7 +55,7 @@ export class AppContainer extends Component {
 
   handleCloseConfirmLicenseeMapping = () =>{
     this.props.setConfirmCancelPopup({ show: false, setting: '', settingId: 0});
-};
+  };
 
 
   handleEditStatus = () =>{
@@ -68,6 +78,7 @@ export class AppContainer extends Component {
   handleCloseEditStatusPopup = () =>{
       this.props.setEditStatusPopup({ show: false });
   };
+  
   render() {
     const {isHost, mainSettings, gridParams, editStatusPopup, insertNewSettingPopup, licenseeMappingPopup, editPopup} = this.props;
 

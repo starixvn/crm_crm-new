@@ -38,6 +38,10 @@ export class AppContainer extends Component {
         this.props.getAllSettings();
     }
 
+    componentWillUnmount(){
+        this.props.resetState();
+    }
+
     handleCloseCreatePopup = isSuccessful => {
         this.props.setCreateCommunicationPopup({ show: false });
         this.props.setCreateCommunicationResult(null);

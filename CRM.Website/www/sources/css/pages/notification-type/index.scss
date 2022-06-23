@@ -7,6 +7,8 @@
 @import '../../components/messages';
 @import '../../components/tables';
 
-.modal-dialog {
-    max-width: 600px;
+.notification-type{
+    .modal-dialog {
+        max-width: 600px;
+    }
 }

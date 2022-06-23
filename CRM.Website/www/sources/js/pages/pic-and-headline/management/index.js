@@ -1,9 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import Layout from '@jsroot/components/layout-container/index';
 import PicManagementReducer from './picManagementSlice';
 import AppContainer from './components/AppContainer';
 
@@ -11,12 +9,19 @@ const store = configureStore({
     reducer: PicManagementReducer
 });
 
-const isHost = document.getElementById('IsHost').checked;
+import '@cssroot/pages/pic-and-headline/management/index.scss';
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Layout>
-            <AppContainer isHost={isHost} />
-        </Layout>
-    </Provider>,
-    document.getElementById('app-container'));
+const isHost = true;
+
+
+export default class index extends Component {
+    render(){
+        return(
+            <Provider store={store}>
+                <div className='pic-management'>
+                    <AppContainer isHost={isHost} />
+                </div>
+            </Provider>
+        );
+    }
+}

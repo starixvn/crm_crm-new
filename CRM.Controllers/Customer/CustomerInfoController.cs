@@ -14,15 +14,13 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    //[CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
-    public class CustomerInfoController : Controller
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
+    public class CustomerInfoController : BaseController
     {
         private readonly INapSession napSession;
         private readonly ICustomerService customerService;
         private readonly ISettingService settingService;
         private readonly ISessionService sessionService;
-        private readonly IUserService userService;
-        private readonly INapSettings napSettings;
 
 
         public CustomerInfoController(
@@ -37,8 +35,6 @@
             this.customerService = customerService;
             this.settingService = settingService;
             this.sessionService = sessionService;
-            this.userService = userService;
-            this.napSettings = napSettings;
         }
 
         public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
@@ -79,7 +75,7 @@
         public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
         {
             command.UserId = napSession.UserId;
-            //command.IP = ClientIP;
+            command.IP = ClientIP;
             var result = await customerService.UpdateCustomerInfoAsync(command);
             return Json(result);
         }

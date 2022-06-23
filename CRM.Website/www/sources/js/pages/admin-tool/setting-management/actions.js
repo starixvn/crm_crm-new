@@ -1,6 +1,7 @@
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import {
+    resetState,
     setMainSettings,
     setParentSettings,
     setLicensees,
@@ -18,11 +19,10 @@ import {
 } from './settingManagementSlice';
 
 const getMainSettings = () => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('SettingManagement/GetMainSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setMainSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    });
 };
 
 const getParentSettings = () => async dispatch => {
@@ -95,6 +95,7 @@ const editLicenseeMapping = params => async () => {
 
 
 export const ActionCreators = {
+    resetState,
     getMainSettings,
     setMainSettings,
     getParentSettings,

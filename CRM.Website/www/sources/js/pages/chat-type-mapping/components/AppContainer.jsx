@@ -1,24 +1,10 @@
 ﻿import React, { Component } from 'react';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
-import { Provider } from 'react-redux';
-import Store from '@jsroot/common/store';
-import reducer from '../reducers/index';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions/index';
 import '@cssroot/pages/chat-type-mapping/index.scss';
-
-const store = Store.createStore(reducer, {
-    gridData: { data: null, totalItems: 0 },
-    updateActiveStatusResult: null,
-    insertPersonalMappingData: { isShow: false },
-    insertPersonalMappingResult: null,
-    updatePersonalMappingData: { isShow: false, data: null },
-    updatePersonalMappingResult: null,
-    updateGroupMappingData: { isShow: false, data: null },
-    updateGroupMappingResult: null,
-    recipients: [],
-    groupHeadline: [],
-    letstalkVerification: { isBotRemoved: false, recipients: [] }
-});
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -26,14 +12,22 @@ export class AppContainer extends Component {
         this.isHost = document.getElementById('is-host') ? document.getElementById('is-host').checked : false;
     }
 
+    // componentWillUnmount(){
+    //     this.props.resetState();
+    // }
+
     render() {
         return (
-            <Provider store={store}>
+            <div>
                 <Filter isHost={this.isHost} />
                 <DataGrid isHost={this.isHost} />
-            </Provider>
+            </div>
         );
     }
 }
 
-export default AppContainer;
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => null;
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

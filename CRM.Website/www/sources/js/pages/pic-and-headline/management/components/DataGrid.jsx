@@ -161,7 +161,7 @@ export class DataGrid extends PureComponent {
                 <Table
                     maxWidth={2300}
                     shouldUseMaxWidth
-                    width={document.getElementById('app-container').clientWidth}
+                    width={document.getElementById('right-row-container').clientWidth}
                     autoWidth={false}
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}

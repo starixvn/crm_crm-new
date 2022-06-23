@@ -2,6 +2,7 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
 import {
+    resetState,
     setGridParams,
     setFeedBackSubject,
     setAllActiveFeedbackSubject,
@@ -48,9 +49,8 @@ const editFeedbackSubject = data => async dispatch => {
     });
 };
 
-
-
 export const ActionCreators = {
+    resetState,
     setFeedBackSubject,
     setGridParams,
     setSelectFeedbackSubjectId,

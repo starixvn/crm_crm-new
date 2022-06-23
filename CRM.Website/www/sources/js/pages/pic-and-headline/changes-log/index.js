@@ -1,20 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, {Component} from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-
-import Layout from '@jsroot/components/layout-container/index';
 import ChangesLogReducer from './changesLogSlice';
 import TabContainer from './components/TabContainer';
+import '@cssroot/pages/pic-and-headline/changes-log/index.scss';
 
 const store = configureStore({
     reducer: ChangesLogReducer
 });
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Layout>
-            <TabContainer />
-        </Layout>
-    </Provider>,
-    document.getElementById('app-container'));
+export default class index extends Component {
+    render(){
+        return(
+            <Provider store={store}>
+                <div className='change-logs'>
+                    <TabContainer />
+                </div>
+            </Provider>
+        );
+    }
+}

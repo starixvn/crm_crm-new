@@ -521,7 +521,6 @@ export default class DataGrid extends PureComponent {
     };
 
     render() {
-        console.log('datagrid');
         if (!this.props.customerInfo) {
             return null;
         }

@@ -59,7 +59,9 @@ export default class index extends Component {
     render(){
         return(
             <Provider store={store}>
-                <AppContainer />
+                <div className='notification-list'>
+                    <AppContainer />
+                </div>
             </Provider>
         );
     }

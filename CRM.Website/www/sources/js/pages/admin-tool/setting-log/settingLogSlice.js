@@ -1,16 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+    actionLogs: null,
+    gridParams: {
+        pageIndex: 1,
+        pageSize: 100
+    },
+    gridDataSettingLogs: null
+};
+
 const settingLogSlice = createSlice({
     name: 'settingLog',
-    initialState: {
-        actionLogs: null,
-        gridParams: {
-            pageIndex: 1,
-            pageSize: 100
-        },
-        gridDataSettingLogs: null
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setActionLog: (state, action) => {
             state.actionLogs = action.payload;
         },
@@ -26,6 +29,7 @@ const settingLogSlice = createSlice({
 const { actions, reducer } = settingLogSlice;
 
 export const {
+    resetState,
     setActionLog,
     setGridParams,
     setGridSettingLogs

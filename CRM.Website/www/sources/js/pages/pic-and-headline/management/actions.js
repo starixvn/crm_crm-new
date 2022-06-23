@@ -1,6 +1,7 @@
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import {
+    resetState,
     setSetting,
     setGridParams,
     setGridData,
@@ -74,6 +75,7 @@ const validateEditPic = params => async dispatch => {
 };
 
 export const ActionCreators = {
+    resetState,
     setSetting,
     getRolesByPic,
     setGridParams,

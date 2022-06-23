@@ -564,122 +564,122 @@
 .react-select-container .react-select__menu {
   margin-top: 0; }
 
-.form-filter .react-select__indicators {
+.notification-list .form-filter .react-select__indicators {
   display: none; }
 
-.link-click {
+.notification-list .link-click {
   cursor: pointer;
   color: #366092 !important; }
 
-.link-click:hover {
+.notification-list .link-click:hover {
   color: #c60 !important; }
 
-.notification-content {
+.notification-list .notification-content {
   white-space: pre-line;
   word-break: break-word; }
 
-.status-font {
+.notification-list .status-font {
   font-weight: bold; }
 
-.planned-color {
+.notification-list .planned-color {
   color: #808080 !important; }
 
-.sending-color {
+.notification-list .sending-color {
   color: #274B86 !important; }
 
-.sent-color {
+.notification-list .sent-color {
   color: #063 !important; }
 
-.error-color {
+.notification-list .error-color {
   color: #f00 !important; }
 
-.draft-color {
+.notification-list .draft-color {
   color: #c60 !important; }
 
-.resolved-color {
+.notification-list .resolved-color {
   color: #f60 !important; }
 
-.duplicated-color {
+.notification-list .duplicated-color {
   color: #538dd5 !important; }
 
-.botblocked-color {
+.notification-list .botblocked-color {
   color: #948a54 !important; }
 
-.checkbox-cell-style {
+.notification-list .checkbox-cell-style {
   width: 13px;
   height: 13px;
   margin: auto;
   cursor: pointer; }
 
-.margin-top-10 {
+.notification-list .margin-top-10 {
   margin-top: 10px !important; }
 
-.invalid-input {
+.notification-list .invalid-input {
   border-color: #f00; }
 
-.valid-input {
+.notification-list .valid-input {
   border-color: #ced4da; }
 
-.action-style {
+.notification-list .action-style {
   padding: 5px 0;
   font-weight: bold; }
 
-td, th {
+.notification-list td, .notification-list th {
   word-break: break-word; }
 
-.error-occured-message {
+.notification-list .error-occured-message {
   color: #f00; }
 
-.error-resolved-row {
+.notification-list .error-resolved-row {
   margin: 20px 0 5px; }
 
-.view-detail-remark {
+.notification-list .view-detail-remark {
   width: 100%;
   border: 1px solid #ced4da; }
 
-.view-detail-remark:focus {
+.notification-list .view-detail-remark:focus {
   outline: none; }
 
-.notification-id-container {
+.notification-list .notification-id-container {
   justify-content: space-between; }
-  .notification-id-container .notification-id-input {
+  .notification-list .notification-id-container .notification-id-input {
     width: 45% !important; }
 
-button:focus {
+.notification-list button:focus {
   outline: none; }
 
-input:focus {
+.notification-list input:focus {
   outline: none; }
 
-#multiple-select-notification-type .multiple-select-options-container {
+.notification-list #multiple-select-notification-type .multiple-select-options-container {
   min-width: 250px; }
 
-.react-datepicker-wrapper-container {
+.notification-list .react-datepicker-wrapper-container {
   height: 28px; }
-  .react-datepicker-wrapper-container .react-datepicker__input-container {
+  .notification-list .react-datepicker-wrapper-container .react-datepicker__input-container {
     height: 100%; }
-    .react-datepicker-wrapper-container .react-datepicker__input-container input {
+    .notification-list .react-datepicker-wrapper-container .react-datepicker__input-container input {
       width: 100% !important;
       height: 100%; }
 
-.auto-refresh {
+.notification-list .auto-refresh {
   width: 110px;
   margin-right: 10px;
   position: relative;
   color: #010101;
   font-weight: normal; }
-  .auto-refresh-value {
+  .notification-list .auto-refresh-value {
     height: 28px;
     background-color: #fff;
     border: 1px solid #ced4da;
     cursor: pointer; }
-    .auto-refresh-value div {
+    .notification-list .auto-refresh-value div {
       text-align: center;
       width: 90px; }
-    .auto-refresh-value span {
+    .notification-list .auto-refresh-value span {
       text-align: center;
       width: 20px; }
-  .auto-refresh-dropdown {
+  .notification-list .auto-refresh-dropdown {
     position: absolute;
     z-index: 1000;
     background-color: #fff;
@@ -687,16 +687,16 @@ input:focus {
     list-style-type: none;
     width: 100%;
     padding: 0; }
-    .auto-refresh-dropdown li {
+    .notification-list .auto-refresh-dropdown li {
       cursor: pointer;
       padding: 5px 0 5px 5px; }
-    .auto-refresh-dropdown li:hover {
+    .notification-list .auto-refresh-dropdown li:hover {
       background-color: #f0f0f0; }
 
-.Select-placeholder {
+.notification-list .Select-placeholder {
   display: none; }
 
-.Select-arrow-zone {
+.notification-list .Select-arrow-zone {
   display: none; }
 
 

@@ -134,7 +134,6 @@ export class DataGrid extends Component {
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPagingCommunication}
-                    containerPadding={0}
                     adjustedHeight={10}
                 />
             </Fragment>

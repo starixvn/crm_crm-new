@@ -1,19 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    mainSettings: null,
+    settingType: null,
+    gridParams: {
+        settingName: ''
+    },
+    gridDataSettingLogs: null,
+    mainSettingRelation: [],
+    updateResult: null,
+    updatePopup: { show: false, title: '', parentId: null }
+};
 const settingRelationSlice = createSlice({
     name: 'settingRelation',
-    initialState: {
-        mainSettings: null,
-        settingType: null,
-        gridParams: {
-            settingName: ''
-        },
-        gridDataSettingLogs: null,
-        mainSettingRelation: [],
-        updateResult: null,
-        updatePopup: { show: false, title: '', parentId: null }
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setMainSettings: (state, action) => {
             state.mainSettings = action.payload;
         },
@@ -38,6 +39,7 @@ const settingRelationSlice = createSlice({
 const { actions, reducer } = settingRelationSlice;
 
 export const {
+    resetState,
     setMainSettings,
     setGridParams,
     setSettingTypes,

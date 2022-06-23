@@ -1,23 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+    gridData: null,
+    gridParams: {
+       Subject: null,
+       pageIndex: 1,
+       pageSize: 100
+    },
+    allActiveFeedbackSubject: null,
+    selectFeedbackSubject: null,
+    createFeedbackSubjectPopup: { show: false },
+    createFeedbackSubjectResult: '',
+    editStatusFeedbackSubjectPopup: { show: false },
+    editFeedbackSubjectPopup: { show:false },
+    editFeedbackSubjectResult: ''
+};
 const feedbackSubjectSlice = createSlice({
     name: 'feedbackSubject',
-    initialState: {
-        gridData: null,
-        gridParams: {
-           Subject: null,
-           pageIndex: 1,
-           pageSize: 100
-        },
-        allActiveFeedbackSubject: null,
-        selectFeedbackSubject: null,
-        createFeedbackSubjectPopup: { show: false },
-        createFeedbackSubjectResult: '',
-        editStatusFeedbackSubjectPopup: { show: false },
-        editFeedbackSubjectPopup: { show:false },
-        editFeedbackSubjectResult: ''
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
@@ -51,6 +53,7 @@ const feedbackSubjectSlice = createSlice({
 const { actions, reducer } = feedbackSubjectSlice;
 
 export const {
+    resetState,
     setGridParams,
     setFeedBackSubject,
     setAllActiveFeedbackSubject,

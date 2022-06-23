@@ -1,6 +1,7 @@
 ﻿import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import {
+    resetState,
     setAllSettings,
     setGridParamsCommunication,
     setGridCommunicationSetting,
@@ -63,6 +64,7 @@ const verifyUsername = data => async () => {
 };
 
 export const ActionCreators = {
+    resetState,
     setAllSettings,
     setGridParamsCommunication,
     setGridCommunicationSetting,

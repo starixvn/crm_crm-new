@@ -1,17 +1,17 @@
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import {
+    resetState,
     setActionLog,
     setGridParams,
     setGridSettingLogs
 } from './settingLogSlice';
 
 const getActionLogs = () => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('SettingLog/GetActionLog');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setActionLog(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError);
 };
 
 const getGridSettingLogs = params => async dispatch => {
@@ -24,6 +24,7 @@ const getGridSettingLogs = params => async dispatch => {
 
 
 export const ActionCreators = {
+    resetState,
     setActionLog,
     getActionLogs,
     setGridParams,

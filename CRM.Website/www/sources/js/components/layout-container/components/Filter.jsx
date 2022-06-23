@@ -170,8 +170,6 @@ class Filter extends Component {
         if(!this.props.menus || this.props.menus.length === 0) {
             return null;
         }
-
-        console.log('filter');
         
         const {username, customerSuggestions, isGuest, handleChange, showEmptyCustomerInfoPopup, debounceUserNameInputChange, handleChangeSuggestion,
             handleCloseEmptyCustomerInfoPopup, showEmptyConfirmPopup, handleGetCustomerIsGuest, handleCloseEmptyConfirm} = this.props;

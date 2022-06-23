@@ -1,38 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+    setting: {
+        roleListWithInActive: [],
+        roleList: [],
+        communicationTools: [],
+        languages: [],
+        countries: []
+    },
+    gridParams: {
+        username: '',
+        headlineName: '',
+        role: '',
+        pageIndex: 1,
+        pageSize: 100
+    },
+    gridData: null,
+    selectedPic: null,
+    createPicPopup: { show: false },
+    createPicResult: null,
+    editPicPopup: { show: false },
+    editPicResult: null,
+    activeResult: null,
+    confirmPopup: {
+        show: false,
+        username: '',
+        picId: null,
+        checked: false
+    },
+    validateEditPicResult: ''
+};
+
 const picManagementSlice = createSlice({
     name: 'PICManagement',
-    initialState: {
-        setting: {
-            roleListWithInActive: [],
-            roleList: [],
-            communicationTools: [],
-            languages: [],
-            countries: []
-        },
-        gridParams: {
-            username: '',
-            headlineName: '',
-            role: '',
-            pageIndex: 1,
-            pageSize: 100
-        },
-        gridData: null,
-        selectedPic: null,
-        createPicPopup: { show: false },
-        createPicResult: null,
-        editPicPopup: { show: false },
-        editPicResult: null,
-        activeResult: null,
-        confirmPopup: {
-            show: false,
-            username: '',
-            picId: null,
-            checked: false
-        },
-        validateEditPicResult: ''
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setSetting: (state, action) => {
             state.setting = action.payload;
         },
@@ -72,6 +75,7 @@ const picManagementSlice = createSlice({
 const { actions, reducer } = picManagementSlice;
 
 export const {
+    resetState,
     setSetting,
     setGridParams,
     setGridData,

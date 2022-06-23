@@ -1,46 +1,48 @@
 ﻿import { createSlice } from '@reduxjs/toolkit';
 import { DefaultPageSize } from '@jsroot/common/constants';
 
+const initialState = {
+    gridParams: {
+        pageIndex: 1,
+        pageSize: DefaultPageSize
+    },
+    picAssignmentGridData: {},
+    setting: {},
+    removeOptions: {
+        isCheckedAll: false,
+        isDisabledRemove: true,
+        isHadAll: false,
+        shouldResetScrollPosition: true,
+        dataList: []
+    },
+    removePicAssignmentPopup: {
+        show: false
+    },
+    assignPicPopup: {
+        show:false
+    },
+    assignPicResult: {
+        show: false
+    },
+    assignPicFilter: {
+        headline: null,
+        pics: [],
+        directAccount: [],
+        isSelectedAll: false
+    },
+    validateAssignPicResult: {},
+    confirmAssignedDirectAccountPopup: {
+        show: false
+    },
+    defaultPicPopup: {
+        show: false
+    }
+};
 const picAssignmentSlice = createSlice({
     name: 'picAssignment',
-    initialState: {
-        gridParams: {
-            pageIndex: 1,
-            pageSize: DefaultPageSize
-        },
-        picAssignmentGridData: {},
-        setting: {},
-        removeOptions: {
-            isCheckedAll: false,
-            isDisabledRemove: true,
-            isHadAll: false,
-            shouldResetScrollPosition: true,
-            dataList: []
-        },
-        removePicAssignmentPopup: {
-            show: false
-        },
-        assignPicPopup: {
-            show:false
-        },
-        assignPicResult: {
-            show: false
-        },
-        assignPicFilter: {
-            headline: null,
-            pics: [],
-            directAccount: [],
-            isSelectedAll: false
-        },
-        validateAssignPicResult: {},
-        confirmAssignedDirectAccountPopup: {
-            show: false
-        },
-        defaultPicPopup: {
-            show: false
-        }
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
@@ -80,6 +82,7 @@ const picAssignmentSlice = createSlice({
 const { actions, reducer } = picAssignmentSlice;
 
 export const {
+    resetState,
     setGridParams,
     setGridData,
     setSettings,

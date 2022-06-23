@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[3],{
 
-/***/ "./www/sources/css/pages/notification-template/index.scss":
-/*!****************************************************************!*\
-  !*** ./www/sources/css/pages/notification-template/index.scss ***!
-  \****************************************************************/
+/***/ "./www/sources/css/pages/pic-and-headline/pic-assignment/index.scss":
+/*!**************************************************************************!*\
+  !*** ./www/sources/css/pages/pic-and-headline/pic-assignment/index.scss ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11,10 +11,10 @@
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/actions.js":
-/*!***************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/actions.js ***!
-  \***************************************************************/
+/***/ "./www/sources/js/pages/pic-and-headline/pic-assignment/actions.js":
+/*!*************************************************************************!*\
+  !*** ./www/sources/js/pages/pic-and-headline/pic-assignment/actions.js ***!
+  \*************************************************************************/
 /*! exports provided: ActionCreators */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -23,146 +23,165 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ActionCreators", function() { return ActionCreators; });
 /* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
 /* harmony import */ var _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/dataService */ "./www/sources/js/common/dataService.js");
-/* harmony import */ var _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./notificationTemplateSlice */ "./www/sources/js/pages/notification-template/notificationTemplateSlice.js");
+/* harmony import */ var _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./picAssignmentSlice */ "./www/sources/js/pages/pic-and-headline/pic-assignment/picAssignmentSlice.js");
 
 
 
 
-const getNotificationTypes = () => async dispatch => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('Common/GetNotificationTypes');
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].getDataAsync(url).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setNotificationTypes"])(response.data));
+const getSettings = () => async dispatch => {
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('PicAssignment/AllSetting');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url).then(response => {
+    if (!response || !response.data) {
+      return;
+    }
+
+    dispatch(Object(_picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setSettings"])(response.data));
   });
 };
 
-const getLanguages = () => async dispatch => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('NotificationTemplate/GetLanguages');
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].getDataAsync(url).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setLanguages"])(response.data));
-  });
-};
-
-const getGridData = params => async dispatch => {
+const getGridData = (params, callback) => async dispatch => {
   _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].blockUI();
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('NotificationTemplate/GetNotificationTemplate');
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('PicAssignment/GetAllPICAssignment');
   await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setGridData"])(response.data));
+    if (typeof callback === 'function') {
+      callback(response.data.data);
+    }
+
+    dispatch(Object(_picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setGridData"])(response.data));
   }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].unblockUI());
 };
 
-const getTemplateById = (templateId, callback) => async dispatch => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl(`NotificationTemplate/GetById/${templateId}`);
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].getDataAsync(url).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setSelectedTemplate"])(response.data));
-
-    if (typeof callback === 'function') {
-      callback();
-    }
-  });
-};
-
-const createTemplate = data => async dispatch => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('NotificationTemplate/Create');
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, data).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setCreateTemplateResult"])(response.data));
-  });
-};
-
-const editTemplate = data => async dispatch => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('NotificationTemplate/Edit');
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, data).then(response => {
-    dispatch(Object(_notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setEditTemplateResult"])(response.data));
-  });
-};
-
-const deleteTemplate = params => async () => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl(`NotificationTemplate/Delete`);
-  return await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => response);
+const validateAssignPic = params => async dispatch => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].blockUI();
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('PicAssignment/ValidateAssignPic');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => {
+    dispatch(Object(_picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setValidateAssignPicResult"])(response.data));
+  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].unblockUI());
 };
 
 const ActionCreators = {
-  resetState: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["resetState"],
-  setNotificationTypes: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setNotificationTypes"],
-  setLanguages: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setLanguages"],
-  setGridParams: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setGridParams"],
-  setGridData: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setGridData"],
-  setSelectedTemplate: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setSelectedTemplate"],
-  setCreateTemplatePopup: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setCreateTemplatePopup"],
-  setCreateTemplateResult: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setCreateTemplateResult"],
-  setEditTemplatePopup: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setEditTemplatePopup"],
-  setEditTemplateResult: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setEditTemplateResult"],
-  setDeleteTemplatePopup: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setDeleteTemplatePopup"],
-  setContentDetailPopup: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_2__["setContentDetailPopup"],
-  getNotificationTypes,
-  getLanguages,
+  resetState: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["resetState"],
+  setGridParams: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setGridParams"],
+  setGridData: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setGridData"],
+  setSettings: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setSettings"],
+  setRemoveOptions: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setRemoveOptions"],
+  setRemovePicAssignmentPopup: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setRemovePicAssignmentPopup"],
+  setAssignPicPopup: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setAssignPicPopup"],
+  setAssignPicResult: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setAssignPicResult"],
+  setValidateAssignPicResult: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setValidateAssignPicResult"],
+  setAssignPicFilter: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setAssignPicFilter"],
+  setConfirmAssignedDirectAccountPopup: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setConfirmAssignedDirectAccountPopup"],
+  setDefaultPicPopup: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_2__["setDefaultPicPopup"],
+  getSettings,
   getGridData,
-  getTemplateById,
-  createTemplate,
-  editTemplate,
-  deleteTemplate
+  validateAssignPic
 };
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/common.functions.js":
-/*!************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/common.functions.js ***!
-  \************************************************************************/
-/*! exports provided: renderNotificationTypeOption, validateFormik */
+/***/ "./www/sources/js/pages/pic-and-headline/pic-assignment/common.functions.js":
+/*!**********************************************************************************!*\
+  !*** ./www/sources/js/pages/pic-and-headline/pic-assignment/common.functions.js ***!
+  \**********************************************************************************/
+/*! exports provided: handleNewRemoveOptions, assignPic, removePicAssignment, removeDefaultPic, setDefaultPic, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderNotificationTypeOption", function() { return renderNotificationTypeOption; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateFormik", function() { return validateFormik; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewRemoveOptions", function() { return handleNewRemoveOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignPic", function() { return assignPic; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removePicAssignment", function() { return removePicAssignment; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeDefaultPic", function() { return removeDefaultPic; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setDefaultPic", function() { return setDefaultPic; });
+/* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
+/* harmony import */ var _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/dataService */ "./www/sources/js/common/dataService.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/lib/index.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_toastify__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
 
 
-const renderNotificationTypeOption = item => {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    key: item.notificationTypeId,
-    value: item.notificationTypeId
-  }, item.notificationTypeName);
-};
-const validateFormik = (values, languages = []) => {
-  const errors = {};
 
-  if (!values.notificationTypeId) {
-    errors.notificationTypeId = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('NotificationTypeRequired');
-  }
 
-  if (!values.notificationTemplateName || values.notificationTemplateName.trim().length === 0) {
-    errors.notificationTemplateName = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('TemplateNameRequired');
-  } else {
-    if (values.notificationTemplateName.trim().length > 1000) {
-      errors.notificationTemplateName = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('FieldMaxLength'), _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('TemplateName'), 1000);
-    }
-  }
-
-  if (!values.title || values.title.trim().length === 0) {
-    errors.title = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('TitleRequired');
-  } else {
-    if (values.title.trim().length > 2000) {
-      errors.title = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('FieldMaxLength'), _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Title'), 2000);
-    }
-  }
-
-  languages.map(item => {
-    if (!values['language_' + item.settingId] || values['language_' + item.settingId].trim().length === 0) {
-      errors['language_' + item.settingId] = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('FieldRequired'), `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Content')} (${item.settingValue})`);
-    }
+const handleNewRemoveOptions = (data, done) => {
+  const removeList = data.filter(item => item.picList && item.picList.length > 0);
+  const dataList = data.map(item => {
+    return {
+      picList: item.picList,
+      headlineID: item.headlineID,
+      headlineName: item.headlineName,
+      custId: item.directAccountID,
+      custName: item.directAccount,
+      isRemoved: false
+    };
   });
-  return errors;
+  done({
+    isCheckedAll: false,
+    isDisabledRemove: true,
+    isHadAll: removeList.length > 0,
+    shouldResetScrollPosition: true,
+    dataList
+  });
 };
+const assignPic = async (params, done) => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].blockUI();
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('PicAssignment/AssignPIC');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => {
+    done(response.data);
+  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].unblockUI());
+};
+const removePicAssignment = async (params, message, done) => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].blockUI();
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('PicAssignment/RemoveAssignment');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => {
+    if (response.data.isSuccessful) {
+      done();
+      react_toastify__WEBPACK_IMPORTED_MODULE_2__["toast"].success(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_3__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_3__["default"].getResource('RemoveAssignmentSuccessfully'), message));
+    } else {
+      react_toastify__WEBPACK_IMPORTED_MODULE_2__["toast"].error(response.data.message);
+    }
+  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].unblockUI());
+};
+const removeDefaultPic = async (params, done) => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].blockUI();
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('PicAssignment/RemoveDefaultPIC');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => {
+    done(response.data);
+  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].unblockUI());
+};
+const setDefaultPic = async (params, done) => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].blockUI();
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('PicAssignment/SetDefaultPIC');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => {
+    done(response.data);
+  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].unblockUI());
+};
+
+const exportExcel = async params => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].blockUI();
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('PicAssignment/ExportExcelReport');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].getFileAsync(url, params).then(response => {
+    let fileName = response.headers['content-disposition'].split('filename=')[1];
+    fileName = fileName.split("\"")[1];
+    _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].downloadFile(response.data, fileName);
+  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].unblockUI());
+};
+
+const functions = {
+  handleNewRemoveOptions,
+  assignPic,
+  removePicAssignment,
+  removeDefaultPic,
+  setDefaultPic,
+  exportExcel
+};
+/* harmony default export */ __webpack_exports__["default"] = (functions);
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/components/AppContainer.jsx":
-/*!********************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/AppContainer.jsx ***!
-  \********************************************************************************/
+/***/ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/AppContainer.jsx":
+/*!******************************************************************************************!*\
+  !*** ./www/sources/js/pages/pic-and-headline/pic-assignment/components/AppContainer.jsx ***!
+  \******************************************************************************************/
 /*! exports provided: AppContainer, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -171,28 +190,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppContainer", function() { return AppContainer; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/lib/index.js");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_toastify__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/notification-template/actions.js");
-/* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Filter */ "./www/sources/js/pages/notification-template/components/Filter.jsx");
-/* harmony import */ var _DataGrid__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./DataGrid */ "./www/sources/js/pages/notification-template/components/DataGrid.jsx");
-/* harmony import */ var _NewNotificationTemplate__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./NewNotificationTemplate */ "./www/sources/js/pages/notification-template/components/NewNotificationTemplate.jsx");
-/* harmony import */ var _EditNotificationTemplate__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./EditNotificationTemplate */ "./www/sources/js/pages/notification-template/components/EditNotificationTemplate.jsx");
-/* harmony import */ var _ContentDetailModalDialog__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ContentDetailModalDialog */ "./www/sources/js/pages/notification-template/components/ContentDetailModalDialog.jsx");
-/* harmony import */ var _jsroot_components_SweetModalDialog__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @jsroot/components/SweetModalDialog */ "./www/sources/js/components/SweetModalDialog.jsx");
-/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
+/* harmony import */ var _DataGrid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DataGrid */ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/DataGrid.jsx");
+/* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Filter */ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/Filter.jsx");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/actions.js");
+/* harmony import */ var _RemovePicAssignment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./RemovePicAssignment */ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/RemovePicAssignment.jsx");
+/* harmony import */ var _AssignPic__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./AssignPic */ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/AssignPic.jsx");
+/* harmony import */ var _DefaultPic__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./DefaultPic */ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/DefaultPic.jsx");
 
 
 
@@ -203,258 +208,869 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-  constructor(...args) {
-    super(...args);
-
-    _defineProperty(this, "handleCloseCreatePopup", () => {
-      this.props.setCreateTemplatePopup({
-        show: false
-      });
-      this.props.setCreateTemplateResult(null);
-    });
-
-    _defineProperty(this, "handleCreateSuccess", () => {
-      this.handleCloseCreatePopup();
-      this.props.getGridData(this.props.gridParams);
-    });
-
-    _defineProperty(this, "handleCloseEditPopup", () => {
-      this.props.setEditTemplatePopup({
-        show: false
-      });
-      this.props.setSelectedTemplate(null);
-      this.props.setEditTemplateResult(null);
-    });
-
-    _defineProperty(this, "handleEditSuccess", () => {
-      this.handleCloseEditPopup();
-      this.props.getGridData(this.props.gridParams);
-    });
-
-    _defineProperty(this, "handleCloseViewContentPopup", () => {
-      this.props.setContentDetailPopup({
-        show: false
-      });
-      this.props.setSelectedTemplate(null);
-    });
-
-    _defineProperty(this, "handleCloseDeletePopup", () => {
-      this.props.setDeleteTemplatePopup({
-        show: false
-      });
-    });
-
-    _defineProperty(this, "handleDelete", () => {
-      const {
-        templateId,
-        name
-      } = this.props.deleteTemplatePopup;
-      const params = {
-        notificationTemplateId: templateId,
-        notificationTemplateName: name
-      };
-      this.props.deleteTemplate(params).then(response => {
-        const data = response.data;
-        this.handleCloseDeletePopup();
-        this.props.getGridData(this.props.gridParams);
-
-        if (data.isSuccessful) {
-          react_toastify__WEBPACK_IMPORTED_MODULE_3__["toast"].success(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_13__["default"].getResource('DeleteNotificationTemplateSuccessfully'));
-        } else {
-          react_toastify__WEBPACK_IMPORTED_MODULE_3__["toast"].error(data.message);
-        }
-      });
-    });
-  }
-
-  componentDidMount() {
-    this.props.getNotificationTypes();
-    this.props.getLanguages();
-  }
-
   componentWillUnmount() {
     this.props.resetState();
   }
 
   render() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Filter__WEBPACK_IMPORTED_MODULE_7__["default"], {
-      isHost: this.props.isHost
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DataGrid__WEBPACK_IMPORTED_MODULE_8__["default"], {
-      isHost: this.props.isHost
-    }), this.props.createTemplatePopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_NewNotificationTemplate__WEBPACK_IMPORTED_MODULE_9__["default"], {
-      onClose: this.handleCloseCreatePopup,
-      onSuccess: this.handleCreateSuccess
-    }), this.props.editTemplatePopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EditNotificationTemplate__WEBPACK_IMPORTED_MODULE_10__["default"], {
-      onClose: this.handleCloseEditPopup,
-      onSuccess: this.handleEditSuccess
-    }), this.props.deleteTemplatePopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_SweetModalDialog__WEBPACK_IMPORTED_MODULE_12__["default"], {
-      title: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_13__["default"].getResource('Confirmation'),
-      contents: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Are you sure you want to delete ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, this.props.deleteTemplatePopup.name), "?"),
-      buttons: [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
-        variant: "primary",
-        size: "sm",
-        onClick: this.handleDelete
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_13__["default"].getResource('OK')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
-        variant: "primary",
-        size: "sm",
-        onClick: this.handleCloseDeletePopup
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_13__["default"].getResource('Cancel'))],
-      onClose: this.handleCloseDeletePopup
-    }), this.props.contentDetailPopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ContentDetailModalDialog__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      onClose: this.handleCloseViewContentPopup
+    const {
+      isHost,
+      isReadPicManagement
+    } = this.props;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Filter__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      isHost: isHost
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DataGrid__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      isHost: isHost,
+      isReadPicManagement: isReadPicManagement
+    }), this.props.removePicAssignmentPopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RemovePicAssignment__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      onClose: () => this.props.setRemovePicAssignmentPopup({
+        show: false
+      })
+    }), this.props.assignPicPopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AssignPic__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      data: this.props.assignPicPopup.data
+    }), this.props.defaultPicPopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DefaultPic__WEBPACK_IMPORTED_MODULE_8__["default"], null));
+  }
+
+}
+
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_4__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_5__["ActionCreators"], dispatch);
+
+const mapStateToProps = state => {
+  const {
+    removePicAssignmentPopup,
+    assignPicPopup,
+    defaultPicPopup
+  } = state;
+  return {
+    removePicAssignmentPopup,
+    assignPicPopup,
+    defaultPicPopup
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["connect"])(mapStateToProps, mapDispatchToProps)(AppContainer));
+
+/***/ }),
+
+/***/ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/AssignPic.jsx":
+/*!***************************************************************************************!*\
+  !*** ./www/sources/js/pages/pic-and-headline/pic-assignment/components/AssignPic.jsx ***!
+  \***************************************************************************************/
+/*! exports provided: AssignPic, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AssignPic", function() { return AssignPic; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/components/DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/actions.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/components/ResponseMessage */ "./www/sources/js/components/ResponseMessage.jsx");
+/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/common.functions.js");
+/* harmony import */ var _ConfirmAssignedDirectAccount__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ConfirmAssignedDirectAccount */ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/ConfirmAssignedDirectAccount.jsx");
+/* harmony import */ var _jsroot_components_ConfirmPopup__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @jsroot/components/ConfirmPopup */ "./www/sources/js/components/ConfirmPopup.jsx");
+/* harmony import */ var _jsroot_components_CustomReactSelect__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @jsroot/components/CustomReactSelect */ "./www/sources/js/components/CustomReactSelect.jsx");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+class AssignPic extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  constructor(props) {
+    super(props);
+
+    _defineProperty(this, "componentDidMount", () => {
+      const headlineOptions = this.props.settings.headlineList.map(item => {
+        return {
+          value: item.id,
+          label: item.name
+        };
+      });
+      const picOptions = this.props.settings.picList.map(item => {
+        return {
+          value: item.picId,
+          label: `${item.username} (${item.roleName})`
+        };
+      });
+      this.setState({
+        headlineOptions,
+        picOptions
+      });
+      this.props.setAssignPicResult({
+        show: false
+      });
+
+      if (this.props.data && this.props.data.headlineId) {
+        const {
+          headlineId,
+          accountNames
+        } = this.props.data;
+        const headline = headlineOptions.filter(item => item.value === headlineId)[0];
+        const assignPicFilter = {
+          headline,
+          pics: [],
+          directAccount: accountNames.map(item => this.handleIsValidItem(item, true)),
+          isSelectedAll: false
+        };
+        this.props.setAssignPicFilter(assignPicFilter);
+        this.setState({
+          oldAssignPicFilter: assignPicFilter
+        });
+      }
+    });
+
+    _defineProperty(this, "handleHeadlineChange", value => this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+      headline: value
+    })));
+
+    _defineProperty(this, "handlePicChange", value => this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+      pics: value
+    })));
+
+    _defineProperty(this, "renderRelatedCustomerItem", (item, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      key: index,
+      className: this.getRelatedCustomerItemClassName(item.isValid)
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, item.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "fa fa-close",
+      onClick: () => this.handleRemoveDirectAccount(index)
+    })));
+
+    _defineProperty(this, "getRelatedCustomerItemClassName", isValid => {
+      let className = 'related-customer-item';
+
+      if (!isValid) {
+        className += ' invalid';
+      }
+
+      if (this.props.assignPicFilter.isSelectedAll) {
+        className += ' selected';
+      }
+
+      return className;
+    });
+
+    _defineProperty(this, "handleRemoveDirectAccount", index => {
+      const directAccount = [...this.props.assignPicFilter.directAccount];
+      directAccount.splice(index, 1);
+      this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+        directAccount
+      }));
+    });
+
+    _defineProperty(this, "handleKeyDownRelatedCustomerInput", event => {
+      if (event.keyCode !== 8) {
+        this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+          isSelectedAll: false
+        }));
+      }
+
+      if (event.ctrlKey && event.keyCode === 65 && this.inputRef.value === '') {
+        this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+          isSelectedAll: true
+        }));
+      } else {
+        this.switchKeyCode(event);
+      }
+    });
+
+    _defineProperty(this, "switchKeyCode", event => {
+      switch (event.keyCode) {
+        case 8:
+          this.handleBackSpaceKeyCode();
+          break;
+
+        case 32:
+        case 188:
+        case 13:
+          event.preventDefault();
+          this.handleAddCustomerKeyCode();
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    _defineProperty(this, "handleBackSpaceKeyCode", () => {
+      if (this.inputRef.value === '') {
+        if (this.props.assignPicFilter.isSelectedAll) {
+          this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+            directAccount: [],
+            isSelectedAll: false
+          }));
+        } else {
+          const directAccount = [...this.props.assignPicFilter.directAccount];
+          directAccount.pop();
+          this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+            directAccount
+          }));
+        }
+      }
+    });
+
+    _defineProperty(this, "handleAddCustomerKeyCode", () => {
+      const username = this.inputRef.value;
+      this.inputRef.value = '';
+
+      if (this.props.assignPicFilter.directAccount.length < this.state.maxUsername) {
+        if (username.trim() && !username.includes(',')) {
+          const directAccount = [...this.props.assignPicFilter.directAccount];
+          directAccount.push({
+            username,
+            isValid: true
+          });
+          this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+            directAccount
+          }));
+        }
+      } else {
+        this.setOverMaxUnernameWhenAssignPic();
+      }
+    });
+
+    _defineProperty(this, "handleKeyUpRelatedCustomerInput", event => {
+      const addKeyCode = [13, 32, 188];
+
+      if (addKeyCode.includes(event.keyCode)) {
+        this.inputRef.value = '';
+      }
+    });
+
+    _defineProperty(this, "handlePasteRelatedCustomerInput", event => {
+      const newDirectAccount = event.clipboardData.getData('text/plain').replace(/ /g, ',').replace(/\r\n/g, ',').replace(/\n/g, ',').replace(/\t/g, ',').split(',').filter(item => item !== '');
+      setTimeout(() => this.inputRef.value = '', 10);
+
+      if (this.props.assignPicFilter.directAccount.length + newDirectAccount.length <= this.state.maxUsername) {
+        const directAccount = [...this.props.assignPicFilter.directAccount, ...newDirectAccount.map(item => this.handleIsValidItem(item, true))];
+        this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+          directAccount
+        }));
+      } else {
+        this.setOverMaxUnernameWhenAssignPic();
+      }
+    });
+
+    _defineProperty(this, "handleIsValidItem", (username, isValid) => {
+      return {
+        isValid,
+        username
+      };
+    });
+
+    _defineProperty(this, "setOverMaxUnernameWhenAssignPic", () => this.props.setAssignPicResult({
+      show: true,
+      isSuccessful: false,
+      message: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('OverMaxUnernameWhenAssignPic'), this.state.maxUsername)
+    }));
+
+    _defineProperty(this, "handleBlurRelatedCustomerInput", () => {
+      const directAccount = [...this.props.assignPicFilter.directAccount];
+
+      if (directAccount.length < this.state.maxUsername) {
+        if (this.inputRef.value.trim() !== '') {
+          directAccount.push({
+            isValid: true,
+            username: this.inputRef.value
+          });
+          this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+            isSelectedAll: false,
+            directAccount
+          }));
+        } else {
+          this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+            isSelectedAll: false
+          }));
+        }
+      } else {
+        this.setOverMaxUnernameWhenAssignPic();
+        this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+          isSelectedAll: false
+        }));
+      }
+
+      this.inputRef.value = '';
+    });
+
+    _defineProperty(this, "validateForm", () => {
+      const errMsg = [];
+
+      if (!this.props.assignPicFilter.headline) {
+        errMsg.push(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('GroupHeadlineRequired'));
+      }
+
+      if (!this.props.assignPicFilter.pics || this.props.assignPicFilter.pics.length === 0) {
+        errMsg.push(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('PICRequired'));
+      }
+
+      if (this.props.assignPicFilter.directAccount.length === 0) {
+        errMsg.push(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('DirectAccountRequired'));
+      }
+
+      if (errMsg.length > 0) {
+        this.setState({
+          validate: {
+            show: true,
+            errMsg
+          }
+        });
+        return false;
+      }
+
+      return true;
+    });
+
+    _defineProperty(this, "handleSubmit", () => {
+      this.setState({
+        validate: {
+          show: false
+        }
+      });
+      this.props.setAssignPicPopup(_objectSpread(_objectSpread({}, this.props.assignPicPopup), {}, {
+        isSubmitting: true
+      }));
+      this.props.setAssignPicResult({
+        show: false
+      });
+
+      if (this.validateForm()) {
+        this.props.validateAssignPic({
+          headlineId: this.props.assignPicFilter.headline.value,
+          picIds: this.props.assignPicFilter.pics.map(item => item.value).toString(),
+          directAccountIds: this.props.assignPicFilter.directAccount.map(item => item.username).toString()
+        }).then(this.handleAssignPic);
+      } else {
+        this.props.setAssignPicPopup(_objectSpread(_objectSpread({}, this.props.assignPicPopup), {}, {
+          isSubmitting: false
+        }));
+      }
+    });
+
+    _defineProperty(this, "handleAssignPic", () => {
+      const {
+        isSuccessful,
+        errorAccounts,
+        assignedDirectAccounts
+      } = this.props.validateAssignPicResult;
+
+      if (isSuccessful && assignedDirectAccounts && assignedDirectAccounts.length === 0) {
+        _common_functions__WEBPACK_IMPORTED_MODULE_8__["default"].assignPic({
+          headlineId: this.props.assignPicFilter.headline.value,
+          picIds: this.props.assignPicFilter.pics.map(item => item.value).toString(),
+          isKeepAssign: true,
+          directAccountIds: this.props.assignPicFilter.directAccount.map(item => item.username).toString()
+        }, this.callbackAssignPic);
+      }
+
+      if (isSuccessful && assignedDirectAccounts && assignedDirectAccounts.length > 0) {
+        this.props.setConfirmAssignedDirectAccountPopup({
+          show: true,
+          data: assignedDirectAccounts
+        });
+      }
+
+      if (!isSuccessful && assignedDirectAccounts && assignedDirectAccounts.length === 0) {
+        this.handleNotSuccessfulAndEmptyAssignDirectAccounts(errorAccounts);
+      }
+    });
+
+    _defineProperty(this, "handleNotSuccessfulAndEmptyAssignDirectAccounts", errorAccounts => {
+      const messages = [];
+      let invalidAccounts = [];
+
+      if (errorAccounts.invalidUsername) {
+        invalidAccounts = invalidAccounts.concat(errorAccounts.invalidUsername.split(',').map(item => item.trim()));
+        messages.push(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('InvalidUsernames'), errorAccounts.invalidUsername));
+      }
+
+      if (errorAccounts.notDirectAccount) {
+        invalidAccounts = invalidAccounts.concat(errorAccounts.notDirectAccount.split(',').map(item => item.trim()));
+        messages.push(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('TheseAccountsAreNotDirectAccounts'), errorAccounts.notDirectAccount));
+      }
+
+      if (errorAccounts.noBelongHeadlineAccount) {
+        invalidAccounts = invalidAccounts.concat(errorAccounts.noBelongHeadlineAccount.split(',').map(item => item.trim()));
+        messages.push(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('TheseDirectAccountsDoNotBelongToGroupHeadline'), errorAccounts.noBelongHeadlineAccount));
+      }
+
+      if (invalidAccounts.length > 0) {
+        const directAccount = this.props.assignPicFilter.directAccount.map(item => this.handleIsValidItem(item.username, !invalidAccounts.includes(item.username)));
+        this.props.setAssignPicFilter(_objectSpread(_objectSpread({}, this.props.assignPicFilter), {}, {
+          directAccount
+        }));
+      }
+
+      this.props.setAssignPicPopup(_objectSpread(_objectSpread({}, this.props.assignPicPopup), {}, {
+        isSubmitting: false
+      }));
+      this.props.setAssignPicResult({
+        show: true,
+        isSuccessful: false,
+        messages
+      });
+    });
+
+    _defineProperty(this, "callbackAssignPic", data => {
+      const {
+        isSuccessful,
+        message
+      } = data;
+      this.props.setAssignPicResult({
+        isSuccessful,
+        message: isSuccessful ? _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('AssignPICSuccessfully') : message,
+        show: true
+      });
+
+      if (data.isSuccessful) {
+        setTimeout(this.refreshGrid, 2000);
+      } else {
+        this.props.setAssignPicPopup(_objectSpread(_objectSpread({}, this.props.assignPicPopup), {}, {
+          isSubmitting: false
+        }));
+      }
+    });
+
+    _defineProperty(this, "refreshGrid", () => {
+      this.props.setAssignPicPopup({
+        show: false
+      });
+      this.props.setAssignPicFilter({
+        headline: null,
+        pics: [],
+        directAccount: [],
+        isSelectedAll: false
+      });
+      this.props.getGridData(this.props.gridParams, data => _common_functions__WEBPACK_IMPORTED_MODULE_8__["default"].handleNewRemoveOptions(data, this.props.setRemoveOptions));
+    });
+
+    _defineProperty(this, "handleCancel", () => {
+      if (this.isFilterNotChange()) {
+        this.onClose();
+      } else {
+        this.setState({
+          isShowConfirmPopup: true
+        });
+      }
+    });
+
+    _defineProperty(this, "isFilterNotChange", () => {
+      const assignPicFilter = _objectSpread({}, this.props.assignPicFilter);
+
+      const oldAssignPicFilter = _objectSpread({}, this.state.oldAssignPicFilter);
+
+      if (!assignPicFilter.pics) {
+        return true;
+      }
+
+      return this.isEqualDirectAccountArray(assignPicFilter.directAccount, oldAssignPicFilter.directAccount) && assignPicFilter.headline === oldAssignPicFilter.headline && assignPicFilter.pics.length === 0;
+    });
+
+    _defineProperty(this, "isEqualDirectAccountArray", (firstArray, secondArray) => {
+      if (firstArray.length !== secondArray.length) {
+        return false;
+      }
+
+      for (let index = 0; index < firstArray.length; index++) {
+        if (firstArray[index].username !== secondArray[index].username) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    _defineProperty(this, "onClose", () => {
+      this.props.setAssignPicPopup({
+        show: false
+      });
+      this.props.setAssignPicFilter({
+        headline: null,
+        pics: [],
+        directAccount: [],
+        isSelectedAll: false
+      });
+    });
+
+    _defineProperty(this, "closeAll", () => {
+      this.closeConfirmPopup();
+      this.onClose();
+    });
+
+    _defineProperty(this, "closeConfirmPopup", () => this.setState({
+      isShowConfirmPopup: false
+    }));
+
+    this.state = {
+      maxUsername: 10000,
+      headlineOptions: [],
+      picOptions: [],
+      isShowConfirmPopup: false,
+      oldAssignPicFilter: {
+        headline: null,
+        pics: [],
+        directAccount: []
+      },
+      validate: {
+        show: false,
+        errMsg: []
+      }
+    };
+  }
+
+  render() {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"], {
+      show: true,
+      backdrop: "static",
+      keyboard: false,
+      centered: true,
+      onHide: () => this.handleCancel(),
+      dialogAs: _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_2__["default"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Header, {
+      closeButton: true
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Title, {
+      as: "div"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('AssignPIC'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Body, null, this.state.validate.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Alert"], {
+      variant: "danger"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+      className: "list-message-error"
+    }, this.state.validate.errMsg.map((message, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      key: index
+    }, message)))), this.props.assignPicResult.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      isSuccessful: this.props.assignPicResult.isSuccessful,
+      message: this.props.assignPicResult.message,
+      messages: this.props.assignPicResult.messages
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Group, {
+      as: react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Row"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Label, {
+      column: true,
+      sm: "4",
+      md: "3",
+      className: "required"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('GroupHeadline')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Col"], {
+      sm: "8",
+      md: "9"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_CustomReactSelect__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      isClearable: true,
+      onChange: value => this.handleHeadlineChange(value),
+      options: this.state.headlineOptions,
+      value: this.props.assignPicFilter.headline,
+      placeholder: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('PleaseSelect')
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Group, {
+      as: react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Row"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Label, {
+      column: true,
+      sm: "4",
+      md: "3",
+      className: "required"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('PIC')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Col"], {
+      sm: "8",
+      md: "9"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_CustomReactSelect__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      isMulti: true,
+      isClearable: true,
+      onChange: value => this.handlePicChange(value),
+      options: this.state.picOptions,
+      value: this.props.assignPicFilter.pics,
+      placeholder: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('PleaseSelect')
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Group, {
+      as: react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Row"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Label, {
+      column: true,
+      sm: "4",
+      md: "3",
+      className: "required"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('DirectAccount')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Col"], {
+      sm: "8",
+      md: "9"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-xs-12 related-customer-container",
+      onClick: () => this.inputRef.focus()
+    }, this.props.assignPicFilter.directAccount.map(this.renderRelatedCustomerItem), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      ref: input => this.inputRef = input,
+      type: "text",
+      onKeyDown: e => this.handleKeyDownRelatedCustomerInput(e),
+      onKeyUp: e => this.handleKeyUpRelatedCustomerInput(e),
+      onPaste: e => this.handlePasteRelatedCustomerInput(e),
+      onBlur: () => this.handleBlurRelatedCustomerInput()
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-xs-12"
+    }, "Maximum usernames: ", this.state.maxUsername - this.props.assignPicFilter.directAccount.length)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Button"], {
+      variant: "primary",
+      size: "sm",
+      disabled: this.props.assignPicPopup.isSubmitting,
+      onClick: () => this.handleSubmit()
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Save')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Button"], {
+      variant: "primary",
+      size: "sm",
+      onClick: () => this.handleCancel()
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Cancel'))))), this.props.confirmAssignedDirectAccountPopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ConfirmAssignedDirectAccount__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      data: this.props.confirmAssignedDirectAccountPopup.data,
+      closeAssignPicPopup: () => this.onClose()
+    }), this.state.isShowConfirmPopup && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ConfirmPopup__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      size: "lg",
+      title: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Confirmation'),
+      content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('ThereAreSomeChangesConfirmMessage')),
+      onSubmit: () => this.closeAll(),
+      onClose: () => this.closeConfirmPopup()
     }));
   }
 
 }
 
-_defineProperty(AppContainer, "propTypes", {
-  contentDetailPopup: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.shape({
-    show: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool
-  }).isRequired,
-  createTemplatePopup: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.shape({
-    show: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool
-  }).isRequired,
-  deleteTemplatePopup: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.shape({
-    show: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool
-  }).isRequired,
-  editTemplatePopup: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.shape({
-    show: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool
-  }).isRequired,
-  getLanguages: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
-  getNotificationTypes: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
-  isHost: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool.isRequired
-});
-
-_defineProperty(AppContainer, "defaultProps", {
-  contentDetailPopup: {
-    show: false
-  },
-  createTemplatePopup: {
-    show: false
-  },
-  deleteTemplatePopup: {
-    show: false
-  },
-  editTemplatePopup: {
-    show: false
-  },
-  getLanguages: function () {// nothing
-  },
-  getNotificationTypes: function () {// nothing
-  },
-  isHost: false
-});
-
-const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_5__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_6__["ActionCreators"], dispatch);
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_4__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_5__["ActionCreators"], dispatch);
 
 const mapStateToProps = state => {
   const {
+    settings,
+    assignPicResult,
+    validateAssignPicResult,
     gridParams,
-    createTemplatePopup,
-    editTemplatePopup,
-    deleteTemplatePopup,
-    deleteTemplateResult,
-    contentDetailPopup
+    assignPicFilter,
+    confirmAssignedDirectAccountPopup,
+    assignPicPopup
   } = state;
   return {
+    settings,
+    assignPicResult,
+    validateAssignPicResult,
     gridParams,
-    createTemplatePopup,
-    editTemplatePopup,
-    deleteTemplatePopup,
-    deleteTemplateResult,
-    contentDetailPopup
+    assignPicFilter,
+    confirmAssignedDirectAccountPopup,
+    assignPicPopup
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["connect"])(mapStateToProps, mapDispatchToProps)(AppContainer));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["connect"])(mapStateToProps, mapDispatchToProps)(AssignPic));
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/components/ContentDetailModalDialog.jsx":
-/*!********************************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/ContentDetailModalDialog.jsx ***!
-  \********************************************************************************************/
-/*! exports provided: ContentDetailModalDialog, default */
+/***/ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/ConfirmAssignedDirectAccount.jsx":
+/*!**********************************************************************************************************!*\
+  !*** ./www/sources/js/pages/pic-and-headline/pic-assignment/components/ConfirmAssignedDirectAccount.jsx ***!
+  \**********************************************************************************************************/
+/*! exports provided: ConfirmAssignedDirectAccount, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ContentDetailModalDialog", function() { return ContentDetailModalDialog; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConfirmAssignedDirectAccount", function() { return ConfirmAssignedDirectAccount; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
-/* harmony import */ var _jsroot_components_SweetModalDialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jsroot/components/SweetModalDialog */ "./www/sources/js/components/SweetModalDialog.jsx");
-/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/components/DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/actions.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/components/react-grid/index */ "./www/sources/js/components/react-grid/index.jsx");
+/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/common.functions.js");
+/* harmony import */ var _components_SweetModalDialog__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../../components/SweetModalDialog */ "./www/sources/js/components/SweetModalDialog.jsx");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 
 
 
-const ContentDetailModalDialog = props => {
-  const template = props.template;
-  const buttons = [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Button"], {
-    variant: "primary",
-    size: "sm",
-    onClick: props.onClose
-  }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Close'))];
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_SweetModalDialog__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    size: "lg",
-    backdropClassName: "notification-template-content-modal-backdrop",
-    className: "notification-template-content-modal",
-    title: template.title,
-    contents: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, template.contents.map(item => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], {
-        key: item.languageId
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "font-weight-bold"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Content'), " (", item.language, ")"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "border p-2 mt-2 mb-3 content"
-      }, item.content));
-    })),
-    buttons: buttons,
-    onClose: props.onClose
-  });
-};
-ContentDetailModalDialog.propTypes = {
-  template: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape({
-    notificationTemplateId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    notificationTypeId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    notificationTemplateName: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-    title: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-    contents: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object)
-  }).isRequired
-};
-ContentDetailModalDialog.defaultProps = {
-  template: {
-    notificationTemplateId: 0,
-    notificationTypeId: 0,
-    notificationTemplateName: '',
-    title: '',
-    contents: []
+
+
+
+
+
+class ConfirmAssignedDirectAccount extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  constructor(props) {
+    super(props);
+
+    _defineProperty(this, "buildHeader", () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["HeaderRow"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["HeaderCell"], {
+      colWidth: 30
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('PIC')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["HeaderCell"], {
+      colWidth: 70
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('DirectAccount'))));
+
+    _defineProperty(this, "buildBody", () => this.props.confirmAssignedDirectAccountPopup.data.map((item, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Row"], {
+      key: index
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Cell"], null, `${item.picName} (${item.role})`), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Cell"], null, this.renderDirectAccount(item.directAccount)))));
+
+    _defineProperty(this, "renderDirectAccount", data => {
+      const directAccount = data.split(',');
+
+      if (directAccount.length > 20) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          className: "link-color cursor-pointer",
+          onClick: () => this.openDirectAccountPopup(directAccount)
+        }, directAccount.length, " custommers");
+      }
+
+      return data;
+    });
+
+    _defineProperty(this, "openDirectAccountPopup", directAccount => this.setState({
+      directAccountPopup: {
+        show: true,
+        data: directAccount
+      }
+    }));
+
+    _defineProperty(this, "closeDirectAccountPopup", () => this.setState({
+      directAccountPopup: {
+        show: false
+      }
+    }));
+
+    _defineProperty(this, "onClose", () => {
+      this.props.setConfirmAssignedDirectAccountPopup({
+        show: false
+      });
+      this.props.setAssignPicPopup(_objectSpread(_objectSpread({}, this.props.assignPicPopup), {}, {
+        isSubmitting: false
+      }));
+    });
+
+    _defineProperty(this, "assignPic", isKeepAssign => {
+      this.props.setConfirmAssignedDirectAccountPopup({
+        show: false
+      });
+      _common_functions__WEBPACK_IMPORTED_MODULE_8__["default"].assignPic({
+        headlineId: this.props.assignPicFilter.headline.value,
+        picIds: this.props.assignPicFilter.pics.map(item => item.value).toString(),
+        isKeepAssign,
+        directAccountIds: this.props.assignPicFilter.directAccount.map(item => item.username).toString()
+      }, this.callbackAssignPic);
+    });
+
+    _defineProperty(this, "callbackAssignPic", data => {
+      const {
+        isSuccessful,
+        message
+      } = data;
+      this.props.setAssignPicResult({
+        show: true,
+        isSuccessful,
+        message: isSuccessful ? _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('AssignPICSuccessfully') : message
+      });
+
+      if (data.isSuccessful) {
+        setTimeout(this.refreshGrid, 2000);
+      } else {
+        this.props.setAssignPicPopup(_objectSpread(_objectSpread({}, this.props.assignPicPopup), {}, {
+          isSubmitting: false
+        }));
+      }
+    });
+
+    _defineProperty(this, "refreshGrid", () => {
+      this.props.setAssignPicPopup({
+        show: false
+      });
+      this.props.getGridData(this.props.gridParams, data => _common_functions__WEBPACK_IMPORTED_MODULE_8__["default"].handleNewRemoveOptions(data, this.props.setRemoveOptions));
+      this.props.setAssignPicFilter({
+        headline: null,
+        pics: [],
+        directAccount: [],
+        isSelectedAll: false
+      });
+    });
+
+    this.state = {
+      isSubmitting: false,
+      directAccountPopup: {
+        show: false
+      }
+    };
   }
-};
+
+  render() {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"], {
+      show: true,
+      backdrop: "static",
+      keyboard: false,
+      size: "lg",
+      centered: true,
+      onHide: () => this.onClose(),
+      dialogAs: _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_2__["default"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Header, {
+      closeButton: true
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Title, {
+      as: "div"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('ListOfAssignedDirectAccounts'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Body, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Table"], {
+      maxWidth: 772,
+      header: this.buildHeader(),
+      body: this.buildBody(),
+      containerPadding: 0
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Button"], {
+      variant: "primary",
+      size: "sm",
+      disabled: this.state.isSubmitting,
+      onClick: () => this.assignPic(false)
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('RemoveAndAssign')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Button"], {
+      variant: "primary",
+      size: "sm",
+      disabled: this.state.isSubmitting,
+      onClick: () => this.assignPic(true)
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('KeepAssign')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Button"], {
+      variant: "primary",
+      size: "sm",
+      onClick: () => this.onClose()
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Cancel')))), this.state.directAccountPopup.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_SweetModalDialog__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      onClose: this.closeDirectAccountPopup,
+      contents: this.state.directAccountPopup.data,
+      buttons: [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Button"], {
+        variant: "primary",
+        size: "sm",
+        onClick: this.closeDirectAccountPopup
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Close'))],
+      title: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('DirectAccount')
+    }));
+  }
+
+}
+
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_4__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_5__["ActionCreators"], dispatch);
 
 const mapStateToProps = state => {
   const {
-    selectedTemplate
+    confirmAssignedDirectAccountPopup,
+    gridParams,
+    assignPicFilter,
+    assignPicPopup
   } = state;
   return {
-    template: selectedTemplate
+    confirmAssignedDirectAccountPopup,
+    gridParams,
+    assignPicFilter,
+    assignPicPopup
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps)(ContentDetailModalDialog));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["connect"])(mapStateToProps, mapDispatchToProps)(ConfirmAssignedDirectAccount));
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/components/DataGrid.jsx":
-/*!****************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/DataGrid.jsx ***!
-  \****************************************************************************/
+/***/ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/DataGrid.jsx":
+/*!**************************************************************************************!*\
+  !*** ./www/sources/js/pages/pic-and-headline/pic-assignment/components/DataGrid.jsx ***!
+  \**************************************************************************************/
 /*! exports provided: DataGrid, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -465,15 +1081,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/notification-template/actions.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/actions.js");
 /* harmony import */ var _jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jsroot/components/react-grid/index */ "./www/sources/js/components/react-grid/index.jsx");
 /* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
 /* harmony import */ var _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/common/constants */ "./www/sources/js/common/constants.js");
+/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/common.functions.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
@@ -489,117 +1109,489 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     _defineProperty(this, "onPaging", (pageIndex, pageSize) => {
       const params = _objectSpread({}, this.props.gridParams);
 
-      params['pageIndex'] = pageIndex;
-      params['pageSize'] = pageSize;
+      params.pageIndex = pageIndex;
+      params.pageSize = pageSize;
       this.props.setGridParams(params);
-      this.props.getGridData(params);
+      this.props.getGridData(params, data => _common_functions__WEBPACK_IMPORTED_MODULE_7__["default"].handleNewRemoveOptions(data, this.props.setRemoveOptions));
     });
 
-    _defineProperty(this, "handleEdit", id => {
-      this.props.getTemplateById(id, () => this.props.setEditTemplatePopup({
-        show: true
-      }));
+    _defineProperty(this, "buildPicManagementHeader", (isHost, isRenderCommunication, uniqueCommunication) => {
+      return [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderRow"], {
+        key: "header1"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 50,
+        rowSpan: this.rowSpanHeader(isRenderCommunication)
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('TextNo')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 100,
+        rowSpan: this.rowSpanHeader(isRenderCommunication)
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('GroupHeadline')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 100,
+        rowSpan: this.rowSpanHeader(isRenderCommunication)
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('HeadlineType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 130,
+        rowSpan: this.rowSpanHeader(isRenderCommunication)
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('DefaultPIC')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 135,
+        rowSpan: this.rowSpanHeader(isRenderCommunication)
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('PIC')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 100,
+        rowSpan: this.rowSpanHeader(isRenderCommunication)
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('DirectAccount')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 100,
+        rowSpan: this.rowSpanHeader(isRenderCommunication)
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Status')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 130,
+        rowSpan: this.rowSpanHeader(isRenderCommunication)
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Site')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 100,
+        rowSpan: this.rowSpanHeader(isRenderCommunication)
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Currency')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 100,
+        rowSpan: this.rowSpanHeader(isRenderCommunication)
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Position')), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 80,
+        rowSpan: isRenderCommunication ? 2 : 0
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "d-flex justify-content-center"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "d-block mx-auto",
+        type: "button",
+        value: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Remove'),
+        disabled: this.props.removeOptions.isDisabledRemove,
+        onClick: () => this.handleOpenRemovePopup()
+      })), this.props.removeOptions.isHadAll && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "d-block cursor-pointer mx-auto margin-top-5px",
+        type: "checkbox",
+        checked: this.props.removeOptions.isCheckedAll,
+        onChange: () => this.handleChangeRemoveCheckboxAll()
+      })), isRenderCommunication && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colSpan: uniqueCommunication.length + 1
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('CommunicationTool'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderRow"], {
+        key: "header2"
+      }, isRenderCommunication && this.renderHeaderCommunicationTools(uniqueCommunication))];
     });
 
-    _defineProperty(this, "handleViewContent", id => {
-      this.props.getTemplateById(id, () => this.props.setContentDetailPopup({
-        show: true
-      }));
-    });
+    _defineProperty(this, "rowSpanHeader", isRenderCommunication => isRenderCommunication ? 2 : 0);
 
-    _defineProperty(this, "handleDelete", (id, name) => {
-      this.props.setDeleteTemplatePopup({
-        show: true,
-        templateId: id,
-        name: name
+    _defineProperty(this, "renderHeaderCommunicationTools", uniqueCommunication => {
+      const header = [];
+      header.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        key: "PICName",
+        colWidth: 100
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('PICName')));
+      uniqueCommunication.forEach((item, index) => {
+        const maxLengthComm = this.findLongestWordLength(item.settingValue);
+        const calWidthCommByPixel = this.measureText(maxLengthComm);
+        header.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+          className: "header-comm",
+          colWidth: calWidthCommByPixel > 100 ? calWidthCommByPixel + 50 : 100,
+          key: `comm-header-${item.settingValue}-${index}`
+        }, item.settingValue));
       });
+      return header;
     });
 
-    _defineProperty(this, "buildGridHeader", isHost => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderRow"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 5
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('SymbolNo')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 30
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('NotificationType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 30
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('TemplateName')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 80
-      }, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Title')}/${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Content')}`), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 10
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Action')));
+    _defineProperty(this, "findLongestWordLength", str => {
+      const arr = str.split(' ');
+      let strArr = '';
+
+      for (let i = 0; i < arr.length; i++) {
+        if (strArr.length < arr[i].length) {
+          strArr = arr[i];
+        }
+      }
+
+      return strArr;
     });
 
-    _defineProperty(this, "buildGridBody", isHost => {
+    _defineProperty(this, "buildPicManagementBody", (isHost, isRenderCommunication) => {
       const {
         pageIndex,
         pageSize
       } = this.props.gridParams;
       this.startIndex = (pageIndex - 1) * pageSize + 1;
 
-      if (this.props.gridData.data.length > 0) {
-        return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
+      if (this.props.picAssignmentGridData.data.length > 0) {
+        {
+          return this.buildPicManagementBodyHasData(isHost, isRenderCommunication);
+        }
       }
 
       return [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Row"], {
         key: `body${1}`,
         className: "no-data"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
-        colSpan: "5"
+        className: "text-center",
+        colSpan: isHost ? 11 : 10
       }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('ThereIsNoData')))];
     });
 
-    _defineProperty(this, "renderRow", (item, index, isHost) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Row"], {
-      key: item.notificationTemplateId
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
-      className: "text-center"
-    }, index + this.startIndex), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.notificationTypeName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.notificationTemplateName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-      href: "#",
-      onClick: () => this.handleViewContent(item.notificationTemplateId)
-    }, item.title)), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
-      className: "text-center"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-      className: "rounded-circle fa fa-pencil icon-edit",
-      onClick: () => this.handleEdit(item.notificationTemplateId)
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-      className: "rounded-circle fa fa-trash icon-delete",
-      onClick: () => this.handleDelete(item.notificationTemplateId, item.notificationTemplateName)
-    }))));
+    _defineProperty(this, "buildPicManagementBodyHasData", (isHost, isRenderCommunication) => {
+      const body = [];
+      let mergeHeadline = 0;
+      let mergePIC = 0;
+      let countComm = 0;
+      let rowIndex = 0;
+
+      for (let index = 0; index < this.props.picAssignmentGridData.data.length; index++) {
+        rowIndex++;
+        let row;
+        const assignment = this.props.picAssignmentGridData.data[index];
+        let comm = [];
+        const communicationTools = this.props.picAssignmentGridData.communicationTools;
+        const picForMappingSplit = this.picForMappingItem(assignment);
+        const uniquePicMapping = picForMappingSplit.filter((v, i, a) => a.findIndex(t => t === v) === i);
+        comm = communicationTools.filter(item => uniquePicMapping.indexOf(item.picId.toString()) > -1);
+
+        if (mergeHeadline === 0) {
+          mergeHeadline = this.props.picAssignmentGridData.data.filter(x => x.headlineID === assignment.headlineID).length;
+          const pics = this.props.picAssignmentGridData.data.filter(item => item.headlineID === assignment.headlineID && item.picForMapping === assignment.picForMapping);
+          mergePIC = pics.length;
+          countComm = 0;
+          row = this.renderRowMergeHeadline(index, rowIndex, pics, assignment, comm, mergeHeadline, mergePIC);
+        } else if (mergePIC === 0) {
+          const pics = this.props.picAssignmentGridData.data.filter(item => item.headlineID === assignment.headlineID && item.picForMapping === assignment.picForMapping);
+          mergePIC = pics.length;
+          row = this.renderRowMerPic(index, rowIndex, pics, assignment, comm, countComm, mergePIC);
+        } else {
+          row = this.renderRowCommunication(index, rowIndex, assignment, countComm, comm);
+        }
+
+        body.push(row);
+        countComm++;
+        mergeHeadline--;
+        mergePIC--;
+
+        if (mergeHeadline === 0 && countComm < comm.length && isRenderCommunication) {
+          const remainRowComm = comm.length - countComm;
+
+          for (let indexExtra = 0; indexExtra < remainRowComm; indexExtra++) {
+            row = this.renderRowCommEmpty(isHost, rowIndex, comm[countComm]);
+            body.push(row);
+            countComm++;
+          }
+        }
+      }
+
+      return body;
+    });
+
+    _defineProperty(this, "picForMappingItem", assignment => {
+      const picForMappingSplit = [];
+      const headline = this.props.picAssignmentGridData.data.filter(x => x.headlineID === assignment.headlineID);
+      headline.map(item => {
+        if (item.picForMapping) {
+          const splitPic = item.picForMapping.split(',');
+          splitPic.map(item1 => {
+            picForMappingSplit.push(item1);
+          });
+        }
+      });
+      return picForMappingSplit;
+    });
+
+    _defineProperty(this, "renderRowMergeHeadline", (index, rowIndex, pics, assignment, comm, mergeHeadline, mergePIC) => {
+      const isHost = this.props.isHost;
+      const isRenderCommunication = this.isHostCommunication();
+      const accounts = pics.map(pic => pic.directAccount);
+      const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost);
+
+      if (comm.length > mergeHeadline && isRenderCommunication) {
+        const countExtraComm = comm.length - mergeHeadline;
+        const mergeHeadlineExtraComm = mergeHeadline + countExtraComm;
+        return this.renderRow(index, rowIndex, assignment, mergeHeadlineExtraComm, mergePIC, picCell, comm[0]);
+      } else {
+        return this.renderRow(index, rowIndex, assignment, mergeHeadline, mergePIC, picCell, comm[0]);
+      }
+    });
+
+    _defineProperty(this, "renderRowMerPic", (index, rowIndex, pics, assignment, comm, countComm, mergePIC) => {
+      const isHost = this.props.isHost;
+      const isRenderCommunication = this.isHostCommunication();
+      const accounts = pics.map(pic => pic.directAccount);
+      const picCell = this.renderPic(assignment.picList, assignment.headlineID, accounts, isHost);
+
+      if (countComm < comm.length && isRenderCommunication) {
+        const commRenderPicMerge = comm[countComm];
+        return this.renderRow(index, rowIndex, assignment, 0, mergePIC, picCell, commRenderPicMerge);
+      } else {
+        return this.renderRow(index, rowIndex, assignment, 0, mergePIC, picCell, 0);
+      }
+    });
+
+    _defineProperty(this, "renderRowCommunication", (index, rowIndex, assignment, countComm, comm) => {
+      const isRenderCommunication = this.isHostCommunication();
+
+      if (countComm < comm.length && isRenderCommunication) {
+        const commRender = comm[countComm];
+        return this.renderRow(index, rowIndex, assignment, 0, 0, 0, commRender);
+      } else {
+        return this.renderRow(index, rowIndex, assignment, 0, 0, 0, 0);
+      }
+    });
+
+    _defineProperty(this, "isHostCommunication", () => {
+      const isReadPicManagement = this.props.isReadPicManagement;
+      const communicationTools = this.props.picAssignmentGridData.communicationTools;
+      return isReadPicManagement && communicationTools.length > 0;
+    });
+
+    _defineProperty(this, "renderRowCommEmpty", (isHost, index, comm) => {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Row"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null), comm ? this.renderCommunicationToolsValue(comm) : this.renderCommunicationToolsNullValue());
+    });
+
+    _defineProperty(this, "renderRow", (index, rowIndex, item, mergeHeadline, mergePIC, picCell, comm) => {
+      const listComm = this.props.picAssignmentGridData.listComm;
+      const isHost = this.props.isHost;
+      const isRenderCommunication = this.isHostCommunication();
+      const defaultPicList = item.defaultPicList ? item.defaultPicList.map(pic => {
+        return {
+          value: pic.picId,
+          label: `${pic.picName} (${pic.role})`
+        };
+      }) : [];
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Row"], {
+        key: rowIndex
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+        className: "text-center"
+      }, rowIndex), this.renderMergeHeadlineCells(mergeHeadline, item, defaultPicList, isHost), mergePIC > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+        className: item.picList ? '' : 'text-center',
+        rowSpan: mergePIC
+      }, picCell), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+        className: `${item.status.toLowerCase()}-color`
+      }, item.directAccount), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+        className: `${item.status.toLowerCase()}-color`
+      }, item.status), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+        className: `${item.status.toLowerCase()}-color`
+      }, item.site), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+        className: `${item.status.toLowerCase()}-color`
+      }, item.currency), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+        className: `${item.status.toLowerCase()}-color`
+      }, item.position), isHost && this.renderIsHost(item, index), comm ? isRenderCommunication && this.renderCommunicationToolsValue(comm) : isRenderCommunication && this.renderCommunicationToolsNullValue(listComm));
+    });
+
+    _defineProperty(this, "renderCommunicationToolsNullValue", listComm => {
+      const bodyCommunicationNullValue = [];
+
+      for (let indexComm = 0; indexComm < listComm.length + 1; indexComm++) {
+        bodyCommunicationNullValue.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+          key: `comm-${indexComm}`
+        }));
+      }
+
+      return bodyCommunicationNullValue;
+    });
+
+    _defineProperty(this, "renderCommunicationToolsValue", comm => {
+      const listComm = this.props.picAssignmentGridData.listComm;
+      const bodyCommunication = [];
+      bodyCommunication.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+        key: "picName"
+      }, comm.picName));
+
+      for (let indexCommRender = 0; indexCommRender < listComm.length; indexCommRender++) {
+        const renderValueComm = comm.listComm.filter(item => item.communicationTool.toString() === listComm[indexCommRender].settingValue);
+        bodyCommunication.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+          key: indexCommRender,
+          className: "text-center"
+        }, renderValueComm.length > 0 ? renderValueComm[0].communicationValue : renderValueComm));
+      }
+
+      return bodyCommunication;
+    });
+
+    _defineProperty(this, "renderMergeHeadlineCells", (mergeHeadline, item, defaultPicList, isHost) => {
+      if (mergeHeadline > 0) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["OverlayTrigger"], {
+          placement: "top",
+          overlay: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["Tooltip"], null, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('GroupHeadline')}: ${item.headlineName}`)
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+          className: "text-center",
+          rowSpan: mergeHeadline
+        }, item.headlineName)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+          className: "text-center",
+          rowSpan: mergeHeadline
+        }, item.headlineType), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+          className: defaultPicList.length > 0 ? '' : 'text-center',
+          rowSpan: mergeHeadline
+        }, this.renderDefaultPic({
+          id: item.headlineID,
+          name: item.headlineName
+        }, defaultPicList, isHost)));
+      }
+
+      return null;
+    });
+
+    _defineProperty(this, "renderIsHost", (item, index) => {
+      const checked = this.props.removeOptions.dataList && this.props.removeOptions.dataList[index] && this.props.removeOptions.dataList[index].isRemoved;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+        className: `${item.status.toLowerCase()}-color text-center`
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "checkbox",
+        className: "cursor-pointer",
+        checked: item.picList && item.picList.length > 0 && checked,
+        disabled: !item.picList || item.picList.length === 0,
+        onChange: () => this.handleChangeRemoveCheckbox(index)
+      }));
+    });
+
+    _defineProperty(this, "handleOpenAssignPicPopup", (headlineId, accountNames) => this.props.setAssignPicPopup({
+      show: true,
+      data: {
+        headlineId,
+        accountNames
+      }
+    }));
+
+    _defineProperty(this, "renderPic", (pics, headlineId, accountNames, isHost) => {
+      if (pics === null || pics.length === 0) {
+        if (isHost) {
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "plus-icon",
+            onClick: () => this.handleOpenAssignPicPopup(headlineId, accountNames)
+          }, "+");
+        }
+
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "-");
+      }
+
+      return pics.map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        key: item.picId,
+        className: "pic-name"
+      }, `${item.picName} (${item.role})`));
+    });
+
+    _defineProperty(this, "renderDefaultPic", (headline, pics, isHost) => {
+      if (pics.length > 0) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "cursor-pointer link-color",
+          onClick: () => this.handleOpenDefaultPicPopup(headline, pics, isHost)
+        }, pics.map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          key: item.value,
+          className: "pic-name default-pic-class"
+        }, item.label)));
+      }
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "plus-icon",
+        onClick: () => this.handleOpenDefaultPicPopup(headline, pics, isHost)
+      }, "+");
+    });
+
+    _defineProperty(this, "handleChangeRemoveCheckboxAll", () => {
+      const checked = !this.props.removeOptions.isCheckedAll;
+      const dataList = this.props.removeOptions.dataList.map(item => {
+        return _objectSpread({}, item);
+      });
+      dataList.forEach(item => {
+        if (item.picList && item.picList.length > 0) {
+          item.isRemoved = checked;
+        }
+      });
+      this.props.setRemoveOptions({
+        isCheckedAll: checked,
+        isDisabledRemove: !checked,
+        isHadAll: this.props.removeOptions.isHadAll,
+        shouldResetScrollPosition: false,
+        dataList
+      });
+    });
+
+    _defineProperty(this, "handleChangeRemoveCheckbox", index => {
+      const dataList = this.props.removeOptions.dataList.map(item => {
+        return _objectSpread({}, item);
+      });
+      dataList[index].isRemoved = !this.props.removeOptions.dataList[index].isRemoved;
+      const removeList = dataList.filter(item => item.picList && item.picList.length > 0 && item.isRemoved);
+      const notCheckedDataList = dataList.filter(item => item.picList && item.picList.length > 0 && !item.isRemoved);
+      this.props.setRemoveOptions({
+        isCheckedAll: notCheckedDataList.length <= 0,
+        isDisabledRemove: removeList.length <= 0,
+        isHadAll: this.props.removeOptions.isHadAll,
+        shouldResetScrollPosition: false,
+        dataList
+      });
+    });
+
+    _defineProperty(this, "handleOpenRemovePopup", () => this.props.setRemovePicAssignmentPopup({
+      show: true
+    }));
+
+    _defineProperty(this, "measureText", (str, fontSize = 13) => {
+      const widths1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      const widths2 = [0.2796875, 0.2765625, 0.3546875, 0.5546875, 0.5546875, 0.8890625, 0.665625, 0.190625, 0.3328125, 0.3328125, 0.3890625, 0.5828125, 0.2765625];
+      const widths3 = [0.3328125, 0.2765625, 0.3015625, 0.5546875, 0.5546875, 0.5546875, 0.5546875, 0.5546875, 0.5546875, 0.5546875, 0.5546875, 0.5546875, 0.5546875];
+      const widths4 = [0.2765625, 0.2765625, 0.584375, 0.5828125, 0.584375, 0.5546875, 1.0140625, 0.665625, 0.665625, 0.721875, 0.721875, 0.665625, 0.609375, 0.7765625];
+      const widths5 = [0.721875, 0.2765625, 0.5, 0.665625, 0.5546875, 0.8328125, 0.721875, 0.7765625, 0.665625, 0.7765625, 0.721875, 0.665625, 0.609375, 0.721875, 0.665625];
+      const widths6 = [0.94375, 0.665625, 0.665625, 0.609375, 0.2765625, 0.3546875, 0.2765625, 0.4765625, 0.5546875, 0.3328125, 0.5546875, 0.5546875, 0.5, 0.5546875, 0.5546875];
+      const widths7 = [0.2765625, 0.5546875, 0.5546875, 0.221875, 0.240625, 0.5, 0.221875, 0.8328125, 0.5546875, 0.5546875, 0.5546875, 0.5546875, 0.3328125];
+      const widths8 = [0.5, 0.2765625, 0.5546875, 0.5, 0.721875, 0.5, 0.5, 0.5, 0.3546875, 0.259375, 0.353125, 0.5890625];
+      const widths = widths1.concat(widths2).concat(widths3).concat(widths4).concat(widths5).concat(widths6).concat(widths7).concat(widths8);
+      const avg = 0.5279276315789471;
+      return str.split('').map(c => c.charCodeAt(0) < widths.length ? widths[c.charCodeAt(0)] : avg).reduce((cur, acc) => acc + cur) * fontSize;
+    });
+
+    _defineProperty(this, "handleOpenDefaultPicPopup", (headline, pics, isHost) => isHost && this.props.setDefaultPicPopup({
+      show: true,
+      headline,
+      pics
+    }));
   }
 
   render() {
-    if (!this.props.gridData || !this.props.gridData.data) {
+    if (!this.props.picAssignmentGridData || !this.props.picAssignmentGridData.data) {
       return null;
     }
 
     const {
-      isHost
-    } = this.props;
-    const {
-      totalItems
-    } = this.props.gridData;
+      totalItems,
+      totalUnassignedDirectAccount,
+      listComm
+    } = this.props.picAssignmentGridData;
+    const uniqueCommunication = listComm;
     const {
       pageIndex,
       pageSize
     } = this.props.gridParams;
+    const isHost = this.props.isHost;
+    const isRenderCommunication = this.isHostCommunication();
     const pagingOption = {
       PageIndex: pageIndex,
       PageSize: pageSize,
       TotalItem: totalItems,
       PageList: _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_6__["PAGING_SIZES"]
     };
+    let totalWidthComm = 0;
+    uniqueCommunication.forEach(item => {
+      const maxLengthComm = this.findLongestWordLength(item.settingValue);
+      const calWidthCommByPixel = this.measureText(maxLengthComm);
+
+      if (calWidthCommByPixel > 100) {
+        totalWidthComm += calWidthCommByPixel + 50;
+      } else {
+        totalWidthComm += 100;
+      }
+    });
+    const totalAssignmentWidth = 1225;
+    const calMaxWidth = totalAssignmentWidth + totalWidthComm;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "table-title"
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('NotificationTemplate')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Table"], {
-      minWidth: 720,
-      maxWidth: document.getElementById('app-container').clientWidth,
-      autoWidth: true,
-      header: this.buildGridHeader(isHost),
-      body: this.buildGridBody(isHost),
+      className: `table-title d-flex justify-content-between ${!isRenderCommunication ? 'header-pic-max-width' : ''}`
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('PICAssignment')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('ThereAreUnassignedDirectAccounts'), totalUnassignedDirectAccount), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "fa fa-file-excel-o ml-3 icon-excel",
+      onClick: () => _common_functions__WEBPACK_IMPORTED_MODULE_7__["default"].exportExcel(this.props.gridParams)
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Table"], {
+      maxWidth: isRenderCommunication ? calMaxWidth : 1350,
+      shouldUseMaxWidth: true,
+      width: isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350,
+      autoWidth: false,
+      header: this.buildPicManagementHeader(isHost, isRenderCommunication, uniqueCommunication),
+      body: this.buildPicManagementBody(isHost, isRenderCommunication),
       isPaging: true,
       pageOption: pagingOption,
       onPaging: this.onPaging,
       containerPadding: 0,
-      adjustedHeight: 10
+      shouldResetScrollPosition: this.props.removeOptions.shouldResetScrollPosition
     }));
   }
 
@@ -609,12 +1601,14 @@ const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_2__
 
 const mapStateToProps = state => {
   const {
+    picAssignmentGridData,
     gridParams,
-    gridData
+    removeOptions
   } = state;
   return {
+    picAssignmentGridData,
     gridParams,
-    gridData
+    removeOptions
   };
 };
 
@@ -622,30 +1616,28 @@ const mapStateToProps = state => {
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/components/EditNotificationTemplate.jsx":
-/*!********************************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/EditNotificationTemplate.jsx ***!
-  \********************************************************************************************/
-/*! exports provided: EditNotificationTemplate, default */
+/***/ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/DefaultPic.jsx":
+/*!****************************************************************************************!*\
+  !*** ./www/sources/js/pages/pic-and-headline/pic-assignment/components/DefaultPic.jsx ***!
+  \****************************************************************************************/
+/*! exports provided: DefaultPic, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditNotificationTemplate", function() { return EditNotificationTemplate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultPic", function() { return DefaultPic; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/notification-template/actions.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
-/* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! formik */ "./node_modules/formik/dist/formik.esm.js");
-/* harmony import */ var _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/components/DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
-/* harmony import */ var _jsroot_components_FormikErrorMessage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @jsroot/components/FormikErrorMessage */ "./www/sources/js/components/FormikErrorMessage.jsx");
-/* harmony import */ var _jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @jsroot/components/ResponseMessage */ "./www/sources/js/components/ResponseMessage.jsx");
-/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
-/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/notification-template/common.functions.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/components/DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/actions.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/common.functions.js");
+/* harmony import */ var _jsroot_components_ConfirmPopup__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @jsroot/components/ConfirmPopup */ "./www/sources/js/components/ConfirmPopup.jsx");
+/* harmony import */ var _jsroot_components_CustomReactSelect__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @jsroot/components/CustomReactSelect */ "./www/sources/js/components/CustomReactSelect.jsx");
+/* harmony import */ var _jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @jsroot/components/ResponseMessage */ "./www/sources/js/components/ResponseMessage.jsx");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -659,248 +1651,250 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-class EditNotificationTemplate extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+class DefaultPic extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
 
-    _defineProperty(this, "renderForm", ({
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleSubmit,
-      setFieldValue,
-      isSubmitting
-    }) => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"], {
-        noValidate: true,
-        onSubmit: handleSubmit
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Body, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_FormikErrorMessage__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        touched: touched,
-        errors: errors,
-        fieldNames: Object.keys(values)
-      }), this.props.editTemplateResult && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        isSuccessful: this.props.editTemplateResult.isSuccessful,
-        message: this.props.editTemplateResult.message || _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('EditNotificationTemplateSuccessfully')
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "notificationTypeId"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('NotificationType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        as: "select",
-        size: "sm",
-        className: "shadow-none",
-        name: "notificationTypeId",
-        id: "notificationTypeId",
-        isInvalid: touched.notificationTypeId && errors.notificationTypeId,
-        onChange: handleChange,
-        value: values.notificationTypeId
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "",
-        disabled: true,
-        hidden: true
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('PleaseSelect')), this.props.notificationTypes.map(_common_functions__WEBPACK_IMPORTED_MODULE_11__["renderNotificationTypeOption"])))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "notificationTemplateName"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('TemplateName')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        type: "text",
-        size: "sm",
-        value: values.notificationTemplateName,
-        className: "shadow-none",
-        autoComplete: "off",
-        name: "notificationTemplateName",
-        id: "notificationTemplateName",
-        isInvalid: touched.notificationTemplateName && errors.notificationTemplateName,
-        onChange: handleChange
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "title"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Title')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        type: "text",
-        size: "sm",
-        value: values.title,
-        className: "shadow-none",
-        autoComplete: "off",
-        name: "title",
-        id: "title",
-        isInvalid: touched.title && errors.title,
-        onChange: handleChange
-      }))), this.props.languages !== null && this.props.languages.map(item => {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-          key: `language${item.settingId}`,
-          as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-          column: true,
-          sm: "4",
-          md: "3",
-          className: "required",
-          htmlFor: 'language_' + item.settingId
-        }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Content'), " (", item.settingValue, ")"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-          sm: "8",
-          md: "9"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-          as: "textarea",
-          value: values['language_' + item.settingId],
-          className: "shadow-none form-control",
-          name: 'language_' + item.settingId,
-          id: 'language_' + item.settingId,
-          rows: "4",
-          isInvalid: touched['language_' + item.settingId] && errors['language_' + item.settingId],
-          onChange: handleChange
-        })));
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Button"], {
-        type: "submit",
-        variant: "primary",
-        size: "sm",
-        disabled: isSubmitting
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Save')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Button"], {
-        type: "submit",
-        variant: "primary",
-        size: "sm",
-        onClick: this.props.onClose
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Cancel'))));
+    _defineProperty(this, "componentDidMount", () => {
+      const picOptions = this.props.settings.picList.map(item => {
+        return {
+          value: item.picId,
+          label: `${item.username} (${item.roleName})`
+        };
+      });
+      this.setState({
+        picOptions
+      });
+
+      if (this.props.defaultPicPopup.pics) {
+        this.setState({
+          pics: this.props.defaultPicPopup.pics,
+          oldPics: this.props.defaultPicPopup.pics
+        });
+      }
     });
 
-    _defineProperty(this, "handleSubmit", (values, {
-      setSubmitting
-    }) => {
-      setSubmitting(true);
-      const template = {
-        notificationTemplateId: values.notificationTemplateId,
-        notificationTypeId: values.notificationTypeId,
-        notificationTemplateName: values.notificationTemplateName,
-        title: values.title,
-        contents: []
-      };
-      this.props.languages !== null && this.props.languages.map(item => {
-        template.contents.push({
-          languageId: item.settingId,
-          content: values['language_' + item.settingId]
+    _defineProperty(this, "handlePicChange", pics => this.setState({
+      pics
+    }));
+
+    _defineProperty(this, "handleCancel", () => {
+      if (this.isEqualPicArray(this.state.pics, this.state.oldPics)) {
+        this.props.setDefaultPicPopup({
+          show: false
         });
+      }
+
+      this.toggleConfirmPopup();
+    });
+
+    _defineProperty(this, "isEqualPicArray", (firstArray, secondArray) => {
+      if (!firstArray) {
+        return secondArray.length === 0;
+      }
+
+      if (firstArray.length !== secondArray.length) {
+        return false;
+      }
+
+      for (let index = 0; index < firstArray.length; index++) {
+        if (firstArray[index].value !== secondArray[index].value) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    _defineProperty(this, "toggleConfirmPopup", () => this.setState({
+      isShowConfirmPopup: !this.state.isShowConfirmPopup
+    }));
+
+    _defineProperty(this, "handleRemoveDefaultPic", headlineId => {
+      this.setState({
+        isSubmitting: true
       });
-      this.props.editTemplate(template).then(() => {
-        if (this.props.editTemplateResult.isSuccessful) {
-          setTimeout(() => {
-            this.props.onSuccess();
-          }, 3000);
-        } else {
-          setSubmitting(false);
+      _common_functions__WEBPACK_IMPORTED_MODULE_7__["default"].removeDefaultPic({
+        headlineId
+      }, data => this.callback(data, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('RemoveDefaultPICSuccessfully')));
+    });
+
+    _defineProperty(this, "callback", (data, defaultMessage) => {
+      const {
+        isSuccessful,
+        message
+      } = data;
+      this.setState({
+        responseMesssage: {
+          isSuccessful,
+          message: message ? message : defaultMessage,
+          show: true
         }
       });
+
+      if (data.isSuccessful) {
+        setTimeout(this.refreshGrid, 2000);
+      } else {
+        this.setState({
+          isSubmitting: false
+        });
+      }
     });
+
+    _defineProperty(this, "refreshGrid", () => {
+      this.props.setDefaultPicPopup({
+        show: false
+      });
+      this.props.getGridData(this.props.gridParams, data => _common_functions__WEBPACK_IMPORTED_MODULE_7__["default"].handleNewRemoveOptions(data, this.props.setRemoveOptions));
+    });
+
+    _defineProperty(this, "handleSubmitSetDefaultPIC", headlineId => {
+      this.setState({
+        isSubmitting: true
+      });
+
+      if (!this.state.pics) {
+        this.setState({
+          isSubmitting: false,
+          responseMesssage: {
+            show: true,
+            isSuccessful: false,
+            message: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('DefaultPICRequired')
+          }
+        });
+      } else {
+        if (this.state.pics.length === 0) {
+          this.setState({
+            isSubmitting: false,
+            responseMesssage: {
+              show: true,
+              isSuccessful: false,
+              message: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('DefaultPICRequired')
+            }
+          });
+        } else {
+          const params = {
+            headlineId,
+            defaultPicIDs: this.state.pics.map(item => item.value).toString()
+          };
+          _common_functions__WEBPACK_IMPORTED_MODULE_7__["default"].setDefaultPic(params, data => this.callback(data, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('SetDefaultPICSuccessfully')));
+        }
+      }
+    });
+
+    _defineProperty(this, "closeAll", () => {
+      this.props.setDefaultPicPopup({
+        show: false
+      });
+      this.toggleConfirmPopup();
+    });
+
+    this.state = {
+      picOptions: [],
+      pics: [],
+      oldPics: [],
+      isShowConfirmPopup: false,
+      isSubmitting: false,
+      responseMesssage: {
+        show: false
+      }
+    };
   }
 
   render() {
-    const template = this.props.template;
-    const initialValues = {
-      notificationTemplateId: template.notificationTemplateId,
-      notificationTypeId: template.notificationTypeId,
-      notificationTemplateName: template.notificationTemplateName,
-      title: template.title
-    };
-    this.props.languages !== null && this.props.languages.map(item => {
-      initialValues['language_' + item.settingId] = '';
-      const index = template.contents.findIndex(x => x.languageId === item.settingId);
-
-      if (index >= 0) {
-        initialValues['language_' + item.settingId] = template.contents[index].content;
-      }
-    });
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"], {
+    const {
+      headline,
+      pics
+    } = this.props.defaultPicPopup;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"], {
       show: true,
-      className: "notification-template-modal",
-      dialogAs: _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_7__["default"],
-      onHide: this.props.onClose,
       backdrop: "static",
       keyboard: false,
-      size: "lg",
-      centered: true
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Header, {
+      centered: true,
+      onHide: () => this.handleCancel(),
+      dialogAs: _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_2__["default"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Header, {
       closeButton: true
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Title, {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Title, {
       as: "div"
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('EditNotificationTemplate'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_6__["Formik"], {
-      validate: values => Object(_common_functions__WEBPACK_IMPORTED_MODULE_11__["validateFormik"])(values, this.props.languages),
-      onSubmit: this.handleSubmit,
-      initialValues: initialValues
-    }, this.renderForm));
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource(pics && pics.length > 0 ? 'UpdateDefaultPIC' : 'SetDefaultPIC'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Body, null, this.state.responseMesssage.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      isSuccessful: this.state.responseMesssage.isSuccessful,
+      message: this.state.responseMesssage.message
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Group, {
+      as: react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Row"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Label, {
+      column: true,
+      sm: "4",
+      md: "3",
+      className: "required"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('GroupHeadline')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Label, {
+      column: true,
+      sm: "8",
+      md: "9"
+    }, headline.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Group, {
+      as: react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Row"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Form"].Label, {
+      column: true,
+      sm: "4",
+      md: "3",
+      className: "required"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('DefaultPIC')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Col"], {
+      sm: "8",
+      md: "9"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_CustomReactSelect__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      isMulti: true,
+      onChange: value => this.handlePicChange(value),
+      options: this.state.picOptions,
+      value: this.state.pics,
+      placeholder: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('PleaseSelect')
+    })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Modal"].Footer, null, this.props.defaultPicPopup.pics && this.props.defaultPicPopup.pics.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Button"], {
+      variant: "primary",
+      size: "sm",
+      disabled: this.state.isSubmitting,
+      onClick: () => this.handleRemoveDefaultPic(headline.id)
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Remove')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Button"], {
+      variant: "primary",
+      size: "sm",
+      disabled: this.state.isSubmitting,
+      onClick: () => this.handleSubmitSetDefaultPIC(headline.id)
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Save')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["Button"], {
+      variant: "primary",
+      size: "sm",
+      onClick: () => this.handleCancel()
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Cancel'))))), this.state.isShowConfirmPopup && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ConfirmPopup__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      size: "lg",
+      title: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('Confirmation'),
+      content: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_1__["default"].getResource('ThereAreSomeChangesConfirmMessage')),
+      onSubmit: () => this.closeAll(),
+      onClose: () => this.toggleConfirmPopup()
+    }));
   }
 
 }
 
-_defineProperty(EditNotificationTemplate, "propTypes", {
-  languages: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object),
-  notificationTypes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object),
-  template: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape({
-    notificationTemplateId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    notificationTypeId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-    notificationTemplateName: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-    title: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-    contents: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object)
-  }).isRequired
-});
-
-_defineProperty(EditNotificationTemplate, "defaultProps", {
-  languages: [],
-  notificationTypes: [],
-  template: {
-    notificationTemplateId: 0,
-    notificationTypeId: 0,
-    notificationTemplateName: '',
-    title: '',
-    contents: []
-  }
-});
-
-const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_3__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_4__["ActionCreators"], dispatch);
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_4__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_5__["ActionCreators"], dispatch);
 
 const mapStateToProps = state => {
   const {
-    editTemplateResult,
-    selectedTemplate,
-    notificationTypes,
-    languages
+    settings,
+    defaultPicPopup,
+    gridParams
   } = state;
   return {
-    editTemplateResult,
-    template: selectedTemplate,
-    notificationTypes,
-    languages
+    settings,
+    defaultPicPopup,
+    gridParams
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(EditNotificationTemplate));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["connect"])(mapStateToProps, mapDispatchToProps)(DefaultPic));
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/components/Filter.jsx":
-/*!**************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/Filter.jsx ***!
-  \**************************************************************************/
+/***/ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/Filter.jsx":
+/*!************************************************************************************!*\
+  !*** ./www/sources/js/pages/pic-and-headline/pic-assignment/components/Filter.jsx ***!
+  \************************************************************************************/
 /*! exports provided: Filter, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -909,15 +1903,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Filter", function() { return Filter; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/notification-template/actions.js");
-/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
-/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/notification-template/common.functions.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/actions.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _jsroot_components_multiple_select_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/components/multiple-select/index */ "./www/sources/js/components/multiple-select/index.jsx");
+/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/common.functions.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/lib/index.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react_toastify__WEBPACK_IMPORTED_MODULE_8__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -931,132 +1931,336 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
 
-    _defineProperty(this, "handleNotificationTypeChange", event => {
-      this.setState({
-        notificationTypeId: event.target.value
+    _defineProperty(this, "componentDidMount", () => {
+      this.props.getSettings().then(() => {
+        const siteIds = [];
+        const siteOptions = this.props.settings.siteList.map(x => {
+          siteIds.push(x.site);
+          return {
+            id: x.site,
+            name: x.site,
+            checked: true
+          };
+        });
+        const currencyIds = [];
+        const currencyOptions = this.props.settings.currencyList.map(x => {
+          currencyIds.push(x.id);
+          return {
+            id: x.id,
+            name: x.name,
+            checked: true
+          };
+        });
+        const statusOptions = this.props.settings.statusList.map(x => {
+          return {
+            id: x,
+            name: x,
+            checked: true
+          };
+        });
+        const positionIds = [];
+        const positionOptions = this.props.settings.positionList.map(x => {
+          positionIds.push(x.settingId);
+          return {
+            id: x.settingId,
+            name: x.settingValue,
+            checked: true
+          };
+        });
+        this.setState(prevState => ({
+          siteOptions,
+          currencyOptions,
+          statusOptions,
+          positionOptions,
+          filter: _objectSpread(_objectSpread({}, prevState.filter), {}, {
+            site: siteIds.toString(),
+            currency: currencyIds.toString(),
+            status: this.props.settings.statusList.toString(),
+            position: positionIds.toString()
+          })
+        }));
       });
     });
 
-    _defineProperty(this, "handleTemplateNameChange", event => {
-      this.setState({
-        notificationTemplateName: event.target.value
-      });
+    _defineProperty(this, "handleFilterChange", (name, value) => this.setState(prevState => ({
+      filter: _objectSpread(_objectSpread({}, prevState.filter), {}, {
+        [name]: value
+      })
+    })));
+
+    _defineProperty(this, "handleChange", event => {
+      event.persist();
+      this.setState(prevState => ({
+        filter: _objectSpread(_objectSpread({}, prevState.filter), {}, {
+          [event.target.name]: event.target.value
+        })
+      }));
     });
+
+    _defineProperty(this, "handleCheckBoxChange", event => {
+      event.persist();
+      this.setState(prevState => ({
+        filter: _objectSpread(_objectSpread({}, prevState.filter), {}, {
+          [event.target.name]: event.target.checked
+        })
+      }));
+    });
+
+    _defineProperty(this, "handleSiteChange", (currentItem, selectedItemsKey) => this.handleFilterChange('site', selectedItemsKey));
+
+    _defineProperty(this, "handleCurrencyChange", (currentItem, selectedItemsKey) => this.handleFilterChange('currency', selectedItemsKey));
+
+    _defineProperty(this, "handleStatusChange", (currentItem, selectedItemsKey) => this.handleFilterChange('status', selectedItemsKey));
+
+    _defineProperty(this, "handlePositionChange", (currentItem, selectedItemsKey) => this.handleFilterChange('position', selectedItemsKey));
+
+    _defineProperty(this, "renderHeadlineTypeOption", item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: item.id,
+      value: item.id
+    }, item.name));
 
     _defineProperty(this, "getParams", () => {
-      return {
-        notificationTypeId: parseInt(this.state.notificationTypeId, 10),
-        notificationTemplateName: this.state.notificationTemplateName,
-        pageIndex: 1,
-        pageSize: 100
-      };
+      const {
+        pageIndex,
+        pageSize
+      } = this.props.gridParams;
+      return _objectSpread(_objectSpread({}, this.state.filter), {}, {
+        pageIndex,
+        pageSize
+      });
     });
 
-    _defineProperty(this, "handleSubmit", event => {
-      event.preventDefault();
+    _defineProperty(this, "handleSubmit", () => {
       const params = this.getParams();
+
+      if (!this.state.filter.site) {
+        react_toastify__WEBPACK_IMPORTED_MODULE_8__["toast"].error(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('PleaseChooseSite'));
+        return;
+      }
+
+      if (!this.state.filter.currency) {
+        react_toastify__WEBPACK_IMPORTED_MODULE_8__["toast"].error(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('PleaseChooseCurrency'));
+        return;
+      }
+
+      if (!this.state.filter.status) {
+        react_toastify__WEBPACK_IMPORTED_MODULE_8__["toast"].error(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('PleaseChooseStatus'));
+        return;
+      }
+
+      if (!this.state.filter.position) {
+        react_toastify__WEBPACK_IMPORTED_MODULE_8__["toast"].error(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('PleaseChoosePosition'));
+        return;
+      }
+
+      params.pageIndex = 1;
       this.props.setGridParams(params);
-      this.props.getGridData(params);
+      this.props.getGridData(params, data => _common_functions__WEBPACK_IMPORTED_MODULE_7__["default"].handleNewRemoveOptions(data, this.props.setRemoveOptions));
     });
 
-    _defineProperty(this, "handleOpenCreatePopup", () => this.props.setCreateTemplatePopup({
+    _defineProperty(this, "handleOpenAssignPicPopup", () => this.props.setAssignPicPopup({
       show: true
     }));
 
+    _defineProperty(this, "handleToggleFilter", value => {
+      this.setState({
+        showFilter: value
+      });
+      window.dispatchEvent(new Event('resize'));
+    });
+
     this.state = {
-      notificationTypeId: '',
-      notificationTemplateName: ''
+      filter: {
+        site: '1',
+        currency: '1',
+        status: '1',
+        headlineType: 2,
+        groupHeadline: '',
+        picName: '',
+        directAccount: '',
+        position: '1',
+        excludeAssignedAcc: false,
+        excludeIgnoredAcc: true,
+        excludeIsTest: true
+      },
+      siteOptions: [],
+      currencyOptions: [],
+      statusOptions: [],
+      positionOptions: [],
+      showFilter: true
     };
   }
 
   render() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"], {
+    const {
+      isHost
+    } = this.props;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"], {
       className: "form-filter",
       onSubmit: this.handleSubmit
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Row, {
+    }, this.state.showFilter && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Row, {
       bsPrefix: "form-row"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Label, {
-      htmlFor: "filterNotificationTypeId"
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('NotificationType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Control, {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Site')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "form-control-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_multiple_select_index__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      dataSource: this.state.siteOptions,
+      keyField: "id",
+      valueField: "name",
+      statusField: "checked",
+      isSummited: false,
+      isAllTextShown: true,
+      onChange: (currentItem, selectedItemsKey) => this.handleSiteChange(currentItem, selectedItemsKey)
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Currency')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "form-control-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_multiple_select_index__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      dataSource: this.state.currencyOptions,
+      keyField: "id",
+      valueField: "name",
+      statusField: "checked",
+      isSummited: false,
+      isAllTextShown: true,
+      onChange: (currentItem, selectedItemsKey) => this.handleCurrencyChange(currentItem, selectedItemsKey)
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Status')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "form-control-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_multiple_select_index__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      dataSource: this.state.statusOptions,
+      keyField: "id",
+      valueField: "name",
+      statusField: "checked",
+      isSummited: false,
+      isAllTextShown: true,
+      onChange: (currentItem, selectedItemsKey) => this.handleStatusChange(currentItem, selectedItemsKey)
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('HeadlineType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Control, {
       as: "select",
       size: "sm",
       className: "shadow-none",
-      id: "filterNotificationTypeId",
-      value: this.state.notificationTypeId,
-      onChange: this.handleNotificationTypeChange
+      name: "headlineType",
+      value: this.state.filter.headlineType,
+      onChange: this.handleChange
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-      value: ""
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('All')), this.props.notificationTypes.map(_common_functions__WEBPACK_IMPORTED_MODULE_7__["renderNotificationTypeOption"]))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Label, {
-      htmlFor: "filterNotificationTemplateName"
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('TemplateName')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Control, {
-      type: "text",
+      value: 2
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('All')), this.props.settings && this.props.settings.headlineTypeList && this.props.settings.headlineTypeList.map(this.renderHeadlineTypeOption)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Row, {
+      bsPrefix: "form-row"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('GroupHeadline')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Control, {
+      as: "input",
       size: "sm",
       className: "shadow-none",
-      id: "filterNotificationTemplateName",
-      autoComplete: "off",
-      value: this.state.notificationTemplateName,
-      onChange: this.handleTemplateNameChange
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+      name: "groupHeadline",
+      value: this.state.filter.groupHeadline,
+      onChange: this.handleChange
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('PIC')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Control, {
+      as: "input",
+      size: "sm",
+      className: "shadow-none",
+      name: "picName",
+      value: this.state.filter.picName,
+      onChange: this.handleChange
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('DirectAccount')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Control, {
+      as: "input",
+      size: "sm",
+      className: "shadow-none",
+      name: "directAccount",
+      value: this.state.filter.directAccount,
+      onChange: this.handleChange
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Position')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "form-control-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_multiple_select_index__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      dataSource: this.state.positionOptions,
+      keyField: "id",
+      valueField: "name",
+      statusField: "checked",
+      isSummited: false,
+      isAllTextShown: true,
+      onChange: (currentItem, selectedItemsKey) => this.handlePositionChange(currentItem, selectedItemsKey)
+    })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Row, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "filter-checkbox"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      type: "checkbox",
+      className: "shadow-none",
+      name: "excludeAssignedAcc",
+      checked: this.state.filter.excludeAssignedAcc,
+      onChange: this.handleCheckBoxChange
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "filter-checkbox-text"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('OnlyShowUnassignedDirectAccounts')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      type: "checkbox",
+      className: "shadow-none",
+      name: "excludeIgnoredAcc",
+      checked: this.state.filter.excludeIgnoredAcc,
+      onChange: this.handleCheckBoxChange
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "filter-checkbox-text"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('ExcludeIgnoredAccounts')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      type: "checkbox",
+      className: "shadow-none",
+      name: "excludeIsTest",
+      checked: this.state.filter.excludeIsTest,
+      onChange: this.handleCheckBoxChange
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "filter-checkbox-text"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('ExcludeTestAccounts')))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Row, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "button-row"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Button"], {
       className: "mr-4",
       variant: "primary",
       size: "sm",
       onClick: this.handleSubmit
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Submit')), this.props.isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Submit')), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+      className: "mr-2",
       variant: "primary",
       size: "sm",
-      onClick: this.handleOpenCreatePopup
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Insert')))));
+      onClick: this.handleOpenAssignPicPopup
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('AssignPIC'))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "filter-collapse text-center"
+    }, this.state.showFilter ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "fa fa-caret-up fa-sm",
+      onClick: () => this.handleToggleFilter(false)
+    }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "fa fa-caret-down fa-sm",
+      onClick: () => this.handleToggleFilter(true)
+    })));
   }
 
 }
 
-_defineProperty(Filter, "propTypes", {
-  notificationTypes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object)
-});
-
-_defineProperty(Filter, "defaultProps", {
-  notificationTypes: []
-});
-
-const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_3__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_5__["ActionCreators"], dispatch);
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_2__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_4__["ActionCreators"], dispatch);
 
 const mapStateToProps = state => {
   const {
-    notificationTypes
+    settings,
+    gridParams
   } = state;
   return {
-    notificationTypes
+    settings,
+    gridParams
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Filter));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Filter));
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/components/NewNotificationTemplate.jsx":
-/*!*******************************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/components/NewNotificationTemplate.jsx ***!
-  \*******************************************************************************************/
-/*! exports provided: NewNotificationTemplate, default */
+/***/ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/RemovePicAssignment.jsx":
+/*!*************************************************************************************************!*\
+  !*** ./www/sources/js/pages/pic-and-headline/pic-assignment/components/RemovePicAssignment.jsx ***!
+  \*************************************************************************************************/
+/*! exports provided: RemovePicAssignment, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NewNotificationTemplate", function() { return NewNotificationTemplate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RemovePicAssignment", function() { return RemovePicAssignment; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/notification-template/actions.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
-/* harmony import */ var formik__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! formik */ "./node_modules/formik/dist/formik.esm.js");
-/* harmony import */ var _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/components/DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
-/* harmony import */ var _jsroot_components_FormikErrorMessage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @jsroot/components/FormikErrorMessage */ "./www/sources/js/components/FormikErrorMessage.jsx");
-/* harmony import */ var _jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @jsroot/components/ResponseMessage */ "./www/sources/js/components/ResponseMessage.jsx");
-/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
-/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/notification-template/common.functions.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @jsroot/components/DraggableModalDialog */ "./www/sources/js/components/DraggableModalDialog.jsx");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../actions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/actions.js");
+/* harmony import */ var _jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/components/react-grid/index */ "./www/sources/js/components/react-grid/index.jsx");
+/* harmony import */ var _jsroot_components_ConfirmPopup__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @jsroot/components/ConfirmPopup */ "./www/sources/js/components/ConfirmPopup.jsx");
+/* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/pic-and-headline/pic-assignment/common.functions.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -1069,225 +2273,383 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-
-class NewNotificationTemplate extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+class RemovePicAssignment extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
 
-    _defineProperty(this, "renderForm", ({
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleSubmit,
-      setFieldValue,
-      isSubmitting
-    }) => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"], {
-        noValidate: true,
-        onSubmit: handleSubmit
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Body, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_FormikErrorMessage__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        touched: touched,
-        errors: errors,
-        fieldNames: Object.keys(values)
-      }), this.props.createTemplateResult && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        isSuccessful: this.props.createTemplateResult.isSuccessful,
-        message: this.props.createTemplateResult.message || _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('InsertNotificationTemplateSuccessfully')
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "notificationTypeId"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('NotificationType')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        as: "select",
-        size: "sm",
-        className: "shadow-none",
-        isInvalid: touched.notificationTypeId && errors.notificationTypeId,
-        name: "notificationTypeId",
-        id: "notificationTypeId",
-        value: values.notificationTypeId,
-        onChange: handleChange
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "",
-        hidden: true,
-        disabled: true
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('PleaseSelect')), this.props.notificationTypes.map(_common_functions__WEBPACK_IMPORTED_MODULE_11__["renderNotificationTypeOption"])))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "notificationTemplateName"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('TemplateName')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        type: "text",
-        size: "sm",
-        value: values.notificationTemplateName,
-        name: "notificationTemplateName",
-        id: "notificationTemplateName",
-        className: "shadow-none",
-        autoComplete: "off",
-        isInvalid: touched.notificationTemplateName && errors.notificationTemplateName,
-        onChange: handleChange
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-        column: true,
-        sm: "4",
-        md: "3",
-        className: "required",
-        htmlFor: "title"
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Title')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-        sm: "8",
-        md: "9"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-        type: "text",
-        size: "sm",
-        value: values.title,
-        name: "title",
-        id: "title",
-        className: "shadow-none",
-        autoComplete: "off",
-        isInvalid: touched.title && errors.title,
-        onChange: handleChange
-      }))), this.props.languages !== null && this.props.languages.map(item => {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Group, {
-          key: `language${item.settingId}`,
-          as: react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Row"]
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Label, {
-          column: true,
-          sm: "4",
-          md: "3",
-          className: "required",
-          htmlFor: 'language_' + item.settingId
-        }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Content'), " (", item.settingValue, ")"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Col"], {
-          sm: "8",
-          md: "9"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Form"].Control, {
-          as: "textarea",
-          className: "shadow-none form-control",
-          value: values['language_' + item.settingId],
-          name: 'language_' + item.settingId,
-          id: 'language_' + item.settingId,
-          rows: "4",
-          isInvalid: touched['language_' + item.settingId] && errors['language_' + item.settingId],
-          onChange: handleChange
-        })));
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Button"], {
-        type: "submit",
-        variant: "primary",
-        size: "sm",
-        disabled: isSubmitting
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Save')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Button"], {
-        type: "submit",
-        variant: "primary",
-        size: "sm",
-        onClick: this.props.onClose
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('Cancel'))));
-    });
+    _defineProperty(this, "componentDidMount", () => {
+      const dataList = this.props.removeOptions.dataList.filter(item => item.isRemoved);
+      const picNames = [];
+      const picIds = [];
 
-    _defineProperty(this, "handleSubmit", (values, {
-      setSubmitting
-    }) => {
-      setSubmitting(true);
-      const template = {
-        notificationTypeId: values.notificationTypeId,
-        notificationTemplateName: values.notificationTemplateName,
-        title: values.title,
-        contents: []
-      };
-      this.props.languages !== null && this.props.languages.map(item => {
-        template.contents.push({
-          languageId: item.settingId,
-          content: values['language_' + item.settingId]
+      for (let index = 0; index < dataList.length; index++) {
+        const rowItem = dataList[index];
+
+        if (rowItem.picList && rowItem.picList.length > 0) {
+          this.pushPics(rowItem, picNames, picIds);
+        }
+      }
+
+      const checkedAllList = picNames.map(() => true);
+      const matrix = dataList.map((row, rowNumber) => {
+        const picIdsRow = dataList[rowNumber].picList.map(item => item.picId);
+        return checkedAllList.map((item, colNumber) => {
+          if (picIdsRow.includes(picIds[colNumber])) {
+            return true;
+          }
+
+          return null;
         });
       });
-      this.props.createTemplate(template).then(() => {
-        if (this.props.createTemplateResult.isSuccessful) {
-          setTimeout(() => {
-            this.props.onSuccess();
-          }, 3000);
-        } else {
-          setSubmitting(false);
-        }
+      this.setState({
+        picIds,
+        picNames,
+        checkedAllList: [...checkedAllList],
+        matrix,
+        dataList
       });
     });
+
+    _defineProperty(this, "pushPics", (item, picNames, picIds) => {
+      for (let picIndex = 0; picIndex < item.picList.length; picIndex++) {
+        const name = item.picList[picIndex].picName;
+
+        if (!picNames.includes(name)) {
+          picNames.push(name);
+          picIds.push(item.picList[picIndex].picId);
+        }
+      }
+    });
+
+    _defineProperty(this, "buildHeader", () => {
+      let cells = [{
+        key: 'TextNo',
+        rowSpan: 2,
+        colWidth: 50,
+        value: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('TextNo')
+      }, {
+        key: 'GroupHeadline',
+        rowSpan: 2,
+        colWidth: 120,
+        value: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('GroupHeadline')
+      }, {
+        key: 'DirectAccount',
+        rowSpan: 2,
+        colWidth: 120,
+        value: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('DirectAccount')
+      }];
+      const picCells = this.state.picNames.map(item => {
+        return {
+          key: item,
+          rowSpan: 1,
+          colWidth: 80,
+          value: item
+        };
+      });
+
+      if (this.state.picNames.length > 0) {
+        cells = [...cells, ...picCells];
+      }
+
+      return [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["HeaderRow"], {
+        key: 0
+      }, cells.map(item => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["HeaderCell"], {
+        key: item.key,
+        rowSpan: item.rowSpan,
+        colWidth: item.colWidth
+      }, item.value))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["HeaderRow"], {
+        key: 1
+      }, picCells.map((item, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["HeaderCell"], {
+        key: item.key,
+        rowSpan: item.rowSpan,
+        colWidth: item.colWidth
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "checkbox",
+        checked: this.state.checkedAllList[index],
+        onChange: () => this.handleChangeCheckAll(index)
+      }))))];
+    });
+
+    _defineProperty(this, "buildBody", () => {
+      const picColNumer = this.state.picNames.length;
+      const defaultColNumber = 3;
+      const dataList = this.props.removeOptions.dataList.filter(item => item.isRemoved);
+
+      if (dataList.length > 0) {
+        const body = [];
+        let mergeHeadline = 0;
+
+        for (let index = 0; index < dataList.length; index++) {
+          const rowData = dataList[index];
+          let row;
+
+          if (mergeHeadline === 0) {
+            mergeHeadline = dataList.filter(item => item.headlineID === rowData.headlineID).length;
+            row = this.renderRow(index, rowData, mergeHeadline);
+          } else {
+            row = this.renderRow(index, rowData);
+          }
+
+          body.push(row);
+          mergeHeadline--;
+        }
+
+        return body;
+      }
+
+      return [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Row"], {
+        key: `body${1}`,
+        className: "no-data"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Cell"], {
+        colSpan: defaultColNumber + picColNumer
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('ThereIsNoData')))];
+    });
+
+    _defineProperty(this, "renderRow", (index, row, mergeHeadline) => {
+      let cells = [{
+        value: index + 1
+      }, {
+        value: row.custName
+      }];
+
+      if (mergeHeadline) {
+        cells.splice(1, 0, {
+          value: row.headlineName
+        });
+      }
+
+      const picNames = row.picList.map(item => item.picName);
+      const picCells = this.state.picNames.map((item, picIndex) => {
+        if (picNames.includes(item)) {
+          return {
+            value: {
+              rowNumber: index,
+              colNumber: picIndex
+            }
+          };
+        }
+
+        return {
+          value: ''
+        };
+      });
+      cells = [...cells, ...picCells];
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Row"], {
+        key: index
+      }, cells.map((cell, cellIndex) => this.renderCell(cell, cellIndex, mergeHeadline)));
+    });
+
+    _defineProperty(this, "renderCell", (cell, index, mergeHeadline) => {
+      if (mergeHeadline && index === 1) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["OverlayTrigger"], {
+          key: index,
+          placement: "top",
+          overlay: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Tooltip"], null, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('GroupHeadline')}: ${cell.value}`)
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Cell"], {
+          rowSpan: mergeHeadline
+        }, cell.value));
+      }
+
+      if (typeof cell.value === 'object') {
+        const {
+          rowNumber,
+          colNumber
+        } = cell.value;
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Cell"], {
+          key: index,
+          className: "text-center"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+          type: "checkbox",
+          className: "cursor-pointer",
+          checked: this.state.matrix[rowNumber][colNumber],
+          onChange: () => this.handleChange(rowNumber, colNumber)
+        }));
+      }
+
+      let className = '';
+
+      if (index === 0) {
+        className += 'text-center';
+      }
+
+      if (cell.value === '') {
+        className += 'null-cell-color';
+      }
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Cell"], {
+        key: index,
+        className: className
+      }, cell.value);
+    });
+
+    _defineProperty(this, "handleChange", (rowNumber, colNumber) => {
+      const matrix = [...this.state.matrix];
+      matrix[rowNumber][colNumber] = !matrix[rowNumber][colNumber];
+      const checkedAllList = [...this.state.checkedAllList];
+      checkedAllList[colNumber] = this.isCheckedAll(colNumber);
+      this.setState({
+        matrix,
+        checkedAllList
+      });
+    });
+
+    _defineProperty(this, "handleChangeCheckAll", colNumber => {
+      const isChecked = !this.state.checkedAllList[colNumber];
+      const checkedAllList = [...this.state.checkedAllList];
+      checkedAllList[colNumber] = isChecked;
+      const matrix = [...this.state.matrix];
+
+      for (let rowNumber = 0; rowNumber < this.state.matrix.length; rowNumber++) {
+        if (matrix[rowNumber][colNumber] !== null) {
+          matrix[rowNumber][colNumber] = isChecked;
+        }
+      }
+
+      this.setState({
+        checkedAllList,
+        matrix
+      });
+    });
+
+    _defineProperty(this, "isCheckedAll", colNumber => {
+      for (let index = 0; index < this.state.matrix.length; index++) {
+        if (!this.state.matrix[index][colNumber]) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    _defineProperty(this, "toggleConfirmRemovePopup", () => this.setState({
+      isShowConfirmRemovePopup: !this.state.isShowConfirmRemovePopup
+    }));
+
+    _defineProperty(this, "handleSubmitRemoveAssignment", () => {
+      this.toggleConfirmRemovePopup();
+      this.props.onClose();
+      const isCheckedPics = this.state.picNames.filter((item, index) => this.isChecked(index));
+      const removeAssignments = [];
+
+      for (let rowNumber = 0; rowNumber < this.state.matrix.length; rowNumber++) {
+        const rowData = this.state.dataList[rowNumber];
+
+        for (let colNumber = 0; colNumber < this.state.picIds.length; colNumber++) {
+          if (this.state.matrix[rowNumber][colNumber]) {
+            removeAssignments.push({
+              headlineId: rowData.headlineID,
+              custId: rowData.custId,
+              picId: this.state.picIds[colNumber]
+            });
+          }
+        }
+      }
+
+      _common_functions__WEBPACK_IMPORTED_MODULE_9__["default"].removePicAssignment(removeAssignments, isCheckedPics.toString(), this.refreshGrid);
+    });
+
+    _defineProperty(this, "refreshGrid", () => this.props.getGridData(this.props.gridParams, data => _common_functions__WEBPACK_IMPORTED_MODULE_9__["default"].handleNewRemoveOptions(data, this.props.setRemoveOptions)));
+
+    _defineProperty(this, "isChecked", colNumber => {
+      for (let index = 0; index < this.state.matrix.length; index++) {
+        if (this.state.matrix[index][colNumber]) {
+          return true;
+        }
+      }
+
+      return false;
+    });
+
+    _defineProperty(this, "isNotHadChecked", () => {
+      for (let rowNumber = 0; rowNumber < this.state.matrix.length; rowNumber++) {
+        for (let colNumber = 0; colNumber < this.state.picIds.length; colNumber++) {
+          if (this.state.matrix[rowNumber][colNumber]) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    });
+
+    this.state = {
+      picIds: [],
+      picNames: [],
+      checkedAllList: [],
+      matrix: [],
+      isShowConfirmRemovePopup: false,
+      dataList: []
+    };
   }
 
   render() {
-    const initialValues = {
-      notificationTypeId: '',
-      notificationTemplateName: '',
-      title: ''
-    };
-    this.props.languages !== null && this.props.languages.map(item => {
-      initialValues['language_' + item.settingId] = '';
-    });
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"], {
+    const maxWidth = this.state.picNames.length * 80 + 500;
+    const {
+      onClose
+    } = this.props;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
       show: true,
-      className: "notification-template-modal",
-      dialogAs: _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_7__["default"],
       backdrop: "static",
       keyboard: false,
       size: "lg",
       centered: true,
-      onHide: this.props.onClose
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Header, {
+      onHide: () => onClose(),
+      dialogAs: _jsroot_components_DraggableModalDialog__WEBPACK_IMPORTED_MODULE_3__["default"]
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Header, {
       closeButton: true
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["Modal"].Title, {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Title, {
       as: "div"
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_10__["default"].getResource('InsertNotificationTemplate'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(formik__WEBPACK_IMPORTED_MODULE_6__["Formik"], {
-      initialValues: initialValues,
-      validate: values => Object(_common_functions__WEBPACK_IMPORTED_MODULE_11__["validateFormik"])(values, this.props.languages),
-      onSubmit: this.handleSubmit
-    }, this.renderForm));
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('RemovePICAssignment'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Body, {
+      className: "remove-pic-body"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Table"], {
+      maxWidth: maxWidth,
+      bodyHeight: 500,
+      autoWidth: true,
+      autoHeight: false,
+      header: this.buildHeader(),
+      body: this.buildBody(),
+      containerPadding: 0,
+      shouldResetScrollPosition: false
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Modal"].Footer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+      onClick: () => this.toggleConfirmRemovePopup(),
+      variant: "primary",
+      size: "sm",
+      disabled: this.isNotHadChecked()
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Remove')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+      onClick: () => onClose(),
+      variant: "primary",
+      size: "sm"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Close')))), this.state.isShowConfirmRemovePopup && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ConfirmPopup__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      onSubmit: () => this.handleSubmitRemoveAssignment(),
+      onClose: () => this.toggleConfirmRemovePopup(),
+      title: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('Confirmation'),
+      content: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('ConfirmRemoveDirectAccounts')
+    }));
   }
 
 }
 
-_defineProperty(NewNotificationTemplate, "propTypes", {
-  languages: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object),
-  notificationTypes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object)
-});
-
-_defineProperty(NewNotificationTemplate, "defaultProps", {
-  languages: [],
-  notificationTypes: []
-});
-
-const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_3__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_4__["ActionCreators"], dispatch);
+const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_5__["bindActionCreators"])(_actions__WEBPACK_IMPORTED_MODULE_6__["ActionCreators"], dispatch);
 
 const mapStateToProps = state => {
   const {
-    notificationTypes,
-    languages,
-    createTemplateResult
+    removeOptions,
+    gridParams
   } = state;
   return {
-    notificationTypes,
-    languages,
-    createTemplateResult
+    removeOptions,
+    gridParams
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(NewNotificationTemplate));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["connect"])(mapStateToProps, mapDispatchToProps)(RemovePicAssignment));
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/index.js":
-/*!*************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/index.js ***!
-  \*************************************************************/
+/***/ "./www/sources/js/pages/pic-and-headline/pic-assignment/index.js":
+/*!***********************************************************************!*\
+  !*** ./www/sources/js/pages/pic-and-headline/pic-assignment/index.js ***!
+  \***********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1298,139 +2660,158 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
-/* harmony import */ var _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./notificationTemplateSlice */ "./www/sources/js/pages/notification-template/notificationTemplateSlice.js");
-/* harmony import */ var _components_AppContainer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/AppContainer */ "./www/sources/js/pages/notification-template/components/AppContainer.jsx");
-/* harmony import */ var _cssroot_pages_notification_template_index_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @cssroot/pages/notification-template/index.scss */ "./www/sources/css/pages/notification-template/index.scss");
-/* harmony import */ var _cssroot_pages_notification_template_index_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_cssroot_pages_notification_template_index_scss__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./picAssignmentSlice */ "./www/sources/js/pages/pic-and-headline/pic-assignment/picAssignmentSlice.js");
+/* harmony import */ var _components_AppContainer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/AppContainer */ "./www/sources/js/pages/pic-and-headline/pic-assignment/components/AppContainer.jsx");
+/* harmony import */ var _cssroot_pages_pic_and_headline_pic_assignment_index_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @cssroot/pages/pic-and-headline/pic-assignment/index.scss */ "./www/sources/css/pages/pic-and-headline/pic-assignment/index.scss");
+/* harmony import */ var _cssroot_pages_pic_and_headline_pic_assignment_index_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_cssroot_pages_pic_and_headline_pic_assignment_index_scss__WEBPACK_IMPORTED_MODULE_5__);
+
 
 
 
 
 
 const store = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__["configureStore"])({
-  reducer: _notificationTemplateSlice__WEBPACK_IMPORTED_MODULE_3__["default"]
-});
+  reducer: _picAssignmentSlice__WEBPACK_IMPORTED_MODULE_3__["default"]
+}); // const isHost = document.getElementById('is-host').checked;
+// const isReadPicManagement = document.getElementById('is-read-picmanagement').checked;
 
 const isHost = true;
+const isReadPicManagement = true;
 class index extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__["Provider"], {
       store: store
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "pic-assignment"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      isHost: isHost
-    }));
+      isHost: isHost,
+      isReadPicManagement: isReadPicManagement
+    })));
   }
 
 }
 
 /***/ }),
 
-/***/ "./www/sources/js/pages/notification-template/notificationTemplateSlice.js":
-/*!*********************************************************************************!*\
-  !*** ./www/sources/js/pages/notification-template/notificationTemplateSlice.js ***!
-  \*********************************************************************************/
-/*! exports provided: resetState, setNotificationTypes, setLanguages, setGridParams, setGridData, setSelectedTemplate, setCreateTemplatePopup, setCreateTemplateResult, setEditTemplatePopup, setEditTemplateResult, setDeleteTemplatePopup, setContentDetailPopup, default */
+/***/ "./www/sources/js/pages/pic-and-headline/pic-assignment/picAssignmentSlice.js":
+/*!************************************************************************************!*\
+  !*** ./www/sources/js/pages/pic-and-headline/pic-assignment/picAssignmentSlice.js ***!
+  \************************************************************************************/
+/*! exports provided: resetState, setGridParams, setGridData, setSettings, setRemoveOptions, setRemovePicAssignmentPopup, setAssignPicPopup, setAssignPicResult, setAssignPicFilter, setValidateAssignPicResult, setConfirmAssignedDirectAccountPopup, setDefaultPicPopup, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resetState", function() { return resetState; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setNotificationTypes", function() { return setNotificationTypes; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setLanguages", function() { return setLanguages; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setGridParams", function() { return setGridParams; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setGridData", function() { return setGridData; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setSelectedTemplate", function() { return setSelectedTemplate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setCreateTemplatePopup", function() { return setCreateTemplatePopup; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setCreateTemplateResult", function() { return setCreateTemplateResult; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setEditTemplatePopup", function() { return setEditTemplatePopup; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setEditTemplateResult", function() { return setEditTemplateResult; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setDeleteTemplatePopup", function() { return setDeleteTemplatePopup; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setContentDetailPopup", function() { return setContentDetailPopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setSettings", function() { return setSettings; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRemoveOptions", function() { return setRemoveOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRemovePicAssignmentPopup", function() { return setRemovePicAssignmentPopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAssignPicPopup", function() { return setAssignPicPopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAssignPicResult", function() { return setAssignPicResult; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAssignPicFilter", function() { return setAssignPicFilter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setValidateAssignPicResult", function() { return setValidateAssignPicResult; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setConfirmAssignedDirectAccountPopup", function() { return setConfirmAssignedDirectAccountPopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setDefaultPicPopup", function() { return setDefaultPicPopup; });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+/* harmony import */ var _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/common/constants */ "./www/sources/js/common/constants.js");
+
 
 const initialState = {
-  notificationTypes: [],
-  languages: [],
   gridParams: {
-    notificationTypeId: '',
-    notificationTemplateName: '',
     pageIndex: 1,
-    pageSize: 100
+    pageSize: _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_1__["DefaultPageSize"]
   },
-  gridData: null,
-  selectedTemplate: null,
-  createTemplatePopup: {
+  picAssignmentGridData: {},
+  setting: {},
+  removeOptions: {
+    isCheckedAll: false,
+    isDisabledRemove: true,
+    isHadAll: false,
+    shouldResetScrollPosition: true,
+    dataList: []
+  },
+  removePicAssignmentPopup: {
     show: false
   },
-  createTemplateResult: null,
-  editTemplatePopup: {
+  assignPicPopup: {
     show: false
   },
-  editTemplateResult: null,
-  deleteTemplatePopup: {
+  assignPicResult: {
     show: false
   },
-  contentDetailPopup: {
+  assignPicFilter: {
+    headline: null,
+    pics: [],
+    directAccount: [],
+    isSelectedAll: false
+  },
+  validateAssignPicResult: {},
+  confirmAssignedDirectAccountPopup: {
+    show: false
+  },
+  defaultPicPopup: {
     show: false
   }
 };
-const notificationTemplateSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlice"])({
-  name: 'notificationTemplate',
+const picAssignmentSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlice"])({
+  name: 'picAssignment',
   initialState: initialState,
   reducers: {
     resetState: () => initialState,
-    setNotificationTypes: (state, action) => {
-      state.notificationTypes = action.payload;
-    },
-    setLanguages: (state, action) => {
-      state.languages = action.payload;
-    },
     setGridParams: (state, action) => {
       state.gridParams = action.payload;
     },
     setGridData: (state, action) => {
-      state.gridData = action.payload;
+      state.picAssignmentGridData = action.payload;
     },
-    setSelectedTemplate: (state, action) => {
-      state.selectedTemplate = action.payload;
+    setSettings: (state, action) => {
+      state.settings = action.payload;
     },
-    setCreateTemplatePopup: (state, action) => {
-      state.createTemplatePopup = action.payload;
+    setRemoveOptions: (state, action) => {
+      state.removeOptions = action.payload;
     },
-    setCreateTemplateResult: (state, action) => {
-      state.createTemplateResult = action.payload;
+    setRemovePicAssignmentPopup: (state, action) => {
+      state.removePicAssignmentPopup = action.payload;
     },
-    setEditTemplatePopup: (state, action) => {
-      state.editTemplatePopup = action.payload;
+    setAssignPicPopup: (state, action) => {
+      state.assignPicPopup = action.payload;
     },
-    setEditTemplateResult: (state, action) => {
-      state.editTemplateResult = action.payload;
+    setAssignPicResult: (state, action) => {
+      state.assignPicResult = action.payload;
     },
-    setDeleteTemplatePopup: (state, action) => {
-      state.deleteTemplatePopup = action.payload;
+    setAssignPicFilter: (state, action) => {
+      state.assignPicFilter = action.payload;
     },
-    setContentDetailPopup: (state, action) => {
-      state.contentDetailPopup = action.payload;
+    setValidateAssignPicResult: (state, action) => {
+      state.validateAssignPicResult = action.payload;
+    },
+    setConfirmAssignedDirectAccountPopup: (state, action) => {
+      state.confirmAssignedDirectAccountPopup = action.payload;
+    },
+    setDefaultPicPopup: (state, action) => {
+      state.defaultPicPopup = action.payload;
     }
   }
 });
 const {
   actions,
   reducer
-} = notificationTemplateSlice;
+} = picAssignmentSlice;
 const {
   resetState,
-  setNotificationTypes,
-  setLanguages,
   setGridParams,
   setGridData,
-  setSelectedTemplate,
-  setCreateTemplatePopup,
-  setCreateTemplateResult,
-  setEditTemplatePopup,
-  setEditTemplateResult,
-  setDeleteTemplatePopup,
-  setContentDetailPopup
+  setSettings,
+  setRemoveOptions,
+  setRemovePicAssignmentPopup,
+  setAssignPicPopup,
+  setAssignPicResult,
+  setAssignPicFilter,
+  setValidateAssignPicResult,
+  setConfirmAssignedDirectAccountPopup,
+  setDefaultPicPopup
 } = actions;
 /* harmony default export */ __webpack_exports__["default"] = (reducer);
 

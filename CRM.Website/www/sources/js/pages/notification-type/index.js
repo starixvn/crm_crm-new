@@ -15,7 +15,9 @@ export default class index extends Component {
     render(){
         return(
             <Provider store={store}>
-                <AppContainer isHost={isHost} />
+                <div className='notification-type'>
+                    <AppContainer isHost={isHost} />
+                </div>
             </Provider>
         );
     }

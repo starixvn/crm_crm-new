@@ -29,6 +29,10 @@ export class AppContainer extends PureComponent {
         super(props);
     }
 
+    componentWillUnmount(){
+        this.props.resetState();
+    }
+
     changeActiveStatus = () => {
         const { picId, checked } = this.props.confirmPopup;
         this.props.changeActiveStatus({ picId, IsActive: checked }).then(() => {

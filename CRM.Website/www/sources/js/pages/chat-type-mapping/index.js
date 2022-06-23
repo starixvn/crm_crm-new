@@ -24,7 +24,9 @@ export default class index extends Component {
     render(){
         return(
             <Provider store={store}>
-                <AppContainer />
+                <div className='chat-type-mapping'>
+                    <AppContainer />
+                </div>
             </Provider>
         );
     }

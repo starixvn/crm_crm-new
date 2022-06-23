@@ -67,7 +67,6 @@ export class Header extends PureComponent {
 
     render() {
         const { menus, handleCollapseExpandLayout } = this.props;
-        console.log('header');
         if (!menus || menus.length <= 0) {
             return null;
         }

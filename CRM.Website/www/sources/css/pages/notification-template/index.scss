@@ -6,31 +6,34 @@
 @import '../../components/modal';
 @import '../../components/tables';
 
-.form-filter {
-    .form-row {
-        .form-group {
-            width: 350px;
+
+.notification-template{
+    .form-filter {
+        .form-row {
+            .form-group {
+                width: 350px;
+            }
         }
     }
-}
-
-.notification-template-modal {
-    .modal-body {
-        textarea {
-            min-height: 88px;
-            max-height: 184px;
+    
+    .notification-template-modal {
+        .modal-body {
+            textarea {
+                min-height: 88px;
+                max-height: 184px;
+            }
         }
     }
-}
-
-.notification-template-content-modal {
-    .modal-body {
-        .content {
-            white-space: pre-line;
+    
+    .notification-template-content-modal {
+        .modal-body {
+            .content {
+                white-space: pre-line;
+            }
         }
     }
-}
-
-.modal-dialog {
-    max-width: 700px;
+    
+    .modal-dialog {
+        max-width: 700px;
+    }
 }

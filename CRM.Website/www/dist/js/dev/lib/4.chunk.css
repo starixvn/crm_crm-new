@@ -227,53 +227,6 @@
 *::after {
   box-sizing: border-box; }
 
-.form-label.required:after {
-  content: "*";
-  color: #ff0101;
-  margin-left: .25rem; }
-
-.form-control:invalid, .form-control.is-invalid {
-  background-image: unset;
-  padding-right: unset; }
-
-.form-control:disabled, .form-control[readonly] {
-  cursor: not-allowed; }
-
-.modal-dialog .modal-content {
-  background-clip: unset; }
-  .modal-dialog .modal-content .modal-header {
-    background: #466ab6;
-    color: #fff;
-    padding: .75rem; }
-    .modal-dialog .modal-content .modal-header .close {
-      color: #fff;
-      padding: .75rem;
-      text-shadow: unset;
-      opacity: 1; }
-
-.modal-dialog.react-draggable .modal-header {
-  cursor: move; }
-
-.icon-edit, .icon-delete {
-  height: 24px;
-  width: 24px;
-  line-height: 24px;
-  cursor: pointer; }
-  .icon-edit:hover, .icon-delete:hover {
-    border-radius: 50%;
-    color: #fff; }
-
-.icon-edit:hover {
-  background-color: #ff9913; }
-
-.icon-delete:hover {
-  background-color: #fe3a3a; }
-
-.icon-excel {
-  color: #28a745;
-  font-size: 14px;
-  cursor: pointer; }
-
 .multiple-select-container {
   border: 1px solid #ced4da;
   position: relative;
@@ -441,9 +394,56 @@
   .multiple-select-field.invalid .invalid-feedback {
     display: block; }
 
+.form-label.required:after {
+  content: "*";
+  color: #ff0101;
+  margin-left: .25rem; }
+
+.form-control:invalid, .form-control.is-invalid {
+  background-image: unset;
+  padding-right: unset; }
+
+.form-control:disabled, .form-control[readonly] {
+  cursor: not-allowed; }
+
 .alert.alert-danger ul.list-message-error {
   margin: 0;
   padding: 0 0 0 1.25rem; }
+
+.modal-dialog .modal-content {
+  background-clip: unset; }
+  .modal-dialog .modal-content .modal-header {
+    background: #466ab6;
+    color: #fff;
+    padding: .75rem; }
+    .modal-dialog .modal-content .modal-header .close {
+      color: #fff;
+      padding: .75rem;
+      text-shadow: unset;
+      opacity: 1; }
+
+.modal-dialog.react-draggable .modal-header {
+  cursor: move; }
+
+.icon-edit, .icon-delete {
+  height: 24px;
+  width: 24px;
+  line-height: 24px;
+  cursor: pointer; }
+  .icon-edit:hover, .icon-delete:hover {
+    border-radius: 50%;
+    color: #fff; }
+
+.icon-edit:hover {
+  background-color: #ff9913; }
+
+.icon-delete:hover {
+  background-color: #fe3a3a; }
+
+.icon-excel {
+  color: #28a745;
+  font-size: 14px;
+  cursor: pointer; }
 
 .table-title {
   border: 1px solid #b7b7b7;
@@ -460,8 +460,64 @@
 .cursor-not-allowed {
   cursor: not-allowed !important; }
 
-.modal-dialog {
-  max-width: 600px; }
+.communication-setting .form-filter .form-row .form-group {
+  width: 350px; }
+
+.communication-setting .form-filter .form-row .communication-setting {
+  width: 80px !important; }
+
+.communication-setting .multiple-select-options-container {
+  width: 300px; }
+
+.communication-setting .communication-setting-modal {
+  overflow-x: auto !important; }
+  .communication-setting .communication-setting-modal .modal-content {
+    width: 83%;
+    min-width: 950px;
+    margin-left: 101px; }
+    .communication-setting .communication-setting-modal .modal-content .modal-body .customerShow {
+      border-left: 18px solid green; }
+    .communication-setting .communication-setting-modal .modal-content .modal-body .guestShow {
+      border-left: 18px solid #06c; }
+    .communication-setting .communication-setting-modal .modal-content .modal-body .invalidShow {
+      border-left: 18px solid red; }
+    .communication-setting .communication-setting-modal .modal-content .modal-body .customersList {
+      border: 1px solid #ced4da; }
+    .communication-setting .communication-setting-modal .modal-content .modal-body .txt-customer, .communication-setting .communication-setting-modal .modal-content .modal-body .txt-guest, .communication-setting .communication-setting-modal .modal-content .modal-body .txt-invalid {
+      display: flex;
+      align-items: center;
+      border: 1px solid #8e8e8e;
+      border-radius: 5px; }
+      .communication-setting .communication-setting-modal .modal-content .modal-body .txt-customer .fa-times, .communication-setting .communication-setting-modal .modal-content .modal-body .txt-guest .fa-times, .communication-setting .communication-setting-modal .modal-content .modal-body .txt-invalid .fa-times {
+        cursor: pointer; }
+    .communication-setting .communication-setting-modal .modal-content .modal-body .txt-customer {
+      color: green; }
+    .communication-setting .communication-setting-modal .modal-content .modal-body .txt-guest {
+      color: #06c; }
+    .communication-setting .communication-setting-modal .modal-content .modal-body .txt-invalid {
+      color: red; }
+    .communication-setting .communication-setting-modal .modal-content .modal-body .fa-question-circle-o {
+      font-size: 14px;
+      color: #0789d1;
+      position: absolute;
+      right: 0; }
+
+@media (min-width: 768px) {
+  .communication-setting .sub-category-left {
+    margin-left: 3rem !important; } }
+
+.tooltipCatagory [class$="inner"] {
+  min-width: 100px;
+  max-width: 550px;
+  min-height: 100px;
+  max-height: 920px;
+  border-radius: 3px;
+  font-size: 12px;
+  text-align: left; }
+
+#tooltip-customers [class$="inner"] {
+  min-width: 300px;
+  text-align: left; }
 
 
 /*# sourceMappingURL=4.chunk.css.map*/

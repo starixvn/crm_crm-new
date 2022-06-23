@@ -236,14 +236,13 @@ export class DataGrid extends Component {
                 </div>
                 <Table
                     minWidth={960}
-                    maxWidth={document.getElementById('app-container').clientWidth}
+                    maxWidth={document.getElementById('right-row-container').clientWidth}
                     autoWidth
                     header={this.buildNotificationListHeader(isHost)}
                     body={this.buildNotificationListBody(isHost)}
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
-                    containerPadding={0}
                     shouldResetScrollPosition={this.props.resendOptions.shouldResetScrollPosition}
                 />
             </Fragment>

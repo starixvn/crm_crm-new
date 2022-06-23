@@ -9,8 +9,8 @@ import AssignPic from './AssignPic';
 import DefaultPic from './DefaultPic';
 
 export class AppContainer extends Component {
-    constructor(props) {
-        super(props);
+    componentWillUnmount(){
+        this.props.resetState();
     }
 
     render() {

@@ -33,11 +33,11 @@
             this.userService = userService;
         }
 
-        public IActionResult Index()
-        {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.FeedbackSubject, Policy.Host);
-            return View(isHost);
-        }
+        //public IActionResult Index()
+        //{
+        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.FeedbackSubject, Policy.Host);
+        //    return View(isHost);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> GetFeedbackSubject([FromBody] GetFeedbackSubjectParam param)

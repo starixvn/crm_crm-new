@@ -10,128 +10,130 @@
 @import '../../components/tables';
 @import '../../components/loading';
 
-.checkbox-cell-style {
-    width: 13px;
-    height: 13px;
-    margin: auto;
-    cursor: pointer;
-}
-
-.icon-edit {
-    cursor: pointer;
-}
-
-.badge-grey {
-    color: #A6A6A6;
-    font-weight: 600;
-}
-
-.badge-red {
-    color: #C00000;
-    font-weight: 600;
-}
-
-.badge-green {
-    color: #00B050;
-    font-weight: 600;
-}
-
-.icon-copy {
-    cursor: pointer;
-}
-
-.pd-0 {
-    padding: 0;
-}
-
-.tooltip-inner {
-    background-color: #fff;
-    color:#000 ;
-}
-
-.recipient-merge-cell {
-    padding: 0 !important;
-
-    .recipient-item {
-        padding: 8px;
-        border-bottom: 1px solid #b7b7b7;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-
-        &:last-child {
-            border-bottom: none;
-        }
+.chat-type-mapping{
+    .checkbox-cell-style {
+        width: 13px;
+        height: 13px;
+        margin: auto;
+        cursor: pointer;
     }
-}
-
-.mrg-top-3 {
-    margin-top: 3px;
-}
-
-.letstalk-group-mapping {
-    border-bottom: 1px solid #b7b7b7;
-
-    .letstalk-wrapper {
-        display: inline-block;
-        width: calc(100% - 200px);
+    
+    .icon-edit {
+        cursor: pointer;
     }
-
-    .common-letstalk-display {
-        display: inline-block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .recipient-name {
-        vertical-align: top;
-        padding-right: 10px;
+    
+    .badge-grey {
+        color: #A6A6A6;
         font-weight: 600;
-        width: 200px;
     }
-
-    .letstalk-name {
-        width: 120px;
+    
+    .badge-red {
+        color: #C00000;
+        font-weight: 600;
     }
-
-    .icon {
-        color: #05b15b;
-        padding-left: 10px;
+    
+    .badge-green {
+        color: #00B050;
+        font-weight: 600;
     }
-}
-
-.modal-backdrop {
-    z-index: 1050 !important;
-}
-
-.react-select__control, .react-select__control--is-focused {
-    height: 28px;
-
-    .react-select__single-value, .react-select__placeholder {
-        top: 40%;
+    
+    .icon-copy {
+        cursor: pointer;
     }
-
-    .react-select__indicator {
+    
+    .pd-0 {
         padding: 0;
     }
-}
-
-.basic-single {
-    .react-select__menu {
-        top: 75%;
+    
+    .tooltip-inner {
+        background-color: #fff;
+        color:#000 ;
     }
-}
-
-.disabled-select{
-    .multiple-select-container{
-        button[disabled] {
-            opacity: 0.8 !important;
-            background-color: #C3C3C3 !important;
+    
+    .recipient-merge-cell {
+        padding: 0 !important;
+    
+        .recipient-item {
+            padding: 8px;
+            border-bottom: 1px solid #b7b7b7;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+    
+            &:last-child {
+                border-bottom: none;
+            }
         }
     }
-}
-
-.hidden-isTest{
-    visibility:hidden;
+    
+    .mrg-top-3 {
+        margin-top: 3px;
+    }
+    
+    .letstalk-group-mapping {
+        border-bottom: 1px solid #b7b7b7;
+    
+        .letstalk-wrapper {
+            display: inline-block;
+            width: calc(100% - 200px);
+        }
+    
+        .common-letstalk-display {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    
+        .recipient-name {
+            vertical-align: top;
+            padding-right: 10px;
+            font-weight: 600;
+            width: 200px;
+        }
+    
+        .letstalk-name {
+            width: 120px;
+        }
+    
+        .icon {
+            color: #05b15b;
+            padding-left: 10px;
+        }
+    }
+    
+    .modal-backdrop {
+        z-index: 1050 !important;
+    }
+    
+    .react-select__control, .react-select__control--is-focused {
+        height: 28px;
+    
+        .react-select__single-value, .react-select__placeholder {
+            top: 40%;
+        }
+    
+        .react-select__indicator {
+            padding: 0;
+        }
+    }
+    
+    .basic-single {
+        .react-select__menu {
+            top: 75%;
+        }
+    }
+    
+    .disabled-select{
+        .multiple-select-container{
+            button[disabled] {
+                opacity: 0.8 !important;
+                background-color: #C3C3C3 !important;
+            }
+        }
+    }
+    
+    .hidden-isTest{
+        visibility:hidden;
+    }
 }

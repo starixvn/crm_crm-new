@@ -8,52 +8,54 @@
 @import '../../../components/react-select';
 @import '../../../components/form-filter';
 
-.table-title{
-    max-width: 700px;
-}
-
-.table {
-    tbody {
-        tr:hover td {
-            background-color: #E0FFFF !important;
-        }
+.setting-management{
+    .table-title{
+        max-width: 700px;
     }
-}
-
-.setting-modal{
-    .modal-lg {
-        max-width: 600px;
-
-        .modal-body{
-            input::-webkit-outer-spin-button,
-            input::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-            /* Firefox */
-            input[type=number] {
-                -moz-appearance: textfield;
+    
+    .table {
+        tbody {
+            tr:hover td {
+                background-color: #E0FFFF !important;
             }
         }
     }
-}
-
-.licensee-mapping{
-    .modal-content{
-        height: 700px !important;
-        width: 830px;
-        .table-container .body-content{
-            max-height: 400px !important;
-
-            tbody tr td {
-                overflow: unset !important;
+    
+    .setting-modal{
+        .modal-lg {
+            max-width: 600px;
+    
+            .modal-body{
+                input::-webkit-outer-spin-button,
+                input::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                /* Firefox */
+                input[type=number] {
+                    -moz-appearance: textfield;
+                }
             }
-
-            .action-icon{
-                cursor: not-allowed !important;
-            }
-            .disabled-btn{
-                pointer-events: none !important;
+        }
+    }
+    
+    .licensee-mapping{
+        .modal-content{
+            height: 700px !important;
+            width: 830px;
+            .table-container .body-content{
+                max-height: 400px !important;
+    
+                tbody tr td {
+                    overflow: unset !important;
+                }
+    
+                .action-icon{
+                    cursor: not-allowed !important;
+                }
+                .disabled-btn{
+                    pointer-events: none !important;
+                }
             }
         }
     }

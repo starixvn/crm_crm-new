@@ -1,6 +1,7 @@
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import {
+    resetState,
     setMainSettings,
     setGridParams,
     setSettingTypes,
@@ -10,11 +11,10 @@ import {
 } from './settingRelationSlice';
 
 const getMainSettings = () => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('SettingRelation/GetMainSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setMainSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    });
 };
 
 const getSettingTypes = params => async dispatch => {
@@ -42,6 +42,7 @@ const updateRelation = params => async dispatch => {
 };
 
 export const ActionCreators = {
+    resetState,
     getMainSettings,
     setMainSettings,
     setGridParams,
