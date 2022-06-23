@@ -59,7 +59,7 @@ export default class index extends Component {
     render(){
         return(
             <Provider store={store}>
-                    <AppContainer />
+                <AppContainer />
             </Provider>
         );
     }

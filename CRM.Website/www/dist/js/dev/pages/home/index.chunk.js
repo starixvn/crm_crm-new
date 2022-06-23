@@ -103,7 +103,7 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"0":1,"1":1,"2":1,"3":1};
+/******/ 		var cssChunks = {"0":1,"1":1,"2":1,"3":1,"4":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
@@ -2669,7 +2669,10 @@ class Layout extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     });
 
     _defineProperty(this, "setDataToElementId", data => {
+      var _data$currentCustomer;
+
       document.getElementById('currentUsername').value = data.currentUsername;
+      document.getElementById('currentCustId').value = (_data$currentCustomer = data.currentCustomer) === null || _data$currentCustomer === void 0 ? void 0 : _data$currentCustomer.custId;
       document.getElementById('currentClientTime').value = data.currentClientTime;
       document.getElementById('clientTimezone').value = data.clientTimezone;
       document.getElementById('serverTimezone').value = data.serverTimezone;
@@ -3006,9 +3009,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const NotificationListComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-list/index */ "./www/sources/js/pages/notification-list/index.js")));
-const NotificationTemplateComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(2)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-template/index */ "./www/sources/js/pages/notification-template/index.js")));
-const NotificationTypeComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-type/index */ "./www/sources/js/pages/notification-type/index.js")));
+const NotificationListComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(2)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-list/index */ "./www/sources/js/pages/notification-list/index.js")));
+const NotificationTemplateComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-template/index */ "./www/sources/js/pages/notification-template/index.js")));
+const ChatTypeMappingComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(1)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/chat-type-mapping/index */ "./www/sources/js/pages/chat-type-mapping/index.js")));
+const NotificationTypeComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(4)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/notification-type/index */ "./www/sources/js/pages/notification-type/index.js")));
 const DashboardComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(0)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/dashboard/index */ "./www/sources/js/pages/dashboard/index.js")));
 class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   render() {
@@ -3022,6 +3026,9 @@ class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
       path: "/NotificationTemplate",
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTemplateComponent, null)
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+      path: "/ChatTypeMapping",
+      element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ChatTypeMappingComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
       path: "/NotificationType",
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTypeComponent, null)

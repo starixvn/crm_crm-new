@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, {Component} from 'react';
 import { Provider } from 'react-redux';
 
 import Store from '@jsroot/common/store';
 import AppContainer from './components/AppContainer';
 import reducer from './reducers/index';
+import '@cssroot/pages/chat-type-mapping/index.scss';
 
 const store = Store.createStore(reducer, {
     gridData: { data: null, totalItems: 0 },
@@ -20,9 +20,12 @@ const store = Store.createStore(reducer, {
     letstalkVerification: { isBotRemoved: false, recipients: [] }
 });
 
-ReactDOM.render(
-    <Provider store={store}>
-        <AppContainer />
-    </Provider>,
-    document.getElementById('app-container')
-);
+export default class index extends Component {
+    render(){
+        return(
+            <Provider store={store}>
+                <AppContainer />
+            </Provider>
+        );
+    }
+}

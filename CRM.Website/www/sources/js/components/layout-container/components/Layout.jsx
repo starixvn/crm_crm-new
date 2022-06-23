@@ -96,6 +96,7 @@ class Layout extends Component {
 
     setDataToElementId = data =>{
         document.getElementById('currentUsername').value = data.currentUsername;
+        document.getElementById('currentCustId').value = data.currentCustomer?.custId;
         document.getElementById('currentClientTime').value = data.currentClientTime;
         document.getElementById('clientTimezone').value = data.clientTimezone;
         document.getElementById('serverTimezone').value = data.serverTimezone;

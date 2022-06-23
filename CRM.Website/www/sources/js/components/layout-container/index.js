@@ -8,6 +8,7 @@ import {
 
 const NotificationListComponent  = lazy(() => import('@jsroot/pages/notification-list/index'));
 const NotificationTemplateComponent = lazy(() => import('@jsroot/pages/notification-template/index'));
+const ChatTypeMappingComponent = lazy(() => import('@jsroot/pages/chat-type-mapping/index'));
 const NotificationTypeComponent = lazy(() => import('@jsroot/pages/notification-type/index'));
 const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
 
@@ -21,6 +22,7 @@ export default class Index extends PureComponent {
                             <Route path="/" />
                             <Route path="/NotificationList" element={<NotificationListComponent />} />
                             <Route path="/NotificationTemplate" element={<NotificationTemplateComponent />} />
+                            <Route path="/ChatTypeMapping" element={<ChatTypeMappingComponent />} />
                             <Route path="/NotificationType" element={<NotificationTypeComponent />} />
                             <Route path="/Dashboard" element={<DashboardComponent />} />
                         </Routes>

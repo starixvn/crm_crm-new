@@ -1,5 +1,52 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["common"],{
 
+/***/ "./www/sources/js/common/createReducer.js":
+/*!************************************************!*\
+  !*** ./www/sources/js/common/createReducer.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const createReducer = (initialState, handlers) => {
+  return (state = initialState, action) => {
+    if (handlers.hasOwnProperty(action.type)) {
+      return handlers[action.type](state, action);
+    } else {
+      return state;
+    }
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (createReducer);
+
+/***/ }),
+
+/***/ "./www/sources/js/common/store.js":
+/*!****************************************!*\
+  !*** ./www/sources/js/common/store.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Store; });
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux_thunk__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-thunk */ "./node_modules/redux-thunk/es/index.js");
+
+
+class Store {
+  static createStore(reducer, initialState) {
+    const enhancer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["compose"])(Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_1__["default"]));
+    return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(reducer, initialState, enhancer);
+  }
+
+}
+
+/***/ }),
+
 /***/ "./www/sources/js/components/ConfirmPopup.jsx":
 /*!****************************************************!*\
   !*** ./www/sources/js/components/ConfirmPopup.jsx ***!
@@ -86,6 +133,75 @@ _defineProperty(ConfirmPopup, "defaultProps", {
 });
 
 /* harmony default export */ __webpack_exports__["default"] = (ConfirmPopup);
+
+/***/ }),
+
+/***/ "./www/sources/js/components/CustomReactSelect.jsx":
+/*!*********************************************************!*\
+  !*** ./www/sources/js/components/CustomReactSelect.jsx ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomReactSelect; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.browser.esm.js");
+/* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+const _excluded = ["components", "styles", "placeholder"];
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+
+
+
+class CustomReactSelect extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+  render() {
+    const _this$props = this.props,
+          {
+      components,
+      styles,
+      placeholder
+    } = _this$props,
+          rest = _objectWithoutProperties(_this$props, _excluded);
+
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_1__["default"], _extends({
+      className: "react-select-container",
+      classNamePrefix: "react-select",
+      placeholder: placeholder || _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_2__["default"].getResource('PleaseSelect')
+    }, rest, {
+      components: _objectSpread({
+        IndicatorSeparator: () => null
+      }, components),
+      styles: _objectSpread({
+        control: base => _objectSpread(_objectSpread({}, base), {}, {
+          borderRadius: 0,
+          minHeight: 'unset',
+          boxShadow: 'none'
+        }),
+        input: base => _objectSpread(_objectSpread({}, base), {}, {
+          lineHeight: 1
+        }),
+        multiValue: base => _objectSpread(_objectSpread({}, base), {}, {
+          margin: '0 4px 0 0'
+        })
+      }, styles)
+    }));
+  }
+
+}
 
 /***/ }),
 
@@ -858,7 +974,8 @@ class Table extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     _defineProperty(this, "_calculateWidth", () => {
       const isFullWidthClient = this.props.width === clientWidth;
       const leftRowContainer = document.getElementById('left-row-container');
-      const leftContainerWidth = leftRowContainer !== null ? leftRowContainer.clientWidth + _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"] : _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"];
+      const currentCustId = document.getElementById('currentCustId').value;
+      const leftContainerWidth = currentCustId !== undefined && leftRowContainer !== null ? leftRowContainer.clientWidth + _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"] : _constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_PADDING"];
       const widthRemain = isFullWidthClient ? leftContainerWidth : 0;
       return widthRemain;
     });
@@ -1075,6 +1192,7 @@ class Table extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     const maxWidthRemain = shouldUseMaxWidth ? 0 : widthRemain;
     const maxWidth = this.state.maxWidth - containerPadding - maxWidthRemain;
+    console.log(maxWidth);
     const actualWidth = width - containerPadding - widthRemain;
     const newColumnLayout = this.columnWidthSum && this.columnWidthSum !== actualWidth ? this._getUpdatedColumnLayout() : this.state.columnsWidth;
 

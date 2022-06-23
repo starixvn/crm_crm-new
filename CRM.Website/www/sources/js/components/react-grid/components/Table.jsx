@@ -221,7 +221,8 @@ class Table extends Component {
     _calculateWidth = () =>{
         const isFullWidthClient = this.props.width === clientWidth;
         const leftRowContainer = document.getElementById('left-row-container');
-        const leftContainerWidth = leftRowContainer !== null  ? leftRowContainer.clientWidth + DEFAULT_PADDING : DEFAULT_PADDING;
+        const currentCustId = document.getElementById('currentCustId').value;
+        const leftContainerWidth = currentCustId !== undefined && leftRowContainer !== null  ? leftRowContainer.clientWidth + DEFAULT_PADDING : DEFAULT_PADDING;
         const widthRemain = isFullWidthClient ? leftContainerWidth : 0;
         return widthRemain;
     }
@@ -276,6 +277,7 @@ class Table extends Component {
         const widthRemain = this._calculateWidth();
         const maxWidthRemain = shouldUseMaxWidth ? 0 : widthRemain;
         const maxWidth = this.state.maxWidth - containerPadding - maxWidthRemain;
+        console.log(maxWidth);
         const actualWidth = width - containerPadding - widthRemain;
         const newColumnLayout = this.columnWidthSum && this.columnWidthSum !== actualWidth ?
             this._getUpdatedColumnLayout() :
