@@ -247,7 +247,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/www/dist";
+/******/ 	__webpack_require__.p = "/www/dist/";
 /******/
 /******/ 	// on error function for async loading
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
@@ -3023,6 +3023,7 @@ class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   render() {
     const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
 
+    console.log(_rootUrl);
     document.getElementById('RootUrl').value = _rootUrl;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], {
       basename: _rootUrl
