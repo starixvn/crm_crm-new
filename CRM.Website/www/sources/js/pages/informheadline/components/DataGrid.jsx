@@ -154,7 +154,7 @@ export class DataGrid extends Component {
         );
     };
 
-    renderTitle = informs =>{
+    renderTitle = informs => {
         return (
             <div className='table-title d-flex justify-content-between align-items-center'>
                 <span>Inform Headlines Cases</span>
@@ -173,8 +173,6 @@ export class DataGrid extends Component {
         if (!informs) {
             return null;
         }
-
-        console.log('test');
 
         if (window.searchPolicy !== Policy.None || window.contactPolicy !== Policy.None) {
             return (

@@ -1,7 +1,6 @@
 import informHeadline, {
     setInforms,
     setTitleDetail,
-    setContactInformSettings,
     setContactInforms,
     setEditContactInformDialog,
     setGridParams,
@@ -28,7 +27,6 @@ describe('informHeadlineSlice reducer', () => {
         expect(informHeadline(undefined, {})).toEqual({
             informs: null,
             titleDetail: null,
-            contactInformSettings: null,
             contactInforms: null,
             editContactInformDialog: {show: false},
             allSettings: null,
@@ -70,17 +68,6 @@ describe('informHeadlineSlice reducer', () => {
             })
         ).toEqual({
             titleDetail: { titleId: 720, title:"test", currencies: "2,3,5" }
-        });
-    });
-
-    it('should handle setContactInformSettings', () => {
-        expect(
-            informHeadline({}, {
-                type: setContactInformSettings.type,
-                payload: { titleId: 720, title:"test" }
-            })
-        ).toEqual({
-            contactInformSettings: { titleId: 720, title:"test" }
         });
     });
 

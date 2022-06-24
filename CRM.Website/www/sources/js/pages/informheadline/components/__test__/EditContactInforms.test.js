@@ -2,11 +2,21 @@ import React from 'react';
 import { EditContactInforms } from '../EditContactInforms';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import Site from '@jsroot/common/site';
 
 describe('EditContactInforms', () => {
+    beforeAll(() => {
+        Site.blockUI = jest.fn();
+        Site.unblockUI = jest.fn();
+        jest.useFakeTimers();
+    });
+
     afterAll(() => {
         jest.clearAllMocks();
     });
+
+    const response = { data: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] } };
+    const promise = Promise.resolve(response);
 
     const initProps = {
         titleId: 720,
@@ -17,20 +27,28 @@ describe('EditContactInforms', () => {
         contactInforms: [{headlineId: 720, groupId: 12, username: 'test'}],
         getContactInforms: jest.fn(),
         setGridParams: jest.fn(),
-        editedInforms: [{ headlineId: 1234, groupId: 122, remark: '&test'}]
+        editedInforms: [{ headlineId: 1234, groupId: 122, remark: '&test'}],
+        getContactInformSettings: jest.fn(() => promise)
     };
 
     describe('componentDidMount', () => {
         it('should call functions api', async () => {
             // Arrange
+            const response = { data: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] } };
+            const promise = Promise.resolve(response);
             const props = {...initProps};
 
             //Act
             const container = shallow(<EditContactInforms {...props} />);
+            container.instance().componentDidMount();
+            await promise;
+            jest.runAllTimers();
 
             // Assert
-            expect(await props.getTitleDetail).toHaveBeenCalledWith({titleId: 720});
-            expect(await props.getContactInforms).toHaveBeenCalledWith({
+            expect(props.getContactInformSettings).toHaveBeenCalled();
+            expect(container.state().selectedStatuses).toBe('1');
+            expect(props.getTitleDetail).toHaveBeenCalledWith({titleId: 720});
+            expect(props.getContactInforms).toHaveBeenCalledWith({
                 titleId: 720,
                 username: '', statusId: '1'
             });
@@ -47,6 +65,9 @@ describe('EditContactInforms', () => {
             jest.useFakeTimers();
             // Act
             const container = shallow(<EditContactInforms {...props}/>);
+            container.instance().setState({
+                contactInformSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] }
+            });
             container.instance().setAlert();
            
             // Assert
@@ -67,6 +88,9 @@ describe('EditContactInforms', () => {
 
             // Act
             const container = shallow(<EditContactInforms {...props}/>);
+            container.instance().setState({
+                contactInformSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] }
+            });
             container.instance().handleSubmit();
             await promise;
 
@@ -85,6 +109,9 @@ describe('EditContactInforms', () => {
 
             // Act
             const container = shallow(<EditContactInforms {...props} />);
+            container.instance().setState({
+                contactInformSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] }
+            });
             container.setState({saveResult: {isSuccessful: true}})
             
             // Assert
@@ -101,6 +128,9 @@ describe('EditContactInforms', () => {
 
             // Act
             const container = shallow(<EditContactInforms {...props} />);
+            container.instance().setState({
+                contactInformSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] }
+            });
             
             // Assert
             expect(toJson(container)).toMatchSnapshot();
@@ -117,6 +147,9 @@ describe('EditContactInforms', () => {
             };
 
             const container = shallow(<EditContactInforms {...props}/>);
+            container.instance().setState({
+                contactInformSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] }
+            });
 
             // Assert
             expect(container.type()).toEqual(null);

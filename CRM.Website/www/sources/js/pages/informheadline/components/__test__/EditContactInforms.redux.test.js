@@ -25,14 +25,12 @@ describe('connect ', () => {
         // Arrange
         const expected = {
             titleDetail: "test",
-            contactInformSettings: {filterStatuses: [{ settingId: 1, settingValue: 'test'}]},
             contactInforms: {headlineId: 720, groupId: 12, username: 'test'},
             editedInforms: [{ headlineId: 1234, groupId: 122}],
             resultEditContactInforms: 'Successfully!'
         };
         const state = {
             titleDetail: "test",
-            contactInformSettings: {filterStatuses: [{ settingId: 1, settingValue: 'test'}]},
             contactInforms: {headlineId: 720, groupId: 12, username: 'test'},
             editedInforms: [{ headlineId: 1234, groupId: 122}],
             resultEditContactInforms: 'Successfully!'

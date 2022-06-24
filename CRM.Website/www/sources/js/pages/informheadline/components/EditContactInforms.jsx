@@ -36,11 +36,11 @@ export class EditContactInforms extends Component {
         this.props.getContactInformSettings().then(response =>{
             Site.unblockUI();
             if(response !== undefined && response.data !== null){
-                this.props.getTitleDetail({titleId: this.props.titleId});
+                this.props.getTitleDetail({ titleId: this.props.titleId });
                 const selectedStatuses = response.data.filterStatuses.map(item =>
                     item.settingId
                 ).join();
-                const params = {titleId: this.props.titleId, username: '', statusId: selectedStatuses};
+                const params = { titleId: this.props.titleId, username: '', statusId: selectedStatuses };
                 this.setState({ selectedStatuses: selectedStatuses, contactInformSettings: response.data });
                 this.props.getContactInforms(params);
             }
@@ -131,8 +131,8 @@ export class EditContactInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, contactInformSettings, contactInforms, editedInforms, resultEditContactInforms } = state;
-    return { titleDetail, contactInformSettings, contactInforms, editedInforms, resultEditContactInforms };
+    const { titleDetail, contactInforms, editedInforms, resultEditContactInforms } = state;
+    return { titleDetail, contactInforms, editedInforms, resultEditContactInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditContactInforms);

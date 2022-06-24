@@ -14,6 +14,21 @@ describe('AppContainer', () => {
         getContactInformSettings: jest.fn()
     };
 
+    describe('componentDidMount', () => {
+        it('should call exactly props function', async () => {
+            // Arrange
+            const props = { ...initProps };
+
+            // Act
+            const container = shallow(<AppContainer {...props}/>);
+            await container.instance().componentDidMount();
+
+            // Assert
+            expect(props.getInforms).toHaveBeenCalled();
+            expect(props.getAllSettings).toHaveBeenCalled();
+        });
+    });
+
     describe('handleCloseEditContactInformDialog', () => {
         it('should call exactly functions when close edit contact', () => {
             // Arrange
@@ -153,6 +168,25 @@ describe('AppContainer', () => {
 
             // Assert
             expect(toJson(container)).toMatchSnapshot();
+        });
+
+        it('should render null when allSettings is null', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                editContactInformDialog: { show: true },
+                editInformDialog: { show: true },
+                removedLogDialog: { show: true },
+                removedLogDetailDialog: { show: true },
+                newInformDialog: { show: true },
+                allSettings: null
+            };
+
+            // Act
+            const container = shallow(<AppContainer {...props} />);
+
+            // Assert
+            expect(container.type()).toBe(null);
         });
     });
 });

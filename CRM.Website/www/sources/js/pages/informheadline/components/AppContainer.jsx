@@ -75,10 +75,10 @@ export class AppContainer extends Component {
 
         const { editContactInformDialog, editInformDialog, removedLogDialog, 
                 removedLogDetailDialog, newInformDialog, allSettings } = this.props;
-        if(!allSettings){
+        if (!allSettings) {
             return null;
         }
-        
+
         return (
             <>
                 <DataGrid/>
@@ -125,11 +125,11 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 const mapStateToProps = state => {
     const {
         editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
-        newInformDialog, resultEditContactInforms, resultEditInforms, contactInformSettings, allSettings
+        newInformDialog, resultEditContactInforms, resultEditInforms, allSettings
     } = state;
     return {
         editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
-        newInformDialog, resultEditContactInforms, resultEditInforms, contactInformSettings, allSettings
+        newInformDialog, resultEditContactInforms, resultEditInforms, allSettings
     };
 };
 
