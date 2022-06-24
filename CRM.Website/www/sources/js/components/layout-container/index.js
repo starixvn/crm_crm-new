@@ -5,6 +5,7 @@ import {
     Routes,
     Route
 } from "react-router-dom";
+import Site from '@jsroot/common/site';
 
 const NotificationListComponent  = lazy(() => import('@jsroot/pages/notification-list/index'));
 const NotificationTemplateComponent = lazy(() => import('@jsroot/pages/notification-template/index'));
@@ -35,10 +36,10 @@ export default class Index extends PureComponent {
                     <Suspense fallback={<div>Loading...</div>}>
                         <Routes>
                             <Route path="/" />
-                            <Route path="/NotificationList" element={<NotificationListComponent />} />
-                            <Route path="/NotificationTemplate" element={<NotificationTemplateComponent />} />
-                            <Route path="/ChatTypeMapping" element={<ChatTypeMappingComponent />} />
-                            <Route path="/NotificationType" element={<NotificationTypeComponent />} />
+                            <Route path={Site.resolveClientUrl("/NotificationList")} element={<NotificationListComponent />} />
+                            <Route path={Site.resolveClientUrl("/NotificationTemplate")} element={<NotificationTemplateComponent />} />
+                            <Route path={Site.resolveClientUrl("/ChatTypeMapping")} element={<ChatTypeMappingComponent />} />
+                            <Route path={Site.resolveClientUrl("/NotificationType")} element={<NotificationTypeComponent />} />
                             
                             <Route path="/PicManagement" element={<ManagementComponent />} />
                             <Route path="/PicOfHeadline" element={<PicAssignmentComponent />} />
