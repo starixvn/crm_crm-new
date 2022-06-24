@@ -5,12 +5,6 @@
     <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="wwwroot\**" />
-    <Content Remove="wwwroot\**" />
-    <EmbeddedResource Remove="wwwroot\**" />
-    <None Remove="wwwroot\**" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="logs\log.txt" />
     <None Remove="www\dist\css\fonts\fontawesome-webfont.eot" />
     <None Remove="www\dist\css\fonts\fontawesome-webfont.svg" />
@@ -252,6 +246,7 @@
     <ProjectReference Include="..\CRM.Services\CRM.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="wwwroot\" />
     <Folder Include="www\sources\css\pages\customer\customer-info\" />
     <Folder Include="www\sources\js\pages\pic-and-headline\pic-assignment\" />
   </ItemGroup>
