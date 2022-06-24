@@ -597,28 +597,6 @@ describe('Filter', () => {
             expect(form.props().className).toBe('form-filter');
         });
 
-        it('should have Form onSubmit', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise),
-                setGridParams: jest.fn(),
-                getGridData: jest.fn()
-            };
-
-            const filter = shallow(<Filter {...props} />);
-            filter.instance().handleSubmit = jest.fn();
-            const form = filter.find(Form);
-
-            // Action
-            form.simulate('submit');
-
-            // Assert
-            expect(filter.instance().handleSubmit).toHaveBeenCalled();
-        });
-
         it('should have first Form Row', () => {
             // Arrange
             const promise = Promise.resolve({});

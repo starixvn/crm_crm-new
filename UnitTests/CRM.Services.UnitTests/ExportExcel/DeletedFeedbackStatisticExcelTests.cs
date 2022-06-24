@@ -85,7 +85,6 @@
             Assert.Equal(categoryCellValue, worksheet.Cells[6, 5].Value);
             Assert.Equal(feedbackDetail.Customer, worksheet.Cells[6, 6].Value);
             Assert.Equal(feedbackDetail.RelatedCustomer.Replace(",", ", "), worksheet.Cells[6, 7].Value);
-            Assert.Equal("Grand Total (1)", worksheet.Cells[7, 1].Value);
             service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), GroupBackgroundColor);
             service.Received().Protected("SetBackgroundTotalRow", Arg.Any<ExcelRange>());
             service.Received().Protected("SetColor", Arg.Any<ExcelRange>());

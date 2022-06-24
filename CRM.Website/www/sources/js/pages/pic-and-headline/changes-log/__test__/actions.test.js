@@ -50,7 +50,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getHeadlineDAReport(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('ChangesLog/GetHeadlineDAReportAsync', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('ChangesLog/GetHeadlineDAReport', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -79,7 +79,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getPicReport(expectedParams));
 
             // Assert
-            expect(DataService.postDataAsync).toHaveBeenCalledWith('ChangesLog/GetPicReportAsync', expectedParams);
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('ChangesLog/GetPicReport', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
@@ -96,7 +96,7 @@ describe('actionCreators', () => {
             const result = await store.dispatch(ActionCreators.getActionTypes());
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('ChangesLog/GetActionTypesAsync');
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('ChangesLog/GetActionTypes');
             expect(result).toEqual(response.data);
         });
     });
