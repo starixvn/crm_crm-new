@@ -3,214 +3,34 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
+    <UserSecretsId>a22f7a1b-8285-405c-aa31-33e3e0c2bb42</UserSecretsId>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="logs\log.txt" />
-    <None Remove="www\dist\css\fonts\fontawesome-webfont.eot" />
-    <None Remove="www\dist\css\fonts\fontawesome-webfont.svg" />
-    <None Remove="www\dist\css\fonts\fontawesome-webfont.ttf" />
-    <None Remove="www\dist\css\fonts\fontawesome-webfont.woff" />
-    <None Remove="www\dist\css\fonts\fontawesome-webfont.woff2" />
-    <None Remove="www\dist\css\fonts\FontAwesome.otf" />
-    <None Remove="www\dist\css\images\404\404.svg" />
-    <None Remove="www\dist\css\images\404\balloon.svg" />
-    <None Remove="www\dist\css\images\404\cloud-big.svg" />
-    <None Remove="www\dist\css\images\404\cloud-small.svg" />
-    <None Remove="www\dist\css\images\404\wind.svg" />
-    <None Remove="www\dist\css\images\405\door.svg" />
-    <None Remove="www\dist\css\images\405\seal.svg" />
-    <None Remove="www\dist\css\images\405\short-seal.svg" />
-    <None Remove="www\dist\css\images\405\signage.svg" />
-    <None Remove="www\dist\css\images\500\bluscreen.svg" />
-    <None Remove="www\dist\css\images\500\desktop.svg" />
-    <None Remove="www\dist\css\images\500\Error.svg" />
-    <None Remove="www\dist\css\images\500\leave.svg" />
-    <None Remove="www\dist\css\images\br-arrow-ico.png" />
-    <None Remove="www\dist\css\images\icon-search.png" />
-    <None Remove="www\dist\css\images\icon\icon-logout.png" />
-    <None Remove="www\dist\css\images\icon\list-muti-select.png" />
-    <None Remove="www\dist\css\images\icon\logo-crm.png" />
-    <None Remove="www\dist\css\images\icon\user.png" />
-    <None Remove="www\dist\css\images\login\chinese-flag.png" />
-    <None Remove="www\dist\css\images\login\english-flag.png" />
-    <None Remove="www\dist\css\images\login\firefox_original.png" />
-    <None Remove="www\dist\css\images\login\ie.png" />
-    <None Remove="www\dist\css\images\login\lock.png" />
-    <None Remove="www\dist\css\images\login\logo-cn88.png" />
-    <None Remove="www\dist\css\images\login\logo.png" />
-    <None Remove="www\dist\css\images\login\password.png" />
-    <None Remove="www\dist\css\images\login\pattern6.png" />
-    <None Remove="www\dist\css\images\login\small-arrow-down.png" />
-    <None Remove="www\dist\css\images\login\username.png" />
-  </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
     <Content Include="App_Data\SpNames.AWS.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\SpNames.LOCAL.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\SpNames.PROD.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\SpNames.SIT.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\SpNames.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\SpNames.UAT.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="logs\log.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
-    <Content Include="www\dist\css\fonts\fontawesome-webfont.eot">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    <Content Include="www\dist\**">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="www\dist\css\fonts\fontawesome-webfont.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\fonts\fontawesome-webfont.ttf">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\fonts\fontawesome-webfont.woff">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\fonts\fontawesome-webfont.woff2">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\fonts\FontAwesome.otf">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\404\404.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\404\balloon.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\404\cloud-big.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\404\cloud-small.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\404\wind.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\405\door.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\405\seal.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\405\short-seal.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\405\signage.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\500\bluscreen.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\500\desktop.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\500\Error.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\500\leave.svg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\br-arrow-ico.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\icon-search.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\icon\icon-logout.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\icon\list-muti-select.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\icon\logo-crm.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\icon\user.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\chinese-flag.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\english-flag.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\firefox_original.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\ie.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\lock.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\logo-cn88.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\logo.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\password.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\pattern6.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\small-arrow-down.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\username.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\lib\CryptoJS.js" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fanex.Caching" Version="2.2.2" />
@@ -244,11 +64,6 @@
     <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
     <ProjectReference Include="..\CRM.Resources\CRM.Resources.csproj" />
     <ProjectReference Include="..\CRM.Services\CRM.Services.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-    <Folder Include="www\sources\css\pages\customer\customer-info\" />
-    <Folder Include="www\sources\js\pages\pic-and-headline\pic-assignment\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="ExcelTemplates\CustomerReport.xlsx">
