@@ -270,15 +270,15 @@ class Table extends Component {
         if (!newColumnLayout) {
             return null;
         }
+
         if(this.props.isFixColumn && this.props.fixColumns.length > 0){
             this.props.fixColumns.map(item => {
                 newColumnLayout[item] = this.props.widthFixColumns[item];
-            })
+            });
         }
         const sectionProps = { width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
         const headerSectionProps = { onSort: this.props.onSort, width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
         const rowLayout = <RowLayout columnLayout={newColumnLayout}/>;
-        const { Header, Body, Footer } = this;
         const fixProps = {header, body, footer, sectionProps, headerSectionProps, maxWidth, width, rowLayout,isPaging, pageOption, onPaging};
 
         return (
@@ -286,23 +286,23 @@ class Table extends Component {
             this.renderFixColumn({...fixProps}) :
             <div>
                 <div className='table-container' style={{ maxWidth}}>
-                    <Header {...headerSectionProps}>
+                    <this.Header {...headerSectionProps}>
                         {rowLayout}
                         {header}
-                    </Header>
+                    </this.Header>
                     {
                         body &&
-                        <Body {...sectionProps} maxHeight={this.state.contentHeight}>
+                        <this.Body {...sectionProps} maxHeight={this.state.contentHeight}>
                             {rowLayout}
                             {body}
-                        </Body>
+                        </this.Body>
                     }
                     {
                         footer &&
-                        <Footer {...sectionProps}>
+                        <this.Footer {...sectionProps}>
                             {rowLayout}
                             {footer}
-                        </Footer>
+                        </this.Footer>
                     }
                 </div>
                 {

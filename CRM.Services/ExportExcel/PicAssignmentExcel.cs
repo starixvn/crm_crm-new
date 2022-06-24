@@ -236,7 +236,7 @@
                             GroupHeadline = g.FirstOrDefault().HeadlineName,
                             HeadlineType = g.FirstOrDefault().HeadlineType,
                             DefaultPIC = g.FirstOrDefault().DefaultPicList,
-                            Pics = g.GroupBy(p => p.PicForMapping, (k, pic) => new PicOfDirectAccount
+                            Pics = g.GroupBy(p => p.PicForMapping, (_, pic) => new PicOfDirectAccount
                             {
                                 Pic = pic.FirstOrDefault().PicList,
                                 DirectAccounts = pic.Select(d => new DirectAccountInfo

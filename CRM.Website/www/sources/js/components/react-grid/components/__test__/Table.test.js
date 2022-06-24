@@ -1,13 +1,9 @@
 import React from 'react';
 import Table from '../Table';
-import RowLayout from '../RowLayout';
-import createTableSection from '../tableSection';
-import { DEFAULT_COLUMN_WIDTH, SCROLLBAR_WIDTH } from '../..//constants';
+import {  SCROLLBAR_WIDTH } from '../..//constants';
 import Pager from '../Pager';
 import functions from '../../functions';
-import Site from '@jsroot/common/site';
 import { shallow } from 'enzyme';
-import { Tab } from 'bootstrap';
 import toJson from 'enzyme-to-json';
 
 describe('Table', () => {

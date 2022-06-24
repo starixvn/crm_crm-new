@@ -43,6 +43,13 @@
      min-width: 1200px;
 }
 
+.recharts-default-legend{
+    width: 98%;
+    li{
+        width: 280px;
+    }
+}
+
 .cursor-pointer{
     cursor: pointer;
 }
@@ -95,7 +102,7 @@
 
 .modal-dialog {
     .modal-content {
-        width: 1010px !important;
+        width: 1350px !important;
     }
 }
 

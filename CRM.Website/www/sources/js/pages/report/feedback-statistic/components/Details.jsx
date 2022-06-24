@@ -158,7 +158,7 @@ export class Details extends Component {
     renderTableTitle = params => {
         return (
             <div className='table-title d-flex justify-content-between align-items-center'>
-                <span>{`${LangHelper.getResource('FeedbackDetailTitle')} from ${params.fromDate} to from ${params.toDate}`}</span>
+                <span>{`${LangHelper.getResource('FeedbackDetailTitle')} from ${params.fromDate} to ${params.toDate}`}</span>
                 {
                     this.props.details.data.length > 0 && this.renderExportExcel()
                 }
