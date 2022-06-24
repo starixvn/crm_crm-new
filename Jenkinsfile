@@ -19,9 +19,7 @@ pipeline{
         script{
           pipelineLib.beginSonarQubeForMsBuild("CRMNew", "Nexus / CRM New", "/d:sonar.cs.opencover.reportsPaths=\"${WORKSPACE}\\CoverageReports\\*.xml\" /d:sonar.cs.vstest.reportsPaths=\"${WORKSPACE}\\TestResults\\*.trx\" /d:sonar.javascript.lcov.reportPaths=\"${WORKSPACE}\\js-lcov\\lcov.info\" /d:sonar.testExecutionReportPaths=\"${WORKSPACE}\\js-test-report.xml\" /d:sonar.tests=__tests__ /d:sonar.test.inclusions=**/*.test.js")
 
-          pipelineLib.restoreNuget()
-
-          pipelineLib.msBuild("CRM.sln")
+          pipelineLib.msBuild16("CRM.sln")
         }
       }
     }
@@ -31,7 +29,7 @@ pipeline{
 	    stage("C# Unit Test"){
 		  steps{
             script{
-              pipelineLib.xUnitForNetCore()
+              pipelineLib.xUnitForNet5()
             }
           }
 		}
