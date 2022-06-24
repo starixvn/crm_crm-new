@@ -2544,6 +2544,7 @@ class Header extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
       return null;
     }
 
+    console.log(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl('Auth/SignOut'));
     const currentUsername = document.getElementById('currentUsername').value;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "header"
@@ -3025,7 +3026,7 @@ class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   render() {
     const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
 
-    console.log(_rootUrl);
+    console.log(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/NotificationList"));
     document.getElementById('RootUrl').value = _rootUrl;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], {
       basename: _rootUrl

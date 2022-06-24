@@ -71,6 +71,8 @@ export class Header extends PureComponent {
             return null;
         }
 
+        console.log(Site.resolveClientUrl('Auth/SignOut'));
+
         const currentUsername = document.getElementById('currentUsername').value;
 
         return (
