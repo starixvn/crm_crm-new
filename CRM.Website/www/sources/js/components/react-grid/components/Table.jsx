@@ -285,29 +285,29 @@ class Table extends Component {
         const headerSectionProps = { onSort: this.props.onSort, width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
         const rowLayout = <RowLayout columnLayout={newColumnLayout} />;
         const fixProps = { header, body, footer, sectionProps, headerSectionProps, maxWidth, width, rowLayout, isPaging, pageOption, onPaging };
-
+        const {Header, Body, Footer} = this;
         return (
             isFixColumn ?
                 this.renderFixColumn({ ...fixProps }) :
                 <div>
                     <div className='table-container' style={{ maxWidth }}>
-                        <this.Header {...headerSectionProps}>
+                        <Header {...headerSectionProps}>
                             {rowLayout}
                             {header}
-                        </this.Header>
+                        </Header>
                         {
                             body &&
-                            <this.Body {...sectionProps} maxHeight={this.state.contentHeight}>
+                            <Body {...sectionProps} maxHeight={this.state.contentHeight}>
                                 {rowLayout}
                                 {body}
-                            </this.Body>
+                            </Body>
                         }
                         {
                             footer &&
-                            <this.Footer {...sectionProps}>
+                            <Footer {...sectionProps}>
                                 {rowLayout}
                                 {footer}
-                            </this.Footer>
+                            </Footer>
                         }
                     </div>
                     {
