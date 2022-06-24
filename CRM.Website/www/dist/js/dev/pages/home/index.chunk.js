@@ -3026,7 +3026,6 @@ class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   render() {
     const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
 
-    console.log(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/NotificationList"));
     document.getElementById('RootUrl').value = _rootUrl;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], {
       basename: _rootUrl
@@ -3035,7 +3034,7 @@ class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Routes"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
       path: "/"
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/NotificationList"),
+      path: "local2/NotificationList",
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationListComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
       path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/NotificationTemplate"),

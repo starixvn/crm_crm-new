@@ -28,7 +28,6 @@ const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
 export default class Index extends PureComponent {
     render() {
         const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
-        console.log(Site.resolveClientUrl("/NotificationList"));
         document.getElementById('RootUrl').value = _rootUrl;
         return (
             <Router basename={_rootUrl}>
@@ -36,7 +35,7 @@ export default class Index extends PureComponent {
                     <Suspense fallback={<div>Loading...</div>}>
                         <Routes>
                             <Route path="/" />
-                            <Route path={Site.resolveClientUrl("/NotificationList")} element={<NotificationListComponent />} />
+                            <Route path="local2/NotificationList" element={<NotificationListComponent />} />
                             <Route path={Site.resolveClientUrl("/NotificationTemplate")} element={<NotificationTemplateComponent />} />
                             <Route path={Site.resolveClientUrl("/ChatTypeMapping")} element={<ChatTypeMappingComponent />} />
                             <Route path={Site.resolveClientUrl("/NotificationType")} element={<NotificationTypeComponent />} />
