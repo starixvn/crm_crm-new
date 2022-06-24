@@ -175,7 +175,6 @@
               .UseConfig(app.ApplicationServices.GetService<INapSettings>())
               .UseSession(app.ApplicationServices.GetService<INapSession>());
 
-            app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
