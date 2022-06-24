@@ -7,6 +7,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 function generateConfig(environment) {
     const jsPath = `${pathConfig.scriptPaths.build}/${environment}`;
     const cssPath = `${pathConfig.cssPaths.build}/${environment}`;
+    console.log(path.resolve(__dirname));
     return {
         resolve: {
             alias: alias,
@@ -24,7 +25,7 @@ function generateConfig(environment) {
             [`${cssPath}/pages/auth/login`]: pathConfig.cssPaths.auth
         },
         output: {
-            publicPath: "/www/dist/",
+            publicPath: '/www/dist',
             path: pathConfig.distPath,
             filename: "[name].chunk.js",
             chunkFilename: `${jsPath}/lib/[name].chunk.js`
