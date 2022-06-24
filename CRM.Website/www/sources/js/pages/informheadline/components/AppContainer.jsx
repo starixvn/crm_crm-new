@@ -31,6 +31,11 @@ export class AppContainer extends Component {
         newInformDialog: { show: false }
     };
 
+    async componentDidMount() {
+        await this.props.getInforms();
+        await this.props.getAllSettings();
+    }
+
     handleCloseEditContactInformDialog = () => {
         this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.props.setContactInforms(null);
@@ -67,8 +72,13 @@ export class AppContainer extends Component {
     };
 
     render() {
-        const { editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog, newInformDialog } = this.props;
 
+        const { editContactInformDialog, editInformDialog, removedLogDialog, 
+                removedLogDetailDialog, newInformDialog, allSettings } = this.props;
+        if(!allSettings){
+            return null;
+        }
+        
         return (
             <>
                 <DataGrid/>
@@ -115,11 +125,11 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 const mapStateToProps = state => {
     const {
         editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
-        newInformDialog, resultEditContactInforms, resultEditInforms
+        newInformDialog, resultEditContactInforms, resultEditInforms, contactInformSettings, allSettings
     } = state;
     return {
         editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
-        newInformDialog, resultEditContactInforms, resultEditInforms
+        newInformDialog, resultEditContactInforms, resultEditInforms, contactInformSettings, allSettings
     };
 };
 

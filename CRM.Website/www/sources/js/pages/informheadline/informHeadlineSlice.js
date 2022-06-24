@@ -5,7 +5,6 @@ const informHeadlineSlice = createSlice({
     initialState: {
         informs: null,
         titleDetail: null,
-        contactInformSettings: null,
         contactInforms: null,
         editContactInformDialog: {show: false},
         allSettings: null,
@@ -32,9 +31,6 @@ const informHeadlineSlice = createSlice({
         },
         setTitleDetail: (state, action) => {
             state.titleDetail = action.payload;
-        },
-        setContactInformSettings: (state, action) => {
-            state.contactInformSettings = action.payload;
         },
         setContactInforms: (state, action) => {
             state.contactInforms = action.payload;
@@ -101,7 +97,6 @@ const { actions, reducer } = informHeadlineSlice;
 export const {
     setInforms,
     setTitleDetail,
-    setContactInformSettings,
     setContactInforms,
     setEditContactInformDialog,
     setGridParams,

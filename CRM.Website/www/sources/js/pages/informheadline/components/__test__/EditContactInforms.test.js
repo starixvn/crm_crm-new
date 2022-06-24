@@ -96,7 +96,6 @@ describe('EditContactInforms', () => {
             const props = {
                 ...initProps,
                 titleDetail: null,
-                //contactInformSettings: null,
                 contactInforms: null
             };
 
@@ -114,7 +113,6 @@ describe('EditContactInforms', () => {
             const props = {
                 ...initProps,
                 titleDetail: null,
-                //contactInformSettings: null,
                 contactInforms: null
             };
 

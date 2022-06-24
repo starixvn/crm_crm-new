@@ -12,17 +12,37 @@
     max-width: 1620px;
 }
 
-body {
-    overflow: hidden; 
+body{
+    overflow-x: hidden;
 }
 
-.table-container {
-    overflow-y: auto;
-    border: 1px solid #b7b7b7;
-    max-width: 1622px !important;
+.fix-table-container{
+    .table-title{
+        border-right: none;
+    }
+    
+    .table-container {
+        overflow-y: auto;
+        border: 1px solid #b7b7b7;
+    
+        .body-content {
+            overflow: unset !important; 
+        }
 
-    .body-content {
-        overflow: unset !important; 
+        .header-content, .body-content {
+            border: none;
+            padding: 0;
+        }
+
+        .header-content,
+        .body-content,
+        .footer-content {
+            .table {
+                td:first-child {
+                    border-left: 1px solid rgb(183, 183, 183) !important;
+                }
+            }
+        }
     }
 }
 

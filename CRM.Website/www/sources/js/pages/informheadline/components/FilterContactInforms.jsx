@@ -53,6 +53,9 @@ export class FilterContactInforms extends PureComponent {
 
     render() {
         const { titleDetail, contactInforms, contactInformSettings } = this.props;
+        if(!contactInformSettings){
+            return null;
+        }
         const filterStatuses = contactInformSettings.filterStatuses.map(item => {
             return {
                 settingId: item.settingId,
