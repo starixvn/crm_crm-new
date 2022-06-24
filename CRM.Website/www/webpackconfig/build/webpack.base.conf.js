@@ -7,7 +7,6 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 function generateConfig(environment) {
     const jsPath = `${pathConfig.scriptPaths.build}/${environment}`;
     const cssPath = `${pathConfig.cssPaths.build}/${environment}`;
-    console.log(path.resolve(__dirname));
     return {
         resolve: {
             alias: alias,
