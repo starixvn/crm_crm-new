@@ -29,6 +29,11 @@
     }
 }
 
+.table-container .body-content {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .setting-modal{
     .modal-lg {
         max-width: 600px;
