@@ -188,7 +188,7 @@
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Auth}/{action=Index}/{id?}");
             });
 
             //app.Map(new PathString("/local2"), appMember =>

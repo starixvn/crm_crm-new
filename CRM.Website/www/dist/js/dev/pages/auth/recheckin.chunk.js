@@ -416,8 +416,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Site; });
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./www/sources/js/common/constants.js");
 
+let rootUrl = document.getElementById('root-url').value;
 
-const _rootUrl = document.getElementById('root-url') ? document.getElementById('root-url').value : '/';
+if (!rootUrl) {
+  const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
+
+  rootUrl = _rootUrl;
+}
 
 let _xsrfToken = null;
 class Site {
@@ -471,7 +476,7 @@ class Site {
   }
 
   static resolveClientUrl(relativeUrl) {
-    return _rootUrl + relativeUrl;
+    return rootUrl + relativeUrl;
   }
 
   static unblockUI() {
