@@ -1,9 +1,5 @@
 ﻿import { MappingStatus } from './constants';
-let rootUrl = document.getElementById('root-url').value;
-if(!rootUrl){
-    const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
-    rootUrl = _rootUrl;
-}
+const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
 let _xsrfToken = null;
 
 export default class Site {
@@ -56,7 +52,8 @@ export default class Site {
     }
 
     static resolveClientUrl(relativeUrl) {
-        return rootUrl + relativeUrl;
+        console.log(_rootUrl);
+        return _rootUrl + relativeUrl;
     }
 
     static unblockUI() {
