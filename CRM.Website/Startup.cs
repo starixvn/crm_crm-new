@@ -46,12 +46,14 @@
 
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment currentEnvironment)
         {
             Configuration = configuration;
+            CurrentEnvironment = currentEnvironment;
         }
 
         public IConfiguration Configuration { get; }
+        private readonly IHostingEnvironment CurrentEnvironment;
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -140,7 +142,7 @@
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "www/dist";
+                configuration.RootPath = Path.Combine(CurrentEnvironment.ContentRootPath, "www/dist");
             });
 
             RegisterDI(services, botConfigs.Get<List<BotConfig>>());
