@@ -199,9 +199,9 @@
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "www";
+                spa.Options.SourcePath = Path.Combine(env.ContentRootPath, "www");
                 Log.Information("SourcePath" + spa.Options.SourcePath);
-                Log.Information("SourcePath" + spa.Options.SourcePath);
+                Log.Information("DefaultPage" + spa.Options.DefaultPage.ToString());
             });
         }
 
