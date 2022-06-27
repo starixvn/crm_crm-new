@@ -22,21 +22,23 @@ const SettingLogComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting
 const SettingManagementComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-management/index'));
 const SettingRelationComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-relation/index'));
 
-
 const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
 
 export default class Index extends PureComponent {
     render() {
-        const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
-        console.log(_rootUrl);
-        document.getElementById('RootUrl').value = _rootUrl;
+        let rootUrl = document.getElementById('root-url').value;
+        if(!rootUrl){
+            const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
+            rootUrl = _rootUrl;
+        }
+        console.log(rootUrl);
         return (
-            <Router basename={_rootUrl}>
+            <Router basename={rootUrl.value}>
                 <Layout>
                     <Suspense fallback={<div>Loading...</div>}>
                         <Routes>
-                            <Route path="/" />
-                            <Route path="local2/NotificationList" element={<NotificationListComponent />} />
+                            <Route path={Site.resolveClientUrl("/")} />
+                            <Route path={Site.resolveClientUrl("/NotificationList")} element={<NotificationListComponent />} />
                             <Route path={Site.resolveClientUrl("/NotificationTemplate")} element={<NotificationTemplateComponent />} />
                             <Route path={Site.resolveClientUrl("/ChatTypeMapping")} element={<ChatTypeMappingComponent />} />
                             <Route path={Site.resolveClientUrl("/NotificationType")} element={<NotificationTypeComponent />} />
