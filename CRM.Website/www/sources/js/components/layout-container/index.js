@@ -27,7 +27,7 @@ const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
 export default class Index extends PureComponent {
     render() {
         return (
-            <Router basename={Site.resolveClientUrl("/")}>
+            <Router basename="/">
                 <Layout>
                     <Suspense fallback={<div>Loading...</div>}>
                         <Routes>
