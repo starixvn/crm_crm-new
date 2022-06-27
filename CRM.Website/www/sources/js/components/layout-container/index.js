@@ -32,7 +32,7 @@ export default class Index extends PureComponent {
                     <Suspense fallback={<div>Loading...</div>}>
                         <Routes>
                             <Route path={Site.resolveClientUrl("")} />
-                            <Route path="/local2/NotificationList" element={<NotificationListComponent />} />
+                            <Route path={Site.resolveClientUrl("NotificationList")}element={<NotificationListComponent />} />
                             <Route path={Site.resolveClientUrl("NotificationTemplate")} element={<NotificationTemplateComponent />} />
                             <Route path={Site.resolveClientUrl("ChatTypeMapping")} element={<ChatTypeMappingComponent />} />
                             <Route path={Site.resolveClientUrl("NotificationType")} element={<NotificationTypeComponent />} />

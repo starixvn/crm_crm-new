@@ -1,5 +1,5 @@
 ﻿import { MappingStatus } from './constants';
-const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
+const _rootUrl = getRootUrl();
 let _xsrfToken = null;
 
 export default class Site {
@@ -52,13 +52,20 @@ export default class Site {
     }
 
     static resolveClientUrl(relativeUrl) {
-        console.log(_rootUrl + relativeUrl);
         return _rootUrl + relativeUrl;
     }
 
     static unblockUI() {
         document.getElementById('loadingProcess').style.display = 'none';
     }
+
+    static getRootUrl() {
+        const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
+        const subUrl = subPathName !== '' ? subPathName : './';
+        const _rootUrl = !document.getElementById('RootUrl') ? subUrl : document.getElementById('RootUrl').value;
+        return _rootUrl;
+    }
+
 
     static mappingStatusClass(mappingStatusId) {
         switch (mappingStatusId) {

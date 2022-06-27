@@ -615,7 +615,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./www/sources/js/common/constants.js");
 
 
-const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
+const _rootUrl = getRootUrl();
 
 let _xsrfToken = null;
 class Site {
@@ -669,12 +669,20 @@ class Site {
   }
 
   static resolveClientUrl(relativeUrl) {
-    console.log(_rootUrl + relativeUrl);
     return _rootUrl + relativeUrl;
   }
 
   static unblockUI() {
     document.getElementById('loadingProcess').style.display = 'none';
+  }
+
+  static getRootUrl() {
+    const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
+    const subUrl = subPathName !== '' ? subPathName : './';
+
+    const _rootUrl = !document.getElementById('RootUrl') ? subUrl : document.getElementById('RootUrl').value;
+
+    return _rootUrl;
   }
 
   static mappingStatusClass(mappingStatusId) {
@@ -2675,6 +2683,7 @@ class Layout extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       document.getElementById('clientTimezone').value = data.clientTimezone;
       document.getElementById('serverTimezone').value = data.serverTimezone;
       document.getElementById('hasCreateFeedbackPermission').value = data.hasCreateFeedbackPermission;
+      document.getElementById('rootUrl').value = data.rootUrl;
     });
 
     _defineProperty(this, "setCurrentCustomer", currentCustomer => {
@@ -3030,9 +3039,9 @@ class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Layout__WEBPACK_IMPORTED_MODULE_1__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Suspense"], {
       fallback: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading...")
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Routes"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/")
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("")
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: "/local2/NotificationList",
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("NotificationList"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationListComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
       path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("NotificationTemplate"),

@@ -57,7 +57,7 @@
             var permission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo);
             var hasCreateFeedbackPermission = permission > 0;
             var menus = sessionService.MenuItems ?? userService.GetMenuItem(napSession.UserId, napSettings.SiteId, napSettings.Environment, true);
-            
+
             return Json(new {
                 currentCustomer = sessionService.CurrentCustomer,
                 currentUsername,
