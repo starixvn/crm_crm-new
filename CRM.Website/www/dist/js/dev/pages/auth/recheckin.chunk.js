@@ -417,7 +417,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./www/sources/js/common/constants.js");
 
 
-const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
+const _rootUrl = document.getElementById('root-url') ? document.getElementById('root-url').value : '/';
 
 let _xsrfToken = null;
 class Site {
