@@ -28,6 +28,7 @@ const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
 export default class Index extends PureComponent {
     render() {
         const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
+        console.log(_rootUrl);
         document.getElementById('RootUrl').value = _rootUrl;
         return (
             <Router basename={_rootUrl}>

@@ -3026,6 +3026,7 @@ class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   render() {
     const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('RootUrl').value : '/';
 
+    console.log(_rootUrl);
     document.getElementById('RootUrl').value = _rootUrl;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], {
       basename: _rootUrl
