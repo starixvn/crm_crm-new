@@ -41,6 +41,7 @@
     using ONEbook.UM.Services;
     using ONEbook.UM.Transport;
     using Sentry;
+    using Serilog;
     using StackExchange.Redis;
 
     public class Startup
@@ -188,18 +189,20 @@
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.Map(new PathString("/local2"), appMember =>
-            {
-                appMember.UseSpa(spa =>
-                {
-                    spa.Options.SourcePath = "www";
-                });
-            });
-
-            //app.UseSpa(spa =>
+            //app.Map(new PathString("/local2"), appMember =>
             //{
-            //    spa.Options.SourcePath = "www";
+            //    appMember.UseSpa(spa =>
+            //    {
+            //        spa.Options.SourcePath = "www";
+            //    });
             //});
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "www";
+                Log.Information("SourcePath" + spa.Options.SourcePath);
+                Log.Information("SourcePath" + spa.Options.SourcePath);
+            });
         }
 
         private void RegisterDI(IServiceCollection services, List<BotConfig> botConfigs)

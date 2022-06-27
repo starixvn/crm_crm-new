@@ -24,6 +24,8 @@
                 .WriteTo.Async(a => a.File(logfile, LogEventLevel.Information, loggerTemplate, rollingInterval: RollingInterval.Day, shared:true))
                 .CreateLogger();
 
+            Log.Information("baseDir" + baseDir);
+
             try
             {
                 CreateWebHostBuilder(args).Build().Run();
@@ -44,7 +46,7 @@
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
                     var env = builderContext.HostingEnvironment;
-
+                    Log.Information("rootpaht" + env.ContentRootPath);
                     config.SetBasePath(env.ContentRootPath);
                     config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
