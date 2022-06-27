@@ -10,10 +10,14 @@ export class DataGrid extends Component {
         super(props);
     }
 
-    buildHeader = isHost => {
+    buildHeader = (isHost) => {
+        const checkShowSourceMapping = this.IsShowSourceMapping();
         return (
             <HeaderRow>
                 <HeaderCell colWidth={45}>{LangHelper.getResource('Setting')}</HeaderCell>
+                {
+                    checkShowSourceMapping && <HeaderCell colWidth={40}>{LangHelper.getResource('SourceMapping')}</HeaderCell>
+                }
                 <HeaderCell colWidth={13}>{LangHelper.getResource('SettingId')}</HeaderCell>
                 <HeaderCell colWidth={13}>{LangHelper.getResource('Order')}</HeaderCell>
                 {
@@ -27,9 +31,13 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index, isHost) => {
+        const checkShowSourceMapping = this.IsShowSourceMapping();
         return (
             <Row key={`setting-management-${index}`}>
                 <Cell>{item.settingValue}</Cell>
+                {
+                    checkShowSourceMapping && <Cell>{item.settingSource}</Cell>
+                }
                 <Cell className='text-right'>{item.settingId}</Cell>
                 <Cell className='text-right'>{item.displayOrder}</Cell>
                 {
@@ -52,7 +60,7 @@ export class DataGrid extends Component {
         );
     };
 
-    buildBody = isHost => {
+    buildBody = (isHost) => {
         const { settingType } = this.props;
         if ( settingType.length > 0) {
             return settingType.map((item, index) => this.renderRow(item, index, isHost));
@@ -73,6 +81,15 @@ export class DataGrid extends Component {
         this.props.setOpenEdiPopup({ show: true, data: item});
     };
 
+    IsShowSourceMapping(){
+        const { settingType} = this.props;
+        let count = false;
+        settingType.map(item => {
+            if(item.settingSource != null){count = true}
+        })
+        return count;
+    }
+
     render() {
         const { settingType, gridParams, isHost } = this.props;
         if(!settingType){
@@ -81,13 +98,13 @@ export class DataGrid extends Component {
 
         return (
             <Fragment>
-                <div className='justify-content-between align-items-center table-title d-flex'>
+                <div className='justify-content-between align-items-center table-title d-flex' style={{width: this.IsShowSourceMapping() ? 1000 : 700}}>
                     <span>{`${LangHelper.getResource('SettingManagementTitle')} ${gridParams.settingName}`}</span>
                 </div>
                 <Table
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
-                    width={700}
+                    width={this.IsShowSourceMapping() ? 1000 : 700}
                     autoWidth={false}
                     onSort={this.onSort}
                     containerPadding={0}

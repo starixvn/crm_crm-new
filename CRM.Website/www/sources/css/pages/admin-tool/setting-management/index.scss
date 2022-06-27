@@ -9,7 +9,16 @@
 @import '../../../components/form-filter';
 
 .table-title{
-    max-width: 700px;
+    max-width: 1000px;
+}
+
+.header-content .table > thead > tr > th {
+    border: none;
+    border-right: 1px solid #b7b7b7;
+}
+
+.modal-lg, .modal-xl {
+    max-width: 600px;
 }
 
 .table {

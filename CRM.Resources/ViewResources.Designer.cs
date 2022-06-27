@@ -1087,7 +1087,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redemption Statistics Report from {0} to Jan {1}.
+        ///   Looks up a localized string similar to Redemption Statistics Report from {0} to {1}.
         /// </summary>
         public static string RedemptionStatistics_Title {
             get {
