@@ -52,7 +52,7 @@ export default class Site {
     }
 
     static resolveClientUrl(relativeUrl) {
-        console.log(_rootUrl);
+        console.log(_rootUrl + relativeUrl);
         return _rootUrl + relativeUrl;
     }
 

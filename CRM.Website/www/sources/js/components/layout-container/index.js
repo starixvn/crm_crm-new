@@ -31,23 +31,23 @@ export default class Index extends PureComponent {
                 <Layout>
                     <Suspense fallback={<div>Loading...</div>}>
                         <Routes>
-                            <Route path={Site.resolveClientUrl("/")} />
+                            <Route path={Site.resolveClientUrl("")} />
                             <Route path="/local2/NotificationList" element={<NotificationListComponent />} />
-                            <Route path={Site.resolveClientUrl("/NotificationTemplate")} element={<NotificationTemplateComponent />} />
-                            <Route path={Site.resolveClientUrl("/ChatTypeMapping")} element={<ChatTypeMappingComponent />} />
-                            <Route path={Site.resolveClientUrl("/NotificationType")} element={<NotificationTypeComponent />} />
+                            <Route path={Site.resolveClientUrl("NotificationTemplate")} element={<NotificationTemplateComponent />} />
+                            <Route path={Site.resolveClientUrl("ChatTypeMapping")} element={<ChatTypeMappingComponent />} />
+                            <Route path={Site.resolveClientUrl("NotificationType")} element={<NotificationTypeComponent />} />
                             
-                            <Route path={Site.resolveClientUrl("/PicManagement")} element={<ManagementComponent />} />
-                            <Route path={Site.resolveClientUrl("/PicOfHeadline")} element={<PicAssignmentComponent />} />
-                            <Route path={Site.resolveClientUrl("/ChangesLog")} element={<ChangesLogManagementComponent />} />
+                            <Route path={Site.resolveClientUrl("PicManagement")} element={<ManagementComponent />} />
+                            <Route path={Site.resolveClientUrl("PicOfHeadline")} element={<PicAssignmentComponent />} />
+                            <Route path={Site.resolveClientUrl("ChangesLog")} element={<ChangesLogManagementComponent />} />
 
-                            <Route path={Site.resolveClientUrl("/CommunicationSetting/Index")} element={<CommunicationSettingComponent />} />
-                            <Route path={Site.resolveClientUrl("/FeedbackSubjectManagement/Index")} element={<FeedbackSubjectComponent />} />
-                            <Route path={Site.resolveClientUrl("/ActionLog/SettingLog")} element={<SettingLogComponent />} />
-                            <Route path={Site.resolveClientUrl("/SettingManagement/Index")} element={<SettingManagementComponent />} />
-                            <Route path={Site.resolveClientUrl("/SettingRelation/Index")} element={<SettingRelationComponent />} />
+                            <Route path={Site.resolveClientUrl("CommunicationSetting/Index")} element={<CommunicationSettingComponent />} />
+                            <Route path={Site.resolveClientUrl("FeedbackSubjectManagement/Index")} element={<FeedbackSubjectComponent />} />
+                            <Route path={Site.resolveClientUrl("ActionLog/SettingLog")} element={<SettingLogComponent />} />
+                            <Route path={Site.resolveClientUrl("SettingManagement/Index")} element={<SettingManagementComponent />} />
+                            <Route path={Site.resolveClientUrl("SettingRelation/Index")} element={<SettingRelationComponent />} />
 
-                            <Route path={Site.resolveClientUrl("/Dashboard/Index")} element={<DashboardComponent />} />
+                            <Route path={Site.resolveClientUrl("Dashboard/Index")} element={<DashboardComponent />} />
                         </Routes>
                     </Suspense>
                 </Layout>

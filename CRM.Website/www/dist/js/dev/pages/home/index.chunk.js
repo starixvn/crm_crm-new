@@ -669,7 +669,7 @@ class Site {
   }
 
   static resolveClientUrl(relativeUrl) {
-    console.log(_rootUrl);
+    console.log(_rootUrl + relativeUrl);
     return _rootUrl + relativeUrl;
   }
 
@@ -3035,40 +3035,40 @@ class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
       path: "/local2/NotificationList",
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationListComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/NotificationTemplate"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("NotificationTemplate"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTemplateComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/ChatTypeMapping"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("ChatTypeMapping"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ChatTypeMappingComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/NotificationType"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("NotificationType"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationTypeComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/PicManagement"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("PicManagement"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ManagementComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/PicOfHeadline"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("PicOfHeadline"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(PicAssignmentComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/ChangesLog"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("ChangesLog"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ChangesLogManagementComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/CommunicationSetting/Index"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("CommunicationSetting/Index"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CommunicationSettingComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/FeedbackSubjectManagement/Index"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("FeedbackSubjectManagement/Index"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(FeedbackSubjectComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/ActionLog/SettingLog"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("ActionLog/SettingLog"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SettingLogComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/SettingManagement/Index"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("SettingManagement/Index"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SettingManagementComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/SettingRelation/Index"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("SettingRelation/Index"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SettingRelationComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("/Dashboard/Index"),
+      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("Dashboard/Index"),
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DashboardComponent, null)
     })))));
   }

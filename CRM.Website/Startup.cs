@@ -142,7 +142,7 @@
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = Path.Combine(CurrentEnvironment.ContentRootPath, "www/dist");
+                configuration.RootPath = "www/dist";
             });
 
             RegisterDI(services, botConfigs.Get<List<BotConfig>>());
@@ -188,22 +188,12 @@
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Auth}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            //app.Map(new PathString("/local2"), appMember =>
-            //{
-            //    appMember.UseSpa(spa =>
-            //    {
-            //        spa.Options.SourcePath = "www";
-            //    });
-            //});
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = Path.Combine(env.ContentRootPath, "www");
-                Log.Information("SourcePath" + spa.Options.SourcePath);
-                Log.Information("DefaultPage" + spa.Options.DefaultPage.ToString());
+                spa.Options.SourcePath = "www";
             });
         }
 
