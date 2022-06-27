@@ -121,7 +121,6 @@
             services.AddAntiforgery(options =>
             {
                 options.SuppressXFrameOptionsHeader = true;
-                options.Cookie.SameSite = SameSiteMode.None;
             });
 
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
