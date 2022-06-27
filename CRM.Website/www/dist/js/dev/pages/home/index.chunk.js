@@ -614,8 +614,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Site; });
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./www/sources/js/common/constants.js");
 
+const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
+const subUrl = subPathName !== '' ? subPathName : './';
 
-const _rootUrl = getRootUrl();
+const _rootUrl = !document.getElementById('RootUrl') ? subUrl : document.getElementById('RootUrl').value;
 
 let _xsrfToken = null;
 class Site {
@@ -674,15 +676,6 @@ class Site {
 
   static unblockUI() {
     document.getElementById('loadingProcess').style.display = 'none';
-  }
-
-  static getRootUrl() {
-    const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
-    const subUrl = subPathName !== '' ? subPathName : './';
-
-    const _rootUrl = !document.getElementById('RootUrl') ? subUrl : document.getElementById('RootUrl').value;
-
-    return _rootUrl;
   }
 
   static mappingStatusClass(mappingStatusId) {
@@ -2683,7 +2676,6 @@ class Layout extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       document.getElementById('clientTimezone').value = data.clientTimezone;
       document.getElementById('serverTimezone').value = data.serverTimezone;
       document.getElementById('hasCreateFeedbackPermission').value = data.hasCreateFeedbackPermission;
-      document.getElementById('rootUrl').value = data.rootUrl;
     });
 
     _defineProperty(this, "setCurrentCustomer", currentCustomer => {

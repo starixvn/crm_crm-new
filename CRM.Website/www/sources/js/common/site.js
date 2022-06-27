@@ -1,5 +1,7 @@
 ﻿import { MappingStatus } from './constants';
-const _rootUrl = getRootUrl();
+const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
+const subUrl = subPathName !== '' ? subPathName : './';
+const _rootUrl = !document.getElementById('RootUrl') ? subUrl : document.getElementById('RootUrl').value;
 let _xsrfToken = null;
 
 export default class Site {
@@ -58,14 +60,6 @@ export default class Site {
     static unblockUI() {
         document.getElementById('loadingProcess').style.display = 'none';
     }
-
-    static getRootUrl() {
-        const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
-        const subUrl = subPathName !== '' ? subPathName : './';
-        const _rootUrl = !document.getElementById('RootUrl') ? subUrl : document.getElementById('RootUrl').value;
-        return _rootUrl;
-    }
-
 
     static mappingStatusClass(mappingStatusId) {
         switch (mappingStatusId) {
