@@ -181,7 +181,6 @@
                 Path.Combine(env.ContentRootPath, "www/dist")),
                 RequestPath = "/www/dist"
             });
-            app.UseSpaStaticFiles();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -189,10 +188,18 @@
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseSpa(spa =>
+            app.Map(new PathString("/local2"), appMember =>
             {
-                spa.Options.SourcePath = "www";
+                appMember.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "www";
+                });
             });
+
+            //app.UseSpa(spa =>
+            //{
+            //    spa.Options.SourcePath = "www";
+            //});
         }
 
         private void RegisterDI(IServiceCollection services, List<BotConfig> botConfigs)
