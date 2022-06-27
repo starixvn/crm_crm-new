@@ -24,7 +24,7 @@ function generateConfig(environment) {
             [`${cssPath}/pages/auth/login`]: pathConfig.cssPaths.auth
         },
         output: {
-            publicPath: 'local2/www/dist/',
+            publicPath: 'www/dist/',
             path: pathConfig.distPath,
             filename: "[name].chunk.js",
             chunkFilename: `${jsPath}/lib/[name].chunk.js`
