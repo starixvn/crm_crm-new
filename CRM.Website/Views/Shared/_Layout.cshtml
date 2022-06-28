@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <base href="/" />
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -27,6 +26,7 @@
             </circle>
         </svg>
     </div>
+    <input type="hidden" id="RootUrl" value="@Url.Content("~/")" />
     @RenderSection("Scripts", required: false)
 </body>
 </html>
