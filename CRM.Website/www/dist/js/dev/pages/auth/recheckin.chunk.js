@@ -417,7 +417,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./www/sources/js/common/constants.js");
 
 const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
-const subUrl = subPathName !== '' ? subPathName : './';
+const subUrl = subPathName !== '' ? subPathName : '/';
 
 const _rootUrl = !document.getElementById('RootUrl') ? subUrl : document.getElementById('RootUrl').value;
 

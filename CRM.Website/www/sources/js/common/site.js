@@ -1,6 +1,6 @@
 ﻿import { MappingStatus } from './constants';
 const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
-const subUrl = subPathName !== '' ? subPathName : './';
+const subUrl = subPathName !== '' ? subPathName : '/';
 const _rootUrl = !document.getElementById('RootUrl') ? subUrl : document.getElementById('RootUrl').value;
 let _xsrfToken = null;
 
