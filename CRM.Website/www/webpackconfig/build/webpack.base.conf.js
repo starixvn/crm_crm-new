@@ -4,9 +4,9 @@ const pluginGenerator = require('../config/plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-function generateConfig(environment) {
-    const jsPath = `${pathConfig.scriptPaths.build}/${environment}`;
-    const cssPath = `${pathConfig.cssPaths.build}/${environment}`;
+function generateConfig(env) {
+    const jsPath = `${pathConfig.scriptPaths.build}/${env.Environment}`;
+    const cssPath = `${pathConfig.cssPaths.build}/${env.Environment}`;
     return {
         resolve: {
             alias: alias,
@@ -24,7 +24,7 @@ function generateConfig(environment) {
             [`${cssPath}/pages/auth/login`]: pathConfig.cssPaths.auth
         },
         output: {
-            publicPath: 'www/dist/',
+            publicPath: `${env.PUBLIC_URL}www/dist/`,
             path: pathConfig.distPath,
             filename: "[name].chunk.js",
             chunkFilename: `${jsPath}/lib/[name].chunk.js`
@@ -38,7 +38,7 @@ function generateConfig(environment) {
                 }
             ]
         },
-        plugins: pluginGenerator(environment),
+        plugins: pluginGenerator(env.Environment),
         stats: {
             assets: false,
             colors: true,

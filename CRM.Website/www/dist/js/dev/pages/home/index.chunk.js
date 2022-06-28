@@ -247,7 +247,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "www/dist/";
+/******/ 	__webpack_require__.p = "/www/dist/";
 /******/
 /******/ 	// on error function for async loading
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
@@ -613,12 +613,10 @@ class LangHelper {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Site; });
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./www/sources/js/common/constants.js");
+ // const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
+// const subUrl = subPathName !== '' ? subPathName : '/';
 
-const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
-const subUrl = subPathName !== '' ? subPathName : '/';
-
-const _rootUrl = !document.getElementById('RootUrl') ? subUrl : document.getElementById('RootUrl').value;
-
+const _rootUrl = '/';
 let _xsrfToken = null;
 class Site {
   static blockUI() {
@@ -3027,6 +3025,7 @@ const SettingRelationComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MOD
 const DashboardComponent = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(() => Promise.all(/*! import() */[__webpack_require__.e("vendor"), __webpack_require__.e("common"), __webpack_require__.e(0)]).then(__webpack_require__.bind(null, /*! @jsroot/pages/dashboard/index */ "./www/sources/js/pages/dashboard/index.js")));
 class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   render() {
+    //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], {
       basename: "/"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Layout__WEBPACK_IMPORTED_MODULE_1__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Suspense"], {
@@ -3034,7 +3033,7 @@ class Index extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Routes"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
       path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("")
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-      path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("NotificationList"),
+      path: "NotificationList",
       element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotificationListComponent, null)
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
       path: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl("NotificationTemplate"),

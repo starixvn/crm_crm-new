@@ -26,13 +26,14 @@ const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
 
 export default class Index extends PureComponent {
     render() {
+        //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
         return (
-            <Router basename="/">
+            <Router basename='/'>
                 <Layout>
                     <Suspense fallback={<div>Loading...</div>}>
                         <Routes>
                             <Route path={Site.resolveClientUrl("")} />
-                            <Route path={Site.resolveClientUrl("NotificationList")}element={<NotificationListComponent />} />
+                            <Route path="NotificationList" element={<NotificationListComponent />} />
                             <Route path={Site.resolveClientUrl("NotificationTemplate")} element={<NotificationTemplateComponent />} />
                             <Route path={Site.resolveClientUrl("ChatTypeMapping")} element={<ChatTypeMappingComponent />} />
                             <Route path={Site.resolveClientUrl("NotificationType")} element={<NotificationTypeComponent />} />
