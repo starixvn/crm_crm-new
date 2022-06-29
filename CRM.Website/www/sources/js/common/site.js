@@ -1,7 +1,7 @@
 ﻿import { MappingStatus } from './constants';
 // const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
 // const subUrl = subPathName !== '' ? subPathName : '/';
-const _rootUrl = '/local2';
+const _rootUrl = '/local2/';
 let _xsrfToken = null;
 
 export default class Site {
