@@ -1,7 +1,6 @@
 ﻿import { MappingStatus } from './constants';
-// const subPathName = window.location.pathname.substr(0, window.location.pathname.indexOf('/', 1) + 1);
-// const subUrl = subPathName !== '' ? subPathName : '/';
-const _rootUrl = '/local2/';
+const _rootUrl = PUBLIC_URL;
+console.log(_rootUrl);
 let _xsrfToken = null;
 
 export default class Site {
@@ -54,7 +53,6 @@ export default class Site {
     }
 
     static resolveClientUrl(relativeUrl) {
-        console.log(_rootUrl + relativeUrl);
         return _rootUrl + relativeUrl;
     }
 
