@@ -100,6 +100,12 @@
         <None Update="ExcelTemplates\Issue_Statistics.xlsx">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+		<None Update="ExcelTemplates\Categories_Summary_Report.xlsx">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="ExcelTemplates\Direct_Customer_Report.xlsx">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
         <None Update="ExcelTemplates\Deleted_Feedback.xlsx">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>

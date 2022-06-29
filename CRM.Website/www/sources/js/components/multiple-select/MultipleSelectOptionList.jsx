@@ -30,7 +30,7 @@ export default class MultipleSelectOptionList extends Component {
         if(countFalse === dataSource.length && countNA > 0 ){
             dataSource[indexNa].checked = true;
         }
-    }
+    };
 
     _renderOptionList() {
         const { dataSource, onChange, onChangeSub, id, isAllExpand } = this.props;
@@ -39,7 +39,7 @@ export default class MultipleSelectOptionList extends Component {
         }
 
         this.isUnCheckAll(dataSource);
-        
+
         const optionList = dataSource.map((item, index) => {
             return item.visible && (
                 <Option
