@@ -51,7 +51,7 @@ export class DataGrid extends Component {
                 </Cell>
                 <Cell className='text-center'>
                     <i className="fa fa-plus-circle icon-excel" aria-hidden="true"
-                        onClick={event => this.handleOpenUpdate(event, item.settingId)}
+                        onClick={event => this.handleOpenUpdate(event, item.settingId, item.settingValue)}
                     />
                 </Cell>
                 <Cell className='text-right'>{item.settingId}</Cell>
@@ -98,14 +98,15 @@ export class DataGrid extends Component {
         this.setState({ toggleRow });
     };
 
-    handleOpenUpdate = (event, value) => {
+    handleOpenUpdate = (event, value, name) => {
         event.preventDefault();
-        const title = `${LangHelper.getResource('AddSubSettingTitle')} ${value}`;
+        const title = `${LangHelper.getResource('AddSubSettingTitle')}`;
         const params = {
             settingName : this.props.mainSettings.slice(1)[0].settingName,
-            parentId: parseInt(value, 10)
+            parentId: parseInt(value, 10),
+            parentName: name
         };
-        this.props.setOpenUpdatePopup({ show: true, title: title, parentId: params.parentId});
+        this.props.setOpenUpdatePopup({ show: true, title: title, parentId: params.parentId, parentName: params.parentName});
         this.props.getMainSettingRelation(params);
     };
 

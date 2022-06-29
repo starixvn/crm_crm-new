@@ -37,7 +37,7 @@ export class Filter extends Component {
         const languageOptions = allSettings.languages.map(item => {
             languageIds.push(item.languageId);
             return {
-                languageId: item.languageId,
+                languageId: item.languageId === 0 ? -1 : item.languageId,
                 name: item.name,
                 checked: true
             };
@@ -90,7 +90,7 @@ export class Filter extends Component {
         this.setState({ siteId: site.id });
     };
 
-    handleChangeMultipleSelect = (name, currentItem, selectedItemsKey) => {
+    handleChangeMultipleSelect = (name, currentItem, selectedItemsKey) => {        
         this.setState({ [name]: selectedItemsKey });
     };
 

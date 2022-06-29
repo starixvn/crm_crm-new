@@ -30,13 +30,21 @@
 .update-setting-relation{
     .modal-content{
         width: 660px !important;
-        height: 660px !important;
+        max-height: 660px !important;
 
         .table-container .body-content{
             max-height: 350px !important;
         }
+        .bold{
+            font-weight: bold;
+        }
         .modal-footer{
             justify-content: flex-start !important;
+        }
+
+        .header-content .table, .body-content .table, .footer-content .table {
+            margin: 0;
+            border-left: 1px solid #b7b7b7;
         }
 
         .filter-relation{
@@ -46,6 +54,9 @@
             margin-bottom: 10px;
             padding: 10px;
             background-color: rgb(232, 232, 232);
+            .label-subSetting{
+                max-width: 18%;
+            }
         }
 
         .checkbox-cell-style {

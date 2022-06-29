@@ -55,11 +55,11 @@ export class NewSettingValue extends Component {
                     if(check.settingValue === values.settingValue){
                         checkValue = false;
                     }
-                })
+                });
             }
-        })
+        });
         return checkValue;
-    }
+    };
 
     renderForm = ({
         values,

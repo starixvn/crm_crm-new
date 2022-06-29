@@ -18,7 +18,7 @@ export class Edit extends Component {
             sourceMappings: ''
         };
     }
-    
+
     componentDidMount(){
         this.props.sourceMapping.length > 0 &&  this.handleOptionMapping();
     }

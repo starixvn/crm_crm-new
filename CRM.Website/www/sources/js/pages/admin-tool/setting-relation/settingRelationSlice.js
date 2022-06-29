@@ -11,7 +11,7 @@ const settingRelationSlice = createSlice({
         gridDataSettingLogs: null,
         mainSettingRelation: [],
         updateResult: null,
-        updatePopup: { show: false, title: '', parentId: null }
+        updatePopup: { show: false, title: '', parentId: null, parentName: '' }
     },
     reducers: {
         setMainSettings: (state, action) => {

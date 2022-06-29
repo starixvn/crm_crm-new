@@ -68,7 +68,7 @@ export class Update extends Component {
                     />
                 </Cell>
                 <Cell>
-                    <Form.Control type="number" size="sm" className="shadow-none"
+                    <Form.Control type="number" size="sm" disabled="disabled" className="shadow-none"
                         value={item.displayOrder}
                         onChange={e => this.onChangeDisplay(item.value, e.target.value)}
                     />
@@ -92,10 +92,11 @@ export class Update extends Component {
                     <Form.Group className='form-group row'>
                         <Form.Label column sm="12" md="12">
                             {updatePopup.title}
+                            <span className='bold'>{this.props.updatePopup.parentName}</span>
                         </Form.Label>
                     </Form.Group>
                     <div className='filter-relation'>
-                        <Form.Label column sm="3" md="3"  htmlFor="subSetting">
+                        <Form.Label className='label-subSetting' column sm="3" md="3"  htmlFor="subSetting">
                             {LangHelper.getResource('SubSetting')}
                         </Form.Label>
                         <Col sm="5" md="5">
