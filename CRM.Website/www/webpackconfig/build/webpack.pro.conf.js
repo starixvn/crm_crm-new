@@ -11,7 +11,7 @@ module.exports = (env) => {
     const jsRootPath = `www/dist/${pathConfig.scriptPaths.build}/${environment}`;
 
     return merge(baseConfigs,
-        utils.setDefinePlugin('process.env.NODE_ENV', 'production'),
+        utils.setDefinePlugin('process.env.NODE_ENV', 'production', env.PUBLIC_URL),
         {
             mode: 'production',
             watch: false,
