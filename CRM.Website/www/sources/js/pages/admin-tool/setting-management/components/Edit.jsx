@@ -8,8 +8,47 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
 
 export class Edit extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            optionMappings: [],
+            sourceMappings: ''
+        };
+    }
+    
+    componentDidMount(){
+        this.props.sourceMapping.length > 0 &&  this.handleOptionMapping();       
+    }
+
+    handleOptionMapping(){
+        const {sourceMapping, editPopup} = this.props;
+        let selectedMapping = []
+        if(editPopup.data.settingSource != null){
+            selectedMapping = editPopup.data.settingSource.split(", ").map(tool => {
+                return {
+                    id: tool,
+                    name: tool,
+                    checked: true
+                };
+            });
+        }
+
+        const optionMappings = sourceMapping.map(tool => {
+            return {
+                id: tool.source,
+                name: tool.source,
+                checked: false
+            };
+        });
+        const concatenated = [];
+        concatenated.push(...selectedMapping);
+        concatenated.push(...optionMappings);
+        this.setState({optionMappings: concatenated, sourceMappings: editPopup.data.settingSource})
+    }
+
     validateFormik = values =>{
         const errors = {};
         if(values.settingValue === ''){
@@ -26,6 +65,7 @@ export class Edit extends Component {
             settingId: values.settingId,
             settingName: values.settingName,
             settingValue: values.settingValue,
+            settingSource: this.state.sourceMappings === ''? null : this.state.sourceMappings,
             displayOrder: values.displayOrder === '' ? 0 : values.displayOrder
         };
         setSubmitting(true);
@@ -55,7 +95,7 @@ export class Edit extends Component {
                     {
                         this.props.editNewSettingResult &&
                         <ResponseMessage isSuccessful={this.props.editNewSettingResult.isSuccessful}
-                            message={this.props.editNewSettingResult.message || LangHelper.getResource('InsertNewSettingSuccess')}
+                            message={this.props.editNewSettingResult.message || LangHelper.getResource('UpdateSettingSuccess')}
                         />
                     }
                     <Form.Group as={Row}>
@@ -81,6 +121,24 @@ export class Edit extends Component {
                             />
                         </Col>
                     </Form.Group>
+                    {
+                        this.props.sourceMapping.length > 0 &&  
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="4" md="3" htmlFor="SourceMapping">
+                                {LangHelper.getResource('SourceMapping')}
+                            </Form.Label>
+                            <Col sm="8" md="9">
+                                <MultipleSelect
+                                        keyField='id' valueField='name'
+                                        hasSearchBox isNAOption
+                                        dataSource={this.state.optionMappings}
+                                        onChange={(currentItem, selectedItemsKey) => {
+                                           this.setState({sourceMappings: selectedItemsKey});
+                                        }}
+                                    />
+                            </Col>
+                        </Form.Group>                               
+                    }
                     <Form.Group as={Row}>
                         <Form.Label column sm="4" md="3" htmlFor="displayOrder">
                             {LangHelper.getResource('DisplayOrder')}
@@ -117,6 +175,7 @@ export class Edit extends Component {
             settingId: editPopup.data.settingId,
             settingName: editPopup.data.settingName,
             settingValue: editPopup.data.settingValue,
+            settingSource: editPopup.data.settingSource,
             displayOrder: editPopup.data.displayOrder
         };
 
@@ -143,9 +202,9 @@ export class Edit extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { editPopup, editNewSettingResult } = state;
+    const { editPopup, editNewSettingResult, sourceMapping } = state;
     return {
-        editPopup, editNewSettingResult
+        editPopup, editNewSettingResult, sourceMapping
     };
 };
 

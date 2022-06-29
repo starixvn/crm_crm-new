@@ -16,7 +16,7 @@ export class DataGrid extends Component {
             <HeaderRow>
                 <HeaderCell colWidth={45}>{LangHelper.getResource('Setting')}</HeaderCell>
                 {
-                    checkShowSourceMapping && <HeaderCell colWidth={40}>{LangHelper.getResource('SourceMapping')}</HeaderCell>
+                    checkShowSourceMapping && <HeaderCell colWidth={45}>{LangHelper.getResource('SourceMapping')}</HeaderCell>
                 }
                 <HeaderCell colWidth={13}>{LangHelper.getResource('SettingId')}</HeaderCell>
                 <HeaderCell colWidth={13}>{LangHelper.getResource('Order')}</HeaderCell>
@@ -76,8 +76,9 @@ export class DataGrid extends Component {
         this.props.setEditStatusPopup({show: true, settingId, settingValue, isActive});
     };
 
-    handleOpenEdit = (event, item) => {
+    handleOpenEdit = async (event, item) => {
         event.preventDefault();
+        await this.props.getSourceMapping(this.props.gridParams);
         this.props.setOpenEdiPopup({ show: true, data: item});
     };
 

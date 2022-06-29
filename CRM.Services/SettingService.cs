@@ -61,28 +61,32 @@
 
         public async Task<IEnumerable<Setting>>GetSettingByTypes(string settingName)
         {
-                var allSettings = await GetSettingAsync();
-                IEnumerable<Setting> relations = await GetSettingRelationAsync();
-                IEnumerable<Setting> result = allSettings
-                    .Where(s => s.SettingName == settingName)
-                    .GroupBy(s => s.SettingId).Select(x => x.First())
-                    .OrderBy(s => s.DisplayOrder);
+            var allSettings = await GetSettingAsync();
+            IEnumerable<Setting> relations = await GetSettingRelationAsync();
+            IEnumerable<Setting> result = allSettings
+                .Where(s => s.SettingName == settingName)
+                .GroupBy(s => s.SettingId).Select(x => x.First())
+                .OrderBy(s => s.DisplayOrder);
 
-                foreach (Setting item in result)
+            foreach (Setting item in result)
+            {
+                var settingIds = relations
+                    .Where(r => r.ParentID == item.SettingId)
+                    .Select(s => new { s.SettingId, s.DisplayOrder });
+                if (settingIds.Any())
                 {
-                    var settingIds = relations
-                        .Where(r => r.ParentID == item.SettingId)
-                        .Select(s => new { s.SettingId, s.DisplayOrder });
-                    if (settingIds.Any())
-                    {
-                        item.ChildSettings = allSettings.Where(x => settingIds.Any(y => x.SettingId == y.SettingId))
-                            .GroupBy(x => x.SettingId)
-                            .Select(x => x.First())
-                            .OrderBy(s => s.DisplayOrder).ToList();
-                    }
+                    item.ChildSettings = allSettings.Where(x => settingIds.Any(y => x.SettingId == y.SettingId))
+                        .GroupBy(x => x.SettingId)
+                        .Select(x => x.First())
+                        .OrderBy(s => s.DisplayOrder).ToList();
                 }
 
-                return result;
+                var sources = allSettings.Where(x => x.SettingValue == item.SettingValue && x.SettingSource != null && item.SettingName == x.SettingName).ToList();
+                if (sources.Any()) { 
+                    item.SettingSource = string.Join(", ", sources.Select(r => r.SettingSource));
+                }
+            }
+            return result;
         }
 
         public async Task<IEnumerable<Setting>> GetRolesByPicAsync(int picType)
@@ -283,11 +287,16 @@
 
         public async Task<IEnumerable<SettingMapping>> GetSettingMappingAsync(string settings)
         {
+            var allSettings = await GetSettingAsync();
+            var selectedSetting = allSettings.Where(x => x.SettingName == settings && x.SettingSource != null).Select(x => x.SettingSource).ToList();
+
             var criteria = new GetSourceSettingMappingCriteria
             {
                 Settings = settings
             };
-            return await baseService.GetDataAsync<SettingMapping>(criteria);
+            var sourceMappings = await baseService.GetDataAsync<SettingMapping>(criteria);
+            sourceMappings = sourceMappings.Where(x => !selectedSetting.Contains(x.Source)).ToList();
+            return sourceMappings;
         }
 
         public async Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync()

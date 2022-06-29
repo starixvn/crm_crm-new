@@ -10,8 +10,10 @@ const settingManagementSlice = createSlice({
         licenseesMapping: null,
         licenseesManager: [],
         gridParams: {
-            settingName: ''
+            settingName: '',
+            settingValue: ''
         },
+        sourceMapping: [],
         editStatusPopup: {show: false},
         insertNewSettingPopup: {show: false, settingName: ''},
         licenseeMappingPopup: {show: false},
@@ -62,6 +64,9 @@ const settingManagementSlice = createSlice({
         },
         setConfirmCancelPopup: (state, action) => {
             state.confirmCancelPopup = action.payload;
+        },
+        setSourceMapping: (state, action) => {
+            state.sourceMapping = action.payload;
         }
     }
 });
@@ -82,7 +87,8 @@ export const {
     setInsertNewSettingResult,
     setOpenEdiPopup,
     setEditNewSettingResult,
-    setConfirmCancelPopup
+    setConfirmCancelPopup,
+    setSourceMapping
 } = actions;
 
 export default reducer;

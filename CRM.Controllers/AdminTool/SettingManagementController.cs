@@ -1,11 +1,14 @@
 ﻿namespace CRM.Controllers.AdminTool
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.AdminTool.SettingManagement;
+    using CRM.Criteria.Setting;
     using CRM.Models.AdminTool;
     using CRM.Services;
     using CRM.ViewModels;
@@ -14,6 +17,7 @@
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
+
     [CrmPermission(FunctionKey = FunctionKey.SettingManagement, Policy = Policy.Read)]
     public class SettingManagementController : BaseController
     {
@@ -81,6 +85,14 @@
             var settingByTypes = await settingService.GetSettingByTypes(settingType.SettingName);
             return Json(settingByTypes);
         }
+        
+
+        [HttpPost]
+        public async Task<IActionResult> GetSourceMappingByType([FromBody] SettingTypeViewModel settingType)
+        {
+            var mappingByTypes = await settingService.GetSettingMappingAsync(settingType.SettingName);            
+            return Json(mappingByTypes);
+        }
 
         [HttpPost]
         public async Task<IActionResult> EditStatusSetting([FromBody] EditStatusCommand command)
@@ -104,9 +116,20 @@
         [HttpPost]
         public async Task<IActionResult> EditNewSetting([FromBody] EditNewSettingCommand command)
         {
+            var criteria = new EditSourceSettingMappingCriteria
+            {
+                SettingID = command.SettingId,
+                SettingSource = command.SettingSource,
+                IP = command.IP
+            };
+
+            command.SettingSource = null;
             command.UserId = napSession.UserId;
             command.IP = ClientIP;
+
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
+            _ = await baseService.ExecuteNonQueryAsync(criteria);
+
             return Json(commandResult);
         }
 

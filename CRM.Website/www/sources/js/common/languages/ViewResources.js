@@ -225,6 +225,7 @@
     IsGuest: 'Is Guest',
     InvalidDuration: 'Invalid Duration Time',
     InsertNewSettingSuccess: 'Insert new setting successfully!',
+    UpdateSettingSuccess: 'Update Setting successfully!',
     KeepAssign: 'Keep Assign',
     KeptForReference: 'Kept for reference',
     LastFiveSpecialRemark: 'Last 5 Special Remark',

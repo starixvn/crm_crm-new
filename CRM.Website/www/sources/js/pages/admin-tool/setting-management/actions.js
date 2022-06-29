@@ -14,7 +14,8 @@ import {
     setInsertNewSettingResult,
     setOpenEdiPopup,
     setEditNewSettingResult,
-    setConfirmCancelPopup
+    setConfirmCancelPopup,
+    setSourceMapping
 } from './settingManagementSlice';
 
 const getMainSettings = () => async dispatch => {
@@ -93,6 +94,13 @@ const editLicenseeMapping = params => async () => {
     .catch(Site.handleAxiosError);
 };
 
+const getSourceMapping = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('SettingManagement/GetSourceMappingByType');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setSourceMapping(response.data));
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+};
 
 export const ActionCreators = {
     getMainSettings,
@@ -118,5 +126,7 @@ export const ActionCreators = {
     editNewSetting,
     setEditNewSettingResult,
     editLicenseeMapping,
-    setConfirmCancelPopup
+    setConfirmCancelPopup,
+    setSourceMapping,
+    getSourceMapping
 };
