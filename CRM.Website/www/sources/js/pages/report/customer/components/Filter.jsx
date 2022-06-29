@@ -104,12 +104,12 @@ export class Filter extends Component {
 
         const { username, headline, vipId, languageIds, siteIds, positionIds, excludeIgnoredAccounts } = this.state;
         const params = {
-            username: username,
+            username: username=== '' ? null : username,
             headline: headline === '' ? null : headline,
             vipId: vipId,
             languageIds: languageIds,
             siteIds: siteIds,
-            positionIds: positionIds,
+            positionIds: positionIds.replace('5', '5,6,7,8,9,10'),
             excludeIgnoredAccounts: excludeIgnoredAccounts,
             pageIndex: 1,
             pageSize: this.props.gridParams.pageSize
