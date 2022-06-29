@@ -20,14 +20,14 @@ export class Edit extends Component {
     }
     
     componentDidMount(){
-        this.props.sourceMapping.length > 0 &&  this.handleOptionMapping();       
+        this.props.sourceMapping.length > 0 &&  this.handleOptionMapping();
     }
 
     handleOptionMapping(){
         const {sourceMapping, editPopup} = this.props;
-        let selectedMapping = []
+        let selectedMapping = [];
         if(editPopup.data.settingSource != null){
-            selectedMapping = editPopup.data.settingSource.split(", ").map(tool => {
+            selectedMapping = editPopup.data.settingSource.split(', ').map(tool => {
                 return {
                     id: tool,
                     name: tool,
@@ -46,7 +46,7 @@ export class Edit extends Component {
         const concatenated = [];
         concatenated.push(...selectedMapping);
         concatenated.push(...optionMappings);
-        this.setState({optionMappings: concatenated, sourceMappings: editPopup.data.settingSource})
+        this.setState({optionMappings: concatenated, sourceMappings: editPopup.data.settingSource});
     }
 
     validateFormik = values =>{
@@ -122,7 +122,7 @@ export class Edit extends Component {
                         </Col>
                     </Form.Group>
                     {
-                        this.props.sourceMapping.length > 0 &&  
+                        this.props.sourceMapping.length > 0 &&
                         <Form.Group as={Row}>
                             <Form.Label column sm="4" md="3" htmlFor="SourceMapping">
                                 {LangHelper.getResource('SourceMapping')}
@@ -137,7 +137,7 @@ export class Edit extends Component {
                                         }}
                                     />
                             </Col>
-                        </Form.Group>                               
+                        </Form.Group>
                     }
                     <Form.Group as={Row}>
                         <Form.Label column sm="4" md="3" htmlFor="displayOrder">

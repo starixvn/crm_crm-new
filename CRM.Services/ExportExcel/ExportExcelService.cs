@@ -210,7 +210,7 @@
 
         public byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo, int year)
         {
-            const string ExcelTemplatePath = "ExcelTemplates/Issue_Statistics.xlsx";
+            const string ExcelTemplatePath = "ExcelTemplates/Categories_Summary_Report.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
             var excel = new SummaryReportExcel(templatePath, summaryreportInfo, year);
             return excel.Export();

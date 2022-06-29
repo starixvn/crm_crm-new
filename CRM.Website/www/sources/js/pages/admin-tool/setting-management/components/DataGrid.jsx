@@ -10,7 +10,7 @@ export class DataGrid extends Component {
         super(props);
     }
 
-    buildHeader = (isHost) => {
+    buildHeader = isHost => {
         const checkShowSourceMapping = this.IsShowSourceMapping();
         return (
             <HeaderRow>
@@ -60,7 +60,7 @@ export class DataGrid extends Component {
         );
     };
 
-    buildBody = (isHost) => {
+    buildBody = isHost => {
         const { settingType } = this.props;
         if ( settingType.length > 0) {
             return settingType.map((item, index) => this.renderRow(item, index, isHost));
@@ -86,8 +86,10 @@ export class DataGrid extends Component {
         const { settingType} = this.props;
         let count = false;
         settingType.map(item => {
-            if(item.settingSource != null){count = true}
-        })
+            if(item.settingSource != null){
+                count = true;
+            }
+        });
         return count;
     }
 

@@ -73,7 +73,7 @@ export class AppContainer extends Component {
 
     render() {
 
-        const { editContactInformDialog, editInformDialog, removedLogDialog, 
+        const { editContactInformDialog, editInformDialog, removedLogDialog,
                 removedLogDetailDialog, newInformDialog, allSettings } = this.props;
         if (!allSettings) {
             return null;
