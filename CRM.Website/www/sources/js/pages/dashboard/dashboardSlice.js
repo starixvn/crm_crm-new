@@ -1,19 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    customerRemarks: null,
+    redemptions: null,
+    editRedemptionDialog: { show: false },
+    communicationLogs: null,
+    noOfInquiryDialog: { show: false },
+    editCommunicationDialog: { show: false },
+    createCommunicationDialog: { show: false },
+    customerInfoVerify: null,
+    editCustomerVerifyDialog: { show: false }
+};
 const dashboardSlice = createSlice({
     name: 'dashboard',
-    initialState: {
-        customerRemarks: null,
-        redemptions: null,
-        editRedemptionDialog: { show: false },
-        communicationLogs: null,
-        noOfInquiryDialog: { show: false },
-        editCommunicationDialog: { show: false },
-        createCommunicationDialog: { show: false },
-        customerInfoVerify: null,
-        editCustomerVerifyDialog: { show: false }
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setCustomerRemarks: (state, action) => {
             state.customerRemarks = action.payload;
         },
@@ -55,7 +56,8 @@ export const {
     setEditCommunicationDialog,
     setCreateCommunicationDialog,
     setCustomerInfoVerify,
-    setEditCustomerVerifyDialog
+    setEditCustomerVerifyDialog,
+    resetState
 } = actions;
 
 export default reducer;

@@ -1,16 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    settings: null,
+    balanceUpday: null,
+    customerDetail: null,
+    addFeedbackResult: null,
+    feedbackSubjectTemplates: [],
+    confirmCreateGuestDialog: { show: false }
+};
 const addGuestFeedbackSlice = createSlice({
     name: 'addCustomerFeedback',
-    initialState: {
-        settings: null,
-        balanceUpday: null,
-        customerDetail: null,
-        addFeedbackResult: null,
-        feedbackSubjectTemplates: [],
-        confirmCreateGuestDialog: { show: false }
-    },
+    initialState:  initialState,
     reducers: {
+        resetState: () => initialState,
         setAllSettings: (state, action) => {
             state.settings = action.payload;
         },
@@ -40,7 +41,8 @@ export const {
     setCustomerDetail,
     setFeedbackSubjectTemplates,
     setAddFeedback,
-    setConfirmCreateGuestDialog
+    setConfirmCreateGuestDialog,
+    resetState
 } = actions;
 
 export default reducer;

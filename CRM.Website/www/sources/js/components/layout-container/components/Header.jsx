@@ -76,7 +76,7 @@ export class Header extends PureComponent {
         return (
             <div className='header'>
                 <div className='left-header'>
-                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/logo-crm.png')} onClick={this.props.handleNavigateDashboard}/>
+                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/logo-crm.png')} onClick={() => this.props.handleNavigate('/Dashboard')}/>
                     <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" onClick={handleCollapseExpandLayout}/></span>
                 </div>
                 <div className='right-header'>

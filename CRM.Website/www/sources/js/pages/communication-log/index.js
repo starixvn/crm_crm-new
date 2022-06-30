@@ -1,19 +1,28 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import Layout from '@jsroot/components/layout-container/index';
 import communicationLog from './communicationLogSlice';
 import AppContainer from './components/AppContainer';
+import WithNavigation from '@jsroot/components/WithNavigation';
 
 const store = configureStore({
     reducer: communicationLog
 });
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Layout>
-            <AppContainer id={window.currentCustomer.custId}/>
-        </Layout>
-    </Provider>,
-    document.getElementById('app-container'));
+import '@cssroot/pages/communication-log/index.scss';
+
+class index extends React.PureComponent {
+    render(){
+        const location = this.props.location;
+        return(
+            <Provider store={store}>
+                <div className='communication-log'>
+                    <AppContainer id={!location.state ? null : location.state.toString()}/>
+                </div>
+            </Provider>
+        );
+    }
+}
+
+const FunctionBarWithNavigation = WithNavigation(index);
+export default FunctionBarWithNavigation;

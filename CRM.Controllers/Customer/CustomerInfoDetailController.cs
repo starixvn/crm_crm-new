@@ -41,16 +41,16 @@
             this.baseService = baseService;
         }
 
-        public IActionResult Index()
-        {
-            var permission = new CustomerPermissionViewModel
-            {
-                CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
-                UpdateHeadlineInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo),
-            };
+        //public IActionResult Index()
+        //{
+        //    var permission = new CustomerPermissionViewModel
+        //    {
+        //        CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo),
+        //        UpdateHeadlineInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo),
+        //    };
 
-            return View(permission);
-        }
+        //    return View(permission);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> GetCustomerById([FromBody] GetCustomerInfoDetailByIdCriteria criteria)

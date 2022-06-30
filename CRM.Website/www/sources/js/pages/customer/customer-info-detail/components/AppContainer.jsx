@@ -22,6 +22,10 @@ export class AppContainer extends Component {
         }
     };
 
+    componentWillUnmount(){
+        this.props.resetState();
+     }
+
     handleCloseEditDetailDialog = () => {
         this.props.setEditCustomerInfoDetailDialog({ show: false });
     };

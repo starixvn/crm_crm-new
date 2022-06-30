@@ -31,6 +31,10 @@ export class Filter extends Component {
         this.props.getAllLogAction({ actionType: 1 });
     }
 
+    componentWillUnmount(){
+        this.props.resetState();
+     }
+
     handleChangeToDate = date => {
         this.setState({ toDate: date, maxFromDate: date });
     };

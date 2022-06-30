@@ -7,80 +7,82 @@
 @import '../../components/ckeditor';
 @import '../../components/date-picker/style';
 
-.table-title, .page-container, .table-container{
-    max-width: 1200px !important;
-}
-
-.react-datepicker-wrapper input{
-    width: 100% !important;
-}
-
-.form-group-button {
-    width: 100px;
-    display: flex;
-    align-items: center;
-    margin-right: 1rem;
-    margin-bottom: 1rem;
-}
-
-.link-click {
-    cursor: pointer;
-    color: $link-color !important;
-
-    &:hover {
-        color: $draft-color !important;
+.redemption{
+    .table-title, .page-container, .table-container{
+        max-width: 1200px !important;
     }
-}
-
-.sort-header{
-    float: right;
-    cursor: pointer;
-}
-
-.modal-edit-redemption {
-    .modal-dialog {
-        
-        .modal-content {
-            width: 768px;
-            margin: auto;
-            .panel-group {
-                .form-group {
-                    margin-bottom: 4px;
-
-                    .col-form-label {
-                        padding-right: 0;
+    
+    .react-datepicker-wrapper input{
+        width: 100% !important;
+    }
+    
+    .form-group-button {
+        width: 100px;
+        display: flex;
+        align-items: center;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .link-click {
+        cursor: pointer;
+        color: $link-color !important;
+    
+        &:hover {
+            color: $draft-color !important;
+        }
+    }
+    
+    .sort-header{
+        float: right;
+        cursor: pointer;
+    }
+    
+    .modal-edit-redemption {
+        .modal-dialog {
+            
+            .modal-content {
+                width: 768px;
+                margin: auto;
+                .panel-group {
+                    .form-group {
+                        margin-bottom: 4px;
+    
+                        .col-form-label {
+                            padding-right: 0;
+                        }
                     }
-                }
-
-                .panel-title {
-                    display: flex;
-                    align-items: center;
-                    height: 28px;
-                    margin: 0;
-                    padding: 0 6px;
-                    color: #2f70b4;
-                    background: linear-gradient(#e7e7e7, #e2e2e2);
-                    border-bottom: 1px solid #b1b1b1;
-                    cursor: pointer;
-
-                    .form-label {
+    
+                    .panel-title {
+                        display: flex;
+                        align-items: center;
+                        height: 28px;
                         margin: 0;
+                        padding: 0 6px;
+                        color: #2f70b4;
+                        background: linear-gradient(#e7e7e7, #e2e2e2);
+                        border-bottom: 1px solid #b1b1b1;
+                        cursor: pointer;
+    
+                        .form-label {
+                            margin: 0;
+                        }
                     }
-                }
-
-                .panel-content {
-                    padding: 4px 9px;
-                }
-
-                .panel-remark {
-                    border: 1px solid #b1b1b1;
-                    margin: 0 10px;
+    
+                    .panel-content {
+                        padding: 4px 9px;
+                    }
+    
+                    .panel-remark {
+                        border: 1px solid #b1b1b1;
+                        margin: 0 10px;
+                    }
                 }
             }
         }
     }
-}
-
-.modal-backdrop {
-    z-index: 1050 !important;
+    
+    .modal-backdrop {
+        z-index: 1050 !important;
+    }
 }

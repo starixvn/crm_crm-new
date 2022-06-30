@@ -2,6 +2,7 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
 import {
+    resetState,
     setCustomerById,
     setAllSettings,
     setEditCustomerInfoDetail,
@@ -33,6 +34,7 @@ const editCustomerInfoDetail = params => async dispatch => {
 };
 
 export const ActionCreators = {
+    resetState,
     getCustomerById,
     getAllSettings,
     editCustomerInfoDetail,

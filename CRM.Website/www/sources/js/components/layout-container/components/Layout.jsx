@@ -207,7 +207,7 @@ class Layout extends Component {
             if(response.data !== null){
                 document.getElementById('currentCustId').value = response.data.custId;
                 this.setState({customerInfo: response.data}, () =>{
-                    this.handleNavigateDashboard();
+                    this.handleNavigate('/Dashboard');
                 });
             }else if (response.data === null && !this.state.isGuest) {
                 this.setState({
@@ -220,7 +220,7 @@ class Layout extends Component {
         }}).then(() => Site.unblockUI());
     };
 
-    handleNavigateDashboard = () => this.props.navigate('/Dashboard', {state: this.state.customerInfo.custId});
+    handleNavigate = name => this.props.navigate(name, {state: this.state.customerInfo.custId});
 
 
     handleCollapseExpandLayout = event =>{
@@ -250,7 +250,7 @@ class Layout extends Component {
                     customerInfo !== null && settings !== null &&
                     <DataGrid 
                         customerInfo={customerInfo} settings = {settings} gridParams={gridParams} setGridParams={this.setGridParams} setUserName={this.setUserName}
-                        getCustomerInfo={this.getCustomerInfo} handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup}
+                        getCustomerInfo={this.getCustomerInfo} handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup} handleNavigate = {this.handleNavigate}
                     />
                 }
                 </div>
@@ -286,7 +286,7 @@ class Layout extends Component {
         return (
             <div>
                 <div className='fix-header-menu'>
-                    <Header menus={menus} handleNavigateDashboard={this.handleNavigateDashboard} handleCollapseExpandLayout={this.handleCollapseExpandLayout} />
+                    <Header menus={menus} handleNavigate={this.handleNavigate} handleCollapseExpandLayout={this.handleCollapseExpandLayout} />
                     <Filter
                         isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                         customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}

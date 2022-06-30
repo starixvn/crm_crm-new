@@ -1,17 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    redemptionLogs: null,
+    allStatus: null,
+    redemptionLog: null,
+    gridParams: null,
+    editRedemptionDialog: { show: false },
+    settings: null,
+    createRedemptionDialog: { show: false }
+};
 const redemptionSlice = createSlice({
     name: 'redemption',
-    initialState: {
-        redemptionLogs: null,
-        allStatus: null,
-        redemptionLog: null,
-        gridParams: null,
-        editRedemptionDialog: { show: false },
-        settings: null,
-        createRedemptionDialog: { show: false }
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setLogsByCustomerId: (state, action) => {
             state.redemptionLogs = action.payload;
         },
@@ -39,6 +40,7 @@ const redemptionSlice = createSlice({
 const { actions, reducer } = redemptionSlice;
 
 export const {
+    resetState,
     setLogsByCustomerId,
     setAllStatus,
     setLogById,

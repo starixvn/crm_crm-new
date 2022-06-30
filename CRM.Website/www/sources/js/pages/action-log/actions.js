@@ -2,6 +2,7 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
 import {
+    resetState,
     setAllLogAction,
     setActivityLog,
     setGridParams
@@ -24,6 +25,7 @@ const getActivityLog = params => async dispatch => {
 };
 
 export const ActionCreators = {
+    resetState,
     getAllLogAction,
     getActivityLog,
     setGridParams

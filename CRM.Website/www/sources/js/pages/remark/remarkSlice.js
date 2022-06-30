@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    gridData: null
+};
 const remarkSlice = createSlice({
     name: 'remark',
-    initialState: {
-        gridData: null
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setRemarks: (state, action) => {
             state.gridData = action.payload;
         }
@@ -15,7 +16,8 @@ const remarkSlice = createSlice({
 const { actions, reducer } = remarkSlice;
 
 export const {
-    setRemarks
+    setRemarks,
+    resetState
 } = actions;
 
 export default reducer;

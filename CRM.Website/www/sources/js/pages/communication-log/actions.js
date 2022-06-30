@@ -8,23 +8,22 @@ import {
     setEditNoOfInquiryDialog,
     setEditCommunicationDialog,
     setFeedbackSubjectTemplates,
-    setCreateCommunicationDialog
+    setCreateCommunicationDialog,
+    resetState
 } from './communicationLogSlice';
 
 const getLogsByCustomerId = params => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('CommunicationLog/GetLogsByCustomerId');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setLogsByCustomerId(response.data));
-    }).then(() => Site.unblockUI());
+    });
 };
 
 const getStatusForFilter = () => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl(`CommunicationLog/GetAllStatus?isEdit=false`);
     await DataService.getDataAsync(url).then(response => {
         dispatch(setStatusForFilter(response.data));
-    }).then(() => Site.unblockUI());
+    });
 };
 
 const getFeedbackSubjectTemplates = subject => async dispatch => {
@@ -43,5 +42,6 @@ export const ActionCreators = {
     setEditCommunicationDialog,
     setFeedbackSubjectTemplates,
     getFeedbackSubjectTemplates,
-    setCreateCommunicationDialog
+    setCreateCommunicationDialog,
+    resetState
 };

@@ -1,19 +1,29 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import Layout from '@jsroot/components/layout-container/index';
 import customerInfoDetail from './customerInfoDetailSlice';
 import AppContainer from './components/AppContainer';
+import WithNavigation from '@jsroot/components/WithNavigation';
 
 const store = configureStore({
     reducer: customerInfoDetail
 });
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Layout>
-            <AppContainer id={window.currentCustomer.custId}/>
-        </Layout>
-    </Provider>,
-    document.getElementById('app-container'));
+import '@cssroot/pages/customer/customer-info-detail/index.scss';
+
+class index extends React.PureComponent {
+    render(){
+        const location = this.props.location;
+        console.log(location);
+        return(
+            <Provider store={store}>
+                  <div className='customer-info-detail'>
+                    <AppContainer id={!location.state ? null : location.state.toString()}/>
+                  </div>
+            </Provider>
+        );
+    }
+}
+
+const FunctionBarWithNavigation = WithNavigation(index);
+export default FunctionBarWithNavigation;

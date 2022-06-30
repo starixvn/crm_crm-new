@@ -11,126 +11,128 @@
 @import '../../components/verify-customer';
 @import '../../components/date-picker/style';
 
-.table-title, .page-container {
-    max-width: 1200px !important;
-}
-
-
-.pending{
-    background-color: #f0edc4;
-}
-
-.closed{
-    background-color: #ddd;
-}
-
-.link-click {
-    cursor: pointer;
-    color: $link-color !important;
-
-    &:hover {
-        color: $draft-color !important;
+.communication-log{
+    // .table-title, .page-container {
+    //     max-width: 1200px !important;
+    // }
+    
+    
+    .pending{
+        background-color: #f0edc4;
     }
-}
-
-.form-group-button {
-    width: 100px;
-    display: flex;
-    align-items: center;
-    margin-right: 1rem;
-    margin-bottom: 1rem;
-}
-
-.react-datepicker-wrapper input{
-    width: 100% !important;
-}
-
-.communication-modal-dialog {
-    .modal-dialog {
-        min-width: 1140px;
-
-        .modal-content {
-            .panel-group {
-                border: 1px solid #b1b1b1;
-
-                .form-group {
-                    margin-bottom: 4px;
-
-                    .col-form-label {
-                        padding-right: 0;
-                    }
-                }
-
-                .panel-title {
-                    display: flex;
-                    align-items: center;
-                    height: 28px;
-                    margin: 0;
-                    padding: 0 15px;
-                    color: #2f70b4;
-                    background: linear-gradient(#e7e7e7, #e2e2e2);
-                    border-bottom: 1px solid #b1b1b1;
-                    cursor: pointer;
-
-                    .form-label {
-                        margin: 0;
-                    }
-                }
-
-                .panel-content {
-                    padding: 4px 9px;
-
-                    .customersList {
-                        padding: 5px;
-
-                        .txt-customer, .txt-guest, .txt-invalid, .txt-inactive {
-                            width: auto;
-                            border: 1px solid #8e8e8e;
-                            border-radius: 5px;
-                            padding: 1px 4px;
-                            margin: 0 0.5rem 0.5rem 0;
+    
+    .closed{
+        background-color: #ddd;
+    }
+    
+    .link-click {
+        cursor: pointer;
+        color: $link-color !important;
+    
+        &:hover {
+            color: $draft-color !important;
+        }
+    }
+    
+    .form-group-button {
+        width: 100px;
+        display: flex;
+        align-items: center;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .react-datepicker-wrapper input{
+        width: 100% !important;
+    }
+    
+    .communication-modal-dialog {
+        .modal-dialog {
+            min-width: 1140px;
+    
+            .modal-content {
+                .panel-group {
+                    border: 1px solid #b1b1b1;
+    
+                    .form-group {
+                        margin-bottom: 4px;
+    
+                        .col-form-label {
+                            padding-right: 0;
                         }
                     }
-
-                    .fa-question-circle-o {
-                        font-size: 14px;
-                        color: #0789d1;
-                        position: absolute;
-                        right: 0;
+    
+                    .panel-title {
+                        display: flex;
+                        align-items: center;
+                        height: 28px;
+                        margin: 0;
+                        padding: 0 15px;
+                        color: #2f70b4;
+                        background: linear-gradient(#e7e7e7, #e2e2e2);
+                        border-bottom: 1px solid #b1b1b1;
+                        cursor: pointer;
+    
+                        .form-label {
+                            margin: 0;
+                        }
+                    }
+    
+                    .panel-content {
+                        padding: 4px 9px;
+    
+                        .customersList {
+                            padding: 5px;
+    
+                            .txt-customer, .txt-guest, .txt-invalid, .txt-inactive {
+                                width: auto;
+                                border: 1px solid #8e8e8e;
+                                border-radius: 5px;
+                                padding: 1px 4px;
+                                margin: 0 0.5rem 0.5rem 0;
+                            }
+                        }
+    
+                        .fa-question-circle-o {
+                            font-size: 14px;
+                            color: #0789d1;
+                            position: absolute;
+                            right: 0;
+                        }
                     }
                 }
             }
         }
     }
-}
-
-.sort-header{
-    float: right;
-    cursor: pointer;
-}
-
-.sweet-alert-modal-backdrop {
-    z-index: 1050 !important;
-}
-
-#tooltip-ref-ticket [class$="inner"] {
-    white-space: pre-wrap;
-    min-width: 500px;
-    text-align: left;
-}
-
-.ref-ticket-input {
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
+    
+    .sort-header{
+        float: right;
+        cursor: pointer;
     }
-    /* Firefox */
-    input[type=number] {
-        -moz-appearance: textfield;
+    
+    .sweet-alert-modal-backdrop {
+        z-index: 1050 !important;
     }
-}
-
-.modal-backdrop {
-    z-index: 1050 !important;
+    
+    #tooltip-ref-ticket [class$="inner"] {
+        white-space: pre-wrap;
+        min-width: 500px;
+        text-align: left;
+    }
+    
+    .ref-ticket-input {
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    }
+    
+    .modal-backdrop {
+        z-index: 1050 !important;
+    }
 }

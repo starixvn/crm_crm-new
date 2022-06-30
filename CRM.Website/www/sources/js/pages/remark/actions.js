@@ -1,7 +1,8 @@
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import {
-    setRemarks
+    setRemarks,
+    resetState
 } from './remarkSlice';
 
 const getRemarks = params => async dispatch => {
@@ -18,6 +19,7 @@ const editRemarks = params => async () => {
 };
 
 export const ActionCreators = {
+    resetState,
     getRemarks,
     editRemarks
 };

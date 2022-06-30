@@ -16,7 +16,9 @@ class index extends PureComponent {
         const location = this.props.location;
         return(
             <Provider store={store}>
-                <AppContainer custId={!location.state ? null : location.state.toString()}/>
+                <div className='dashboard'>
+                    <AppContainer custId={!location.state ? null : location.state.toString()}/>
+                </div>
             </Provider>
         );
     }

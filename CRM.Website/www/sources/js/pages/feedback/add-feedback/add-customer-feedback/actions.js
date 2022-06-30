@@ -6,7 +6,8 @@ import {
     setCustomerDetail,
     setFeedbackSubjectTemplates,
     setAddFeedback,
-    setConfirmCreateGuestDialog
+    setConfirmCreateGuestDialog,
+    resetState
 } from './addCustomerFeedbackSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -70,5 +71,6 @@ export const ActionCreators = {
     setAddFeedback,
     verifyUserName,
     setConfirmCreateGuestDialog,
-    getTicketInfoByRef
+    getTicketInfoByRef,
+    resetState
 };

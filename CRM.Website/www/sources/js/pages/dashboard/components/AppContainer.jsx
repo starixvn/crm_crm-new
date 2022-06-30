@@ -30,6 +30,10 @@ export class AppContainer extends Component {
         editCustomerVerifyDialog: { show: false }
     };
 
+    componentWillUnmount(){
+        this.props.resetState();
+     }
+
     handleCloseEditRedemptionDialog = isSuccessful => {
         this.props.setEditRedemptionDialog({ show: false });
         if (isSuccessful) {

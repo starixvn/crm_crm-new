@@ -30,8 +30,12 @@ export class AppContainer extends Component {
     componentDidMount() {
         this.props.getAllSettings();
         this.props.getBalanceUpday();
-        this.props.getCustomerDetail({customerId: window.currentCustomer.custId});
+        this.props.getCustomerDetail({customerId: this.props.id});
     }
+
+    componentWillUnmount(){
+        this.props.resetState();
+     }
 
     render() {
         const { settings, balanceUpday, customerDetail, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult } = this.props;

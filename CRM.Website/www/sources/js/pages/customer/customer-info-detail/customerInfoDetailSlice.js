@@ -1,14 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    customerInfo: null,
+    allSettings: null,
+    editCustomerInfoDetailResult: '',
+    editCustomerInfoDetailDialog: { show: false }
+};
 const customerInfoDetailSlice = createSlice({
     name: 'customerInfoDetail',
-    initialState: {
-        customerInfo: null,
-        allSettings: null,
-        editCustomerInfoDetailResult: '',
-        editCustomerInfoDetailDialog: { show: false }
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setCustomerById: (state, action) => {
             state.customerInfo = action.payload;
         },
@@ -27,6 +28,7 @@ const customerInfoDetailSlice = createSlice({
 const { actions, reducer } = customerInfoDetailSlice;
 
 export const {
+    resetState,
     setCustomerById,
     setAllSettings,
     setEditCustomerInfoDetail,

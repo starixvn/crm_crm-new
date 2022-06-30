@@ -10,7 +10,8 @@ import {
     setEditCommunicationDialog,
     setCreateCommunicationDialog,
     setCustomerInfoVerify,
-    setEditCustomerVerifyDialog
+    setEditCustomerVerifyDialog,
+    resetState
 } from './dashboardSlice';
 
 const getCustomerRemarks = params => async dispatch => {
@@ -57,5 +58,6 @@ export const ActionCreators = {
     setCreateCommunicationDialog,
     getCustomerInfoVerify,
     setEditCustomerVerifyDialog,
-    editCustomerVerify
+    editCustomerVerify,
+    resetState
 };

@@ -33,14 +33,14 @@
             this.remarkService = remarkService;
         }
 
-        public IActionResult Index(int custId)
-        {
-            var permission = new CustomerPermissionViewModel
-            {
-                CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo)
-            };
-            return View(permission);
-        }
+        //public IActionResult Index(int custId)
+        //{
+        //    var permission = new CustomerPermissionViewModel
+        //    {
+        //        CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo)
+        //    };
+        //    return View(permission);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> GetRemarks([FromBody] GetRemarkCriteria criteria)

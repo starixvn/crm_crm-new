@@ -428,11 +428,11 @@ export default class DataGrid extends PureComponent {
                         <ul className='list-unstyled list-menu pull-left'>
                             <li>
                                 <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a href={Site.resolveClientUrl('CustomerInfoDetail')}>{LangHelper.getResource('CRMInfo')}</a>
+                                <a onClick = {() => this.props.handleNavigate('/Detail')}>{LangHelper.getResource('CRMInfo')}</a>
                             </li>
                             <li>
                                 <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a href={Site.resolveClientUrl('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
+                                <a onClick = {() => this.props.handleNavigate('/Feedbacks/LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
                             </li>
                         </ul>
                         <ul className='list-unstyled list-menu pull-left'>
@@ -440,12 +440,12 @@ export default class DataGrid extends PureComponent {
                                 !isShowInactiveMsg &&
                                 <li>
                                     <i className="fa fa-angle-right" aria-hidden="true" />
-                                    <a href={Site.resolveClientUrl('AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
+                                    <a onClick = {() => this.props.handleNavigate('/AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
                                 </li>
                             }
                             <li>
                                 <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a href={Site.resolveClientUrl('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
+                                <a onClick = {() => this.props.handleNavigate('/Feedbacks/ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
                             </li>
                         </ul>
                     </Form.Group>

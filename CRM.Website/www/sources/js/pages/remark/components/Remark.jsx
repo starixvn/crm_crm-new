@@ -39,6 +39,10 @@ export class Remark extends Component {
         });
     }
 
+    componentWillUnmount(){
+        this.props.resetState();
+     }
+
     handleChange = (value, key, name, dataRemark) => {
         const newDataRemark = [...dataRemark];
         newDataRemark[key] = value;

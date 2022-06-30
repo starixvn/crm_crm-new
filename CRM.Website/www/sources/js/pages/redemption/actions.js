@@ -2,6 +2,7 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
 import {
+    resetState,
     setLogsByCustomerId,
     setAllStatus,
     setLogById,
@@ -12,11 +13,10 @@ import {
 } from './redemptionSlice';
 
 const getLogsByCustomerId = params => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('Redemption/GetLogsByCustomerId');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setLogsByCustomerId(response.data));
-    }).then(() => Site.unblockUI());
+    });
 };
 
 const getAllStatus = () => async dispatch => {
@@ -54,6 +54,7 @@ const createRedemptionLog = params => async () => {
 };
 
 export const ActionCreators = {
+    resetState,
     getLogsByCustomerId,
     setLogsByCustomerId,
     getAllStatus,

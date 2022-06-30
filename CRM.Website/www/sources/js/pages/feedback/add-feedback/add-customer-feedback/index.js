@@ -1,20 +1,28 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-
-import Layout from '@jsroot/components/layout-container/index';
 import addCustomerFeedbackReducer from './addCustomerFeedbackSlice';
 import AppContainer from './components/AppContainer';
+import WithNavigation from '@jsroot/components/WithNavigation';
 
 const store = configureStore({
     reducer: addCustomerFeedbackReducer
 });
+import '@cssroot/pages/feedback/add-feedback/index.scss';
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Layout>
-            <AppContainer/>
-        </Layout>
-    </Provider>,
-    document.getElementById('app-container'));
+class index extends React.PureComponent {
+    render(){
+        const location = this.props.location;
+        console.log(location);
+        return(
+            <Provider store={store}>
+                  <div className='add-feedback'>
+                    <AppContainer id={!location.state ? null : location.state.toString()}/>
+                  </div>
+            </Provider>
+        );
+    }
+}
+
+const FunctionBarWithNavigation = WithNavigation(index);
+export default FunctionBarWithNavigation;

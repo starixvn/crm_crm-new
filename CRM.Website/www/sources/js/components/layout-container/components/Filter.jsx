@@ -71,7 +71,7 @@ class Filter extends Component {
         return breadcrumbsMenu;
     }
 
-    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={this.handleMenuDashboardClick}/></li>;
+    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={event => this.handleNavigateSubHome(event, '/Dashboard')}/></li>;
 
     renderBreadcrumbsMenu = (breadcrumbsMenu, pathname) =>{
         const isHome = breadcrumbsMenu.length > 0 && breadcrumbsMenu[0].toLowerCase() === 'home' 
@@ -100,46 +100,49 @@ class Filter extends Component {
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
                 <li id="li-main" className={this.isActiveTab(pathname, 0) ? 'active' : ''}>
-                    <a href={Site.resolveClientUrl('Dashboard')}>
+                    <a onClick = {event => this.handleNavigateSubHome(event, '/Dashboard')}>
                         {LangHelper.getResource('Main')}
                     </a>
                 </li>
                 <li id="li-main" className={this.isActiveTab(pathname, 1) ? 'active' : ''}>
-                    <a href={Site.resolveClientUrl('CustomerInfoDetail')}>
+                    <a onClick = {event => this.handleNavigateSubHome(event, '/Detail')}>
                         {LangHelper.getResource('Detail')}
                     </a>
                 </li>
                 <li id="li-communication-log" className={this.isActiveTab(pathname, 2) ? 'active' : ''}>
-                    <a href={Site.resolveClientUrl('CommunicationLog')}>
+                    <a onClick = {event => this.handleNavigateSubHome(event, '/Communication')}>
                         {LangHelper.getResource('CommunicationLog')}
                     </a>
                 </li>
                 <li id="li-special-remark" className={this.isActiveTab(pathname, 3) ? 'active' : ''}>
-                    <a href={Site.resolveClientUrl('Remark')}>
+                    <a onClick = {event => this.handleNavigateSubHome(event, '/Remark')}>
                         {LangHelper.getResource('SpecialRemark')}
                     </a>
                 </li>
                 <li id="li-redemption" className={this.isActiveTab(pathname, 4) ? 'active' : ''}>
-                    <a href={Site.resolveClientUrl('Redemption')}>
+                    <a onClick = {event => this.handleNavigateSubHome(event, '/Redemption')}>
                         {LangHelper.getResource('Redemption')}
                     </a>
                 </li>
                 <li id="li-activity-log" className={this.isActiveTab(pathname, 5) ? 'active' : ''}>
-                    <a href={Site.resolveClientUrl('ActionLog')}>
+                    <a onClick = {event => this.handleNavigateSubHome(event, '/ActionLog')}>
                         {LangHelper.getResource('ActivityLog')}
                     </a>
                 </li>
             </ul> :
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
-                <li id="li-main" className='active'><a href={Site.resolveClientUrl('Dashboard')}>{LangHelper.getResource('Main')}</a></li>
+                <li id="li-main" className='active'>
+                    <a onClick = {event => this.handleNavigateSubHome(event, '/Dashboard')}>{LangHelper.getResource('Main')}
+                    </a>
+                </li>
             </ul>
         );
     };
 
-    handleMenuDashboardClick = event =>{
+    handleNavigateSubHome = (event, name) =>{
         event.preventDefault();
-        this.props.navigate('/Dashboard', {state: {id: this.props.customerInfo.custId}});
+        this.props.navigate(name, {state: this.props.customerInfo.custId});
     }
 
     handleConcatMenu = menus => {

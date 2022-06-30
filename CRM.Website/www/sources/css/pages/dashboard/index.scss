@@ -11,7 +11,7 @@
 @import '../../components/multiple-select/style';
 @import '../../components/verify-customer';
 
-#child-app-container {
+.dashboard{
     .redemption-grid{
         .table-title, .page-container, .table-container{
             width: 980px !important;
@@ -38,225 +38,225 @@
             color: #b40b0b;
         }
     }
-}
-
-.link-detail {
-    cursor: pointer;
-    color: $link-color !important;
-
-    &:hover {
-        color: $draft-color !important;
-    }
-}
-
-.pending{
-    background-color: #f0edc4;
-}
-
-.closed{
-    background-color: #ddd;
-}
-
-.modal-edit-redemption {
-    .modal-dialog {
-        
-        .modal-content {
-            width: 768px;
-            margin: auto;
-            .panel-group {
-                .form-group {
-                    margin-bottom: 4px;
-
-                    .col-form-label {
-                        padding-right: 0;
-                    }
-                }
-
-                .panel-title {
-                    display: flex;
-                    align-items: center;
-                    height: 28px;
-                    margin: 0;
-                    padding: 0 6px;
-                    color: #2f70b4;
-                    background: linear-gradient(#e7e7e7, #e2e2e2);
-                    border-bottom: 1px solid #b1b1b1;
-                    cursor: pointer;
-
-                    .form-label {
-                        margin: 0;
-                    }
-                }
-
-                .panel-content {
-                    padding: 4px 9px;
-                }
-
-                .panel-remark {
-                    border: 1px solid #b1b1b1;
-                    margin: 0 10px;
-                }
-            }
+    
+    .link-detail {
+        cursor: pointer;
+        color: $link-color !important;
+    
+        &:hover {
+            color: $draft-color !important;
         }
-    }
-}
-
-.communication-modal-dialog {
-    .modal-dialog {
-        min-width: 1140px;
-
-        .modal-content {
-            .panel-group {
-                border: 1px solid #b1b1b1;
-
-                .form-group {
-                    margin-bottom: 4px;
-
-                    .col-form-label {
-                        padding-right: 0;
-                    }
-                }
-
-                .panel-title {
-                    display: flex;
-                    align-items: center;
-                    height: 28px;
-                    margin: 0;
-                    padding: 0 15px;
-                    color: #2f70b4;
-                    background: linear-gradient(#e7e7e7, #e2e2e2);
-                    border-bottom: 1px solid #b1b1b1;
-                    cursor: pointer;
-
-                    .form-label {
-                        margin: 0;
-                    }
-                }
-
-                .panel-content {
-                    padding: 4px 9px;
-
-                    .customersList {
-                        padding: 5px;
-
-                        .txt-customer, .txt-guest, .txt-invalid, .txt-inactive {
-                            width: auto;
-                            border: 1px solid #8e8e8e;
-                            border-radius: 5px;
-                            padding: 1px 4px;
-                            margin: 0 0.5rem 0.5rem 0;
-                        }
-                    }
-
-                    .fa-question-circle-o {
-                        font-size: 14px;
-                        color: #0789d1;
-                        position: absolute;
-                        right: 0;
-                    }
-                }
-            }
-        }
-    }
-}
-
-.react-datepicker-wrapper input{
-    width: 100% !important;
-}
-
-.sweet-alert-modal-backdrop {
-    z-index: 1050 !important;
-}
-
-#tooltip-ref-ticket [class$="inner"] {
-    white-space: pre-wrap;
-    min-width: 500px;
-    text-align: left;
-}
-
-.ref-ticket-input {
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    /* Firefox */
-    input[type=number] {
-        -moz-appearance: textfield;
-    }
-}
-
-.dataGrid-remark {
-    width: 70%;
-}
-
-.information {
-    width: 20%;
-    height: 140px;
-}
-
-.customer-verify {
-    padding: 7px;
-    height: 75%;
-    background-color: #ffffff;
-    border: solid 1px rgba(0,0,0,.2);
-
-    .info-text {
-        text-align: end;
-        padding: 5px 0px;
     }
     
-    .process {
-        position: relative;
-
-        .percent-process {
-            position: absolute;
-            left: 45%;
-            top: 7%;
+    .pending{
+        background-color: #f0edc4;
+    }
+    
+    .closed{
+        background-color: #ddd;
+    }
+    
+    .modal-edit-redemption {
+        .modal-dialog {
+            
+            .modal-content {
+                width: 768px;
+                margin: auto;
+                .panel-group {
+                    .form-group {
+                        margin-bottom: 4px;
+    
+                        .col-form-label {
+                            padding-right: 0;
+                        }
+                    }
+    
+                    .panel-title {
+                        display: flex;
+                        align-items: center;
+                        height: 28px;
+                        margin: 0;
+                        padding: 0 6px;
+                        color: #2f70b4;
+                        background: linear-gradient(#e7e7e7, #e2e2e2);
+                        border-bottom: 1px solid #b1b1b1;
+                        cursor: pointer;
+    
+                        .form-label {
+                            margin: 0;
+                        }
+                    }
+    
+                    .panel-content {
+                        padding: 4px 9px;
+                    }
+    
+                    .panel-remark {
+                        border: 1px solid #b1b1b1;
+                        margin: 0 10px;
+                    }
+                }
+            }
         }
     }
-
-    .progress {
-        height: 22px;
-
-        .progress-bar {
-            color: #333333;
-            font-size: 12px;
-            background-color: #78b5e4;
+    
+    .communication-modal-dialog {
+        .modal-dialog {
+            min-width: 1140px;
+    
+            .modal-content {
+                .panel-group {
+                    border: 1px solid #b1b1b1;
+    
+                    .form-group {
+                        margin-bottom: 4px;
+    
+                        .col-form-label {
+                            padding-right: 0;
+                        }
+                    }
+    
+                    .panel-title {
+                        display: flex;
+                        align-items: center;
+                        height: 28px;
+                        margin: 0;
+                        padding: 0 15px;
+                        color: #2f70b4;
+                        background: linear-gradient(#e7e7e7, #e2e2e2);
+                        border-bottom: 1px solid #b1b1b1;
+                        cursor: pointer;
+    
+                        .form-label {
+                            margin: 0;
+                        }
+                    }
+    
+                    .panel-content {
+                        padding: 4px 9px;
+    
+                        .customersList {
+                            padding: 5px;
+    
+                            .txt-customer, .txt-guest, .txt-invalid, .txt-inactive {
+                                width: auto;
+                                border: 1px solid #8e8e8e;
+                                border-radius: 5px;
+                                padding: 1px 4px;
+                                margin: 0 0.5rem 0.5rem 0;
+                            }
+                        }
+    
+                        .fa-question-circle-o {
+                            font-size: 14px;
+                            color: #0789d1;
+                            position: absolute;
+                            right: 0;
+                        }
+                    }
+                }
+            }
         }
     }
-
-    button {
-        float: right;
+    
+    .react-datepicker-wrapper input{
+        width: 100% !important;
     }
-}
-
-.customer-modal-dialog {
-
-    .check-customer {
-        display: flex;
-        align-items: center;
+    
+    .sweet-alert-modal-backdrop {
+        z-index: 1050 !important;
     }
-
-    .check-name {
-        padding-left: 7px;
+    
+    #tooltip-ref-ticket [class$="inner"] {
+        white-space: pre-wrap;
+        min-width: 500px;
+        text-align: left;
     }
-
-    td {
-        padding: 10px !important;
+    
+    .ref-ticket-input {
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
     }
-
-    .label-email {
-        color: #0255a5 !important;
-        cursor: pointer;
-        text-decoration: underline;
+    
+    .dataGrid-remark {
+        width: 70%;
     }
-
-    .label-email:hover {
-        color: #ffb400 !important;
+    
+    .information {
+        width: 20%;
+        height: 140px;
     }
-}
-
-.modal-backdrop {
-    z-index: 1050 !important;
+    
+    .customer-verify {
+        padding: 7px;
+        height: 75%;
+        background-color: #ffffff;
+        border: solid 1px rgba(0,0,0,.2);
+    
+        .info-text {
+            text-align: end;
+            padding: 5px 0px;
+        }
+        
+        .process {
+            position: relative;
+    
+            .percent-process {
+                position: absolute;
+                left: 45%;
+                top: 7%;
+            }
+        }
+    
+        .progress {
+            height: 22px;
+    
+            .progress-bar {
+                color: #333333;
+                font-size: 12px;
+                background-color: #78b5e4;
+            }
+        }
+    
+        button {
+            float: right;
+        }
+    }
+    
+    .customer-modal-dialog {
+    
+        .check-customer {
+            display: flex;
+            align-items: center;
+        }
+    
+        .check-name {
+            padding-left: 7px;
+        }
+    
+        td {
+            padding: 10px !important;
+        }
+    
+        .label-email {
+            color: #0255a5 !important;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    
+        .label-email:hover {
+            color: #ffb400 !important;
+        }
+    }
+    
+    .modal-backdrop {
+        z-index: 1050 !important;
+    }
 }
