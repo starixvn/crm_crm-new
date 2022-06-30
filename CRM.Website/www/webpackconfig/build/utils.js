@@ -17,7 +17,7 @@ exports.setDefinePlugin = function (key, value, PUBLIC_URL) {
 
 exports.extractCSS = function (isProduction) {
     const env = isProduction ? 'pro' : 'dev';
-    const jsPath = `${pathConfig.scriptPaths.build}/${env}/lib`;
+    const jsPath = `${pathConfig.scriptPaths.build}/build/lib`;
     return {
         plugins: [
             new MiniCssExtractPlugin({ filename: '[name].chunk.css', chunkFilename: jsPath + '/[name].chunk.css' })

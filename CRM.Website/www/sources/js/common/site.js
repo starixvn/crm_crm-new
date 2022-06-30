@@ -1,6 +1,5 @@
 ﻿import { MappingStatus } from './constants';
 const _rootUrl = PUBLIC_URL;
-console.log(_rootUrl);
 let _xsrfToken = null;
 
 export default class Site {

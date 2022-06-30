@@ -5,7 +5,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const pathConfig = require('../config/path');
 
 module.exports = (env) => {
-    const environment = env.Environment;
     const baseConfigs = baseWebpackConfigGenerator(env);
     const cssRootPath = `www/dist/${pathConfig.cssPaths.build}/build`;
     const jsRootPath = `www/dist/${pathConfig.scriptPaths.build}/build`;
