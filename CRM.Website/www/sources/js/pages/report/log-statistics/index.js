@@ -10,10 +10,16 @@ const store = configureStore({
     reducer: logStatisticsReducer
 });
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Layout>
-            <AppContainer />
-        </Layout>
-    </Provider>,
-    document.getElementById('app-container'));
+import '@cssroot/pages/report/log-statistics/index.scss';
+
+export default class index extends React.Component {
+    render(){
+        return(
+            <Provider store={store}>
+                <div className='log-statistics'>
+                    <AppContainer />
+                </div>
+            </Provider>
+        );
+    }
+}

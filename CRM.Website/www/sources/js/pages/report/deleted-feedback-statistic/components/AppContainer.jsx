@@ -10,47 +10,51 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 
 export class AppContainer extends Component {
-handleCloseEditFeedbackDialog = isSuccessful => {
-    this.props.setEditFeedbackDialog({ show: false });
-    if (isSuccessful) {
-        this.props.getDeletedFeedbackStatistic(this.props.gridParams);
+    componentWillUnmount(){
+        this.props.resetState();
     }
-};
+    handleCloseEditFeedbackDialog = isSuccessful => {
+        this.props.setEditFeedbackDialog({ show: false });
+        if (isSuccessful) {
+            this.props.getDeletedFeedbackStatistic(this.props.gridParams);
+        }
+    };
 
-handleCloseViewRelatedCustomerDialog = () => {
-    this.props.setViewRelatedCustomerDialog({ show: false });
-};
-  render() {
-    const { editFeedbackDialog, viewRelatedCustomerDialog } = this.props;
-    return (
-      <Fragment>
-           <Filter />
-           <DataGrid />
-           {
-              viewRelatedCustomerDialog.show &&
-              <SweetModalDialog size="lg"
-                  title={LangHelper.getResource('RelatedCustomer')}
-                  contents={<div>{viewRelatedCustomerDialog.relatedCustomers}</div>}
-                  buttons={[
-                      <Button variant="primary" size="sm"
-                          onClick={this.handleCloseViewRelatedCustomerDialog}
-                      >
-                          {LangHelper.getResource('Close')}
-                      </Button>
-                  ]}
-                  onClose={this.handleCloseViewRelatedCustomerDialog}
-              />
-           }
-           {
-              editFeedbackDialog.show &&
-              <FeedbackDetails
-                  title='FeedbackDetail'
-                  feedbackId={editFeedbackDialog.feedbackId}
-                  onClose={this.handleCloseEditFeedbackDialog}
-              />
-           }
-      </Fragment>
-);
+    handleCloseViewRelatedCustomerDialog = () => {
+        this.props.setViewRelatedCustomerDialog({ show: false });
+    };
+
+    render() {
+        const { editFeedbackDialog, viewRelatedCustomerDialog } = this.props;
+        return (
+        <Fragment>
+            <Filter />
+            <DataGrid />
+            {
+                viewRelatedCustomerDialog.show &&
+                <SweetModalDialog size="lg"
+                    title={LangHelper.getResource('RelatedCustomer')}
+                    contents={<div>{viewRelatedCustomerDialog.relatedCustomers}</div>}
+                    buttons={[
+                        <Button variant="primary" size="sm"
+                            onClick={this.handleCloseViewRelatedCustomerDialog}
+                        >
+                            {LangHelper.getResource('Close')}
+                        </Button>
+                    ]}
+                    onClose={this.handleCloseViewRelatedCustomerDialog}
+                />
+            }
+            {
+                editFeedbackDialog.show &&
+                <FeedbackDetails
+                    title='FeedbackDetail'
+                    feedbackId={editFeedbackDialog.feedbackId}
+                    onClose={this.handleCloseEditFeedbackDialog}
+                />
+            }
+        </Fragment>
+    );
   }
 }
 

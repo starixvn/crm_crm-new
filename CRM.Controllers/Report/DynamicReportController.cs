@@ -32,10 +32,10 @@
             this.excelService = excelService;
         }
 
-        public IActionResult Index()
-        {
-            return View("../Report/Dynamic/Index");
-        }
+        //public IActionResult Index()
+        //{
+        //    return View("../Report/Dynamic/Index");
+        //}
 
         public async Task<IActionResult> GetDynamicReports([FromBody] GetDynamicReportCriteria criteria)
         {

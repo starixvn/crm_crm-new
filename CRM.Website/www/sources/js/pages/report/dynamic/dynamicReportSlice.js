@@ -1,18 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+const initialState = {
+    dynamicReports: null,
+    allSettings: null,
+    gridParams: {
+        pageIndex: 1,
+        pageSize: 100
+    },
+    viewCommunicationDialog: { show: false },
+    viewChartDialog: { show: false, chartInfo: {} }
+};
 const dynamicReportSlice = createSlice({
     name: 'dynamicReport',
-    initialState: {
-        dynamicReports: null,
-        allSettings: null,
-        gridParams: {
-            pageIndex: 1,
-            pageSize: 100
-        },
-        viewCommunicationDialog: { show: false },
-        viewChartDialog: { show: false, chartInfo: {} }
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setDynamicReports: (state, action) => {
             state.dynamicReports = action.payload;
         },
@@ -34,6 +35,7 @@ const dynamicReportSlice = createSlice({
 const { actions, reducer } = dynamicReportSlice;
 
 export const {
+    resetState,
     setDynamicReports,
     setAllSettings,
     setGridParams,

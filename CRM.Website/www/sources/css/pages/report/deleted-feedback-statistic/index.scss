@@ -10,102 +10,104 @@
 @import '../../../components/select-with-search-site';
 @import '../../../components/verify-customer';
 
-.form-filter {
-    min-width: 1120px;
-    
-    .react-datepicker__input-container input{
-        width: 100% !important;
-    }
-}
-
-.parent-level-0{
-    height: 29px;
-
-    td{
-        background-color: #e3e3e3 !important;
-
-        .text-handler{
-            color: #0054a6 !important;
-            cursor: pointer;
+.deleted-feedback-statistic{
+    .form-filter {
+        min-width: 1120px;
+        
+        .react-datepicker__input-container input{
+            width: 100% !important;
         }
     }
-}
-
-.footer-container td{
-    background: #c0cae3!important;
-    color: #0054a6 !important;
-}
-
-.table > tbody .child{ 
-    td{
-        background-color: #fff !important;
+    
+    .parent-level-0{
+        height: 29px;
+    
+        td{
+            background-color: #e3e3e3 !important;
+    
+            .text-handler{
+                color: #0054a6 !important;
+                cursor: pointer;
+            }
+        }
     }
     
-    &:hover td{
-		background-color: #f0edc4 !important;
-    }	
-}
-
-.link-click{
-    outline: none;
-    color: #0255a5;
-    text-decoration: none;
-    cursor: pointer;
-
-    &:hover {
-        color: $draft-color !important;
+    .footer-container td{
+        background: #c0cae3!important;
+        color: #0054a6 !important;
     }
-}
-
-.table-title {
-    max-width: 1250px;
-}
-
-.word-break{
-    word-break: break-all;
-}
-
-.feedback-detail {
-    .modal-dialog {
-        max-width: 1600px;
-
-        .modal-content {
-            .panel-group {
-                border: 1px solid #b1b1b1;
-
-                .panel-title {
-                    display: flex;
-                    align-items: center;
-                    height: 28px;
-                    margin: 0;
-                    padding: 0 10px;
-                    color: #2f70b4;
-                    background: linear-gradient(#e7e7e7, #e2e2e2);
-                    border-bottom: 1px solid #b1b1b1;
-                    cursor: pointer;
-
-                    .form-label {
+    
+    .table > tbody .child{ 
+        td{
+            background-color: #fff !important;
+        }
+        
+        &:hover td{
+            background-color: #f0edc4 !important;
+        }	
+    }
+    
+    .link-click{
+        outline: none;
+        color: #0255a5;
+        text-decoration: none;
+        cursor: pointer;
+    
+        &:hover {
+            color: $draft-color !important;
+        }
+    }
+    
+    .table-title {
+        max-width: 1250px;
+    }
+    
+    .word-break{
+        word-break: break-all;
+    }
+    
+    .feedback-detail {
+        .modal-dialog {
+            max-width: 1600px;
+    
+            .modal-content {
+                .panel-group {
+                    border: 1px solid #b1b1b1;
+    
+                    .panel-title {
+                        display: flex;
+                        align-items: center;
+                        height: 28px;
                         margin: 0;
+                        padding: 0 10px;
+                        color: #2f70b4;
+                        background: linear-gradient(#e7e7e7, #e2e2e2);
+                        border-bottom: 1px solid #b1b1b1;
+                        cursor: pointer;
+    
+                        .form-label {
+                            margin: 0;
+                        }
                     }
-                }
-
-                .title-username .form-label{
-                    color: red !important;
-                    font-weight: bold !important;
-                }
-
-                .disabled-filed, .selectwithsearchtree{
-                    pointer-events: none;
-                    cursor: not-allowed;
-                    opacity: .7;
-                    background-color: #fff;
-                }
-
-                .panel-content {
-                    padding: 4px 9px;
-
-                    .react-datepicker-wrapper-container {
-                        width: 100% !important;
+    
+                    .title-username .form-label{
+                        color: red !important;
+                        font-weight: bold !important;
+                    }
+    
+                    .disabled-filed, .selectwithsearchtree{
+                        pointer-events: none;
+                        cursor: not-allowed;
+                        opacity: .7;
+                        background-color: #fff;
+                    }
+    
+                    .panel-content {
+                        padding: 4px 9px;
+    
+                        .react-datepicker-wrapper-container {
+                            width: 100% !important;
+                        }
                     }
                 }
             }

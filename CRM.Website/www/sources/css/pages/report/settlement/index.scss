@@ -5,52 +5,51 @@
 @import "../../../components/icons";
 @import "../../../components/tables";
 
-#child-app-container {
+.settlement{
     width: 700px;
-}
-
-.form-filter {
-    .form-row {
-        .form-group {
-            width: 150px;
-
-            .form-label {
-                width: 50px;
-            }
-
-            .form-control {
-                width: calc(100% - 0.5rem - 50px);
+    .form-filter {
+        .form-row {
+            .form-group {
+                width: 150px;
+    
+                .form-label {
+                    width: 50px;
+                }
+    
+                .form-control {
+                    width: calc(100% - 0.5rem - 50px);
+                }
             }
         }
     }
-}
-
-.table-title {
-    .tool-box {
-        .fa {
-            cursor: pointer;
+    
+    .table-title {
+        .tool-box {
+            .fa {
+                cursor: pointer;
+            }
         }
     }
-}
-
-table.table {
-    tbody tr {
-        &:hover td {
-            background-color: transparent;
-        }
-
-        td {
-            background-color: white !important;
-            color: #666;
-        }
-
-        &.last-row td {
-            background-color: #c0cbe2 !important;
-            color: #363636;
-            font-weight: bold;
-
-            &[rowspan] {
-                border-bottom: none;
+    
+    table.table {
+        tbody tr {
+            &:hover td {
+                background-color: transparent;
+            }
+    
+            td {
+                background-color: white !important;
+                color: #666;
+            }
+    
+            &.last-row td {
+                background-color: #c0cbe2 !important;
+                color: #363636;
+                font-weight: bold;
+    
+                &[rowspan] {
+                    border-bottom: none;
+                }
             }
         }
     }

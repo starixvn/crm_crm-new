@@ -9,141 +9,150 @@
 @import '../../../components/multiple-select/style';
 @import "../../../components/rechart";
 
-.form-filter {
-    .react-datepicker__input-container input{
-        width: 100% !important;
-    }
-
-    .react-datepicker-popper{
-        z-index: 9999 !important;
-    }
-
-    .small-width{
-        width: 150px !important;
-    }
-
-    .width-90{
-        width: 90px !important;
-    }
-
-    .width-320{
-        width: 320px !important;
-    }
-
-    .duration{
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        /* Firefox */
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-    }
-}
-
-.cursor-pointer{
-    cursor: pointer;
-}
-
-.fix-table-container{
-    .parent-level-0{
-        height: 29px;
-        .subcategory, td{
-            background-color: #e3e3e3 !important;
-            color: #0054a6 !important;
+.feedback-statistic{
+    .form-filter {
+        .react-datepicker__input-container input{
+            width: 100% !important;
         }
     
-        .subcategory{
-            font-weight: 600;
-            cursor: pointer;
+        .react-datepicker-popper{
+            z-index: 9999 !important;
         }
-    }
-
-    .body-content{
-        tbody .child{ 
-            background-color: #fff !important;
+    
+        .small-width{
+            width: 150px !important;
         }
-
-        .sub-total{
-            color: rgb(95, 95, 95);
-            font-weight: bold;
+    
+        .width-90{
+            width: 90px !important;
         }
-
-        .link-click {
-            cursor: pointer;
-            font-weight: 600;
-            color: $link-color !important;
+    
+        .width-320{
+            width: 320px !important;
         }
-
-        .disable-click{
-            pointer-events: none;
+    
+        .duration{
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            /* Firefox */
+            input[type=number] {
+                -moz-appearance: textfield;
+            }
         }
     }
     
-    .footer-content{
-        .footer-container{
-            td{
-                background: #c0cae3!important;
+    .cursor-pointer{
+        cursor: pointer;
+    }
+    
+    .fix-table-container{
+        .parent-level-0{
+            height: 29px;
+            .subcategory, td{
+                background-color: #e3e3e3 !important;
                 color: #0054a6 !important;
             }
+        
+            .subcategory{
+                font-weight: 600;
+                cursor: pointer;
+            }
         }
-    }
-}
-
-.modal-dialog {
-    .modal-content {
-        width: 1010px !important;
-    }
-}
-
-.feedback-detail .modal-content{
-    width: 11142px;
-    max-height: 875px;
-
-    .table-container{
-        max-height: 875px !important;
-
+    
         .body-content{
-            max-height: 715px !important;
+            tbody .child{ 
+                background-color: #fff !important;
+            }
+    
+            .sub-total{
+                color: rgb(95, 95, 95);
+                font-weight: bold;
+            }
+    
+            .link-click {
+                cursor: pointer;
+                font-weight: 600;
+                color: $link-color !important;
+            }
+    
+            .disable-click{
+                pointer-events: none;
+            }
+        }
+        
+        .footer-content{
+            .footer-container{
+                td{
+                    background: #c0cae3!important;
+                    color: #0054a6 !important;
+                }
+            }
         }
     }
-
-    .manage-feedback-row{
-        .edit-feedback{
-            &:hover {
-                color: $draft-color !important;
+    
+    .modal-dialog {
+        .modal-content {
+        .recharts-legend-wrapper{
+            width: 1030px !important;
+            .recharts-default-legend{
+                li{
+                    width: 150px;
+                }
+            }
+        }
+        }
+    }
+    
+    .feedback-detail .modal-content{
+        width: 11142px;
+        max-height: 875px;
+    
+        .table-container{
+            max-height: 875px !important;
+    
+            .body-content{
+                max-height: 715px !important;
             }
         }
     
-        .fa-pencil:before {
-            color: #D3B35D;
-        }
-    
-        strong.link-click {
-            color: $link-color !important;
-        
-            &:hover {
-                color: $draft-color !important;
+        .manage-feedback-row{
+            .edit-feedback{
+                &:hover {
+                    color: $draft-color !important;
+                }
             }
-        }
         
-        .feedback-info {
-            padding-left: 17px;
-        
-            .info{
-                padding: 3px 0px;
+            .fa-pencil:before {
+                color: #D3B35D;
             }
-        }
-    
-        span.fa.fa-file-excel-o.icon-excel {
-            color: #28a745;
-            font-size: 14px;
-        }
-    
-        .break-word{
-            word-break: break-all;
+        
+            strong.link-click {
+                color: $link-color !important;
+            
+                &:hover {
+                    color: $draft-color !important;
+                }
+            }
+            
+            .feedback-info {
+                padding-left: 17px;
+            
+                .info{
+                    padding: 3px 0px;
+                }
+            }
+        
+            span.fa.fa-file-excel-o.icon-excel {
+                color: #28a745;
+                font-size: 14px;
+            }
+        
+            .break-word{
+                word-break: break-all;
+            }
         }
     }
 }

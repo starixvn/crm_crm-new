@@ -1,19 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
+const initialState = {
+    settings: null,
+    gridParams: null,
+    gridParamDetails: {
+        pageIndex: 1,
+        pageSize: 100
+    },
+    gridData: null,
+    gridDataDetails: null,
+    detailPopup: { show: false, title: '' }
+};
 
 const redemptionStatisticsSlice = createSlice({
     name: 'redemptionStatistics',
-    initialState: {
-        settings: null,
-        gridParams: null,
-        gridParamDetails: {
-            pageIndex: 1,
-            pageSize: 100
-        },
-        gridData: null,
-        gridDataDetails: null,
-        detailPopup: { show: false, title: '' }
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
@@ -38,6 +40,7 @@ const redemptionStatisticsSlice = createSlice({
 const { actions, reducer } = redemptionStatisticsSlice;
 
 export const {
+    resetState,
     setGridParams,
     setGridParamDetails,
     setAllSettings,

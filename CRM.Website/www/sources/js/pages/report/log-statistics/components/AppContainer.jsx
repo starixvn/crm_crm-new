@@ -11,6 +11,10 @@ export class AppContainer extends Component {
   componentDidMount(){
     this.props.getAllSettings();
   }
+  
+  componentWillUnmount(){
+    this.props.resetState();
+  }
 
   handleCloseChartDialog = () =>{
     this.props.setChartData({ show: false, title: '', data: null});

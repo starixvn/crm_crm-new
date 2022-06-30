@@ -1,20 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    settings: null,
+    gridParams: null,
+    gridParamDetails: {
+        pageIndex: 1,
+        pageSize: 100
+    },
+    mainReports: null,
+    reportDetails: null,
+    details: { show: false, title: ''},
+    chart: { show: false,title: '', data: null}
+};
 const logStatisticsSlice = createSlice({
     name: 'logStatistics',
-    initialState: {
-        settings: null,
-        gridParams: null,
-        gridParamDetails: {
-            pageIndex: 1,
-            pageSize: 100
-        },
-        mainReports: null,
-        reportDetails: null,
-        details: { show: false, title: ''},
-        chart: { show: false,title: '', data: null}
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
@@ -48,7 +49,8 @@ export const {
     setMainReport,
     setReportDetails,
     setDetailsDataGrid,
-    setChartData
+    setChartData,
+    resetState
 } = actions;
 
 export default reducer;

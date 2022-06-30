@@ -6,8 +6,8 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 
 export class AppContainer extends Component {
-  constructor(props) {
-    super(props);
+  componentWillUnmount(){
+    this.props.resetState();
   }
 
   render() {

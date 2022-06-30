@@ -38,6 +38,18 @@ const RemarkComponent = lazy(() => import('@jsroot/pages/remark/index'));
 const RedemptionComponent = lazy(() => import('@jsroot/pages/redemption/index'));
 const ActionLogComponent = lazy(() => import('@jsroot/pages/action-log/index'));
 
+const DeletedFeedbackStatisticsComponent = lazy(() => import('@jsroot/pages/report/deleted-feedback-statistic/index'));
+const LogStatisticsComponent = lazy(() => import('@jsroot/pages/report/log-statistics/index'));
+const StatisticReportComponent = lazy(() => import('@jsroot/pages/report/issue-statistics/index'));
+const FeedbackStatisticReportComponent = lazy(() => import('@jsroot/pages/report/feedback-statistic/index'));
+const RedemptionStatisticsReportComponent = lazy(() => import('@jsroot/pages/report/redemption-statistics/index'));
+const CustomerReportComponent = lazy(() => import('@jsroot/pages/report/customer/index'));
+const SummaryReportComponent = lazy(() => import('@jsroot/pages/report/summary/index'));
+const DirectCustomerReportComponent = lazy(() => import('@jsroot/pages/report/direct/index'));
+const DynamicReportComponent = lazy(() => import('@jsroot/pages/report/dynamic/index'));
+const SettlementReportComponent = lazy(() => import('@jsroot/pages/report/settlement/index'));
+const WagerReportComponent = lazy(() => import('@jsroot/pages/report/wager/index'));
+
 export default class Index extends PureComponent {
     render() {
         return (
@@ -76,6 +88,18 @@ export default class Index extends PureComponent {
                             <Route path={Site.resolveClientUrl("Remark")} element={<RemarkComponent />} />
                             <Route path={Site.resolveClientUrl("Redemption")} element={<RedemptionComponent />} />
                             <Route path={Site.resolveClientUrl("ActionLog")} element={<ActionLogComponent />} />
+
+                            <Route path={Site.resolveClientUrl("DeletedFeedbackStatistics/Index")} element={<DeletedFeedbackStatisticsComponent />} />
+                            <Route path={Site.resolveClientUrl("LogStatistics/Index")} element={<LogStatisticsComponent />} />
+                            <Route path={Site.resolveClientUrl("StatisticReport/Index")} element={<StatisticReportComponent />} />
+                            <Route path={Site.resolveClientUrl("FeedbackStatisticReport/Index")} element={<FeedbackStatisticReportComponent />} />
+                            <Route path={Site.resolveClientUrl("RedemptionStatisticsReport/Index")} element={<RedemptionStatisticsReportComponent />} />
+                            <Route path={Site.resolveClientUrl("CustomerReport/Index")} element={<CustomerReportComponent />} />
+                            <Route path={Site.resolveClientUrl("SummaryReport/Index")} element={<SummaryReportComponent />} />
+                            <Route path={Site.resolveClientUrl("DirectCustomerReport/Index")} element={<DirectCustomerReportComponent />} />
+                            <Route path={Site.resolveClientUrl("DynamicReport/Index")} element={<DynamicReportComponent />} />
+                            <Route path={Site.resolveClientUrl("SettlementReport/Index")} element={<SettlementReportComponent />} />
+                            <Route path={Site.resolveClientUrl("WagerReport/Index")} element={<WagerReportComponent />} />
                         </Routes>
                     </Suspense>
                 </Layout>

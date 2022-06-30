@@ -37,10 +37,10 @@
         }
 
         [CrmPermission(FunctionKey = FunctionKey.RedemptionStatistics, Policy = Constant.Policy.Read)]
-        public IActionResult Index()
-        {
-            return View("../Report/RedemptionStatistics/Index");
-        }
+        //public IActionResult Index()
+        //{
+        //    return View("../Report/RedemptionStatistics/Index");
+        //}
 
         public async Task<IActionResult> GetAllSettings()
         {

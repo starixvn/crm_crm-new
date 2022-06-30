@@ -36,12 +36,12 @@
             this.excelService = excelService;
         }
 
-        [NapAuth(FunctionKey = FunctionKey.FeedbackStatistics, Policy = Constant.Policy.Read)]
-        [Route("FeedbackStatisticReport/Index")]
-        public IActionResult Index()
-        {
-            return View("../Report/FeedbackStatistic/Index");
-        }
+        //[NapAuth(FunctionKey = FunctionKey.FeedbackStatistics, Policy = Constant.Policy.Read)]
+        //[Route("FeedbackStatisticReport/Index")]
+        //public IActionResult Index()
+        //{
+        //    return View("../Report/FeedbackStatistic/Index");
+        //}
 
         [HttpPost]
         public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStatisticCriteria criteria)

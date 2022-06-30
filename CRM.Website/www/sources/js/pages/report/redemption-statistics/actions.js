@@ -7,7 +7,8 @@ import{
     setAllSettings,
     setRedemptionSummary,
     setRedemptionDetails,
-    setOpenDetails
+    setOpenDetails,
+    resetState
 } from './redemptionStatisticsSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -51,6 +52,7 @@ const exportExcelDetails = params => async () => {
 };
 
 export const ActionCreators = {
+    resetState,
     getAllSettings,
     setGridParams,
     setGridParamDetails,

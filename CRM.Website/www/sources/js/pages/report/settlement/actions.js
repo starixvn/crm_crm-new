@@ -3,7 +3,8 @@ import DataService from '@jsroot/common/dataService';
 import {
     setGridParams,
     setGridData,
-    setChartPopup
+    setChartPopup,
+    resetState
 } from './settlementReportSlice';
 
 
@@ -24,6 +25,7 @@ const exportExcel = params => async () => {
 };
 
 export const ActionCreators = {
+    resetState,
     setGridParams,
     setGridData,
     setChartPopup,

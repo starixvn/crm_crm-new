@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Chart from './Chart';
 import DataGrid from './DataGrid';
 import Filter from './Filter';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 
 export class AppContainer extends PureComponent {
     static propTypes = {
@@ -14,8 +16,8 @@ export class AppContainer extends PureComponent {
         contentChartPopup: { show: false }
     };
 
-    constructor(props) {
-        super(props);
+    componentWillUnmount(){
+        this.props.resetState();
     }
 
     render() {
@@ -31,13 +33,9 @@ export class AppContainer extends PureComponent {
     }
 }
 
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 const mapStateToProps = state => {
-    const {
-        contentChartPopup
-    } = state;
-    return {
-        contentChartPopup
-    };
+  const { contentChartPopup } = state;
+  return { contentChartPopup };
 };
-
-export default connect(mapStateToProps)(AppContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

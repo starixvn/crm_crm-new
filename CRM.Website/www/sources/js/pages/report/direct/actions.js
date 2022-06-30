@@ -2,6 +2,7 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 
 import {
+    resetState,
     setGridParams,
     setGridData
 } from './directCustomerSlice';
@@ -23,6 +24,7 @@ const exportExcel = params => async () => {
 };
 
 export const ActionCreators = {
+    resetState,
     setGridParams,
     setGridData,
     getGridData,

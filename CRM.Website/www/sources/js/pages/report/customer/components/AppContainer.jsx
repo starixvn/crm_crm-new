@@ -10,6 +10,10 @@ export class AppContainer extends Component {
     componentDidMount() {
         this.props.getAllSettings();
     }
+    
+    componentWillUnmount(){
+        this.props.resetState();
+    }
 
     render() {
         const { allSettings } = this.props;

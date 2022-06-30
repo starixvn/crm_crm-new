@@ -3,7 +3,8 @@ import DataService from '@jsroot/common/dataService';
 
 import {
     setGridParams,
-    setGridData
+    setGridData,
+    resetState
 } from './wagerReportSlice';
 
 const getGridData = params => async dispatch => {
@@ -26,5 +27,6 @@ export const ActionCreators = {
     setGridParams,
     setGridData,
     getGridData,
-    exportExcel
+    exportExcel,
+    resetState
 };

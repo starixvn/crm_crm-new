@@ -3,7 +3,8 @@ import Site from '@jsroot/common/site';
 import {
     setCustomerReport,
     setAllSettings,
-    setGridParams
+    setGridParams,
+    resetState
 } from './customerReportSlice';
 
 const getCustomerReport = params => async dispatch => {
@@ -34,5 +35,6 @@ export const ActionCreators = {
     getCustomerReport,
     getAllSettings,
     setGridParams,
-    exportExcel
+    exportExcel,
+    resetState
 };

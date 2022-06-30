@@ -5,7 +5,8 @@ import {
     setAllSettings,
     setGridParams,
     setViewCommunicationDialog,
-    setViewChartDialog
+    setViewChartDialog,
+    resetState
 } from './dynamicReportSlice';
 
 const getDynamicReports = params => async dispatch => {
@@ -38,5 +39,6 @@ export const ActionCreators = {
     setGridParams,
     setViewCommunicationDialog,
     exportExcel,
-    setViewChartDialog
+    setViewChartDialog,
+    resetState
 };

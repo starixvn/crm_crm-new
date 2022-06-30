@@ -8,15 +8,15 @@ import{
     setMainReport,
     setReportDetails,
     setChartData,
-    setDetailsDataGrid
+    setDetailsDataGrid,
+    resetState
 } from './logStatisticsSlice';
 
 const getAllSettings = () => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('LogStatistics/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError);
 };
 
 const getMainReport = params => async dispatch => {
@@ -63,5 +63,6 @@ export const ActionCreators = {
     setDetailsDataGrid,
     setChartData,
     exportExcel,
-    exportExcelDetails
+    exportExcelDetails,
+    resetState
 };

@@ -7,68 +7,70 @@
 @import '../../../components/date-picker/style';
 @import '../../../components/multiple-select/style';
 
-.form-filter {
-    min-width: 1142px;
-    .react-datepicker__input-container input{
-        width: 100% !important;
-    }
-
-    .dropdown-width{
-        width: 177px !important;
-    }
-
-    .subject-width{
-        width: 473px !important;
-    }
-
-    .filter-collapse {
-        .fa {
+.redemption-statistics{
+    .form-filter {
+        min-width: 1142px;
+        .react-datepicker__input-container input{
+            width: 100% !important;
+        }
+    
+        .dropdown-width{
+            width: 177px !important;
+        }
+    
+        .subject-width{
+            width: 473px !important;
+        }
+    
+        .filter-collapse {
+            .fa {
             font-size: 11px;
             width: 25px;
             background-color: #464D5D;
-            color: white;
-            cursor: pointer;
-        }
-    }
-}
-
-.table-title{
-    max-width: 900px;
-}
-
-.table-container{
-    max-width: 900px !important;
-    .body-content{
-        .background-total td{
-            background-color: #c0cbe2 !important;
-            color: black !important;
-        }
-    
-        .text-bold{
-            font-weight: bold;
-        }
-    
-        .background-total td:first-child{
-            border-bottom: none !important;
-        }
-    
-        .link-click {
-            cursor: pointer;
-            color: $link-color !important;
-        
-            &:hover {
-                color: $draft-color !important;
+                color: white;
+                cursor: pointer;
             }
         }
     }
-} 
-
-.details{
-    .title-detail, .table-container, .page-container{
-        max-width: 980px !important;
+    
+    .table-title{
+        max-width: 900px;
     }
-
-    .icon{
-        cursor: pointer;
+    
+    .table-container{
+        max-width: 900px !important;
+        .body-content{
+            .background-total td{
+                background-color: #c0cbe2 !important;
+                color: black !important;
+            }
+        
+            .text-bold{
+                font-weight: bold;
+            }
+        
+            .background-total td:first-child{
+                border-bottom: none !important;
+            }
+        
+            .link-click {
+                cursor: pointer;
+                color: $link-color !important;
+            
+                &:hover {
+                    color: $draft-color !important;
+                }
+            }
+        }
+    } 
+    
+    .details{
+        .title-detail, .table-container, .page-container{
+            max-width: 980px !important;
+        }
+    
+        .icon{
+            cursor: pointer;
+        }
     }
 }

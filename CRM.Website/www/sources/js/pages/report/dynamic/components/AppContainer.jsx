@@ -19,6 +19,10 @@ export class AppContainer extends Component {
         viewChartDialog: { show: false, chartInfo: {} }
     };
 
+    componentWillUnmount(){
+        this.props.resetState();
+    }
+
     handleCloseViewCommunication = () => {
         this.props.setViewCommunicationDialog({ show: false });
     };

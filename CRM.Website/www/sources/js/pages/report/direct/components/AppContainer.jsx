@@ -10,6 +10,10 @@ export class AppContainer extends Component {
     super(props);
   }
 
+  componentWillUnmount(){
+    this.props.resetState();
+  }
+
   render() {
     const { gridData} = this.props;
 

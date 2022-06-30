@@ -33,10 +33,10 @@
             this.appSettings = appSettings.Value;
         }
 
-        public IActionResult Index()
-        {
-            return View("../Report/Wager/Index");
-        }
+        //public IActionResult Index()
+        //{
+        //    return View("../Report/Wager/Index");
+        //}
 
         [HttpPost]
         public async Task<IActionResult> GetWagerReport([FromBody] GetWagerReportCriteria criteria)

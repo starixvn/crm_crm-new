@@ -16,12 +16,12 @@ export class AppContainer extends Component {
     contentChartPopup: { show: false }
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.getAllSetting();
+  }
+
+  componentWillUnmount(){
+    this.props.resetState();
   }
 
   render() {

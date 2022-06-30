@@ -1,18 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
+const initialState = {     
+    allSettingData:null,   
+    gridParams: {
+        year: new Date().getFullYear(),
+        categories:'',
+        siteType: 0
+    },
+    gridData: null,
+    contentChartPopup: { show: false }
+};
 
 const summaryReportSlice = createSlice({
     name: 'summaryReport',
-    initialState: {     
-        allSettingData:null,   
-        gridParams: {
-            year: new Date().getFullYear(),
-            categories:'',
-            siteType: 0
-        },
-        gridData: null,
-        contentChartPopup: { show: false }
-    },
-    reducers: {      
+    initialState: initialState,
+    reducers: {   
+        resetState: () => initialState,   
         setAllSetting: (state, action) => {
             state.allSettingData = action.payload;
         },
@@ -34,7 +36,8 @@ export const {
     setAllSetting,
     setGridParams,
     setGridData,
-    setChartPopup
+    setChartPopup,
+    resetState
 } = actions;
 
 export default reducer;

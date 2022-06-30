@@ -32,10 +32,10 @@
         }
 
         [CrmPermission(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Policy.Read)]
-        public IActionResult Index()
-        {
-            return View("../Report/DeleteFeedbackStatistic/Index");
-        }
+        //public IActionResult Index()
+        //{
+        //    return View("../Report/DeleteFeedbackStatistic/Index");
+        //}
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Policy.Read)]

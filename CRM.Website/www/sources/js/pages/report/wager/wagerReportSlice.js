@@ -1,14 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    gridParams: {
+        year: new Date().getFullYear()
+    },
+    gridData: null
+};
 const wagerReportSlice = createSlice({
     name: 'wagerReport',
-    initialState: {
-        gridParams: {
-            year: new Date().getFullYear()
-        },
-        gridData: null
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
@@ -22,7 +23,8 @@ const { actions, reducer } = wagerReportSlice;
 
 export const {
     setGridParams,
-    setGridData
+    setGridData,
+    resetState
 } = actions;
 
 export default reducer;

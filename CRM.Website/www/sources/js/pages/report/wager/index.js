@@ -1,20 +1,23 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import Layout from '@jsroot/components/layout-container/index';
-
 import wagerReportReducer from './wagerReportSlice';
 import AppContainer from './components/AppContainer';
+import '@cssroot/pages/report/wager/index.scss';
 
 const store = configureStore({
     reducer: wagerReportReducer
 });
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Layout>
-            <AppContainer />
-        </Layout>
-    </Provider>,
-    document.getElementById('app-container'));
+export default class index extends React.Component {
+    render(){
+        return(
+            <Provider store={store}>
+                <div className='wager'>
+                    <AppContainer />
+                </div>
+            </Provider>
+        );
+    }
+}
+

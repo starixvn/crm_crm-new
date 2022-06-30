@@ -8,7 +8,8 @@ import{
     setDetailsDataGrid,
     setOpenDetailPopup,
     setOpenChartPopup,
-    setViewRelatedCustomerDialog
+    setViewRelatedCustomerDialog,
+    resetState
 } from './feedbackStatisticSlice';
 
 const getGridData = params => async dispatch => {
@@ -54,5 +55,6 @@ export const ActionCreators = {
     getGridData,
     getDetails,
     exportExcel,
-    exportExcelDetails
+    exportExcelDetails,
+    resetState
 };

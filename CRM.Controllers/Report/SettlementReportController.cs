@@ -31,11 +31,11 @@
             this.appSettings = appSettings.Value;
         }
 
-        [Route("Index")]
-        public IActionResult Index()
-        {
-            return View("../Report/Settlement/Index");
-        }
+        //[Route("Index")]
+        //public IActionResult Index()
+        //{
+        //    return View("../Report/Settlement/Index");
+        //}
 
         [HttpPost]
         [Route("GetSettlementReport")]

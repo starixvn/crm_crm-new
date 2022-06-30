@@ -11,6 +11,10 @@ export class AppContainer extends Component {
     this.props.getAllSettings();
   }
 
+  componentWillUnmount(){
+    this.props.resetState();
+  }
+
   render() {
     const {settings, detailPopup} = this.props;
     if(settings === null || !settings){

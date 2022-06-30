@@ -10,11 +10,16 @@ const store = configureStore({
     reducer: dynamicReportSlice
 });
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Layout>
-            <AppContainer />
-        </Layout>
-    </Provider>,
-    document.getElementById('app-container')
-);
+import '@cssroot/pages/report/dynamic/index.scss';
+
+export default class index extends React.Component {
+    render(){
+        return(
+            <Provider store={store}>
+                <div className='dynamic'>
+                    <AppContainer />
+                </div>
+            </Provider>
+        );
+    }
+}

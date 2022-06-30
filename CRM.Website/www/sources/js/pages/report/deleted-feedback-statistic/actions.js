@@ -5,7 +5,8 @@ import{
     setGridParams,
     setGridData,
     setEditFeedbackDialog,
-    setViewRelatedCustomerDialog
+    setViewRelatedCustomerDialog,
+    resetState
 } from './deletedFeedbackStatisticSlice';
 
 const getDeletedFeedbackStatistic = params => async dispatch => {
@@ -30,5 +31,6 @@ export const ActionCreators = {
     setGridData,
     exportExcel,
     setEditFeedbackDialog,
-    setViewRelatedCustomerDialog
+    setViewRelatedCustomerDialog,
+    resetState
 };

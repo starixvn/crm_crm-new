@@ -5,7 +5,8 @@ import{
     setGridParams,
     setAllSettings,
     setGridData,
-    setChartData
+    setChartData,
+    resetState
 } from './issueStatisticsSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -39,5 +40,6 @@ export const ActionCreators = {
     getGridData,
     setGridData,
     setChartData,
-    exportExcel
+    exportExcel,
+    resetState
 };

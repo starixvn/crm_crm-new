@@ -11,195 +11,195 @@
 @import "../../../components/modal";
 @import "../../../components/rechart";
 
-#child-app-container {
+.dynamic{
     min-width: 1142px;
-}
 
-.table-title, .page-container, .table-container{
-    min-width: 1142px !important;
-    max-width: 1200px !important;
-}
-
-.form-filter {
-    .row {
-        margin-left: 0;
-        margin-right: 0;
+    .table-title, .page-container, .table-container{
+        min-width: 1142px !important;
+        max-width: 1200px !important;
     }
-
-    .group-field {
-        display: flex;
-        width: 270px;
-
-        label {
-            width: 105px;
+    
+    .form-filter {
+        .row {
+            margin-left: 0;
+            margin-right: 0;
         }
-
-        .select-field {
-            width: 150px;
+    
+        .group-field {
+            display: flex;
+            width: 270px;
+    
+            label {
+                width: 105px;
+            }
+    
+            .select-field {
+                width: 150px;
+            }
         }
-    }
-
-    .group-field-tool {
-        display: flex;
-        width: 300px;
-
-        label {
-            width: 135px;
+    
+        .group-field-tool {
+            display: flex;
+            width: 300px;
+    
+            label {
+                width: 135px;
+            }
+    
+            .select-field {
+                width: 150px;
+            }
         }
-
-        .select-field {
-            width: 150px;
+    
+        .group-field-mainCate {
+            display: flex;
+            width: 540px;
+    
+            label {
+                width: 105px;
+            }
+    
+            .select-field {
+                width: 420px;
+            }
         }
-    }
-
-    .group-field-mainCate {
-        display: flex;
-        width: 540px;
-
-        label {
-            width: 105px;
+    
+        .group-field-subject {
+            display: flex;
+            width: 810px;
+    
+            label {
+                width: 105px;
+            }
+    
+            .select-field {
+                width: 690px;
+            }
         }
-
-        .select-field {
-            width: 420px;
-        }
-    }
-
-    .group-field-subject {
-        display: flex;
-        width: 810px;
-
-        label {
-            width: 105px;
-        }
-
-        .select-field {
-            width: 690px;
-        }
-    }
-
-    .toggle-filter {
-        width: 100%;
-        text-align: center;
-
-        .icon {
-            height: 14px;
-            width: 27px;
-            background-color: #464d5d;
-            color: white;
-        }
-    }
-}
-
-.no-data{
-    font-weight: bold;
-}
-
-.react-datepicker-popper {
-    width: 200px;
-}
-
-.react-datepicker__month-text{
-    width: 6rem !important;
-}
-
-td.group-collapse-expand {
-    color: #0054a6 !important;
-    background-color: #eceff1 !important;
-    cursor: pointer;
-}
-
-.pending {
-    background-color: #f0edc4;
-}
-
-.closed {
-    background-color: #dddddd;
-}
-
-.checked {
-    background-color: #f2f2f2;
-}
-
-.icon {
-    cursor: pointer;
-}
-
-.table-container {
-    .table {
-        tbody {
-            tr:hover td {
-                background-color: #E0FFFF !important;
+    
+        .toggle-filter {
+            width: 100%;
+            text-align: center;
+    
+            .icon {
+                height: 14px;
+                width: 27px;
+                background-color: #464d5d;
+                color: white;
             }
         }
     }
-}
-
-.link-click {
-    cursor: pointer;
-    color: $link-color !important;
-
-    &:hover {
-        color: $draft-color !important;
+    
+    .no-data{
+        font-weight: bold;
     }
-}
-
-.feedback-detail {
-    .modal-dialog {
-        max-width: 1600px;
-
-        .modal-content {
-            .panel-group {
-                border: 1px solid #b1b1b1;
-
-                .panel-title {
-                    display: flex;
-                    align-items: center;
-                    height: 28px;
-                    margin: 0;
-                    padding: 0 10px;
-                    color: #2f70b4;
-                    background: linear-gradient(#e7e7e7, #e2e2e2);
-                    border-bottom: 1px solid #b1b1b1;
-                    cursor: pointer;
-
-                    .form-label {
+    
+    .react-datepicker-popper {
+        width: 200px;
+    }
+    
+    .react-datepicker__month-text{
+        width: 6rem !important;
+    }
+    
+    td.group-collapse-expand {
+        color: #0054a6 !important;
+        background-color: #eceff1 !important;
+        cursor: pointer;
+    }
+    
+    .pending {
+        background-color: #f0edc4;
+    }
+    
+    .closed {
+        background-color: #dddddd;
+    }
+    
+    .checked {
+        background-color: #f2f2f2;
+    }
+    
+    .icon {
+        cursor: pointer;
+    }
+    
+    .table-container {
+        .table {
+            tbody {
+                tr:hover td {
+                    background-color: #E0FFFF !important;
+                }
+            }
+        }
+    }
+    
+    .link-click {
+        cursor: pointer;
+        color: $link-color !important;
+    
+        &:hover {
+            color: $draft-color !important;
+        }
+    }
+    
+    .feedback-detail {
+        .modal-dialog {
+            max-width: 1600px;
+    
+            .modal-content {
+                .panel-group {
+                    border: 1px solid #b1b1b1;
+    
+                    .panel-title {
+                        display: flex;
+                        align-items: center;
+                        height: 28px;
                         margin: 0;
+                        padding: 0 10px;
+                        color: #2f70b4;
+                        background: linear-gradient(#e7e7e7, #e2e2e2);
+                        border-bottom: 1px solid #b1b1b1;
+                        cursor: pointer;
+    
+                        .form-label {
+                            margin: 0;
+                        }
                     }
-                }
-
-                .title-username .form-label{
-                    color: red !important;
-                    font-weight: bold !important;
-                }
-
-                .disabled-filed, .selectwithsearchtree{
-                    pointer-events: none;
-                    cursor: not-allowed;
-                    opacity: .7;
-                    background-color: #fff;
-                }
-
-                .panel-content {
-                    padding: 4px 9px;
-
-                    .react-datepicker-wrapper-container {
-                        width: 100% !important;
+    
+                    .title-username .form-label{
+                        color: red !important;
+                        font-weight: bold !important;
+                    }
+    
+                    .disabled-filed, .selectwithsearchtree{
+                        pointer-events: none;
+                        cursor: not-allowed;
+                        opacity: .7;
+                        background-color: #fff;
+                    }
+    
+                    .panel-content {
+                        padding: 4px 9px;
+    
+                        .react-datepicker-wrapper-container {
+                            width: 100% !important;
+                        }
                     }
                 }
             }
         }
     }
-}
-
-.modal-content {
-    .recharts-xAxis {
-        .recharts-text {
-            tspan {
-                fill: #5e5a5a;
-                font-size: 18px;
-                display: block;
+    
+    .modal-content {
+        .recharts-xAxis {
+            .recharts-text {
+                tspan {
+                    fill: #5e5a5a;
+                    font-size: 18px;
+                    display: block;
+                }
             }
         }
-    }
+            }
 }
