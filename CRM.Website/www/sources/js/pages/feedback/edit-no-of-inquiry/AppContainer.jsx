@@ -92,7 +92,7 @@ export class AppContainer extends Component {
                     <Button size="sm" type="submit" variant="primary" disabled={this.state.isSubmitting}>
                         {LangHelper.getResource('Save')}
                     </Button>
-                    <Button size="sm" type="button" variant="primary" size="sm" onClick={this.props.onClose}>
+                    <Button size="sm" type="button" variant="primary" onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>

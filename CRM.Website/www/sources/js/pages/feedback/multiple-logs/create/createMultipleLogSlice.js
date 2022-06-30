@@ -1,17 +1,18 @@
 ﻿import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    settings: null,
+    verifyCustomerResults: [],
+    relatedCustomerResults: [],
+    feedbackSubjectTemplates: [],
+    addRelatedCustomerDialog: { show: false },
+    viewRelatedCustomerDialog: { show: false },
+    confirmCreateMultipleLogsDialog: { show: false }
+};
 const createMultipleLogSlice = createSlice({
     name: 'createMultipleLogs',
-    initialState: {
-        settings: null,
-        verifyCustomerResults: [],
-        relatedCustomerResults: [],
-        feedbackSubjectTemplates: [],
-        addRelatedCustomerDialog: { show: false },
-        viewRelatedCustomerDialog: { show: false },
-        confirmCreateMultipleLogsDialog: { show: false }
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setSettings: (state, action) => {
             state.settings = action.payload;
         },
@@ -58,6 +59,7 @@ const createMultipleLogSlice = createSlice({
 const { actions, reducer } = createMultipleLogSlice;
 
 export const {
+    resetState,
     setSettings,
     setVerifyCustomerResults,
     setReVerifyCustomerResults,

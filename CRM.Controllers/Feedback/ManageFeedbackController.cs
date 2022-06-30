@@ -44,13 +44,13 @@
             this.exportExcelService = exportExcelService;
         }
 
-        [Route("Feedbacks/ManageFeedback")]
-        [Route("ManageFeedback")]
-        public IActionResult Index()
-        {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-            return View(isHost);
-        }
+        //[Route("Feedbacks/ManageFeedback")]
+        //[Route("ManageFeedback")]
+        //public IActionResult Index()
+        //{
+        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
+        //    return View(isHost);
+        //}
 
         public async Task<ActionResult> GetAllSettings()
         {

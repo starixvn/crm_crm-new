@@ -41,11 +41,11 @@
             this.userService = userService;
         }
 
-        [Route("AddFeedback")]
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //[Route("AddFeedback")]
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
         public async Task<ActionResult> AllSetting()
         {

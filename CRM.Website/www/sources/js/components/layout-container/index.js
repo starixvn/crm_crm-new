@@ -20,7 +20,16 @@ const CommunicationSettingComponent  = lazy(() => import('@jsroot/pages/admin-to
 const FeedbackSubjectComponent  = lazy(() => import('@jsroot/pages/admin-tool/feedback-subject/index'));
 const SettingLogComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-log/index'));
 const SettingManagementComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-management/index'));
-const SettingRelationComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-relation/index'));
+const SettingRelationComponent = lazy(() => import('@jsroot/pages/admin-tool/setting-relation/index'));
+
+const InformHeadlineComponent = lazy(() => import('@jsroot/pages/informheadline/index'));
+
+const AddGuestFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/add-feedback/add-guest-feedback/index'));
+const LatestFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/latest-feedback/index'));
+const ManageFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/manage-feedback/index'));
+const DeletedFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/deleted-feedback/index'));
+const MultipleLogsComponent = lazy(() => import('@jsroot/pages/feedback/multiple-logs/create/index'));
+
 
 const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
 
@@ -47,7 +56,16 @@ export default class Index extends PureComponent {
                             <Route path={Site.resolveClientUrl("SettingManagement/Index")} element={<SettingManagementComponent />} />
                             <Route path={Site.resolveClientUrl("SettingRelation/Index")} element={<SettingRelationComponent />} />
 
-                            <Route path={Site.resolveClientUrl("Dashboard/Index")} element={<DashboardComponent />} />
+                            <Route path={Site.resolveClientUrl("InformHeadline")} element={<InformHeadlineComponent />} />
+
+                            <Route path={Site.resolveClientUrl("AddGuestFeedback/Index")} element={<AddGuestFeedbackComponent />} />
+                            <Route path={Site.resolveClientUrl("Feedbacks/LatestFeedback")} element={<LatestFeedbackComponent />} />
+                            <Route path={Site.resolveClientUrl("Feedbacks/ManageFeedback")} element={<ManageFeedbackComponent />} />
+                            <Route path={Site.resolveClientUrl("Feedbacks/DeletedFeedback")} element={<DeletedFeedbackComponent />} />
+                            <Route path={Site.resolveClientUrl("MultipleLogs/Create")} element={<MultipleLogsComponent />} />
+                            
+                            <Route path={Site.resolveClientUrl("Dashboard")} element={<DashboardComponent />} />
+                            
                         </Routes>
                     </Suspense>
                 </Layout>

@@ -6,7 +6,8 @@ import{
     setAllSettings,
     setDeletedFeedback,
     setEditFeedbackDialog,
-    setViewRelatedCustomerDialog
+    setViewRelatedCustomerDialog,
+    resetState
 } from './deletedFeedbackSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -38,5 +39,6 @@ export const ActionCreators = {
     getDeletedFeedback,
     exportExcel,
     setEditFeedbackDialog,
-    setViewRelatedCustomerDialog
+    setViewRelatedCustomerDialog,
+    resetState
 };

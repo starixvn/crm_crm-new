@@ -9,41 +9,39 @@
 @import '../../components/multiple-select/style';
 @import './edit-customer-feedback';
 
-#child-app-container {
+.latest-feedback{
     max-width: 1200px !important;
     min-width: 1142px !important;
     .table-container{
         max-width: 1200px;
         min-width: 1142px;
     }
-}
-
-
-
-.link-click {
-    cursor: pointer;
-    color: $link-color !important;
-
-    &:hover {
-        color: $draft-color !important;
+    
+    .link-click {
+        cursor: pointer;
+        color: $link-color !important;
+    
+        &:hover {
+            color: $draft-color !important;
+        }
     }
-}
-
-.tooltipFeedback [class$="inner"] {
-    min-width: 100px;
-    max-width: 650px;
-    min-height: 100px;
-    max-height: 920px;
-    border-radius: 3px;
-    font-size: 12px;
-    text-align: left
-}
-
-#tooltip-customers [class$="inner"] {
-    min-width: 300px;
-    text-align: left;
-}
-
-.sweet-alert-modal-backdrop {
-    z-index: 1050 !important;
+    
+    .tooltipFeedback [class$="inner"] {
+        min-width: 100px;
+        max-width: 650px;
+        min-height: 100px;
+        max-height: 920px;
+        border-radius: 3px;
+        font-size: 12px;
+        text-align: left
+    }
+    
+    #tooltip-customers [class$="inner"] {
+        min-width: 300px;
+        text-align: left;
+    }
+    
+    .sweet-alert-modal-backdrop {
+        z-index: 1050 !important;
+    }
 }

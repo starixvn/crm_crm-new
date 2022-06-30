@@ -5,7 +5,8 @@ import {
     setBalanceUpday,
     setFeedbackSubjectTemplates,
     setAddFeedback,
-    setConfirmCreateGuestDialog
+    setConfirmCreateGuestDialog,
+    resetState
 } from './addGuestFeedbackSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -60,5 +61,6 @@ export const ActionCreators = {
     setAddFeedback,
     verifyUserName,
     setConfirmCreateGuestDialog,
-    getTicketInfoByRef
+    getTicketInfoByRef,
+    resetState
 };

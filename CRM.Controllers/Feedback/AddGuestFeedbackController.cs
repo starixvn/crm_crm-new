@@ -38,10 +38,10 @@
             this.userService = userService;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
         public async Task<ActionResult> AllSetting()
         {

@@ -1,21 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
+const initialState = {
+    settings: null,
+    gridParams: {
+        pageIndex: 1,
+        pageSize: 100
+    },
+    gridDataFeedbacks: null,
+    editFeedbackDialog: { show: false },
+    editNoOfInquiryDialog: { show: false },
+    editMultipleLogStatusDialog: { show: false },
+    editMultipleLogDialog: { show: false },
+    viewRelatedCustomerDialog: { show: false }
+};
 
 const manageFeedbackSlice = createSlice({
     name: 'manageFeedback',
-    initialState: {
-        settings: null,
-        gridParams: {
-            pageIndex: 1,
-            pageSize: 100
-        },
-        gridDataFeedbacks: null,
-        editFeedbackDialog: { show: false },
-        editNoOfInquiryDialog: { show: false },
-        editMultipleLogStatusDialog: { show: false },
-        editMultipleLogDialog: { show: false },
-        viewRelatedCustomerDialog: { show: false }
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setAllSettings: (state, action) => {
             state.settings = action.payload;
         },
@@ -53,7 +55,8 @@ export const {
     setEditNoOfInquiryDialog,
     setEditMultipleLogStatusDialog,
     setEditMultipleLogDialog,
-    setViewRelatedCustomerDialog
+    setViewRelatedCustomerDialog,
+    resetState
 } = actions;
 
 export default reducer;

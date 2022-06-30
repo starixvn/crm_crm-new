@@ -8,15 +8,15 @@ import {
     setEditNoOfInquiryDialog,
     setEditMultipleLogStatusDialog,
     setEditMultipleLogDialog,
-    setViewRelatedCustomerDialog
+    setViewRelatedCustomerDialog,
+    resetState
 } from './manageFeedbackSlice';
 
 const getAllSettings = () => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('ManageFeedback/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError);
 };
 
 
@@ -48,5 +48,6 @@ export const ActionCreators = {
     setEditNoOfInquiryDialog,
     setEditMultipleLogStatusDialog,
     setEditMultipleLogDialog,
-    setViewRelatedCustomerDialog
+    setViewRelatedCustomerDialog,
+    resetState
 };

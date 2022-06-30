@@ -207,7 +207,7 @@ class Layout extends Component {
             if(response.data !== null){
                 document.getElementById('currentCustId').value = response.data.custId;
                 this.setState({customerInfo: response.data}, () =>{
-                    this.props.navigate('/Dashboard', {state: response.data.custId});
+                    this.handleNavigateDashboard();
                 });
             }else if (response.data === null && !this.state.isGuest) {
                 this.setState({
@@ -219,6 +219,9 @@ class Layout extends Component {
             });
         }}).then(() => Site.unblockUI());
     };
+
+    handleNavigateDashboard = () => this.props.navigate('/Dashboard', {state: this.state.customerInfo.custId});
+
 
     handleCollapseExpandLayout = event =>{
         event.preventDefault();
@@ -283,7 +286,7 @@ class Layout extends Component {
         return (
             <div>
                 <div className='fix-header-menu'>
-                    <Header menus={menus} custId={customerInfo?.custId} handleCollapseExpandLayout={this.handleCollapseExpandLayout} />
+                    <Header menus={menus} handleNavigateDashboard={this.handleNavigateDashboard} handleCollapseExpandLayout={this.handleCollapseExpandLayout} />
                     <Filter
                         isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                         customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}

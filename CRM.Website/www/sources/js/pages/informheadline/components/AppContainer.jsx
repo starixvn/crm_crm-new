@@ -31,6 +31,10 @@ export class AppContainer extends Component {
         newInformDialog: { show: false }
     };
 
+    componentWillUnmount(){
+        this.props.resetState();
+     }
+
     handleCloseEditContactInformDialog = () => {
         this.props.setGridParams({pageIndex: 1, pageSize: 100});
         this.props.setContactInforms(null);

@@ -14,260 +14,262 @@
 @import '../../../components/select-with-search-site';
 @import '../edit-customer-feedback';
 
-.form-filter {
-    min-width: 1142px;    
-
-    .form-row {
-        .sm-width{
-            width: 290px !important;
-        }
-
-        .subCategory-width{
-            width: 593px !important;
-
-            Label{
-                margin-right: 9px !important;
+.manage-feedback{
+    .form-filter {
+        min-width: 1142px;    
+    
+        .form-row {
+            .sm-width{
+                width: 290px !important;
             }
-        }
-
-        .label-status{
-            width: 50px !important;
-        }
-
-        .form-group {
-            width: 440px;
-
-            .form-label {
-                width: 115px;
+    
+            .subCategory-width{
+                width: 593px !important;
+    
+                Label{
+                    margin-right: 9px !important;
+                }
             }
-
-            .react-datepicker-wrapper-container{
-                input{
+    
+            .label-status{
+                width: 50px !important;
+            }
+    
+            .form-group {
+                width: 440px;
+    
+                .form-label {
+                    width: 115px;
+                }
+    
+                .react-datepicker-wrapper-container{
+                    input{
+                        width: 170px;
+                    }
+                }
+    
+                .username-width{
+                    width: 211px;
+                    margin-right: 10px;
+                    margin-left: -4px;
+                }
+    
+                .response-width{
+                    width: 100px;
+                }
+    
+                .select-options{
                     width: 170px;
                 }
+                .select-options-sm{
+                    width: 133px;
+                }
             }
-
-            .username-width{
-                width: 211px;
-                margin-right: 10px;
-                margin-left: -4px;
-            }
-
-            .response-width{
-                width: 100px;
-            }
-
-            .select-options{
-                width: 170px;
-            }
-            .select-options-sm{
-                width: 133px;
-            }
-        }
-    }
-}
-
-.table-title, .page-container, .table-container{
-    min-width: 1142px !important;
-    max-width: 1340px !important;
-}
-
-.disabled-multiple-edit-status{
-    pointer-events: none;
-}
-
-.multiple-edit:hover{
-    color: $draft-color !important;
-}
-
-.cursor-pointer{
-    cursor: pointer;
-}
-
-.pending{
-    background-color: #f0edc4;
-}
-
-.closed{
-    background-color: #ddd;
-}
-
-.manage-feedback-row{
-    .edit-feedback{
-        &:hover {
-            color: $draft-color !important;
-        }
-    }
-
-    .fa-pencil:before {
-        color: #D3B35D;
-    }
-
-    strong.link-click {
-        color: $link-color !important;
-    
-        &:hover {
-            color: $draft-color !important;
         }
     }
     
-    .feedback-info {
-        padding-left: 17px;
+    .table-title, .page-container, .table-container{
+        min-width: 1142px !important;
+        max-width: 1340px !important;
+    }
     
-        .info{
-            padding: 3px 0px;
-        }
+    .disabled-multiple-edit-status{
+        pointer-events: none;
     }
-
-    span.fa.fa-file-excel-o.icon-excel {
-        color: #28a745;
-        font-size: 14px;
+    
+    .multiple-edit:hover{
+        color: $draft-color !important;
     }
-
-    .break-word{
-        word-break: break-all;
+    
+    .cursor-pointer{
+        cursor: pointer;
     }
-}
-
-.tooltipManageFeedback [class$="inner"] {
-    min-width: 100px;
-    max-width: 650px;
-    min-height: 100px;
-    max-height: 920px;
-    border-radius: 3px;
-    font-size: 12px;
-    text-align: left
-}
-
-#tooltip-customers [class$="inner"] {
-    min-width: 300px;
-    text-align: left;
-}
-
-
-.edit-multiple-review-status-modal-dialog{
-    .modal-dialog {
-        max-width: 987px;
-
-        .modal-content {
-            .panel-group{
-                border: 1px solid #b1b1b1;
-                border-width: 1px 1px 0 1px;
-
-                .row {
-                    margin: 0;
-                }
-
-                .alert-box-warn{
-                    background: #fff;
-                    border: solid 1px #ffc0cb;
-                    padding: 2px 2px 5px;
-                    margin: 2px;
-                    font-weight: 700;
-                }
-
-                .text{
-                    color: #ff1493;
-                }
-
-                input[type=checkbox]{
-                    position: relative;
-                    top: 9px;
-                }
-
-                .title{
-                    background: linear-gradient(rgb(231, 231, 231), rgb(226, 226, 226));
-                    color: rgb(47, 112, 180)
-                }
-            }
-
-            .modal-footer{
-                display:block !important;
+    
+    .pending{
+        background-color: #f0edc4;
+    }
+    
+    .closed{
+        background-color: #ddd;
+    }
+    
+    .manage-feedback-row{
+        .edit-feedback{
+            &:hover {
+                color: $draft-color !important;
             }
         }
+    
+        .fa-pencil:before {
+            color: #D3B35D;
+        }
+    
+        strong.link-click {
+            color: $link-color !important;
+        
+            &:hover {
+                color: $draft-color !important;
+            }
+        }
+        
+        .feedback-info {
+            padding-left: 17px;
+        
+            .info{
+                padding: 3px 0px;
+            }
+        }
+    
+        span.fa.fa-file-excel-o.icon-excel {
+            color: #28a745;
+            font-size: 14px;
+        }
+    
+        .break-word{
+            word-break: break-all;
+        }
     }
-}
-
-.edit-multiple-log {
-    .modal-dialog {
-        max-width: 987px;
-
-        .modal-content {
-            .panel-group {
-                border: 1px solid #b1b1b1;
-
-                .form-group {
-                    margin-bottom: 4px;
-
-                    .col-form-label {
-                        padding-right: 0;
-                    }
-
-                    .fa-question-circle-o {
-                        color: #0789d1;
-                        margin-left: 10px;
-                    }
-                }
-
-                .panel-title {
-                    display: flex;
-                    align-items: center;
-                    height: 28px;
-                    margin: 0;
-                    padding: 0 15px;
-                    color: #2f70b4;
-                    background: linear-gradient(#e7e7e7, #e2e2e2);
-                    border-bottom: 1px solid #b1b1b1;
-                    cursor: pointer;
-
-                    .form-label {
+    
+    .tooltipManageFeedback [class$="inner"] {
+        min-width: 100px;
+        max-width: 650px;
+        min-height: 100px;
+        max-height: 920px;
+        border-radius: 3px;
+        font-size: 12px;
+        text-align: left
+    }
+    
+    #tooltip-customers [class$="inner"] {
+        min-width: 300px;
+        text-align: left;
+    }
+    
+    
+    .edit-multiple-review-status-modal-dialog{
+        .modal-dialog {
+            max-width: 987px;
+    
+            .modal-content {
+                .panel-group{
+                    border: 1px solid #b1b1b1;
+                    border-width: 1px 1px 0 1px;
+    
+                    .row {
                         margin: 0;
                     }
+    
+                    .alert-box-warn{
+                        background: #fff;
+                        border: solid 1px #ffc0cb;
+                        padding: 2px 2px 5px;
+                        margin: 2px;
+                        font-weight: 700;
+                    }
+    
+                    .text{
+                        color: #ff1493;
+                    }
+    
+                    input[type=checkbox]{
+                        position: relative;
+                        top: 9px;
+                    }
+    
+                    .title{
+                        background: linear-gradient(rgb(231, 231, 231), rgb(226, 226, 226));
+                        color: rgb(47, 112, 180)
+                    }
                 }
-
-                .disabled-filed{
-                    pointer-events: none;
-                    cursor: not-allowed;
-                    opacity: .7;
-                    background-color: #fff;
+    
+                .modal-footer{
+                    display:block !important;
                 }
-
-                .panel-content {
-                    padding: 4px 9px;
-
-                    .select-all-field {
-                        padding-left: 75px;
-                        margin-top: 20px;
+            }
+        }
+    }
+    
+    .edit-multiple-log {
+        .modal-dialog {
+            max-width: 987px;
+    
+            .modal-content {
+                .panel-group {
+                    border: 1px solid #b1b1b1;
+    
+                    .form-group {
                         margin-bottom: 4px;
-                    }                    
-
-                    input[type="checkbox"] {
-                        margin-top: 6px;
-                    }
-
-                    .react-datepicker-wrapper-container {
-                        width: 201px !important;
-                    }
-
-                    .multiple-select-container, .select-width-sm {
-                        width: 195px !important;
-
-                        .multiple-select-label .caret{
-                            right: 5px !important;
+    
+                        .col-form-label {
+                            padding-right: 0;
+                        }
+    
+                        .fa-question-circle-o {
+                            color: #0789d1;
+                            margin-left: 10px;
                         }
                     }
-
-                    .selectwithsearchtree{
-                        .btn {
-                            padding: 0.375rem 0.55rem !important;
+    
+                    .panel-title {
+                        display: flex;
+                        align-items: center;
+                        height: 28px;
+                        margin: 0;
+                        padding: 0 15px;
+                        color: #2f70b4;
+                        background: linear-gradient(#e7e7e7, #e2e2e2);
+                        border-bottom: 1px solid #b1b1b1;
+                        cursor: pointer;
+    
+                        .form-label {
+                            margin: 0;
+                        }
+                    }
+    
+                    .disabled-filed{
+                        pointer-events: none;
+                        cursor: not-allowed;
+                        opacity: .7;
+                        background-color: #fff;
+                    }
+    
+                    .panel-content {
+                        padding: 4px 9px;
+    
+                        .select-all-field {
+                            padding-left: 75px;
+                            margin-top: 20px;
+                            margin-bottom: 4px;
+                        }                    
+    
+                        input[type="checkbox"] {
+                            margin-top: 6px;
+                        }
+    
+                        .react-datepicker-wrapper-container {
+                            width: 201px !important;
+                        }
+    
+                        .multiple-select-container, .select-width-sm {
+                            width: 195px !important;
+    
+                            .multiple-select-label .caret{
+                                right: 5px !important;
+                            }
+                        }
+    
+                        .selectwithsearchtree{
+                            .btn {
+                                padding: 0.375rem 0.55rem !important;
+                            }
                         }
                     }
                 }
             }
         }
     }
-}
-
-.sweet-alert-modal-backdrop {
-    z-index: 1050 !important;
+    
+    .sweet-alert-modal-backdrop {
+        z-index: 1050 !important;
+    }
 }

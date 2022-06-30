@@ -10,7 +10,7 @@
 @import '../../../components/autocomplete';
 @import '../../../components/select-with-search-site';
 
-#child-app-container {
+.add-feedback{
     min-width: 78%;
     .panel-group {
         padding: 0px 15px;
@@ -128,50 +128,50 @@
             -moz-appearance: textfield;
         }
     }
-}
-
-#tooltip-customers{
-    transform: translate(467px, 549px) !important;
-}
-
-#collapse-tooltip-customers{
-    transform: translate(467px, 280px) !important;
-}
-
-#tooltip-ref-ticket{
-    transform: translate(207px, 584px) !important;
-}
-
-#collapse-tooltip-ref-ticket{
-    transform: translate(209px, 312px) !important;
-}
-
-#tooltip-customers [class$="inner"], #collapse-tooltip-customers [class$="inner"]{
-    min-width: 300px;
-    text-align: left;
-}
-
-#tooltip-ref-ticket [class$="inner"], #collapse-tooltip-ref-ticket [class$="inner"]{
-    white-space: pre-wrap;
-    max-width: 400px;
-    text-align: left;
-}
-
-@media only screen and (max-width: 1500px) {
+    
     #tooltip-customers{
-        transform:translate(362px, 549px) !important;
+        transform: translate(467px, 549px) !important;
     }
     
     #collapse-tooltip-customers{
-        transform:translate(362px, 280px) !important;
+        transform: translate(467px, 280px) !important;
     }
-
+    
     #tooltip-ref-ticket{
-        transform: translate(160px, 584px) !important;
+        transform: translate(207px, 584px) !important;
     }
     
     #collapse-tooltip-ref-ticket{
-        transform: translate(160px, 312px) !important;
+        transform: translate(209px, 312px) !important;
+    }
+    
+    #tooltip-customers [class$="inner"], #collapse-tooltip-customers [class$="inner"]{
+        min-width: 300px;
+        text-align: left;
+    }
+    
+    #tooltip-ref-ticket [class$="inner"], #collapse-tooltip-ref-ticket [class$="inner"]{
+        white-space: pre-wrap;
+        max-width: 400px;
+        text-align: left;
+    }
+    
+    @media only screen and (max-width: 1500px) {
+        #tooltip-customers{
+            transform:translate(362px, 549px) !important;
+        }
+        
+        #collapse-tooltip-customers{
+            transform:translate(362px, 280px) !important;
+        }
+    
+        #tooltip-ref-ticket{
+            transform: translate(160px, 584px) !important;
+        }
+        
+        #collapse-tooltip-ref-ticket{
+            transform: translate(160px, 312px) !important;
+        }
     }
 }
 

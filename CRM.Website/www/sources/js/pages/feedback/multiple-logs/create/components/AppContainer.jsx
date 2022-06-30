@@ -20,6 +20,10 @@ export class AppContainer extends Component {
         this.props.getSettings();
     }
 
+    componentWillUnmount(){
+        this.props.resetState();
+    }
+
     render() {
         const { settings } = this.props;
         if (settings === null) {

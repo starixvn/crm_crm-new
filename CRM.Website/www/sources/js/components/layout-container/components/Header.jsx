@@ -71,14 +71,12 @@ export class Header extends PureComponent {
             return null;
         }
 
-        console.log(Site.resolveClientUrl('Auth/SignOut'));
-
         const currentUsername = document.getElementById('currentUsername').value;
 
         return (
             <div className='header'>
                 <div className='left-header'>
-                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/logo-crm.png')} onClick={() => window.location = Site.resolveClientUrl('Dashboard')}/>
+                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/logo-crm.png')} onClick={this.props.handleNavigateDashboard}/>
                     <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" onClick={handleCollapseExpandLayout}/></span>
                 </div>
                 <div className='right-header'>
@@ -92,7 +90,7 @@ export class Header extends PureComponent {
                     <div className='item-end float-right'>
                         <span className='fa fa-user fa-lg' />
                         <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{currentUsername}</span></span>
-                        <img src={Site.resolveClientUrl('css/images/icon/icon-logout.png')} />
+                        <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-logout.png')} />
                         <a className='sign-out' onClick={() =>this.handleLogout()}>{LangHelper.getResource('SignOut')}</a>
                     </div>
                 </div>

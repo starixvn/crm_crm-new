@@ -28,6 +28,10 @@ export class AppContainer extends Component {
         this.props.getAllSettings();
     }
 
+    componentWillUnmount(){
+        this.props.resetState();
+     }
+
     handleCloseEditNoInquiryDialog = () => {
         this.props.setEditNoOfInquiryDialog({ show: false });
     };

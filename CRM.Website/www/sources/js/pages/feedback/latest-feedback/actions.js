@@ -5,7 +5,8 @@ import {
     setLatestFeedback,
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
-    setEditNoOfInquiryDialog
+    setEditNoOfInquiryDialog,
+    resetState
 } from './latestFeedbackSlide';
 
 const getLatestFeedback = params => async dispatch => {
@@ -31,5 +32,6 @@ export const ActionCreators = {
     setEditFeedbackDialog,
     getLatestFeedback,
     exportExcel,
-    setEditNoOfInquiryDialog
+    setEditNoOfInquiryDialog,
+    resetState
 };

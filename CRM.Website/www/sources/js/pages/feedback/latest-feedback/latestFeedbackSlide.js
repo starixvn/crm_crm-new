@@ -1,15 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    gridData: null,
+    gridParams: { top: 10 },
+    viewRelatedCustomerDialog: { show: false },
+    editFeedbackDialog: { show: false },
+    editNoOfInquiryDialog: { show: false }
+}
 const latestFeedbackSlice = createSlice({
     name: 'latestFeedback',
-    initialState: {
-        gridData: null,
-        gridParams: { top: 10 },
-        viewRelatedCustomerDialog: { show: false },
-        editFeedbackDialog: { show: false },
-        editNoOfInquiryDialog: { show: false }
-    },
+    initialState: initialState
+    ,
     reducers: {
+        resetState: () => initialState,
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
@@ -35,7 +37,8 @@ export const {
     setLatestFeedback,
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
-    setEditNoOfInquiryDialog
+    setEditNoOfInquiryDialog,
+    resetState
 } = actions;
 
 export default reducer;

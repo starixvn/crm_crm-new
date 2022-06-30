@@ -1,18 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    gridParams: {
+        pageIndex: 1,
+        pageSize: 100
+    },
+    settings: null,
+    gridData: null,
+    editFeedbackDialog: { show: false },
+    viewRelatedCustomerDialog: { show: false }
+}
 const deletedFeedbackSlice = createSlice({
     name: 'deletedFeedback',
-    initialState: {
-        gridParams: {
-            pageIndex: 1,
-            pageSize: 100
-        },
-        settings: null,
-        gridData: null,
-        editFeedbackDialog: { show: false },
-        viewRelatedCustomerDialog: { show: false }
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
         },
@@ -38,7 +39,8 @@ export const {
     setAllSettings,
     setDeletedFeedback,
     setEditFeedbackDialog,
-    setViewRelatedCustomerDialog
+    setViewRelatedCustomerDialog,
+    resetState
 } = actions;
 
 export default reducer;

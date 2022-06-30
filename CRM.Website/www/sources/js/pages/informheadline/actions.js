@@ -1,6 +1,7 @@
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import{
+    resetState,
     setInforms,
     setTitleDetail,
     setContactInformSettings,
@@ -164,6 +165,7 @@ const exportNewInforms = params => async () => {
 };
 
 export const ActionCreators = {
+    resetState,
     getInforms,
     exportInforms,
     getTitleDetail,

@@ -4,6 +4,7 @@ const ShortDateFormat = 'MMM DD, YYYY';
 const ShortDateTimeFormat = 'MMM DD, YYYY hh:mm A';
 const LongDateTimeFormat = 'MMM DD, YYYY hh:mm:ss A';
 const StartTimeRemarkPrefix = 'YYYYMMDD/hh:mmA';
+const ClientTimezone = document.getElementById('clientTimezone').value;
 
 export default class DateTimeService {
     static startOfDay(date) {
@@ -55,7 +56,6 @@ export default class DateTimeService {
     }
 
     static toClientDateTime(date) {
-        const ClientTimezone = document.getElementById('clientTimezone').value;
         date = moment(date, LongDateTimeFormat);
         return moment.utc(date).utcOffset(ClientTimezone);
     }

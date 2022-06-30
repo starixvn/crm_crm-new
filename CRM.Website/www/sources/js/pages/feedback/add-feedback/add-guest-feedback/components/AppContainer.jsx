@@ -29,6 +29,10 @@ export class AppContainer extends Component {
         this.props.getBalanceUpday();
     }
 
+    componentWillUnmount(){
+        this.props.resetState();
+     }
+
     render() {
         const {settings,balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult } = this.props;
         if (settings === null || balanceUpday === null) {

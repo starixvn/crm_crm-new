@@ -33,6 +33,10 @@ export class AppContainer extends Component {
         this.props.getLatestFeedback(this.props.gridParams);
     }
 
+    componentWillUnmount(){
+        this.props.resetState();
+    }
+
     handleCloseEditNoInquiryDialog = () => {
         this.props.setEditNoOfInquiryDialog({ show: false });
     };

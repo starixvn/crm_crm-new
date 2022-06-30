@@ -32,6 +32,10 @@ export class AppContainer extends Component {
         this.props.getAllSettings();
     }
 
+    componentWillUnmount(){
+        this.props.resetState();
+     }
+
     handleCloseEditFeedbackDialog = isSuccessful => {
         this.props.setEditFeedbackDialog({ show: false });
         if (isSuccessful) {
