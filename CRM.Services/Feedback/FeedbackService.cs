@@ -105,6 +105,12 @@
 
             foreach (var feedback in feedbacks)
             {
+                var totalDays = feedback.ResolutionDate - feedback.FeedbackDate;
+                feedback.DurationTime = string.Format("{0}:{1}:{2}:{3}",
+                                                            totalDays.Days,
+                                                            totalDays.Hours,
+                                                            totalDays.Minutes,
+                                                            totalDays.Seconds);
                 feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
                 feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
                 feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);

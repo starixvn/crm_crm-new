@@ -40,3 +40,8 @@
 .sweet-alert-modal-backdrop {
     z-index: 1050 !important;
 }
+
+.header-content .table > thead > tr > th {
+    border: none;
+    border-right: 1px solid #b7b7b7;
+}
