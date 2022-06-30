@@ -5,8 +5,8 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 function generateConfig(env) {
-    const jsPath = `${pathConfig.scriptPaths.build}/${env.Environment}`;
-    const cssPath = `${pathConfig.cssPaths.build}/${env.Environment}`;
+    const jsPath = `${pathConfig.scriptPaths.build}/build`;
+    const cssPath = `${pathConfig.cssPaths.build}/build`;
     return {
         resolve: {
             alias: alias,
