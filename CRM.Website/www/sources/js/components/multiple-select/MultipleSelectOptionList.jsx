@@ -14,12 +14,25 @@ export default class MultipleSelectOptionList extends Component {
         super(props);
     }
 
+    isUnCheckAllSubItem = item =>{
+        let countFalse = 0;
+        item.subItem.map(subItem => {
+            if(!subItem.checked){
+                countFalse++;
+            }
+        });
+        if(countFalse === item.subItem.length){
+            return true;
+        }
+        return false;
+    }
+
     isUnCheckAll = dataSource => {
         let countFalse = 0;
         let countNA = 0;
         let indexNa = 0;
         dataSource.map((item, index) => {
-            if(!item.checked){
+            if(!item.checked && this.isUnCheckAllSubItem(item)){                
                 countFalse++;
             }
             if(item.value === 'N/A'){

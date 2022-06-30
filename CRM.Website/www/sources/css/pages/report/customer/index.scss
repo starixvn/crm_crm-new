@@ -70,6 +70,7 @@
 }
 
 .table-container {
+    border: 1px solid #b7b7b7;
     .header-content {
         border-bottom: none;
         position: sticky;
@@ -79,7 +80,6 @@
     .body-content {
         overflow: unset !important;
         .table {
-            border: 1px solid rgb(183, 183, 183); 
             tbody {                
                 tr:hover td {
                     background-color: #E0FFFF !important;

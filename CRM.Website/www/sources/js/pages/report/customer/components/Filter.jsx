@@ -104,11 +104,11 @@ export class Filter extends Component {
 
         const { username, headline, vipId, languageIds, siteIds, positionIds, excludeIgnoredAccounts } = this.state;
         const params = {
-            username: username=== '' ? null : username,
+            username: username === '' ? null : username,
             headline: headline === '' ? null : headline,
             vipId: vipId,
-            languageIds: languageIds,
-            siteIds: siteIds,
+            languageIds: languageIds === '' ? '0' : languageIds,
+            siteIds: siteIds === '' ? '0' : siteIds,
             positionIds: positionIds.replace('5', '5,6,7,8,9,10'),
             excludeIgnoredAccounts: excludeIgnoredAccounts,
             pageIndex: 1,
