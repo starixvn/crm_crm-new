@@ -13,21 +13,23 @@ export class DataGrid extends Component {
         };
     }
 
-    buildHeader = () => {
+    buildHeader = isHost => {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={45}>{LangHelper.getResource('Setting')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('Relation')}</HeaderCell>
+                {
+                    isHost && <HeaderCell colWidth={10}>{LangHelper.getResource('Relation')}</HeaderCell>
+                }
                 <HeaderCell colWidth={12}>{LangHelper.getResource('SettingId')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Order')}</HeaderCell>
             </HeaderRow>
         );
     };
 
-    buildBody = () => {
+    buildBody = isHost => {
         const { settingType } = this.props;
-        if ( settingType.length > 0) {
-            return settingType.map(item => this.renderRow(item));
+        if (settingType.length > 0) {
+            return settingType.map(item => this.renderRow(item, isHost));
         }
         return [
             <Row className="no-data" >
@@ -38,7 +40,7 @@ export class DataGrid extends Component {
         ];
     };
 
-    renderRow = item => {
+    renderRow = (item, isHost) => {
         const rows = [];
         rows.push(
             <Row key={`parent-${item.settingId}`} className='parent-level-0'>
@@ -49,16 +51,19 @@ export class DataGrid extends Component {
                     }
                     <span >{item.settingValue}</span>
                 </Cell>
-                <Cell className='text-center'>
-                    <i className="fa fa-plus-circle icon-excel" aria-hidden="true"
-                        onClick={event => this.handleOpenUpdate(event, item.settingId, item.settingValue)}
-                    />
-                </Cell>
+                {
+                    isHost &&
+                    <Cell className='text-center'>
+                        <i className="fa fa-plus-circle icon-excel" aria-hidden="true"
+                            onClick={event => this.handleOpenUpdate(event, item.settingId, item.settingValue)}
+                        />
+                    </Cell>
+                }
                 <Cell className='text-right'>{item.settingId}</Cell>
                 <Cell className='text-right'>{item.displayOrder}</Cell>
             </Row>
         );
-        if(item.childSettings.length > 0){
+        if (item.childSettings.length > 0) {
             rows.push(
                 item.childSettings.map(sub => this.renderSubSetting(item.settingId, sub))
             );
@@ -67,10 +72,11 @@ export class DataGrid extends Component {
     };
 
     renderSubSetting = (parentId, sub) => {
-        const {toggleRow} = this.state;
+        const { toggleRow } = this.state;
+
         const rows = [];
 
-        if(!toggleRow.includes(parentId)){
+        if (!toggleRow.includes(parentId)) {
             rows.push(
                 <Row key={`child-${sub.settingId}`} className='child-setting'>
                     <Cell className='pl-4'>{sub.settingValue}</Cell>
@@ -87,7 +93,7 @@ export class DataGrid extends Component {
 
     handleToggleRow = (event, settingId) => {
         event.stopPropagation();
-        const {toggleRow} = this.state;
+        const { toggleRow } = this.state;
         const index = toggleRow.indexOf(settingId);
         if (index >= 0) {
             toggleRow.splice(index, 1);
@@ -102,17 +108,18 @@ export class DataGrid extends Component {
         event.preventDefault();
         const title = `${LangHelper.getResource('AddSubSettingTitle')}`;
         const params = {
-            settingName : this.props.mainSettings.slice(1)[0].settingName,
+            settingName: this.props.mainSettings.slice(1)[0].settingName,
             parentId: parseInt(value, 10),
             parentName: name
         };
-        this.props.setOpenUpdatePopup({ show: true, title: title, parentId: params.parentId, parentName: params.parentName});
+        this.props.setOpenUpdatePopup({ show: true, title: title, parentId: params.parentId, parentName: params.parentName });
         this.props.getMainSettingRelation(params);
     };
 
     render() {
-        const { settingType, gridParams } = this.props;
-        if(!settingType || settingType === null){
+        const { settingType, gridParams, isHost } = this.props;
+
+        if (!settingType || settingType === null) {
             return null;
         }
 
@@ -124,8 +131,8 @@ export class DataGrid extends Component {
                 <Table
                     width={700}
                     autoWidth={false}
-                    header={this.buildHeader()}
-                    body={this.buildBody()}
+                    header={this.buildHeader(isHost)}
+                    body={this.buildBody(isHost)}
                     onSort={this.onSort}
                     containerPadding={0}
                     adjustedHeight={10}

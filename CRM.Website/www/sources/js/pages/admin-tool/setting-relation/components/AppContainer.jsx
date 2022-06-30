@@ -15,7 +15,7 @@ export class AppContainer extends Component {
     this.props.setMainSettingRelation(null);
   };
   render() {
-    const {mainSettings, updatePopup, gridParams} = this.props;
+    const {mainSettings, updatePopup, gridParams, isHost} = this.props;
 
     if(!mainSettings || mainSettings === null){
       return null;
@@ -25,7 +25,7 @@ export class AppContainer extends Component {
     return (
         <Fragment>
               <Filter />
-              <DataGrid/>
+              <DataGrid isHost={isHost}/>
               {
                 updatePopup.show &&
                 <Update subSettingOptions={subSettingOptions} onClose={this.handleCloseUpdatePopup}/>

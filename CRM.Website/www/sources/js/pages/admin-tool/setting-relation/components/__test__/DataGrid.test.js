@@ -140,7 +140,7 @@ describe('DataGrid', () => {
             // Act
             container.handleOpenUpdate(event, 1);
             // Assert
-            expect(initProps.setOpenUpdatePopup).toHaveBeenCalledWith({show: true, title: 'AddSubSettingTitle 1', parentId: 1});
+            expect(initProps.setOpenUpdatePopup).toHaveBeenCalledWith({show: true, title: 'AddSubSettingTitle', parentId: 1});
             expect(initProps.getMainSettingRelation).toHaveBeenCalled();
             expect(event.preventDefault).toHaveBeenCalled();
         });

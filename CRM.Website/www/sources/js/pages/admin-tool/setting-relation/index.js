@@ -10,12 +10,12 @@ import AppContainer from './components/AppContainer';
 const store = configureStore({
     reducer: settingRelationReducer
 });
-
+const isHost = document.getElementById('isHost').checked;
 
 ReactDOM.render(
     <Provider store={store}>
         <Layout>
-            <AppContainer />
+            <AppContainer isHost={isHost} />
         </Layout>
     </Provider>,
     document.getElementById('app-container'));
