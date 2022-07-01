@@ -112,6 +112,8 @@ export const exportExcelMapping = params => async dispatch => {
 };
 
 const actions = {
+    setSettings,
+    setGridData,
     getSettings,
     getGridData,
     setGridParams,

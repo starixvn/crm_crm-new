@@ -26,6 +26,11 @@ export class AppContainer extends Component {
         });
     }
 
+    componentWillUnmount(){
+        this.props.setGridData(null);
+        this.props.setSettings(null);
+    }
+
     closeConfirmPopup = () => this.props.setConfirmPopup({ show: false });
 
     handleCloseContent = () => {

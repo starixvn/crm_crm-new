@@ -20,6 +20,11 @@ export class AppContainer extends Component {
             this.setState({policy: response});
         });
     }
+
+    componentWillUnmount(){
+        this.props.setGridData(null);
+        this.props.setSettings(null);
+    }
     
     render() {
         if(!this.state.policy){
