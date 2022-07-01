@@ -13,6 +13,7 @@ import '@cssroot/pages/redemption/index.scss';
 
 class index extends React.Component{
     render(){
+        const location = this.props.location;
         return(
             <Provider store={store}>
                 <div className='redemption'>

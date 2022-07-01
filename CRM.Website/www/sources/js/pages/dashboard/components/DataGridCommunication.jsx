@@ -223,13 +223,11 @@ export class DataGridCommunication extends Component {
                     <span className='link-detail' onClick={() => this.handleShowEditCommunication(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>
                 {
-                    isHost === Policy.Host && (
+                    this.props.isHost ? 
                         <Cell className="text-center">
-                            <span className="fa fa-pencil rounded-circle icon-edit"
-                                onClick={() => this.handleShowNoOfInquiry(item.feedbackId)}
-                            ></span>
-                        </Cell>
-                    )
+                            <span className="fa fa-pencil rounded-circle icon-edit" onClick={() => this.handleShowNoOfInquiry(item.feedbackId)} />
+                        </Cell> :
+                        <Cell />
                 }
                 <Cell className="text-center">
                     {DateTimeService.toShortDateTimeFormat(item.feedbackDate)}

@@ -9,11 +9,10 @@ import {
 } from './actionLogSlice';
 
 const getAllLogAction = params => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl(`ActionLog/GetAllLogAction`);
     await DataService.getDataAsync(url,params).then(response => {
         dispatch(setAllLogAction(response.data));
-    }).then(() => Site.unblockUI());
+    });
 };
 
 const getActivityLog = params => async dispatch => {

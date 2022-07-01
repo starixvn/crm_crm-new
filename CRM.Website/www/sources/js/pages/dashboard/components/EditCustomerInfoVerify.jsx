@@ -106,14 +106,12 @@ export class EditCustomerInfoVerify extends Component {
                             </Table>
                         </Modal.Body>
                         {
-                            isHost === Policy.Host &&
-                            (
-                                <Modal.Footer>
-                                    <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit} disabled={isSubmitting}>
-                                        {LangHelper.getResource('Save')}
-                                    </Button>
-                                </Modal.Footer>
-                            )
+                            isHost &&
+                            <Modal.Footer>
+                                <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit} disabled={isSubmitting}>
+                                    {LangHelper.getResource('Save')}
+                                </Button>
+                            </Modal.Footer>
                         }
                     </Form>
                 </Modal>

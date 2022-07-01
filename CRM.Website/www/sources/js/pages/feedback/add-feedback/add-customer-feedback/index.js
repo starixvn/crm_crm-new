@@ -13,7 +13,6 @@ import '@cssroot/pages/feedback/add-feedback/index.scss';
 class index extends React.PureComponent {
     render(){
         const location = this.props.location;
-        console.log(location);
         return(
             <Provider store={store}>
                   <div className='add-feedback'>

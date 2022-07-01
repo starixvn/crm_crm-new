@@ -7,7 +7,8 @@ import CkEditor from '@jsroot/components/ckeditor/index';
 import LangHelper from '@jsroot/common/langHelper';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import Site from '@jsroot/common/site';
-import { Policy } from '@jsroot/common/constants';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class Remark extends Component {
     constructor(props) {

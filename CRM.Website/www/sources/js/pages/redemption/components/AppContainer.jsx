@@ -37,7 +37,7 @@ export class AppContainer extends Component {
 
     componentDidMount(){
         getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
-            this.setState({customerInfoPolicy: response});
+            this.setState({createUpdateFeedbackPermission: response});
         });
     }
 
