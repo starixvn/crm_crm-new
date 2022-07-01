@@ -207,7 +207,7 @@ class Layout extends Component {
             if(response.data !== null){
                 document.getElementById('currentCustId').value = response.data.custId;
                 this.setState({customerInfo: response.data}, () =>{
-                    this.handleNavigate('/Dashboard');
+                    this.handleNavigate('Dashboard');
                 });
             }else if (response.data === null && !this.state.isGuest) {
                 this.setState({
