@@ -220,7 +220,7 @@ class Layout extends Component {
         }}).then(() => Site.unblockUI());
     };
 
-    handleNavigate = name => this.props.navigate(name, {state: this.state.customerInfo.custId});
+    handleNavigate = name => this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo.custId});
 
 
     handleCollapseExpandLayout = event =>{

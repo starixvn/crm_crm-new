@@ -142,7 +142,7 @@ class Filter extends Component {
 
     handleNavigateSubHome = (event, name) =>{
         event.preventDefault();
-        this.props.navigate(name, {state: this.props.customerInfo.custId});
+        this.props.navigate(Site.resolveClientUrl(name), {state: this.props.customerInfo.custId});
     }
 
     handleConcatMenu = menus => {
