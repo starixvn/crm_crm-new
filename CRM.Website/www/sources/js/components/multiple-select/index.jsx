@@ -24,7 +24,8 @@ export default class MultipleSelect extends Component {
         valueField: PropTypes.string,
         isDisable: PropTypes.bool,
         isNAOption: PropTypes.bool,
-        isAllToggle: PropTypes.bool
+        isAllToggle: PropTypes.bool,
+        isCheckedNA: PropTypes.bool
     };
 
     static defaultProps = {
@@ -36,7 +37,8 @@ export default class MultipleSelect extends Component {
         isDisable: false,
         textOptions: MULTI_SELECT_TEXT_OPTIONS,
         isNAOption: false,
-        isAllToggle: false
+        isAllToggle: false,
+        isCheckedNA: false
     };
 
     constructor(props) {
@@ -309,6 +311,7 @@ export default class MultipleSelect extends Component {
                         onChange={this.onChangeHandler}
                         onChangeSub={this.onChangeSubHandler}
                         isAllExpand={this.state.isAllExpand}
+                        isCheckedNA={this.props.isCheckedNA}
                     />
                 </div>
             </div>

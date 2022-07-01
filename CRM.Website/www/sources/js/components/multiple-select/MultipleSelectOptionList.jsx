@@ -7,7 +7,8 @@ export default class MultipleSelectOptionList extends Component {
         dataSource: PropTypes.arrayOf(PropTypes.object).isRequired,
         id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
         onChange: PropTypes.func,
-        isAllExpand: PropTypes.bool
+        isAllExpand: PropTypes.bool,
+        isCheckedNA:  PropTypes.bool
     };
 
     constructor(props) {
@@ -25,14 +26,14 @@ export default class MultipleSelectOptionList extends Component {
             return true;
         }
         return false;
-    }
+    };
 
     isUnCheckAll = dataSource => {
         let countFalse = 0;
         let countNA = 0;
         let indexNa = 0;
         dataSource.map((item, index) => {
-            if(!item.checked && this.isUnCheckAllSubItem(item)){                
+            if(!item.checked && this.isUnCheckAllSubItem(item)){
                 countFalse++;
             }
             if(item.value === 'N/A'){
@@ -46,12 +47,12 @@ export default class MultipleSelectOptionList extends Component {
     };
 
     _renderOptionList() {
-        const { dataSource, onChange, onChangeSub, id, isAllExpand } = this.props;
+        const { dataSource, onChange, onChangeSub, id, isAllExpand, isCheckedNA } = this.props;
         if (!dataSource || !dataSource.length) {
             return <span>No information</span>;
         }
 
-        this.isUnCheckAll(dataSource);
+        isCheckedNA && this.isUnCheckAll(dataSource);
 
         const optionList = dataSource.map((item, index) => {
             return item.visible && (

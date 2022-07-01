@@ -187,6 +187,7 @@ export class Filter extends Component {
                                     dataSource={languageOptions}
                                     keyField='languageId' valueField='name'
                                     isNAOption
+                                    isCheckedNA
                                     maxDisplayItemCount={2}
                                     hasAllOption={languageOptions.length > 0}
                                     onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('languageIds' ,currentItem, selectedItemsKey)}
@@ -200,6 +201,7 @@ export class Filter extends Component {
                                     keyField='siteId' valueField='name'
                                     hasAllOption={siteOptions.length > 0}
                                     isNAOption
+                                    isCheckedNA
                                     isAllToggle
                                     maxDisplayItemCount={6}
                                     onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('siteIds', currentItem, selectedItemsKey)}
