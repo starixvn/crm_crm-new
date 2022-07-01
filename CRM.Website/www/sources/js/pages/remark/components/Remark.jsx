@@ -13,6 +13,7 @@ export class Remark extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            policy: null,
             collapse: {
                 specialRemark: false,
                 normalRemark: false
@@ -29,6 +30,9 @@ export class Remark extends Component {
     async componentDidMount() {
         await this.props.getRemarks({
             customerId: this.props.id
+        });
+        getPermission(FunctionKey.NotificationList).then(response => {
+            this.setState({policy: response});
         });
         const { gridData } = this.props;
         this.setState({
@@ -121,10 +125,11 @@ export class Remark extends Component {
     render() {
         const { collapse, specialRemarks, dataSpecialRemarks, normalRemarks, dataNormalRemarks, editRemarkResult
         } = this.state;
-        const canEditRemark = window.customerInfoPolicy === Policy.Host;
-        if (this.props.gridData === null){
+
+        if (this.props.gridData === null || !this.state.policy){
             return null;
         }
+        const canEditRemark = this.state.policy === Policy.Host;
 
         return (
             <div>

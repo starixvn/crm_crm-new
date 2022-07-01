@@ -10,9 +10,7 @@
     using CRM.Criteria.NotificationType;
     using CRM.Models.NotificationList;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -20,33 +18,21 @@
     public class NotificationListController : BaseController
     {
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly INotificationListService notificationListService;
         private readonly INotificationTypeService notificationTypeService;
         private readonly ICommonService commonService;
 
         public NotificationListController(
             INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             INotificationListService notificationListService,
             INotificationTypeService notificationTypeService,
             ICommonService commonService)
         {
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.notificationListService = notificationListService;
             this.notificationTypeService = notificationTypeService;
             this.commonService = commonService;
         }
-
-        //public IActionResult Index()
-        //{
-        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.NotificationList, Policy.Host);
-        //    return View(isHost);
-        //}
 
         public async Task<IActionResult> GetSettings()
         {

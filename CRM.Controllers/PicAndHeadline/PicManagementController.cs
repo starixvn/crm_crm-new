@@ -6,13 +6,10 @@
     using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Criteria.PicAndHeadline;
-    using CRM.Criteria.Setting;
     using CRM.Models;
     using CRM.Resources;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -21,32 +18,21 @@
     {
         private readonly INapSession napSession;
         private readonly ISettingService settingService;
-        private readonly IUserService userService;
-        private readonly INapSettings napSettings;
         private readonly IPicManagementService picManagementService;
         private readonly IExportExcelService excelService;
 
         public PicManagementController(
             INapSession napSession,
             ISettingService settingService,
-            IUserService userService,
-            INapSettings napSettings,
             IPicManagementService picManagementService,
             IExportExcelService excelService)
         {
             this.napSession = napSession;
             this.settingService = settingService;
-            this.userService = userService;
-            this.napSettings = napSettings;
             this.picManagementService = picManagementService;
             this.excelService = excelService;
         }
 
-        //public IActionResult Index()
-        //{
-        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Host);
-        //    return View(isHost);
-        //}
 
         [HttpPost]
         public async Task<IActionResult> GetReport([FromBody] GetReportCriteria criteria)

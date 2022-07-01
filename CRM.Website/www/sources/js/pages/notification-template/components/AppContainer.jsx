@@ -12,6 +12,8 @@ import EditNotificationTemplate from './EditNotificationTemplate';
 import ContentDetailModalDialog from './ContentDetailModalDialog';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -21,7 +23,6 @@ export class AppContainer extends Component {
         editTemplatePopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         getLanguages: PropTypes.func,
         getNotificationTypes: PropTypes.func,
-        isHost: PropTypes.bool.isRequired
     };
 
     static defaultProps = {
@@ -34,13 +35,22 @@ export class AppContainer extends Component {
         },
         getNotificationTypes: function () {
             // nothing
-        },
-        isHost: false
+        }
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            policy: null
+        };
+    }
 
     componentDidMount() {
         this.props.getNotificationTypes();
         this.props.getLanguages();
+        getPermission(FunctionKey.NotificationTemplate).then(response => {
+            this.setState({policy: response});
+        });
     }
     
     componentWillUnmount(){
@@ -93,10 +103,14 @@ export class AppContainer extends Component {
     };
 
     render() {
+        if(!this.state.policy){
+            return null;
+        }
+        const isHost = this.state.policy === Policy.Host;
         return (
             <Fragment>
-                <Filter isHost={this.props.isHost} />
-                <DataGrid isHost={this.props.isHost} />
+                <Filter isHost={isHost} />
+                <DataGrid isHost={isHost} />
                 {
                     this.props.createTemplatePopup.show &&
                     <NewNotificationTemplate

@@ -65,7 +65,7 @@ export class EditContactInforms extends Component {
     };
 
     renderForm = () => {
-        const { contactInforms, contactInformSettings } = this.props;
+        const { contactInforms, contactInformSettings, hasHostPermission } = this.props;
         const { selectedStatuses } = this.state;
 
         return(
@@ -87,6 +87,7 @@ export class EditContactInforms extends Component {
                 }
 
                 <DataGridEdit
+                    hasHostPermission={hasHostPermission}
                     status={this.props.status}
                     informData={contactInforms}
                     informSettings={contactInformSettings}

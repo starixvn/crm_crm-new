@@ -10,13 +10,12 @@ const store = configureStore({
 
 import '@cssroot/pages/feedback/manage-feedback/index.scss';
 
-const isHost = true;
 export default class index extends React.Component{
     render(){
         return(
             <Provider store={store}>
                 <div className='manage-feedback'>
-                    <AppContainer isHost={isHost} />
+                    <AppContainer />
                 </div>
             </Provider>
         );

@@ -29,13 +29,6 @@ namespace CRM.Controllers.Report.Statistics
             this.excelService = excelService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.IssueStatistics, Policy = Constant.Policy.Read)]
-        //[Route("StatisticReport/Index")]
-        //public IActionResult Index()
-        //{
-        //    return View("../Report/IssueStatistics/Index");
-        //}
-
         public async Task<ActionResult> GetAllSettings()
         {
             var mainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active);

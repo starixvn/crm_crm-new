@@ -30,11 +30,6 @@
             this.excelService = excelService;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View("../Report/Customer/Index");
-        //}
-
         public async Task<IActionResult> GetCustomerReport([FromBody] GetCustomerReportParam param)
         {
             var customerReport = await customerReportService.GetCustomerReportAsync(param);

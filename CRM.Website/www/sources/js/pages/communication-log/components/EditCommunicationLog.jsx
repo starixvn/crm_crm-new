@@ -815,7 +815,7 @@ export class EditCommunicationLog extends Component {
                 </Modal.Body >
                 <Modal.Footer>
                     {
-                        window.createUpdateFeedbackPermission === Policy.Host && (
+                        this.props.createUpdateFeedbackPermission === Policy.Host && (
                             <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
                                 {LangHelper.getResource('Save')}
                             </Button>

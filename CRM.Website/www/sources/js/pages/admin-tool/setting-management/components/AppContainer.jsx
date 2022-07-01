@@ -11,10 +11,22 @@ import DataGrid from './DataGrid';
 import NewSettingValue from './NewSettingValue';
 import Edit from './Edit';
 import LicenseeMapping from './LicenseeMapping';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      policy: null
+    };
+  } 
+
   componentDidMount() {
       this.props.getMainSettings();
+      getPermission(FunctionKey.SettingManagement).then(response => {
+        this.setState({policy: response});
+      });
   }
 
   componentWillUnmount(){
@@ -80,11 +92,11 @@ export class AppContainer extends Component {
   };
   
   render() {
-    const {isHost, mainSettings, gridParams, editStatusPopup, insertNewSettingPopup, licenseeMappingPopup, editPopup} = this.props;
-
-    if(!mainSettings || mainSettings === null){
+    const {mainSettings, gridParams, editStatusPopup, insertNewSettingPopup, licenseeMappingPopup, editPopup} = this.props;
+    if(!mainSettings || mainSettings === null || !this.state.policy){
       return null;
     }
+    const isHost = this.state.policy === Policy.Host;
     return (
         <Fragment>
               <Filter isHost={isHost}/>

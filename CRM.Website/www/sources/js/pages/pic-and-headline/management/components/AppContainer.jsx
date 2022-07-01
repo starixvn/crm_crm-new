@@ -10,23 +10,32 @@ import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import DataGrid from './DataGrid';
 import Filter from './Filter';
 import LangHelper from '@jsroot/common/langHelper';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends PureComponent {
     static propTypes = {
         createPicPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         editPicPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        isHost: PropTypes.bool.isRequired
     };
 
     static defaultProps = {
         createPicPopup: { show: false },
         editPicPopup: { show: false },
-        confirmPopup: { show: false },
-        isHost: false
+        confirmPopup: { show: false }
     };
 
     constructor(props) {
         super(props);
+        this.state = {
+            policy: null
+        };
+    }
+    
+    componentDidMount(){
+        getPermission(FunctionKey.PICManagement).then(response => {
+            this.setState({policy: response});
+        });
     }
 
     componentWillUnmount(){
@@ -58,10 +67,15 @@ export class AppContainer extends PureComponent {
     };
 
     render() {
+    if(!this.state.policy){
+        return null;
+    }
+
+    const isHost = this.state.policy === Policy.Host;
         return (
             <Fragment>
-                <Filter isHost={this.props.isHost} />
-                <DataGrid isHost={this.props.isHost} />
+                <Filter isHost={isHost} />
+                <DataGrid isHost={isHost} />
                 {
                     this.props.createPicPopup.show &&
                     <NewPicManagement />

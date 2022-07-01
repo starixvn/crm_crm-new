@@ -38,11 +38,6 @@
             this.userService = userService;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
         public async Task<ActionResult> AllSetting()
         {
             var hasCreateFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);

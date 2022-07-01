@@ -8,7 +8,6 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback.AddFeedback;
-    using CRM.Models;
     using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
@@ -40,12 +39,6 @@
             this.napSettings = napSettings;
             this.userService = userService;
         }
-
-        //[Route("AddFeedback")]
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
 
         public async Task<ActionResult> AllSetting()
         {

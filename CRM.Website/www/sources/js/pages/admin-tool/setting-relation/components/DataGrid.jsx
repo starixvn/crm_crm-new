@@ -49,11 +49,15 @@ export class DataGrid extends Component {
                     }
                     <span >{item.settingValue}</span>
                 </Cell>
-                <Cell className='text-center'>
-                    <i className="fa fa-plus-circle icon-excel" aria-hidden="true"
-                        onClick={event => this.handleOpenUpdate(event, item.settingId)}
-                    />
-                </Cell>
+                {
+                    this.props.isHost ?
+                    <Cell className='text-center'>
+                        <i className="fa fa-plus-circle icon-excel" aria-hidden="true"
+                            onClick={event => this.handleOpenUpdate(event, item.settingId)}
+                        />
+                    </Cell> :
+                    <Cell />
+                }
                 <Cell className='text-right'>{item.settingId}</Cell>
                 <Cell className='text-right'>{item.displayOrder}</Cell>
             </Row>

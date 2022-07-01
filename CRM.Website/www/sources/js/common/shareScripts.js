@@ -1,5 +1,12 @@
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import DataService from '@jsroot/common/dataService';
+import Site from '@jsroot/common/site';
+
+export const getPermission = async functionKey =>{
+    const url = Site.resolveClientUrl('Common/GetPermission');
+    return await DataService.postDataAsync(url, {functionKey : functionKey}).then(response => response.data);
+};
 
 export const generateTimeAndToolPrefix = (startTime, communicationTool) => {
     return LangHelper.formatString('Date Time & Tool: {0}/{1}', DateTimeService.toStartTimePrefix(startTime), communicationTool);

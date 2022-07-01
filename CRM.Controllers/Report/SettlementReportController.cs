@@ -31,12 +31,6 @@
             this.appSettings = appSettings.Value;
         }
 
-        //[Route("Index")]
-        //public IActionResult Index()
-        //{
-        //    return View("../Report/Settlement/Index");
-        //}
-
         [HttpPost]
         [Route("GetSettlementReport")]
         public async Task<IActionResult> GetSettlementReport([FromBody] GetSettlementReportCriteria criteria)

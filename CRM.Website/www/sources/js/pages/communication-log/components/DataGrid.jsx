@@ -22,7 +22,7 @@ export class DataGrid extends Component {
                     <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('feedbackId')}/>
                 </HeaderCell>
                 {
-                    window.createUpdateFeedbackPermission === Policy.Host &&
+                    this.props.createUpdateFeedbackPermission === Policy.Host &&
                     <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
                 }
                 <HeaderCell colWidth={25}>{LangHelper.getResource('FeedbackDate')}
@@ -59,7 +59,7 @@ export class DataGrid extends Component {
         }
         return [
             <Row key={`body${1}`} className="no-data" >
-                <Cell className='text-center' colSpan={window.createUpdateFeedbackPermission === Policy.Host ? 9 : 8}>
+                <Cell className='text-center' colSpan={this.props.createUpdateFeedbackPermission === Policy.Host ? 9 : 8}>
                     {LangHelper.getResource('ThereIsNoData')}
                 </Cell>
             </Row>
@@ -142,7 +142,7 @@ export class DataGrid extends Component {
                     <span className='link-click' onClick={() => this.handleEditCommunicationLog(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>
                 {
-                    window.createUpdateFeedbackPermission === Policy.Host && (
+                    this.props.createUpdateFeedbackPermission === Policy.Host && (
                         <Cell className="text-center">
                             <span className="rounded-circle fa fa-pencil icon-edit"
                                 onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}
@@ -166,7 +166,7 @@ export class DataGrid extends Component {
     };
 
     render() {
-        const { gridData, gridParams } = this.props;
+        const { gridData, gridParams, customerInfoPolicy } = this.props;
         if (!gridData) {
             return null;
         }
@@ -195,7 +195,7 @@ export class DataGrid extends Component {
                     adjustedHeight={10}
                 />
                 {
-                    window.customerInfoPolicy === Policy.Host &&
+                    customerInfoPolicy === Policy.Host &&
                     <Button variant="primary" size="sm" className="mt-3" onClick={this.handleCreate}>
                         {LangHelper.getResource('InsertCase')}
                     </Button>

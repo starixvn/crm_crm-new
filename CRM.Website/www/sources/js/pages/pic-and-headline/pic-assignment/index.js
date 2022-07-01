@@ -10,17 +10,12 @@ const store = configureStore({
     reducer: picAssignmentSlice
 });
 
-// const isHost = document.getElementById('is-host').checked;
-// const isReadPicManagement = document.getElementById('is-read-picmanagement').checked;
-const isHost = true;
-const isReadPicManagement = true;
-
 export default class index extends Component {
     render(){
         return(
             <Provider store={store}>
                 <div className='pic-assignment'>
-                    <AppContainer isHost={isHost} isReadPicManagement = {isReadPicManagement}/>
+                    <AppContainer />
                 </div>
             </Provider>
         );

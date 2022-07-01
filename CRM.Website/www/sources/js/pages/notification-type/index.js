@@ -9,14 +9,12 @@ const store = configureStore({
     reducer: notificationTypeReducer
 });
 
-const isHost = true;
-
 export default class index extends Component {
     render(){
         return(
             <Provider store={store}>
                 <div className='notification-type'>
-                    <AppContainer isHost={isHost} />
+                    <AppContainer />
                 </div>
             </Provider>
         );

@@ -17,32 +17,16 @@
     [CrmPermission(FunctionKey = FunctionKey.DefaultCommunicationSetting, Policy = Policy.Read)]
     public class CommunicationSettingController : BaseController
     {
-        private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ISettingService settingService;
         private readonly ICommunicationToolSettingService communicationToolService;
 
         public CommunicationSettingController(
-            INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             ISettingService settingService,
             ICommunicationToolSettingService communicationToolService)
         {
-            this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.settingService = settingService;
             this.communicationToolService = communicationToolService;
         }
-
-        //public IActionResult Index()
-        //{
-        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DefaultCommunicationSetting, Policy.Host);
-        //    return View(isHost);
-        //}
-
         public async Task<IActionResult> GetAllSettings()
         {
             var settings = new

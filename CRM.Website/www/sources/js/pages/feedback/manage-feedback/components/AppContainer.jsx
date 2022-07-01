@@ -12,6 +12,9 @@ import EditNoOfInquiry from '../../edit-no-of-inquiry/AppContainer';
 import EditFeedback from '../../edit-customer-feedback/AppContainer';
 import EditMultipleReviewAndStatus from './EditMultipleReviewAndStatus';
 import EditMultipleLogs from './EditMultipleLogs';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
+
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -24,8 +27,18 @@ export class AppContainer extends Component {
         }
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            policy: null
+        };
+    }
+
     componentDidMount() {
         this.props.getAllSettings();
+        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
+            this.setState({policy: response});
+        });
     }
 
     componentWillUnmount(){
@@ -62,7 +75,11 @@ export class AppContainer extends Component {
     };
 
     render() {
-        const { isHost, editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog, editMultipleLogDialog, viewRelatedCustomerDialog } = this.props;
+        if(!this.state.policy){
+            return null;
+        }
+        const isHost = this.state.policy === Policy.Host;
+        const { editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog, editMultipleLogDialog, viewRelatedCustomerDialog } = this.props;
         return (
             <Fragment>
                 <Filter />

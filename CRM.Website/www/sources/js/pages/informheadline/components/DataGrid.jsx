@@ -97,7 +97,7 @@ export class DataGrid extends Component {
                                 {LangHelper.getResource('RemovedEditedAccountsLogs')}
                             </Dropdown.Item>
                             {
-                                window.searchPolicy === Policy.Host &&
+                                this.props.searchPolicy === Policy.Host &&
                                 <Dropdown.Item onClick={() => this.handleCloseCase(titleId)}>
                                 <i className="fa fa-times icon icon-closed" />
                                     {LangHelper.getResource('CloseCase')}
@@ -111,7 +111,7 @@ export class DataGrid extends Component {
                     (
                         <Dropdown.Menu>
                             {
-                                window.searchPolicy === Policy.Host &&
+                                this.props.searchPolicy === Policy.Host &&
                                 <Dropdown.Item onClick={() => this.handleOpenCase(titleId)}>
                                     <i className="fa fa-folder-open icon icon-open" />
                                     {LangHelper.getResource('OpenCase')}
@@ -141,7 +141,7 @@ export class DataGrid extends Component {
                 </Cell>
                 <Cell>
                     {
-                        window.contactPolicy !== Policy.None ?
+                        this.props.contactPolicy !== Policy.None ?
                         <span className='link-click' onClick={() => this.handleEditContact(item.titleId, item.status)}>{item.title}</span>
                         : item.title
                     }
@@ -167,7 +167,7 @@ export class DataGrid extends Component {
             return null;
         }
 
-        if (window.searchPolicy !== Policy.None || window.contactPolicy !== Policy.None) {
+        if (this.props.searchPolicy !== Policy.None || this.props.contactPolicy !== Policy.None) {
             return (
                 <Fragment>
                     <div className='table-title d-flex justify-content-between align-items-center'>
@@ -192,7 +192,7 @@ export class DataGrid extends Component {
                     />
 
                     {
-                        window.searchPolicy === Policy.Host &&
+                        this.props.searchPolicy === Policy.Host &&
                         <Button variant="primary" size="sm" className="mt-3" onClick={this.handleNewInforms}>
                             {LangHelper.getResource('NewCase')}
                         </Button>

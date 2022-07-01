@@ -5,7 +5,6 @@
     using CRM.Core.Filters;
     using CRM.Criteria.Remark;
     using CRM.Services.Remark;
-    using CRM.ViewModels.Customer;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -16,31 +15,16 @@
     public class RemarkController : BaseController
     {
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly IRemarkService remarkService;
 
         public RemarkController(
             INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             IRemarkService remarkService
         )
         {
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.remarkService = remarkService;
         }
-
-        //public IActionResult Index(int custId)
-        //{
-        //    var permission = new CustomerPermissionViewModel
-        //    {
-        //        CustomerInfoPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo)
-        //    };
-        //    return View(permission);
-        //}
 
         [HttpPost]
         public async Task<IActionResult> GetRemarks([FromBody] GetRemarkCriteria criteria)

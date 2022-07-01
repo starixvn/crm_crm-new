@@ -9,6 +9,8 @@ import EditInforms from './EditInforms';
 import RemovedAccountLogs from './RemovedAccountLogs';
 import RemovedAccountLogDetails from './RemovedAccountLogDetails';
 import NewInforms from './NewInforms';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -30,6 +32,27 @@ export class AppContainer extends Component {
         removedLogDetailDialog: { show: false },
         newInformDialog: { show: false }
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            contactPolicy: null,
+            searchPolicy: null,
+            hasHostPermission: null
+        };
+    }
+
+    componentDidMount(){
+        getPermission(FunctionKey.InformHeadlineContact).then(response => {
+            this.setState({contactPolicy: response});
+        });
+        getPermission(FunctionKey.InformHeadlineSearch).then(response => {
+            this.setState({searchPolicy: response});
+        });
+        getPermission(FunctionKey.InformHeadlineContact).then(response => {
+            this.setState({hasHostPermission: response});
+        });
+    }
 
     componentWillUnmount(){
         this.props.resetState();
@@ -71,14 +94,19 @@ export class AppContainer extends Component {
     };
 
     render() {
+        const {contactPolicy, searchPolicy, hasHostPermission} = this.state;
+        if(!contactPolicy || !searchPolicy || !hasHostPermission){
+            return null;
+        }
         const { editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog, newInformDialog } = this.props;
 
         return (
             <>
-                <DataGrid/>
+                <DataGrid contactPolicy={contactPolicy} searchPolicy={searchPolicy}/>
                 {
                     editContactInformDialog.show &&
                     <EditContactInforms
+                        hasHostPermission={hasHostPermission}
                         titleId={editContactInformDialog.titleId}
                         status={editContactInformDialog.status}
                         onClose={this.handleCloseEditContactInformDialog}
@@ -87,6 +115,8 @@ export class AppContainer extends Component {
                 {
                     editInformDialog.show &&
                     <EditInforms
+                        hasHostPermission={hasHostPermission}
+                        searchPolicy={searchPolicy}
                         titleId={editInformDialog.titleId}
                         onClose={this.handleCloseEditInformDialog}
                     />
@@ -106,6 +136,7 @@ export class AppContainer extends Component {
                 {
                     newInformDialog.show &&
                     <NewInforms
+                        hasHostPermission={hasHostPermission}
                         onClose={this.handleCloseNewInformDialog}
                     />
                 }

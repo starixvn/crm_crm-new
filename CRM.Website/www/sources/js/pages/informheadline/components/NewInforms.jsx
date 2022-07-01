@@ -45,7 +45,7 @@ export class NewInforms extends Component {
     };
 
     render() {
-        const { allSettings, newInforms, exportNewInforms } = this.props;
+        const { allSettings, newInforms, exportNewInforms, hasHostPermission } = this.props;
         if (!allSettings) {
             return null;
         }
@@ -78,6 +78,7 @@ export class NewInforms extends Component {
                     {
                         newInforms && (
                             <DataGridEdit
+                                hasHostPermission={hasHostPermission}
                                 informData={newInforms}
                                 informSettings={allSettings}
                                 totalItem={newInforms.length}

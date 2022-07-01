@@ -10,17 +10,17 @@ import EditNoOfInquiry from '../../edit-no-of-inquiry/AppContainer';
 import EditFeedback from '../../edit-customer-feedback/AppContainer';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
     static propTypes = {
-        isHost: PropTypes.bool.isRequired,
         getLatestFeedback: PropTypes.func,
         editNoOfInquiryDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         editFeedbackDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
-        isHost: false,
         viewRelatedCustomerDialog: { show: false },
         editNoOfInquiryDialog: { show: false },
         editFeedbackDialog: { show: false },
@@ -28,9 +28,19 @@ export class AppContainer extends Component {
             // nothing
         }
     };
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            policy: null
+        };
+    }
 
     componentDidMount() {
         this.props.getLatestFeedback(this.props.gridParams);
+        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
+            this.setState({policy: response});
+        });
     }
 
     componentWillUnmount(){
@@ -53,7 +63,12 @@ export class AppContainer extends Component {
     };
 
     render() {
-        const { isHost, viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog } = this.props;
+        if(!this.state.policy){
+            return null;
+        }
+
+        const isHost = this.state.policy === Policy.Host;
+        const {viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog } = this.props;
         return (
             <Fragment>
                 <Filter />

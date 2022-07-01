@@ -29,10 +29,6 @@
             this.appSettings = appSettings.Value;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View("../Report/Summary/Index");
-        //}
 
         public async Task<IActionResult> GetAllSettings()
         {

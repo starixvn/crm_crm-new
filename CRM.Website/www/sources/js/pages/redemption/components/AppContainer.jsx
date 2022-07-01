@@ -10,6 +10,8 @@ import CreateRedemptionLog from './CreateRedemptionLog';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import redemption from '../redemptionSlice';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 const store = configureStore({
     reducer: redemption
@@ -25,6 +27,19 @@ export class AppContainer extends Component {
         editRedemptionDialog: { show: false },
         createRedemptionDialog: { show: false }
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            createUpdateFeedbackPermission: null
+        };
+    }
+
+    componentDidMount(){
+        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
+            this.setState({customerInfoPolicy: response});
+        });
+    }
 
     componentWillUnmount(){
         this.props.resetState();
@@ -45,14 +60,19 @@ export class AppContainer extends Component {
     };
 
     render() {
+        if(!this.state.createUpdateFeedbackPermission){
+            return null;
+        }
+
         const { editRedemptionDialog, createRedemptionDialog } = this.props;
+        
         return (
             <Provider store={store}>
                 <Filter id={this.props.id}/>
-                <DataGrid />
+                <DataGrid createUpdateFeedbackPermission={this.state.createUpdateFeedbackPermission}/>
                 {
                     editRedemptionDialog.show &&
-                    <EditRedemptionLog logId={editRedemptionDialog.logId}
+                    <EditRedemptionLog logId={editRedemptionDialog.logId} createUpdateFeedbackPermission={this.state.createUpdateFeedbackPermission}
                         onClose={this.handleCloseEditRedemptionDialog}
                     />
                 }

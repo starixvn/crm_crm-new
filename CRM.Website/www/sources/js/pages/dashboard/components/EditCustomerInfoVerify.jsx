@@ -64,7 +64,7 @@ export class EditCustomerInfoVerify extends Component {
     };
 
     render() {
-        const { customerInfoVerify } = this.props;
+        const { customerInfoVerify, isHost } = this.props;
         const { data, isSubmitting, editResult } = this.state;
         if (!customerInfoVerify || !data) {
             return null;
@@ -106,7 +106,7 @@ export class EditCustomerInfoVerify extends Component {
                             </Table>
                         </Modal.Body>
                         {
-                            window.createUpdateFeedbackPermission === Policy.Host &&
+                            isHost === Policy.Host &&
                             (
                                 <Modal.Footer>
                                     <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit} disabled={isSubmitting}>

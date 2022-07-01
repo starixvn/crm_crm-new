@@ -147,7 +147,7 @@ export class EditRedemptionLog extends Component {
                 </Modal.Body >
                 <Modal.Footer>
                     {
-                        window.createUpdateFeedbackPermission === Policy.Host && (
+                        this.props.createUpdateFeedbackPermission === Policy.Host && (
                             <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
                                 {LangHelper.getResource('Save')}
                             </Button>

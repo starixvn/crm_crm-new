@@ -36,12 +36,6 @@
             this.excelService = excelService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.RedemptionStatistics, Policy = Constant.Policy.Read)]
-        //public IActionResult Index()
-        //{
-        //    return View("../Report/RedemptionStatistics/Index");
-        //}
-
         public async Task<IActionResult> GetAllSettings()
         {
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.Redemption);

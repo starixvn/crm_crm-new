@@ -7,9 +7,6 @@ namespace CRM.Controllers
     using CRM.Criteria.NotificationType;
     using CRM.Models.NotificationType;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -17,22 +14,13 @@ namespace CRM.Controllers
     public class NotificationTypeController : BaseController
     {
         private readonly INotificationTypeService notificationTypeService;
-        private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ICommonService commonService;
 
         public NotificationTypeController(
             INotificationTypeService notificationTypeService,
-            INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             ICommonService commonService)
         {
             this.notificationTypeService = notificationTypeService;
-            this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.commonService = commonService;
         }
 
@@ -47,12 +35,6 @@ namespace CRM.Controllers
 
             return Json(result);
         }
-
-        //public IActionResult Index()
-        //{
-        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.NotificationType, Policy.Host);
-        //    return View(isHost);
-        //}
 
         [HttpPost]
         public async Task<IActionResult> GetNotificationType([FromBody] GetNotificationTypeParam param)

@@ -50,17 +50,6 @@
             this.excelService = excelService;
         }
 
-        //[Route("PicOfHeadline")]
-        //public IActionResult Index()
-        //{
-        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICAssignment, Policy.Host);
-        //    var isReadPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read);
-
-        //    ViewBag.isHost = isHost;
-        //    ViewBag.isReadPicManagement = isReadPicManagement;
-        //    return View();
-        //}
-
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
         public async Task<IActionResult> AllSetting()

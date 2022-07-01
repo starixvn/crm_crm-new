@@ -31,12 +31,6 @@
             this.feedbackService = feedbackService;
         }
 
-        //[Route("Feedbacks/DeletedFeedback")]
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
         public async Task<IActionResult> GetAllSettings()
         {
             var settings = new

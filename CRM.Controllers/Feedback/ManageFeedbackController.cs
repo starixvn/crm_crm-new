@@ -20,37 +20,20 @@
     [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
     public class ManageFeedbackController : BaseController
     {
-        private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ISettingService settingService;
         private readonly IFeedbackService feedbackService;
         private readonly IExportExcelService exportExcelService;
 
         public ManageFeedbackController(
-            INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             ISettingService settingService,
             IFeedbackService feedbackService,
             IExportExcelService exportExcelService
             )
         {
-            this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.settingService = settingService;
             this.feedbackService = feedbackService;
             this.exportExcelService = exportExcelService;
         }
-
-        //[Route("Feedbacks/ManageFeedback")]
-        //[Route("ManageFeedback")]
-        //public IActionResult Index()
-        //{
-        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-        //    return View(isHost);
-        //}
 
         public async Task<ActionResult> GetAllSettings()
         {

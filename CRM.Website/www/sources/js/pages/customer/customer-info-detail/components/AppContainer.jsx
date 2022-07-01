@@ -7,6 +7,8 @@ import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import { Button } from 'react-bootstrap';
 import EditForm from './EditForm';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
 
@@ -22,6 +24,24 @@ export class AppContainer extends Component {
         }
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            customerInfoPolicy: null,
+            updateHeadlineInfoPolicy: null
+        };
+    }
+
+    componentDidMount(){
+        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
+            this.setState({customerInfoPolicy: response});
+        });
+
+        getPermission(FunctionKey.Updateheadlineinfo).then(response => {
+            this.setState({updateHeadlineInfoPolicy: response});
+        });
+    }
+
     componentWillUnmount(){
         this.props.resetState();
      }
@@ -31,9 +51,14 @@ export class AppContainer extends Component {
     };
 
     render() {
+        const {customerInfoPolicy, updateHeadlineInfoPolicy} = this.state;
+        if(!customerInfoPolicy || !updateHeadlineInfoPolicy){
+            return null;
+        }
+
         return (
             <div>
-                <EditForm id={this.props.id}/>
+                <EditForm id={this.props.id} customerInfoPolicy={customerInfoPolicy} updateHeadlineInfoPolicy={updateHeadlineInfoPolicy}/>
                 {
                     this.props.editCustomerInfoDetailDialog.show &&
                     <SweetModalDialog size="sm"

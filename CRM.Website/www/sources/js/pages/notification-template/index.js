@@ -11,13 +11,12 @@ const store = configureStore({
 
 import '@cssroot/pages/notification-template/index.scss';
 
-const isHost = true;
 export default class index extends Component {
     render(){
         return(
             <Provider store={store}>
                 <div className='notification-template'>
-                    <AppContainer isHost={isHost} />
+                    <AppContainer />
                 </div>
             </Provider>
         );

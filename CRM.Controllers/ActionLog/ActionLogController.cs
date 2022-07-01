@@ -25,11 +25,6 @@
             this.actionLogService = actionLogService;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
         public async Task<IActionResult> GetAllLogAction(int actionType)
         {
             var allLogActions = await settingService.GetAllLogActionAsync(actionType);

@@ -8,6 +8,8 @@ import DataGrid from './DataGrid';
 import EditNoOfInquiry from '../../feedback/edit-no-of-inquiry/AppContainer';
 import EditCommunicationLog from './EditCommunicationLog';
 import CreateCommunicationLog from './CreateCommunicationLog';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -21,6 +23,24 @@ export class AppContainer extends Component {
         editCommunicationDialog: { show: false },
         createCommunicationDialog: { show: false }
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            customerInfoPolicy: null,
+            createUpdateFeedbackPermission: null
+        };
+    }
+
+    componentDidMount(){
+        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
+            this.setState({customerInfoPolicy: response});
+        });
+
+        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
+            this.setState({createUpdateFeedbackPermission: response});
+        });
+    }
 
     componentWillUnmount(){
         this.props.resetState();
@@ -47,10 +67,15 @@ export class AppContainer extends Component {
 
     render() {
         const { editNoOfInquiryDialog, editCommunicationDialog, createCommunicationDialog } = this.props;
+        const {customerInfoPolicy, createUpdateFeedbackPermission} = this.state;
+        if(!customerInfoPolicy || !createUpdateFeedbackPermission){
+            return null;
+        }
+
         return (
             <div>
                 <Filter id={this.props.id}/>
-                <DataGrid/>
+                <DataGrid customerInfoPolicy={customerInfoPolicy} createUpdateFeedbackPermission={createUpdateFeedbackPermission} />
                 {
                     editNoOfInquiryDialog.show &&
                     <EditNoOfInquiry feedbackId={editNoOfInquiryDialog.feedbackId}
@@ -59,7 +84,7 @@ export class AppContainer extends Component {
                 }
                 {
                     editCommunicationDialog.show &&
-                    <EditCommunicationLog feedbackId={editCommunicationDialog.feedbackId}
+                    <EditCommunicationLog feedbackId={editCommunicationDialog.feedbackId} createUpdateFeedbackPermission={createUpdateFeedbackPermission}
                         onClose={this.handleCloseEditCommunicationDialog}
                     />
                 }

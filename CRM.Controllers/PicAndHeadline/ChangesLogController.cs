@@ -25,11 +25,6 @@
             this.baseService = baseService;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
         [HttpPost]
         public async Task<IActionResult> GetHeadlineDAReportAsync([FromBody] GetHeadlineDALogCriteria criteria)
         {

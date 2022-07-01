@@ -9,14 +9,28 @@ import EditNotificationType from './EditNotificationType';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import LangHelper from '@jsroot/common/langHelper';
 import { toast } from 'react-toastify';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
+
 
 export class AppContainer extends Component {
     static defaultProps = {
         createNotificationTypePopup: { show: false},
         editNotificationTypePopup: { show: false},
-        deleteNotificationTypePopup: { show: false },
-        isHost: false
+        deleteNotificationTypePopup: { show: false }
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            policy: null
+        };
+    }
+    componentDidMount(){
+        getPermission(FunctionKey.NotificationType).then(response => {
+            this.setState({policy: response});
+        });
+    }
 
     componentWillUnmount(){
         this.props.resetState();
@@ -61,10 +75,15 @@ export class AppContainer extends Component {
     };
 
     render() {
+        if(!this.state.policy){
+            return null;
+        }
+        const isHost = this.state.policy === Policy.Host;
+
         return (
             <Fragment>
-                <Filter isHost={this.props.isHost} />
-                <DataGrid isHost={this.props.isHost} />
+                <Filter isHost={isHost} />
+                <DataGrid isHost={isHost} />
                 {
                     this.props.createNotificationTypePopup.show &&
                     <NewNotificationType

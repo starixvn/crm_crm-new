@@ -11,13 +11,10 @@
     using CRM.Criteria.Common;
     using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Models;
-    using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.ChatTypeMapping;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -25,28 +22,20 @@
     public class ChatTypeMappingController : BaseController
     {
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ISettingService settingService;
         private readonly ICommonService commonService;
         private readonly IChatTypeMappingService chatTypeMappingService;
         private readonly Func<int, ILetstalkService> letstalkService;
         private readonly IExportExcelService excelService;
-#pragma warning disable S107 // Methods should not have too many parameters
         public ChatTypeMappingController(
             INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             ISettingService settingService,
             ICommonService commonService,
             IChatTypeMappingService chatTypeMappingService,
             Func<int, ILetstalkService> letstalkService,
             IExportExcelService excelService)
-#pragma warning restore S107 // Methods should not have too many parameters
         {
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.settingService = settingService;
             this.commonService = commonService;
             this.chatTypeMappingService = chatTypeMappingService;

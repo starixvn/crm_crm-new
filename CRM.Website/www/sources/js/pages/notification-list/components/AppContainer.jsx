@@ -9,13 +9,21 @@ import ViewDetail from './ViewDetail';
 import ValidateResend from './ValidateResend';
 import LangHelper from '@jsroot/common/langHelper';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+           policy: null
+        };
+    }
 
-        // this.isHost = document.getElementById('is-host').checked;
-        this.isHost = true;
+    componentDidMount(){
+        getPermission(FunctionKey.NotificationList).then(response => {
+            this.setState({policy: response});
+        });
     }
 
     closeConfirmPopup = () => this.props.setConfirmPopup({ show: false });
@@ -31,10 +39,15 @@ export class AppContainer extends Component {
     };
 
     render() {
+        if(!this.state.policy){
+            return null;
+        }
+
+        const isHost = this.state.policy === Policy.Host;
         return (
             <Fragment>
                 <Filter />
-                <DataGrid isHost={this.isHost} />
+                <DataGrid isHost={isHost} />
                 {
                     this.props.contentPopup.show &&
                     <Content

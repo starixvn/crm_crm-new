@@ -13,9 +13,7 @@
     using CRM.Services;
     using CRM.Services.InformHeadline;
     using CRM.ViewModels.InformHeadline;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -23,8 +21,6 @@
     public class InformHeadlineController : BaseController
     {
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
@@ -32,8 +28,6 @@
 
         public InformHeadlineController(
             INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             IBaseService baseService,
             ISettingService settingService,
             IExportExcelService excelService,
@@ -41,25 +35,11 @@
         )
         {
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.baseService = baseService;
             this.settingService = settingService;
             this.excelService = excelService;
             this.informHeadlineService = informHeadlineService;
         }
-
-        //public IActionResult Index()
-        //{
-        //    var permission = new GetPermissionInform
-        //    {
-        //        ContactPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact),
-        //        SearchPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineSearch),
-        //        HasHostPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact, Policy.Host)
-        //    };
-        //    return View(permission);
-        //}
-
 
         public async Task<IActionResult> GetInforms()
         {

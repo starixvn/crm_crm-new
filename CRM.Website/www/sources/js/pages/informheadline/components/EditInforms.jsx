@@ -116,7 +116,7 @@ export class EditInforms extends Component {
         if (!titleDetail || !allSettings || !dataEditInforms) {
             return null;
         }
-        const isHostPermission = window.searchPolicy === Policy.Host;
+        const isHostPermission = this.props.searchPolicy === Policy.Host;
 
         return (
             <Modal show className="modal-edit edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
@@ -146,6 +146,7 @@ export class EditInforms extends Component {
                     />
 
                     <DataGridEdit
+                        hasHostPermission={hasHostPermission}
                         informData={dataEditInforms}
                         informSettings={allSettings}
                         totalItem={dataEditInforms.length}

@@ -118,7 +118,7 @@ export class DataGrid extends Component {
                     adjustedHeight={10}
                 />
                 {
-                    window.customerInfoPolicy === Policy.Host && (
+                    this.props.createUpdateFeedbackPermission === Policy.Host && (
                         <Button variant="primary" size="sm" className="mt-3" onClick={() => this.handleCreateRedemptionLog()}>
                             {LangHelper.getResource('InsertCase')}
                         </Button>

@@ -10,13 +10,12 @@ const store = configureStore({
 
 import '@cssroot/pages/admin-tool/communication-setting/index.scss';
 
-const isHost = true;
 export default class index extends React.Component {
     render(){
         return(
             <Provider store={store}>
                 <div className='communication-setting'>
-                    <AppContainer isHost={isHost} />
+                    <AppContainer />
                 </div>
             </Provider>
         );

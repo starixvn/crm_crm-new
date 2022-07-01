@@ -48,6 +48,39 @@ export const Policy = {
     Host: 2
 };
 
+export const FunctionKey = {
+    NotificationList: 'NotificationList',
+    ChatTypeMapping: 'ChatTypeMapping',
+    NotificationTemplate: 'NotificationTemplate',
+    NotificationType: 'NotificationType',
+    DefaultCommunicationSetting: 'DefaultCommunicationSetting',
+    SettlementIssuesReport: 'SettlementIssuesReport',
+    CategoriesSummaryReport: 'CategoriesSummaryReport',
+    DirectCustomerReport: 'DirectCustomerReport',
+    FeedbackSubject: 'FBSubjectTemplateManagement',
+    PICAssignment: 'PICAssignment',
+    PICManagement: 'PICManagement',
+    ChangesLog: 'ChangesLog',
+    LatestFeedback: 'LatestFeedback',
+    DeleteFeedback: 'DeleteFeedback',
+    ReviewFeedback: 'ReviewFeedback',
+    CreateUpdateFeedbackAndCustomerInfo: 'CreateUpdateFeedback_CustomerInfo',
+    Updateheadlineinfo: 'Updateheadlineinfo',
+    InformHeadline: 'InformHeadline',
+    InformHeadlineSearch: 'InformHeadlineSearch',
+    InformHeadlineContact: 'InformHeadlineContact',
+    SettingLog: 'ViewSettingLog',
+    DeletedFeedbackStatistic: 'DeletedFeedbackStatistic',
+    LogStatistics: 'LogStatistics',
+    IssueStatistics: 'IssueStatistics',
+    FeedbackStatistics: 'FeedbackStatistics',
+    DynamicReport: 'DynamicReport',
+    RedemptionStatistics: 'RedemptionStatistics',
+    CustomerReport: 'CustomerReport',
+    SettingRelationManagement: 'SettingRelationshipManagement',
+    SettingManagement: 'SettingManagement'
+};
+
 export const BorderStyle = {
     bottom: 'border-bottom-0',
     top: 'border-top-0'

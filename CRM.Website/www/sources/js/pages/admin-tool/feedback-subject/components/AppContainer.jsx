@@ -11,23 +11,20 @@ import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
+
 
 export class AppContainer extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     static propTypes = {
         createFeedbackSubjectPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         editStatusFeedbackSubjectPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         editFeedbackSubjectPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        isHost: PropTypes.bool.isRequired,
         getFeedBackSubject: PropTypes.func,
         getAllActiveFeedbackSubject: PropTypes.func
     };
 
     static defaultProps = {
-        isHost: false,
         createFeedbackSubjectPopup: { show: false },
         editStatusFeedbackSubjectPopup: { show: false },
         editFeedbackSubjectPopup: { show: false },
@@ -39,8 +36,18 @@ export class AppContainer extends Component {
         }
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            policy: null
+        };
+    }
+
     componentDidMount() {
         this.props.getAllActiveFeedbackSubject();
+        getPermission(FunctionKey.FeedbackSubject).then(response => {
+            this.setState({policy: response});
+        });
     }
 
     componentWillUnmount(){
@@ -95,9 +102,13 @@ export class AppContainer extends Component {
     };
 
     render() {
+        if(!this.state.policy){
+            return null;
+        }
+        const isHost = this.state.policy === Policy.Host;
         return (
             <Fragment>
-                <Filter isHost={this.props.isHost}/>
+                <Filter isHost={isHost}/>
                 {
                     this.props.createFeedbackSubjectPopup.show &&
                     <NewFeedbackSubject
@@ -105,7 +116,7 @@ export class AppContainer extends Component {
                         onSuccess={this.handleCreateSuccess}
                     />
                 }
-                <DataGrid isHost={this.props.isHost}/>
+                <DataGrid isHost={isHost}/>
                 {
                     this.props.editFeedbackSubjectPopup.show &&
                     <EditFeedbackSubject

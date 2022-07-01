@@ -11,14 +11,15 @@ import NewCommunitionSetting from './NewCommunitionSetting';
 import EditCommunitionSetting from './EditCommunitionSetting';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
     static propTypes = {
         createCommunicationPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         deleteCommunicationPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         editCommunicationPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        getAllSettings: PropTypes.func,
-        isHost: PropTypes.bool.isRequired
+        getAllSettings: PropTypes.func
     };
 
     static defaultProps = {
@@ -27,15 +28,20 @@ export class AppContainer extends Component {
         editCommunicationPopup: { show: false },
         getAllSettings: function () {
             // nothing
-        },
-        isHost: false
+        }
     };
     constructor(props) {
         super(props);
+        this.state = {
+            policy: null
+        };
     }
 
     componentDidMount() {
         this.props.getAllSettings();
+        getPermission(FunctionKey.DefaultCommunicationSetting).then(response => {
+            this.setState({policy: response});
+        });
     }
 
     componentWillUnmount(){
@@ -83,9 +89,13 @@ export class AppContainer extends Component {
     };
 
     render() {
+        if(!this.state.policy){
+            return null;
+        }
+        const isHost = this.state.policy === Policy.Host;
         return (
             <Fragment>
-                <Filter isHost={this.props.isHost} />
+                <Filter isHost={isHost} />
                 {
                     this.props.createCommunicationPopup.show &&
                     <NewCommunitionSetting
@@ -93,7 +103,7 @@ export class AppContainer extends Component {
                         onSuccess={this.handleCreateSuccess}
                     />
                 }
-                <DataGrid isHost={this.props.isHost} />
+                <DataGrid isHost={isHost} />
                 {
                     this.props.editCommunicationPopup.show &&
                     <EditCommunitionSetting

@@ -17,27 +17,12 @@
     public class FeedbackSubjectManagementController : BaseController
     {
         private readonly IFeedbackSubjectService feedbackSubjectService;
-        private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
 
         public FeedbackSubjectManagementController(
-            IFeedbackSubjectService feedbackSubjectService,
-            INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService)
+            IFeedbackSubjectService feedbackSubjectService)
         {
             this.feedbackSubjectService = feedbackSubjectService;
-            this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
         }
-
-        //public IActionResult Index()
-        //{
-        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.FeedbackSubject, Policy.Host);
-        //    return View(isHost);
-        //}
 
         [HttpPost]
         public async Task<IActionResult> GetFeedbackSubject([FromBody] GetFeedbackSubjectParam param)

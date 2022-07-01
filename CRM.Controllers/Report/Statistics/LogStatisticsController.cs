@@ -25,11 +25,6 @@
             this.excelService = excelService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
-        //public IActionResult Index()
-        //{
-        //    return View("../Report/LogStatistics/Index");
-        //}
 
         public async Task<IActionResult> GetAllSettings()
         {

@@ -3,8 +3,12 @@
     using System.Threading.Tasks;
     using CRM.Criteria.Common;
     using CRM.Criteria.NotificationType;
+    using CRM.Models;
     using CRM.Models.FeedbackSubject;
     using CRM.Services;
+    using Fanex.NAP.Client.Configuration;
+    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
 
     public class CommonController : BaseController
@@ -12,22 +16,41 @@
         private readonly INotificationTypeService notificationTypeService;
         private readonly ICommonService commonService;
         private readonly IFeedbackSubjectService feedbackSubjectService;
+        private readonly INapSession napSession;
+        private readonly INapSettings napSettings;
+        private readonly IUserService userService;
 
         public CommonController(
             INotificationTypeService notificationTypeService,
             ICommonService commonService,
-            IFeedbackSubjectService feedbackSubjectService)
+            IFeedbackSubjectService feedbackSubjectService,
+            INapSession napSession,
+            INapSettings napSettings,
+            IUserService userService
+            )
         {
             this.notificationTypeService = notificationTypeService;
             this.commonService = commonService;
             this.feedbackSubjectService = feedbackSubjectService;
+            this.napSession = napSession;
+            this.napSettings = napSettings;
+            this.userService = userService;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetPermission([FromBody] GetPermissionCriteria criteria)
+        {
+            var permission = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, criteria.functionKey);
+            return Json(permission);
+        }
+
 
         public async Task<IActionResult> GetNotificationTypes()
         {
             var notificationTypes = await notificationTypeService.GetNotificationTypeAsync(new GetNotificationTypeCriteria());
             return Json(notificationTypes);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> GetHeadlines([FromBody] GetHeadlinesCriteria criteria)

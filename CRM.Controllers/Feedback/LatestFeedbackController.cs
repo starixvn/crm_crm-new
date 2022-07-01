@@ -19,36 +19,19 @@
     [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
     public class LatestFeedbackController : BaseController
     {
-        private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         private readonly IFeedbackService feedbackService;
 
         public LatestFeedbackController(
-            INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             IExportExcelService excelService,
             ISettingService settingService,
             IFeedbackService feedbackService)
         {
-            this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.settingService = settingService;
             this.excelService = excelService;
             this.feedbackService = feedbackService;
         }
-
-        //[Route("Feedbacks/LatestFeedback")]
-        //[Route("LatestFeedback")]
-        //public IActionResult Index()
-        //{
-        //    var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-        //    return View(isHost);
-        //}
 
         [HttpPost]
         public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackParam param)

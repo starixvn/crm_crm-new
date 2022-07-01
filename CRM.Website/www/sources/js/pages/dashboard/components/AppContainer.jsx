@@ -12,6 +12,8 @@ import EditCommunicationLog from '../../communication-log/components/EditCommuni
 import CreateCommunicationLog from '../../communication-log/components/CreateCommunicationLog';
 import CustomerInfoVerify from './CustomerInfoVerify';
 import EditCustomerInfoVerify from './EditCustomerInfoVerify';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -29,6 +31,19 @@ export class AppContainer extends Component {
         createCommunicationDialog: { show: false },
         editCustomerVerifyDialog: { show: false }
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            policy: null
+        };
+    }
+
+    componentDidMount(){
+        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
+            this.setState({policy: response});
+        });
+    }
 
     componentWillUnmount(){
         this.props.resetState();
@@ -67,6 +82,12 @@ export class AppContainer extends Component {
     };
 
     render() {
+        if(!this.state.policy){
+            return null;
+        }
+
+        const isHost = this.state.policy === Policy.Host;
+
         if(!this.props.custId){
             return(
                 <div className='alert-boxer'>
@@ -75,6 +96,7 @@ export class AppContainer extends Component {
                 </div>
             );
         }
+
         const {
             editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
             createCommunicationDialog, editCustomerVerifyDialog, custId
@@ -86,7 +108,7 @@ export class AppContainer extends Component {
                     <div className="information"><CustomerInfoVerify id={custId}/></div>
                 </div>
                 <DataGridRedemption id={custId} />
-                <DataGridCommunication id={custId} />
+                <DataGridCommunication id={custId} isHost={isHost}/>
                 {
                     editRedemptionDialog.show &&
                     <EditRedemptionLog logId={editRedemptionDialog.redemptionId}
@@ -116,6 +138,7 @@ export class AppContainer extends Component {
                 {
                     editCustomerVerifyDialog.show &&
                     <EditCustomerInfoVerify
+                        isHost={this.state.isHost}
                         id={custId}
                         onClose={this.handleCloseEditCustomerVerify}
                     />

@@ -4,23 +4,32 @@ import DataGrid from './DataGrid';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
-import '@cssroot/pages/chat-type-mapping/index.scss';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
     constructor(props) {
         super(props);
-        this.isHost = document.getElementById('is-host') ? document.getElementById('is-host').checked : false;
+        this.state = {
+            policy: null
+        };
     }
 
-    // componentWillUnmount(){
-    //     this.props.resetState();
-    // }
-
+    componentDidMount(){
+        getPermission(FunctionKey.ChatTypeMapping).then(response => {
+            this.setState({policy: response});
+        });
+    }
+    
     render() {
+        if(!this.state.policy){
+            return null;
+        }
+        const isHost = this.state.policy === Policy.Host;
         return (
             <div>
-                <Filter isHost={this.isHost} />
-                <DataGrid isHost={this.isHost} />
+                <Filter isHost={isHost} />
+                <DataGrid isHost={isHost} />
             </div>
         );
     }

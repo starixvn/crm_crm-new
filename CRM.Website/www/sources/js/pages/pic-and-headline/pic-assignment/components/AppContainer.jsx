@@ -7,19 +7,43 @@ import { ActionCreators } from '../actions';
 import RemovePicAssignment from './RemovePicAssignment';
 import AssignPic from './AssignPic';
 import DefaultPic from './DefaultPic';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            policy: null,
+            policyPicManagement: null
+        };
+    }
+    componentDidMount(){
+        getPermission(FunctionKey.PICAssignment).then(response => {
+            this.setState({policy: response});
+        });
+        getPermission(FunctionKey.PICManagement).then(response => {
+            this.setState({policyPicManagement: response});
+        });
+    }
+
     componentWillUnmount(){
         this.props.resetState();
     }
 
     render() {
-        const { isHost, isReadPicManagement } = this.props;
+        const { policy, policyPicManagement } = this.state;
+        if(!policy || !policyPicManagement) {
+            return null;
+        }
+        const isHost = policy === Policy.Host;
+        const isReadPicManagement = policyPicManagement > Policy.Read;
 
         return (
             <Fragment>
                 <Filter isHost={isHost}/>
-                <DataGrid isHost={isHost}  isReadPicManagement={isReadPicManagement}/>
+                <DataGrid isHost={isHost} isReadPicManagement={isReadPicManagement}/>
                 {
                     this.props.removePicAssignmentPopup.show &&
                     <RemovePicAssignment

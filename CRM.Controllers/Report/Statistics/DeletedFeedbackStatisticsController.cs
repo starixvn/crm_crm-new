@@ -31,12 +31,6 @@
             this.excelService = excelService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Policy.Read)]
-        //public IActionResult Index()
-        //{
-        //    return View("../Report/DeleteFeedbackStatistic/Index");
-        //}
-
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.DeletedFeedbackStatistic, Policy = Policy.Read)]
         public async Task<IActionResult> GetDeletedFeedbackStatistics([FromBody] DeletedFeedbackStatisticsCriteria criteria)

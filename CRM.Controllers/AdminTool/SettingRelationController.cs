@@ -9,9 +9,7 @@
     using CRM.Criteria.Setting;
     using CRM.Services;
     using CRM.ViewModels;
-    using Fanex.NAP.Client.AspNetCore.Attributes;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -30,11 +28,6 @@
             this.napSession = napSession;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.SettingRelationManagement, Policy = Constant.Policy.Read)]
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         public async Task<IActionResult> GetMainSettings()
         {

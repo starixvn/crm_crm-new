@@ -38,14 +38,14 @@ export class DataGridCommunication extends Component {
     };
 
     buildBody = () => {
-        const { communicationLogs } = this.props;
+        const { communicationLogs, isHost} = this.props;
 
         if (communicationLogs.data.length > 0) {
             return communicationLogs.data.map((item, index) => this.renderRow(item, index));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
-                <Cell className='text-center' colSpan={window.createUpdateFeedbackPermission === Policy.Host ? 10 : 9}>
+                <Cell className='text-center' colSpan={isHost === Policy.Host ? 10 : 9}>
                     {LangHelper.getResource('ThereIsNoData')}
                 </Cell>
             </Row>
@@ -223,7 +223,7 @@ export class DataGridCommunication extends Component {
                     <span className='link-detail' onClick={() => this.handleShowEditCommunication(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>
                 {
-                    window.createUpdateFeedbackPermission === Policy.Host && (
+                    isHost === Policy.Host && (
                         <Cell className="text-center">
                             <span className="fa fa-pencil rounded-circle icon-edit"
                                 onClick={() => this.handleShowNoOfInquiry(item.feedbackId)}

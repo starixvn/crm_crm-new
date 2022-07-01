@@ -5,10 +5,22 @@ import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import Update from './Update';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
+
 
 export class AppContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+       policy: null
+    };
+  }
   componentDidMount() {
       this.props.getMainSettings();
+      getPermission(FunctionKey.SettingRelationManagement).then(response => {
+        this.setState({policy: response});
+      });
   }
   componentWillUnmount(){
     this.props.resetState();
@@ -22,15 +34,17 @@ export class AppContainer extends Component {
   render() {
     const {mainSettings, updatePopup, gridParams} = this.props;
 
-    if(!mainSettings || mainSettings === null){
+    if(!mainSettings || mainSettings === null || !this.state.policy){
       return null;
     }
+
+    const isHost = this.state.policy === Policy.Host;
 
     const subSettingOptions = mainSettings.filter(x=> x.settingName !== gridParams.settingName);
     return (
         <Fragment>
               <Filter />
-              <DataGrid/>
+              <DataGrid isHost={isHost}/>
               {
                 updatePopup.show &&
                 <Update subSettingOptions={subSettingOptions} onClose={this.handleCloseUpdatePopup}/>

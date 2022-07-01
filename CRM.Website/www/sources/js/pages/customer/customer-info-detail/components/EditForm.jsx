@@ -967,10 +967,10 @@ export class EditForm extends Component {
     };
 
     render() {
-        const { allSettings, customerInfo } = this.props;
+        const { allSettings, customerInfo, updateHeadlineInfoPolicy, customerInfoPolicy } = this.props;
         const values = this.state;
-        const updatePolicy = window.updateHeadlineInfoPolicy;
-        const customerPolicy = window.customerInfoPolicy;
+        const updatePolicy = updateHeadlineInfoPolicy;
+        const customerPolicy = customerInfoPolicy;
         const canEditHeadline = updatePolicy === Policy.Host;
         if (!allSettings || !customerInfo) {
             return null;
