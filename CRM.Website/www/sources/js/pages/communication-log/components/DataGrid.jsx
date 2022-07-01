@@ -7,6 +7,7 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { Policy, PAGING_SIZES } from '@jsroot/common/constants';
+import { handleSort } from '@jsroot/common/shareScripts';
 
 export class DataGrid extends Component {
 
@@ -18,32 +19,18 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('RunningNo')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('feedbackId')}/>
-                </HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='runningNo'>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 {
                     window.createUpdateFeedbackPermission === Policy.Host &&
                     <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
                 }
-                <HeaderCell colWidth={25}>{LangHelper.getResource('FeedbackDate')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('feedbackDate')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={55}>{LangHelper.getResource('Category')}
-                    <i aria-hidden="true" className="fa fa-sort sort-header" onClick={() => this.handleSort('subject')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={40}>{LangHelper.getResource('Subject')}
-                    <i className="sort-header fa fa-sort" aria-hidden="true" onClick={() => this.handleSort('subject')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}
-                    <i aria-hidden="true" className="sort-header fa fa-sort" onClick={() => this.handleSort('status')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Duration')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('duration')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Handler')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('handler')}/></HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Reviewer')}
-                    <i aria-hidden="true" className="fa fa-sort sort-header" onClick={() => this.handleSort('reviewer')}/></HeaderCell>
+                <HeaderCell colWidth={25} sortOrder='desc' sortBy='Time'>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
+                <HeaderCell colWidth={55} sortOrder='desc' sortBy='category'>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={40} sortOrder='desc' sortBy='subject'>{LangHelper.getResource('Subject')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='status'>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='duration'>{LangHelper.getResource('Duration')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='handler'>{LangHelper.getResource('Handler')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='reviewer'>{LangHelper.getResource('Reviewer')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -66,24 +53,12 @@ export class DataGrid extends Component {
         ];
     };
 
-    isSortEqual = (itemA, itemB) => {
-        if ( itemA === itemB ) {
-            return 0;
-        } else {
-            return -1;
-        }
-    };
-
-    handleSort = item => {
+    onSort = (sortBy, sortOrder) => {
         const { gridData } = this.props;
-        let sortData = [];
-        if (this.sortDesc) {
-            sortData = [...gridData.data].sort((a, b) => a[item] > b[item] ? 1 : this.isSortEqual(a[item], b[item]));
-        } else {
-            sortData = [...gridData.data].sort((a, b) => a[item] < b[item] ? 1 : this.isSortEqual(a[item], b[item]));
-        }
-        this.sortDesc = !this.sortDesc;
-        this.props.setLogsByCustomerId({data: sortData, mainCategories: gridData.mainCategories});
+        const cloneGridData = [...gridData.data];
+
+        let gridDataSortAsc = handleSort(cloneGridData, sortBy, sortOrder);
+        this.props.setLogsByCustomerId({ data: gridDataSortAsc, mainCategories: gridData.mainCategories });
     };
 
     handleGroupCategory = category => {
@@ -189,6 +164,7 @@ export class DataGrid extends Component {
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     isPaging
+                    onSort={this.onSort}
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
                     containerPadding={0}

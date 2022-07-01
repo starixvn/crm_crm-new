@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import { Policy } from '@jsroot/common/constants';
+import { handleSort } from '@jsroot/common/shareScripts';
 
 export class DataGrid extends Component {
 
@@ -18,24 +19,12 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={50}>{LangHelper.getResource('Subject')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('subject')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={25}>{LangHelper.getResource('ClaimedTime')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('claimTime')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Currency')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('currency')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Amount')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('amount')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={25}>{LangHelper.getResource('DoneBy')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('doneBy')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('status')}/>
-                </HeaderCell>
+                <HeaderCell colWidth={50} sortOrder='desc' sortBy='subject'>{LangHelper.getResource('Subject')}</HeaderCell>
+                <HeaderCell colWidth={25} sortOrder='desc' sortBy='Time'>{LangHelper.getResource('ClaimedTime')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='currency'>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='amount'>{LangHelper.getResource('Amount')}</HeaderCell>
+                <HeaderCell colWidth={25} sortOrder='desc' sortBy='doneBy'>{LangHelper.getResource('DoneBy')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='status'>{LangHelper.getResource('Status')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -55,24 +44,12 @@ export class DataGrid extends Component {
         ];
     };
 
-    isSortEqual = (itemX, itemY) => {
-        if ( itemX === itemY ) {
-            return 0;
-        } else {
-            return -1;
-        }
-    };
-
-    handleSort = item => {
+    onSort = (sortBy, sortOrder) => {
         const { redemptionLogs } = this.props;
-        let sortData = [];
-        if (this.sortDesc) {
-            sortData = [...redemptionLogs].sort((a, b) => a[item] > b[item] ? 1 : this.isSortEqual(a[item], b[item]));
-        } else {
-            sortData = [...redemptionLogs].sort((a, b) => a[item] < b[item] ? 1 : this.isSortEqual(a[item], b[item]));
-        }
-        this.sortDesc = !this.sortDesc;
-        this.props.setLogsByCustomerId(sortData);
+        const cloneGridData = [...redemptionLogs];
+
+        let gridDataSortAsc = handleSort(cloneGridData, sortBy, sortOrder);
+        this.props.setLogsByCustomerId(gridDataSortAsc);
     };
 
     handleEditRedemptionLog = id => {
@@ -112,6 +89,7 @@ export class DataGrid extends Component {
                 <Table
                     width={1400}
                     autoWidth={false}
+                    onSort={this.onSort}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     containerPadding={0}

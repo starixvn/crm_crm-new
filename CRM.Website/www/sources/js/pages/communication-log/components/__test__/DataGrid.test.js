@@ -21,26 +21,6 @@ describe('DataGrid', () => {
             // Assert
             expect(header.find(HeaderCell).length).toBe(9);
         });
-
-        it('should call handleSort when click', () => {
-            // Arrange
-            const container = shallow(<DataGrid />).instance();
-            container.handleSort = jest.fn();
-            const row = shallow(container.buildHeader());
-
-            // Action
-            row.find(HeaderCell).at(0).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(2).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(3).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(4).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(5).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(6).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(7).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(8).find('i').at(0).simulate('click');
-
-            // Assert
-            expect(container.handleSort).toHaveBeenCalled();
-        });
     });
 
     describe('buildBody', () => {
@@ -80,33 +60,12 @@ describe('DataGrid', () => {
         });
     });
 
-    describe('isSortEqual', () => {
-        it('should return 0', () => {
-            // Arrange
-            const container = shallow(<DataGrid />).instance();
-
-            // Act
-            const actual = container.isSortEqual('test','test');
-
-            // Assert
-            expect(actual).toEqual(0);
-        });
-
-        it('should return -1', () => {
-            // Arrange
-            const container = shallow(<DataGrid />).instance();
-
-            // Act
-            const actual = container.isSortEqual('test','test123');
-
-            // Assert
-            expect(actual).toEqual(-1);
-        });
-    });
-
-    describe('handleSort', () => {
-        it('should call exactly props function with sortDesc is true', () => {
-            // Arrange
+    describe('onSort', () => {
+        it.each([
+            'asc',
+            'desc'
+          ])("should call exact function when sortOrder is %s'", (sortOrder) => {
+            // arrange
             const props = {
                 gridData: { 
                     data: [{ id: 1, communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0'}],
@@ -115,30 +74,10 @@ describe('DataGrid', () => {
                 gridParams: { pageIndex: 1, pageSize: 100},
                 setLogsByCustomerId: jest.fn()
             };
-            const container = shallow(<DataGrid {...props} />).instance();
-
+            const container = shallow(<DataGrid  {...props}/>).instance();
+            
             // Act
-            container.handleSort('id');
-
-            // Assert
-            expect(props.setLogsByCustomerId).toHaveBeenCalled();
-        });
-
-        it('should call exactly props function with sortDesc is false', () => {
-            // Arrange
-            const props = {
-                gridData: { 
-                    data: [{ id: 1, communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0'}],
-                    mainCategories:[{ settingId: 3000, childSettings:[{subCategoryId: 4000}] }]
-                },
-                gridParams: { pageIndex: 1, pageSize: 100},
-                setLogsByCustomerId: jest.fn()
-            };
-            const container = shallow(<DataGrid {...props} />).instance();
-            container.sortDesc = false;
-
-            // Act
-            container.handleSort('id');
+            container.onSort('username', sortOrder);
 
             // Assert
             expect(props.setLogsByCustomerId).toHaveBeenCalled();
