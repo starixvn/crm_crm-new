@@ -27,6 +27,7 @@ FROM hub.nexdev.net/base/dotnet/core/aspnet:5.0-buster-slim AS base
 WORKDIR /app
 
 COPY --from=builder /app .
+ENV TZ="America/La_Paz"
 
 # install System.Drawing native dependencies
 RUN apt-get update \
