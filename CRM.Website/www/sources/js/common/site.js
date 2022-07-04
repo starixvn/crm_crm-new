@@ -1,5 +1,5 @@
 ﻿import { MappingStatus } from './constants';
-const _rootUrl = PUBLIC_URL;
+const _rootUrl = !document.getElementById('RootUrl').value ? '/' : document.getElementById('RootUrl').value;
 let _xsrfToken = null;
 
 export default class Site {

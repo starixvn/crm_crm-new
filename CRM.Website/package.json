@@ -41,8 +41,8 @@
         "webpack-merge": "^4.1.0"
     },
     "scripts": {
-        "build-dev": "node node_modules/webpack/bin/webpack.js --config www/webpackconfig/build/webpack.dev.conf.js --env.Environment=dev --env.PUBLIC_URL=/",
-        "build-pro": "node node_modules/webpack/bin/webpack.js --config www/webpackconfig/build/webpack.pro.conf.js --env.Environment=pro --env.PUBLIC_URL=/local2/",
+        "build-dev": "node node_modules/webpack/bin/webpack.js --config www/webpackconfig/build/webpack.dev.conf.js --env.Environment=dev",
+        "build-pro": "node node_modules/webpack/bin/webpack.js --config www/webpackconfig/build/webpack.pro.conf.js --env.Environment=pro",
         "test": "jest --coverage --config ./jest.config.js",
         "test:watch": "npm test -- --watch",
         "jest-update-snapshot": "jest --updateSnapshot",

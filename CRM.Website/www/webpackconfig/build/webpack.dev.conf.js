@@ -9,7 +9,7 @@ module.exports = (env) => {
     const cssRootPath = `www/dist/${pathConfig.cssPaths.build}/build`;
     const jsRootPath = `www/dist/${pathConfig.scriptPaths.build}/build`;
     return merge(baseConfigs,
-        utils.setDefinePlugin('process.env.NODE_ENV', 'development', env.PUBLIC_URL),
+        utils.setDefinePlugin('process.env.NODE_ENV', 'development'),
         {
             mode: 'development',
             devtool: 'source-map',

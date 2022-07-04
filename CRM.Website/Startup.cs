@@ -139,11 +139,6 @@
                 options.SerializerSettings.DateFormatString = DateTimeExtensions.LongDateTimeFormat;
             });
 
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "www/dist";
-            });
-
             RegisterDI(services, botConfigs.Get<List<BotConfig>>());
         }
 
@@ -177,22 +172,24 @@
               .UseConfig(app.ApplicationServices.GetService<INapSettings>())
               .UseSession(app.ApplicationServices.GetService<INapSession>());
 
+            app.UseStaticFiles();
+
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
                 Path.Combine(env.ContentRootPath, "www/dist")),
                 RequestPath = "/www/dist"
             });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-            });
 
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "www";
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
             });
         }
 

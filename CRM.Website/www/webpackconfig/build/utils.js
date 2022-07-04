@@ -2,14 +2,13 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const pathConfig = require('../config/path');
 
-exports.setDefinePlugin = function (key, value, PUBLIC_URL) {
+exports.setDefinePlugin = function (key, value) {
     const env = {};
     env[key] = JSON.stringify(value);
     return {
         plugins: [
             new webpack.DefinePlugin({
-                env,
-                PUBLIC_URL: JSON.stringify(PUBLIC_URL)
+                env
             })
         ]
     };
