@@ -33,6 +33,7 @@ describe('NewSettingValue', () => {
             settingValue: "TestRuby1",
             subCategoryId: 0
         }],
+        mainSettings: [],
         getParentSettings: jest.fn(),
         insertNewSetting: jest.fn(() => promise),
         settingName: '',
