@@ -110,7 +110,7 @@ export class History extends Component {
         const { remarksHistory } = this.props;
         const cloneGridData = [...remarksHistory.data];
 
-        let gridDataSortAsc = handleSort(cloneGridData, sortBy, sortOrder);
+        const gridDataSortAsc = handleSort(cloneGridData, sortBy, sortOrder);
         this.props.setRemarksHistory({...this.props.remarksHistory.data, data: gridDataSortAsc, totalItems:this.props.remarksHistory.totalItems});
     };
 

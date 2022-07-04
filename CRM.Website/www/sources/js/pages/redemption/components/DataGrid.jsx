@@ -19,12 +19,12 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={50} sortOrder='desc' sortBy='subject'>{LangHelper.getResource('Subject')}</HeaderCell>
+                <HeaderCell colWidth={50} sortOrder='desc' sortBy='Subject'>{LangHelper.getResource('Subject')}</HeaderCell>
                 <HeaderCell colWidth={25} sortOrder='desc' sortBy='Time'>{LangHelper.getResource('ClaimedTime')}</HeaderCell>
-                <HeaderCell colWidth={20} sortOrder='desc' sortBy='currency'>{LangHelper.getResource('Currency')}</HeaderCell>
-                <HeaderCell colWidth={20} sortOrder='desc' sortBy='amount'>{LangHelper.getResource('Amount')}</HeaderCell>
-                <HeaderCell colWidth={25} sortOrder='desc' sortBy='doneBy'>{LangHelper.getResource('DoneBy')}</HeaderCell>
-                <HeaderCell colWidth={20} sortOrder='desc' sortBy='status'>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='Currency'>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='Amount'>{LangHelper.getResource('Amount')}</HeaderCell>
+                <HeaderCell colWidth={25} sortOrder='desc' sortBy='DoneBy'>{LangHelper.getResource('DoneBy')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='Status'>{LangHelper.getResource('Status')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -48,7 +48,7 @@ export class DataGrid extends Component {
         const { redemptionLogs } = this.props;
         const cloneGridData = [...redemptionLogs];
 
-        let gridDataSortAsc = handleSort(cloneGridData, sortBy, sortOrder);
+        const gridDataSortAsc = handleSort(cloneGridData, sortBy, sortOrder);
         this.props.setLogsByCustomerId(gridDataSortAsc);
     };
 

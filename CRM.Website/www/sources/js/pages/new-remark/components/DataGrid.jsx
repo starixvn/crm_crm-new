@@ -164,7 +164,7 @@ export class DataGrid extends Component {
     onSort = (sortBy, sortOrder) => {
         const { gridData } = this.props;
         const cloneGridData = [...gridData.data];
-        let gridDataSortAsc = handleSort(cloneGridData, sortBy, sortOrder);
+        const gridDataSortAsc = handleSort(cloneGridData, sortBy, sortOrder);
         this.props.setRemarks({...this.props.gridData.data, data: gridDataSortAsc, totalItems:this.props.gridData.totalItems });
     };
 
