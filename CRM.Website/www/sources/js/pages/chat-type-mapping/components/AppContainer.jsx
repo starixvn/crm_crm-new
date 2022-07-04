@@ -42,6 +42,6 @@ export class AppContainer extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
-const mapStateToProps = state => null;
+const mapStateToProps = state => state;
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

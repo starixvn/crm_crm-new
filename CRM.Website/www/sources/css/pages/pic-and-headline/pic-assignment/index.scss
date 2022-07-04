@@ -8,192 +8,194 @@
 @import "../../../components/multiple-select/style";
 @import "../../../components/fix-table-container";
 
-$suspended-color: #f8ded7;
-$closed-color: #f8ded7;
-$disabled-color: #a0a97a;
+.pic-assignment{
+    $suspended-color: #f8ded7;
+    $closed-color: #f8ded7;
+    $disabled-color: #a0a97a;
 
-body{
-    overflow-x: hidden;
-}
-
-button:focus {
-    outline: none;
-}
-
-.filter-checkbox {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-
-    &-text {
-        margin: 0 20px 0 5px;
+    body{
+        overflow-x: hidden;
     }
-}
 
-.button-row {
-    margin-bottom: 1rem !important;
-}
+    button:focus {
+        outline: none;
+    }
 
-p,
-ul {
-    margin-bottom: 0;
-}
+    .filter-checkbox {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
 
-.margin-top-5px {
-    margin-top: 5px;
-}
-
-.plus-icon {
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 15px;
-    color: $link-color;
-}
-
-.cursor-pointer {
-    cursor: pointer;
-}
-
-.cursor-pointer:hover {
-    color: $draft-color;
-}
-
-.link-color {
-    color: $link-color;
-}
-
-.table > tbody tr:nth-child(2n) td {
-    background: $white;
-}
-
-.suspended-color {
-    background-color: #f8ded7 !important;
-}
-
-.disabled-color {
-    background-color: #a0a97a !important;
-}
-
-.closed-color {
-    background-color: #e1e0da !important;
-}
-
-.locked-color {
-    background-color: #86C5E4 !important;
-}
-.null-cell-color {
-    background-color: #eaeaea !important;
-}
-
-input[type="checkbox"]:disabled {
-    cursor: no-drop;
-}
-
-.related-customer-container {
-    padding: 2px 4px;
-    border: 1px solid #b1b1b1;
-    min-height: 105px;
-    max-height: 420px;
-    overflow: auto;
-
-    input {
-        padding-left: 2px !important;
-        border: none !important;
-
-        &:focus {
-            outline: none;
+        &-text {
+            margin: 0 20px 0 5px;
         }
     }
 
-    .related-customer-item {
-        background-color: #f1f1f1;
-        border: 1px solid #8e8e8e;
-        border-radius: 5px;
-        float: left;
-        margin: 2px 0 2px 5px;
-        padding: 1px 4px;
-
-        &.invalid {
-            border-color: #ff0000;
-            color: #ff0000;
-        }
-
-        &.selected {
-            border-color: #0066cc;
-            color: #0066cc;
-        }
-
-        .fa-close {
-            margin-left: 5px;
-            color: #5f5f5f;
-            cursor: pointer;
-            display: inline-block;
-        }
+    .button-row {
+        margin-bottom: 1rem !important;
     }
-}
 
-.table td {
-    word-break: break-word;
-}
+    p,
+    ul {
+        margin-bottom: 0;
+    }
 
-.modal-backdrop {
-    z-index: 1050 !important;
-}
-.modal-dialog {
-    max-width: 650px;
-}
-.filter-collapse {
-    .fa {
-        font-size: 11px;
-        width: 25px;
-        background-color: #464D5D;
-        color: white;
+    .margin-top-5px {
+        margin-top: 5px;
+    }
+
+    .plus-icon {
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 15px;
+        color: $link-color;
+    }
+
+    .cursor-pointer {
         cursor: pointer;
     }
-}
 
-.header-pic-max-width {
-    max-width: 1350px;
-}
-
-.page-container {
-    min-width: 0 !important;
-}
-
-.header-comm{
-    padding: 0;
-}
-
-.table-container {
-    overflow-y: auto;
-    border: 1px solid #b7b7b7;
-
-    .body-content {
-        overflow: unset !important; 
+    .cursor-pointer:hover {
+        color: $draft-color;
     }
-}
 
-.header-content, .body-content, .footer-content {
-    border: none;
-    padding: 0;
-}
+    .link-color {
+        color: $link-color;
+    }
 
-@media only screen and (max-width: 1150px) {
-    .form-filter .form-row{
-        width: 850px;
+    .table > tbody tr:nth-child(2n) td {
+        background: $white;
+    }
 
-        .form-group{
-            width: 300px;
+    .suspended-color {
+        background-color: #f8ded7 !important;
+    }
+
+    .disabled-color {
+        background-color: #a0a97a !important;
+    }
+
+    .closed-color {
+        background-color: #e1e0da !important;
+    }
+
+    .locked-color {
+        background-color: #86C5E4 !important;
+    }
+    .null-cell-color {
+        background-color: #eaeaea !important;
+    }
+
+    input[type="checkbox"]:disabled {
+        cursor: no-drop;
+    }
+
+    .related-customer-container {
+        padding: 2px 4px;
+        border: 1px solid #b1b1b1;
+        min-height: 105px;
+        max-height: 420px;
+        overflow: auto;
+
+        input {
+            padding-left: 2px !important;
+            border: none !important;
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .related-customer-item {
+            background-color: #f1f1f1;
+            border: 1px solid #8e8e8e;
+            border-radius: 5px;
+            float: left;
+            margin: 2px 0 2px 5px;
+            padding: 1px 4px;
+
+            &.invalid {
+                border-color: #ff0000;
+                color: #ff0000;
+            }
+
+            &.selected {
+                border-color: #0066cc;
+                color: #0066cc;
+            }
+
+            .fa-close {
+                margin-left: 5px;
+                color: #5f5f5f;
+                cursor: pointer;
+                display: inline-block;
+            }
         }
     }
-}
 
-@media only screen and (max-width: 680px) {
-    .form-filter .form-row{
-        width: 530px;
+    .table td {
+        word-break: break-word;
+    }
 
-        .form-group{
-            width: 260px;
+    .modal-backdrop {
+        z-index: 1050 !important;
+    }
+    .modal-dialog {
+        max-width: 650px;
+    }
+    .filter-collapse {
+        .fa {
+            font-size: 11px;
+            width: 25px;
+            background-color: #464D5D;
+            color: white;
+            cursor: pointer;
+        }
+    }
+
+    .header-pic-max-width {
+        max-width: 1350px;
+    }
+
+    .page-container {
+        min-width: 0 !important;
+    }
+
+    .header-comm{
+        padding: 0;
+    }
+
+    .table-container {
+        overflow-y: auto;
+        border: 1px solid #b7b7b7;
+
+        .body-content {
+            overflow: unset !important; 
+        }
+    }
+
+    .header-content, .body-content, .footer-content {
+        border: none;
+        padding: 0;
+    }
+
+    @media only screen and (max-width: 1150px) {
+        .form-filter .form-row{
+            width: 850px;
+
+            .form-group{
+                width: 300px;
+            }
+        }
+    }
+
+    @media only screen and (max-width: 680px) {
+        .form-filter .form-row{
+            width: 530px;
+
+            .form-group{
+                width: 260px;
+            }
         }
     }
 }

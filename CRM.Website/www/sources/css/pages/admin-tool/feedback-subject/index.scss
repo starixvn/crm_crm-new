@@ -8,8 +8,6 @@
 @import '../../../components/autocomplete';
 
 .feedback-subject{
-    width: 920px;
-
     .form-filter {
         .form-row {
             .form-group {
@@ -26,5 +24,9 @@
     
     .modal-dialog {
         max-width: 600px;
+    }
+    
+    #app-container {
+        width: 920px;
     }
 }
