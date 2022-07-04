@@ -45,14 +45,12 @@
 
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment currentEnvironment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            CurrentEnvironment = currentEnvironment;
         }
 
         public IConfiguration Configuration { get; }
-        private readonly IHostingEnvironment CurrentEnvironment;
 
         public void ConfigureServices(IServiceCollection services)
         {
