@@ -15,9 +15,7 @@
     using CRM.Services;
     using CRM.Services.InformHeadline;
     using CRM.ViewModels.InformHeadline;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -28,32 +26,11 @@
     {
         private readonly IFixture fixture = new Fixture();
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private IBaseService baseService;
         private ISettingService settingService;
         private IExportExcelService excelService;
         private IInformHeadlineService informHeadlineService;
-
-        [Fact]
-        public void Index_WhenCalled_ReturnAsExpectedResult()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact).Returns(2);
-            userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineSearch).Returns(2);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact, Policy.Host).Returns(true);
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var permission = (GetPermissionInform)viewResult.Model;
-            Assert.Equal(2, permission.ContactPolicy);
-            Assert.Equal(2, permission.SearchPolicy);
-            Assert.True(permission.HasHostPermission);
-        }
+       
 
         [Fact]
         public async Task GetInforms_WhenCalled_ReturnAsExpectedResult()
@@ -435,13 +412,11 @@
         private InformHeadlineController GetController()
         {
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
             informHeadlineService = Substitute.For<IInformHeadlineService>();
-            return new InformHeadlineController(napSession,napSettings,userService,baseService,settingService,excelService,informHeadlineService);
+            return new InformHeadlineController(napSession,baseService,settingService,excelService,informHeadlineService);
         }
     }
 }

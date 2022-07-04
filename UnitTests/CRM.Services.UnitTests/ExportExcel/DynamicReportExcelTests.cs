@@ -10,7 +10,6 @@
     using CRM.Services.UnitTests.ExportExcel.TestableClasses;
     using NSubstitute;
     using OfficeOpenXml;
-    using OfficeOpenXml.Style;
     using Xunit;
 
     public class DynamicReportExcelTests

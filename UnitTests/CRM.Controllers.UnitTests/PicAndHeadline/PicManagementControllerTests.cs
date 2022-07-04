@@ -12,40 +12,20 @@
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Setting;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
     using NSubstitute;
     using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class PicManagementControllerTests
     {
         private INapSession napSession;
         private ISettingService settingService;
-        private IUserService userService;
-        private INapSettings napSettings;
         private IPicManagementService picManagementService;
         private IExportExcelService excelService;
 
-        [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Host).Returns(true);
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
-        }
 
         [Fact]
         public async Task GetReport_WhenCalled_ReturnExpectedData()
@@ -232,11 +212,9 @@
         {
             napSession = Substitute.For<INapSession>();
             settingService = Substitute.For<ISettingService>();
-            userService = Substitute.For<IUserService>();
-            napSettings = Substitute.For<INapSettings>();
             picManagementService = Substitute.For<IPicManagementService>();
             excelService = Substitute.For<IExportExcelService>();
-            return new PicManagementController(napSession, settingService, userService, napSettings, picManagementService, excelService);
+            return new PicManagementController(napSession, settingService, picManagementService, excelService);
         }
 
         #endregion Helpers

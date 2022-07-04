@@ -10,7 +10,6 @@
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Models;
-    using CRM.Models.Customer;
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Customer;
@@ -33,23 +32,6 @@
         private ISettingService settingService;
         private IBaseService baseService;
 
-        [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            //Arrange
-            var controller = GetController();
-            userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo).Returns(2);
-            userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo).Returns(2);
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var permission = (CustomerPermissionViewModel)viewResult.Model;
-            Assert.Equal(2, permission.CustomerInfoPolicy);
-            Assert.Equal(2, permission.UpdateHeadlineInfoPolicy);
-        }
 
         [Fact]
         public async Task GetCustomerById_WhenCalled_ReturnAsExpectedResult()

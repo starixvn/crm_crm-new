@@ -9,9 +9,6 @@
     using CRM.Models.NotificationTemplate;
     using CRM.Models.Setting;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -21,27 +18,8 @@
     public class NotificationTemplateControllerTests
     {
         private readonly IFixture fixture = new Fixture();
-        private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private INotificationTemplateService templateService;
         private ISettingService settingService;
-
-        [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.NotificationTemplate, Policy.Host).Returns(true);
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
-        }
 
         [Fact]
         public async Task GetNotificationTemplate_WhenCalled_ReturnExpectedData()
@@ -156,12 +134,9 @@
 
         private NotificationTemplateController GetController()
         {
-            napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
             templateService = Substitute.For<INotificationTemplateService>();
             settingService = Substitute.For<ISettingService>();
-            var controller = new NotificationTemplateController(napSession, napSettings, userService, templateService, settingService);
+            var controller = new NotificationTemplateController(templateService, settingService);
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
                 Connection =

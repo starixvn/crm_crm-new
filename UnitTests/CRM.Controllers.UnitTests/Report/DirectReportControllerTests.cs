@@ -16,21 +16,7 @@
     {
         private IExportExcelService exportExcelService;
         private IBaseService baseService;
-
-        [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Null(viewResult.Model);
-            Assert.Equal("../Report/Direct/Index", viewResult.ViewName);
-        }
+        
 
         [Fact]
         public async Task ExportDirectReport_WhenCalled_ReturnExpectedResult()

@@ -20,19 +20,6 @@
         private ISettingService settingService;
         private IActionLogService actionLogService;
 
-        [Fact]
-        public void Index_WhenCalled_ReturnAsExpectedResult()
-        {
-            // Arrange
-            var controller = GetController();
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Null(viewResult.ViewName);
-        }
 
         [Fact]
         public async Task GetAllLogAction_WhenCalled_ReturnAsExpectedResult()

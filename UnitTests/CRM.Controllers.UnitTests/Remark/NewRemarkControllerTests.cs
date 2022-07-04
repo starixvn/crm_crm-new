@@ -8,7 +8,6 @@
     using CRM.Controllers.Remark;
     using CRM.Core.Constants;
     using CRM.Core.Models;
-    using CRM.Criteria.Common;
     using CRM.Criteria.Customer;
     using CRM.Criteria.NewRemark;
     using CRM.Models.Customer;

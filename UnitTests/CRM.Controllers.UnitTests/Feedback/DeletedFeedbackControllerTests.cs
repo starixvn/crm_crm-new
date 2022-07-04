@@ -21,19 +21,7 @@
         private ISettingService settingService;
         private IExportExcelService excelService;
         private IFeedbackService feedbackService;
-
-        [Fact]
-        public void Index_WhenCalled_ReturnAsExpectedResult()
-        {
-            var controller = GetController();
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Null(viewResult.ViewName);
-        }
+        
 
         [Fact]
         public async Task GetDeletedFeedback_WhenCalled_ReturnAsExpectedResult()

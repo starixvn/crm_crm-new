@@ -3,26 +3,18 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
-    using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Criteria.NotificationType;
     using CRM.Models;
     using CRM.Models.NotificationType;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class NotificationTypeControllerTests
     {
         private INotificationTypeService notificationTypeService;
-        private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private ICommonService commonService;
         private readonly Fixture fixture = new Fixture();
 
@@ -48,22 +40,6 @@
             Assert.Equal(chatTypes, chatTypesResult);
             Assert.Equal(systems, systemsResult);
             Assert.Equal(recipientTypes, recipientResult);
-        }
-
-        [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.NotificationType, Policy.Host).Returns(true);
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
         }
 
         [Fact]
@@ -144,11 +120,8 @@
         private NotificationTypeController GetController()
         {
             notificationTypeService = Substitute.For<INotificationTypeService>();
-            napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
             commonService = Substitute.For<ICommonService>();
-            return new NotificationTypeController(notificationTypeService, napSession, napSettings, userService, commonService);
+            return new NotificationTypeController(notificationTypeService, commonService);
         }
     }
 }

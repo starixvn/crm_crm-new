@@ -38,21 +38,6 @@
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
-        public void Index_WhenCalled_ReturnsExpectedView()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICAssignment, Policy.Host).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read).Returns(true);
-            // Action
-            var result = controller.Index() as ViewResult;
-
-            // Assert
-            Assert.Equal(true, result.ViewData["isHost"]);
-            Assert.Equal(true, result.ViewData["isReadPicManagement"]);
-        }
-
-        [Fact]
         public async Task AllSetting_WhenCalled_ReturnsExpectedSettings()
         {
             // Arrange

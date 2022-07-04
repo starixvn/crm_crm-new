@@ -24,21 +24,6 @@
         private IBaseService baseService;
 
         [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Null(viewResult.Model);
-            Assert.Equal("../Report/Wager/Index", viewResult.ViewName);
-        }
-
-        [Fact]
         public async Task ExportWagerReport_WhenCalled_ReturnExpectedResult()
         {
             // Arrange

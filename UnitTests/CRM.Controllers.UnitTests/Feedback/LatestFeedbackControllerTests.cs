@@ -10,9 +10,6 @@
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Feedback;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -21,27 +18,9 @@
     public class LatestFeedbackControllerTests
     {
         private readonly IFixture fixture = new Fixture();
-        private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private ISettingService settingService;
         private IExportExcelService excelService;
         private IFeedbackService feedbackService;
-
-        [Fact]
-        public void Index_WhenCalled_ReturnAsExpectedResult()
-        {
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
-        }
 
         [Fact]
         public async Task GetLatestFeedback_WhenCalled_ReturnAsExpectedResult()
@@ -96,13 +75,10 @@
 
         private LatestFeedbackController GetController()
         {
-            napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
             feedbackService = Substitute.For<IFeedbackService>();
-            return new LatestFeedbackController(napSession, napSettings, userService, excelService, settingService, feedbackService);
+            return new LatestFeedbackController(excelService, settingService, feedbackService);
         }
 
         #endregion Helpers

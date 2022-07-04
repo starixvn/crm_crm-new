@@ -53,7 +53,7 @@
             return Json(customerInfo);
         }
 
-        public async Task<IActionResult> GetCurrentCustomerInfo()
+        public IActionResult GetCurrentCustomerInfo()
         {
             return Json(sessionService.CurrentCustomer);
         }

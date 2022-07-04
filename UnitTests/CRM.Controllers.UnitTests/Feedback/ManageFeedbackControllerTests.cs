@@ -12,9 +12,6 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -23,28 +20,9 @@
     public class ManageFeedbackControllerTests
     {
         private readonly IFixture fixture = new Fixture();
-        private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private ISettingService settingService;
         private IFeedbackService feedbackService;
         private IExportExcelService exportExcelService;
-
-        [Fact]
-        public void Index_WhenCalled_ReturnAsExpectedResult()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
-
-            // Act
-            var actual = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
-        }
 
         [Fact]
         public async Task GetAllSettings_WhenCalled_ReturnAsExpectedResult()
@@ -145,14 +123,10 @@
 
         private ManageFeedbackController GetController()
         {
-            napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            settingService = Substitute.For<ISettingService>();
-            userService = Substitute.For<IUserService>();
             settingService = Substitute.For<ISettingService>();
             feedbackService = Substitute.For<IFeedbackService>();
             exportExcelService = Substitute.For<IExportExcelService>();
-            return new ManageFeedbackController(napSession, napSettings, userService, settingService, feedbackService, exportExcelService);
+            return new ManageFeedbackController(settingService, feedbackService, exportExcelService);
         }
     }
 }

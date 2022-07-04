@@ -25,21 +25,6 @@
         private IDynamicReportService dynamicReportService;
 
         [Fact]
-        public void Index_WhenCalled_ReturnAsExpectedResult()
-        {
-            // Arrange
-            var controller = GetController();
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Null(viewResult.Model);
-            Assert.Equal("../Report/Dynamic/Index", viewResult.ViewName);
-        }
-
-        [Fact]
         public async Task GetDynamicReport_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange

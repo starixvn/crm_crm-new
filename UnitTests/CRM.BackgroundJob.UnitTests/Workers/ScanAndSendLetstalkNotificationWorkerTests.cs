@@ -7,7 +7,6 @@ namespace CRM.BackgroundJob.UnitTests.Workers
     using CRM.BackgroundJob.Workers;
     using CRM.Core.Services;
     using CRM.Letstalk.Services.Services.Interfaces;
-    using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using ONEbook.UM.Services;

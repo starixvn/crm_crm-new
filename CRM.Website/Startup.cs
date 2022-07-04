@@ -41,7 +41,6 @@
     using ONEbook.UM.Services;
     using ONEbook.UM.Transport;
     using Sentry;
-    using Serilog;
     using StackExchange.Redis;
 
     public class Startup

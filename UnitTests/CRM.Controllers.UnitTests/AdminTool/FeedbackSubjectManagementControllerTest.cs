@@ -3,40 +3,16 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
-    using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Models.FeedbackSubject;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class FeedbackSubjectControllerTests : Controller
     {
         private IFeedbackSubjectService feedbackSubjectService;
-        private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
-
-        [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            //Arrange
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.FeedbackSubject, Policy.Host).Returns(true);
-
-            //Act
-            var result = controller.Index();
-
-            //Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
-        }
 
         [Fact]
         public async Task GetFeedbackSubject_WhenCalled_ReturnExpectedData()
@@ -138,10 +114,7 @@
         private FeedbackSubjectManagementController GetController()
         {
             feedbackSubjectService = Substitute.For<IFeedbackSubjectService>();
-            napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
-            return new FeedbackSubjectManagementController(feedbackSubjectService, napSession, napSettings, userService);
+            return new FeedbackSubjectManagementController(feedbackSubjectService);
         }
 
         #endregion Helpers

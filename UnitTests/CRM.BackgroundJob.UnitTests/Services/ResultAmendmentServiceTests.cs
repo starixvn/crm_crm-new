@@ -219,7 +219,6 @@
                 Arg.Any<string>(),
                 Constants.ServiceName_ResultAmendment
            );
-            //await commonFeedback.Received().EditSystemSettingUpdateLastSeqAndLastSubmitDateAsync("JobStatusNameEnv", "LastSeq", Arg.Any<int>(), "LastSubmitTime", Arg.Any<string>(), "AmendmentNotiFB");
         }
 
         #endregion ResultAmendmentUpdateSystemSetting

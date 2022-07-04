@@ -30,19 +30,6 @@
         private IUserService userService;
         private readonly Fixture fixture = new Fixture();
 
-        [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
-
-            // Act
-            var actual = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
-        }
 
         [Fact]
         public async Task AllSetting_WhenCalled_ReturnExpectedSettings()

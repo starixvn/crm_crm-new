@@ -15,8 +15,6 @@
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Communication;
-    using CRM.ViewModels.Customer;
-    using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -35,24 +33,6 @@
         private IBaseService baseService;
         private ISettingService settingService;
         private ICommunicationService communicationService;
-
-        [Fact]
-        public void Index_WhenCalled_ReturnAsExpectedResult()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo).Returns(2);
-            userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo).Returns(2);
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var permission = (CustomerPermissionViewModel)viewResult.Model;
-            Assert.Equal(2, permission.CustomerInfoPolicy);
-            Assert.Equal(2, permission.CreateUpdateFeedbackPermission);
-        }
 
         [Fact]
         public async Task GetLogsByCustomerId_WhenCalled_ReturnAsExpectedResult()

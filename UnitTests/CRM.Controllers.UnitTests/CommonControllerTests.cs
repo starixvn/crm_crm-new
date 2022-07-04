@@ -10,6 +10,9 @@
     using CRM.Models.FeedbackSubject;
     using CRM.Models.NotificationType;
     using CRM.Services;
+    using Fanex.NAP.Client.Configuration;
+    using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -19,6 +22,9 @@
         private INotificationTypeService notificationTypeService;
         private ICommonService commonService;
         private IFeedbackSubjectService feedbackSubjectService;
+        private INapSession napSession;
+        private INapSettings napSettings;
+        private IUserService userService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -92,8 +98,10 @@
             notificationTypeService = Substitute.For<INotificationTypeService>();
             commonService = Substitute.For<ICommonService>();
             feedbackSubjectService = Substitute.For<IFeedbackSubjectService>();
-
-            return new CommonController(notificationTypeService, commonService, feedbackSubjectService);
+            napSession = Substitute.For<INapSession>();
+            napSettings = Substitute.For<INapSettings>();
+            userService = Substitute.For<IUserService>();
+            return new CommonController(notificationTypeService, commonService, feedbackSubjectService, napSession, napSettings, userService);
         }
     }
 }

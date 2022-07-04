@@ -37,19 +37,6 @@
         private ISettingService settingService;
         private IFeedbackService feedbackService;
 
-        [Fact]
-        public void Create_Get_WhenCalled_ReturnAsExpectedResult()
-        {
-            // Arrange
-            var controller = GetController();
-
-            // Act
-            var actual = controller.Create();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            Assert.Null(viewResult.ViewName);
-        }
 
         [Fact]
         public async Task Create_Post_WhenCalled_ReturnAsExpectedResult()

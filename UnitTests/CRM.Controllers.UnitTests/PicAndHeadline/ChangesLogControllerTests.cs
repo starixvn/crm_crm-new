@@ -17,21 +17,6 @@
         private IBaseService baseService;
 
         [Fact]
-        public void Index_WhenCalled_ReturnAsExpectedResult()
-        {
-            // Arrange
-            var controller = GetController();
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Null(viewResult.Model);
-            Assert.Null(viewResult.ViewName);
-        }
-
-        [Fact]
         public async Task GetHeadlineDAReportAsync_WhenCalled_ReturnExpectedJsonResult()
         {
             // Arrange

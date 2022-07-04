@@ -6,7 +6,6 @@ namespace CRM.Controllers.UnitTests.AdminTool
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.AdminTool;
-    using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.AdminTool.SettingManagement;
@@ -14,9 +13,7 @@ namespace CRM.Controllers.UnitTests.AdminTool
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.ViewModels;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -28,25 +25,7 @@ namespace CRM.Controllers.UnitTests.AdminTool
         private IBaseService baseService;
         private ISettingService settingService;
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private readonly IFixture fixture = new Fixture();
-
-        [Fact]
-        public void Index_WhenCalled_ReturnAsExpectedResult()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.SettingManagement, Policy.Host).Returns(true);
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
-        }
 
         [Fact]
         public async Task GetMainSettings_WhenCalled_ReturnExpectedJson()
@@ -268,9 +247,7 @@ namespace CRM.Controllers.UnitTests.AdminTool
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
-            return new SettingManagementController(baseService, settingService, napSession, napSettings, userService);
+            return new SettingManagementController(baseService, settingService, napSession);
         }
     }
 }

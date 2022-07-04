@@ -5,7 +5,6 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.Dashboard;
-    using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Criteria.Dashboard;
     using CRM.Models.CommunicationLogs;
@@ -14,7 +13,6 @@
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Dashboard;
-    using CRM.ViewModels.Customer;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -31,22 +29,7 @@
         private IUserService userService;
         private ISettingService settingService;
         private IDashboardService dashboardService;
-
-        [Fact]
-        public void Index_WhenCalled_ReturnAsExpectedResult()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo).Returns(2);
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var permission = (CustomerPermissionViewModel)viewResult.Model;
-            Assert.Equal(2, permission.CreateUpdateFeedbackPermission);
-        }
+      
 
         [Fact]
         public async Task GetCustomerRemarks_WhenCalled_ReturnAsExpectedResult()

@@ -22,21 +22,6 @@
         private AppSettings appSettings;
 
         [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Null(viewResult.Model);
-            Assert.Equal("../Report/Settlement/Index", viewResult.ViewName);
-        }
-
-        [Fact]
         public async Task ExportSettlementReport_WhenCalled_ReturnExpectedResult()
         {
             // Arrange

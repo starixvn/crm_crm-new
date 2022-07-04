@@ -23,20 +23,7 @@
         private ICommonService commonService;
         private ISettingService settingService;
         private IExportExcelService excelService;
-
-        [Fact]
-        public void Index_WhenCalled_ReturnAsExpectedResult()
-        {
-            var controller = GetController();
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Null(viewResult.Model);
-            Assert.Equal("../Report/DeleteFeedbackStatistic/Index", viewResult.ViewName);
-        }
+        
 
         [Fact]
         public async Task GetDeletedFeedbackStatistics_WhenCalled_ReturnAsExpectedResult()

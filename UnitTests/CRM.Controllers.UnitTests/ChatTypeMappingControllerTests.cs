@@ -15,45 +15,23 @@
     using CRM.Models;
     using CRM.Models.ChatTypeMapping;
     using CRM.Models.Common;
-    using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.ChatTypeMapping;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
     using NSubstitute;
     using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class ChatTypeMappingControllerTests
     {
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private ISettingService settingService;
         private ICommonService commonService;
         private IChatTypeMappingService chatTypeMappingService;
         private Func<int, ILetstalkService> letstalkService;
         private IExportExcelService excelService;
-
-        [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ChatTypeMapping, Policy.Host).Returns(true);
-
-            // Act
-            var actual = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
-        }
 
         [Fact]
         public async Task GetSettings_WhenCalled_ReturnExpectedJsonResult()
@@ -367,9 +345,7 @@
 
         private ChatTypeMappingController GetController()
         {
-            userService = Substitute.For<IUserService>();
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
             settingService = Substitute.For<ISettingService>();
             commonService = Substitute.For<ICommonService>();
             chatTypeMappingService = Substitute.For<IChatTypeMappingService>();
@@ -378,8 +354,6 @@
 
             return new ChatTypeMappingController(
                 napSession,
-                napSettings,
-                userService,
                 settingService,
                 commonService,
                 chatTypeMappingService,

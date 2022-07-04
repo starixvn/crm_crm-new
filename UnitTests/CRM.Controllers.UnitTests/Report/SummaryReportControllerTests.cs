@@ -45,21 +45,6 @@
         }
 
         [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Null(viewResult.Model);
-            Assert.Equal("../Report/Summary/Index", viewResult.ViewName);
-        }
-
-        [Fact]
         public async Task ExportSummaryReport_WhenCalled_ReturnExpectedResult()
         {
             // Arrange
