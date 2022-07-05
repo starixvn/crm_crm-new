@@ -20,13 +20,6 @@ class Layout extends Component {
                 username: null,
                 isGuest: false
             },
-            sessionData: {
-                currentUsername: '',
-                currentClientTime: new Date(),
-                clientTimezone: 0,
-                serverTimezone: 0,
-                hasCreateFeedbackPermission: false
-            },
             showEmptyConfirmPopup: false,
             showEmptyCustomerInfoPopup: false,
             customerSuggestions: [],
@@ -36,7 +29,9 @@ class Layout extends Component {
     }
 
     async componentDidMount() {
-        this.getInitInfo();
+        await this.getSetting();
+        this.initDataMenu(window.menus);
+        this.setCurrentCustomer(window.currentCustomer);
         const storage = window.localStorage;
         const isShowingLeftPanel = storage.getItem('isShowingLeftPanel');
         const isKeepLeftPanel = storage.getItem('isKeepLeftPanel');
@@ -46,21 +41,7 @@ class Layout extends Component {
         if(isShowingLeftPanel !== null){
             storage.removeItem('isShowingLeftPanel');
         }
-        this.getAntiForgeryToken();
     }
-
-    getInitInfo = async () =>{
-        await this.getSetting();
-        await this.getSessionData();
-    }
-
-    getAntiForgeryToken = async () =>{
-        Site.blockUI();
-        const url = Site.resolveClientUrl('Antiforgery/GenerateAntiForgeryTokens');
-        await DataService.getDataAsync(url).then(response => {
-            document.getElementById('xsrfToken').value = response.data.requestToken;
-        }).then(() => Site.unblockUI());
-    };
 
     getSetting = async () =>{
         Site.blockUI();
@@ -69,38 +50,6 @@ class Layout extends Component {
              this.setState({ settings: response.data});
         }).then(() => Site.unblockUI());
     };
-
-    getSessionData = async () =>{
-        Site.blockUI();
-        const url = Site.resolveClientUrl('Home/GetSessionData');
-        await DataService.getDataAsync(url).then(response => {
-            if(response || response !== null){
-                const data = response.data;
-                this.setDataToElementId(data);
-                this.setState(state => ({
-                    sessionData: {
-                        ...state.sessionData,
-                        currentUsername: data.currentUsername,
-                        currentClientTime: data.currentClientTime,
-                        clientTimezone: data.clientTimezone,
-                        serverTimezone: data.clientTimezone,
-                        hasCreateFeedbackPermission: data.hasCreateFeedbackPermission
-                    }
-                }));
-                this.setCurrentCustomer(data.currentCustomer);
-                this.initDataMenu(data.menus);
-            }
-        }).then(() => Site.unblockUI());
-    };
-
-    setDataToElementId = data =>{
-        document.getElementById('currentUsername').value = data.currentUsername;
-        document.getElementById('currentCustId').value = data.currentCustomer?.custId;
-        document.getElementById('currentClientTime').value = data.currentClientTime;
-        document.getElementById('clientTimezone').value = data.clientTimezone;
-        document.getElementById('serverTimezone').value = data.serverTimezone;
-        document.getElementById('hasCreateFeedbackPermission').value = data.hasCreateFeedbackPermission;
-    }
 
     setCurrentCustomer = currentCustomer =>{
         if(currentCustomer !== undefined && currentCustomer !== null){
@@ -206,9 +155,7 @@ class Layout extends Component {
         await DataService.postDataAsync(url,params, this.state.antiToken).then(response => {
             if(response.data !== null){
                 document.getElementById('currentCustId').value = response.data.custId;
-                this.setState({customerInfo: response.data}, () =>{
-                    this.handleNavigate('Dashboard');
-                });
+                this.setState({customerInfo: response.data});
             }else if (response.data === null && !this.state.isGuest) {
                 this.setState({
                     showEmptyConfirmPopup: true
@@ -282,7 +229,7 @@ class Layout extends Component {
         if(menus.length <=0){
             return null;
         }
-        const hasCreateFeedbackPermission = this.state.sessionData.hasCreateFeedbackPermission;
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <div>
                 <div className='fix-header-menu'>

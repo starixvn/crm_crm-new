@@ -13,7 +13,7 @@ import { ReportBy }from '@jsroot/common/constants';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        const currentClientTime = document.getElementById('currentClientTime').value;
+        const currentClientTime = window.currentClientTime;
         this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const currentDate = this.currentDate;
         const firstDateFirstMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() , 1);

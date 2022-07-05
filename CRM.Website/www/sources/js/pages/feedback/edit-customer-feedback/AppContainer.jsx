@@ -202,7 +202,7 @@ export default class AppContainer extends Component {
 
     initFormikData = (feedback, settings) => {
         const feedbackSettings = this.getFeedbackSettings(feedback, settings);
-        const currentClientTime = document.getElementById('currentClientTime').value;
+        const currentClientTime = window.currentClientTime;
         return {
             feedbackId: feedback.feedbackId,
             // cust info

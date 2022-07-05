@@ -11,7 +11,7 @@ import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        const currentClientTime = document.getElementById('currentClientTime').value;
+        const currentClientTime = window.currentClientTime;
         const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const firstDateCurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
 
@@ -242,7 +242,7 @@ export class Filter extends Component {
     handleChangeReportType = event => {
         const value = parseInt(event.target.value, 10);
         this.setState({ reportType: value });
-        const currentClientTime = document.getElementById('currentClientTime').value;
+        const currentClientTime = window.currentClientTime;
         const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
 
         switch (value) {

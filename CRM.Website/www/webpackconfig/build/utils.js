@@ -5,18 +5,17 @@ const pathConfig = require('../config/path');
 exports.setDefinePlugin = function (key, value) {
     const env = {};
     env[key] = JSON.stringify(value);
+
     return {
         plugins: [
-            new webpack.DefinePlugin({
-                env
-            })
+            new webpack.DefinePlugin(env)
         ]
     };
 };
 
 exports.extractCSS = function (isProduction) {
     const env = isProduction ? 'pro' : 'dev';
-    const jsPath = `${pathConfig.scriptPaths.build}/build/lib`;
+    const jsPath = `${pathConfig.scriptPaths.build}/${env}/lib`;
     return {
         plugins: [
             new MiniCssExtractPlugin({ filename: '[name].chunk.css', chunkFilename: jsPath + '/[name].chunk.css' })

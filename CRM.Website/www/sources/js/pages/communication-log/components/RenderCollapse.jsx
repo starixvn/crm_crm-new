@@ -5,7 +5,7 @@ import CkEditor from '@jsroot/components/ckeditor/index';
 
 export class RenderCollapse extends Component {
     render() {
-        const currentUsername = document.getElementById('currentUsername').value;
+        const currentUsername = window.currentUsername;
         const { values, errors, touched, collapse, setFieldValue, handleChange, handleCollapseExpand, isEdit } = this.props;
         return (
             <div>

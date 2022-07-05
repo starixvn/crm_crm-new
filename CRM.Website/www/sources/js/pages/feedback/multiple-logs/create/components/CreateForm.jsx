@@ -53,7 +53,7 @@ export class CreateForm extends Component {
 
     initFormData = () => {
         const settings = this.props.settings;
-        const currentClientTime = document.getElementById('currentClientTime').value;
+        const currentClientTime = window.currentClientTime;
         const startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         endTime.setMinutes(endTime.getMinutes() + 1);
@@ -877,7 +877,7 @@ export class CreateForm extends Component {
                     <Collapse in={!collapse.remark}>
                         <div id="collapse-expand-remark" className={`panel-content ${collapse.remark ? 'border-bottom-0' : ''}`}>
                             <CkEditor isInvalid={touched.remark && errors.remark}
-                                data={values.remark} username={document.getElementById('currentUsername').value}
+                                data={values.remark} username={window.currentUsername}
                                 onChange={value => setFieldValue('remark', value)}
                             />
                         </div>
@@ -893,7 +893,7 @@ export class CreateForm extends Component {
                     <Collapse in={!collapse.solution}>
                         <div id="collapse-expand-solution" className="panel-content">
                             <CkEditor isInvalid={touched.solution && errors.solution}
-                                data={values.solution} username={document.getElementById('currentUsername').value}
+                                data={values.solution} username={window.currentUsername}
                                 onChange={value => setFieldValue('solution', value)}
                             />
                         </div>

@@ -16,7 +16,9 @@ class Filter extends Component {
             toast.error(`${LangHelper.getResource('PleaseInputUsername')}`);
             return;
         }
-        this.props.getDataGrid();
+        this.props.getDataGrid().then(() =>{
+            this.props.navigate(Site.resolveClientUrl('Dashboard'), {state: this.props.customerInfo.custId});
+        });
     };
 
     renderRightContainer = () =>{

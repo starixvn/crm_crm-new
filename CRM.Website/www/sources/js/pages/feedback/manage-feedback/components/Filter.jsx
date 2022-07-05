@@ -10,7 +10,7 @@ import LangHelper from '@jsroot/common/langHelper';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.currentClientTime = document.getElementById('currentClientTime').value;
+        this.currentClientTime = window.currentClientTime;
         const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
         const fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
         fromDate.setDate(fromDate.getDate() - 1);

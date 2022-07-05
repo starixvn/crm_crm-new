@@ -4,7 +4,6 @@ import { AppContainer } from '../AppContainer';
 import DataGridRemark from '../DataGridRemark';
 import toJson from 'enzyme-to-json';
 
-window.currentCustomer = {custId: 1};
 describe('AppContainer', () => {
     afterAll(() => {
         jest.clearAllMocks();

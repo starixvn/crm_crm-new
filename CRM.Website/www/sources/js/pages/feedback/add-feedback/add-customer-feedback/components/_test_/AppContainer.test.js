@@ -10,7 +10,6 @@ describe('AppContainer', () => {
     });
 
     describe('render', () => {
-        window.currentCustomer = {custId: 1};
         it('has regular components', () => {
             // Arrange
             const props = { 

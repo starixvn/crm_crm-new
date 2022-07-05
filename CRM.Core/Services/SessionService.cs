@@ -8,7 +8,6 @@
 
     public interface ISessionService
     {
-        IEnumerable<MenuItem> MenuItems { get; set; }
         CurrentCustomer CurrentCustomer { get; set; }
         void ClearKey(string key);
     }
@@ -16,7 +15,6 @@
     public class SessionService : ISessionService
     {
         private readonly ISession session;
-        private const string MenuItemsKey = "MenuItems";
         private const string CurrentCustomerKey = "CurrentCustomer";
 
 
@@ -30,11 +28,6 @@
             session = accessor.HttpContext.Session;
         }
 
-        public IEnumerable<MenuItem> MenuItems
-        {
-            get => session.Get<IEnumerable<MenuItem>>(MenuItemsKey);
-            set => session.Set(MenuItemsKey, value);
-        }
         public CurrentCustomer CurrentCustomer
         {
             get => session.Get<CurrentCustomer>(CurrentCustomerKey);

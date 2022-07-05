@@ -10,6 +10,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Models;
+    using CRM.Models.Customer;
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Customer;
@@ -38,7 +39,7 @@
         {
             //Arrange
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
-            var customer = fixture.Create<CustomerSession>();
+            var customer = fixture.Create<CustomerInfoDetails>();
             var param = fixture.Create<GetCustomerInfoDetailByIdCriteria>();
             var controller = GetController();
             customerService.GetCustomerByIdAsync(param).Returns(customer);

@@ -15,7 +15,7 @@ export class EditForm extends Component {
 
     constructor(props) {
         super(props);
-        const currentClientTime = document.getElementById('currentClientTime').value;
+        const currentClientTime = window.currentClientTime;
         this.state = {
             collapse: {
                 personalInfo: false,

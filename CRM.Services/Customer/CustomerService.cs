@@ -12,13 +12,13 @@
 
     public interface ICustomerService
     {
-        Task<CustomerSession> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria);
+        Task<CustomerInfoDetails> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria);
 
         Task<CommandResult> UpdateCustomerInfoAsync(UpdateCustomerInfoCommand command);
 
         Task<IEnumerable<string>> GetCustomerAutoSuggestionAsync(CustomerSuggestionCriteria criteria);
 
-        Task<CustomerSession> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria);
+        Task<CustomerInfoDetails> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria);
 
         Task<IEnumerable<Models.Customer.UserInfo>> GetAllCustomerAsync(GetAllCustomersCriteria criteria);
     }
@@ -37,10 +37,10 @@
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
-        public async Task<CustomerSession> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria)
+        public async Task<CustomerInfoDetails> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria)
         {
-            var (customers, languageIds) = await baseService.FetchMultipleAsync<CustomerSession, int>(criteria);
-            CustomerSession customerInfo = null;
+            var (customers, languageIds) = await baseService.FetchMultipleAsync<CustomerInfoDetails, int>(criteria);
+            CustomerInfoDetails customerInfo = null;
             if (customers.Any())
             {
                 customerInfo = customers.FirstOrDefault();
@@ -65,11 +65,11 @@
             return customerInfo;
         }
 
-        protected internal virtual async Task<IEnumerable<CustomerSession>> GetUplineInfoAsync(int custId)
+        protected internal virtual async Task<IEnumerable<CustomerInfoDetails>> GetUplineInfoAsync(int custId)
         {
             var criteria = new GetUplineInfoOfUserCriteria { CustId = custId };
-            var uplineInfos = new List<CustomerSession>();
-            var customers = await baseService.GetDataAsync<CustomerSession>(criteria);
+            var uplineInfos = new List<CustomerInfoDetails>();
+            var customers = await baseService.GetDataAsync<CustomerInfoDetails>(criteria);
             foreach (var item in customers)
             {
                 if (criteria.CustId == item.CustId || item.RoleId == RoleIdConstants.Headline)
@@ -104,7 +104,7 @@
             return await baseService.GetDataAsync<string>(criteria);
         }
 
-        private CustomerSession GetUnAssignedCustomerInfo()
+        private CustomerInfoDetails GetUnAssignedCustomerInfo()
         {
             return new CustomerInfoDetails
             {
@@ -120,7 +120,7 @@
             };
         }
 
-        public async Task<CustomerSession> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria)
+        public async Task<CustomerInfoDetails> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria)
         {
             var (customer, languages) = await baseService.FetchMultipleAsync<CustomerInfoDetails, CustomerLanguageInfo>(criteria);
             var listLanguages = new List<int>();

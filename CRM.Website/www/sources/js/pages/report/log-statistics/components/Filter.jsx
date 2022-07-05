@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        const currentClientTime = document.getElementById('currentClientTime').value;
+        const currentClientTime = window.currentClientTime;
         this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const firstDayOfWeek = moment(this.currentDate).startOf('week');
         const firstDayOfWeekFormat = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDayOfWeek)));
@@ -41,7 +41,7 @@ export class Filter extends Component {
     };
 
     handleChangeFromDate = fromDate => {
-        const currentClientTime = document.getElementById('currentClientTime').value;
+        const currentClientTime = window.currentClientTime;
         const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const fromDateTime = new Date(fromDate.getTime());
         fromDateTime.setMonth(fromDate.getMonth() + 3);

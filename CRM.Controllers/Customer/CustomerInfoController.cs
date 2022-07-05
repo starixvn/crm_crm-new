@@ -6,6 +6,7 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
+    using CRM.Models.Customer;
     using CRM.Services;
     using CRM.Services.Customer;
     using Fanex.NAP.Client.Configuration;
@@ -27,9 +28,7 @@
             INapSession napSession,
             ICustomerService customerService,
             ISettingService settingService,
-            ISessionService sessionService,
-            IUserService userService,
-            INapSettings napSettings)
+            ISessionService sessionService)
         {
             this.napSession = napSession;
             this.customerService = customerService;
@@ -39,7 +38,7 @@
 
         public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
         {
-            CustomerSession customerInfo = await customerService.GetCustomerInfoAsync(criteria);
+            CustomerInfoDetails customerInfo = await customerService.GetCustomerInfoAsync(criteria);
             if (customerInfo != null)
             {
                 CurrentCustomer currentCustomer = new CurrentCustomer
