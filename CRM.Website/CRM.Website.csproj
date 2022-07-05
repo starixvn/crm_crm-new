@@ -1,471 +1,133 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
-    <UserSecretsId>a22f7a1b-8285-405c-aa31-33e3e0c2bb42</UserSecretsId>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="wwwroot\js\**" />
-    <Content Remove="wwwroot\js\**" />
-    <EmbeddedResource Remove="wwwroot\js\**" />
-    <None Remove="wwwroot\js\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="www\dist\css\fonts\fontawesome-webfont.eot" />
-    <None Remove="www\dist\css\fonts\fontawesome-webfont.svg" />
-    <None Remove="www\dist\css\fonts\fontawesome-webfont.ttf" />
-    <None Remove="www\dist\css\fonts\fontawesome-webfont.woff" />
-    <None Remove="www\dist\css\fonts\fontawesome-webfont.woff2" />
-    <None Remove="www\dist\css\fonts\FontAwesome.otf" />
-    <None Remove="www\dist\css\images\404\404.svg" />
-    <None Remove="www\dist\css\images\404\balloon.svg" />
-    <None Remove="www\dist\css\images\404\cloud-big.svg" />
-    <None Remove="www\dist\css\images\404\cloud-small.svg" />
-    <None Remove="www\dist\css\images\404\wind.svg" />
-    <None Remove="www\dist\css\images\405\door.svg" />
-    <None Remove="www\dist\css\images\405\seal.svg" />
-    <None Remove="www\dist\css\images\405\short-seal.svg" />
-    <None Remove="www\dist\css\images\405\signage.svg" />
-    <None Remove="www\dist\css\images\500\bluscreen.svg" />
-    <None Remove="www\dist\css\images\500\desktop.svg" />
-    <None Remove="www\dist\css\images\500\Error.svg" />
-    <None Remove="www\dist\css\images\500\leave.svg" />
-    <None Remove="www\dist\css\images\br-arrow-ico.png" />
-    <None Remove="www\dist\css\images\icon-search.png" />
-    <None Remove="www\dist\css\images\icon\icon-logout.png" />
-    <None Remove="www\dist\css\images\icon\list-muti-select.png" />
-    <None Remove="www\dist\css\images\icon\logo-crm.png" />
-    <None Remove="www\dist\css\images\icon\user.png" />
-    <None Remove="www\dist\css\images\login\chinese-flag.png" />
-    <None Remove="www\dist\css\images\login\english-flag.png" />
-    <None Remove="www\dist\css\images\login\firefox_original.png" />
-    <None Remove="www\dist\css\images\login\ie.png" />
-    <None Remove="www\dist\css\images\login\lock.png" />
-    <None Remove="www\dist\css\images\login\logo-cn88.png" />
-    <None Remove="www\dist\css\images\login\logo.png" />
-    <None Remove="www\dist\css\images\login\password.png" />
-    <None Remove="www\dist\css\images\login\pattern6.png" />
-    <None Remove="www\dist\css\images\login\small-arrow-down.png" />
-    <None Remove="www\dist\css\images\login\username.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-    <Content Include="App_Data\SpNames.AWS.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\SpNames.LOCAL.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\SpNames.PROD.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\SpNames.SIT.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\SpNames.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\SpNames.UAT.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="logs\log.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="www\dist\css\fonts\fontawesome-webfont.eot">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\fonts\fontawesome-webfont.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\fonts\fontawesome-webfont.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\fonts\fontawesome-webfont.woff">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\fonts\fontawesome-webfont.woff2">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\fonts\FontAwesome.otf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\404\404.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\404\balloon.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\404\cloud-big.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\404\cloud-small.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\404\wind.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\405\door.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\405\seal.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\405\short-seal.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\405\signage.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\500\bluscreen.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\500\desktop.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\500\Error.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\500\leave.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\br-arrow-ico.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\icon-search.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\icon\icon-logout.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\icon\list-muti-select.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\icon\logo-crm.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\icon\user.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\chinese-flag.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\english-flag.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\firefox_original.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\ie.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\lock.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\logo-cn88.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\logo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\password.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\pattern6.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\small-arrow-down.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\css\images\login\username.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="www\dist\favicon.ico" />
-    <Content Include="www\dist\lib\CryptoJS.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Fanex.Caching" Version="2.2.2" />
-    <PackageReference Include="Fanex.Data" Version="4.2.2" />
-    <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.2" />
-    <PackageReference Include="Fanex.NAP.Client.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.1.0-beta05" />
-    <PackageReference Include="ONEbook.UM.Transport" Version="3.1.1" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.9.0.19135">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CRM.Controllers\CRM.Controllers.csproj" />
-    <ProjectReference Include="..\CRM.Core\CRM.Core.csproj" />
-    <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
-    <ProjectReference Include="..\CRM.Resources\CRM.Resources.csproj" />
-    <ProjectReference Include="..\CRM.Services\CRM.Services.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Update="wwwroot\css\fonts\fontawesome-webfont.eot">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\fonts\fontawesome-webfont.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\fonts\fontawesome-webfont.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\fonts\fontawesome-webfont.woff">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\fonts\fontawesome-webfont.woff2">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\fonts\FontAwesome.otf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\404\404.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\404\balloon.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\404\cloud-big.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\404\cloud-small.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\404\wind.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\405\door.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\405\seal.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\405\short-seal.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\405\signage.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\500\bluscreen.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\500\desktop.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\500\Error.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\500\leave.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\br-arrow-ico.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\icon-search.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\icon\icon-logout.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\icon\list-muti-select.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\icon\logo-crm.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\icon\user.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\login\chinese-flag.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\login\english-flag.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\login\firefox_original.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\login\ie.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\login\lock.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\login\logo-cn88.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\login\logo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\login\password.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\login\pattern6.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\login\small-arrow-down.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\css\images\login\username.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="ExcelTemplates\CustomerReport.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\Customer_Report.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\DynamicReport.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\RedemptionStatisticsDetail.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\RedemptionStatistics.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\FeedbackStatistic.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\Issue_Statistics.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\Deleted_Feedback.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\Deleted_Feedback_Statistics.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\InformHeadlines.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\LatestFeedback.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\Log_Statistics.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\Log_Statistics_Detail.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\FeedbackStatisticDetail.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\ManageFeedback.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\NewInformHeadlines.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\PicAssignment.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\ChatType_Mapping.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\PicManagement.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\Settlement_Issues_Report.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ExcelTemplates\UpdateInformHeadlines.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+        <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
+        <UserSecretsId>a22f7a1b-8285-405c-aa31-33e3e0c2bb42</UserSecretsId>
+    </PropertyGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+        <Content Include="App_Data\SpNames.AWS.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="App_Data\SpNames.LOCAL.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="App_Data\SpNames.PROD.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="App_Data\SpNames.SIT.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="App_Data\SpNames.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="App_Data\SpNames.UAT.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="logs\log.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="www\dist\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Fanex.Caching" Version="2.2.2" />
+        <PackageReference Include="Fanex.Data" Version="4.2.2" />
+        <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.2" />
+        <PackageReference Include="Fanex.NAP.Client.AspNetCore" Version="2.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.1.0-beta05" />
+        <PackageReference Include="ONEbook.UM.Transport" Version="3.1.1" />
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.9.0.19135">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CRM.Controllers\CRM.Controllers.csproj" />
+        <ProjectReference Include="..\CRM.Core\CRM.Core.csproj" />
+        <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
+        <ProjectReference Include="..\CRM.Resources\CRM.Resources.csproj" />
+        <ProjectReference Include="..\CRM.Services\CRM.Services.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="ExcelTemplates\CustomerReport.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\Customer_Report.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\DynamicReport.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\RedemptionStatisticsDetail.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\RedemptionStatistics.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\FeedbackStatistic.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\Issue_Statistics.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\Deleted_Feedback.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\Deleted_Feedback_Statistics.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\InformHeadlines.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\LatestFeedback.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\Log_Statistics.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\Log_Statistics_Detail.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\FeedbackStatisticDetail.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\ManageFeedback.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\NewInformHeadlines.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\PicAssignment.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\ChatType_Mapping.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\PicManagement.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\Settlement_Issues_Report.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="ExcelTemplates\UpdateInformHeadlines.xlsx">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>
