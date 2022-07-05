@@ -30,7 +30,8 @@ describe('connect ', () => {
             removedLogDetailDialog: { show: false },
             newInformDialog: { show: false },
             resultEditContactInforms: { isSuccessful: true},
-            resultEditInforms: { isSuccessful: true}
+            resultEditInforms: { isSuccessful: true},
+            allSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] }
         };
         const state = {
             editContactInformDialog: { show: false },
@@ -39,7 +40,8 @@ describe('connect ', () => {
             removedLogDetailDialog: { show: false },
             newInformDialog: { show: false },
             resultEditContactInforms: { isSuccessful: true},
-            resultEditInforms: { isSuccessful: true}
+            resultEditInforms: { isSuccessful: true},
+            allSettings: { filterStatuses: [{ settingId: 1, settingValue: 'test'}] }
         };
 
         // Act

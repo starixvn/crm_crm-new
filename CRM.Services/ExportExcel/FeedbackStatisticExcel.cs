@@ -60,7 +60,7 @@
                     rowIndex++;
                     colIndex = 1;
                     var sub = fbCategories.FeedbackSubcategories[indexSub];
-                    worksheet.Cells[rowIndex, colIndex++].Value = sub.Name + " (" + fbCategories.FeedbackSubcategories.Count + ")";
+                    worksheet.Cells[rowIndex, colIndex++].Value = sub.Name + " (" + sub.Total + ")";
 
                     foreach (var resolve in sub.Resolves)
                     {

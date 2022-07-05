@@ -9,7 +9,6 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts';
-import { getBackGroundColor } from '@jsroot/common/shareScripts';
 
 import {Form, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
@@ -64,9 +63,9 @@ export class Chart extends Component {
                     >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
-                    <YAxis label={{ value: 'Feedback(s)', position: 'top', dy: -10 }} />                    
+                    <YAxis label={{ value: 'Feedback(s)', position: 'top', dy: -10 }} />
                     <Legend wrapperStyle={{ bottom: 5, left: 90, width: 993 }} />
-                        {labels.map((label, index) => (                            
+                        {labels.map((label, index) => (
                             <Bar dataKey={label} key={index} label={{ position: 'top' }}
                                 fill={colors[index % 20]}
                             />

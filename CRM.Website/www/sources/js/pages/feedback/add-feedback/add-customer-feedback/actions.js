@@ -54,7 +54,7 @@ const verifyUserName = data => async () => {
 };
 
 const getTicketInfoByRef = Refno => async () => {
-    const url = Site.resolveClientUrl('Feedback/GetTicketInfoByRefNoAsync');
+    const url = Site.resolveClientUrl('Feedback/GetTicketInfoByRefNo');
     return await DataService.getDataAsync(url, Refno).then(response => response.data);
 };
 

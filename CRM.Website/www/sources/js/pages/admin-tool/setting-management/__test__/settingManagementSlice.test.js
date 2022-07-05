@@ -25,7 +25,8 @@ describe('settingManagementSlice reducer', () => {
             licenseesMapping: null,
             licenseesManager: [],
             gridParams: {
-                settingName: ''
+                settingName: '',
+                settingValue: ''
             },
             editStatusPopup: {show: false},
             insertNewSettingPopup: {show: false, settingName: ''},
@@ -33,7 +34,8 @@ describe('settingManagementSlice reducer', () => {
             insertNewSettingResult: null,
             editPopup: {show: false, data: null},
             editNewSettingResult: null,
-            confirmCancelPopup: {show: false, setting: '', settingId: 0}
+            confirmCancelPopup: {show: false, setting: '', settingId: 0},
+            sourceMapping: []
         });
     });
 

@@ -59,10 +59,13 @@ export default class LicenseeRow extends PureComponent {
                             isSearchable
                             isFocused
                             isSelected
+                            //menuIsOpen
                             defaultValue={sourceMappingDefault}
                             noOptionsMessage={() => 'No results found'}
                             onChange={value => this.handleChangeSelect(value, 'settingSource')}
                             options={licenseesOption}
+                            menuPortalTarget={document.body}
+                            styles={{ menuPortal: base => ({...base, zIndex: 9999})}}
                         />
                     </Cell> :
                     <Cell>{settingSource}</Cell>
@@ -81,6 +84,8 @@ export default class LicenseeRow extends PureComponent {
                             onChange={value => this.handleChangeSelect(value, 'licenseeManager')}
                             onInputChange={searchText => debounceHandleLicenseeManagerChange(searchText)}
                             options={licenseesManagerOption}
+                            menuPortalTarget={document.body}
+                            styles={{ menuPortal: base => ({...base, zIndex: 9999})}}
                         />
                     </Cell>
                     :

@@ -69,6 +69,7 @@
         public DateTime ConvertToClientDateTime(DateTime date)
         {
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
+            
             return date.Add(timeSpan);
         }
 

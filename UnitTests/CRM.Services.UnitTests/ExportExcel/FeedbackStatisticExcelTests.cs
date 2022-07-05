@@ -64,7 +64,7 @@
 
             // Assert
             Assert.Equal("Special Notification - 1 item(s)", worksheet.Cells[5, 1].Value);
-            Assert.Equal("Abnormal Account (1)", worksheet.Cells[6, 1].Value);
+            Assert.Equal("Abnormal Account (5)", worksheet.Cells[6, 1].Value);
             Assert.Equal(5, worksheet.Cells[6, 2].Value);
             Assert.Equal("Sub Total (5)", worksheet.Cells[7, 1].Value);
             Assert.Equal(5, worksheet.Cells[7, 2].Value);

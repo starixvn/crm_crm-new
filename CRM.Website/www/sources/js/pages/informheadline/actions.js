@@ -4,7 +4,6 @@ import{
     resetState,
     setInforms,
     setTitleDetail,
-    setContactInformSettings,
     setContactInforms,
     setEditContactInformDialog,
     setGridParams,
@@ -51,12 +50,9 @@ const getTitleDetail = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
-const getContactInformSettings = () => async dispatch => {
-    Site.blockUI();
+const getContactInformSettings = () => async () => {
     const url = Site.resolveClientUrl('InformHeadline/GetContactInformSettings');
-    await DataService.getDataAsync(url).then(response => {
-        dispatch(setContactInformSettings(response.data));
-    }).then(() => Site.unblockUI());
+    return await DataService.getDataAsync(url).then(response => response);
 };
 
 const getContactInforms = params => async dispatch => {
@@ -65,7 +61,7 @@ const getContactInforms = params => async dispatch => {
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setContactInforms(response.data));
     }).then(() => Site.unblockUI());
-}
+};
 
 const editContactInforms = params => async dispatch => {
     Site.blockUI();
@@ -73,7 +69,7 @@ const editContactInforms = params => async dispatch => {
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setResultEditContactInforms(response.data));
     }).then(() => Site.unblockUI());
-}
+};
 
 const getAllSettings = () => async dispatch => {
     Site.blockUI();

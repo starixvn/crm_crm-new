@@ -1,29 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-    mainSettings: null,
-    parents: null,
-    settingType: null,
-    licensees: null,
-    licenseesMapping: null,
-    licenseesManager: [],
-    gridParams: {
-        settingName: ''
-    },
-    editStatusPopup: {show: false},
-    insertNewSettingPopup: {show: false, settingName: ''},
-    licenseeMappingPopup: {show: false},
-    insertNewSettingResult: null,
-    editPopup: {show: false, data: null},
-    editNewSettingResult: null,
-    confirmCancelPopup: {show: false, setting: '', settingId: 0}
-};
-
 const settingManagementSlice = createSlice({
     name: 'settingManagement',
-    initialState: initialState,
+    initialState: {
+        mainSettings: null,
+        parents: null,
+        settingType: null,
+        licensees: null,
+        licenseesMapping: null,
+        licenseesManager: [],
+        gridParams: {
+            settingName: '',
+            settingValue: ''
+        },
+        sourceMapping: [],
+        editStatusPopup: {show: false},
+        insertNewSettingPopup: {show: false, settingName: ''},
+        licenseeMappingPopup: {show: false},
+        insertNewSettingResult: null,
+        editPopup: {show: false, data: null},
+        editNewSettingResult: null,
+        confirmCancelPopup: {show: false, setting: '', settingId: 0}
+    },
     reducers: {
-        resetState: () => initialState,
         setMainSettings: (state, action) => {
             state.mainSettings = action.payload;
         },
@@ -65,6 +64,9 @@ const settingManagementSlice = createSlice({
         },
         setConfirmCancelPopup: (state, action) => {
             state.confirmCancelPopup = action.payload;
+        },
+        setSourceMapping: (state, action) => {
+            state.sourceMapping = action.payload;
         }
     }
 });
@@ -72,7 +74,6 @@ const settingManagementSlice = createSlice({
 const { actions, reducer } = settingManagementSlice;
 
 export const {
-    resetState,
     setMainSettings,
     setParentSettings,
     setSettingTypes,
@@ -86,7 +87,8 @@ export const {
     setInsertNewSettingResult,
     setOpenEdiPopup,
     setEditNewSettingResult,
-    setConfirmCancelPopup
+    setConfirmCancelPopup,
+    setSourceMapping
 } = actions;
 
 export default reducer;

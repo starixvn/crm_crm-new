@@ -53,6 +53,9 @@ export class FilterContactInforms extends PureComponent {
 
     render() {
         const { titleDetail, contactInforms, contactInformSettings } = this.props;
+        if (!contactInformSettings) {
+            return null;
+        }
         const filterStatuses = contactInformSettings.filterStatuses.map(item => {
             return {
                 settingId: item.settingId,
@@ -123,8 +126,8 @@ export class FilterContactInforms extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, contactInforms, contactInformSettings, gridParams } = state;
-    return { titleDetail, contactInforms, contactInformSettings, gridParams };
+    const { titleDetail, contactInforms, gridParams } = state;
+    return { titleDetail, contactInforms, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterContactInforms);

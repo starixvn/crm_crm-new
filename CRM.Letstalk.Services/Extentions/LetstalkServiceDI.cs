@@ -1,11 +1,8 @@
 ﻿namespace CRM.Letstalk.Services.Extentions
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using CRM.Letstalk.Client.Configurations;
-    using CRM.Letstalk.Client.Services;
-    using CRM.Letstalk.Client.Services.Interfaces;
+    using CRM.Letstalk.Client.Extensions;
     using CRM.Letstalk.Services.Models;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -24,26 +21,7 @@
             var monitorSettings = monitorSettingsSection.Get<MonitorSettings>();
             services.AddSingleton(monitorSettings);
 
-            services.AddTransient<ICryptographyService, CryptographyService>();
-            services.AddTransient<IJwtService, JwtService>();
-            services.AddTransient<RestClientService>();
-            services.AddTransient<LetstalkService>();
-            services.AddTransient<Func<int, ILetstalkService>>(serviceProvider => botId =>
-            {
-                var botConfig = botConfigs.FirstOrDefault(config => config.BotAccountId == botId);
-
-                if (botConfig == null)
-                {
-                    throw new ArgumentNullException($"The bot ID: {botId} does not existed in config file");
-                }
-
-                var restClientService = new RestClientService(
-                RestClientService.CreateDefaultClient(botConfig.ApiEndpoint, botConfig.ProxyAddress, botConfig.ByPassProxyLocal, botConfig.IsUseProxy),
-                new JwtService(),
-                botConfig);
-
-                return new LetstalkService(serviceProvider.GetRequiredService<ICryptographyService>(), restClientService, botConfig);
-            });
+            services.RegisterLetstalkBotService(configuration, botConfigs);
         }
     }
 }

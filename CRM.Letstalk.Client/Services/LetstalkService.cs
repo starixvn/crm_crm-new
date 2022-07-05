@@ -15,7 +15,7 @@
     {
         private const int payloadId = 100;
         private readonly BotConfig botConfig;
-        private readonly IRestClientService restClientService;
+        private readonly IHttpClientService httpClientService;
         private readonly ICryptographyService cryptographyService;
 
         private readonly JsonSerializerSettings DefaultJsonSerializeSetting = new JsonSerializerSettings
@@ -24,11 +24,11 @@
         };
 
         public LetstalkService(ICryptographyService cryptographyService,
-            IRestClientService restClientService,
+            IHttpClientService httpClientService,
             BotConfig botConfig)
         {
             this.cryptographyService = cryptographyService;
-            this.restClientService = restClientService;
+            this.httpClientService = httpClientService;
             this.botConfig = botConfig;
         }
 
@@ -36,7 +36,7 @@
         {
             ValidateInputParam(nameof(botName), botName);
 
-            return await restClientService.ExecutePutAsync<BaseResult>(
+            return await httpClientService.ExecutePutAsync<BaseResult>(
                 $"bot/change_display_name/{botConfig.BotAccountId}",
                 new Dictionary<string, object>
                 {
@@ -46,7 +46,7 @@
 
         public async Task<IList<string>> GetBotContactList()
         {
-            var result = await restClientService.ExecuteGetAsync<BotContactListResult>($"bot/v2/contact?botId={botConfig.BotAccountId}");
+            var result = await httpClientService.ExecuteGetAsync<BotContactListResult>($"bot/v2/contact?botId={botConfig.BotAccountId}");
             if (result.IsSuccess)
             {
                 return result.Contacts;
@@ -59,7 +59,7 @@
         {
             ValidateInputParam(nameof(roomToken), roomToken);
 
-            var result = await restClientService.ExecuteGetAsync<RoomResult>($"bot/v2/chatroom/data?botId={botConfig.BotAccountId}&room={roomToken}");
+            var result = await httpClientService.ExecuteGetAsync<RoomResult>($"bot/v2/chatroom/data?botId={botConfig.BotAccountId}&room={roomToken}");
 
             if (result.IsSuccess)
             {
@@ -73,7 +73,7 @@
         {
             ValidateInputParam(nameof(accountId), accountId);
 
-            var result = await restClientService.ExecuteGetAsync<ProfileResult>($"bot/get_profile/{botConfig.BotAccountId}/user/{accountId}");
+            var result = await httpClientService.ExecuteGetAsync<ProfileResult>($"bot/get_profile/{botConfig.BotAccountId}/user/{accountId}");
 
             if (result != null && result.IsSuccess)
             {
@@ -92,7 +92,7 @@
         {
             ValidateInputParam(nameof(roomToken), roomToken);
 
-            var result = await restClientService.ExecuteDeleteAsync<BaseResult>(
+            var result = await httpClientService.ExecuteDeleteAsync<BaseResult>(
                 $"bot/v2/leave_chatroom?botId={botConfig.BotAccountId}&token={roomToken}",
                 new Dictionary<string, object>());
 
@@ -115,7 +115,7 @@
             payload.Receiver = accountIdToLowerList.ElementAt(0);
             payload.HashId = botConfig.ChatKeyVersion;
 
-            var result = await restClientService.ExecutePostAsync<PushMessageResult>(
+            var result = await httpClientService.ExecutePostAsync<PushMessageResult>(
                 $"bot/push/{botConfig.BotAccountId}",
                 new Dictionary<string, object>
                 {
@@ -150,7 +150,7 @@
             ValidateInputParam(nameof(chatroomToken), chatroomToken);
             ValidateInputParam(nameof(message), message);
 
-            var result = await restClientService.ExecutePostAsync<BaseResult>(
+            var result = await httpClientService.ExecutePostAsync<BaseResult>(
                $"bot/push_chatroom/{botConfig.BotAccountId}",
                new Dictionary<string, object>
                {
@@ -165,7 +165,7 @@
         {
             ValidateInputParam(nameof(image), image);
 
-            var result = await restClientService.ExecutePostAsync<BaseResult>(
+            var result = await httpClientService.ExecutePostAsync<BaseResult>(
                 $"bot/upload_avatar_image/{botConfig.BotAccountId}",
                 new Dictionary<string, object>
                 {
@@ -177,7 +177,7 @@
 
         public async Task<BaseResult> SetPermissionAddBotToGroup(bool isAllowed)
         {
-            var result = await restClientService.ExecutePostAsync<BaseResult>(
+            var result = await httpClientService.ExecutePostAsync<BaseResult>(
                $"bot/v2/chatroom_switch",
                new Dictionary<string, object>
                {
@@ -191,7 +191,7 @@
         public async Task<BaseResult> SetWebhookAsync(string url)
         {
             ValidateInputParam(nameof(url), url);
-            return await restClientService.ExecutePostAsync<BaseResult>(
+            return await httpClientService.ExecutePostAsync<BaseResult>(
                 $"bot/set_webhook/{botConfig.BotAccountId}",
                 new Dictionary<string, object>
                 {
@@ -203,7 +203,7 @@
         {
             ValidateInputParam(nameof(message), message);
 
-            return await restClientService.ExecutePostAsync<BaseResult>(
+            return await httpClientService.ExecutePostAsync<BaseResult>(
                   $"bot/set_welcome_msg/{botConfig.BotAccountId}",
                   new Dictionary<string, object>
                 {
@@ -222,7 +222,7 @@
 
         public async Task<IList<string>> GetChatRoomList()
         {
-            var result = await restClientService.ExecuteGetAsync<BotChatRoomListResult>($"bot/v2/chatroom?botId={botConfig.BotAccountId}");
+            var result = await httpClientService.ExecuteGetAsync<BotChatRoomListResult>($"bot/v2/chatroom?botId={botConfig.BotAccountId}");
             if (result.IsSuccess)
             {
                 return result.Rooms;
@@ -233,7 +233,7 @@
 
         public async Task<string> GetWebhookAsync()
         {
-            var result = await restClientService.ExecuteGetAsync<WebhookResult>($"bot/get_webhook/{botConfig.BotAccountId}");
+            var result = await httpClientService.ExecuteGetAsync<WebhookResult>($"bot/get_webhook/{botConfig.BotAccountId}");
 
             if (result.IsSuccess)
             {

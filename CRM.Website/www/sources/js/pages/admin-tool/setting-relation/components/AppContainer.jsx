@@ -32,7 +32,7 @@ export class AppContainer extends Component {
   };
   
   render() {
-    const {mainSettings, updatePopup, gridParams} = this.props;
+    const {mainSettings, updatePopup, gridParams, isHost} = this.props;
 
     if(!mainSettings || mainSettings === null || !this.state.policy){
       return null;

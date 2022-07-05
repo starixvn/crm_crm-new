@@ -104,11 +104,11 @@ export class Filter extends Component {
 
         const { username, headline, vipId, languageIds, siteIds, positionIds, excludeIgnoredAccounts } = this.state;
         const params = {
-            username: username,
+            username: username === '' ? null : username,
             headline: headline === '' ? null : headline,
             vipId: vipId,
-            languageIds: languageIds,
-            siteIds: siteIds,
+            languageIds: languageIds === '' ? '0' : languageIds,
+            siteIds: siteIds === '' ? '0' : siteIds,
             positionIds: positionIds.replace('5', '5,6,7,8,9,10'),
             excludeIgnoredAccounts: excludeIgnoredAccounts,
             pageIndex: 1,
@@ -187,6 +187,7 @@ export class Filter extends Component {
                                     dataSource={languageOptions}
                                     keyField='languageId' valueField='name'
                                     isNAOption
+                                    isCheckedNA
                                     maxDisplayItemCount={2}
                                     hasAllOption={languageOptions.length > 0}
                                     onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('languageIds' ,currentItem, selectedItemsKey)}
@@ -200,6 +201,7 @@ export class Filter extends Component {
                                     keyField='siteId' valueField='name'
                                     hasAllOption={siteOptions.length > 0}
                                     isNAOption
+                                    isCheckedNA
                                     isAllToggle
                                     maxDisplayItemCount={6}
                                     onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('siteIds', currentItem, selectedItemsKey)}

@@ -1,42 +1,36 @@
 import { createSlice } from '@reduxjs/toolkit';
-const initialState = {
-    informs: null,
-    titleDetail: null,
-    contactInformSettings: null,
-    contactInforms: null,
-    editContactInformDialog: {show: false},
-    allSettings: null,
-    dataEditInforms: null,
-    editInformDialog: {show: false},
-    resultEditContactInforms: null,
-    resultEditInforms: null,
-    removedAccountLogs: null,
-    removedAccountLogDetails: null,
-    removedLogDialog: {show: false},
-    removedLogDetailDialog: {show: false},
-    newInforms: null,
-    newInformDialog: {show: false},
-    resultInsertInforms: null,
-    editedInforms: [],
-    filterData: { values: {}, errors: {} },
-    gridParams: { pageIndex: 1, pageSize: 100 },
-    gridParamRemovedLogs: { pageIndex: 1, pageSize: 100 },
-    gridRemovedLogDetails: { pageIndex: 1, pageSize: 100 }
-};
 
 const informHeadlineSlice = createSlice({
     name: 'informHeadline',
-    initialState: initialState,
+    initialState: {
+        informs: null,
+        titleDetail: null,
+        contactInforms: null,
+        editContactInformDialog: {show: false},
+        allSettings: null,
+        dataEditInforms: null,
+        editInformDialog: {show: false},
+        resultEditContactInforms: null,
+        resultEditInforms: null,
+        removedAccountLogs: null,
+        removedAccountLogDetails: null,
+        removedLogDialog: {show: false},
+        removedLogDetailDialog: {show: false},
+        newInforms: null,
+        newInformDialog: {show: false},
+        resultInsertInforms: null,
+        editedInforms: [],
+        filterData: { values: {}, errors: {} },
+        gridParams: { pageIndex: 1, pageSize: 100 },
+        gridParamRemovedLogs: { pageIndex: 1, pageSize: 100 },
+        gridRemovedLogDetails: { pageIndex: 1, pageSize: 100 }
+    },
     reducers: {
-        resetState: () => initialState,
         setInforms: (state, action) => {
             state.informs = action.payload;
         },
         setTitleDetail: (state, action) => {
             state.titleDetail = action.payload;
-        },
-        setContactInformSettings: (state, action) => {
-            state.contactInformSettings = action.payload;
         },
         setContactInforms: (state, action) => {
             state.contactInforms = action.payload;
@@ -101,10 +95,8 @@ const informHeadlineSlice = createSlice({
 const { actions, reducer } = informHeadlineSlice;
 
 export const {
-    resetState,
     setInforms,
     setTitleDetail,
-    setContactInformSettings,
     setContactInforms,
     setEditContactInformDialog,
     setGridParams,

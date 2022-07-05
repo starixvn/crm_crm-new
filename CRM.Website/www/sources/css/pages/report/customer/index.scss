@@ -9,60 +9,68 @@
 @import '../../../components/multiple-select/style';
 @import '../../../components/messages';
 
-.report-customer{
-    .form-filter {
-        .row {
-            margin-left: 0;
-            margin-right: 0;
+#app-container {
+    width: 1890px;
+    padding: 10px;
+}
+
+.body-content, .footer-content, .header-content {
+    border: none; 
+}
+
+.form-filter {
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .group-field {
+        display: flex;
+        width: 320px;
+
+        label {
+            width: 105px;
         }
-    
-        .group-field {
-            display: flex;
-            width: 320px;
-    
-            label {
-                width: 105px;
-            }
-    
-            .input-field {
-                width: 200px;
-            }
-        }
-    
-        .multiple-select-container {
+
+        .input-field {
             width: 200px;
         }
-    
-        .group-checkbox {
-            display: flex;
-            width: 320px;
-        }
-    
-        .check-exclude {
-            padding-top: 5px;
-            padding-right: 5px;
-        }
-    
-        .danger-position .multiple-select-container {
-            border: 1px solid #dc3545;
-        }
-    
-        .show-filter {
-            width: 100%;
-            text-align: center;
-    
-            .icon {
-                height: 14px;
-                width: 27px;
-                background-color: #464d5d;
-                color: white;
-                cursor: pointer;
-            }
+    }
+
+    .multiple-select-container {
+        width: 200px;
+    }
+
+    .group-checkbox {
+        display: flex;
+        width: 320px;
+    }
+
+    .check-exclude {
+        padding-top: 5px;
+        padding-right: 5px;
+    }
+
+    .danger-position .multiple-select-container {
+        border: 1px solid #dc3545;
+    }
+
+    .show-filter {
+        width: 100%;
+        text-align: center;
+
+        .icon {
+            height: 14px;
+            width: 27px;
+            background-color: #464d5d;
+            color: white;
+            cursor: pointer;
         }
     }
 }
 
 .table-container {
+    border: 1px solid #b7b7b7;
     .header-content {
         border-bottom: none;
         position: sticky;

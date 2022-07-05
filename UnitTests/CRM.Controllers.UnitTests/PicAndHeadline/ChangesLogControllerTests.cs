@@ -29,7 +29,7 @@
             baseService.GetDataAsync<ChangeHeadlineDALog>(Arg.Do<GetHeadlineDALogCriteria>(x => criteria = x)).Returns(logInfo);
 
             // Act
-            var actual = await controler.GetHeadlineDAReportAsync(criteria);
+            var actual = await controler.GetHeadlineDAReport(criteria);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -52,7 +52,7 @@
             baseService.GetDataAsync<ChangePicLogInfo>(Arg.Do<GetPicLogCriteria>(x => criteria = x)).Returns(picInfo);
 
             // Act
-            var actual = await controler.GetPicReportAsync(criteria);
+            var actual = await controler.GetPicReport(criteria);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
@@ -72,7 +72,7 @@
             baseService.GetDataAsync<ActionType>(Arg.Any<GetActionTypeCriteria>()).Returns(actionTypes);
 
             // Act
-            var actual = await controler.GetActionTypesAsync();
+            var actual = await controler.GetActionTypes();
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);

@@ -10,16 +10,15 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { remarkEncode, renderButtonSave } from '../common.functions';
 import DataGridEdit from './DataGridEdit';
 import FilterContactInforms from './FilterContactInforms';
+import Site from '@jsroot/common/site';
 
 export class EditContactInforms extends Component {
 
     static propTypes = {
-        contactInformSettings: PropTypes.shape({ filterStatuses: PropTypes.arrayOf(PropTypes.object).isRequired }).isRequired,
         titleId: PropTypes.number.isRequired
     };
 
     static defaultProps = {
-        contactInformSettings: { filterStatuses: [] },
         titleId: 0
     };
 
@@ -27,20 +26,25 @@ export class EditContactInforms extends Component {
         super(props);
         this.state = {
             saveResult: null,
-            selectedStatuses: ''
+            selectedStatuses: '',
+            contactInformSettings: null
         };
     }
 
     componentDidMount() {
-        const { contactInformSettings, titleId } = this.props;
-        this.props.getTitleDetail({titleId: titleId});
-
-        const selectedStatuses = contactInformSettings.filterStatuses.map(item =>
-            item.settingId
-        ).join();
-        const params = {titleId: titleId, username: '', statusId: selectedStatuses};
-        this.setState({ selectedStatuses: selectedStatuses });
-        this.props.getContactInforms(params);
+        Site.blockUI();
+        this.props.getContactInformSettings().then(response =>{
+            Site.unblockUI();
+            if(response !== undefined && response.data !== null){
+                this.props.getTitleDetail({ titleId: this.props.titleId });
+                const selectedStatuses = response.data.filterStatuses.map(item =>
+                    item.settingId
+                ).join();
+                const params = { titleId: this.props.titleId, username: '', statusId: selectedStatuses };
+                this.setState({ selectedStatuses: selectedStatuses, contactInformSettings: response.data });
+                this.props.getContactInforms(params);
+            }
+        });
     }
 
     setAlert = () => {
@@ -65,8 +69,8 @@ export class EditContactInforms extends Component {
     };
 
     renderForm = () => {
-        const { contactInforms, contactInformSettings, hasHostPermission } = this.props;
-        const { selectedStatuses } = this.state;
+        const { contactInforms } = this.props;
+        const { selectedStatuses, contactInformSettings } = this.state;
 
         return(
             <Modal.Body>
@@ -81,13 +85,12 @@ export class EditContactInforms extends Component {
                     selectedStatuses &&
                     (
                         <FilterContactInforms
-                            selectedStatuses={selectedStatuses}
+                            selectedStatuses={selectedStatuses} contactInformSettings={contactInformSettings}
                         />
                     )
                 }
 
                 <DataGridEdit
-                    hasHostPermission={hasHostPermission}
                     status={this.props.status}
                     informData={contactInforms}
                     informSettings={contactInformSettings}
@@ -100,9 +103,9 @@ export class EditContactInforms extends Component {
     };
 
     render() {
-        const { titleDetail, contactInformSettings, contactInforms, status } = this.props;
+        const { titleDetail, contactInforms, status } = this.props;
         const isClosed = status === 'Closed' ? true : false;
-        if (!titleDetail || !contactInformSettings || !contactInforms) {
+        if (!titleDetail || !this.state.contactInformSettings || !contactInforms) {
             return null;
         }
 
@@ -128,8 +131,8 @@ export class EditContactInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, contactInformSettings, contactInforms, editedInforms, resultEditContactInforms } = state;
-    return { titleDetail, contactInformSettings, contactInforms, editedInforms, resultEditContactInforms };
+    const { titleDetail, contactInforms, editedInforms, resultEditContactInforms } = state;
+    return { titleDetail, contactInforms, editedInforms, resultEditContactInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditContactInforms);

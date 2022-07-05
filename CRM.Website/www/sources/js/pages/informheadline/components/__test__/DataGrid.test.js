@@ -12,26 +12,6 @@ describe('DataGrid', () => {
 
     const initProps = {};
 
-    describe('ComponentDidMount', () => {
-        it('should call exactly props function', async () => {
-            // Arrange
-            const props = {
-                getInforms: jest.fn(),
-                getAllSettings: jest.fn(),
-                getContactInformSettings: jest.fn()
-            }
-
-            // Act
-            const container = shallow(<DataGrid {...props}/>).instance();
-            await container.componentDidMount();
-
-            // Assert
-            expect(props.getInforms).toHaveBeenCalledWith();
-            expect(props.getAllSettings).toHaveBeenCalledWith();
-            expect(props.getContactInformSettings).toHaveBeenCalledWith();
-        })
-    });
-
     describe('buildHeader', () => {
         it('should render expected header', () => {
             // Act

@@ -4,7 +4,6 @@
     using System.IO;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Configuration;
     using Serilog;
     using Serilog.Enrichers;
     using Serilog.Events;
@@ -18,10 +17,9 @@
             var logfile = Path.Combine(baseDir, "logs", "log.txt");
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("Hangfire", LogEventLevel.Warning)
                 .Enrich.With(new ThreadIdEnricher())
                 .Enrich.FromLogContext()
-                .WriteTo.Async(a => a.File(logfile, LogEventLevel.Information, loggerTemplate, rollingInterval: RollingInterval.Day, shared:true))
+                .WriteTo.Async(a => a.File(logfile, LogEventLevel.Information, loggerTemplate, rollingInterval: RollingInterval.Day, shared: true))
                 .CreateLogger();
 
 
@@ -42,14 +40,7 @@
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((builderContext, config) =>
-                {
-                    var env = builderContext.HostingEnvironment;
-                    config.SetBasePath(env.ContentRootPath);
-                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
-                    config.AddEnvironmentVariables();
-                })
+                .UseUrls($"http://*:5000")
                 .UseStartup<Startup>()
                 .UseSerilog();
         }

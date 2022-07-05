@@ -5,11 +5,11 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using CRM.Core;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
     using CRM.Letstalk.Client.Configurations;
+    using CRM.Letstalk.Client.Extensions;
     using CRM.Services.Extensions;
     using Fanex.Data;
     using Fanex.Data.SqlServer;
@@ -34,7 +34,7 @@
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.FileProviders;
+    using Microsoft.Extensions.Hosting;
     using ONEbook.UM.AspNetCore;
     using ONEbook.UM.Configurations;
     using ONEbook.UM.Helpers;
@@ -121,27 +121,20 @@
             services.AddAntiforgery(options =>
             {
                 options.SuppressXFrameOptionsHeader = true;
-                options.Cookie.SameSite = SameSiteMode.None;
             });
-
 
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
             ConfigRedisCache(services, redisConfig);
 
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).AddJsonOptions(options =>
-            {
-                options.SerializerSettings.DateFormatString = DateTimeExtensions.LongDateTimeFormat;
-            });
+            services.AddControllersWithViews(
+                mvcOption => mvcOption.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
+                ).AddNewtonsoftJson();
 
             RegisterDI(services, botConfigs.Get<List<BotConfig>>());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -163,8 +156,8 @@
             app.UseCookiePolicy();
             app.UseSession();
             app.UseAuthentication();
-
-            ////app.UseStatusCodePagesWithReExecute("/Error/{0}");
+            app.UseRouting();
+            app.UseAuthorization();
 
             NapClientManager
               .UseConfig(app.ApplicationServices.GetService<INapSettings>())
@@ -178,11 +171,11 @@
                 Path.Combine(env.ContentRootPath, "www/dist")),
                 RequestPath = "/www/dist"
             });
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Auth}/{action=Index}/{id?}");
 
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
@@ -209,11 +202,11 @@
             services.AddSingleton<ISecurityService, SecurityService>();
             services.AddSingleton<ISiteService, SiteService>();
 
-            services.AddSingleton<Fanex.Logging.ILogger, Logger>();
+            services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<List<BotConfig>>();
             services.ResolveCoreDI();
             services.ResolveServiceDI();
-            services.ResolveLetstalkServiceDI(botConfigs);
+            services.RegisterLetstalkBotService(Configuration, botConfigs);
         }
 
         private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)

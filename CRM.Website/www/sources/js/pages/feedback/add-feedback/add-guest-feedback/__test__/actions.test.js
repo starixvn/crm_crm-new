@@ -175,7 +175,7 @@ describe('actionCreators', () => {
             const actual = await store.dispatch(ActionCreators.getTicketInfoByRef({Refno: 1}));
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('Feedback/GetTicketInfoByRefNoAsync', {Refno: 1});
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('Feedback/GetTicketInfoByRefNo', {Refno: 1});
             expect(actual).toEqual(response.data);
         });
     });

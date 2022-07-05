@@ -10,6 +10,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { toast } from 'react-toastify';
+import { handleSort } from '@jsroot/common/shareScripts';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -20,7 +21,7 @@ export class DataGrid extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={8}>{LangHelper.getResource('ID')}</HeaderCell>
-                <HeaderCell colWidth={16} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
+                <HeaderCell colWidth={16} sortOrder='desc' sortBy='Time'>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Creator')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Headline')}</HeaderCell>
                 <HeaderCell colWidth={15} sortOrder='desc' sortBy='userName'>{LangHelper.getResource('Username')}</HeaderCell>
@@ -29,7 +30,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={15}>{LangHelper.getResource('RelatedTo')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Handler')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('UpdatedBy')}</HeaderCell>
-                <HeaderCell colWidth={16} sortOrder='desc' sortBy='lastUpdate'>{LangHelper.getResource('LastUpdateGM8')}</HeaderCell>
+                <HeaderCell colWidth={16} sortOrder='desc' sortBy='Time'>{LangHelper.getResource('LastUpdateGM8')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Requester')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Approver')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Acknowledger')}</HeaderCell>
@@ -163,30 +164,9 @@ export class DataGrid extends Component {
     onSort = (sortBy, sortOrder) => {
         const { gridData } = this.props;
         const cloneGridData = [...gridData.data];
-        let gridDataSortAsc = null;
-        if(sortBy === 'createdDate' || sortBy === 'lastUpdate'){
-            if(sortOrder === 'asc'){
-                gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortDateAsc(sortBy, first, second));
-            }else{
-                gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortDateDesc(sortBy, first, second));
-            }
-        }else{
-            if(sortOrder === 'asc'){
-                gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortStringAsc(sortBy, first, second));
-            }else{
-                gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortStringDesc(sortBy, first, second));
-            }
-        }
+        const gridDataSortAsc = handleSort(cloneGridData, sortBy, sortOrder);
         this.props.setRemarks({...this.props.gridData.data, data: gridDataSortAsc, totalItems:this.props.gridData.totalItems });
     };
-
-    handleSortDateAsc = (sortBy, first, second) => new Date(first[`${sortBy}`]) > new Date(second[`${sortBy}`]) ? 1 : -1;
-
-    handleSortDateDesc = (sortBy, first, second) => new Date(first[`${sortBy}`]) < new Date(second[`${sortBy}`]) ? 1 : -1;
-
-    handleSortStringAsc = (sortBy, first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1;
-
-    handleSortStringDesc = (sortBy, first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1;
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };

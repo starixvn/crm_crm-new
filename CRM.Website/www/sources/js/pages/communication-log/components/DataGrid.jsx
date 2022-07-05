@@ -7,6 +7,7 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { Policy, PAGING_SIZES } from '@jsroot/common/constants';
+import { handleSort } from '@jsroot/common/shareScripts';
 
 export class DataGrid extends Component {
 
@@ -18,32 +19,18 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={22}>{LangHelper.getResource('RunningNo')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('feedbackId')}/>
-                </HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='runningNo'>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 {
-                    this.props.createUpdateFeedbackPermission === Policy.Host &&
+                    window.createUpdateFeedbackPermission === Policy.Host &&
                     <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
                 }
-                <HeaderCell colWidth={25}>{LangHelper.getResource('FeedbackDate')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('feedbackDate')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={55}>{LangHelper.getResource('Category')}
-                    <i aria-hidden="true" className="fa fa-sort sort-header" onClick={() => this.handleSort('subject')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={40}>{LangHelper.getResource('Subject')}
-                    <i className="sort-header fa fa-sort" aria-hidden="true" onClick={() => this.handleSort('subject')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}
-                    <i aria-hidden="true" className="sort-header fa fa-sort" onClick={() => this.handleSort('status')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Duration')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('duration')}/>
-                </HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Handler')}
-                    <i className="fa fa-sort sort-header" aria-hidden="true" onClick={() => this.handleSort('handler')}/></HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Reviewer')}
-                    <i aria-hidden="true" className="fa fa-sort sort-header" onClick={() => this.handleSort('reviewer')}/></HeaderCell>
+                <HeaderCell colWidth={25} sortOrder='desc' sortBy='Time'>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
+                <HeaderCell colWidth={55} sortOrder='desc' sortBy='Category'>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={40} sortOrder='desc' sortBy='Subject'>{LangHelper.getResource('Subject')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='Status'>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='Duration'>{LangHelper.getResource('Duration')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='Handler'>{LangHelper.getResource('Handler')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='Reviewer'>{LangHelper.getResource('Reviewer')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -59,31 +46,19 @@ export class DataGrid extends Component {
         }
         return [
             <Row key={`body${1}`} className="no-data" >
-                <Cell className='text-center' colSpan={this.props.createUpdateFeedbackPermission === Policy.Host ? 9 : 8}>
+                <Cell className='text-center' colSpan={window.createUpdateFeedbackPermission === Policy.Host ? 9 : 8}>
                     {LangHelper.getResource('ThereIsNoData')}
                 </Cell>
             </Row>
         ];
     };
 
-    isSortEqual = (itemA, itemB) => {
-        if ( itemA === itemB ) {
-            return 0;
-        } else {
-            return -1;
-        }
-    };
-
-    handleSort = item => {
+    onSort = (sortBy, sortOrder) => {
         const { gridData } = this.props;
-        let sortData = [];
-        if (this.sortDesc) {
-            sortData = [...gridData.data].sort((a, b) => a[item] > b[item] ? 1 : this.isSortEqual(a[item], b[item]));
-        } else {
-            sortData = [...gridData.data].sort((a, b) => a[item] < b[item] ? 1 : this.isSortEqual(a[item], b[item]));
-        }
-        this.sortDesc = !this.sortDesc;
-        this.props.setLogsByCustomerId({data: sortData, mainCategories: gridData.mainCategories});
+        const cloneGridData = [...gridData.data];
+
+        const gridDataSortAsc = handleSort(cloneGridData, sortBy, sortOrder);
+        this.props.setLogsByCustomerId({ data: gridDataSortAsc, mainCategories: gridData.mainCategories });
     };
 
     handleGroupCategory = category => {
@@ -142,7 +117,7 @@ export class DataGrid extends Component {
                     <span className='link-click' onClick={() => this.handleEditCommunicationLog(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>
                 {
-                    this.props.createUpdateFeedbackPermission === Policy.Host && (
+                    window.createUpdateFeedbackPermission === Policy.Host && (
                         <Cell className="text-center">
                             <span className="rounded-circle fa fa-pencil icon-edit"
                                 onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}
@@ -166,7 +141,7 @@ export class DataGrid extends Component {
     };
 
     render() {
-        const { gridData, gridParams, customerInfoPolicy } = this.props;
+        const { gridData, gridParams } = this.props;
         if (!gridData) {
             return null;
         }
@@ -184,18 +159,19 @@ export class DataGrid extends Component {
                     <span>{LangHelper.getResource('CustomerCommunicationLogs')}</span>
                 </div>
                 <Table
-                    width={1200}
+                    width={1400}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     isPaging
+                    onSort={this.onSort}
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
                     containerPadding={0}
                     adjustedHeight={10}
                 />
                 {
-                    customerInfoPolicy === Policy.Host &&
+                    window.customerInfoPolicy === Policy.Host &&
                     <Button variant="primary" size="sm" className="mt-3" onClick={this.handleCreate}>
                         {LangHelper.getResource('InsertCase')}
                     </Button>

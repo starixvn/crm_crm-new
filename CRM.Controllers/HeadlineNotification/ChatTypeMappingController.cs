@@ -27,6 +27,7 @@
         private readonly IChatTypeMappingService chatTypeMappingService;
         private readonly Func<int, ILetstalkService> letstalkService;
         private readonly IExportExcelService excelService;
+
         public ChatTypeMappingController(
             INapSession napSession,
             ISettingService settingService,
@@ -237,7 +238,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Read)]
-        public async Task<IActionResult> ExportExcel([FromBody]ChatTypeFilterViewModel filter)
+        public async Task<IActionResult> ExportExcel([FromBody] ChatTypeFilterViewModel filter)
         {
             var criteria = new GetChatTypeMappingCriteria
             {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import RowLayout from './RowLayout';
 import PropTypes from 'prop-types';
 import createTableSection from './tableSection';
-import { DEFAULT_COLUMN_WIDTH, SCROLLBAR_WIDTH, DEFAULT_PADDING, MIN_WIDTH_CONTAINER } from '../constants';
+import { DEFAULT_COLUMN_WIDTH, SCROLLBAR_WIDTH } from '../constants';
 import Pager from './Pager';
 import functions from '../functions';
 import Site from '@jsroot/common/site';
@@ -23,6 +23,8 @@ class Table extends Component {
         body: PropTypes.arrayOf(PropTypes.object),
         footer: PropTypes.arrayOf(PropTypes.object),
         isFixColumn: PropTypes.bool,
+        fixColumns: PropTypes.array,
+        widthFixColumns: PropTypes.array,
         isPaging: PropTypes.bool,
         onPaging: PropTypes.func,
         pageOption: PropTypes.object,
@@ -38,11 +40,13 @@ class Table extends Component {
         maxWidth: clientWidth,
         autoWidth: true,
         isFixColumn: false,
+        fixColumns: [],
+        widthFixColumns: [],
         isPaging: false,
         adjustedHeight: 0,
         bodyHeight: 0,
         autoHeight: true,
-        containerPadding: 31,
+        containerPadding: 30,
         shouldResetScrollPosition: true,
         shouldUseMaxWidth: false
     };
@@ -138,7 +142,6 @@ class Table extends Component {
         const currentRowIndex = 0;
         const cellList = headerIsArray ? headerRows[currentRowIndex].props.children : headerRows.props.children;
         this._getWidthByCells(headerRows, columnsWidth, currentNextCellIndexByRow, cellList, currentRowIndex);
-
         return columnsWidth;
     }
 
@@ -170,6 +173,7 @@ class Table extends Component {
             this._getWidthByCells(headerRows, columnsWidth, currentNextCellIndexByRow, nextColspanCells, nextRowIndex);
         } else {
             const cellWidth = cellProps.colWidth ? cellProps.colWidth : DEFAULT_COLUMN_WIDTH;
+
             columnsWidth.push(cellWidth);
         }
     };
@@ -183,24 +187,11 @@ class Table extends Component {
                 this.setState({ contentHeight: bodyHeight });
             }
         }
-        const { maxWidth, shouldUseMaxWidth} = this.props;
-        const showingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
-        const rightRowContainer = document.getElementById('right-row-container').clientWidth;
-        const clientWidth = document.body.clientWidth;
-        const calWidth =  clientWidth < MIN_WIDTH_CONTAINER ? MIN_WIDTH_CONTAINER : clientWidth;
-        if(showingLeftPanel !== null){
-            this.setState({ maxWidth:  shouldUseMaxWidth ? maxWidth : rightRowContainer});
-            window.localStorage.removeItem('isShowingLeftPanel');
-        }else{
-            let maxWidthCal = 0;
-            if(!window.currentCustomer){
-                maxWidthCal = shouldUseMaxWidth ? maxWidth : calWidth - this.diffWidth;
-            }else{
-                maxWidthCal = shouldUseMaxWidth ? maxWidth : rightRowContainer;
-            }
-            if (this.state.maxWidth !== maxWidthCal) {
-                this.setState({ maxWidth: maxWidthCal });
-            }
+
+        const { maxWidth, shouldUseMaxWidth } = this.props;
+        const maxWidthCal = shouldUseMaxWidth ? maxWidth : document.body.clientWidth - this.diffWidth;
+        if (this.state.maxWidth !== maxWidthCal) {
+            this.setState({ maxWidth: maxWidthCal });
         }
     };
 
@@ -213,9 +204,9 @@ class Table extends Component {
     }
 
     _getUpdatedColumnLayout() {
-        const { width, shouldUseMaxWidth , autoWidth, containerPadding } = this.props;
+        const { width, autoWidth, containerPadding, shouldUseMaxWidth } = this.props;
         let sumOfColumnWidth = autoWidth || shouldUseMaxWidth ? this.state.maxWidth : width;
-        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH - 1;
+        sumOfColumnWidth = sumOfColumnWidth - containerPadding - SCROLLBAR_WIDTH;
 
         const newColumnsWidth = this.columnWidthSum && this.state.columnsWidth.map(cellWidth =>
             sumOfColumnWidth / this.columnWidthSum * cellWidth);
@@ -223,23 +214,23 @@ class Table extends Component {
         return newColumnsWidth;
     }
 
-    renderFixColumn = fixProps =>{
-        const {header, body, footer, sectionProps, headerSectionProps, maxWidth, rowLayout, isPaging, pageOption, onPaging} = fixProps;
+    renderFixColumn = fixProps => {
+        const { header, body, footer, sectionProps, headerSectionProps, maxWidth, rowLayout, isPaging, pageOption, onPaging } = fixProps;
         let maxHeightContainer = 0;
-        if(this.headerWrapper !== null){
+        if (this.headerWrapper !== null) {
             maxHeightContainer = this.headerWrapper.offsetHeight + this.state.contentHeight;
         }
         const increaseMaxWidth = maxWidth + 1;
         const maxWidthCal = maxWidth + SCROLLBAR_WIDTH + 1;
-        const footerSectionProps = {...sectionProps, maxWidth: maxWidthCal};
-        const fixHeaderSectionProps = {...headerSectionProps, maxWidth: increaseMaxWidth};
-        const fixSectionProps = {...sectionProps, maxWidth: increaseMaxWidth};
-        const {Header, Body, Footer} = this;
+        const footerSectionProps = { ...sectionProps, maxWidth: maxWidthCal };
+        const fixHeaderSectionProps = { ...headerSectionProps, maxWidth: increaseMaxWidth };
+        const fixSectionProps = { ...sectionProps, maxWidth: increaseMaxWidth };
+        const { Header, Body, Footer } = this;
         return (
             <div className='fix-table-container' style={{ maxWidth: maxWidthCal }}>
-                <div style={{ maxWidth: maxWidthCal}}>{this.props.title}</div>
+                <div style={{ maxWidth: maxWidthCal }}>{this.props.title}</div>
                 <div className='fix-table'
-                    style={{ maxWidth:  maxWidthCal , maxHeight: maxHeightContainer}}
+                    style={{ maxWidth: maxWidthCal, maxHeight: maxHeightContainer }}
                 >
                     <Header {...fixHeaderSectionProps}>
                         {rowLayout}
@@ -268,53 +259,62 @@ class Table extends Component {
         );
     };
 
+    handleNewLayOut(actualWidth) {
+        return this.columnWidthSum && this.columnWidthSum !== actualWidth ?
+            this._getUpdatedColumnLayout() :
+            this.state.columnsWidth;
+    }
+
     render() {
         const { width, autoWidth, minWidth, header, body, footer, isPaging, pageOption, onPaging, containerPadding, shouldUseMaxWidth, isFixColumn } = this.props;
         const maxWidth = this.state.maxWidth - containerPadding;
         const actualWidth = width - containerPadding;
-        const newColumnLayout = this.columnWidthSum && this.columnWidthSum !== actualWidth ?
-            this._getUpdatedColumnLayout() :
-            this.state.columnsWidth;
+        const newColumnLayout = this.handleNewLayOut(actualWidth);
 
         if (!newColumnLayout) {
             return null;
         }
 
+        if (this.props.isFixColumn && this.props.fixColumns.length > 0) {
+            this.props.fixColumns.map(item => {
+                newColumnLayout[item] = this.props.widthFixColumns[item];
+            });
+        }
+
         const sectionProps = { width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
         const headerSectionProps = { onSort: this.props.onSort, width: actualWidth, autoWidth, minWidth, maxWidth, shouldUseMaxWidth };
         const rowLayout = <RowLayout columnLayout={newColumnLayout} />;
-        const { Header, Body, Footer } = this;
-        const fixProps = {header, body, footer, sectionProps, headerSectionProps, maxWidth, width, rowLayout,isPaging, pageOption, onPaging};
-
+        const fixProps = { header, body, footer, sectionProps, headerSectionProps, maxWidth, width, rowLayout, isPaging, pageOption, onPaging };
+        const {Header, Body, Footer} = this;
         return (
             isFixColumn ?
-            this.renderFixColumn({...fixProps}) :
-            <div>
-                <div className='table-container' style={{ maxWidth}}>
-                    <Header {...headerSectionProps}>
-                        {rowLayout}
-                        {header}
-                    </Header>
-                    {
-                        body &&
-                        <Body {...sectionProps} maxHeight={this.state.contentHeight}>
+                this.renderFixColumn({ ...fixProps }) :
+                <div>
+                    <div className='table-container' style={{ maxWidth }}>
+                        <Header {...headerSectionProps}>
                             {rowLayout}
-                            {body}
-                        </Body>
-                    }
+                            {header}
+                        </Header>
+                        {
+                            body &&
+                            <Body {...sectionProps} maxHeight={this.state.contentHeight}>
+                                {rowLayout}
+                                {body}
+                            </Body>
+                        }
+                        {
+                            footer &&
+                            <Footer {...sectionProps}>
+                                {rowLayout}
+                                {footer}
+                            </Footer>
+                        }
+                    </div>
                     {
-                        footer &&
-                        <Footer {...sectionProps}>
-                            {rowLayout}
-                            {footer}
-                        </Footer>
+                        isPaging && pageOption &&
+                        <Pager pageOption={pageOption} onPaging={onPaging} {...sectionProps} />
                     }
                 </div>
-                {
-                    isPaging && pageOption &&
-                    <Pager pageOption={pageOption} onPaging={onPaging} {...sectionProps} />
-                }
-            </div>
         );
     }
 }

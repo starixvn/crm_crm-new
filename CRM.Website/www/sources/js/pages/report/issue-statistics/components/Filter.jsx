@@ -172,10 +172,10 @@ export class Filter extends Component {
                     showFilter &&
                     <Fragment>
                         <Form.Row bsPrefix='form-row'>
-                            <Form.Group style={{width: "210px"}}>
+                            <Form.Group style={{width: '210px'}}>
                                 <Form.Label htmlFor="groupBy">{LangHelper.getResource('GroupBy')}</Form.Label>
                                 <Form.Control as="select" size="sm"
-                                    style={{width: "100px"}}
+                                    style={{width: '100px'}}
                                     name="groupBy" id="groupBy"
                                     value={groupBy}
                                     onChange={this.handleChange}

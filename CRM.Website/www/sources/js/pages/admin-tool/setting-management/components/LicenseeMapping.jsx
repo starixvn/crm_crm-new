@@ -195,7 +195,7 @@ export class LicenseeMapping extends PureComponent {
                                     className="shadow-none mr-4" autoComplete="off"
                                     onChange={event => this.setState({setting: event.target.value})}
                                 />
-                                <Button variant="primary" size="sm" onClick={this.handleSearch}>
+                                <Button variant="primary" className='btnSearch' size="sm" onClick={this.handleSearch}>
                                     {LangHelper.getResource('Search')}
                                 </Button>
                             </Form.Group>

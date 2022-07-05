@@ -21,7 +21,6 @@ export class Filter extends Component {
         event.preventDefault();
         const settingName = event.target.value;
         this.setState({settingName});
-        this.props.setGridParams({settingName});
     };
 
     handleSubmit = () => {

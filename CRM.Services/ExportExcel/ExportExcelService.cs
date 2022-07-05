@@ -9,8 +9,8 @@
     using CRM.Models.InformHeadline;
     using CRM.Models.PicAndHeadline;
     using CRM.Models.Report;
-    using CRM.Models.Report.CustomerReport;
     using CRM.Models.Report.CategoriesSummaryReport;
+    using CRM.Models.Report.CustomerReport;
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Report.DirectCustomerReport;
     using CRM.Models.Report.DynamicReport;
@@ -41,7 +41,6 @@
 
         byte[] ExportWagerReport(WagerReportModel wagerreportInfo, int year);
 
-
         byte[] ExportChatTypeMapping(IEnumerable<ChatTypeMappingModel> chatTypeMappings);
 
         byte[] ExportLatestFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, int top);
@@ -51,10 +50,10 @@
         byte[] ExportInformHeadline(IEnumerable<InformHeadlineModel> informs);
 
         byte[] ExportEditInformHeadline(
-            IEnumerable<EditInform> editInforms, 
-            IEnumerable<InformStatus> informStatuses, 
-            IEnumerable<Station> informStations, 
-            IEnumerable<FeedbackStatus> informProductStatuses, 
+            IEnumerable<EditInform> editInforms,
+            IEnumerable<InformStatus> informStatuses,
+            IEnumerable<Station> informStations,
+            IEnumerable<FeedbackStatus> informProductStatuses,
             string informHeadlineTitle);
 
         byte[] ExportNewInformHeadline(IEnumerable<NewInform> newInforms, IEnumerable<InformStatus> informStatuses, string title);
@@ -76,7 +75,7 @@
         byte[] ExportStatisticFeedbackDetail(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string titleExcel);
 
         byte[] ExportRedemptionStatisticsSumary(IList<RedemptionStatisticsEntity> redemptionStatistics, IDictionary<string, decimal> totals, string titleExcel, int reportBy);
-        
+
         byte[] ExportDynamicReport(DynamicReportInfo dynamicReportInfos, IEnumerable<Setting> mainCategories, string titleExcel);
 
         byte[] ExportRedemptionStatisticsDetail(IEnumerable<RedemptionStatisticsDetailEntity> redemptionStatisticsDetails);
@@ -86,9 +85,9 @@
 
     public class ExportExcelService : IExportExcelService
     {
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment hostingEnvironment;
 
-        public ExportExcelService(IHostingEnvironment hostingEnvironment)
+        public ExportExcelService(IWebHostEnvironment hostingEnvironment)
         {
             this.hostingEnvironment = hostingEnvironment;
         }
@@ -211,12 +210,12 @@
 
         public byte[] ExportSummaryReport(SummaryReportModel summaryreportInfo, int year)
         {
-            const string ExcelTemplatePath = "ExcelTemplates/Issue_Statistics.xlsx";
+            const string ExcelTemplatePath = "ExcelTemplates/Categories_Summary_Report.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new SummaryReportExcel(templatePath, summaryreportInfo, year);           
+            var excel = new SummaryReportExcel(templatePath, summaryreportInfo, year);
             return excel.Export();
         }
-        
+
         public byte[] ExportIssueStatisticsReport(IssuesStatisticsReportInfo issueStatistics, string titleExcel)
         {
             const string ExcelTemplatePath = "ExcelTemplates/Issue_Statistics.xlsx";
@@ -225,7 +224,7 @@
             var excel = new IssueStatisticsExcel(templatePath, issueStatistics, titleExcel);
             return excel.Export();
         }
-        
+
         public byte[] ExportStatisticFeedback(FeedbackStatisticInfo feedbackStatistic)
         {
             const string ExcelTemplatePath = "ExcelTemplates/FeedbackStatistic.xlsx";
@@ -249,7 +248,7 @@
             var excel = new RedemptionStatisticsExcel(templatePath, redemptionStatistics, totals, titleExcel, reportBy);
             return excel.Export();
         }
-        
+
         public byte[] ExportDynamicReport(DynamicReportInfo dynamicReportInfos, IEnumerable<Setting> mainCategories, string titleExcel)
         {
             const string ExcelTemplatePath = "ExcelTemplates/DynamicReport.xlsx";
@@ -273,7 +272,7 @@
             var excel = new CustomerReportExcel(templatePath, customerReportInfo);
             return excel.Export();
         }
-        
+
         public byte[] ExportDirectCustomerReport(DirectCustomerReportInfo directreportInfo)
         {
             const string ExcelTemplatePath = "ExcelTemplates/Direct_Customer_Report.xlsx";
@@ -289,6 +288,5 @@
             var excel = new WagerReportExcel(templatePath, wagerreportInfo, year);
             return excel.Export();
         }
-
     }
 }

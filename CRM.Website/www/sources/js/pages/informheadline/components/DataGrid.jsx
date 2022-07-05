@@ -9,13 +9,6 @@ import { Policy } from '@jsroot/common/constants';
 import ExcelIcon from '@jsroot/components/ExcelIcon';
 
 export class DataGrid extends Component {
-
-    async componentDidMount() {
-        await this.props.getContactInformSettings();
-        await this.props.getAllSettings();
-        await this.props.getInforms();
-    }
-
     buildHeader = () => {
         return(
             <HeaderRow>
@@ -161,6 +154,20 @@ export class DataGrid extends Component {
         );
     };
 
+    renderTitle = informs => {
+        return (
+            <div className='table-title d-flex justify-content-between align-items-center'>
+                <span>Inform Headlines Cases</span>
+                {
+                    informs.length > 0 &&
+                    <ExcelIcon
+                        handleExportExcel={this.props.exportInforms}
+                    />
+                }
+            </div>
+        );
+    };
+
     render() {
         const { informs } = this.props;
         if (!informs) {
@@ -170,21 +177,13 @@ export class DataGrid extends Component {
         if (this.props.searchPolicy !== Policy.None || this.props.contactPolicy !== Policy.None) {
             return (
                 <Fragment>
-                    <div className='table-title d-flex justify-content-between align-items-center'>
-                        <span>Inform Headlines Cases</span>
-                        {
-                            informs.length > 0 &&
-                            <ExcelIcon
-                                handleExportExcel={this.props.exportInforms}
-                            />
-                        }
-                    </div>
-
                     <Table
                         maxWidth={1600}
                         shouldUseMaxWidth
                         width={1600}
                         autoWidth={false}
+                        isFixColumn
+                        title={this.renderTitle(informs)}
                         header={this.buildHeader()}
                         body={this.buildBody()}
                         containerPadding={0}
@@ -208,8 +207,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { informs, contactInformSettings } = state;
-    return { informs, contactInformSettings };
+    const { informs } = state;
+    return { informs };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

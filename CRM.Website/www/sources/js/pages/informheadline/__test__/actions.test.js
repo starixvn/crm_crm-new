@@ -7,7 +7,6 @@ import { ActionCreators } from '../actions';
 import{
     setInforms,
     setTitleDetail,
-    setContactInformSettings,
     setContactInforms,
     setAllSettings,
     setEditInforms,
@@ -108,17 +107,16 @@ describe('actionCreators', () => {
             const response = [
                 { titleId: 720, title:"test" }
             ]
-            const expectedActions = [{ type: setContactInformSettings.type, payload: response.data }];
-            const store = mockStore({ contactInformSettings: null });
+            const store = mockStore({});
             const promise = Promise.resolve(response);
             DataService.getDataAsync = jest.fn(() => promise);
 
             // Act
-            await store.dispatch(ActionCreators.getContactInformSettings());
+            const actual = await store.dispatch(ActionCreators.getContactInformSettings());
 
             // Assert
             expect(DataService.getDataAsync).toHaveBeenCalledWith('InformHeadline/GetContactInformSettings');
-            expect(store.getActions()).toEqual(expectedActions);
+            expect(actual).toEqual(response);
         });
     });
 

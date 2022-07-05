@@ -59,21 +59,27 @@
         public async Task<IActionResult> GetFeedbackStatisticDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
         {
             var feedbackDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
+            var total = feedbackDetail.Count();
+            if (feedbackDetail.Any())
+            {
+                feedbackDetail = feedbackDetail.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
+            }
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
             var feedbacksOrder = feedbackDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
-
-            return Json(new { data = feedbacksOrder, mainCategories });
+            return Json(new { data = feedbacksOrder, mainCategories, total });
         }
 
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] GetFeedbackStatisticCriteria criteria)
         {
             criteria.PageIndex = 0;
-            var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
             var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
             var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
             var title = string.Format(ViewResources.FeedbackStatisticTitle,
                             criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
+            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
+            var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
             feedbackStatistic.Title = title;
             var bytes = excelService.ExportStatisticFeedback(feedbackStatistic);
             string reportName = string.Format(ViewResources.FeedbackStatistic_ExcelFile, fromDateFormat, toDateFormat);
@@ -84,12 +90,12 @@
         public async Task<IActionResult> ExportExcelDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
         {
             criteria.PageIndex = 0;
-            IEnumerable<DeletedFeedback> feedbacksDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
             var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
             var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
             var title = string.Format(ViewResources.FeedbackStatisticDetail_ExcelTitle,
                                         criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+            IEnumerable<DeletedFeedback> feedbacksDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
             var feedbacksOrder = feedbacksDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
 
             var bytes = excelService.ExportStatisticFeedbackDetail(feedbacksOrder, mainCategories, title);

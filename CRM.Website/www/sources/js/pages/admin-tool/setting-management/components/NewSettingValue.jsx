@@ -40,7 +40,25 @@ export class NewSettingValue extends Component {
         if(values.settingValue === ''){
             errors.settingValue = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingValue'));
         }
+        if(!this.isCheckSettingValue(values)){
+            errors.settingValue = LangHelper.getResource('SettingExistedAlready');
+        }
         return errors;
+    };
+
+    isCheckSettingValue = values =>{
+        const {mainSettings} = this.props;
+        let checkValue = true;
+        mainSettings.map(item => {
+            if(item.settingName === values.settingName){
+                item.childSettings.map(check => {
+                    if(check.settingValue === values.settingValue){
+                        checkValue = false;
+                    }
+                });
+            }
+        });
+        return checkValue;
     };
 
     renderForm = ({
@@ -168,9 +186,9 @@ export class NewSettingValue extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { parents, insertNewSettingResult } = state;
+    const { parents, insertNewSettingResult, mainSettings } = state;
     return {
-        parents, insertNewSettingResult
+        parents, insertNewSettingResult, mainSettings
     };
 };
 

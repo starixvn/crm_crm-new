@@ -10,31 +10,28 @@
         <PublishProtocol>FileSystem</PublishProtocol>
         <Configuration>Release</Configuration>
         <Platform>Any CPU</Platform>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <PublishDir>D:\Deploy\CRM.Service</PublishDir>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <SelfContained>true</SelfContained>
         <_IsPortable>false</_IsPortable>
         <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
+        <UserSecretsId>c6191107-6326-45fb-b4bb-3f2d9239f558</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
     <ItemGroup>
-      <Compile Remove="Controllers\**" />
       <Compile Remove="Filters\**" />
       <Compile Remove="Views\**" />
-      <Content Remove="Controllers\**" />
       <Content Remove="Filters\**" />
       <Content Remove="Views\**" />
-      <EmbeddedResource Remove="Controllers\**" />
       <EmbeddedResource Remove="Filters\**" />
       <EmbeddedResource Remove="Views\**" />
-      <None Remove="Controllers\**" />
       <None Remove="Filters\**" />
       <None Remove="Views\**" />
     </ItemGroup>
     <ItemGroup>
       <Compile Remove="Services\BackgroundService.cs" />
       <Compile Remove="Services\CustomWebHostService.cs" />
-      <Compile Remove="Startup.cs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -116,16 +113,16 @@
         <PackageReference Include="Fanex.Logging.Extensions.Database" Version="1.0.8" />
         <PackageReference Include="Fanex.Logging.Sentry" Version="1.0.6" />
         <PackageReference Include="Fanex.RemotingRef" Version="1.5.0" />
-        <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="5.0.17" />
         <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="5.0.1" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.1.0-beta05" />
         <PackageReference Include="ONEbook.UM.Transport" Version="3.1.1" />
-        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.19.0.28253">
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.40.0.48530">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>

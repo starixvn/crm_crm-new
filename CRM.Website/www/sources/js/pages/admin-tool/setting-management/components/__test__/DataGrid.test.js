@@ -41,7 +41,8 @@ describe('DataGrid', () => {
         }
         ],
         setEditStatusPopup: jest.fn(),
-        setOpenEdiPopup: jest.fn()
+        setOpenEdiPopup: jest.fn(),
+        getSourceMapping: jest.fn()
     };
 
     describe('buildHeader', () => {
@@ -105,12 +106,12 @@ describe('DataGrid', () => {
     });
 
     describe('handleOpenEdit', () => {
-        it('should call exact function', () => {
+        it('should call exact function',async () =>  {
             // Arrange
             const event = {preventDefault: jest.fn()};
             const container = shallow(<DataGrid {...initProps} />).instance();
             // Act
-            container.handleOpenEdit(event, {id: 1});
+            await container.handleOpenEdit(event, {id: 1});
             // Assert
             expect(initProps.setOpenEdiPopup).toHaveBeenCalledWith({show: true, data: {id: 1}});
             expect(event.preventDefault).toHaveBeenCalled();

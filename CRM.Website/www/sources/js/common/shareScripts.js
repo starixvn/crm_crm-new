@@ -248,3 +248,30 @@ function shadeColor(color, percent){
            backGroundColor.Green +
            backGroundColor.Blue).toString(16).slice(1);
 }
+
+const handleSortDateAsc = (sortBy, first, second) => new Date(first[`${sortBy}`]) > new Date(second[`${sortBy}`]) ? 1 : -1;
+
+const handleSortDateDesc = (sortBy, first, second) => new Date(first[`${sortBy}`]) < new Date(second[`${sortBy}`]) ? 1 : -1;
+
+const handleSortStringAsc = (sortBy, first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1;
+
+const handleSortStringDesc = (sortBy, first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1;
+
+export const handleSort = (cloneGridData, sortBy, sortOrder) => {
+    let gridDataSortAsc = null;
+    if (sortBy === 'Time') {
+        if (sortOrder === 'asc') {
+            gridDataSortAsc = [...cloneGridData].sort((first, second) => handleSortDateAsc(sortBy, first, second));
+        } else {
+            gridDataSortAsc = [...cloneGridData].sort((first, second) => handleSortDateDesc(sortBy, first, second));
+        }
+    } else {
+        if (sortOrder === 'asc') {
+            gridDataSortAsc = [...cloneGridData].sort((first, second) => handleSortStringAsc(sortBy, first, second));
+        } else {
+            gridDataSortAsc = [...cloneGridData].sort((first, second) => handleSortStringDesc(sortBy, first, second));
+        }
+    }
+
+    return gridDataSortAsc;
+};

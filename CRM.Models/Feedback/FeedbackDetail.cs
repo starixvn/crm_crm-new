@@ -9,7 +9,7 @@
 
         public string Username { get; set; }
 
-        public string Creator { get; set; }
+        public string CreatorName { get; set; }
 
         public DateTime FeedbackDate { get; set; }
 
@@ -45,17 +45,6 @@
 
         public IList<FeedbackSettingRelation> Settings { get; set; } = new List<FeedbackSettingRelation>();
 
-        public string DurationTime => ResolutionDate != DateTime.MinValue ? GetResolvingTime() : string.Empty;
-
-        private string GetResolvingTime()
-        {
-            var totalDays = ResolutionDate - FeedbackDate;
-            return string.Format(
-                "{0}:{1}:{2}:{3}",
-                totalDays.Days,
-                totalDays.Hours,
-                totalDays.Minutes,
-                totalDays.Seconds);
-        }
+        public string DurationTime { get; set; }
     }
 }

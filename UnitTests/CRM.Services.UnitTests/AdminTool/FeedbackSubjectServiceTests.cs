@@ -1,6 +1,5 @@
 ﻿namespace CRM.Services.UnitTests.AdminTool
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -21,7 +20,7 @@
         {
             //Arrange
             var fixture = new Fixture();
-            var param = new GetFeedbackSubjectParam { Subject = null, PageIndex = 1, PageSize = 50};
+            var param = new GetFeedbackSubjectParam { Subject = null, PageIndex = 1, PageSize = 50 };
             var expected = fixture.Create<IEnumerable<FeedbackSubjectTemplate>>();
             var criteria = new GetFeedbackSubjectTemplateCriteria();
             var service = GetFeedbackSubjectService();
@@ -38,7 +37,6 @@
         [Fact]
         public async Task GetFeedbackSubjectTemplateAsync_WhenFilter_ReturnExpectedFeedback()
         {
-
             //Arrange
             var fixture = new Fixture();
             var param = fixture.Create<GetFeedbackSubjectParam>();

@@ -23,6 +23,7 @@ describe('Edit', () => {
     const initProps = {
         editNewSetting: jest.fn(() => promise),
         onSuccess: jest.fn(),
+        sourceMapping: [],
         editPopup: {
             data:{
                 childSettings: [],
@@ -141,7 +142,8 @@ describe('Edit', () => {
         it('should return null', () => {
             // Arrange
             const props = {
-                editPopup: {data: null}
+                editPopup: {data: null},
+                sourceMapping: []
             };
             // Act
             const container = shallow(<Edit {...props} />);

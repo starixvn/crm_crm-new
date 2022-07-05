@@ -154,6 +154,9 @@ describe('DataGrid', () => {
                 username: null,
                 excludeIgnoredAcc: true
             },
+            gridData: {
+                totalCustomer: 1
+            },
             exportExcel: jest.fn()
         };
 
@@ -162,7 +165,7 @@ describe('DataGrid', () => {
         container.instance().handleExportExcel();
 
         // Assert
-        expect(props.exportExcel).toHaveBeenCalledWith({ headline: null, username: null, excludeIgnoredAcc: true });
+        expect(props.exportExcel).toHaveBeenCalledWith({ headline: null, username: null, excludeIgnoredAcc: true , pageIndex : 1, pageSize: 1});
     });
 
     it('click export excel call exact function', () => {

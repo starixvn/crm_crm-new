@@ -8,6 +8,7 @@ import { PAGING_SIZES } from '@jsroot/common/constants';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import { handleSort } from '@jsroot/common/shareScripts';
 
 export class History extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ export class History extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={8}>{LangHelper.getResource('Version')}</HeaderCell>
-                <HeaderCell colWidth={14} sortOrder='desc' sortBy='createdDate'>{LangHelper.getResource('DateOfUpdateGM8')}</HeaderCell>
+                <HeaderCell colWidth={14} sortOrder='desc' sortBy='Time'>{LangHelper.getResource('DateOfUpdateGM8')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('UpdatedBy')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('RemarkTitle')}</HeaderCell>
                 <HeaderCell colWidth={50}>{LangHelper.getResource('RemarkContent')}</HeaderCell>
@@ -108,19 +109,10 @@ export class History extends Component {
     onSort = (sortBy, sortOrder) => {
         const { remarksHistory } = this.props;
         const cloneGridData = [...remarksHistory.data];
-        let gridDataSortAsc = null;
-        if(sortOrder === 'asc'){
-            gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortStringAsc(sortBy, first, second));
-        }else{
-            gridDataSortAsc = [...cloneGridData].sort((first, second) => this.handleSortStringDesc(sortBy, first, second));
-        }
+
+        const gridDataSortAsc = handleSort(cloneGridData, sortBy, sortOrder);
         this.props.setRemarksHistory({...this.props.remarksHistory.data, data: gridDataSortAsc, totalItems:this.props.remarksHistory.totalItems});
     };
-
-    handleSortStringAsc = (sortBy, first, second) => first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1;
-
-    handleSortStringDesc = (sortBy, first, second) => first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1;
-
 
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.historyGridParams };

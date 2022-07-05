@@ -17,7 +17,8 @@ describe('DataGrid', () => {
         redemptionLogs: [ 
             { id: 4752, subject: 'test', claimTime: 'Nov 12, 2021 06:46:00 AM', status: 'KIV' },
             { id: 1234, subject: 'test', claimTime: 'Nov 12, 2021 06:46:00 AM', status: 'KIV' }
-        ]
+        ],
+        setLogsByCustomerId: jest.fn()
     };
 
     describe('buildHeader', () => {
@@ -28,26 +29,6 @@ describe('DataGrid', () => {
 
             // Assert
             expect(header.find(HeaderCell).length).toBe(6);
-        });
-
-        it('should call handleSort when click', () => {
-            // Arrange
-            const props = { ...initProps };
-
-            const container = shallow(<DataGrid {...props} />).instance();
-            container.handleSort = jest.fn();
-            const row = shallow(container.buildHeader());
-
-            // Action
-            row.find(HeaderCell).at(0).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(1).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(2).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(3).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(4).find('i').at(0).simulate('click');
-            row.find(HeaderCell).at(5).find('i').at(0).simulate('click');
-
-            // Assert
-            expect(container.handleSort).toHaveBeenCalled();
         });
     });
 
@@ -81,70 +62,19 @@ describe('DataGrid', () => {
         });
     });
 
-    describe('isSortEqual', () => {
-        it('should return 0', () => {
-            // Arrange
-            const props = { ...initProps };
-            const container = shallow(<DataGrid {...props} />).instance();
-
+    describe('onSort', () => {
+        it.each([
+            'asc',
+            'desc'
+          ])("should call exact function when sortOrder is %s'", (sortOrder) => {
+            // arrange
+            const container = shallow(<DataGrid  {...initProps}/>).instance();
+            
             // Act
-            const actual = container.isSortEqual('test','test');
+            container.onSort('username', sortOrder);
 
             // Assert
-            expect(actual).toEqual(0);
-        });
-
-        it('should return -1', () => {
-            // Arrange
-            const props = { ...initProps };
-            const container = shallow(<DataGrid {...props} />).instance();
-
-            // Act
-            const actual = container.isSortEqual('test','test123');
-
-            // Assert
-            expect(actual).toEqual(-1);
-        });
-    });
-
-    describe('handleSort', () => {
-        it('should call exactly props function with sortDesc is true', () => {
-            // Arrange
-            const expected = [
-                { id: 1234, subject: 'test', claimTime: 'Nov 12, 2021 06:46:00 AM', status: 'KIV' },
-                { id: 4752, subject: 'test', claimTime: 'Nov 12, 2021 06:46:00 AM', status: 'KIV' }
-            ];
-            const props = { 
-                ...initProps,
-                setLogsByCustomerId: jest.fn()
-            };
-            const container = shallow(<DataGrid {...props} />).instance();
-
-            // Act
-            container.handleSort('id');
-
-            // Assert
-            expect(props.setLogsByCustomerId).toHaveBeenCalledWith(expected);
-        });
-
-        it('should call exactly props function with sortDesc is false', () => {
-            // Arrange
-            const expected = [
-                { id: 4752, subject: 'test', claimTime: 'Nov 12, 2021 06:46:00 AM', status: 'KIV' },
-                { id: 1234, subject: 'test', claimTime: 'Nov 12, 2021 06:46:00 AM', status: 'KIV' }
-            ];
-            const props = { 
-                ...initProps,
-                setLogsByCustomerId: jest.fn()
-            };
-            const container = shallow(<DataGrid {...props} />).instance();
-            container.sortDesc = false;
-
-            // Act
-            container.handleSort('id');
-
-            // Assert
-            expect(props.setLogsByCustomerId).toHaveBeenCalledWith(expected);
+            expect(initProps.setLogsByCustomerId).toHaveBeenCalled();
         });
     });
 

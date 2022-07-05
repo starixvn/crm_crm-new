@@ -18,7 +18,7 @@
         private readonly LetstalkService letstalkService;
         private readonly BotConfig botConfig;
         private readonly ICryptographyService cryptographyService;
-        private readonly IRestClientService restClientService;
+        private readonly IHttpClientService restClientService;
         private readonly IJwtService jwtService;
 
         public LetstalkServiceTests()
@@ -30,17 +30,14 @@
                 BotAccountId = 1000,
                 BotUserId = "@test",
                 BusinessAccountType = 1,
-                ByPassProxyLocal = true,
                 ChatKey = "ABC",
-                ProxyAddress = "10.0.0.0",
                 ChatKeyVersion = 5,
                 EncryptionMode = 2,
-                IsUseProxy = true,
                 SecureKey = "Secure"
             };
             cryptographyService = Substitute.For<ICryptographyService>();
             jwtService = Substitute.For<IJwtService>();
-            restClientService = Substitute.For<IRestClientService>();
+            restClientService = Substitute.For<IHttpClientService>();
             letstalkService = new LetstalkService(cryptographyService, restClientService, botConfig);
         }
 

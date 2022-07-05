@@ -109,8 +109,9 @@ export class DataGrid extends Component {
     };
 
     handleExportExcel = () => {
+        const { totalCustomer } = this.props.gridData;
         const { excludeIgnoredAcc, username, headline } = this.props.gridParams;
-        const params = { excludeIgnoredAcc, username, headline };
+        const params = { excludeIgnoredAcc, username, headline, pageSize: totalCustomer, pageIndex: 1 };
         this.props.exportExcel(params);
     };
 

@@ -9,8 +9,6 @@ import EditInforms from './EditInforms';
 import RemovedAccountLogs from './RemovedAccountLogs';
 import RemovedAccountLogDetails from './RemovedAccountLogDetails';
 import NewInforms from './NewInforms';
-import { Policy, FunctionKey } from '@jsroot/common/constants';
-import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -33,30 +31,10 @@ export class AppContainer extends Component {
         newInformDialog: { show: false }
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            contactPolicy: null,
-            searchPolicy: null,
-            hasHostPermission: null
-        };
+    async componentDidMount() {
+        await this.props.getInforms();
+        await this.props.getAllSettings();
     }
-
-    componentDidMount(){
-        getPermission(FunctionKey.InformHeadlineContact).then(response => {
-            this.setState({contactPolicy: response});
-        });
-        getPermission(FunctionKey.InformHeadlineSearch).then(response => {
-            this.setState({searchPolicy: response});
-        });
-        getPermission(FunctionKey.InformHeadlineContact).then(response => {
-            this.setState({hasHostPermission: response});
-        });
-    }
-
-    componentWillUnmount(){
-        this.props.resetState();
-     }
 
     handleCloseEditContactInformDialog = () => {
         this.props.setGridParams({pageIndex: 1, pageSize: 100});
@@ -94,19 +72,19 @@ export class AppContainer extends Component {
     };
 
     render() {
-        const {contactPolicy, searchPolicy, hasHostPermission} = this.state;
-        if(!contactPolicy || !searchPolicy || !hasHostPermission){
+
+        const { editContactInformDialog, editInformDialog, removedLogDialog,
+                removedLogDetailDialog, newInformDialog, allSettings } = this.props;
+        if (!allSettings) {
             return null;
         }
-        const { editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog, newInformDialog } = this.props;
 
         return (
             <>
-                <DataGrid contactPolicy={contactPolicy} searchPolicy={searchPolicy}/>
+                <DataGrid/>
                 {
                     editContactInformDialog.show &&
                     <EditContactInforms
-                        hasHostPermission={hasHostPermission}
                         titleId={editContactInformDialog.titleId}
                         status={editContactInformDialog.status}
                         onClose={this.handleCloseEditContactInformDialog}
@@ -115,8 +93,6 @@ export class AppContainer extends Component {
                 {
                     editInformDialog.show &&
                     <EditInforms
-                        hasHostPermission={hasHostPermission}
-                        searchPolicy={searchPolicy}
                         titleId={editInformDialog.titleId}
                         onClose={this.handleCloseEditInformDialog}
                     />
@@ -136,7 +112,6 @@ export class AppContainer extends Component {
                 {
                     newInformDialog.show &&
                     <NewInforms
-                        hasHostPermission={hasHostPermission}
                         onClose={this.handleCloseNewInformDialog}
                     />
                 }
@@ -150,11 +125,11 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 const mapStateToProps = state => {
     const {
         editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
-        newInformDialog, resultEditContactInforms, resultEditInforms
+        newInformDialog, resultEditContactInforms, resultEditInforms, allSettings
     } = state;
     return {
         editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
-        newInformDialog, resultEditContactInforms, resultEditInforms
+        newInformDialog, resultEditContactInforms, resultEditInforms, allSettings
     };
 };
 

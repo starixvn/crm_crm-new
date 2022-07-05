@@ -25,12 +25,12 @@ describe('connect ', () => {
         // Arrange
         const expected = {
             titleDetail: { title: 'test', currencies: '1,2,3' },
-            contactInformSettings: {filterStatuses: [{ settingId: 1, settingValue: 'test'}]},
+            gridParams: { pageIndex: 1, pageSize: 100 },
             contactInforms: {headlineId: 720, groupId: 12, username: 'test'}
         };
         const state = {
             titleDetail: { title: 'test', currencies: '1,2,3' },
-            contactInformSettings: {filterStatuses: [{ settingId: 1, settingValue: 'test'}]},
+            gridParams: { pageIndex: 1, pageSize: 100 },
             contactInforms: {headlineId: 720, groupId: 12, username: 'test'}
         };
 

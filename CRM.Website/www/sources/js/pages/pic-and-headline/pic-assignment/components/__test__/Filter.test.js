@@ -8,7 +8,6 @@ import configureMockStore from 'redux-mock-store';
 import { toast } from 'react-toastify';
 import toJson from 'enzyme-to-json';
 
-
 jest.mock('react-toastify');
 
 describe('Filter', () => {
@@ -598,49 +597,6 @@ describe('Filter', () => {
             expect(form.props().className).toBe('form-filter');
         });
 
-        it('should have Form onSubmit', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise),
-                setGridParams: jest.fn(),
-                getGridData: jest.fn((params, callback) => callback())
-            };
-
-            const state = {
-                filter: {
-                    site: '1',
-                    currency: '1',
-                    status: '1',
-                    headlineType: 2,
-                    groupHeadline: '',
-                    picName: '',
-                    directAccount: '',
-                    position: '1',
-                    excludeAssignedAcc: false,
-                    excludeIgnoredAcc: true,
-                    excludeIsTest: true
-                },
-                siteOptions: [],
-                currencyOptions: [],
-                statusOptions: [],
-                positionOptions: [],
-                showFilter: true
-            };
-
-            const filter = shallow(<Filter {...props} />);            
-            filter.instance().handleSubmit = jest.fn();
-            filter.instance().setState(state);
-            functions.handleNewRemoveOptions = jest.fn();
-
-            // Action
-            filter.find(Form).simulate('submit');
-            // Assert
-            expect(filter.instance().handleSubmit).toHaveBeenCalled();
-        });
-
         it('should have first Form Row', () => {
             // Arrange
             const promise = Promise.resolve({});
@@ -846,28 +802,6 @@ describe('Filter', () => {
             expect(group.find('option').at(0).html()).toEqual('<option value="2">All</option>');
         });
 
-        it('should have first Form Row having forth Form Group containing Form Control onChange', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise)
-            };
-
-            const event = { persist: jest.fn(), target: { name: "test" } };
-            const filter = shallow(<Filter {...props} />);
-            filter.instance().handleChange = jest.fn();
-            const formRender = shallow(filter.instance().render());
-            const control = formRender.find(Form.Group).at(3).find(Form.Control);
-
-            // Action
-            control.simulate('change', event);
-
-            // Assert
-            expect(filter.instance().handleChange).toHaveBeenCalledWith(event);
-        });
-
         it('should have first Form Row having fifth Form Group', () => {
             // Arrange
             const promise = Promise.resolve({});
@@ -896,28 +830,6 @@ describe('Filter', () => {
             expect(group.find(Form.Control).props().className).toBe('shadow-none');
             expect(group.find(Form.Control).props().name).toBe('groupHeadline');
             expect(group.find(Form.Control).props().value).toEqual(state.filter.groupHeadline);
-        });
-
-        it('should have first Form Row having fifth Form Group containing Form Control onChange', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise)
-            };
-
-            const event = { persist: jest.fn(), target: { name: "test" } };
-            const filter = shallow(<Filter {...props} />);
-            filter.instance().handleChange = jest.fn();
-            const formRender = shallow(filter.instance().render());
-            const control = formRender.find(Form.Group).at(4).find(Form.Control);
-
-            // Action
-            control.simulate('change', event);
-
-            // Assert
-            expect(filter.instance().handleChange).toHaveBeenCalledWith(event);
         });
 
         it('should have first Form Row having sixth Form Group', () => {
@@ -950,28 +862,6 @@ describe('Filter', () => {
             expect(group.find(Form.Control).props().value).toEqual(state.filter.picName);
         });
 
-        it('should have first Form Row having sixth Form Group containing Form Control onChange', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise)
-            };
-
-            const event = { persist: jest.fn(), target: { name: "test" } };
-            const filter = shallow(<Filter {...props} />);
-            filter.instance().handleChange = jest.fn();
-            const formRender = shallow(filter.instance().render());
-            const control = formRender.find(Form.Group).at(5).find(Form.Control);
-
-            // Action
-            control.simulate('change', event);
-
-            // Assert
-            expect(filter.instance().handleChange).toHaveBeenCalledWith(event);
-        });
-
         it('should have first Form Row having seventh Form Group', () => {
             // Arrange
             const promise = Promise.resolve({});
@@ -1000,28 +890,6 @@ describe('Filter', () => {
             expect(group.find(Form.Control).props().className).toBe('shadow-none');
             expect(group.find(Form.Control).props().name).toBe('directAccount');
             expect(group.find(Form.Control).props().value).toEqual(state.filter.directAccount);
-        });
-
-        it('should have first Form Row having seventh Form Group containing Form Control onChange', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise)
-            };
-
-            const event = { persist: jest.fn(), target: { name: "test" } };
-            const filter = shallow(<Filter {...props} />);
-            filter.instance().handleChange = jest.fn();
-            const formRender = shallow(filter.instance().render());
-            const control = formRender.find(Form.Group).at(6).find(Form.Control);
-
-            // Action
-            control.simulate('change', event);
-
-            // Assert
-            expect(filter.instance().handleChange).toHaveBeenCalledWith(event);
         });
 
         it('should have first Form Row having eighth Form Group', () => {
@@ -1119,72 +987,6 @@ describe('Filter', () => {
             expect(group.find('input').at(2).props().checked).toEqual(state.filter.excludeIsTest);
         });
 
-        it('should have second Form Row containing first input onChange', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise)
-            };
-
-            const event = { persist: jest.fn(), target: { name: "test" } };
-            const filter = shallow(<Filter {...props} />);
-            filter.instance().handleCheckBoxChange = jest.fn();
-            const formRender = shallow(filter.instance().render());
-            const input = formRender.find(Form.Row).at(2).find('input').at(0);
-
-            // Action
-            input.simulate('change', event);
-
-            // Assert
-            expect(filter.instance().handleCheckBoxChange).toHaveBeenCalledWith(event);
-        });
-
-        it('should have second Form Row containing second input onChange', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise)
-            };
-
-            const event = { persist: jest.fn(), target: { name: "test" } };
-            const filter = shallow(<Filter {...props} />);
-            filter.instance().handleCheckBoxChange = jest.fn();
-            const formRender = shallow(filter.instance().render());
-            const input = formRender.find(Form.Row).at(2).find('input').at(1);
-
-            // Action
-            input.simulate('change', event);
-
-            // Assert
-            expect(filter.instance().handleCheckBoxChange).toHaveBeenCalledWith(event);
-        });
-
-        it('should have second Form Row containing third input onChange', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise)
-            };
-
-            const event = { persist: jest.fn(), target: { name: "test" } };
-            const filter = shallow(<Filter {...props} />);
-            filter.instance().handleCheckBoxChange = jest.fn();
-            const formRender = shallow(filter.instance().render());            
-            const input = formRender.find(Form.Row).at(2).find('input').at(2);
-
-            // Action
-            input.simulate('change', event);
-
-            // Assert
-            expect(filter.instance().handleCheckBoxChange).toHaveBeenCalledWith(event);
-        });
-
         it('should have third Form Row', () => {
             // Arrange
             const promise = Promise.resolve({});
@@ -1209,52 +1011,6 @@ describe('Filter', () => {
             expect(row.find(Button).at(1).props().variant).toBe('primary');
             expect(row.find(Button).at(1).props().size).toBe('sm');
             expect(row.find(Button).at(1).html()).toContain('AssignPIC');
-        });
-
-        it('should have third Form Row containing first Button onClick', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise),
-                setGridParams: jest.fn(),
-                getGridData: jest.fn()
-            };
-
-            const filter = shallow(<Filter {...props} />);
-            filter.instance().handleSubmit = jest.fn();
-            const formRender = shallow(filter.instance().render());
-            const button = formRender.find(Form.Row).at(3).find(Button).at(0);
-
-            // Action
-            button.simulate('click');
-
-            // Assert
-            expect(filter.instance().handleSubmit).toHaveBeenCalled();
-        });
-
-        it('should have third Form Row containing second Button onClick', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise),
-                isHost: true,
-                setAssignPicPopup: jest.fn(() => promise)
-            };
-
-            const filter = shallow(<Filter {...props} />);
-            filter.instance().handleOpenAssignPicPopup = jest.fn();
-            const formRender = shallow(filter.instance().render());
-            const button = formRender.find(Form.Row).at(3).find(Button).at(1);
-
-            // Action
-            button.simulate('click');
-
-            // Assert
-            expect(filter.instance().handleOpenAssignPicPopup).toHaveBeenCalled();
         });
 
         it('should call handleToggleFilter when onClick icon show/hide', () => {
