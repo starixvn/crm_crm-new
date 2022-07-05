@@ -154,7 +154,6 @@ class Layout extends Component {
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
         await DataService.postDataAsync(url,params, this.state.antiToken).then(response => {
             if(response.data !== null){
-                document.getElementById('currentCustId').value = response.data.custId;
                 this.setState({customerInfo: response.data});
             }else if (response.data === null && !this.state.isGuest) {
                 this.setState({
@@ -167,7 +166,7 @@ class Layout extends Component {
         }}).then(() => Site.unblockUI());
     };
 
-    handleNavigate = name => this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo.custId});
+    handleNavigate = name => this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo?.custId});
 
 
     handleCollapseExpandLayout = event =>{

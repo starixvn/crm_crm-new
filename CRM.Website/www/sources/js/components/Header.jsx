@@ -96,7 +96,7 @@ export class Header extends Component {
             <Router>
                 <div className='header'>
                     <div className='left-header'>
-                        <img src={Site.resolveClientUrl('css/images/icon/logo-crm.png')} />
+                        <img src={Site.resolveClientUrl('www/dist/css/images/icon/logo-crm.png')} />
                         <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" /></span>
                     </div>
                     <div className='right-header'>
@@ -109,9 +109,9 @@ export class Header extends Component {
                         </ul>
 
                         <div className='item-end float-right'>
-                            <img src={Site.resolveClientUrl('css/images/icon/user.png')} />
+                            <img src={Site.resolveClientUrl('www/dist/css/images/icon/user.png')} />
                             <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{this.props.username}</span></span>
-                            <img src={Site.resolveClientUrl('css/images/icon/icon-logout.png')} />
+                            <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-logout.png')} />
                             <span className='sign-out'>{LangHelper.getResource('SignOut')}</span>
                         </div>
                     </div>

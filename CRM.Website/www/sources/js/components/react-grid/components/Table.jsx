@@ -192,9 +192,8 @@ class Table extends Component {
             this.setState({ maxWidth:  shouldUseMaxWidth ? maxWidth : rightRowContainer});
             window.localStorage.removeItem('isShowingLeftPanel');
         }else{
-            const currentSearchCustId = document.getElementById('currentCustId').value;
             let maxWidthCal = 0;
-            if(!currentSearchCustId){
+            if(!window.currentCustomer){
                 maxWidthCal = shouldUseMaxWidth ? maxWidth : calWidth - this.diffWidth;
             }else{
                 maxWidthCal = shouldUseMaxWidth ? maxWidth : rightRowContainer;
