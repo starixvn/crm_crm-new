@@ -2639,7 +2639,7 @@ class Header extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
       className: "left-header"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
       src: _jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl('www/dist/css/images/icon/logo-crm.png'),
-      onClick: () => this.props.handleNavigate('/Dashboard')
+      onClick: () => this.props.handleNavigate(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_3__["default"].resolveClientUrl('/Dashboard'))
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
       className: "icon-bar"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {

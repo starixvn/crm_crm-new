@@ -1291,60 +1291,60 @@
           background-color: #fff;
           cursor: pointer; }
 
-.form-filter {
+.direct .form-filter {
   min-width: 700px; }
-  .form-filter .form-row .form-group {
+  .direct .form-filter .form-row .form-group {
     width: 700px; }
-    .form-filter .form-row .form-group .form-label {
+    .direct .form-filter .form-row .form-group .form-label {
       width: 300px; }
-    .form-filter .form-row .form-group .form-control-sm {
+    .direct .form-filter .form-row .form-group .form-control-sm {
       width: 500px;
       margin-right: 20px; }
-    .form-filter .form-row .form-group .checkIgnoredAccount-setting {
+    .direct .form-filter .form-row .form-group .checkIgnoredAccount-setting {
       margin-right: 86px;
       margin-left: -34px; }
-    .form-filter .form-row .form-group .form-check-label {
+    .direct .form-filter .form-row .form-group .form-check-label {
       width: 200px; }
-    .form-filter .form-row .form-group .btn-submit {
+    .direct .form-filter .form-row .form-group .btn-submit {
       width: 100px;
       margin-right: 196px !important; }
-  .form-filter .filter-collapse .fa {
+  .direct .form-filter .filter-collapse .fa {
     font-size: 11px;
     width: 25px;
     background-color: #464D5D;
     color: white;
     cursor: pointer; }
 
-.table-title {
+.direct .table-title {
   min-width: 700px !important;
   display: flex;
   justify-content: flex-end; }
 
-.header-content, .body-content, .footer-content {
+.direct .header-content, .direct .body-content, .direct .footer-content {
   border: none; }
 
-.table-container {
+.direct .table-container {
   border: solid 1px #b7b7b7;
   overflow: scroll;
   min-width: 700px !important; }
-  .table-container .header-content {
+  .direct .table-container .header-content {
     border-bottom: none;
     position: sticky;
     top: 0;
     z-index: 1; }
-  .table-container .body-content {
+  .direct .table-container .body-content {
     overflow-y: unset;
     overflow-x: unset; }
-    .table-container .body-content .table tbody .icon-check {
+    .direct .table-container .body-content .table tbody .icon-check {
       color: #466ab6; }
-    .table-container .body-content .table tbody tr:hover td {
+    .direct .table-container .body-content .table tbody tr:hover td {
       background-color: #E0FFFF !important; }
-    .table-container .body-content .table tbody .height-row {
+    .direct .table-container .body-content .table tbody .height-row {
       height: 30px; }
-    .table-container .body-content .table tbody .no-data {
+    .direct .table-container .body-content .table tbody .no-data {
       font-weight: bold; }
 
-.page-container {
+.direct .page-container {
   min-width: 700px !important; }
 
 

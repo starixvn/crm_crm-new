@@ -1692,34 +1692,29 @@
         .edit-feedback-modal-dialog .modal-dialog .modal-content .panel-group .panel-content .pic-container .phone {
           width: 55%; }
 
-#app-container {
+.latest-feedback {
   width: 1200px; }
-
-.link-click {
-  cursor: pointer;
-  color: #366092 !important; }
-  .link-click:hover {
-    color: #c60 !important; }
-
-.tooltipFeedback [class$="inner"] {
-  min-width: 100px;
-  max-width: 650px;
-  min-height: 100px;
-  max-height: 920px;
-  border-radius: 3px;
-  font-size: 12px;
-  text-align: left; }
-
-#tooltip-customers [class$="inner"] {
-  min-width: 300px;
-  text-align: left; }
-
-.sweet-alert-modal-backdrop {
-  z-index: 1050 !important; }
-
-.header-content .table > thead > tr > th {
-  border: none;
-  border-right: 1px solid #b7b7b7; }
+  .latest-feedback .link-click {
+    cursor: pointer;
+    color: #366092 !important; }
+    .latest-feedback .link-click:hover {
+      color: #c60 !important; }
+  .latest-feedback .tooltipFeedback [class$="inner"] {
+    min-width: 100px;
+    max-width: 650px;
+    min-height: 100px;
+    max-height: 920px;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: left; }
+  .latest-feedback #tooltip-customers [class$="inner"] {
+    min-width: 300px;
+    text-align: left; }
+  .latest-feedback .sweet-alert-modal-backdrop {
+    z-index: 1050 !important; }
+  .latest-feedback .header-content .table > thead > tr > th {
+    border: none;
+    border-right: 1px solid #b7b7b7; }
 
 
 /*# sourceMappingURL=27.chunk.css.map*/

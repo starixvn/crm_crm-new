@@ -1335,100 +1335,100 @@
     .recharts-default-legend li .recharts-surface, .recharts-default-legend li .recharts-legend-item-text {
       float: left; }
 
-.form-filter {
+.issue-statistics .form-filter {
   min-width: 890px; }
-  .form-filter .filter-collapse .fa {
+  .issue-statistics .form-filter .filter-collapse .fa {
     font-size: 11px;
     width: 25px;
     background-color: #464D5D;
     color: white;
     cursor: pointer; }
-  .form-filter .react-datepicker-popper {
+  .issue-statistics .form-filter .react-datepicker-popper {
     z-index: 9999 !important; }
-  .form-filter .react-datepicker-wrapper-container {
+  .issue-statistics .form-filter .react-datepicker-wrapper-container {
     height: 28px; }
-    .form-filter .react-datepicker-wrapper-container .react-datepicker__input-container {
+    .issue-statistics .form-filter .react-datepicker-wrapper-container .react-datepicker__input-container {
       height: 100%; }
-      .form-filter .react-datepicker-wrapper-container .react-datepicker__input-container input {
+      .issue-statistics .form-filter .react-datepicker-wrapper-container .react-datepicker__input-container input {
         width: 100% !important;
         height: 100%; }
-  .form-filter .form-group-date-picker {
+  .issue-statistics .form-filter .form-group-date-picker {
     width: 230px !important; }
-  .form-filter .month-datepicker .react-datepicker-wrapper {
+  .issue-statistics .form-filter .month-datepicker .react-datepicker-wrapper {
     width: 134px !important; }
-  .form-filter .month-datepicker .react-datepicker__month-container {
+  .issue-statistics .form-filter .month-datepicker .react-datepicker__month-container {
     width: 180px !important; }
-    .form-filter .month-datepicker .react-datepicker__month-container .react-datepicker__month-wrapper {
+    .issue-statistics .form-filter .month-datepicker .react-datepicker__month-container .react-datepicker__month-wrapper {
       padding-top: 7px !important; }
-  .form-filter .form-group-main-category {
+  .issue-statistics .form-filter .form-group-main-category {
     width: 373px !important; }
-  .form-filter .form-group-sub-category {
+  .issue-statistics .form-filter .form-group-sub-category {
     width: 351px !important; }
-  .form-filter .ml-1 {
+  .issue-statistics .form-filter .ml-1 {
     margin-left: 10px !important; }
 
-.footer-container {
+.issue-statistics .footer-container {
   border: 0; }
-  .footer-container td {
+  .issue-statistics .footer-container td {
     background: #c0cae3 !important;
     color: #0054a6 !important; }
 
-.fix-table-container .header-content, .fix-table-container .body-content, .fix-table-container .footer-content {
+.issue-statistics .fix-table-container .header-content, .issue-statistics .fix-table-container .body-content, .issue-statistics .fix-table-container .footer-content {
   border: 0 !important; }
 
-.fix-table-container .header-content table thead th:first-child, .fix-table-container thead th:nth-child(2), .fix-table-container .fix-first-column, .fix-table-container .fix-second-column {
+.issue-statistics .fix-table-container .header-content table thead th:first-child, .issue-statistics .fix-table-container thead th:nth-child(2), .issue-statistics .fix-table-container .fix-first-column, .issue-statistics .fix-table-container .fix-second-column {
   position: sticky !important;
   border-left: none !important;
   border-right: none !important; }
 
-.fix-table-container .header-content table thead th:first-child, .fix-table-container .fix-first-column {
+.issue-statistics .fix-table-container .header-content table thead th:first-child, .issue-statistics .fix-table-container .fix-first-column {
   box-shadow: inset 0 0 1px -1px #b7b7b7, inset 1px 0 1px 0px #b7b7b7; }
 
-.fix-table-container .header-content table thead th:nth-child(2), .fix-table-container .fix-second-column {
+.issue-statistics .fix-table-container .header-content table thead th:nth-child(2), .issue-statistics .fix-table-container .fix-second-column {
   box-shadow: inset 2px 0 0px -1px #b7b7b7, inset 1px 0 1px 0px #b7b7b7, inset -2px 0 9px -8px #383333; }
 
-.fix-table-container .header-content thead th:first-child {
+.issue-statistics .fix-table-container .header-content thead th:first-child {
   z-index: 2;
   left: 0 !important; }
 
-.fix-table-container .header-content thead th:nth-child(2) {
+.issue-statistics .fix-table-container .header-content thead th:nth-child(2) {
   z-index: 2;
   left: 147px !important; }
 
-.fix-table-container .body-content table tbody .fix-first-column, .fix-table-container .footer-content .footer-container .fix-first-column {
+.issue-statistics .fix-table-container .body-content table tbody .fix-first-column, .issue-statistics .fix-table-container .footer-content .footer-container .fix-first-column {
   left: 0 !important; }
 
-.fix-table-container .body-content table tbody .fix-second-column, .fix-table-container .footer-content .footer-container .fix-second-column {
+.issue-statistics .fix-table-container .body-content table tbody .fix-second-column, .issue-statistics .fix-table-container .footer-content .footer-container .fix-second-column {
   left: 147px !important; }
 
-.fix-table-container .table-title {
+.issue-statistics .fix-table-container .table-title {
   border-right: 0; }
-  .fix-table-container .table-title .btn-chart {
+  .issue-statistics .fix-table-container .table-title .btn-chart {
     cursor: pointer; }
 
-.fix-table-container .body-content {
+.issue-statistics .fix-table-container .body-content {
   max-height: none !important; }
-  .fix-table-container .body-content .height-row {
+  .issue-statistics .fix-table-container .body-content .height-row {
     height: 37px !important; }
-  .fix-table-container .body-content .total-row td {
+  .issue-statistics .fix-table-container .body-content .total-row td {
     background-color: #e3e3e3 !important; }
-  .fix-table-container .body-content tr td {
+  .issue-statistics .fix-table-container .body-content tr td {
     background-color: #fff !important; }
-  .fix-table-container .body-content .no-data {
+  .issue-statistics .fix-table-container .body-content .no-data {
     font-weight: bold; }
 
-.recharts-default-legend {
+.issue-statistics .recharts-default-legend {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   border: 1px solid #b7b7b7;
   padding-top: 5px !important;
   width: 1010px !important; }
-  .recharts-default-legend li {
+  .issue-statistics .recharts-default-legend li {
     margin-right: -22 !important;
     margin-left: 10px;
     width: 170px; }
-    .recharts-default-legend li .recharts-surface, .recharts-default-legend li .recharts-legend-item-text {
+    .issue-statistics .recharts-default-legend li .recharts-surface, .issue-statistics .recharts-default-legend li .recharts-legend-item-text {
       float: left; }
 
 

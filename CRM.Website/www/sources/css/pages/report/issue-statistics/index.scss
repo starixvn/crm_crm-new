@@ -10,157 +10,159 @@
 @import '../../../components/react-select';
 @import '../../../components/rechart';
 
-.form-filter {
-    min-width: 890px;
-    .filter-collapse {
-        .fa {
-            font-size: 11px;
-            width: 25px;
-            background-color: #464D5D;
-            color: white;
-            cursor: pointer;
-        }
-    }
-
-    .react-datepicker-popper{
-        z-index: 9999 !important;
-    }
-    
-    .react-datepicker-wrapper-container {
-        height: 28px;
-    
-        .react-datepicker__input-container {
-            height: 100%;
-    
-            input {
-                width: 100% !important;
-                height: 100%;
+.issue-statistics{
+    .form-filter {
+        min-width: 890px;
+        .filter-collapse {
+            .fa {
+                font-size: 11px;
+                width: 25px;
+                background-color: #464D5D;
+                color: white;
+                cursor: pointer;
             }
         }
-    }
-
-    .form-group-date-picker{
-        width: 230px !important;
-    }
-
-    .month-datepicker .react-datepicker-wrapper{
-        width: 134px !important;
-    }
     
-    .month-datepicker{
-        .react-datepicker__month-container{
-            width: 180px !important;
-
-            .react-datepicker__month-wrapper{
-                padding-top: 7px !important;
-            }
-        }
-    }
-
-    .form-group-main-category{
-        width: 373px !important;
-    }
-
-    .form-group-sub-category{
-        width: 351px !important;
-    }
-
-    .ml-1{
-        margin-left: 10px !important;
-    }
-}
-
-.footer-container{
-    border: 0;
-    td{
-        background: #c0cae3!important;
-        color: #0054a6 !important;
-    }
-}
-
-.fix-table-container{
-    .header-content, .body-content, .footer-content {
-        border: 0 !important;
-    }
-    
-    .header-content table thead th:first-child, thead th:nth-child(2), .fix-first-column, .fix-second-column{
-        position: sticky !important;
-        border-left: none !important;
-        border-right: none !important;
-    }
-    .header-content table thead th:first-child, .fix-first-column{
-        box-shadow: inset 0 0 1px -1px #b7b7b7,
-                    inset 1px 0 1px 0px #b7b7b7;
-    }
-
-    .header-content table thead th:nth-child(2), .fix-second-column{
-        box-shadow: inset 2px 0 0px -1px #b7b7b7,
-        inset 1px 0 1px 0px #b7b7b7, inset -2px 0 9px -8px #383333;
-    }
-    
-    .header-content thead th:first-child{
-        z-index: 2;
-        left: 0 !important;
-    }
-
-    .header-content thead th:nth-child(2){
-        z-index: 2;
-        left: 147px !important;
-    }
-
-    .body-content table tbody, .footer-content .footer-container {
-        .fix-first-column{
-            left: 0 !important;
-        }
-
-        .fix-second-column{
-            left: 147px !important;
-        }
-    }
-
-
-    .table-title{
-        border-right: 0;
-        .btn-chart{
-            cursor: pointer;
-        }
-    }
-
-    .body-content{
-        .height-row{
-            height: 37px !important;
-        }
-    
-        .total-row td{
-            background-color: rgb(227, 227, 227) !important;
-        }
-    
-        tr td{
-            background-color: #fff !important;
+        .react-datepicker-popper{
+            z-index: 9999 !important;
         }
         
-        .no-data{
-            font-weight: bold;
+        .react-datepicker-wrapper-container {
+            height: 28px;
+        
+            .react-datepicker__input-container {
+                height: 100%;
+        
+                input {
+                    width: 100% !important;
+                    height: 100%;
+                }
+            }
         }
-
-        max-height: none !important;
+    
+        .form-group-date-picker{
+            width: 230px !important;
+        }
+    
+        .month-datepicker .react-datepicker-wrapper{
+            width: 134px !important;
+        }
+        
+        .month-datepicker{
+            .react-datepicker__month-container{
+                width: 180px !important;
+    
+                .react-datepicker__month-wrapper{
+                    padding-top: 7px !important;
+                }
+            }
+        }
+    
+        .form-group-main-category{
+            width: 373px !important;
+        }
+    
+        .form-group-sub-category{
+            width: 351px !important;
+        }
+    
+        .ml-1{
+            margin-left: 10px !important;
+        }
     }
-}
-.recharts-default-legend{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    border: 1px solid #b7b7b7;
-    padding-top: 5px !important;
-    width: 1010px !important;
-
-    li{
-        margin-right: -22 !important;
-        margin-left: 10px;
-        width: 170px;
-
-        .recharts-surface, .recharts-legend-item-text{
-            float: left;
+    
+    .footer-container{
+        border: 0;
+        td{
+            background: #c0cae3!important;
+            color: #0054a6 !important;
+        }
+    }
+    
+    .fix-table-container{
+        .header-content, .body-content, .footer-content {
+            border: 0 !important;
+        }
+        
+        .header-content table thead th:first-child, thead th:nth-child(2), .fix-first-column, .fix-second-column{
+            position: sticky !important;
+            border-left: none !important;
+            border-right: none !important;
+        }
+        .header-content table thead th:first-child, .fix-first-column{
+            box-shadow: inset 0 0 1px -1px #b7b7b7,
+                        inset 1px 0 1px 0px #b7b7b7;
+        }
+    
+        .header-content table thead th:nth-child(2), .fix-second-column{
+            box-shadow: inset 2px 0 0px -1px #b7b7b7,
+            inset 1px 0 1px 0px #b7b7b7, inset -2px 0 9px -8px #383333;
+        }
+        
+        .header-content thead th:first-child{
+            z-index: 2;
+            left: 0 !important;
+        }
+    
+        .header-content thead th:nth-child(2){
+            z-index: 2;
+            left: 147px !important;
+        }
+    
+        .body-content table tbody, .footer-content .footer-container {
+            .fix-first-column{
+                left: 0 !important;
+            }
+    
+            .fix-second-column{
+                left: 147px !important;
+            }
+        }
+    
+    
+        .table-title{
+            border-right: 0;
+            .btn-chart{
+                cursor: pointer;
+            }
+        }
+    
+        .body-content{
+            .height-row{
+                height: 37px !important;
+            }
+        
+            .total-row td{
+                background-color: rgb(227, 227, 227) !important;
+            }
+        
+            tr td{
+                background-color: #fff !important;
+            }
+            
+            .no-data{
+                font-weight: bold;
+            }
+    
+            max-height: none !important;
+        }
+    }
+    .recharts-default-legend{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        border: 1px solid #b7b7b7;
+        padding-top: 5px !important;
+        width: 1010px !important;
+    
+        li{
+            margin-right: -22 !important;
+            margin-left: 10px;
+            width: 170px;
+    
+            .recharts-surface, .recharts-legend-item-text{
+                float: left;
+            }
         }
     }
 }

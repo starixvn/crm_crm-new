@@ -8,97 +8,99 @@
 @import '../../../components/tables';
 @import '../../../components/date-picker/style';
 
-.form-filter {
-    min-width: 700px;
-
-    .form-row {
-        .form-group {
-            width: 700px;
-
-            .form-label {
-                width: 300px;
-            }
-
-            .form-control-sm {
-                width: 500px;
-                margin-right: 20px;
-            }
-
-            .checkIgnoredAccount-setting {
-                margin-right: 86px;
-                margin-left: -34px;
-            }
-
-            .form-check-label {
-                width: 200px;
-            }
-
-            .btn-submit {
-                width: 100px;
-                margin-right: 196px !important;
-            }
-        }
-    }
-
-    .filter-collapse {
-        .fa {
-            font-size: 11px;
-            width: 25px;
-            background-color: #464D5D;
-            color: white;
-            cursor: pointer;
-        }
-    }
-}
-
-.table-title {
-    min-width: 700px !important;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.header-content, .body-content, .footer-content {
-    border: none;
-}
-
-.table-container {
-    border: solid 1px #b7b7b7;
-    overflow: scroll;
-    min-width: 700px !important;
-
-    .header-content {
-        border-bottom: none;
-        position: sticky;
-        top: 0;
-        z-index: 1;
-    }
-
-    .body-content {
-        overflow-y: unset;
-        overflow-x: unset;
-
-        .table {
-            tbody {
-                .icon-check {
-                    color: #466ab6;
+.direct{
+    .form-filter {
+        min-width: 700px;
+    
+        .form-row {
+            .form-group {
+                width: 700px;
+    
+                .form-label {
+                    width: 300px;
                 }
-
-                tr:hover td {
-                    background-color: #E0FFFF !important;
+    
+                .form-control-sm {
+                    width: 500px;
+                    margin-right: 20px;
                 }
-
-                .height-row{
-                    height: 30px;
+    
+                .checkIgnoredAccount-setting {
+                    margin-right: 86px;
+                    margin-left: -34px;
                 }
-                
-                .no-data{
-                    font-weight: bold;
+    
+                .form-check-label {
+                    width: 200px;
+                }
+    
+                .btn-submit {
+                    width: 100px;
+                    margin-right: 196px !important;
                 }
             }
         }
+    
+        .filter-collapse {
+            .fa {
+                font-size: 11px;
+                width: 25px;
+                background-color: #464D5D;
+                color: white;
+                cursor: pointer;
+            }
+        }
     }
-}
-
-.page-container {
-    min-width: 700px !important;
+    
+    .table-title {
+        min-width: 700px !important;
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .header-content, .body-content, .footer-content {
+        border: none;
+    }
+    
+    .table-container {
+        border: solid 1px #b7b7b7;
+        overflow: scroll;
+        min-width: 700px !important;
+    
+        .header-content {
+            border-bottom: none;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+    
+        .body-content {
+            overflow-y: unset;
+            overflow-x: unset;
+    
+            .table {
+                tbody {
+                    .icon-check {
+                        color: #466ab6;
+                    }
+    
+                    tr:hover td {
+                        background-color: #E0FFFF !important;
+                    }
+    
+                    .height-row{
+                        height: 30px;
+                    }
+                    
+                    .no-data{
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+    
+    .page-container {
+        min-width: 700px !important;
+    }
 }

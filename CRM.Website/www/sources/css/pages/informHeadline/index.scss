@@ -8,135 +8,135 @@
 @import '../../components/react-select';
 @import '../../components/icons';
 
-#app-container {
+.informHeadline {
     max-width: 1620px;
-}
 
-body{
-    overflow-x: hidden;
-}
-
-.fix-table-container{
-    .table-title{
-        border-right: none;
+    body{
+        overflow-x: hidden;
     }
     
-    .table-container {
-        overflow-y: auto;
-        border: 1px solid #b7b7b7;
+    .fix-table-container{
+        .table-title{
+            border-right: none;
+        }
+        
+        .table-container {
+            overflow-y: auto;
+            border: 1px solid #b7b7b7;
+        
+            .body-content {
+                overflow: unset !important; 
+            }
     
-        .body-content {
-            overflow: unset !important; 
-        }
-
-        .header-content, .body-content {
-            border: none;
-            padding: 0;
-        }
-
-        .header-content,
-        .body-content,
-        .footer-content {
-            .table {
-                td:first-child {
-                    border-left: 1px solid rgb(183, 183, 183) !important;
+            .header-content, .body-content {
+                border: none;
+                padding: 0;
+            }
+    
+            .header-content,
+            .body-content,
+            .footer-content {
+                .table {
+                    td:first-child {
+                        border-left: 1px solid rgb(183, 183, 183) !important;
+                    }
                 }
             }
         }
     }
-}
-
-.link-click {
-    cursor: pointer;
-    color: $link-color !important;
-
-    &:hover {
-        color: $draft-color !important;
-    }
-}
-
-.cursor-pointer{
-    cursor: pointer;
-}
-
-.body-content{
-    tr{
-        &.open td{
-            background: #f0edc4 !important;
-        }
-        &.closed td{
-            background: #f2f2f2 !important;
-        }
-        &.free-grid-headline td{
-            background: #d0e6f4 !important;
-        }
-        &.free-grid-direct td{
-            background: #f1f1f1 !important;
+    
+    .link-click {
+        cursor: pointer;
+        color: $link-color !important;
+    
+        &:hover {
+            color: $draft-color !important;
         }
     }
-}
-
-.check-btn{
-    padding-left: 30px;
-    padding-top: 2px;
-}
-
-.number-remove{
-    cursor: pointer;
-    color: #0255a5;
-}
-
-.number-remove:hover{
-    color: #ffb400;
-}
-
-.group-input-excel{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.input-excel{
-    width: 98%;
-}
-
-
-.modal-edit .modal-xl {
-    max-width: 1200px;
-}
-
-.modal-removeDetail .modal-content{
-    width: 1080px;
-    margin: auto;
-}
-
-.modal-remove .modal-content {
-    width: 600px;
-    margin: auto;
-}
-
-a.dropdown-item {
-    line-height: 1.8;
-    border-bottom: 1px solid #e5e5e5;
-    color: #333333;
-
-    .icon{
-        margin-right: 5px;
-        font-size: 13px;
-
-        &-default{
-            color: #0789d1;
-        }
-        &-closed{
-            color: #de5144;
-        }
-        &-open{
-            color: #cabc04;
+    
+    .cursor-pointer{
+        cursor: pointer;
+    }
+    
+    .body-content{
+        tr{
+            &.open td{
+                background: #f0edc4 !important;
+            }
+            &.closed td{
+                background: #f2f2f2 !important;
+            }
+            &.free-grid-headline td{
+                background: #d0e6f4 !important;
+            }
+            &.free-grid-direct td{
+                background: #f1f1f1 !important;
+            }
         }
     }
-}
-
-.option{
-    overflow: visible !important;
+    
+    .check-btn{
+        padding-left: 30px;
+        padding-top: 2px;
+    }
+    
+    .number-remove{
+        cursor: pointer;
+        color: #0255a5;
+    }
+    
+    .number-remove:hover{
+        color: #ffb400;
+    }
+    
+    .group-input-excel{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .input-excel{
+        width: 98%;
+    }
+    
+    
+    .modal-edit .modal-xl {
+        max-width: 1200px;
+    }
+    
+    .modal-removeDetail .modal-content{
+        width: 1080px;
+        margin: auto;
+    }
+    
+    .modal-remove .modal-content {
+        width: 600px;
+        margin: auto;
+    }
+    
+    a.dropdown-item {
+        line-height: 1.8;
+        border-bottom: 1px solid #e5e5e5;
+        color: #333333;
+    
+        .icon{
+            margin-right: 5px;
+            font-size: 13px;
+    
+            &-default{
+                color: #0789d1;
+            }
+            &-closed{
+                color: #de5144;
+            }
+            &-open{
+                color: #cabc04;
+            }
+        }
+    }
+    
+    .option{
+        overflow: visible !important;
+    }
 }

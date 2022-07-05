@@ -154,12 +154,12 @@
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    FileProvider = new PhysicalFileProvider(
-            //    Path.Combine(env.ContentRootPath, "www/dist")),
-            //    RequestPath = "/www/dist"
-            //});
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(env.ContentRootPath, "www/dist")),
+                RequestPath = "/www/dist"
+            });
             app.UseCookiePolicy();
             app.UseSession();
             app.UseAuthentication();
@@ -174,9 +174,9 @@
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Auth}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                //endpoints.MapFallbackToController("Index", "Home");
+                endpoints.MapFallbackToController("Index", "Home");
             });
         }
 

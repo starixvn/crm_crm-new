@@ -576,64 +576,55 @@
   margin: 0;
   padding: 0 0 0 1.25rem; }
 
-#app-container {
+.report-customer {
   width: 1890px;
   padding: 10px; }
-
-.body-content, .footer-content, .header-content {
-  border: none; }
-
-.form-filter .row {
-  margin-left: 0;
-  margin-right: 0; }
-
-.form-filter .group-field {
-  display: flex;
-  width: 320px; }
-  .form-filter .group-field label {
-    width: 105px; }
-  .form-filter .group-field .input-field {
+  .report-customer .body-content, .report-customer .footer-content, .report-customer .header-content {
+    border: none; }
+  .report-customer .form-filter .row {
+    margin-left: 0;
+    margin-right: 0; }
+  .report-customer .form-filter .group-field {
+    display: flex;
+    width: 320px; }
+    .report-customer .form-filter .group-field label {
+      width: 105px; }
+    .report-customer .form-filter .group-field .input-field {
+      width: 200px; }
+  .report-customer .form-filter .multiple-select-container {
     width: 200px; }
-
-.form-filter .multiple-select-container {
-  width: 200px; }
-
-.form-filter .group-checkbox {
-  display: flex;
-  width: 320px; }
-
-.form-filter .check-exclude {
-  padding-top: 5px;
-  padding-right: 5px; }
-
-.form-filter .danger-position .multiple-select-container {
-  border: 1px solid #dc3545; }
-
-.form-filter .show-filter {
-  width: 100%;
-  text-align: center; }
-  .form-filter .show-filter .icon {
-    height: 14px;
-    width: 27px;
-    background-color: #464d5d;
-    color: white;
-    cursor: pointer; }
-
-.table-container {
-  border: 1px solid #b7b7b7; }
-  .table-container .header-content {
-    border-bottom: none;
-    position: sticky;
-    top: 0;
-    z-index: 1; }
-  .table-container .body-content {
-    overflow: unset !important; }
-    .table-container .body-content .table tbody tr:hover td {
-      background-color: #E0FFFF !important; }
-    .table-container .body-content .no-data {
-      font-weight: bold; }
-    .table-container .body-content .icon-check {
-      color: #466ab6; }
+  .report-customer .form-filter .group-checkbox {
+    display: flex;
+    width: 320px; }
+  .report-customer .form-filter .check-exclude {
+    padding-top: 5px;
+    padding-right: 5px; }
+  .report-customer .form-filter .danger-position .multiple-select-container {
+    border: 1px solid #dc3545; }
+  .report-customer .form-filter .show-filter {
+    width: 100%;
+    text-align: center; }
+    .report-customer .form-filter .show-filter .icon {
+      height: 14px;
+      width: 27px;
+      background-color: #464d5d;
+      color: white;
+      cursor: pointer; }
+  .report-customer .table-container {
+    border: 1px solid #b7b7b7; }
+    .report-customer .table-container .header-content {
+      border-bottom: none;
+      position: sticky;
+      top: 0;
+      z-index: 1; }
+    .report-customer .table-container .body-content {
+      overflow: unset !important; }
+      .report-customer .table-container .body-content .table tbody tr:hover td {
+        background-color: #E0FFFF !important; }
+      .report-customer .table-container .body-content .no-data {
+        font-weight: bold; }
+      .report-customer .table-container .body-content .icon-check {
+        color: #466ab6; }
 
 
 /*# sourceMappingURL=28.chunk.css.map*/
