@@ -318,12 +318,17 @@
 
 .setting-relation .update-setting-relation .modal-content {
   width: 660px !important;
-  height: 660px !important;
+  max-height: 660px !important;
   /* Firefox */ }
   .setting-relation .update-setting-relation .modal-content .table-container .body-content {
     max-height: 350px !important; }
+  .setting-relation .update-setting-relation .modal-content .bold {
+    font-weight: bold; }
   .setting-relation .update-setting-relation .modal-content .modal-footer {
     justify-content: flex-start !important; }
+  .setting-relation .update-setting-relation .modal-content .header-content .table, .setting-relation .update-setting-relation .modal-content .body-content .table, .setting-relation .update-setting-relation .modal-content .footer-content .table {
+    margin: 0;
+    border-left: 1px solid #b7b7b7; }
   .setting-relation .update-setting-relation .modal-content .filter-relation {
     display: flex;
     flex-wrap: wrap;
@@ -331,6 +336,8 @@
     margin-bottom: 10px;
     padding: 10px;
     background-color: #e8e8e8; }
+    .setting-relation .update-setting-relation .modal-content .filter-relation .label-subSetting {
+      max-width: 18%; }
   .setting-relation .update-setting-relation .modal-content .checkbox-cell-style {
     width: 13px;
     height: 13px;

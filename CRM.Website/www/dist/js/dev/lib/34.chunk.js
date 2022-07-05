@@ -63,7 +63,7 @@ const verifyUserName = data => async () => {
 };
 
 const getTicketInfoByRef = Refno => async () => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('Feedback/GetTicketInfoByRefNoAsync');
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('Feedback/GetTicketInfoByRefNo');
   return await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].getDataAsync(url, Refno).then(response => response.data);
 };
 

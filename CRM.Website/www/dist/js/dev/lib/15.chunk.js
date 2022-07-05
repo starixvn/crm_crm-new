@@ -563,12 +563,6 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       this.props.setGridParams(params);
     });
 
-    _defineProperty(this, "renderTitle", gridData => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "table-title d-flex justify-content-between align-items-center"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, gridData.title), gridData.feedbackCategories.length > 0 && this.renderCustomButton());
-    });
-
     this.styleCLick = 'link-click cursor-pointer';
     this.styleDisableCLick = 'disable-click';
     this.state = {
@@ -614,17 +608,18 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     };
     const defaultWidth = 420;
     const totalWidth = defaultWidth + gridData.usernames.length * 155;
-    const clientWidth = document.getElementById('right-row-container').clientWidth;
-    const width = clientWidth < totalWidth ? clientWidth : totalWidth;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["Table"], {
-      maxWidth: totalWidth,
-      shouldUseMaxWidth: true,
-      width: width,
+    const width = document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: {
+        width: width
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "table-title d-flex justify-content-between align-items-center"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, gridData.title), gridData.feedbackCategories.length > 0 && this.renderCustomButton()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["Table"], {
+      width: totalWidth,
       autoWidth: false,
       header: this.buildHeader(gridData),
       body: this.buildBody(gridData),
-      isFixColumn: true,
-      title: this.renderTitle(gridData),
       isPaging: true,
       pageOption: pagingOption,
       onPaging: this.onPaging,
@@ -802,7 +797,9 @@ class Details extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         className: "py-1"
       }, "Feedback date ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, feedbackDateFormat)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "py-1"
-      }, "By", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, " ", item.creator, " "), "on ", createDateFormatDate), item.reviewerName && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "By", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, " ", item.creator, " "), "on ", createDateFormatDate), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "py-1"
+      }, "Solving Duration: ", item.durationTime), item.reviewerName && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "info"
       }, "Reviewed by ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, " ", item.reviewerName, " "), " on ", solveDateFormatDate))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_9__["Cell"], null, item.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_9__["Cell"], null, this.renderMainCategory(item)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_9__["Cell"], {
         className: "text-center"
@@ -848,7 +845,7 @@ class Details extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     _defineProperty(this, "renderTableTitle", params => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "table-title d-flex justify-content-between align-items-center"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__["default"].getResource('FeedbackDetailTitle')} from ${params.fromDate} to from ${params.toDate}`), this.props.details.data.length > 0 && this.renderExportExcel());
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_4__["default"].getResource('FeedbackDetailTitle')} from ${params.fromDate} to ${params.toDate}`), this.props.details.data.length > 0 && this.renderExportExcel());
     });
 
     _defineProperty(this, "renderForm", () => {
@@ -867,7 +864,7 @@ class Details extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       const pagingOption = {
         PageIndex: pageIndex,
         PageSize: pageSize,
-        TotalItem: details.data.length,
+        TotalItem: details.total,
         PageList: _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_11__["PAGING_SIZES"]
       };
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["Modal"].Body, null, this.renderTableTitle(this.props.gridParamDetails), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_9__["Table"], {
@@ -1039,7 +1036,7 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       const isInValid = timeBegin > timeEnd && timeBegin !== 0 && timeEnd !== 0;
 
       if (timeBegin !== 0 && timeEnd === 0 || isInValid) {
-        react_toastify__WEBPACK_IMPORTED_MODULE_9__["toast"].error(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('InvalidDuration'));
+        react_toastify__WEBPACK_IMPORTED_MODULE_9__["toast"].error(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('NotificationSubmitDurationIsWrong'));
         return false;
       }
 
@@ -1336,10 +1333,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 const store = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__["configureStore"])({
   reducer: _feedbackStatisticSlice__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
+
 class index extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
   render() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__["Provider"], {

@@ -313,6 +313,9 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     _defineProperty(this, "handleExportExcel", () => {
       const {
+        totalCustomer
+      } = this.props.gridData;
+      const {
         excludeIgnoredAcc,
         username,
         headline
@@ -320,7 +323,9 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       const params = {
         excludeIgnoredAcc,
         username,
-        headline
+        headline,
+        pageSize: totalCustomer,
+        pageIndex: 1
       };
       this.props.exportExcel(params);
     });

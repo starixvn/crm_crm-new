@@ -208,10 +208,10 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(props) {
     super(props);
 
-    _defineProperty(this, "buildHeader", () => {
+    _defineProperty(this, "buildHeader", isHost => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderRow"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
         colWidth: 45
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Setting')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Setting')), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
         colWidth: 10
       }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Relation')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
         colWidth: 12
@@ -220,13 +220,13 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Order')));
     });
 
-    _defineProperty(this, "buildBody", () => {
+    _defineProperty(this, "buildBody", isHost => {
       const {
         settingType
       } = this.props;
 
       if (settingType.length > 0) {
-        return settingType.map(item => this.renderRow(item));
+        return settingType.map(item => this.renderRow(item, isHost));
       }
 
       return [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Row"], {
@@ -237,7 +237,7 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('ThereIsNoData')))];
     });
 
-    _defineProperty(this, "renderRow", item => {
+    _defineProperty(this, "renderRow", (item, isHost) => {
       const rows = [];
       rows.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Row"], {
         key: `parent-${item.settingId}`,
@@ -247,13 +247,13 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         onClick: event => this.handleToggleRow(event, item.settingId)
       }, item.childSettings.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: `expand-icon fa pr-2 ${!this.state.toggleRow.includes(item.settingId) ? 'fa-caret-down' : 'fa-caret-right'}`
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, item.settingValue)), this.props.isHost ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, item.settingValue)), isHost && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
         className: "text-center"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-plus-circle icon-excel",
         "aria-hidden": "true",
-        onClick: event => this.handleOpenUpdate(event, item.settingId)
-      })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+        onClick: event => this.handleOpenUpdate(event, item.settingId, item.settingValue)
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
         className: "text-right"
       }, item.settingId), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
         className: "text-right"
@@ -307,17 +307,19 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       });
     });
 
-    _defineProperty(this, "handleOpenUpdate", (event, value) => {
+    _defineProperty(this, "handleOpenUpdate", (event, value, name) => {
       event.preventDefault();
-      const title = `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('AddSubSettingTitle')} ${value}`;
+      const title = `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('AddSubSettingTitle')}`;
       const params = {
         settingName: this.props.mainSettings.slice(1)[0].settingName,
-        parentId: parseInt(value, 10)
+        parentId: parseInt(value, 10),
+        parentName: name
       };
       this.props.setOpenUpdatePopup({
         show: true,
         title: title,
-        parentId: params.parentId
+        parentId: params.parentId,
+        parentName: params.parentName
       });
       this.props.getMainSettingRelation(params);
     });
@@ -330,7 +332,8 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
     const {
       settingType,
-      gridParams
+      gridParams,
+      isHost
     } = this.props;
 
     if (!settingType || settingType === null) {
@@ -342,8 +345,8 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('SettingRelationTitle')} ${gridParams.settingName}`)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Table"], {
       width: 700,
       autoWidth: false,
-      header: this.buildHeader(),
-      body: this.buildBody(),
+      header: this.buildHeader(isHost),
+      body: this.buildBody(isHost),
       onSort: this.onSort,
       containerPadding: 0,
       adjustedHeight: 10
@@ -548,6 +551,7 @@ class Update extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Cell"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Control, {
         type: "number",
         size: "sm",
+        disabled: "disabled",
         className: "shadow-none",
         value: item.displayOrder,
         onChange: e => this.onChangeDisplay(item.value, e.target.value)
@@ -572,9 +576,12 @@ class Update extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         column: true,
         sm: "12",
         md: "12"
-      }, updatePopup.title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, updatePopup.title, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "bold"
+      }, this.props.updatePopup.parentName))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "filter-relation"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Label, {
+        className: "label-subSetting",
         column: true,
         sm: "3",
         md: "3",
@@ -777,28 +784,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return index; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
-/* harmony import */ var _settingRelationSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./settingRelationSlice */ "./www/sources/js/pages/admin-tool/setting-relation/settingRelationSlice.js");
-/* harmony import */ var _components_AppContainer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/AppContainer */ "./www/sources/js/pages/admin-tool/setting-relation/components/AppContainer.jsx");
-/* harmony import */ var _cssroot_pages_admin_tool_setting_relation_index_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @cssroot/pages/admin-tool/setting-relation/index.scss */ "./www/sources/css/pages/admin-tool/setting-relation/index.scss");
-/* harmony import */ var _cssroot_pages_admin_tool_setting_relation_index_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_cssroot_pages_admin_tool_setting_relation_index_scss__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+/* harmony import */ var _settingRelationSlice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./settingRelationSlice */ "./www/sources/js/pages/admin-tool/setting-relation/settingRelationSlice.js");
+/* harmony import */ var _components_AppContainer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/AppContainer */ "./www/sources/js/pages/admin-tool/setting-relation/components/AppContainer.jsx");
+/* harmony import */ var _cssroot_pages_admin_tool_setting_relation_index_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @cssroot/pages/admin-tool/setting-relation/index.scss */ "./www/sources/css/pages/admin-tool/setting-relation/index.scss");
+/* harmony import */ var _cssroot_pages_admin_tool_setting_relation_index_scss__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_cssroot_pages_admin_tool_setting_relation_index_scss__WEBPACK_IMPORTED_MODULE_6__);
 
 
 
 
 
-const store = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_2__["configureStore"])({
-  reducer: _settingRelationSlice__WEBPACK_IMPORTED_MODULE_3__["default"]
+
+const store = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_3__["configureStore"])({
+  reducer: _settingRelationSlice__WEBPACK_IMPORTED_MODULE_4__["default"]
 });
 
 class index extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
   render() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_1__["Provider"], {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_2__["Provider"], {
       store: store
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "setting-relation"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AppContainer__WEBPACK_IMPORTED_MODULE_5__["default"], null)));
   }
 
 }
@@ -809,18 +819,18 @@ class index extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
 /*!**********************************************************************************!*\
   !*** ./www/sources/js/pages/admin-tool/setting-relation/settingRelationSlice.js ***!
   \**********************************************************************************/
-/*! exports provided: resetState, setMainSettings, setGridParams, setSettingTypes, setMainSettingRelation, setUpdateResult, setOpenUpdatePopup, default */
+/*! exports provided: setMainSettings, setGridParams, setSettingTypes, setMainSettingRelation, setUpdateResult, setOpenUpdatePopup, resetState, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resetState", function() { return resetState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setMainSettings", function() { return setMainSettings; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setGridParams", function() { return setGridParams; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setSettingTypes", function() { return setSettingTypes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setMainSettingRelation", function() { return setMainSettingRelation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUpdateResult", function() { return setUpdateResult; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setOpenUpdatePopup", function() { return setOpenUpdatePopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resetState", function() { return resetState; });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
 const initialState = {
@@ -835,7 +845,8 @@ const initialState = {
   updatePopup: {
     show: false,
     title: '',
-    parentId: null
+    parentId: null,
+    parentName: ''
   }
 };
 const settingRelationSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlice"])({
@@ -868,13 +879,13 @@ const {
   reducer
 } = settingRelationSlice;
 const {
-  resetState,
   setMainSettings,
   setGridParams,
   setSettingTypes,
   setMainSettingRelation,
   setUpdateResult,
-  setOpenUpdatePopup
+  setOpenUpdatePopup,
+  resetState
 } = actions;
 /* harmony default export */ __webpack_exports__["default"] = (reducer);
 

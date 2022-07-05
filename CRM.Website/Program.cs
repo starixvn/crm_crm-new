@@ -22,7 +22,6 @@
                 .WriteTo.Async(a => a.File(logfile, LogEventLevel.Information, loggerTemplate, rollingInterval: RollingInterval.Day, shared: true))
                 .CreateLogger();
 
-
             try
             {
                 CreateWebHostBuilder(args).Build().Run();

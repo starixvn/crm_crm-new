@@ -1302,7 +1302,7 @@
       margin-right: 20px; }
     .form-filter .form-row .form-group .checkIgnoredAccount-setting {
       margin-right: 86px;
-      margin-left: -40px; }
+      margin-left: -34px; }
     .form-filter .form-row .form-group .form-check-label {
       width: 200px; }
     .form-filter .form-row .form-group .btn-submit {
@@ -1320,7 +1320,11 @@
   display: flex;
   justify-content: flex-end; }
 
+.header-content, .body-content, .footer-content {
+  border: none; }
+
 .table-container {
+  border: solid 1px #b7b7b7;
   overflow: scroll;
   min-width: 700px !important; }
   .table-container .header-content {

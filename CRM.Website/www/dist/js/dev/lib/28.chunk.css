@@ -267,7 +267,7 @@
   border-radius: 0;
   color: #fff;
   font-size: 12px;
-  padding: 2px 10px;
+  padding: 2px 12px;
   height: 24px;
   margin-top: 1px; }
   .btn.btn-primary {
@@ -576,56 +576,64 @@
   margin: 0;
   padding: 0 0 0 1.25rem; }
 
-.report-customer .form-filter .row {
+#app-container {
+  width: 1890px;
+  padding: 10px; }
+
+.body-content, .footer-content, .header-content {
+  border: none; }
+
+.form-filter .row {
   margin-left: 0;
   margin-right: 0; }
 
-.report-customer .form-filter .group-field {
+.form-filter .group-field {
   display: flex;
   width: 320px; }
-  .report-customer .form-filter .group-field label {
+  .form-filter .group-field label {
     width: 105px; }
-  .report-customer .form-filter .group-field .input-field {
+  .form-filter .group-field .input-field {
     width: 200px; }
 
-.report-customer .form-filter .multiple-select-container {
+.form-filter .multiple-select-container {
   width: 200px; }
 
-.report-customer .form-filter .group-checkbox {
+.form-filter .group-checkbox {
   display: flex;
   width: 320px; }
 
-.report-customer .form-filter .check-exclude {
+.form-filter .check-exclude {
   padding-top: 5px;
   padding-right: 5px; }
 
-.report-customer .form-filter .danger-position .multiple-select-container {
+.form-filter .danger-position .multiple-select-container {
   border: 1px solid #dc3545; }
 
-.report-customer .form-filter .show-filter {
+.form-filter .show-filter {
   width: 100%;
   text-align: center; }
-  .report-customer .form-filter .show-filter .icon {
+  .form-filter .show-filter .icon {
     height: 14px;
     width: 27px;
     background-color: #464d5d;
     color: white;
     cursor: pointer; }
 
-.table-container .header-content {
-  border-bottom: none;
-  position: sticky;
-  top: 0;
-  z-index: 1; }
-
-.table-container .body-content {
-  overflow: unset !important; }
-  .table-container .body-content .table tbody tr:hover td {
-    background-color: #E0FFFF !important; }
-  .table-container .body-content .no-data {
-    font-weight: bold; }
-  .table-container .body-content .icon-check {
-    color: #466ab6; }
+.table-container {
+  border: 1px solid #b7b7b7; }
+  .table-container .header-content {
+    border-bottom: none;
+    position: sticky;
+    top: 0;
+    z-index: 1; }
+  .table-container .body-content {
+    overflow: unset !important; }
+    .table-container .body-content .table tbody tr:hover td {
+      background-color: #E0FFFF !important; }
+    .table-container .body-content .no-data {
+      font-weight: bold; }
+    .table-container .body-content .icon-check {
+      color: #466ab6; }
 
 
 /*# sourceMappingURL=28.chunk.css.map*/

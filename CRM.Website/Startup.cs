@@ -34,6 +34,7 @@
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.FileProviders;
     using Microsoft.Extensions.Hosting;
     using ONEbook.UM.AspNetCore;
     using ONEbook.UM.Configurations;
@@ -152,7 +153,13 @@
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
-            
+            app.UseStaticFiles();
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //    Path.Combine(env.ContentRootPath, "www/dist")),
+            //    RequestPath = "/www/dist"
+            //});
             app.UseCookiePolicy();
             app.UseSession();
             app.UseAuthentication();
@@ -163,23 +170,13 @@
               .UseConfig(app.ApplicationServices.GetService<INapSettings>())
               .UseSession(app.ApplicationServices.GetService<INapSession>());
 
-            app.UseStaticFiles();
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                Path.Combine(env.ContentRootPath, "www/dist")),
-                RequestPath = "/www/dist"
-            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Auth}/{action=Index}/{id?}");
 
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
+                //endpoints.MapFallbackToController("Index", "Home");
             });
         }
 

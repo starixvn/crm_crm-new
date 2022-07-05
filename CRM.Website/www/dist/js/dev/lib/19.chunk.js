@@ -812,7 +812,7 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       bsPrefix: "form-row"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, {
       style: {
-        width: "210px"
+        width: '210px'
       }
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, {
       htmlFor: "groupBy"
@@ -820,7 +820,7 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       as: "select",
       size: "sm",
       style: {
-        width: "100px"
+        width: '100px'
       },
       name: "groupBy",
       id: "groupBy",

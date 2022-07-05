@@ -8,7 +8,6 @@ import Update from './Update';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 
-
 export class AppContainer extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +31,7 @@ export class AppContainer extends Component {
   };
   
   render() {
-    const {mainSettings, updatePopup, gridParams, isHost} = this.props;
+    const {mainSettings, updatePopup, gridParams} = this.props;
 
     if(!mainSettings || mainSettings === null || !this.state.policy){
       return null;

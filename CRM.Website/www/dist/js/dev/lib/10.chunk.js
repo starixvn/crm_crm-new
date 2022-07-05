@@ -30,7 +30,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const getHeadlineDAReport = params => async dispatch => {
   _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].blockUI();
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('ChangesLog/GetHeadlineDAReportAsync');
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('ChangesLog/GetHeadlineDAReport');
   await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => {
     dispatch(Object(_changesLogSlice__WEBPACK_IMPORTED_MODULE_2__["setHeadlineDA"])(response.data));
   }).catch(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].handleAxiosError).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].unblockUI());
@@ -38,15 +38,15 @@ const getHeadlineDAReport = params => async dispatch => {
 
 const getPicReport = params => async dispatch => {
   _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].blockUI();
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('ChangesLog/GetPicReportAsync');
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('ChangesLog/GetPicReport');
   await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => {
     dispatch(Object(_changesLogSlice__WEBPACK_IMPORTED_MODULE_2__["setPicReport"])(response.data));
   }).catch(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].handleAxiosError).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].unblockUI());
 };
 
 const getActionTypes = () => async () => {
-  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('ChangesLog/GetActionTypesAsync');
-  return await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].getDataAsync(url).then(response => response.data);
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('ChangesLog/GetActionTypes');
+  return _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].getDataAsync(url).then(response => response.data);
 };
 
 const ActionCreators = {

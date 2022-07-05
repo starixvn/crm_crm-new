@@ -53,12 +53,9 @@ const getTitleDetail = params => async dispatch => {
   }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
 };
 
-const getContactInformSettings = () => async dispatch => {
-  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].blockUI();
+const getContactInformSettings = () => async () => {
   const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('InformHeadline/GetContactInformSettings');
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_0__["default"].getDataAsync(url).then(response => {
-    dispatch(Object(_informHeadlineSlice__WEBPACK_IMPORTED_MODULE_2__["setContactInformSettings"])(response.data));
-  }).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
+  return await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_0__["default"].getDataAsync(url).then(response => response);
 };
 
 const getContactInforms = params => async dispatch => {
@@ -293,8 +290,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RemovedAccountLogs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./RemovedAccountLogs */ "./www/sources/js/pages/informheadline/components/RemovedAccountLogs.jsx");
 /* harmony import */ var _RemovedAccountLogDetails__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./RemovedAccountLogDetails */ "./www/sources/js/pages/informheadline/components/RemovedAccountLogDetails.jsx");
 /* harmony import */ var _NewInforms__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./NewInforms */ "./www/sources/js/pages/informheadline/components/NewInforms.jsx");
-/* harmony import */ var _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @jsroot/common/constants */ "./www/sources/js/common/constants.js");
-/* harmony import */ var _jsroot_common_shareScripts__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @jsroot/common/shareScripts */ "./www/sources/js/common/shareScripts.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -308,11 +303,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-
 class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-  constructor(props) {
-    super(props);
+  constructor(...args) {
+    super(...args);
 
     _defineProperty(this, "handleCloseEditContactInformDialog", () => {
       this.props.setGridParams({
@@ -373,65 +366,32 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         errors: {}
       });
     });
-
-    this.state = {
-      contactPolicy: null,
-      searchPolicy: null,
-      hasHostPermission: null
-    };
   }
 
-  componentDidMount() {
-    Object(_jsroot_common_shareScripts__WEBPACK_IMPORTED_MODULE_12__["getPermission"])(_jsroot_common_constants__WEBPACK_IMPORTED_MODULE_11__["FunctionKey"].InformHeadlineContact).then(response => {
-      this.setState({
-        contactPolicy: response
-      });
-    });
-    Object(_jsroot_common_shareScripts__WEBPACK_IMPORTED_MODULE_12__["getPermission"])(_jsroot_common_constants__WEBPACK_IMPORTED_MODULE_11__["FunctionKey"].InformHeadlineSearch).then(response => {
-      this.setState({
-        searchPolicy: response
-      });
-    });
-    Object(_jsroot_common_shareScripts__WEBPACK_IMPORTED_MODULE_12__["getPermission"])(_jsroot_common_constants__WEBPACK_IMPORTED_MODULE_11__["FunctionKey"].InformHeadlineContact).then(response => {
-      this.setState({
-        hasHostPermission: response
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    this.props.resetState();
+  async componentDidMount() {
+    await this.props.getInforms();
+    await this.props.getAllSettings();
   }
 
   render() {
-    const {
-      contactPolicy,
-      searchPolicy,
-      hasHostPermission
-    } = this.state;
-
-    if (!contactPolicy || !searchPolicy || !hasHostPermission) {
-      return null;
-    }
-
     const {
       editContactInformDialog,
       editInformDialog,
       removedLogDialog,
       removedLogDetailDialog,
-      newInformDialog
+      newInformDialog,
+      allSettings
     } = this.props;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DataGrid__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      contactPolicy: contactPolicy,
-      searchPolicy: searchPolicy
-    }), editContactInformDialog.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EditContactInforms__WEBPACK_IMPORTED_MODULE_6__["default"], {
-      hasHostPermission: hasHostPermission,
+
+    if (!allSettings) {
+      return null;
+    }
+
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DataGrid__WEBPACK_IMPORTED_MODULE_5__["default"], null), editContactInformDialog.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EditContactInforms__WEBPACK_IMPORTED_MODULE_6__["default"], {
       titleId: editContactInformDialog.titleId,
       status: editContactInformDialog.status,
       onClose: this.handleCloseEditContactInformDialog
     }), editInformDialog.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EditInforms__WEBPACK_IMPORTED_MODULE_7__["default"], {
-      hasHostPermission: hasHostPermission,
-      searchPolicy: searchPolicy,
       titleId: editInformDialog.titleId,
       onClose: this.handleCloseEditInformDialog
     }), removedLogDialog.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RemovedAccountLogs__WEBPACK_IMPORTED_MODULE_8__["default"], {
@@ -439,7 +399,6 @@ class AppContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }), removedLogDetailDialog.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RemovedAccountLogDetails__WEBPACK_IMPORTED_MODULE_9__["default"], {
       onClose: this.handleCloseRemovedLogDetailDialog
     }), newInformDialog.show && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_NewInforms__WEBPACK_IMPORTED_MODULE_10__["default"], {
-      hasHostPermission: hasHostPermission,
       onClose: this.handleCloseNewInformDialog
     }));
   }
@@ -495,7 +454,8 @@ const mapStateToProps = state => {
     removedLogDetailDialog,
     newInformDialog,
     resultEditContactInforms,
-    resultEditInforms
+    resultEditInforms,
+    allSettings
   } = state;
   return {
     editContactInformDialog,
@@ -504,7 +464,8 @@ const mapStateToProps = state => {
     removedLogDetailDialog,
     newInformDialog,
     resultEditContactInforms,
-    resultEditInforms
+    resultEditInforms,
+    allSettings
   };
 };
 
@@ -713,12 +674,14 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         className: "text-center"
       }, item.keptForReference));
     });
-  }
 
-  async componentDidMount() {
-    await this.props.getContactInformSettings();
-    await this.props.getAllSettings();
-    await this.props.getInforms();
+    _defineProperty(this, "renderTitle", informs => {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "table-title d-flex justify-content-between align-items-center"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Inform Headlines Cases"), informs.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ExcelIcon__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        handleExportExcel: this.props.exportInforms
+      }));
+    });
   }
 
   render() {
@@ -731,15 +694,13 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }
 
     if (this.props.searchPolicy !== _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_7__["Policy"].None || this.props.contactPolicy !== _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_7__["Policy"].None) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "table-title d-flex justify-content-between align-items-center"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Inform Headlines Cases"), informs.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ExcelIcon__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        handleExportExcel: this.props.exportInforms
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["Table"], {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["Table"], {
         maxWidth: 1600,
         shouldUseMaxWidth: true,
         width: 1600,
         autoWidth: false,
+        isFixColumn: true,
+        title: this.renderTitle(informs),
         header: this.buildHeader(),
         body: this.buildBody(),
         containerPadding: 0,
@@ -763,12 +724,10 @@ const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_2__
 
 const mapStateToProps = state => {
   const {
-    informs,
-    contactInformSettings
+    informs
   } = state;
   return {
-    informs,
-    contactInformSettings
+    informs
   };
 };
 
@@ -1033,7 +992,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _common_functions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../common.functions */ "./www/sources/js/pages/informheadline/common.functions.js");
 /* harmony import */ var _DataGridEdit__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./DataGridEdit */ "./www/sources/js/pages/informheadline/components/DataGridEdit.jsx");
 /* harmony import */ var _FilterContactInforms__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./FilterContactInforms */ "./www/sources/js/pages/informheadline/components/FilterContactInforms.jsx");
+/* harmony import */ var _jsroot_common_site__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @jsroot/common/site */ "./www/sources/js/common/site.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -1081,20 +1042,19 @@ class EditContactInforms extends react__WEBPACK_IMPORTED_MODULE_0__["Component"]
 
     _defineProperty(this, "renderForm", () => {
       const {
-        contactInforms,
-        contactInformSettings,
-        hasHostPermission
+        contactInforms
       } = this.props;
       const {
-        selectedStatuses
+        selectedStatuses,
+        contactInformSettings
       } = this.state;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Modal"].Body, null, this.state.saveResult && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_8__["default"], {
         isSuccessful: this.state.saveResult.isSuccessful,
         message: this.state.saveResult.message || _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('SaveInformHeadlinesSuccessfully')
       }), selectedStatuses && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FilterContactInforms__WEBPACK_IMPORTED_MODULE_11__["default"], {
-        selectedStatuses: selectedStatuses
+        selectedStatuses: selectedStatuses,
+        contactInformSettings: contactInformSettings
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DataGridEdit__WEBPACK_IMPORTED_MODULE_10__["default"], {
-        hasHostPermission: hasHostPermission,
         status: this.props.status,
         informData: contactInforms,
         informSettings: contactInformSettings,
@@ -1106,40 +1066,44 @@ class EditContactInforms extends react__WEBPACK_IMPORTED_MODULE_0__["Component"]
 
     this.state = {
       saveResult: null,
-      selectedStatuses: ''
+      selectedStatuses: '',
+      contactInformSettings: null
     };
   }
 
   componentDidMount() {
-    const {
-      contactInformSettings,
-      titleId
-    } = this.props;
-    this.props.getTitleDetail({
-      titleId: titleId
+    _jsroot_common_site__WEBPACK_IMPORTED_MODULE_12__["default"].blockUI();
+    this.props.getContactInformSettings().then(response => {
+      _jsroot_common_site__WEBPACK_IMPORTED_MODULE_12__["default"].unblockUI();
+
+      if (response !== undefined && response.data !== null) {
+        this.props.getTitleDetail({
+          titleId: this.props.titleId
+        });
+        const selectedStatuses = response.data.filterStatuses.map(item => item.settingId).join();
+        const params = {
+          titleId: this.props.titleId,
+          username: '',
+          statusId: selectedStatuses
+        };
+        this.setState({
+          selectedStatuses: selectedStatuses,
+          contactInformSettings: response.data
+        });
+        this.props.getContactInforms(params);
+      }
     });
-    const selectedStatuses = contactInformSettings.filterStatuses.map(item => item.settingId).join();
-    const params = {
-      titleId: titleId,
-      username: '',
-      statusId: selectedStatuses
-    };
-    this.setState({
-      selectedStatuses: selectedStatuses
-    });
-    this.props.getContactInforms(params);
   }
 
   render() {
     const {
       titleDetail,
-      contactInformSettings,
       contactInforms,
       status
     } = this.props;
     const isClosed = status === 'Closed' ? true : false;
 
-    if (!titleDetail || !contactInformSettings || !contactInforms) {
+    if (!titleDetail || !this.state.contactInformSettings || !contactInforms) {
       return null;
     }
 
@@ -1161,16 +1125,10 @@ class EditContactInforms extends react__WEBPACK_IMPORTED_MODULE_0__["Component"]
 }
 
 _defineProperty(EditContactInforms, "propTypes", {
-  contactInformSettings: prop_types__WEBPACK_IMPORTED_MODULE_5___default.a.shape({
-    filterStatuses: prop_types__WEBPACK_IMPORTED_MODULE_5___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_5___default.a.object).isRequired
-  }).isRequired,
   titleId: prop_types__WEBPACK_IMPORTED_MODULE_5___default.a.number.isRequired
 });
 
 _defineProperty(EditContactInforms, "defaultProps", {
-  contactInformSettings: {
-    filterStatuses: []
-  },
   titleId: 0
 });
 
@@ -1179,14 +1137,12 @@ const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_2__
 const mapStateToProps = state => {
   const {
     titleDetail,
-    contactInformSettings,
     contactInforms,
     editedInforms,
     resultEditContactInforms
   } = state;
   return {
     titleDetail,
-    contactInformSettings,
     contactInforms,
     editedInforms,
     resultEditContactInforms
@@ -1517,6 +1473,11 @@ class FilterContactInforms extends react__WEBPACK_IMPORTED_MODULE_0__["PureCompo
       contactInforms,
       contactInformSettings
     } = this.props;
+
+    if (!contactInformSettings) {
+      return null;
+    }
+
     const filterStatuses = contactInformSettings.filterStatuses.map(item => {
       return {
         settingId: item.settingId,
@@ -1585,13 +1546,11 @@ const mapStateToProps = state => {
   const {
     titleDetail,
     contactInforms,
-    contactInformSettings,
     gridParams
   } = state;
   return {
     titleDetail,
     contactInforms,
-    contactInformSettings,
     gridParams
   };
 };
@@ -2624,7 +2583,7 @@ class index extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
 /*!********************************************************************!*\
   !*** ./www/sources/js/pages/informheadline/informHeadlineSlice.js ***!
   \********************************************************************/
-/*! exports provided: resetState, setInforms, setTitleDetail, setContactInformSettings, setContactInforms, setEditContactInformDialog, setGridParams, setAllSettings, setEditInforms, setEditInformDialog, setResultEditContactInforms, setResultEditInforms, setRemovedAccountLogs, setRemovedAccountLogDetails, setRemovedLogDialog, setRemovedLogDetailDialog, setGridParamRemovedLogs, setGridParamRemovedLogDetails, setNewInforms, setNewInformDialog, setResultInsertInforms, setEditedInforms, setFilterData, default */
+/*! exports provided: resetState, setInforms, setTitleDetail, setContactInforms, setEditContactInformDialog, setGridParams, setAllSettings, setEditInforms, setEditInformDialog, setResultEditContactInforms, setResultEditInforms, setRemovedAccountLogs, setRemovedAccountLogDetails, setRemovedLogDialog, setRemovedLogDetailDialog, setGridParamRemovedLogs, setGridParamRemovedLogDetails, setNewInforms, setNewInformDialog, setResultInsertInforms, setEditedInforms, setFilterData, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2632,7 +2591,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resetState", function() { return resetState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setInforms", function() { return setInforms; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setTitleDetail", function() { return setTitleDetail; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setContactInformSettings", function() { return setContactInformSettings; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setContactInforms", function() { return setContactInforms; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setEditContactInformDialog", function() { return setEditContactInformDialog; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setGridParams", function() { return setGridParams; });
@@ -2657,7 +2615,6 @@ __webpack_require__.r(__webpack_exports__);
 const initialState = {
   informs: null,
   titleDetail: null,
-  contactInformSettings: null,
   contactInforms: null,
   editContactInformDialog: {
     show: false
@@ -2710,9 +2667,6 @@ const informHeadlineSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__
     },
     setTitleDetail: (state, action) => {
       state.titleDetail = action.payload;
-    },
-    setContactInformSettings: (state, action) => {
-      state.contactInformSettings = action.payload;
     },
     setContactInforms: (state, action) => {
       state.contactInforms = action.payload;
@@ -2781,7 +2735,6 @@ const {
   resetState,
   setInforms,
   setTitleDetail,
-  setContactInformSettings,
   setContactInforms,
   setEditContactInformDialog,
   setGridParams,

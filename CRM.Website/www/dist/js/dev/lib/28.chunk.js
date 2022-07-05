@@ -482,11 +482,11 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         excludeIgnoredAccounts
       } = this.state;
       const params = {
-        username: username,
+        username: username === '' ? null : username,
         headline: headline === '' ? null : headline,
         vipId: vipId,
-        languageIds: languageIds,
-        siteIds: siteIds,
+        languageIds: languageIds === '' ? '0' : languageIds,
+        siteIds: siteIds === '' ? '0' : siteIds,
         positionIds: positionIds.replace('5', '5,6,7,8,9,10'),
         excludeIgnoredAccounts: excludeIgnoredAccounts,
         pageIndex: 1,
@@ -604,6 +604,7 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       keyField: "languageId",
       valueField: "name",
       isNAOption: true,
+      isCheckedNA: true,
       maxDisplayItemCount: 2,
       hasAllOption: languageOptions.length > 0,
       onChange: (currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('languageIds', currentItem, selectedItemsKey)
@@ -618,6 +619,7 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       valueField: "name",
       hasAllOption: siteOptions.length > 0,
       isNAOption: true,
+      isCheckedNA: true,
       isAllToggle: true,
       maxDisplayItemCount: 6,
       onChange: (currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('siteIds', currentItem, selectedItemsKey)

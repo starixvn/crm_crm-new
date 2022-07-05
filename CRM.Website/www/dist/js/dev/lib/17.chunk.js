@@ -491,7 +491,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/common/dateTimeService */ "./www/sources/js/common/dateTimeService.js");
 /* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
 /* harmony import */ var _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @jsroot/common/constants */ "./www/sources/js/common/constants.js");
+/* harmony import */ var _jsroot_common_shareScripts__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @jsroot/common/shareScripts */ "./www/sources/js/common/shareScripts.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -508,42 +510,30 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     _defineProperty(this, "buildHeader", () => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderRow"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 50
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('Subject'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-sort sort-header",
-        "aria-hidden": "true",
-        onClick: () => this.handleSort('subject')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 25
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('ClaimedTime'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-sort sort-header",
-        "aria-hidden": "true",
-        onClick: () => this.handleSort('claimTime')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 20
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('Currency'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-sort sort-header",
-        "aria-hidden": "true",
-        onClick: () => this.handleSort('currency')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 20
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('Amount'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-sort sort-header",
-        "aria-hidden": "true",
-        onClick: () => this.handleSort('amount')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 25
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('DoneBy'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-sort sort-header",
-        "aria-hidden": "true",
-        onClick: () => this.handleSort('doneBy')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
-        colWidth: 20
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('Status'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-sort sort-header",
-        "aria-hidden": "true",
-        onClick: () => this.handleSort('status')
-      })));
+        colWidth: 50,
+        sortOrder: "desc",
+        sortBy: "Subject"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('Subject')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 25,
+        sortOrder: "desc",
+        sortBy: "Time"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('ClaimedTime')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 20,
+        sortOrder: "desc",
+        sortBy: "Currency"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('Currency')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 20,
+        sortOrder: "desc",
+        sortBy: "Amount"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('Amount')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 25,
+        sortOrder: "desc",
+        sortBy: "DoneBy"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('DoneBy')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 20,
+        sortOrder: "desc",
+        sortBy: "Status"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('Status')));
     });
 
     _defineProperty(this, "buildBody", () => {
@@ -564,28 +554,13 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('ThereIsNoData')))];
     });
 
-    _defineProperty(this, "isSortEqual", (itemX, itemY) => {
-      if (itemX === itemY) {
-        return 0;
-      } else {
-        return -1;
-      }
-    });
-
-    _defineProperty(this, "handleSort", item => {
+    _defineProperty(this, "onSort", (sortBy, sortOrder) => {
       const {
         redemptionLogs
       } = this.props;
-      let sortData = [];
-
-      if (this.sortDesc) {
-        sortData = [...redemptionLogs].sort((a, b) => a[item] > b[item] ? 1 : this.isSortEqual(a[item], b[item]));
-      } else {
-        sortData = [...redemptionLogs].sort((a, b) => a[item] < b[item] ? 1 : this.isSortEqual(a[item], b[item]));
-      }
-
-      this.sortDesc = !this.sortDesc;
-      this.props.setLogsByCustomerId(sortData);
+      const cloneGridData = [...redemptionLogs];
+      const gridDataSortAsc = Object(_jsroot_common_shareScripts__WEBPACK_IMPORTED_MODULE_9__["handleSort"])(cloneGridData, sortBy, sortOrder);
+      this.props.setLogsByCustomerId(gridDataSortAsc);
     });
 
     _defineProperty(this, "handleEditRedemptionLog", id => {
@@ -639,6 +614,7 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('CustomerRedemptionLogs'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Table"], {
       width: 1200,
       autoWidth: false,
+      onSort: this.onSort,
       header: this.buildHeader(),
       body: this.buildBody(),
       containerPadding: 0,

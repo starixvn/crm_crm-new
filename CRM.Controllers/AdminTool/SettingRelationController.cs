@@ -37,8 +37,6 @@
             this.userService = userService;
         }
 
-
-
         public async Task<IActionResult> GetMainSettings()
         {
             var settingGroupOrder = await settingService.GetMainSettingAsync();

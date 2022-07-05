@@ -9,75 +9,77 @@
 @import '../../../components/form-filter';
 @import '../../../components/multiple-select/style';
 
-.table-title{
-    max-width: 1000px;
-}
-
-.header-content .table > thead > tr > th {
-    border: none;
-    border-right: 1px solid #b7b7b7;
-}
-
-.modal-lg, .modal-xl {
-    max-width: 600px;
-}
-
-.table {
-    tbody {
-        tr:hover td {
-            background-color: #E0FFFF !important;
-        }
+.setting-management{
+    .table-title{
+        max-width: 1000px;
     }
-}
-
-.table-container .body-content {
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.setting-modal{
-    .modal-lg {
+    
+    .header-content .table > thead > tr > th {
+        border: none;
+        border-right: 1px solid #b7b7b7;
+    }
+    
+    .modal-lg, .modal-xl {
         max-width: 600px;
-
-        .modal-body{
-            input::-webkit-outer-spin-button,
-            input::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-            /* Firefox */
-            input[type=number] {
-                -moz-appearance: textfield;
+    }
+    
+    .table {
+        tbody {
+            tr:hover td {
+                background-color: #E0FFFF !important;
             }
         }
     }
-}
-
-.licensee-mapping{
-    .modal-content{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        max-height: 700px !important;
-        width: 830px;
-        .table-container .body-content{
-            max-height: 400px !important;
-
-            tbody tr td {
-                overflow: unset !important;
-                word-wrap: break-word;
-            }
-
-            .action-icon{
-                cursor: not-allowed !important;
-            }
-            .disabled-btn{
-                pointer-events: none !important;
+    
+    .table-container .body-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    
+    .setting-modal{
+        .modal-lg {
+            max-width: 600px;
+    
+            .modal-body{
+                input::-webkit-outer-spin-button,
+                input::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                /* Firefox */
+                input[type=number] {
+                    -moz-appearance: textfield;
+                }
             }
         }
-        .btnSearch{
-            min-width: 70px;
+    }
+    
+    .licensee-mapping{
+        .modal-content{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 700px !important;
+            width: 830px;
+            .table-container .body-content{
+                max-height: 400px !important;
+    
+                tbody tr td {
+                    overflow: unset !important;
+                    word-wrap: break-word;
+                }
+    
+                .action-icon{
+                    cursor: not-allowed !important;
+                }
+                .disabled-btn{
+                    pointer-events: none !important;
+                }
+            }
+            .btnSearch{
+                min-width: 70px;
+            }
         }
     }
 }

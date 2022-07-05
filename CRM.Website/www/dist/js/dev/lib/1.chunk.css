@@ -461,69 +461,96 @@
   font-size: 14px;
   cursor: pointer; }
 
-.inform-headline {
+#app-container {
   max-width: 1620px; }
-  .inform-headline .table-container {
-    overflow-y: auto;
-    border: 1px solid #b7b7b7;
-    max-width: 1622px !important; }
-    .inform-headline .table-container .body-content {
-      overflow: unset !important; }
-  .inform-headline .link-click {
-    cursor: pointer;
-    color: #366092 !important; }
-    .inform-headline .link-click:hover {
-      color: #c60 !important; }
-  .inform-headline .cursor-pointer {
-    cursor: pointer; }
-  .inform-headline .body-content, .inform-headline .footer-content, .inform-headline .header-content {
-    border: 0 !important; }
-  .inform-headline .body-content tr.open td {
-    background: #f0edc4 !important; }
-  .inform-headline .body-content tr.closed td {
-    background: #f2f2f2 !important; }
-  .inform-headline .body-content tr.free-grid-headline td {
-    background: #d0e6f4 !important; }
-  .inform-headline .body-content tr.free-grid-direct td {
-    background: #f1f1f1 !important; }
-  .inform-headline .check-btn {
-    padding-left: 30px;
-    padding-top: 2px; }
-  .inform-headline .number-remove {
-    cursor: pointer;
-    color: #0255a5; }
-  .inform-headline .number-remove:hover {
-    color: #ffb400; }
-  .inform-headline .group-input-excel {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%; }
-  .inform-headline .input-excel {
-    width: 98%; }
-  .inform-headline .modal-edit .modal-xl {
-    max-width: 1200px; }
-  .inform-headline .modal-removeDetail .modal-content {
-    width: 1080px;
-    margin: auto; }
-  .inform-headline .modal-remove .modal-content {
-    width: 600px;
-    margin: auto; }
-  .inform-headline a.dropdown-item {
-    line-height: 1.8;
-    border-bottom: 1px solid #e5e5e5;
-    color: #333333; }
-    .inform-headline a.dropdown-item .icon {
-      margin-right: 5px;
-      font-size: 13px; }
-      .inform-headline a.dropdown-item .icon-default {
-        color: #0789d1; }
-      .inform-headline a.dropdown-item .icon-closed {
-        color: #de5144; }
-      .inform-headline a.dropdown-item .icon-open {
-        color: #cabc04; }
-  .inform-headline .option {
-    overflow: visible !important; }
+
+body {
+  overflow-x: hidden; }
+
+.fix-table-container .table-title {
+  border-right: none; }
+
+.fix-table-container .table-container {
+  overflow-y: auto;
+  border: 1px solid #b7b7b7; }
+  .fix-table-container .table-container .body-content {
+    overflow: unset !important; }
+  .fix-table-container .table-container .header-content, .fix-table-container .table-container .body-content {
+    border: none;
+    padding: 0; }
+  .fix-table-container .table-container .header-content .table td:first-child,
+  .fix-table-container .table-container .body-content .table td:first-child,
+  .fix-table-container .table-container .footer-content .table td:first-child {
+    border-left: 1px solid #b7b7b7 !important; }
+
+.link-click {
+  cursor: pointer;
+  color: #366092 !important; }
+  .link-click:hover {
+    color: #c60 !important; }
+
+.cursor-pointer {
+  cursor: pointer; }
+
+.body-content tr.open td {
+  background: #f0edc4 !important; }
+
+.body-content tr.closed td {
+  background: #f2f2f2 !important; }
+
+.body-content tr.free-grid-headline td {
+  background: #d0e6f4 !important; }
+
+.body-content tr.free-grid-direct td {
+  background: #f1f1f1 !important; }
+
+.check-btn {
+  padding-left: 30px;
+  padding-top: 2px; }
+
+.number-remove {
+  cursor: pointer;
+  color: #0255a5; }
+
+.number-remove:hover {
+  color: #ffb400; }
+
+.group-input-excel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; }
+
+.input-excel {
+  width: 98%; }
+
+.modal-edit .modal-xl {
+  max-width: 1200px; }
+
+.modal-removeDetail .modal-content {
+  width: 1080px;
+  margin: auto; }
+
+.modal-remove .modal-content {
+  width: 600px;
+  margin: auto; }
+
+a.dropdown-item {
+  line-height: 1.8;
+  border-bottom: 1px solid #e5e5e5;
+  color: #333333; }
+  a.dropdown-item .icon {
+    margin-right: 5px;
+    font-size: 13px; }
+    a.dropdown-item .icon-default {
+      color: #0789d1; }
+    a.dropdown-item .icon-closed {
+      color: #de5144; }
+    a.dropdown-item .icon-open {
+      color: #cabc04; }
+
+.option {
+  overflow: visible !important; }
 
 
 /*# sourceMappingURL=1.chunk.css.map*/

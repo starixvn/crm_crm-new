@@ -396,7 +396,7 @@ const verifyLetstalkInGroup = params => async dispatch => {
     const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('ChatTypeMapping/VerifyLetstalkInGroup');
     await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_3__["default"].postDataAsync(url, params).then(response => {
       dispatch(setLetstalkVerifationData(response.data));
-    }).catch(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].handleAxiosError);
+    });
   } else {
     dispatch(setLetstalkVerifationData({
       isBotRemoved: false,

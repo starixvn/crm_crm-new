@@ -210,11 +210,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
 /* harmony import */ var _jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/common/dateTimeService */ "./www/sources/js/common/dateTimeService.js");
 /* harmony import */ var _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @jsroot/common/constants */ "./www/sources/js/common/constants.js");
+/* harmony import */ var _jsroot_common_shareScripts__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @jsroot/common/shareScripts */ "./www/sources/js/common/shareScripts.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -231,56 +233,40 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     _defineProperty(this, "buildHeader", () => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderRow"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
-        colWidth: 22
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('RunningNo'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-sort sort-header",
-        "aria-hidden": "true",
-        onClick: () => this.handleSort('feedbackId')
-      })), this.props.createUpdateFeedbackPermission === _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__["Policy"].Host && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
+        colWidth: 20,
+        sortOrder: "desc",
+        sortBy: "runningNo"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('RunningNo')), window.createUpdateFeedbackPermission === _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__["Policy"].Host && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
         colWidth: 15
       }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Update')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
-        colWidth: 25
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('FeedbackDate'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-sort sort-header",
-        "aria-hidden": "true",
-        onClick: () => this.handleSort('feedbackDate')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
-        colWidth: 55
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Category'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        "aria-hidden": "true",
-        className: "fa fa-sort sort-header",
-        onClick: () => this.handleSort('subject')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
-        colWidth: 40
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Subject'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "sort-header fa fa-sort",
-        "aria-hidden": "true",
-        onClick: () => this.handleSort('subject')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
-        colWidth: 20
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Status'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        "aria-hidden": "true",
-        className: "sort-header fa fa-sort",
-        onClick: () => this.handleSort('status')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
-        colWidth: 20
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Duration'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-sort sort-header",
-        "aria-hidden": "true",
-        onClick: () => this.handleSort('duration')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
-        colWidth: 20
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Handler'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-sort sort-header",
-        "aria-hidden": "true",
-        onClick: () => this.handleSort('handler')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
-        colWidth: 20
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Reviewer'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        "aria-hidden": "true",
-        className: "fa fa-sort sort-header",
-        onClick: () => this.handleSort('reviewer')
-      })));
+        colWidth: 25,
+        sortOrder: "desc",
+        sortBy: "Time"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('FeedbackDate')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
+        colWidth: 55,
+        sortOrder: "desc",
+        sortBy: "Category"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Category')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
+        colWidth: 40,
+        sortOrder: "desc",
+        sortBy: "Subject"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Subject')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
+        colWidth: 20,
+        sortOrder: "desc",
+        sortBy: "Status"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Status')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
+        colWidth: 20,
+        sortOrder: "desc",
+        sortBy: "Duration"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Duration')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
+        colWidth: 20,
+        sortOrder: "desc",
+        sortBy: "Handler"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Handler')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["HeaderCell"], {
+        colWidth: 20,
+        sortOrder: "desc",
+        sortBy: "Reviewer"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Reviewer')));
     });
 
     _defineProperty(this, "buildBody", () => {
@@ -304,33 +290,18 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         className: "no-data"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["Cell"], {
         className: "text-center",
-        colSpan: this.props.createUpdateFeedbackPermission === _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__["Policy"].Host ? 9 : 8
+        colSpan: window.createUpdateFeedbackPermission === _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__["Policy"].Host ? 9 : 8
       }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('ThereIsNoData')))];
     });
 
-    _defineProperty(this, "isSortEqual", (itemA, itemB) => {
-      if (itemA === itemB) {
-        return 0;
-      } else {
-        return -1;
-      }
-    });
-
-    _defineProperty(this, "handleSort", item => {
+    _defineProperty(this, "onSort", (sortBy, sortOrder) => {
       const {
         gridData
       } = this.props;
-      let sortData = [];
-
-      if (this.sortDesc) {
-        sortData = [...gridData.data].sort((a, b) => a[item] > b[item] ? 1 : this.isSortEqual(a[item], b[item]));
-      } else {
-        sortData = [...gridData.data].sort((a, b) => a[item] < b[item] ? 1 : this.isSortEqual(a[item], b[item]));
-      }
-
-      this.sortDesc = !this.sortDesc;
+      const cloneGridData = [...gridData.data];
+      const gridDataSortAsc = Object(_jsroot_common_shareScripts__WEBPACK_IMPORTED_MODULE_9__["handleSort"])(cloneGridData, sortBy, sortOrder);
       this.props.setLogsByCustomerId({
-        data: sortData,
+        data: gridDataSortAsc,
         mainCategories: gridData.mainCategories
       });
     });
@@ -405,7 +376,7 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "link-click",
         onClick: () => this.handleEditCommunicationLog(item.feedbackId)
-      }, item.feedbackId)), this.props.createUpdateFeedbackPermission === _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__["Policy"].Host && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["Cell"], {
+      }, item.feedbackId)), window.createUpdateFeedbackPermission === _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__["Policy"].Host && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["Cell"], {
         className: "text-center"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "rounded-circle fa fa-pencil icon-edit",
@@ -436,8 +407,7 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
     const {
       gridData,
-      gridParams,
-      customerInfoPolicy
+      gridParams
     } = this.props;
 
     if (!gridData) {
@@ -457,16 +427,17 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "table-title d-flex justify-content-between align-items-center"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('CustomerCommunicationLogs'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_5__["Table"], {
-      width: 1200,
+      width: 1400,
       autoWidth: false,
       header: this.buildHeader(),
       body: this.buildBody(),
       isPaging: true,
+      onSort: this.onSort,
       pageOption: pagingOption,
       onPaging: this.onPaging,
       containerPadding: 0,
       adjustedHeight: 10
-    }), customerInfoPolicy === _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__["Policy"].Host && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+    }), window.customerInfoPolicy === _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_8__["Policy"].Host && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Button"], {
       variant: "primary",
       size: "sm",
       className: "mt-3",

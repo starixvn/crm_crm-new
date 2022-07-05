@@ -104,6 +104,14 @@ const editLicenseeMapping = params => async () => {
   return await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => response.data).catch(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].handleAxiosError);
 };
 
+const getSourceMapping = params => async dispatch => {
+  _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].blockUI();
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].resolveClientUrl('SettingManagement/GetSourceMappingByType');
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_1__["default"].postDataAsync(url, params).then(response => {
+    dispatch(Object(_settingManagementSlice__WEBPACK_IMPORTED_MODULE_2__["setSourceMapping"])(response.data));
+  }).catch(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].handleAxiosError).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_0__["default"].unblockUI());
+};
+
 const ActionCreators = {
   resetState: _settingManagementSlice__WEBPACK_IMPORTED_MODULE_2__["resetState"],
   getMainSettings,
@@ -129,7 +137,9 @@ const ActionCreators = {
   editNewSetting,
   setEditNewSettingResult: _settingManagementSlice__WEBPACK_IMPORTED_MODULE_2__["setEditNewSettingResult"],
   editLicenseeMapping,
-  setConfirmCancelPopup: _settingManagementSlice__WEBPACK_IMPORTED_MODULE_2__["setConfirmCancelPopup"]
+  setConfirmCancelPopup: _settingManagementSlice__WEBPACK_IMPORTED_MODULE_2__["setConfirmCancelPopup"],
+  setSourceMapping: _settingManagementSlice__WEBPACK_IMPORTED_MODULE_2__["setSourceMapping"],
+  getSourceMapping
 };
 
 /***/ }),
@@ -385,9 +395,12 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     super(props);
 
     _defineProperty(this, "buildHeader", isHost => {
+      const checkShowSourceMapping = this.IsShowSourceMapping();
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderRow"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
         colWidth: 45
-      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Setting')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('Setting')), checkShowSourceMapping && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
+        colWidth: 45
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('SourceMapping')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
         colWidth: 13
       }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('SettingId')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["HeaderCell"], {
         colWidth: 13
@@ -399,9 +412,10 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     });
 
     _defineProperty(this, "renderRow", (item, index, isHost) => {
+      const checkShowSourceMapping = this.IsShowSourceMapping();
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Row"], {
         key: `setting-management-${index}`
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.settingValue), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.settingValue), checkShowSourceMapping && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.settingSource), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
         className: "text-right"
       }, item.settingId), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], {
         className: "text-right"
@@ -447,13 +461,27 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       });
     });
 
-    _defineProperty(this, "handleOpenEdit", (event, item) => {
+    _defineProperty(this, "handleOpenEdit", async (event, item) => {
       event.preventDefault();
+      await this.props.getSourceMapping(this.props.gridParams);
       this.props.setOpenEdiPopup({
         show: true,
         data: item
       });
     });
+  }
+
+  IsShowSourceMapping() {
+    const {
+      settingType
+    } = this.props;
+    let count = false;
+    settingType.map(item => {
+      if (item.settingSource != null) {
+        count = true;
+      }
+    });
+    return count;
   }
 
   render() {
@@ -468,11 +496,14 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }
 
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "justify-content-between align-items-center table-title d-flex"
+      className: "justify-content-between align-items-center table-title d-flex",
+      style: {
+        width: this.IsShowSourceMapping() ? 1000 : 700
+      }
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, `${_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('SettingManagementTitle')} ${gridParams.settingName}`)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Table"], {
       header: this.buildHeader(isHost),
       body: this.buildBody(isHost),
-      width: 700,
+      width: this.IsShowSourceMapping() ? 1000 : 700,
       autoWidth: false,
       onSort: this.onSort,
       containerPadding: 0,
@@ -522,6 +553,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jsroot_components_FormikErrorMessage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @jsroot/components/FormikErrorMessage */ "./www/sources/js/components/FormikErrorMessage.jsx");
 /* harmony import */ var _jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @jsroot/components/ResponseMessage */ "./www/sources/js/components/ResponseMessage.jsx");
 /* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+/* harmony import */ var _jsroot_components_multiple_select_index__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @jsroot/components/multiple-select/index */ "./www/sources/js/components/multiple-select/index.jsx");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -534,9 +566,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 class Edit extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-  constructor(...args) {
-    super(...args);
+  constructor(props) {
+    super(props);
 
     _defineProperty(this, "validateFormik", values => {
       const errors = {};
@@ -559,6 +592,7 @@ class Edit extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         settingId: values.settingId,
         settingName: values.settingName,
         settingValue: values.settingValue,
+        settingSource: this.state.sourceMappings === '' ? null : this.state.sourceMappings,
         displayOrder: values.displayOrder === '' ? 0 : values.displayOrder
       };
       setSubmitting(true);
@@ -590,7 +624,7 @@ class Edit extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         fieldNames: Object.keys(values)
       }), this.props.editNewSettingResult && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ResponseMessage__WEBPACK_IMPORTED_MODULE_8__["default"], {
         isSuccessful: this.props.editNewSettingResult.isSuccessful,
-        message: this.props.editNewSettingResult.message || _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__["default"].getResource('InsertNewSettingSuccess')
+        message: this.props.editNewSettingResult.message || _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__["default"].getResource('UpdateSettingSuccess')
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Group, {
         as: react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Row"]
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Label, {
@@ -631,6 +665,27 @@ class Edit extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         autoComplete: "off",
         isInvalid: touched.settingValue && errors.settingValue,
         onChange: handleChange
+      }))), this.props.sourceMapping.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Group, {
+        as: react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Row"]
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Label, {
+        column: true,
+        sm: "4",
+        md: "3",
+        htmlFor: "SourceMapping"
+      }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__["default"].getResource('SourceMapping')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Col"], {
+        sm: "8",
+        md: "9"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_multiple_select_index__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        keyField: "id",
+        valueField: "name",
+        hasSearchBox: true,
+        isNAOption: true,
+        dataSource: this.state.optionMappings,
+        onChange: (currentItem, selectedItemsKey) => {
+          this.setState({
+            sourceMappings: selectedItemsKey
+          });
+        }
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Group, {
         as: react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Row"]
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Form"].Label, {
@@ -659,6 +714,48 @@ class Edit extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         onClick: this.props.onClose
       }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__["default"].getResource('Cancel'))));
     });
+
+    this.state = {
+      optionMappings: [],
+      sourceMappings: ''
+    };
+  }
+
+  componentDidMount() {
+    this.props.sourceMapping.length > 0 && this.handleOptionMapping();
+  }
+
+  handleOptionMapping() {
+    const {
+      sourceMapping,
+      editPopup
+    } = this.props;
+    let selectedMapping = [];
+
+    if (editPopup.data.settingSource != null) {
+      selectedMapping = editPopup.data.settingSource.split(', ').map(tool => {
+        return {
+          id: tool,
+          name: tool,
+          checked: true
+        };
+      });
+    }
+
+    const optionMappings = sourceMapping.map(tool => {
+      return {
+        id: tool.source,
+        name: tool.source,
+        checked: false
+      };
+    });
+    const concatenated = [];
+    concatenated.push(...selectedMapping);
+    concatenated.push(...optionMappings);
+    this.setState({
+      optionMappings: concatenated,
+      sourceMappings: editPopup.data.settingSource
+    });
   }
 
   render() {
@@ -674,6 +771,7 @@ class Edit extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       settingId: editPopup.data.settingId,
       settingName: editPopup.data.settingName,
       settingValue: editPopup.data.settingValue,
+      settingSource: editPopup.data.settingSource,
       displayOrder: editPopup.data.displayOrder
     };
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Modal"], {
@@ -703,11 +801,13 @@ const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_2__
 const mapStateToProps = state => {
   const {
     editPopup,
-    editNewSettingResult
+    editNewSettingResult,
+    sourceMapping
   } = state;
   return {
     editPopup,
-    editNewSettingResult
+    editNewSettingResult,
+    sourceMapping
   };
 };
 
@@ -748,9 +848,6 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       event.preventDefault();
       const settingName = event.target.value;
       this.setState({
-        settingName
-      });
-      this.props.setGridParams({
         settingName
       });
     });
@@ -1119,6 +1216,7 @@ class LicenseeMapping extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"
         })
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["Button"], {
         variant: "primary",
+        className: "btnSearch",
         size: "sm",
         onClick: this.handleSearch
       }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__["default"].getResource('Search'))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_7__["Table"], {
@@ -1243,6 +1341,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsroot/components/react-grid/index */ "./www/sources/js/components/react-grid/index.jsx");
 /* harmony import */ var _jsroot_components_CustomReactSelect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsroot/components/CustomReactSelect */ "./www/sources/js/components/CustomReactSelect.jsx");
 /* harmony import */ var _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @jsroot/common/langHelper */ "./www/sources/js/common/langHelper.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -1330,11 +1432,18 @@ class LicenseeRow extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
       isClearable: true,
       isSearchable: true,
       isFocused: true,
-      isSelected: true,
+      isSelected: true //menuIsOpen
+      ,
       defaultValue: sourceMappingDefault,
       noOptionsMessage: () => 'No results found',
       onChange: value => this.handleChangeSelect(value, 'settingSource'),
-      options: licenseesOption
+      options: licenseesOption,
+      menuPortalTarget: document.body,
+      styles: {
+        menuPortal: base => _objectSpread(_objectSpread({}, base), {}, {
+          zIndex: 9999
+        })
+      }
     })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_1__["Cell"], null, settingSource), isChangeableValue ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_1__["Cell"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_CustomReactSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
       placeholder: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_3__["default"].getResource('PleaseSelect'),
       isClearable: true,
@@ -1345,7 +1454,13 @@ class LicenseeRow extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
       noOptionsMessage: () => 'No results found',
       onChange: value => this.handleChangeSelect(value, 'licenseeManager'),
       onInputChange: searchText => debounceHandleLicenseeManagerChange(searchText),
-      options: licenseesManagerOption
+      options: licenseesManagerOption,
+      menuPortalTarget: document.body,
+      styles: {
+        menuPortal: base => _objectSpread(_objectSpread({}, base), {}, {
+          zIndex: 9999
+        })
+      }
     })) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_1__["Cell"], null, licenseeManager), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_1__["Cell"], null, item.settingId), isChangeableValue ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_1__["Cell"], {
       className: "text-center"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
@@ -1438,7 +1553,28 @@ class NewSettingValue extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         errors.settingValue = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__["default"].formatString(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__["default"].getResource('FieldRequired'), _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__["default"].getResource('SettingValue'));
       }
 
+      if (!this.isCheckSettingValue(values)) {
+        errors.settingValue = _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_9__["default"].getResource('SettingExistedAlready');
+      }
+
       return errors;
+    });
+
+    _defineProperty(this, "isCheckSettingValue", values => {
+      const {
+        mainSettings
+      } = this.props;
+      let checkValue = true;
+      mainSettings.map(item => {
+        if (item.settingName === values.settingName) {
+          item.childSettings.map(check => {
+            if (check.settingValue === values.settingValue) {
+              checkValue = false;
+            }
+          });
+        }
+      });
+      return checkValue;
     });
 
     _defineProperty(this, "renderForm", ({
@@ -1603,11 +1739,13 @@ const mapDispatchToProps = dispatch => Object(redux__WEBPACK_IMPORTED_MODULE_2__
 const mapStateToProps = state => {
   const {
     parents,
-    insertNewSettingResult
+    insertNewSettingResult,
+    mainSettings
   } = state;
   return {
     parents,
-    insertNewSettingResult
+    insertNewSettingResult,
+    mainSettings
   };
 };
 
@@ -1659,7 +1797,7 @@ class index extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
 /*!**************************************************************************************!*\
   !*** ./www/sources/js/pages/admin-tool/setting-management/settingManagementSlice.js ***!
   \**************************************************************************************/
-/*! exports provided: resetState, setMainSettings, setParentSettings, setSettingTypes, setLicensees, setLicenseeMapping, setLicenseeManager, setGridParams, setEditStatusPopup, setOpenInsertNewSettingPopup, setOpenLicenseeMappingPopup, setInsertNewSettingResult, setOpenEdiPopup, setEditNewSettingResult, setConfirmCancelPopup, default */
+/*! exports provided: resetState, setMainSettings, setParentSettings, setSettingTypes, setLicensees, setLicenseeMapping, setLicenseeManager, setGridParams, setEditStatusPopup, setOpenInsertNewSettingPopup, setOpenLicenseeMappingPopup, setInsertNewSettingResult, setOpenEdiPopup, setEditNewSettingResult, setConfirmCancelPopup, setSourceMapping, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1679,6 +1817,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setOpenEdiPopup", function() { return setOpenEdiPopup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setEditNewSettingResult", function() { return setEditNewSettingResult; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setConfirmCancelPopup", function() { return setConfirmCancelPopup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setSourceMapping", function() { return setSourceMapping; });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
 const initialState = {
@@ -1689,8 +1828,10 @@ const initialState = {
   licenseesMapping: null,
   licenseesManager: [],
   gridParams: {
-    settingName: ''
+    settingName: '',
+    settingValue: ''
   },
+  sourceMapping: [],
   editStatusPopup: {
     show: false
   },
@@ -1759,6 +1900,9 @@ const settingManagementSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_
     },
     setConfirmCancelPopup: (state, action) => {
       state.confirmCancelPopup = action.payload;
+    },
+    setSourceMapping: (state, action) => {
+      state.sourceMapping = action.payload;
     }
   }
 });
@@ -1781,7 +1925,8 @@ const {
   setInsertNewSettingResult,
   setOpenEdiPopup,
   setEditNewSettingResult,
-  setConfirmCancelPopup
+  setConfirmCancelPopup,
+  setSourceMapping
 } = actions;
 /* harmony default export */ __webpack_exports__["default"] = (reducer);
 

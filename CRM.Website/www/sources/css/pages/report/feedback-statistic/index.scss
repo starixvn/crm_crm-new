@@ -9,150 +9,152 @@
 @import '../../../components/multiple-select/style';
 @import "../../../components/rechart.scss";
 
-.form-filter {
-    .react-datepicker__input-container input{
-        width: 100% !important;
-    }
-
-    .small-width{
-        width: 150px !important;
-    }
-
-    .width-90{
-        width: 90px !important;
-    }
-
-    .width-320{
-        width: 320px !important;
-    }
-
-    .duration{
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        /* Firefox */
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-    }
-}
-
-.form-filter {
-     min-width: 1200px;
-}
-
-.recharts-default-legend{
-    width: 98%;
-    li{
-        width: 280px;
-    }
-}
-
-.cursor-pointer{
-    cursor: pointer;
-}
-
-.table-container{
-    .parent-level-0{
-        height: 29px;
-        .subcategory, td{
-            background-color: #e3e3e3 !important;
-            color: #0054a6 !important;
+.feedback-statistic{
+    .form-filter {
+        .react-datepicker__input-container input{
+            width: 100% !important;
         }
     
-        .subcategory{
-            font-weight: 600;
-            cursor: pointer;
+        .small-width{
+            width: 150px !important;
         }
-    }
-
-    .body-content{
-        tbody .child{ 
-            background-color: #fff !important;
+    
+        .width-90{
+            width: 90px !important;
         }
-
-        .sub-total{
-            color: rgb(95, 95, 95);
-            font-weight: bold;
+    
+        .width-320{
+            width: 320px !important;
         }
-
-        .link-click {
-            cursor: pointer;
-            font-weight: 600;
-            color: $link-color !important;
-        }
-
-        .disable-click{
-            pointer-events: none;
+    
+        .duration{
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            /* Firefox */
+            input[type=number] {
+                -moz-appearance: textfield;
+            }
         }
     }
     
-    .footer-content{
-        .footer-container{
-            td{
-                background: #c0cae3!important;
+    .form-filter {
+         min-width: 1200px;
+    }
+    
+    .recharts-default-legend{
+        width: 98%;
+        li{
+            width: 280px;
+        }
+    }
+    
+    .cursor-pointer{
+        cursor: pointer;
+    }
+    
+    .table-container{
+        .parent-level-0{
+            height: 29px;
+            .subcategory, td{
+                background-color: #e3e3e3 !important;
                 color: #0054a6 !important;
             }
+        
+            .subcategory{
+                font-weight: 600;
+                cursor: pointer;
+            }
         }
-    }
-}
-
-
-.modal-dialog {
-    .modal-content {
-        left: -9%;
-        width: 1350px !important;
-    }
-}
-
-.feedback-detail .modal-content{
-    width: 1200px;
-    max-height: 900px;
-
-    .table-container{
-        max-height: 875px !important;
-
+    
         .body-content{
-            max-height: 715px !important;
+            tbody .child{ 
+                background-color: #fff !important;
+            }
+    
+            .sub-total{
+                color: rgb(95, 95, 95);
+                font-weight: bold;
+            }
+    
+            .link-click {
+                cursor: pointer;
+                font-weight: 600;
+                color: $link-color !important;
+            }
+    
+            .disable-click{
+                pointer-events: none;
+            }
+        }
+        
+        .footer-content{
+            .footer-container{
+                td{
+                    background: #c0cae3!important;
+                    color: #0054a6 !important;
+                }
+            }
         }
     }
-
-    .manage-feedback-row{
-        .edit-feedback{
-            &:hover {
-                color: $draft-color !important;
+    
+    
+    .modal-dialog {
+        .modal-content {
+            left: -9%;
+            width: 1350px !important;
+        }
+    }
+    
+    .feedback-detail .modal-content{
+        width: 1200px;
+        max-height: 900px;
+    
+        .table-container{
+            max-height: 875px !important;
+    
+            .body-content{
+                max-height: 715px !important;
             }
         }
     
-        .fa-pencil:before {
-            color: #D3B35D;
-        }
-    
-        strong.link-click {
-            color: $link-color !important;
-        
-            &:hover {
-                color: $draft-color !important;
+        .manage-feedback-row{
+            .edit-feedback{
+                &:hover {
+                    color: $draft-color !important;
+                }
             }
-        }
         
-        .feedback-info {
-            padding-left: 17px;
-        
-            .info{
-                padding: 3px 0px;
+            .fa-pencil:before {
+                color: #D3B35D;
             }
-        }
-    
-        span.fa.fa-file-excel-o.icon-excel {
-            color: #28a745;
-            font-size: 14px;
-        }
-    
-        .break-word{
-            word-break: break-word;
+        
+            strong.link-click {
+                color: $link-color !important;
+            
+                &:hover {
+                    color: $draft-color !important;
+                }
+            }
+            
+            .feedback-info {
+                padding-left: 17px;
+            
+                .info{
+                    padding: 3px 0px;
+                }
+            }
+        
+            span.fa.fa-file-excel-o.icon-excel {
+                color: #28a745;
+                font-size: 14px;
+            }
+        
+            .break-word{
+                word-break: break-word;
+            }
         }
     }
 }

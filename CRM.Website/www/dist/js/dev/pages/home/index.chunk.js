@@ -3324,6 +3324,41 @@ class MultipleSelectOptionList extends react__WEBPACK_IMPORTED_MODULE_0__["Compo
   constructor(props) {
     super(props);
 
+    _defineProperty(this, "isUnCheckAllSubItem", item => {
+      let countFalse = 0;
+      item.subItem.map(subItem => {
+        if (!subItem.checked) {
+          countFalse++;
+        }
+      });
+
+      if (countFalse === item.subItem.length) {
+        return true;
+      }
+
+      return false;
+    });
+
+    _defineProperty(this, "isUnCheckAll", dataSource => {
+      let countFalse = 0;
+      let countNA = 0;
+      let indexNa = 0;
+      dataSource.map((item, index) => {
+        if (!item.checked && this.isUnCheckAllSubItem(item)) {
+          countFalse++;
+        }
+
+        if (item.value === 'N/A') {
+          countNA++;
+          indexNa = index;
+        }
+      });
+
+      if (countFalse === dataSource.length && countNA > 0) {
+        dataSource[indexNa].checked = true;
+      }
+    });
+
     _defineProperty(this, "_calculateMinHeightOptionList", maxLengthOfSubData => {
       let minHeight = 0;
 
@@ -3345,13 +3380,15 @@ class MultipleSelectOptionList extends react__WEBPACK_IMPORTED_MODULE_0__["Compo
       onChange,
       onChangeSub,
       id,
-      isAllExpand
+      isAllExpand,
+      isCheckedNA
     } = this.props;
 
     if (!dataSource || !dataSource.length) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "No information");
     }
 
+    isCheckedNA && this.isUnCheckAll(dataSource);
     const optionList = dataSource.map((item, index) => {
       return item.visible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Option__WEBPACK_IMPORTED_MODULE_2__["default"], {
         id: `${id}-optionItem-${index}`,
@@ -3385,7 +3422,8 @@ _defineProperty(MultipleSelectOptionList, "propTypes", {
   dataSource: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object).isRequired,
   id: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string]).isRequired,
   onChange: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  isAllExpand: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool
+  isAllExpand: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+  isCheckedNA: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool
 });
 
 /***/ }),
@@ -4007,7 +4045,8 @@ class MultipleSelect extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       dataSource: this.state.dataSource,
       onChange: this.onChangeHandler,
       onChangeSub: this.onChangeSubHandler,
-      isAllExpand: this.state.isAllExpand
+      isAllExpand: this.state.isAllExpand,
+      isCheckedNA: this.props.isCheckedNA
     })));
   }
 
@@ -4027,7 +4066,8 @@ _defineProperty(MultipleSelect, "propTypes", {
   valueField: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
   isDisable: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
   isNAOption: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
-  isAllToggle: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool
+  isAllToggle: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+  isCheckedNA: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool
 });
 
 _defineProperty(MultipleSelect, "defaultProps", {
@@ -4039,7 +4079,8 @@ _defineProperty(MultipleSelect, "defaultProps", {
   isDisable: false,
   textOptions: _jsroot_common_constants__WEBPACK_IMPORTED_MODULE_6__["MULTI_SELECT_TEXT_OPTIONS"],
   isNAOption: false,
-  isAllToggle: false
+  isAllToggle: false,
+  isCheckedNA: false
 });
 
 /***/ }),

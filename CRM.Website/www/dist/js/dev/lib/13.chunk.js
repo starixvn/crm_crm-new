@@ -793,7 +793,7 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       options: this.state.feedbackSubjectSuggestions,
       onChange: value => this.handleChange(value),
       onInputChange: search => this.handleInputChange(search)
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Button"], {
       className: "mr-4",
       variant: "primary",
       size: "sm",
@@ -802,7 +802,7 @@ class Filter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       variant: "primary",
       size: "sm",
       onClick: this.handleOpenCreatePopup
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('FeedbackSubjectInsert')))));
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_5__["default"].getResource('FeedbackSubjectInsert'))));
   }
 
 }

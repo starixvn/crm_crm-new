@@ -282,7 +282,7 @@
   border-radius: 0;
   color: #fff;
   font-size: 12px;
-  padding: 2px 10px;
+  padding: 2px 12px;
   height: 24px;
   margin-top: 1px; }
   .btn.btn-primary {
@@ -1325,9 +1325,6 @@
 .feedback-statistic .form-filter .react-datepicker__input-container input {
   width: 100% !important; }
 
-.feedback-statistic .form-filter .react-datepicker-popper {
-  z-index: 9999 !important; }
-
 .feedback-statistic .form-filter .small-width {
   width: 150px !important; }
 
@@ -1346,45 +1343,52 @@
   .feedback-statistic .form-filter .duration input[type=number] {
     -moz-appearance: textfield; }
 
+.feedback-statistic .form-filter {
+  min-width: 1200px; }
+
+.feedback-statistic .recharts-default-legend {
+  width: 98%; }
+  .feedback-statistic .recharts-default-legend li {
+    width: 280px; }
+
 .feedback-statistic .cursor-pointer {
   cursor: pointer; }
 
-.feedback-statistic .fix-table-container .parent-level-0 {
+.feedback-statistic .table-container .parent-level-0 {
   height: 29px; }
-  .feedback-statistic .fix-table-container .parent-level-0 .subcategory, .feedback-statistic .fix-table-container .parent-level-0 td {
+  .feedback-statistic .table-container .parent-level-0 .subcategory, .feedback-statistic .table-container .parent-level-0 td {
     background-color: #e3e3e3 !important;
     color: #0054a6 !important; }
-  .feedback-statistic .fix-table-container .parent-level-0 .subcategory {
+  .feedback-statistic .table-container .parent-level-0 .subcategory {
     font-weight: 600;
     cursor: pointer; }
 
-.feedback-statistic .fix-table-container .body-content tbody .child {
+.feedback-statistic .table-container .body-content tbody .child {
   background-color: #fff !important; }
 
-.feedback-statistic .fix-table-container .body-content .sub-total {
+.feedback-statistic .table-container .body-content .sub-total {
   color: #5f5f5f;
   font-weight: bold; }
 
-.feedback-statistic .fix-table-container .body-content .link-click {
+.feedback-statistic .table-container .body-content .link-click {
   cursor: pointer;
   font-weight: 600;
   color: #366092 !important; }
 
-.feedback-statistic .fix-table-container .body-content .disable-click {
+.feedback-statistic .table-container .body-content .disable-click {
   pointer-events: none; }
 
-.feedback-statistic .fix-table-container .footer-content .footer-container td {
+.feedback-statistic .table-container .footer-content .footer-container td {
   background: #c0cae3 !important;
   color: #0054a6 !important; }
 
-.feedback-statistic .modal-dialog .modal-content .recharts-legend-wrapper {
-  width: 1030px !important; }
-  .feedback-statistic .modal-dialog .modal-content .recharts-legend-wrapper .recharts-default-legend li {
-    width: 150px; }
+.feedback-statistic .modal-dialog .modal-content {
+  left: -9%;
+  width: 1350px !important; }
 
 .feedback-statistic .feedback-detail .modal-content {
-  width: 11142px;
-  max-height: 875px; }
+  width: 1200px;
+  max-height: 900px; }
   .feedback-statistic .feedback-detail .modal-content .table-container {
     max-height: 875px !important; }
     .feedback-statistic .feedback-detail .modal-content .table-container .body-content {
@@ -1405,7 +1409,7 @@
     color: #28a745;
     font-size: 14px; }
   .feedback-statistic .feedback-detail .modal-content .manage-feedback-row .break-word {
-    word-break: break-all; }
+    word-break: break-word; }
 
 
 /*# sourceMappingURL=15.chunk.css.map*/
