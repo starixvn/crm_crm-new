@@ -279,6 +279,7 @@
     NoReply: 'No reply',
     NotificationID: 'Notification ID',
     NotificationIDFromNotGreaterThanTo: 'From Notification ID cannot be greater than To Notification ID',
+    NotificationSubmitDurationIsWrong: "'To Duration' must be greater than or equal 'From Duration'.",
     NotificationIDMustHaveBoth: 'Notification ID must have both',
     NotificationList: 'Notification List',
     NotificationTemplate: 'Notification Template',

@@ -94,7 +94,7 @@ export class Filter extends Component {
         const timeEnd = (toDuration.day * 86400) + (toDuration.hour * 3600) + (toDuration.minute * 60) + toDuration.second;
         const isInValid = (timeBegin > timeEnd && timeBegin !== 0 && timeEnd !== 0);
         if ((timeBegin !== 0 && timeEnd === 0) || isInValid) {
-            toast.error(LangHelper.getResource('InvalidDuration'));
+            toast.error(LangHelper.getResource('NotificationSubmitDurationIsWrong'));
             return false;
         }
         return true;

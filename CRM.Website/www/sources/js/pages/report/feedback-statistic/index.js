@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import feedbackStatisticReducer from './feedbackStatisticSlice';
 import AppContainer from './components/AppContainer';
+import Layout from '@jsroot/components/Layout';
 
 const store = configureStore({
     reducer: feedbackStatisticReducer
@@ -11,6 +12,8 @@ const store = configureStore({
 
 ReactDOM.render(
     <Provider store={store}>
-        <AppContainer />
+        <Layout>
+            <AppContainer />
+        </Layout>
     </Provider>,
     document.getElementById('app-container'));
