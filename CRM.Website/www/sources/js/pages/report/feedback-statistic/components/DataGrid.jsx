@@ -273,7 +273,7 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    width={width}
+                    width={totalWidth}
                     autoWidth={false}
                     header={this.buildHeader(gridData)}
                     body={this.buildBody(gridData)}
