@@ -93,7 +93,7 @@ export default class DataGrid extends PureComponent {
                 {
                     (values.role.id === RoleIds.Member || values.role.id === RoleIds.CRMMember) &&
                     <Form.Group className="row item">
-                        <Form.Label column md="3" htmlFor="name" >
+                        <Form.Label column md="3" className="pl-1" htmlFor="name" >
                             {LangHelper.getResource('Danger')}
                         </Form.Label>
                         <Col md="9">
