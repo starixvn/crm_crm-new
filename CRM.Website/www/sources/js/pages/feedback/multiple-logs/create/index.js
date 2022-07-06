@@ -14,7 +14,7 @@ export default class index extends React.Component{
     render(){
         return(
             <Provider store={store}>
-                <div className='notification-template'>
+                <div className='multiple-logs'>
                     <AppContainer />
                 </div>
             </Provider>
