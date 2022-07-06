@@ -200,7 +200,7 @@ export class Details extends Component {
     render() {
         return (
             <Fragment>
-                <Modal show className="feedback-detail" dialogAs={DraggableModalDialog}
+                <Modal show className="feedback-detail-statistics" dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} size="xl" centered aria-label="contained-modal-title-vcenter"
                     onHide={this.props.onClose}
                 >

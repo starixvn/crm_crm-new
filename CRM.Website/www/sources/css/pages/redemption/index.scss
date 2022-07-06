@@ -39,52 +39,52 @@
         float: right;
         cursor: pointer;
     }
-    
-    .modal-edit-redemption {
-        .modal-dialog {
-            
-            .modal-content {
-                width: 768px;
-                margin: auto;
-                .panel-group {
-                    .form-group {
-                        margin-bottom: 4px;
-    
-                        .col-form-label {
-                            padding-right: 0;
-                        }
+       
+    .modal-backdrop {
+        z-index: 1050 !important;
+    }
+}
+
+.modal-edit-redemption {
+    .modal-dialog {
+        
+        .modal-content {
+            width: 768px;
+            margin: auto;
+            .panel-group {
+                .form-group {
+                    margin-bottom: 4px;
+
+                    .col-form-label {
+                        padding-right: 0;
                     }
-    
-                    .panel-title {
-                        display: flex;
-                        align-items: center;
-                        height: 28px;
+                }
+
+                .panel-title {
+                    display: flex;
+                    align-items: center;
+                    height: 28px;
+                    margin: 0;
+                    padding: 0 6px;
+                    color: #2f70b4;
+                    background: linear-gradient(#e7e7e7, #e2e2e2);
+                    border-bottom: 1px solid #b1b1b1;
+                    cursor: pointer;
+
+                    .form-label {
                         margin: 0;
-                        padding: 0 6px;
-                        color: #2f70b4;
-                        background: linear-gradient(#e7e7e7, #e2e2e2);
-                        border-bottom: 1px solid #b1b1b1;
-                        cursor: pointer;
-    
-                        .form-label {
-                            margin: 0;
-                        }
                     }
-    
-                    .panel-content {
-                        padding: 4px 9px;
-                    }
-    
-                    .panel-remark {
-                        border: 1px solid #b1b1b1;
-                        margin: 0 10px;
-                    }
+                }
+
+                .panel-content {
+                    padding: 4px 9px;
+                }
+
+                .panel-remark {
+                    border: 1px solid #b1b1b1;
+                    margin: 0 10px;
                 }
             }
         }
-    }
-    
-    .modal-backdrop {
-        z-index: 1050 !important;
     }
 }

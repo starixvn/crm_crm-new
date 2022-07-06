@@ -37,7 +37,7 @@ export default class Chart extends Component {
         const data = this.getDataChart(chartInfo);
         const labels = this.getLabels(chartInfo);
         return (
-            <Modal show dialogAs={DraggableModalDialog}
+            <Modal className='chart-modal-feedback-statistics' show dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl"
                 onHide={this.props.onClose}
             >

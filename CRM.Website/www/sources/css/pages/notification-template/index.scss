@@ -15,25 +15,25 @@
             }
         }
     }
-    
-    .notification-template-modal {
-        .modal-body {
-            textarea {
-                min-height: 88px;
-                max-height: 184px;
-            }
-        }
-    }
-    
-    .notification-template-content-modal {
-        .modal-body {
-            .content {
-                white-space: pre-line;
-            }
-        }
-    }
-    
+        
     .modal-dialog {
         max-width: 700px;
+    }
+}
+
+.notification-template-modal {
+    .modal-body {
+        textarea {
+            min-height: 88px;
+            max-height: 184px;
+        }
+    }
+}
+
+.notification-template-content-modal {
+    .modal-body {
+        .content {
+            white-space: pre-line;
+        }
     }
 }

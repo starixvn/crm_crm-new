@@ -51,7 +51,7 @@ export default class Chart extends PureComponent {
         const data = this.getDataChart(chartInfo);
         const labels = this.getLabels(chartInfo);
         return (
-            <Modal show dialogAs={DraggableModalDialog}
+            <Modal show dialogAs={DraggableModalDialog} className='modal-chart-issue-statistics'
                 backdrop="static" keyboard={false} size="xl"
                 onHide={this.props.onClose}
             >

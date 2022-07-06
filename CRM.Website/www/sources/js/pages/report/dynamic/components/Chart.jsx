@@ -28,7 +28,7 @@ export class Chart extends Component {
         const labels = this.getLabelChart(chartInfo);
 
         return (
-            <Modal show dialogAs={DraggableModalDialog}
+            <Modal className='chart-modal-dynamic' show dialogAs={DraggableModalDialog}
                 onHide={this.props.onClose} backdrop="static" keyboard={false} size="xl"
             >
             <Modal.Header closeButton>

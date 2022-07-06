@@ -11,7 +11,6 @@
 
 .log-statistics{
     .form-filter {
-
         .react-datepicker__input-container input{
             width: 100% !important;
         }
@@ -181,15 +180,14 @@
             }  
         }
     }
-    
-    .chart-modal-dialog{
-        .modal-content{
-            .recharts-default-legend{
-                li{
-                    width: 270px;
-                }
+}
+
+.chart-modal-dialog-log-statistics{
+    .modal-content{
+        .recharts-default-legend{
+            li{
+                width: 270px;
             }
         }
     }
 }
-

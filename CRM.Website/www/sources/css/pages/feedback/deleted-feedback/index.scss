@@ -73,96 +73,96 @@
             padding-right: 0;
         }
     }
-    
-    .edit-feedback-modal-dialog {
-        .modal-dialog {
-            min-width: 1140px;
-    
-            .modal-content {
-                .panel-group {
-                    border: 1px solid #b1b1b1;
-    
-                    .form-group {
-                        margin-bottom: 4px;
-    
-                        .col-form-label {
-                            padding-right: 0;
-                        }
-    
-                        .fa-question-circle-o {
-                            color: #0789d1;
-                            margin-left: 10px;
-                        }
+       
+    .sweet-alert-modal-backdrop {
+        z-index: 1050 !important;
+    }
+}
+
+.edit-feedback-modal-dialog {
+    .modal-dialog {
+        min-width: 1140px;
+
+        .modal-content {
+            .panel-group {
+                border: 1px solid #b1b1b1;
+
+                .form-group {
+                    margin-bottom: 4px;
+
+                    .col-form-label {
+                        padding-right: 0;
                     }
-    
-                    .panel-title {
-                        display: flex;
-                        align-items: center;
-                        height: 28px;
+
+                    .fa-question-circle-o {
+                        color: #0789d1;
+                        margin-left: 10px;
+                    }
+                }
+
+                .panel-title {
+                    display: flex;
+                    align-items: center;
+                    height: 28px;
+                    margin: 0;
+                    padding: 0 15px;
+                    color: #2f70b4;
+                    background: linear-gradient(#e7e7e7, #e2e2e2);
+                    border-bottom: 1px solid #b1b1b1;
+                    cursor: pointer;
+
+                    .form-label {
                         margin: 0;
-                        padding: 0 15px;
-                        color: #2f70b4;
-                        background: linear-gradient(#e7e7e7, #e2e2e2);
-                        border-bottom: 1px solid #b1b1b1;
-                        cursor: pointer;
-    
-                        .form-label {
-                            margin: 0;
+                    }
+                }
+
+                .panel-content {
+                    padding: 4px 9px;
+
+                    .phone-container {
+                        display: flex;
+
+                        .country {
+                            margin-right: 1%;
+                            width: 22%;
+                        }
+
+                        .area {
+                            margin-right: 1%;
+                            width: 23%;
+                        }
+
+                        .phone {
+                            width: 55%;
                         }
                     }
-    
-                    .panel-content {
-                        padding: 4px 9px;
-    
-                        .phone-container {
-                            display: flex;
-    
-                            .country {
-                                margin-right: 1%;
-                                width: 22%;
-                            }
-    
-                            .area {
-                                margin-right: 1%;
-                                width: 23%;
-                            }
-    
-                            .phone {
-                                width: 55%;
-                            }
+
+                    .pic-container {
+                        display: flex;
+
+                        .pic-name {
+                            margin-right: 1%;
+                            width: 44%;
                         }
-    
-                        .pic-container {
-                            display: flex;
-    
-                            .pic-name {
-                                margin-right: 1%;
-                                width: 44%;
-                            }
-    
-                            .phone {
-                                width: 55%;
-                            }
+
+                        .phone {
+                            width: 55%;
                         }
-    
-                        .customersList {
-                            padding: 5px;
-    
-                            .txt-customer, .txt-guest, .txt-invalid {
-                                width: auto;
-                                border: 1px solid #8e8e8e;
-                                border-radius: 5px;
-                                padding: 1px 4px;
-                                margin: 0 0.5rem 0.5rem 0;
-                            }
+                    }
+
+                    .customersList {
+                        padding: 5px;
+
+                        .txt-customer, .txt-guest, .txt-invalid {
+                            width: auto;
+                            border: 1px solid #8e8e8e;
+                            border-radius: 5px;
+                            padding: 1px 4px;
+                            margin: 0 0.5rem 0.5rem 0;
                         }
                     }
                 }
             }
         }
-    }
-    
-    .sweet-alert-modal-backdrop {
-        z-index: 1050 !important;
     }
 }

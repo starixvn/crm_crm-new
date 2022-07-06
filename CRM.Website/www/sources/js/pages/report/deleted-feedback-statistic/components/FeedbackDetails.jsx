@@ -580,7 +580,7 @@ export default class FeedbackDetails extends Component {
 
         return (
             <div>
-                <Modal show className="feedback-detail" dialogAs={DraggableModalDialog}
+                <Modal show className="feedback-detail-deleted" dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} size="xl" centered
                     onHide={() => this.props.onClose(false)}
                 >

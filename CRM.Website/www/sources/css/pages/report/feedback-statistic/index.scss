@@ -99,62 +99,63 @@
             }
         }
     }
-    
-    
+}
+
+.chart-modal-feedback-statistics{
     .modal-dialog {
         .modal-content {
             left: -9%;
             width: 1350px !important;
         }
     }
-    
-    .feedback-detail .modal-content{
-        width: 1200px;
-        max-height: 900px;
-    
-        .table-container{
-            max-height: 875px !important;
-    
-            .body-content{
-                max-height: 715px !important;
+}
+
+.feedback-detail-statistics .modal-content{
+    width: 1200px;
+    max-height: 900px;
+
+    .table-container{
+        max-height: 875px !important;
+
+        .body-content{
+            max-height: 715px !important;
+        }
+    }
+
+    .manage-feedback-row{
+        .edit-feedback{
+            &:hover {
+                color: $draft-color !important;
             }
         }
     
-        .manage-feedback-row{
-            .edit-feedback{
-                &:hover {
-                    color: $draft-color !important;
-                }
-            }
+        .fa-pencil:before {
+            color: #D3B35D;
+        }
+    
+        strong.link-click {
+            color: $link-color !important;
         
-            .fa-pencil:before {
-                color: #D3B35D;
+            &:hover {
+                color: $draft-color !important;
             }
+        }
         
-            strong.link-click {
-                color: $link-color !important;
-            
-                &:hover {
-                    color: $draft-color !important;
-                }
-            }
-            
-            .feedback-info {
-                padding-left: 17px;
-            
-                .info{
-                    padding: 3px 0px;
-                }
-            }
+        .feedback-info {
+            padding-left: 17px;
         
-            span.fa.fa-file-excel-o.icon-excel {
-                color: #28a745;
-                font-size: 14px;
+            .info{
+                padding: 3px 0px;
             }
-        
-            .break-word{
-                word-break: break-word;
-            }
+        }
+    
+        span.fa.fa-file-excel-o.icon-excel {
+            color: #28a745;
+            font-size: 14px;
+        }
+    
+        .break-word{
+            word-break: break-word;
         }
     }
 }

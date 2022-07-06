@@ -65,53 +65,52 @@
     .word-break{
         word-break: break-all;
     }
-    
-    .feedback-detail {
-        .modal-dialog {
-            max-width: 1600px;
-    
-            .modal-content {
-                .panel-group {
-                    border: 1px solid #b1b1b1;
-    
-                    .panel-title {
-                        display: flex;
-                        align-items: center;
-                        height: 28px;
+}
+
+.feedback-detail-deleted {
+    .modal-dialog {
+        max-width: 1600px;
+
+        .modal-content {
+            .panel-group {
+                border: 1px solid #b1b1b1;
+
+                .panel-title {
+                    display: flex;
+                    align-items: center;
+                    height: 28px;
+                    margin: 0;
+                    padding: 0 10px;
+                    color: #2f70b4;
+                    background: linear-gradient(#e7e7e7, #e2e2e2);
+                    border-bottom: 1px solid #b1b1b1;
+                    cursor: pointer;
+
+                    .form-label {
                         margin: 0;
-                        padding: 0 10px;
-                        color: #2f70b4;
-                        background: linear-gradient(#e7e7e7, #e2e2e2);
-                        border-bottom: 1px solid #b1b1b1;
-                        cursor: pointer;
-    
-                        .form-label {
-                            margin: 0;
-                        }
                     }
-    
-                    .title-username .form-label{
-                        color: red !important;
-                        font-weight: bold !important;
-                    }
-    
-                    .disabled-filed, .selectwithsearchtree{
-                        pointer-events: none;
-                        cursor: not-allowed;
-                        opacity: .7;
-                        background-color: #fff;
-                    }
-    
-                    .panel-content {
-                        padding: 4px 9px;
-    
-                        .react-datepicker-wrapper-container {
-                            width: 100% !important;
-                        }
+                }
+
+                .title-username .form-label{
+                    color: red !important;
+                    font-weight: bold !important;
+                }
+
+                .disabled-filed, .selectwithsearchtree{
+                    pointer-events: none;
+                    cursor: not-allowed;
+                    opacity: .7;
+                    background-color: #fff;
+                }
+
+                .panel-content {
+                    padding: 4px 9px;
+
+                    .react-datepicker-wrapper-container {
+                        width: 100% !important;
                     }
                 }
             }
         }
     }
 }
-

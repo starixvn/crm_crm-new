@@ -80,7 +80,7 @@ export class Chart extends Component {
     render() {
         const {title, data} = this.props.chart;
         return (
-            <Modal show className="chart-modal-dialog" dialogAs={DraggableModalDialog}
+            <Modal show className="chart-modal-dialog-log-statistics" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl" centered
                 onHide={() => this.props.onClose(false)}
             >

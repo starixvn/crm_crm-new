@@ -56,7 +56,7 @@ export class Chart extends Component {
         const data = this.convertDataChart(months, categorySummaries);
         const labels = this.getLabels(categorySummaries);
         return (
-            <Modal show className="chart-modal-dialog" dialogAs={DraggableModalDialog}
+            <Modal show className="chart-modal-dialog-summary" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl"
                 onHide={this.onCloseChart}
             >
