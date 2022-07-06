@@ -153,7 +153,8 @@
 #right-row-container{
     padding: 15px;
     border-left: 1px solid #b7b7b7;
-    min-height: calc(100vh - 78px);
+    max-height: calc(100vh - 78px);
+    overflow-x: auto;
 }
 
 .left-row-empty{

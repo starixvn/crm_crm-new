@@ -1,6 +1,6 @@
 ﻿@section Styles {
     <environment include="Development">
-        <link rel="stylesheet" href="~/www/dist/css/dev/main.chunk.css" />
+        <link rel="stylesheet" href="~/www/dist/css/dev/main.chunk.css" asp-append-version="true"/>
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/www/dist/css/pro/main.chunk.css" asp-append-version="true" />
@@ -8,7 +8,7 @@
 }
 @section Scripts{
     <environment include="Development">
-        <script src="~/www/dist/js/dev/pages/home/index.chunk.js"></script>
+        <script src="~/www/dist/js/dev/pages/home/index.chunk.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
         <script src="~/www/dist/js/pro/pages/home/index.chunk.js" asp-append-version="true"></script>
