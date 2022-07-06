@@ -47,16 +47,6 @@
             this.customerService = customerService;
         }
 
-        public IActionResult Index(int? custId=0, string customerName = "", bool? isGuest = false, bool? isLastFiveRemark = false)
-        {
-            var isHost = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-            ViewBag.customerName = customerName;
-            ViewBag.isGuest = isGuest;
-            ViewBag.isLastFiveRemark = isLastFiveRemark;
-            ViewBag.custId = custId;
-            return View(isHost);
-        }
-
         public async Task<IActionResult> GetRemarkTitles()
         {
             var remarkSettings = await settingService.GetSettingAsync(SettingName.RemarkTitles, true);

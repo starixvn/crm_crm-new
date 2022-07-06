@@ -28,6 +28,10 @@ export class AppContainer extends Component {
         this.props.getRemarkTitles();
     }
 
+    componentWillUnmount(){
+        this.props.resetState();
+    }
+
     handleCloseAddPopup = () => {
         this.props.setOpenCreatePopup({ show: false });
         this.props.setCreateResult(null);

@@ -117,16 +117,21 @@ class Filter extends Component {
                     </a>
                 </li>
                 <li id="li-special-remark" className={this.isActiveTab(pathname, 3) ? 'active' : ''}>
-                    <a onClick = {event => this.handleNavigateSubHome(event, 'Remark')}>
+                    <a onClick = {event => this.handleNavigateSubHome(event, 'SpecialRemark')}>
                         {LangHelper.getResource('SpecialRemark')}
                     </a>
                 </li>
-                <li id="li-redemption" className={this.isActiveTab(pathname, 4) ? 'active' : ''}>
+                <li id="li-special-new-remark" className={this.isActiveTab(pathname, 4) ? 'active' : ''}>
+                    <a onClick = {event => this.handleNavigateNewRemark(event, 'Remark')}>
+                        {LangHelper.getResource('Remark')}
+                    </a>
+                </li>
+                <li id="li-redemption" className={this.isActiveTab(pathname, 5) ? 'active' : ''}>
                     <a onClick = {event => this.handleNavigateSubHome(event, 'Redemption')}>
                         {LangHelper.getResource('Redemption')}
                     </a>
                 </li>
-                <li id="li-activity-log" className={this.isActiveTab(pathname, 5) ? 'active' : ''}>
+                <li id="li-activity-log" className={this.isActiveTab(pathname, 6) ? 'active' : ''}>
                     <a onClick = {event => this.handleNavigateSubHome(event, 'ActionLog')}>
                         {LangHelper.getResource('ActivityLog')}
                     </a>
@@ -145,6 +150,16 @@ class Filter extends Component {
     handleNavigateSubHome = (event, name) =>{
         event.preventDefault();
         this.props.navigate(Site.resolveClientUrl(name), {state: this.props.customerInfo.custId});
+    }
+
+    handleNavigateNewRemark = (event, name) =>{
+        event.preventDefault();
+        const currentCustomer = {
+            custId: this.props.customerInfo !== null ? this.props.customerInfo.custId : 0,
+            isGuest: this.props.isGuest,
+            username: this.props.username
+        };
+        this.props.navigate(Site.resolveClientUrl(name), {state: currentCustomer});
     }
 
     handleConcatMenu = menus => {

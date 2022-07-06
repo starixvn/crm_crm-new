@@ -1,25 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+    remarkTitles: null,
+    allSettings: null,
+    gridParams: { pageIndex: 1, pageSize: 100, username: '', isGuest: false},
+    gridData: null,
+    popupAdd: { show: false },
+    editResult: null,
+    popupEdit: { show: false, data: null, isViewHistory: false },
+    popupDeleteConfirm: { show: false, id: null },
+    deleteResult: null,
+    createResult: null,
+    validateResult: null,
+    remarksHistory: null,
+    showHistory: {show: false},
+    historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: ''},
+    lastFiveRemarks: null
+};
 const newRemarkSlice = createSlice({
     name: 'newRemark',
-    initialState: {
-        remarkTitles: null,
-        allSettings: null,
-        gridParams: { pageIndex: 1, pageSize: 100, username: '', isGuest: false},
-        gridData: null,
-        popupAdd: { show: false },
-        editResult: null,
-        popupEdit: { show: false, data: null, isViewHistory: false },
-        popupDeleteConfirm: { show: false, id: null },
-        deleteResult: null,
-        createResult: null,
-        validateResult: null,
-        remarksHistory: null,
-        showHistory: {show: false},
-        historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: ''},
-        lastFiveRemarks: null
-    },
+    initialState: initialState,
     reducers: {
+        resetState: () => initialState,
         setRemarkTitle: (state, action) => {
             state.remarkTitles = action.payload;
         },
@@ -81,7 +82,8 @@ export const {
     setRemarksHistory,
     setShowHistory,
     setHistoryGridParams,
-    setLastFiveRemark
+    setLastFiveRemark,
+    resetState
 } = actions;
 
 export default reducer;

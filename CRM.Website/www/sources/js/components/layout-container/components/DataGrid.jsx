@@ -61,7 +61,7 @@ export default class DataGrid extends PureComponent {
                         values.uplineInfo.map((value, index) => {
                             return (
                                 <Row className="item" key={index}>
-                                    <Col md="3" className="text-left">
+                                    <Col md="3" className="text-left pl-1">
                                         {value.role.name}
                                     </Col>
                                     <Col md="5" className="text-left">
@@ -80,7 +80,7 @@ export default class DataGrid extends PureComponent {
                     }
                 </Form.Group>
                 <Form.Group className="row item current">
-                    <Col md="3" className="text-left">
+                    <Col md="3" className="text-left pl-1">
                         {values.role.name}
                     </Col>
                     <Col md="5" className="text-left">

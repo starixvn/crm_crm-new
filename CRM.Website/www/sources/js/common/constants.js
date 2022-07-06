@@ -154,9 +154,10 @@ export const SubMainMenu = [
     {id: 1, url: '/Dashboard'},
     {id: 2, url: '/Detail'},
     {id: 3, url: '/Communication'},
-    {id: 4, url: '/Remark'},
-    {id: 5, url: '/Redemption'},
-    {id: 6, url: '/ActionLog'}
+    {id: 4, url: '/SpecialRemark'},
+    {id: 5, url: '/Remark'},
+    {id: 6, url: '/Redemption'},
+    {id: 7, url: '/ActionLog'}
 ];
 
 export const DetailMenu = [

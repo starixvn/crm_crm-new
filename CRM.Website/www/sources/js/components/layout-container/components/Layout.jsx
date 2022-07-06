@@ -235,11 +235,11 @@ class Layout extends Component {
         if(menus.length <=0){
             return null;
         }
-        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
+
         return (
             <div>
                 <div className='fix-header-menu'>
-                    <Header menus={menus} handleNavigate={this.handleNavigate} handleCollapseExpandLayout={this.handleCollapseExpandLayout} />
+                    <Header menus={menus} handleNavigate={this.handleNavigate} handleCollapseExpandLayout={this.handleCollapseExpandLayout} custId={!customerInfo ? 0 : customerInfo.custId}/>
                     <Filter
                         isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                         customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}

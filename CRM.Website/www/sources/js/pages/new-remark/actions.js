@@ -14,7 +14,8 @@ import {
     setRemarksHistory,
     setShowHistory,
     setHistoryGridParams,
-    setLastFiveRemark
+    setLastFiveRemark,
+    resetState
 } from './newRemarkSlice';
 
 const getRemarkTitles= () => async dispatch => {
@@ -112,5 +113,6 @@ export const ActionCreators = {
     getNewRemarkHistory,
     setShowHistory,
     setHistoryGridParams,
-    getLastFiveRemark
+    getLastFiveRemark,
+    resetState
 };

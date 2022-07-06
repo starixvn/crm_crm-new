@@ -221,7 +221,12 @@
     .item.no-border-bg {
         background: none;
         border: none;
-        padding: 0;
+        padding: 0 6px;
+        margin-top: 2px;
+
+        label {
+            padding-left: 0.25rem;
+        }
     }
     
     

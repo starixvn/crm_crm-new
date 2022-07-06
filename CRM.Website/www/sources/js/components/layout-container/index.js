@@ -34,7 +34,9 @@ const MultipleLogsComponent = lazy(() => import('@jsroot/pages/feedback/multiple
 const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
 const CustomerInfoDetailComponent = lazy(() => import('@jsroot/pages/customer/customer-info-detail/index'));
 const CommunicationComponent = lazy(() => import('@jsroot/pages/communication-log/index'));
-const RemarkComponent = lazy(() => import('@jsroot/pages/remark/index'));
+const SpecialRemarkComponent = lazy(() => import('@jsroot/pages/special-remark/index'));
+const NewRemMarkComponent = lazy(() => import('@jsroot/pages/new-remark/index'));
+const RemMarkComponent = lazy(() => import('@jsroot/pages/remark/index'));
 const RedemptionComponent = lazy(() => import('@jsroot/pages/redemption/index'));
 const ActionLogComponent = lazy(() => import('@jsroot/pages/action-log/index'));
 
@@ -49,6 +51,7 @@ const DirectCustomerReportComponent = lazy(() => import('@jsroot/pages/report/di
 const DynamicReportComponent = lazy(() => import('@jsroot/pages/report/dynamic/index'));
 const SettlementReportComponent = lazy(() => import('@jsroot/pages/report/settlement/index'));
 const WagerReportComponent = lazy(() => import('@jsroot/pages/report/wager/index'));
+
 
 export default class Index extends PureComponent {
     render() {
@@ -85,7 +88,9 @@ export default class Index extends PureComponent {
                             <Route path={Site.resolveClientUrl("Dashboard")} element={<DashboardComponent />} />
                             <Route path={Site.resolveClientUrl("Detail")} element={<CustomerInfoDetailComponent />} />
                             <Route path={Site.resolveClientUrl("Communication")} element={<CommunicationComponent />} />
-                            <Route path={Site.resolveClientUrl("Remark")} element={<RemarkComponent />} />
+                            <Route path={Site.resolveClientUrl("SpecialRemark")} element={<SpecialRemarkComponent />} />
+                            <Route path={Site.resolveClientUrl("NewRemark")} element={<NewRemMarkComponent />} />
+                            <Route path={Site.resolveClientUrl("Remark")} element={<RemMarkComponent />} />
                             <Route path={Site.resolveClientUrl("Redemption")} element={<RedemptionComponent />} />
                             <Route path={Site.resolveClientUrl("ActionLog")} element={<ActionLogComponent />} />
 
@@ -100,6 +105,8 @@ export default class Index extends PureComponent {
                             <Route path={Site.resolveClientUrl("DynamicReport/Index")} element={<DynamicReportComponent />} />
                             <Route path={Site.resolveClientUrl("SettlementReport/Index")} element={<SettlementReportComponent />} />
                             <Route path={Site.resolveClientUrl("WagerReport/Index")} element={<WagerReportComponent />} />
+
+
                         </Routes>
                     </Suspense>
                 </Layout>

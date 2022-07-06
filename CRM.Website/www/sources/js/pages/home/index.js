@@ -1,8 +1,6 @@
-import React, {StrictMode} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import Layout from '@jsroot/components/layout-container/index';
 ReactDOM.render(
-    <StrictMode>
-        <Layout />
-    </StrictMode>,
+    <Layout />,
 document.getElementById('app-container'));

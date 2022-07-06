@@ -23,7 +23,7 @@ export class Header extends PureComponent {
                 <div className='menu-title'>
                 <Link 
                     to={item.url !== '' ? Site.resolveClientUrl(item.url.slice(1)) : ''}
-                    state={this.props.custId}
+                    state={item.url === 'NewRemark' ? null : this.props.custId}
                     className='title'
                 >
                     {item.name}
