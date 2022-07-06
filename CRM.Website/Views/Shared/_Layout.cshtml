@@ -43,12 +43,13 @@
     </div>
     <input type="hidden" id="RootUrl" value="@Url.Content("~/")" />
     @Html.AntiForgeryToken()
-    <script type="text/javascript">
+<script type="text/javascript">
         window.currentUsername = '@currentUsername';
         window.clientTimezone = @appSettings.Value.ClientTimezone;
         window.serverTimezone = @appSettings.Value.ServerTimezone;
         window.currentClientTime = '@currentClientTime';
-    </script>
+        window.menus = @Json.Serialize(napSession.MenuItemList);
+</script>
     <environment include="Development">
         <script src="~/www/dist/js/dev/lib/lang-en-US.chunk.js"></script>
         <script src="~/www/dist/js/dev/lib/vendor.chunk.js"></script>
@@ -60,14 +61,6 @@
         <script src="~/www/dist/js/pro/lib/vendor.chunk.js" asp-append-version="true"></script>
         <script src="~/www/dist/js/pro/lib/common.chunk.js" asp-append-version="true"></script>
     </environment>
-    <script type="text/javascript">
-            window.currentUsername = '@currentUsername';
-            window.clientTimezone = @appSettings.Value.ClientTimezone;
-            window.serverTimezone = @appSettings.Value.ServerTimezone;
-            window.currentClientTime = '@currentClientTime';
-            window.menus = @Json.Serialize(napSession.MenuItemList);
-            window.currentCustomer = @Json.Serialize(sessionService.CurrentCustomer);
-    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

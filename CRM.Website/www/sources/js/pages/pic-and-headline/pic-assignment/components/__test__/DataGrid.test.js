@@ -13,12 +13,12 @@ describe('DataGrid', () => {
     beforeEach(() => {
         LangHelper.getResource = jest.fn(value => value);
         const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'app-container');
+        appContainer.setAttribute('id', 'right-row-container');
         document.body.appendChild(appContainer);
     });
 
     afterEach(() => {
-        const appContainer = document.getElementById('app-container');
+        const appContainer = document.getElementById('right-row-container');
         if (appContainer) {
             document.body.removeChild(appContainer);
         }
@@ -1648,7 +1648,7 @@ describe('DataGrid', () => {
 
             // Assert
             expect(dataGrid.find(Table).props().maxWidth).toEqual(calMaxWidth);
-            expect(dataGrid.find(Table).props().width).toEqual(document.getElementById('app-container').clientWidth);
+            expect(dataGrid.find(Table).props().width).toEqual(document.getElementById('right-row-container').clientWidth);
             expect(dataGrid.find(Table).props().autoWidth).toBeFalse;
             expect(dataGrid.find(Table).props().isPaging).toBeTrue;
             expect(dataGrid.find(Table).props().shouldUseMaxWidth).toBeTrue;

@@ -178,8 +178,8 @@ export class DataGrid extends Component {
                     footer={this.renderFooter(gridData)}
                     isFixColumn
                     isPaging = {this.isPagingCheck()}
+                    fixColumns={[0]}
                     widthFixColumns = {[147]}
-                    isPaging = {this.isPagingCheck()}
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
                     containerPadding={0}

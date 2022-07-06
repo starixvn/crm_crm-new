@@ -171,7 +171,8 @@ export class DataGrid extends Component {
         this.setState({ categories });
     };
 
-    getMaxWidth = totalWidth => document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
+    getMaxWidth = totalWidth => document.getElementById('right-row-container').clientWidth < totalWidth ?
+                                document.getElementById('right-row-container').clientWidth : totalWidth;
 
     handleShowChart = () => {
         this.props.setChartPopup({ show: true });

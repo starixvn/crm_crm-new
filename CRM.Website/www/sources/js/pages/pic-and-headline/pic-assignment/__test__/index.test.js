@@ -5,7 +5,7 @@ describe('index', () => {
         const appContainer = document.createElement('div');
         const isHost = document.createElement('div');
         const isReadPicManagement = document.createElement('div');
-        appContainer.setAttribute('id', 'app-container');
+        appContainer.setAttribute('id', 'right-row-container');
         isHost.setAttribute('id', 'is-host');
         isReadPicManagement.setAttribute('id', 'is-read-picmanagement');
         document.body.appendChild(appContainer);
@@ -16,7 +16,7 @@ describe('index', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        const appContainer = document.getElementById('app-container');
+        const appContainer = document.getElementById('right-row-container');
         const isHost = document.getElementById('is-host');
         const isReadPicManagement = document.getElementById('is-read-picmanagement');
         if (appContainer) {

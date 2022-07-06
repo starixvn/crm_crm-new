@@ -340,7 +340,8 @@ export class DataGrid extends Component {
         );
     };
 
-    getMaxWidth = totalWidth => document.getElementById('app-container').clientWidth < totalWidth ? document.getElementById('app-container').clientWidth : totalWidth;
+    getMaxWidth = totalWidth => document.getElementById('right-row-container').clientWidth < totalWidth ?
+                                document.getElementById('right-row-container').clientWidth : totalWidth;
 
     renderLicenseeDailyStatistic = (fromDateFormat, toFormat) => {
         const { licenseeReport } = this.props.mainReports;

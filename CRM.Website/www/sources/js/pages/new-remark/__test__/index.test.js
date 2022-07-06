@@ -8,7 +8,7 @@ describe('index', () => {
         const custId = document.createElement('div');
         const isGuest = document.createElement('div');
         const isLastFiveRemark = document.createElement('div');
-        appContainer.setAttribute('id', 'app-container');
+        appContainer.setAttribute('id', 'right-row-container');
         isHost.setAttribute('id', 'isHost');
         customerName.setAttribute('id', 'customerName');
         custId.setAttribute('id', 'custId');
@@ -25,7 +25,7 @@ describe('index', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        const appContainer = document.getElementById('app-container');
+        const appContainer = document.getElementById('right-row-container');
         const isHost = document.getElementById('isHost');
         const customerName = document.getElementById('customerName');
         const custId = document.getElementById('custId');

@@ -473,7 +473,7 @@ export class DataGrid extends Component {
                 <Table
                     maxWidth={isRenderCommunication ? calMaxWidth : 1350}
                     shouldUseMaxWidth
-                    width={isRenderCommunication ? document.getElementById('app-container').clientWidth : 1350}
+                    width={isRenderCommunication ? document.getElementById('right-row-container').clientWidth : 1350}
                     autoWidth={false}
                     title={title}
                     isFixColumn

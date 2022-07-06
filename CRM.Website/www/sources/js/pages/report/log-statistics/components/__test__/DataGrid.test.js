@@ -10,12 +10,12 @@ describe('DataGrid', () => {
 
     beforeEach(() => {
         const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'app-container');
+        appContainer.setAttribute('id', 'right-row-container');
         document.body.appendChild(appContainer);
     });
 
     afterEach(() => {
-        const appContainer = document.getElementById('app-container');
+        const appContainer = document.getElementById('right-row-container');
         if (appContainer) {
             document.body.removeChild(appContainer);
         }

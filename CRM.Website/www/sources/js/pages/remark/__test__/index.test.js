@@ -4,7 +4,7 @@ describe('index', () => {
     beforeEach(() => {
         const appContainer = document.createElement('div');
         const id = document.createElement('div');
-        appContainer.setAttribute('id', 'app-container');
+        appContainer.setAttribute('id', 'right-row-container');
         id.setAttribute('id', 'id');
         document.body.appendChild(appContainer);
         document.body.appendChild(id);
@@ -13,7 +13,7 @@ describe('index', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        const appContainer = document.getElementById('app-container');
+        const appContainer = document.getElementById('right-row-container');
         if (appContainer) {
             document.body.removeChild(appContainer);
         }
@@ -21,7 +21,6 @@ describe('index', () => {
 
     it('renders dom correctly', () => {
         // Action
-        window.currentCustomer = {custId: 1};        
         require('../index');
 
         // Assert

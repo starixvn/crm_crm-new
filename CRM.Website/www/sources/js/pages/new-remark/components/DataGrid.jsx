@@ -200,7 +200,7 @@ export class DataGrid extends Component {
                     maxWidth={2025}
                     autoWidth={false}
                     shouldUseMaxWidth
-                    width={document.getElementById('app-container').clientWidth}
+                    width={document.getElementById('right-row-container').clientWidth}
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
                     isPaging

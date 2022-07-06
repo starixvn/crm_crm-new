@@ -5,8 +5,8 @@ describe('index', () => {
         const appContainer = document.createElement('div');
         const id = document.createElement('div');
         const name = document.createElement('div');
-        appContainer.setAttribute('id', 'app-container');
-        appContainer.setAttribute('name', 'app-container');
+        appContainer.setAttribute('id', 'right-row-container');
+        appContainer.setAttribute('name', 'right-row-container');
         id.setAttribute('id', 'id');
         name.setAttribute('id', 'name');
         document.body.appendChild(appContainer);
@@ -17,7 +17,7 @@ describe('index', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
-        const appContainer = document.getElementById('app-container');
+        const appContainer = document.getElementById('right-row-container');
         if (appContainer) {
             document.body.removeChild(appContainer);
         }

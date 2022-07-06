@@ -31,7 +31,7 @@ class Layout extends Component {
     async componentDidMount() {
         await this.getSetting();
         this.initDataMenu(window.menus);
-        this.setCurrentCustomer(window.currentCustomer);
+        this.getCurrentCustomer();
         const storage = window.localStorage;
         const isShowingLeftPanel = storage.getItem('isShowingLeftPanel');
         const isKeepLeftPanel = storage.getItem('isKeepLeftPanel');
@@ -51,12 +51,15 @@ class Layout extends Component {
         }).then(() => Site.unblockUI());
     };
 
-    setCurrentCustomer = currentCustomer =>{
-        if(currentCustomer !== undefined && currentCustomer !== null){
-            this.setState({username: currentCustomer.name, isGuest: currentCustomer.isGuest} , () =>{
+    getCurrentCustomer = async () =>{
+        Site.blockUI();
+        const url = Site.resolveClientUrl('CustomerInfo/GetCurrentCustomer');
+        await DataService.getDataAsync(url).then(response => {
+            if(!response || !response.data) return;
+            this.setState({username: response.data.name, isGuest: response.data.isGuest} , () =>{
                 this.getCustomerInfo();
             });
-        }
+        }).then(() => Site.unblockUI());
     };
 
     initDataMenu = menus => {
@@ -128,7 +131,7 @@ class Layout extends Component {
             if (searchText.length >= 2) {
                 const params = this.getParams();
                 const url = Site.resolveClientUrl('CustomerInfo/GetCustomerAutoSuggestion');
-                await DataService.postDataAsync(url,params, this.state.antiToken).then(response => {
+                await DataService.postDataAsync(url,params).then(response => {
                     this.setState({customerSuggestions: response.data});
                 });
             } else {
@@ -152,9 +155,13 @@ class Layout extends Component {
         this.handleSetStorage(true);
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
-        await DataService.postDataAsync(url,params, this.state.antiToken).then(response => {
+        await DataService.postDataAsync(url,params).then(response => {
             if(response.data !== null){
-                this.setState({customerInfo: response.data});
+                this.setState({customerInfo: response.data}, () =>{
+                    if(this.props.location.pathname === '/'){
+                        this.handleNavigate('Dashboard');
+                    }
+                });
             }else if (response.data === null && !this.state.isGuest) {
                 this.setState({
                     showEmptyConfirmPopup: true

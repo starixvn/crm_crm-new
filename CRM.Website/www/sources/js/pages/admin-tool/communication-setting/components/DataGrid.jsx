@@ -127,7 +127,7 @@ export class DataGrid extends Component {
                 <div className='table-title'>{LangHelper.getResource('DefaultCommunicationSetting')}</div>
                 <Table
                     minWidth={960}
-                    maxWidth={document.getElementById('app-container').clientWidth}
+                    maxWidth={document.getElementById('right-row-container').clientWidth}
                     autoWidth
                     header={this.buildHeaderCommunication(isHost)}
                     body={this.buildBodyCommunication(isHost)}

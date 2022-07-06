@@ -9,9 +9,7 @@
     using CRM.Models.Customer;
     using CRM.Services;
     using CRM.Services.Customer;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -52,7 +50,7 @@
             return Json(customerInfo);
         }
 
-        public IActionResult GetCurrentCustomerInfo()
+        public IActionResult GetCurrentCustomer()
         {
             return Json(sessionService.CurrentCustomer);
         }
