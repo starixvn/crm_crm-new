@@ -17,7 +17,7 @@ class Filter extends Component {
             return;
         }
         this.props.getDataGrid().then(() =>{
-            this.props.navigate(Site.resolveClientUrl('Dashboard'), {state: this.props.customerInfo.custId});
+            this.props.handleNavigateDashboard();
         });
     };
 
@@ -102,7 +102,7 @@ class Filter extends Component {
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
                 <li id="li-main" className={this.isActiveTab(pathname, 0) ? 'active' : ''}>
-                    <a onClick = {event => this.handleNavigateSubHome(event, 'Dashboard')}>
+                    <a onClick = {() => this.props.handleNavigateDashboard()}>
                         {LangHelper.getResource('Main')}
                     </a>
                 </li>
@@ -151,6 +151,7 @@ class Filter extends Component {
         event.preventDefault();
         this.props.navigate(Site.resolveClientUrl(name), {state: this.props.customerInfo.custId});
     }
+
 
     handleNavigateNewRemark = (event, name) =>{
         event.preventDefault();

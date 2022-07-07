@@ -13,8 +13,7 @@ const initialState = {
     validateResult: null,
     remarksHistory: null,
     showHistory: {show: false},
-    historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: ''},
-    lastFiveRemarks: null
+    historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: ''}
 };
 const newRemarkSlice = createSlice({
     name: 'newRemark',
@@ -59,9 +58,6 @@ const newRemarkSlice = createSlice({
         },
         setHistoryGridParams: (state, action) => {
             state.historyGridParams = action.payload;
-        },
-        setLastFiveRemark: (state, action) => {
-            state.lastFiveRemarks = action.payload;
         }
     }
 });

@@ -87,7 +87,6 @@
     CommunicationLog: 'Communication Log',
     CRMInfo: 'CRM Info',
     Creator: 'Creator',
-    ClaimedDate: 'Claimed Date',
     CreateNewRemarkSuccessfully: 'Create new remark successfully!',
     Danger: 'Danger',
     DangerOriginal: 'Original',
@@ -189,7 +188,6 @@
     History: 'History',
     HandledBy: 'Handled By',
     Hour: 'Hour',
-    HandledBy: 'Handled By',
     IBanSwiftCode: 'IBAN/SWIFT Code',
     IntroducedBy: 'Introduced By',
     InformHeadlines: 'Inform Headlines',
@@ -261,6 +259,7 @@
     LastUpdateGM8: 'Last Update (GMT+8)',
     LicenseeManager: 'Licensee Manager',
     LoggedOn: 'Logged On',
+    Last5Remarks: 'Last 5 Remarks',
     MappingStatus: 'Mapping Status',
     MessageID: 'Message ID',
     Month: 'Month',
@@ -492,6 +491,7 @@
     VIP: 'VIP',
     Validate: 'Validate',
     Version: 'Version',
+    ViewAllRemarks: 'View All Remarks',
     WithoutAnyGroup: 'Without any group',
     WeChat: 'WeChat',
     WhatApp: "What's App",
@@ -508,6 +508,5 @@
     Languages: 'Languages',
     Welcome: 'Welcome',
     SignOut: 'Sign Out',
-    PleaseInputUseCommunicationType: 'Communication Type',
-    PleaseInputUsername: 'Please Input Username!'
+    PleaseInputUseCommunicationType: 'Communication Type'
 };

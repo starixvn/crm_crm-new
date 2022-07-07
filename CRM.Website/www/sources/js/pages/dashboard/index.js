@@ -17,7 +17,10 @@ class index extends PureComponent {
         return(
             <Provider store={store}>
                 <div className='dashboard'>
-                    <AppContainer custId={!location.state ? null : location.state.toString()}/>
+                    <AppContainer 
+                        currentCustomer={location.state}
+                        custId={location.state.custId || location.state}
+                    />
                 </div>
             </Provider>
         );

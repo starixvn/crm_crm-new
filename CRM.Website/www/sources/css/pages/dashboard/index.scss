@@ -81,6 +81,20 @@
             -moz-appearance: textfield;
         }
     }
+
+    .table-last-five-remarks{
+        .table-container{
+            .body-content{
+                max-height: 180px !important;
+            }
+        }
+
+        u{
+            cursor: pointer;
+        }
+
+        padding-bottom: 15px;
+    }
     
     .dataGrid-remark {
         width: 70%;

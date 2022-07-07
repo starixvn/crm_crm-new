@@ -36,7 +36,7 @@ const CustomerInfoDetailComponent = lazy(() => import('@jsroot/pages/customer/cu
 const CommunicationComponent = lazy(() => import('@jsroot/pages/communication-log/index'));
 const SpecialRemarkComponent = lazy(() => import('@jsroot/pages/special-remark/index'));
 const NewRemMarkComponent = lazy(() => import('@jsroot/pages/new-remark/index'));
-const RemMarkComponent = lazy(() => import('@jsroot/pages/remark/index'));
+const ReMarkComponent = lazy(() => import('@jsroot/pages/remark/index'));
 const RedemptionComponent = lazy(() => import('@jsroot/pages/redemption/index'));
 const ActionLogComponent = lazy(() => import('@jsroot/pages/action-log/index'));
 
@@ -90,7 +90,7 @@ export default class Index extends PureComponent {
                             <Route path={Site.resolveClientUrl("Communication")} element={<CommunicationComponent />} />
                             <Route path={Site.resolveClientUrl("SpecialRemark")} element={<SpecialRemarkComponent />} />
                             <Route path={Site.resolveClientUrl("NewRemark")} element={<NewRemMarkComponent />} />
-                            <Route path={Site.resolveClientUrl("Remark")} element={<RemMarkComponent />} />
+                            <Route path={Site.resolveClientUrl("Remark")} element={<ReMarkComponent />} />
                             <Route path={Site.resolveClientUrl("Redemption")} element={<RedemptionComponent />} />
                             <Route path={Site.resolveClientUrl("ActionLog")} element={<ActionLogComponent />} />
 

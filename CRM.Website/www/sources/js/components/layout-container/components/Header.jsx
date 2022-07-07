@@ -23,7 +23,7 @@ export class Header extends PureComponent {
                 <div className='menu-title'>
                 <Link 
                     to={item.url !== '' ? Site.resolveClientUrl(item.url.slice(1)) : ''}
-                    state={item.url === 'NewRemark' ? null : this.props.custId}
+                    state={item.url === '/Dashboard' ? this.props.currentCustomerInfo : this.props.currentCustomerInfo.custId}
                     className='title'
                 >
                     {item.name}
@@ -75,7 +75,7 @@ export class Header extends PureComponent {
             <div className='header'>
                 <div className='left-header'>
                     <img src={Site.resolveClientUrl('www/dist/css/images/icon/logo-crm.png')} 
-                        onClick={() => this.props.handleNavigate(Site.resolveClientUrl('/Dashboard'))}
+                        onClick={() => this.props.handleNavigateDashboard()}
                     />
                     <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" onClick={handleCollapseExpandLayout}/></span>
                 </div>

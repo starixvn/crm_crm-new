@@ -7,6 +7,8 @@ import LangHelper from '@jsroot/common/langHelper';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import Site from '@jsroot/common/site';
+import WithNavigation from '@jsroot/components/WithNavigation';
 
 export class LastFiveRemarkDataGrid extends Component {
     constructor(props) {
@@ -17,7 +19,6 @@ export class LastFiveRemarkDataGrid extends Component {
         const param = {custId: this.props.custId};
         this.props.getLastFiveRemark(param);
     }
-
 
     buildHeader = () => {
         return (
@@ -70,6 +71,13 @@ export class LastFiveRemarkDataGrid extends Component {
         this.props.setOpenEditPopup({show: true, data: item, isViewHistory: false});
     };
 
+    handleViewNewRemark = event =>{
+        event.preventDefault();
+        this.props.navigate(Site.resolveClientUrl('Remark'), 
+                {state: this.props.currentCustomer}
+        );
+    }
+
     render() {
         const {lastFiveRemarks} = this.props;
         if(!lastFiveRemarks){
@@ -77,8 +85,12 @@ export class LastFiveRemarkDataGrid extends Component {
         }
         return (
             <div className="table-last-five-remarks">
+                <div className='table-title d-flex justify-content-between align-items-center'>
+                    <span>{LangHelper.getResource('Last5Remarks')}</span>
+                    <u onClick={this.handleViewNewRemark}>{LangHelper.getResource('ViewAllRemarks')}</u>
+                </div>
                 <Table
-                    width={985}
+                    width={1025}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     autoWidth={false}
@@ -101,4 +113,5 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LastFiveRemarkDataGrid);
+const FunctionBarWithNavigation = WithNavigation(LastFiveRemarkDataGrid);
+export default connect(mapStateToProps, mapDispatchToProps)(FunctionBarWithNavigation);

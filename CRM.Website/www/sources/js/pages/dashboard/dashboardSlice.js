@@ -8,7 +8,8 @@ const initialState = {
     editCommunicationDialog: { show: false },
     createCommunicationDialog: { show: false },
     customerInfoVerify: null,
-    editCustomerVerifyDialog: { show: false }
+    editCustomerVerifyDialog: { show: false },
+    lastFiveRemarks: null
 };
 const dashboardSlice = createSlice({
     name: 'dashboard',
@@ -41,6 +42,9 @@ const dashboardSlice = createSlice({
         },
         setEditCustomerVerifyDialog: (state, action) => {
             state.editCustomerVerifyDialog = action.payload;
+        },
+        setLastFiveRemark: (state, action) => {
+            state.lastFiveRemarks = action.payload;
         }
     }
 });
@@ -57,6 +61,7 @@ export const {
     setCreateCommunicationDialog,
     setCustomerInfoVerify,
     setEditCustomerVerifyDialog,
+    setLastFiveRemark,
     resetState
 } = actions;
 

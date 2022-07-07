@@ -14,6 +14,7 @@ class Layout extends Component {
             menus: [],
             username: null,
             isGuest: false,
+            isCreditSite: false,
             customerInfo: null,
             settings: null,
             gridParams: {
@@ -156,10 +157,15 @@ class Layout extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
         await DataService.postDataAsync(url,params).then(response => {
-            if(response.data !== null){
+            if(response !== undefined && response.data !== null){
                 this.setState({customerInfo: response.data}, () =>{
+                    const siteCredits = this.state.settings.sites.filter(site =>site.name === 'Credit');
+                    const isCreditSite = siteCredits.filter(x => x.childSites.some(y => this.state.customerInfo.siteId === y.id)).length > 0;
+                    this.setState({isCreditSite});
                     if(this.props.location.pathname === '/'){
-                        this.handleNavigate('Dashboard');
+                        this.setState({isCreditSite}, () =>{
+                            this.handleNavigateDashboard();
+                        });
                     }
                 });
             }else if (response.data === null && !this.state.isGuest) {
@@ -172,6 +178,24 @@ class Layout extends Component {
             });
         }}).then(() => Site.unblockUI());
     };
+
+    handleNavigateDashboard = () =>{
+        const currentCustomer = this.getCurrentCustomerInfo();
+        this.props.navigate(Site.resolveClientUrl('Dashboard'), 
+            {state: currentCustomer}
+        );
+    }
+
+    getCurrentCustomerInfo = () =>{
+        const {customerInfo, isGuest, username, isCreditSite } = this.state;
+        const currentCustomer = {
+            custId: customerInfo?.custId,
+            isGuest: isGuest,
+            username: username,
+            isCreditSite: isCreditSite
+        };
+        return currentCustomer;
+    }
 
     handleNavigate = name => this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo?.custId});
 
@@ -232,19 +256,23 @@ class Layout extends Component {
     render() {
         const {customerInfo, isGuest, customerSuggestions, showEmptyConfirmPopup,
             username, showEmptyCustomerInfoPopup, menus, isShowingLeftPanel } = this.state;
-        if(menus.length <=0){
+        if(menus.length <= 0){
             return null;
         }
+
+        const currentCustomerInfo = this.getCurrentCustomerInfo();
 
         return (
             <div>
                 <div className='fix-header-menu'>
-                    <Header menus={menus} handleNavigate={this.handleNavigate} handleCollapseExpandLayout={this.handleCollapseExpandLayout} custId={!customerInfo ? 0 : customerInfo.custId}/>
+                    <Header menus={menus} handleNavigate={this.handleNavigate} currentCustomerInfo={currentCustomerInfo}
+                        handleNavigateDashboard={this.handleNavigateDashboard} handleCollapseExpandLayout={this.handleCollapseExpandLayout}
+                    />
                     <Filter
                         isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                         customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
                         showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
-                        showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
+                        showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} handleNavigateDashboard={this.handleNavigateDashboard}
                         handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
                     />
                 </div>

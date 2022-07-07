@@ -14,7 +14,6 @@ import {
     setRemarksHistory,
     setShowHistory,
     setHistoryGridParams,
-    setLastFiveRemark,
     resetState
 } from './newRemarkSlice';
 
@@ -82,14 +81,6 @@ const getNewRemarkHistory = params => async dispatch => {
     }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
-const getLastFiveRemark = params => async dispatch => {
-    Site.blockUI();
-    const url = Site.resolveClientUrl('NewRemark/GetLastFiveRemark');
-    await DataService.postDataAsync(url,params).then(response => {
-        dispatch(setLastFiveRemark(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
-};
-
 export const ActionCreators = {
     getRemarkTitles,
     setRemarkTitle,
@@ -113,6 +104,5 @@ export const ActionCreators = {
     getNewRemarkHistory,
     setShowHistory,
     setHistoryGridParams,
-    getLastFiveRemark,
     resetState
 };

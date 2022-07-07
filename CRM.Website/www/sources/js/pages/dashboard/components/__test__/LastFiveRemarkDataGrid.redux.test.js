@@ -2,7 +2,7 @@ jest.mock('react-redux');
 jest.mock('redux');
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ActionCreators } from '../../actions';
+import { ActionCreators } from '../../../new-remark/actions';
 
 describe('connect ', () => {
     let mapStateToProps, mapDispatchToProps;

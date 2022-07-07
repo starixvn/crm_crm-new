@@ -12,6 +12,7 @@ import EditCommunicationLog from '../../communication-log/components/EditCommuni
 import CreateCommunicationLog from '../../communication-log/components/CreateCommunicationLog';
 import CustomerInfoVerify from './CustomerInfoVerify';
 import EditCustomerInfoVerify from './EditCustomerInfoVerify';
+import LastFiveRemarkDataGrid from './LastFiveRemarkDataGrid';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 
@@ -98,13 +99,17 @@ export class AppContainer extends Component {
         }
 
         const {
-            editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
-            createCommunicationDialog, editCustomerVerifyDialog, custId
+            custId, editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
+            createCommunicationDialog, editCustomerVerifyDialog, currentCustomer
         } = this.props;
         return (
             <div>
                 <div className="d-flex justify-content-between">
-                    <div className="dataGrid-remark"><DataGridRemark id={custId} /></div>
+                    {
+                        !currentCustomer.isCreditSite ?
+                        <div className="dataGrid-remark"><DataGridRemark id={custId} /></div> :
+                        <div className="dataGrid-remark"><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} /></div>
+                    }
                     <div className="information"><CustomerInfoVerify id={custId}/></div>
                 </div>
                 <DataGridRedemption id={custId} />

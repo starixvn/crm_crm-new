@@ -11,6 +11,7 @@ import {
     setCreateCommunicationDialog,
     setCustomerInfoVerify,
     setEditCustomerVerifyDialog,
+    setLastFiveRemark,
     resetState
 } from './dashboardSlice';
 
@@ -48,6 +49,15 @@ const editCustomerVerify = params => async () => {
     return await DataService.postDataAsync(url,params).then(response => response);
 };
 
+
+const getLastFiveRemark = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('NewRemark/GetLastFiveRemark');
+    await DataService.postDataAsync(url,params).then(response => {
+        dispatch(setLastFiveRemark(response.data));
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
     getCustomerRemarks,
     getRedemptionLogs,
@@ -59,5 +69,7 @@ export const ActionCreators = {
     getCustomerInfoVerify,
     setEditCustomerVerifyDialog,
     editCustomerVerify,
+    getLastFiveRemark,
+    setLastFiveRemark,
     resetState
 };
