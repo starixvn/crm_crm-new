@@ -47,6 +47,10 @@
                 };
                 sessionService.CurrentCustomer = currentCustomer;
             }
+            else
+            {
+                sessionService.CurrentCustomer = null;
+            }
             return Json(customerInfo);
         }
 

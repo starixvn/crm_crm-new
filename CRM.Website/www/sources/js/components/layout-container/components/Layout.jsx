@@ -148,6 +148,9 @@ class Layout extends Component {
     getDataGrid = async () =>{
         await this.getCustomerInfo();
         await this.getSetting();
+        this.setState({isShowingLeftPanel: true}, () =>{
+           this.handleSetStorage(this.state.isShowingLeftPanel);
+        });
     };
 
     getCustomerInfo = async () => {
@@ -157,24 +160,23 @@ class Layout extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
         await DataService.postDataAsync(url,params).then(response => {
+            this.setState({customerInfo: response.data});
             if(response !== undefined && response.data !== null){
-                this.setState({customerInfo: response.data}, () =>{
-                    const siteCredits = this.state.settings.sites.filter(site =>site.name === 'Credit');
-                    const isCreditSite = siteCredits.filter(x => x.childSites.some(y => this.state.customerInfo.siteId === y.id)).length > 0;
-                    this.setState({isCreditSite});
-                    if(this.props.location.pathname === '/'){
-                        this.setState({isCreditSite}, () =>{
-                            this.handleNavigateDashboard();
-                        });
-                    }
-                });
+                const siteCredits = this.state.settings.sites.filter(site =>site.name === 'Credit');
+                const isCreditSite = siteCredits.filter(x => x.childSites.some(y => this.state.customerInfo.siteId === y.id)).length > 0;
+                this.setState({isCreditSite});
+                if(this.props.location.pathname === '/'){
+                    this.setState({isCreditSite}, () =>{
+                        this.handleNavigateDashboard();
+                    });
+                }
             }else if (response.data === null && !this.state.isGuest) {
                 this.setState({
                     showEmptyConfirmPopup: true
                 });
             }else if(response.data === null) {
                 this.setState({
-                    showEmptyCustomerInfoPopup: true
+                showEmptyCustomerInfoPopup: true
             });
         }}).then(() => Site.unblockUI());
     };
@@ -259,6 +261,7 @@ class Layout extends Component {
         if(menus.length <= 0){
             return null;
         }
+
 
         const currentCustomerInfo = this.getCurrentCustomerInfo();
 

@@ -152,7 +152,7 @@ export class DataGrid extends Component {
                 <Table
                     maxWidth={4300}
                     shouldUseMaxWidth
-                    width={document.getElementById('aright-row-container').clientWidth}
+                    width={document.getElementById('right-row-container').clientWidth}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody(customerList)}

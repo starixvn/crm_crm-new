@@ -28,6 +28,7 @@ body {
 }
 
 .loading-process {
+    background: rgba(255, 255, 255, 0.1) no-repeat;
     height: 100%;
     width: 100%;
     position: fixed;
@@ -62,7 +63,7 @@ body {
         max-width: 540px;
 
         &.Toastify__toast-container--top-center {
-            top: 0;
+            top: 30px;
         }
 
         .Toastify__toast {
@@ -95,7 +96,7 @@ body {
         position: sticky;
         width: 100%;
         top: 0;
-        z-index: 1;
+        z-index: 999;
 
         .header{
             min-width: 1485px;
@@ -171,7 +172,7 @@ body {
                 position: absolute;
                 left: 0;
                 width: 215px;
-                z-index: 9999;
+                z-index: 999;
                 margin-top: 10px;
                 background-color: #39496d;
                 display: none;
