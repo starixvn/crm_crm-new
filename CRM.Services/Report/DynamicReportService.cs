@@ -45,6 +45,8 @@
                 ChildReports = new List<DynamicReportInfo>()
             };
 
+            dynamicReport.ChildReports.ForEach(x => x.ChildReports.ForEach(y => y.FeedbackDate = commonService.ConvertToServerDateTime(y.FeedbackDate)) );
+
             var childReportLength = dynamicReport.ChildReports.Count;
             for (var periodIndex = 0; periodIndex < childReportLength; periodIndex++)
             {
@@ -55,7 +57,7 @@
                     Name = periodReport.Name,
                     ShortName = periodReport.ShortName,
                     TotalChildReports = periodReport.TotalChildReports
-                });
+            });
             }
 
             return new DynamicReportInfo

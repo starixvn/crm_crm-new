@@ -262,10 +262,10 @@ export class DataGrid extends Component {
 
         const defaultWidth = 420;
         const totalWidth = defaultWidth + gridData.usernames.length * 155;
-        const width = document.getElementById('right-row-container').clientWidth < totalWidth ? document.getElementById('right-row-container').clientWidth : totalWidth;
+        const width = document.getElementById('right-row-container').clientWidth -31 < totalWidth ? document.getElementById('right-row-container').clientWidth -31 : totalWidth;
 
         return (
-            <div style={{width: width}}>
+            <div style={{maxWidth:width}}>
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>{gridData.title}</span>
                     {
@@ -273,7 +273,7 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    width={totalWidth}
+                    width={totalWidth-2}
                     autoWidth={false}
                     header={this.buildHeader(gridData)}
                     body={this.buildBody(gridData)}

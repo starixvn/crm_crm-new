@@ -91,8 +91,8 @@ export class Filter extends Component {
     };
 
     validateDuration = (fromDuration, toDuration) =>{
-        const timeBegin = (fromDuration.day * 86400) + (fromDuration.hour * 3600) + (fromDuration.minute * 60) + (fromDuration.second);
-        const timeEnd = (toDuration.day * 86400) + (toDuration.hour * 3600) + (toDuration.minute * 60) + toDuration.second;
+        const timeBegin = Number((fromDuration.day * 86400) + (fromDuration.hour * 3600) + (fromDuration.minute * 60) + (fromDuration.second));
+        const timeEnd = Number((toDuration.day * 86400) + (toDuration.hour * 3600) + (toDuration.minute * 60) + toDuration.second);
         const isInValid = (timeBegin > timeEnd && timeBegin !== 0 && timeEnd !== 0);
         if ((timeBegin !== 0 && timeEnd === 0) || isInValid) {
             toast.error(LangHelper.getResource('NotificationSubmitDurationIsWrong'));

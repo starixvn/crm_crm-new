@@ -174,7 +174,7 @@
         {
             const string ExcelTemplatePath = "ExcelTemplates/ManageFeedback.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories, true, ViewResources.ManageFeedback);
+            var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories, true, ViewResources.Feedback);
             return excel.Export();
         }
 

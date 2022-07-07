@@ -107,8 +107,8 @@ export class Filter extends Component {
         const subCategories = this.filterSubCategories(data.subCategories, this.state.mainCategoryId);
         const reviews = [
             { settingValue: 'All', settingId: '' },
-            { settingValue: 'Review', settingId: 1 },
-            { settingValue: 'Not Reviewd', settingId: 0 }
+            { settingValue: 'Reviewed', settingId: 1 },
+            { settingValue: 'Not Reviewed', settingId: 0 }
         ];
         const customerTypes = [
             { settingValue: 'All', settingId: '' },
@@ -236,7 +236,7 @@ export class Filter extends Component {
                         {LangHelper.getResource('Is Reviewed')}
                     </Form.Label>
                     <Col sm="2" md="2" className="filter-col">
-                        <Form.Control as="select" size="sm" className="shadow-none"
+                        <Form.Control as="select" size="sm" className="shadow-none dropdown-Reviewed"
                             name="isReviewed"
                             onChange={this.handleChange}
                         >

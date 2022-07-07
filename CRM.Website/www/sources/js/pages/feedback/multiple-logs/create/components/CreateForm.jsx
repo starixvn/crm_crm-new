@@ -530,7 +530,7 @@ export class CreateForm extends Component {
                             <Col sm="1" md="1">
                                 <OverlayTrigger
                                     placement="bottom-end"
-                                    overlay={<Tooltip>Role, Site, Licensee Type shall be update automatically by system!</Tooltip>}
+                                    overlay={<Tooltip>Role, Site, Licensee Type shall be updated automatically by system!</Tooltip>}
                                 >
                                     <span className="fa fa-exclamation-circle" />
                                 </OverlayTrigger>
@@ -661,7 +661,7 @@ export class CreateForm extends Component {
                             />
                         </OverlayTrigger>
                     </Col>
-                    <Form.Label column sm="2" md="2">{LangHelper.getResource('Language')}</Form.Label>
+                    <Form.Label column sm="2" className="required" md="2">{LangHelper.getResource('Language')}</Form.Label>
                     <Col sm="3" md="3">
                         <Form.Control as="select" size="sm" className="shadow-none"
                             value={values.languageId} onChange={handleChange}

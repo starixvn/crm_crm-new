@@ -112,7 +112,7 @@ export class Filter extends Component {
 
         const reviews = [
             { settingValue: 'All', settingId: '' },
-            { settingValue: 'Review', settingId: 1 },
+            { settingValue: 'Reviewed', settingId: 1 },
             { settingValue: 'Not Reviewed', settingId: 0 }
         ];
 

@@ -164,6 +164,7 @@ export class DataGrid extends Component {
                     <div className="pl-3">
                         <div className="py-1">Feedback date <strong>{feedbackDateFormat}</strong></div>
                         <div className="py-1">By<strong> {item.creatorName} </strong>on {createDateFormat}</div>
+                        <div className="py-1">Solving Duration: {item.durationTime}</div>
                         {
                             item.reviewerName &&
                             <div className="info">

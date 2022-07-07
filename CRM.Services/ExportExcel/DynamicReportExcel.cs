@@ -49,7 +49,9 @@
         {
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]
               .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]);
-            worksheet.Cells[1, 1].Value = titleExcel;
+            var toltalReport = 0;
+            dynamicReportInfos.ChildReports.ForEach(dynamicReportInfo => toltalReport += dynamicReportInfo.TotalChildReports);
+            worksheet.Cells[1, 1].Value = titleExcel + " ["+ toltalReport +"]";
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)

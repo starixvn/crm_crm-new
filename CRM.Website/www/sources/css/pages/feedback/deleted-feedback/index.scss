@@ -20,6 +20,11 @@
         min-width: 1142px !important;
         max-width: 1340px !important;
     }
+
+    .header-content .table > thead > tr > th {
+        border: none;
+        border-right: 1px solid #b7b7b7;
+    }
     
     strong.link-click {
         cursor: pointer;
@@ -40,7 +45,9 @@
         .filter-title{
             width: 9%;
         }
-        
+        .dropdown-Reviewed{
+            margin-left: 5px;
+        }
         .row{
             margin-left: 0;
             margin-right: 0;

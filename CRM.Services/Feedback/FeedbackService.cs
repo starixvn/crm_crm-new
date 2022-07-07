@@ -15,6 +15,7 @@
     using CRM.Models.LatestFeedback;
     using CRM.Repositories;
     using CRM.Resources;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -105,12 +106,7 @@
 
             foreach (var feedback in feedbacks)
             {
-                var totalDays = feedback.ResolutionDate - feedback.FeedbackDate;
-                feedback.DurationTime = string.Format("{0}:{1}:{2}:{3}",
-                                                            totalDays.Days,
-                                                            totalDays.Hours,
-                                                            totalDays.Minutes,
-                                                            totalDays.Seconds);
+                feedback.DurationTime = calculationDuration(feedback.ResolutionDate, feedback.FeedbackDate);
                 feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
                 feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
                 feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
@@ -147,8 +143,8 @@
             {
                 Username = param.Username,
                 IsGuest = param.IsGuest,
-                FromDate = param.FromDate,
-                ToDate = param.ToDate,
+                FromDate = commonService.ConvertClientFromTimeToServerTime(param.FromDate),
+                ToDate = commonService.ConvertClientToTimeToServerTime(param.ToDate),
                 MainCategoryId = param.MainCategoryId,
                 SubCategoryId = param.SubCategoryId,
                 CommunicationId = param.CommunicationId,
@@ -163,6 +159,7 @@
 
             foreach (var feedback in feedbacks)
             {
+                feedback.DurationTime = calculationDuration(feedback.ResolutionDate, feedback.FeedbackDate);
                 feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
                 feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
                 feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
@@ -173,6 +170,17 @@
 
             return feedbacks;
         }
+
+        private string calculationDuration(DateTime ResolutionDate, DateTime FeedbackDate)
+        {
+            var totalDays = ResolutionDate - FeedbackDate;
+            return string.Format("{0}:{1}:{2}:{3}",
+                                                        totalDays.Days,
+                                                        totalDays.Hours,
+                                                        totalDays.Minutes,
+                                                        totalDays.Seconds);
+        }
+
         public async Task<IEnumerable<DeletedFeedback>> GetFeedbackStatisticAsyncDetail(GetFeedbackStatisticDetailCriteria criteria)
         {
             var status = await settingService.GetStatusAsync(ViewTypeConstants.All);
@@ -184,13 +192,7 @@
 
             foreach (var feedback in feedbackStatistic)
             {
-                var totalDays = feedback.ResolutionDate - feedback.FeedbackDate;
-
-                feedback.DurationTime = string.Format( "{0}:{1}:{2}:{3}",
-                                                        totalDays.Days,
-                                                        totalDays.Hours,
-                                                        totalDays.Minutes,
-                                                        totalDays.Seconds);
+                feedback.DurationTime = calculationDuration(feedback.ResolutionDate, feedback.FeedbackDate);
                 feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
                 feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
                 feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
@@ -204,6 +206,13 @@
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
+
+            foreach (var feedback in feedbacks)
+            {
+                feedback.DurationTime = calculationDuration(feedback.ResolutionDate, feedback.FeedbackDate);
+                feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
+                feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
+            }
             return feedbacks;
         }
 

@@ -225,6 +225,7 @@ export default class AppContainer extends Component {
             responseId: feedback.responseId,
             languageId: feedback.languageId,
             statusId: feedback.statusId,
+            relatedCustomers: feedback.relatedCustomers,
             roleId: feedback.roleId,
             countryId: feedback.countryId,
             noInquiries: feedback.noInquiries > 0 ? feedback.noInquiries : '',
@@ -240,7 +241,8 @@ export default class AppContainer extends Component {
             isOverwrite: false,
             isPreviewDescription: true,
             isPreviewSolution: true,
-            customerNameInput: ''
+            customerNameInput: '',
+            reviewNameInput:''
         };
     };
 
@@ -286,7 +288,8 @@ export default class AppContainer extends Component {
             line: feedback.line,
             letstalk: feedback.yahoo,
             qq: feedback.qq,
-            zalo: feedback.bbm
+            zalo: feedback.bbm,
+            relatedCustomers: feedback.relatedCustomers
         };
     };
 
@@ -437,9 +440,13 @@ export default class AppContainer extends Component {
 
     validateFormik = values => {
         const errors = {};
-
-        if (values.hasRelated && this.state.fieldInput.customerNameInput !== '') {
+        console.log(this.props);
+        if (values.hasRelated && this.state.fieldInput.customerNameInput !== '' && values.relatedCustomers.length ===0) {
             errors.customerNameInput = 'You must verify the username before saving this feedback.';
+        }
+    
+        if (values.isReviewed && values.review === '') {
+            errors.reviewNameInput = 'Review  is required!';
         }
 
         if (moment(values.feedbackDate).isAfter(moment(values.resolutionDate))) {
