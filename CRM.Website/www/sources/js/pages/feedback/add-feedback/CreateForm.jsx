@@ -1018,12 +1018,23 @@ export default class CreateForm extends Component {
 
     createFeedback = async () => {
         const { params } = this.props.confirmCreateGuestDialog;
-        this.props.addFeedback(params).then(() => {
+        await this.props.addFeedback(params).then(() => {
             this.handleCloseConfirmCreateGuestDialog();
             if (this.props.addFeedbackResult.isSuccessful) {
-                setTimeout(() => {
-                    window.location = Site.resolveClientUrl('CustomerInfo/Index');
-                }, 3000);
+                const paramsCustomer = {
+                    username: params.UserName,
+                    isGuest: true
+                };
+                const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
+                DataService.postDataAsync(url,paramsCustomer).then(response => {
+                    if(!response || !response.data){
+                        return;
+                    }else{
+                        setTimeout(() => {
+                            window.location = Site.resolveClientUrl('');
+                        }, 3000);
+                    }
+                });
             }
         });
     };
