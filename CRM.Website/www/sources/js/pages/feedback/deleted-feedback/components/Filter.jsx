@@ -84,7 +84,7 @@ export class Filter extends Component {
             responseId: responseId,
             isReviewed: isReviewed,
             pageIndex: 1,
-            pageSize: 100
+            pageSize: this.props.gridParams.pageSize
         };
         this.props.setGridParams(params);
         this.props.getDeletedFeedback(params);
