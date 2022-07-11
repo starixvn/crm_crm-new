@@ -440,6 +440,7 @@ export class EditCommunicationLog extends Component {
                                 <DatePicker timeInputLabel="Time:" showTimeInput isInvalid={touched.startTime && errors.startTime}
                                     selected={values.startTime}
                                     dropdownMode="select"
+                                    useShortMonthInDropdown
                                     showMonthDropdown
                                     showYearDropdown
                                     onChange={value => setFieldValue('startTime', value)}
@@ -474,6 +475,7 @@ export class EditCommunicationLog extends Component {
                                     selected={values.endTime}
                                     dropdownMode="select"
                                     showMonthDropdown
+                                    useShortMonthInDropdown
                                     showYearDropdown
                                     onChange={value => setFieldValue('endTime', value)}
                                 />

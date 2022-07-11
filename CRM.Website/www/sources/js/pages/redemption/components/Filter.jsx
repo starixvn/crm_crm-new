@@ -84,7 +84,7 @@ export class Filter extends Component {
                             <DatePicker
                                 dropdownMode="select"
                                 showMonthDropdown
-                                showYearDropdown
+                                showYearDropdown useShortMonthInDropdown
                                 selected={this.state.fromDate}
                                 maxDate={this.state.maxFromDate}
                                 minDate={this.state.minFromDate}
@@ -100,7 +100,7 @@ export class Filter extends Component {
                             <DatePicker
                                 dropdownMode="select"
                                 showMonthDropdown
-                                showYearDropdown
+                                showYearDropdown useShortMonthInDropdown
                                 selected={this.state.toDate}
                                 maxDate={this.state.maxToDate}
                                 minDate={this.state.minToDate}

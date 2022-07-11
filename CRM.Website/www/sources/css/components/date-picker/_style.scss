@@ -38,6 +38,7 @@
 }
 
 .react-datepicker__header {
+    padding-top: 16px !important;
     background: #fff;
     border-bottom: none;
 }
@@ -49,6 +50,7 @@
 }
 
 .react-datepicker__current-month {
+    display: none;
     line-height: 2.5rem;
     font-size: 1.2rem;
 }
@@ -101,7 +103,7 @@
     background: #ecedef;
 }
 
-.react-datepicker__navigation {
+.react-datepicker__navigation{
     border: none;
     background: #ecedef;
     border-radius: 50%;

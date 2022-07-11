@@ -460,6 +460,7 @@ export class CreateCommunicationLog extends Component {
                                     timeInputLabel="Time:"
                                     dropdownMode="select"
                                     showMonthDropdown
+                                    useShortMonthInDropdown
                                     showYearDropdown
                                     showTimeInput
                                     selected={values.startTime}
@@ -495,6 +496,7 @@ export class CreateCommunicationLog extends Component {
                                     timeInputLabel="Time:"
                                     showTimeInput
                                     dropdownMode="select"
+                                    useShortMonthInDropdown
                                     showMonthDropdown
                                     showYearDropdown
                                     selected={values.endTime}

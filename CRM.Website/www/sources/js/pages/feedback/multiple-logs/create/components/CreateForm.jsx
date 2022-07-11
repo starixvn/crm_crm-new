@@ -551,6 +551,7 @@ export class CreateForm extends Component {
                                 <DatePicker isInvalid={touched.startTime && errors.startTime}
                                     selected={values.startTime}
                                     timeInputLabel="Time:"
+                                    useShortMonthInDropdown
                                     dateFormat="MMM dd, yyyy hh:mm aa"
                                     showTimeInput peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                     onChange={value => this.handleChangeStartTime(setFieldValue, value, values.endTime)}
@@ -577,6 +578,7 @@ export class CreateForm extends Component {
                                 <DatePicker
                                     selected={values.endTime}
                                     timeInputLabel="Time:"
+                                    useShortMonthInDropdown
                                     dateFormat="MMM dd, yyyy hh:mm aa"
                                     showTimeInput peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                     onChange={value => this.handleChangeEndTime(setFieldValue, values.startTime, value)}

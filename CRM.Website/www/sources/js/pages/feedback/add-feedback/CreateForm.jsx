@@ -392,7 +392,7 @@ export default class CreateForm extends Component {
                                         </Form.Label>
                                         <Col sm="8" md="8" className='react-datepicker-wrapper-container form-control-wrapper'>
                                             <DatePicker
-                                                dropdownMode="select" showMonthDropdown
+                                                dropdownMode="select" showMonthDropdown useShortMonthInDropdown
                                                 showYearDropdown showTimeInput selected={values.feedbackDate}
                                                 isInvalid={touched.feedbackDate && errors.feedbackDate}
                                                 timeInputLabel="Time:" dateFormat="MMM dd, yyyy hh:mm aa"
@@ -409,7 +409,7 @@ export default class CreateForm extends Component {
                                             <DatePicker
                                                 selected={values.resolutionTime} timeInputLabel="Time:"
                                                 dateFormat="MMM dd, yyyy hh:mm aa"
-                                                dropdownMode="select" showMonthDropdown
+                                                dropdownMode="select" showMonthDropdown useShortMonthInDropdown
                                                 showYearDropdown showTimeInput
                                                 onChange={value => this.handleChangeResolutionTime(setFieldValue, values.feedbackDate, value)}
                                             />

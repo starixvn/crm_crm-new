@@ -658,7 +658,7 @@ export class EditMultipleLogs extends Component {
                             <Col sm="4" md="4" className="d-flex">
                                 <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${this.isDisabledField(values.isCheck.startTime)}`}>
                                     <DatePicker timeInputLabel="Time:" showTimeInput
-                                        selected={values.startTime}
+                                        selected={values.startTime} useShortMonthInDropdown
                                         peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                         onChange={value => setFieldValue('startTime', value)}
                                     />
@@ -699,7 +699,7 @@ export class EditMultipleLogs extends Component {
                             <Col sm="4" md="4" className="d-flex">
                                 <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${this.isDisabledField(values.isCheck.endTime)}`}>
                                     <DatePicker timeInputLabel="Time:" showTimeInput
-                                        selected={values.endTime}
+                                        selected={values.endTime} useShortMonthInDropdown
                                         peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                         onChange={value => setFieldValue('endTime', value)}
                                     />

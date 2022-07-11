@@ -395,6 +395,7 @@ export class CustomerInfo extends Component {
                                     dropdownMode="select"
                                     showMonthDropdown
                                     showYearDropdown
+                                    useShortMonthInDropdown
                                     selected={values.birthday}
                                     maxDate={maxDate}
                                     onChange={value => setFieldValue('birthday', value)}

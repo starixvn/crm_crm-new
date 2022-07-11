@@ -124,7 +124,7 @@ export class Filter extends Component {
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
                                 selected={fromDate} dropdownMode="select"
-                                maxDate={new Date(this.maxFromDate)}
+                                maxDate={new Date(this.maxFromDate)} useShortMonthInDropdown
                                 peekNextMonth showYearDropdown showMonthDropdown
                                 onChange={value => this.handleChangeFromDate(value)}
                             />
@@ -134,7 +134,7 @@ export class Filter extends Component {
                         <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
-                                dropdownMode="select"
+                                dropdownMode="select" useShortMonthInDropdown
                                 minDate={new Date(fromDate)}
                                 maxDate={new Date(this.maxToDate)}
                                 showYearDropdown peekNextMonth showMonthDropdown

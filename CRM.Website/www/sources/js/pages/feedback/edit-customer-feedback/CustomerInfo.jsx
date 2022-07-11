@@ -448,7 +448,7 @@ export default class CustomerInfo extends PureComponent {
                                         <div className='react-datepicker-wrapper-container form-control-wrapper'>
                                             <DatePicker
                                                 selected={values.birthday} maxDate={values.maxDate}
-                                                onChange={value => setFieldValue('birthday', value)}
+                                                onChange={value => setFieldValue('birthday', value)} useShortMonthInDropdown
                                                 peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                             />
                                         </div>

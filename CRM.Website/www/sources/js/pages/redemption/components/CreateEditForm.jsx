@@ -19,6 +19,7 @@ export class CreateEditForm extends Component {
                                         dropdownMode="select"
                                         showMonthDropdown
                                         showYearDropdown
+                                        useShortMonthInDropdown
                                         onChange={value => setFieldValue('claimTime', value)}
                                     />
                                 </Col>

@@ -1,16 +1,4 @@
-﻿@import '../../abstracts//variables';
-@import '../../components/form-filter';
-@import '../../components/react-grid/react-grid';
-@import '../../components/multiple-select/style';
-@import '../../components/select-with-search';
-@import '../../components/forms';
-@import '../../components/icons';
-@import '../../components/messages';
-@import '../../components/modal';
-@import '../../components/tables';
-@import '../../components/loading';
-
-.chat-type-mapping{
+﻿.chat-type-mapping{
     .checkbox-cell-style {
         width: 13px;
         height: 13px;

@@ -148,6 +148,7 @@ export class Filter extends Component {
                             dropdownMode="select"
                             showMonthDropdown
                             showYearDropdown
+                            useShortMonthInDropdown
                             selected={this.state.fromDate}
                             dateFormat="MMM dd, yyyy"
                             maxDate={new Date(this.maxFromDate)}
@@ -166,6 +167,7 @@ export class Filter extends Component {
                             maxDate={new Date(this.maxToDate)}
                             showMonthDropdown
                             dropdownMode="select"
+                            useShortMonthInDropdown
                             showYearDropdown
                             onChange={value => this.handleChangeToDate(value)}
                         />

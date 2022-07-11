@@ -192,7 +192,7 @@ export class Filter extends Component {
                                     <div className='react-datepicker-wrapper-container'>
                                         <DatePicker
                                             dropdownMode="select"
-                                            showMonthDropdown
+                                            showMonthDropdown useShortMonthInDropdown
                                             showYearDropdown
                                             peekNextMonth
                                             selected={fromDate}
@@ -209,7 +209,7 @@ export class Filter extends Component {
                                     <Form.Label htmlFor="fromDate">{LangHelper.getResource('ToDate')}</Form.Label>
                                     <div className='react-datepicker-wrapper-container'>
                                         <DatePicker
-                                            dropdownMode="select"
+                                            dropdownMode="select" useShortMonthInDropdown
                                             showMonthDropdown
                                             showYearDropdown
                                             selected={toDate}
@@ -227,7 +227,7 @@ export class Filter extends Component {
                                     <div className='react-datepicker-wrapper-container month-datepicker'>
                                         <DatePicker
                                             dateFormat="MM/yyyy"
-                                            showMonthYearPicker
+                                            showMonthYearPicker useShortMonthInDropdown
                                             selected={fromMonthDate}
                                             minDate={new Date(this.minMonthFromDate)}
                                             maxDate={new Date(this.maxMonthFromDate)}
@@ -243,7 +243,7 @@ export class Filter extends Component {
                                     <div className='react-datepicker-wrapper-container month-datepicker'>
                                         <DatePicker
                                             dateFormat="MM/yyyy"
-                                            showMonthYearPicker
+                                            showMonthYearPicker useShortMonthInDropdown
                                             selected={toMonthDate}
                                             minDate={new Date(this.minMonthToDate)}
                                             maxDate={new Date(this.maxMonthToDate)}

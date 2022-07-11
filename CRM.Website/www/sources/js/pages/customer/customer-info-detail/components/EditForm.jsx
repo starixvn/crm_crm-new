@@ -233,6 +233,7 @@ export class EditForm extends Component {
                                         <DatePicker
                                             dropdownMode="select"
                                             showMonthDropdown
+                                            useShortMonthInDropdown
                                             showYearDropdown
                                             selected={values.birthDay}
                                             maxDate={values.maxDate}

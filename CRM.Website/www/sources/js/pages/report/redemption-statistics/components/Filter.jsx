@@ -144,7 +144,7 @@ export class Filter extends Component {
                                     <DatePicker
                                         peekNextMonth showMonthDropdown showYearDropdown dropdownMode='select'
                                         maxDate={new Date(this.maxFromDate)}
-                                        selected={fromDate}
+                                        selected={fromDate} useShortMonthInDropdown
                                         onChange={value => this.handleChangeFromDate(value)}
                                     />
                                 </div>
@@ -155,7 +155,7 @@ export class Filter extends Component {
                                     <DatePicker
                                         minDate={fromDate}
                                         maxDate={new Date(this.maxToDate)}
-                                        selected={toDate}
+                                        selected={toDate} useShortMonthInDropdown
                                         peekNextMonth showMonthDropdown showYearDropdown dropdownMode='select'
                                         onChange={value => this.handleChangeToDate(value)}
                                     />

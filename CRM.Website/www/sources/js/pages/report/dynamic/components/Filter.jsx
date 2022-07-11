@@ -208,7 +208,7 @@ export class Filter extends Component {
                         <DatePicker
                             dropdownMode="select"
                             showMonthDropdown
-                            showYearDropdown
+                            showYearDropdown useShortMonthInDropdown
                             selected={this.state.fromDate}
                             dateFormat={dateFormat}
                             maxDate={new Date(this.maxFromDate)}
@@ -222,7 +222,7 @@ export class Filter extends Component {
                     <div className="react-datepicker-wrapper-container form-control-wrapper select-field">
                         <DatePicker
                             selected={this.state.toDate}
-                            dateFormat={dateFormat}
+                            dateFormat={dateFormat} useShortMonthInDropdown
                             weekNumber={true}
                             minDate={new Date(this.minToDate)}
                             maxDate={new Date(this.maxToDate)}

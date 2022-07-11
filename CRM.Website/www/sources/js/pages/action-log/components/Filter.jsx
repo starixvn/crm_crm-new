@@ -92,6 +92,7 @@ export class Filter extends Component {
                                 dropdownMode="select"
                                 showMonthDropdown
                                 showYearDropdown
+                                useShortMonthInDropdown
                                 maxDate={this.state.maxFromDate}
                                 minDate={this.state.minFromDate}
                                 selected={this.state.fromDate}
@@ -108,6 +109,7 @@ export class Filter extends Component {
                                 dropdownMode="select"
                                 showMonthDropdown
                                 showYearDropdown
+                                useShortMonthInDropdown
                                 maxDate={this.state.maxToDate}
                                 minDate={this.state.minToDate}
                                 selected={this.state.toDate}
