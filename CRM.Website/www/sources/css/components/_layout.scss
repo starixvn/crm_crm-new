@@ -15,7 +15,7 @@
                 background: none;
                 border: none;
                 color: white;
-                height: 35px;
+                height: 35px !important;
                 line-height: 25px;
                 padding: 5px 0 5px 35px;
                 width: 100%;
@@ -35,6 +35,10 @@
             padding-top: 8px;
             background-color: #464d5d;
             color: #ebebeb;
+
+            .form-check-input{
+                margin-top: 0.25rem !important;
+            }
         }
 
 
@@ -78,7 +82,7 @@
 
             .sub-menu li{
                 &:first-child{
-                    padding: 2px 23px 2px 11px;
+                    padding: 1px 23px 2px 11px;
                     float: left;
                     background: url('../../css/images/br-arrow-ico.png') right 8px no-repeat;
                 }

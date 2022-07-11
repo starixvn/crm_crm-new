@@ -2,6 +2,7 @@
 
 .react-select-container {
     .react-select__control {
+        height: 25px;
         .react-select__indicators {
             .react-select__indicator {
                 padding: 4px;
@@ -19,6 +20,11 @@
                     padding-left: 0px;
                 }
             }
+        }
+
+        .react-select__value-container{
+            padding-top: 0;
+            padding-bottom: 0;
         }
     }
 
