@@ -38,7 +38,7 @@
         public async Task<IActionResult> GetWagerReport([FromBody] GetWagerReportCriteria criteria)
         {
             criteria.TimeSpan = appSettings.TimeSpan * -1;
-            var report = await GetWagerReportAsync(criteria);
+            var report = await GetWagerReportByYears(criteria);
             return Json(report);
         }
 
@@ -46,13 +46,13 @@
         public async Task<IActionResult> ExportWagerReport([FromBody] GetWagerReportCriteria criteria)
         {
             criteria.TimeSpan = appSettings.TimeSpan * -1;
-            var reports = await GetWagerReportAsync(criteria);
+            var reports = await GetWagerReportByYears(criteria);
             var bytes = exportExcelService.ExportWagerReport(reports, criteria.Year);
             string reportName = string.Format(ViewResources.WagerReportExcelName,criteria.Year);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
 
-        private async Task<WagerReportModel> GetWagerReportAsync(GetWagerReportCriteria criteria)
+        private async Task<WagerReportModel> GetWagerReportByYears(GetWagerReportCriteria criteria)
         {
             Wager wager = null;
             WagerByMonth wagerByMonth = null;
