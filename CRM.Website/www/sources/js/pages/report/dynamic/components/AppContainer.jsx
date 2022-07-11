@@ -7,6 +7,7 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 import FeedbackDetails from '../../deleted-feedback-statistic/components/FeedbackDetails';
 import Chart from './Chart';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -18,6 +19,10 @@ export class AppContainer extends Component {
         viewCommunicationDialog: { show: false },
         viewChartDialog: { show: false, chartInfo: {} }
     };
+
+    componentDidMount() {
+        document.title = LangHelper.getResource('DynamicReport');
+    }
 
     componentWillUnmount(){
         this.props.resetState();

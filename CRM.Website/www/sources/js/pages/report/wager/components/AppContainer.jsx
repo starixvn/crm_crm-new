@@ -4,8 +4,12 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
+  componentDidMount(){
+    document.title = LangHelper.getResource('WagersRelatedReport');
+  }
   componentWillUnmount(){
     this.props.resetState();
   }

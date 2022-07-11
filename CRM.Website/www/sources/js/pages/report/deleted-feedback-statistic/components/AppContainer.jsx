@@ -10,6 +10,9 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 
 export class AppContainer extends Component {
+    componentDidMount() {
+        document.title = LangHelper.getResource('DeletedFeedbackStatistic');
+    }
     componentWillUnmount(){
         this.props.resetState();
     }

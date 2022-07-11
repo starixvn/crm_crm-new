@@ -51,6 +51,7 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.NotificationTemplate).then(response => {
             this.setState({policy: response});
         });
+        document.title = LangHelper.getResource('NotificationTemplate');
     }
     
     componentWillUnmount(){

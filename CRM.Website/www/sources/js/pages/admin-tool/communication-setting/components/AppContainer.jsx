@@ -42,6 +42,7 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.DefaultCommunicationSetting).then(response => {
             this.setState({policy: response});
         });
+        document.title = LangHelper.getResource('DefaultCommunicationSetting');
     }
 
     componentWillUnmount(){

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import Chart from './Chart';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
   static propTypes = {
@@ -18,6 +19,7 @@ export class AppContainer extends Component {
 
   componentDidMount() {
     this.props.getAllSetting();
+    document.title = LangHelper.getResource('CategoriesSummaryReport');
   }
 
   componentWillUnmount(){

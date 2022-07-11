@@ -5,10 +5,12 @@ import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import Detail from './Detail';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
   componentDidMount(){
     this.props.getAllSettings();
+    document.title = LangHelper.getResource('RedemptionStatistics');
   }
 
   componentWillUnmount(){

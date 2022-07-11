@@ -39,6 +39,7 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
             this.setState({policy: response});
         });
+        document.title = LangHelper.getResource('ManageFeedback');
     }
 
     componentWillUnmount(){

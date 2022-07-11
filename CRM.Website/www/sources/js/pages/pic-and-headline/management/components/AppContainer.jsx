@@ -36,6 +36,7 @@ export class AppContainer extends PureComponent {
         getPermission(FunctionKey.PICManagement).then(response => {
             this.setState({policy: response});
         });
+        document.title = LangHelper.getResource('PICManagement');
     }
 
     componentWillUnmount(){

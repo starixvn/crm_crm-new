@@ -4,6 +4,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import newRemarkSlice from '../new-remark/newRemarkSlice';
 import AppContainer from '../new-remark/components/AppContainer';
 import WithNavigation from '@jsroot/components/WithNavigation';
+import LangHelper from '@jsroot/common/langHelper';
 
 const store = configureStore({
     reducer: newRemarkSlice
@@ -12,6 +13,9 @@ const store = configureStore({
 import '@cssroot/pages/new-remark/index.scss';
 
 class index extends React.Component {
+    componentDidMount(){
+        document.title = LangHelper.getResource('CRMSystem');
+    }
     render(){
         const data = this.props.location.state;
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;

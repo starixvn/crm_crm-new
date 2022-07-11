@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import PropTypes from 'prop-types';
+import LangHelper from '@jsroot/common/langHelper';
 import CreateForm from '../../CreateForm';
 
 export class AppContainer extends Component {
@@ -31,6 +32,7 @@ export class AppContainer extends Component {
         this.props.getAllSettings();
         this.props.getBalanceUpday();
         this.props.getCustomerDetail({customerId: this.props.id});
+        document.title = LangHelper.getResource('AddFeedback');
     }
 
     componentWillUnmount(){

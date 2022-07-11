@@ -10,8 +10,9 @@ import CreateRedemptionLog from './CreateRedemptionLog';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import redemption from '../redemptionSlice';
-import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
+import LangHelper from '@jsroot/common/langHelper';
 
 const store = configureStore({
     reducer: redemption
@@ -39,6 +40,7 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
             this.setState({createUpdateFeedbackPermission: response});
         });
+        document.title = LangHelper.getResource('CRMSystem');
     }
 
     componentWillUnmount(){

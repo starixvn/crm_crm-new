@@ -14,6 +14,10 @@ class TabContainer extends Component {
         };
     }
 
+    componentDidMount() {
+        document.title = LangHelper.getResource('ChangesLog');
+    }
+    
     componentWillUnmount(){
         this.props.resetState();
     }

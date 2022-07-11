@@ -6,6 +6,7 @@ import DataGrid from './DataGrid';
 import Filter from './Filter';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends PureComponent {
     static propTypes = {
@@ -15,6 +16,10 @@ export class AppContainer extends PureComponent {
     static defaultProps = {
         contentChartPopup: { show: false }
     };
+
+    componentDidMount() {
+        document.title = LangHelper.getResource('SettlementIssuesReport');
+    }
 
     componentWillUnmount(){
         this.props.resetState();

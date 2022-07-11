@@ -4,8 +4,12 @@ import DataGrid from './DataGrid';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
+    componentDidMount() {
+        document.title = LangHelper.getResource('SettingLog');
+    }
     componentWillUnmount(){
         this.props.resetState();
     }

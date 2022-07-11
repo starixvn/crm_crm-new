@@ -4,11 +4,13 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
 
     componentDidMount() {
         this.props.getAllSettings();
+        document.title = LangHelper.getResource('CustomerReport');
     }
     
     componentWillUnmount(){

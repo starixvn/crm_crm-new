@@ -7,6 +7,7 @@ import DataGrid from './DataGrid';
 import Update from './Update';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ export class AppContainer extends Component {
       getPermission(FunctionKey.SettingRelationManagement).then(response => {
         this.setState({policy: response});
       });
+      document.title = LangHelper.getResource('SettingRelationv2');
   }
   componentWillUnmount(){
     this.props.resetState();

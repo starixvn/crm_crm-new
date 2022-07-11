@@ -27,6 +27,7 @@ export class AppContainer extends Component {
       getPermission(FunctionKey.SettingManagement).then(response => {
         this.setState({policy: response});
       });
+      document.title = LangHelper.getResource('SettingManagementv2');
   }
 
   componentWillUnmount(){

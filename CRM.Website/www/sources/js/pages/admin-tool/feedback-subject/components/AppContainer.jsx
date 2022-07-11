@@ -48,6 +48,7 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.FeedbackSubject).then(response => {
             this.setState({policy: response});
         });
+        document.title = LangHelper.getResource('FeedbackSubjectManagementv2');
     }
 
     componentWillUnmount(){

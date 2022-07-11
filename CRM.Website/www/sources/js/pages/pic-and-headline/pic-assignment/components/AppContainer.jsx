@@ -9,6 +9,7 @@ import AssignPic from './AssignPic';
 import DefaultPic from './DefaultPic';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     
@@ -26,6 +27,7 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.PICManagement).then(response => {
             this.setState({policyPicManagement: response});
         });
+        document.title = LangHelper.getResource('PICAssignment');
     }
 
     componentWillUnmount(){

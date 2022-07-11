@@ -30,6 +30,7 @@ export class AppContainer extends Component {
 
     componentDidMount() {
         this.props.getAllSettings();
+        document.title = LangHelper.getResource('DeletedFeedbackv2');
     }
 
     componentWillUnmount(){

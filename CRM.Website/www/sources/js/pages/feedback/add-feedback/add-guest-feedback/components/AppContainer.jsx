@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import PropTypes from 'prop-types';
 import CreateForm from '../../CreateForm';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -27,6 +28,7 @@ export class AppContainer extends Component {
     componentDidMount() {
         this.props.getAllSettings();
         this.props.getBalanceUpday();
+        document.title = LangHelper.getResource('LatestFeedbackv2');
     }
 
     componentWillUnmount(){

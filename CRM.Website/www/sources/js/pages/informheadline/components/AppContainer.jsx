@@ -9,6 +9,7 @@ import EditInforms from './EditInforms';
 import RemovedAccountLogs from './RemovedAccountLogs';
 import RemovedAccountLogDetails from './RemovedAccountLogDetails';
 import NewInforms from './NewInforms';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -34,6 +35,7 @@ export class AppContainer extends Component {
     async componentDidMount() {
         await this.props.getInforms();
         await this.props.getAllSettings();
+        document.title = LangHelper.getResource('InformHeadlines');
     }
 
     handleCloseEditContactInformDialog = () => {

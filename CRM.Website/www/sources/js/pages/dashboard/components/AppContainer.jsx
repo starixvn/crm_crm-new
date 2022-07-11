@@ -15,6 +15,7 @@ import EditCustomerInfoVerify from './EditCustomerInfoVerify';
 import LastFiveRemarkDataGrid from './LastFiveRemarkDataGrid';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -44,6 +45,8 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
             this.setState({policy: response});
         });
+
+        document.title = LangHelper.getResource('CRMSystem');
     }
 
     componentWillUnmount(){

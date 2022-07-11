@@ -11,6 +11,9 @@ import Details from './Details';
 import Chart from './Chart';
 
 export class AppContainer extends Component {
+  componentDidMount(){
+    document.title = LangHelper.getResource('FeedbackStatisticsv2');
+  }
   componentWillUnmount(){
     this.props.resetState();
   }

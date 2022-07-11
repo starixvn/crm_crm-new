@@ -12,6 +12,7 @@ import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 
+
 export class AppContainer extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +25,7 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.NotificationList).then(response => {
             this.setState({policy: response});
         });
+        document.title = LangHelper.getResource('NotificationList');
     }
 
     componentWillUnmount(){

@@ -29,6 +29,7 @@ export class Filter extends Component {
 
     componentDidMount() {
         this.props.getAllLogAction({ actionType: 1 });
+        document.title = LangHelper.getResource('CRMSystem');
     }
 
     componentWillUnmount(){

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import CreateForm from './CreateForm';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -18,6 +19,7 @@ export class AppContainer extends Component {
 
     componentDidMount() {
         this.props.getSettings();
+        document.title = LangHelper.getResource('CreateMultipleLogs');
     }
 
     componentWillUnmount(){

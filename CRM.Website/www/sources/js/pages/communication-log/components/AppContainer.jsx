@@ -8,8 +8,9 @@ import DataGrid from './DataGrid';
 import EditNoOfInquiry from '../../feedback/edit-no-of-inquiry/AppContainer';
 import EditCommunicationLog from './EditCommunicationLog';
 import CreateCommunicationLog from './CreateCommunicationLog';
-import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -40,6 +41,7 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
             this.setState({createUpdateFeedbackPermission: response});
         });
+        document.title = LangHelper.getResource('CRMSystem');
     }
 
     componentWillUnmount(){

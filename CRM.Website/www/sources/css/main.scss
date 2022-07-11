@@ -157,6 +157,10 @@ body {
             padding: 12px 12px;
             color: #FFFFFF;
             cursor: pointer;
+
+            .disabled-link{
+                pointer-events: none;
+            }
     
             .menu-title {
                 .title {

@@ -35,6 +35,7 @@ export class Remark extends Component {
         getPermission(FunctionKey.NotificationList).then(response => {
             this.setState({policy: response});
         });
+        document.title = LangHelper.getResource('CRMSystem');
         const { gridData } = this.props;
         this.setState({
             specialRemarks: [...gridData.specialRemarks,''],

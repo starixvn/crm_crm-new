@@ -8,6 +8,7 @@ import DataGrid from './DataGrid';
 import NewRemark from './NewRemark';
 import EditRemark from './EditRemark';
 import History from './History';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -26,6 +27,7 @@ export class AppContainer extends Component {
     };
     componentDidMount(){
         this.props.getRemarkTitles();
+        document.title = LangHelper.getResource('Remarks');
     }
 
     componentWillUnmount(){

@@ -7,7 +7,7 @@ import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import { Button } from 'react-bootstrap';
 import EditForm from './EditForm';
-import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
@@ -40,6 +40,7 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.Updateheadlineinfo).then(response => {
             this.setState({updateHeadlineInfoPolicy: response});
         });
+        document.title = LangHelper.getResource('CRMSystem');
     }
 
     componentWillUnmount(){
