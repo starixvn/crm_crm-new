@@ -16,27 +16,9 @@
             margin-left: 0;
             margin-right: 0;
         }
-    
-        .group-field {
-            display: flex;
-            width: 320px;
-    
-            label {
-                width: 105px;
-            }
-    
-            .input-field {
-                width: 200px;
-            }
-        }
-    
-        .multiple-select-container {
-            width: 200px;
-        }
-    
-        .group-checkbox {
-            display: flex;
-            width: 320px;
+
+        .label-exclude {
+            width: 230px !important;
         }
     
         .check-exclude {

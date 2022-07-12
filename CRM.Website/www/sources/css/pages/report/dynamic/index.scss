@@ -15,55 +15,11 @@
             margin-right: 0;
         }
 
-        .group-field {
-            display: flex;
-            width: 270px;
+        .group-tool {
+            width: 310px !important;
 
-            label {
-                width: 105px;
-            }
-
-            .select-field {
-                width: 150px;
-            }
-        }
-
-        .group-field-tool {
-            display: flex;
-            width: 300px;
-
-            label {
-                width: 135px;
-            }
-
-            .select-field {
-                width: 150px;
-            }
-        }
-
-        .group-field-mainCate {
-            display: flex;
-            width: 540px;
-
-            label {
-                width: 105px;
-            }
-
-            .select-field {
-                width: 420px;
-            }
-        }
-
-        .group-field-subject {
-            display: flex;
-            width: 810px;
-
-            label {
-                width: 105px;
-            }
-
-            .select-field {
-                width: 690px;
+            .col-label-tool {
+                width: 150px !important;
             }
         }
 
