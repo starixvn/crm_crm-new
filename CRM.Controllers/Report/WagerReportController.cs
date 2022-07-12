@@ -45,11 +45,19 @@
         [HttpPost]
         public async Task<IActionResult> ExportWagerReport([FromBody] GetWagerReportCriteria criteria)
         {
-            criteria.TimeSpan = appSettings.TimeSpan * -1;
-            var reports = await GetWagerReportByYears(criteria);
-            var bytes = exportExcelService.ExportWagerReport(reports, criteria.Year);
-            string reportName = string.Format(ViewResources.WagerReportExcelName,criteria.Year);
-            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+            try
+            {
+                criteria.TimeSpan = appSettings.TimeSpan * -1;
+                var reports = await GetWagerReportByYears(criteria);
+                var bytes = exportExcelService.ExportWagerReport(reports, criteria.Year);
+                string reportName = string.Format(ViewResources.WagerReportExcelName, criteria.Year);
+                return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+            }
+            catch (System.Exception e)
+            {
+
+                throw new System.Exception(e.Message);
+            }
         }
 
         private async Task<WagerReportModel> GetWagerReportByYears(GetWagerReportCriteria criteria)
