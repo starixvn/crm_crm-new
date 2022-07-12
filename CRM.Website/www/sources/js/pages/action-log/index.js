@@ -15,7 +15,7 @@ class index extends React.Component{
     render(){
         return(
             <Provider store={store}>
-                <div className='actionLog'>
+                <div className='action-log'>
                     <AppContainer id={!location.state ? null : location.state.toString()}/>
                 </div>
             </Provider>

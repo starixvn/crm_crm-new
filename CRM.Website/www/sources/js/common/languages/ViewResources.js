@@ -29,6 +29,7 @@
     ActiveStatusSettingSuccess: 'Active status setting successfully!',
     AddGuestFeedback: 'Add Guest Feedback',
     AddFeedback: 'Add Feedback',
+    ActivityLog: 'Activity Log',
     BankInfo: 'Bank Info',
     BankName: 'Bank\'s Name',
     BotBlocked: 'Bot Blocked',

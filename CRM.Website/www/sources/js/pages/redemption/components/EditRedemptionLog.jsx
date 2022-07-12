@@ -185,6 +185,7 @@ export class EditRedemptionLog extends Component {
                         isShowEditConfirm &&
                         <ConfirmPopup
                             size='md'
+                            className='modal-confirm-redemption'
                             title={LangHelper.getResource('ConfirmIgnoreChanges')}
                             content={
                                 <div>

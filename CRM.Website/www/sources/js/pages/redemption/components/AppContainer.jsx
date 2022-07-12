@@ -69,7 +69,7 @@ export class AppContainer extends Component {
         const { editRedemptionDialog, createRedemptionDialog } = this.props;
         
         return (
-            <Provider store={store}>
+            <>
                 <Filter id={this.props.id}/>
                 <DataGrid createUpdateFeedbackPermission={this.state.createUpdateFeedbackPermission}/>
                 {
@@ -85,7 +85,7 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseCreateRedemptionDialog}
                     />
                 }
-            </Provider>
+            </>
         );
     }
 }

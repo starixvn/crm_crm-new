@@ -168,6 +168,7 @@ export class CreateRedemptionLog extends Component {
                         this.state.isShowCreateConfirm &&
                         <ConfirmPopup
                             size='md'
+                            className='modal-confirm-redemption'
                             onClose={this.closeCreateConfirm}
                             onSubmit={() => this.props.onClose(false)}
                             title={LangHelper.getResource('ConfirmIgnoreChanges')}
