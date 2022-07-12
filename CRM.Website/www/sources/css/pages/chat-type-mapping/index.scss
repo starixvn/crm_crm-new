@@ -125,3 +125,28 @@
         visibility:hidden;
     }
 }
+
+.chat-type-mapping-modal{
+    .form-control:not(:last-child){
+        height: calc(1.5em + 0.5rem + 2px);
+    }
+    
+    .react-select__control{
+        height: 28px;
+
+        .react-select__value-container{
+            margin-left: 8px;
+            padding: 0;
+        }
+
+        .react-select__indicators{
+            .css-tlfecz-indicatorContainer{
+                padding: 0;
+            }
+        }
+
+        .react-select__indicator{
+            padding: 0;
+        }
+    }
+}

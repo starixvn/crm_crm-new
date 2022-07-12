@@ -77,58 +77,8 @@
         cursor: no-drop;
     }
 
-    .related-customer-container {
-        padding: 2px 4px;
-        border: 1px solid #b1b1b1;
-        min-height: 105px;
-        max-height: 420px;
-        overflow: auto;
-
-        input {
-            padding-left: 2px !important;
-            border: none !important;
-
-            &:focus {
-                outline: none;
-            }
-        }
-
-        .related-customer-item {
-            background-color: #f1f1f1;
-            border: 1px solid #8e8e8e;
-            border-radius: 5px;
-            float: left;
-            margin: 2px 0 2px 5px;
-            padding: 1px 4px;
-
-            &.invalid {
-                border-color: #ff0000;
-                color: #ff0000;
-            }
-
-            &.selected {
-                border-color: #0066cc;
-                color: #0066cc;
-            }
-
-            .fa-close {
-                margin-left: 5px;
-                color: #5f5f5f;
-                cursor: pointer;
-                display: inline-block;
-            }
-        }
-    }
-
     .table td {
         word-break: break-word;
-    }
-
-    .modal-backdrop {
-        z-index: 1050 !important;
-    }
-    .modal-dialog {
-        max-width: 650px;
     }
     .filter-collapse {
         .fa {
@@ -182,6 +132,60 @@
 
             .form-group{
                 width: 260px;
+            }
+        }
+    }
+}
+
+.assign-pic-modal{
+    .modal-backdrop {
+        z-index: 1050 !important;
+    }
+    .modal-dialog {
+        max-width: 650px;
+
+        .modal-content{
+            .related-customer-container {
+                padding: 2px 4px;
+                border: 1px solid #b1b1b1;
+                min-height: 105px;
+                max-height: 420px;
+                overflow: auto;
+        
+                input {
+                    padding-left: 2px !important;
+                    border: none !important;
+        
+                    &:focus {
+                        outline: none;
+                    }
+                }
+        
+                .related-customer-item {
+                    background-color: #f1f1f1;
+                    border: 1px solid #8e8e8e;
+                    border-radius: 5px;
+                    float: left;
+                    margin: 2px 0 2px 5px;
+                    padding: 1px 4px;
+        
+                    &.invalid {
+                        border-color: #ff0000;
+                        color: #ff0000;
+                    }
+        
+                    &.selected {
+                        border-color: #0066cc;
+                        color: #0066cc;
+                    }
+        
+                    .fa-close {
+                        margin-left: 5px;
+                        color: #5f5f5f;
+                        cursor: pointer;
+                        display: inline-block;
+                    }
+                }
             }
         }
     }

@@ -471,7 +471,7 @@ export class AssignPic extends Component {
         return (
             <Fragment>
                 <Modal
-                    show backdrop='static' keyboard={false} centered
+                    show backdrop='static' keyboard={false} centered className='assign-pic-modal'
                     onHide={() => this.handleCancel()} dialogAs={DraggableModalDialog}
                 >
                     <Modal.Header closeButton>
@@ -574,6 +574,7 @@ export class AssignPic extends Component {
                     this.state.isShowConfirmPopup &&
                     <ConfirmPopup
                         size='lg'
+                        className='assign-pic-modal'
                         title={LangHelper.getResource('Confirmation')}
                         content={
                             <div>{LangHelper.getResource('ThereAreSomeChangesConfirmMessage')}</div>

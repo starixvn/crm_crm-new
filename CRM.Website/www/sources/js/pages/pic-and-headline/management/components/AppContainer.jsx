@@ -89,6 +89,7 @@ export class AppContainer extends PureComponent {
                     this.props.confirmPopup.show &&
                     <ConfirmPopup
                         size='lg'
+                        className='pic-management-modal'
                         title={LangHelper.getResource('ChangePICState')}
                         content={
                             <div>

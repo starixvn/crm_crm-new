@@ -8,6 +8,7 @@ class ConfirmPopup extends PureComponent {
     static propTypes = {
         size: PropTypes.oneOf(['sm', 'lg', 'xl', 'md']),
         title: PropTypes.string,
+        className: PropTypes.string,
         content: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.element
@@ -24,13 +25,14 @@ class ConfirmPopup extends PureComponent {
         size: 'sm',
         title: '',
         content: '',
+        className: '',
         requestResponse: null
     };
 
     render() {
-        const { size, title, content, requestResponse } = this.props;
+        const { size, title, content, requestResponse, className } = this.props;
         return (
-            <Modal show backdrop="static" dialogAs={DraggableModalDialog} className="confirmation-modal"
+            <Modal show backdrop="static" dialogAs={DraggableModalDialog} className={`confirmation-modal ${className}`}
                 keyboard={false} size={size} centered
                 onHide={this.props.onClose}
             >

@@ -14,7 +14,7 @@ export default class Content extends Component {
         const messageIdDisplay = `(${LangHelper.getResource('MessageID')}: ${data.referenceId})`;
         return (
             <Modal show backdrop='static' keyboard={false} size='lg' centered
-                onHide={onClose}
+                onHide={onClose} className='notification-list-modal'
                 dialogAs={DraggableModalDialog}
             >
                 <Modal.Header closeButton>

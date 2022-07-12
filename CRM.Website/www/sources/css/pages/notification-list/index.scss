@@ -16,11 +16,6 @@
         color: $draft-color !important;
     }
     
-    .notification-content {
-        white-space: pre-line;
-        word-break: break-word;
-    }
-    
     .status-font {
         font-weight: bold;
     }
@@ -125,8 +120,6 @@
     }
     
     .react-datepicker-wrapper-container {
-        height: 28px;
-    
         .react-datepicker__input-container {
             height: 100%;
     
@@ -187,5 +180,12 @@
     
     .Select-arrow-zone {
         display: none;
+    }
+}
+
+.notification-list-modal{
+    .notification-content {
+        white-space: pre-line;
+        word-break: break-word;
     }
 }

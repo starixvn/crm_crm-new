@@ -1,28 +1,75 @@
 @import '../../abstracts/variables';
 
-.container-fluid{
-    padding: 0 !important;
-}
-
-.form-filter {
-    min-width: 960px;
+.new-remark{
+    .container-fluid{
+        padding: 0 !important;
+    }
     
-    .react-datepicker__input-container input{
-        width: 100% !important;
+    .form-filter {
+        min-width: 960px;
+        
+        .react-datepicker__input-container input{
+            width: 100% !important;
+        }
+    
+        .react-datepicker-popper{
+            z-index: 999 !important;
+        }
+    }
+    
+    .link-click {
+        cursor: pointer;
+        color: $link-color !important;
+    }
+    
+    .link-click:hover {
+        color: $draft-color !important;
     }
 
-    .react-datepicker-popper{
-        z-index: 999 !important;
+    .table-new-remarks .body-content{
+        overflow: unset !important; 
     }
-}
-
-.link-click {
-    cursor: pointer;
-    color: $link-color !important;
-}
-
-.link-click:hover {
-    color: $draft-color !important;
+    
+    .table-new-remarks, .table-history{
+            .body-content{
+                .remark-content, .remark-content p{
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    min-width: 1px;
+                }
+        
+                tbody tr td{
+                    word-break: break-word;
+                }
+        
+                .disable-edit{
+                    pointer-events: none;
+                }
+            }
+    }
+    
+    .table-history{
+        .history-section{
+            .fa-backward{
+                cursor: pointer;
+            }
+        
+            .history-info{
+                border: 1px solid #b7b7b7;
+                padding: 8px 0 8px 18px;
+                margin-bottom: 10px;
+        
+                div:first-child, div > span:nth-child(even){
+                    font-weight: bold;
+                }
+            }
+        }
+    
+        .page-container{
+            max-width: 1750px !important;
+        }
+    }
 }
 
 #tooltip-remark-content [class$="inner"] {
@@ -84,50 +131,5 @@
             width: 537px;
             padding: 10px;
         }
-    }
-}
-
-.table-new-remarks .body-content{
-    overflow: unset !important; 
-}
-
-.table-new-remarks, .table-history{
-        .body-content{
-            .remark-content, .remark-content p{
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                min-width: 1px;
-            }
-    
-            tbody tr td{
-                word-break: break-word;
-            }
-    
-            .disable-edit{
-                pointer-events: none;
-            }
-        }
-}
-
-.table-history{
-    .history-section{
-        .fa-backward{
-            cursor: pointer;
-        }
-    
-        .history-info{
-            border: 1px solid #b7b7b7;
-            padding: 8px 0 8px 18px;
-            margin-bottom: 10px;
-    
-            div:first-child, div > span:nth-child(even){
-                font-weight: bold;
-            }
-        }
-    }
-
-    .page-container{
-        max-width: 1750px !important;
     }
 }

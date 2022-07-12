@@ -21,11 +21,11 @@ export class DataGrid extends Component {
     };
 
     handleEdit = id => {
-        this.props.getTemplateById( id, () => this.props.setEditTemplatePopup( { show: true } ) );
+        this.props.getTemplateById(id, () => this.props.setEditTemplatePopup({ show: true }));
     };
 
     handleViewContent = id => {
-        this.props.getTemplateById( id, () => this.props.setContentDetailPopup( { show: true } ) );
+        this.props.getTemplateById( id, () => this.props.setContentDetailPopup({ show: true }));
     };
 
     handleDelete = ( id, name ) => {
@@ -65,7 +65,7 @@ export class DataGrid extends Component {
             <Cell className="text-center">{index + this.startIndex}</Cell>
             <Cell>{item.notificationTypeName}</Cell>
             <Cell>{item.notificationTemplateName}</Cell>
-            <Cell><a href="#" onClick={() => this.handleViewContent( item.notificationTemplateId )}>{item.title}</a></Cell>
+            <Cell><div className="view-content" onClick={() => this.handleViewContent(item.notificationTemplateId)}>{item.title}</div></Cell>
             {
                 isHost &&
                 <Cell className="text-center">

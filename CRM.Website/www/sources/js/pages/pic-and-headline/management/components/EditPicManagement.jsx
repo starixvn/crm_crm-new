@@ -414,6 +414,7 @@ export class EditPicManagement extends Component {
                     this.state.showConfirmClose &&
                     <ConfirmPopup
                         title={LangHelper.getResource('Confirmation')}
+                        className='pic-management-modal'
                         content={
                             <div>{LangHelper.getResource('ConfirmDirtyMessage')}</div>
                         }
@@ -425,6 +426,7 @@ export class EditPicManagement extends Component {
                 {
                     this.state.confirmSave.show &&
                     <ConfirmPopup
+                        className='pic-management-modal'
                         title={LangHelper.getResource('Confirmation')}
                         content={
                             <div>{this.state.confirmSave.message}</div>

@@ -289,7 +289,7 @@ export class NewPicManagement extends Component {
                         <Col sm="8" md="9">
                             <Form.Control as="textarea"
                                 name="remark" id="remark" rows="4"
-                                className="shadow-none form-control"
+                                className="shadow-none"
                                 onChange={handleChange}
                             />
                         </Col>
@@ -343,6 +343,7 @@ export class NewPicManagement extends Component {
                     this.state.showConfirmClose &&
                     <ConfirmPopup
                         size='lg'
+                        className='pic-management-modal'
                         title={LangHelper.getResource('Confirmation')}
                         content={
                             <div>{LangHelper.getResource('ConfirmDirtyMessage')}</div>

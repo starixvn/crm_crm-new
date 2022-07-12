@@ -9,7 +9,7 @@
 }
 
 .form-control {
-    height: calc(1.5em + 0.5rem + -1px) !important;
+    height: calc(1.5em + 0.5rem + -1px);
     &:invalid, &.is-invalid {
         background-image: unset;
         padding-right: unset;
@@ -18,4 +18,8 @@
     &:disabled, &[readonly] {
         cursor: not-allowed;
     }
+}
+
+textarea.form-control{
+    height: auto;
 }
