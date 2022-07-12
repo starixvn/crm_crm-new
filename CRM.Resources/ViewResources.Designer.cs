@@ -223,6 +223,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CRM System.
+        /// </summary>
+        public static string CRMSystem {
+            get {
+                return ResourceManager.GetString("CRMSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customer.
         /// </summary>
         public static string Customer {
@@ -1222,6 +1231,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sign In.
+        /// </summary>
+        public static string SignIn {
+            get {
+                return ResourceManager.GetString("SignIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skype.
         /// </summary>
         public static string Skype {
@@ -1321,7 +1339,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total.
+        ///   Looks up a localized string similar to Telegram.
         /// </summary>
         public static string Telegram {
             get {
@@ -1445,7 +1463,7 @@ namespace CRM.Resources {
                 return ResourceManager.GetString("Yearly", resourceCulture);
             }
         }
-           
+        
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>

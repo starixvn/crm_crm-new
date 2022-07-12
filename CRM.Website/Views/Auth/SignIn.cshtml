@@ -3,7 +3,6 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta charset="utf-8" />
-    <title>Sign In</title>
     <meta name="viewport" content="width=device-width" />
 </head>
 @section Styles {
@@ -14,6 +13,7 @@
         <link rel="stylesheet" href="~/www/dist/css/pro/pages/auth/login.chunk.css" asp-append-version="true" />
     </environment>
 }
+@{ ViewData["Title"] = ViewResources.SignIn; }
 <body>
     <div id='not-supported-browser-panel' style="display: none">
         Your browser is no longer supported. Some parts will not work and you may experience

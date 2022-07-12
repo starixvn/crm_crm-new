@@ -585,4 +585,10 @@
   <data name="Letstalk" xml:space="preserve">
     <value>Letstalk</value>
   </data>
+  <data name="CRMSystem" xml:space="preserve">
+    <value>CRM System</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
 </root>

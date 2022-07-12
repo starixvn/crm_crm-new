@@ -1,6 +1,7 @@
-﻿@section Styles {
+﻿@{ ViewData["Title"] = ViewResources.CRMSystem; }
+@section Styles {
     <environment include="Development">
-        <link rel="stylesheet" href="~/www/dist/css/dev/main.chunk.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/www/dist/css/dev/main.chunk.css" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/www/dist/css/pro/main.chunk.css" asp-append-version="true" />
