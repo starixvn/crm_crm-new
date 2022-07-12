@@ -12,7 +12,7 @@ export default class BreadcrumbTime extends Component {
     }
     componentDidMount() {
         this.interval = setInterval(() => {
-            const currentTime = new Date(DateTimeService.toClientDateTime(new Date()));
+            const currentTime = DateTimeService.toClientDateTime(new Date());
             const currentTimeFormat = moment(currentTime).format('hh:mm:ss A MMM DD, YYYY');
             this.setState({ time: currentTimeFormat });
         }, 1000);
