@@ -8,7 +8,6 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.AdminTool.SettingManagement;
-    using CRM.Criteria.Setting;
     using CRM.Models.AdminTool;
     using CRM.Services;
     using CRM.ViewModels;
@@ -26,7 +25,7 @@
         public SettingManagementController(
             IBaseService baseService,
             ISettingService settingService,
-            INapSession napSessione)
+            INapSession napSession)
         {
             this.baseService = baseService;
             this.settingService = settingService;
