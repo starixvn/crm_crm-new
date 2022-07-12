@@ -146,5 +146,8 @@
         <None Update="ExcelTemplates\UpdateInformHeadlines.xlsx">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="ExcelTemplates\Wagers_Related_Report.xlsx">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 </Project>

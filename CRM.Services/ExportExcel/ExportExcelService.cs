@@ -283,18 +283,11 @@
 
         public byte[] ExportWagerReport(WagerReportModel wagerreportInfo, int year)
         {
-            try
-            {
-                const string ExcelTemplatePath = "ExcelTemplates/Wagers_Related_Report.xlsx";
-                var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-                var excel = new WagerReportExcel(templatePath, wagerreportInfo, year);
-                return excel.Export();
-            }
-            catch (System.Exception e)
-            {
-
-                throw new System.Exception(e.StackTrace + e.Message);
-            }
+            const string ExcelTemplatePath = "ExcelTemplates/Wagers_Related_Report.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new WagerReportExcel(templatePath, wagerreportInfo, year);
+            return excel.Export();
+            
         }
     }
 }
