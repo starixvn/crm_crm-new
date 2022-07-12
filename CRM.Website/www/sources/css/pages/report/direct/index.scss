@@ -48,14 +48,14 @@
         justify-content: flex-end;
     }
     
-    .header-content, .body-content, .footer-content {
-        border: none;
-    }
-    
     .table-container {
         border: solid 1px #b7b7b7;
         overflow: scroll;
         min-width: 700px !important;
+
+        .header-content, .body-content, .footer-content {
+            border: none;
+        }
     
         .header-content {
             border-bottom: none;

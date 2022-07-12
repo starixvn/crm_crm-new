@@ -34,19 +34,11 @@
          min-width: 1200px;
     }
     
-    .recharts-default-legend{
-        width: 98%;
-        li{
-            width: 280px;
-        }
-    }
-    
     .cursor-pointer{
         cursor: pointer;
     }
     
     .table-container{
-        border: solid 1px #b7b7b7;
         .parent-level-0{
             height: 29px;
             .subcategory, td{
@@ -98,7 +90,14 @@
             left: -9%;
             width: 1350px !important;
         }
-    }
+
+        .recharts-default-legend{
+            width: 98%;
+            li{
+                width: 280px;
+            }
+        }
+    } 
 }
 
 .feedback-detail-statistics .modal-content{

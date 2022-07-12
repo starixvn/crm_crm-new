@@ -1,16 +1,5 @@
 @import '../../../abstracts/variables';
 .report-customer {
-    padding: 10px;
-
-    .body-content, .footer-content, .header-content {
-        border: none; 
-        .table {
-            td:first-child {
-                border-left: 1px solid rgb(183, 183, 183) !important;
-            }
-        }
-    }
-    
     .form-filter {
         .row {
             margin-left: 0;
@@ -45,6 +34,14 @@
     
     .table-container {
         border: 1px solid #b7b7b7;
+        .body-content, .footer-content, .header-content {
+            border: none; 
+            .table {
+                td:first-child {
+                    border-left: 1px solid rgb(183, 183, 183) !important;
+                }
+            }
+        }
         .header-content {
             border-bottom: none;
             position: sticky;
