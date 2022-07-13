@@ -440,7 +440,6 @@ export default class AppContainer extends Component {
 
     validateFormik = values => {
         const errors = {};
-        console.log(this.props);
         if (values.hasRelated && this.state.fieldInput.customerNameInput !== '' && values.relatedCustomers.length ===0) {
             errors.customerNameInput = 'You must verify the username before saving this feedback.';
         }
@@ -662,7 +661,8 @@ export default class AppContainer extends Component {
             const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
             await DataService.postDataAsync(url, { username: newRelatedCustJoin }).then(response => {
                 const customerRemains = oldReLatedCust.filter(x=> !deleteRelatedCust.some(y=>y.custId === x.custId));
-                const customersCombine = [...response.data, ...customerRemains];
+                let customersCombine = [...response.data, ...customerRemains];
+                customersCombine = customersCombine.filter((v, i, a) => a.findIndex(t => t.custId === v.custId && t.val === v.val) === i);
                 this.setState({relatedCustomers: customersCombine});
                 const inactiveCust = response.data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
                 if(inactiveCust.length > 0){

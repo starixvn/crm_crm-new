@@ -80,7 +80,7 @@ export class Filter extends Component {
             handledBy: handler,
             reviewer: reviewer,
             pageIndex: 1,
-            pageSize: 100
+            pageSize: this.props.gridParams.pageSize
         };
 
         this.props.setGridParams(params);
@@ -297,8 +297,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings } = state;
-    return { settings };
+    const { settings, gridParams } = state;
+    return { settings, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

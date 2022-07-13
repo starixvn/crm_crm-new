@@ -35,6 +35,8 @@
 
         public async Task<DynamicReportInfo> GetDynamicReportAsync(GetDynamicReportCriteria criteria)
         {
+            criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var dynamicReport = await GetDynamicReportData(criteria);
             var chartInfo = new DynamicReportInfo
             {
@@ -45,7 +47,7 @@
                 ChildReports = new List<DynamicReportInfo>()
             };
 
-            dynamicReport.ChildReports.ForEach(x => x.ChildReports.ForEach(y => y.FeedbackDate = commonService.ConvertToServerDateTime(y.FeedbackDate)) );
+            dynamicReport.ChildReports.ForEach(x => x.ChildReports.ForEach(y => y.FeedbackDate = commonService.ConvertToClientDateTime(y.FeedbackDate)) );
 
             var childReportLength = dynamicReport.ChildReports.Count;
             for (var periodIndex = 0; periodIndex < childReportLength; periodIndex++)

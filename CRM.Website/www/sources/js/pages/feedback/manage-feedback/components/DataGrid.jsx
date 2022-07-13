@@ -82,6 +82,7 @@ export class DataGrid extends Component {
         return groupCategory.map((value, key) => {
             const filterMainCategory = mainCategories.find(el => el.settingId === value.settingId);
             return (
+                filterMainCategory !== undefined && 
                 <div>
                     <div key={key} className="font-weight-bold">{filterMainCategory.settingValue}</div>
                     {
