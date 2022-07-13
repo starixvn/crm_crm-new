@@ -10,6 +10,10 @@
     }
 
     .form-filter {
+        .react-datepicker-wrapper-container .react-datepicker-wrapper .react-datepicker__input-container input.form-control {
+            height: 100%;
+            width: 153.5px;
+        }
         .row {
             margin-left: 0;
             margin-right: 0;

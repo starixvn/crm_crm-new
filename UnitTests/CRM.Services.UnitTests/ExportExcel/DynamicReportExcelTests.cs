@@ -41,7 +41,7 @@
             // Assert
             Assert.Equal(template.Cells[2, 1, RowStartHeader - 1, TotalCols],
                 worksheet.Cells[2, 1, RowStartHeader - 1, TotalCols]);
-            Assert.Equal("Daily_Communication", worksheet.Cells[1, 1].Value);
+            Assert.Equal("Daily_Communication [0]", worksheet.Cells[1, 1].Value);
         }
 
         [Fact]

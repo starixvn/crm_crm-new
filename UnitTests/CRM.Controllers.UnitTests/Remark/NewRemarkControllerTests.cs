@@ -36,22 +36,6 @@
         private ICustomerService customerService;
 
         [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
-
-            // Act
-            var actual = controller.Index(1);
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(actual);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
-        }
-
-        [Fact]
         public async Task GetRemarkTitles_WhenCalled_ReturnExpectedJsonResult()
         {
             var remarkSettings = new List<Setting> { new Setting { Name = " test" } };

@@ -13,13 +13,9 @@
 
     public class HomeControllerTests
     {
-
-        private ISessionService sessionService;
         private IUserService userService;
         private INapSession napSession;
         private INapSettings napSettings;
-        private ICommonService commonService;
-        private IOptionsSnapshot<AppSettings> appSettings;
 
         [Fact]
         public void Index_WhenCalled_ReturnExpectedViewResult()
@@ -39,14 +35,11 @@
         #region Helpers
 
         private HomeController GetController()
-        {
-            sessionService = Substitute.For<ISessionService>();
+        {            
             userService = Substitute.For<IUserService>();
             napSession = Substitute.For<INapSession>();
             napSettings = Substitute.For<INapSettings>();
-            commonService = Substitute.For<ICommonService>();
-            appSettings = Substitute.For<IOptionsSnapshot<AppSettings>>();
-            return new HomeController(sessionService, userService, napSession, napSettings, commonService, appSettings);
+            return new HomeController(userService, napSession, napSettings);
         }
 
         #endregion Helpers

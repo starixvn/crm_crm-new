@@ -29,9 +29,6 @@
         private ICustomerService customerService;
         private ISettingService settingService;
         private ISessionService sessionService;
-        private IUserService userService;
-        private INapSettings napSettings;
-
 
         [Fact]
         public async Task GetCustomerInfo_WhenCalled_ReturnExpectedData()
@@ -132,9 +129,7 @@
             settingService = Substitute.For<ISettingService>();
             napSession = Substitute.For<INapSession>();
             sessionService = Substitute.For<ISessionService>();
-            userService = Substitute.For<IUserService>();
-            napSettings = Substitute.For<INapSettings>();
-            var controller = new CustomerInfoController(napSession, customerService, settingService, sessionService, userService, napSettings);
+            var controller = new CustomerInfoController(napSession, customerService, settingService, sessionService);
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
                 Connection =
