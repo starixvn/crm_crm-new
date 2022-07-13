@@ -114,7 +114,7 @@
     }
     
     @media only screen and (max-width: 1500px) {
-        #tooltip-customers{
+        #add-feedback-tooltip-customers{
             transform:translate(362px, 549px) !important;
         }
         
@@ -136,7 +136,7 @@
     z-index: 1050 !important;
 }
 
-#tooltip-customers{
+#add-feedback-tooltip-customers{
     transform: translate(467px, 549px) !important;
 }
 
@@ -152,7 +152,7 @@
     transform: translate(209px, 312px) !important;
 }
 
-#tooltip-customers [class$="inner"], #collapse-tooltip-customers [class$="inner"]{
+#add-feedback-tooltip-customers [class$="inner"], #collapse-tooltip-customers [class$="inner"]{
     min-width: 300px;
     text-align: left;
 }
