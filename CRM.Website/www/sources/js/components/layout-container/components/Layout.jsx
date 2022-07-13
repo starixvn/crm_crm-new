@@ -199,7 +199,7 @@ class Layout extends Component {
         return currentCustomer;
     };
 
-    handleNavigate = name => this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo?.custId});
+    handleNavigate = name => this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo});
 
 
     handleCollapseExpandLayout = event =>{

@@ -55,8 +55,24 @@
             IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(criteria);
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
 
-            var bytes = excelService.ExportLatestFeedbackReport(feedbacks, mainCategories, criteria.Top);
-            string reportName = string.Format(ViewResources.FeedbackReport_Title, criteria.Top);
+            var bytes = excelService.ExportLatestFeedbackReport(feedbacks, mainCategories, criteria.Top, string.Empty);
+            string reportName = string.Format(ViewResources.LatestFeedbackReport_File, criteria.Top);
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchByCustExportExcel([FromBody] GetLatestFeedbackParam param)
+        {
+            var criteria = new GetLatestFeedbackByCustIdCriteria
+            {
+                Top = param.Top,
+                CustID = param.CustID
+            };
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(criteria);
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+
+            var bytes = excelService.ExportLatestFeedbackReport(feedbacks, mainCategories, param.Top, param.UserName);
+            string reportName = string.Format(ViewResources.LatestFeedback_Report_ByCustId_File, param.Top, param.UserName);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
     }

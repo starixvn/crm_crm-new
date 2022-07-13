@@ -14,7 +14,7 @@ export class Filter extends Component {
     }
 
     getParams = top => {
-        return { top, custId: this.props.custId };
+        return { top, custId: this.props.custId, username: this.props.username};
     };
 
     handleTopChange = event => {

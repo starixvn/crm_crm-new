@@ -541,7 +541,7 @@ export default class CreateForm extends Component {
                 <Col sm="1" md="1">
                     <Form.Label>
                         <OverlayTrigger placement="bottom-start" overlay={
-                            <Tooltip id={isCollapse ? 'collapse-tooltip-customers' : 'tooltip-customers'}>{LangHelper.getResource('MultipleCustomersTooltip')}</Tooltip>}
+                            <Tooltip id={isCollapse ? 'collapse-tooltip-customers' : 'add-feedback-tooltip-customers'}>{LangHelper.getResource('MultipleCustomersTooltip')}</Tooltip>}
                         >
                             <span className="fa fa-question-circle-o" />
                         </OverlayTrigger>

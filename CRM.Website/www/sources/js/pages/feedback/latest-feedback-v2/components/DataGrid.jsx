@@ -12,7 +12,11 @@ import { MaximumDisplayRelatedCustomer } from '@jsroot/common/constants';
 export class DataGrid extends Component {
     handleExportExcel = () => {
         const { gridParams } = this.props;
-        this.props.exportExcel(gridParams);
+        if(!gridParams.custId){
+            this.props.exportExcel(gridParams);
+        }else{
+            this.props.searchByCustExportExcel(gridParams);
+        }
     };
 
     buildHeader = () => {
@@ -129,7 +133,7 @@ export class DataGrid extends Component {
         let html = '';
         const totalItems = relatedCustomers.length;
         if (totalItems > MaximumDisplayRelatedCustomer) {
-            html = (<a href="#" onClick={() => this.handleOpenViewRelatedCustomerDialog(relatedCustomers.join(', '))}>
+            html = (<a onClick={() => this.handleOpenViewRelatedCustomerDialog(relatedCustomers.join(', '))}>
                 {totalItems} customers
             </a>);
         } else {
@@ -233,7 +237,11 @@ export class DataGrid extends Component {
         return (
             <Fragment>
                 <div className='table-title d-flex justify-content-between align-items-center'>
-                    <span>Top {gridParams.top} Feedback</span>
+                    {
+                        !gridParams.username ?
+                        <span>Top {gridParams.top} Feedback</span> :
+                        <span>Top {gridParams.top} Feedback From {this.props.gridParams.username}</span>
+                    }
                     {
                         gridData.data.length > 0 && this.renderExportExcelText()
                     }

@@ -40,19 +40,29 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
             this.setState({policy: response});
         });
-        if(this.props.custId !== undefined && this.props.custId > 0){
-            const params = {...this.props.gridParams, custId: this.props.custId};
-            this.props.setGridParams(params);
-            this.props.getLatestFeedbackByCustId(params);
-            document.title = LangHelper.getResource('LatestFeedback');
-        }else{
-            this.props.getLatestFeedback(this.props.gridParams);
-            document.title = LangHelper.getResource('LatestFeedbackv2');
+        this.handleInitData();
+    }
+
+    componentDidUpdate(prevProps){
+        if (prevProps.custId !== this.props.custId) {
+            this.handleInitData();
         }
     }
 
     componentWillUnmount(){
         this.props.resetState();
+    }
+
+    handleInitData = () =>{
+        if(this.props.custId !== undefined && this.props.custId > 0){
+            const params = {...this.props.gridParams, custId: this.props.custId, username: this.props.username};
+            this.props.setGridParams(params);
+            this.props.getLatestFeedbackByCustId(params);
+            document.title = LangHelper.getResource('LatestFeedback');
+        } else{
+            this.props.getLatestFeedback(this.props.gridParams);
+            document.title = LangHelper.getResource('LatestFeedbackv2');
+        }
     }
 
     handleCloseEditNoInquiryDialog = () => {
@@ -79,8 +89,8 @@ export class AppContainer extends Component {
         const {viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog } = this.props;
         return (
             <Fragment>
-                <Filter currentCustomer={this.props.currentCustomer} />
-                <DataGrid isHost={isHost} custId={this.props.custId}/>
+                <Filter custId={this.props.custId} username={this.props.username}/>
+                <DataGrid isHost={isHost} />
                 {
                     viewRelatedCustomerDialog.show &&
                     <SweetModalDialog size="lg"

@@ -14,6 +14,7 @@
         private readonly IEnumerable<FeedbackDetail> feedbacks;
         private readonly IEnumerable<Setting> mainCategories;
         private readonly int top;
+        private readonly string username;
 
         private const byte RowStartHeader = 4;
         private const byte RowStartBody = 6;
@@ -23,18 +24,21 @@
             string templatePath,
             IEnumerable<FeedbackDetail> feedbacks,
             IEnumerable<Setting> mainCategories,
-            int top) : base(templatePath, 0, ViewResources.LatestFeedback)
+            int top, string username) : base(templatePath, 0, ViewResources.LatestFeedback)
         {
             this.feedbacks = feedbacks;
             this.mainCategories = mainCategories;
             this.top = top;
+            this.username = username;
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
             templateWorksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]
                 .Copy(worksheet.Cells[1, 1, RowStartHeader - 1, TotalCols]);
-            worksheet.Cells[1, 1].Value = string.Format(ViewResources.FeedbackReport_Title, top);
+            worksheet.Cells[1, 1].Value = username == string.Empty ? 
+                string.Format(ViewResources.LatestFeedbackReport_Title, top) :
+                string.Format(ViewResources.LatestFeedback_Report_ByCustId_Title, top, username);
         }
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)

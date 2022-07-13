@@ -81,7 +81,6 @@ export default class Index extends PureComponent {
                             
                             <Route path={Site.resolveClientUrl("AddFeedback")} element={<AddFeedbackComponent />} />
                             <Route path={Site.resolveClientUrl("AddGuestFeedback/Index")} element={<AddGuestFeedbackComponent />} />
-                            <Route path={Site.resolveClientUrl("Feedbacks/LatestFeedback")} element={<LatestFeedbackComponent />} />
                             <Route path={Site.resolveClientUrl("Feedbacks/LatestFeedback")} element={<LatestFeedbackV2Component />} />
                             <Route path={Site.resolveClientUrl("LatestFeedback")} element={<LatestFeedbackComponent />} />
                             <Route path={Site.resolveClientUrl("Feedbacks/ManageFeedback")} element={<ManageFeedbackComponent />} />

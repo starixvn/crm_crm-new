@@ -17,6 +17,12 @@
         border: none;
         border-right: 1px solid #b7b7b7;
     }
+
+    .table-container .body-content a{
+        cursor: pointer;
+        color: #147ccc;
+        text-decoration: none;
+    }
 }
 
 .tooltipFeedback [class$="inner"] {

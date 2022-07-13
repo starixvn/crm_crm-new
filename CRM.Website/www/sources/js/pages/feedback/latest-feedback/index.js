@@ -17,7 +17,7 @@ class index extends React.Component{
         return(
             <Provider store={store}>
                 <div className='latest-feedback'>
-                    <AppContainer custId={location.state}/>
+                    <AppContainer custId={location.state.custId} username={location.state.username}/>
                 </div>
             </Provider>
         );

@@ -457,15 +457,6 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Top_{0}_Feedback.
-        /// </summary>
-        public static string FeedbackReport_Title {
-            get {
-                return ResourceManager.GetString("FeedbackReport_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to FeedbackStatistic-{0}-{1}.
         /// </summary>
         public static string FeedbackStatistic_ExcelFile {
@@ -669,6 +660,42 @@ namespace CRM.Resources {
         public static string LatestFeedback {
             get {
                 return ResourceManager.GetString("LatestFeedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top_{0}_Feedback_From_{1}.
+        /// </summary>
+        public static string LatestFeedback_Report_ByCustId_File {
+            get {
+                return ResourceManager.GetString("LatestFeedback_Report_ByCustId_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top {0} Feedback From {1}.
+        /// </summary>
+        public static string LatestFeedback_Report_ByCustId_Title {
+            get {
+                return ResourceManager.GetString("LatestFeedback_Report_ByCustId_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top_{0}_Feedback.
+        /// </summary>
+        public static string LatestFeedbackReport_File {
+            get {
+                return ResourceManager.GetString("LatestFeedbackReport_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top {0} Feedback.
+        /// </summary>
+        public static string LatestFeedbackReport_Title {
+            get {
+                return ResourceManager.GetString("LatestFeedbackReport_Title", resourceCulture);
             }
         }
         
