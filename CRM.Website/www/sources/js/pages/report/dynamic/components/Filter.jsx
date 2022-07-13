@@ -465,7 +465,9 @@ export class Filter extends Component {
                                 </Form.Control>
                             </Form.Group>
                             <Form.Group className="group-tool">
-                                <Form.Label htmlFor="communicationTool" className="col-auto col-form-label col-label-tool">{LangHelper.getResource('CommunicationTool')}</Form.Label>
+                                <Form.Label htmlFor="communicationTool"
+                                 className="col-auto col-form-label col-label-tool">{LangHelper.getResource('CommunicationTool')}
+                                </Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
                                     name="communicationToolId"
                                     onChange={this.handleChange}

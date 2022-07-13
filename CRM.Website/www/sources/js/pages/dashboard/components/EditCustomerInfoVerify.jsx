@@ -8,7 +8,6 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
-import { Policy } from '@jsroot/common/constants';
 
 export class EditCustomerInfoVerify extends Component {
 

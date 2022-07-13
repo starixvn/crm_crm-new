@@ -21,7 +21,7 @@ export default class BreadcrumbTime extends Component {
     componentWillUnmount() {
         clearInterval(this.interval);
     }
-    
+
     render() {
         return(
             <div sm="3" md="3">

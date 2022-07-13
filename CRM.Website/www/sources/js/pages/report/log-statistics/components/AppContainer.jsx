@@ -13,7 +13,7 @@ export class AppContainer extends Component {
     this.props.getAllSettings();
     document.title = LangHelper.getResource('LogStatistics');
   }
-  
+
   componentWillUnmount(){
     this.props.resetState();
   }

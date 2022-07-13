@@ -16,7 +16,7 @@ import { getPermission } from '@jsroot/common/shareScripts';
 export class AppContainer extends PureComponent {
     static propTypes = {
         createPicPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        editPicPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
+        editPicPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
@@ -31,7 +31,7 @@ export class AppContainer extends PureComponent {
             policy: null
         };
     }
-    
+
     componentDidMount(){
         getPermission(FunctionKey.PICManagement).then(response => {
             this.setState({policy: response});

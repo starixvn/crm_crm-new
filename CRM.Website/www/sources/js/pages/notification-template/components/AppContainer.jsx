@@ -22,7 +22,7 @@ export class AppContainer extends Component {
         deleteTemplatePopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         editTemplatePopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         getLanguages: PropTypes.func,
-        getNotificationTypes: PropTypes.func,
+        getNotificationTypes: PropTypes.func
     };
 
     static defaultProps = {
@@ -53,7 +53,7 @@ export class AppContainer extends Component {
         });
         document.title = LangHelper.getResource('NotificationTemplate');
     }
-    
+
     componentWillUnmount(){
         this.props.resetState();
     }

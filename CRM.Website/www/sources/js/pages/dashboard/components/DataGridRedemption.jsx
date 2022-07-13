@@ -10,7 +10,7 @@ export class DataGridRedemption extends Component {
     componentDidMount() {
         this.props.getRedemptionLogs({ customerId: this.props.id });
     }
-    
+
     componentDidUpdate(prevProps) {
         if ( this.props.id !== prevProps.id ) {
             this.props.getRedemptionLogs({ customerId: this.props.id });

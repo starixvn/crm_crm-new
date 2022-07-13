@@ -232,7 +232,7 @@ export default class DataGrid extends PureComponent {
                         />
                     </Col>
                 </Form.Group>
-                { 
+                {
                     this.renderCommunicationTool(values, handleChange, isSubmitting)
                 }
                 {
@@ -417,7 +417,7 @@ export default class DataGrid extends PureComponent {
     renderDetail = isShowInactiveMsg =>{
         return (
             <div>
-                <Row className="item title text-left btn-detail" 
+                <Row className="item title text-left btn-detail"
                     onClick={() => this.setState(prevState =>({isShowDetail: !prevState.isShowDetail}))}
                 >
                     {LangHelper.getResource('Detail')}
@@ -452,7 +452,7 @@ export default class DataGrid extends PureComponent {
                 }
             </div>
         );
-    }
+    };
 
     handleChangeSite = item => {
         this.setState({

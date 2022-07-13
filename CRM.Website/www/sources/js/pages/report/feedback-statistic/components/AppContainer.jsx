@@ -17,7 +17,7 @@ export class AppContainer extends Component {
   componentWillUnmount(){
     this.props.resetState();
   }
-  
+
   handleCloseDetailDialog = () =>{
     this.props.setOpenDetailPopup({ show: false});
   };

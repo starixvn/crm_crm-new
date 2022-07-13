@@ -12,7 +12,7 @@ export class AppContainer extends Component {
         this.props.getAllSettings();
         document.title = LangHelper.getResource('CustomerReport');
     }
-    
+
     componentWillUnmount(){
         this.props.resetState();
     }

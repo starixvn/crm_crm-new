@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import Filter from './Filter';
 import { ToastContainer, Slide } from 'react-toastify';
 import Header from './Header';
@@ -56,7 +56,7 @@ class Layout extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetCurrentCustomer');
         await DataService.getDataAsync(url).then(response => {
-            if(!response || !response.data) return;
+            if(!response || !response.data) {return};
             this.setState({username: response.data.name, isGuest: response.data.isGuest} , () =>{
                 this.getCustomerInfo();
             });
@@ -106,10 +106,10 @@ class Layout extends Component {
     setGridParams = gridParams =>{
         this.setState({gridParams});
     };
-    
+
     setUserName = username =>{
         this.setState({username});
-    }
+    };
 
     handleCloseEmptyConfirm = () => {
         this.setState({ showEmptyConfirmPopup: false });
@@ -183,10 +183,10 @@ class Layout extends Component {
 
     handleNavigateDashboard = () =>{
         const currentCustomer = this.getCurrentCustomerInfo();
-        this.props.navigate(Site.resolveClientUrl('Dashboard'), 
+        this.props.navigate(Site.resolveClientUrl('Dashboard'),
             {state: currentCustomer}
         );
-    }
+    };
 
     getCurrentCustomerInfo = () =>{
         const {customerInfo, isGuest, username, isCreditSite } = this.state;
@@ -197,7 +197,7 @@ class Layout extends Component {
             isCreditSite: isCreditSite
         };
         return currentCustomer;
-    }
+    };
 
     handleNavigate = name => this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo?.custId});
 
@@ -218,7 +218,7 @@ class Layout extends Component {
     handleSetStorage = isShowLeft =>{
         window.localStorage.setItem('isShowingLeftPanel', isShowLeft);
         window.localStorage.setItem('isKeepLeftPanel', isShowLeft);
-    }
+    };
 
     renderLeftRightContent = customerInfo =>{
         const {settings, gridParams} = this.state;
@@ -227,7 +227,7 @@ class Layout extends Component {
                 <div id={customerInfo !== null ? 'left-row-container' : 'left-row-hidden'}>
                 {
                     customerInfo !== null && settings !== null &&
-                    <DataGrid 
+                    <DataGrid
                         customerInfo={customerInfo} settings = {settings} gridParams={gridParams} setGridParams={this.setGridParams} setUserName={this.setUserName}
                         getCustomerInfo={this.getCustomerInfo} handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup} handleNavigate = {this.handleNavigate}
                     />
@@ -250,10 +250,10 @@ class Layout extends Component {
                     <div id='child-app-container'>
                     {this.props.children}
                     </div>
-                </div> 
+                </div>
             </div>
         );
-    }
+    };
 
     render() {
         const {customerInfo, isGuest, customerSuggestions, showEmptyConfirmPopup,
@@ -273,8 +273,11 @@ class Layout extends Component {
                     <Filter
                         getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                         customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
-                        showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
-                        showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} handleNavigateDashboard={this.handleNavigateDashboard}
+                        showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} 
+                        handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
+                        showEmptyConfirmPopup={showEmptyConfirmPopup} 
+                        handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} 
+                        handleNavigateDashboard={this.handleNavigateDashboard}
                         handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
                     />
                 </div>
@@ -288,7 +291,6 @@ class Layout extends Component {
                         }
                     </div>
                 }
-                
                 <ToastContainer
                     limit={1}
                     position='top-center'

@@ -168,7 +168,7 @@
             return feedbacks;
         }
 
-        private string calculationDuration(DateTime ResolutionDate, DateTime FeedbackDate)
+        private static string calculationDuration(DateTime ResolutionDate, DateTime FeedbackDate)
         {
             var totalDays = ResolutionDate - FeedbackDate;
             return string.Format("{0}:{1}:{2}:{3}",

@@ -443,7 +443,7 @@ export default class AppContainer extends Component {
         if (values.hasRelated && this.state.fieldInput.customerNameInput !== '' && values.relatedCustomers.length ===0) {
             errors.customerNameInput = 'You must verify the username before saving this feedback.';
         }
-    
+
         if (values.isReviewed && values.review === '') {
             errors.reviewNameInput = 'Review  is required!';
         }
@@ -467,7 +467,11 @@ export default class AppContainer extends Component {
 
         const { mainCategories, subCategories } = this.state.settings;
         validateMainCategorySubCategory(errors, values.mainCategoryIds, values.subCategoryIds, mainCategories, subCategories);
+        this.validateFormikEmpty(values, errors);
+        return errors;
+    };
 
+    validateFormikEmpty = (values, errors) => {
         if (values.subject === '') {
             errors.subject = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Subject'));
         }
@@ -479,9 +483,8 @@ export default class AppContainer extends Component {
         if (values.solution === '') {
             errors.solution = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Solution'));
         }
-
         return errors;
-    };
+    }
 
     getExtensionParams = (selectedExtensionIds, extensionNA) => {
         let extensionIds = [];

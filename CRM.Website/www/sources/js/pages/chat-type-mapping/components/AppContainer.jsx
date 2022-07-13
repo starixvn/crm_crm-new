@@ -27,7 +27,7 @@ export class AppContainer extends Component {
         this.props.setGridData(null);
         this.props.setSettings(null);
     }
-    
+
     render() {
         if(!this.state.policy){
             return null;

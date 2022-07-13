@@ -51,7 +51,7 @@ class Filter extends Component {
                 return this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname);
             }
         }
-    }
+    };
 
     renderDetailBreadcrumbsMenu = pathname =>{
         return (
@@ -60,7 +60,7 @@ class Filter extends Component {
                 <li><a>{LangHelper.getResource(pathname.substring(1))}</a></li>
             </ul>
         );
-    }
+    };
 
     getBreadcrumbsMenu = (currentMenu, menus) =>{
         let breadcrumbsMenu = [];
@@ -71,12 +71,12 @@ class Filter extends Component {
             breadcrumbsMenu = [...breadcrumbsMenu, currentMenu.name];
         }
         return breadcrumbsMenu;
-    }
+    };
 
     renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={event => this.handleNavigateSubHome(event, 'Dashboard')}/></li>;
 
     renderBreadcrumbsMenu = (breadcrumbsMenu, pathname) =>{
-        const isHome = breadcrumbsMenu.length > 0 && breadcrumbsMenu[0].toLowerCase() === 'home' 
+        const isHome = breadcrumbsMenu.length > 0 && breadcrumbsMenu[0].toLowerCase() === 'home'
                         || SubMainMenu.filter(x=> this.getUrlPath(x.url) === pathname.toLowerCase()).length > 0;
         return (
             isHome ?
@@ -151,7 +151,7 @@ class Filter extends Component {
     handleNavigateSubHome = (event, name) =>{
         event.preventDefault();
         this.props.navigate(Site.resolveClientUrl(name), {state: this.props.customerInfo.custId});
-    }
+    };
 
 
     handleNavigateNewRemark = (event, name) =>{
@@ -162,7 +162,7 @@ class Filter extends Component {
             username: this.props.username
         };
         this.props.navigate(Site.resolveClientUrl(name), {state: currentCustomer});
-    }
+    };
 
     handleConcatMenu = menus => {
         let menusArr = [];
@@ -174,7 +174,7 @@ class Filter extends Component {
             }
         });
         return menusArr;
-    }
+    };
 
     recursiveFindParentName = (menus, parentId) =>{
         let parentNames = [];
@@ -186,13 +186,13 @@ class Filter extends Component {
             parentNames = [...parentNames, parent[0]];
         }
         return parentNames;
-    }
+    };
 
     render() {
         if(!this.props.menus || this.props.menus.length === 0) {
             return null;
         }
-        
+
         const {username, customerSuggestions, isGuest, handleChange, showEmptyCustomerInfoPopup, debounceUserNameInputChange, handleChangeSuggestion,
             handleCloseEmptyCustomerInfoPopup, showEmptyConfirmPopup, handleGetCustomerIsGuest, handleCloseEmptyConfirm} = this.props;
 

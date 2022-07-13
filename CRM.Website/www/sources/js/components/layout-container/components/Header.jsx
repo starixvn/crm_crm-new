@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 import {
     Link
-} from "react-router-dom";
+} from 'react-router-dom';
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
 
@@ -15,13 +15,13 @@ export class Header extends PureComponent {
     handleLogout = () =>{
         window.localStorage.clear();
         window.location = Site.resolveClientUrl('Auth/SignOut');
-    }
+    };
 
     renderListMenu = (item, index) => {
         return (
             <li key={index + item.id} className='menu-item'>
                 <div className='menu-title'>
-                <Link 
+                <Link
                     to={item.url !== '' ? Site.resolveClientUrl(item.url.slice(1)) : ''}
                     state={item.url === '/Dashboard' ? this.props.currentCustomerInfo : this.props.currentCustomerInfo.custId}
                     className={`title ${item.url === '' ? 'disabled-link' : ''}`}
@@ -39,7 +39,9 @@ export class Header extends PureComponent {
                             {
                                 item.subMenus.map((element, key) => (
                                     <div key={key} className='layer-first'>
-                                        <Link to={Site.resolveClientUrl(element.url.slice(1))} className={`title ${element.url === '' ? 'disabled-link' : ''}`}>{element.name}</Link>
+                                        <Link to={Site.resolveClientUrl(element.url.slice(1))} 
+                                        className={`title ${element.url === '' ? 'disabled-link' : ''}`}>{element.name}
+                                        </Link>
                                         {
                                             element.subMenus.length > 0 &&
                                             (
@@ -48,7 +50,9 @@ export class Header extends PureComponent {
                                                     <div className='layer-second'>
                                                         {
                                                             element.subMenus.map((ele, num) => (
-                                                                <Link to={Site.resolveClientUrl(ele.url.slice(1))} className={`layer-first ${ele.url === '' ? 'disabled-link' : ''}`} key={num}>{ele.name}</Link>
+                                                                <Link to={Site.resolveClientUrl(ele.url.slice(1))} 
+                                                                className={`layer-first ${ele.url === '' ? 'disabled-link' : ''}`} 
+                                                                key={num}>{ele.name}</Link>
                                                             ))
                                                         }
                                                     </div>
@@ -74,7 +78,7 @@ export class Header extends PureComponent {
         return (
             <div className='header'>
                 <div className='left-header'>
-                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/logo-crm.png')} 
+                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/logo-crm.png')}
                         onClick={() => this.props.handleNavigateDashboard()}
                     />
                     <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" onClick={handleCollapseExpandLayout}/></span>

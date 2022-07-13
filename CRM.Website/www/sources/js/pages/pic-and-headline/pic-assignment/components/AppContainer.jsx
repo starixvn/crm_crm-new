@@ -12,7 +12,6 @@ import { getPermission } from '@jsroot/common/shareScripts';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
-    
     constructor(props) {
         super(props);
         this.state = {

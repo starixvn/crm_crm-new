@@ -7,7 +7,6 @@ import DataGrid from './DataGrid';
 import Filter from './Filter';
 import EditRedemptionLog from './EditRedemptionLog';
 import CreateRedemptionLog from './CreateRedemptionLog';
-import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import redemption from '../redemptionSlice';
 import { FunctionKey } from '@jsroot/common/constants';
@@ -67,7 +66,7 @@ export class AppContainer extends Component {
         }
 
         const { editRedemptionDialog, createRedemptionDialog } = this.props;
-        
+
         return (
             <>
                 <Filter id={this.props.id}/>

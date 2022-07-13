@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import RowLayout from './RowLayout';
 import PropTypes from 'prop-types';
 import createTableSection from './tableSection';
-import { DEFAULT_COLUMN_WIDTH, SCROLLBAR_WIDTH, DEFAULT_PADDING, MIN_WIDTH_CONTAINER } from '../constants';
+import { DEFAULT_COLUMN_WIDTH, SCROLLBAR_WIDTH, MIN_WIDTH_CONTAINER } from '../constants';
 import Pager from './Pager';
 import functions from '../functions';
 import Site from '@jsroot/common/site';

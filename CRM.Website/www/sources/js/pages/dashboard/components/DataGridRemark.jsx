@@ -10,7 +10,7 @@ export class DataGridRemark extends Component {
     componentDidMount() {
         this.props.getCustomerRemarks({ customerId: this.props.id });
     }
-    
+
     componentDidUpdate(prevProps) {
         if ( this.props.id !== prevProps.id ) {
             this.props.getCustomerRemarks({ customerId: this.props.id });
@@ -36,7 +36,7 @@ export class DataGridRemark extends Component {
         return (
             <Row key={index}>
                 <Cell>
-                    <div dangerouslySetInnerHTML={{ __html: (index + 1 + ". " + item)}}></div>
+                    <div dangerouslySetInnerHTML={{ __html: `${index + 1}. ${item}`}}></div>
                 </Cell>
             </Row>
         );

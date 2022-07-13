@@ -223,7 +223,7 @@ export class DataGridCommunication extends Component {
                     <span className='link-detail' onClick={() => this.handleShowEditCommunication(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>
                 {
-                    this.props.isHost ? 
+                    this.props.isHost ?
                         <Cell className="text-center">
                             <span className="fa fa-pencil rounded-circle icon-edit" onClick={() => this.handleShowNoOfInquiry(item.feedbackId)} />
                         </Cell> :
