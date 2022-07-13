@@ -38,7 +38,8 @@ export class Filter extends Component {
             extensionId: 0,
             reviewer: null,
             subject: null,
-            showFilter: true
+            showFilter: true,
+            communicationId: 0
         };
     }
 
@@ -324,7 +325,7 @@ export class Filter extends Component {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
             productId: productId,
-            subProductId: subProductId,
+            subProductId: productId === 0 ? 0 : subProductId,
             statusId: statusId,
             roleId: roleId,
             mainCategoryId: mainCategoryId,
@@ -333,7 +334,7 @@ export class Filter extends Component {
             responseId: responseId,
             communicationId: communicationId,
             extensionId: extensionId,
-            subCategoryId: subCategoryId,
+            subCategoryId: mainCategoryId === 0 ? 0 : subCategoryId,
             reviewer: reviewer,
             subject: subject,
             pageIndex: 0,
@@ -469,7 +470,7 @@ export class Filter extends Component {
                                  className="col-auto col-form-label col-label-tool">{LangHelper.getResource('CommunicationTool')}
                                 </Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
-                                    name="communicationToolId"
+                                    name="communicationId"
                                     onChange={this.handleChange}
                                 >
                                     <option value={0}>All</option>

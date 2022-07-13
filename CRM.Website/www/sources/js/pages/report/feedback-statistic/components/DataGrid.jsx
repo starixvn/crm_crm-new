@@ -34,7 +34,7 @@ export class DataGrid extends Component {
 
     buildHeader = gridData => {
         const header = [];
-        header.push(<HeaderCell colWidth={45}>{LangHelper.getResource('Subcategory')}</HeaderCell>);
+        header.push(<HeaderCell className='first-column' colWidth={45}>{LangHelper.getResource('Subcategory')}</HeaderCell>);
         gridData.usernames.forEach(item =>{
             header.push(<HeaderCell colWidth={15}>{item.name}</HeaderCell>);
         });
@@ -80,7 +80,7 @@ export class DataGrid extends Component {
         const {toggleRow} = this.state;
         const usernames = this.props.gridData.usernames;
         cells.push(
-            <Cell className='subcategory'>
+            <Cell className='subcategory first-column'>
                 <span className={`expand-icon fa pr-2 ${!toggleRow.includes(item.id) ? 'fa-caret-down' : 'fa-caret-right'}`} />
                 <span >{`${item.name} - ${item.feedbackSubcategories.length} item(s)`}</span>
             </Cell>
@@ -101,7 +101,7 @@ export class DataGrid extends Component {
             );
             if(!toggleRow.includes(item.id)){
                 cellsSubTotal.push(
-                    <Cell className='child sub-total pl-4'>{`Sub Total (${item.subTotal.total})`}</Cell>
+                    <Cell className='child sub-total pl-4 first-column'>{`Sub Total (${item.subTotal.total})`}</Cell>
                 );
                 item.subTotal.resolves.forEach((count, index) =>{
                     cellsSubTotal.push(
@@ -128,7 +128,7 @@ export class DataGrid extends Component {
 
         if(!toggleRow.includes(parentId)){
             const cells = [];
-            cells.push(<Cell key={`sub-${sub.id}`} className='child pl-4'>{`${sub.name} (${sub.total})`}</Cell>);
+            cells.push(<Cell key={`sub-${sub.id}`} className='child pl-4 first-column'>{`${sub.name} (${sub.total})`}</Cell>);
             sub.resolves.forEach((count, index) =>{
                 cells.push(
                     <Cell key={`count-${index}`}
@@ -149,7 +149,7 @@ export class DataGrid extends Component {
 
     renderFooter = gridData => {
         const cells = [];
-        cells.push(<Cell>Grand Total</Cell>);
+        cells.push(<Cell className = 'first-column'>Grand Total</Cell>);
         gridData.grandTotals.forEach((item,index) =>{
             cells.push(<Cell className={`${item > 0 ? this.styleCLick : this.styleDisableCLick } text-center`}
             onClick={() => this.handleShowDetails(gridData.usernames[index].id,0,0)}>{item}</Cell>);
@@ -273,8 +273,10 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    width={totalWidth-2}
+                    maxWidth={totalWidth-3}
                     autoWidth={false}
+                    isFixColumn
+                    shouldUseMaxWidth
                     header={this.buildHeader(gridData)}
                     body={this.buildBody(gridData)}
                     isPaging
