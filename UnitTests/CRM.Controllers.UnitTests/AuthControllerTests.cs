@@ -43,20 +43,6 @@
             Assert.IsType<ViewResult>(actual);
         }
 
-        [Fact]
-        public async Task Logout_WhenCalled_ExecutedExpectedMethodsAndReturnViewResult()
-        {
-            var controller = FakeDoCheckInController();
-            //Actual
-            var actual = await controller.SignOut();
-
-            //Assert
-            await securityService.Received().LogoutAsync(Arg.Any<int>());
-            napSession.Received().ClearAll();
-            var viewResult = Assert.IsType<RedirectToActionResult>(actual);
-            Assert.Equal("SignIn", viewResult.ActionName);
-        }
-
         #region SSO Login Tests
 
         [Fact]

@@ -35,6 +35,7 @@ export class AppContainer extends Component {
     async componentDidMount() {
         await this.props.getInforms();
         await this.props.getAllSettings();
+        await this.props.getPermissions();
         document.title = LangHelper.getResource('InformHeadlines');
     }
 
@@ -76,8 +77,8 @@ export class AppContainer extends Component {
     render() {
 
         const { editContactInformDialog, editInformDialog, removedLogDialog,
-                removedLogDetailDialog, newInformDialog, allSettings } = this.props;
-        if (!allSettings) {
+                removedLogDetailDialog, newInformDialog, allSettings, permissions } = this.props;
+        if (!allSettings || !permissions) {
             return null;
         }
 
@@ -127,11 +128,11 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 const mapStateToProps = state => {
     const {
         editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
-        newInformDialog, resultEditContactInforms, resultEditInforms, allSettings
+        newInformDialog, resultEditContactInforms, resultEditInforms, allSettings, permissions
     } = state;
     return {
         editContactInformDialog, editInformDialog, removedLogDialog, removedLogDetailDialog,
-        newInformDialog, resultEditContactInforms, resultEditInforms, allSettings
+        newInformDialog, resultEditContactInforms, resultEditInforms, allSettings, permissions
     };
 };
 

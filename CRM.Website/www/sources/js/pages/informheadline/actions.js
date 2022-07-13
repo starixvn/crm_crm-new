@@ -3,6 +3,7 @@ import Site from '@jsroot/common/site';
 import{
     resetState,
     setInforms,
+    setPermissions,
     setTitleDetail,
     setContactInforms,
     setEditContactInformDialog,
@@ -32,6 +33,14 @@ const getInforms = () => async dispatch => {
         dispatch(setInforms(response.data));
     }).then(() => Site.unblockUI());
 };
+
+const getPermissions = () => async dispatch => {
+    const url = Site.resolveClientUrl('InformHeadline/GetPermissions');
+    return await DataService.getDataAsync(url).then(response => {
+        dispatch(setPermissions(response.data));
+    }).then(() => Site.unblockUI());
+};
+
 
 const exportInforms = () => async () => {
     Site.blockUI();
@@ -163,6 +172,7 @@ const exportNewInforms = params => async () => {
 export const ActionCreators = {
     resetState,
     getInforms,
+    getPermissions,
     exportInforms,
     getTitleDetail,
     getContactInformSettings,

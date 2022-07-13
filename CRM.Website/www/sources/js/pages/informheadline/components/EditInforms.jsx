@@ -112,11 +112,11 @@ export class EditInforms extends Component {
     };
 
     render() {
-        const { titleDetail, allSettings, dataEditInforms, exportEditInforms } = this.props;
+        const { titleDetail, allSettings, dataEditInforms, exportEditInforms, permissions } = this.props;
         if (!titleDetail || !allSettings || !dataEditInforms) {
             return null;
         }
-        const isHostPermission = this.props.searchPolicy === Policy.Host;
+        const isHostPermission = permissions.searchPolicy === Policy.Host;
 
         return (
             <Modal show className="modal-edit edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
@@ -146,7 +146,6 @@ export class EditInforms extends Component {
                     />
 
                     <DataGridEdit
-                        hasHostPermission={hasHostPermission}
                         informData={dataEditInforms}
                         informSettings={allSettings}
                         totalItem={dataEditInforms.length}
@@ -166,8 +165,8 @@ export class EditInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, allSettings, dataEditInforms, resultEditInforms, editedInforms, filterData } = state;
-    return { titleDetail, allSettings, dataEditInforms, resultEditInforms, editedInforms, filterData };
+    const { titleDetail, allSettings, dataEditInforms, resultEditInforms, editedInforms, filterData, permissions } = state;
+    return { titleDetail, allSettings, dataEditInforms, resultEditInforms, editedInforms, filterData, permissions };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditInforms);

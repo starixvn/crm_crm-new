@@ -90,7 +90,7 @@ export class DataGrid extends Component {
                                 {LangHelper.getResource('RemovedEditedAccountsLogs')}
                             </Dropdown.Item>
                             {
-                                this.props.searchPolicy === Policy.Host &&
+                                this.props.permissions.searchPolicy === Policy.Host &&
                                 <Dropdown.Item onClick={() => this.handleCloseCase(titleId)}>
                                 <i className="fa fa-times icon icon-closed" />
                                     {LangHelper.getResource('CloseCase')}
@@ -104,7 +104,7 @@ export class DataGrid extends Component {
                     (
                         <Dropdown.Menu>
                             {
-                                this.props.searchPolicy === Policy.Host &&
+                                this.props.permissions.searchPolicy === Policy.Host &&
                                 <Dropdown.Item onClick={() => this.handleOpenCase(titleId)}>
                                     <i className="fa fa-folder-open icon icon-open" />
                                     {LangHelper.getResource('OpenCase')}
@@ -134,7 +134,7 @@ export class DataGrid extends Component {
                 </Cell>
                 <Cell>
                     {
-                        this.props.contactPolicy !== Policy.None ?
+                        this.props.permissions.contactPolicy !== Policy.None ?
                         <span className='link-click' onClick={() => this.handleEditContact(item.titleId, item.status)}>{item.title}</span>
                         : item.title
                     }
@@ -169,12 +169,12 @@ export class DataGrid extends Component {
     };
 
     render() {
-        const { informs } = this.props;
+        const { informs, permissions } = this.props;
         if (!informs) {
             return null;
         }
 
-        if (this.props.searchPolicy !== Policy.None || this.props.contactPolicy !== Policy.None) {
+        if (permissions.searchPolicy !== Policy.None || permissions.contactPolicy !== Policy.None) {
             return (
                 <Fragment>
                     <Table
@@ -191,7 +191,7 @@ export class DataGrid extends Component {
                     />
 
                     {
-                        this.props.searchPolicy === Policy.Host &&
+                        permissions.searchPolicy === Policy.Host &&
                         <Button variant="primary" size="sm" className="mt-3" onClick={this.handleNewInforms}>
                             {LangHelper.getResource('NewCase')}
                         </Button>
@@ -207,8 +207,8 @@ export class DataGrid extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { informs } = state;
-    return { informs };
+    const { informs, permissions } = state;
+    return { informs, permissions };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);

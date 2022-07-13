@@ -15,7 +15,9 @@
     using CRM.Services;
     using CRM.Services.InformHeadline;
     using CRM.ViewModels.InformHeadline;
+    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -30,7 +32,9 @@
         private ISettingService settingService;
         private IExportExcelService excelService;
         private IInformHeadlineService informHeadlineService;
-       
+        private INapSettings napSettings;
+        private IUserService userService;
+
 
         [Fact]
         public async Task GetInforms_WhenCalled_ReturnAsExpectedResult()
@@ -416,7 +420,9 @@
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
             informHeadlineService = Substitute.For<IInformHeadlineService>();
-            return new InformHeadlineController(napSession,baseService,settingService,excelService,informHeadlineService);
+            napSettings = Substitute.For<INapSettings>();
+            userService = Substitute.For<IUserService>();
+            return new InformHeadlineController(napSession,baseService,settingService,excelService,informHeadlineService, napSettings, userService);
         }
     }
 }

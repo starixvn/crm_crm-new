@@ -55,7 +55,7 @@ export class DataGridEdit extends PureComponent {
                         name="informHeadlineStatusId"
                         defaultValue={item.informHeadlineStatusId}
                         key={item.informHeadlineStatusId}
-                        disabled={isClosed || !this.props.hasHostPermission}
+                        disabled={isClosed || !this.props.permissions.hasHostPermission}
                         onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
                     >
                         {
@@ -70,7 +70,7 @@ export class DataGridEdit extends PureComponent {
                         defaultValue={item.remark}
                         key={item.remark}
                         rows={2}
-                        disabled={!isClosed && this.props.hasHostPermission === true ? false : true}
+                        disabled={!isClosed && this.props.permissions.hasHostPermission === true ? false : true}
                         onBlur={event => this.handleChangeDataGrid(event,item.headlineId)}
                     />
                 </Cell>
@@ -81,7 +81,7 @@ export class DataGridEdit extends PureComponent {
                         name="extension"
                         defaultValue={item.extension}
                         key={item.extension}
-                        disabled={isClosed || !this.props.hasHostPermission}
+                        disabled={isClosed || !this.props.permissions.hasHostPermission}
                         onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
                     >
                         {
@@ -93,7 +93,7 @@ export class DataGridEdit extends PureComponent {
                 <Cell className='text-center'>
                     <Form.Control as="select" size="sm" className="shadow-none"
                         name="productStatus"
-                        disabled={isClosed || !this.props.hasHostPermission}
+                        disabled={isClosed || !this.props.permissions.hasHostPermission}
                         defaultValue={item.productStatus}
                         key={item.productStatus}
                         onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
@@ -167,8 +167,8 @@ export class DataGridEdit extends PureComponent {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams, editedInforms } = state;
-    return { gridParams, editedInforms };
+    const { gridParams, editedInforms, permissions } = state;
+    return { gridParams, editedInforms, permissions };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataGridEdit);

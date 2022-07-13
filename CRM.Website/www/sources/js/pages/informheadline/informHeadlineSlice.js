@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     informs: null,
+    permissions: null,
     titleDetail: null,
     contactInforms: null,
     editContactInformDialog: {show: false},
@@ -29,6 +30,9 @@ const informHeadlineSlice = createSlice({
         resetState: () => initialState,
         setInforms: (state, action) => {
             state.informs = action.payload;
+        },
+        setPermissions: (state, action) => {
+            state.permissions = action.payload;
         },
         setTitleDetail: (state, action) => {
             state.titleDetail = action.payload;
@@ -98,6 +102,7 @@ const { actions, reducer } = informHeadlineSlice;
 export const {
     resetState,
     setInforms,
+    setPermissions,
     setTitleDetail,
     setContactInforms,
     setEditContactInformDialog,

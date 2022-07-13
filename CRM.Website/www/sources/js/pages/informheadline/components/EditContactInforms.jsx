@@ -103,7 +103,7 @@ export class EditContactInforms extends Component {
     };
 
     render() {
-        const { titleDetail, contactInforms, status } = this.props;
+        const { titleDetail, contactInforms, status, permissions } = this.props;
         const isClosed = status === 'Closed' ? true : false;
         if (!titleDetail || !this.state.contactInformSettings || !contactInforms) {
             return null;
@@ -121,7 +121,7 @@ export class EditContactInforms extends Component {
                     this.renderForm()
                 }
                 <Modal.Footer>
-                    {renderButtonSave(isClosed, window.hasHostPermission ,this.handleSubmit)}
+                    {renderButtonSave(isClosed, permissions.hasHostPermission ,this.handleSubmit)}
                 </Modal.Footer>
             </Modal>
         );
@@ -131,8 +131,8 @@ export class EditContactInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { titleDetail, contactInforms, editedInforms, resultEditContactInforms } = state;
-    return { titleDetail, contactInforms, editedInforms, resultEditContactInforms };
+    const { titleDetail, contactInforms, editedInforms, resultEditContactInforms, permissions } = state;
+    return { titleDetail, contactInforms, editedInforms, resultEditContactInforms, permissions };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditContactInforms);

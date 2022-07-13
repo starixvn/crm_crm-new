@@ -21,6 +21,7 @@
     using CRM.Models.Setting;
     using CRM.Repositories;
     using CRM.Services.Feedback;
+    using Fanex.Data.Repository;
     using NSubstitute;
     using Xunit;
 
@@ -104,8 +105,7 @@
             // Arrange
             var date = fixture.Create<DateTime>();
             var clientdate = fixture.Create<DateTime>();
-            var param = fixture.Create<GetLatestFeedbackParam>();
-            var criteria = new GetLatestFeedbackCriteria();
+            var param = fixture.Create<GetLatestFeedbackCriteria>();
             var statuses = new List<FeedbackStatus>
             {
                 new FeedbackStatus { StatusId = 100, Name = "Pending" }
@@ -124,7 +124,7 @@
                 }
             };
             var service = GetService();
-            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<GetLatestFeedbackCriteria>(x => criteria = x)).Returns(feedbacks);
+            feedbackRepository.GetDeletedFeedbackAsync(Arg.Do<GetLatestFeedbackCriteria>(x => param = x)).Returns(feedbacks);
             settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool).Returns(statuses);
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
 
@@ -133,7 +133,6 @@
 
             // Assert
             Assert.Equal(feedbacks, actual);
-            Assert.Equal(param.Top, criteria.Top);
             Assert.Collection(actual, item =>
             {
                 Assert.Equal(clientdate, item.FeedbackDate);

@@ -1,32 +1,23 @@
 @import '../../abstracts/variables';
 
-.informHeadline {
+.inform-headline {
     max-width: 1620px;
+
+    .table-title{
+        border-right: none;
+    }
     .fix-table-container{
-        .table-title{
-            border-right: none;
+        .header-content, .body-content {
+            border: none;
+            padding: 0;
         }
-        
-        .table-container {
-            overflow-y: auto;
-            border: 1px solid #b7b7b7;
-        
-            .body-content {
-                overflow: unset !important; 
-            }
-    
-            .header-content, .body-content {
-                border: none;
-                padding: 0;
-            }
-    
-            .header-content,
-            .body-content,
-            .footer-content {
-                .table {
-                    td:first-child {
-                        border-left: 1px solid rgb(183, 183, 183) !important;
-                    }
+
+        .header-content,
+        .body-content,
+        .footer-content {
+            .table {
+                td:first-child {
+                    border-left: 1px solid rgb(183, 183, 183) !important;
                 }
             }
         }
@@ -62,11 +53,6 @@
         }
     }
     
-    .check-btn{
-        padding-left: 30px;
-        padding-top: 2px;
-    }
-    
     .number-remove{
         cursor: pointer;
         color: #0255a5;
@@ -74,32 +60,6 @@
     
     .number-remove:hover{
         color: #ffb400;
-    }
-    
-    .group-input-excel{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-    }
-    
-    .input-excel{
-        width: 98%;
-    }
-    
-    
-    .modal-edit .modal-xl {
-        max-width: 1200px;
-    }
-    
-    .modal-removeDetail .modal-content{
-        width: 1080px;
-        margin: auto;
-    }
-    
-    .modal-remove .modal-content {
-        width: 600px;
-        margin: auto;
     }
     
     a.dropdown-item {
@@ -126,4 +86,37 @@
     .option{
         overflow: visible !important;
     }
+}
+
+.edit-inform-modal-dialog, .new-inform-modal-dialog{
+    .modal-dialog{
+        max-width: 1200px;
+    }
+}
+
+.group-input-excel{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.input-excel{
+    width: 98%;
+}
+
+.check-btn{
+    padding-left: 30px;
+    padding-top: 2px;
+}
+
+.modal-removeDetail .modal-content{
+    width: 1080px;
+    margin: auto;
+}
+
+
+.modal-remove .modal-content {
+    width: 600px;
+    margin: auto;
 }

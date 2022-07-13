@@ -13,7 +13,9 @@
     using CRM.Services;
     using CRM.Services.InformHeadline;
     using CRM.ViewModels.InformHeadline;
+    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
+    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -25,13 +27,17 @@
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         private readonly IInformHeadlineService informHeadlineService;
+        private readonly INapSettings napSettings;
+        private readonly IUserService userService;
 
         public InformHeadlineController(
             INapSession napSession,
             IBaseService baseService,
             ISettingService settingService,
             IExportExcelService excelService,
-            IInformHeadlineService informHeadlineService
+            IInformHeadlineService informHeadlineService,
+            INapSettings napSettings,
+            IUserService userService
         )
         {
             this.napSession = napSession;
@@ -39,6 +45,8 @@
             this.settingService = settingService;
             this.excelService = excelService;
             this.informHeadlineService = informHeadlineService;
+            this.napSettings = napSettings;
+            this.userService = userService;
         }
 
         public async Task<IActionResult> GetInforms()
@@ -46,6 +54,18 @@
             IEnumerable<InformHeadlineModel> informs = await informHeadlineService.GetInformAsync();
             return Json(informs);
         }
+
+        public IActionResult GetPermissions()
+        {
+            var permission = new GetPermissionInform
+            {
+                ContactPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact),
+                SearchPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineSearch),
+                HasHostPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact, Policy.Host)
+            };
+            return Json(permission);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> ExportInforms()

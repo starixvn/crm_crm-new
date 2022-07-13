@@ -37,7 +37,7 @@
             // Assert
             Assert.Equal(template.Cells[2, 1, RowStartHeader - 1, TotalCols],
                 worksheet.Cells[2, 1, RowStartHeader - 1, TotalCols]);
-            Assert.Equal("Top_10_Feedback", worksheet.Cells[1, 1].Value);
+            Assert.Equal("Top 10 Feedback", worksheet.Cells[1, 1].Value);
         }
 
         [Fact]
@@ -145,7 +145,7 @@
                     ChildSettings = new List<Setting> { new Setting { SubCategoryId = 1, Name = "Abnormal Bets" } }
                 }
             };
-            return Substitute.For<LatestFeedbackExcelTestable>(string.Empty, feedbacks, mainCategories, 10);
+            return Substitute.For<LatestFeedbackExcelTestable>(string.Empty, feedbacks, mainCategories, 10, string.Empty);
         }
 
         private FeedbackDetail FakeFeedbackDetail()

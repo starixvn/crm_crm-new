@@ -11,7 +11,7 @@
                string templatePath,
                IEnumerable<FeedbackDetail> feedbacks,
                IEnumerable<Setting> mainCategories,
-               int top) : base(templatePath, feedbacks, mainCategories, top)
+               int top, string username) : base(templatePath, feedbacks, mainCategories, top, username)
         {
         }
 

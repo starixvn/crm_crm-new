@@ -5,11 +5,13 @@
     using AutoFixture;
     using CRM.Controllers.Feedback;
     using CRM.Core.Constants;
+    using CRM.Criteria.Feedback;
     using CRM.Models.Feedback;
     using CRM.Models.LatestFeedback;
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Feedback;
+    using Fanex.Data.Repository;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -31,13 +33,13 @@
                 new Setting { MainCategoryID = 1, Name = "Special Notification" }
             };
             var feedbacks = fixture.Create<IEnumerable<DeletedFeedback>>();
-            var param = fixture.Create<GetLatestFeedbackParam>();
+            var criteria = fixture.Create<GetLatestFeedbackCriteria>();
             var controller = GetController();
-            feedbackService.GetLatestFeedbackAsync(param).Returns(feedbacks);
+            feedbackService.GetLatestFeedbackAsync(criteria).Returns(feedbacks);
             settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
 
             // Act
-            var result = await controller.GetLatestFeedback(param);
+            var result = await controller.GetLatestFeedback(criteria);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
@@ -56,7 +58,7 @@
                 new Setting { MainCategoryID = 1, Name = "Special Notification" }
             };
             var feedbacks = fixture.Create<IEnumerable<DeletedFeedback>>();
-            var param = fixture.Create<GetLatestFeedbackParam>();
+            var param = fixture.Create<GetLatestFeedbackCriteria>();
             var fileName = $"Top_{param.Top}_Feedback.xlsx";
             var controller = GetController();
             feedbackService.GetLatestFeedbackAsync(param).Returns(feedbacks);
