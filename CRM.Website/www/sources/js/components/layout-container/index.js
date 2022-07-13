@@ -26,6 +26,7 @@ const InformHeadlineComponent = lazy(() => import('@jsroot/pages/informheadline/
 
 const AddFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/add-feedback/add-customer-feedback/index'));
 const AddGuestFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/add-feedback/add-guest-feedback/index'));
+const LatestFeedbackV2Component = lazy(() => import('@jsroot/pages/feedback/latest-feedback-v2/index'));
 const LatestFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/latest-feedback/index'));
 const ManageFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/manage-feedback/index'));
 const DeletedFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/deleted-feedback/index'));
@@ -81,6 +82,8 @@ export default class Index extends PureComponent {
                             <Route path={Site.resolveClientUrl("AddFeedback")} element={<AddFeedbackComponent />} />
                             <Route path={Site.resolveClientUrl("AddGuestFeedback/Index")} element={<AddGuestFeedbackComponent />} />
                             <Route path={Site.resolveClientUrl("Feedbacks/LatestFeedback")} element={<LatestFeedbackComponent />} />
+                            <Route path={Site.resolveClientUrl("Feedbacks/LatestFeedback")} element={<LatestFeedbackV2Component />} />
+                            <Route path={Site.resolveClientUrl("LatestFeedback")} element={<LatestFeedbackComponent />} />
                             <Route path={Site.resolveClientUrl("Feedbacks/ManageFeedback")} element={<ManageFeedbackComponent />} />
                             <Route path={Site.resolveClientUrl("Feedbacks/DeletedFeedback")} element={<DeletedFeedbackComponent />} />
                             <Route path={Site.resolveClientUrl("MultipleLogs/Create")} element={<MultipleLogsComponent />} />
@@ -105,8 +108,6 @@ export default class Index extends PureComponent {
                             <Route path={Site.resolveClientUrl("DynamicReport/Index")} element={<DynamicReportComponent />} />
                             <Route path={Site.resolveClientUrl("SettlementReport/Index")} element={<SettlementReportComponent />} />
                             <Route path={Site.resolveClientUrl("WagerReport/Index")} element={<WagerReportComponent />} />
-
-
                         </Routes>
                     </Suspense>
                 </Layout>

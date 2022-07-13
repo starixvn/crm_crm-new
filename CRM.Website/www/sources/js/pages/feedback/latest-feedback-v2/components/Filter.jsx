@@ -14,7 +14,7 @@ export class Filter extends Component {
     }
 
     getParams = top => {
-        return { top };
+        return { top, custId: this.props.custId };
     };
 
     handleTopChange = event => {
@@ -23,7 +23,11 @@ export class Filter extends Component {
         });
         const params = this.getParams(parseInt(event.target.value, 10));
         this.props.setGridParams(params);
-        this.props.getLatestFeedback(params);
+        if(this.props.custId !== undefined && this.props.custId > 0){
+            this.props.getLatestFeedbackByCustId(params);
+        }else{
+            this.props.getLatestFeedback(this.props.gridParams);
+        }
     };
 
     renderOptions = (item, key) => <option key={key} value={item}>{item}</option>;
@@ -35,7 +39,7 @@ export class Filter extends Component {
             <Form className="form-filter" >
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
-                        <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('Top')}</Form.Label>
+                        <Form.Label className='col-auto col-form-label' style={{width: "30px"}}>{LangHelper.getResource('Top')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none"
                             value={this.state.top}
                             onChange={this.handleTopChange}

@@ -13,10 +13,11 @@ import {
 } from './communicationLogSlice';
 
 const getLogsByCustomerId = params => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('CommunicationLog/GetLogsByCustomerId');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setLogsByCustomerId(response.data));
-    });
+    }).then(() => Site.unblockUI());
 };
 
 const getStatusForFilter = () => async dispatch => {

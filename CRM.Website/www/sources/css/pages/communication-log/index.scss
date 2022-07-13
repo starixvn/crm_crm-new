@@ -37,16 +37,6 @@
         cursor: pointer;
     }
     
-    .sweet-alert-modal-backdrop {
-        z-index: 1050 !important;
-    }
-    
-    #tooltip-ref-ticket [class$="inner"] {
-        white-space: pre-wrap;
-        min-width: 500px;
-        text-align: left;
-    }
-    
     .ref-ticket-input {
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -58,10 +48,20 @@
             -moz-appearance: textfield;
         }
     }
-    
-    .modal-backdrop {
-        z-index: 1050 !important;
-    }
+}
+
+.modal-backdrop {
+    z-index: 1050 !important;
+}
+
+.sweet-alert-modal-backdrop {
+    z-index: 1050 !important;
+}
+
+#tooltip-ref-ticket [class$="inner"] {
+    white-space: pre-wrap;
+    min-width: 500px;
+    text-align: left;
 }
 
 .communication-modal-dialog {

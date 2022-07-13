@@ -274,6 +274,7 @@
     LoggedOn: 'Logged On',
     Last5Remarks: 'Last 5 Remarks',
     LatestFeedbackv2 : 'Latest Feedback v2',
+    LatestFeedback: 'Latest Feedback',
     LogStatistics: 'Log Statistics',
     MappingStatus: 'Mapping Status',
     MessageID: 'Message ID',

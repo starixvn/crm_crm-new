@@ -17,6 +17,14 @@ const getLatestFeedback = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const getLatestFeedbackByCustId = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('LatestFeedback/GetLatestFeedbackByCustId');
+    await DataService.postDataAsync(url,params).then(response => {
+        dispatch(setLatestFeedback(response.data));
+    }).then(() => Site.unblockUI());
+};
+
 const exportExcel = params => async () => {
     const url = Site.resolveClientUrl('LatestFeedback/ExportExcel');
     await DataService.getFileAsync(url, params).then(response => {
@@ -31,6 +39,7 @@ export const ActionCreators = {
     setViewRelatedCustomerDialog,
     setEditFeedbackDialog,
     getLatestFeedback,
+    getLatestFeedbackByCustId,
     exportExcel,
     setEditNoOfInquiryDialog,
     resetState

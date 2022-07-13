@@ -118,25 +118,25 @@
             word-break: break-all;
         }
     }
-    
-    .tooltipManageFeedback [class$="inner"] {
-        min-width: 100px;
-        max-width: 650px;
-        min-height: 100px;
-        max-height: 920px;
-        border-radius: 3px;
-        font-size: 12px;
-        text-align: left
-    }
-    
-    #tooltip-customers [class$="inner"] {
-        min-width: 300px;
-        text-align: left;
-    }
-    
-    .sweet-alert-modal-backdrop {
-        z-index: 1050 !important;
-    }
+}
+
+.tooltipManageFeedback [class$="inner"] {
+    min-width: 100px;
+    max-width: 650px;
+    min-height: 100px;
+    max-height: 920px;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: left
+}
+
+#tooltip-customers [class$="inner"] {
+    min-width: 300px;
+    text-align: left;
+}
+
+.sweet-alert-modal-backdrop {
+    z-index: 1050 !important;
 }
 
 .edit-multiple-review-status-modal-dialog{

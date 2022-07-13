@@ -129,9 +129,9 @@ export class DataGrid extends Component {
         let html = '';
         const totalItems = relatedCustomers.length;
         if (totalItems > MaximumDisplayRelatedCustomer) {
-            html = <a href="#" onClick={() => this.handleOpenViewRelatedCustomerDialog(relatedCustomers.join(', '))}>
+            html = (<a href="#" onClick={() => this.handleOpenViewRelatedCustomerDialog(relatedCustomers.join(', '))}>
                 {totalItems} customers
-            </a>;
+            </a>);
         } else {
             html = <span>{relatedCustomers.join(', ')}</span>;
         }
@@ -217,7 +217,7 @@ export class DataGrid extends Component {
                 }
             >
                 <div className='pb-1' onClick={() => this.handleEditFeedback(item.feedbackId)}>
-                    <span className="rounded-circle fa fa-pencil-square-o" />
+                    <span className="rounded-circle fa fa-pencil-square-o link-click" />
                     <strong className='link-click'> {item.subject}</strong>
                 </div>
             </OverlayTrigger>

@@ -131,6 +131,20 @@ export class DataGrid extends PureComponent {
         return data;
     };
 
+    renderTitle = () =>{
+        return (
+            <div className='table-title d-flex justify-content-between align-items-center'>
+                    <span>{LangHelper.getResource('PICManagement')}</span>
+                    {
+                        this.props.gridData.dataList.length > 0 &&
+                        <div className="tool-box">
+                            <span className="fa fa-file-excel-o btn-export-excel icon-excel" onClick={this.handleExportExcel} />
+                        </div>
+                    }
+            </div>
+        );
+    }
+
     render() {
         if (!this.props.gridData || !this.props.gridData.dataList) {
             return null;
@@ -149,15 +163,7 @@ export class DataGrid extends PureComponent {
 
         return (
             <Fragment>
-                <div className='table-title d-flex justify-content-between align-items-center'>
-                    <span>{LangHelper.getResource('PICManagement')}</span>
-                    {
-                        this.props.gridData.dataList.length > 0 &&
-                        <div className="tool-box">
-                            <span className="fa fa-file-excel-o btn-export-excel icon-excel" onClick={this.handleExportExcel} />
-                        </div>
-                    }
-                </div>
+                
                 <Table
                     maxWidth={2300}
                     shouldUseMaxWidth
@@ -165,6 +171,8 @@ export class DataGrid extends PureComponent {
                     autoWidth={false}
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
+                    title={this.renderTitle()}
+                    isFixColumn
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}

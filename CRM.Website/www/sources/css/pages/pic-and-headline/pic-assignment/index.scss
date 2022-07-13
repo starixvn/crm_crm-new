@@ -102,18 +102,17 @@
         padding: 0;
     }
 
-    .table-container {
-        overflow-y: auto;
-        border: 1px solid #b7b7b7;
-
-        .body-content {
-            overflow: unset !important; 
+    .fix-table-container {
+        .header-content, .body-content, .footer-content {
+            border: none;
+            padding: 0;
         }
-    }
 
-    .header-content, .body-content, .footer-content {
-        border: none;
-        padding: 0;
+        table tr td{
+            &:first-child {
+                border-left: 1px solid rgb(183, 183, 183);;;
+            }
+        }
     }
 
     @media only screen and (max-width: 1150px) {

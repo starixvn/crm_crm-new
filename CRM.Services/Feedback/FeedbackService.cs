@@ -15,6 +15,7 @@
     using CRM.Models.LatestFeedback;
     using CRM.Repositories;
     using CRM.Resources;
+    using Fanex.Data.Repository;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -22,7 +23,7 @@
 
     public interface IFeedbackService
     {
-        Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param);
+        Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(ICriteria criteria);
 
         Task<IEnumerable<DeletedFeedback>> GetFeedbackStatisticAsyncDetail(GetFeedbackStatisticDetailCriteria criteria);
 
@@ -93,12 +94,8 @@
             return feedback;
         }
 
-        public async Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(GetLatestFeedbackParam param)
+        public async Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(ICriteria criteria)
         {
-            var criteria = new GetLatestFeedbackCriteria
-            {
-                Top = param.Top
-            };
             IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var statusHash = statusList.ToDictionary(k => k.StatusId, v => v.Name);

@@ -5,8 +5,6 @@
 
     public class GetLatestFeedbackCriteria : CriteriaBase
     {
-        public string Username { get; set; }
-
         public int Top { get; set; }
 
         public byte UserRole { get; } = Constants.UserRole;

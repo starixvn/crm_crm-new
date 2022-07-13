@@ -13,27 +13,27 @@
         }
     }
     
-    .tooltipFeedback [class$="inner"] {
-        min-width: 100px;
-        max-width: 650px;
-        min-height: 100px;
-        max-height: 920px;
-        border-radius: 3px;
-        font-size: 12px;
-        text-align: left
-    }
-    
-    #tooltip-customers [class$="inner"] {
-        min-width: 300px;
-        text-align: left;
-    }
-    
-    .sweet-alert-modal-backdrop {
-        z-index: 1050 !important;
-    }
-    
     .header-content .table > thead > tr > th {
         border: none;
         border-right: 1px solid #b7b7b7;
     }
+}
+
+.tooltipFeedback [class$="inner"] {
+    min-width: 100px;
+    max-width: 650px;
+    min-height: 100px;
+    max-height: 920px;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: left
+}
+
+#tooltip-customers [class$="inner"] {
+    min-width: 300px;
+    text-align: left;
+}
+
+.sweet-alert-modal-backdrop {
+    z-index: 1050 !important;
 }

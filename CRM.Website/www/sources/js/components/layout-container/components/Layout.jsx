@@ -262,17 +262,16 @@ class Layout extends Component {
             return null;
         }
 
-
         const currentCustomerInfo = this.getCurrentCustomerInfo();
 
         return (
             <div>
                 <div className='fix-header-menu'>
-                    <Header menus={menus} handleNavigate={this.handleNavigate} currentCustomerInfo={currentCustomerInfo}
-                        handleNavigateDashboard={this.handleNavigateDashboard} handleCollapseExpandLayout={this.handleCollapseExpandLayout}
+                    <Header menus={menus} currentCustomerInfo={currentCustomerInfo} handleNavigateDashboard={this.handleNavigateDashboard}
+                        handleCollapseExpandLayout={this.handleCollapseExpandLayout}
                     />
                     <Filter
-                        isHost={hasCreateFeedbackPermission} getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
+                        getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                         customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
                         showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
                         showEmptyConfirmPopup={showEmptyConfirmPopup} handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} handleNavigateDashboard={this.handleNavigateDashboard}

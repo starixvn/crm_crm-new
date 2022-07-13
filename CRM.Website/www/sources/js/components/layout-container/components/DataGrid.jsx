@@ -430,12 +430,6 @@ export default class DataGrid extends PureComponent {
                                 <i className="fa fa-angle-right" aria-hidden="true" />
                                 <a onClick = {() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
                             </li>
-                            <li>
-                                <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a onClick = {() => this.props.handleNavigate('Feedbacks/LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
-                            </li>
-                        </ul>
-                        <ul className='list-unstyled list-menu pull-left'>
                             {
                                 !isShowInactiveMsg &&
                                 <li>
@@ -443,6 +437,12 @@ export default class DataGrid extends PureComponent {
                                     <a onClick = {() => this.props.handleNavigate('AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
                                 </li>
                             }
+                        </ul>
+                        <ul className='list-unstyled list-menu pull-left'>
+                            <li>
+                                <i className="fa fa-angle-right" aria-hidden="true" />
+                                <a onClick = {() => this.props.handleNavigate('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
+                            </li>
                             <li>
                                 <i className="fa fa-angle-right" aria-hidden="true" />
                                 <a onClick = {() => this.props.handleNavigate('Feedbacks/ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>

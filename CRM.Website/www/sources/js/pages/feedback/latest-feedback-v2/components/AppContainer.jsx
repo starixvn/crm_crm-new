@@ -37,11 +37,18 @@ export class AppContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.getLatestFeedback(this.props.gridParams);
         getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
             this.setState({policy: response});
         });
-        document.title = LangHelper.getResource('LatestFeedbackv2');
+        if(this.props.custId !== undefined && this.props.custId > 0){
+            const params = {...this.props.gridParams, custId: this.props.custId};
+            this.props.setGridParams(params);
+            this.props.getLatestFeedbackByCustId(params);
+            document.title = LangHelper.getResource('LatestFeedback');
+        }else{
+            this.props.getLatestFeedback(this.props.gridParams);
+            document.title = LangHelper.getResource('LatestFeedbackv2');
+        }
     }
 
     componentWillUnmount(){
@@ -72,8 +79,8 @@ export class AppContainer extends Component {
         const {viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog } = this.props;
         return (
             <Fragment>
-                <Filter />
-                <DataGrid isHost={isHost} />
+                <Filter currentCustomer={this.props.currentCustomer} />
+                <DataGrid isHost={isHost} custId={this.props.custId}/>
                 {
                     viewRelatedCustomerDialog.show &&
                     <SweetModalDialog size="lg"

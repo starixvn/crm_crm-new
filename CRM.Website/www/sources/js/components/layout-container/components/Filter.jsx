@@ -97,8 +97,9 @@ class Filter extends Component {
     isActiveTab = (pathname, index) => pathname.toLowerCase() === this.getUrlPath(SubMainMenu[index].url);
 
     renderHomeSubMenu = pathname =>{
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
-            this.props.isHost ?
+            hasCreateFeedbackPermission ?
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
                 <li id="li-main" className={this.isActiveTab(pathname, 0) ? 'active' : ''}>

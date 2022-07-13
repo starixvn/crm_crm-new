@@ -1,13 +1,14 @@
 .pic-management{
-    .table-container {
-        overflow-y: auto;
-        border: 1px solid #b7b7b7;
+    .fix-table-container {
+        .header-content, .body-content, .footer-content {
+            border: none;
+            padding: 0;
     
-        .body-content {
-            overflow: unset !important; 
-    
-            .table td {
+            table tr td{
                 word-break: break-all;
+                &:first-child {
+                    border-left: 1px solid rgb(183, 183, 183);;;
+                }
             }
     
             table.table {
@@ -31,11 +32,6 @@
                 }
             }
         }
-    }
-    
-    .header-content, .body-content, .footer-content {
-        border: none;
-        padding: 0;
     }
 }
 

@@ -8,8 +8,7 @@ const initialState = {
 }
 const latestFeedbackSlice = createSlice({
     name: 'latestFeedback',
-    initialState: initialState
-    ,
+    initialState: initialState,
     reducers: {
         resetState: () => initialState,
         setGridParams: (state, action) => {

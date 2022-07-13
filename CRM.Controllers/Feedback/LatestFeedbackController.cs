@@ -4,15 +4,13 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
+    using CRM.Criteria.Feedback;
     using CRM.Models.Feedback;
     using CRM.Models.LatestFeedback;
     using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -34,22 +32,31 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackParam param)
+        public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackCriteria criteria)
         {
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(criteria);
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
 
             return Json(new { data = feedbacks, mainCategories });
         }
 
         [HttpPost]
-        public async Task<IActionResult> ExportExcel([FromBody] GetLatestFeedbackParam param)
+        public async Task<IActionResult> GetLatestFeedbackByCustId([FromBody] GetLatestFeedbackByCustIdCriteria criteria)
         {
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(param);
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(criteria);
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
 
-            var bytes = excelService.ExportLatestFeedbackReport(feedbacks, mainCategories, param.Top);
-            string reportName = string.Format(ViewResources.FeedbackReport_Title, param.Top);
+            return Json(new { data = feedbacks, mainCategories });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportExcel([FromBody] GetLatestFeedbackCriteria criteria)
+        {
+            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetLatestFeedbackAsync(criteria);
+            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+
+            var bytes = excelService.ExportLatestFeedbackReport(feedbacks, mainCategories, criteria.Top);
+            string reportName = string.Format(ViewResources.FeedbackReport_Title, criteria.Top);
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
     }
