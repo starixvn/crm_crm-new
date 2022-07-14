@@ -2,7 +2,8 @@
     setupFilesAfterEnv: ['<rootDir>/www/sources/js/setupTests/setupEnzyme.js'],
     moduleFileExtensions: ['js', 'jsx'],
     moduleNameMapper: {
-        '^@jsroot(.*)$': '<rootDir>/www/sources/js$1'
+        '^@jsroot(.*)$': '<rootDir>/www/sources/js$1',
+        '^@cssroot(.*)$': '<rootDir>/www/sources/css$1'
     },
     collectCoverage: true,
     collectCoverageFrom: [

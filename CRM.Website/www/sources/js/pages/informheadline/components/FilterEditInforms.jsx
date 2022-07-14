@@ -70,7 +70,7 @@ export class FilterEditInforms extends PureComponent {
         });
 
         return(
-            <Form noValidate onSubmit={handleSubmit} className="form-filter">
+            <Form noValidate onSubmit={handleSubmit} className="form-filter form-filter-edit-inform">
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
 
                 <Form.Group as={Row}>

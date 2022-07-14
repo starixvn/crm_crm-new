@@ -12,11 +12,17 @@ import { MaximumDisplayRelatedCustomer, PAGING_SIZES } from '@jsroot/common/cons
 export class DataGrid extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             checkedItems: new Map()
         };
     }
+
+    componentDidUpdate(prevProps){
+        if(JSON.stringify(prevProps.gridDataFeedbacks) !== JSON.stringify(this.props.gridDataFeedbacks)){
+            this.setState({checkedItems: new Map()});
+        }
+    }
+
     buildHeader = isHost => {
         const isCheckAll = this.isCheckAll();
         return (

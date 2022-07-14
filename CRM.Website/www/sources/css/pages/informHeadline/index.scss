@@ -94,20 +94,22 @@
     }
 }
 
-.group-input-excel{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
+.form-filter-edit-inform{
+    .group-input-excel{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
 
-.input-excel{
-    width: 98%;
-}
+        .input-excel{
+            width: 98%;
+        }
+    }
 
-.check-btn{
-    padding-left: 30px;
-    padding-top: 2px;
+    .check-btn{
+        padding-left: 30px;
+        padding-top: 2px;
+    }
 }
 
 .modal-removeDetail .modal-content{

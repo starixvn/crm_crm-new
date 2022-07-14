@@ -21,7 +21,7 @@ export class Filter extends Component {
             runningNumber: '',
             fromDate: fromDate,
             toDate: currentDate,
-            username: '',
+            username: !this.props.currentCustomer ? '' : this.props.currentCustomer.username,
             handler: '',
             mainCategoryId: 0,
             subCategoryId: 0,
@@ -30,7 +30,7 @@ export class Filter extends Component {
             statusId: 0,
             responseId: 0,
             isReviewed: '',
-            isGuest: -1
+            isGuest: !this.props.currentCustomer ? -1 : this.props.currentCustomer.isGuest ? 1 : 0
         };
     }
 
@@ -171,12 +171,14 @@ export class Filter extends Component {
                     <Form.Group>
                         <Form.Label htmlFor="username">{LangHelper.getResource('Username')}</Form.Label>
                         <Form.Control type="text" size="sm"
+                            disabled={this.props.currentCustomer}
                             value={username}
                             name="username" id="username"
                             className="shadow-none username-width" autoComplete="off"
                             onChange={this.handleChange}
                         />
                         <Form.Control as="select" size="sm"
+                            disabled={this.props.currentCustomer}
                             name="isGuest" id="isGuest"
                             className="shadow-none response-width"
                             value={isGuest}

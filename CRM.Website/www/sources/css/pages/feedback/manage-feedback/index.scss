@@ -1,6 +1,5 @@
 
 @import '../edit-customer-feedback';
-
 @import '../../../abstracts/variables';
 
 .manage-feedback{
@@ -162,11 +161,6 @@
 
                 .text{
                     color: #ff1493;
-                }
-
-                input[type=checkbox]{
-                    position: relative;
-                    top: 9px;
                 }
 
                 .title{

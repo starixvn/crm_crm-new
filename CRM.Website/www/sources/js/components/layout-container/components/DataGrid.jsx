@@ -445,7 +445,7 @@ export default class DataGrid extends PureComponent {
                             </li>
                             <li>
                                 <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a onClick = {() => this.props.handleNavigate('Feedbacks/ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
+                                <a onClick = {() => this.props.handleNavigate('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
                             </li>
                         </ul>
                     </Form.Group>

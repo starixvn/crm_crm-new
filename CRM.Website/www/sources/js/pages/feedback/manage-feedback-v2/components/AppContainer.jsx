@@ -15,7 +15,6 @@ import EditMultipleLogs from './EditMultipleLogs';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 
-
 export class AppContainer extends Component {
     static propTypes = {
         getAllSettings: PropTypes.func
@@ -44,7 +43,7 @@ export class AppContainer extends Component {
 
     componentWillUnmount(){
         this.props.resetState();
-     }
+    }
 
     handleCloseEditNoInquiryDialog = () => {
         this.props.setEditNoOfInquiryDialog({ show: false });
@@ -80,10 +79,10 @@ export class AppContainer extends Component {
             return null;
         }
         const isHost = this.state.policy === Policy.Host;
-        const { editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog, editMultipleLogDialog, viewRelatedCustomerDialog } = this.props;
+        const { editNoOfInquiryDialog, editFeedbackDialog, editMultipleLogStatusDialog, editMultipleLogDialog, viewRelatedCustomerDialog, currentCustomer } = this.props;
         return (
             <Fragment>
-                <Filter />
+                <Filter currentCustomer={currentCustomer}/>
                 <DataGrid isHost={isHost} />
                 {
                     editNoOfInquiryDialog.show &&

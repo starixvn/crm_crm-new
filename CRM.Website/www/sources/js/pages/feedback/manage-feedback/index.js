@@ -1,8 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import manageFeedbackReducer from './manageFeedbackSlice';
-import AppContainer from './components/AppContainer';
+import manageFeedbackReducer from '../manage-feedback-v2/manageFeedbackSlice';
+import AppContainer from '../manage-feedback-v2/components/AppContainer';
+import WithNavigation from '@jsroot/components/WithNavigation';
 
 const store = configureStore({
     reducer: manageFeedbackReducer
@@ -10,14 +11,17 @@ const store = configureStore({
 
 import '@cssroot/pages/feedback/manage-feedback/index.scss';
 
-export default class index extends React.Component{
+class index extends React.Component{
     render(){
+        const location = this.props.location;
         return(
             <Provider store={store}>
                 <div className='manage-feedback'>
-                    <AppContainer />
+                    <AppContainer currentCustomer={location.state} />
                 </div>
             </Provider>
         );
     }
 }
+const FunctionBarWithNavigation = WithNavigation(index);
+export default FunctionBarWithNavigation;
