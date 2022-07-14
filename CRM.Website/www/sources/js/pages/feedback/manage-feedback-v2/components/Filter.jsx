@@ -30,8 +30,15 @@ export class Filter extends Component {
             statusId: 0,
             responseId: 0,
             isReviewed: '',
-            isGuest: !this.props.currentCustomer ? -1 : this.props.currentCustomer.isGuest ? 1 : 0
+            isGuest: !this.props.currentCustomer ? -1 : this.isCheckGuest()
         };
+    }
+
+    isCheckGuest(){
+        if(this.props.currentCustomer.isGuest){
+            return 1;
+        }
+        return 0;
     }
 
     handleChangeFromDate = fromDate => {
