@@ -195,7 +195,7 @@ class Layout extends Component {
 
     handleNavigateSubHome = (event, name) =>{
         event.preventDefault();
-        this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo.custId});
+        this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo});
     };
 
     handleNavigateNewRemark = (event, name) =>{

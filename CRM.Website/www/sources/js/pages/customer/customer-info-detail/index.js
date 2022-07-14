@@ -17,7 +17,7 @@ class index extends React.PureComponent {
         return(
             <Provider store={store}>
                   <div className='customer-info-detail'>
-                    <AppContainer id={!location.state ? null : location.state.toString()}/>
+                    <AppContainer id={location.state.custId}/>
                   </div>
             </Provider>
         );

@@ -100,10 +100,10 @@ export default class EditMultipleReviewAndStatus extends Component {
                     }
                     <div className="panel-group">
                         <div className='alert-box-warn'>
-                            <Form.Label className='text' column sm="12" md="12">
+                            <div className='text' column sm="12" md="12">
                                 {LangHelper.getResource('MultipleReviewAndUpdateStatusText')}
-                            </Form.Label>
-                            <Form.Group as={Row} className='pb-2'>
+                            </div>
+                            <Form.Group as={Row}>
                                 <Form.Label column sm="2" md="2" htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
                                 <Col sm="3" md="3">
                                     <Form.Control as="select" size="sm"

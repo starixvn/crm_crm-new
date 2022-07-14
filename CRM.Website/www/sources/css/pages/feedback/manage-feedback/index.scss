@@ -156,11 +156,15 @@
                     border: solid 1px #ffc0cb;
                     padding: 2px 2px 5px;
                     margin: 2px;
-                    font-weight: 700;
-                }
+                    .text{
+                        font-weight: 700;
+                        color: #ff1493;
+                    }
 
-                .text{
-                    color: #ff1493;
+                    #statusId{
+                        height: calc(1.5em + 0.5rem + 2px);
+                        margin-top: 2px;
+                    }
                 }
 
                 .title{
@@ -223,15 +227,15 @@
                 .panel-content {
                     padding: 4px 9px;
 
+                    .form-control {
+                        margin-top: 3px;
+                    }
+
                     .select-all-field {
                         padding-left: 75px;
                         margin-top: 20px;
                         margin-bottom: 4px;
                     }                    
-
-                    input[type="checkbox"] {
-                        margin-top: 6px;
-                    }
 
                     .react-datepicker-wrapper-container {
                         width: 201px !important;

@@ -23,7 +23,7 @@ export class Filter extends Component {
         });
         const params = this.getParams(parseInt(event.target.value, 10));
         this.props.setGridParams(params);
-        if(this.props.custId !== undefined && this.props.custId > 0){
+        if(this.props.custId !== undefined && this.props.custId !== 0){
             this.props.getLatestFeedbackByCustId(params);
         }else{
             this.props.getLatestFeedback(this.props.gridParams);

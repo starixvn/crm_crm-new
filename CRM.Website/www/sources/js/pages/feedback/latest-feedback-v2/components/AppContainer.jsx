@@ -54,7 +54,7 @@ export class AppContainer extends Component {
     }
 
     handleInitData = () =>{
-        if(this.props.custId !== undefined && this.props.custId > 0){
+        if(this.props.custId !== undefined && this.props.custId !== 0){
             const params = {...this.props.gridParams, custId: this.props.custId, username: this.props.username};
             this.props.setGridParams(params);
             this.props.getLatestFeedbackByCustId(params);

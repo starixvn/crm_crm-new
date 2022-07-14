@@ -13,10 +13,11 @@ import {
 } from './redemptionSlice';
 
 const getLogsByCustomerId = params => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('Redemption/GetLogsByCustomerId');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setLogsByCustomerId(response.data));
-    });
+    }).then(() => Site.unblockUI());
 };
 
 const getAllStatus = () => async dispatch => {

@@ -762,7 +762,7 @@ export default class AppContainer extends Component {
         return (
             <Fragment>
                 <Modal show className="edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
-                    backdrop="static" keyboard={false} size="xl" centered
+                    backdrop="static" keyboard={false} centered
                     onHide={this.props.onClose}
                 >
                     <Modal.Header closeButton>

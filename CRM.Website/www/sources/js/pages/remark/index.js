@@ -24,9 +24,9 @@ class index extends React.Component {
                 <div className='new-remark'>
                     <AppContainer 
                         isHost={hasCreateFeedbackPermission}
-                        customerName={!data ? '' : data.username}
-                        custId={!data ? 0 : data.custId}
-                        isGuestSearch={!data ? false : data.isGuest}
+                        customerName={data.username}
+                        custId={data.custId}
+                        isGuestSearch={data.isGuest}
                     />
                 </div>
             </Provider>

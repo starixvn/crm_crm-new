@@ -93,7 +93,7 @@ export class DataGrid extends Component {
             <Row key={index} className="deleted">
                 <Cell>
                     <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
-                        <span className="rounded-circle fa fa-pencil-square-o" />
+                        <span className="rounded-circle fa fa-pencil-square-o link-click pr-2" />
                         <strong className='link-click'>{item.subject}</strong>
                     </div>
                     <div className="feedback-info">
