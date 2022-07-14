@@ -7,9 +7,8 @@ import Site from '@jsroot/common/site';
 import { SubMainMenu, DetailMenu }from '@jsroot/common/constants';
 import { toast } from 'react-toastify';
 import BreadcrumbTime from './BreadcrumbTime';
-import WithNavigation from '../../WithNavigation';
 
-class Filter extends Component {
+export default class Filter extends Component {
     handleSubmit = event => {
         event.preventDefault();
         if(this.props.username === '' || this.props.username === null){
@@ -73,7 +72,7 @@ class Filter extends Component {
         return breadcrumbsMenu;
     };
 
-    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={event => this.handleNavigateSubHome(event, 'Dashboard')}/></li>;
+    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={event => this.props.handleNavigateSubHome(event, 'Dashboard')}/></li>;
 
     renderBreadcrumbsMenu = (breadcrumbsMenu, pathname) =>{
         const isHome = breadcrumbsMenu.length > 0 && breadcrumbsMenu[0].toLowerCase() === 'home'
@@ -103,42 +102,43 @@ class Filter extends Component {
 
     renderHomeSubMenu = pathname =>{
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
+        const {handleNavigateSubHome, handleNavigateDashboard, handleNavigateNewRemark} = this.props;
         return (
             hasCreateFeedbackPermission ?
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
                 <li id="li-main" className={this.isCheckActive(pathname, 0)}>
-                    <a onClick = {() => this.props.handleNavigateDashboard()}>
+                    <a onClick = {() => handleNavigateDashboard()}>
                         {LangHelper.getResource('Main')}
                     </a>
                 </li>
                 <li id="li-main" className={this.isCheckActive(pathname, 1)}>
-                    <a onClick = {event => this.handleNavigateSubHome(event, 'Detail')}>
+                    <a onClick = {event => handleNavigateSubHome(event, 'Detail')}>
                         {LangHelper.getResource('Detail')}
                     </a>
                 </li>
                 <li id="li-communication-log" className={this.isCheckActive(pathname, 2)}>
-                    <a onClick = {event => this.handleNavigateSubHome(event, 'Communication')}>
+                    <a onClick = {event => handleNavigateSubHome(event, 'Communication')}>
                         {LangHelper.getResource('CommunicationLog')}
                     </a>
                 </li>
                 <li id="li-special-remark" className={this.isCheckActive(pathname, 3)}>
-                    <a onClick = {event => this.handleNavigateSubHome(event, 'SpecialRemark')}>
+                    <a onClick = {event => handleNavigateSubHome(event, 'SpecialRemark')}>
                         {LangHelper.getResource('SpecialRemark')}
                     </a>
                 </li>
                 <li id="li-special-new-remark" className={this.isCheckActive(pathname, 4)}>
-                    <a onClick = {event => this.handleNavigateNewRemark(event, 'Remark')}>
+                    <a onClick = {event => handleNavigateNewRemark(event, 'Remark')}>
                         {LangHelper.getResource('Remark')}
                     </a>
                 </li>
                 <li id="li-redemption" className={this.isCheckActive(pathname, 5)}>
-                    <a onClick = {event => this.handleNavigateSubHome(event, 'Redemption')}>
+                    <a onClick = {event => handleNavigateSubHome(event, 'Redemption')}>
                         {LangHelper.getResource('Redemption')}
                     </a>
                 </li>
                 <li id="li-activity-log" className={this.isCheckActive(pathname, 6)}>
-                    <a onClick = {event => this.handleNavigateSubHome(event, 'ActionLog')}>
+                    <a onClick = {event =>handleNavigateSubHome(event, 'ActionLog')}>
                         {LangHelper.getResource('ActivityLog')}
                     </a>
                 </li>
@@ -146,27 +146,11 @@ class Filter extends Component {
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
                 <li id="li-main" className='active'>
-                    <a onClick = {event => this.handleNavigateSubHome(event, 'Dashboard')}>{LangHelper.getResource('Main')}
+                    <a onClick = {event => handleNavigateSubHome(event, 'Dashboard')}>{LangHelper.getResource('Main')}
                     </a>
                 </li>
             </ul>
         );
-    };
-
-    handleNavigateSubHome = (event, name) =>{
-        event.preventDefault();
-        this.props.navigate(Site.resolveClientUrl(name), {state: this.props.customerInfo.custId});
-    };
-
-
-    handleNavigateNewRemark = (event, name) =>{
-        event.preventDefault();
-        const currentCustomer = {
-            custId: this.props.customerInfo !== null ? this.props.customerInfo.custId : 0,
-            isGuest: this.props.isGuest,
-            username: this.props.username
-        };
-        this.props.navigate(Site.resolveClientUrl(name), {state: currentCustomer});
     };
 
     handleConcatMenu = menus => {
@@ -261,6 +245,3 @@ class Filter extends Component {
         );
     }
 }
-
-const LayoutNavigation = WithNavigation(Filter);
-export default LayoutNavigation;

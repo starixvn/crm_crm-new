@@ -191,6 +191,23 @@ class Layout extends Component {
         );
     };
 
+    handleNavigate = name => this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo});
+
+    handleNavigateSubHome = (event, name) =>{
+        event.preventDefault();
+        this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo.custId});
+    };
+
+    handleNavigateNewRemark = (event, name) =>{
+        event.preventDefault();
+        const currentCustomer = {
+            custId: this.state.customerInfo !== null ? this.state.customerInfo.custId : 0,
+            isGuest: this.state.isGuest,
+            username: this.state.username
+        };
+        this.props.navigate(Site.resolveClientUrl(name), {state: currentCustomer});
+    };
+
     getCurrentCustomerInfo = () =>{
         const {customerInfo, isGuest, username, isCreditSite } = this.state;
         const currentCustomer = {
@@ -201,9 +218,6 @@ class Layout extends Component {
         };
         return currentCustomer;
     };
-
-    handleNavigate = name => this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo});
-
 
     handleCollapseExpandLayout = event =>{
         event.preventDefault();
@@ -279,8 +293,8 @@ class Layout extends Component {
                         showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup}
                         handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
                         showEmptyConfirmPopup={showEmptyConfirmPopup}
-                        handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
-                        handleNavigateDashboard={this.handleNavigateDashboard}
+                        handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} handleNavigateNewRemark = {this.handleNavigateNewRemark}
+                        handleNavigateDashboard={this.handleNavigateDashboard} handleNavigateSubHome={this.handleNavigateSubHome}
                         handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
                     />
                 </div>

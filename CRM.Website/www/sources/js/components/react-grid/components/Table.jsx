@@ -201,8 +201,8 @@ class Table extends Component {
         let maxWidthCal = 0;
         const { maxWidth, shouldUseMaxWidth} = this.props;
         const rightRowContainer = document.getElementById('right-row-container').clientWidth;
-        const calWidth =  clientWidth < MIN_WIDTH_CONTAINER ? MIN_WIDTH_CONTAINER : clientWidth;
         const clientWidth = document.body.clientWidth;
+        const calWidth =  clientWidth < MIN_WIDTH_CONTAINER ? MIN_WIDTH_CONTAINER : clientWidth;
         const isFullWidth = rightRowContainer === clientWidth;
         if(isFullWidth){
             maxWidthCal = shouldUseMaxWidth ? maxWidth : calWidth - this.diffWidth;
