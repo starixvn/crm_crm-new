@@ -84,10 +84,9 @@ class Filter extends Component {
             <ul className='breadcrumbsMenu sub-menu list-inline list-unstyled'>
                 {this.renderIconHome(pathname)}
                 {
-                    breadcrumbsMenu.map((item, key) =>{(
-                            <li key={key}>{item}</li>
-                        );
-                    })
+                    breadcrumbsMenu.map((item, key) =>
+                        <li key={key}>{item}</li>
+                    )
                 }
             </ul>
         );

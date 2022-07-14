@@ -1,5 +1,5 @@
 import React, {PureComponent, lazy, Suspense } from 'react';
-import LayoutNavigation from './components/Layout';
+import LayoutNavigation from './components/LayoutNavigation';
 import {
     BrowserRouter as Router,
     Routes,

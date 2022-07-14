@@ -179,7 +179,8 @@ class Layout extends Component {
             }else if(response.data === null) {
                 this.setState({
                 showEmptyCustomerInfoPopup: true
-            });}
+            });
+            }
         }).then(() => Site.unblockUI());
     };
 
