@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import AppContainerWrapper, { AppContainer } from '../AppContainer';
+import {AppContainerWrapper, AppContainer } from '../AppContainer';
 import { shallow } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import toJson from 'enzyme-to-json';

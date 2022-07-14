@@ -1,3 +1,84 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Filter render filter component 1`] = `ShallowWrapper {}`;
+exports[`Filter render filter component 1`] = `
+<Form
+  className="form-filter"
+  inline={false}
+>
+  <FormRow
+    bsPrefix="form-row"
+  >
+    <FormGroup>
+      <FormLabel
+        column={false}
+        htmlFor="groupHeadlineInput"
+        srOnly={false}
+      >
+        GroupHeadline
+      </FormLabel>
+      <FormControl
+        autoComplete="off"
+        className="shadow-none"
+        id="groupHeadlineInput"
+        onChange={[Function]}
+        size="sm"
+        type="text"
+      />
+      <FormCheck
+        checked={true}
+        className="mr-5"
+        id="checkIgnoredAccountInput"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <FormLabel
+        className="checkIgnoredAccount-setting"
+        column={false}
+        htmlFor="checkIgnoredAccountInput"
+        srOnly={false}
+      >
+        ExcludeIgnoredAccounts
+      </FormLabel>
+    </FormGroup>
+  </FormRow>
+  <FormRow
+    bsPrefix="form-row"
+  >
+    <FormGroup>
+      <FormLabel
+        column={false}
+        htmlFor="userNameInput"
+        srOnly={false}
+      >
+        Username
+      </FormLabel>
+      <FormControl
+        autoComplete="off"
+        className="shadow-none"
+        id="userNameInput"
+        onChange={[Function]}
+        size="sm"
+        type="text"
+      />
+      <Button
+        active={false}
+        className="mr-4 btn-submit"
+        disabled={false}
+        onClick={[Function]}
+        size="sm"
+        variant="primary"
+      >
+        Submit
+      </Button>
+    </FormGroup>
+  </FormRow>
+  <div
+    className="text-center filter-collapse"
+  >
+    <span
+      className="fa-sm fa fa-caret-up "
+      onClick={[Function]}
+    />
+  </div>
+</Form>
+`;

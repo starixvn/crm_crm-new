@@ -1,3 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppContainer render should render correctly 1`] = `ShallowWrapper {}`;
+exports[`AppContainer render should render correctly 1`] = `
+<Fragment>
+  <Connect(Filter) />
+  <Connect(DataGrid) />
+  <Connect(Details)
+    onClose={[Function]}
+  />
+  <SweetModalDialog
+    backdropClassName="sweet-alert-modal-backdrop"
+    buttons={
+      Array [
+        <ForwardRef
+          active={false}
+          disabled={false}
+          onClick={[Function]}
+          size="sm"
+          variant="primary"
+        >
+          Close
+        </ForwardRef>,
+      ]
+    }
+    className="sweet-alert-modal"
+    contents={<div />}
+    onClose={[Function]}
+    size="lg"
+    title="RelatedCustomer"
+  />
+  <Chart
+    onClose={[Function]}
+  />
+</Fragment>
+`;

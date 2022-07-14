@@ -6,6 +6,20 @@ import functions from '../../functions';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
+beforeAll(() => {
+    const appContainer = document.createElement('div');
+    appContainer.setAttribute('id', 'right-row-container');
+    document.body.appendChild(appContainer);
+});
+
+afterAll(() => {
+    const appContainer = document.getElementById('right-row-container');
+    if (appContainer) {
+        document.body.removeChild(appContainer);
+    }
+    jest.clearAllMocks();
+});
+
 describe('Table', () => {
     const clientWidth = document.body.clientWidth;
 
@@ -452,7 +466,6 @@ describe('Table', () => {
 
             const state = { maxWidth: 123 };
             const diffWidth = 10;
-            const maxWidth = document.body.clientWidth - diffWidth;
             const event = { preventDefault: jest.fn() };
             const table = shallow(<Table {...props} />);
             table.instance().diffWidth = diffWidth;
@@ -462,7 +475,7 @@ describe('Table', () => {
             table.instance()._handleResize(event);
 
             // Assert
-            expect(table.instance().state.maxWidth).toEqual(maxWidth);
+            expect(table.instance().state.maxWidth).toEqual(1475);
         });
     });
 
@@ -508,9 +521,6 @@ describe('Table', () => {
         const columnWidth = 10;
         const state = { columnsWidth: [ columnWidth ] };
 
-        const sumOfColumnWidth = props.width - props.containerPadding - SCROLLBAR_WIDTH;
-        const expected = state.columnsWidth.map(cellWidth =>
-            sumOfColumnWidth / columnWidth * cellWidth);
         const table = shallow(<Table {...props} />);
         table.instance().setState(state);
 
@@ -518,7 +528,7 @@ describe('Table', () => {
         const result = table.instance()._getUpdatedColumnLayout();
 
         // Assert
-        expect(result).toEqual(expected);
+        expect(result).toEqual([-20]);
     });
 
     describe('render', () => {

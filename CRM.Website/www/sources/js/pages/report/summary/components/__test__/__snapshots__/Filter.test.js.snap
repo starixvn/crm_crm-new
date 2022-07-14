@@ -1,3 +1,117 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Filter render filter component 1`] = `ShallowWrapper {}`;
+exports[`Filter render filter component 1`] = `
+<Form
+  className="form-filter"
+  inline={false}
+  onSubmit={[Function]}
+>
+  <FormRow
+    bsPrefix="form-row"
+  >
+    <FormGroup>
+      <FormLabel
+        column={false}
+        htmlFor="year"
+        srOnly={false}
+      >
+        Year
+      </FormLabel>
+      <FormControl
+        as="select"
+        className="shadow-none form-control-year"
+        id="year"
+        onChange={[Function]}
+        size="sm"
+        value={2022}
+      >
+        <option
+          key="2022"
+          value={2022}
+        >
+          2022
+        </option>
+      </FormControl>
+    </FormGroup>
+    <FormGroup>
+      <FormLabel
+        className="label-width"
+        column={false}
+        htmlFor="site"
+        srOnly={false}
+      >
+        Site
+      </FormLabel>
+      <FormControl
+        as="select"
+        className="shadow-none "
+        id="year"
+        onChange={[Function]}
+        size="sm"
+      >
+        <option
+          key="0"
+          value={0}
+        />
+      </FormControl>
+    </FormGroup>
+    <FormGroup
+      className="form-width"
+    >
+      <FormLabel
+        column={false}
+        htmlFor="categoryId"
+        srOnly={false}
+      >
+        Category
+      </FormLabel>
+      <div
+        className="form-control-wrapper"
+      >
+        <MultipleSelect
+          dataSource={
+            Array [
+              Object {
+                "checked": true,
+                "mainCategoryID": 3000,
+                "name": "General Network/Database Issues",
+              },
+            ]
+          }
+          hasAllOption={true}
+          hasSearchBox={true}
+          isAllToggle={false}
+          isCheckedNA={false}
+          isDisable={false}
+          isNAOption={true}
+          keyField="mainCategoryID"
+          maxDisplayItemCount={0}
+          onChange={[Function]}
+          statusField="checked"
+          textOptions={
+            Object {
+              "NA": "N/A",
+              "NoData": "NoData",
+              "SelectOptions": "PleaseSelect",
+              "SelectedItemCount": "# selected",
+              "Texts": "All",
+            }
+          }
+          valueField="name"
+        />
+      </div>
+    </FormGroup>
+    <FormGroup>
+      <Button
+        active={false}
+        disabled={false}
+        onClick={[Function]}
+        size="sm"
+        variant="primary"
+      >
+        Submit
+      </Button>
+    </FormGroup>
+  </FormRow>
+</Form>
+`;

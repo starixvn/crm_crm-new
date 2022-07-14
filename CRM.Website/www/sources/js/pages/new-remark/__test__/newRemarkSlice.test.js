@@ -21,7 +21,6 @@ describe('remarkSlice reducer', () => {
             remarkTitles: null,
             allSettings: null,
             gridParams: { pageIndex: 1, pageSize: 100, username: '', isGuest: false},
-            lastFiveRemarks: null,
             gridData: null,
             popupAdd: { show: false },
             editResult: null,
@@ -213,17 +212,5 @@ describe('remarkSlice reducer', () => {
         ).toEqual({
             historyGridParams: { pageIndex: 1, pageSize: 100, custId: '', remarkID: '' }
         });
-    });
-
-    it('should handle setLastFiveRemark', () => {
-        expect(
-            newRemark({}, {
-                type: setLastFiveRemark.type,
-                payload: [{remarkID: 1504, createdDate: "Apr 18, 2022 10:35:19 PM", lastUpdate: "Apr 18, 2022 11:23:30 PM"}]
-            })
-        ).toEqual({
-            lastFiveRemarks: [{remarkID: 1504, createdDate: "Apr 18, 2022 10:35:19 PM", lastUpdate: "Apr 18, 2022 11:23:30 PM"}]
-        });
-    });
-    
+    });    
 });

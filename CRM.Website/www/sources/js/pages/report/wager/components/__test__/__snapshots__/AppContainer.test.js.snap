@@ -1,7 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppContainer should render correctly when gridData has data 1`] = `ShallowWrapper {}`;
+exports[`AppContainer should render correctly when gridData has data 1`] = `
+<Fragment>
+  <Connect(Filter) />
+  <Connect(DataGrid) />
+</Fragment>
+`;
 
-exports[`AppContainer should render correctly when gridData null 1`] = `ShallowWrapper {}`;
+exports[`AppContainer should render correctly when gridData null 1`] = `
+<Fragment>
+  <Connect(Filter) />
+</Fragment>
+`;
 
-exports[`AppContainer should render correctly when gridData undefined 1`] = `ShallowWrapper {}`;
+exports[`AppContainer should render correctly when gridData undefined 1`] = `
+<Fragment>
+  <Connect(Filter) />
+</Fragment>
+`;

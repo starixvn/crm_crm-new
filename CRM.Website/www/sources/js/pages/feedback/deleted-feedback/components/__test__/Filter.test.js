@@ -16,7 +16,11 @@ describe('Filter', () => {
             subCategories: [{ mainCategoryID : 0 }],
             communications: [{ id: 1, name: "test"}],
             customerResponses: [{ id: 1, name: "test"}]
-        }
+        },
+        gridParams: {
+            pageIndex: 1,
+            pageSize: 100
+        },
     };
 
     describe('componentDidUpdate', () => {

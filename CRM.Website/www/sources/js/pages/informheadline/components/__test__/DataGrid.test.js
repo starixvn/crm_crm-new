@@ -10,7 +10,13 @@ describe('DataGrid', () => {
         jest.clearAllMocks();
     });
 
-    const initProps = {};
+    const initProps = {
+        permissions: {
+            searchPolicy: Policy.None,
+            contactPolicy: Policy.None,
+            hasHostPermission: false
+        }
+    };
 
     describe('buildHeader', () => {
         it('should render expected header', () => {
@@ -190,28 +196,6 @@ describe('DataGrid', () => {
             // Assert
 
             expect(container.handleOption).toHaveBeenCalledWith(720, 'Open');
-        });
-
-        it('should call handleEditContact when click titleId', () => {
-            // Arrange
-
-            const props = {
-                ...initProps,
-                informs: [
-                    { titleId: 720, title:'test', status: 'Closed'}
-                ]
-            };
-            const container = shallow(<DataGrid {...props}/>).instance();
-            container.handleEditContact = jest.fn();
-
-            const row = shallow(container.renderRow(item, 1, document.getElementById('ContactPolicy')));
-
-            // Act
-            row.find(Cell).at(1).find('span').at(0).props().onClick();
-
-            // Assert
-
-            expect(container.handleEditContact).toHaveBeenCalledWith(720, 'Open');
         });
     });
 

@@ -121,7 +121,7 @@ describe('DataGridCommunication', () => {
                 ...initProps,
                 communicationLogs: { data: [] }
              };
-            const expectedBody = [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={10}>ThereIsNoData</Cell></Row>];
+            const expectedBody = [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={9}>ThereIsNoData</Cell></Row>];
             const container = shallow(<DataGridCommunication {...props} />).instance();
 
             // Act
@@ -286,32 +286,6 @@ describe('DataGridCommunication', () => {
 
             // Assert
             expect(container.handleShowEditCommunication).toHaveBeenCalled();
-        });
-
-        it('should call handleShowNoOfInquiry when click updated', () => {
-            // Arrange
-            const props = {
-                ...initProps,
-                communicationLogs: {
-                    data: [{ id: 1, settings: [{ settingId: 3000, subSettingId: 4000 }], duration: '1 : 0'}],
-                    mainCategories:[{ settingId: 3000, settingValue: 'test' ,childSettings:[{subCategoryId: 4000, name: 'test'}] }]
-                }
-            };
-            const item = {
-                feedbackId: 1234, subject: 'test', relatedCustomer: "test1,test2",
-                duration: '1 : 0', status: 'closed', handler: 'sa', reviewer: 'test', settings: [{ settingId: 3000, subSettingId: 4000 }]
-            };
-
-            const container = shallow(<DataGridCommunication {...props} />).instance();
-            container.handleShowNoOfInquiry = jest.fn();
-
-            const row = shallow(container.renderRow(item,0));
-
-            // Act
-            row.find(Cell).at(1).find('span').at(0).simulate('click');
-
-            // Assert
-            expect(container.handleShowNoOfInquiry).toHaveBeenCalledWith(1234);
         });
 
         it('should call handleShowCreateCommunication when click FeedbackId', () => {

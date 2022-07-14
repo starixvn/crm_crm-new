@@ -17,6 +17,7 @@ describe('dashboardSlice reducer', () => {
             redemptions: null,
             editRedemptionDialog: { show: false },
             communicationLogs: null,
+            lastFiveRemarks: null,
             noOfInquiryDialog: { show: false },
             editCommunicationDialog: { show: false },
             createCommunicationDialog: { show: false },

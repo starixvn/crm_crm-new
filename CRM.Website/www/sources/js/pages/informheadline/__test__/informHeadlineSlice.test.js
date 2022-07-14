@@ -31,6 +31,7 @@ describe('informHeadlineSlice reducer', () => {
             editContactInformDialog: {show: false},
             allSettings: null,
             dataEditInforms: null,
+            permissions: null,
             editInformDialog: {show: false},
             resultEditContactInforms: null,
             resultEditInforms: null,

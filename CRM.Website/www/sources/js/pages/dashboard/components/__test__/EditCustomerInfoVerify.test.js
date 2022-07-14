@@ -158,23 +158,6 @@ describe('EditCustomerInfoVerify', () => {
             expect(container.type()).toEqual(null);
         });
 
-        it('should call exactly function when click button', () => {
-            // Arrange
-            const props = {...initProps};
-            window.createUpdateFeedbackPermission = 2;
-
-            const container = shallow(<EditCustomerInfoVerify {...props} />).instance();
-            container.handleSubmit = jest.fn();
-
-            const formRender = shallow(container.render());
-
-            // Act
-            formRender.find(Button).at(0).simulate('click');
-
-            // Assert
-            expect(container.handleSubmit).toHaveBeenCalled();
-        });
-
         it('should call exactly function when change check', () => {
             // Arrange
             const props = {...initProps};

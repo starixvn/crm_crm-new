@@ -162,7 +162,7 @@ describe('AppContainer', () => {
 
             // Assert
             expect(toJson(container)).toMatchSnapshot();
-            expect(container.find(DataGridRemark).length).toBe(1);
+            expect(container.find(DataGridRemark).length).toBe(0);
         });
     });
 });

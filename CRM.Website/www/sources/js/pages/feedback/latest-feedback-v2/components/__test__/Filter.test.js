@@ -52,7 +52,6 @@ describe('Filter', () => {
             const actual = container.instance().handleTopChange(event);
             // Assert
             expect(props.setGridParams).toHaveBeenCalledWith({top: 1});
-            expect(props.getLatestFeedback).toHaveBeenCalledWith({top: 1});
         });
     });
 });

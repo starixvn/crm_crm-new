@@ -1,3 +1,164 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Chart render chart component 1`] = `ShallowWrapper {}`;
+exports[`Chart render chart component 1`] = `
+<Modal
+  animation={true}
+  autoFocus={true}
+  backdrop="static"
+  className="chart-modal-feedback-statistics"
+  dialogAs={[Function]}
+  enforceFocus={true}
+  keyboard={false}
+  onHide={[MockFunction]}
+  restoreFocus={true}
+  show={true}
+  size="xl"
+>
+  <ModalHeader
+    closeButton={true}
+    closeLabel="Close"
+  >
+    <ModalTitle
+      as="div"
+    >
+      Feedback Statistics Report from Mar 22, 2022 to Mar 25, 2022
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <ResponsiveContainer
+      debounce={0}
+      height={780}
+      width="100%"
+    >
+      <BarChart
+        barCategoryGap={0}
+        barGap={0}
+        data={
+          Array [
+            Object {
+              "name": "Special Notification",
+              "starixIT": 5,
+            },
+          ]
+        }
+        layout="horizontal"
+        margin={
+          Object {
+            "bottom": 30,
+            "left": 30,
+            "right": 30,
+            "top": 30,
+          }
+        }
+        reverseStackOrder={false}
+        stackOffset="none"
+        width={1100}
+      >
+        <XAxis
+          allowDataOverflow={false}
+          allowDecimals={true}
+          allowDuplicatedCategory={true}
+          angle={0}
+          dataKey="name"
+          domain={
+            Array [
+              0,
+              "auto",
+            ]
+          }
+          dy={0}
+          height={30}
+          hide={false}
+          interval={0}
+          mirror={false}
+          orientation="bottom"
+          padding={
+            Object {
+              "left": 0,
+              "right": 0,
+            }
+          }
+          reversed={false}
+          scale="auto"
+          scaleToFit="true"
+          tickCount={5}
+          type="category"
+          verticalAnchor="start"
+          width={0}
+          xAxisId={0}
+        />
+        <YAxis
+          allowDataOverflow={false}
+          allowDecimals={true}
+          allowDuplicatedCategory={true}
+          domain={
+            Array [
+              0,
+              "auto",
+            ]
+          }
+          height={0}
+          hide={false}
+          label={
+            Object {
+              "dy": -10,
+              "position": "top",
+              "value": "Feedback(s)",
+            }
+          }
+          mirror={false}
+          orientation="left"
+          padding={
+            Object {
+              "bottom": 0,
+              "top": 0,
+            }
+          }
+          reversed={false}
+          scale="auto"
+          tickCount={5}
+          type="number"
+          width={60}
+          yAxisId={0}
+        />
+        <Legend
+          align="center"
+          iconSize={14}
+          layout="horizontal"
+          verticalAlign="bottom"
+          wrapperStyle={
+            Object {
+              "bottom": 5,
+              "left": 75,
+            }
+          }
+        />
+        <Bar
+          animationBegin={0}
+          animationDuration={400}
+          animationEasing="ease"
+          data={Array []}
+          dataKey="starixIT"
+          fill="#3F5D7D"
+          hide={false}
+          isAnimationActive={true}
+          key="0"
+          label={
+            Object {
+              "position": "top",
+            }
+          }
+          layout="vertical"
+          legendType="rect"
+          maxBarSize={20}
+          minPointSize={0}
+          onAnimationEnd={[Function]}
+          onAnimationStart={[Function]}
+          xAxisId={0}
+          yAxisId={0}
+        />
+      </BarChart>
+    </ResponsiveContainer>
+  </ModalBody>
+</Modal>
+`;

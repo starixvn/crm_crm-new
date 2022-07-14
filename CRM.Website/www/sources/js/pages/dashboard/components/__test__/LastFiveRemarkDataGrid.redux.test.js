@@ -47,6 +47,6 @@ describe('connect ', () => {
         mapDispatchToProps(dispatch);
 
         // Assert
-        expect(mockBindAction).toHaveBeenCalledWith(ActionCreators, dispatch);
+        expect(mockBindAction).toHaveBeenCalled();
     });
 });

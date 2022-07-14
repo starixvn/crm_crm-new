@@ -11,6 +11,7 @@ describe('AppContainer', () => {
     const initProps = {
         getInforms: jest.fn(),
         getAllSettings: jest.fn(),
+        getPermissions: jest.fn(),
         getContactInformSettings: jest.fn()
     };
 

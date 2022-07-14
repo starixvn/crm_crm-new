@@ -1,5 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppContainer render render component correctly 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer render return null if props setting is null 1`] = `ShallowWrapper {}`;
+exports[`AppContainer render render component correctly 1`] = `
+<CreateForm
+  feedbackSubjectTemplates={Array []}
+  settings={
+    Array [
+      1,
+    ]
+  }
+/>
+`;

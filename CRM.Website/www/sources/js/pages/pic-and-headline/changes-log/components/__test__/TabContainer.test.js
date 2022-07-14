@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Tabs, Tab } from 'react-bootstrap';
-import AppContainer from '../AppContainer';
-import TabContainer from '../TabContainer';
+import {AppContainer} from '../AppContainer';
+import {TabContainer} from '../TabContainer';
 describe('TabContainer', () => {
     afterAll(() => {
         jest.clearAllMocks();

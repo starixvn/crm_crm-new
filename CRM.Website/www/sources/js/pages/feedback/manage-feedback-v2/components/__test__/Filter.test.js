@@ -77,6 +77,10 @@ describe('Filter', () => {
                 // Arrange
                 const props = {
                     settings: settingsInit,
+                    gridParams: {
+                        pageIndex: 1,
+                        pageSize: 100
+                    },
                     setGridParams: jest.fn(),
                     getGridFeedbacks: jest.fn()
                 };
@@ -127,6 +131,10 @@ describe('Filter', () => {
                 // Arrange
                 const props = {
                     settings: settingsInit,
+                    gridParams: {
+                        pageIndex: 1,
+                        pageSize: 100
+                    },
                     setGridParams: jest.fn(),
                     getGridFeedbacks: jest.fn()
                 };

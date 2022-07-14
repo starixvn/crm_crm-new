@@ -2,6 +2,8 @@ import React from 'react';
 import { EditInforms } from '../EditInforms';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import { Policy } from '@jsroot/common/constants';
+
 
 describe('EditInforms', () => {
     afterAll(() => {
@@ -15,6 +17,11 @@ describe('EditInforms', () => {
             sites: '1,2', typeAccount: 3,
             positions: '4,5,6', isVip: 2,
             excludeIgnoredAccounts: true
+        },
+        permissions: {
+            searchPolicy: Policy.None,
+            contactPolicy: Policy.None,
+            hasHostPermission: false
         },
         allSettings: {
             currencies: [{id: 1, name: 'test'},{id: 2, name: 'test'},{id: 3, name: 'test'},{id: 4, name: 'test'}],

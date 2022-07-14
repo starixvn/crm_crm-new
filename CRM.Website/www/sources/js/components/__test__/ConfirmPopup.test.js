@@ -32,7 +32,7 @@ describe('ConfirmPopup', () => {
             expect(confirmPopup.props().show).toBeTrue;
             expect(confirmPopup.props().backdrop).toBe('static');
             expect(confirmPopup.props().dialogAs).toEqual(DraggableModalDialog);
-            expect(confirmPopup.props().className).toBe('confirmation-modal');
+            expect(confirmPopup.props().className).toBe('confirmation-modal ');
             expect(confirmPopup.props().keyboard).toBeFalse;
             expect(confirmPopup.props().size).toEqual(props.size);
             expect(confirmPopup.props().centered).toBeTrue;

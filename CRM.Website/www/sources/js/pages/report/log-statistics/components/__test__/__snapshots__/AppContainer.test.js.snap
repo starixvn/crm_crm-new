@@ -1,9 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppContainer render should render correctly when gridData null 1`] = `ShallowWrapper {}`;
+exports[`AppContainer render should render correctly when settings is empty 1`] = `
+<Fragment>
+  <Connect(Filter) />
+  <Connect(DataGrid) />
+  <Chart
+    chart={
+      Object {
+        "data": null,
+        "show": true,
+        "title": "",
+      }
+    }
+    onClose={[Function]}
+  />
+</Fragment>
+`;
 
-exports[`AppContainer render should render correctly when settings is empty 1`] = `ShallowWrapper {}`;
+exports[`AppContainer render should render correctly when settings null 1`] = `""`;
 
-exports[`AppContainer render should render correctly when settings null 1`] = `ShallowWrapper {}`;
-
-exports[`AppContainer render should render correctly when show detail report 1`] = `ShallowWrapper {}`;
+exports[`AppContainer render should render correctly when show detail report 1`] = `
+<Fragment>
+  <Connect(Filter) />
+  <Connect(Detail) />
+</Fragment>
+`;

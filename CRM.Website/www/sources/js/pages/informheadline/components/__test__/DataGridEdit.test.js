@@ -2,6 +2,8 @@ import React from 'react';
 import { DataGridEdit } from '../DataGridEdit';
 import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { shallow } from 'enzyme';
+import { Policy } from '@jsroot/common/constants';
+
 
 describe('DataGridEdit', () => {
     afterAll(() => {
@@ -19,7 +21,12 @@ describe('DataGridEdit', () => {
             productStatuses: [ { statusId: 123, name: 'test' } ]
         },
         informData: [{ headlineId: 1234, groupId: 122}],
-        editedInforms: [{ headlineId: 1234, groupId: 122}]
+        editedInforms: [{ headlineId: 1234, groupId: 122}],
+        permissions: {
+            searchPolicy: Policy.None,
+            contactPolicy: Policy.None,
+            hasHostPermission: false
+        }
     };
 
     describe('buildHeader', () => {

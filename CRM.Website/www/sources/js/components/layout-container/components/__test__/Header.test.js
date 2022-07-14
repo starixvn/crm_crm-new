@@ -21,7 +21,11 @@ describe('Header', () => {
                 }
             ]
         }],
-        handleCollapseExpandLayout : jest.fn()
+        currentCustomerInfo:{
+            custId: 0
+        },
+        handleCollapseExpandLayout : jest.fn(),
+        handleNavigateDashboard: jest.fn()
     }
     describe('isIgnoreMenu', () => {
         it('should return false', () => {

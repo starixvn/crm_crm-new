@@ -79,7 +79,7 @@ describe('DataGrid', () => {
             expect(table.props().autoWidth).toBeTrue;
             expect(table.props().isPaging).toBeTrue;
             expect(table.props().pageOption).toEqual(pagingOption);
-            expect(table.props().containerPadding).toBe(0);
+            expect(table.props().containerPadding).toBe(31);
             expect(table.props().adjustedHeight).toBe(10);
         });
     });

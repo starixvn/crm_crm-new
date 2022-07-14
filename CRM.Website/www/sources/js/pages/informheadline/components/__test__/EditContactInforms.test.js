@@ -3,6 +3,8 @@ import { EditContactInforms } from '../EditContactInforms';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import Site from '@jsroot/common/site';
+import { Policy } from '@jsroot/common/constants';
+
 
 describe('EditContactInforms', () => {
     beforeAll(() => {
@@ -28,7 +30,12 @@ describe('EditContactInforms', () => {
         getContactInforms: jest.fn(),
         setGridParams: jest.fn(),
         editedInforms: [{ headlineId: 1234, groupId: 122, remark: '&test'}],
-        getContactInformSettings: jest.fn(() => promise)
+        getContactInformSettings: jest.fn(() => promise),
+        permissions: {
+            searchPolicy: Policy.None,
+            contactPolicy: Policy.None,
+            hasHostPermission: false
+        }
     };
 
     describe('componentDidMount', () => {

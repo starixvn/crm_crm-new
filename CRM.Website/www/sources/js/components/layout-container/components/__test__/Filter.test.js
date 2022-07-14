@@ -41,7 +41,7 @@ describe('filter', () => {
         const filter = shallow(<Filter {...props} />);
 
         // Assert
-        expect(filter.state()).toEqual(initialState);
+        expect(filter.state()).toEqual(null);
     });
 
     describe('methods', () => {

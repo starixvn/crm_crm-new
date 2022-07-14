@@ -222,7 +222,7 @@ describe('Filter', () => {
                 const actual = container.instance().validateDuration (fromDuration, toDuration);
                 // Assert
                 expect(actual).toBeFalsy();
-                expect(toast.error).toHaveBeenCalledWith('InvalidDuration');
+                expect(toast.error).toHaveBeenCalledWith('NotificationSubmitDurationIsWrong');
             });
         });
     });
