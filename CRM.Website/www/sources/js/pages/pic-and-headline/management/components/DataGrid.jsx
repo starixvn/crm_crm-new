@@ -143,7 +143,7 @@ export class DataGrid extends PureComponent {
                     }
             </div>
         );
-    }
+    };
 
     render() {
         if (!this.props.gridData || !this.props.gridData.dataList) {
@@ -163,7 +163,6 @@ export class DataGrid extends PureComponent {
 
         return (
             <Fragment>
-                
                 <Table
                     maxWidth={2300}
                     shouldUseMaxWidth

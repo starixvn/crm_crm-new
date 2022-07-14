@@ -20,7 +20,7 @@ export class AppContainer extends Component {
     this.state = {
       policy: null
     };
-  } 
+  }
 
   componentDidMount() {
       this.props.getMainSettings();
@@ -91,7 +91,7 @@ export class AppContainer extends Component {
   handleCloseEditStatusPopup = () =>{
       this.props.setEditStatusPopup({ show: false });
   };
-  
+
   render() {
     const {mainSettings, gridParams, editStatusPopup, insertNewSettingPopup, licenseeMappingPopup, editPopup} = this.props;
     if(!mainSettings || mainSettings === null || !this.state.policy){

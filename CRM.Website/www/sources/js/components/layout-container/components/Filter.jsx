@@ -84,17 +84,23 @@ class Filter extends Component {
             <ul className='breadcrumbsMenu sub-menu list-inline list-unstyled'>
                 {this.renderIconHome(pathname)}
                 {
-                    breadcrumbsMenu.map((item, key) =>{
-                        return (
+                    breadcrumbsMenu.map((item, key) =>{(
                             <li key={key}>{item}</li>
                         );
                     })
                 }
             </ul>
         );
-    }
+    };
 
     isActiveTab = (pathname, index) => pathname.toLowerCase() === this.getUrlPath(SubMainMenu[index].url);
+
+    isCheckActive = (pathname, index) => {
+        if(this.isActiveTab(pathname, index)){
+            return 'active';
+        }
+        return '';
+    };
 
     renderHomeSubMenu = pathname =>{
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
@@ -102,37 +108,37 @@ class Filter extends Component {
             hasCreateFeedbackPermission ?
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
-                <li id="li-main" className={this.isActiveTab(pathname, 0) ? 'active' : ''}>
+                <li id="li-main" className={this.isCheckActive(pathname, 0)}>
                     <a onClick = {() => this.props.handleNavigateDashboard()}>
                         {LangHelper.getResource('Main')}
                     </a>
                 </li>
-                <li id="li-main" className={this.isActiveTab(pathname, 1) ? 'active' : ''}>
+                <li id="li-main" className={this.isCheckActive(pathname, 1)}>
                     <a onClick = {event => this.handleNavigateSubHome(event, 'Detail')}>
                         {LangHelper.getResource('Detail')}
                     </a>
                 </li>
-                <li id="li-communication-log" className={this.isActiveTab(pathname, 2) ? 'active' : ''}>
+                <li id="li-communication-log" className={this.isCheckActive(pathname, 2)}>
                     <a onClick = {event => this.handleNavigateSubHome(event, 'Communication')}>
                         {LangHelper.getResource('CommunicationLog')}
                     </a>
                 </li>
-                <li id="li-special-remark" className={this.isActiveTab(pathname, 3) ? 'active' : ''}>
+                <li id="li-special-remark" className={this.isCheckActive(pathname, 3)}>
                     <a onClick = {event => this.handleNavigateSubHome(event, 'SpecialRemark')}>
                         {LangHelper.getResource('SpecialRemark')}
                     </a>
                 </li>
-                <li id="li-special-new-remark" className={this.isActiveTab(pathname, 4) ? 'active' : ''}>
+                <li id="li-special-new-remark" className={this.isCheckActive(pathname, 4)}>
                     <a onClick = {event => this.handleNavigateNewRemark(event, 'Remark')}>
                         {LangHelper.getResource('Remark')}
                     </a>
                 </li>
-                <li id="li-redemption" className={this.isActiveTab(pathname, 5) ? 'active' : ''}>
+                <li id="li-redemption" className={this.isCheckActive(pathname, 5)}>
                     <a onClick = {event => this.handleNavigateSubHome(event, 'Redemption')}>
                         {LangHelper.getResource('Redemption')}
                     </a>
                 </li>
-                <li id="li-activity-log" className={this.isActiveTab(pathname, 6) ? 'active' : ''}>
+                <li id="li-activity-log" className={this.isCheckActive(pathname, 6)}>
                     <a onClick = {event => this.handleNavigateSubHome(event, 'ActionLog')}>
                         {LangHelper.getResource('ActivityLog')}
                     </a>
@@ -257,5 +263,5 @@ class Filter extends Component {
     }
 }
 
-const FunctionBarWithNavigation = WithNavigation(Filter);
-export default FunctionBarWithNavigation;
+const LayoutNavigation = WithNavigation(Filter);
+export default LayoutNavigation;

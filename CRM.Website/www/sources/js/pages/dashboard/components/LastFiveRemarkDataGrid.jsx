@@ -73,10 +73,10 @@ export class LastFiveRemarkDataGrid extends Component {
 
     handleViewNewRemark = event =>{
         event.preventDefault();
-        this.props.navigate(Site.resolveClientUrl('Remark'), 
+        this.props.navigate(Site.resolveClientUrl('Remark'),
                 {state: this.props.currentCustomer}
         );
-    }
+    };
 
     render() {
         const {lastFiveRemarks} = this.props;

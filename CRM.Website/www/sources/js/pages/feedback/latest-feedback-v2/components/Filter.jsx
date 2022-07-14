@@ -39,7 +39,7 @@ export class Filter extends Component {
             <Form className="form-filter" >
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
-                        <Form.Label className='col-auto col-form-label' style={{width: "30px"}}>{LangHelper.getResource('Top')}</Form.Label>
+                        <Form.Label className='col-auto col-form-label' style={{width: '30px'}}>{LangHelper.getResource('Top')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none"
                             value={this.state.top}
                             onChange={this.handleTopChange}

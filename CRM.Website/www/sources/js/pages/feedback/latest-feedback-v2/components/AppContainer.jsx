@@ -63,7 +63,7 @@ export class AppContainer extends Component {
             this.props.getLatestFeedback(this.props.gridParams);
             document.title = LangHelper.getResource('LatestFeedbackv2');
         }
-    }
+    };
 
     handleCloseEditNoInquiryDialog = () => {
         this.props.setEditNoOfInquiryDialog({ show: false });

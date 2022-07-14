@@ -18,13 +18,14 @@ export class Header extends PureComponent {
     };
 
     renderListMenu = (item, index) => {
+        const disabledLink = 'disabled-link';
         return (
             <li key={index + item.id} className='menu-item'>
                 <div className='menu-title'>
                 <Link
                     to={item.url !== '' ? Site.resolveClientUrl(item.url.slice(1)) : ''}
                     state={item.url === '/Dashboard' ? this.props.currentCustomerInfo : this.props.currentCustomerInfo.custId}
-                    className={`title ${item.url === '' ? 'disabled-link' : ''}`}
+                    className={`title ${item.url === '' ? disabledLink : ''}`}
                 >
                     {item.name}
                 </Link>
@@ -39,8 +40,8 @@ export class Header extends PureComponent {
                             {
                                 item.subMenus.map((element, key) => (
                                     <div key={key} className='layer-first'>
-                                        <Link to={Site.resolveClientUrl(element.url.slice(1))} 
-                                        className={`title ${element.url === '' ? 'disabled-link' : ''}`}>{element.name}
+                                        <Link to={Site.resolveClientUrl(element.url.slice(1))}
+                                        className={`title ${element.url === '' ? disabledLink : ''}`}>{element.name}
                                         </Link>
                                         {
                                             element.subMenus.length > 0 &&
@@ -50,8 +51,8 @@ export class Header extends PureComponent {
                                                     <div className='layer-second'>
                                                         {
                                                             element.subMenus.map((ele, num) => (
-                                                                <Link to={Site.resolveClientUrl(ele.url.slice(1))} 
-                                                                className={`layer-first ${ele.url === '' ? 'disabled-link' : ''}`} 
+                                                                <Link to={Site.resolveClientUrl(ele.url.slice(1))}
+                                                                className={`layer-first ${ele.url === '' ? disabledLink : ''}`}
                                                                 key={num}>{ele.name}</Link>
                                                             ))
                                                         }

@@ -484,7 +484,7 @@ export default class AppContainer extends Component {
             errors.solution = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Solution'));
         }
         return errors;
-    }
+    };
 
     getExtensionParams = (selectedExtensionIds, extensionNA) => {
         let extensionIds = [];

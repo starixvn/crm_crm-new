@@ -29,11 +29,9 @@ export default class CreateForm extends Component {
     static propTypes = {
         feedbackSubjectTemplates: PropTypes.arrayOf(PropTypes.object)
     };
-
     static defaultProps = {
         feedbackSubjectTemplates: []
     };
-
     constructor(props) {
         super(props);
         const now = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
@@ -305,11 +303,9 @@ export default class CreateForm extends Component {
             <div className={`panel-group ${BorderStyle.bottom}`}>
                 <Form.Group as={Row} className={`title ${!isCollapse ? BorderStyle.bottom : ''}`}
                     aria-controls="collapse-expand-identity"
-                    aria-expanded={isCollapse}
-                >
+                    aria-expanded={isCollapse}>
                     <Form.Label column sm="2" md="2" className={customerDetail === null ? 'required' : 'username'}
-                        onClick={() => this.handleCollapseExpend('isShowCustomerDetailOption')}
-                    >
+                        onClick={() => this.handleCollapseExpend('isShowCustomerDetailOption')}>
                         {customerDetail === null ?  LangHelper.getResource('IdentityInformation') : customerDetail.username}
                     </Form.Label>
                     {
@@ -352,8 +348,7 @@ export default class CreateForm extends Component {
                     <Form.Group as={Row} className={`title ${BorderStyle.bottom}`}
                         onClick={() => this.handleCollapseExpend('isShowDetailsOption')}
                         aria-controls="collapse-expand-identity"
-                        aria-expanded={!collapse.isShowDetailsOption}
-                    >
+                        aria-expanded={!collapse.isShowDetailsOption}>
                         <Form.Label column sm="2" md="2" className="required">
                             {LangHelper.getResource('Details')}
                         </Form.Label>
@@ -373,8 +368,7 @@ export default class CreateForm extends Component {
                                                 showYearDropdown showTimeInput selected={values.feedbackDate}
                                                 isInvalid={touched.feedbackDate && errors.feedbackDate}
                                                 timeInputLabel="Time:" dateFormat="MMM dd, yyyy hh:mm aa"
-                                                onChange={value => this.handleChangeFeedbackTime(setFieldValue, value, values.resolutionTime)}
-                                            />
+                                                onChange={value => this.handleChangeFeedbackTime(setFieldValue, value, values.resolutionTime)}/>
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -388,8 +382,7 @@ export default class CreateForm extends Component {
                                                 dateFormat="MMM dd, yyyy hh:mm aa"
                                                 dropdownMode="select" showMonthDropdown useShortMonthInDropdown
                                                 showYearDropdown showTimeInput
-                                                onChange={value => this.handleChangeResolutionTime(setFieldValue, values.feedbackDate, value)}
-                                            />
+                                                onChange={value => this.handleChangeResolutionTime(setFieldValue, values.feedbackDate, value)}/>
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -405,8 +398,7 @@ export default class CreateForm extends Component {
                                                 keyField='id' valueField='value' isAllTextShown
                                                 onChange={(currentItem, selectedItemsKey) => {
                                                     setFieldValue('extension', selectedItemsKey);
-                                                }}
-                                            />
+                                                }}/>
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -419,8 +411,7 @@ export default class CreateForm extends Component {
                                         <Col sm="8" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
                                                 name="statusId" id="statusId" value={values.statusId}
-                                                onChange={handleChange}
-                                            >
+                                                onChange={handleChange}>
                                                 <option value="" hidden disabled />
                                                 {statuses.map(item => this.renderOptions(item.name, item.statusId))}
                                             </Form.Control>
@@ -434,8 +425,7 @@ export default class CreateForm extends Component {
                                         <Col sm="8" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
                                                 name="languageId" id="languageId" value={values.languageId}
-                                                onChange={handleChange} isInvalid={touched.languageId && errors.languageId}
-                                            >
+                                                onChange={handleChange} isInvalid={touched.languageId && errors.languageId}>
                                                 <option value="" hidden disabled />
                                                 {languages.map(item => this.renderOptions(item.name, item.languageId))}
                                             </Form.Control>
@@ -447,8 +437,7 @@ export default class CreateForm extends Component {
                                         <Form.Label column sm="4" md="4" htmlFor="responseId">{LangHelper.getResource('Response')}</Form.Label>
                                         <Col sm="8" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
-                                                name="responseId" id="responseId" value={values.responseId} onChange={handleChange}
-                                            >
+                                                name="responseId" id="responseId" value={values.responseId} onChange={handleChange}>
                                                 <option value="" hidden disabled />
                                                 {responses.map(item => this.renderOptions(item.value, item.id))}
                                             </Form.Control>
@@ -464,8 +453,7 @@ export default class CreateForm extends Component {
                                             <Form.Label column sm="4" md="4" htmlFor="role">{LangHelper.getResource('Role')}</Form.Label>
                                             <Col sm="8" md="8">
                                                 <Form.Control as="select" size="sm" className="shadow-none"
-                                                    name="role" id="role" value={values.role} onChange={handleChange}
-                                                >
+                                                    name="role" id="role" value={values.role} onChange={handleChange}>
                                                     <option value="" hidden disabled />
                                                     {roles.map(item => this.renderOptions(item.value, item.id))}
                                                 </Form.Control>
@@ -478,8 +466,7 @@ export default class CreateForm extends Component {
                                         <Form.Label column sm="4" md="4" htmlFor="country">{LangHelper.getResource('Country')}</Form.Label>
                                         <Col sm="8" md="8">
                                             <Form.Control as="select" size="sm" className="shadow-none"
-                                                name="country" id="country" value={values.country} onChange={handleChange}
-                                            >
+                                                name="country" id="country" value={values.country} onChange={handleChange}>
                                                 <option value="" hidden disabled />
                                                 {countries.map(item => this.renderOptions(item.name, item.id))}
                                             </Form.Control>
@@ -492,8 +479,7 @@ export default class CreateForm extends Component {
                                         <Col sm="8" md="8">
                                             <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries"
                                                 min={1} max={3200} value={values.noOfInquiries}
-                                                onInput={validateNoOfInquiry} onChange={handleChange}
-                                            />
+                                                onInput={validateNoOfInquiry} onChange={handleChange}/>
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -535,14 +521,14 @@ export default class CreateForm extends Component {
                 <Col sm="2" md="2">
                     <Form.Check type="checkbox" id="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
                         htmlFor="check-box-verify" checked={this.state.collapse.isVerifyCustomer}
-                        onChange={() => this.handleCollapseExpend('isVerifyCustomer')}
-                    />
+                        onChange={() => this.handleCollapseExpend('isVerifyCustomer')}/>
                 </Col>
                 <Col sm="1" md="1">
                     <Form.Label>
                         <OverlayTrigger placement="bottom-start" overlay={
-                            <Tooltip id={isCollapse ? 'collapse-tooltip-customers' : 'add-feedback-tooltip-customers'}>{LangHelper.getResource('MultipleCustomersTooltip')}</Tooltip>}
-                        >
+                            <Tooltip id={isCollapse ? 'collapse-tooltip-customers' : 'add-feedback-tooltip-customers'}>
+                                {LangHelper.getResource('MultipleCustomersTooltip')}
+                            </Tooltip>}>
                             <span className="fa fa-question-circle-o" />
                         </OverlayTrigger>
                     </Form.Label>
@@ -552,14 +538,12 @@ export default class CreateForm extends Component {
                         <Col sm="10" md="10">
                             <Form.Control type="text" size="sm" value={values.customerNameInput}
                                 name="customerNameInput" className="shadow-none" autoComplete="off" onChange={handleChange}
-                                onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)}
-                            />
+                                onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)}/>
                         </Col>
                         <Col sm="2" md="2">
                             <Button name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
                                 disabled={!this.state.collapse.isVerifyCustomer}
-                                size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}
-                            >
+                                size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}>
                                 {LangHelper.getResource('Verify')}
                             </Button>
                         </Col>
@@ -581,8 +565,7 @@ export default class CreateForm extends Component {
                             <OverlayTrigger placement="bottom-start" overlay={
                                 <Tooltip id={isCollapse ? 'collapse-tooltip-ref-ticket' : 'tooltip-ref-ticket'}>
                                     {LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}
-                                </Tooltip>}
-                            >
+                                </Tooltip>}>
                                 <span className="fa fa-question-circle-o" />
                             </OverlayTrigger>
                         </Form.Label>
@@ -592,8 +575,7 @@ export default class CreateForm extends Component {
                                 value={values.ticketRefInput}
                                 onPaste={event => this.onPasteRefTicketHandler(event)}
                                 id="refNo" name="refNo" className="shadow-none" autoComplete="off"
-                                onChange={e =>this.handleChangeRefTicket(e, setFieldValue)}
-                            />
+                                onChange={e =>this.handleChangeRefTicket(e, setFieldValue)}/>
                         </Col>
                     </Form.Group>
                 </Col>
@@ -630,8 +612,7 @@ export default class CreateForm extends Component {
                                     dataSource={communicationTools}
                                     hasSearchBox
                                     isNAOption
-                                    onChange={(currentItem, selectedItemsKey) => this.handleCommunicationChange(currentItem, selectedItemsKey, setFieldValue)}
-                                />
+                                    onChange={(currentItem, selectedItemsKey) => this.handleCommunicationChange(currentItem, selectedItemsKey, setFieldValue)}/>
                             </Col>
                         </Form.Group>
                     </Col>
@@ -718,8 +699,7 @@ export default class CreateForm extends Component {
                                     hasSearchBox
                                     onChange={(currentItem, selectedItemsKey) => {
                                         this.subProductHandleChange(currentItem, selectedItemsKey, setFieldValue, values.betType);
-                                    }}
-                                />
+                                    }}/>
                             </Col>
                         </Form.Group>
                     </Col>
@@ -842,16 +822,14 @@ export default class CreateForm extends Component {
                         {
                             !this.state.editBlock.isEditSolution ?
                                 <div disabled className="shadow-none" name="previewDescription" id="previewSolution"
-                                    dangerouslySetInnerHTML={{ __html: values.solution }}
-                                />
+                                    dangerouslySetInnerHTML={{ __html: values.solution }}/>
                                 :
                                 <div id="collapse-expand-solution" className="pt-1 pb-1">
                                     <CkEditor
                                         name='solution'
                                         isInvalid={touched.solution && errors.solution}
                                         data={values.solution} username={window.currentUsername}
-                                        onChange={value => setFieldValue('solution', value)}
-                                    />
+                                        onChange={value => setFieldValue('solution', value)}/>
                                 </div>
                         }
                     </Collapse>
@@ -873,8 +851,7 @@ export default class CreateForm extends Component {
                 {
                     this.props.addFeedbackResult &&
                     <ResponseMessage isSuccessful={this.props.addFeedbackResult.isSuccessful}
-                        message={this.props.addFeedbackResult.message || LangHelper.getResource('AddFeedbackSuccessfully')}
-                    />
+                        message={this.props.addFeedbackResult.message || LangHelper.getResource('AddFeedbackSuccessfully')}/>
                 }
                 {
                     this.renderIdentityInformation(values, errors, touched, handleChange, setFieldValue)
@@ -893,8 +870,7 @@ export default class CreateForm extends Component {
                             </Button>,
                             <Button variant="primary" size="sm" onClick={this.handleCloseConfirmCreateGuestDialog}>
                                 {LangHelper.getResource('Cancel')}
-                            </Button>
-                        ]}
+                            </Button>]}
                         onClose={this.handleCloseConfirmCreateGuestDialog}
                     />
                 }
@@ -911,8 +887,7 @@ export default class CreateForm extends Component {
                                 {LangHelper.getResource('Cancel')}
                             </Button>
                         ]}
-                        onClose={this.handleCloseCheckDuplicateDialog}
-                    />
+                        onClose={this.handleCloseCheckDuplicateDialog}/>
                 }
                 <Form.Group as={Row} className="mt-3">
                     <Col>
@@ -1016,8 +991,7 @@ export default class CreateForm extends Component {
             <Formik
                 initialValues={initialValues}
                 validate={values => validateFormik(values, customerDetail, settings)}
-                onSubmit={this.handleSubmit}
-            >
+                onSubmit={this.handleSubmit}>
                 {this.renderForm}
             </Formik>
         );

@@ -1,5 +1,5 @@
 import React, {PureComponent, lazy, Suspense } from 'react';
-import Layout from './components/Layout';
+import LayoutNavigation from './components/Layout';
 import {
     BrowserRouter as Router,
     Routes,
@@ -58,7 +58,7 @@ export default class Index extends PureComponent {
     render() {
         return (
             <Router basename='/'>
-                <Layout>
+                <LayoutNavigation>
                     <Suspense fallback={<div>Loading...</div>}>
                         <Routes>
                             <Route path={Site.resolveClientUrl("")} />
@@ -109,7 +109,7 @@ export default class Index extends PureComponent {
                             <Route path={Site.resolveClientUrl("WagerReport/Index")} element={<WagerReportComponent />} />
                         </Routes>
                     </Suspense>
-                </Layout>
+                </LayoutNavigation>
             </Router>
         );
     }

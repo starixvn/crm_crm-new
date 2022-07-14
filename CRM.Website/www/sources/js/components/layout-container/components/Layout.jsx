@@ -56,7 +56,9 @@ class Layout extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetCurrentCustomer');
         await DataService.getDataAsync(url).then(response => {
-            if(!response || !response.data) {return};
+            if(!response || !response.data) {
+                return;
+            }
             this.setState({username: response.data.name, isGuest: response.data.isGuest} , () =>{
                 this.getCustomerInfo();
             });
@@ -177,8 +179,8 @@ class Layout extends Component {
             }else if(response.data === null) {
                 this.setState({
                 showEmptyCustomerInfoPopup: true
-            });
-        }}).then(() => Site.unblockUI());
+            });}
+        }).then(() => Site.unblockUI());
     };
 
     handleNavigateDashboard = () =>{
@@ -273,10 +275,10 @@ class Layout extends Component {
                     <Filter
                         getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                         customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
-                        showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} 
+                        showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup}
                         handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
-                        showEmptyConfirmPopup={showEmptyConfirmPopup} 
-                        handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} 
+                        showEmptyConfirmPopup={showEmptyConfirmPopup}
+                        handleGetCustomerIsGuest={this.handleGetCustomerIsGuest}
                         handleNavigateDashboard={this.handleNavigateDashboard}
                         handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
                     />
@@ -306,5 +308,5 @@ class Layout extends Component {
     }
 }
 
-const FunctionBarWithNavigation = WithNavigation(Layout);
-export default FunctionBarWithNavigation;
+const LayoutNavigation = WithNavigation(Layout);
+export default LayoutNavigation;
