@@ -49,7 +49,7 @@ export class Chart extends PureComponent {
         const data = this.convertDataChart(chartInfo.childReports);
         const labels = this.getLabels(chartInfo.childReports);
         return (
-            <Modal show dialogAs={DraggableModalDialog}
+            <Modal className='settlement-modal-chart' show dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl"
                 onHide={this.onCloseChart}
             >
