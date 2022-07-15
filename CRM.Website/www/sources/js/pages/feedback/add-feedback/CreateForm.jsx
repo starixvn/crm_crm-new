@@ -562,10 +562,11 @@ export default class CreateForm extends Component {
                         <Form.Label column md="3" sm="3" htmlFor="ticketRefNo">{LangHelper.getResource('TicketRefNo')}</Form.Label>
                         <Col sm="1" md="1">
                         <Form.Label>
-                            <OverlayTrigger placement="bottom-start" overlay={
-                                <Tooltip id={isCollapse ? 'collapse-tooltip-ref-ticket' : 'tooltip-ref-ticket'}>
+                            <OverlayTrigger placement="auto" overlay={
+                                <Tooltip id={isCollapse ? 'collapse-tooltip-ref-ticket' : 'expanse-tooltip-ref-ticket'}>
                                     {LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}
-                                </Tooltip>}>
+                                </Tooltip>}
+                            >
                                 <span className="fa fa-question-circle-o" />
                             </OverlayTrigger>
                         </Form.Label>
@@ -575,7 +576,8 @@ export default class CreateForm extends Component {
                                 value={values.ticketRefInput}
                                 onPaste={event => this.onPasteRefTicketHandler(event)}
                                 id="refNo" name="refNo" className="shadow-none" autoComplete="off"
-                                onChange={e =>this.handleChangeRefTicket(e, setFieldValue)}/>
+                                onChange={e =>this.handleChangeRefTicket(e, setFieldValue)}
+                            />
                         </Col>
                     </Form.Group>
                 </Col>

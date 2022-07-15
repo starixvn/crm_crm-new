@@ -84,7 +84,7 @@
     
     
     .fa-question-circle-o {
-        font-size: 20px;
+        font-size: 17px;
         color: #0789d1;
         position: absolute;
         right: 0;
@@ -122,7 +122,7 @@
             transform:translate(362px, 280px) !important;
         }
     
-        #tooltip-ref-ticket{
+        #expanse-tooltip-ref-ticket{
             transform: translate(160px, 584px) !important;
         }
         
@@ -144,7 +144,7 @@
     transform: translate(467px, 280px) !important;
 }
 
-#tooltip-ref-ticket{
+#expanse-tooltip-ref-ticket{
     transform: translate(207px, 584px) !important;
 }
 
@@ -157,7 +157,7 @@
     text-align: left;
 }
 
-#tooltip-ref-ticket [class$="inner"], #collapse-tooltip-ref-ticket [class$="inner"]{
+#expanse-tooltip-ref-ticket [class$="inner"], #collapse-tooltip-ref-ticket [class$="inner"]{
     white-space: pre-wrap;
     max-width: 400px;
     text-align: left;

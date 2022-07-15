@@ -59,7 +59,7 @@
 
 .feedback-detail-deleted {
     .modal-dialog {
-        max-width: 1600px;
+        max-width: 900px;
 
         .modal-content {
             .panel-group {
@@ -99,6 +99,12 @@
                     .react-datepicker-wrapper-container {
                         width: 100% !important;
                     }
+
+                    .form-group label{
+                        padding-top: 4px;
+                        padding-bottom: 0
+                    }
+
                 }
             }
         }

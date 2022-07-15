@@ -6,10 +6,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
 
 export class Header extends PureComponent {
-    constructor(props) {
-        super(props);
-    }
-
     isIgnoreMenu = item => !(item.subMenus.length === 0 && (item.url.includes('n/a') || item.url.length === 0));
 
     handleLogout = () =>{
@@ -41,7 +37,7 @@ export class Header extends PureComponent {
                                 item.subMenus.map((element, key) => (
                                     <div key={key} className='layer-first'>
                                         <Link to={Site.resolveClientUrl(element.url.slice(1))}
-                                        className={`title ${element.url === '' ? disabledLink : ''}`}>{element.name}
+                                            className={`title ${element.url === '' ? disabledLink : ''}`}>{element.name}
                                         </Link>
                                         {
                                             element.subMenus.length > 0 &&
@@ -52,8 +48,11 @@ export class Header extends PureComponent {
                                                         {
                                                             element.subMenus.map((ele, num) => (
                                                                 <Link to={Site.resolveClientUrl(ele.url.slice(1))}
-                                                                className={`layer-first ${ele.url === '' ? disabledLink : ''}`}
-                                                                key={num}>{ele.name}</Link>
+                                                                    className={`layer-first ${ele.url === '' ? disabledLink : ''}`}
+                                                                    key={num}
+                                                                >
+                                                                    {ele.name}
+                                                                </Link>
                                                             ))
                                                         }
                                                     </div>
@@ -80,7 +79,7 @@ export class Header extends PureComponent {
             <div className='header'>
                 <div className='left-header'>
                     <img src={Site.resolveClientUrl('www/dist/css/images/icon/logo-crm.png')}
-                        onClick={() => this.props.handleNavigateDashboard()}
+                        onClick={() => this.props.handleNavigate('Dashboard')}
                     />
                     <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" onClick={handleCollapseExpandLayout}/></span>
                 </div>

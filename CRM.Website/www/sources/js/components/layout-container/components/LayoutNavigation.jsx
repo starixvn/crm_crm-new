@@ -169,7 +169,7 @@ class Layout extends Component {
                 this.setState({isCreditSite});
                 if(this.props.location.pathname === '/'){
                     this.setState({isCreditSite}, () =>{
-                        this.handleNavigateDashboard();
+                        this.handleNavigate('Dashboard');
                     });
                 }
             }else if (response.data === null && !this.state.isGuest) {
@@ -184,30 +184,6 @@ class Layout extends Component {
         }).then(() => Site.unblockUI());
     };
 
-    handleNavigateDashboard = () =>{
-        const currentCustomer = this.getCurrentCustomerInfo();
-        this.props.navigate(Site.resolveClientUrl('Dashboard'),
-            {state: currentCustomer}
-        );
-    };
-
-    handleNavigate = name => this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo});
-
-    handleNavigateSubHome = (event, name) =>{
-        event.preventDefault();
-        this.props.navigate(Site.resolveClientUrl(name), {state: this.state.customerInfo});
-    };
-
-    handleNavigateNewRemark = (event, name) =>{
-        event.preventDefault();
-        const currentCustomer = {
-            custId: this.state.customerInfo !== null ? this.state.customerInfo.custId : 0,
-            isGuest: this.state.isGuest,
-            username: this.state.username
-        };
-        this.props.navigate(Site.resolveClientUrl(name), {state: currentCustomer});
-    };
-
     getCurrentCustomerInfo = () =>{
         const {customerInfo, isGuest, username, isCreditSite } = this.state;
         const currentCustomer = {
@@ -220,6 +196,7 @@ class Layout extends Component {
     };
 
     handleNavigate = name => this.props.navigate(Site.resolveClientUrl(name), {state: this.getCurrentCustomerInfo()});
+
     handleCollapseExpandLayout = event =>{
         event.preventDefault();
         if(!this.state.customerInfo){
@@ -285,17 +262,15 @@ class Layout extends Component {
         return (
             <div>
                 <div className='fix-header-menu'>
-                    <Header menus={menus} currentCustomerInfo={currentCustomerInfo} handleNavigateDashboard={this.handleNavigateDashboard}
+                    <Header menus={menus} currentCustomerInfo={currentCustomerInfo} handleNavigate={this.handleNavigate}
                         handleCollapseExpandLayout={this.handleCollapseExpandLayout}
                     />
                     <Filter
                         getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                         customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
-                        showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup}
+                        showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} showEmptyConfirmPopup={showEmptyConfirmPopup}
                         handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
-                        showEmptyConfirmPopup={showEmptyConfirmPopup}
-                        handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} handleNavigateNewRemark = {this.handleNavigateNewRemark}
-                        handleNavigateDashboard={this.handleNavigateDashboard} handleNavigateSubHome={this.handleNavigateSubHome}
+                        handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} handleNavigate={this.handleNavigate}
                         handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
                     />
                 </div>

@@ -16,7 +16,7 @@ export default class Filter extends Component {
             return;
         }
         this.props.getDataGrid().then(() =>{
-            this.props.handleNavigateDashboard();
+            this.props.handleNavigate('Dashboard');
         });
     };
 
@@ -72,7 +72,7 @@ export default class Filter extends Component {
         return breadcrumbsMenu;
     };
 
-    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={event => this.props.handleNavigateSubHome(event, 'Dashboard')}/></li>;
+    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={() => handleNavigate('Dashboard')}/></li>;
 
     renderBreadcrumbsMenu = (breadcrumbsMenu, pathname) =>{
         const isHome = breadcrumbsMenu.length > 0 && breadcrumbsMenu[0].toLowerCase() === 'home'
@@ -102,43 +102,43 @@ export default class Filter extends Component {
 
     renderHomeSubMenu = pathname =>{
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
-        const {handleNavigateSubHome, handleNavigateDashboard, handleNavigateNewRemark} = this.props;
+        const {handleNavigate} = this.props;
         return (
             hasCreateFeedbackPermission ?
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
                 <li id="li-main" className={this.isCheckActive(pathname, 0)}>
-                    <a onClick = {() => handleNavigateDashboard()}>
+                    <a onClick = {() => handleNavigate('Dashboard')}>
                         {LangHelper.getResource('Main')}
                     </a>
                 </li>
                 <li id="li-main" className={this.isCheckActive(pathname, 1)}>
-                    <a onClick = {event => handleNavigateSubHome(event, 'Detail')}>
+                    <a onClick = {() => handleNavigate('Detail')}>
                         {LangHelper.getResource('Detail')}
                     </a>
                 </li>
                 <li id="li-communication-log" className={this.isCheckActive(pathname, 2)}>
-                    <a onClick = {event => handleNavigateSubHome(event, 'Communication')}>
+                    <a onClick = {() => handleNavigate('Communication')}>
                         {LangHelper.getResource('CommunicationLog')}
                     </a>
                 </li>
                 <li id="li-special-remark" className={this.isCheckActive(pathname, 3)}>
-                    <a onClick = {event => handleNavigateSubHome(event, 'SpecialRemark')}>
+                    <a onClick = {() => handleNavigate('SpecialRemark')}>
                         {LangHelper.getResource('SpecialRemark')}
                     </a>
                 </li>
                 <li id="li-special-new-remark" className={this.isCheckActive(pathname, 4)}>
-                    <a onClick = {event => handleNavigateNewRemark(event, 'Remark')}>
+                    <a onClick = {() => handleNavigate('Remark')}>
                         {LangHelper.getResource('Remark')}
                     </a>
                 </li>
                 <li id="li-redemption" className={this.isCheckActive(pathname, 5)}>
-                    <a onClick = {event => handleNavigateSubHome(event, 'Redemption')}>
+                    <a onClick = {() => handleNavigate('Redemption')}>
                         {LangHelper.getResource('Redemption')}
                     </a>
                 </li>
                 <li id="li-activity-log" className={this.isCheckActive(pathname, 6)}>
-                    <a onClick = {event =>handleNavigateSubHome(event, 'ActionLog')}>
+                    <a onClick = {() => handleNavigate('ActionLog')}>
                         {LangHelper.getResource('ActivityLog')}
                     </a>
                 </li>
@@ -146,7 +146,7 @@ export default class Filter extends Component {
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
                 <li id="li-main" className='active'>
-                    <a onClick = {event => handleNavigateSubHome(event, 'Dashboard')}>{LangHelper.getResource('Main')}
+                    <a onClick = {() => handleNavigate('Dashboard')}>{LangHelper.getResource('Main')}
                     </a>
                 </li>
             </ul>

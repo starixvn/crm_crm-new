@@ -66,8 +66,8 @@ export class Detail extends Component {
     getSubCategoryValue = (mainCategoryId, subCategoryId, mainCategories) =>{
         const mainCategoriesFilter = mainCategories.filter(x=> x.mainCategoryID === mainCategoryId);
         if(mainCategoriesFilter.length > 0){
-            const subCategory = mainCategoriesFilter[0].childSettings.filter(x=> x.subCategoryId === subCategoryId)[0].name;
-            return subCategory ;
+            const subCategory = mainCategoriesFilter[0].childSettings.filter(x=> x.subCategoryId === subCategoryId)[0]?.name;
+            return subCategory;
         }else{
             return 'N/A';
         }
@@ -118,6 +118,7 @@ export class Detail extends Component {
 
     handleGoBack = () =>{
         this.props.setDetailsDataGrid({show: false, title: ''});
+        this.props.setReportDetails(null);
     };
 
     onPaging = (pageIndex, pageSize) => {
