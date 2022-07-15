@@ -32,8 +32,10 @@
         }
     }
     
-    .table-container {
-        border: 1px solid #b7b7b7;
+    .fix-table-container {
+        .fix-table{
+            border-left: 1px solid #b7b7b7;
+        }
         .body-content, .footer-content, .header-content {
             border: none; 
             .table {

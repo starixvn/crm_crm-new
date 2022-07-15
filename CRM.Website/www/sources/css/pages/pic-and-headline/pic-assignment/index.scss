@@ -107,6 +107,9 @@
             border: none;
             padding: 0;
         }
+        .fix-table{
+            border-left: 1px solid #b7b7b7;
+        }
 
         table tr td{
             &:first-child {

@@ -1,5 +1,8 @@
 .pic-management{
     .fix-table-container {
+        .fix-table{
+            border-left: 1px solid #b7b7b7;
+        }
         .header-content, .body-content, .footer-content {
             border: none;
             padding: 0;

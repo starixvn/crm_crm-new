@@ -11,9 +11,9 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Date')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Currency')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Amount')}</HeaderCell>
+                <HeaderCell colWidth={5}>{LangHelper.getResource('Date')}</HeaderCell>
+                <HeaderCell colWidth={5}>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={5}>{LangHelper.getResource('Amount')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -52,7 +52,7 @@ export class DataGrid extends Component {
             <Row key={`redemption-${index}`}>
                 <Cell className='text-center link-click' onClick={() => this.handleOpenDetail(0, item.year, item.month, titleYearDetail)}>{dateFormat}</Cell>
                 <Cell className='text-center link-click' onClick={() => this.handleOpenDetail(item.currencyId, 0, 0, titleCurrencyDetail)}>{item.currency}</Cell>
-                <Cell className='text-center'>{Number(item.amount).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')}</Cell>
+                <Cell className='text-center right'>{Number(item.amount).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')}</Cell>
             </Row>
         );
     };
@@ -64,14 +64,14 @@ export class DataGrid extends Component {
                 <Row key='totals-1' className='background-total'>
                     <Cell className='text-center text-bold' rowSpan={totalArr.length}>{LangHelper.getResource('Total')}</Cell>
                     <Cell className='text-center text-bold'>{totalArr[0][0]}</Cell>
-                    <Cell className='text-center text-bold'>{Number(totalArr[0][1]).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')}</Cell>
+                    <Cell className='text-center text-bold right'>{Number(totalArr[0][1]).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')}</Cell>
                 </Row>
                 {
                     totalArr.length > 1 &&
                     totalArr.slice(1).map((element, key) => (
                         <Row key={`amount-${key}`} className='background-total'>
                             <Cell className='text-center text-bold'>{element[0]}</Cell>
-                            <Cell className='text-center text-bold'>{Number(element[1]).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')}</Cell>
+                            <Cell className='text-center text-bold right'>{Number(element[1]).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')}</Cell>
                         </Row>
                     ))
                 }
@@ -133,7 +133,7 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    width={900}
+                    width={600}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
