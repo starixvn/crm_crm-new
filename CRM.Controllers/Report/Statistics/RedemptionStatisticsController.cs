@@ -72,6 +72,7 @@
             var redemptions = await baseService.GetDataAsync<RedemptionStatisticsEntity>(criteria);
             foreach (var redemption in redemptions)
             {
+                redemption.ClaimTime = commonService.ConvertToClientDateTime(redemption.ClaimTime);
                 redemption.Year = redemption.ClaimTime.Year;
                 if (criteria.ReportBy != SummaryByYear)
                 {
@@ -108,6 +109,7 @@
             var redemptions = await baseService.GetDataAsync<RedemptionStatisticsEntity>(criteria);
             foreach (var redemption in redemptions)
             {
+                redemption.ClaimTime = commonService.ConvertToClientDateTime(redemption.ClaimTime);
                 redemption.Year = redemption.ClaimTime.Year;
                 if (criteria.ReportBy != SummaryByYear)
                 {
