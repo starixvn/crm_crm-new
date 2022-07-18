@@ -192,7 +192,8 @@ describe('Detail', () => {
         exportExcelDetails: jest.fn(),
         setDetailsDataGrid: jest.fn(),
         getReportDetails: jest.fn(),
-        setGridParamDetails: jest.fn()
+        setGridParamDetails: jest.fn(),
+        setReportDetails: jest.fn()
     };
 
     it('should render expected header', () => {

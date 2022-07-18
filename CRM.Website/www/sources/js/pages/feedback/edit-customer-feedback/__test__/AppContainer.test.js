@@ -753,6 +753,7 @@ describe('AppContainer', () => {
                 resolutionDate: '2021-01-01',
                 communicationToolIds: [],
                 languageId: 0,
+                relatedCustomers: [],
                 subject: '',
                 description : '',
                 solution: ''

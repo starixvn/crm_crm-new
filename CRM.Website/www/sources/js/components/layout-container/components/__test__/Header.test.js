@@ -25,7 +25,8 @@ describe('Header', () => {
             custId: 0
         },
         handleCollapseExpandLayout : jest.fn(),
-        handleNavigateDashboard: jest.fn()
+        handleNavigateDashboard: jest.fn(),
+        handleNavigate: jest.fn()
     }
     describe('isIgnoreMenu', () => {
         it('should return false', () => {

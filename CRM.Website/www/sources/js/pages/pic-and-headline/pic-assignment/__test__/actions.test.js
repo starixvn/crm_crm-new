@@ -31,7 +31,6 @@ describe('actions', () => {
             await store.dispatch(ActionCreators.getSettings());
 
             // Assert
-            expect(Site.blockUI).toHaveBeenCalled();
             expect(DataService.postDataAsync).toHaveBeenCalledWith('PicAssignment/AllSetting');
             expect(store.getActions()).toEqual(expectedActions);
             expect(Site.unblockUI).toHaveBeenCalled();
