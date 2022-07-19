@@ -8,12 +8,10 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import DatePicker from '@jsroot/components/date-picker/index';
 
 export class Filter extends Component {
-
     constructor(props) {
         super(props);
-        const currentClientTime = window.currentClientTime;
         const date = new Date();
-        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
+        const currentDate = new Date(DateTimeService.toShortDateFormat(date));
         const fromDate = new Date(DateTimeService.firstDayOfMonth(date));
 
         this.state = {
@@ -31,8 +29,8 @@ export class Filter extends Component {
         const { fromDate, toDate } = this.state;
         const params = {
             customerId: this.props.id,
-            fromDate: DateTimeService.toLongDateTimeFormat(fromDate),
-            toDate: DateTimeService.toLongDateTimeFormat(toDate),
+            fromDate: DateTimeService.toShortDateFormat(fromDate),
+            toDate: DateTimeService.toShortDateFormat(toDate),
             statusId: 0
         };
         this.props.setGridParams(params);
@@ -60,10 +58,11 @@ export class Filter extends Component {
         const { statusId, fromDate, toDate } = this.state;
         const params = {
             customerId: this.props.id,
-            fromDate: DateTimeService.toLongDateTimeFormat(fromDate),
-            toDate: DateTimeService.toLongDateTimeFormat(toDate),
+            fromDate: DateTimeService.toShortDateFormat(fromDate),
+            toDate: DateTimeService.toShortDateFormat(toDate),
             statusId: statusId
         };
+        this.props.setGridParams(params);
         this.props.getLogsByCustomerId(params);
     };
 

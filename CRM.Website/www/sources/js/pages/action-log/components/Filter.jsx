@@ -13,7 +13,7 @@ export class Filter extends Component {
         super(props);
         const date = new Date();
         const currentClientTime = window.currentClientTime;
-        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
+        const currentDate = new Date(DateTimeService.toShortDateFormat(new Date(currentClientTime)));
         const fromDate = new Date(DateTimeService.firstDayOfMonth(date));
 
         this.state = {
@@ -58,8 +58,8 @@ export class Filter extends Component {
             actionId: 0,
             customerId: this.props.id,
             handler: handler,
-            fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(fromDate)),
-            toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(toDate)),
+            fromDate: DateTimeService.toShortDateFormat(fromDate),
+            toDate: DateTimeService.toShortDateFormat(toDate),
             pageIndex: 1,
             pageSize: 100
         };

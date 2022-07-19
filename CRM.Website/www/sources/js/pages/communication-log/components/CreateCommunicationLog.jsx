@@ -886,7 +886,7 @@ export class CreateCommunicationLog extends Component {
         return (
             <div>
                 <Modal show className="communication-modal-dialog" dialogAs={DraggableModalDialog}
-                    backdrop="static" keyboard={false} size="xl" centered
+                    backdrop="static" keyboard={false} centered
                     onHide={this.onCloseCreatePopup}
                 >
                     <Modal.Header closeButton>

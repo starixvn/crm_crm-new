@@ -21,7 +21,7 @@
 
         public int TitleId { get; set; }
 
-        public int SiteId { get; set; }
+        public int? SiteId { get; set; }
 
         public DateTime? Birthday { get; set; }
 

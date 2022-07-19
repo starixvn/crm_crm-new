@@ -141,7 +141,7 @@ export class DataGrid extends Component {
     };
 
     render() {
-        const { gridData, gridParams } = this.props;
+        const { gridData, gridParams, customerInfoPolicy } = this.props;
         if (!gridData) {
             return null;
         }
@@ -171,7 +171,7 @@ export class DataGrid extends Component {
                     adjustedHeight={10}
                 />
                 {
-                    window.customerInfoPolicy === Policy.Host &&
+                    customerInfoPolicy === Policy.Host &&
                     <Button variant="primary" size="sm" className="mt-3" onClick={this.handleCreate}>
                         {LangHelper.getResource('InsertCase')}
                     </Button>

@@ -36,22 +36,30 @@
 
         public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
         {
-            CustomerInfoDetails customerInfo = await customerService.GetCustomerInfoAsync(criteria);
-            if (customerInfo != null)
+            try
             {
-                CurrentCustomer currentCustomer = new CurrentCustomer
+                CustomerInfoDetails customerInfo = await customerService.GetCustomerInfoAsync(criteria);
+                if (customerInfo != null)
                 {
-                    CustId = customerInfo.CustId,
-                    Name = criteria.Username,
-                    IsGuest = criteria.IsGuest
-                };
-                sessionService.CurrentCustomer = currentCustomer;
+                    CurrentCustomer currentCustomer = new CurrentCustomer
+                    {
+                        CustId = customerInfo.CustId,
+                        Name = criteria.Username,
+                        IsGuest = criteria.IsGuest
+                    };
+                    sessionService.CurrentCustomer = currentCustomer;
+                }
+                else
+                {
+                    sessionService.CurrentCustomer = null;
+                }
+                return Json(customerInfo);
             }
-            else
+            catch (System.Exception e)
             {
-                sessionService.CurrentCustomer = null;
+
+                throw;
             }
-            return Json(customerInfo);
         }
 
         public IActionResult GetCurrentCustomer()

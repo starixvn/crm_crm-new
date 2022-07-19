@@ -1,14 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
+import DateTimeService from '@jsroot/common/dateTimeService';
 
-export class CustomerInfo extends Component {
-    constructor(props) {
-        super(props);
-    }
-    renderCustomerInformation = (values, handleChange) => {
+export class CustomerInfo extends PureComponent{
+    renderCustomerInformation = (customerInfo, handleChange) => {
         return (
             <div>
                 <Form.Group as={Row}>
@@ -18,17 +16,17 @@ export class CustomerInfo extends Component {
                             <Col md="8" sm="8">
                                 <div className="d-flex">
                                     <div className="code-country">
-                                        <Form.Control type="text" size="sm" value={values.faxCountryCode}
+                                        <Form.Control type="text" size="sm" value={customerInfo.faxCountryCode}
                                             name="faxCountryCode" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </div>
                                     <div className="code-area">
-                                        <Form.Control type="text" size="sm" value={values.faxAreaCode}
+                                        <Form.Control type="text" size="sm" value={customerInfo.faxAreaCode}
                                             className="shadow-none" autoComplete="off" name="faxAreaCode" onChange={handleChange}
                                         />
                                     </div>
                                     <div className="phone">
-                                        <Form.Control type="text" size="sm" value={values.faxNumber}
+                                        <Form.Control type="text" size="sm" value={customerInfo.faxNumber}
                                             autoComplete="off" name="faxNumber" className="shadow-none" onChange={handleChange}
                                         />
                                     </div>
@@ -42,17 +40,17 @@ export class CustomerInfo extends Component {
                             <Col sm="8" md="8">
                                 <div className="d-flex">
                                     <div className="code-country">
-                                        <Form.Control type="text" size="sm" value={values.mobileCountryCode}
+                                        <Form.Control type="text" size="sm" value={customerInfo.mobileCountryCode}
                                             name="mobileCountryCode" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </div>
                                     <div className="code-area">
-                                        <Form.Control type="text" size="sm" value={values.mobileAreaCode}
+                                        <Form.Control type="text" size="sm" value={customerInfo.mobileAreaCode}
                                             name="mobileAreaCode" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </div>
                                     <div className="phone">
-                                        <Form.Control type="text" size="sm" value={values.mobilePhoneNumber}
+                                        <Form.Control type="text" size="sm" value={customerInfo.mobilePhoneNumber}
                                             onChange={handleChange} name="mobilePhoneNumber" className="shadow-none" autoComplete="off"
                                         />
                                     </div>
@@ -66,12 +64,12 @@ export class CustomerInfo extends Component {
                             <Col sm="8" md="8">
                                 <div className="d-flex">
                                     <div className="picName">
-                                        <Form.Control type="text" size="sm" value={values.pic1Name}
+                                        <Form.Control type="text" size="sm" value={customerInfo.pic1Name}
                                             name="pic1Name" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </div>
                                     <div className="phone">
-                                        <Form.Control type="text" size="sm" value={values.pic1PhoneNumber}
+                                        <Form.Control type="text" size="sm" value={customerInfo.pic1PhoneNumber}
                                             name="pic1PhoneNumber" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </div>
@@ -87,12 +85,12 @@ export class CustomerInfo extends Component {
                             <Col sm="8" md="8">
                                 <div className="d-flex">
                                     <div className="picName">
-                                        <Form.Control type="text" size="sm" value={values.pic2Name}
+                                        <Form.Control type="text" size="sm" value={customerInfo.pic2Name}
                                             name="pic2Name" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </div>
                                     <div className="phone">
-                                        <Form.Control type="text" size="sm" value={values.pic2PhoneNumber}
+                                        <Form.Control type="text" size="sm" value={customerInfo.pic2PhoneNumber}
                                             name="pic2PhoneNumber" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </div>
@@ -105,12 +103,12 @@ export class CustomerInfo extends Component {
                             <Col sm="8" md="8">
                                 <div className="d-flex">
                                     <div className="picName">
-                                        <Form.Control type="text" size="sm" value={values.pic3Name}
+                                        <Form.Control type="text" size="sm" value={customerInfo.pic3Name}
                                             name="pic3Name" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </div>
                                     <div className="phone">
-                                        <Form.Control type="text" size="sm" value={values.pic3PhoneNumber}
+                                        <Form.Control type="text" size="sm" value={customerInfo.pic3PhoneNumber}
                                             name="pic3PhoneNumber" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </div>
@@ -124,12 +122,12 @@ export class CustomerInfo extends Component {
                             <Col md="8" sm="8">
                                 <div className="d-flex">
                                     <div className="picName">
-                                        <Form.Control type="text" size="sm" value={values.pic4Name}
+                                        <Form.Control type="text" size="sm" value={customerInfo.pic4Name}
                                             name="pic4Name" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </div>
                                     <div className="phone">
-                                        <Form.Control type="text" size="sm" value={values.pic4PhoneNumber}
+                                        <Form.Control type="text" size="sm" value={customerInfo.pic4PhoneNumber}
                                             name="pic4PhoneNumber" className="shadow-none" autoComplete="off" onChange={handleChange}
                                         />
                                     </div>
@@ -142,7 +140,7 @@ export class CustomerInfo extends Component {
         );
     };
 
-    renderCommunicationToolCustomer = (values, handleChange) => {
+    renderCommunicationToolCustomer = (customerInfo, handleChange) => {
         return (
             <div>
                 <Form.Group as={Row}>
@@ -150,7 +148,7 @@ export class CustomerInfo extends Component {
                         <Form.Group as={Row}>
                             <Form.Label htmlFor="skype" column sm="4" md="4">{LangHelper.getResource('Skype')}</Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.skype}
+                                <Form.Control type="text" size="sm" value={customerInfo.skype}
                                     name="skype" id="skype" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 />
                             </Col>
@@ -160,7 +158,7 @@ export class CustomerInfo extends Component {
                         <Form.Group as={Row}>
                             <Form.Label htmlFor="email" column sm="4" md="4">{LangHelper.getResource('Email')}</Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.email}
+                                <Form.Control type="text" size="sm" value={customerInfo.email}
                                     name="email" id="email" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 />
                             </Col>
@@ -170,7 +168,7 @@ export class CustomerInfo extends Component {
                         <Form.Group as={Row}>
                             <Form.Label htmlFor="telegram" column sm="4" md="4">{LangHelper.getResource('Telegram')}</Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.telegram}
+                                <Form.Control type="text" size="sm" value={customerInfo.telegram}
                                     name="telegram" id="telegram" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 />
                             </Col>
@@ -181,7 +179,7 @@ export class CustomerInfo extends Component {
                     <Col md="4" sm="4">
                         <Form.Group as={Row}><Form.Label htmlFor="weChat" column sm="4" md="4">{LangHelper.getResource('WeChat')}</Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.weChat}
+                                <Form.Control type="text" size="sm" value={customerInfo.weChat}
                                     name="weChat" id="weChat" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 />
                             </Col>
@@ -191,7 +189,7 @@ export class CustomerInfo extends Component {
                         <Form.Group as={Row}>
                             <Form.Label htmlFor="whatApp" column sm="4" md="4">{LangHelper.getResource('WhatApp')}</Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.whatApp}
+                                <Form.Control type="text" size="sm" value={customerInfo.whatApp}
                                     name="whatApp" id="whatApp" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 />
                             </Col>
@@ -201,7 +199,7 @@ export class CustomerInfo extends Component {
                         <Form.Group as={Row}>
                             <Form.Label htmlFor="line" column sm="4" md="4">{LangHelper.getResource('Line')}</Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.line}
+                                <Form.Control type="text" size="sm" value={customerInfo.line}
                                     name="line" id="line" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 />
                             </Col>
@@ -212,7 +210,7 @@ export class CustomerInfo extends Component {
                     <Col sm="4" md="4">
                         <Form.Group as={Row}><Form.Label htmlFor="letstalk" column sm="4" md="4">{LangHelper.getResource('Letstalk')}</Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.letstalk}
+                                <Form.Control type="text" size="sm" value={customerInfo.letstalk}
                                     name="letstalk" id="letstalk" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 />
                             </Col>
@@ -222,7 +220,7 @@ export class CustomerInfo extends Component {
                         <Form.Group as={Row}>
                             <Form.Label htmlFor="qq" column sm="4" md="4">{LangHelper.getResource('QQ')}</Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.qq}
+                                <Form.Control type="text" size="sm" value={customerInfo.qq}
                                     name="qq" id="qq" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 />
                             </Col>
@@ -232,7 +230,7 @@ export class CustomerInfo extends Component {
                         <Form.Group as={Row}>
                             <Form.Label htmlFor="zalo" column sm="4" md="4">{LangHelper.getResource('Zalo')}</Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.zalo}
+                                <Form.Control type="text" size="sm" value={customerInfo.zalo}
                                     name="zalo" id="zalo" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 />
                             </Col>
@@ -243,7 +241,7 @@ export class CustomerInfo extends Component {
         );
     };
 
-    renderContact = (values, handleChange) =>{
+    renderContact = (customerInfo, handleChange) =>{
         return (
             <Form.Group as={Row}>
                 <Col sm="4" md="4">
@@ -252,17 +250,17 @@ export class CustomerInfo extends Component {
                         <Col sm="8" md="8">
                             <div className="d-flex">
                                 <div className="code-country">
-                                    <Form.Control type="text" size="sm" value={values.countryCode}
+                                    <Form.Control type="text" size="sm" value={customerInfo.countryCode}
                                         name="countryCode" className="shadow-none" autoComplete="off" onChange={handleChange}
                                     />
                                 </div>
                                 <div className="code-area">
-                                    <Form.Control type="text" size="sm" value={values.areaCode}
+                                    <Form.Control type="text" size="sm" value={customerInfo.areaCode}
                                         name="areaCode" className="shadow-none" autoComplete="off" onChange={handleChange}
                                     />
                                 </div>
                                 <div className="phone">
-                                    <Form.Control type="text" size="sm" value={values.phoneNumber}
+                                    <Form.Control type="text" size="sm" value={customerInfo.phoneNumber}
                                         className="shadow-none" autoComplete="off" onChange={handleChange} name="phoneNumber"
                                     />
                                 </div>
@@ -276,17 +274,17 @@ export class CustomerInfo extends Component {
                         <Col md="8" sm="8">
                             <div className="d-flex">
                                 <div className="code-country">
-                                    <Form.Control type="text" size="sm" value={values.countryCode2}
+                                    <Form.Control type="text" size="sm" value={customerInfo.countryCode2}
                                         name="countryCode2" className="shadow-none" autoComplete="off" onChange={handleChange}
                                     />
                                 </div>
                                 <div className="code-area">
-                                    <Form.Control type="text" size="sm" value={values.areaCode2}
+                                    <Form.Control type="text" size="sm" value={customerInfo.areaCode2}
                                         name="areaCode2" className="shadow-none" autoComplete="off" onChange={handleChange}
                                     />
                                 </div>
                                 <div className="phone">
-                                    <Form.Control type="text" size="sm" value={values.phoneNumber2}
+                                    <Form.Control type="text" size="sm" value={customerInfo.phoneNumber2}
                                         name="phoneNumber2" className="shadow-none" autoComplete="off" onChange={handleChange}
                                     />
                                 </div>
@@ -299,17 +297,17 @@ export class CustomerInfo extends Component {
                         <Col sm="8" md="8">
                             <div className="d-flex">
                                 <div className="code-country">
-                                    <Form.Control type="text" size="sm" value={values.countryCode3}
+                                    <Form.Control type="text" size="sm" value={customerInfo.countryCode3}
                                         name="countryCode3" className="shadow-none" autoComplete="off" onChange={handleChange}
                                     />
                                 </div>
                                 <div className="code-area">
-                                    <Form.Control type="text" size="sm" value={values.areaCode3}
+                                    <Form.Control type="text" size="sm" value={customerInfo.areaCode3}
                                         name="areaCode3" className="shadow-none" autoComplete="off" onChange={handleChange}
                                     />
                                 </div>
                                 <div className="phone">
-                                    <Form.Control type="text" size="sm" value={values.phoneNumber3}
+                                    <Form.Control type="text" size="sm" value={customerInfo.phoneNumber3}
                                         name="phoneNumber3" className="shadow-none" autoComplete="off" onChange={handleChange}
                                     />
                                 </div>
@@ -321,7 +319,7 @@ export class CustomerInfo extends Component {
         );
     };
 
-    renderLicenseeType = (values, handleChange) => (
+    renderLicenseeType = (customerInfo, handleChange) => (
         <Col sm="4" md="4">
             <Form.Group as={Row}>
                 <Form.Label column sm="4" md="4" htmlFor="licenseeType">
@@ -329,7 +327,7 @@ export class CustomerInfo extends Component {
                 </Form.Label>
                 <Col sm="8" md="8">
                     <Form.Control as="select" size="sm" className="shadow-none"
-                        name="licenseeType" id="licenseeType" value={values.licenseeType} onChange={handleChange}
+                        name="licenseeType" id="licenseeType" value={customerInfo.licenseeType} onChange={handleChange}
                     >
                         <option value='' hidden disabled />
                         {this.props.settings.licenseeTypes.map(item => this.props.renderOptions(item.name, item.id))}
@@ -340,7 +338,9 @@ export class CustomerInfo extends Component {
     );
 
     render() {
-        const {values, handleChange, setFieldValue, settings, maxDate, renderOptions, customerDetail} = this.props;
+        const {customerInfo, handleChange, settings, renderOptions, customerDetail, handleChangeValueInfo} = this.props;
+        const maxDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
+        console.log('render');
         return (
             <div>
                 <Form.Group as={Row} className="pt-2" >
@@ -351,7 +351,7 @@ export class CustomerInfo extends Component {
                             </Form.Label>
                             <Col sm="8" md="8">
                                 <Form.Control as="select" size="sm" className="shadow-none"
-                                    name="title" id="title" value={values.title} onChange={handleChange}
+                                    name="title" id="title" value={customerInfo.title} onChange={handleChange}
                                 >
                                     <option value="Mr" hidden disabled />
                                     {settings.titles.map(value => renderOptions(value.value, value.id))}
@@ -365,8 +365,9 @@ export class CustomerInfo extends Component {
                                 {LangHelper.getResource('FirstName')}
                             </Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.firstName}
-                                    name="firstName" id="firstName" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                <Form.Control type="text" size="sm" value={customerInfo.firstName}
+                                    name="firstName" id="firstName" className="shadow-none" autoComplete="off"
+                                    onChange={handleChange}
                                 />
                             </Col>
                         </Form.Group>
@@ -377,8 +378,9 @@ export class CustomerInfo extends Component {
                                 {LangHelper.getResource('LastName')}
                             </Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.lastName}
-                                    name="lastName" id="lastName" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                <Form.Control type="text" size="sm" value={customerInfo.lastName}
+                                    name="lastName" id="lastName" className="shadow-none" autoComplete="off"
+                                    onChange={handleChange}
                                 />
                             </Col>
                         </Form.Group>
@@ -396,9 +398,9 @@ export class CustomerInfo extends Component {
                                     showMonthDropdown
                                     showYearDropdown
                                     useShortMonthInDropdown
-                                    selected={values.birthday}
+                                    selected={customerInfo.birthday}
                                     maxDate={maxDate}
-                                    onChange={value => setFieldValue('birthday', value)}
+                                    onChange={value => handleChangeValueInfo('birthday', value)}
                                 />
                             </Col>
                         </Form.Group>
@@ -409,7 +411,7 @@ export class CustomerInfo extends Component {
                                 {LangHelper.getResource('PassportNo')}
                             </Form.Label>
                             <Col sm="8" md="8">
-                                <Form.Control type="text" size="sm" value={values.passportNo}
+                                <Form.Control type="text" size="sm" value={customerInfo.passportNo}
                                     name="passportNo" id="passportNo" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 />
                             </Col>
@@ -417,7 +419,7 @@ export class CustomerInfo extends Component {
                     </Col>
                     {
                         customerDetail === null ?
-                        this.renderLicenseeType(values, handleChange)
+                        this.renderLicenseeType(customerInfo, handleChange)
                         :
                         <Col sm="4" md="4">
                             <Form.Group as={Row}>
@@ -428,28 +430,17 @@ export class CustomerInfo extends Component {
                                     <SelectWithSearch
                                         className='basic-single'
                                         options={settings.sites}
-                                        value={values.siteId}
-                                        name={values.siteName}
+                                        value={customerInfo.siteId}
+                                        name={customerInfo.siteName}
                                         isSelectOption
                                         isHideNA
-                                        OnChangeValue={item => handleChange('siteId',item.id)}
+                                        OnChangeValue={item => handleChangeValueInfo('siteId', item.id)}
                                     />
                                 </Col>
                             </Form.Group>
                         </Col>
                     }
                 </Form.Group>
-                {
-                    customerDetail !== null &&
-                    <Form.Group as={Row} className="pt-1 pb-2">
-                        <Col sm="2" md="2">
-                            <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentCRMInfo')}
-                                htmlFor="check-box-overwrite" checked={values.isOverwriteInfo}
-                                onChange={() =>setFieldValue('isOverwriteInfo', !values.isOverwriteInfo)}
-                            />
-                        </Col>
-                    </Form.Group>
-                }
                 {
                     customerDetail !== null &&
                     <Form.Group as={Row}>
@@ -459,8 +450,9 @@ export class CustomerInfo extends Component {
                                     {LangHelper.getResource('RefCodes')}
                                 </Form.Label>
                                 <Col sm="8" md="8">
-                                    <Form.Control type="text" size="sm" value={values.refCodes}
-                                        name="refCodes" id="refCodes" className="shadow-none" autoComplete="off" onChange={handleChange}
+                                    <Form.Control type="text" size="sm" value={customerInfo.refCodes}
+                                        name="refCodes" id="refCodes" className="shadow-none" autoComplete="off"
+                                        onChange={handleChange}
                                     />
                                 </Col>
                             </Form.Group>
@@ -471,26 +463,37 @@ export class CustomerInfo extends Component {
                                     {LangHelper.getResource('SecretCode')}
                                 </Form.Label>
                                 <Col sm="8" md="8">
-                                    <Form.Control type="text" size="sm" value={values.secretCode}
+                                    <Form.Control type="text" size="sm" value={customerInfo.secretCode}
                                         name="secretCode" id="secretCode" className="shadow-none" autoComplete="off" onChange={handleChange}
                                     />
                                 </Col>
                             </Form.Group>
                         </Col>
-                        {this.renderLicenseeType(values, handleChange)}
+                        {this.renderLicenseeType(customerInfo, handleChange)}
+                    </Form.Group>
+                }
+                {
+                    customerDetail !== null &&
+                    <Form.Group as={Row} className="pt-1 pb-2">
+                        <Col sm="2" md="2">
+                            <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentCRMInfo')}
+                                htmlFor="check-box-overwrite" checked={customerInfo.isOverwriteInfo}
+                                onChange={() => handleChangeValueInfo('isOverwriteInfo', !customerInfo.isOverwriteInfo)}
+                            />
+                        </Col>
                     </Form.Group>
                 }
                 <div className="separate">
                     <hr />
                 </div>
                 {
-                    this.renderContact(values, handleChange)
+                    this.renderContact(customerInfo, handleChange)
                 }
                 {
-                    this.renderCustomerInformation(values, handleChange)
+                    this.renderCustomerInformation(customerInfo, handleChange)
                 }
                 {
-                    this.renderCommunicationToolCustomer(values, handleChange)
+                    this.renderCommunicationToolCustomer(customerInfo, handleChange)
                 }
             </div>
         );

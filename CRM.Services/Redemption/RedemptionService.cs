@@ -26,6 +26,8 @@
 
         public async Task<IEnumerable<CustomerLogInfo>> GetLogsByCustomerIdAsync(GetLogsByCustomerIdCriteria criteria)
         {
+            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var customerLogInfo = await baseService.GetDataAsync<CustomerLogInfo>(criteria);
             foreach (var customerLog in customerLogInfo)
             {

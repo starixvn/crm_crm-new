@@ -837,7 +837,7 @@ export class EditCommunicationLog extends Component {
         return (
             <div>
                 <Modal show className="communication-modal-dialog" dialogAs={DraggableModalDialog}
-                    backdrop="static" keyboard={false} size="xl" centered onHide={this.onCloseEdit}
+                    backdrop="static" keyboard={false} centered onHide={this.onCloseEdit}
                 >
                     <Modal.Header closeButton>
                         <Modal.Title as="div">{LangHelper.getResource('EditCommunicationLog')}</Modal.Title>

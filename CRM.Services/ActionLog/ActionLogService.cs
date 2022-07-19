@@ -50,6 +50,8 @@
 
         public async Task<IEnumerable<ActionLogInfo>> GetActivityLogAsync(GetActivityLogCriteria criteria)
         {
+            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var actionLogs = await baseService.GetDataAsync<ActionLogInfo>(criteria);
             actionLogs = actionLogs.Where(x => !string.Equals(x.OldValues, x.NewValues, StringComparison.OrdinalIgnoreCase));
             allSetting = await GetAllSettings();

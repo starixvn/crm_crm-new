@@ -21,14 +21,10 @@ export class AppContainer extends Component {
         }
     };
 
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         this.props.getAllSettings();
         this.props.getBalanceUpday();
-        document.title = LangHelper.getResource('LatestFeedbackv2');
+        document.title = LangHelper.getResource('AddGuestFeedback');
     }
 
     componentWillUnmount(){
