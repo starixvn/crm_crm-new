@@ -22,18 +22,5 @@ describe('AppContainer', () => {
             // Assert
             expect(container.find(CreateForm).length).toBe(1);
         });
-
-        it('render component correctly', () => {
-            // Arrange
-            const props = {
-                settings : [1]
-            };
-
-            // Act
-            const container = shallow(<AppContainer {...props} />);
-
-            // Assert
-            expect(toJson(container)).toMatchSnapshot();
-        });
     });
 });

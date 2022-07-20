@@ -73,7 +73,7 @@ export default class Content extends PureComponent {
     };
 
     render() {
-        const {editBlock, collapse, content, handleEditBlock, handleCollapseExpend, handleChangeContent, isValidSolution} = this.props;
+        const {editBlock, collapse, content, handleEditBlock, handleCollapseExpend, handleChangeContent, isInValidSolution} = this.props;
         return (
             <div>
                 {
@@ -110,7 +110,7 @@ export default class Content extends PureComponent {
                                      <Suspense fallback={<div>Loading...</div>}>
                                         <CkEditor
                                             name='solution'
-                                            isInvalid={isValidSolution}
+                                            isInvalid={isInValidSolution}
                                             data={content.solution} username={window.currentUsername}
                                             onChange={value => handleChangeContent('solution', value)}
                                         />

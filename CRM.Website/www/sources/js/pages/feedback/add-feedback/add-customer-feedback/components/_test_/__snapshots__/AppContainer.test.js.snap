@@ -2,7 +2,6 @@
 
 exports[`AppContainer render render component correctly 1`] = `
 <CreateForm
-  feedbackSubjectTemplates={Array []}
   settings={
     Array [
       1,

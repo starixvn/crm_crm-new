@@ -54,7 +54,7 @@ export const validateFormik = (values, customerDetail, settings, content) => {
     return errors;
 };
 
-export const initValues = (settings) =>{
+export const initValues = settings =>{
     const currentClientTime = window.currentClientTime;
     const { statuses, languages, responses  } = settings;
     const feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));

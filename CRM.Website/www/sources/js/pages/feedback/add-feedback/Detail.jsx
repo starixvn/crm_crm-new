@@ -4,11 +4,11 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { validateNoOfInquiry } from '../common.functions';
 import LangHelper from '@jsroot/common/langHelper';
-import { BorderStyle  } from '@jsroot/common/constants';
 
-class Detail extends PureComponent {
-    renderDetailDropdown = (values, errors, touched, setFieldValue) => {
-        const { subCategoriesOptions, subProductOptions, betTypeOptions } = this.props;
+export default class Detail extends PureComponent {
+    renderDetailDropdown = () => {
+        const { subCategoriesOptions, subProductOptions, betTypeOptions, handleCommunicationChange, mainCategoriesHandleChange,
+                productHandleChange, subProductHandleChange, values, errors, touched, setFieldValue } = this.props;
         const { mainCategories, products, communicationTools } = this.props.settings;
         return (
             <div>
@@ -28,7 +28,7 @@ class Detail extends PureComponent {
                                     dataSource={communicationTools}
                                     hasSearchBox
                                     isNAOption
-                                    onChange={(currentItem, selectedItemsKey) => this.handleCommunicationChange(currentItem, selectedItemsKey, setFieldValue)}/>
+                                    onChange={(currentItem, selectedItemsKey) => handleCommunicationChange(currentItem, selectedItemsKey, setFieldValue)}/>
                             </Col>
                         </Form.Group>
                     </Col>
@@ -48,7 +48,7 @@ class Detail extends PureComponent {
                                     keyField='mainCategoryID'
                                     valueField='name'
                                     onChange={(currentItem, selectedItemsKey) => {
-                                        this.mainCategoriesHandleChange(currentItem, selectedItemsKey, setFieldValue, values);
+                                        mainCategoriesHandleChange(currentItem, selectedItemsKey, setFieldValue, values);
                                     }}
                                 />
                             </Col>
@@ -90,7 +90,7 @@ class Detail extends PureComponent {
                                     dataSource={products}
                                     keyField='id' maxDisplayItemCount={2}
                                     onChange={(currentItem, selectedItemsKey) => {
-                                        this.productHandleChange(currentItem, selectedItemsKey, setFieldValue, values.subProduct);
+                                        productHandleChange(currentItem, selectedItemsKey, setFieldValue, values.subProduct);
                                     }}
                                     hasSearchBox
                                     isNAOption
@@ -114,8 +114,9 @@ class Detail extends PureComponent {
                                     isAllTextShown={subProductOptions.length > 0}
                                     hasSearchBox
                                     onChange={(currentItem, selectedItemsKey) => {
-                                        this.subProductHandleChange(currentItem, selectedItemsKey, setFieldValue, values.betType);
-                                    }}/>
+                                        subProductHandleChange(currentItem, selectedItemsKey, setFieldValue, values.betType);
+                                    }}
+                                />
                             </Col>
                         </Form.Group>
                     </Col>
@@ -149,7 +150,7 @@ class Detail extends PureComponent {
     render() {
         const {
             values, errors, touched, handleChange, setFieldValue, settings, handleChangeFeedbackTime,
-            handleChangeResolutionTime, renderDetailDropdown, renderOptions, customerDetail
+            handleChangeResolutionTime, renderOptions, customerDetail
         } = this.props;
         const { statuses, languages, responses, roles, countries, extensions } = settings;
 
@@ -203,7 +204,7 @@ class Detail extends PureComponent {
                         </Form.Group>
                     </Col>
                 </Form.Group>
-                {renderDetailDropdown(values, errors, touched, setFieldValue)}
+                {this.renderDetailDropdown()}
                 <Form.Group as={Row}>
                     <Col sm="4" md="4">
                         <Form.Group as={Row}>
@@ -293,5 +294,3 @@ class Detail extends PureComponent {
         );
     }
 }
-
-export default Detail;

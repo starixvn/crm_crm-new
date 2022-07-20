@@ -4,8 +4,6 @@ import { Form } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import { shallow } from 'enzyme';
-import SelectWithSearch from '@jsroot/components/SelectWithSearch';
-
 
 describe('CustomerInfo', () => {
     beforeAll(() => {
@@ -28,14 +26,13 @@ describe('CustomerInfo', () => {
             statuses: [{statusId: 1, name: 'statuses'}],
             responses: [{id: 1, value: 'responses'}]
             },
-        values:{},
+        customerInfo:{},
         handleChange: jest.fn(),
-        setFieldValue: jest.fn(),
-        maxDate: new Date(),
+        handleChangeValueInfo: jest.fn(),
         renderOptions: jest.fn(()=> '<div></div>')
     };
 
-    describe('renderIdentityInformation', () => {
+    describe('render', () => {
         it('render correctly form', () => {
             // Arrange
 
@@ -46,7 +43,7 @@ describe('CustomerInfo', () => {
             expect(customerInfo.find(Form.Control)).toHaveLength(39);
         });
 
-        it('setFieldValue birthday correctly', () => {
+        it('handleChangeValueInfo birthday correctly', () => {
             // Arrange
             const customerInfo = shallow(<CustomerInfo {...props} />);
 
@@ -54,18 +51,16 @@ describe('CustomerInfo', () => {
             customerInfo.find(DatePicker).at(0).simulate('change', 'value');
 
             // Assert
-            expect(props.setFieldValue).toHaveBeenCalled();
+            expect(props.handleChangeValueInfo).toHaveBeenCalled();
         });
-    });
 
-    describe('render', () => {
         it('render renderLicenseeType when customer detail is null', () => {
             // Arrange
             const customerInfo = shallow(<CustomerInfo {...props} />);
             // Action
             customerInfo.find(Form.Check).at(0).simulate('change');
             // Assert
-            expect(props.setFieldValue).toHaveBeenCalledWith('isOverwriteInfo', true);
+            expect(props.handleChangeValueInfo).toHaveBeenCalledWith('isOverwriteInfo', true);
         });
     });
 });

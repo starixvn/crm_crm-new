@@ -340,7 +340,6 @@ export class CustomerInfo extends PureComponent{
     render() {
         const {customerInfo, handleChange, settings, renderOptions, customerDetail, handleChangeValueInfo} = this.props;
         const maxDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
-        console.log('render');
         return (
             <div>
                 <Form.Group as={Row} className="pt-2" >
