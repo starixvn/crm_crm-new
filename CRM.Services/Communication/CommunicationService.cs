@@ -31,6 +31,8 @@
 
         public async Task<IEnumerable<CommunicationLog>> GetLogsByCustomerIdAsync(GetLogsByCustomerIdCriteria criteria)
         {
+            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var (communicationLogInfos, settingItems) = await baseService.FetchMultipleAsync<CommunicationLog, SettingItem>(criteria);
             foreach (var communicationLog in communicationLogInfos)
             {

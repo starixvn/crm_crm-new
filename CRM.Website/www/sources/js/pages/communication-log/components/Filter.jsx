@@ -11,16 +11,14 @@ export class Filter extends Component {
 
     constructor(props) {
         super(props);
-        const currentClientTime = window.currentClientTime;
-        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const date = new Date();
         const fromDate = new Date(DateTimeService.firstDayOfMonth(date));
 
         this.state = {
             fromDate: fromDate,
-            toDate: currentDate,
-            maxFromDate: currentDate,
-            maxToDate: currentDate,
+            toDate: date,
+            maxFromDate: date,
+            maxToDate: date,
             minFromDate: '',
             minToDate: fromDate,
             statusId: 0,
@@ -33,9 +31,9 @@ export class Filter extends Component {
         const params = {
             customerId: this.props.id,
             pageIndex: 1, pageSize: 100,
-            fromDate: DateTimeService.toLongDateTimeFormat(fromDate),
+            fromDate: DateTimeService.toShortDateFormat(fromDate),
             handler: '', statusId: 0,
-            toDate: DateTimeService.toLongDateTimeFormat(toDate)
+            toDate: DateTimeService.toShortDateFormat(toDate)
         };
         this.props.getLogsByCustomerId(params);
         this.props.setGridParams(params);
@@ -65,8 +63,8 @@ export class Filter extends Component {
             pageIndex: 1, pageSize: 100,
             statusId: statusId,
             handler: handler,
-            fromDate: DateTimeService.toLongDateTimeFormat(fromDate),
-            toDate: DateTimeService.toLongDateTimeFormat(toDate)
+            fromDate: DateTimeService.toShortDateFormat(fromDate),
+            toDate: DateTimeService.toShortDateFormat(toDate)
         };
         this.props.setGridParams(params);
         this.props.getLogsByCustomerId(params);

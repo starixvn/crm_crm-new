@@ -86,10 +86,10 @@ export class CreateCommunicationLog extends Component {
     initFormikData = () => {
         const { options } = this.props;
         const { allSettings } = this.state;
-        const currentClientTime = window.currentClientTime;
+        const date = new Date();
         const remarkDuplicated = '<div><font color=\"#ff0000\">This is a duplicated entry</font></div>\n\n';
-        const startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
-        const endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
+        const startTime = new Date(DateTimeService.toShortDateFormat(date));
+        const endTime = new Date(DateTimeService.toShortDateFormat(date));
         endTime.setMinutes(endTime.getMinutes() + 1);
         const initTools = this.getInitDataTool(options, allSettings);
         const initSite = this.getInitDataSite(options);
@@ -136,7 +136,7 @@ export class CreateCommunicationLog extends Component {
     onChangeStartTime = (setFieldValue, selectedTime, endTime) => {
         setFieldValue('startTime', selectedTime);
         if (moment(selectedTime).isAfter(moment(endTime))) {
-            endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(selectedTime)));
+            endTime = new Date(DateTimeService.toShortDateFormat(new Date(selectedTime)));
             endTime.setMinutes(endTime.getMinutes() + 1);
             setFieldValue('endTime', endTime);
         }
@@ -146,7 +146,7 @@ export class CreateCommunicationLog extends Component {
     onChangeEndTime = (setFieldValue, startTime, selectedTime) => {
         setFieldValue('endTime', selectedTime);
         if (moment(startTime).isAfter(moment(selectedTime))) {
-            startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(selectedTime)));
+            startTime = new Date(DateTimeService.toShortDateFormat(new Date(selectedTime)));
             startTime.setMinutes(startTime.getMinutes() - 1);
             setFieldValue('startTime', startTime);
         }
@@ -260,8 +260,8 @@ export class CreateCommunicationLog extends Component {
 
         const params = {
             customerId: this.props.id,
-            startTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.startTime)),
-            endTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.endTime)),
+            startTime: DateTimeService.toShortDateFormat(values.startTime),
+            endTime: DateTimeService.toShortDateFormat(values.endTime),
             extensionIds: values.extensionIds !== '' ? values.extensionIds : allSettings.extensionNA.id,
             communicationToolIds: values.communicationToolIds,
             products: getProductParams(productIds.length > 0 ? productIds : [],

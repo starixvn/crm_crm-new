@@ -61,7 +61,7 @@ export class EditRedemptionLog extends Component {
         const params = {
             id: values.id,
             subject: values.subject,
-            claimTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.claimTime)),
+            claimTime: DateTimeService.toShortDateFormat(values.claimTime),
             remark: values.remark,
             statusId: parseInt(values.statusId, 10),
             currencyId: parseInt(values.currencyId, 10),

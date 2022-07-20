@@ -14,7 +14,7 @@ export class CreateEditForm extends Component {
                         <Col sm="6" md="6">
                             <Form.Group as={Row}>
                                 <Form.Label column sm="4" md="4" htmlFor="ClaimedTime">{LangHelper.getResource('ClaimedTime')}</Form.Label>
-                                <Col md="7" sm="7" className="react-datepicker-wrapper-container form-control-wrapper">
+                                <Col md="8" sm="8" className="react-datepicker-wrapper-container form-control-wrapper">
                                     <DatePicker selected={values.claimTime}
                                         dropdownMode="select"
                                         showMonthDropdown
@@ -28,7 +28,7 @@ export class CreateEditForm extends Component {
                         <Col sm="6" md="6">
                             <Form.Group as={Row}>
                                 <Form.Label column sm="4" md="4" htmlFor="currencyId">{LangHelper.getResource('Currency')}</Form.Label>
-                                <Col sm="7" md="7">
+                                <Col sm="8" md="8">
                                     <Form.Control as="select" size="sm" className="shadow-none"
                                         name="currencyId" id="currencyId"
                                         value={values.currencyId}
@@ -47,7 +47,7 @@ export class CreateEditForm extends Component {
                         <Col sm="6" md="6">
                             <Form.Group as={Row}>
                                 <Form.Label column sm="4" md="4" htmlFor="doneBy" className="required">{LangHelper.getResource('DoneBy')}</Form.Label>
-                                <Col md="7" sm="7">
+                                <Col md="8" sm="8">
                                     <Form.Control isInvalid={touched.doneBy && errors.doneBy}
                                         type="text" className="shadow-none" size="sm"
                                         name="doneBy" id="doneBy"
@@ -60,7 +60,7 @@ export class CreateEditForm extends Component {
                         <Col sm="6" md="6">
                             <Form.Group as={Row}>
                                 <Form.Label column sm="4" md="4" htmlFor="amount">{LangHelper.getResource('Amount')}</Form.Label>
-                                <Col sm="7" md="7">
+                                <Col sm="8" md="8">
                                     <Form.Control size="sm" type="number" className="shadow-none"
                                         name="amount" id="amount"
                                         value={values.amount}
@@ -74,7 +74,7 @@ export class CreateEditForm extends Component {
                         <Col sm="6" md="6">
                             <Form.Group as={Row}>
                                 <Form.Label column sm="4" md="4" htmlFor="subject" className="required">{LangHelper.getResource('Subject')}</Form.Label>
-                                <Col md="7" sm="7">
+                                <Col md="8" sm="8">
                                     <Form.Control isInvalid={touched.subject && errors.subject}
                                         type="text" size="sm" className="shadow-none"
                                         name="subject" id="subject"
@@ -87,7 +87,7 @@ export class CreateEditForm extends Component {
                         <Col sm="6" md="6">
                             <Form.Group as={Row}>
                                 <Form.Label column sm="4" md="4" htmlFor="statusId">{LangHelper.getResource('Status')}</Form.Label>
-                                <Col sm="7" md="7">
+                                <Col sm="8" md="8">
                                     <Form.Control as="select" className="shadow-none"
                                         name="statusId" id="statusId" size="sm"
                                         value={values.statusId} onChange={handleChange}
