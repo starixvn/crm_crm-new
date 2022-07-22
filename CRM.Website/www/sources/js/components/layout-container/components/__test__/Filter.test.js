@@ -2,10 +2,8 @@ import React from 'react';
 import Filter from '../Filter';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
-import configureMockStore from 'redux-mock-store';
 import { toast } from 'react-toastify';
 import Site from '@jsroot/common/site';
-import AutoComplete from '@jsroot/components/AutoComplete';
 
 describe('filter', () => {
     beforeAll(() => {
