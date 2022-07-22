@@ -24,8 +24,6 @@ describe('actions', () => {
             DataService.postDataAsync = jest.fn(() => promise);
             const expectedActions = [{ type: ActionCreators.setSettings.type, payload: response.data }];
             const store = mockStore({ settings: [] });
-            Site.blockUI = jest.fn();
-            Site.unblockUI = jest.fn();
 
             // Act
             await store.dispatch(ActionCreators.getSettings());
@@ -33,7 +31,6 @@ describe('actions', () => {
             // Assert
             expect(DataService.postDataAsync).toHaveBeenCalledWith('PicAssignment/AllSetting');
             expect(store.getActions()).toEqual(expectedActions);
-            expect(Site.unblockUI).toHaveBeenCalled();
         });
     });
 

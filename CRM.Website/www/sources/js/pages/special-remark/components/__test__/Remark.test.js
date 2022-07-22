@@ -38,6 +38,22 @@ describe('Remark', () => {
             expect(container.state.dataNormalRemarks).toEqual(['testing','']);
         });
     });
+    
+    describe('componentWillUnmount', () => {
+        const props = {
+            resetState: jest.fn()
+        };
+
+        it('should do reset store', () => {
+            const container = shallow(<Remark {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
+    });
 
     describe('handleChange', () => {
         it('should call setState when handle change', async () => {
@@ -195,8 +211,11 @@ describe('Remark', () => {
             const props = {
                 gridData: null
             };
+            const state = {
+                policy : 2
+            };
             const container = shallow(<Remark {...props}/>);
-
+            container.instance().setState(state);
             // Assert
             expect(container.type()).toEqual(null);
         });
@@ -206,7 +225,11 @@ describe('Remark', () => {
             const props = {
                 gridData: ''
             };
-            const container = shallow(<Remark {...props} />);
+            const state = {
+                policy : 2
+            };
+            const container = shallow(<Remark {...props}/>);
+            container.instance().setState(state);
 
             //Assert
             expect(toJson(container)).toMatchSnapshot();
@@ -221,10 +244,11 @@ describe('Remark', () => {
                 editRemarkResult: {
                     isSuccessful: false,
                     message: 'unsuccessful'
-                }
+                },
+                policy : 2
             };
             const container = shallow(<Remark {...props}/>);
-            container.setState(state);
+            container.instance().setState(state);
     
             // Assert 
             expect(container.find(ResponseMessage).props().isSuccessful).toBe(false);
@@ -240,7 +264,8 @@ describe('Remark', () => {
                 editRemarkResult: {
                     isSuccessful: true,
                     message: 'UpdateRemarkSuccessfully'
-                }
+                },
+                policy : 2
             };        
             const container = shallow(<Remark {...props}/>);
             container.setState(state);
@@ -258,7 +283,8 @@ describe('Remark', () => {
             const state = {
                 editRemarkResult: {
                     isSuccessful: true
-                }
+                },
+                policy : 2
             };  
             const container = shallow(<Remark {...props}/>);
             container.setState(state);
@@ -274,7 +300,11 @@ describe('Remark', () => {
             const props = {
                 gridData: ''
             };
-            const container = shallow(<Remark {...props} />);
+            const state = {
+                policy : 2
+            };  
+            const container = shallow(<Remark {...props}/>);
+            container.setState(state);
             container.instance().handleCollapseExpand = jest.fn();
 
             // Act
@@ -289,7 +319,11 @@ describe('Remark', () => {
             const props = {
                 gridData: ''
             };
-            const container = shallow(<Remark {...props} />);
+            const state = {
+                policy : 2
+            };  
+            const container = shallow(<Remark {...props}/>);
+            container.instance().setState(state);
             container.instance().handleCollapseExpand = jest.fn();
 
             // Act
@@ -306,9 +340,11 @@ describe('Remark', () => {
             };
             const state = {
                 specialRemarks: ['test'],
-                normalRemarks: ['test']
+                normalRemarks: ['test'],
+                policy : 2
             };
-            const container = shallow(<Remark {...props} />);
+            const container = shallow(<Remark {...props}/>);
+            container.instance().setState(state);
             container.instance().handleChange = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 
@@ -326,9 +362,11 @@ describe('Remark', () => {
             };
             const state = {
                 specialRemarks: ['test'],
-                normalRemarks: ['test']
+                normalRemarks: ['test'],
+                policy : 2
             };
             const container = shallow(<Remark {...props} />);
+            container.instance().setState(state);
             container.instance().handleChange = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 
@@ -346,9 +384,11 @@ describe('Remark', () => {
             };
             const state = {
                 specialRemarks: ['test'],
-                normalRemarks: ['test']
+                normalRemarks: ['test'],
+                policy : 2
             };
             const container = shallow(<Remark {...props} />);
+            container.instance().setState(state);
             container.instance().addSpecialRemarkItem = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 
@@ -366,9 +406,11 @@ describe('Remark', () => {
             };
             const state = {
                 specialRemarks: ['test','test1'],
-                normalRemarks: ['test']
+                normalRemarks: ['test'],
+                policy : 2
             };
             const container = shallow(<Remark {...props} />);
+            container.instance().setState(state);
             container.instance().removeSpecialRemarkItem = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 
@@ -386,9 +428,11 @@ describe('Remark', () => {
             };
             const state = {
                 specialRemarks: ['test'],
-                normalRemarks: ['test']
+                normalRemarks: ['test'],
+                policy : 2
             };
             const container = shallow(<Remark {...props} />);
+            container.instance().setState(state);
             container.instance().addNormalRemarkItem = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 
@@ -406,9 +450,11 @@ describe('Remark', () => {
             };
             const state = {
                 specialRemarks: ['test'],
-                normalRemarks: ['test','test1']
+                normalRemarks: ['test','test1'],
+                policy : 2
             };
             const container = shallow(<Remark {...props} />);
+            container.instance().setState(state);
             container.instance().removeNormalRemarkItem = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 
@@ -426,9 +472,11 @@ describe('Remark', () => {
             };
             const state = {
                 specialRemarks: ['test'],
-                normalRemarks: ['test','test1']
+                normalRemarks: ['test','test1'],
+                policy : 2
             };
             const container = shallow(<Remark {...props} />);
+            container.instance().setState(state);
             container.instance().handleSubmit = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 

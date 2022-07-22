@@ -7,7 +7,7 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import WithNavigation from '../../WithNavigation';
 
-class Layout extends Component {
+export class Layout extends Component {
     constructor(props) {
         super(props);
         this.state = {

@@ -1,4 +1,5 @@
 import latestFeedback, {
+    resetState,
     setGridParams,
     setLatestFeedback,
     setViewRelatedCustomerDialog,
@@ -7,6 +8,19 @@ import latestFeedback, {
 } from '../latestFeedbackSlide';
 
 describe('latestFeedbackSlide reducer', () => {
+    it('show handle reset state', () => {
+        expect(latestFeedback({}, {
+            type: resetState.type,
+            payload: { data: {} }
+        })).toEqual({
+            gridData: null,
+            gridParams: { top: 10 },
+            viewRelatedCustomerDialog: { show: false },
+            editFeedbackDialog: { show: false },
+            editNoOfInquiryDialog: { show: false }
+        });
+    });
+
     it('should handle initial state', () => {
         expect(latestFeedback(undefined, {})).toEqual({
             gridData: null,

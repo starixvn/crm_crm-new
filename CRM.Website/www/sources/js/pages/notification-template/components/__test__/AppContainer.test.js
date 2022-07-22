@@ -19,10 +19,28 @@ describe('AppContainer', () => {
 
     it('should render correctly', () => {
         // Act
+        const state = {
+            policy: 2
+        };
         const container = shallow(<AppContainer />);
-
+        container.instance().setState(state);
         // Assert
         expect(toJson(container)).toMatchSnapshot();
+    });
+
+    describe('componentWillUnmount', () => {
+        it('should do reset store', () => {
+            const props = {
+                resetState: jest.fn()
+            };
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
     });
 
     describe('create notification template', () => {
@@ -31,10 +49,13 @@ describe('AppContainer', () => {
             const props = {
                 createTemplatePopup: { show: true }
             };
+            const state = {
+                policy: 2
+            };
 
             // Act
             const container = shallow(<AppContainer {...props} />);
-
+            container.instance().setState(state);
             // Assert
             expect(toJson(container)).toMatchSnapshot();
             expect(container.find(NewNotificationTemplate).length).toBe(1);
@@ -80,10 +101,12 @@ describe('AppContainer', () => {
             const props = {
                 editTemplatePopup: { show: true }
             };
-
+            const state = {
+                policy: 2
+            };
             // Act
             const container = shallow(<AppContainer {...props} />);
-
+            container.instance().setState(state);
             // Assert
             expect(toJson(container)).toMatchSnapshot();
             expect(container.find(EditNotificationTemplate).length).toBe(1);
@@ -96,8 +119,11 @@ describe('AppContainer', () => {
                 setEditTemplateResult: jest.fn(),
                 setSelectedTemplate: jest.fn()
             };
+            const state = {
+                policy: 2
+            };
             const container = shallow(<AppContainer {...props} />).instance();
-
+            container.setState(state);
             // Act
             container.handleCloseEditPopup();
 
@@ -207,10 +233,13 @@ describe('AppContainer', () => {
             const props = {
                 contentDetailPopup: { show: true }
             };
+            const state = {
+                policy: 2
+            };
 
             // Act
             const container = shallow(<AppContainer {...props} />);
-
+            container.instance().setState(state);
             // Assert
             expect(toJson(container)).toMatchSnapshot();
         });
@@ -221,8 +250,11 @@ describe('AppContainer', () => {
                 setContentDetailPopup: jest.fn(),
                 setSelectedTemplate: jest.fn()
             };
+            const state = {
+                policy: 2
+            };
             const container = shallow(<AppContainer {...props} />).instance();
-
+            container.setState(state);
             // Act
             container.handleCloseViewContentPopup();
 

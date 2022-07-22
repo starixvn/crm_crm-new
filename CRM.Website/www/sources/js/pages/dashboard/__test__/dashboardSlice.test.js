@@ -1,4 +1,6 @@
 import dashboard, {
+    resetState,
+    setLastFiveRemark,
     setCustomerRemarks,
     setRedemptionLogs,
     setEditRedemptionDialog,
@@ -11,6 +13,24 @@ import dashboard, {
 } from '../dashboardSlice';
 
 describe('dashboardSlice reducer', () => {
+    it('show handle reset state', () => {
+        expect(dashboard({}, {
+            type: resetState.type,
+            payload: { data: {} }
+        })).toEqual({
+            customerRemarks: null,
+            redemptions: null,
+            editRedemptionDialog: { show: false },
+            communicationLogs: null,
+            lastFiveRemarks: null,
+            noOfInquiryDialog: { show: false },
+            editCommunicationDialog: { show: false },
+            createCommunicationDialog: { show: false },
+            customerInfoVerify: null,
+            editCustomerVerifyDialog: { show: false }
+        });
+    });
+
     it('should handle initial state', () => {
         expect(dashboard(undefined, {})).toEqual({
             customerRemarks: null,
@@ -128,6 +148,39 @@ describe('dashboardSlice reducer', () => {
             })
         ).toEqual({
             editCustomerVerifyDialog: { show: true, id: 1 }
+        });
+    });
+
+    it('should handle setLastFiveRemark', () => {
+        expect(
+            dashboard({}, {
+                type: setLastFiveRemark.type,
+                payload: { acknowledger: null,
+                    acknowledgerID: 0,
+                    approver: null,
+                    approverID: 0,
+                    createdDate: "2022-05-17T15:00:05.81",
+                    creator: null,
+                    creatorID: 0,
+                    custID: 9670720,
+                    ext: 0,
+                    extStation: null,
+                    handler: null,
+                    handlerID: 0}
+            })
+        ).toEqual({
+            lastFiveRemarks: { acknowledger: null,
+                acknowledgerID: 0,
+                approver: null,
+                approverID: 0,
+                createdDate: "2022-05-17T15:00:05.81",
+                creator: null,
+                creatorID: 0,
+                custID: 9670720,
+                ext: 0,
+                extStation: null,
+                handler: null,
+                handlerID: 0 }
         });
     });
 });

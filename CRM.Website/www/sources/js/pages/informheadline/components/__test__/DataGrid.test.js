@@ -12,8 +12,8 @@ describe('DataGrid', () => {
 
     const initProps = {
         permissions: {
-            searchPolicy: Policy.None,
-            contactPolicy: Policy.None,
+            searchPolicy: Policy.Host,
+            contactPolicy: Policy.Host,
             hasHostPermission: false
         }
     };
@@ -213,12 +213,15 @@ describe('DataGrid', () => {
             expect(container.type()).toEqual(null);
         });
         
-        it('should render danger when informs is null', () => {
+        it('should render danger when informs is do not have permission', () => {
             // Arrange
             const props = {
-                ...initProps,
+                permissions: {
+                    searchPolicy: Policy.None,
+                    contactPolicy: Policy.None
+                },
                 informs: [
-                    { titleId: 720, title:'test', status: 'Closed'}
+                    { titleId: 720, title:'test'}
                 ]
             };
             const expected = <div className="text-center text-danger">NoPermission</div>;

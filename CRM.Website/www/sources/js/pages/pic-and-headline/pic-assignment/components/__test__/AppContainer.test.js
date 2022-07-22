@@ -42,25 +42,40 @@ describe('AppContainer', () => {
         });
     });
 
+    describe('componentWillUnmount', () => {
+        const props = {
+            resetState: jest.fn()
+        };
+
+        it('should do reset store', () => {
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
+    });
+
     describe('render', () => {
         it('has regular components', () => {
             // Arrange
             const props = {
                 removePicAssignmentPopup: {},
                 assignPicPopup: {},
-                defaultPicPopup: {},
-                isHost: true,
-                isReadPicManagement: true
+                defaultPicPopup: {}
+            };
+            const state = {
+                policy : 2,
+                policyPicManagement: 1
             };
 
             // Action
             const appContainer = shallow(<AppContainer {...props} />);
-
+            appContainer.instance().setState(state);
             // Assert
             expect(appContainer.find(Filter).length).toBe(1);
-            expect(appContainer.find(DataGrid).props().isHost).toBe(props.isHost);
-            expect(appContainer.find(DataGrid).props().isReadPicManagement).toBe(props.isReadPicManagement);
-
         });
 
         it('has RemovePicAssignment closing correctly', () => {
@@ -76,7 +91,14 @@ describe('AppContainer', () => {
                 setRemovePicAssignmentPopup: jest.fn()
             };
 
+            const state = {
+                policy : 2,
+                policyPicManagement: 1
+            };
+
+            // Action
             const appContainer = shallow(<AppContainer {...props} />);
+            appContainer.instance().setState(state);
 
             // Action
             appContainer.find(RemovePicAssignment).simulate('close');
@@ -100,7 +122,14 @@ describe('AppContainer', () => {
             };
 
             // Action
+            const state = {
+                policy : 2,
+                policyPicManagement: 1
+            };
+
+            // Action
             const appContainer = shallow(<AppContainer {...props} />);
+            appContainer.instance().setState(state);
 
             // Assert
             expect(appContainer.find(AssignPic).props().data).toBe(props.assignPicPopup.data);
@@ -120,7 +149,14 @@ describe('AppContainer', () => {
             };
 
             // Action
+            const state = {
+                policy : 2,
+                policyPicManagement: 2
+            };
+
+            // Action
             const appContainer = shallow(<AppContainer {...props} />);
+            appContainer.instance().setState(state);
 
             // Assert
             expect(appContainer.find(DefaultPic).length).toBe(1);

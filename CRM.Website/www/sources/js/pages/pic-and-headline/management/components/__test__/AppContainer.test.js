@@ -33,10 +33,12 @@ describe('AppContainer', () => {
     it('renders default component correctly', () => {
         // Arrange
         const props = { isHost: false };
-
+        const state = {
+            policy : 1
+        };
         // Act
         const container = shallow(<AppContainer {...props} />);
-
+        container.instance().setState(state);
         // Assert
         expect(container.find(Filter).length).toBe(1);
         expect(container.find(Filter).props().isHost).toBe(props.isHost);
@@ -45,15 +47,34 @@ describe('AppContainer', () => {
         expect(container.find(DataGrid).props().isHost).toBe(props.isHost);
     });
 
+    describe('componentWillUnmount', () => {
+        const props = {
+            resetState: jest.fn()
+        };
+
+        it('should do reset store', () => {
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
+    });
+
     it('render NewPicManagement component correctly', () => {
         // Arrange
         const props = {
             createPicPopup: { show: true }
         };
+        const state = {
+            policy : 1
+        };
 
         // Act
         const container = shallow(<AppContainer {...props} />);
-
+        container.instance().setState(state);
         // Assert
         expect(toJson(container)).toMatchSnapshot();
     });
@@ -63,10 +84,13 @@ describe('AppContainer', () => {
         const props = {
             editPicPopup: { show: true }
         };
+        const state = {
+            policy : 1
+        };
 
         // Act
         const container = shallow(<AppContainer {...props} />);
-
+        container.instance().setState(state);
         // Assert
         expect(container).toMatchSnapshot();
         expect(container.find(EditPicManagement).length).toBe(1);
@@ -78,11 +102,14 @@ describe('AppContainer', () => {
             const props = {
                 confirmPopup: { show: true, username: 'username', picId: 1, checked: false }
             };
+            const state = {
+                policy : 1
+            };
             const expected = 'Are you sure you want to deactivate PIC username? ';
 
             // Act
             const container = shallow(<AppContainer {...props} />);
-
+            container.instance().setState(state);
             // Assert
             expect(container.find(ConfirmPopup).length).toBe(1);
             expect(shallow(container.find(ConfirmPopup).props().content).text()).toEqual(expected);
@@ -93,11 +120,14 @@ describe('AppContainer', () => {
             const props = {
                 confirmPopup: { show: true, username: 'username', picId: 1, checked: true }
             };
+            const state = {
+                policy : 1
+            };
             const expected = 'Are you sure you want to active PIC username? ';
 
             // Act
             const container = shallow(<AppContainer {...props} />);
-
+            container.instance().setState(state);
             // Assert
             expect(container.find(ConfirmPopup).length).toBe(1);
             expect(shallow(container.find(ConfirmPopup).props().content).text()).toEqual(expected);

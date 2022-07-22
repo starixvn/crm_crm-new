@@ -1,4 +1,5 @@
 import customerInfoDetail, {
+    resetState,
     setCustomerById,
     setAllSettings,
     setEditCustomerInfoDetail,
@@ -6,6 +7,18 @@ import customerInfoDetail, {
 } from '../customerInfoDetailSlice';
 
 describe('customerInfoDetail reducer', () => {
+    it('show handle reset state', () => {
+        expect(customerInfoDetail({}, {
+            type: resetState.type,
+            payload: { data: {} }
+        })).toEqual({
+            customerInfo: null,
+            allSettings: null,
+            editCustomerInfoDetailResult: '',
+            editCustomerInfoDetailDialog: { show: false }
+        });
+    });
+
     it('show handle initial state', () => {
         expect(customerInfoDetail(undefined, {})).toEqual({
             customerInfo: null,

@@ -5,6 +5,7 @@ import DataService from '@jsroot/common/dataService';
 import { ActionCreators } from '../actions';
 
 import{
+    setPermissions,
     setInforms,
     setTitleDetail,
     setContactInforms,
@@ -48,6 +49,24 @@ describe('actionCreators', () => {
 
             // Assert
             expect(DataService.getDataAsync).toHaveBeenCalledWith('InformHeadline/GetInforms');
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
+    describe('getPermissions', () => {
+        it('should handle setPermissions when fetching data have been done', async () => {
+            // Arrange
+            const response = {isHost: true};
+            const expectedActions = [{ type: setPermissions.type, payload: response.data }];
+            const store = mockStore({ gridData: null });
+            const promise = Promise.resolve(response);
+            DataService.getDataAsync = jest.fn(() => promise);
+
+            // Act
+            await store.dispatch(ActionCreators.getPermissions());
+
+            // Assert
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('InformHeadline/GetPermissions');
             expect(store.getActions()).toEqual(expectedActions);
         });
     });

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 
-class TabContainer extends Component {
+export class TabContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {

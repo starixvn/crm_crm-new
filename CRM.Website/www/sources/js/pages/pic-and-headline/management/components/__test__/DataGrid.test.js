@@ -54,16 +54,6 @@ describe('DataGrid', () => {
             }
         };
 
-        it('renders table title correctly', () => {
-            // Act
-            const container = shallow(<DataGrid {...props} />);
-
-            // Assert
-            expect(LangHelper.getResource).toHaveBeenCalledWith('PICManagement');
-            expect(container.find('div').html())
-                .toEqual('<div class="table-title d-flex justify-content-between align-items-center"><span>PICManagement</span></div>');
-        });
-
         it('Table props should be mapped correctly', () => {
             // Arrange
             const pagingOption = {
@@ -86,24 +76,6 @@ describe('DataGrid', () => {
             expect(table.props().containerPadding).toBe(0);
             expect(table.props().adjustedHeight).toBe(10);
             expect(table.props().shouldResetScrollPosition).toBeTrue;
-        });
-
-        it('render icon export file excel when has data', () => {
-            // Arrange
-            const propsHasData = {
-                ...props,
-                gridData: {
-                    total: 1,
-                    dataList: [{ picId: 1, languages: [] }]
-                }
-            };
-            const container = shallow(<DataGrid {...propsHasData} />);
-
-            // Act
-            const icon = container.find('.fa-file-excel-o');
-
-            // Assert
-            expect(icon.length).toBe(1);
         });
     });
 

@@ -64,6 +64,24 @@ describe('AppContainer', () => {
         });
     });
 
+    describe('componentWillUnmount', () => {
+        const props = {
+            setGridData: jest.fn(),
+            setSettings: jest.fn()
+        };
+
+        it('should do reset store', () => {
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.setGridData).toHaveBeenCalled();
+            expect(props.setSettings).toHaveBeenCalled();
+        });
+    });
+
     describe('closeConfirmPopup', () => {
         it('runs correctly', () => {
             // Arrange
@@ -75,8 +93,12 @@ describe('AppContainer', () => {
                 confirmPopup: {},
                 setConfirmPopup: jest.fn()
             };
+            const state = {
+                policy: 1
+            };
 
             const appContainer = shallow(<AppContainer {...props} />);
+            appContainer.instance().setState(state);
             // Action
             appContainer.instance().closeConfirmPopup();
     
@@ -96,10 +118,13 @@ describe('AppContainer', () => {
             setContentPopup: jest.fn(),
             setIsRefresh: jest.fn()
         };
+        const state = {
+            policy: 1
+        };
 
         const appContainer = shallow(<AppContainer {...props} />);
         appContainer.instance().setIsRefresh = jest.fn();
-
+        appContainer.instance().setState(state);
         // Action
         appContainer.instance().handleCloseContent();
 
@@ -119,8 +144,11 @@ describe('AppContainer', () => {
             setViewDetailPopup: jest.fn(),
             setIsRefresh: jest.fn()
         };
-
+        const state = {
+            policy: 1
+        };
         const appContainer = shallow(<AppContainer {...props} />);
+        appContainer.instance().setState(state);
         appContainer.instance().setIsRefresh = jest.fn();
 
         // Action
@@ -141,10 +169,13 @@ describe('AppContainer', () => {
                 validateResendResult: {},
                 confirmPopup: {}
             };
+            const state = {
+                policy: 1
+            };
 
             // Action
             const appContainer = shallow(<AppContainer {...props} />);
-
+            appContainer.instance().setState(state);
             // Assert
             
             expect(toJson(appContainer)).toMatchSnapshot();
@@ -164,12 +195,14 @@ describe('AppContainer', () => {
                     validateResendResult: {},
                     confirmPopup: {}
                 };
+                const state = {
+                    policy: 1
+                };
     
                 // Action
                 const appContainer = shallow(<AppContainer {...props} />);
-    
+                appContainer.instance().setState(state);
                 // Assert
-                expect(toJson(appContainer)).toMatchSnapshot();
                 expect(appContainer.find(Content).props().data).toEqual(props.contentPopup.data);
             });
     
@@ -186,8 +219,12 @@ describe('AppContainer', () => {
                     confirmPopup: {},
                     setContentPopup: jest.fn()
                 };
+                const state = {
+                    policy: 1
+                };
     
                 const appContainer = shallow(<AppContainer {...props} />);
+                appContainer.instance().setState(state);
                 appContainer.instance().handleCloseContent = jest.fn();
     
                 // Action
@@ -211,12 +248,14 @@ describe('AppContainer', () => {
                     validateResendResult: {},
                     confirmPopup: {}
                 };
+                const state = {
+                    policy: 1
+                };
         
                 // Action
                 const appContainer = shallow(<AppContainer {...props} />);
-        
+                appContainer.instance().setState(state);
                 // Assert
-                expect(toJson(appContainer)).toMatchSnapshot();
                 expect(appContainer.find(ViewDetail).props().data).toEqual(props.viewDetailPopup.data);
             });
 
@@ -232,10 +271,13 @@ describe('AppContainer', () => {
                     validateResendResult: {},
                     confirmPopup: {}
                 };
+                const state = {
+                    policy: 1
+                };
 
                 const appContainer = shallow(<AppContainer {...props} />);
                 appContainer.instance().handleCloseViewDetail = jest.fn();
-        
+                appContainer.instance().setState(state);
                 // Action
                 appContainer.find(ViewDetail).simulate('close');
         
@@ -255,10 +297,13 @@ describe('AppContainer', () => {
                 },
                 confirmPopup: {}
             };
-    
+            const state = {
+                policy: 1
+            };
+
             // Action
             const appContainer = shallow(<AppContainer {...props} />);
-    
+            appContainer.instance().setState(state);
             // Assert
             expect(toJson(appContainer)).toMatchSnapshot();
             expect(appContainer.find(ValidateResend).length).toBe(1);
@@ -278,9 +323,14 @@ describe('AppContainer', () => {
                         show: true
                     }
                 };
+                const state = {
+                    policy: 1
+                };
+
     
                 // Action
                 const appContainer = shallow(<AppContainer {...props} />);
+                appContainer.instance().setState(state);
                 const content = shallow(appContainer.find(ConfirmPopup).props().content);
     
                 // Assert
@@ -300,8 +350,11 @@ describe('AppContainer', () => {
                         show: true
                     }
                 };
-    
+                const state = {
+                    policy: 1
+                };
                 const appContainer = shallow(<AppContainer {...props} />);
+                appContainer.instance().setState(state);
                 appContainer.instance().closeConfirmPopup = jest.fn();
     
                 // Action
@@ -324,9 +377,11 @@ describe('AppContainer', () => {
                     },
                     setConfirmPopup: jest.fn()
                 };
-    
+                const state = {
+                    policy: 1
+                };
                 const appContainer = shallow(<AppContainer {...props} />);
-    
+                appContainer.instance().setState(state);
                 // Action
                 appContainer.find(ConfirmPopup).simulate('submit');
     

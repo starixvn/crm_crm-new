@@ -1,6 +1,7 @@
 import React from 'react';
 import { DataGrid } from '../DataGrid';
 import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
+import { Policy } from '@jsroot/common/constants';
 import { Button } from 'react-bootstrap';
 import { shallow } from 'enzyme';
 
@@ -18,6 +19,7 @@ describe('DataGrid', () => {
             { id: 4752, subject: 'test', claimTime: 'Nov 12, 2021 06:46:00 AM', status: 'KIV' },
             { id: 1234, subject: 'test', claimTime: 'Nov 12, 2021 06:46:00 AM', status: 'KIV' }
         ],
+        createUpdateFeedbackPermission : Policy.Host,
         setLogsByCustomerId: jest.fn()
     };
 

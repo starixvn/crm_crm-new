@@ -1,4 +1,6 @@
 import informHeadline, {
+    resetState,
+    setPermissions,
     setInforms,
     setTitleDetail,
     setContactInforms,
@@ -23,6 +25,36 @@ import informHeadline, {
 } from '../informHeadlineSlice';
 
 describe('informHeadlineSlice reducer', () => {
+    it('show handle reset state', () => {
+        expect(informHeadline({}, {
+            type: resetState.type,
+            payload: { data: {} }
+        })).toEqual({
+            informs: null,
+            titleDetail: null,
+            contactInforms: null,
+            editContactInformDialog: {show: false},
+            allSettings: null,
+            dataEditInforms: null,
+            permissions: null,
+            editInformDialog: {show: false},
+            resultEditContactInforms: null,
+            resultEditInforms: null,
+            removedAccountLogs: null,
+            removedAccountLogDetails: null,
+            removedLogDialog: {show: false},
+            removedLogDetailDialog: {show: false},
+            newInforms: null,
+            newInformDialog: {show: false},
+            resultInsertInforms: null,
+            editedInforms: [],
+            filterData: { values: {}, errors: {} },
+            gridParams: { pageIndex: 1, pageSize: 100 },
+            gridParamRemovedLogs: { pageIndex: 1, pageSize: 100 },
+            gridRemovedLogDetails: { pageIndex: 1, pageSize: 100 }
+        });
+    });
+
     it('should handle initial state', () => {
         expect(informHeadline(undefined, {})).toEqual({
             informs: null,
@@ -58,6 +90,17 @@ describe('informHeadlineSlice reducer', () => {
             })
         ).toEqual({
             informs: { titleId: 720, title:"test" }
+        });
+    });
+
+    it('should handle setPermissions', () => {
+        expect(
+            informHeadline({}, {
+                type: setPermissions.type,
+                payload: { isHost: true }
+            })
+        ).toEqual({
+            permissions: { isHost: true }
         });
     });
 

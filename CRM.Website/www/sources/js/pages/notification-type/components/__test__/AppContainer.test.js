@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import AppContainerWrapper, { AppContainer } from '../AppContainer';
+import { AppContainer } from '../AppContainer';
 import configureMockStore from 'redux-mock-store';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow } from 'enzyme';
@@ -29,15 +29,34 @@ describe('AppContainer', () => {
         expect(toJson(container)).toMatchSnapshot();
     });
 
+    describe('componentWillUnmount', () => {
+        const props = {
+            resetState: jest.fn()
+        };
+
+        it('should do reset store', () => {
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
+    });
+
     describe('create notification type', () => {
         it('render component NewNotificationType correctly', () => {
             // Arrange
             const props = {
                 createNotificationTypePopup: { show: true }
             };
+            const state = {
+                policy: 2
+            };
 
             const container = shallow(<AppContainer {...props} />);
-
+            container.instance().setState(state);
             // Assert
             expect(toJson(container)).toMatchSnapshot();
             expect(container.find(NewNotificationTypeWrapper).length).toBe(1);
@@ -85,10 +104,14 @@ describe('AppContainer', () => {
             };
 
             // Act
+            const state = {
+                policy: 2
+            };
+
             const container = shallow(<AppContainer {...props} />);
+            container.instance().setState(state);
 
             // Assert
-            expect(toJson(container)).toMatchSnapshot();
             expect(container.find(EditNotificationTypeWrapper).length).toBe(1);
         });
 
@@ -128,19 +151,6 @@ describe('AppContainer', () => {
     });
 
     describe('delete notification type', () => {
-        it('render component DeleteNotificationType correctly', () => {
-            // Arrange
-            const props = {
-                deleteNotificationTypePopup: { show: true, name: 'test123' }
-            };
-
-            // Act
-            const container = shallow(<AppContainer {...props} />);
-
-            // Assert
-            expect(toJson(container)).toMatchSnapshot();
-        });
-
         it('should call correct functions when close popup', () => {
             // Arrange
             const props = {

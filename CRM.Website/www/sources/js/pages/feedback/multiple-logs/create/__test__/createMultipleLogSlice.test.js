@@ -1,4 +1,6 @@
 ﻿import createMultipleLog, {
+    resetState,
+    setReVerifyCustomerResults,
     setSettings,
     setVerifyCustomerResults,
     removeCustomer,
@@ -10,6 +12,21 @@
 } from '../createMultipleLogSlice';
 
 describe('createMultipleLog reducer', () => {
+    it('show handle reset state', () => {
+        expect(createMultipleLog({}, {
+            type: resetState.type,
+            payload: { data: {} }
+        })).toEqual({
+            settings: null,
+            verifyCustomerResults: [],
+            relatedCustomerResults: [],
+            feedbackSubjectTemplates: [],
+            addRelatedCustomerDialog: { show: false },
+            viewRelatedCustomerDialog: { show: false },
+            confirmCreateMultipleLogsDialog: { show: false }
+        });
+    });
+
     it('should handle initial state', () => {
         expect(createMultipleLog(undefined, {})).toEqual({
             settings: null,
@@ -30,6 +47,17 @@ describe('createMultipleLog reducer', () => {
             })
         ).toEqual({
             settings: { extensions: { id: 1, type: 'tests' } }
+        });
+    });
+
+    it('should handle setReVerifyCustomerResults', () => {
+        expect(
+            createMultipleLog({}, {
+                type: setReVerifyCustomerResults.type,
+                payload: [{ custId: 1, username: 'test' }]
+            })
+        ).toEqual({
+            verifyCustomerResults : [{ custId: 1, username: 'test' }]
         });
     });
 

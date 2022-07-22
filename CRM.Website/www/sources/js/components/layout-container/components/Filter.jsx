@@ -37,7 +37,7 @@ export default class Filter extends Component {
         const pathname = window.location.pathname;
         const menus = this.handleConcatMenu(this.props.menus);
         const currentMenu = menus.filter(menu => this.getUrlPath(menu.url) === pathname.toLowerCase())[0];
-        const isLefDetailMenu = DetailMenu.filter(x => this.getUrlPath(x.url) === pathname.toLowerCase()).length > 0;
+        const isLefDetailMenu = DetailMenu.filter(x => this.getUrlPath(x.url).toLowerCase() === pathname.toLowerCase()).length > 0;
         if(isLefDetailMenu){
             return this.renderDetailBreadcrumbsMenu(pathname);
         }else{
@@ -72,7 +72,7 @@ export default class Filter extends Component {
         return breadcrumbsMenu;
     };
 
-    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={() => handleNavigate('Dashboard')}/></li>;
+    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={() => this.props.handleNavigate('Dashboard')}/></li>;
 
     renderBreadcrumbsMenu = (breadcrumbsMenu, pathname) =>{
         const isHome = breadcrumbsMenu.length > 0 && breadcrumbsMenu[0].toLowerCase() === 'home'
@@ -112,7 +112,7 @@ export default class Filter extends Component {
                         {LangHelper.getResource('Main')}
                     </a>
                 </li>
-                <li id="li-main" className={this.isCheckActive(pathname, 1)}>
+                <li id="li-detail" className={this.isCheckActive(pathname, 1)}>
                     <a onClick = {() => handleNavigate('Detail')}>
                         {LangHelper.getResource('Detail')}
                     </a>

@@ -128,36 +128,35 @@
             float: right;
         }
     }
-    
-    .customer-modal-dialog {
-    
-        .check-customer {
-            display: flex;
-            align-items: center;
-        }
-    
-        .check-name {
-            padding-left: 7px;
-        }
-    
-        td {
-            padding: 10px !important;
-        }
-    
-        .label-email {
-            color: #0255a5 !important;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-    
-        .label-email:hover {
-            color: #ffb400 !important;
-        }
+}
+
+.customer-modal-dialog {
+    .check-customer {
+        display: flex;
+        align-items: center;
     }
-    
-    .modal-backdrop {
-        z-index: 1050 !important;
+
+    .check-name {
+        padding-left: 7px;
     }
+
+    td {
+        padding: 10px !important;
+    }
+
+    .label-email {
+        color: #0255a5 !important;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .label-email:hover {
+        color: #ffb400 !important;
+    }
+}
+
+.modal-backdrop {
+    z-index: 1050 !important;
 }
 
 .modal-edit-redemption {

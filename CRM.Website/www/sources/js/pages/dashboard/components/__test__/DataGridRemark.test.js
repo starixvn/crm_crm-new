@@ -14,6 +14,7 @@ describe('DataGridRemark', () => {
     });
 
     const initProps = {
+        id:1,
         getCustomerRemarks: jest.fn()
     };
 
@@ -26,6 +27,21 @@ describe('DataGridRemark', () => {
 
             // Act
             container.componentDidMount();
+
+            // Assert
+            expect(props.getCustomerRemarks).toHaveBeenCalled();
+        });
+    });
+
+    describe('componentDidUpdate', () => {
+        it('should call exactly props function', () => {
+            // Arrange
+            const props = {...initProps};
+            const prevProps ={id:2};
+            const container = shallow(<DataGridRemark {...props} />).instance();
+
+            // Act
+            container.componentDidUpdate(prevProps);
 
             // Assert
             expect(props.getCustomerRemarks).toHaveBeenCalled();

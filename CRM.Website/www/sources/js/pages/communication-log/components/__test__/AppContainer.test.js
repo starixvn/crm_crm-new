@@ -10,7 +10,7 @@ describe('AppContainer', () => {
 
     describe('componentWillUnmount', () => {
         const props = {
-            resetState: jest.fn(),
+            resetState: jest.fn()
         };
 
         it('should do reset store', () => {

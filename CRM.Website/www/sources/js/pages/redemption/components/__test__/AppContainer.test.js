@@ -12,6 +12,22 @@ describe('AppContainer', () => {
     const initProps = {
         gridParams: { id: 1, subject: 'test', status: 'KIV' }
     };
+    
+    describe('componentWillUnmount', () => {
+        const props = {
+            resetState: jest.fn()
+        };
+
+        it('should do reset store', () => {
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
+    });
 
     describe('handleCloseEditRedemptionDialog', () => {
         it('should call exactly functions when close edit redemption with unSuccessful', () => {
@@ -91,9 +107,12 @@ describe('AppContainer', () => {
                     createRedemptionDialog: { show: true, logId: 456 }
                 };
     
+                const state = {
+                    createUpdateFeedbackPermission : 2
+                };
                 // Act
                 const container = shallow(<AppContainer {...props} />);
-    
+                container.instance().setState(state);
                 // Assert
                 expect(toJson(container)).toMatchSnapshot();
             });

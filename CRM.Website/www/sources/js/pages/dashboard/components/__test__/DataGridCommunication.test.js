@@ -102,6 +102,21 @@ describe('DataGridCommunication', () => {
         });
     });
 
+    describe('componentDidUpdate', () => {
+        it('should call exactly props function', () => {
+            // Arrange
+            const props = {...initProps};
+            const prevProps ={id:2};
+            const container = shallow(<DataGridCommunication {...props} />).instance();
+
+            // Act
+            container.componentDidUpdate(prevProps);
+
+            // Assert
+            expect(props.getCommunicationLogs).toHaveBeenCalled();
+        });
+    });
+
     describe('buildHeader', () => {
         it('should render expected header', () => {
             // Act

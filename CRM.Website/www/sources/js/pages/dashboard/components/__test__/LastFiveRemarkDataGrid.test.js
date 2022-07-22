@@ -2,9 +2,7 @@ import React from 'react';
 import { LastFiveRemarkDataGrid } from '../LastFiveRemarkDataGrid';
 import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { shallow } from 'enzyme';
-import { toast } from 'react-toastify';
 import LangHelper from '@jsroot/common/langHelper';
-import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 
 describe('LastFiveRemarkDataGrid', () => {
     beforeAll(() => {
@@ -92,6 +90,23 @@ describe('LastFiveRemarkDataGrid', () => {
 
             // Assert
             expect(initProps.setOpenEditPopup).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleViewNewRemark ', () => {
+        it('should call exactly function', () => {
+            // Arrange
+            const event = {
+                preventDefault: jest.fn()
+            };
+            const props = {...initProps, navigate: jest.fn()};
+            const container = shallow(<LastFiveRemarkDataGrid {...props} />).instance();
+
+            // Act
+           container.handleViewNewRemark(event);
+
+            // Assert
+            expect(props.navigate).toHaveBeenCalled();
         });
     });
 

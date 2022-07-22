@@ -17,10 +17,50 @@ describe('AppContainer', () => {
             };
 
             //Act
-            shallow(<AppContainer {...props} />);
+            const container = shallow(<AppContainer {...props} />).instance();
+            container.handleInitData = jest.fn();
+            container.componentDidMount();
+            // Assert
+            expect(container.handleInitData).toHaveBeenCalled();
+        });
+    });
+
+    describe('componentDidUpdate', () => {
+        it('should call exactly props function', () => {
+            // Arrange
+            const props = {
+                custId: 1,
+                getLatestFeedback: jest.fn(),
+                gridParams: {},
+                setGridParams: jest.fn(),
+                getLatestFeedbackByCustId: jest.fn()
+            };
+            const prevProps ={custId :2};
+            const container = shallow(<AppContainer {...props} />).instance();
+            container.handleInitData = jest.fn();
+            // Act
+            container.componentDidUpdate(prevProps);
 
             // Assert
-            expect(props.getLatestFeedback).toHaveBeenCalledWith({});
+            expect(container.handleInitData).toHaveBeenCalled();
+        });
+    });
+
+    
+    describe('componentWillUnmount', () => {
+        it('should do reset store', () => {
+            const props = {
+                resetState: jest.fn(),
+                getLatestFeedback: jest.fn(),
+                gridParams: {}
+            };
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
         });
     });
 
@@ -88,9 +128,13 @@ describe('AppContainer', () => {
                 gridParams: {}
             };
 
+            const state = {
+                policy : 2
+            };
+
             // Act
             const container = shallow(<AppContainer {...props} />);
-
+            container.instance().setState(state);
             // Assert
             expect(toJson(container)).toMatchSnapshot();
         });

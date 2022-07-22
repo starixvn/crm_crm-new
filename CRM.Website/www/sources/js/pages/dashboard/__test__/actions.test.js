@@ -8,7 +8,8 @@ import {
     setCustomerRemarks,
     setRedemptionLogs,
     setCommunicationLogs,
-    setCustomerInfoVerify
+    setCustomerInfoVerify,
+    setLastFiveRemark
 } from '../dashboardSlice';
 
 const middlewares = [thunk];
@@ -40,7 +41,7 @@ describe('actionCreators', () => {
 
             // Assert
             expect(DataService.getDataAsync).toHaveBeenCalledWith('Dashboard/GetCustomerRemarks', expectedParams);
-            expect(store.getActions()).toEqual(expectedActions)
+            expect(store.getActions()).toEqual(expectedActions);
         });
     });
 
@@ -59,7 +60,7 @@ describe('actionCreators', () => {
 
             // Assert
             expect(DataService.getDataAsync).toHaveBeenCalledWith('Dashboard/GetRedemptionLogs', expectedParams);
-            expect(store.getActions()).toEqual(expectedActions)
+            expect(store.getActions()).toEqual(expectedActions);
         });
     });
 
@@ -100,7 +101,7 @@ describe('actionCreators', () => {
 
             // Assert
             expect(DataService.getDataAsync).toHaveBeenCalledWith('Dashboard/GetCustomerInfoVerify', expectedParams);
-            expect(store.getActions()).toEqual(expectedActions)
+            expect(store.getActions()).toEqual(expectedActions);
         });
     });
 
@@ -118,7 +119,41 @@ describe('actionCreators', () => {
 
             // Assert
             expect(DataService.postDataAsync).toHaveBeenCalledWith('Dashboard/EditCustomerVerify', expectedParams);
-            expect(actual).toEqual(response)
+            expect(actual).toEqual(response);
+        });
+    });
+
+    describe('getLastFiveRemark', () => {
+        it('should hanlde setLastFiveRemark when fetching data have been done', async () => {
+            // Arrange
+            const expectedParams = { custId: 9670720 };
+            const response = { data: [
+                {
+                    acknowledger: null,
+                    acknowledgerID: 0,
+                    approver: null,
+                    approverID: 0,
+                    createdDate: "2022-05-17T15:00:05.81",
+                    creator: null,
+                    creatorID: 0,
+                    custID: 9670720,
+                    ext: 0,
+                    extStation: null,
+                    handler: null,
+                    handlerID: 0
+                }
+            ]};
+            const expectedActions = [{ type: setLastFiveRemark.type, payload: response.data }];
+            const store = mockStore({});
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+            
+            // Act
+            const actual = await store.dispatch(ActionCreators.getLastFiveRemark(expectedParams));
+
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('NewRemark/GetLastFiveRemark', expectedParams);
+            expect(store.getActions()).toEqual(expectedActions);
         });
     });
 });

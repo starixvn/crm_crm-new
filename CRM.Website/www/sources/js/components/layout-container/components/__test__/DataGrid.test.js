@@ -306,6 +306,70 @@ describe('DataGridCustomerInfo', () => {
             });
         });
 
+        describe('renderDetail', () => {
+            it('should call setState', () => {
+                //Arrange
+                const props = {
+                    getSettings: jest.fn(),
+                    settings: {
+                        languages: []
+                    }
+                };
+                const state = {
+                    isShowDetail: false
+                };
+                const container = shallow(<DataGrid {...props} />);
+                container.instance().setState(state);
+                //Act
+                const detail = shallow(container.instance().renderDetail(false));
+                detail.find(Row).at(0).simulate('click');
+                //Assert
+                expect( container.instance().state.isShowDetail).toEqual(true);
+            });
+
+            it('should navigate to detail', () => {
+                //Arrange
+                const props = {
+                    getSettings: jest.fn(),
+                    settings: {
+                        languages: []
+                    },
+                    handleNavigate: jest.fn()
+                };
+                const state = {
+                    isShowDetail: true
+                };
+                const container = shallow(<DataGrid {...props} />);
+                container.instance().setState(state);
+                //Act
+                const detail = shallow(container.instance().renderDetail(false));
+                detail.find('li').at(0).find('a').simulate('click');
+                //Assert
+                expect(props.handleNavigate).toHaveBeenCalledWith('Detail');
+            });
+
+            it('should navigate to add feedback', () => {
+                //Arrange
+                const props = {
+                    getSettings: jest.fn(),
+                    settings: {
+                        languages: []
+                    },
+                    handleNavigate: jest.fn()
+                };
+                const state = {
+                    isShowDetail: true
+                };
+                const container = shallow(<DataGrid {...props} />);
+                container.instance().setState(state);
+                //Act
+                const detail = shallow(container.instance().renderDetail(false));
+                detail.find('li').at(1).find('a').simulate('click');
+                //Assert
+                expect(props.handleNavigate).toHaveBeenCalledWith('AddFeedback');
+            });
+        });
+
         describe('handleSubmit', () => {
             it('should call exactly functions when edit successful', async () => {
                 //Arrange

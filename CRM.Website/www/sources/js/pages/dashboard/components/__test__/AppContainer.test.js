@@ -9,6 +9,21 @@ describe('AppContainer', () => {
         jest.clearAllMocks();
     });
 
+    describe('componentWillUnmount', () => {
+        it('should do reset store', () => {
+            const props = {
+                resetState: jest.fn()
+            };
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
+    });
+
     describe('handleCloseEditRedemptionDialog', () => {
         it('should call exactly function when close dialog when not call api', () => {
             // Arrange
@@ -157,9 +172,13 @@ describe('AppContainer', () => {
 
     describe('render', () => {
         it('should render DataGridRemark correctly', () => {
+            // Arrange
+            const state = {
+                policy: 2
+            };
             // Act
             const container = shallow(<AppContainer />);
-
+            container.setState(state);
             // Assert
             expect(toJson(container)).toMatchSnapshot();
             expect(container.find(DataGridRemark).length).toBe(0);
