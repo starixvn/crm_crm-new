@@ -9,6 +9,22 @@ describe('AppContainer', () => {
         jest.clearAllMocks();
     });
 
+    describe('componentWillUnmount', () => {
+        it('should do reset store', () => {
+            const props = {
+                resetState: jest.fn()
+            };
+
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
+    });
+
     describe('render', () => {
         it('has regular components', () => {
             // Arrange
@@ -35,6 +51,19 @@ describe('AppContainer', () => {
 
             // Assert
             expect(toJson(container)).toMatchSnapshot();
+        });
+
+        it('should return null', () => {
+            // Arrange
+            const props = {
+                settings : null
+            };
+
+            // Act
+            const container = shallow(<AppContainer {...props} />);
+
+            // Assert
+            expect(container).toEqual({});
         });
     });
 });

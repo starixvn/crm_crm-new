@@ -59,7 +59,6 @@ export default class LicenseeRow extends PureComponent {
                             isSearchable
                             isFocused
                             isSelected
-                            //menuIsOpen
                             defaultValue={sourceMappingDefault}
                             noOptionsMessage={() => 'No results found'}
                             onChange={value => this.handleChangeSelect(value, 'settingSource')}

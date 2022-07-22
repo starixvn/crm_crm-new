@@ -1,3 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppContainer render should render correctly 1`] = `""`;
+exports[`AppContainer render should render correctly 1`] = `
+<Fragment>
+  <Connect(Filter) />
+  <Connect(DataGrid)
+    isHost={true}
+  />
+  <Connect(Update)
+    onClose={[Function]}
+    subSettingOptions={Array []}
+  />
+</Fragment>
+`;

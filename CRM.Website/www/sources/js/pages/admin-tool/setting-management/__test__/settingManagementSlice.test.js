@@ -1,4 +1,5 @@
 import settingManagement, {
+    resetState,
     setMainSettings,
     setParentSettings,
     setSettingTypes,
@@ -16,6 +17,33 @@ import settingManagement, {
 } from '../settingManagementSlice';
 
 describe('settingManagementSlice reducer', () => {
+    it('should handle reset state', () => {
+        expect(
+            settingManagement({}, {
+                type: resetState.type
+            })
+        ).toEqual({
+            mainSettings: null,
+            parents: null,
+            settingType: null,
+            licensees: null,
+            licenseesMapping: null,
+            licenseesManager: [],
+            gridParams: {
+                settingName: '',
+                settingValue: ''
+            },
+            editStatusPopup: {show: false},
+            insertNewSettingPopup: {show: false, settingName: ''},
+            licenseeMappingPopup: {show: false},
+            insertNewSettingResult: null,
+            editPopup: {show: false, data: null},
+            editNewSettingResult: null,
+            confirmCancelPopup: {show: false, setting: '', settingId: 0},
+            sourceMapping: []
+        });
+    });
+
     it('should handle initial state', () => {
         expect(settingManagement(undefined, {})).toEqual({
             mainSettings: null,

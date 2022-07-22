@@ -23,6 +23,23 @@ describe('AppContainer', () => {
         });
     });
 
+    describe('componentWillUnmount', () => {
+        const props = {
+            resetState: jest.fn(),
+            getMainSettings: jest.fn()
+        };
+
+        it('should do reset store', () => {
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
+    });
+
 
     describe('handleCloseUpdatePopup', () => {
         it('should call exactly functions when close', () => {
@@ -50,7 +67,7 @@ describe('AppContainer', () => {
                 getMainSettings: jest.fn(),
                 updatePopup: { show: true},
                 gridParams: { settingName: 'test' },
-                mainSettings: null
+                mainSettings: [{settingName: 'test'}]
             };
 
             // Act
@@ -79,10 +96,10 @@ describe('AppContainer', () => {
 
             // Act
             const container = shallow(<AppContainer {...props} />);
+            container.instance().setState({policy: 2});
 
             // Assert
             expect(toJson(container)).toMatchSnapshot();
         });
     });
-    
 });

@@ -1,11 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Edit } from '../Edit';
-import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
-import { Button, Col, Form, Modal } from 'react-bootstrap';
 import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
-import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 
 describe('Edit', () => {
@@ -36,9 +33,9 @@ describe('Edit', () => {
                 parentID: 0,
                 settingId: 68005,
                 settingName: "111111111",
-                settingSource: null,
                 settingValue: "TestRuby1",
-                subCategoryId: 0
+                subCategoryId: 0,
+                settingSource: '1'
             }
         }
     };
@@ -62,6 +59,20 @@ describe('Edit', () => {
             
             // Assert
             expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('handleOptionMapping', () => {
+        it('should call setState', () => {
+            // Arrange
+            const container = shallow(<Edit {...initProps}/>).instance();
+
+            // Act
+            container.handleOptionMapping();
+
+            // Assert
+            expect(container.state.optionMappings).toEqual([{checked: true, id: '1', name: '1'}]);
+            expect(container.state.sourceMappings).toEqual('1');
         });
     });
 

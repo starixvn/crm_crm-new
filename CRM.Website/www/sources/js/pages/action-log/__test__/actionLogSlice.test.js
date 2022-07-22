@@ -1,10 +1,26 @@
 import actionLog, {
+    resetState,
     setAllLogAction,
     setActivityLog,
     setGridParams
 } from '../actionLogSlice';
 
 describe('actionLogSlice reducer', () => {
+    it('should handle reset state', () => {
+        expect(
+            actionLog({}, {
+                type: resetState.type
+            })
+        ).toEqual({
+            allLogActions: null,
+            activityLogs: null,
+            gridParams: {
+                pageIndex: 1,
+                pageSize: 100
+            }
+        });
+    });
+
     it('should handle initial state', () => {
         expect(actionLog(undefined, {})).toEqual({
             allLogActions: null,

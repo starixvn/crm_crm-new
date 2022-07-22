@@ -33,7 +33,12 @@ describe('NewSettingValue', () => {
             settingValue: "TestRuby1",
             subCategoryId: 0
         }],
-        mainSettings: [],
+        mainSettings: [{
+            settingName: 'settingName',
+            childSettings: [{
+                settingValue: 'settingValue'
+            }]
+        }],
         getParentSettings: jest.fn(),
         insertNewSetting: jest.fn(() => promise),
         settingName: '',
@@ -52,22 +57,57 @@ describe('NewSettingValue', () => {
     });
 
     describe('validateFormik', () => {
-        it('should return exact errors', () => {
+        it('should return exact errors when exist setting value', () => {
             // Arrange
             const expectErrors = {
                 settingName: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingName')),
-                settingValue: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingValue'))
+                //settingValue: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingValue')),
+                settingValue: LangHelper.getResource('SettingExistedAlready')
+            };
+            const values = {
+                settingName: '',
+                settingValue: '1'
+            };
+            const container = shallow(<NewSettingValue {...initProps} />).instance();
+            container.isCheckSettingValue = jest.fn(() => false);
+            //Act
+            const actual = container.validateFormik(values);
+            // Assert
+            expect(actual).toEqual(expectErrors);
+        });
+
+        it('should return exact errors when setting value is null', () => {
+            // Arrange
+            const expectErrors = {
+                settingName: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingName')),
+                settingValue: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingValue')),
             };
             const values = {
                 settingName: '',
                 settingValue: ''
             };
             const container = shallow(<NewSettingValue {...initProps} />).instance();
-
             //Act
             const actual = container.validateFormik(values);
             // Assert
             expect(actual).toEqual(expectErrors);
+        });
+    });
+
+    describe('isCheckSettingValue ', () => {
+        it('should return exact value', () => {
+            // Arrange
+            const values = {
+                settingName: 'settingName',
+                settingValue: 'settingValue'
+            };
+            const container = shallow(<NewSettingValue {...initProps} />).instance();
+
+            //Act
+            const actual = container.isCheckSettingValue(values);
+            // Assert
+            expect(actual).toEqual(false);
+
         });
     });
 

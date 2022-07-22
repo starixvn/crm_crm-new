@@ -1,10 +1,26 @@
 import settingLog, {
+    resetState,
     setActionLog,
     setGridParams,
     setGridSettingLogs
 } from '../settingLogSlice';
 
 describe('settingLogSlice reducer', () => {
+    it('should handle reset state', () => {
+        expect(
+            settingLog({}, {
+                type: resetState.type
+            })
+        ).toEqual({
+            actionLogs: null,
+            gridParams: {
+                pageIndex: 1,
+                pageSize: 100
+            },
+            gridDataSettingLogs: null
+        });
+    });
+
     it('should handle initial state', () => {
         expect(settingLog(undefined, {})).toEqual({
             actionLogs: null,

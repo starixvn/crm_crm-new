@@ -8,6 +8,22 @@ describe('AppContainer', () => {
         jest.clearAllMocks();
     });
 
+    describe('componentWillUnmount', () => {
+        const props = {
+            resetState: jest.fn(),
+        };
+
+        it('should do reset store', () => {
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
+    });
+
     describe('handleCloseEditNoInquiryDialog', () => {
         it('should call exactly functions when close dialog', () => {
             //Arrange
@@ -50,7 +66,7 @@ describe('AppContainer', () => {
                 getLogsByCustomerId: jest.fn(),
                 setCreateCommunicationDialog: jest.fn(),
                 setGridParams: jest.fn(),
-                gridParams: { customerId: 1754 },
+                gridParams: { customerId: 1754 }
             };
             const container = shallow(<AppContainer {...props} />).instance();
 
@@ -68,7 +84,7 @@ describe('AppContainer', () => {
         it('should render Filter correctly', () => {
             //Act
             const container = shallow(<AppContainer />);
-
+            container.instance().setState({customerInfoPolicy: 1, createUpdateFeedbackPermission: 1});
             //Assert
             expect(toJson(container)).toMatchSnapshot();
         });

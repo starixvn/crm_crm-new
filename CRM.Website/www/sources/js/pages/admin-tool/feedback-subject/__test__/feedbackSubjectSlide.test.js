@@ -1,4 +1,5 @@
 import feedbackSubject, {
+    resetState,
     setGridParams,
     setFeedBackSubject,
     setAllActiveFeedbackSubject,
@@ -11,6 +12,28 @@ import feedbackSubject, {
 } from '../feedbackSubjectSlide';
 
 describe('feedbackSubject reducer', () => {
+    it('should handle reset state', () => {
+        expect(
+            feedbackSubject({}, {
+                type: resetState.type
+            })
+        ).toEqual({
+            gridData: null,
+            gridParams: {
+            Subject: null,
+            pageIndex: 1,
+            pageSize: 100
+            },
+            allActiveFeedbackSubject: null,
+            selectFeedbackSubject: null,
+            createFeedbackSubjectPopup: { show: false },
+            createFeedbackSubjectResult: '',
+            editStatusFeedbackSubjectPopup: { show: false },
+            editFeedbackSubjectPopup: { show:false },
+            editFeedbackSubjectResult: ''
+        });
+    });
+
     it('show handle initial state', () => {
         expect(feedbackSubject(undefined, {})).toEqual({
             gridData: null,

@@ -35,11 +35,6 @@ describe('AppContainer', () => {
             pageIndex: 1,
             pageSize: 100
         },
-        editStatusPopup: {
-            show: true,
-            isActive: true,
-            settingValue: 'test'
-        },
         insertNewSettingPopup: {
             show: true
         },
@@ -49,6 +44,7 @@ describe('AppContainer', () => {
         editPopup: {
             show: true
         },
+        resetState: jest.fn(),
         getMainSettings: jest.fn(),
         setOpenInsertNewSettingPopup: jest.fn(),
         setInsertNewSettingResult: jest.fn(),
@@ -70,6 +66,18 @@ describe('AppContainer', () => {
 
             // Assert
             expect(initProps.getMainSettings).toHaveBeenCalled();
+        });
+    });
+
+    describe('componentWillUnmount', () => {
+        it('should do reset store', () => {
+            const container = shallow(<AppContainer {...initProps} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(initProps.resetState).toHaveBeenCalled();
         });
     });
 
@@ -178,7 +186,12 @@ describe('AppContainer', () => {
             const response = {isSuccessful: true};
             const promise = Promise.resolve(response);
             const editStatusSetting = jest.fn(() => promise);
-            const props = {...initProps, editStatusSetting};
+            const editStatusPopup = {
+                show: true,
+                isActive: true,
+                settingValue: 'test'
+            };
+            const props = {...initProps, editStatusSetting, editStatusPopup};
             toast.success = jest.fn();
             const container = shallow(<AppContainer {...props}/>).instance();
             container.handleCloseEditStatusPopup = jest.fn();
@@ -192,12 +205,41 @@ describe('AppContainer', () => {
             expect(toast.success).toHaveBeenCalledWith(LangHelper.getResource('ActiveStatusSettingSuccess'));
         });
 
+        it('should call exactly functions when edit status is successfully and is inactive', async () => {
+            // Arrange
+            const response = {isSuccessful: true};
+            const promise = Promise.resolve(response);
+            const editStatusSetting = jest.fn(() => promise);
+            const editStatusPopup = {
+                show: true,
+                isActive: false,
+                settingValue: 'test'
+            };
+            const props = {...initProps, editStatusSetting, editStatusPopup};
+            toast.success = jest.fn();
+            const container = shallow(<AppContainer {...props}/>).instance();
+            container.handleCloseEditStatusPopup = jest.fn();
+            container.handleGetSettingType = jest.fn();
+
+            // Act
+            container.handleEditStatus();
+            await promise;
+            
+            // Assert
+            expect(toast.success).toHaveBeenCalledWith(LangHelper.getResource('DeActiveStatusSettingSuccess'));
+        });
+
         it('should call exactly functions when edit status is unsuccessfully', async () => {
             // Arrange
             const response = {isSuccessful: false};
             const promise = Promise.resolve(response);
             const editStatusSetting = jest.fn(() => promise);
-            const props = {...initProps, editStatusSetting};
+            const editStatusPopup = {
+                show: true,
+                isActive: false,
+                settingValue: 'test'
+            };
+            const props = {...initProps, editStatusSetting, editStatusPopup};
             toast.error = jest.fn();
             const container = shallow(<AppContainer {...props}/>).instance();
             container.handleCloseEditStatusPopup = jest.fn();

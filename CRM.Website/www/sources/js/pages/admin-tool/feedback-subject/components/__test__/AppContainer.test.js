@@ -15,10 +15,30 @@ describe('AppContainer', () => {
 
     it('should render correctly', () => {
         // Act
+        const state = {
+            policy: true
+        };
         const container = shallow(<AppContainer />);
-
+        container.instance().setState(state);
         // Assert
         expect(toJson(container)).toMatchSnapshot();
+    });
+
+    describe('componentWillUnmount', () => {
+        const props = {
+            resetState: jest.fn(),
+            getAllActiveFeedbackSubject: jest.fn()
+        };
+
+        it('should do reset store', () => {
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
     });
 
     describe('create feedback subject', () => {
@@ -28,8 +48,13 @@ describe('AppContainer', () => {
                 createFeedbackSubjectPopup: { show: true }
             };
 
+            const state = {
+                policy: true
+            };
+
             // Act
             const container = shallow(<AppContainer {...props} />);
+            container.instance().setState(state);
 
             //Assert
             expect(toJson(container)).toMatchSnapshot();
@@ -41,8 +66,12 @@ describe('AppContainer', () => {
                 setCreateFeedbackSubjectPopup: jest.fn(),
                 setCreateFeedbackSubjectResult: jest.fn()
             };
-            const container = shallow(<AppContainer {...props} />).instance();
+            const state = {
+                policy: true
+            };
 
+            const container = shallow(<AppContainer {...props} />).instance();
+            container.setState(state);
             // Act
             container.handleCloseCreatePopup();
 
@@ -58,8 +87,12 @@ describe('AppContainer', () => {
                 getFeedBackSubject: jest.fn(),
                 getAllActiveFeedbackSubject: jest.fn()
             };
+            const state = {
+                policy: true
+            };
             const container = shallow(<AppContainer {...props} />).instance();
             container.handleCloseCreatePopup = jest.fn();
+            container.setState(state);
 
             // Act
             container.handleCreateSuccess();
@@ -77,12 +110,15 @@ describe('AppContainer', () => {
             const props = {
                 editFeedbackSubjectPopup: { show: true }
             };
+            const state = {
+                policy: true
+            };
 
             // Act
             const container = shallow(<AppContainer {...props} />);
+            container.instance().setState(state);
 
             // Assert
-            expect(toJson(container)).toMatchSnapshot();
             expect(container.find(EditFeedbackSubject).length).toBe(1);
         });
 

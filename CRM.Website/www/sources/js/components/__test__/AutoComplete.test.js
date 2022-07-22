@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import AutoComplete from '../AutoComplete';
 import LangHelper from '@jsroot/common/langHelper';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { Form } from 'react-bootstrap';
 

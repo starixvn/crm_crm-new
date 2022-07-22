@@ -16,6 +16,7 @@ export class AppContainer extends Component {
        policy: null
     };
   }
+
   componentDidMount() {
       this.props.getMainSettings();
       getPermission(FunctionKey.SettingRelationManagement).then(response => {
@@ -23,6 +24,7 @@ export class AppContainer extends Component {
       });
       document.title = LangHelper.getResource('SettingRelationv2');
   }
+  
   componentWillUnmount(){
     this.props.resetState();
   }

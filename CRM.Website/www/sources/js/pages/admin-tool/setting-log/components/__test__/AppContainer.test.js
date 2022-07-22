@@ -8,6 +8,22 @@ describe('AppContainer', () => {
         jest.clearAllMocks();
     });
 
+    describe('componentWillUnmount', () => {
+        const props = {
+            resetState: jest.fn()
+        };
+
+        it('should do reset store', () => {
+            const container = shallow(<AppContainer {...props} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
+    });
+
     describe('render', () => {
         it('should render correctly', () => {
             // Act

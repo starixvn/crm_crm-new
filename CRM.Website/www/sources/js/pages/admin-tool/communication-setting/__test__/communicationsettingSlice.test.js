@@ -1,4 +1,5 @@
 import communicationSetting, {
+    resetState,
     setAllSettings,
     setGridParamsCommunication,
     setGridCommunicationSetting,
@@ -14,6 +15,36 @@ import communicationSetting, {
 describe('communicationSetting reducer', () => {
     it('should handle initial state', () => {
         expect(communicationSetting(undefined, {})).toEqual({
+            settings: {
+                communicationTools: [],
+                mainCategories: [],
+                subCategories: []
+            },
+            gridParamsCommunication: {
+                username: '',
+                categoryIds: '',
+                subCategoryIds: '',
+                isDisableCategorySubCategory: '',
+                pageIndex: 1,
+                pageSize: 50
+            },
+            gridDataCommunication: null,
+            selectCommunication: null,
+            createCommunicationPopup: { show: false },
+            createCommunicationResult: null,
+            editCommunicationPopup: { show: false },
+            editCommunicationResult: null,
+            deleteCommunicationPopup: { show: false },
+            deleteCommunicationResult: null
+        });
+    });
+
+    it('should handle reset state', () => {
+        expect(
+            communicationSetting({}, {
+                type: resetState.type
+            })
+        ).toEqual({
             settings: {
                 communicationTools: [],
                 mainCategories: [],

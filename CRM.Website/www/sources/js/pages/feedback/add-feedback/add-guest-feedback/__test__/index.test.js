@@ -1,34 +1,24 @@
-// import ReactDOM from 'react-dom';
+import React from 'react';
+import toJson from 'enzyme-to-json';
+import configureMockStore from 'redux-mock-store';
+import Index from '../index';
+import { shallow } from 'enzyme';
 
-// describe('index', () => {
-//     beforeEach(() => {
-//         const appContainer = document.createElement('div');
-//         const isHost = document.createElement('div');
-//         appContainer.setAttribute('id', 'right-row-container');
-//         isHost.setAttribute('id', 'IsHost');
-//         document.body.appendChild(appContainer);
-//         document.body.appendChild(isHost);
-//         ReactDOM.render = jest.fn();
-//     });
+describe('index', () => {
+    const mockStore = configureMockStore();
+    const initialState = {
+        settings: null,
+        balanceUpday: null,
+        addFeedbackResult: null,
+        feedbackSubjectTemplates: [],
+        confirmCreateGuestDialog: { show: false }
+    };
+    const store = mockStore(initialState);
 
-//     afterEach(() => {
-//         jest.clearAllMocks();
-//         const appContainer = document.getElementById('right-row-container');
-//         const isHost = document.getElementById('IsHost');
-//         if (appContainer) {
-//             document.body.removeChild(appContainer);
-//         }
-
-//         if (isHost) {
-//             document.body.removeChild(isHost);
-//         }
-//     });
-
-//     it('renders dom correctly', () => {
-//         // Action
-//         require('../index');
-
-//         // Assert
-//         expect(ReactDOM.render).toHaveBeenCalled();
-//     });
-// });
+    it('component renders correctly', () => {
+        //Arrange
+        const container = shallow(<Index store={store}/>);
+        // Action
+        expect(toJson(container)).toMatchSnapshot();
+    });
+});

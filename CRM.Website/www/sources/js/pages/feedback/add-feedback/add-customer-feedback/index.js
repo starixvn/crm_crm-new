@@ -10,7 +10,7 @@ const store = configureStore({
 });
 import '@cssroot/pages/feedback/add-feedback/index.scss';
 
-class index extends React.PureComponent {
+export class index extends React.PureComponent {
     render(){
         const location = this.props.location;
         return(

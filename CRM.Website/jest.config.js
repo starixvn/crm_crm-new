@@ -2,7 +2,8 @@
     setupFilesAfterEnv: ['<rootDir>/www/sources/js/setupTests/setupEnzyme.js'],
     moduleFileExtensions: ['js', 'jsx'],
     moduleNameMapper: {
-        '^@jsroot(.*)$': '<rootDir>/www/sources/js$1'
+        '^@jsroot(.*)$': '<rootDir>/www/sources/js$1',
+        '\\.(css|scss)$': 'identity-obj-proxy'
     },
     collectCoverage: true,
     collectCoverageFrom: [
@@ -10,5 +11,5 @@
     ],
     coveragePathIgnorePatterns: [
         '<rootDir>/node_modules/'
-    ]
+    ] 
 };

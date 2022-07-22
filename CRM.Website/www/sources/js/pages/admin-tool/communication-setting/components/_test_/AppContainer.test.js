@@ -2,8 +2,6 @@ import React from 'react';
 import { toast } from 'react-toastify';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import Filter from '../Filter';
-import DataGrid from '../DataGrid';
 import toJson from 'enzyme-to-json';
 
 jest.mock('react-toastify');
@@ -21,19 +19,21 @@ describe('AppContainer', () => {
         expect(toJson(container)).toMatchSnapshot();
     });
 
-    it('renders default component correctly', () => {
-        // Arrange
-        const props = { isHost: false };
+    describe('componentWillUnmount', () => {
+        const props = {
+            resetState: jest.fn(),
+            getAllSettings: jest.fn()
+        };
 
-        // Act
-        const container = shallow(<AppContainer {...props} />);
+        it('should do reset store', () => {
+            const container = shallow(<AppContainer {...props} />);
 
-        // Assert
-        expect(container.find(Filter).length).toBe(1);
-        expect(container.find(Filter).props().isHost).toBe(props.isHost);
+            // Action
+            container.instance().componentWillUnmount();
 
-        expect(container.find(DataGrid).length).toBe(1);
-        expect(container.find(DataGrid).props().isHost).toBe(props.isHost);
+            // Assert
+            expect(props.resetState).toHaveBeenCalled();
+        });
     });
 
     describe('create communication setting', () => {

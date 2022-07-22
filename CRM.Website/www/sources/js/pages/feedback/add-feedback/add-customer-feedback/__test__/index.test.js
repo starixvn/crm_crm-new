@@ -1,33 +1,32 @@
-// import ReactDOM from 'react-dom';
+import React from 'react';
+import toJson from 'enzyme-to-json';
+import configureMockStore from 'redux-mock-store';
+import {index} from '../index';
+import { shallow } from 'enzyme';
 
-// describe('index', () => {
-//     beforeEach(() => {
-//         const appContainer = document.createElement('div');
-//         const id = document.createElement('div');
-//         const name = document.createElement('div');
-//         appContainer.setAttribute('id', 'right-row-container');
-//         appContainer.setAttribute('name', 'right-row-container');
-//         id.setAttribute('id', 'id');
-//         name.setAttribute('id', 'name');
-//         document.body.appendChild(appContainer);
-//         document.body.appendChild(id);
-//         document.body.appendChild(name);
-//         ReactDOM.render = jest.fn();
-//     });
 
-//     afterEach(() => {
-//         jest.clearAllMocks();
-//         const appContainer = document.getElementById('right-row-container');
-//         if (appContainer) {
-//             document.body.removeChild(appContainer);
-//         }
-//     });
+describe('index', () => {
+    const mockStore = configureMockStore();
+    const initialState = {
+        settings: null,
+        balanceUpday: null,
+        addFeedbackResult: null,
+        feedbackSubjectTemplates: [],
+        confirmCreateGuestDialog: { show: false }
+    };
+    const store = mockStore(initialState);
 
-//     it('renders dom correctly', () => {
-//         // Action
-//         require('../index');
-
-//         // Assert
-//         expect(ReactDOM.render).toHaveBeenCalled();
-//     });
-// });
+    it('component renders correctly', () => {
+        //Arrange
+        const props = {
+            location: {
+                state: {custId: 1}
+            }
+        };
+        const container = shallow(
+                <index {...props} store={store}/>
+            );
+        // Action
+        expect(toJson(container)).toMatchSnapshot();
+    });
+});

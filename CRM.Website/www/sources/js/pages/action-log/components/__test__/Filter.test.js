@@ -16,7 +16,8 @@ describe('Filter', () => {
     const initProps = {
         allLogActions: [ { id: 100, name: 'Add the general information for customer' } ],
         getAllLogAction: jest.fn(),
-        setGridParams: jest.fn()
+        setGridParams: jest.fn(),
+        resetState: jest.fn()
     };
 
     describe('componentDidMount', () => {
@@ -25,10 +26,22 @@ describe('Filter', () => {
             const props = { ...initProps };
 
             //Act
-            const container = shallow(<Filter {...props} />);
+            shallow(<Filter {...props} />);
 
             // Assert
             expect(props.getAllLogAction).toHaveBeenCalled();
+        });
+    });
+
+    describe('componentWillUnmount', () => {
+        it('should do reset store', () => {
+            const container = shallow(<Filter {...initProps} />);
+
+            // Action
+            container.instance().componentWillUnmount();
+
+            // Assert
+            expect(initProps.resetState).toHaveBeenCalled();
         });
     });
 

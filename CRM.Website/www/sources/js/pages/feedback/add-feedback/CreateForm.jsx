@@ -296,7 +296,7 @@ export default class CreateForm extends Component {
     };
 
     handleChangeRefTicket = (e, setFieldValue) => {
-        const value = e.target.value > 15 ? e.target.value.slice(0, 15) : e.target.value;
+        const value = e.target.value > 19 ? e.target.value.slice(0, 19) : e.target.value;
         setFieldValue('ticketRefInput', value);
     };
 
@@ -446,7 +446,7 @@ export default class CreateForm extends Component {
                             settings={this.props.settings} customerDetail={customerDetail} handleChange={handleChange} mainCategoriesHandleChange={this.mainCategoriesHandleChange}
                             values={values} errors={errors} touched={touched} setFieldValue ={setFieldValue} handleChangeFeedbackTime={this.handleChangeFeedbackTime}
                             handleChangeResolutionTime={this.handleChangeResolutionTime} handleCommunicationChange={this.handleCommunicationChange} renderOptions={this.renderOptions}
-                            subCategoriesOptions={this.state.subCategoriesOptions} subProductOptions={this.state.ubProductOptions} betTypeOptions={this.state.betTypeOptions}
+                            subCategoriesOptions={this.state.subCategoriesOptions} subProductOptions={this.state.subProductOptions} betTypeOptions={this.state.betTypeOptions}
                             productHandleChange={this.productHandleChange} subProductHandleChange={this.subProductHandleChange}
                         />
                         {this.renderVerifyCustomer(values, handleChange, setFieldValue)}

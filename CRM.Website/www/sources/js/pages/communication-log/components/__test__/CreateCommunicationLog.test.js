@@ -167,24 +167,6 @@ describe('CreateCommunicationLog', () => {
             expect(setFieldValue).toHaveBeenCalledWith('startTime', startTime);
             expect(container.updateTimeAndToolPrefix).toHaveBeenCalled();
         });
-
-        it('should update endTime when startTime is after endTime', () => {
-            // Arrange
-            const setFieldValue = jest.fn();
-            const startTime = '2021-12-20T00:00:00-06:00';
-            const endTime = '2021-11-20T00:00:00-06:00';
-            const container = shallow(<CreateCommunicationLog />).instance();
-            container.updateTimeAndToolPrefix = jest.fn();
-
-            // Act
-            container.onChangeStartTime(setFieldValue, startTime, endTime);
-            jest.runAllTimers();
-
-            // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('startTime', startTime);
-            expect(setFieldValue).toHaveBeenNthCalledWith(2, 'endTime', new Date('2021-12-20T00:00:00-06:01'));
-            expect(container.updateTimeAndToolPrefix).toHaveBeenCalled();
-        });
     });
 
     describe('onChangeEndTime', () => {
@@ -201,22 +183,6 @@ describe('CreateCommunicationLog', () => {
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('endTime', endTime);
-        });
-
-        it('should update startTime when startTime is before endTime', () => {
-            // Arrange
-            const setFieldValue = jest.fn();
-            const startTime = '2021-12-20T00:00:00-06:00';
-            const endTime = '2021-11-20T00:00:00-06:00';
-            const container = shallow(<CreateCommunicationLog />).instance();
-
-            // Act
-            container.onChangeEndTime(setFieldValue, startTime, endTime);
-            jest.runAllTimers();
-
-            // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('endTime', endTime);
-            expect(setFieldValue).toHaveBeenNthCalledWith(2, 'startTime', new Date('2021-11-20T00:00:00-05:59'));
         });
     });
 
@@ -981,7 +947,7 @@ describe('CreateCommunicationLog', () => {
             const actual = container.isOldEqualNewValue();
 
             // Assert
-            expect(actual).toEqual(false);
+            expect(actual).toEqual(true);
         });
 
         it('should return true when call function isOldEqualNewValue', () => {
