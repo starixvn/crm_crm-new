@@ -358,25 +358,26 @@ export default class CreateForm extends Component {
 
     handleChangeContent = (name, value) => {
         this.setState({ content: {...this.state.content, [name]: value }});
-    }
+    };
 
     handleChangeCustomerInfo = event => {
         this.setState({ customerInfo: {...this.state.customerInfo, [event.target.name]: event.target.value }});
-    }
+    };
 
     handleChangeValueInfo = (name, value) => {
         this.setState({ customerInfo: {...this.state.customerInfo, [name]: value }});
-    }
-    
+    };
+
     renderIdentityInformation = (values, errors, touched, handleChange) => {
         const {customerDetail} = this.props;
         const {isShowCustomerDetailOption} = this.state.collapse;
         const isCollapse = customerDetail === null ? !isShowCustomerDetailOption : isShowCustomerDetailOption;
+        const borderStyle = !isCollapse ? BorderStyle.bottom : '';
         return (
             <div className={`panel-group ${BorderStyle.bottom}`}>
                 {
                     customerDetail === null ?
-                    <Form.Group as={Row} className={`title ${!isCollapse ? BorderStyle.bottom : ''}`}
+                    <Form.Group as={Row} className={`title ${borderStyle}`}
                         aria-controls="collapse-expand-identity"
                         aria-expanded={isCollapse}
                     >
@@ -396,7 +397,7 @@ export default class CreateForm extends Component {
                                 </Col>
                         }
                     </Form.Group> :
-                    <Form.Group as={Row} className={`title ${!isCollapse ? BorderStyle.bottom : ''}`}
+                    <Form.Group as={Row} className={`title ${borderStyle}`}
                         aria-controls="collapse-expand-identity"
                         aria-expanded={isCollapse}
                         onClick={() => this.handleCollapseExpend('isShowCustomerDetailOption')}
@@ -442,11 +443,12 @@ export default class CreateForm extends Component {
                 </div>
                 <Collapse in={!collapse.isShowDetailsOption}>
                     <div className={`panel-group ${BorderStyle.bottom}`} id="collapse-expand-show-detail">
-                        <Detail 
-                            settings={this.props.settings} customerDetail={customerDetail} handleChange={handleChange} mainCategoriesHandleChange={this.mainCategoriesHandleChange}
+                        <Detail
+                            settings={this.props.settings} customerDetail={customerDetail} handleChange={handleChange}
                             values={values} errors={errors} touched={touched} setFieldValue ={setFieldValue} handleChangeFeedbackTime={this.handleChangeFeedbackTime}
-                            handleChangeResolutionTime={this.handleChangeResolutionTime} handleCommunicationChange={this.handleCommunicationChange} renderOptions={this.renderOptions}
-                            subCategoriesOptions={this.state.subCategoriesOptions} subProductOptions={this.state.subProductOptions} betTypeOptions={this.state.betTypeOptions}
+                            handleChangeResolutionTime={this.handleChangeResolutionTime} handleCommunicationChange={this.handleCommunicationChange}
+                            subCategoriesOptions={this.state.subCategoriesOptions} subProductOptions={this.state.subProductOptions}
+                            betTypeOptions={this.state.betTypeOptions} renderOptions={this.renderOptions} mainCategoriesHandleChange={this.mainCategoriesHandleChange}
                             productHandleChange={this.productHandleChange} subProductHandleChange={this.subProductHandleChange}
                         />
                         {this.renderVerifyCustomer(values, handleChange, setFieldValue)}
