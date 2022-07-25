@@ -30,11 +30,11 @@ describe('filter', () => {
             displayOrder: 1,
             environment: "LIVE",
             functionName: "Customer & Feedback",
-            id: 473,
+            id: 1,
             isActive: true,
             name: "Feedback",
             parentId: 1,
-            parentName: "",
+            parentName: "Feedback1",
             policy: 2,
             url: '',
             subMenus: [{
@@ -179,6 +179,19 @@ describe('filter', () => {
             });
         });
 
+        describe('recursiveFindParentName ', () => {
+            it('should return exact parent name', () => {
+                //Arrange
+                const container = shallow(<Filter {...initProps} />).instance();
+                container.recursiveFindParentName = jest.fn(() => 'test');
+                //Act
+                const actual = container.recursiveFindParentName(initProps.menus, 1);
+
+                //Assert
+                expect(actual).toEqual("test");
+            });
+        });
+
         describe('isCheckActive', () => {
             it('should return exact class name', () => {
                 //Arrange
@@ -218,6 +231,32 @@ describe('filter', () => {
                 expect(initProps.handleNavigate).toHaveBeenCalledWith(firstArg);
                 }
             );
+        });
+
+        describe('Render', () => {
+            it('should return null', () => {
+                //Arrange
+                const props = {
+                    menus: null
+                };
+                const actual = shallow(<Filter {...props} />);
+                //Act
+
+                //Assert
+                expect(actual).toEqual({});
+            });
+        });
+
+        describe('recursiveFindParentName', () => {
+            it('should return exact parent name', () => {
+                //Arrange
+                const container = shallow(<Filter {...initProps} />).instance();
+                container.recursiveFindParentName = jest.fn(() => []);
+                //Act
+                const actual = container.recursiveFindParentName(initProps.menus, 1);
+                //Assert
+                expect(actual).toEqual([]);
+            });
         });
     });
 });
