@@ -80,7 +80,6 @@ export class DataGrid extends Component {
             return null;
         }
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
-
         return (
             <div>
                 <div className='table-title d-flex justify-content-between align-items-center'>

@@ -113,7 +113,6 @@ export class DataGrid extends Component {
         const cssStatus = item.status ? item.status.toLowerCase() : '',
             cssClass = (cssStatus !== 'pending' && cssStatus !== 'closed') ? '' : cssStatus;
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
-        
         return (
             <Row key={index} className={cssClass}>
                 <Cell className="text-center">
