@@ -7,11 +7,18 @@ import { shallow } from 'enzyme';
 
 describe('DataGrid', () => {
     beforeAll(() => {
-        window.customerInfoPolicy = 2;
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'hasCreateFeedbackPermission');
+        appContainer.checked = true;
+        document.body.appendChild(appContainer);
     });
 
     afterAll(() => {
         jest.clearAllMocks();
+        const appContainer = document.getElementById('hasCreateFeedbackPermission');
+        if (appContainer) {
+            document.body.removeChild(appContainer);
+        }
     });
 
     const initProps = {
@@ -19,7 +26,7 @@ describe('DataGrid', () => {
             { id: 4752, subject: 'test', claimTime: 'Nov 12, 2021 06:46:00 AM', status: 'KIV' },
             { id: 1234, subject: 'test', claimTime: 'Nov 12, 2021 06:46:00 AM', status: 'KIV' }
         ],
-        createUpdateFeedbackPermission : Policy.Host,
+        hasCreateFeedbackPermission : Policy.Host,
         setLogsByCustomerId: jest.fn()
     };
 

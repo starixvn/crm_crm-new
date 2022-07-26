@@ -5,8 +5,19 @@ import DataGridRemark from '../DataGridRemark';
 import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
+    beforeAll(() => {
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'hasCreateFeedbackPermission');
+        appContainer.checked = true;
+        document.body.appendChild(appContainer);
+    });
+
     afterAll(() => {
         jest.clearAllMocks();
+        const appContainer = document.getElementById('hasCreateFeedbackPermission');
+        if (appContainer) {
+            document.body.removeChild(appContainer);
+        }
     });
 
     describe('componentWillUnmount', () => {
@@ -173,12 +184,8 @@ describe('AppContainer', () => {
     describe('render', () => {
         it('should render DataGridRemark correctly', () => {
             // Arrange
-            const state = {
-                policy: 2
-            };
             // Act
             const container = shallow(<AppContainer />);
-            container.setState(state);
             // Assert
             expect(toJson(container)).toMatchSnapshot();
             expect(container.find(DataGridRemark).length).toBe(0);

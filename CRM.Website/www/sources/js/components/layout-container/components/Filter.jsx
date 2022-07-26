@@ -210,7 +210,7 @@ export default class Filter extends Component {
                 {this.renderRightContainer()}
                 {
                     showEmptyCustomerInfoPopup &&
-                    <SweetModalDialog size="lg"
+                    <SweetModalDialog size="sm"
                         title={LangHelper.getResource('Confirmation')}
                         contents={
                             LangHelper.getResource('EmptyData')
@@ -225,7 +225,7 @@ export default class Filter extends Component {
                 }
                 {
                     showEmptyConfirmPopup &&
-                    <SweetModalDialog size="lg"
+                    <SweetModalDialog size="sm"
                         title={LangHelper.getResource('Confirmation')}
                         contents={
                             <div>{LangHelper.getResource('ConfirmCustomerSearchGuest')}</div>

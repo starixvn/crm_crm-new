@@ -80,6 +80,7 @@ export class DataGrid extends Component {
         if (!redemptionLogs) {
             return null;
         }
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
 
         return (
             <div>
@@ -96,7 +97,7 @@ export class DataGrid extends Component {
                     adjustedHeight={10}
                 />
                 {
-                    this.props.createUpdateFeedbackPermission === Policy.Host && (
+                    hasCreateFeedbackPermission && (
                         <Button variant="primary" size="sm" className="mt-3" onClick={() => this.handleCreateRedemptionLog()}>
                             {LangHelper.getResource('InsertCase')}
                         </Button>

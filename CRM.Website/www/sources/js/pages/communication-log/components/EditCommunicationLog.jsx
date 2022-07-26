@@ -792,6 +792,7 @@ export class EditCommunicationLog extends Component {
         isSubmitting
     }) => {
         const { collapse, editResult } = this.state;
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -817,7 +818,7 @@ export class EditCommunicationLog extends Component {
                 </Modal.Body >
                 <Modal.Footer>
                     {
-                        this.props.createUpdateFeedbackPermission === Policy.Host && (
+                        hasCreateFeedbackPermission && (
                             <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
                                 {LangHelper.getResource('Save')}
                             </Button>

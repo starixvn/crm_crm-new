@@ -28,18 +28,13 @@ export class AppContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            customerInfoPolicy: null,
-            createUpdateFeedbackPermission: null
+            customerInfoPolicy: null
         };
     }
 
     componentDidMount(){
         getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
             this.setState({customerInfoPolicy: response});
-        });
-
-        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
-            this.setState({createUpdateFeedbackPermission: response});
         });
         document.title = LangHelper.getResource('CRMSystem');
     }
@@ -69,15 +64,15 @@ export class AppContainer extends Component {
 
     render() {
         const { editNoOfInquiryDialog, editCommunicationDialog, createCommunicationDialog } = this.props;
-        const {customerInfoPolicy, createUpdateFeedbackPermission} = this.state;
-        if(!customerInfoPolicy || !createUpdateFeedbackPermission){
+        const {customerInfoPolicy} = this.state;
+        if(!customerInfoPolicy){
             return null;
         }
 
         return (
             <div>
                 <Filter id={this.props.id}/>
-                <DataGrid customerInfoPolicy={customerInfoPolicy} createUpdateFeedbackPermission={createUpdateFeedbackPermission} />
+                <DataGrid customerInfoPolicy={customerInfoPolicy} />
                 {
                     editNoOfInquiryDialog.show &&
                     <EditNoOfInquiry feedbackId={editNoOfInquiryDialog.feedbackId}
@@ -86,7 +81,7 @@ export class AppContainer extends Component {
                 }
                 {
                     editCommunicationDialog.show &&
-                    <EditCommunicationLog feedbackId={editCommunicationDialog.feedbackId} createUpdateFeedbackPermission={createUpdateFeedbackPermission}
+                    <EditCommunicationLog feedbackId={editCommunicationDialog.feedbackId}
                         onClose={this.handleCloseEditCommunicationDialog}
                     />
                 }

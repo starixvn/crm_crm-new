@@ -64,10 +64,6 @@ describe('LayoutNavigation', () => {
           
               removeItem(key) {
                 delete store[key];
-              },
-               
-              getAll() {
-                console.log(store);
               }
             };
           })();

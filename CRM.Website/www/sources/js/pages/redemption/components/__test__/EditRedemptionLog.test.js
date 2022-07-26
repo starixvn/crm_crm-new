@@ -19,10 +19,18 @@ describe('EditRedemptionLog', () => {
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
         LangHelper.getResource = jest.fn(key => key);
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'hasCreateFeedbackPermission');
+        appContainer.checked = true;
+        document.body.appendChild(appContainer);
     });
 
     afterAll(() => {
         jest.clearAllMocks();
+        const appContainer = document.getElementById('hasCreateFeedbackPermission');
+        if (appContainer) {
+            document.body.removeChild(appContainer);
+        }
     });
 
     const initProps = {

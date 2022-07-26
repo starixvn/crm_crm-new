@@ -106,13 +106,9 @@ describe('AppContainer', () => {
                     editRedemptionDialog: { show: true, logId: 123 },
                     createRedemptionDialog: { show: true, logId: 456 }
                 };
-    
-                const state = {
-                    createUpdateFeedbackPermission : 2
-                };
+                
                 // Act
                 const container = shallow(<AppContainer {...props} />);
-                container.instance().setState(state);
                 // Assert
                 expect(toJson(container)).toMatchSnapshot();
             });

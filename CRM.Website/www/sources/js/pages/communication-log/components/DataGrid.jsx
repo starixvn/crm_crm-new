@@ -17,11 +17,12 @@ export class DataGrid extends Component {
     }
 
     buildHeader = () => {
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <HeaderRow>
                 <HeaderCell colWidth={20} sortOrder='desc' sortBy='runningNo'>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 {
-                    window.createUpdateFeedbackPermission === Policy.Host &&
+                    hasCreateFeedbackPermission &&
                     <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
                 }
                 <HeaderCell colWidth={25} sortOrder='desc' sortBy='Time'>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
@@ -40,13 +41,14 @@ export class DataGrid extends Component {
         const { pageIndex, pageSize } = gridParams;
         const skip = pageSize * (pageIndex - 1);
         const data = gridData.data.slice(skip, pageSize * pageIndex);
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
 
         if (data.length > 0) {
             return data.map((item, index) => this.renderRow(item, index));
         }
         return [
             <Row key={`body${1}`} className="no-data" >
-                <Cell className='text-center' colSpan={window.createUpdateFeedbackPermission === Policy.Host ? 9 : 8}>
+                <Cell className='text-center' colSpan={hasCreateFeedbackPermission ? 9 : 8}>
                     {LangHelper.getResource('ThereIsNoData')}
                 </Cell>
             </Row>
@@ -111,13 +113,15 @@ export class DataGrid extends Component {
     renderRow = (item, index) => {
         const cssStatus = item.status ? item.status.toLowerCase() : '',
             cssClass = (cssStatus !== 'pending' && cssStatus !== 'closed') ? '' : cssStatus;
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
+        
         return (
             <Row key={index} className={cssClass}>
                 <Cell className="text-center">
                     <span className='link-click' onClick={() => this.handleEditCommunicationLog(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>
                 {
-                    window.createUpdateFeedbackPermission === Policy.Host && (
+                    hasCreateFeedbackPermission && (
                         <Cell className="text-center">
                             <span className="rounded-circle fa fa-pencil icon-edit"
                                 onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}

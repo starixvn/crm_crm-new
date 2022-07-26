@@ -45,7 +45,7 @@ export class DataGridCommunication extends Component {
         }
         return [
             <Row key={`body${1}`} className="no-data" >
-                <Cell className='text-center' colSpan={isHost === Policy.Host ? 10 : 9}>
+                <Cell className='text-center' colSpan={isHost ? 10 : 9}>
                     {LangHelper.getResource('ThereIsNoData')}
                 </Cell>
             </Row>

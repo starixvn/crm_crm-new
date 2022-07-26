@@ -34,18 +34,7 @@ export class AppContainer extends Component {
         editCustomerVerifyDialog: { show: false }
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            policy: null
-        };
-    }
-
     componentDidMount(){
-        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
-            this.setState({policy: response});
-        });
-
         document.title = LangHelper.getResource('CRMSystem');
     }
 
@@ -86,11 +75,7 @@ export class AppContainer extends Component {
     };
 
     render() {
-        if(!this.state.policy){
-            return null;
-        }
-
-        const isHost = this.state.policy === Policy.Host;
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
 
         if(!this.props.custId){
             return(
@@ -116,7 +101,7 @@ export class AppContainer extends Component {
                     <div className="information"><CustomerInfoVerify id={custId}/></div>
                 </div>
                 <DataGridRedemption id={custId} />
-                <DataGridCommunication id={custId} isHost={isHost}/>
+                <DataGridCommunication id={custId} isHost={hasCreateFeedbackPermission}/>
                 {
                     editRedemptionDialog.show &&
                     <EditRedemptionLog logId={editRedemptionDialog.redemptionId}
@@ -146,7 +131,7 @@ export class AppContainer extends Component {
                 {
                     editCustomerVerifyDialog.show &&
                     <EditCustomerInfoVerify
-                        isHost={this.state.isHost}
+                        isHost={hasCreateFeedbackPermission}
                         id={custId}
                         onClose={this.handleCloseEditCustomerVerify}
                     />

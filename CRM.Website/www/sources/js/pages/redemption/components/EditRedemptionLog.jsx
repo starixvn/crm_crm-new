@@ -8,7 +8,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import { Policy } from '@jsroot/common/constants';
 import { validateFormik } from '../common.functions';
 import CreateEditForm from './CreateEditForm';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
@@ -129,7 +128,7 @@ export class EditRedemptionLog extends Component {
         isSubmitting
     }) => {
         const { editRedemptionResult, allStatus } = this.state;
-
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -147,7 +146,7 @@ export class EditRedemptionLog extends Component {
                 </Modal.Body >
                 <Modal.Footer>
                     {
-                        this.props.createUpdateFeedbackPermission === Policy.Host && (
+                        hasCreateFeedbackPermission && (
                             <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
                                 {LangHelper.getResource('Save')}
                             </Button>

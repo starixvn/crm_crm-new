@@ -9,8 +9,6 @@ import EditRedemptionLog from './EditRedemptionLog';
 import CreateRedemptionLog from './CreateRedemptionLog';
 import { configureStore } from '@reduxjs/toolkit';
 import redemption from '../redemptionSlice';
-import { FunctionKey } from '@jsroot/common/constants';
-import { getPermission } from '@jsroot/common/shareScripts';
 import LangHelper from '@jsroot/common/langHelper';
 
 const store = configureStore({
@@ -28,17 +26,7 @@ export class AppContainer extends Component {
         createRedemptionDialog: { show: false }
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            createUpdateFeedbackPermission: null
-        };
-    }
-
     componentDidMount(){
-        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
-            this.setState({createUpdateFeedbackPermission: response});
-        });
         document.title = LangHelper.getResource('CRMSystem');
     }
 
@@ -61,19 +49,15 @@ export class AppContainer extends Component {
     };
 
     render() {
-        if(!this.state.createUpdateFeedbackPermission){
-            return null;
-        }
-
         const { editRedemptionDialog, createRedemptionDialog } = this.props;
 
         return (
             <>
                 <Filter id={this.props.id}/>
-                <DataGrid createUpdateFeedbackPermission={this.state.createUpdateFeedbackPermission}/>
+                <DataGrid />
                 {
                     editRedemptionDialog.show &&
-                    <EditRedemptionLog logId={editRedemptionDialog.logId} createUpdateFeedbackPermission={this.state.createUpdateFeedbackPermission}
+                    <EditRedemptionLog logId={editRedemptionDialog.logId}
                         onClose={this.handleCloseEditRedemptionDialog}
                     />
                 }

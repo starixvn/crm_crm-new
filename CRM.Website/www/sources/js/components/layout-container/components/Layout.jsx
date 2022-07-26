@@ -92,10 +92,11 @@ export class Layout extends Component {
     handleGetCustomerIsGuest = () => {
         this.setState({
             isGuest: true
+        }, () =>{
+            this.handleCloseEmptyConfirm();
+            const params = this.getParams();
+            this.getDataGrid(params).then(() => this.handleNavigate('Dashboard'));
         });
-        this.handleCloseEmptyConfirm();
-        const params = this.getParams();
-        this.getDataGrid(params);
     };
 
     getParams = () => {
