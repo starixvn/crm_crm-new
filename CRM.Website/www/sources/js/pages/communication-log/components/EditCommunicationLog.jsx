@@ -14,7 +14,6 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
-import { Policy } from '@jsroot/common/constants';
 import { validateNoOfInquiry } from '../../feedback/common.functions';
 import RenderCollapse from './RenderCollapse';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';

@@ -13,8 +13,6 @@ import CreateCommunicationLog from '../../communication-log/components/CreateCom
 import CustomerInfoVerify from './CustomerInfoVerify';
 import EditCustomerInfoVerify from './EditCustomerInfoVerify';
 import LastFiveRemarkDataGrid from './LastFiveRemarkDataGrid';
-import { Policy, FunctionKey } from '@jsroot/common/constants';
-import { getPermission } from '@jsroot/common/shareScripts';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {

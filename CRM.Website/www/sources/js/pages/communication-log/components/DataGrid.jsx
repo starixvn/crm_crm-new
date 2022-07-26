@@ -42,7 +42,6 @@ export class DataGrid extends Component {
         const skip = pageSize * (pageIndex - 1);
         const data = gridData.data.slice(skip, pageSize * pageIndex);
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
-
         if (data.length > 0) {
             return data.map((item, index) => this.renderRow(item, index));
         }

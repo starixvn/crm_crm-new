@@ -7,7 +7,6 @@ import { Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DataService from '@jsroot/common/dataService';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import { Policy } from '@jsroot/common/constants';
 
 export class DataGridCommunication extends Component {
     componentDidMount() {

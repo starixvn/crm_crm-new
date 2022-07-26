@@ -6,7 +6,6 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import { Button } from 'react-bootstrap';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
-import { Policy } from '@jsroot/common/constants';
 import { handleSort } from '@jsroot/common/shareScripts';
 
 export class DataGrid extends Component {

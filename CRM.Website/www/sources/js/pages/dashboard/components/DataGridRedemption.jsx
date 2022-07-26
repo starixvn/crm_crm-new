@@ -50,7 +50,7 @@ export class DataGridRedemption extends Component {
     };
 
     renderRow = (item, index) => {
-        let dollarUSLocale = Intl.NumberFormat('en-US');
+        const dollarUSLocale = Intl.NumberFormat('en-US');
         return (
             <Row key={index}>
                 <Cell className="text-left">
