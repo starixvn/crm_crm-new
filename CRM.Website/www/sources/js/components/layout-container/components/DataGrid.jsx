@@ -27,6 +27,16 @@ export default class DataGrid extends PureComponent {
     }
 
     componentDidMount() {
+        this.handleCheckLanguage();
+    }
+
+    componentDidUpdate(prevProps) {
+        if(JSON.stringify(prevProps.customerInfo.languages) !== JSON.stringify(this.props.customerInfo.languages)){
+            this.handleCheckLanguage();
+        }
+    }
+
+    handleCheckLanguage = () =>{
         const data = this.props.customerInfo;
         const languages = this.props.settings.languages.map(x => {
             return {
@@ -62,7 +72,7 @@ export default class DataGrid extends PureComponent {
                             return (
                                 <Row className="item" key={index}>
                                     <Col md="3" className="text-left pl-1">
-                                        {value.role.name}
+                                        {value.roleName}
                                     </Col>
                                     <Col md="5" className="text-left">
                                         {
@@ -81,7 +91,7 @@ export default class DataGrid extends PureComponent {
                 </Form.Group>
                 <Form.Group className="row item current">
                     <Col md="3" className="text-left pl-1">
-                        {values.role.name}
+                        {values.roleName}
                     </Col>
                     <Col md="5" className="text-left">
                         {values.username}
@@ -91,7 +101,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
                 {
-                    (values.role.id === RoleIds.Member || values.role.id === RoleIds.CRMMember) &&
+                    (values.roleID === RoleIds.Member || values.roleID === RoleIds.CRMMember) &&
                     <Form.Group className="row item">
                         <Form.Label column md="3" className="pl-1" htmlFor="name" >
                             {LangHelper.getResource('Danger')}
@@ -562,7 +572,8 @@ export default class DataGrid extends PureComponent {
             pic4Name: customerInfo.pic4Name,
             pic4: customerInfo.pic4,
             pics: customerInfo.personalInfoContacts,
-            role: customerInfo.role,
+            roleID: customerInfo.roleID,
+            roleName: customerInfo.roleName,
             uplineInfo: customerInfo.uplineInfo,
             status: customerInfo.status,
             originalDangerLevel: customerInfo.originalDangerLevel,

@@ -49,7 +49,7 @@ describe('DataGridCustomerInfo', () => {
             customerInfo: {
                 languages: [1, 2],
                 uplineInfo: [],
-                role: { name: 'test' }
+                roleName:'test'
             },
             getSettings: jest.fn(() => Promise.resolve({}))
         };
@@ -74,7 +74,7 @@ describe('DataGridCustomerInfo', () => {
                     customerInfo: {
                         languages: [1, 2],
                         uplineInfo: [],
-                        role: { name: 'test' }
+                        roleName:'test'
                     },
                     getSettings: jest.fn(() => Promise.resolve({}))
                 };
@@ -103,7 +103,7 @@ describe('DataGridCustomerInfo', () => {
                     customerInfo: {
                         languages: [1, 2],
                         uplineInfo: [],
-                        role: { name: 'test' }
+                        roleName:'test'
                     },
                     getSettings: jest.fn(),
                     settings: {
@@ -116,7 +116,7 @@ describe('DataGridCustomerInfo', () => {
                     values: {
                         languages: [1, 2],
                         uplineInfo: [],
-                        role: { name: 'test' },
+                        roleName:'test',
                         site: {}
                     },
                     errors: {},
@@ -140,7 +140,7 @@ describe('DataGridCustomerInfo', () => {
                     customerInfo: {
                         languages: [1, 2],
                         uplineInfo: [],
-                        role: { name: 'test' }
+                        roleName:'test'
                     },
                     getSettings: jest.fn(),
                     settings: {
@@ -152,8 +152,8 @@ describe('DataGridCustomerInfo', () => {
                 const formikProps = {
                     values: {
                         languages: [1, 2],
-                        uplineInfo: [{ username: "tesla", role: { name: 'test' } }],
-                        role: { name: 'test' },
+                        uplineInfo: [{ username: "tesla", roleName:'test'}],
+                        roleName: 'test',
                         site: {}
                     },
                     errors: {},
@@ -181,7 +181,7 @@ describe('DataGridCustomerInfo', () => {
                 values: {
                     languages: [1, 2],
                     uplineInfo: [],
-                    role: { name: 'test' },
+                    roleName: 'test',
                     site: {}
                 },
                 errors: {},
@@ -221,7 +221,7 @@ describe('DataGridCustomerInfo', () => {
                     customerInfo: {
                         languages: [1, 2],
                         uplineInfo: [],
-                        role: { name: 'test' }
+                        roleName: 'test'
                     },
                     getSettings: jest.fn(),
                     settings: {
@@ -249,7 +249,7 @@ describe('DataGridCustomerInfo', () => {
                     values: {
                         languages: [1, 2],
                         uplineInfo: [],
-                        role: { name: 'test' },
+                        roleName: 'test',
                         site: {}
                     },
                     errors: {

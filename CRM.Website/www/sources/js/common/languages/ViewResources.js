@@ -532,5 +532,6 @@
     Languages: 'Languages',
     Welcome: 'Welcome',
     SignOut: 'Sign Out',
-    PleaseInputUseCommunicationType: 'Communication Type'
+    PleaseInputUseCommunicationType: 'Communication Type',
+    PostCode: 'Post Code'
 };

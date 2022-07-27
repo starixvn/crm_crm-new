@@ -38,7 +38,7 @@ const getPermissions = () => async dispatch => {
     const url = Site.resolveClientUrl('InformHeadline/GetPermissions');
     return await DataService.getDataAsync(url).then(response => {
         dispatch(setPermissions(response.data));
-    }).then(() => Site.unblockUI());
+    });
 };
 
 
@@ -81,11 +81,10 @@ const editContactInforms = params => async dispatch => {
 };
 
 const getAllSettings = () => async dispatch => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    }).then(() => Site.unblockUI());
+    });
 };
 
 const getEditInforms = params => async dispatch => {

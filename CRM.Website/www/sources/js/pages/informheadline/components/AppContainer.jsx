@@ -33,9 +33,7 @@ export class AppContainer extends Component {
     };
 
     async componentDidMount() {
-        await this.props.getInforms();
-        await this.props.getAllSettings();
-        await this.props.getPermissions();
+        await Promise.all([this.props.getInforms(), this.props.getAllSettings(), this.props.getPermissions()]);
         document.title = LangHelper.getResource('InformHeadlines');
     }
 

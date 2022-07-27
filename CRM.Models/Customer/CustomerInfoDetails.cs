@@ -170,13 +170,14 @@
 
         public bool IsIgnored { get; set; }
 
-        public bool IsSuper => Role != null && (Role.Id == RoleIdConstants.Super || Role.Id == RoleIdConstants.CRMSuper);
+        public bool IsSuper => RoleID == RoleIdConstants.Super || RoleID == RoleIdConstants.CRMSuper;
 
         public bool IsDirectAccount { get; set; }
 
-        public bool IsGuest => Role != null && (Role.Id == RoleIdConstants.Guest || Role.Id == RoleIdConstants.CRMGuest);
+        public bool IsGuest => RoleID == RoleIdConstants.Guest || RoleID == RoleIdConstants.CRMGuest;
 
-        public BaseSetting Role { get; set; } = new BaseSetting();
+        public int RoleID { get; set; }
+        public string RoleName { get; set; }
 
         public BaseSetting SiteSetting { get; set; } = new BaseSetting();
 

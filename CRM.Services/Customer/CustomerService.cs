@@ -44,8 +44,7 @@
             if (customers.Any())
             {
                 customerInfo = customers.FirstOrDefault();
-                customerInfo.Role.Id = customerInfo.RoleId;
-                customerInfo.Role.Name = RoleSettingService.GetRoleName(customerInfo.RoleId);
+                customerInfo.RoleName = RoleSettingService.GetRoleName(customerInfo.RoleId);
                 customerInfo.Languages = languageIds.ToList();
                 customerInfo.LanguageIds = string.Join(",", languageIds);
 
@@ -77,15 +76,15 @@
                     continue;
                 }
 
-                item.Role.Id = item.RoleId;
-                item.Role.Name = RoleSettingService.GetRoleName(item.RoleId);
+                item.RoleID = item.RoleId;
+                item.RoleName = RoleSettingService.GetRoleName(item.RoleId);
                 uplineInfos.Add(item);
             }
 
-            var headline = customers.Where(i => i.Role.Id == RoleIdConstants.Headline)
+            var headline = customers.Where(i => i.RoleID == RoleIdConstants.Headline)
                 .Select(i =>
                 {
-                    i.Role.Name = RoleSettingService.GetRoleName(i.Role.Id);
+                    i.RoleName = RoleSettingService.GetRoleName(i.RoleID);
                     return i;
                 }).FirstOrDefault() ?? GetUnAssignedCustomerInfo();
 
@@ -112,11 +111,8 @@
                 IsActive = false,
                 IsClosed = false,
                 IsSuspended = false,
-                Role = new BaseSetting
-                {
-                    Id = RoleIdConstants.Headline,
-                    Name = RoleSettingService.GetRoleName(RoleIdConstants.Headline)
-                }
+                RoleId = RoleIdConstants.Headline,
+                RoleName = RoleSettingService.GetRoleName(RoleIdConstants.Headline)
             };
         }
 

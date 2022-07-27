@@ -734,86 +734,72 @@ export class EditForm extends Component {
                 <Collapse in={!this.state.collapse.homeAddress}>
                     <div className="panel-content">
                         <Form.Group as={Row} className="pt-2">
-                            <Col sm="12" md="12">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="2" md="2" htmlFor="line1">{LangHelper.getResource('Line1')}</Form.Label>
-                                    <Col sm="10" md="10">
-                                        <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off" onChange={this.handleChange}
-                                            value={values.homeAddressLine1} id="homeAddressLine1" name="homeAddressLine1"
-                                        />
-                                    </Col>
-                                </Form.Group>
+                            <Col md="12" sm="12">
+                            <div className='d-flex'>
+                                <Form.Label className='label-width-line' htmlFor="line1">{LangHelper.getResource('Line1')}</Form.Label>
+                                <Form.Control type="text" size="sm" className="shadow-none control-width-line" autoComplete="off" onChange={this.handleChange}
+                                    value={values.homeAddressLine1} id="homeAddressLine1" name="homeAddressLine1"
+                                />
+                            </div>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col md="12" sm="12">
-                                <Form.Group as={Row}>
-                                    <Form.Label sm="2" column md="2" htmlFor="line2">{LangHelper.getResource('Line2')}</Form.Label>
-                                    <Col md="10" sm="10">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.homeAddressLine2}
-                                            name="homeAddressLine2" id="homeAddressLine2" autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label className='label-width-line' htmlFor="line2">{LangHelper.getResource('Line2')}</Form.Label>
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-line" value={values.homeAddressLine2}
+                                        name="homeAddressLine2" id="homeAddressLine2" autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col sm="12" md="12">
-                                <Form.Group as={Row}>
-                                    <Form.Label htmlFor="line3" column sm="2" md="2">{LangHelper.getResource('Line3')}</Form.Label>
-                                    <Col md="10" sm="10">
-                                        <Form.Control size="sm" className="shadow-none" value={values.homeAddressLine3}
-                                            name="homeAddressLine3" type="text" id="homeAddressLine3" autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label htmlFor="line3" className='label-width-line'>{LangHelper.getResource('Line3')}</Form.Label>
+                                    <Form.Control size="sm" className="shadow-none control-width-line" value={values.homeAddressLine3}
+                                        name="homeAddressLine3" type="text" id="homeAddressLine3" autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col md="6" sm="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label sm="4" column md="4" htmlFor="city">{LangHelper.getResource('City')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.homeAddressCity}
-                                            name="homeAddressCity" id="homeAddressCity" autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label className='label-width-bank' htmlFor="city">{LangHelper.getResource('City')}</Form.Label>
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-bank" value={values.homeAddressCity}
+                                        name="homeAddressCity" id="homeAddressCity" autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
                             </Col>
                             <Col sm="6" md="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label sm="4" md="4" htmlFor="state" column>{LangHelper.getResource('State')}
+                                <div className='d-flex'>
+                                    <Form.Label  className='label-width-bank' htmlFor="state">{LangHelper.getResource('State')}
                                     </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" value={values.homeAddressState} autoComplete="off" onChange={this.handleChange}
-                                            name="homeAddressState" size="sm" className="shadow-none" id="homeAddressState"
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                    <Form.Control type="text" value={values.homeAddressState} autoComplete="off" onChange={this.handleChange}
+                                        name="homeAddressState" size="sm" className="shadow-none control-width-bank" id="homeAddressState"
+                                    />
+                                </div>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col sm="6" md="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="country">{LangHelper.getResource('Country')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control as="select" size="sm" className="shadow-none" value={values.homeAddressCountryId}
-                                            name="homeAddressCountryId" id="homeAddressCountryId" autoComplete="off" onChange={this.handleChange}
-                                        >
-                                            {this.props.allSettings.countries.map(item => this.renderOptions(item.name, item.id))}
-                                        </Form.Control>
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label className='label-width-bank' htmlFor="country">{LangHelper.getResource('Country')}</Form.Label>
+                                    <Form.Control as="select" size="sm" className="shadow-none control-width-bank" value={values.homeAddressCountryId}
+                                        name="homeAddressCountryId" id="homeAddressCountryId" autoComplete="off" onChange={this.handleChange}
+                                    >
+                                        {this.props.allSettings.countries.map(item => this.renderOptions(item.name, item.id))}
+                                    </Form.Control>
+                                </div>
                             </Col>
                             <Col sm="6" md="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="postCode">{LangHelper.getResource('PostCode')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.homeAddressPostCode}
-                                            name="homeAddressPostCode" id="homeAddressPostCode" autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label className='label-width-bank' htmlFor="postCode">{LangHelper.getResource('PostCode')}</Form.Label>
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-bank" value={values.homeAddressPostCode}
+                                        name="homeAddressPostCode" id="homeAddressPostCode" autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
                             </Col>
                         </Form.Group>
                     </div>
@@ -835,130 +821,111 @@ export class EditForm extends Component {
                     <div className="panel-content">
                         <Form.Group as={Row} className="pt-2">
                             <Col sm="6" md="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" md="4" htmlFor="accName">{LangHelper.getResource('AccName')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.bankInfoHolderName}
-                                            name="bankInfoHolderName" id="bankInfoHolderName" autoComplete="off" onChange={this.handleChange} />
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label className='label-width-bank' htmlFor="accName">{LangHelper.getResource('AccName')}</Form.Label>
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-bank" value={values.bankInfoHolderName}
+                                        name="bankInfoHolderName" id="bankInfoHolderName" autoComplete="off" onChange={this.handleChange} 
+                                    />
+                                </div>
                             </Col>
                             <Col md="6" sm="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label sm="4" md="4" column htmlFor="bankName">{LangHelper.getResource('BankName')}</Form.Label>
-                                    <Col md="8" sm="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.bankInfoName}
-                                            name="bankInfoName" id="bankInfoName" autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label className='label-width-bank' htmlFor="bankName">{LangHelper.getResource('BankName')}</Form.Label>
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-bank" value={values.bankInfoName}
+                                        name="bankInfoName" id="bankInfoName" autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col sm="6" md="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label md="4" column sm="4" htmlFor="accountNo">
-                                        {LangHelper.getResource('AccountNo')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.bankInfoAccNo}
-                                            name="bankInfoAccNo" id="bankInfoAccNo" autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col sm="6" md="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label md="4" htmlFor="iBanSwiftCode" column sm="4">{LangHelper.getResource('IBanSwiftCode')}
+                                <div className='d-flex'>
+                                    <Form.Label htmlFor="accountNo" className='label-width-bank'>
+                                        {LangHelper.getResource('AccountNo')}
                                     </Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.bankInfoSwiftCode}
-                                            name="bankInfoSwiftCode" id="bankInfoSwiftCode" autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-bank" value={values.bankInfoAccNo}
+                                        name="bankInfoAccNo" id="bankInfoAccNo" autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
+                            </Col>
+                            <Col sm="6" md="6">
+                                <div className='d-flex'>
+                                    <Form.Label htmlFor="iBanSwiftCode" className='label-width-bank'>{LangHelper.getResource('IBanSwiftCode')}
+                                    </Form.Label>
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-bank" value={values.bankInfoSwiftCode}
+                                        name="bankInfoSwiftCode" id="bankInfoSwiftCode" autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col sm="12" md="12">
-                                <Form.Group as={Row}>
-                                    <Form.Label column md="2" sm="2" htmlFor="bankLine1">{LangHelper.getResource('Line1')}</Form.Label>
-                                    <Col sm="10" md="10">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.bankAddressLine1}
-                                            name="bankAddressLine1" id="bankAddressLine1" autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label className='label-width-line' htmlFor="bankLine1">{LangHelper.getResource('Line1')}</Form.Label>
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-line" value={values.bankAddressLine1}
+                                        name="bankAddressLine1" id="bankAddressLine1" autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col sm="12" md="12">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="2" md="2" htmlFor="bankLine2">{LangHelper.getResource('Line2')}</Form.Label>
-                                    <Col md="10" sm="10">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.bankAddressLine2}
-                                            name="bankAddressLine2" id="bankAddressLine2" autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label className='label-width-line' htmlFor="bankLine2">{LangHelper.getResource('Line2')}</Form.Label>
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-line" value={values.bankAddressLine2}
+                                        name="bankAddressLine2" id="bankAddressLine2" autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
                             </Col>
                         </Form.Group>
 
                         <Form.Group as={Row}>
                             <Col md="12" sm="12">
-                                <Form.Group as={Row}>
-                                    <Form.Label htmlFor="bankLine3" sm="2" md="2" column>{LangHelper.getResource('Line3')}
+                                <div className='d-flex'>
+                                    <Form.Label htmlFor="bankLine3" className='label-width-line'>{LangHelper.getResource('Line3')}
                                     </Form.Label>
-                                    <Col sm="10" md="10">
-                                        <Form.Control type="text" value={values.bankAddressLine3} name="bankAddressLine3" id="bankAddressLine3"
-                                            size="sm" className="shadow-none" autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                    <Form.Control type="text" value={values.bankAddressLine3} name="bankAddressLine3" id="bankAddressLine3"
+                                        size="sm" className="shadow-none control-width-line" autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col md="6" sm="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label htmlFor="bankCity" column md="4" sm="4">{LangHelper.getResource('City')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.bankAddressCity}
-                                            name="bankAddressCity" id="bankAddressCity" autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label htmlFor="bankCity" className='label-width-bank'>{LangHelper.getResource('City')}</Form.Label>
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-bank" value={values.bankAddressCity}
+                                        name="bankAddressCity" id="bankAddressCity" autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
                             </Col>
                             <Col sm="6" md="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="4" htmlFor="bankState" md="4">{LangHelper.getResource('State')}</Form.Label>
-                                    <Col md="8" sm="8">
-                                        <Form.Control type="text" size="sm" className="shadow-none" value={values.bankAddressState}
+                                <div className='d-flex'>
+                                    <Form.Label className='label-width-bank' md="4">{LangHelper.getResource('State')}</Form.Label>
+                                        <Form.Control type="text" size="sm" className="shadow-none control-width-bank" value={values.bankAddressState}
                                             autoComplete="off" onChange={this.handleChange} name="bankAddressState" id="bankAddressState"
-                                        /></Col>
-                                </Form.Group>
+                                        />
+                                </div>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col md="6" sm="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label sm="4" column md="4" htmlFor="bankCountry">{LangHelper.getResource('Country')}</Form.Label>
-                                    <Col md="8" sm="8">
-                                        <Form.Control as="select" size="sm" className="shadow-none" value={values.bankAddressCountryId}
-                                            name="bankAddressCountryId" id="bankAddressCountryId" autoComplete="off" onChange={this.handleChange}
-                                        >
-                                            {this.props.allSettings.countries.map(element => this.renderOptions(element.name, element.id))}
-                                        </Form.Control>
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label className='label-width-bank' htmlFor="bankCountry">{LangHelper.getResource('Country')}</Form.Label>
+                                    <Form.Control as="select" size="sm" className="shadow-none control-width-bank" value={values.bankAddressCountryId}
+                                        name="bankAddressCountryId" id="bankAddressCountryId" autoComplete="off" onChange={this.handleChange}
+                                    >
+                                        {this.props.allSettings.countries.map(element => this.renderOptions(element.name, element.id))}
+                                    </Form.Control>
+                                </div>
                             </Col>
                             <Col sm="6" md="6">
-                                <Form.Group as={Row}>
-                                    <Form.Label column md="4" sm="4" htmlFor="bankPostCode">{LangHelper.getResource('PostCode')}</Form.Label>
-                                    <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" id="bankAddressPostCode" className="shadow-none" name="bankAddressPostCode"
-                                            value={values.bankAddressPostCode} autoComplete="off" onChange={this.handleChange}
-                                        />
-                                    </Col>
-                                </Form.Group>
+                                <div className='d-flex'>
+                                    <Form.Label htmlFor="bankPostCode" className='label-width-bank'>{LangHelper.getResource('PostCode')}</Form.Label>
+                                    <Form.Control type="text" size="sm" id="bankAddressPostCode" className="shadow-none control-width-bank" name="bankAddressPostCode"
+                                        value={values.bankAddressPostCode} autoComplete="off" onChange={this.handleChange}
+                                    />
+                                </div>
                             </Col>
                         </Form.Group>
                     </div>
