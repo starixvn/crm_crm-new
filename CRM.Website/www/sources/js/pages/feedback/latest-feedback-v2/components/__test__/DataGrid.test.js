@@ -98,28 +98,6 @@ describe('DataGrid', () => {
         });
     });
 
-    // describe('renderCategoryColumn', () => {
-    //     it('should return expect array', () => {
-    //         // Arrange
-    //         const params = [
-    //             { settingId: 3024, subSettingId: 4069 },
-    //             { settingId: 3024, subSettingId: 4070 },
-    //             { settingId: 3025, subSettingId: 4080 },
-    //             { settingId: 3024, subSettingId: 4071 }
-    //         ];
-    //         const expectValue = [
-    //             { settingId: 3024, subSettingId: [ 4069, 4070, 4071 ] },
-    //             { settingId: 3025, subSettingId: [ 4080 ] }
-    //         ];
-    //         // Act
-    //         const container = shallow(<DataGrid />);
-    //         const received = container.instance().renderCategoryColumn(params);
-
-    //         // Assert
-    //         expect(received).toEqual(expectValue);
-    //     });
-    // });
-
     describe('renderRelatedCustomerColumn', () => {
         it('should return exact info customer when items less than 20', () => {
             // Arrange

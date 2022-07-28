@@ -36,11 +36,13 @@
         {
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
+
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);
+
             IEnumerable<DeletedFeedback> feedbacks = feedbacksTask.Result;
             IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
 
-            return Json(new { data = feedbacks, mainCategories });
+            return Json(new { data = feedbacks, mainCategories});
         }
 
         [HttpPost]
@@ -48,9 +50,13 @@
         {
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
+
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);
 
-            return Json(new { data = feedbacksTask.Result, mainCategoriesTask.Result });
+            IEnumerable<DeletedFeedback> feedbacks = feedbacksTask.Result;
+            IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
+
+            return Json(new { data = feedbacks, mainCategories });
         }
 
         [HttpPost]
