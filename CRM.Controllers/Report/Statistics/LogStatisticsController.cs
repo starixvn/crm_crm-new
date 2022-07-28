@@ -43,7 +43,7 @@
         [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetMainReport([FromBody] LogStatisticsCriteria criteria)
         {
-            var ibcReport = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
+            var ibcReportTask = logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
                 MainCategoryId = criteria.MainCategoryId,
@@ -55,7 +55,7 @@
                 SiteType = LogStatisticConstants.IBC
             });
 
-            var licenseeReport = await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
+            var licenseeReportTask = logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
                 MainCategoryId = criteria.MainCategoryId,
@@ -66,6 +66,11 @@
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = LogStatisticConstants.Licensee
             });
+
+            await Task.WhenAll(ibcReportTask, licenseeReportTask);
+            var ibcReport = ibcReportTask.Result;
+            var licenseeReport = licenseeReportTask.Result;
+
             return Json(new { ibcReport, licenseeReport });
         }
 
@@ -73,13 +78,22 @@
         [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetReportDetails([FromBody] LogStatisticsDetailCriteria criteria)
         {
-            var reportDetails = await logStatisticsService.GetReportDetailsAsync(criteria, true);
-            var report = reportDetails.ChildReports;
-            var mainCategories = await settingService.GetAllMainSubCategoriesAsync();
-            var communicationTools = await settingService.GetCommunicationToolAsync();
-            var products = await settingService.GetProductAsync();
-            var subProducts = await settingService.GetSubProductAsync();
-            var extensions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            var reportDetailsTask = logStatisticsService.GetReportDetailsAsync(criteria, true);
+            var mainCategoriesTask = settingService.GetAllMainSubCategoriesAsync();
+            var communicationToolsTask = settingService.GetCommunicationToolAsync();
+            var productsTask = settingService.GetProductAsync();
+            var subProductsTask = settingService.GetSubProductAsync();
+            var extensionTasks = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+
+            await Task.WhenAll(reportDetailsTask, mainCategoriesTask, communicationToolsTask, productsTask, subProductsTask, extensionTasks);
+
+            var report = reportDetailsTask.Result.ChildReports;
+            var mainCategories = mainCategoriesTask.Result;
+            var communicationTools = communicationToolsTask.Result;
+            var products = productsTask.Result;
+            var subProducts = subProductsTask.Result;
+            var extensions = extensionTasks.Result;
+
             return Json(new
             {
                 report, mainCategories, communicationTools,

@@ -42,46 +42,50 @@
 
         public async Task<ActionResult> AllSetting()
         {
-            var languages = await settingService.GetLanguageAsync(SettingConstants.Active, true);
-            var countries = await settingService.GetCountryAsync(SettingConstants.Active, true);
-            var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
-            var extentionNA = extentions.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
-            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var communicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active);
-            var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
-            var titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
-            var licenseeTypes = await settingService.GetLicenseeTypeAsync();
-            var products = await settingService.GetProductAsync(SettingConstants.Active);
-            var productNA = products.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
-            var subproducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
-            var subproductNA = subproducts.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
-            var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
-            var bettypeNA = bettypes.FirstOrDefault(b => b.Id == NAConstants.BettypeNA);
-            var mainCategorys = await settingService.GetMainCategoryAsync(SettingConstants.Active);
-            var subCategorys = await settingService.GetSubCategoryAsync(active: SettingConstants.Active);
-            var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
-            var sites = await settingService.GetAllSitesWithGroupAsync();
+            var languagesTask = settingService.GetLanguageAsync(SettingConstants.Active, true);
+            var countriesTask = settingService.GetCountryAsync(SettingConstants.Active, true);
+            var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            var statusesTask =  settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var communicationToolsTask = settingService.GetCommunicationToolAsync(SettingConstants.Active);
+            var responsesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
+            var titlesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
+            var licenseeTypesTask = settingService.GetLicenseeTypeAsync();
+            var productsTask = settingService.GetProductAsync(SettingConstants.Active);
+            var subproductsTask = settingService.GetSubProductAsync(active: SettingConstants.Active);
+            var bettypesTask = settingService.GetBetTypeAsync(active: SettingConstants.Active);
+            var mainCategorysTask = settingService.GetMainCategoryAsync(SettingConstants.Active);
+            var subCategorysTask = settingService.GetSubCategoryAsync(active: SettingConstants.Active);
+            var rolesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
+            var sitesTask = settingService.GetAllSitesWithGroupAsync();
+            await Task.WhenAll(languagesTask, countriesTask, extentionsTask, statusesTask, communicationToolsTask, responsesTask,
+                titlesTask, licenseeTypesTask, productsTask, subproductsTask, bettypesTask, mainCategorysTask, subCategorysTask, rolesTask, sitesTask);
+
+            var extentionNA = extentionsTask.Result.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
+            var productNA = productsTask.Result.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
+            var subproductNA = subproductsTask.Result.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
+            var bettypeNA = bettypesTask.Result.FirstOrDefault(b => b.Id == NAConstants.BettypeNA);
+
             var settings = new CreateFeedbackViewModel
             {
-                Extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
-                Countries = countries,
-                CommunicationTools = communicationTools,
-                Languages = languages,
-                Responses = responses,
-                Statuses = statuses.Where(s => s.StatusId != (int)FeedbackStatus.Deleted),
-                Titles = titles,
-                Roles = roles,
-                Sites = sites,
-                LicenseeTypes = licenseeTypes,
+                Extensions = extentionsTask.Result.Where(x => x.Id != NAConstants.ExtentionNA),
+                Countries = countriesTask.Result,
+                CommunicationTools = communicationToolsTask.Result,
+                Languages = languagesTask.Result,
+                Responses = responsesTask.Result,
+                Statuses = statusesTask.Result.Where(s => s.StatusId != (int)FeedbackStatus.Deleted),
+                Titles = titlesTask.Result,
+                Roles = rolesTask.Result,
+                Sites = sitesTask.Result,
+                LicenseeTypes = licenseeTypesTask.Result,
                 ProductNA = productNA,
                 SubProductNA = subproductNA,
                 BettypeNA = bettypeNA,
                 ExtensionNA = extentionNA,
-                Products = products.Where(p => p.Id != NAConstants.ProductNA),
-                SubProducts = subproducts.Where(p => p.Id != NAConstants.SubProductNA && p.ParentId != 0),
-                Bettypes = bettypes.Where(b => b.Id != NAConstants.BettypeNA),
-                MainCategories = mainCategorys,
-                SubCategories = subCategorys
+                Products = productsTask.Result.Where(p => p.Id != NAConstants.ProductNA),
+                SubProducts = subproductsTask.Result.Where(p => p.Id != NAConstants.SubProductNA && p.ParentId != 0),
+                Bettypes = bettypesTask.Result.Where(b => b.Id != NAConstants.BettypeNA),
+                MainCategories = mainCategorysTask.Result,
+                SubCategories = subCategorysTask.Result
             };
             return Json(settings);
         }

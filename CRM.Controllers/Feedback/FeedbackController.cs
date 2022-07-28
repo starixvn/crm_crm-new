@@ -155,38 +155,47 @@
         private async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback, bool isDeletedFeedbackView = false)
         {
             var feedbackSettings = feedback.Settings;
-            var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension);
-            var communicationTools = await settingService.GetCommunicationToolAsync(isIncludeNA: true);
-            var products = await settingService.GetProductAsync();
-            var subProducts = await settingService.GetSubProductAsync();
-            var betTypes = await settingService.GetBetTypeAsync();
-            var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response);
-            var languages = await settingService.GetLanguageAsync(isIncludeNA: true);
-            var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
-            var countries = await settingService.GetCountryAsync(isIncludeNA: true);
+            var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension);
+            var communicationToolsTask = settingService.GetCommunicationToolAsync(isIncludeNA: true);
+            var productsTask = settingService.GetProductAsync();
+            var subProductsTask = settingService.GetSubProductAsync();
+            var betTypesTask = settingService.GetBetTypeAsync();
+            var responsesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response);
+            var languagesTask = settingService.GetLanguageAsync(isIncludeNA: true);
+            var rolesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
+            var countriesTask = settingService.GetCountryAsync(isIncludeNA: true);
+            var mainCategoriesTask = GetMainCategoryAsync(feedbackSettings);
+            var statusesTask = GetStatusAsync(isDeletedFeedbackView);
+            var licenseeTypesTask = settingService.GetLicenseeTypeAsync();
+            var titleTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
+            var sitesTask = settingService.GetAllSitesWithGroupAsync();
+            var subCategoriesTask = GetSubCategoryAsync(feedbackSettings);
+
+            await Task.WhenAll(extentionsTask, communicationToolsTask, productsTask, subProductsTask, betTypesTask, responsesTask,
+                languagesTask, rolesTask, countriesTask, mainCategoriesTask, statusesTask, licenseeTypesTask, titleTask, sitesTask, subCategoriesTask);
 
             var settings = new CreateFeedbackViewModel
             {
-                Extensions = GetExtentions(extentions, feedbackSettings),
-                CommunicationTools = GetCommunicationTools(communicationTools, feedbackSettings),
-                Responses = responses.Where(x => x.IsActive || x.Id == feedback.ResponseId).ToList(),
-                Languages = languages.Where(x => x.IsActive || x.LanguageId == feedback.LanguageId).ToList(),
-                Statuses = await GetStatusAsync(isDeletedFeedbackView),
-                Roles = roles.Where(x => x.IsActive || x.Id == feedback.RoleId).ToList(),
-                Countries = countries.Where(x => x.IsActive || x.Id == feedback.CountryId).ToList(),
-                Titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active),
-                LicenseeTypes = await settingService.GetLicenseeTypeAsync(),
-                Sites = await settingService.GetAllSitesWithGroupAsync(),
-                MainCategories = await GetMainCategoryAsync(feedbackSettings),
-                SubCategories = await GetSubCategoryAsync(feedbackSettings),
-                Products = GetProducts(products, feedbackSettings),
-                SubProducts = GetSubProducts(subProducts, feedbackSettings),
-                Bettypes = GetBetTypes(betTypes, feedbackSettings),
-                ProductNA = products.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ProductNA),
-                SubProductNA = subProducts.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.SubProductNA),
-                BettypeNA = betTypes.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.BettypeNA),
-                ExtensionNA = extentions.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ExtentionNA),
-                CommunicationToolNA = communicationTools.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.CommunicationNA)
+                Extensions = GetExtentions(extentionsTask.Result, feedbackSettings),
+                CommunicationTools = GetCommunicationTools(communicationToolsTask.Result, feedbackSettings),
+                Responses = responsesTask.Result.Where(x => x.IsActive || x.Id == feedback.ResponseId).ToList(),
+                Languages = languagesTask.Result.Where(x => x.IsActive || x.LanguageId == feedback.LanguageId).ToList(),
+                Statuses = statusesTask.Result,
+                Roles = rolesTask.Result.Where(x => x.IsActive || x.Id == feedback.RoleId).ToList(),
+                Countries = countriesTask.Result.Where(x => x.IsActive || x.Id == feedback.CountryId).ToList(),
+                Titles = titleTask.Result,
+                LicenseeTypes = licenseeTypesTask.Result,
+                Sites = sitesTask.Result,
+                MainCategories = mainCategoriesTask.Result,
+                SubCategories = subCategoriesTask.Result,
+                Products = GetProducts(productsTask.Result, feedbackSettings),
+                SubProducts = GetSubProducts(subProductsTask.Result, feedbackSettings),
+                Bettypes = GetBetTypes(betTypesTask.Result, feedbackSettings),
+                ProductNA = productsTask.Result.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ProductNA),
+                SubProductNA = subProductsTask.Result.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.SubProductNA),
+                BettypeNA = betTypesTask.Result.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.BettypeNA),
+                ExtensionNA = extentionsTask.Result.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ExtentionNA),
+                CommunicationToolNA = communicationToolsTask.Result.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.CommunicationNA)
             };
 
             return settings;

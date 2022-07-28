@@ -136,15 +136,20 @@
 
         public async Task<IActionResult> GetLogSettingByFeedbackId(int id)
         {
-            var communicationLog = await feedbackService.GetLogByFeedbackIdAsync(id);
-            var settings = await GetAllSettingAsync();
-            var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active);
-            var sites = await settingService.GetAllSitesWithGroupAsync();
-            var licenseeTypes = await settingService.GetLicenseeTypeAsync();
+            var communicationLogTask = feedbackService.GetLogByFeedbackIdAsync(id);
+            var settingTask = GetAllSettingAsync();
+            var rolesTask =  settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active);
+            var sitesTask = settingService.GetAllSitesWithGroupAsync();
+            var licenseeTypesTask = settingService.GetLicenseeTypeAsync();
 
-            settings.Sites = sites;
-            settings.Roles = roles;
-            settings.LicenseeTypes = licenseeTypes;
+            await Task.WhenAll(communicationLogTask, settingTask, rolesTask, sitesTask, licenseeTypesTask);
+
+            var communicationLog = communicationLogTask.Result;
+            var settings = settingTask.Result;
+
+            settings.Sites = sitesTask.Result;
+            settings.Roles = rolesTask.Result;
+            settings.LicenseeTypes = licenseeTypesTask.Result;
 
             var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
             return Json(new { communicationLog, settings, hasReviewFeedbackPermission });
@@ -163,28 +168,38 @@
 
         private async Task<CreateFeedbackViewModel> GetAllSettingAsync()
         {
-            var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
-            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var products = await settingService.GetProductAsync(SettingConstants.Active);
-            var subproducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
-            var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
+            var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            var statusesTask = settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var productsTask = settingService.GetProductAsync(SettingConstants.Active);
+            var subproductsTask = settingService.GetSubProductAsync(active: SettingConstants.Active);
+            var bettypesTask = settingService.GetBetTypeAsync(active: SettingConstants.Active);
+            var responseTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
+            var languagesTask = settingService.GetLanguageAsync(SettingConstants.Active, true);
+            var countriesTask = settingService.GetCountryAsync(SettingConstants.Active, true);
+            var mainCategoriesTask = settingService.GetMainCategoryAsync(SettingConstants.Active);
+            var subCategoriesTask = settingService.GetSubCategoryAsync(active: SettingConstants.Active);
+            var communicationToolsTask = settingService.GetCommunicationToolAsync(SettingConstants.Active);
+
+            await Task.WhenAll(extentionsTask, statusesTask, productsTask, subproductsTask, bettypesTask, responseTask, languagesTask, countriesTask,
+                mainCategoriesTask, subCategoriesTask, communicationToolsTask);
+
             var settings = new CreateFeedbackViewModel
             {
-                Extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
-                CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
-                Statuses = statuses,
-                Responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
-                Languages = await settingService.GetLanguageAsync(SettingConstants.Active, true),
-                Countries = await settingService.GetCountryAsync(SettingConstants.Active, true),
-                MainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
-                SubCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),
-                Products = products.Where(x => x.Id != NAConstants.ProductNA),
-                SubProducts = subproducts.Where(x => x.Id != NAConstants.SubProductNA),
-                Bettypes = bettypes.Where(x => x.Id != NAConstants.BettypeNA),
-                ProductNA = products.FirstOrDefault(x => x.Id == NAConstants.ProductNA),
-                SubProductNA = subproducts.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
-                BettypeNA = bettypes.FirstOrDefault(x => x.Id == NAConstants.BettypeNA),
-                ExtensionNA = extentions.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA),
+                Extensions = extentionsTask.Result.Where(x => x.Id != NAConstants.ExtentionNA),
+                CommunicationTools = communicationToolsTask.Result,
+                Statuses = statusesTask.Result,
+                Responses = responseTask.Result,
+                Languages = languagesTask.Result,
+                Countries = countriesTask.Result,
+                MainCategories = mainCategoriesTask.Result ,
+                SubCategories = subCategoriesTask.Result ,
+                Products = productsTask.Result.Where(x => x.Id != NAConstants.ProductNA),
+                SubProducts = subproductsTask.Result.Where(x => x.Id != NAConstants.SubProductNA),
+                Bettypes = bettypesTask.Result.Where(x => x.Id != NAConstants.BettypeNA),
+                ProductNA = productsTask.Result.FirstOrDefault(x => x.Id == NAConstants.ProductNA),
+                SubProductNA = subproductsTask.Result.FirstOrDefault(x => x.Id == NAConstants.SubProductNA),
+                BettypeNA = bettypesTask.Result.FirstOrDefault(x => x.Id == NAConstants.BettypeNA),
+                ExtensionNA = extentionsTask.Result.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA),
             };
 
             return settings;

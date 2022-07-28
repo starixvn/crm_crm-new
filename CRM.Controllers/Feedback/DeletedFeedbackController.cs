@@ -47,10 +47,15 @@
         [HttpPost]
         public async Task<IActionResult> GetDeletedFeedback([FromBody] GetDeletedFeedbackParam param)
         {
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetDeletedFeedbackAsync(param);
-            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+            var feedbacksTask = feedbackService.GetDeletedFeedbackAsync(param);
+            var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
+
+            await Task.WhenAll(feedbacksTask, mainCategoriesTask);
+
+            IList<DeletedFeedback> feedbacks = feedbacksTask.Result.ToList();
+            IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
             
-            int totalItems = feedbacks.Count();
+            int totalItems = feedbacks.Count;
             if (totalItems > 0)
             {
                 feedbacks = feedbacks.Skip(param.PageSize * (param.PageIndex - 1)).Take(param.PageSize).ToList();
@@ -61,8 +66,12 @@
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] GetDeletedFeedbackParam param)
         {
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetDeletedFeedbackAsync(param);
-            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+            var feedbacksTask = feedbackService.GetDeletedFeedbackAsync(param);
+            var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
+            await Task.WhenAll(feedbacksTask, mainCategoriesTask);
+
+            IEnumerable<DeletedFeedback> feedbacks = feedbacksTask.Result;
+            IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
             
             var bytes = excelService.ExportDeletedFeedbackReport(feedbacks, mainCategories);
             string reportName = ViewResources.DeletedFeedbackReport_Title;

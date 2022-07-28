@@ -58,8 +58,12 @@
         [HttpPost]
         public async Task<ActionResult> SearchManageFeedback([FromBody] ManageFeedbackCriteria criteria)
         {
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetManageFeedbackAsync(criteria);
-            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+            var feedbacksTask = feedbackService.GetManageFeedbackAsync(criteria);
+            var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
+            await Task.WhenAll(feedbacksTask, mainCategoriesTask);
+
+            IEnumerable<DeletedFeedback> feedbacks = feedbacksTask.Result;
+            IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
             var feedbacksOrder = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
             return Json(new { data = feedbacksOrder, mainCategories, totalItems = criteria.TotalRows });
         }
@@ -68,8 +72,12 @@
         public async Task<IActionResult> ExportExcel([FromBody] ManageFeedbackCriteria criteria)
         {
             criteria.PageIndex = 0;
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackService.GetManageFeedbackAsync(criteria);
-            IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
+            var feedbacksTask = feedbackService.GetManageFeedbackAsync(criteria);
+            var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
+            await Task.WhenAll(feedbacksTask, mainCategoriesTask);
+            IEnumerable<DeletedFeedback> feedbacks = feedbacksTask.Result;
+            IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
+
             var feedbacksOrder = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
 
             var bytes = exportExcelService.ExportManageFeedbackReport(feedbacksOrder, mainCategories);
