@@ -22,6 +22,16 @@ export class EditCustomerInfoVerify extends Component {
     }
 
     componentDidMount() {
+        this.handleInitData();
+    }
+
+    componentDidUpdate(prevProps){
+        if(JSON.stringify(prevProps.customerInfoVerify) !== JSON.stringify(this.props.customerInfoVerify)){
+            this.handleInitData();
+        }
+    }
+
+    handleInitData = () =>{
         const info = this.props.customerInfoVerify;
         const data = [];
         data.push({ name: 'Email', value: info.email, isChecked: info.isVerifyEmail });

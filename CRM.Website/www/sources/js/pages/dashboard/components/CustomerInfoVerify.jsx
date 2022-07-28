@@ -20,26 +20,36 @@ export class CustomerInfoVerify extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        if (prevProps.id !==  this.props.id) {
+            this.props.getCustomerInfoVerify({ customerId: this.props.id }).then(() =>{
+                this.handleInitData();
+            });
+        }
+
+        if(JSON.stringify(prevProps.customerInfoVerify) !== JSON.stringify(this.props.customerInfoVerify)){
+            this.handleInitData();
+        }
+    }
+
+    handleInitData = () =>{
         const { customerInfoVerify } = this.props;
         const listVerify = [];
         let countVerified = 0;
-        if (customerInfoVerify !== prevProps.customerInfoVerify) {
-            listVerify.push(customerInfoVerify.isVerifyEmail);
-            listVerify.push(customerInfoVerify.isVerifyPassport);
-            listVerify.push(customerInfoVerify.isVerifyBirthday);
-            listVerify.push(customerInfoVerify.isVerifySecretCode);
+        listVerify.push(customerInfoVerify.isVerifyEmail);
+        listVerify.push(customerInfoVerify.isVerifyPassport);
+        listVerify.push(customerInfoVerify.isVerifyBirthday);
+        listVerify.push(customerInfoVerify.isVerifySecretCode);
 
-            listVerify.forEach(item => {
-                if (item === true) {
-                    ++countVerified;
-                }
-            });
-            this.setState({
-                numberVerified: countVerified,
-                energy: Math.round(25*countVerified)
-            });
-        }
-    }
+        listVerify.forEach(item => {
+            if (item === true) {
+                ++countVerified;
+            }
+        });
+        this.setState({
+            numberVerified: countVerified,
+            energy: Math.round(25*countVerified)
+        });
+    };
 
     handleEditCustomerVerifyDialog = () => {
         this.props.setEditCustomerVerifyDialog({ show: true });
