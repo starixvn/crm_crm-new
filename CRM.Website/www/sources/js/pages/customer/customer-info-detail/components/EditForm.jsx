@@ -824,7 +824,7 @@ export class EditForm extends Component {
                                 <div className='d-flex'>
                                     <Form.Label className='label-width-bank' htmlFor="accName">{LangHelper.getResource('AccName')}</Form.Label>
                                     <Form.Control type="text" size="sm" className="shadow-none control-width-bank" value={values.bankInfoHolderName}
-                                        name="bankInfoHolderName" id="bankInfoHolderName" autoComplete="off" onChange={this.handleChange} 
+                                        name="bankInfoHolderName" id="bankInfoHolderName" autoComplete="off" onChange={this.handleChange}
                                     />
                                 </div>
                             </Col>

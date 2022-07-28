@@ -31,7 +31,7 @@ export default class DataGrid extends PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        if(JSON.stringify(prevProps.customerInfo.languages) !== JSON.stringify(this.props.customerInfo.languages)){
+        if(JSON.stringify(prevProps.customerInfo) !== JSON.stringify(this.props.customerInfo)){
             this.handleCheckLanguage();
         }
     }
@@ -49,7 +49,7 @@ export default class DataGrid extends PureComponent {
         this.setState({
             languages
         });
-    }
+    };
 
     renderForm = ({
         errors,
