@@ -127,12 +127,22 @@
         {
             criteria.PageIndex = 0;
             criteria.PageSize = 0;
-            var logStatisticsDetail = await logStatisticsService.GetReportDetailsAsync(criteria, false);
-            var mainCategories = await settingService.GetAllMainSubCategoriesAsync();
-            var communicationTools = await settingService.GetCommunicationToolAsync();
-            var products = await settingService.GetProductAsync();
-            var subProducts = await settingService.GetSubProductAsync();
-            var extensions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+            var logStatisticsDetailTask = logStatisticsService.GetReportDetailsAsync(criteria, false);
+            var mainCategoriesTask = settingService.GetAllMainSubCategoriesAsync();
+            var communicationToolsTask = settingService.GetCommunicationToolAsync();
+            var productsTask = settingService.GetProductAsync();
+            var subProductsTask = settingService.GetSubProductAsync();
+            var extensionTasks = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
+
+            await Task.WhenAll(logStatisticsDetailTask, mainCategoriesTask, communicationToolsTask, productsTask, subProductsTask, extensionTasks);
+
+            var logStatisticsDetail = logStatisticsDetailTask.Result;
+            var mainCategories = mainCategoriesTask.Result;
+            var communicationTools = communicationToolsTask.Result;
+            var products = productsTask.Result;
+            var subProducts = subProductsTask.Result;
+            var extensions = extensionTasks.Result;
+
             var bytes = excelService.ExportLogStatisticsReportDetail(logStatisticsDetail, mainCategories, communicationTools
                 , products, subProducts, extensions);
             return File(bytes, MimeType.XLSX, $"{logStatisticsDetail?.ExcelFileName}.xlsx");
