@@ -76,15 +76,14 @@
                     continue;
                 }
 
-                item.RoleID = item.RoleId;
                 item.RoleName = RoleSettingService.GetRoleName(item.RoleId);
                 uplineInfos.Add(item);
             }
 
-            var headline = customers.Where(i => i.RoleID == RoleIdConstants.Headline)
+            var headline = customers.Where(i => i.RoleId == RoleIdConstants.Headline)
                 .Select(i =>
                 {
-                    i.RoleName = RoleSettingService.GetRoleName(i.RoleID);
+                    i.RoleName = RoleSettingService.GetRoleName(i.RoleId);
                     return i;
                 }).FirstOrDefault() ?? GetUnAssignedCustomerInfo();
 

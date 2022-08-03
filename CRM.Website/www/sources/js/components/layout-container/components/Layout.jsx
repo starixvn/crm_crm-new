@@ -186,11 +186,11 @@ export class Layout extends Component {
     };
 
     getCurrentCustomerInfo = () =>{
-        const {customerInfo, isGuest, username, isCreditSite } = this.state;
+        const {customerInfo, isGuest, isCreditSite } = this.state;
         const currentCustomer = {
             custId: customerInfo?.custId,
             isGuest: isGuest,
-            username: username,
+            username: customerInfo?.username,
             isCreditSite: isCreditSite
         };
         return currentCustomer;

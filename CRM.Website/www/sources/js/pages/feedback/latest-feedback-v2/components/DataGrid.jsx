@@ -175,7 +175,7 @@ export class DataGrid extends Component {
                     <div dangerouslySetInnerHTML={{ __html: this.renderCategoryColumn(item) }} />
                 </Cell>
                 <Cell className='text-center'>{item.status ? item.status : 'N/A'}</Cell>
-                <Cell>{this.renderRelatedCustomerColumn(item.relatedCustomer.split(','))}</Cell>
+                <Cell>{item.isRelated ? this.renderRelatedCustomerColumn(item.username.split(',')) : ''}</Cell>
             </Row>
         );
     };

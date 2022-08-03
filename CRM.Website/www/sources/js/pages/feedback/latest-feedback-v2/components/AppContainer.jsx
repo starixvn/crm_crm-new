@@ -72,7 +72,11 @@ export class AppContainer extends Component {
     handleCloseEditFeedbackDialog = isSuccessful => {
         this.props.setEditFeedbackDialog({ show: false });
         if (isSuccessful) {
-            this.props.getLatestFeedback(this.props.gridParams);
+            if(this.props.custId !== undefined && this.props.custId !== 0){
+                this.props.getLatestFeedbackByCustId(this.props.gridParams);
+            }else{
+                this.props.getLatestFeedback(this.props.gridParams);
+            }
         }
     };
 
