@@ -15,6 +15,7 @@ export default class DatePickerField extends React.Component {
         this.state = {
             selected: this.props.selected
         };
+        this.ref = React.createRef();
     }
 
     componentDidUpdate(prevProps) {
@@ -24,7 +25,7 @@ export default class DatePickerField extends React.Component {
     }
 
     handleTimeNow = () => {
-        this.setState({ selected: new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))) });
+        this.setState({ selected: new Date(DateTimeService.toLongDateTimeFormat(new Date())) });
     };
 
     render() {
@@ -32,6 +33,7 @@ export default class DatePickerField extends React.Component {
 
         return (
             <DatePicker
+                ref={this.ref}
                 className={`datetime-picker ${className}`}
                 dateFormat={this.props.showTimeInput ? 'MMM dd, yyyy hh:mm aa' : 'MMM dd, yyyy'}
                 customInput={<CustomInput isInvalid={isInvalid} />}
@@ -40,7 +42,10 @@ export default class DatePickerField extends React.Component {
             >
                 {
                     this.props.showTimeInput &&
-                    <div className="react-datepicker__input-time-container btn-now" type='button' onClick={this.handleTimeNow}>{LangHelper.getResource('Now')}</div>
+                    <div>
+                        <div className="btn-now" type='button' onClick={this.handleTimeNow}>{LangHelper.getResource('Now')}</div>
+                        <div className="btn-close" type='button' onClick={() => this.ref.current.setOpen(false)}>{LangHelper.getResource('Done')}</div>
+                    </div>
                 }
             </DatePicker >
         );

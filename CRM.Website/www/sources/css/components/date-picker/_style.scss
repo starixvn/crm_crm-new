@@ -7,15 +7,26 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     font-size: 1rem;
 
-    .btn-now {
+    .btn-now, .btn-close {
         width: auto;
-        background-color: #466ab6;
-        color: #fff;
+        color: #466ab6;
         line-height: 2.5rem;
-        padding: 0 0.5rem;
+        padding: 4px;
+        margin: 16px;
+        display: inline-block;
+
+        &:hover{
+            background:#466ab6;
+            color: #fff;
+        }
+    }
+
+    .btn-close{
+        float: right;
     }
 
     .react-datepicker__input-time-container {
+        margin: 10px 0 0px 20px !important;
         .react-datepicker-time__input-container {
             .react-datepicker-time__input input {
                 width: 95px;

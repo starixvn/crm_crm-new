@@ -32,9 +32,8 @@
         width: 100% !important;
     }
 
-    .sort-header{
-        float: right;
-        cursor: pointer;
+    .sortable span{
+        top: 30% !important;
     }
     
     .ref-ticket-input {
@@ -69,6 +68,10 @@
         min-width: 920px !important;
 
         .modal-content {
+            .multiple-select-options-container{
+                width: 265px !important;
+            }
+
             .panel-group {
                 border: 1px solid #b1b1b1;
 

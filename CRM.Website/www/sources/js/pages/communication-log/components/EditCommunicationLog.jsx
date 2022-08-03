@@ -221,7 +221,7 @@ export class EditCommunicationLog extends Component {
                 values.subProductIds.length > 0 ? values.subProductIds.split(',') : [],
                 values.betTypeIds.length > 0 ? values.betTypeIds.split(',') : [], settings),
             categories: getCategoryParams(mainCategoryIds, values.subCategoryIds.split(','), settings.subCategories),
-            relatedCustomerIds: relatedCustomers.filter(item => item.custId !== 0).map(item => item.custId).join(','),
+            relatedCustomerIds: relatedCustomers.length > 0 ? relatedCustomers.filter(item => item.custId !== 0).map(item => item.custId).join(',') : null,
             responseId: values.responseId,
             languageId: parseInt(values.languageId, 10),
             licenseeTypeId: values.licenseeTypeId,
