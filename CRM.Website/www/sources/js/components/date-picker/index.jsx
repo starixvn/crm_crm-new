@@ -25,7 +25,7 @@ export default class DatePickerField extends React.Component {
     }
 
     handleTimeNow = () => {
-        this.setState({ selected: new Date(DateTimeService.toLongDateTimeFormat(new Date())) });
+        this.setState({ selected: new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))) });
     };
 
     render() {

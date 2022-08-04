@@ -63,6 +63,7 @@ export class Filter extends Component {
     };
 
     getParams = () => {
+        const pageSize = this.props.gridParams.pageSize;
         return {
             chatType: this.state.filter.chatType,
             botId: this.state.filter.botId,
@@ -74,7 +75,7 @@ export class Filter extends Component {
             languageId: this.state.filter.languageId,
             isActive: this.state.filter.active,
             pageIndex: 1,
-            pageSize: 100
+            pageSize: !pageSize ? 100 : pageSize
         };
     };
 
@@ -211,8 +212,9 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings, insertPersonalMappingData, insertPersonalMappingResult } = state;
+    const { gridParams, settings, insertPersonalMappingData, insertPersonalMappingResult } = state;
     return {
+        gridParams,
         settings,
         insertPersonalMappingData,
         insertPersonalMappingResult

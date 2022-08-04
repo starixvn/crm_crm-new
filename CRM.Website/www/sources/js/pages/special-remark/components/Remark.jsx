@@ -9,6 +9,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import Site from '@jsroot/common/site';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 
 export class Remark extends Component {
     constructor(props) {
@@ -24,7 +25,8 @@ export class Remark extends Component {
             specialRemarks: [],
             dataSpecialRemarks: [],
             normalRemarks: [],
-            dataNormalRemarks: []
+            dataNormalRemarks: [],
+            isShowConfirmIgnoreChangePopup: false
         };
     }
 
@@ -46,6 +48,7 @@ export class Remark extends Component {
     }
 
     componentWillUnmount(){
+        this.setState({isShowConfirmIgnoreChangePopup: true});
         this.props.resetState();
      }
 
@@ -147,7 +150,7 @@ export class Remark extends Component {
                         aria-controls="collapse-expand-specialRemark"
                         onClick={() => this.handleCollapseExpand('specialRemark')}
                     >
-                        <Form.Label className="required">{LangHelper.getResource('SpecialRemark')}</Form.Label>
+                        <Form.Label>{LangHelper.getResource('SpecialRemark')}</Form.Label>
                     </Form.Group>
                     <Collapse in={!collapse.specialRemark}>
                         <div className="panel-content" id="collapse-expand-specialRemark">
@@ -177,7 +180,7 @@ export class Remark extends Component {
                         aria-controls="collapse-expand-normalRemark"
                         onClick={() => this.handleCollapseExpand('normalRemark')}
                     >
-                        <Form.Label className="required">{LangHelper.getResource('Remark')}</Form.Label>
+                        <Form.Label>{LangHelper.getResource('Remark')}</Form.Label>
                     </Form.Group>
                     <Collapse in={!collapse.normalRemark}>
                         <div className="panel-content" id="collapse-expand-normalRemark">
@@ -207,6 +210,21 @@ export class Remark extends Component {
                             {LangHelper.getResource('Save')}
                         </Button>
                     )
+                }
+                {
+                    this.state.isShowConfirmIgnoreChangePopup &&
+                    <ConfirmPopup
+                        onSubmit={() => this.props.onClose(false)}
+                        title={LangHelper.getResource('ConfirmIgnoreChanges')}
+                        content={
+                            <div>
+                                <div>{LangHelper.formatString(LangHelper.getResource('ThereAreSomeChangesOnInput'),'customer information on Remark tab!')}</div>
+                                <div>{LangHelper.getResource('ConfirmIgnoreTheseChanges')}</div>
+                            </div>
+                        }
+                        size='md'
+                        onClose={this.closeCreateConfirm}
+                    />
                 }
             </div>
         );
