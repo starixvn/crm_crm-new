@@ -9,7 +9,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import Site from '@jsroot/common/site';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
-import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import { FormCheckDirtyComponent } from '@jsroot/components/UseBlocker';
 
 export class Remark extends Component {
     constructor(props) {
@@ -25,8 +25,7 @@ export class Remark extends Component {
             specialRemarks: [],
             dataSpecialRemarks: [],
             normalRemarks: [],
-            dataNormalRemarks: [],
-            isShowConfirmIgnoreChangePopup: false
+            dataNormalRemarks: []
         };
     }
 
@@ -48,7 +47,6 @@ export class Remark extends Component {
     }
 
     componentWillUnmount(){
-        this.setState({isShowConfirmIgnoreChangePopup: true});
         this.props.resetState();
      }
 
@@ -127,6 +125,19 @@ export class Remark extends Component {
         });
     };
 
+    checkIsDirtyForm = () =>{
+        const {dataSpecialRemarks, dataNormalRemarks} = this.state;
+        const {specialRemarks, normalRemarks} = this.props.gridData;
+        const specialRemarksExtend = [...specialRemarks, ''];
+        const normalRemarksExtend = [...normalRemarks,''];
+        if(JSON.stringify(dataSpecialRemarks) !== JSON.stringify(specialRemarksExtend) ||
+            JSON.stringify(dataNormalRemarks) !== JSON.stringify(normalRemarksExtend)
+        ){
+            return true;
+        }
+        return false;
+    }
+
     render() {
         const { collapse, specialRemarks, dataSpecialRemarks, normalRemarks, dataNormalRemarks, editRemarkResult
         } = this.state;
@@ -135,7 +146,7 @@ export class Remark extends Component {
             return null;
         }
         const canEditRemark = this.state.policy === Policy.Host;
-
+        const isDirty = this.checkIsDirtyForm();
         return (
             <div>
                 {
@@ -212,19 +223,7 @@ export class Remark extends Component {
                     )
                 }
                 {
-                    this.state.isShowConfirmIgnoreChangePopup &&
-                    <ConfirmPopup
-                        onSubmit={() => this.props.onClose(false)}
-                        title={LangHelper.getResource('ConfirmIgnoreChanges')}
-                        content={
-                            <div>
-                                <div>{LangHelper.formatString(LangHelper.getResource('ThereAreSomeChangesOnInput'),'customer information on Remark tab!')}</div>
-                                <div>{LangHelper.getResource('ConfirmIgnoreTheseChanges')}</div>
-                            </div>
-                        }
-                        size='md'
-                        onClose={this.closeCreateConfirm}
-                    />
+                    <FormCheckDirtyComponent isDirty={isDirty} tab={LangHelper.getResource('RemarkTab')}/>
                 }
             </div>
         );
