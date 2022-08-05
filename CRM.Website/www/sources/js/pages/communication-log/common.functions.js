@@ -54,6 +54,19 @@ export const validateFormik = (values, settings) => {
     return errors;
 };
 
+export const filterGroupCategory = category => {
+    const groupCategory = category.reduce( (accumulator, currentValue) => {
+        const itemExist = accumulator.find(item => currentValue.mainCategoryId === item.mainCategoryId);
+        if (itemExist) {
+            itemExist.subCategoryId = [...itemExist.subCategoryId, currentValue.subCategoryId];
+        }else {
+            accumulator.push({mainCategoryId: currentValue.mainCategoryId, subCategoryId: [currentValue.subCategoryId]});
+        }
+        return accumulator;
+    },[]);
+    return groupCategory;
+};
+
 export const handleChangeMainCategory = (setFieldValue, categoryIds, subCategoryIds, subject, settings, setStateSubcategory) => {
     const tempSubject = getSubjectOnChangeCategories(categoryIds ? categoryIds.split(',') : [], subject, settings.mainCategories);
     setFieldValue('mainCategoryIds', categoryIds);

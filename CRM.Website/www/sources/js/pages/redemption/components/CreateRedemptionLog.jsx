@@ -153,7 +153,7 @@ export class CreateRedemptionLog extends Component {
                     onHide={this.onCloseCreatePopup}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('CreateRedemptionLog')}</Modal.Title>
+                        <Modal.Title as="div">{LangHelper.getResource('InsertRedemptionLog')}</Modal.Title>
                     </Modal.Header>
                     <Formik
                         innerRef={el => this.formik = el}

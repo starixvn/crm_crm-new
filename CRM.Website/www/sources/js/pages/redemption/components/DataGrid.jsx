@@ -18,12 +18,12 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={50} sortOrder='desc' sortBy='Subject'>{LangHelper.getResource('Subject')}</HeaderCell>
-                <HeaderCell colWidth={25} sortOrder='desc' sortBy='Time'>{LangHelper.getResource('ClaimedTime')}</HeaderCell>
-                <HeaderCell colWidth={20} sortOrder='desc' sortBy='Currency'>{LangHelper.getResource('Currency')}</HeaderCell>
-                <HeaderCell colWidth={20} sortOrder='desc' sortBy='Amount'>{LangHelper.getResource('Amount')}</HeaderCell>
-                <HeaderCell colWidth={25} sortOrder='desc' sortBy='DoneBy'>{LangHelper.getResource('DoneBy')}</HeaderCell>
-                <HeaderCell colWidth={20} sortOrder='desc' sortBy='Status'>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={50} sortOrder='desc' sortBy='subject'>{LangHelper.getResource('Subject')}</HeaderCell>
+                <HeaderCell colWidth={25} sortOrder='desc' sortBy='claimTime'>{LangHelper.getResource('ClaimedTime')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='currency'>{LangHelper.getResource('Currency')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='amount'>{LangHelper.getResource('Amount')}</HeaderCell>
+                <HeaderCell colWidth={25} sortOrder='desc' sortBy='doneBy'>{LangHelper.getResource('DoneBy')}</HeaderCell>
+                <HeaderCell colWidth={20} sortOrder='desc' sortBy='status'>{LangHelper.getResource('Status')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -35,7 +35,7 @@ export class DataGrid extends Component {
             return redemptionLogs.map((item, index) => this.renderRow(item, index));
         }
         return [
-            <Row key={`body${1}`} className="no-data" >
+            <Row key='body-nodata' className="no-data" >
                 <Cell className='text-center' colSpan={6}>
                     {LangHelper.getResource('ThereIsNoData')}
                 </Cell>

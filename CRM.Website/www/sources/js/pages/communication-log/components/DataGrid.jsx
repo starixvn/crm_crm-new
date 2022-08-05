@@ -26,7 +26,7 @@ export class DataGrid extends Component {
                     <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
                 }
                 <HeaderCell colWidth={25} sortOrder='desc' sortBy='feedbackDate'>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
-                <HeaderCell colWidth={55} sortOrder='desc' sortBy='Category'>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={55} sortOrder='desc' sortBy='mainCategoryValue'>{LangHelper.getResource('Category')}</HeaderCell>
                 <HeaderCell colWidth={40} sortOrder='desc' sortBy='subject'>{LangHelper.getResource('Subject')}</HeaderCell>
                 <HeaderCell colWidth={20} sortOrder='desc' sortBy='status'>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={20} sortOrder='desc' sortBy='duration'>{LangHelper.getResource('Duration')}</HeaderCell>
@@ -89,9 +89,8 @@ export class DataGrid extends Component {
 
     renderCategoryColumn = item => {
         const { mainCategories } = this.props.gridData;
-        const groupCategory = this.handleGroupCategory(item.communicationSettings);
 
-        return groupCategory.map((value,key) => {
+        return item.groupCategory.map((value,key) => {
             const filterMainCategory = mainCategories.find(element => element.settingId === value.mainCategoryId);
             return (
                 <Fragment key={key}>

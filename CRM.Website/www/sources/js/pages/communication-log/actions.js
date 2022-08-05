@@ -1,6 +1,5 @@
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
-
 import {
     setLogsByCustomerId,
     setStatusForFilter,
@@ -11,12 +10,21 @@ import {
     setCreateCommunicationDialog,
     resetState
 } from './communicationLogSlice';
+import { filterGroupCategory } from './common.functions';
 
 const getLogsByCustomerId = params => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('CommunicationLog/GetLogsByCustomerId');
     await DataService.postDataAsync(url,params).then(response => {
-        dispatch(setLogsByCustomerId(response.data));
+        const {data, mainCategories} = response.data;
+        data.map(item => {
+            const filterGroup = filterGroupCategory(item.communicationSettings);
+            const filterMainCategory = mainCategories.find(element => element.settingId === filterGroup[0]?.mainCategoryId);
+            item.groupCategory = filterGroup;
+            item.mainCategoryValue = !filterMainCategory ? '' : filterMainCategory.settingValue;
+            return item;
+        });
+        dispatch(setLogsByCustomerId({data, mainCategories}));
     }).then(() => Site.unblockUI());
 };
 
