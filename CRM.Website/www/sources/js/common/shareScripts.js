@@ -2,6 +2,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
+import moment from 'moment';
 
 export const getPermission = async functionKey =>{
     const url = Site.resolveClientUrl('Common/GetPermission');
@@ -259,7 +260,9 @@ const handleSortStringDesc = (sortBy, first, second) => first[`${sortBy}`] < sec
 
 export const handleSort = (cloneGridData, sortBy, sortOrder) => {
     let gridDataSortAsc = null;
-    if (sortBy === 'Time') {
+    const findSortType = cloneGridData[0][`${sortBy}`];
+    const isDateType = moment(findSortType, moment.ISO_8601, true).isValid();
+    if (isDateType) {
         if (sortOrder === 'asc') {
             gridDataSortAsc = [...cloneGridData].sort((first, second) => handleSortDateAsc(sortBy, first, second));
         } else {
