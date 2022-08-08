@@ -122,16 +122,19 @@ export default class Filter extends Component {
                         {LangHelper.getResource('CommunicationLog')}
                     </a>
                 </li>
-                <li id="li-special-remark" className={this.isCheckActive(pathname, 3)}>
+                    <li id="li-special-remark" className={this.isCheckActive(pathname, 3)}>
                     <a onClick = {() => handleNavigate('SpecialRemark')}>
                         {LangHelper.getResource('SpecialRemark')}
                     </a>
                 </li>
-                <li id="li-special-new-remark" className={this.isCheckActive(pathname, 4)}>
-                    <a onClick = {() => handleNavigate('Remark')}>
-                        {LangHelper.getResource('Remark')}
-                    </a>
-                </li>
+                {
+                    this.props.isCreditSite &&
+                    <li id="li-special-new-remark" className={this.isCheckActive(pathname, 4)}>
+                        <a onClick = {() => handleNavigate('Remark')}>
+                            {LangHelper.getResource('Remark')}
+                        </a>
+                    </li>
+                }
                 <li id="li-redemption" className={this.isCheckActive(pathname, 5)}>
                     <a onClick = {() => handleNavigate('Redemption')}>
                         {LangHelper.getResource('Redemption')}

@@ -8,6 +8,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
+import { RoleIds } from '@jsroot/common/constants';
 
 export class EditCustomerInfoVerify extends Component {
 
@@ -38,6 +39,12 @@ export class EditCustomerInfoVerify extends Component {
         data.push({ name: 'Passport Number', value: info.passport, isChecked: info.isVerifyPassport });
         data.push({ name: 'BirthDay', value: DateTimeService.toShortDateFormat(info.birthDay), isChecked: info.isVerifyBirthday });
         data.push({ name: 'Secret Code', value: info.secretCode, isChecked: info.isVerifySecretCode });
+        if(this.props.id > 0 && (info.roleId === RoleIds.Member || info.roleId === RoleIds.CRMMember)){
+            data.push({ name: 'Bet Credit', value: info.betCredit, isChecked: info.isVerifyBetCredit });
+        }
+        if(this.props.id > 0 && (info.roleId === RoleIds.Member || info.roleId === RoleIds.CRMMember) && info.isCredit){
+            data.push({ name: 'Given Credit', value: info.givenCredit, isChecked: info.isVerifyGivenCredit });
+        }
         this.setState({ data: data });
     }
 
@@ -55,7 +62,9 @@ export class EditCustomerInfoVerify extends Component {
             isVerifyEmail: data[0].isChecked,
             isVerifyPassport: data[1].isChecked,
             isVerifyBirthday: data[2].isChecked,
-            isVerifySecretCode: data[3].isChecked
+            isVerifySecretCode: data[3].isChecked,
+            isVerifyBetCredit: data[4].isChecked,
+            isVerifyGivenCredit: data[5].isChecked
         };
         Site.blockUI();
         this.setState({ isSubmitting: true });

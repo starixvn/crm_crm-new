@@ -270,7 +270,7 @@ export class Layout extends Component {
                         getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                         customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
                         showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} showEmptyConfirmPopup={showEmptyConfirmPopup}
-                        handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup}
+                        handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup} isCreditSite={this.state.isCreditSite}
                         handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} handleNavigate={this.handleNavigate}
                         handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
                     />

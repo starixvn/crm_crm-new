@@ -4,6 +4,7 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Button, ProgressBar } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
+import { RoleIds } from '@jsroot/common/constants';
 
 export class CustomerInfoVerify extends Component {
 
@@ -11,7 +12,8 @@ export class CustomerInfoVerify extends Component {
         super(props);
         this.state = {
             energy: 0,
-            numberVerified: 0
+            numberVerified: 0,
+            listVerify: []
         };
     }
 
@@ -39,6 +41,12 @@ export class CustomerInfoVerify extends Component {
         listVerify.push(customerInfoVerify.isVerifyPassport);
         listVerify.push(customerInfoVerify.isVerifyBirthday);
         listVerify.push(customerInfoVerify.isVerifySecretCode);
+        if(this.props.id > 0 && (customerInfoVerify.roleId === RoleIds.Member || customerInfoVerify.roleId === RoleIds.CRMMember)){
+            listVerify.push(customerInfoVerify.isVerifyBetCredit);
+        }
+        if(this.props.id > 0 && (customerInfoVerify.roleId === RoleIds.Member || customerInfoVerify.roleId === RoleIds.CRMMember) && customerInfoVerify.isCredit){
+            listVerify.push(customerInfoVerify.isVerifyGivenCredit);
+        }
 
         listVerify.forEach(item => {
             if (item === true) {
@@ -46,8 +54,9 @@ export class CustomerInfoVerify extends Component {
             }
         });
         this.setState({
+            listVerify,
             numberVerified: countVerified,
-            energy: Math.round(25*countVerified)
+            energy: Math.round((countVerified/listVerify.length)*100)
         });
     };
 
@@ -57,7 +66,7 @@ export class CustomerInfoVerify extends Component {
 
     render() {
         const { customerInfoVerify } = this.props;
-        const { energy, numberVerified } = this.state;
+        const { energy, numberVerified, listVerify } = this.state;
         if (!customerInfoVerify) {
             return null;
         }
@@ -68,7 +77,7 @@ export class CustomerInfoVerify extends Component {
                     <span className="percent-process">{energy}%</span>
                     <ProgressBar now={energy} />
                 </div>
-                <div className="info-text">{numberVerified}/4 Information Verified</div>
+                <div className="info-text">{numberVerified}/{listVerify.length} Information Verified</div>
                 <Button variant="primary" size="sm" onClick={() => this.handleEditCustomerVerifyDialog()}>
                     {LangHelper.getResource('Verify')}
                 </Button>

@@ -66,7 +66,8 @@ describe('filter', () => {
         handleGetCustomerIsGuest: jest.fn(),
         handleCloseEmptyConfirm: jest.fn(),
         handleNavigate: jest.fn(),
-        getDataGrid: jest.fn(() => promise)
+        getDataGrid: jest.fn(() => promise),
+        isCreditSite: true
     };
 
     describe('methods', () => {

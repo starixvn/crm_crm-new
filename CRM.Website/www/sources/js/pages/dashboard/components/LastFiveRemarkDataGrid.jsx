@@ -20,6 +20,12 @@ export class LastFiveRemarkDataGrid extends Component {
         this.props.getLastFiveRemark(param);
     }
 
+    componentDidUpdate(prevProps) {
+        if ( this.props.custId !== prevProps.custId ) {
+            this.props.getLastFiveRemark({ custId: this.props.custId });
+        }
+    }
+
     buildHeader = () => {
         return (
             <HeaderRow>
