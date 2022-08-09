@@ -1,6 +1,6 @@
 @import '../../../abstracts/variables';
 .dynamic {
-    min-width: 1142px;
+    min-width: 1142px !important;
 
     .table-title,
     .page-container,
@@ -27,10 +27,10 @@
         }
 
         .group-tool {
-            width: 310px !important;
+            width: 310px;
 
             .col-label-tool {
-                width: 150px !important;
+                width: 150px;
             }
         }
 
@@ -44,6 +44,20 @@
                 background-color: #464D5D;
                 color: white;
                 cursor: pointer;
+            }
+        }
+
+        .form-group-subject{
+            width: 533px !important;
+            .autocomplete-container{
+                .form-control{
+                    width: 100%;
+                }
+                .autocomplete-items-container{
+                    .autocomplete-items{
+                        width: fit-content;
+                    }
+                }
             }
         }
     }
@@ -98,6 +112,18 @@
 
         &:hover {
             color: $draft-color  !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 1560px) {
+    .dynamic{
+        .group-tool {
+            width: 282px !important;
+    
+            .col-label-tool {
+                width: 117px !important;
+            }
         }
     }
 }

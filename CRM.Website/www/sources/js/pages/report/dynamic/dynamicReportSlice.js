@@ -6,6 +6,7 @@ const initialState = {
         pageIndex: 1,
         pageSize: 100
     },
+    feedbackSubjectTemplates: [],
     viewCommunicationDialog: { show: false },
     viewChartDialog: { show: false, chartInfo: {} }
 };
@@ -28,6 +29,9 @@ const dynamicReportSlice = createSlice({
         },
         setViewChartDialog: (state, action) => {
             state.viewChartDialog = action.payload;
+        },
+        setFeedbackSubjectTemplates: (state, action) => {
+            state.feedbackSubjectTemplates = action.payload;
         }
     }
 });
@@ -40,7 +44,8 @@ export const {
     setAllSettings,
     setGridParams,
     setViewCommunicationDialog,
-    setViewChartDialog
+    setViewChartDialog,
+    setFeedbackSubjectTemplates
 } = actions;
 
 export default reducer;

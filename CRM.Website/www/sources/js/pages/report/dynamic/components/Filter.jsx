@@ -7,6 +7,8 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
+import AutoComplete from '@jsroot/components/AutoComplete';
+import Site from '@jsroot/common/site';
 
 export class Filter extends Component {
     constructor(props) {
@@ -224,7 +226,7 @@ export class Filter extends Component {
                         <DatePicker
                             selected={this.state.toDate}
                             dateFormat={dateFormat} useShortMonthInDropdown
-                            weekNumber={true}
+                            weekNumber
                             minDate={new Date(this.minToDate)}
                             maxDate={new Date(this.maxToDate)}
                             showMonthDropdown
@@ -289,6 +291,10 @@ export class Filter extends Component {
         this.setState({ siteId: site.id });
     };
 
+    handleChangeSubject = value =>{
+        this.setState({ subject: value });
+    }
+
     filterSubCategoryOptions = (subCategories, mainCategoryId) => {
         if (mainCategoryId === 0) {
             return [];
@@ -311,6 +317,14 @@ export class Filter extends Component {
         }));
     };
 
+    handleGetFeedbackSubjectTemplates = Site.debounce(searchText => {
+        if (searchText.length >= 2) {
+            this.props.getFeedbackSubjectTemplates(searchText);
+        } else {
+            this.props.setFeedbackSubjectTemplates([]);
+        }
+    });
+
     handleSubmit = event => {
         event.preventDefault();
 
@@ -332,7 +346,7 @@ export class Filter extends Component {
             handler: handler,
             siteId: siteId,
             responseId: responseId,
-            communicationId: communicationId,
+            communicationToolId: communicationId,
             extensionId: extensionId,
             subCategoryId: mainCategoryId === 0 ? 0 : subCategoryId,
             reviewer: reviewer,
@@ -466,8 +480,8 @@ export class Filter extends Component {
                                 </Form.Control>
                             </Form.Group>
                             <Form.Group className="group-tool">
-                                <Form.Label htmlFor="communicationTool"
-                                 className="col-auto col-form-label col-label-tool">{LangHelper.getResource('CommunicationTool')}
+                                <Form.Label htmlFor="communicationTool" className="col-auto col-form-label col-label-tool">
+                                    {LangHelper.getResource('CommunicationTool')}
                                 </Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
                                     name="communicationId"
@@ -506,7 +520,6 @@ export class Filter extends Component {
                                     }
                                 </Form.Control>
                             </Form.Group>
-
                             <Form.Group>
                                 <Form.Label htmlFor="sub-category" className="col-auto col-form-label">{LangHelper.getResource('SubCategory')}</Form.Label>
                                 <Form.Control as="select" size="sm" className="shadow-none"
@@ -522,13 +535,22 @@ export class Filter extends Component {
                         </Form.Row>
 
                         <Form.Row>
-                            <Form.Group>
+                            <Form.Group className="form-group-subject">
                                 <Form.Label htmlFor="subject" className="col-auto col-form-label">{LangHelper.getResource('Subject')}</Form.Label>
-                                <Form.Control type="text" size="sm" className="shadow-none select-field"
+                                <div style={{width: '100%'}}>
+                                    <AutoComplete
+                                        value={this.state.subject}
+                                        options={this.props.feedbackSubjectTemplates} displayField="subject"
+                                        onChange={value => this.handleChangeSubject(value.subject)}
+                                        onInputChange={this.handleGetFeedbackSubjectTemplates}
+                                    />
+                                </div>
+                                
+                                {/* <Form.Control type="text" size="sm" className="shadow-none select-field"
                                     autoComplete="off"
                                     name="subject"
                                     onChange={this.handleChange}
-                                />
+                                /> */}
                             </Form.Group>
                             <Form.Group>
                                 <Button type="submit" className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</Button>
@@ -548,8 +570,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, gridParams } = state;
-    return { allSettings, gridParams };
+    const { allSettings, gridParams, feedbackSubjectTemplates } = state;
+    return { allSettings, gridParams, feedbackSubjectTemplates };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

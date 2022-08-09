@@ -6,7 +6,8 @@ import {
     setGridParams,
     setViewCommunicationDialog,
     setViewChartDialog,
-    resetState
+    resetState,
+    setFeedbackSubjectTemplates 
 } from './dynamicReportSlice';
 
 const getDynamicReports = params => async dispatch => {
@@ -33,6 +34,13 @@ const exportExcel = params => async () => {
     });
 };
 
+const getFeedbackSubjectTemplates = subject => async dispatch => {
+    const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
+    await DataService.getDataAsync(url, { subject }).then(response => {
+        dispatch(setFeedbackSubjectTemplates(response.data));
+    });
+};
+
 export const ActionCreators = {
     getDynamicReports,
     getAllSettings,
@@ -40,5 +48,7 @@ export const ActionCreators = {
     setViewCommunicationDialog,
     exportExcel,
     setViewChartDialog,
-    resetState
+    resetState,
+    getFeedbackSubjectTemplates,
+    setFeedbackSubjectTemplates
 };
