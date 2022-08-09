@@ -515,7 +515,7 @@ describe('Filter', () => {
             const container = shallow(<Filter {...props}/>);
 
             // Assert
-            expect(container.find(Form.Control).length).toBe(13);
+            expect(container.find(Form.Control).length).toBe(12);
         });
 
         it('should render exactly className of span when showFiler', () => {

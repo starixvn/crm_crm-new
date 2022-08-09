@@ -545,12 +545,6 @@ export class Filter extends Component {
                                         onInputChange={this.handleGetFeedbackSubjectTemplates}
                                     />
                                 </div>
-                                
-                                {/* <Form.Control type="text" size="sm" className="shadow-none select-field"
-                                    autoComplete="off"
-                                    name="subject"
-                                    onChange={this.handleChange}
-                                /> */}
                             </Form.Group>
                             <Form.Group>
                                 <Button type="submit" className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</Button>

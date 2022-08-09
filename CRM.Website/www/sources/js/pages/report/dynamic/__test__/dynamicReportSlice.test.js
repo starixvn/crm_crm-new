@@ -3,7 +3,8 @@ import dynamicReport, {
     setAllSettings,
     setGridParams,
     setViewCommunicationDialog,
-    setViewChartDialog
+    setViewChartDialog,
+    setFeedbackSubjectTemplates
 } from '../dynamicReportSlice';
 
 describe('dynamicReportSlice reducer', () => {
@@ -15,6 +16,7 @@ describe('dynamicReportSlice reducer', () => {
                 pageIndex: 1,
                 pageSize: 100
             },
+            feedbackSubjectTemplates: [],
             viewCommunicationDialog: { show: false },
             viewChartDialog: { show: false, chartInfo: {} }
         });
@@ -50,6 +52,17 @@ describe('dynamicReportSlice reducer', () => {
             })
         ).toEqual({
             gridParams: { feedbackId: 720, userName:"test" }
+        });
+    });
+
+    it('should handle setFeedbackSubjectTemplates', () => {
+        expect(
+            dynamicReport({}, {
+                type: setFeedbackSubjectTemplates.type,
+                payload: [{ subject: 'test', id:1 }]
+            })
+        ).toEqual({
+            feedbackSubjectTemplates: [{ subject: 'test', id:1 }]
         });
     });
 
