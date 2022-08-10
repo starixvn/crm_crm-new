@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useCallback } from 'react';
 import { UNSAFE_NavigationContext as NavigationContext } from 'react-router-dom';
 import LangHelper from '@jsroot/common/langHelper';
 
-export function useBlocker( blocker, when = true ) {
+function useBlocker( blocker, when = true ) {
     const { navigator } = useContext( NavigationContext );
     useEffect( () => {
         if(!when) {
-            return null;
+            return undefined;
         }
         const unblock = navigator.block( tx => {
             const autoUnblockingTx = {
@@ -24,10 +24,12 @@ export function useBlocker( blocker, when = true ) {
     }, [ navigator, blocker, when ] );
 }
 
-export function usePrompt( message, when = true ) {
+function usePrompt( message, when = true ) {
     const blocker = useCallback(
         tx => {
-            if ( window.confirm( message ) ) tx.retry();
+            if (window.confirm(message)){
+                tx.retry();
+            }
         },
         [ message ]
     );
