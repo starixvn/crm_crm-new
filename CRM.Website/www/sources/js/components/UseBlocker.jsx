@@ -5,9 +5,10 @@ import LangHelper from '@jsroot/common/langHelper';
 export function useBlocker( blocker, when = true ) {
     const { navigator } = useContext( NavigationContext );
     useEffect( () => {
-        if ( ! when ) return;
-
-        const unblock = navigator.block( ( tx ) => {
+        if(!when) {
+            return null;
+        }
+        const unblock = navigator.block( tx => {
             const autoUnblockingTx = {
                 ...tx,
                 retry() {
@@ -17,7 +18,7 @@ export function useBlocker( blocker, when = true ) {
             };
 
             blocker( autoUnblockingTx );
-        } );
+        });
 
         return unblock;
     }, [ navigator, blocker, when ] );
@@ -25,7 +26,7 @@ export function useBlocker( blocker, when = true ) {
 
 export function usePrompt( message, when = true ) {
     const blocker = useCallback(
-        ( tx ) => {
+        tx => {
             if ( window.confirm( message ) ) tx.retry();
         },
         [ message ]
