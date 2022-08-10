@@ -45,9 +45,9 @@ const verifyUserName = data => async () => {
     return await DataService.postDataAsync(url, data).then(response => response.data);
 };
 
-const getTicketInfoByRef = refNo => async () => {
+const getTicketInfoByRef = params => async () => {
     const url = Site.resolveClientUrl('Feedback/GetTicketInfoByRefNo');
-    return await DataService.getDataAsync(url, refNo).then(response => response.data);
+    return await DataService.postDataAsync(url, params).then(response => response.data);
 };
 
 export const ActionCreators = {

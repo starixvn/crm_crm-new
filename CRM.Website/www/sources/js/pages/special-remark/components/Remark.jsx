@@ -136,7 +136,7 @@ export class Remark extends Component {
             return true;
         }
         return false;
-    }
+    };
 
     render() {
         const { collapse, specialRemarks, dataSpecialRemarks, normalRemarks, dataNormalRemarks, editRemarkResult

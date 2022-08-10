@@ -31,7 +31,7 @@ export class AppContainer extends Component {
     componentDidMount() {
         this.props.getAllSettings();
         this.props.getBalanceUpday();
-        this.props.getCustomerDetail({customerId: this.props.id});
+        this.props.getCustomerDetail({customerId: this.props.custId});
         document.title = LangHelper.getResource('AddFeedback');
     }
 
@@ -40,14 +40,14 @@ export class AppContainer extends Component {
      }
 
     render() {
-        const { settings, balanceUpday, customerDetail, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult } = this.props;
+        const { custId, settings, balanceUpday, customerDetail, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult } = this.props;
         if (settings === null || balanceUpday === null || customerDetail === null) {
             return null;
         }
         return (
             <CreateForm
                 settings={settings} balanceUpday={balanceUpday} customerDetail={customerDetail} feedbackSubjectTemplates={feedbackSubjectTemplates}
-                confirmCreateGuestDialog={confirmCreateGuestDialog} setConfirmCreateGuestDialog={this.props.setConfirmCreateGuestDialog}
+                confirmCreateGuestDialog={confirmCreateGuestDialog} setConfirmCreateGuestDialog={this.props.setConfirmCreateGuestDialog} custId={custId}
                 addFeedbackResult={addFeedbackResult}  verifyUserName={this.props.verifyUserName} getTicketInfoByRef={this.props.getTicketInfoByRef}
                 setAddFeedback={this.props.setAddFeedback} duplicateFeedbackResult={duplicateFeedbackResult} addFeedback={this.props.addFeedback}
             />

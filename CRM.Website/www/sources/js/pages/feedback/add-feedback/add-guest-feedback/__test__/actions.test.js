@@ -169,13 +169,13 @@ describe('actionCreators', () => {
                 }]
             };
             const promise = Promise.resolve(response);
-            DataService.getDataAsync = jest.fn(() => promise);
+            DataService.postDataAsync = jest.fn(() => promise);
 
             // Act
             const actual = await store.dispatch(ActionCreators.getTicketInfoByRef({refNo: 1}));
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('Feedback/GetTicketInfoByRefNo', {refNo: 1});
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('Feedback/GetTicketInfoByRefNo', {refNo: 1});
             expect(actual).toEqual(response.data);
         });
     });

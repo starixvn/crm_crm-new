@@ -7,12 +7,13 @@
     using CRM.Core.Services;
     using CRM.Criteria.Feedback;
     using CRM.Models.Feedback;
+    using CRM.Models.Setting;
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
 
     public interface ITicketRefService
     {
-        Task<TicketInfo> GetTicketByRefNoAsync(long refno);
+        Task<TicketInfo> GetTicketByRefNoAsync(SiteDbGroup siteDb, RefTicketParams param);
 
         Task<DateTime> GetBalanceUpdayAsync();
     }
@@ -27,13 +28,13 @@
             this.baseService = baseService;
             this.configuration = configuration;
         }
-        public async Task<TicketInfo> GetTicketByRefNoAsync(long refno)
+        public async Task<TicketInfo> GetTicketByRefNoAsync(SiteDbGroup siteDb, RefTicketParams param)
         {
             var napUrl = configuration.GetSection("NapSettings:Url").Value;
             var apiKey = configuration.GetSection("NapSettings:APIKey").Value;
             CustomDelegatingHandler customDelegatingHandler = new CustomDelegatingHandler(apiKey);
             HttpClient client = HttpClientFactory.Create(customDelegatingHandler);
-            var url = new Uri(napUrl + "BetListApi/GetBetListByRefNo?refno=" + refno);
+            var url = new Uri(string.Format(napUrl + "BetListApi/GetBetListByRefNo?RefNo={0}&Site={1}&SiteDBGroupId={2}", param.Refno, siteDb.Site, siteDb.SiteDBGroupID));
             var response = await client.GetAsync(url);
             var jsonString = await response.Content.ReadAsStringAsync();
             return jsonString != null ? JsonConvert.DeserializeObject<TicketInfo>(jsonString) : await Task.FromResult<TicketInfo>(null);

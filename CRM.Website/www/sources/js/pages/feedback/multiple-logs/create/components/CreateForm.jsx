@@ -442,8 +442,6 @@ export class CreateForm extends Component {
         });
     };
 
-
-
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         const usernames = this.props.verifyCustomerResults.map(x=>x.username).join(',');

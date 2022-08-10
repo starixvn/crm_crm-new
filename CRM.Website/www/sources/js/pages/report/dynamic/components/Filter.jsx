@@ -293,7 +293,7 @@ export class Filter extends Component {
 
     handleChangeSubject = value =>{
         this.setState({ subject: value });
-    }
+    };
 
     filterSubCategoryOptions = (subCategories, mainCategoryId) => {
         if (mainCategoryId === 0) {

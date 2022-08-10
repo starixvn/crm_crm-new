@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useCallback } from 'react';
 import { UNSAFE_NavigationContext as NavigationContext } from 'react-router-dom';
 import LangHelper from '@jsroot/common/langHelper';
 
-function useBlocker( blocker, when = true ) {
+const useBlocker = function( blocker, when = true ) {
     const { navigator } = useContext( NavigationContext );
     useEffect( () => {
         if(!when) {
@@ -22,9 +22,9 @@ function useBlocker( blocker, when = true ) {
 
         return unblock;
     }, [ navigator, blocker, when ] );
-}
+};
 
-function usePrompt( message, when = true ) {
+const usePrompt = function( message, when = true ) {
     const blocker = useCallback(
         tx => {
             if (window.confirm(message)){
@@ -34,7 +34,7 @@ function usePrompt( message, when = true ) {
         [ message ]
     );
     useBlocker( blocker, when );
-}
+};
 
 export const FormCheckDirtyComponent = ({isDirty, tab}) => {
     const message = LangHelper.formatString(LangHelper.getResource('ThereAreSomeChangesOnTabConfirmMessage'), tab);

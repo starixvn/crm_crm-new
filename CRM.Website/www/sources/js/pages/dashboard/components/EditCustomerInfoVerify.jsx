@@ -46,7 +46,7 @@ export class EditCustomerInfoVerify extends Component {
             data.push({ name: 'Given Credit', value: info.givenCredit, isChecked: info.isVerifyGivenCredit });
         }
         this.setState({ data: data });
-    }
+    };
 
     handleChange = index => {
         const data = [...this.state.data];
