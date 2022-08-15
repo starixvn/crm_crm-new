@@ -51,8 +51,10 @@ describe('DataGrid', () => {
             // Arrange
             const props = {
                 gridData: { 
-                    data: [{ id: 1, communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0'}],
-                    mainCategories:[{ settingId: 3000, childSettings:[{subCategoryId: 4000}] }]
+                    data: [{ id: 1, communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0', 
+                    groupCategory: [{ mainCategoryId: 3000, subCategoryId:[4000] }]
+                }],
+                mainCategories:[{ settingId: 3000, childSettings:[{subCategoryId: 4000}] }]
                 },
                 gridParams: { pageIndex: 1, pageSize: 100}         
             };
@@ -75,7 +77,8 @@ describe('DataGrid', () => {
             // arrange
             const props = {
                 gridData: { 
-                    data: [{ id: 1, communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0'}],
+                    data: [{ id: 1, communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0',
+                    groupCategory: [{ mainCategoryId: 3000, subCategoryId:[4000] }]}],
                     mainCategories:[{ settingId: 3000, childSettings:[{subCategoryId: 4000}] }]
                 },
                 gridParams: { pageIndex: 1, pageSize: 100},
@@ -166,7 +169,8 @@ describe('DataGrid', () => {
         it('should call exactly function when onPaging', () => {
             // Arrange
             const props = {
-                setGridParams: jest.fn()
+                setGridParams: jest.fn(),
+                getLogsByCustomerId: jest.fn()
             };
             const container = shallow(<DataGrid {...props} />).instance();
 
@@ -175,6 +179,7 @@ describe('DataGrid', () => {
 
             // Assert
             expect(props.setGridParams).toHaveBeenCalled();
+            expect(props.getLogsByCustomerId).toHaveBeenCalled();
         });
     });
 
@@ -183,15 +188,18 @@ describe('DataGrid', () => {
             // Arrange
             const props = {
                 gridData: { 
-                    data: [{ id: 1, communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0'}],
+                    data: [{ id: 1, communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0',
+                        groupCategory: [{ mainCategoryId: 3000, subCategoryId:[4000] }]
+                    }],
                     mainCategories:[{ settingId: 3000, childSettings:[{subCategoryId: 4000}] }]
                 },
                 gridParams: { pageIndex: 1, pageSize: 100}         
             };
             const item = {
                 feedbackId: 1234, settings: [{settingType: 'Category',settingId: 0, subSettingId : 0}], relatedCustomer: "test1,test2",
+                groupCategory: [{ mainCategoryId: 3000, subCategoryId:[4000] }],
                 communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0'
-            }
+            };
             const container = shallow(<DataGrid {...props}/>).instance();
             container.handleEditCommunicationLog = jest.fn();
 
@@ -209,15 +217,18 @@ describe('DataGrid', () => {
             // Arrange
             const props = {
                 gridData: { 
-                    data: [{ id: 1, communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0'}],
+                    data: [{ id: 1, communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0',
+                        groupCategory: [{ mainCategoryId: 3000, subCategoryId:[4000] }]
+                    }],
                     mainCategories:[{ settingId: 3000, childSettings:[{subCategoryId: 4000}] }]
                 },
                 gridParams: { pageIndex: 1, pageSize: 100}         
             };
             const item = {
                 feedbackId: 1234, settings: [{settingType: 'Category',settingId: 0, subSettingId : 0}], relatedCustomer: "test1,test2",
+                groupCategory: [{ mainCategoryId: 3000, subCategoryId:[4000] }],
                 communicationSettings: [{mainCategoryId: 3000, subCategoryId: 4000}], duration: '1 : 0'
-            }
+            };
             const container = shallow(<DataGrid {...props}/>).instance();
             container.handleEditNoOfInquiry = jest.fn();
 

@@ -9,6 +9,8 @@ import {
     setFeedbackSubjectTemplates
 } from '../communicationLogSlice';
 
+import * as functions from '../common.functions';
+
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
@@ -26,7 +28,7 @@ describe('actionCreators', () => {
     describe('getLogsByCustomerId', () => {
         it('should handle setLogsByCustomerId when fetching data have been done', async () => {
             // Arrange
-            const response = { data: { firstName: 'test' } };
+            const response = { data: {data: [{ firstName: 'test' }], mainCategories:[{settingId: 1, settingValue: 'test'}] }};
             const expectedParams = { 
                 customerId: 1754,
                 fromDate: 'Sep 01, 2021',
@@ -34,11 +36,21 @@ describe('actionCreators', () => {
                 statusId: 0,
                 toDate: 'Sep 15, 2021'
             };
-            const expectedActions = [{ type: setLogsByCustomerId.type, payload: response.data }];
+            const expectedResponse = {
+                data: [{
+                    firstName: "test",
+                    groupCategory:[{
+                        mainCategoryId: 1
+                    }],
+                    mainCategoryValue: "test",
+                }],
+                mainCategories:[{settingId: 1, settingValue: 'test'}]
+            };
+            const expectedActions = [{ type: setLogsByCustomerId.type, payload: expectedResponse }];
             const store = mockStore({ gridData: null });
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
-
+            functions.filterGroupCategory = jest.fn(() => { return [{mainCategoryId: 1 }]});
             // Act
             await store.dispatch(ActionCreators.getLogsByCustomerId(expectedParams));
 

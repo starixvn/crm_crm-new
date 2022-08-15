@@ -123,7 +123,11 @@ const checkExistBetType = (subProductId, betTypeId, betTypes) => {
 
 export const getProductParams = (selectedProductIds, selectedSubProductIds, selectedBettypeIds, settings) => {
     let products = [];
-    if (selectedProductIds.length === 0) {
+    const selectedProductIdsDistinct = selectedProductIds.filter((v,i,a)=> a.findIndex(t=> t === v) === i);
+    const selectedSubProductIdsDistinct = selectedSubProductIds.filter((v,i,a)=> a.findIndex(t=> t === v) === i);
+    const selectedBettypeIdsDistinct = selectedBettypeIds.filter((v,i,a)=> a.findIndex(t=> t === v) === i);
+
+    if (selectedProductIdsDistinct.length === 0) {
         products = [
             {
                 productId: settings.productNA?.id,
@@ -132,19 +136,19 @@ export const getProductParams = (selectedProductIds, selectedSubProductIds, sele
             }
         ];
     } else {
-        selectedProductIds.forEach(productId => {
-            if (selectedSubProductIds.length === 0) {
+        selectedProductIdsDistinct.forEach(productId => {
+            if (selectedSubProductIdsDistinct.length === 0) {
                 products.push({
                     productId: parseInt(productId, 10),
                     subProductId: settings.subProductNA?.id,
                     betTypeId: settings.bettypeNA?.id
                 });
             } else {
-                selectedSubProductIds.forEach(subProductId => {
+                selectedSubProductIdsDistinct.forEach(subProductId => {
                     const index = settings.subProducts.findIndex(item => item.id === parseInt(subProductId, 10) && item.parentId === parseInt(productId, 10));
                     if (index >= 0) {
                         const subProductBettypes = [];
-                        selectedBettypeIds.forEach(betTypeId => {
+                        selectedBettypeIdsDistinct.forEach(betTypeId => {
                             if (checkExistBetType(subProductId, betTypeId, settings.bettypes)) {
                                 subProductBettypes.push({
                                     productId: parseInt(productId, 10),

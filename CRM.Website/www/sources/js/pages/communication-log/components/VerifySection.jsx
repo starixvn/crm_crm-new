@@ -1,18 +1,19 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import { Button, Form, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import VerifyCustomer from '@jsroot/components/verifyCustomer';
 import { validateNoOfInquiry } from '../../feedback/common.functions';
 import { handleGetFeedbackSubjectTemplates } from '../common.functions';
-export default class Verify extends PureComponent {
+
+export default class VerifySection extends PureComponent {
     render() {
     const { handleVerifyCreateRelatedCustomer, relatedCustomers, deleteVerifyCreateCustomer, balanceUpday,
         handleChangeRefTicket, handleClickFillEvent, feedbackSubjectTemplates, verifySection, onPasteRefTicketHandler,
         handlePasteCustomer, handleChangeVerifySection, isValidSubject, isValidCustomerInput } = this.props;
 
         return(
-            <div>
+            <Fragment>
                 <Form.Group as={Row}>
                     <Col sm="6" md="6">
                         <Form.Group as={Row}>
@@ -107,7 +108,7 @@ export default class Verify extends PureComponent {
                         </Form.Group>
                     </Col>
                 </Form.Group>
-            </div>
+            </Fragment>
         );
     }
 }

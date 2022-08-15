@@ -344,7 +344,7 @@ export default class CreateForm extends Component {
             }
 
             this.setState(prevState =>({
-                countClickRefTicket: prevState.countClickRefTicket.sec + 1
+                countClickRefTicket: prevState.countClickRefTicket + 1
             }));
         });
     };

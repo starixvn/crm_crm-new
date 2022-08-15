@@ -39,19 +39,29 @@ describe('commonFunctions', () => {
         it('return expected errors when values are invalid', () => {
             // Arrange
             const values = {
-                customerNameInput: 'test',
                 communicationToolIds: [],
                 mainCategoryIds: '',
                 subCategoryIds: '',
                 languageId: 0,
+                startTime:'2022-02-02',
+                endTime:'2022-01-01'
+            };
+            const contents ={
                 solution: '',
                 remark: '',
-                subject: '',
                 review: null,
                 isReviewed: true
             };
+
+            const verifySection = {
+                customerNameInput: 'test',
+                subject: ''
+            };
+
             const expected = {
                 customerNameInput: 'You must verify the username before saving this feedback.',
+                startTime: LangHelper.formatString( LangHelper.getResource('FieldLessThanOrEqualTo'),
+                LangHelper.getResource('StartTime'),LangHelper.getResource('EndTime')),
                 communicationToolIds: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Communication')),
                 mainCategoryIds: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('MainCategory')),
                 subCategoryIds: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SubCategory')),
@@ -63,71 +73,31 @@ describe('commonFunctions', () => {
             };
 
             // Act
-            const errors = commonFunction.validateFormik(values, settings);
-
-            // Assert
-            expect(errors).toEqual(expected);
-        });
-
-        it('return expected errors when invalid category, start time and end time params', () => {
-            // Arrange
-            const values = {
-                communicationToolIds: [{id: 1}],
-                customerNameInput: '',
-                mainCategoryIds: '1, 2',
-                subCategoryIds: '1',
-                startTime: '2001-12-20T00:00:00-06:00',
-                endTime: '2001-12-20T00:00:00-05:00'
-            };
-            const expected = {
-                mainCategoryIds: LangHelper.formatString(LangHelper.getResource('InvalidCategoryField'), 'settingName'),
-                startTime: LangHelper.formatString(
-                    LangHelper.getResource('FieldLessThanOrEqualTo'),
-                    LangHelper.getResource('StartTime'),
-                    LangHelper.getResource('EndTime'))
-            };
-
-            // Act
-            const errors = commonFunction.validateFormik(values, settings);
+            const errors = commonFunction.validateFormik(values,contents, verifySection, settings);
 
             // Assert
             expect(errors).toEqual(expected);
         });
     });
 
-    describe('handleChangeMainCategory', () => {
-        it('should do as expected when selectedItemsKey has value', () => {
+    describe('handleGroupCategory', () => {
+        it('should return expect array', () => {
             // Arrange
-            const values = {subject: 'subject', subCategory: '1,2'};
-            const setFieldValue = jest.fn();
-            const setStateSubcategory = jest.fn();
-            shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
-            shareScripts.getSubCategories = jest.fn(()=> [1]);
-
+            const params = [
+                { mainCategoryId: 3024, subCategoryId: 4069 },
+                { mainCategoryId: 3024, subCategoryId: 4070 },
+                { mainCategoryId: 3025, subCategoryId: 4080 },
+                { mainCategoryId: 3024, subCategoryId: 4071 }
+            ];
+            const expectValue = [
+                { mainCategoryId: 3024, subCategoryId: [ 4069, 4070, 4071 ] },
+                { mainCategoryId: 3025, subCategoryId: [ 4080 ] }
+            ];
             // Act
-            commonFunction.handleChangeMainCategory(setFieldValue, '1,2', 'currentItem', values, settings, setStateSubcategory);
+            const received = commonFunction.filterGroupCategory(params);
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('mainCategoryIds', '1,2');
-            expect(setFieldValue).toHaveBeenCalledWith('subject', 'tempSubject');
-            expect(setStateSubcategory).toHaveBeenCalledWith([1]);
-        });
-
-        it('should do as expected when selectedItemsKey is empty', () => {
-            // Arrange
-            const values = {subject: 'subject', subCategory: '1,2'};
-            const setFieldValue = jest.fn();
-            const setStateSubcategory = jest.fn();
-            shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
-
-            // Act
-            commonFunction.handleChangeMainCategory(setFieldValue, '', 'currentItem', values, settings, setStateSubcategory);
-
-            // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('mainCategoryIds', '');
-            expect(setFieldValue).toHaveBeenCalledWith('subject', 'tempSubject');
-            expect(setFieldValue).toHaveBeenCalledWith('subCategoryIds', '');
-            expect(setStateSubcategory).toHaveBeenCalledWith([]);
+            expect(received).toEqual(expectValue);
         });
     });
 
