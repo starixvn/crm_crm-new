@@ -1,18 +1,16 @@
 import moment from 'moment';
 import LangHelper from '@jsroot/common/langHelper';
 import { ActionCreators } from './actions';
-import {
-    getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories
-} from '@jsroot/common/shareScripts';
+import { getSubProducts, getBetTypes } from '@jsroot/common/shareScripts';
 import Site from '@jsroot/common/site';
 import { validateMainCategorySubCategory } from '../feedback/common.functions';
 
-export const validateFormik = (values, settings) => {
+export const validateFormik = (values, contents, verifySection, settings) => {
     const errors = {};
     const { mainCategories, subCategories } = settings;
     validateMainCategorySubCategory(errors, values.mainCategoryIds, values.subCategoryIds, mainCategories, subCategories);
 
-    if (values.customerNameInput !== '') {
+    if (verifySection.customerNameInput !== '') {
         errors.customerNameInput = 'You must verify the username before saving this feedback.';
     }
 
@@ -31,22 +29,22 @@ export const validateFormik = (values, settings) => {
             LangHelper.getResource('Language'));
     }
 
-    if (values.subject === '') {
+    if (verifySection.subject === '') {
         errors.subject = LangHelper.formatString(LangHelper.getResource('FieldRequired'),
             LangHelper.getResource('Subject'));
     }
 
-    if (values.remark === '') {
+    if (contents.remark === '') {
         errors.remark = LangHelper.formatString(LangHelper.getResource('FieldRequired'),
             LangHelper.getResource('Remark'));
     }
 
-    if (values.solution === '') {
+    if (contents.solution === '') {
         errors.solution = LangHelper.formatString(LangHelper.getResource('FieldRequired'),
             LangHelper.getResource('Solution'));
     }
 
-    if (values.isReviewed && (values.review === null || values.review === '')) {
+    if (contents.isReviewed && (contents.review === null || contents.review === '')) {
         errors.review = LangHelper.formatString(LangHelper.getResource('FieldRequired'),
             LangHelper.getResource('Review'));
     }
@@ -65,20 +63,6 @@ export const filterGroupCategory = category => {
         return accumulator;
     },[]);
     return groupCategory;
-};
-
-export const handleChangeMainCategory = (setFieldValue, categoryIds, subCategoryIds, subject, settings, setStateSubcategory) => {
-    const tempSubject = getSubjectOnChangeCategories(categoryIds ? categoryIds.split(',') : [], subject, settings.mainCategories);
-    setFieldValue('mainCategoryIds', categoryIds);
-    setFieldValue('subject', tempSubject);
-    if (categoryIds) {
-        const subCategoryId = subCategoryIds.length > 0 ? subCategoryIds.split(',') : [];
-        const subCategories = getSubCategories(categoryIds.split(','), settings.subCategories, subCategoryId, false);
-        setStateSubcategory(subCategories);
-    } else {
-        setFieldValue('subCategoryIds', '');
-        setStateSubcategory([]);
-    }
 };
 
 export const handleChangeProduct = (setFieldValue, productIds, subProductIds, settings, setStateSubProduct, setStateBetType) => {

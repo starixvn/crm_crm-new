@@ -48,10 +48,6 @@
         width: 100% !important;
     }
     
-    .sweet-alert-modal-backdrop {
-        z-index: 1050 !important;
-    }
-    
     #tooltip-ref-ticket [class$="inner"] {
         white-space: pre-wrap;
         min-width: 500px;
@@ -204,9 +200,13 @@
 
 .communication-modal-dialog {
     .modal-dialog {
-        min-width: 920px;
+        min-width: 910px;
 
         .modal-content {
+            // .extend-width .multiple-select-options-container{
+            //     width: 232px !important;
+            // }
+
             .panel-group {
                 border: 1px solid #b1b1b1;
 

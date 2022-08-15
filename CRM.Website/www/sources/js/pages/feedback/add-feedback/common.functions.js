@@ -77,7 +77,9 @@ export const initValues = settings =>{
         noOfInquiries: '',
         customerNameInput: '',
         subject: '',
-        ticketRefInput: ''
+        ticketRefInput: '',
+        description: '',
+        solution: ''
     };
 
     return initialValues;
@@ -159,7 +161,9 @@ export const initValuesAddCustomerFb = (settings, customerDetail) =>{
         noOfInquiries: '',
         customerNameInput: '',
         subject: '',
-        ticketRefInput: ''
+        ticketRefInput: '',
+        description: '',
+        solution: ''
     };
 
     return initialValues;

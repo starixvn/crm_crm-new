@@ -481,8 +481,8 @@ export default class CreateForm extends Component {
                             customerDetail === null &&
                             <Suspense fallback={<div>Loading...</div>}>
                                 <Content
-                                    editBlock={this.state.editBlock} collapse={this.state.collapse}
-                                    content={this.state.content} handleEditBlock={this.handleEditBlock}
+                                    editBlock={this.state.editBlock} collapse={this.state.collapse} isInValidSolution={touched.solution && errors.solution}
+                                    content={this.state.content} handleEditBlock={this.handleEditBlock} isValidDescription={touched.description && errors.description}
                                     handleCollapseExpend={this.handleCollapseExpend} handleChangeContent ={this.handleChangeContent}
                                 />
                              </Suspense>
@@ -493,7 +493,7 @@ export default class CreateForm extends Component {
                     customerDetail !== null &&
                     <Suspense fallback={<div>Loading...</div>}>
                         <Content
-                            editBlock={this.state.editBlock} collapse={this.state.collapse} isInValidSolution={touched.description && errors.description}
+                            editBlock={this.state.editBlock} collapse={this.state.collapse} isInValidSolution={touched.solution && errors.solution}
                             content={this.state.content} handleEditBlock={this.handleEditBlock} isValidDescription={touched.description && errors.description}
                             handleCollapseExpend={this.handleCollapseExpend} handleChangeContent ={this.handleChangeContent}
                         />

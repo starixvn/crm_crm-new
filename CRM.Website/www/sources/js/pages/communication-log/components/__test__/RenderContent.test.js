@@ -1,10 +1,10 @@
 import React from 'react';
-import { RenderCollapse } from '../RenderCollapse';
+import { RenderContent } from '../RenderContent';
 import { Form } from 'react-bootstrap';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import { shallow } from 'enzyme';
 
-describe('commonFunctions', () => {
+describe('RenderContent', () => {
     afterAll(() => {
         jest.clearAllMocks();
     });
@@ -18,15 +18,14 @@ describe('commonFunctions', () => {
             collapse: {},
             handleChange: jest.fn(),
             setFieldValue: jest.fn(),
-            handleCollapseExpand: jest.fn(),
-            isEdit: true
+            handleCollapseExpand: jest.fn()
         };
 
         it('handleChange should call exact function when handleCollapse', () => {
             // Arrange
 
             // Act
-            const container = shallow(<RenderCollapse {...props} />).instance();
+            const container = shallow(<RenderContent {...props} />).instance();
             const renderEdit = shallow(container.render());
             renderEdit.find(Form.Group).at(0).simulate('click');
             renderEdit.find(Form.Group).at(1).simulate('click');
@@ -35,9 +34,8 @@ describe('commonFunctions', () => {
 
         it('handleChange should call exact function when remark render', () => {
             // Arrange
-
             // Act
-            const container = shallow(<RenderCollapse {...props} />).instance();
+            const container = shallow(<RenderContent {...props} />).instance();
             const renderEdit = shallow(container.render());
             renderEdit.find(CkEditor).at(0).simulate('change', 'value');
             
@@ -49,7 +47,7 @@ describe('commonFunctions', () => {
             // Arrange
 
             // Act
-            const container = shallow(<RenderCollapse {...props} />).instance();
+            const container = shallow(<RenderContent {...props} />).instance();
             const renderEdit = shallow(container.render());
             renderEdit.find(CkEditor).at(1).simulate('change', 'value');
             
@@ -63,7 +61,7 @@ describe('commonFunctions', () => {
                 target: {checked: true}
             }; 
             // Act
-            const container = shallow(<RenderCollapse {...props} />);
+            const container = shallow(<RenderContent {...props} />);
             container.find('input').at(0).simulate('change', event);
             
             // Assert
@@ -72,7 +70,7 @@ describe('commonFunctions', () => {
 
         it('handleChange should call exact function when review render', () => {
             // Act
-            const renderEdit = shallow(<RenderCollapse {...props} />);
+            const renderEdit = shallow(<RenderContent {...props} />);
             renderEdit.find(CkEditor).at(2).simulate('change', 'value');
             
             // Assert
