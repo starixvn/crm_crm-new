@@ -359,22 +359,6 @@
         #endregion Get Remoting Ref
 
         [Fact]
-        public void GetFeedbackTemplates_CallFunction_ReturnExpectedTemplate()
-        {
-            // Arrange
-            var service = GetService();
-            var expect = new TODescriptionTemplate
-            {
-                Desc = "test"
-            };
-            // Act
-            var actual = service.GetFeedbackTemplates<TODescriptionTemplate>("TestTemplate.xml");
-
-            // Assert
-            Assert.Equal(expect.ToString(), actual.ToString());
-        }
-
-        [Fact]
         public async Task EditFeedbackSystemSettingAsync_CallFunction_ExpectCallExactFunction()
         {
             // Arrange

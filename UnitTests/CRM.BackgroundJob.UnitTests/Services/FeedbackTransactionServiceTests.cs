@@ -79,7 +79,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                     ProductID = 1,
                     ProductGroup = "1",
                     Level = "1",
-                    ReachedTime = new DateTime(2020,11,13),
+                    ReachedTime = new DateTime(2020, 11, 13, 5, 10, 20, DateTimeKind.Utc),
                     BettypeIDList = "1",
                     CustId = 1,
                     TotalWinAmt = 1000,
@@ -100,7 +100,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var sport = new List<SportInfo>();
             var winLimitReturn = new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>, IEnumerable<SportInfo>>(winLimit, betTypes, sport);
             var XmlTemplate = "<ROOT><r logid='1' custid='1' hl='1' hlname='1' related='1' product='1' group='1' level='1' " +
-                                       "limitsetting='0' winamount='1000' winamountRM='1000' time='11/13/2020 12:00:00 AM' bettype='1'/></ROOT>";
+                                       "limitsetting='0' winamount='1000' winamountRM='1000' time='11/13/2020 5:10:20 AM' bettype='1'/></ROOT>";
             var criteria = new ImportWinLossFeedbackInfoCriteria();
             var service = GetFeedbackTransactionService();
             baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo, SportInfo>(Arg.Do<ImportWinLossFeedbackInfoCriteria>(x => criteria = x)).Returns(winLimitReturn);
@@ -126,7 +126,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
                     ProductGroup = "1",
                     Level = "1",
                     LevelID = 3,
-                    ReachedTime = new DateTime(2020,11,13),
+                    ReachedTime = new DateTime(2020, 11, 13, 5, 10, 20, DateTimeKind.Utc),
                     BettypeIDList = "1",
                     CustId = 1,
                     TotalWinAmt = 1000,
@@ -147,7 +147,7 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var sport = new List<SportInfo>();
             var winLimitReturn = new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>, IEnumerable<SportInfo>>(winLimit, betTypes, sport);
             var XmlTemplate = "<ROOT><r logid='1' custid='1' hl='1' hlname='1' related='1' product='1' group='1' level='1' " +
-                                       "limitsetting='0' winamount='1000' winamountRM='1000' time='11/13/2020 12:00:00 AM' bettype='1'/></ROOT>";
+                                       "limitsetting='0' winamount='1000' winamountRM='1000' time='11/13/2020 5:10:20 AM' bettype='1'/></ROOT>";
             var criteria = new ImportWinLossFeedbackInfoCriteria();
             var service = GetFeedbackTransactionService();
             baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo, SportInfo>(Arg.Do<ImportWinLossFeedbackInfoCriteria>(x => criteria = x)).Returns(winLimitReturn);
