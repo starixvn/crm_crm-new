@@ -99,18 +99,16 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var betTypes = new List<BettypeInfo>();
             var sport = new List<SportInfo>();
             var winLimitReturn = new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>, IEnumerable<SportInfo>>(winLimit, betTypes, sport);
-            var XmlTemplate = "<ROOT><r logid='1' custid='1' hl='1' hlname='1' related='1' product='1' group='1' level='1' " +
-                                       "limitsetting='0' winamount='1000' winamountRM='1000' time='11/13/2020 5:10:20 AM' bettype='1'/></ROOT>";
             var criteria = new ImportWinLossFeedbackInfoCriteria();
             var service = GetFeedbackTransactionService();
             baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo, SportInfo>(Arg.Do<ImportWinLossFeedbackInfoCriteria>(x => criteria = x)).Returns(winLimitReturn);
 
             // Act
-            await service.ImportWinLimitFeedbackInfoAsync(cusWinLimit, headlines);
+            var actual = await service.ImportWinLimitFeedbackInfoAsync(cusWinLimit, headlines);
 
             // Assert
 
-            Assert.Equal(XmlTemplate, criteria.xml);
+            Assert.Equal(winLimitReturn, actual);
         }
 
         [Fact]
@@ -146,18 +144,16 @@ namespace CRM.BackgroundJob.UnitTests.Services
             var betTypes = new List<BettypeInfo>();
             var sport = new List<SportInfo>();
             var winLimitReturn = new ValueTuple<IEnumerable<WinLimitFeedBackInfo>, IEnumerable<BettypeInfo>, IEnumerable<SportInfo>>(winLimit, betTypes, sport);
-            var XmlTemplate = "<ROOT><r logid='1' custid='1' hl='1' hlname='1' related='1' product='1' group='1' level='1' " +
-                                       "limitsetting='0' winamount='1000' winamountRM='1000' time='11/13/2020 5:10:20 AM' bettype='1'/></ROOT>";
             var criteria = new ImportWinLossFeedbackInfoCriteria();
             var service = GetFeedbackTransactionService();
             baseService.FetchMultipleAsync<WinLimitFeedBackInfo, BettypeInfo, SportInfo>(Arg.Do<ImportWinLossFeedbackInfoCriteria>(x => criteria = x)).Returns(winLimitReturn);
 
             // Act
-            await service.ImportWinLimitFeedbackInfoAsync(cusWinLimit, headlines);
+            var actual = await service.ImportWinLimitFeedbackInfoAsync(cusWinLimit, headlines);
 
             // Assert
 
-            Assert.Equal(XmlTemplate, criteria.xml);
+            Assert.Equal(winLimitReturn, actual);
         }
 
         #endregion ImportWinLimitFeedbackInfoAsync
