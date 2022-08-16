@@ -10,7 +10,7 @@
         <PublishProtocol>FileSystem</PublishProtocol>
         <Configuration>Release</Configuration>
         <Platform>Any CPU</Platform>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <PublishDir>D:\Deploy\CRM.Service</PublishDir>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <SelfContained>true</SelfContained>

@@ -238,7 +238,7 @@
             return await securityService.SSOLoginAsync(ssoLoginParam);
         }
 
-        public async Task<IActionResult> SignOut()
+        public async Task<IActionResult> Signout()
         {
             await DoSignOutAsync();
 
@@ -278,7 +278,7 @@
 
         private async Task DoSignOutAsync()
         {
-            if(napSession.OnUserId != 0)
+            if (napSession.OnUserId != 0)
             {
                 await securityService.LogoutAsync(napSession.OnUserId);
                 napSession.ClearAll();

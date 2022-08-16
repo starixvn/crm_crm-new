@@ -8,17 +8,13 @@
     using Microsoft.Extensions.Hosting;
     using ONEbook.UM.Services;
 
-    public class BaseWorker : BackgroundService
+    public abstract class BaseWorker : BackgroundService
     {
         private readonly IMaintenanceService maintenanceService;
         private readonly ICRMLogService logService;
-
-        private Timer timer;
-        private bool isRunning;
-
         protected JobSetting jobSetting;
 
-        public BaseWorker(
+        protected BaseWorker(
             IMaintenanceService maintenanceService,
             ICRMLogService logService)
         {
@@ -28,55 +24,56 @@
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            timer = new Timer(Execute,
-               null,
-               TimeSpan.Zero,
-               TimeSpan.FromSeconds(jobSetting.TimeInterval));
+            const byte MillisecondsDelay = 10;
+            await Task.Delay(MillisecondsDelay).ConfigureAwait(false);
 
-            await Task.CompletedTask;
+            try
+            {
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    await RunJobAsync();
+
+                    await Task.Delay(TimeSpan.FromSeconds(jobSetting.TimeInterval), stoppingToken);
+                }
+
+                logService.LogInformation($"Execution ended. Cancelation token cancelled = {stoppingToken.IsCancellationRequested}");
+            }
+            catch (Exception ex)
+            {
+                logService.LogInformation(ex.Message);
+            }
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-
             logService.LogInformation($"{jobSetting.JobName}: Service Starting");
             return base.StartAsync(cancellationToken);
         }
 
-        private void Execute(object state)
+        public virtual async Task RunJobAsync()
         {
             try
             {
-                if (!isRunning
-                    && jobSetting.IsEnabled
+                if (jobSetting.IsEnabled
                     && (!jobSetting.HasCheckUM || !IsUM()))
                 {
-                    isRunning = true;
                     logService.LogInformation($"{jobSetting.JobName}: Doing...");
-                    _ = ExecuteJobAsync();
+                    await ExecuteJobAsync();
                     logService.LogInformation($"{jobSetting.JobName}: Done.");
                 }
             }
             catch (Exception ex)
             {
-                _ = logService.ErrorAsync(ex);
+                await logService.ErrorAsync(ex);
                 logService.LogInformation($"{jobSetting.JobName}: Error - {ex}");
-            }
-            finally
-            {
-                isRunning = false;
             }
         }
 
-        public virtual async Task ExecuteJobAsync()
-        {
-            await Task.CompletedTask;
-        }
+        public abstract Task ExecuteJobAsync();
 
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
             logService.LogInformation($"{jobSetting.JobName}: Stopping Service");
-            timer?.Change(Timeout.Infinite, 0);
 
             await base.StopAsync(cancellationToken);
         }
@@ -84,7 +81,6 @@
         public override void Dispose()
         {
             logService.LogInformation($"{jobSetting.JobName}: Disposing Service");
-            timer.Dispose();
             base.Dispose();
         }
 
