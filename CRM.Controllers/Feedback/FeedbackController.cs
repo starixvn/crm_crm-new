@@ -61,7 +61,7 @@
         public async Task<IActionResult> EditNoOfInquiry([FromBody] EditNoOfInquiryCommand command)
         {
             command.UserId = napSession.UserId;
-           command.IP = ClientIP;
+            command.IP = ClientIP;
             CommandResult commandResult = await feedbackService.EditNoOfInquiryAsync(command);
             return Json(commandResult);
         }

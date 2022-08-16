@@ -11,7 +11,6 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Communication;
-    using CRM.ViewModels.Customer;
     using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;

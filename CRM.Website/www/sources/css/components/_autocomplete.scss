@@ -25,6 +25,10 @@
                 padding: 5px;
                 white-space: nowrap;
 
+                &:hover{
+                    cursor: pointer;
+                }
+
                 .text-matched {
                     color: #3399FF;
                 }
