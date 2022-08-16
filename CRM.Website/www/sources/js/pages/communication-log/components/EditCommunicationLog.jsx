@@ -500,7 +500,7 @@ export class EditCommunicationLog extends Component {
                                 extensions={extensionOptions} communicationTools={communicationToolOptions} mainCategories={mainCategoryOptions} subCategories={subCategoryOptions}
                                 products={productOptions} subProducts={subProductOptions} betTypes={betTypeOptions}
                             />
-                            <VerifySection 
+                            <VerifySection
                                 handleVerifyCreateRelatedCustomer={this.handleVerifyRelatedCustomer} relatedCustomers={relatedCustomers}
                                 deleteVerifyCreateCustomer={this.deleteVerifyEditCustomer} handlePasteCustomer={this.handlePasteCustomer}
                                 handleChangeVerifySection={this.handleChangeVerifySection} verifySection={verifySection}
