@@ -313,7 +313,7 @@ export default class CreateForm extends Component {
         const colorGenerated = 'color: rgb(255, 0, 0)';
         const relatedCustValid = this.state.listOfCustomerValid.filter(x=> x.isSiteActive);
         const parseFirstRelatedCust = parseInt(relatedCustValid[0]?.custId, 10);
-        const custId = !this.props.custId ? 0 : this.props.custId;
+        const custId = !this.props.currentCustomer ? 0 : this.props.currentCustomer.custId;
         const relatedCust = this.state.collapse.isVerifyCustomer && relatedCustValid.length > 0 ? parseFirstRelatedCust : custId;
         const params = {
             refno: values.ticketRefInput,
@@ -526,7 +526,7 @@ export default class CreateForm extends Component {
                 <Col sm="9" md="9">
                     <Row>
                         <Col sm="10" md="10">
-                            <Form.Control type="text" size="sm" value={values.customerNameInput}
+                            <Form.Control type="text" size="sm" value={values.customerNameInput} disabled={!this.state.collapse.isVerifyCustomer}
                                 name="customerNameInput" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)}/>
                         </Col>
@@ -714,7 +714,7 @@ export default class CreateForm extends Component {
             if (this.props.addFeedbackResult.isSuccessful) {
                 const paramsCustomer = {
                     username: params.UserName,
-                    isGuest: true
+                    isGuest: !this.props.currentCustomer ? true : this.props.currentCustomer.isGuest
                 };
                 const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
                 DataService.postDataAsync(url,paramsCustomer).then(response => {

@@ -117,6 +117,8 @@ export const initCustomerInfo = customerDetail =>{
         pic3PhoneNumber: customerDetail.pic3,
         pic4Name: customerDetail.pic4Name,
         pic4PhoneNumber: customerDetail.pic4,
+        refCodes: customerDetail.bettingCode[1],
+        secretCode: customerDetail.bettingCode[0],
         skype: customerDetail.skype,
         email: customerDetail.email,
         telegram: customerDetail.msn,

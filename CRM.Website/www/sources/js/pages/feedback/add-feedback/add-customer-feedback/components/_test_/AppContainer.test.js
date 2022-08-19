@@ -12,7 +12,8 @@ describe('AppContainer', () => {
     describe('componentWillUnmount', () => {
         it('should do reset store', () => {
             const props = {
-                resetState: jest.fn()
+                resetState: jest.fn(),
+                currentCustomer: {custId: 1}
             };
 
             const container = shallow(<AppContainer {...props} />);
@@ -43,7 +44,8 @@ describe('AppContainer', () => {
         it('render component correctly', () => {
             // Arrange
             const props = {
-                settings : [1]
+                settings : [1],
+                currentCustomer: {custId: 1, custName: 'customer'}
             };
 
             // Act
@@ -56,7 +58,8 @@ describe('AppContainer', () => {
         it('should return null', () => {
             // Arrange
             const props = {
-                settings : null
+                settings : null,
+                currentCustomer: {custId: 1, custName: 'customer'}
             };
 
             // Act

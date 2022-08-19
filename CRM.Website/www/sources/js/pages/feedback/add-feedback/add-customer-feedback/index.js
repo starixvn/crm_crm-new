@@ -16,7 +16,7 @@ export class index extends React.PureComponent {
         return(
             <Provider store={store}>
                   <div className='add-feedback'>
-                    <AppContainer custId={location.state.custId} />
+                    <AppContainer currentCustomer={location.state} />
                   </div>
             </Provider>
         );

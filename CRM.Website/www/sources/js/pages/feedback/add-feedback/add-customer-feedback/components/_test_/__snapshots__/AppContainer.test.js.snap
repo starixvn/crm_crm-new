@@ -2,6 +2,12 @@
 
 exports[`AppContainer render render component correctly 1`] = `
 <CreateForm
+  currentCustomer={
+    Object {
+      "custId": 1,
+      "custName": "customer",
+    }
+  }
   settings={
     Array [
       1,

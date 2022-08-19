@@ -113,12 +113,14 @@ describe('common functions', () => {
             subCategory: '',
             statusId:statuses[0].statusId,
             responseId: responses[0].id,
+            solution: '',
             product: '',
             subProduct: '',
             betType: '',
             languageId: languages[0].languageId,
             noOfInquiries: '',
             customerNameInput: '',
+            description:'',
             subject: '',
             ticketRefInput: ''
         };
@@ -142,6 +144,7 @@ describe('common functions', () => {
             expected.secretCode = '';
             expected.role = '';
             expected.siteName = '';
+            expected.solution =''
             const customerDetail = {...values};
             customerDetail.yahoo = '';
             customerDetail.pic1 = '';
@@ -212,6 +215,8 @@ describe('common functions', () => {
                 line: '',
                 letstalk: '',
                 qq: '',
+                refCodes: "",
+                secretCode: "",
                 zalo: '',
                 isOverwriteInfo: false,
                 siteId: '',
