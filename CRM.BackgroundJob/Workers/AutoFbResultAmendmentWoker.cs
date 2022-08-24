@@ -27,7 +27,7 @@
 
         public override async Task ExecuteJobAsync()
         {
-                await autoFeedbackService.ResultAmendmentExecuteJobAsync();
+            await autoFeedbackService.ResultAmendmentExecuteJobAsync();
         }
     }
 }

@@ -46,7 +46,6 @@
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            logService.LogInformation($"{jobSetting.JobName}: Service Starting");
             return base.StartAsync(cancellationToken);
         }
 
@@ -57,9 +56,7 @@
                 if (jobSetting.IsEnabled
                     && (!jobSetting.HasCheckUM || !IsUM()))
                 {
-                    logService.LogInformation($"{jobSetting.JobName}: Doing...");
                     await ExecuteJobAsync();
-                    logService.LogInformation($"{jobSetting.JobName}: Done.");
                 }
             }
             catch (Exception ex)
