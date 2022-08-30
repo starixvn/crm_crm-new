@@ -19,7 +19,7 @@ namespace CRM.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ViewResources {
@@ -453,6 +453,24 @@ namespace CRM.Resources {
         public static string Feedback {
             get {
                 return ResourceManager.GetString("Feedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback_From_{0}.
+        /// </summary>
+        public static string FeedbackFromUsernameExcelFile {
+            get {
+                return ResourceManager.GetString("FeedbackFromUsernameExcelFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback From {0}.
+        /// </summary>
+        public static string FeedbackFromUsernameExcelName {
+            get {
+                return ResourceManager.GetString("FeedbackFromUsernameExcelName", resourceCulture);
             }
         }
         

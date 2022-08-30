@@ -240,7 +240,7 @@
                     ChildSettings = new List<Setting> { new Setting { SubCategoryId = 1, Name = "Abnormal Bets" } }
                 }
             };
-            return Substitute.For<ManageFeedbackExcelTestable>(string.Empty, feedbacks, mainCategories, true, ViewResources.ManageFeedback);
+            return Substitute.For<ManageFeedbackExcelTestable>(string.Empty, feedbacks, mainCategories, ViewResources.FeedbackFromUsernameExcelName, ViewResources.ManageFeedback);
         }
 
         private FeedbackDetail FakeFeedbackDetail()

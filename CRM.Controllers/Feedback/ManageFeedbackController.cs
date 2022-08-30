@@ -80,8 +80,12 @@
 
             var feedbacksOrder = feedbacks.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
 
-            var bytes = exportExcelService.ExportManageFeedbackReport(feedbacksOrder, mainCategories);
-            string reportName = ViewResources.Feedback;
+            string reportName = string.IsNullOrEmpty(criteria.Username) ? ViewResources.Feedback :
+                                string.Format(ViewResources.FeedbackFromUsernameExcelFile, criteria.Username);
+            string reportTitle = string.IsNullOrEmpty(criteria.Username) ? ViewResources.Feedback :
+                                string.Format(ViewResources.FeedbackFromUsernameExcelName, criteria.Username);
+            var bytes = exportExcelService.ExportManageFeedbackReport(feedbacksOrder, mainCategories, reportName, reportTitle);
+
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
         }
     }

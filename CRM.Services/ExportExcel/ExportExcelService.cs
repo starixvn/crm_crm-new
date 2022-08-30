@@ -58,7 +58,7 @@
 
         byte[] ExportNewInformHeadline(IEnumerable<NewInform> newInforms, IEnumerable<InformStatus> informStatuses, string title);
 
-        byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories);
+        byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string reportName, string reportTitle);
 
         byte[] ExportDeletedFeedbackStatisticReport(IEnumerable<DeletedFeedbackByHandler> deletedFeedbacks, IEnumerable<Setting> mainCategories);
 
@@ -170,11 +170,11 @@
             return excel.Export();
         }
 
-        public byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories)
+        public byte[] ExportManageFeedbackReport(IEnumerable<FeedbackDetail> feedbacks, IEnumerable<Setting> mainCategories, string reportName ,string reportTitle)
         {
             const string ExcelTemplatePath = "ExcelTemplates/ManageFeedback.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories, true, ViewResources.Feedback);
+            var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories, reportName, reportTitle);
             return excel.Export();
         }
 
@@ -237,7 +237,7 @@
         {
             const string ExcelTemplatePath = "ExcelTemplates/FeedbackStatisticDetail.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories, false, titleExcel);
+            var excel = new ManageFeedbackExcel(templatePath, feedbacks, mainCategories, string.Empty, titleExcel);
             return excel.Export();
         }
 

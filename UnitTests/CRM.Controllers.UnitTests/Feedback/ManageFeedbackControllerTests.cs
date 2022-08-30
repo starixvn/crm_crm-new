@@ -107,7 +107,8 @@
             var criteria = fixture.Create<ManageFeedbackCriteria>();
             criteria.PageIndex = 1;
             criteria.PageSize = 100;
-            var fileName = $"{ViewResources.Feedback}.xlsx";
+            var reportName = string.Format(ViewResources.FeedbackFromUsernameExcelFile, criteria.Username);
+            var fileName = $"{reportName}.xlsx";
             var controller = GetController();
             feedbackService.GetManageFeedbackAsync(criteria).Returns(feedbacks);
             settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);

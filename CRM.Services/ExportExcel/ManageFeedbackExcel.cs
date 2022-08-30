@@ -15,7 +15,7 @@
     {
         private readonly IEnumerable<FeedbackDetail> feedbacks;
         private readonly IEnumerable<Setting> mainCategories;
-        private readonly bool isManageFeedback;
+        private readonly string excelNameManageFeedback;
         private readonly string excelTitle;
 
         private const byte RowStartBody = 5;
@@ -29,13 +29,13 @@
             string templatePath,
             IEnumerable<FeedbackDetail> feedbacks,
             IEnumerable<Setting> mainCategories,
-            bool isManageFeedback,
+            string excelNameManageFeedback,
             string excelTitle)
-        : base(templatePath, 0, isManageFeedback ? ViewResources.ManageFeedback : ViewResources.FeedbackStatisticsDetail_SheetName)
+        : base(templatePath, 0, string.IsNullOrEmpty(excelNameManageFeedback) ? ViewResources.FeedbackStatisticsDetail_SheetName : excelNameManageFeedback)
         {
             this.feedbacks = feedbacks;
             this.mainCategories = mainCategories;
-            this.isManageFeedback = isManageFeedback;
+            this.excelNameManageFeedback = excelNameManageFeedback;
             this.excelTitle = excelTitle;
         }
 
@@ -48,7 +48,7 @@
 
         protected internal override void RenderHeader(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            var total = isManageFeedback ? TotalColum - 1 : TotalColum - 2;
+            var total = !string.IsNullOrEmpty(excelNameManageFeedback) ? TotalColum - 1 : TotalColum - 2;
             templateWorksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, total]
                 .Copy(worksheet.Cells[RowStartHeader, 1, RowStartHeader + 1, total]);
         }
@@ -69,7 +69,7 @@
             var feedbackCellValue = GetFeedbackCellValue(feedbackDetail);
             var categoryContents = CategoryContent(feedbackDetail, mainCategories);
             var categoryCellValue = string.Join("\n\n", categoryContents);
-            if (isManageFeedback)
+            if (!string.IsNullOrEmpty(excelNameManageFeedback))
             {
                 worksheet.Cells[rowIndex, colIndex++].Value = feedbackDetail.FeedbackId;
             }
@@ -116,10 +116,10 @@
             const int ColumnCategory = 4;
             const int ColumnStatus = 5;
             const int ColumnRelCustomer = 6;
-            var TotalColumn = isManageFeedback ? ColumnRelCustomer : ColumnRelCustomer - 1;
+            var TotalColumn = !string.IsNullOrEmpty(excelNameManageFeedback) ? ColumnRelCustomer : ColumnRelCustomer - 1;
             worksheet.DefaultColWidth = WidthLarge;
             worksheet.Cells.AutoFitColumns();
-            if (isManageFeedback)
+            if (!string.IsNullOrEmpty(excelNameManageFeedback))
             {
                 worksheet.Column(ColumnRunningNo).Width = WidthNormal;
             }
@@ -143,7 +143,7 @@
 
         private string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
         {
-            var settingsFilter = isManageFeedback ? settings.Where(i => i.SettingType == "Category") : settings;
+            var settingsFilter = !string.IsNullOrEmpty(excelNameManageFeedback) ? settings.Where(i => i.SettingType == "Category") : settings;
             return GetCategoryContentWithoutSettingType(settingsFilter, mainCategories);
         }
 
