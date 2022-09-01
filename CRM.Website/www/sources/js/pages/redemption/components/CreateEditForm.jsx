@@ -5,6 +5,9 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class CreateEditForm extends Component {
+
+    handleOnlyNumber = event => ['e', 'E', '+', '-'].includes(event.key) && event.preventDefault();
+
     render() {
         const { values, errors, touched, setFieldValue, handleChange, statuses } = this.props;
         return (
@@ -64,6 +67,7 @@ export class CreateEditForm extends Component {
                                     <Form.Control size="sm" type="number" className="shadow-none"
                                         name="amount" id="amount"
                                         value={values.amount}
+                                        onKeyDown={this.handleOnlyNumber}
                                         onChange={handleChange}
                                     />
                                 </Col>
