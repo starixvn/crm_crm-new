@@ -1,5 +1,10 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -9,11 +14,6 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public interface IFeedbackService
     {
@@ -40,7 +40,7 @@
 #pragma warning disable S107 // Methods should not have too many parameters
 
         public FeedbackService(
-            IOptionsSnapshot<AppJobSettings> appSettings,
+            IOptions<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
             IMessageService messageService,
@@ -85,7 +85,6 @@
                 setting.LastDateUAT);
 
             logService.LogInformation("after ImportVoidingMessageAsync!!!");
-
 
             IEnumerable<VoidingMessageUserName> failMessages = await messageService.GetFailMessageAsync();
             var messagesImportCombineDistinct = messagesImport.Concat(failMessages).Distinct().ToList();
@@ -174,7 +173,6 @@
             logService.LogInformation("Abnormal Bet - Update job and time");
             logService.LogInformation("end CreateFeedbackForCreditDepositSiteAsync!!!");
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
-            
         }
 
         protected internal virtual async Task CreateFeedbackForCreditSiteAsync(
@@ -265,7 +263,7 @@
                 var isVip = headline.IsVip && headline.Site == "789y";
                 var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
                 criteria.ProductXml = GetProductXml(isMixParlay, matchInfo, transactions, settings, settingMappings);
-                var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(message, transactions, isVip) : 
+                var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(message, transactions, isVip) :
                                              GetSolutionForCreditSite(message, transactions, matchInfo.IssueTypeId);
                 criteria.Solution = solution;
                 criteria.RelatedCustomerXml = GetRelatedCustomerXml(headline.HeadlineId, transactions, matchInfo.IssueTypeId);
@@ -278,7 +276,7 @@
                     string.Join(",", batch)));
                 IEnumerable<int> requestIds = transactions.Select(x => x.RequestId).Distinct().ToList();
                 criteria.RequestIds = string.Join(",", requestIds);
-                var description = isMixParlay ? GetDescriptionMixParlayForCreditSite(message.MessageId, criteria.RequestIds, matchInfo) 
+                var description = isMixParlay ? GetDescriptionMixParlayForCreditSite(message.MessageId, criteria.RequestIds, matchInfo)
                                                 : GetDescriptionForCreditSite(message.MessageId, criteria.RequestIds, matchInfo, transactions);
                 criteria.Description = description;
                 try
@@ -562,7 +560,6 @@
                 && mappings != null
                 && mappings.Any(mapping => mapping.SettingId == bettype.SettingId)).ToList();
             }
-            
 
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
@@ -601,7 +598,6 @@
                     && x.ParentIds.Any(y => y == category.SettingId)
                     && x.SettingValue.Equals(IssueTypeId == abnormalAccount ? "Abnormal Account" : "Abnormal Bets", StringComparison.OrdinalIgnoreCase));
                 subCategoryId = subCategory != null ? subCategory.SettingId : 0;
-                
             }
 
             return new Tuple<int, int, string>(
@@ -650,7 +646,7 @@
             return stringBuilder.ToString();
         }
 
-        protected internal virtual string GetDescriptionForCreditSite(int messageId, string requestIds, MatchInfo matchInfo,IEnumerable<TransactionInfo> transactionInfos)
+        protected internal virtual string GetDescriptionForCreditSite(int messageId, string requestIds, MatchInfo matchInfo, IEnumerable<TransactionInfo> transactionInfos)
         {
             if (matchInfo.IssueTypeId != abnormalAccount)
             {
@@ -665,8 +661,8 @@
             }
             else
             {
-                var transactions = transactionInfos.GroupBy(x => x.RelatedCustID).Select(x => x.First()).OrderBy(x=>x.RelatedUserName);
-                var affectedAccount = string.Join(", ", transactions.Select(x=>x.RelatedUserName));
+                var transactions = transactionInfos.GroupBy(x => x.RelatedCustID).Select(x => x.First()).OrderBy(x => x.RelatedUserName);
+                var affectedAccount = string.Join(", ", transactions.Select(x => x.RelatedUserName));
                 var stringBuilderAbnormalAccount = new StringBuilder(DefaultValue.autoGenerated);
                 stringBuilderAbnormalAccount.AppendFormat(DefaultValue.messageDescription, messageId, requestIds);
                 stringBuilderAbnormalAccount.AppendFormat("<br />Event Date: {0} - {1}", matchInfo.MinWinlostdate.ToString("dd-MMM-yyyy"), matchInfo.MaxWinlostdate.ToString("dd-MMM-yyyy"));
@@ -700,13 +696,12 @@
             var stringBuilder = new StringBuilder(message.Content_en);
             stringBuilder.Append("<br /><br />").Append(message.Content_cs);
             stringBuilder.Append("<br /><br />Kindly refer to Agency site \"Cancelled Bets\" for Voided user.");
-            if(issueTypeId != abnormalAccount)
+            if (issueTypeId != abnormalAccount)
             {
                 foreach (var transaction in transactionInfos)
                 {
                     stringBuilder.AppendFormat("<br />{0} {1}", transaction.Username, transaction.TransId);
                 }
-
             }
             return stringBuilder.ToString();
         }
@@ -717,7 +712,7 @@
             var stringBuilderAffected = new StringBuilder();
             const string templateAffected = "- {0} {1} {2}";
             var solutionTempate = commonFeedback.GetFeedbackTemplates<MixParlayTemplate>(templateXml);
-            foreach(var tran in transactionInfos)
+            foreach (var tran in transactionInfos)
             {
                 stringBuilderAffected.AppendFormat(templateAffected, tran.Username, tran.TransId, Constants.Break);
             }

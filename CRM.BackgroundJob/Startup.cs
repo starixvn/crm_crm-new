@@ -85,7 +85,7 @@
                .UseConfig(new LoggingConfiguration())
                .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
-            services.Configure<IConfiguration>(Configuration);
+            services.AddSingleton(Configuration);
             services.AddControllers();
 
             services.Configure<AppJobSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
@@ -134,34 +134,34 @@
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IRemotingRefService, RemotingRefService>();
-            services.AddTransient<ICacheService, CacheService>();
-            services.AddTransient<IJobRunningChecker, JobRunningChecker>();
-            services.AddScoped<ICommonFeedback, CommonFeedback>();
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<ISettingService, SettingService>();
-            services.AddScoped<ISystemSettingService, SystemSettingService>();
-            services.AddScoped<IMessageService, MessageService>();
-            services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped<IFeedbackService, FeedbackService>();
-            services.AddScoped<IWinLossFeedbackService, WinLossFeedbackService>();
-            services.AddScoped<IFeedbackTicketVoidingService, FeedbackTicketVoidingService>();
-            services.AddScoped<IAutoFeedbackService, AutoFeedbackService>();
-            services.AddScoped<IChatBotTicketVoidingService, ChatBotTicketVoidingService>();
-            services.AddScoped<IChatBotCWLService, ChatBotCWLService>();
-            services.AddScoped<IChatBotJobService, ChatBotJobService>();
-            services.AddScoped<ISendNotificationService, SendNotificationService>();
-            services.AddScoped<IMonitorService, MonitorService>();
-            services.AddScoped<IFeedbackTransactionService, FeedbackTransactionService>();
-            services.AddScoped<ICommonFeedback, CommonFeedback>();
-            services.AddScoped<ITOControlFeedbackService, TOControlFeedbackService>();
-            services.AddScoped<IChatBotCTOService, ChatBotCTOService>();
-            services.AddScoped<IProblemsAccountFeedbackService, ProblemsAccountFeedbackService>();
-            services.AddScoped<IResultAmendmentService, ResultAmendmentService>();
-            services.AddScoped<IChatBotProblemAccountService, ChatBotProblemAccountService>();
-            services.AddScoped<IChatBotResultAmendmentService, ChatBotResultAmendmentService>();
-            services.AddScoped<ISynchronizeLicenseeService, SynchronizeLicenseeService>();
-            services.AddScoped<IVoidingSettledTicketsFeedbackService, VoidingSettledTicketsFeedbackService>();
-            services.AddScoped<IVoidingSettledTicketsService, VoidingSettledTicketsService>();
+            services.AddSingleton<ICacheService, CacheService>();
+            services.AddSingleton<IJobRunningChecker, JobRunningChecker>();
+            services.AddSingleton<ICommonFeedback, CommonFeedback>();
+            services.AddSingleton<ICustomerRepository, CustomerRepository>();
+            services.AddSingleton<ISettingService, SettingService>();
+            services.AddSingleton<ISystemSettingService, SystemSettingService>();
+            services.AddSingleton<IMessageService, MessageService>();
+            services.AddSingleton<ICustomerService, CustomerService>();
+            services.AddSingleton<IFeedbackService, FeedbackService>();
+            services.AddSingleton<IWinLossFeedbackService, WinLossFeedbackService>();
+            services.AddSingleton<IFeedbackTicketVoidingService, FeedbackTicketVoidingService>();
+            services.AddSingleton<IAutoFeedbackService, AutoFeedbackService>();
+            services.AddSingleton<IChatBotTicketVoidingService, ChatBotTicketVoidingService>();
+            services.AddSingleton<IChatBotCWLService, ChatBotCWLService>();
+            services.AddSingleton<IChatBotJobService, ChatBotJobService>();
+            services.AddSingleton<ISendNotificationService, SendNotificationService>();
+            services.AddSingleton<IMonitorService, MonitorService>();
+            services.AddSingleton<IFeedbackTransactionService, FeedbackTransactionService>();
+            services.AddSingleton<ICommonFeedback, CommonFeedback>();
+            services.AddSingleton<ITOControlFeedbackService, TOControlFeedbackService>();
+            services.AddSingleton<IChatBotCTOService, ChatBotCTOService>();
+            services.AddSingleton<IProblemsAccountFeedbackService, ProblemsAccountFeedbackService>();
+            services.AddSingleton<IResultAmendmentService, ResultAmendmentService>();
+            services.AddSingleton<IChatBotProblemAccountService, ChatBotProblemAccountService>();
+            services.AddSingleton<IChatBotResultAmendmentService, ChatBotResultAmendmentService>();
+            services.AddSingleton<ISynchronizeLicenseeService, SynchronizeLicenseeService>();
+            services.AddSingleton<IVoidingSettledTicketsFeedbackService, VoidingSettledTicketsFeedbackService>();
+            services.AddSingleton<IVoidingSettledTicketsService, VoidingSettledTicketsService>();
         }
 
         private static void AddWorker(IServiceCollection services)

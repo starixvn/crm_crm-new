@@ -12,9 +12,10 @@
     {
         public static void Main(string[] args)
         {
+            Log.Information("Application start.");
+
             try
             {
-                Log.Information("Application start.");
                 CreateWebHostBuilder(args).Build().Run();
             }
             catch (Exception ex)
@@ -30,10 +31,11 @@
         private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseUrls($"http://*:5000")
-                .UseStartup<Startup>()
-                .ConfigureLogging(logging =>
-                {
-                    logging.AddSerilog();
-                });
+                .UseStartup<Startup>();
+
+        //.ConfigureLogging(logging =>
+        //{
+        //    logging.AddSerilog();
+        //});
     }
 }

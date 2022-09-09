@@ -1,5 +1,10 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
     using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -8,11 +13,6 @@
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public interface IResultAmendmentService
     {
@@ -40,7 +40,7 @@
         private readonly int EventType9 = 9;
 
         public ResultAmendmentService(
-           IOptionsSnapshot<AppJobSettings> appSettings,
+           IOptions<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
             ICustomerService customerService,
@@ -560,7 +560,7 @@
                 stringBuilder.Append(solutionTemplateEN);
                 stringBuilder.Append(solutionTemplateYNSC);
             }
-           
+
             return stringBuilder.ToString();
         }
 
@@ -639,6 +639,7 @@
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
+
         protected internal virtual StringBuilder GetAmendmentSolutionTemplateYNSC(
 #pragma warning restore S1541 // Methods and properties should not be too complex
             AmendmentAutoFeedbackInfor amendment,
@@ -676,6 +677,7 @@
                 case "Sportsbook":
                     stringBuilder.Append(sportBookOrOutright);
                     break;
+
                 case "Virtual Sports 2":
                     if (isVipCust)
                     {

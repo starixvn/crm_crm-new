@@ -13,9 +13,9 @@
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
             services.AddSingleton<IBaseRepository, BaseRepository>();
             services.AddSingleton<IBaseService, BaseService>();
-            services.AddScoped<ILogger, Logger>();
-            services.AddScoped<ICRMLogService, CRMLogService>();
-            services.AddScoped<ISessionService, SessionService>();
+            services.AddSingleton<ILogger, Logger>();
+            services.AddSingleton<ICRMLogService, CRMLogService>();
+            services.AddSingleton<ISessionService, SessionService>();
         }
     }
 }

@@ -34,8 +34,9 @@
         private readonly string templateXml = "FeedbackTemplate.xml";
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public WinLossFeedbackService(
-            IOptionsSnapshot<AppJobSettings> appSettings,
+            IOptions<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
             ISystemSettingService systemSettingService,
@@ -164,7 +165,7 @@
             CreateMutipleFeedbackCommand criteria)
         {
             var checkValidParamBeforeInsert = commonFeedback.CheckFeedbackValidParams(criteria);
-            if(!checkValidParamBeforeInsert.Item1)
+            if (!checkValidParamBeforeInsert.Item1)
             {
                 var messageInvalid = "Invalid Params: " + checkValidParamBeforeInsert.Item2;
                 logService.LogInformation(string.Format("Invalid Params. @Categorystr: {0} @Category: {1} @Product: {2} @StatusID: {3} @SubCategorystr:{4} @ResponseID:{5} @StationID:{6}",
@@ -264,7 +265,6 @@
                 && subProductsMapping != null
                 && subProductsMapping.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
 
-
             return subProducts.Any()
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SettingItem>
@@ -272,7 +272,6 @@
                     new SettingItem { SettingId = Constants.SubProductNA, ParentIds = new List<int> { Constants.ProductNA } }
                 };
         }
-
 
         protected internal virtual IList<SettingItem> GetBettype(
             IEnumerable<int> subProducts,
@@ -298,6 +297,7 @@
         }
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
+
         protected internal virtual string GetSolution(WinLimitFeedBackInfo winLimit, bool isVipHeadline)
 #pragma warning restore S1541 // Methods and properties should not be too complex
         {
@@ -353,9 +353,11 @@
                     case "Yellow":
                         stringBuilder.AppendFormat(templateYellow, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, Constants.LineBreak);
                         break;
+
                     case "Grey":
                         stringBuilder.AppendFormat(templateGrey, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, Constants.LineBreak);
                         break;
+
                     case "Red":
                         stringBuilder.AppendFormat(templateRed, winLimit.UserName, totalWinAmt, winLimit.Currency, productEN, productFormat, Constants.LineBreak);
                         break;

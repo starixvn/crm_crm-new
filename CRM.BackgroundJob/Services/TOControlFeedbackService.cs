@@ -37,7 +37,7 @@
 #pragma warning disable S107 // Methods should not have too many parameters
 
         public TOControlFeedbackService(
-            IOptionsSnapshot<AppJobSettings> appSettings,
+            IOptions<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
             ISystemSettingService systemSettingService,
@@ -205,11 +205,9 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-
             IList<SettingItem> subProducts = GetTOSubProduct(productId, sportName, settings, settingMappings);
             SettingItem product = GetTOSportsbookProduct(settings);
             IList<SystemSettingMapping> tempBettypes = GetTOBettype(betTypeMappings, settingMappings);
-
 
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             foreach (SettingItem subProduct in subProducts)
@@ -263,11 +261,9 @@
             List<string> betTypeMappings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-
             IList<SystemSettingMapping> bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
-
 
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
@@ -396,7 +392,7 @@
             string homeName = "";
             string awayName = "";
 
-            if(isVipCust)
+            if (isVipCust)
             {
                 smaLevel = smaLevelEN;
                 solutionTemplate = TOSolTemplate.SolutionYN;

@@ -21,6 +21,7 @@
             DateTime lastRuntimeEnv, string lastRuntimeNameEnv,
             string jobStatusNameEnv, string environment);
     }
+
     public class VoidingSettledTicketsFeedbackService : IVoidingSettledTicketsFeedbackService
     {
         private readonly AppJobSettings appSettings;
@@ -42,8 +43,9 @@
         private readonly int SportType161 = 161;
 
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public VoidingSettledTicketsFeedbackService(
-            IOptionsSnapshot<AppJobSettings> appSettings,
+            IOptions<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
             ICRMLogService logService,
@@ -92,8 +94,8 @@
             var voidingTickets = await voidingSettledTicketsService.GetAutoVoidingTicketAsync(voidingSettledTicketSetting, voidingMessageDistinct, environment);
             logService.LogInformation("end GetAutoVoidingTicketAsync!!!");
 
-            logService.LogInformation(string.Format("GetAutoVoidingTicketAsync Item1: {0}, {1}", 
-                string.Join(",", voidingTickets.Item1?.Select(x=>x.MessageId)),
+            logService.LogInformation(string.Format("GetAutoVoidingTicketAsync Item1: {0}, {1}",
+                string.Join(",", voidingTickets.Item1?.Select(x => x.MessageId)),
                 string.Join(",", voidingTickets.Item1?.Select(x => x.TransId)))
             );
             if (voidingTickets.Item2.Any())
@@ -212,7 +214,6 @@
                 }
 
                 logService.LogInformation("end insert voiding settled tickets!!!");
-
             }
             catch (Exception ex)
             {
@@ -249,6 +250,7 @@
             logService.LogInformation("end mapping product, sub-product, bet type voiding settled tickets.");
             return stringBuilder.Append(Constants.EndRootTag).ToString();
         }
+
         protected internal virtual string GetProductSubXml(
             SettingItem product,
             IList<SettingItem> subProducts,

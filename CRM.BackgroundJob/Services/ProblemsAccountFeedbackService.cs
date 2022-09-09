@@ -1,6 +1,10 @@
-﻿
-namespace CRM.BackgroundJob.Services
+﻿namespace CRM.BackgroundJob.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
     using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -9,17 +13,14 @@ namespace CRM.BackgroundJob.Services
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+
     public interface IProblemsAccountFeedbackService
     {
         Task CreateFeedbackForProblemsAccountAsync(ProblemsAccountSetting problemsAccountSetting, bool isUAT,
             DateTime LastRuntimeEnv, string LastRuntimeNameEnv, string JobStatusNameEnv, string Environment
         );
     }
+
     public class ProblemsAccountFeedbackService : IProblemsAccountFeedbackService
     {
         private readonly AppJobSettings appSettings;
@@ -34,7 +35,7 @@ namespace CRM.BackgroundJob.Services
         private readonly int maxUserNameInOneFb = 250;
 
         public ProblemsAccountFeedbackService(
-            IOptionsSnapshot<AppJobSettings> appSettings,
+            IOptions<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
             ICustomerService customerService,
@@ -53,7 +54,7 @@ namespace CRM.BackgroundJob.Services
         }
 
         public async Task CreateFeedbackForProblemsAccountAsync(ProblemsAccountSetting problemsAccountSetting, bool isUAT,
-            DateTime LastRuntimeEnv,  string LastRuntimeNameEnv, 
+            DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
             string JobStatusNameEnv, string Environment)
         {
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_ProblemsAccount);
@@ -61,7 +62,7 @@ namespace CRM.BackgroundJob.Services
             var custIds = custCategory.Select(x => x.CustID).Distinct();
             var headlines = await customerService.GetGroupHeadlineAsync(custIds);
             var problemsAccountInfor = await transactionService.ImportProblemsAccountFeedbackInfoAsync(headlines, custCategory, Environment);
-            if(!problemsAccountInfor.Any())
+            if (!problemsAccountInfor.Any())
             {
                 logService.LogInformation(string.Format("Import problems account doesn't have any data with custId: {0} headlineName: {1}!",
                    string.Join(",", headlines.Select(x => x.HeadlineId)), string.Join(",", headlines.Select(x => x.HeadlineName))));
@@ -92,10 +93,10 @@ namespace CRM.BackgroundJob.Services
                        settings,
                        settingMappings
                     );
-                }    
+                }
             }
             var lastLogIdName = isUAT ? "LastLogIdUAT" : "LastLogID";
-            if(custCategory.Any())
+            if (custCategory.Any())
             {
                 var maxLastLogId = custCategory.Max(x => x.LogID);
                 await commonFeedback.EditSystemSettingUpdateLastLogIdAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, lastLogIdName, maxLastLogId, Constants.ServiceName_ProblemsAccount);
@@ -136,7 +137,7 @@ namespace CRM.BackgroundJob.Services
                           settingMappings
                        );
                     startRange += maxUserNameInOneFb;
-                }    
+                }
             }
         }
 
@@ -174,12 +175,12 @@ namespace CRM.BackgroundJob.Services
                 AutoField1 = string.Empty,
                 AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField3 = $"{Environment.NewLine}System ID: ",
-                PALogID = string.Join(",", problemsAccounts.Select(x=>x.LogID)),
+                PALogID = string.Join(",", problemsAccounts.Select(x => x.LogID)),
                 CustomerXml = GetCustomerXml(problemsAccounts),
                 ProductXml = GetProductXml(settings),
                 Solution = GetSolution(problemsAccounts),
                 RelatedCustomerXml = GetRelatedCustomerXml(problemsAccounts),
-                ListOrigCustIds = string.Join(",", problemsAccounts.Select(x=>x.CustID)),
+                ListOrigCustIds = string.Join(",", problemsAccounts.Select(x => x.CustID)),
                 Description = GetDescription()
             };
             await CheckValidParamsAndInsertFeedbackAsync(problemsAccounts, criteria);
@@ -193,12 +194,11 @@ namespace CRM.BackgroundJob.Services
             if (!checkValidParamBeforeInsert.Item1)
             {
                 var messageInvalid = "Invalid Params: " + checkValidParamBeforeInsert.Item2;
-                await transactionService.EditProblemsAccountFeedbackInfoAsync(string.Join(",", problemsAccounts.Select(x=>x.LogID)), CreateFeedbackJobStatus.Fail, messageInvalid);
+                await transactionService.EditProblemsAccountFeedbackInfoAsync(string.Join(",", problemsAccounts.Select(x => x.LogID)), CreateFeedbackJobStatus.Fail, messageInvalid);
                 return;
             }
             try
             {
-
                 CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
                 if (commandResult.IsSuccessful)
                 {
@@ -280,7 +280,7 @@ namespace CRM.BackgroundJob.Services
         }
 
         protected internal virtual string GetDescription()
-        { 
+        {
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
             stringBuilder.Append(Constants.Break);
             stringBuilder.Append("Announcement sent to Headline and informed our related department marked their member as problem account.");
