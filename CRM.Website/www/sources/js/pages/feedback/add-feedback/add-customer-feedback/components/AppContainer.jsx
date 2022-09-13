@@ -40,7 +40,9 @@ export class AppContainer extends Component {
      }
 
     render() {
-        const { currentCustomer, settings, balanceUpday, customerDetail, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult } = this.props;
+        const { currentCustomer, settings, balanceUpday, customerDetail, feedbackSubjectTemplates,
+                confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult
+        } = this.props;
         if (settings === null || balanceUpday === null || customerDetail === null) {
             return null;
         }

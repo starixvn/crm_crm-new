@@ -31,7 +31,7 @@ export class DataGridCommunication extends Component {
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Duration')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Handler')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Reviewer')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Duplicate')}</HeaderCell>
+                <HeaderCell colWidth={17}>{LangHelper.getResource('Duplicate')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -240,9 +240,7 @@ export class DataGridCommunication extends Component {
                 <Cell className='text-left'>{item.handler}</Cell>
                 <Cell className='text-left'>{item.reviewer}</Cell>
                 <Cell className='text-center'>
-                    <Button variant="primary" size="sm" onClick={() => this.handleShowCreateCommunication(item.feedbackId)}>
-                        {LangHelper.getResource('Duplicate')}
-                    </Button>
+                    <Button size="sm" onClick={() => this.handleShowCreateCommunication(item.feedbackId)}>Duplicate</Button>
                 </Cell>
             </Row>
         );

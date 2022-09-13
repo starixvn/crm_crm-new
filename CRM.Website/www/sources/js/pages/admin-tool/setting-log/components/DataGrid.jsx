@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
+import DateTimeService from '@jsroot/common/dateTimeService';
 
 export class DataGrid extends Component {
     buildHeader = () => {
@@ -43,7 +44,7 @@ export class DataGrid extends Component {
         return (
             <Fragment>
                 <Row key={index}>
-                    <Cell className={`text-center ${backgroundColor}`} rowSpan={rowSpan}>{item.logDate}</Cell>
+                    <Cell className={`text-center ${backgroundColor}`} rowSpan={rowSpan}>{DateTimeService.toLongDateTimeFormat(item.logDate)}</Cell>
                     <Cell className={`word-wrap ${backgroundColor}`} rowSpan={rowSpan}>{item.username}</Cell>
                     <Cell className={backgroundColor} rowSpan={rowSpan}>{item.actionName}</Cell>
                     <Cell className={`text-center ${backgroundColor}`} rowSpan={rowSpan}>{item.entity}</Cell>

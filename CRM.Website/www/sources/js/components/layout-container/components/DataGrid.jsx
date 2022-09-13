@@ -78,7 +78,7 @@ export default class DataGrid extends PureComponent {
                                         {
                                             value.username === 'Unassigned'
                                                 ? value.username
-                                                : <span className='upline-username' onClick={() => this.handleSearchUplineInfo(value.username)}>{value.username}</span>
+                                                : <span className='upline-username' onClick={() => this.props.handleSearchUplineInfo(value.username)}>{value.username}</span>
                                         }
                                     </Col>
                                     <Col md="4" className="status text-right">
@@ -518,16 +518,6 @@ export default class DataGrid extends PureComponent {
                 setSubmitting(false);
             }
         }).then(() => Site.unblockUI());
-    };
-
-    handleSearchUplineInfo = username => {
-        const params = {
-            ...this.props.gridParams,
-            username
-        };
-        this.props.setUserName(username);
-        this.props.setGridParams(params);
-        this.props.getCustomerInfo();
     };
 
     render() {

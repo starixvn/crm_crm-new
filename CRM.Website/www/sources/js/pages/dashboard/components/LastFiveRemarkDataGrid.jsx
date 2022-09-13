@@ -96,7 +96,7 @@ export class LastFiveRemarkDataGrid extends Component {
                     <u onClick={this.handleViewNewRemark}>{LangHelper.getResource('ViewAllRemarks')}</u>
                 </div>
                 <Table
-                    width={1025}
+                    width={980}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     autoWidth={false}

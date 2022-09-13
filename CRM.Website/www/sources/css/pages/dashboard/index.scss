@@ -11,6 +11,12 @@
             max-width: 1200px !important;
         }
     }
+
+    .table-last-five-remarks{
+        .table-title, .page-container, .table-container{
+            width: 980px !important;
+        }
+    }
     
 
     .alert-boxer{
@@ -203,10 +209,6 @@
         min-width: 910px;
 
         .modal-content {
-            // .extend-width .multiple-select-options-container{
-            //     width: 232px !important;
-            // }
-
             .panel-group {
                 border: 1px solid #b1b1b1;
 
