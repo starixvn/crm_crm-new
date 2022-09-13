@@ -1,16 +1,15 @@
-﻿
-namespace CRM.BackgroundJob.Workers
+﻿namespace CRM.BackgroundJob.Workers
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Extensions;
     using CRM.BackgroundJob.Models;
-    using CRM.BackgroundJob.Workers;
     using CRM.Core.Services;
     using CRM.Letstalk.Services.Services.Interfaces;
     using Fanex.CRM.BackgroundJob.Constants;
     using Microsoft.Extensions.Options;
     using ONEbook.UM.Services;
+
     public class ScanAndSendLetstalkNotificationWorker : BaseWorker
     {
         private readonly ISendNotificationService sendNotificationService;

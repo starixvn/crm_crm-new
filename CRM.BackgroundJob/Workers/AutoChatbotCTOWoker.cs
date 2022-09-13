@@ -4,12 +4,12 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Extensions;
     using CRM.BackgroundJob.Models;
-    using CRM.BackgroundJob.Workers;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Services;
     using Microsoft.Extensions.Options;
     using ONEbook.UM.Services;
+
     public class AutoChatbotCTOWoker : BaseWorker
     {
         private readonly IChatBotJobService chatBotJobService;
