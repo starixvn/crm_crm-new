@@ -22,4 +22,7 @@ WORKDIR /app
 
 COPY --from=builder /app .
 
+COPY --from=builder /app .
+ENV TZ="America/La_Paz"
+
 ENTRYPOINT ["dotnet", "CRM.BackgroundJob.dll"]
