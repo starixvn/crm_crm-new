@@ -108,7 +108,14 @@
                 app.UseHsts();
             }
             app.UseMiddleware<ErrorHandler>();
+            app.UseStaticFiles();
             app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Auth}/{action=Index}/{id?}");
+            });
         }
 
         private static void AddDependencyInjection(IServiceCollection services, IConfiguration configuration)

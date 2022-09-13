@@ -1,4 +1,4 @@
-﻿import React, { Component, Fragment } from 'react';
+﻿﻿import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Col, Form, Row, OverlayTrigger, Tooltip, Collapse } from 'react-bootstrap';
@@ -452,11 +452,11 @@ export class CreateForm extends Component {
             startTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.startTime)),
             endTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.endTime)),
             communicationToolIds: values.isUseDefaultCommunicationTool ? '' : values.communicationToolIds,
-            languageId: values.isUseDefaultLanguage ? 0 : values.languageId,
-            countryName: values.isUseDefaultCountry ? '' : this.getCountryName(values.countryId),
-            statusId: values.statusId,
+            languageId: values.isUseDefaultLanguage ? 0 : parseInt(values.languageId),
+            countryName: values.isUseDefaultCountry ? '' : this.getCountryName(parseInt(values.countryId)),
+            statusId: parseInt(values.statusId, 10),
             licenseeTypeId: values.licenseeTypeId,
-            responseId: values.responseId,
+            responseId: parseInt(values.responseId, 10),
             subject: values.subject,
             remark: values.remark,
             solution: values.solution,
@@ -585,7 +585,7 @@ export class CreateForm extends Component {
                             <Col sm="1" md="1" />
                             <Form.Label column sm="2" md="2">{LangHelper.getResource('Country')}</Form.Label>
                             <Col sm="3" md="3">
-                                <Form.Control as="select" size="sm" className="shadow-none"
+                                <Form.Control as="select" size="sm" className="shadow-none" id="countryId" name="countryId"
                                     value={values.countryId} onChange={handleChange}
                                     disabled={values.isUseDefaultCountry}
                                 >
@@ -661,11 +661,10 @@ export class CreateForm extends Component {
                             />
                         </OverlayTrigger>
                     </Col>
-                    <Form.Label column sm="2" className="required" md="2">{LangHelper.getResource('Language')}</Form.Label>
+                    <Form.Label column sm="2" className={values.isUseDefaultLanguage ? '' : 'required'} md="2">{LangHelper.getResource('Language')}</Form.Label>
                     <Col sm="3" md="3">
-                        <Form.Control as="select" size="sm" className="shadow-none"
-                            value={values.languageId} onChange={handleChange}
-                            disabled={values.isUseDefaultLanguage}
+                        <Form.Control as="select" size="sm" className="shadow-none" name="languageId" id="languageId"
+                            disabled={values.isUseDefaultLanguage} value={values.languageId} onChange={handleChange}
                         >
                             <option value="" hidden disabled />
                             {
@@ -765,8 +764,7 @@ export class CreateForm extends Component {
                 <Form.Group as={Row}>
                     <Form.Label column sm="2" md="2">{LangHelper.getResource('Status')}</Form.Label>
                     <Col sm="3" md="3">
-                        <Form.Control as="select" size="sm" className="shadow-none"
-                        >
+                        <Form.Control as="select" size="sm" className="shadow-none" name="statusId" id="statusId" onChange={handleChange}>
                             <option value="" hidden disabled />
                             {
                                 statuses.map(item =>
@@ -810,9 +808,8 @@ export class CreateForm extends Component {
                 <Form.Group as={Row}>
                     <Form.Label column md="2" sm="2">{LangHelper.getResource('Response')}</Form.Label>
                     <Col sm="3" md="3">
-                        <Form.Control as="select" size="sm" className="shadow-none"
-                        >
-                            <option value="" hidden disabled />
+                        <Form.Control as="select" size="sm" className="shadow-none" name="responseId" id="responseId"onChange={handleChange}>
+                            <option value={values.responseId} hidden disabled />
                             {
                                 responses.map(item =>
                                     <option key={item.id} value={item.id}>
@@ -832,7 +829,7 @@ export class CreateForm extends Component {
                 <Form.Group as={Row}>
                     <Form.Label column md="2" sm="2">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
                     <Col sm="3" md="3">
-                        <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries"
+                        <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries" id="noOfInquiries"
                             min={1} max={3200} value={values.noOfInquiries}
                             onInput={validateNoOfInquiry} onChange={handleChange}
                         />
@@ -862,7 +859,7 @@ export class CreateForm extends Component {
                         <Form.Label>{LangHelper.getResource('AutoGenerated')}</Form.Label>
                     </Form.Group>
                         <div className="panel-content">
-                            <Form.Control as="textarea" rows={3} className="shadow-none" name="autoGenerated"
+                            <Form.Control as="textarea" rows={3} className="shadow-none" name="autoGenerated" id="autoGenerated"
                                 value={values.autoGenerated} onChange={handleChange}
                             />
                         </div>
@@ -918,8 +915,11 @@ export class CreateForm extends Component {
         this.props.createMultipleLogs(params).then(response => {
             Site.unblockUI();
             this.setState({ createMultipleLogsResult: response.data });
+            this.handleCloseConfirmCreateMultipleLogsDialog();
             if (response.data.isSuccessful) {
-                window.location = Site.resolveClientUrl('ManageFeedback/Index');
+                setTimeout(() => {
+                    window.location = Site.resolveClientUrl('Feedbacks/ManageFeedback');
+                }, 3000);
             } else {
                 this.formik.setSubmitting(false);
             }
