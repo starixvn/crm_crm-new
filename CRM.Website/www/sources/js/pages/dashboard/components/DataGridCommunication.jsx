@@ -25,7 +25,7 @@ export class DataGridCommunication extends Component {
                 <HeaderCell colWidth={18}>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
                 <HeaderCell colWidth={18}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
-                <HeaderCell colWidth={50}>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={50}>{LangHelper.getResource('MainCategoryAndSubCategory')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('Subject')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Duration')}</HeaderCell>

@@ -61,7 +61,7 @@ export class CreateEditForm extends Component {
                             </Form.Group>
                         </Col>
                         <Col sm="6" md="6">
-                            <Form.Group as={Row}>
+                            <Form.Group as={Row} className="amount-input">
                                 <Form.Label column sm="4" md="4" htmlFor="amount">{LangHelper.getResource('Amount')}</Form.Label>
                                 <Col sm="8" md="8">
                                     <Form.Control size="sm" type="number" className="shadow-none"

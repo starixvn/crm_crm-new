@@ -79,7 +79,7 @@ export class DataGrid extends Component {
                     <div>{`(Ext: ${item.extStation})`}</div>
                 </Cell>
                 <Cell>{item.updater}</Cell>
-                <Cell className='text-center'>{item.lastUpdate}</Cell>
+                <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.lastUpdate)}</Cell>
                 <Cell>{item.requester}</Cell>
                 <Cell>{item.approver}</Cell>
                 <Cell>{item.acknowledger}</Cell>
