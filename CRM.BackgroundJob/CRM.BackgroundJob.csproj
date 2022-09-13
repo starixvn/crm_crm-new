@@ -23,9 +23,14 @@
       <Compile Remove="Services\BackgroundService.cs" />
       <Compile Remove="Services\CustomWebHostService.cs" />
     </ItemGroup>
+    <ItemGroup>
+      <Content Remove="appsettings.LOCAL_1.json" />
+    </ItemGroup>
 
     <ItemGroup>
         <None Remove="App_Data\SpNames.AWS.xml" />
+        <None Remove="App_Data\SpNames.LOCAL_1.xml" />
+        <None Remove="App_Data\SpNames.LOCAL_2.xml" />
         <None Remove="App_Data\SpNames.xml" />
         <None Remove="Deployment.ignore" />
         <None Remove="Format_Templates\AutoCreateFeedback\AmendmentDescriptionTemplate.xml" />
@@ -42,6 +47,12 @@
 
     <ItemGroup>
         <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+        <Content Include="App_Data\SpNames.LOCAL_2.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="App_Data\SpNames.LOCAL_1.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="App_Data\SpNames.AWS.xml">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
@@ -120,5 +131,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\CRM.Letstalk.Services\CRM.Letstalk.Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="appsettings.LOCAL_1.json" />
     </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@
     {
         public static void Main(string[] args)
         {
-            Log.Information("Application start.");
+            Log.Information("Background service start.");
 
             try
             {
@@ -20,7 +20,7 @@
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Application terminated unexpectedly.");
+                Log.Fatal(ex, "Background service terminated unexpectedly.");
             }
             finally
             {
@@ -31,11 +31,10 @@
         private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseUrls($"http://*:5000")
-                .UseStartup<Startup>();
-
-        //.ConfigureLogging(logging =>
-        //{
-        //    logging.AddSerilog();
-        //});
+                .UseStartup<Startup>()
+                .ConfigureLogging(logging =>
+                {
+                    logging.AddSerilog();
+                });
     }
 }
