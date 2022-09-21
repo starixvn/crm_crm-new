@@ -9,6 +9,7 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Criteria.AutoFeedback;
     using global::CRM.BackgroundJob.Models;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
@@ -16,9 +17,9 @@
 
     public interface IFeedbackTicketVoidingService
     {
-        Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> GetTicketVoidingInfoAsync(
-               IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
-               AbnormalBetSystemSetting setting);
+        Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>> GetTicketVoidingInfoAsync(
+                IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
+                AbnormalBetSystemSetting setting);
 
         Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> ImportTicketVoidingInfoAsync(
             IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
@@ -34,6 +35,8 @@
             IEnumerable<int> custIds,
             string status,
             string description);
+
+        Task<IEnumerable<TransactionInfo>> GetAbnormalTicketsByTransAsync(AbnormalBetSystemSetting setting, string checkTrans);
     }
 
     public class FeedbackTicketVoidingService : IFeedbackTicketVoidingService
@@ -57,7 +60,7 @@
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
-        public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> GetTicketVoidingInfoAsync(
+        public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>> GetTicketVoidingInfoAsync(
                IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
                AbnormalBetSystemSetting setting)
         {
@@ -83,7 +86,7 @@
                 ConfigPRO = setting.ConfigPRO,
                 Environment = Environment
             };
-            var ticketInfo = await baseService.FetchMultipleAsync<MatchInfo, TransactionInfo>(criteria);
+            var ticketInfo = await baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, string>(criteria);
 
             var messageIds = ticketInfo.Item1.Where(x => !ticketInfo.Item2.Any(y => x.MessageId == y.MessageId)).Select(x => x.MessageId).ToList();
             if (messageIds.Any())
@@ -93,8 +96,7 @@
                 logService.LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", messageIds)));
             }
 
-            IEnumerable<MatchInfo> matchInfos = ticketInfo.Item1.Where(x => ticketInfo.Item2.Any(y => x.MessageId == y.MessageId)).ToList();
-            return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, ticketInfo.Item2);
+            return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>(ticketInfo.Item1, ticketInfo.Item2, ticketInfo.Item3);
         }
 
         public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> ImportTicketVoidingInfoAsync(
@@ -203,6 +205,18 @@
         {
             return siteSettingMappings.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.SettingSource)
                        && x.SettingSource.Equals(site, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public async Task<IEnumerable<TransactionInfo>> GetAbnormalTicketsByTransAsync(AbnormalBetSystemSetting setting, string checkTrans)
+        {
+            var criteria = new GetAbnormalTicketsCheckCriteria
+            {
+                ConfigPRO = setting.ConfigPRO,
+                ConfigUAT = setting.ConfigUAT,
+                Environment = Environment,
+                TranIDs = checkTrans
+            };
+            return await baseService.GetDataFromSiteDbAsync<TransactionInfo>(criteria);
         }
     }
 }

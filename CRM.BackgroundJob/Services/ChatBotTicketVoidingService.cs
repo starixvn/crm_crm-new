@@ -18,10 +18,10 @@
 
     public interface IChatBotTicketVoidingService
     {
+        Task<IEnumerable<ChatBotUserNameList>> GetChatBotAbnormalAccountUsernameAsync(GetChatBotAbnormalAccountGetUsernameListCriteria criteria);
         Task<ValueTuple<IEnumerable<ChatBotVoidingMessage>, IEnumerable<ChatBotVoidingHistory>>> GetVoidingMessageAsync();
-        Task<IEnumerable<ChatBotVoidingHistory>> ImportVoidingMessageHistoryCheckAsync(IEnumerable<ChatBotVoidingHistory> voidingMessagesHis);
 
-        Task<IEnumerable<ChatBotUserNameList>> GetChatBotAbnormalAccountGetUsernameList(IEnumerable<ChatBotVoidingHistory> voidingHis);
+        Task<IEnumerable<ChatBotVoidingHistory>> ImportVoidingMessageHistoryCheckAsync(IEnumerable<ChatBotVoidingHistory> voidingMessagesHis);
 
         Task<ValueTuple<CommandResult, ImportChatBotVoidingMessageCriteria>> ImportVoidingMessageAsync(
             IEnumerable<ChatBotVoidingMessage> voidingMessages, IEnumerable<ChatBotUserNameList> userNames);
@@ -54,13 +54,18 @@
             this.baseService = baseService;
         }
 
+        public async Task<IEnumerable<ChatBotUserNameList>> GetChatBotAbnormalAccountUsernameAsync(GetChatBotAbnormalAccountGetUsernameListCriteria criteria)
+        {
+            return await baseService.GetDataFromSiteDbAsync<ChatBotUserNameList>(criteria);
+        }
+
         public async Task<ValueTuple<IEnumerable<ChatBotVoidingMessage>, IEnumerable<ChatBotVoidingHistory>>> GetVoidingMessageAsync()
         {
             var criteria = new GetChatBotVoidingMessageCriteria();
             return await baseService.FetchMultipleAsync<ChatBotVoidingMessage, ChatBotVoidingHistory>(criteria);
         }
 
-        public async Task<IEnumerable<ChatBotVoidingHistory>>ImportVoidingMessageHistoryCheckAsync(
+        public async Task<IEnumerable<ChatBotVoidingHistory>> ImportVoidingMessageHistoryCheckAsync(
            IEnumerable<ChatBotVoidingHistory> voidingMessagesHis
             )
         {
@@ -71,28 +76,22 @@
             return await baseService.GetDataAsync<ChatBotVoidingHistory>(criteria);
         }
 
-        public async Task<IEnumerable<ChatBotUserNameList>> GetChatBotAbnormalAccountGetUsernameList(
-           IEnumerable<ChatBotVoidingHistory> voidingHis
-            )
-        {
-            var criteria = new GetChatBotAbnormalAccountGetUsernameListCriteria
-            {
-                Messages = voidingHis.ToXML("root").ToString(),
-            };
-            return await baseService.GetDataAsync<ChatBotUserNameList>(criteria);
-        }
-
 
         public async Task<ValueTuple<CommandResult, ImportChatBotVoidingMessageCriteria>> ImportVoidingMessageAsync(
             IEnumerable<ChatBotVoidingMessage> voidingMessages, IEnumerable<ChatBotUserNameList> userNames)
         {
             const string XmlTemplate = "<r MessageID='{0}' RequestID='{1}' UsernameList='{2}' CustIdList='{3}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
-
+            var userNameGroupBy = userNames.GroupBy(x => new { x.RequestId, x.MessageId }).Select(y => new ChatBotUserNameList
+            {
+                CustIdList = String.Join(",", y.Select(u => u.CustIdList)),
+                RequestId = y.Key.RequestId,
+                MessageId = y.Key.MessageId,
+                UsernameList = String.Join(",", y.Select(u => u.UsernameList))
+            });
             foreach (var message in voidingMessages)
             {
-                ChatBotUserNameList userName = userNames.FirstOrDefault(x => x.MessageId == message.MessageId && x.RequestId == message.RequestId);
-
+                var userName = userNameGroupBy.FirstOrDefault(x => x.MessageId == message.MessageId && x.RequestId == message.RequestId);
                 stringBuilder.AppendFormat(XmlTemplate,
                     message.MessageId,
                     message.RequestId,
@@ -190,7 +189,7 @@
              );
             }
 
-            foreach(VoidingMessage voidingMessage in voidingMessages)
+            foreach (VoidingMessage voidingMessage in voidingMessages)
             {
                 messageStringBuilder.AppendFormat(messageTemplate, voidingMessage.MessageId, voidingMessage.RequestId);
             }

@@ -64,18 +64,17 @@
             // Arrange
             var fixture = new Fixture();
             var voidingHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
-            var expected = fixture.Create<IEnumerable<ChatBotUserNameList>>(); 
-             var xml = voidingHis.ToXML("root").ToString();
+            var expected = fixture.Create<IEnumerable<ChatBotUserNameList>>();
+            var xml = voidingHis.ToXML("root").ToString();
             var criteria = new GetChatBotAbnormalAccountGetUsernameListCriteria();
             var service = GetService();
-            baseService.GetDataAsync<ChatBotUserNameList>(Arg.Do<GetChatBotAbnormalAccountGetUsernameListCriteria>(x => criteria = x)).Returns(expected);
+            baseService.GetDataFromSiteDbAsync<ChatBotUserNameList>(Arg.Do<GetChatBotAbnormalAccountGetUsernameListCriteria>(x => criteria = x)).Returns(expected);
 
             // Act
-            var actual = await service.GetChatBotAbnormalAccountGetUsernameList(voidingHis);
+            var actual = await service.GetChatBotAbnormalAccountUsernameAsync(criteria);
 
             // Assert
             Assert.Equal(expected, actual);
-            Assert.Equal(xml, criteria.Messages);
         }
 
         [Fact]
@@ -244,14 +243,15 @@
             var expected = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>>();
             var userNameList = fixture.Create<IEnumerable<ChatBotUserNameList>>();
             var xml = userNameList.ToXML("root").ToString();
-            var criteria = new GetChatBotTicketVoidingInfoCriteria {
+            var criteria = new GetChatBotTicketVoidingInfoCriteria
+            {
                 Messages = xml
             };
             var service = GetService();
             baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, VoidingMessage>(Arg.Any<GetChatBotTicketVoidingInfoCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetTicketVoidingInfoAsync(userNameList,"Live", true);
+            var actual = await service.GetTicketVoidingInfoAsync(userNameList, "Live", true);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -268,7 +268,7 @@
             const string messageTemplate = "<r MessageID='{0}' RequestID='{1}'/>";
             var messageStringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             var fixture = new Fixture();
-            var voidings = new List<VoidingMessage> { 
+            var voidings = new List<VoidingMessage> {
                 new VoidingMessage
                 {
                     MessageId = 1,

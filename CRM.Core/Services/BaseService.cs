@@ -2,14 +2,24 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.SqlClient;
+    using System.Linq;
     using System.Threading.Tasks;
+    using CRM.Core.Extensions;
     using CRM.Core.Models;
     using CRM.Core.Repositories;
+    using Fanex.Caching;
+    using Fanex.Data;
     using Fanex.Data.Repository;
+    using Fanex.Data.SqlServer;
+    using Microsoft.AspNetCore.Mvc;
 
     public interface IBaseService
     {
         Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria);
+        Task<IEnumerable<SiteDbConfig>> GetSiteDbConfigAsync(ICriteria criteria);
+        Task<IEnumerable<T>> GetDataByIpConfigAsync<T>(string ipConfig, string connectionAlias, CriteriaBaseSiteDb criteria);
+        Task<IEnumerable<T>> GetDataFromSiteDbAsync<T>(CriteriaBaseSiteDb criteria);
 
         Task<T> GetDataEntityAsync<T>(ICriteria criteria);
 
@@ -24,13 +34,22 @@
     {
         private readonly IDynamicRepository dynamicRepository;
         private readonly IBaseRepository baseRepository;
+        private readonly ICacheService cacheService;
+        private readonly ICRMLogService logService;
+        private const string Config_SiteDb_Key = "ConfigSiteDbKey";
+        private const int Command_Timeout = 120;
+        private const bool Ignore_Redundant_Parameters = false;
 
         public BaseService(
             IDynamicRepository dynamicRepository,
-            IBaseRepository baseRepository)
+            IBaseRepository baseRepository,
+            ICacheService cacheService,
+            ICRMLogService logService)
         {
             this.dynamicRepository = dynamicRepository;
             this.baseRepository = baseRepository;
+            this.cacheService = cacheService;
+            this.logService = logService;
         }
 
         public async Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria)
@@ -41,6 +60,59 @@
             }
 
             return new List<T>();
+        }
+
+        public virtual async Task<IEnumerable<SiteDbConfig>> GetSiteDbConfigAsync(ICriteria criteria)
+        {
+            var siteConfigs = cacheService.Get<IEnumerable<SiteDbConfig>>(Config_SiteDb_Key);
+            if (siteConfigs == null || !siteConfigs.Any())
+            {
+                siteConfigs = await GetDataAsync<SiteDbConfig>(criteria);
+                cacheService.Set(Config_SiteDb_Key, siteConfigs);
+            }
+            return siteConfigs;
+        }
+
+        public async Task<IEnumerable<T>> GetDataFromSiteDbAsync<T>(CriteriaBaseSiteDb criteria)
+        {
+            var siteDbCriteria = new GetSiteDbConfigCriteria();
+            var siteConfigs = await GetSiteDbConfigAsync(siteDbCriteria);
+            var tasks = new List<Task<IEnumerable<T>>>();
+            var results = new List<T>();
+            foreach (var siteConfig in siteConfigs)
+            {
+                try
+                {
+                    criteria.SiteDBGroupID = siteConfig.SiteDBGroupID;
+                    var result = await GetDataByIpConfigAsync<T>(siteConfig.AGIP, siteConfig.LinkedServerName, criteria);
+                    results.AddRange(result);
+                }
+                catch (Exception ex)
+                {
+                    var taskEmpty = Task.FromResult<IEnumerable<T>>(null);
+                    tasks.Add(taskEmpty);
+                    await logService.ErrorAsync(ex);
+                }
+            }
+            return results;
+        }
+
+        public virtual async Task<IEnumerable<T>> GetDataByIpConfigAsync<T>(string ipConfig, string connectionAlias, CriteriaBaseSiteDb criteria)
+        {
+            (var sqlRunner, var dbCommand) = CreateNewDbcommand(ipConfig, connectionAlias, criteria);
+            return await sqlRunner.QueryAsync<T>(dbCommand);
+        }
+
+        private static ValueTuple<SqlStoredProcedureRunner, DbCommandDefinition> CreateNewDbcommand(string ipConfig, string connectionAlias, CriteriaBaseSiteDb criteria)
+        {
+            var dbsettingProvider = DbSettingProviderManager.GetCurrentDbSettingProvider();
+            dbsettingProvider.SettingDataSource.TryGetValue(criteria.GetSettingKey(), out IDbSetting oldDbSetting);
+            var newSqlConnectionStringBuilder = new SqlConnectionStringBuilder(oldDbSetting.ConnectionString);
+            newSqlConnectionStringBuilder.DataSource = ipConfig;
+            var newSqlRunner = new SqlStoredProcedureRunner(connectionAlias, newSqlConnectionStringBuilder.ToString());
+            var newDbCommand = newSqlRunner.CreateDbCommandDefinition(oldDbSetting.SpName, Command_Timeout, Ignore_Redundant_Parameters, oldDbSetting.ColumnMaps);
+            newDbCommand.AssignParameters(criteria);
+            return new ValueTuple<SqlStoredProcedureRunner, DbCommandDefinition>(newSqlRunner, newDbCommand);
         }
 
         public async Task<T> GetDataEntityAsync<T>(ICriteria criteria)

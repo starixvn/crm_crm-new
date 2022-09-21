@@ -34,12 +34,13 @@
 
         public async Task Public_CreateFeedbackForCreditDepositSiteAsync(
             IEnumerable<Message> messages,
-            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>> ticketInfo,
+            IEnumerable<MatchInfo> matchInfos,
+            IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<VoidingMessageUserName> messagesImportCombineDistinct,
             string JobStatusNameEnv,
             string LastRuntimeNameEnv)
         {
-            await base.CreateFeedbackForCreditDepositSiteAsync(messages, ticketInfo, messagesImportCombineDistinct, JobStatusNameEnv, LastRuntimeNameEnv);
+            await base.CreateFeedbackForCreditDepositSiteAsync(messages, matchInfos, transactionInfos, messagesImportCombineDistinct, JobStatusNameEnv, LastRuntimeNameEnv);
         }
 
         public async Task Public_CreateFeedbackForCreditSiteAsync(

@@ -17,17 +17,11 @@
     public interface IAutoFeedbackService
     {
         Task AbnormalbetExecuteJobAsync();
-
         Task WinLossExecuteJobAsync();
-
         Task TurnoverControlExecuteJobAsync();
-
         Task ProblemsAcccountExecuteJobAsync();
-
         Task ResultAmendmentExecuteJobAsync();
-
         Task SynchronizeNewLicenseeOICExecuteJobAsync();
-
         Task VoidingSettledTicketsExecuteJobAsync();
     }
 
@@ -50,9 +44,8 @@
         private const string dateTimeParse = "yyyy-MM-dd hh:mm:ss.fff tt";
 
 #pragma warning disable S107 // Methods should not have too many parameters
-
         public AutoFeedbackService(
-            IOptions<AppJobSettings> appSettings,
+            IOptionsSnapshot<AppJobSettings> appSettings,
             IJobRunningChecker jobRunningChecker,
             ISystemSettingService systemSettingService,
             IWinLossFeedbackService winLossService,
@@ -442,5 +435,6 @@
                 }
             }
         }
+
     }
 }

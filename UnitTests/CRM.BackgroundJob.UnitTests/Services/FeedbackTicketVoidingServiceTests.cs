@@ -6,6 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Criteria.AutoFeedback;
     using CRM.BackgroundJob.Models;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -49,10 +50,11 @@
             stringBuilder.Append(Constants.EndRootTag);
             var matchInfos = fixture.Create<IEnumerable<MatchInfo>>();
             var transactionInfos = new List<TransactionInfo>();
-            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
+            var checksTran = fixture.Create<IEnumerable<string>>();
+            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>(matchInfos, transactionInfos, checksTran);
             var criteria = new GetAbnormalTicketInfoCriteria();
             var service = GetService();
-            baseService.FetchMultipleAsync<MatchInfo, TransactionInfo>(Arg.Do<GetAbnormalTicketInfoCriteria>(x => criteria = x)).Returns(ticketInfo);
+            baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, string>(Arg.Do<GetAbnormalTicketInfoCriteria>(x => criteria = x)).Returns(ticketInfo);
 
             // Act
             var actual = await service.GetTicketVoidingInfoAsync(voidingMessageUserNames, setting);
@@ -61,7 +63,7 @@
             logService.Received().LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", matchInfos.Select(x => x.MessageId))));
             await messageService.Received().EditStatusVoidingMessageAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>(), Arg.Any<string>());
 
-            Assert.Empty(actual.Item1);
+            Assert.Equal(matchInfos, actual.Item1);
             Assert.Equal(transactionInfos, actual.Item2);
             Assert.Equal(stringBuilder.ToString(), criteria.MessageIds);
             Assert.Equal(setting.ConfigUAT, criteria.ConfigUAT);
@@ -92,11 +94,12 @@
             stringBuilder.Append(Constants.EndRootTag);
             var matchInfos = fixture.Create<IEnumerable<MatchInfo>>();
             var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
+            var checksTran = fixture.Create<IEnumerable<string>>();
             var expectedMatchInfos = matchInfos.Where(x => transactionInfos.Any(y => x.MessageId == y.MessageId)).ToList();
-            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
+            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>(matchInfos, transactionInfos, checksTran);
             var criteria = new GetAbnormalTicketInfoCriteria();
             var service = GetService();
-            baseService.FetchMultipleAsync<MatchInfo, TransactionInfo>(Arg.Do<GetAbnormalTicketInfoCriteria>(x => criteria = x)).Returns(ticketInfo);
+            baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, string>(Arg.Do<GetAbnormalTicketInfoCriteria>(x => criteria = x)).Returns(ticketInfo);
 
             // Act
             var actual = await service.GetTicketVoidingInfoAsync(voidingMessageUserNames, setting);
@@ -210,7 +213,7 @@
             {
                 new SiteSettingMapping { SettingSource = "Site", LicenseeManagerId = 1 }
             };
-            var headlines = fixture.Create< IEnumerable<GroupHeadline>>();
+            var headlines = fixture.Create<IEnumerable<GroupHeadline>>();
             var licenseeInfo = new CustomerInfo { CustId = 1 };
             var feedbackInfos = new List<AutoFeedbackInfo>
             {
@@ -264,6 +267,24 @@
             Assert.Equal(string.Join(",", status), criteria.Status);
             Assert.Equal(string.Join(",", description), criteria.Description);
             Assert.Equal(string.Join(",", "LIVE"), criteria.Environment);
+        }
+
+        [Fact]
+        public async Task GetAbnormalTicketsByTransAsync_WhenCalled_ReturnExpectedTransaction()
+        {
+            // Arrange
+            var expected = fixture.Create<IEnumerable<TransactionInfo>>();
+            var criteria = fixture.Create<GetAbnormalTicketsCheckCriteria>();
+            var setting = fixture.Create<AbnormalBetSystemSetting>();
+            var checkTrans = fixture.Create<string>();
+            var service = GetService();
+            baseService.GetDataFromSiteDbAsync<TransactionInfo>(Arg.Do<GetAbnormalTicketsCheckCriteria>(x => criteria = x)).Returns(expected);
+
+            // Act
+            var actual = await service.GetAbnormalTicketsByTransAsync(setting, checkTrans);
+
+            // Assert
+            Assert.Equal(expected, actual);
         }
 
         #region Helpers

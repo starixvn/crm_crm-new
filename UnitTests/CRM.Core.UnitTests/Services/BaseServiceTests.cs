@@ -2,10 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
+    using AutoFixture;
     using CRM.Core.Models;
     using CRM.Core.Repositories;
     using CRM.Core.Services;
+    using Fanex.Caching;
     using Fanex.Data.Repository;
     using NSubstitute;
     using Xunit;
@@ -14,6 +17,9 @@
     {
         private IDynamicRepository dynamicRepository;
         private IBaseRepository baseRepository;
+        private ICacheService cacheService;
+        private ICRMLogService logService;
+        private readonly IFixture fixture = new Fixture();
 
         #region GetDataAsync
 
@@ -113,6 +119,71 @@
         }
 
         #endregion GetDataEntityAsync
+
+        #region GetSiteDbConfigAsync
+
+        [Fact]
+        public async Task GetSiteDbConfigAsync_CacheIsNull_ReturnExactValue()
+        {
+            // Arrange
+            var siteConfigs = fixture.Create<IEnumerable<SiteDbConfig>>();
+            var cache = Enumerable.Empty<SiteDbConfig>();
+            var criteria = Substitute.For<ICriteria>();
+            criteria.IsValid().Returns(true);
+            var baseService = GetBaseService();
+            cacheService.Get<IEnumerable<SiteDbConfig>>(Arg.Any<string>()).Returns(cache);
+            baseService.GetDataAsync<SiteDbConfig>(criteria).Returns(siteConfigs);
+            // Act
+            var actual = await baseService.GetSiteDbConfigAsync(criteria);
+
+            // Assert
+            Assert.Equal(siteConfigs, actual);
+        }
+
+        [Fact]
+        public async Task GetSiteDbConfigAsync_CacheIsNotNull_ReturnExactValue()
+        {
+            // Arrange
+            var siteConfigs = fixture.Create<IEnumerable<SiteDbConfig>>();
+            var criteria = Substitute.For<ICriteria>();
+            criteria.IsValid().Returns(true);
+            var baseService = GetBaseService();
+            cacheService.Get<IEnumerable<SiteDbConfig>>(Arg.Any<string>()).Returns(siteConfigs);
+            // Act
+            var actual = await baseService.GetSiteDbConfigAsync(criteria);
+
+            // Assert
+            Assert.Equal(siteConfigs, actual);
+        }
+        #endregion GetSiteDbConfigAsync
+
+        #region GetSiteDbConfigAsync
+
+        [Fact]
+        public async Task GetDataFromSiteDbAsync_ReturnExactValue()
+        {
+            // Arrange
+            var siteConfigs = fixture.Create<IEnumerable<SiteDbConfig>>();
+            var result = fixture.Create<IEnumerable<int>>();
+            var expected = new List<int>();
+            foreach (var site in siteConfigs)
+            {
+                expected.AddRange(result);
+            }
+            var criteria = Substitute.For<CriteriaBaseSiteDb>();
+            criteria.IsValid().Returns(true);
+            var baseService = GetBaseService();
+            baseService.WhenForAnyArgs(x => x.GetSiteDbConfigAsync(Arg.Any<ICriteria>())).DoNotCallBase();
+            baseService.GetSiteDbConfigAsync(Arg.Any<ICriteria>()).Returns(siteConfigs);
+            baseService.WhenForAnyArgs(x => x.GetDataByIpConfigAsync<int>(Arg.Any<string>(), Arg.Any<string>(), criteria)).DoNotCallBase();
+            baseService.GetDataByIpConfigAsync<int>(Arg.Any<string>(), Arg.Any<string>(), criteria).Returns(result);
+            // Act
+            var actual = await baseService.GetDataFromSiteDbAsync<int>(criteria);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+        #endregion GetSiteDbConfigAsync
 
         #region FetchMultipleAsync
 
@@ -273,7 +344,9 @@
         {
             dynamicRepository = Substitute.For<IDynamicRepository>();
             baseRepository = Substitute.For<IBaseRepository>();
-            var service = new BaseService(dynamicRepository, baseRepository);
+            cacheService = Substitute.For<ICacheService>();
+            logService = Substitute.For<ICRMLogService>();
+            var service = Substitute.ForPartsOf<BaseService>(dynamicRepository, baseRepository, cacheService, logService);
 
             return service;
         }

@@ -7,12 +7,13 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Models.ChatBot;
+    using global::CRM.BackgroundJob.Criteria.ChatBot;
     using global::CRM.BackgroundJob.Models.ChatBot;
     using global::CRM.BackgroundJob.Models.ChatBotCTO;
     using global::CRM.BackgroundJob.Models.ChatBotCWL;
     using global::CRM.BackgroundJob.Models.ChatBotProblemsAccount;
     using global::CRM.BackgroundJob.Services;
-    using global::CRM.Core.Models;
+    using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Services;
     using global::CRM.Letstalk.Services.Services.Interfaces;
     using Microsoft.Extensions.Configuration;
@@ -40,6 +41,7 @@
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
 
+
 #pragma warning disable S107 // Methods should not have too many parameters
         public ChatBotJobService(
             ICRMLogService logService,
@@ -50,14 +52,15 @@
             IConfiguration configuration,
             IChatBotCTOService chatBotCTOService,
             IChatBotProblemAccountService chatBotProblemAccountService,
-            IChatBotResultAmendmentService chatBotResultAmendmentService)
+            IChatBotResultAmendmentService chatBotResultAmendmentService
+            )
 #pragma warning restore S107 // Methods should not have too many parameters
         {
             this.logService = logService;
             this.systemSettingService = systemSettingService;
             this.ticketVoidingService = ticketVoidingService;
             this.sendNotificationService = sendNotificationService;
-            this.chatBotCWLService = chatBotCWLService; 
+            this.chatBotCWLService = chatBotCWLService;
             this.chatBotCTOService = chatBotCTOService;
             this.chatBotProblemAccountService = chatBotProblemAccountService;
             this.chatBotResultAmendmentService = chatBotResultAmendmentService;
@@ -71,7 +74,7 @@
                 AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Environment);
                 if (!setting.ServiceFlag)
                 {
-                    logService.LogInformation("Chat Bot Service is shutdown.");
+                    logService.LogInformation("ChatBot - AbnormalBets Service is shutdown.");
                     return;
                 }
 
@@ -81,8 +84,13 @@
                 var userNameList = Enumerable.Empty<ChatBotUserNameList>();
                 if (voidingHis.Any() && voidingInfo.Item2.Any())
                 {
-                    userNameList = await ticketVoidingService.GetChatBotAbnormalAccountGetUsernameList(voidingHis);
+                    var criteria = new GetChatBotAbnormalAccountGetUsernameListCriteria
+                    {
+                        Messages = voidingHis.ToXML("root").ToString()
+                    };
+                    userNameList = await ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(criteria);
                 }
+
                 var commandResult = await ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, userNameList);
                 if (commandResult.Item1.IsSuccessful)
                 {
@@ -96,13 +104,13 @@
                         Environment);
                     if (commandResultImportTicket.Item1.IsSuccessful)
                     {
-                        logService.LogInformation("Successful!!!");
+                        logService.LogInformation("Import ChatBot - AbnormalBets Successful!!!");
                         await sendNotificationService.SendNotificationToLetstalk();
                     }
                     else
                     {
                         await logService.ErrorAsync(commandResultImportTicket.Item1, commandResultImportTicket.Item2);
-                        logService.LogInformation(commandResultImportTicket.Item1.Message);
+                        logService.LogInformation(string.Format("Import ChatBot - AbnormalBets Fail: {0}", commandResultImportTicket.Item1.Message));
                     }
                 }
                 else

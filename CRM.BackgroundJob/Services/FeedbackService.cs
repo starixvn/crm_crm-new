@@ -1,10 +1,5 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Services
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
@@ -14,6 +9,11 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
     public interface IFeedbackService
     {
@@ -40,7 +40,7 @@
 #pragma warning disable S107 // Methods should not have too many parameters
 
         public FeedbackService(
-            IOptions<AppJobSettings> appSettings,
+            IOptionsSnapshot<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
             IMessageService messageService,
@@ -86,6 +86,7 @@
 
             logService.LogInformation("after ImportVoidingMessageAsync!!!");
 
+
             IEnumerable<VoidingMessageUserName> failMessages = await messageService.GetFailMessageAsync();
             var messagesImportCombineDistinct = messagesImport.Concat(failMessages).Distinct().ToList();
             if (!messagesImportCombineDistinct.Any())
@@ -97,8 +98,22 @@
             IEnumerable<int> messageIds = messagesImportCombineDistinct.Where(x => x.MessageId != 0).Select(y => y.MessageId).Distinct().ToList();
             IEnumerable<Message> messages = await messageService.GetMessageInfoAsync(messageIds);
 
-            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(messagesImportCombineDistinct, setting);
-            if (!ticketInfo.Item1.Any())
+            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(
+                messagesImportCombineDistinct, setting
+            );
+
+            var transactionTickets = Enumerable.Empty<TransactionInfo>();
+            if (ticketInfo.Item3.Any() && !string.IsNullOrEmpty(ticketInfo.Item3.FirstOrDefault()))
+            {
+                transactionTickets = await ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item3.FirstOrDefault());
+            }
+
+            logService.LogInformation(string.Format("Acc_CRM_AbnormalTicketsCheck: {0}", string.Join(",", transactionTickets.Select(x => x.MessageId))));
+
+            var transactionTicketsCombine = transactionTickets.Concat(ticketInfo.Item2);
+            IEnumerable<MatchInfo> matchInfos = ticketInfo.Item1.Where(x => transactionTicketsCombine.Any(y => x.MessageId == y.MessageId)).ToList();
+
+            if (!matchInfos.Any())
             {
                 logService.LogInformation("Abnormal Bet - import do not have any ticket");
                 await messageService.EditStatusVoidingMessageAsync(messagesImportCombineDistinct, Environment);
@@ -110,7 +125,8 @@
 
             await CreateFeedbackForCreditDepositSiteAsync(
                 messages,
-                ticketInfo,
+                matchInfos,
+                transactionTicketsCombine,
                 messagesImportCombineDistinct,
                 JobStatusNameEnv,
                 LastRuntimeNameEnv
@@ -119,7 +135,8 @@
 
         protected internal virtual async Task CreateFeedbackForCreditDepositSiteAsync(
             IEnumerable<Message> messages,
-            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>> ticketInfo,
+            IEnumerable<MatchInfo> matchInfos,
+            IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<VoidingMessageUserName> messagesImportCombineDistinct,
             string JobStatusNameEnv,
             string LastRuntimeNameEnv
@@ -130,22 +147,22 @@
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
             IEnumerable<SiteSettingMapping> siteSettingMappings = await settingService.GetSiteSettingMappingAsync();
             CustomerInfo licenseeInfo = (await customerService.GetCustomerInfoAsync(appSettings.LicenseeUsername, true)) ?? new CustomerInfo();
-            var custIds = ticketInfo.Item2.Where(x => !x.IsDeposit).Select(x => x.CustId).Distinct();
+            var custIds = transactionInfos.Where(x => !x.IsDeposit).Select(x => x.CustId).Distinct();
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineVipAsync(custIds);
 
-            ticketInfo = await ticketVoidingService.ImportTicketVoidingInfoAsync(
+            (IEnumerable<MatchInfo> newMatchInfos, IEnumerable<TransactionInfo> newTransactionInfos) = await ticketVoidingService.ImportTicketVoidingInfoAsync(
                 messagesImportCombineDistinct,
-                ticketInfo.Item1,
-                ticketInfo.Item2,
+                matchInfos,
+                transactionInfos,
                 siteSettingMappings,
                 headlines,
                 licenseeInfo);
 
-            foreach (MatchInfo matchInfo in ticketInfo.Item1)
+            foreach (MatchInfo matchInfo in newMatchInfos)
             {
                 Message message = messages.FirstOrDefault(x => x.MessageId == matchInfo.MessageId);
-                IEnumerable<TransactionInfo> credits = ticketInfo.Item2.Where(x => x.MessageId == matchInfo.MessageId && !x.IsDeposit);
-                IEnumerable<TransactionInfo> deposits = ticketInfo.Item2.Where(x => x.MessageId == matchInfo.MessageId && x.IsDeposit);
+                IEnumerable<TransactionInfo> credits = newTransactionInfos.Where(x => x.MessageId == matchInfo.MessageId && !x.IsDeposit);
+                IEnumerable<TransactionInfo> deposits = newTransactionInfos.Where(x => x.MessageId == matchInfo.MessageId && x.IsDeposit);
 
                 if (credits.Any())
                 {
@@ -173,6 +190,7 @@
             logService.LogInformation("Abnormal Bet - Update job and time");
             logService.LogInformation("end CreateFeedbackForCreditDepositSiteAsync!!!");
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
+
         }
 
         protected internal virtual async Task CreateFeedbackForCreditSiteAsync(
@@ -561,6 +579,7 @@
                 && mappings.Any(mapping => mapping.SettingId == bettype.SettingId)).ToList();
             }
 
+
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SettingItem>
@@ -598,6 +617,7 @@
                     && x.ParentIds.Any(y => y == category.SettingId)
                     && x.SettingValue.Equals(IssueTypeId == abnormalAccount ? "Abnormal Account" : "Abnormal Bets", StringComparison.OrdinalIgnoreCase));
                 subCategoryId = subCategory != null ? subCategory.SettingId : 0;
+
             }
 
             return new Tuple<int, int, string>(
@@ -702,6 +722,7 @@
                 {
                     stringBuilder.AppendFormat("<br />{0} {1}", transaction.Username, transaction.TransId);
                 }
+
             }
             return stringBuilder.ToString();
         }

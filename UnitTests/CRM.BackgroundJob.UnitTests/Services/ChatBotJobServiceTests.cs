@@ -26,6 +26,7 @@
     using CRM.BackgroundJob.Criteria.ChatBotCWL;
     using CRM.BackgroundJob.Criteria.ChatbotProblemAccount;
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
+    using CRM.BackgroundJob.Criteria.ChatBot;
 
     public class ChatBotJobServiceTests
     {
@@ -53,7 +54,7 @@
             await service.PullMessageAndSendNotificationAsync();
 
             // Assert
-            logService.Received().LogInformation("Chat Bot Service is shutdown.");
+            logService.Received().LogInformation("ChatBot - AbnormalBets Service is shutdown.");
         }
 
         [Fact]
@@ -74,7 +75,9 @@
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
             ticketVoidingService.GetVoidingMessageAsync().Returns(voidingInfo);
             ticketVoidingService.ImportVoidingMessageHistoryCheckAsync(voidingInfo.Item2).Returns(voidingHis);
-            ticketVoidingService.GetChatBotAbnormalAccountGetUsernameList(voidingHis).Returns(userNameList);
+            ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(
+                Arg.Any<GetChatBotAbnormalAccountGetUsernameListCriteria>()
+            ).Returns(userNameList);
             ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, userNameList).Returns(valueTupe);
 
             // Act
@@ -103,7 +106,7 @@
             var commandResult = new CommandResult { Code = 0 };
             var criteria = fixture.Create<ImportChatBotVoidingMessageCriteria>();
             var valueTupe = new ValueTuple<CommandResult, ImportChatBotVoidingMessageCriteria>(commandResult, criteria);
-            var commandResultImportTicket = new CommandResult { Code = 0};
+            var commandResultImportTicket = new CommandResult { Code = 0 };
             var criteriaVoiding = fixture.Create<ImportChatBotTicketVoidingInfoCommand>();
             var valueTupeImportVoiding = new ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>(commandResultImportTicket, criteriaVoiding);
 
@@ -111,7 +114,9 @@
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
             ticketVoidingService.GetVoidingMessageAsync().Returns(voidingInfo);
             ticketVoidingService.ImportVoidingMessageHistoryCheckAsync(voidingInfo.Item2).Returns(voidingHis);
-            ticketVoidingService.GetChatBotAbnormalAccountGetUsernameList(voidingHis).Returns(userNameList);
+            ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(
+                Arg.Any<GetChatBotAbnormalAccountGetUsernameListCriteria>()
+            ).Returns(userNameList);
             ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, userNameList).Returns(valueTupe);
             ticketVoidingService.GetImportMessageByBatchSize(setting.BatchSize).Returns(messageImport);
             ticketVoidingService.GetMessageInfoAsync(messageImport).Returns(messages);
@@ -122,7 +127,7 @@
             await service.PullMessageAndSendNotificationAsync();
 
             // Assert
-            logService.Received().LogInformation("Successful!!!");
+            logService.Received().LogInformation("Import ChatBot - AbnormalBets Successful!!!");
             await sendNotificationService.Received().SendNotificationToLetstalk();
         }
 
@@ -150,7 +155,7 @@
             var tOReachInfors = fixture.Create<IEnumerable<TOReachInfor>>();
             var tOSMAInfors = fixture.Create<IEnumerable<TOSMAInfor>>();
 
-            var commandResult = new CommandResult { Code = 1};
+            var commandResult = new CommandResult { Code = 1 };
             var criteria = fixture.Create<TOControlImportCommand>();
             var valueTupe = new ValueTuple<CommandResult, TOControlImportCommand>(commandResult, criteria);
 
@@ -339,7 +344,7 @@
             var voidingMesssageSettled = fixture.Create<IEnumerable<MessageVoidSettled>>();
             var voidingMessageCheck = fixture.Create<IEnumerable<MessageVoidSettled>>();
             var settledTicket = fixture.Create<IEnumerable<MessageVoidSettled>>();
-            var commandMessage = new CommandResult { Code = 1};
+            var commandMessage = new CommandResult { Code = 1 };
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ResultAmendment, Constants.DefaultEnvironment).Returns(setting);
             chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync().Returns(voidingMesssageSettled);
@@ -380,7 +385,7 @@
             var commandResult = new CommandResult { Code = 1 };
             var criteria = fixture.Create<ImportChatBotResultAmendmentCommand>();
             var valueTupeAmendment = new ValueTuple<CommandResult, ImportChatBotResultAmendmentCommand>(commandResult, criteria);
-            
+
             chatBotResultAmendmentService.ImportChatBotAmendmentResultAsync(
                     resultAmendmentInfo.Item1.Item1, resultAmendmentInfo.Item1.Item2, messages,
                     voidingMessageInfo.Item2, voidingMessageInfo.Item3, Constants.DefaultEnvironment, resultAmendmentInfo.Item2
@@ -444,9 +449,9 @@
             chatBotResultAmendmentService = Substitute.For<IChatBotResultAmendmentService>();
             return new ChatBotJobService(logService,
                 systemSettingService,
-                ticketVoidingService, 
-                sendNotificationService, 
-                chatBotCWLService, 
+                ticketVoidingService,
+                sendNotificationService,
+                chatBotCWLService,
                 configuration,
                 chatBotCTOService,
                 chatBotProblemAccountService,
