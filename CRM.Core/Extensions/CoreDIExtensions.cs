@@ -2,6 +2,7 @@
 {
     using CRM.Core.Repositories;
     using CRM.Core.Services;
+    using Fanex.Caching;
     using Fanex.Data.Repository;
     using Fanex.Logging;
     using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
             services.AddSingleton<IBaseRepository, BaseRepository>();
             services.AddSingleton<IBaseService, BaseService>();
+            services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ICRMLogService, CRMLogService>();
             services.AddScoped<ISessionService, SessionService>();
