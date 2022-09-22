@@ -29,6 +29,12 @@ WORKDIR /app
 COPY --from=builder /app .
 ENV TZ="America/La_Paz"
 
+RUN set -x \
+ 	&& apt-get update \
+     && apt-get -y install nano \
+     && apt-get -y install curl \
+     && apt-get -y install telnet
+
 # install System.Drawing native dependencies
 RUN apt-get update \
     && apt-get install -y --allow-unauthenticated \
