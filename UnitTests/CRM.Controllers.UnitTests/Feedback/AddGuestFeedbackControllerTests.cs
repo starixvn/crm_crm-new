@@ -28,6 +28,7 @@
         private IBaseService baseService;
         private INapSettings napSettings;
         private IUserService userService;
+        private ICommonService commonService;
         private readonly Fixture fixture = new Fixture();
 
 
@@ -130,7 +131,8 @@
             baseService = Substitute.For<IBaseService>();
             napSettings = Substitute.For<INapSettings>();
             userService = Substitute.For<IUserService>();
-            return new AddGuestFeedbackController(napSession, settingService, baseService, napSettings, userService);
+            commonService = Substitute.For<ICommonService>();
+            return new AddGuestFeedbackController(napSession, settingService, baseService, napSettings, userService, commonService);
         }
 
         #endregion Helpers
