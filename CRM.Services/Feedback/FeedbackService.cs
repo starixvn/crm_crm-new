@@ -156,7 +156,9 @@
 
             foreach (var feedback in feedbacks)
             {
-                feedback.DurationTime = calculationDuration(feedback.ResolutionDate, feedback.FeedbackDate);
+                var formatResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
+                var formatFeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
+                feedback.DurationTime = calculationDuration(formatResolutionDate, formatFeedbackDate);
                 feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
                 feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
                 feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
