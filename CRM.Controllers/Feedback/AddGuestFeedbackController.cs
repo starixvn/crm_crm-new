@@ -23,19 +23,22 @@
         private readonly IBaseService baseService;
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
+        private readonly ICommonService commonService;
 
         public AddGuestFeedbackController(
             INapSession napSession,
             ISettingService settingService,
             IBaseService baseService,
             INapSettings napSettings,
-            IUserService userService)
+            IUserService userService,
+            ICommonService commonService)
         {
             this.napSession = napSession;
             this.settingService = settingService;
             this.baseService = baseService;
             this.napSettings = napSettings;
             this.userService = userService;
+            this.commonService = commonService;
         }
 
         public async Task<ActionResult> AllSetting()
@@ -99,6 +102,8 @@
             command.CreatorId = napSession.UserId;
             command.UserId = napSession.UserId;
             command.IP = ClientIP;
+            command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
+            command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
             var result = await baseService.ExecuteNonQueryAsync(command);
             return Json(result);
         }

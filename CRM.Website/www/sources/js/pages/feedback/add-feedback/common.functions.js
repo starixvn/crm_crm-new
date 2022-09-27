@@ -55,10 +55,9 @@ export const validateFormik = (values, customerDetail, settings, content) => {
 };
 
 export const initValues = settings =>{
-    const currentClientTime = window.currentClientTime;
     const { statuses, languages, responses  } = settings;
-    const feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
-    const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
+    const feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+    const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     resolutionTime.setMinutes(resolutionTime.getMinutes() + 1);
 
     const initialValues = {
@@ -138,9 +137,8 @@ export const initCustomerInfo = customerDetail =>{
 
 export const initValuesAddCustomerFb = (settings, customerDetail) =>{
     const { statuses, responses  } = settings;
-    const currentClientTime = window.currentClientTime;
-    const feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
-    const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
+    const feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+    const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     resolutionTime.setMinutes(resolutionTime.getMinutes() + 1);
 
     const initialValues = {
@@ -217,8 +215,8 @@ export const getParams = (values, customerDetail, settings, state) =>{
         BBM: customerInfo.zalo,
         SiteId: customerDetail !== null ? parseInt(customerInfo.siteId, 10) : null,
         LicenseeType: parseInt(customerInfo.licenseeType, 10),
-        FeedbackDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.feedbackDate)),
-        ResolutionDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.resolutionTime)),
+        FeedbackDate: DateTimeService.toLongDateTimeFormat(values.feedbackDate),
+        ResolutionDate: DateTimeService.toLongDateTimeFormat(values.resolutionTime),
         CommunicationID: values.communication,
         Products: getProductParams(values.product.length > 0 ? values.product.split(',') : [],
             values.subProduct.length > 0 ? values.subProduct.split(',') : [],

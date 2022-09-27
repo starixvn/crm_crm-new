@@ -61,7 +61,7 @@ export default class DateTimeService {
 
     static toServerDateTime(date) {
         date = moment(date, LongDateTimeFormat);
-        return moment(date).utc().utcOffset(window.serverTimezone);
+        return moment.utc(date).utcOffset(window.serverTimezone);
     }
 
     static toShortDateFormat(date) {
