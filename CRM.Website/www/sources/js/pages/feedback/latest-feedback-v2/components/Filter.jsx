@@ -26,7 +26,7 @@ export class Filter extends Component {
         if(this.props.custId !== undefined && this.props.custId !== 0){
             this.props.getLatestFeedbackByCustId(params);
         }else{
-            this.props.getLatestFeedback(this.props.gridParams);
+            this.props.getLatestFeedback(params);
         }
     };
 

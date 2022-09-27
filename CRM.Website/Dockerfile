@@ -26,8 +26,8 @@ FROM hub.nexdev.net/base/dotnet/core/aspnet:6.0-final AS base
 
 WORKDIR /app
 
-COPY --from=builder /app .
-ENV TZ="America/La_Paz"
+#COPY --from=builder /app .
+#ENV TZ="America/La_Paz"
 
 RUN set -x \
  	&& apt-get update \

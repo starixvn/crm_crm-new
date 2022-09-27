@@ -78,7 +78,7 @@ export class Filter extends Component {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
             mainCategoryId: mainCategoryId === 0 ? '' : mainCategoryId,
-            subCategoryId: subCategoryId === 0 ? '' : subCategoryId,
+            subCategoryId: subCategoryId === 0 || mainCategoryId === 0 ? '' : subCategoryId,
             communicationId: communicationId === 0 ? '' : communicationId,
             statusId: statusId === 0 ? '' : statusId,
             responseId: responseId === 0 ? '' : responseId,
