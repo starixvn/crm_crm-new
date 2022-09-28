@@ -113,6 +113,10 @@
             {
                 CustId = param.CustId
             };
+            if (string.IsNullOrEmpty(param.Refno))
+            {
+                Json(new TicketInfo());
+            }
             var siteDb = await settingService.GetSiteDbGroupAsync(criteria);
             var tickets = await ticketRefService.GetTicketByRefNoAsync(siteDb, param);
             if (tickets.ErrorCode == "0")

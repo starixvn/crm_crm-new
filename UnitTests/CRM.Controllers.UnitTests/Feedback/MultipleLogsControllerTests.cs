@@ -36,6 +36,7 @@
         private IBaseService baseService;
         private ISettingService settingService;
         private IFeedbackService feedbackService;
+        private ICommonService commonService;
 
 
         [Fact]
@@ -462,7 +463,8 @@
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
             feedbackService = Substitute.For<IFeedbackService>();
-            return new MultipleLogsController(napSession, napSettings, userService, baseService, settingService, feedbackService);
+            commonService = Substitute.For<ICommonService>();
+            return new MultipleLogsController(napSession, napSettings, userService, baseService, settingService, feedbackService, commonService);
         }
 
         #endregion Helpers

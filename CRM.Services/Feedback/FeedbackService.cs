@@ -131,6 +131,8 @@
 
         public async Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command)
         {
+            command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
+            command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
             return await baseService.ExecuteNonQueryAsync(command);
         }
 

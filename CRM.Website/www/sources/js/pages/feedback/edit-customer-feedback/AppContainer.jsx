@@ -618,8 +618,8 @@ export default class AppContainer extends Component {
             BBM: fieldInput.zalo,
             isVIP: fieldInput.isVIP,
             // feedback info
-            feedbackDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.feedbackDate)),
-            resolutionDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.resolutionDate)),
+            feedbackDate: DateTimeService.toLongDateTimeFormat(values.feedbackDate),
+            resolutionDate: DateTimeService.toLongDateTimeFormat(values.resolutionDate),
             extensionIds: this.getExtensionParams(values.extensionIds, this.state.settings.extensionNA),
             communicationToolIds: values.communicationToolIds,
             products: getProductParams(values.productIds.length > 0 ? values.productIds.split(',') : [],

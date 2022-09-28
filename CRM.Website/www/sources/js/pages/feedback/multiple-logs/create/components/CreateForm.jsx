@@ -449,8 +449,8 @@ export class CreateForm extends Component {
         const autoFields = this.splitAutoFieldWhenUseDefaultCommunicationTool(values);
         const params = {
             customers: this.getCustomers(),
-            startTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.startTime)),
-            endTime: DateTimeService.toLongDateTimeFormat(DateTimeService.toServerDateTime(values.endTime)),
+            startTime: DateTimeService.toLongDateTimeFormat(DateTimeService(values.startTime)),
+            endTime: DateTimeService.toLongDateTimeFormat(DateTimeService(values.endTime)),
             communicationToolIds: values.isUseDefaultCommunicationTool ? '' : values.communicationToolIds,
             languageId: values.isUseDefaultLanguage ? 0 : parseInt(values.languageId),
             countryName: values.isUseDefaultCountry ? '' : this.getCountryName(parseInt(values.countryId)),

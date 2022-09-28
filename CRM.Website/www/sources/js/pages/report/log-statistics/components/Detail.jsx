@@ -106,7 +106,7 @@ export class Detail extends Component {
                 <Cell className='text-center'>{item.language}</Cell>
                 <Cell className='text-center'>{item.response}</Cell>
                 <Cell className='text-center'>{item.creatorName}</Cell>
-                <Cell className='text-center'>{item.createDate}</Cell>
+                <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createDate)}</Cell>
             </Row>
         );
     };

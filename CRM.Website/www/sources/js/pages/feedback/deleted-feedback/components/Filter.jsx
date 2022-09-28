@@ -76,10 +76,10 @@ export class Filter extends Component {
         const params = {
             username: username,
             isGuest: isGuest,
-            fromDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(fromDate)),
-            toDate: DateTimeService.toShortDateFormat(DateTimeService.toServerDateTime(toDate)),
+            fromDate: DateTimeService.toShortDateFormat(fromDate),
+            toDate: DateTimeService.toShortDateFormat(toDate),
             mainCategoryId: mainCategoryId === 0 ? '' : mainCategoryId,
-            subCategoryId: subCategoryId === 0 ? '' : subCategoryId,
+            subCategoryId: subCategoryId === 0 || mainCategoryId === 0 ? '' : subCategoryId,
             communicationId: communicationId,
             responseId: responseId,
             isReviewed: isReviewed,

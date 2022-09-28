@@ -31,6 +31,7 @@
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
         private readonly IFeedbackService feedbackService;
+        private readonly ICommonService commonService;
 
         public MultipleLogsController(
             INapSession napSession,
@@ -38,7 +39,8 @@
             IUserService userService,
             IBaseService baseService,
             ISettingService settingService,
-            IFeedbackService feedbackService
+            IFeedbackService feedbackService,
+            ICommonService commonService
         )
         {
             this.napSession = napSession;
@@ -47,6 +49,7 @@
             this.baseService = baseService;
             this.settingService = settingService;
             this.feedbackService = feedbackService;
+            this.commonService = commonService;
         }
 
         [HttpPost]
@@ -55,6 +58,8 @@
             command.CreatorId = napSession.UserId;
             command.UserId = napSession.UserId;
             command.IP = ClientIP;
+            command.StartTime = commonService.ConvertToServerDateTime(command.StartTime);
+            command.EndTime = commonService.ConvertToServerDateTime(command.EndTime);
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
         }
@@ -161,6 +166,8 @@
             command.ReviewerId = !command.IsReviewed ? 0 : napSession.UserId;
             command.UserId = napSession.UserId;
             command.IP = ClientIP;
+            command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
+            command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
             
