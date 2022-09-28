@@ -102,6 +102,8 @@
             command.CreatorId = napSession.UserId;
             command.UserId = napSession.UserId;
             command.IP = ClientIP;
+            command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
+            command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
             var result = await baseService.ExecuteNonQueryAsync(command);
             return Json(result);
         }
