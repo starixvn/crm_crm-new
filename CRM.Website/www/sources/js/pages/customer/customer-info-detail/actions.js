@@ -5,8 +5,7 @@ import {
     resetState,
     setCustomerById,
     setAllSettings,
-    setEditCustomerInfoDetail,
-    setEditCustomerInfoDetailDialog
+    setEditCustomerInfoDetail
 } from './customerInfoDetailSlice';
 
 const getCustomerById = params => async dispatch => {
@@ -37,6 +36,5 @@ export const ActionCreators = {
     resetState,
     getCustomerById,
     getAllSettings,
-    editCustomerInfoDetail,
-    setEditCustomerInfoDetailDialog
+    editCustomerInfoDetail
 };

@@ -10,6 +10,7 @@ import MultipleSelect from '../../../../components/multiple-select/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import { Policy } from '@jsroot/common/constants';
 import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
+import { toast } from 'react-toastify';
 
 export class EditForm extends Component {
 
@@ -135,7 +136,7 @@ export class EditForm extends Component {
         const params = ParamsSubmit(customerInfo.custId, values);
         this.props.editCustomerInfoDetail(params).then(() => {
             if (this.props.editCustomerInfoDetailResult.isSuccessful) {
-                this.props.setEditCustomerInfoDetailDialog({ show: true });
+                toast.success(LangHelper.getResource('EditCustomerInfoSuccessfully'));
                 this.setState({ isSubmitting: false });
             } else {
                 this.setState({ isSubmitting: false });

@@ -135,7 +135,6 @@ describe('EditForm', () => {
             const props = {
                 ...initProps,
                 editCustomerInfoDetailResult: { isSuccessful: true },
-                setEditCustomerInfoDetailDialog: jest.fn(),
                 editCustomerInfoDetail: jest.fn(() => promise)
             };
             const mockEvent = { preventDefault: jest.fn() };
@@ -147,7 +146,6 @@ describe('EditForm', () => {
 
             // Assert
             expect(props.editCustomerInfoDetail).toHaveBeenCalled();
-            expect(props.setEditCustomerInfoDetailDialog).toHaveBeenCalledWith({ show: true });
             expect(container.state.isSubmitting).toEqual(false);
         });
 
@@ -157,7 +155,6 @@ describe('EditForm', () => {
             const props = {
                 ...initProps,
                 editCustomerInfoDetailResult: { isSuccessful: false },
-                setEditCustomerInfoDetailDialog: jest.fn(),
                 editCustomerInfoDetail: jest.fn(() => promise)
             };
             const mockEvent = { preventDefault: jest.fn() };

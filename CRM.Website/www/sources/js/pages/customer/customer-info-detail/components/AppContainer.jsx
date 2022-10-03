@@ -13,12 +13,10 @@ import { getPermission } from '@jsroot/common/shareScripts';
 export class AppContainer extends Component {
 
     static propTypes = {
-        editCustomerInfoDetailDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired,
         getCustomerById: PropTypes.func
     };
 
     static defaultProps = {
-        editCustomerInfoDetailDialog: { show: false },
         getCustomerById: function () {
             //nothing
         }
@@ -47,10 +45,6 @@ export class AppContainer extends Component {
         this.props.resetState();
      }
 
-    handleCloseEditDetailDialog = () => {
-        this.props.setEditCustomerInfoDetailDialog({ show: false });
-    };
-
     render() {
         const {customerInfoPolicy, updateHeadlineInfoPolicy} = this.state;
         if(!customerInfoPolicy || !updateHeadlineInfoPolicy){
@@ -60,21 +54,6 @@ export class AppContainer extends Component {
         return (
             <div>
                 <EditForm id={this.props.id} customerInfoPolicy={customerInfoPolicy} updateHeadlineInfoPolicy={updateHeadlineInfoPolicy}/>
-                {
-                    this.props.editCustomerInfoDetailDialog.show &&
-                    <SweetModalDialog size="sm"
-                        title={LangHelper.getResource('Confirmation')}
-                        contents={
-                            <div>{LangHelper.getResource('EditCustomerInfoSuccessfully')}</div>
-                        }
-                        buttons={[
-                            <Button variant="primary" size="sm" onClick={this.handleCloseEditDetailDialog}>
-                                {LangHelper.getResource('OK')}
-                            </Button>
-                        ]}
-                        onClose={this.handleCloseEditDetailDialog}
-                    />
-                }
             </div>
         );
     }
@@ -82,9 +61,4 @@ export class AppContainer extends Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
-const mapStateToProps = state => {
-    const { editCustomerInfoDetailDialog } = state;
-    return { editCustomerInfoDetailDialog };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
+export default connect(null, mapDispatchToProps)(AppContainer);

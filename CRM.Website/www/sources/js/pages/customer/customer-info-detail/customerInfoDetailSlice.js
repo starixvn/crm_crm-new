@@ -3,7 +3,6 @@ const initialState = {
     customerInfo: null,
     allSettings: null,
     editCustomerInfoDetailResult: '',
-    editCustomerInfoDetailDialog: { show: false }
 };
 const customerInfoDetailSlice = createSlice({
     name: 'customerInfoDetail',
@@ -18,9 +17,6 @@ const customerInfoDetailSlice = createSlice({
         },
         setEditCustomerInfoDetail: (state, action) => {
             state.editCustomerInfoDetailResult = action.payload;
-        },
-        setEditCustomerInfoDetailDialog : (state, action) => {
-            state.editCustomerInfoDetailDialog = action.payload;
         }
     }
 });
@@ -31,8 +27,7 @@ export const {
     resetState,
     setCustomerById,
     setAllSettings,
-    setEditCustomerInfoDetail,
-    setEditCustomerInfoDetailDialog
+    setEditCustomerInfoDetail
 } = actions;
 
 export default reducer;

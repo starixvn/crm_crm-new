@@ -2,8 +2,7 @@ import customerInfoDetail, {
     resetState,
     setCustomerById,
     setAllSettings,
-    setEditCustomerInfoDetail,
-    setEditCustomerInfoDetailDialog
+    setEditCustomerInfoDetail
 } from '../customerInfoDetailSlice';
 
 describe('customerInfoDetail reducer', () => {
@@ -14,8 +13,7 @@ describe('customerInfoDetail reducer', () => {
         })).toEqual({
             customerInfo: null,
             allSettings: null,
-            editCustomerInfoDetailResult: '',
-            editCustomerInfoDetailDialog: { show: false }
+            editCustomerInfoDetailResult: ''
         });
     });
 
@@ -23,8 +21,7 @@ describe('customerInfoDetail reducer', () => {
         expect(customerInfoDetail(undefined, {})).toEqual({
             customerInfo: null,
             allSettings: null,
-            editCustomerInfoDetailResult: '',
-            editCustomerInfoDetailDialog: { show: false }
+            editCustomerInfoDetailResult: ''
         });
     });
 
@@ -62,17 +59,6 @@ describe('customerInfoDetail reducer', () => {
             })
         ).toEqual({
             editCustomerInfoDetailResult: { isSuccessful: true, message: 'Successfully!' }
-        });
-    });
-
-    it('should handle setEditCustomerInfoDetailDialog', () => {
-        expect(
-            customerInfoDetail({}, {
-                type: setEditCustomerInfoDetailDialog.type,
-                payload: { show: false }
-            })
-        ).toEqual({
-            editCustomerInfoDetailDialog: { show: false }
         });
     });
 });

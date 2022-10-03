@@ -1,5 +1,6 @@
 ﻿namespace CRM.Criteria.Customer
 {
+    using System;
     using CRM.Core.Models;
     using Fanex.Data;
 
@@ -14,7 +15,7 @@
 
         public int TitleId { get; set; }
 
-        public string BirthDay { get; set; }
+        public DateTime? BirthDay { get; set; }
 
         public string LanguageId { get; set; }
 

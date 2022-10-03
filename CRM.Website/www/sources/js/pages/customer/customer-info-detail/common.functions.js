@@ -75,7 +75,7 @@ export const ParamsSubmit = (custId, values) => {
         firstName: values.firstName,
         lastName: values.lastName,
         titleId: values.titleId,
-        birthDay: values.birthDay ? DateTimeService.toShortDateFormat(values.birthDay) : '',
+        birthDay: values.birthDay ? DateTimeService.toShortDateFormat(values.birthDay) : null,
         languageId: values.languages.toString(),
         phone: values.phone,
         phoneCountryCode: values.phoneCountryCode,

@@ -26,22 +26,6 @@ describe('AppContainer', () => {
         });
     });
 
-    describe('handleCloseEditDetailDialog', () => {
-        it('should call exactly functions when close dialog', () => {
-            //Arrange
-            const props = {
-                setEditCustomerInfoDetailDialog: jest.fn()
-            };
-            const container = shallow(<AppContainer {...props} />).instance();
-
-            //Act
-            container.handleCloseEditDetailDialog();
-
-            //Assert
-            expect(props.setEditCustomerInfoDetailDialog).toHaveBeenCalledWith({ show: false });
-        });
-    });
-
     describe('render', () => {
         it('should render EditForm correctly', () => {
             //Act
