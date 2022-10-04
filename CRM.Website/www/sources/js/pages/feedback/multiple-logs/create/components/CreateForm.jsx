@@ -54,8 +54,8 @@ export class CreateForm extends Component {
     initFormData = () => {
         const settings = this.props.settings;
         const currentClientTime = window.currentClientTime;
-        const startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
-        const endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
+        const startTime = new Date(DateTimeService.toLongDateTimeFormat(new Date(currentClientTime)));
+        const endTime = new Date(DateTimeService.toLongDateTimeFormat(new Date(currentClientTime)));
         endTime.setMinutes(endTime.getMinutes() + 1);
 
         return {
@@ -449,8 +449,8 @@ export class CreateForm extends Component {
         const autoFields = this.splitAutoFieldWhenUseDefaultCommunicationTool(values);
         const params = {
             customers: this.getCustomers(),
-            startTime: DateTimeService.toLongDateTimeFormat(DateTimeService(values.startTime)),
-            endTime: DateTimeService.toLongDateTimeFormat(DateTimeService(values.endTime)),
+            startTime: DateTimeService.toLongDateTimeFormat(values.startTime),
+            endTime: DateTimeService.toLongDateTimeFormat(values.endTime),
             communicationToolIds: values.isUseDefaultCommunicationTool ? '' : values.communicationToolIds,
             languageId: values.isUseDefaultLanguage ? 0 : parseInt(values.languageId),
             countryName: values.isUseDefaultCountry ? '' : this.getCountryName(parseInt(values.countryId)),
