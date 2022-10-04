@@ -32,7 +32,7 @@ export class AppContainer extends Component {
      }
 
     render() {
-        const {settings,balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult } = this.props;
+        const {settings,balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult, getFeedbackSubjectTemplates, setFeedbackSubjectTemplates } = this.props;
         if (settings === null || balanceUpday === null) {
             return null;
         }
@@ -41,7 +41,8 @@ export class AppContainer extends Component {
                 settings={settings} balanceUpday={balanceUpday} customerDetail={null} feedbackSubjectTemplates={feedbackSubjectTemplates}
                 confirmCreateGuestDialog={confirmCreateGuestDialog} addFeedbackResult={addFeedbackResult} verifyUserName={this.props.verifyUserName}
                 getTicketInfoByRef={this.props.getTicketInfoByRef} setAddFeedback={this.props.setAddFeedback} addFeedback={this.props.addFeedback}
-                setConfirmCreateGuestDialog={this.props.setConfirmCreateGuestDialog}
+                setConfirmCreateGuestDialog={this.props.setConfirmCreateGuestDialog} getFeedbackSubjectTemplates={getFeedbackSubjectTemplates}
+                setFeedbackSubjectTemplates={setFeedbackSubjectTemplates}
             />
         );
     }

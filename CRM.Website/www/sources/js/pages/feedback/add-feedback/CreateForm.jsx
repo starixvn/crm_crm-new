@@ -470,10 +470,8 @@ export default class CreateForm extends Component {
                             <Col className="subject-auto-complete-container">
                                 <AutoComplete
                                     options={this.props.feedbackSubjectTemplates} displayField="subject" value={values.subject}
-                                    onChange={value => setFieldValue('subject', value)} isInvalid={touched.subject && errors.subject}
-                                    onInputChange={searchText => {
-                                        this.handleGetFeedbackSubjectTemplates(searchText);
-                                    }}
+                                    onChange={value => setFieldValue('subject', value.subject)} isInvalid={touched.subject && errors.subject}
+                                    onInputChange={searchText => this.handleGetFeedbackSubjectTemplates(searchText)}
                                 />
                             </Col>
                         </Form.Group>

@@ -724,6 +724,8 @@ export class CreateForm extends Component {
         );
     };
 
+    
+
     renderProductSection = (values, touched, errors, setFieldValue, handleChange) => {
         const { subProductOptions, betTypeOptions } = this.state;
         const { settings, feedbackSubjectTemplates } = this.props;
@@ -841,7 +843,7 @@ export class CreateForm extends Component {
                         <AutoComplete isInvalid={touched.subject && errors.subject}
                             value={values.subject}
                             options={feedbackSubjectTemplates} displayField="subject"
-                            onChange={value => setFieldValue('subject', value)}
+                            onChange={value => setFieldValue('subject', value.subject)}
                             onInputChange={this.handleGetFeedbackSubjectTemplates}
                         />
                     </Col>

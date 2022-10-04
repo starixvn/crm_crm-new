@@ -131,7 +131,7 @@ export default class FeedbackInfo extends PureComponent {
                                 <AutoComplete isInvalid={touched.subject && errors.subject}
                                     value={values.subject}
                                     options={feedbackSubjectTemplates} displayField="subject"
-                                    onChange={value => setFieldValue('subject', value)}
+                                    onChange={value => setFieldValue('subject', value.subject)}
                                     onInputChange={onGetFeedbackSubjectTemplates}
                                 />
                             </Col>
