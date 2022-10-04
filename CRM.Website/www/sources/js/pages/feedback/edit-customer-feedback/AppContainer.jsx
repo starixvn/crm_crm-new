@@ -444,7 +444,7 @@ export default class AppContainer extends Component {
             errors.customerNameInput = 'You must verify the username before saving this feedback.';
         }
 
-        if (values.isReviewed && values.review === '') {
+        if (values.isReviewed && (values.review === '' || values.review === null )) {
             errors.reviewNameInput = 'Review  is required!';
         }
 

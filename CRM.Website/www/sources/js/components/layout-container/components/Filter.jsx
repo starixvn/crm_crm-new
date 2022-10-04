@@ -175,7 +175,7 @@ export default class Filter extends Component {
         parentNames.push(menu.name);
         if(index >= 0 && menu.parentId > 0){
             const parent = this.recursiveFindParentName(menus, menu.parentId);
-            parentNames = [...parentNames, parent[0]];
+            parentNames.unshift(parent[0]);
         }
         return parentNames;
     };

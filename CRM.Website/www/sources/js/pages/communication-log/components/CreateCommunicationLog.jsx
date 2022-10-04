@@ -112,8 +112,8 @@ export class CreateCommunicationLog extends Component {
         const { options } = this.props;
         const { allSettings } = this.state;
         const date = new Date();
-        const startTime = new Date(DateTimeService.toLongDateTimeFormat(date));
-        const endTime = new Date(DateTimeService.toLongDateTimeFormat(date));
+        const startTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(date)));
+        const endTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(date)));
         endTime.setMinutes(endTime.getMinutes() + 1);
         const initTools = this.getInitDataTool(options, allSettings);
         const initSite = this.getInitDataSite(options);

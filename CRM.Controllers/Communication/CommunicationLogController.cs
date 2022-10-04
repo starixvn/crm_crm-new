@@ -27,6 +27,7 @@
         private readonly ICommunicationService communicationService;
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
+        private readonly ICommonService commonService;
 
         public CommunicationLogController(
             INapSession napSession,
@@ -34,7 +35,8 @@
             IUserService userService,
             ICommunicationService communicationService,
             ISettingService settingService,
-            IBaseService baseService)
+            IBaseService baseService,
+            ICommonService commonService)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
@@ -42,6 +44,7 @@
             this.communicationService = communicationService;
             this.settingService = settingService;
             this.baseService = baseService;
+            this.commonService = commonService;
         }
        
 
@@ -81,6 +84,8 @@
             {
                 command.UserId = napSession.UserId;
                 command.IP = ClientIP;
+                command.StartTime = commonService.ConvertToServerDateTime(command.StartTime);
+                command.EndTime = commonService.ConvertToServerDateTime(command.EndTime);
                 if (command.IsReviewed)
                 {
                     command.ReviewerId = napSession.UserId;
@@ -163,6 +168,8 @@
         {
             command.IP = ClientIP;
             command.UserId = napSession.UserId;
+            command.StartTime = commonService.ConvertToServerDateTime(command.StartTime);
+            command.EndTime = commonService.ConvertToServerDateTime(command.EndTime);
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
         }

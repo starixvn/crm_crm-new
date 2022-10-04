@@ -63,9 +63,10 @@ export class EditCustomerInfoVerify extends Component {
             isVerifyPassport: data[1].isChecked,
             isVerifyBirthday: data[2].isChecked,
             isVerifySecretCode: data[3].isChecked,
-            isVerifyBetCredit: data[4].isChecked,
-            isVerifyGivenCredit: data[5].isChecked
+            isVerifyBetCredit: data[4] ? data[4].isChecked : false,
+            isVerifyGivenCredit: data[5] ? data[5].isChecked : false
         };
+
         Site.blockUI();
         this.setState({ isSubmitting: true });
         this.props.editCustomerVerify(params).then(response => {

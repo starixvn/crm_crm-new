@@ -12,8 +12,6 @@
     using CRM.Repositories;
     using CRM.Resources;
     using CRM.Services.Feedback;
-    using Fanex.NAP.Client.AspNetCore.Attributes;
-    using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
 
     public class FeedbackStatisticController : BaseController

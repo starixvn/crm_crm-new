@@ -33,6 +33,7 @@
         private IBaseService baseService;
         private ISettingService settingService;
         private ICommunicationService communicationService;
+        private ICommonService commonService;
 
         [Fact]
         public async Task GetLogsByCustomerId_WhenCalled_ReturnAsExpectedResult()
@@ -302,7 +303,8 @@
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
             communicationService = Substitute.For<ICommunicationService>();
-            return new CommunicationLogController(napSession, napSettings, userService, communicationService, settingService, baseService);
+            commonService = Substitute.For<ICommonService>();
+            return new CommunicationLogController(napSession, napSettings, userService, communicationService, settingService, baseService, commonService);
         }
 
         #endregion Helpers
