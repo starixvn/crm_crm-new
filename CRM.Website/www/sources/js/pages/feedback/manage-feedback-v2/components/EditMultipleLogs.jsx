@@ -866,9 +866,9 @@ export class EditMultipleLogs extends Component {
             isUpdateSubject: values.isCheck.subject,
             languageId: parseInt(values.languageId, 10),
             isUpdateLanguageID: values.isCheck.language,
-            feedbackDate: DateTimeService.toLongDateTimeFormat(DateTimeService(values.startTime)),
+            feedbackDate: DateTimeService.toLongDateTimeFormat(values.startTime),
             isUpdateFeedbackDate: values.isCheck.startTime,
-            resolutionDate: DateTimeService.toLongDateTimeFormat(DateTimeService(values.endTime)),
+            resolutionDate: DateTimeService.toLongDateTimeFormat(values.endTime),
             isUpdateResolutionDate: values.isCheck.endTime,
             stationId: this.getExtensionParams(values.extensionIds, this.state.settings.extensionNA),
             isUpdateStationId: values.isCheck.ext,
@@ -909,7 +909,7 @@ export class EditMultipleLogs extends Component {
         if (!this.state.hasReviewFeedbackPermission) {
             return 0;
         } else {
-            if (!values.isReviewed) {
+            if (!values.isCheck.reviewed) {
                 return 2;
             } else {
                 return 1;

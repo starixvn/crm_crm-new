@@ -22,7 +22,8 @@ export class Filter extends Component {
             toDate: currentDate,
             minToDate: fromDate,
             maxToDate: currentDate,
-            handler: ''
+            handler: '',
+            actionLogId: 0
         };
     }
 
@@ -52,9 +53,9 @@ export class Filter extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        const { handler, fromDate, toDate } = this.state;
+        const { handler, fromDate, toDate, actionLogId } = this.state;
         const params = {
-            actionId: 0,
+            actionId: actionLogId,
             customerId: this.props.id,
             handler: handler,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
