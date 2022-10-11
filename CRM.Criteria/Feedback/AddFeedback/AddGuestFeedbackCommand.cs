@@ -65,10 +65,6 @@
 
         public string MSN { get; set; }
 
-        public string BettingCode { get; set; }
-
-        public string RefCode2 { get; set; }
-
         public string Pic1 { get; set; }
 
         public string Pic2 { get; set; }

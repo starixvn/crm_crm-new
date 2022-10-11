@@ -192,11 +192,11 @@ export default class AppContainer extends Component {
         return {
             extensionIds: selectedExtensionIds,
             communicationToolIds: selectedCommunicationToolIds,
-            mainCategoryIds: selectedMainCategoryIds,
-            subCategoryIds: selectedSubCategoryIds,
-            productIds: selectedProductIds,
-            subProductIds: selectedSubProductIds,
-            betTypeIds: selectedBetTypeIds
+            mainCategoryIds: selectedMainCategoryIds.filter((v, i, a) => a.indexOf(v) === i),
+            subCategoryIds: selectedSubCategoryIds.filter((v, i, a) => a.indexOf(v) === i),
+            productIds: selectedProductIds.filter((v, i, a) => a.indexOf(v) === i),
+            subProductIds: selectedSubProductIds.filter((v, i, a) => a.indexOf(v) === i),
+            betTypeIds: selectedBetTypeIds.filter((v, i, a) => a.indexOf(v) === i)
         };
     };
 
@@ -332,7 +332,7 @@ export default class AppContainer extends Component {
     };
 
     handleChangeSubProduct = (setFieldValue, selectedSubProductIds, selectedBetTypeIds) => {
-        setFieldValue('subCategory', selectedSubProductIds);
+        setFieldValue('subProductIds', selectedSubProductIds);
         if (selectedSubProductIds) {
             const betTypeIds = selectedBetTypeIds.length > 0 ? selectedBetTypeIds.split(',') : [];
             const betTypes = getBetTypes(selectedSubProductIds.split(','), this.state.settings.bettypes, betTypeIds, false);
