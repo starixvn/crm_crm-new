@@ -10,7 +10,6 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 
-
 export default class FeedbackDetails extends Component {
     static propTypes = {
         onClose: PropTypes.func.isRequired
@@ -38,6 +37,7 @@ export default class FeedbackDetails extends Component {
     }
 
     async componentDidMount() {
+        Site.blockUI();
         const id = this.props.feedbackId;
         const url = Site.resolveClientUrl(`MultipleLogs/GetLogSettingByFeedbackId/${id}`);
         await DataService.getDataAsync(url).then(response => {
@@ -111,7 +111,7 @@ export default class FeedbackDetails extends Component {
                 subCategoryOptions,
                 sitesOptions
             });
-        });
+        }).then(() => Site.unblockUI());;
     }
 
     getSettings = (communicationLog, settings) => {
