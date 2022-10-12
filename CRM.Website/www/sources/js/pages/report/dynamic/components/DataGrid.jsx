@@ -86,7 +86,7 @@ export class DataGrid extends Component {
         if (this.state.toggles.includes(keyToggleRow)) {
             return null;
         }
-        const colorRow = item.status ? item.status.toLowerCase() : '';
+        const colorRow = item.status ? item.status.toLowerCase().replace(/\s/g, '') : '';
         return (
             <Row key={index} className={colorRow}>
                 <Cell>{keyToggle + index + 1}</Cell>
