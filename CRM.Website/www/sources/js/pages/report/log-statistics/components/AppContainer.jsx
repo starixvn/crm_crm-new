@@ -30,7 +30,7 @@ export class AppContainer extends Component {
     return (
       <Fragment>
         <Filter />
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div />}>
             {
               details.show ? <Detail /> : <DataGrid />
             }

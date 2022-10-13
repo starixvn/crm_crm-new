@@ -408,7 +408,7 @@ export default class CreateForm extends Component {
                 <Collapse in={isCollapse}>
                     <div id="collapse-expand-show-identity">
                         {
-                             <Suspense fallback={<div>Loading...</div>}>
+                             <Suspense fallback={<div />}>
                                 <CustomerInfo
                                     customerDetail={customerDetail}
                                     customerInfo={this.state.customerInfo}
@@ -468,7 +468,7 @@ export default class CreateForm extends Component {
                         </Form.Group>
                         {
                             customerDetail === null &&
-                            <Suspense fallback={<div>Loading...</div>}>
+                            <Suspense fallback={<div />}>
                                 <Content
                                     editBlock={this.state.editBlock} collapse={this.state.collapse} isInValidSolution={touched.solution && errors.solution}
                                     content={this.state.content} handleEditBlock={this.handleEditBlock} isValidDescription={touched.description && errors.description}
@@ -480,7 +480,7 @@ export default class CreateForm extends Component {
                 </Collapse >
                 {
                     customerDetail !== null &&
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<div />}>
                         <Content
                             editBlock={this.state.editBlock} collapse={this.state.collapse} isInValidSolution={touched.solution && errors.solution}
                             content={this.state.content} handleEditBlock={this.handleEditBlock} isValidDescription={touched.description && errors.description}

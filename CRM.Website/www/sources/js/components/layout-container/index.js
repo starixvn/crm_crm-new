@@ -61,7 +61,7 @@ export default class Index extends PureComponent {
         return (
             <Router basename='/'>
                 <LayoutNavigation>
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<div />}>
                         <Routes>
                             <Route path={Site.resolveClientUrl("")} />
                             <Route path={Site.resolveClientUrl("NotificationList")} element={<NotificationListComponent />} />

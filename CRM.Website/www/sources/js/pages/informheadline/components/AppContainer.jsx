@@ -82,12 +82,12 @@ export class AppContainer extends Component {
 
         return (
             <>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div />}>
                     <DataGrid/>
                 </Suspense>
                 {
                     editContactInformDialog.show &&
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<div />}>
                         <EditContactInforms
                             titleId={editContactInformDialog.titleId}
                             status={editContactInformDialog.status}
@@ -97,7 +97,7 @@ export class AppContainer extends Component {
                 }
                 {
                     editInformDialog.show &&
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<div />}>
                         <EditInforms
                             titleId={editInformDialog.titleId}
                             onClose={this.handleCloseEditInformDialog}
@@ -106,7 +106,7 @@ export class AppContainer extends Component {
                 }
                 {
                     removedLogDialog.show &&
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<div />}>
                         <RemovedAccountLogs
                             onClose={this.handleCloseRemovedLogDialog}
                         />
@@ -114,7 +114,7 @@ export class AppContainer extends Component {
                 }
                 {
                     removedLogDetailDialog.show &&
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<div />}>
                         <RemovedAccountLogDetails
                             onClose={this.handleCloseRemovedLogDetailDialog}
                         />
@@ -122,7 +122,7 @@ export class AppContainer extends Component {
                 }
                 {
                     newInformDialog.show &&
-                    <Suspense fallback={<div>Loading...</div>}>
+                    <Suspense fallback={<div />}>
                         <NewInforms
                             onClose={this.handleCloseNewInformDialog}
                         />

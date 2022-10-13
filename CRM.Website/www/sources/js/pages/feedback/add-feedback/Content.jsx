@@ -33,7 +33,7 @@ export default class Content extends PureComponent {
                     <Collapse in={!collapse.description}>
                         <div id="collapse-expand-remark" className="pt-1 pb-1">
                             {
-                                 <Suspense fallback={<div>Loading...</div>}>
+                                 <Suspense fallback={<div />}>
                                     <CkEditor
                                         name='description'
                                         isInvalid={this.props.isValidDescription}
