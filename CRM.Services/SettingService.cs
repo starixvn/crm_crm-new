@@ -108,11 +108,6 @@
             };
         }
 
-        public async Task<SiteDbGroup> GetSiteDbGroupAsync(GetSiteDbByCustInfoCriteria criteria)
-        {
-            return await baseService.GetDataEntityAsync<SiteDbGroup>(criteria);
-        }
-
         public async Task<IEnumerable<SiteSetting>> GetSiteAsync()
         {
             var siteInfos = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());

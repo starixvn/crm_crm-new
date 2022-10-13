@@ -421,7 +421,7 @@ describe('AppContainer', () => {
             container.handleChangeSubProduct(setFieldValue, '', '');
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('subCategory', '');
+            expect(setFieldValue).toHaveBeenCalledTimes(2);
             expect(container.state.subProductOptions).toEqual([]);
             expect(container.state.betTypeOptions).toEqual([]);
         });

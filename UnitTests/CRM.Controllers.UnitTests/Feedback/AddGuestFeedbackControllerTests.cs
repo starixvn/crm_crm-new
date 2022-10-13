@@ -76,7 +76,6 @@
 
             // Assert
             Assert.Equal(settings.Extensions, viewModel.Extensions);
-            Assert.Equal(settings.Extensions, viewModel.Extensions);
             Assert.Equal(settings.Countries, viewModel.Countries);
             Assert.Equal(settings.CommunicationTools, viewModel.CommunicationTools);
             Assert.Equal(settings.Languages, viewModel.Languages);

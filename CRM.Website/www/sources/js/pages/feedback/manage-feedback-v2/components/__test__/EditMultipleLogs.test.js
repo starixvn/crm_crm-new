@@ -453,11 +453,16 @@ describe('EditMultipleLogs', () => {
             const state = {
                 hasReviewFeedbackPermission: true
             };
+            const values = {
+                isCheck:{
+                    isReviewed: false
+                }
+            };
             const container = shallow(<EditMultipleLogs />).instance();
             container.setState(state);
 
             // Act
-            const actual = container.reviewMode({isReviewed: false});
+            const actual = container.reviewMode(values);
 
             // Assert
             expect(actual).toEqual(2);
@@ -468,15 +473,21 @@ describe('EditMultipleLogs', () => {
             const state = {
                 hasReviewFeedbackPermission: true
             };
+            const values = {
+                isCheck:{
+                    isReviewed: true
+                },
+                review: ''
+            };
             const container = shallow(<EditMultipleLogs />).instance();
             container.setState(state);
             container.formikValues = jest.fn().mockReturnValue({review: 'test'});
 
             // Act
-            const actual = container.reviewMode({isReviewed: true, review: ''});
+            const actual = container.reviewMode(values);
 
             // Assert
-            expect(actual).toEqual(1);
+            expect(actual).toEqual(2);
         });
     });
 

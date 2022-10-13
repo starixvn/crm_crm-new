@@ -933,17 +933,10 @@ describe('CreateForm', () => {
             expect(Site.unblockUI).toHaveBeenCalled();
             expect(props.createMultipleLogs).toHaveBeenCalledWith(params);
             expect(container.setState).toHaveBeenCalledWith({ createMultipleLogsResult: response.data });
-            expect(container.formik.setSubmitting).toHaveBeenCalledWith(false);
         });
 
         it('should do as expected when create is successful', async () => {
             // Arrange
-            Object.defineProperty(window, 'location', {
-                value: {
-                    href: ''
-                },
-                writable: true
-            });
             const response = { data: { isSuccessful: true, message: '' } };
             const promise = Promise.resolve(response);
             const params = { customers: '1', mainCategoryIds: '1', subCategoryIds: '1' };
@@ -952,6 +945,7 @@ describe('CreateForm', () => {
                 createMultipleLogs: jest.fn(() => promise),
                 confirmCreateMultipleLogsDialog: { params }
             };
+            Site.resolveClientUrl = jest.fn(url => url);
             const container = shallow(<CreateForm {...props} />).instance();
             container.setState = jest.fn();
             container.formik = { setSubmitting: jest.fn() };
@@ -959,6 +953,7 @@ describe('CreateForm', () => {
             // Act
             container.handleCreateMultipleLogs();
             await promise;
+            jest.runAllTimers();
 
             // Assert
             expect(Site.blockUI).toHaveBeenCalled();
@@ -966,7 +961,6 @@ describe('CreateForm', () => {
             expect(props.createMultipleLogs).toHaveBeenCalledWith(params);
             expect(container.setState).toHaveBeenCalledWith({ createMultipleLogsResult: response.data });
             expect(container.formik.setSubmitting).not.toHaveBeenCalled();
-            expect(window.location).toEqual('ManageFeedback/Index');
         });
     });
 });

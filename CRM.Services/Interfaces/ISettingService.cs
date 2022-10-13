@@ -21,8 +21,6 @@
 
         Task<SiteSetting> GetSiteByIdAsync(int siteId);
 
-        Task<SiteDbGroup> GetSiteDbGroupAsync(GetSiteDbByCustInfoCriteria criteria);
-
         Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync();
 
         Task<IEnumerable<SiteInfo>> GetAllSitesLicenseeInactive();

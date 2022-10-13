@@ -98,10 +98,10 @@ describe('FeedbackInfo', () => {
             const feedbackInfo = shallow(<FeedbackInfo {...props} />);
 
              // Action
-            feedbackInfo.find(AutoComplete).simulate('change', 'value');
+            feedbackInfo.find(AutoComplete).simulate('change', {subject: 'subject'});
 
              // Assert
-             expect(props.setFieldValue).toHaveBeenCalledWith('subject','value');
+             expect(props.setFieldValue).toHaveBeenCalledWith('subject','subject');
         });
 
         it('handle onPasteCustomerHandler correctly', () => {

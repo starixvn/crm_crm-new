@@ -13,7 +13,7 @@
 
     public interface ITicketRefService
     {
-        Task<TicketInfo> GetTicketByRefNoAsync(SiteDbGroup siteDb, RefTicketParams param);
+        Task<TicketInfo> GetTicketByRefNoAsync(long refno);
 
         Task<DateTime> GetBalanceUpdayAsync();
     }
@@ -28,13 +28,13 @@
             this.baseService = baseService;
             this.configuration = configuration;
         }
-        public async Task<TicketInfo> GetTicketByRefNoAsync(SiteDbGroup siteDb, RefTicketParams param)
+        public async Task<TicketInfo> GetTicketByRefNoAsync(long refno)
         {
             var napUrl = configuration.GetSection("NapSettings:Url").Value;
             var apiKey = configuration.GetSection("NapSettings:APIKey").Value;
             CustomDelegatingHandler customDelegatingHandler = new CustomDelegatingHandler(apiKey);
             HttpClient client = HttpClientFactory.Create(customDelegatingHandler);
-            var url = new Uri(string.Format(napUrl + "BetListApi/GetBetListByRefNo?RefNo={0}&Site={1}&SiteDBGroupId={2}", param.Refno, siteDb.Site, siteDb.SiteDBGroupID));
+            var url = new Uri(napUrl + "BetListApi/GetBetListByRefNo?refno=" + refno);
             var response = await client.GetAsync(url);
             var jsonString = await response.Content.ReadAsStringAsync();
             return jsonString != null ? JsonConvert.DeserializeObject<TicketInfo>(jsonString) : await Task.FromResult<TicketInfo>(null);

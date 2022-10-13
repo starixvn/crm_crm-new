@@ -243,7 +243,7 @@ describe('CreateForm', () => {
 
     describe('renderDetails ', () => {
         const params = {
-            values: {},
+            values: {subject:'subject'},
             errors: {
                 identityInformation: ''
             },
@@ -329,17 +329,17 @@ describe('CreateForm', () => {
         it('subject autoComplete change correctly', () => {
             // Arrange
             const {values, errors, touched, handleChange, setFieldValue} = params;
-            const value = 'value';
+            const value = {subject: 'subject'};
             const createForm = shallow(<CreateForm {...props} />);
             createForm.instance().setState(state);
             const formRender = shallow(createForm.instance().renderDetails(values, errors, touched, handleChange, setFieldValue));
 
             // Action
-            formRender.find(AutoComplete).simulate('change',value);
+            formRender.find(AutoComplete).simulate('change', value);
 
 
             // Assert
-            expect(params.setFieldValue).toHaveBeenCalledWith('subject', value);
+            expect(params.setFieldValue).toHaveBeenCalledWith('subject', value.subject);
         });
 
         it('invalid subject correctly', () => {
