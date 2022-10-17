@@ -33,9 +33,9 @@ export class Layout extends Component {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         if (hasCreateFeedbackPermission) {
             await this.getSetting();
+            await this.getCurrentCustomer();
         }
         this.initDataMenu(window.menus);
-        this.getCurrentCustomer();
         const storage = window.localStorage;
         const isShowingLeftPanel = storage.getItem('isShowingLeftPanel');
         const isKeepLeftPanel = storage.getItem('isKeepLeftPanel');
