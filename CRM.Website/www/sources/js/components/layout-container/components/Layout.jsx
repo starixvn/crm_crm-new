@@ -30,7 +30,10 @@ export class Layout extends Component {
     }
 
     async componentDidMount() {
-        await this.getSetting();
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
+        if (hasCreateFeedbackPermission) {
+            await this.getSetting();
+        }
         this.initDataMenu(window.menus);
         this.getCurrentCustomer();
         const storage = window.localStorage;
@@ -266,6 +269,7 @@ export class Layout extends Component {
         }
 
         const currentCustomerInfo = this.getCurrentCustomerInfo();
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
 
         return (
             <div>
@@ -273,14 +277,17 @@ export class Layout extends Component {
                     <Header menus={menus} currentCustomerInfo={currentCustomerInfo} handleNavigate={this.handleNavigate}
                         handleCollapseExpandLayout={this.handleCollapseExpandLayout}
                     />
-                    <Filter
-                        getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
-                        customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion ={this.handleChangeSuggestion}
-                        showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} showEmptyConfirmPopup={showEmptyConfirmPopup}
-                        handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup} isCreditSite={this.state.isCreditSite}
-                        handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} handleNavigate={this.handleNavigate}
-                        handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
-                    />
+                    {
+                        hasCreateFeedbackPermission &&
+                        <Filter
+                            getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
+                            customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion={this.handleChangeSuggestion}
+                            showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} showEmptyConfirmPopup={showEmptyConfirmPopup}
+                            handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup} isCreditSite={this.state.isCreditSite}
+                            handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} handleNavigate={this.handleNavigate}
+                            handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
+                        />
+                    }
                 </div>
                 {
                     !showEmptyCustomerInfoPopup &&
