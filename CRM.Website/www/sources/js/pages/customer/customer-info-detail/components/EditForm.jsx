@@ -949,7 +949,7 @@ export class EditForm extends Component {
             <Form onSubmit={this.handleSubmit}>
                 {this.renderPersonalInfo(values)}
                 {
-                    (customerInfo.isHeadLine && (updatePolicy === Policy.Read || canEditHeadline))
+                    (customerInfo.isHeadline && (updatePolicy === Policy.Read || canEditHeadline))
                     && this.renderHeadlineInfo(values, canEditHeadline)
                 }
                 {this.renderCommunicationInfo(values)}
