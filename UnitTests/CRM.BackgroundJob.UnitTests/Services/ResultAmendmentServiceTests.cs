@@ -1348,9 +1348,11 @@
             // Arrange
             var amendmentDescTemplate = new AmendmentDescriptionTemplate
             {
-                SportsbookOutrightEventType9 = "test SportsbookOutright"
+                SportsbookOutrightEventType9 = "test SportsbookOutright",
+                SportsbookOutrightEventType2 = "test SportsbookOutright"
             };
             var amendment = fixture.Create<AmendmentAutoFeedbackInfor>();
+            fixture.Customize<AmendmentAutoFeedbackInfor>(x => x.With(b => b.EventType, 2));
 
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(amendmentDescTemplate.SportsbookOutrightEventType9);
