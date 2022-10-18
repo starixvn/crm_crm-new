@@ -9,13 +9,31 @@ const commonFunction = require('../../common.functions');
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
-describe('DataGridCustomerInfo', () => {
+describe('DataGrid', () => {
     beforeAll(() => {
         jest.useFakeTimers();
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
         Site.resolveClientUrl = jest.fn((url) => url);
         LangHelper.getResource = jest.fn((key) => key);
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'hasCreateFeedbackPermission');
+        appContainer.checked = true;
+        const appContainer1 = document.createElement('div');
+        appContainer1.setAttribute('id', 'hasReadFeedbackPermission');
+        appContainer1.checked = true;
+        document.body.appendChild(appContainer);
+        document.body.appendChild(appContainer1);
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+        const appContainer = document.getElementById('hasCreateFeedbackPermission');
+        const appContainer1 = document.getElementById('hasReadFeedbackPermission');
+        if (appContainer || appContainer1) {
+            document.body.removeChild(appContainer);
+            document.body.removeChild(appContainer1);
+        }
     });
 
     afterAll(() => {
@@ -147,7 +165,8 @@ describe('DataGridCustomerInfo', () => {
                         languages: [],
                         sitesLicenseeInactive: [],
                         countries:[]
-                    }
+                    },
+                    handleSearchUplineInfo: jest.fn()
                 };
                 const formikProps = {
                     values: {
@@ -164,14 +183,13 @@ describe('DataGridCustomerInfo', () => {
                     setFieldValue: jest.fn()
                 };
                 const container = shallow(<DataGrid {...props} />);
-                container.instance().handleSearchUplineInfo = jest.fn();
 
                 // Act
                 const form = shallow(container.instance().renderForm(formikProps));
                 form.find('span').at(0).simulate('click', 'tesla');
 
                 // Assert
-                expect(container.instance().handleSearchUplineInfo).toHaveBeenCalledWith('tesla');
+                expect(props.handleSearchUplineInfo).toHaveBeenCalledWith('tesla');
             });
         });
 
@@ -425,38 +443,6 @@ describe('DataGridCustomerInfo', () => {
 
                 // Assert
                 expect(props.handleCloseEditCustomerInfoPopup).toHaveBeenCalled();
-            });
-        });
-
-        describe('handleSearchUplineInfo', () => {
-            it('handleSearchUplineInfo run correctly', () => {
-                //Arrange
-                const props = {
-                    setGridParams: jest.fn(),
-                    getCustomerInfo: jest.fn(),
-                    getSettings: jest.fn(),
-                    setUserName: jest.fn(),
-                    gridParams: {
-                        username: 'test',
-                        isGuest: false
-                    },
-                    settings: {
-                        languages: []
-                    }
-                };
-                const username = "test1";
-                const expected = {
-                    username: 'test1',
-                    isGuest: false
-                };
-                const container = shallow(<DataGrid {...props} />).instance();
-
-                // Act
-                container.handleSearchUplineInfo(username);
-
-                //Assert
-                expect(props.setGridParams).toHaveBeenCalledWith(expected);
-                expect(props.getCustomerInfo).toHaveBeenCalledTimes(1);
             });
         });
     });

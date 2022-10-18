@@ -101,10 +101,10 @@ export default class Filter extends Component {
     };
 
     renderHomeSubMenu = pathname =>{
-        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
+        const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const {handleNavigate} = this.props;
         return (
-            hasCreateFeedbackPermission ?
+            hasReadFeedbackPermission ?
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
                 <li id="li-main" className={this.isCheckActive(pathname, 0)}>

@@ -214,6 +214,7 @@ export class DataGridCommunication extends Component {
     };
 
     renderRow = (item, index) => {
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         const cssStatus = item.status ? item.status.toLowerCase() : '';
         const cssColor = (cssStatus !== 'closed' && cssStatus !== 'pending') ? '' : cssStatus;
         return (
@@ -240,7 +241,10 @@ export class DataGridCommunication extends Component {
                 <Cell className='text-left'>{item.handler}</Cell>
                 <Cell className='text-left'>{item.reviewer}</Cell>
                 <Cell className='text-center'>
-                    <Button size="sm" onClick={() => this.handleShowCreateCommunication(item.feedbackId)}>Duplicate</Button>
+                    {
+                        hasCreateFeedbackPermission &&
+                        <Button size="sm" onClick={() => this.handleShowCreateCommunication(item.feedbackId)}>Duplicate</Button>
+                    }
                 </Cell>
             </Row>
         );

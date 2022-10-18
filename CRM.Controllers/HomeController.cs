@@ -6,7 +6,7 @@
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Options;
+    using static Fanex.NAP.Core.Business.Constant;
 
     [CrmAuthorize]
     public class HomeController : Controller
@@ -28,8 +28,9 @@
 
         public IActionResult Index()
         {
-            var permission = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo);
-            var hasCreateFeedbackPermission = permission > 0;
+            var hasCreateFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
+            var hasReadFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Read);
+            ViewBag.hasReadFeedbackPermission = hasReadFeedbackPermission;
             return View(hasCreateFeedbackPermission);
         }
     }

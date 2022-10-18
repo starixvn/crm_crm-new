@@ -1,15 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
-import Filter from '../Filter';
-import { ToastContainer, Slide } from 'react-toastify';
-import Header from '../Header';
-import DataGrid from '../DataGrid';
 import {Layout} from '../Layout';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 
-describe('LayoutNavigation', () => {
+describe('Layout', () => {
     beforeAll(() => {
         jest.useFakeTimers();
         LangHelper.getResource = jest.fn((key) => key);
@@ -69,10 +65,25 @@ describe('LayoutNavigation', () => {
           })();
 
         Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'hasCreateFeedbackPermission');
+        appContainer.checked = true;
+        const appContainer1 = document.createElement('div');
+        appContainer1.setAttribute('id', 'hasReadFeedbackPermission');
+        appContainer1.checked = true;
+        document.body.appendChild(appContainer);
+        document.body.appendChild(appContainer1);
     });
 
     afterAll(() => {
         jest.clearAllMocks();
+        const appContainer = document.getElementById('hasCreateFeedbackPermission');
+        const appContainer1 = document.getElementById('hasReadFeedbackPermission');
+        if (appContainer || appContainer1) {
+            document.body.removeChild(appContainer);
+            document.body.removeChild(appContainer1);
+        }
     });
 
     describe('componentDidMount',() => {
@@ -211,7 +222,8 @@ describe('LayoutNavigation', () => {
         const container = shallow(<Layout />).instance();
         container.handleCloseEmptyConfirm = jest.fn();
         container.getParams = jest.fn();
-        container.getDataGrid = jest.fn();
+        const promise = Promise.resolve({data: [{id: 1, name: 'test'}]});
+        container.getDataGrid = jest.fn(() => promise);
 
         // Action
         container.handleGetCustomerIsGuest();
@@ -220,6 +232,21 @@ describe('LayoutNavigation', () => {
         expect(container.handleCloseEmptyConfirm).toHaveBeenCalled();
         expect(container.getParams).toHaveBeenCalled();
         expect(container.getDataGrid).toHaveBeenCalled();
+    });
+  });
+
+  describe('handleSearchUplineInfo', () => {
+    it('should call exact function', () => {
+        // Arrange
+        const promise = Promise.resolve({data: [{id: 1, name: 'test'}]});
+        const container = shallow(<Layout />).instance();
+        container.getCustomerInfo = jest.fn(() => promise);
+
+        // Action
+        container.handleSearchUplineInfo("test");
+        // Assert
+        expect(container.state.username).toEqual("test");
+        expect(container.getCustomerInfo).toHaveBeenCalled();
     });
   });
 

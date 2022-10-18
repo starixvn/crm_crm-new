@@ -253,6 +253,7 @@ export default class DataGrid extends PureComponent {
     };
 
     renderCommunicationTool = (values, handleChange, isSubmitting) => {
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <div>
                 <Row className="item title text-left">{LangHelper.getResource('CommunicationTool')}</Row>
@@ -415,9 +416,12 @@ export default class DataGrid extends PureComponent {
                 <Form.Group className="row item no-border-bg">
                     <Col md="3" />
                     <Col md="9">
-                        <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
-                            {LangHelper.getResource('Update')}
-                        </Button>
+                        {
+                            hasCreateFeedbackPermission &&
+                            <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
+                                {LangHelper.getResource('Update')}
+                            </Button>
+                        }
                     </Col>
                 </Form.Group>
             </div>
@@ -425,6 +429,7 @@ export default class DataGrid extends PureComponent {
     };
 
     renderDetail = isShowInactiveMsg =>{
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <div>
                 <Row className="item title text-left btn-detail"
@@ -441,7 +446,7 @@ export default class DataGrid extends PureComponent {
                                 <a onClick = {() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
                             </li>
                             {
-                                !isShowInactiveMsg &&
+                                !isShowInactiveMsg && hasCreateFeedbackPermission &&
                                 <li>
                                     <i className="fa fa-angle-right" aria-hidden="true" />
                                     <a onClick = {() => this.props.handleNavigate('AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>

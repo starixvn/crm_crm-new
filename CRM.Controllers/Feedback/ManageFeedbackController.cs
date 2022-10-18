@@ -11,13 +11,10 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
     public class ManageFeedbackController : BaseController
     {
         private readonly ISettingService settingService;

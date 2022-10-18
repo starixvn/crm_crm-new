@@ -706,7 +706,7 @@ export default class AppContainer extends Component {
         const { collapse, settings, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
             productOptions, subProductOptions, betTypeOptions, relatedCustomers, feedbackSubjectTemplates, editResult
         } = this.state;
-
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -742,9 +742,12 @@ export default class AppContainer extends Component {
                     />
                 </Modal.Body >
                 <Modal.Footer>
-                    <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
-                        {LangHelper.getResource('Save')}
-                    </Button>
+                    {
+                        hasCreateFeedbackPermission &&
+                        <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
+                            {LangHelper.getResource('Save')}
+                        </Button>
+                    }
                     <Button size="sm" type="button" variant="primary" onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}
                     </Button>

@@ -30,8 +30,8 @@ export class Layout extends Component {
     }
 
     async componentDidMount() {
-        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
-        if (hasCreateFeedbackPermission) {
+        const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
+        if (hasReadFeedbackPermission) {
             await this.getSetting();
             await this.getCurrentCustomer();
         }
@@ -269,7 +269,7 @@ export class Layout extends Component {
         }
 
         const currentCustomerInfo = this.getCurrentCustomerInfo();
-        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
+        const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
 
         return (
             <div>
@@ -278,7 +278,7 @@ export class Layout extends Component {
                         handleCollapseExpandLayout={this.handleCollapseExpandLayout}
                     />
                     {
-                        hasCreateFeedbackPermission &&
+                        hasReadFeedbackPermission &&
                         <Filter
                             getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
                             customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion={this.handleChangeSuggestion}
