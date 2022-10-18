@@ -32,37 +32,6 @@
         }
 
         [Fact]
-        public async Task EventHandleAsync_WhenCalled_UpdateRoomInfoFailed_WillWritelog()
-        {
-            var hookEvent = new HookEvent
-            {
-                Source = new EventSource
-                {
-                    UserId = "letstalk"
-                }
-            };
-
-            var botConfig = new BotConfig
-            {
-                BotAccountId = 10000,
-                BotUserId = "@ow_local"
-            };
-
-            var roomData = new RoomData
-            {
-                Title = "ChatGroup 1"
-            };
-
-            letstalkService.GetChatRoomData(Arg.Any<string>()).Returns(roomData);
-
-            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateGroupNameCommand>()).Returns(new CommandResult { Code = 1, Message = "Error" });
-
-            await changeGroupNameEventHandler.EventHandleAsync(hookEvent, botConfig);
-
-            await logService.Received().ErrorAsync(Arg.Any<Exception>());
-        }
-
-        [Fact]
         public async Task EventHandleAsync_WhenCalled_UpdateRoomInfoSuccess_DidNotCallWriteLog()
         {
             var hookEvent = new HookEvent
