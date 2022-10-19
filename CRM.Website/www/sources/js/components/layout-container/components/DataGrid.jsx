@@ -243,6 +243,17 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
                 {
+                    values.isGroupHeadLine &&
+                    <Form.Group className="row item no-border-bg">
+                        <Form.Label column md="3" />
+                        <Col md="9" className="form-control-wrapper">
+                            <Form.Check className="checked-headline" type="checkbox"  name="isGroupHeadLine"
+                                label={LangHelper.getResource('Headline')} checked disabled
+                            />
+                        </Col>
+                    </Form.Group>
+                }
+                {
                     this.renderCommunicationTool(values, handleChange, isSubmitting)
                 }
                 {
@@ -573,7 +584,8 @@ export default class DataGrid extends PureComponent {
             status: customerInfo.status,
             originalDangerLevel: customerInfo.originalDangerLevel,
             abtDangerLevel: customerInfo.abtDangerLevel,
-            otherSportsDangerLevel: customerInfo.otherSportsDangerLevel
+            otherSportsDangerLevel: customerInfo.otherSportsDangerLevel,
+            isGroupHeadLine: customerInfo.isGroupHeadLine
         };
         return (
             <Formik

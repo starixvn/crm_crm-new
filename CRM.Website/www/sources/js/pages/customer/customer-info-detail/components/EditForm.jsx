@@ -147,7 +147,7 @@ export class EditForm extends Component {
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
     renderCheckVipIgnore = (data, values) => {
-        if (!data.isHeadline && (data.isSuper || data.isDirectAccount || data.isGuest)) {
+        if (!data.isGroupHeadLine && (data.isSuper || data.isDirectAccount || data.isGuest)) {
             return (
                 <Fragment>
                     <Col sm="1" md="1">
@@ -949,7 +949,7 @@ export class EditForm extends Component {
             <Form onSubmit={this.handleSubmit}>
                 {this.renderPersonalInfo(values)}
                 {
-                    (customerInfo.isHeadline && (updatePolicy === Policy.Read || canEditHeadline))
+                    (customerInfo.isGroupHeadLine && (updatePolicy === Policy.Read || canEditHeadline))
                     && this.renderHeadlineInfo(values, canEditHeadline)
                 }
                 {this.renderCommunicationInfo(values)}
