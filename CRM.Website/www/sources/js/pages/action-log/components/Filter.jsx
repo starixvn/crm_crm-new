@@ -57,11 +57,11 @@ export class Filter extends Component {
         const params = {
             actionId: actionLogId,
             customerId: this.props.id,
-            handler: handler,
+            username: handler,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
             pageIndex: 1,
-            pageSize: 100
+            pageSize: this.props.gridParams.pageSize
         };
         this.props.setGridParams(params);
         this.props.getActivityLog(params);
@@ -141,8 +141,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allLogActions } = state;
-    return { allLogActions };
+    const { allLogActions, gridParams } = state;
+    return { allLogActions, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

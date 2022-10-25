@@ -12,9 +12,9 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('LogTime')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('EditedBy')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('Action')}</HeaderCell>
+                <HeaderCell colWidth={8}>{LangHelper.getResource('LogTime')}</HeaderCell>
+                <HeaderCell colWidth={10}>{LangHelper.getResource('EditedBy')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('Action')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('FieldName')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('OldValue')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('NewValue')}</HeaderCell>
