@@ -60,6 +60,24 @@
         min-width: 1142px !important;
         max-width: 1340px !important;
     }
+
+    .header-content .table > thead > tr > th {
+        border-left: none !important;
+        border-right: 1px solid #b7b7b7;
+    }
+
+    .fa-pencil-square-o, .fa-pencil{
+        font-size: 1.27rem;
+        position: relative;
+    }
+
+    .fa-pencil-square-o{
+        top: 2px;
+    }
+
+    .fa-pencil{
+        top: -1px;
+    }
     
     .disabled-multiple-edit-status{
         pointer-events: none;
@@ -89,15 +107,7 @@
         }
     
         .fa-pencil:before {
-            color: #D3B35D;
-        }
-    
-        strong.link-click {
-            color: $link-color !important;
-        
-            &:hover {
-                color: $draft-color !important;
-            }
+            color: rgb(255,169,35);
         }
         
         .feedback-info {
@@ -116,6 +126,14 @@
         .break-word{
             word-break: break-all;
         }
+    }
+}
+
+.link-click {
+    color: $link-color !important;
+
+    &:hover {
+        color: $draft-color !important;
     }
 }
 
@@ -179,8 +197,14 @@
 .edit-multiple-log {
     .modal-dialog {
         max-width: 987px;
+        overflow-y: initial !important;
 
         .modal-content {
+            .modal-body{
+                height: 85vh;
+                overflow-y: auto;
+            }
+
             .panel-group {
                 border: 1px solid #b1b1b1;
 
@@ -228,7 +252,7 @@
                     }
 
                     .select-all-field {
-                        padding-left: 75px;
+                        padding-left: 70px;
                         margin-top: 20px;
                         margin-bottom: 4px;
                     }                    

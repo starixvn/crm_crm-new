@@ -89,8 +89,8 @@ export class DataGrid extends Component {
             const filterMainCategory = mainCategories.find(el => el.settingId === value.settingId);
             return (
                 filterMainCategory !== undefined &&
-                <div>
-                    <div key={key} className="font-weight-bold">{filterMainCategory.settingValue}</div>
+                <div key={key}>
+                    <div className="font-weight-bold">{filterMainCategory.settingValue}</div>
                     {
                         value.subSettingId.map((subId, index) => {
                             const filterSubCategory = filterMainCategory.childSettings.find(el => el.subCategoryId === subId);
@@ -246,9 +246,9 @@ export class DataGrid extends Component {
                     </Tooltip>
                 }
             >
-                <div onClick={() => this.handleEditFeedback(item.feedbackId)}>
+                <div className='link-click cursor-pointer' onClick={() => this.handleEditFeedback(item.feedbackId)}>
                     <span className="pr-1 fa fa-pencil-square-o" />
-                    <strong className='link-click cursor-pointer'>{item.subject}</strong>
+                    <strong>{item.subject}</strong>
                 </div>
             </OverlayTrigger>
         );
@@ -297,14 +297,14 @@ export class DataGrid extends Component {
                      <div>
                         <span className='mx-1'>{LangHelper.getResource('Feedback')}</span>
                         <span className='mx-1'>|</span>
-                        <span className={`mx-1 cursor-pointer multiple-edit ${isClickableEditMultiple ? '' : 'disabled-multiple-edit-status'}`} onClick={this.handleMultipleEdit}>
+                        <span className={`mx-1 cursor-pointer multiple-edit link-click ${isClickableEditMultiple ? '' : 'disabled-multiple-edit-status'}`} onClick={this.handleMultipleEdit}>
                             <span className="mx-1 fa fa-pencil-square-o cursor-pointer" />
-                            <strong className='link-click'>{LangHelper.getResource('MultipleEdit')}</strong>
+                            <strong>{LangHelper.getResource('MultipleEdit')}</strong>
                         </span>
                         <span className='mx-1'>|</span>
-                        <span className={`cursor-pointer multiple-edit ${isClickableEditMultiple ? '' : 'disabled-multiple-edit-status'}`} onClick={this.handleMultipleReviewAndStatus}>
+                        <span className={`cursor-pointer multiple-edit link-click ${isClickableEditMultiple ? '' : 'disabled-multiple-edit-status'}`} onClick={this.handleMultipleReviewAndStatus}>
                             <span className='mx-1 fa fa-pencil-square-o' />
-                            <strong className='link-click'>{LangHelper.getResource('MultipleReviewAndUpdateStatus')}</strong>
+                            <strong>{LangHelper.getResource('MultipleReviewAndUpdateStatus')}</strong>
                         </span>
                     </div> :
                     <span className='mx-1'>{LangHelper.getResource('Feedback')}</span>
