@@ -267,8 +267,8 @@ export class DataGrid extends Component {
             PageList: PAGING_SIZES
         };
 
-        const defaultWidth = 420;
-        const totalWidth = defaultWidth + gridData.usernames.length * 155;
+        const defaultWidth = 380;
+        const totalWidth = defaultWidth + gridData.usernames.length * 120;
         const width = this.getWidth(totalWidth);
 
         return (
