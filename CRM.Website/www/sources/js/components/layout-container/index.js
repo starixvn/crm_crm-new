@@ -55,61 +55,75 @@ const DynamicReportComponent = lazy(() => import('@jsroot/pages/report/dynamic/i
 const SettlementReportComponent = lazy(() => import('@jsroot/pages/report/settlement/index'));
 const WagerReportComponent = lazy(() => import('@jsroot/pages/report/wager/index'));
 
+const MenuRouteArray = [
+    { url: 'NotificationList', component: NotificationListComponent },
+    { url: 'NotificationTemplate', component: NotificationTemplateComponent },
+    { url: 'ChatTypeMapping', component: ChatTypeMappingComponent },
+    { url: 'NotificationType', component: NotificationTypeComponent },
+    { url: 'PicManagement', component: ManagementComponent },
+    { url: 'PicOfHeadline', component: PicAssignmentComponent },
+    { url: 'ChangesLog', component: ChangesLogManagementComponent },
+    { url: 'CommunicationSetting', component: CommunicationSettingComponent },
+    { url: 'FeedbackSubjectManagement', component: FeedbackSubjectComponent },
+    { url: 'ActionLog/SettingLog', component: SettingLogComponent },
+    { url: 'SettingManagement', component: SettingManagementComponent },
+    { url: 'SettingRelation', component: SettingRelationComponent },
+    { url: 'InformHeadline', component: InformHeadlineComponent },
+    { url: 'AddFeedback', component: AddFeedbackComponent },
+    { url: 'AddGuestFeedback', component: AddGuestFeedbackComponent },
+    { url: 'Feedbacks/LatestFeedback', component: LatestFeedbackV2Component },
+    { url: 'LatestFeedback', component: LatestFeedbackComponent },
+    { url: 'Feedbacks/ManageFeedback', component: ManageFeedbackComponentV2 },
+    { url: 'ManageFeedback', component: ManageFeedbackComponent },
+    { url: 'Feedbacks/DeletedFeedback', component: DeletedFeedbackComponent },
+    { url: 'MultipleLogs/Create', component: MultipleLogsComponent },
+    { url: 'Dashboard', component: DashboardComponent },
+    { url: 'Detail', component: CustomerInfoDetailComponent },
+    { url: 'Communication', component: CommunicationComponent },
+    { url: 'SpecialRemark', component: SpecialRemarkComponent },
+    { url: 'NewRemark', component: NewRemMarkComponent },
+    { url: 'Remark', component: ReMarkComponent },
+    { url: 'Redemption', component: RedemptionComponent },
+    { url: 'ActionLog', component: ActionLogComponent },
+    { url: 'DeletedFeedbackStatistics', component: DeletedFeedbackStatisticsComponent },
+    { url: 'LogStatistics', component: LogStatisticsComponent },
+    { url: 'StatisticReport', component: StatisticReportComponent },
+    { url: 'FeedbackStatisticReport', component: FeedbackStatisticReportComponent },
+    { url: 'RedemptionStatisticsReport', component: RedemptionStatisticsReportComponent },
+    { url: 'CustomerReport', component: CustomerReportComponent },
+    { url: 'SummaryReport', component: SummaryReportComponent },
+    { url: 'DirectCustomerReport', component: DirectCustomerReportComponent },
+    { url: 'DynamicReport', component: DynamicReportComponent },
+    { url: 'SettlementReport', component: SettlementReportComponent },
+    { url: 'WagerReport', component: WagerReportComponent, nestedUrl: 'Index' }
+];
 
 export default class Index extends PureComponent {
+    getRoutesBaseUrl = () => {
+        return (
+            MenuRouteArray.map(menu =>{
+                const nestedPath = menu.hasOwnProperty('nestedUrl') ? menu.nestedUrl : 'Index';
+                return(
+                    <Route path={Site.resolveClientUrl(menu.url)} element={<menu.component />}>
+                    {
+                        nestedPath &&
+                        <Route path={nestedPath} element={<menu.component />} />
+                    }
+                    </Route>
+                );
+            })
+        );
+    }
     render() {
         return (
             <Router basename='/'>
                 <LayoutNavigation>
                     <Suspense fallback={<div />}>
                         <Routes>
-                            <Route path={Site.resolveClientUrl("")} />
-                            <Route path={Site.resolveClientUrl("NotificationList")} element={<NotificationListComponent />} />
-                            <Route path={Site.resolveClientUrl("NotificationTemplate")} element={<NotificationTemplateComponent />} />
-                            <Route path={Site.resolveClientUrl("ChatTypeMapping")} element={<ChatTypeMappingComponent />} />
-                            <Route path={Site.resolveClientUrl("NotificationType")} element={<NotificationTypeComponent />} />
-                            
-                            <Route path={Site.resolveClientUrl("PicManagement")} element={<ManagementComponent />} />
-                            <Route path={Site.resolveClientUrl("PicOfHeadline")} element={<PicAssignmentComponent />} />
-                            <Route path={Site.resolveClientUrl("ChangesLog")} element={<ChangesLogManagementComponent />} />
-
-                            <Route path={Site.resolveClientUrl("CommunicationSetting/Index")} element={<CommunicationSettingComponent />} />
-                            <Route path={Site.resolveClientUrl("FeedbackSubjectManagement/Index")} element={<FeedbackSubjectComponent />} />
-                            <Route path={Site.resolveClientUrl("ActionLog/SettingLog")} element={<SettingLogComponent />} />
-                            <Route path={Site.resolveClientUrl("SettingManagement/Index")} element={<SettingManagementComponent />} />
-                            <Route path={Site.resolveClientUrl("SettingRelation/Index")} element={<SettingRelationComponent />} />
-
-                            <Route path={Site.resolveClientUrl("InformHeadline")} element={<InformHeadlineComponent />} />
-                            
-                            <Route path={Site.resolveClientUrl("AddFeedback")} element={<AddFeedbackComponent />} />
-                            <Route path={Site.resolveClientUrl("AddGuestFeedback/Index")} element={<AddGuestFeedbackComponent />} />
-                            <Route path={Site.resolveClientUrl("Feedbacks/LatestFeedback")} element={<LatestFeedbackV2Component />} />
-                            <Route path={Site.resolveClientUrl("LatestFeedback")} element={<LatestFeedbackComponent />} />
-                            <Route path={Site.resolveClientUrl("Feedbacks/ManageFeedback")} element={<ManageFeedbackComponentV2 />} />
-                            <Route path={Site.resolveClientUrl("ManageFeedback")} element={<ManageFeedbackComponent />} />
-                            <Route path={Site.resolveClientUrl("Feedbacks/DeletedFeedback")} element={<DeletedFeedbackComponent />} />
-                            <Route path={Site.resolveClientUrl("MultipleLogs/Create")} element={<MultipleLogsComponent />} />
-                            
-                            <Route path={Site.resolveClientUrl("Dashboard")} element={<DashboardComponent />} />
-                            <Route path={Site.resolveClientUrl("Detail")} element={<CustomerInfoDetailComponent />} />
-                            <Route path={Site.resolveClientUrl("Communication")} element={<CommunicationComponent />} />
-                            <Route path={Site.resolveClientUrl("SpecialRemark")} element={<SpecialRemarkComponent />} />
-                            <Route path={Site.resolveClientUrl("NewRemark")} element={<NewRemMarkComponent />} />
-                            <Route path={Site.resolveClientUrl("Remark")} element={<ReMarkComponent />} />
-                            <Route path={Site.resolveClientUrl("Redemption")} element={<RedemptionComponent />} />
-                            <Route path={Site.resolveClientUrl("ActionLog")} element={<ActionLogComponent />} />
-
-                            <Route path={Site.resolveClientUrl("DeletedFeedbackStatistics/Index")} element={<DeletedFeedbackStatisticsComponent />} />
-                            <Route path={Site.resolveClientUrl("LogStatistics/Index")} element={<LogStatisticsComponent />} />
-                            <Route path={Site.resolveClientUrl("StatisticReport/Index")} element={<StatisticReportComponent />} />
-                            <Route path={Site.resolveClientUrl("FeedbackStatisticReport/Index")} element={<FeedbackStatisticReportComponent />} />
-                            <Route path={Site.resolveClientUrl("RedemptionStatisticsReport/Index")} element={<RedemptionStatisticsReportComponent />} />
-                            <Route path={Site.resolveClientUrl("CustomerReport/Index")} element={<CustomerReportComponent />} />
-                            <Route path={Site.resolveClientUrl("SummaryReport/Index")} element={<SummaryReportComponent />} />
-                            <Route path={Site.resolveClientUrl("DirectCustomerReport/Index")} element={<DirectCustomerReportComponent />} />
-                            <Route path={Site.resolveClientUrl("DynamicReport/Index")} element={<DynamicReportComponent />} />
-                            <Route path={Site.resolveClientUrl("SettlementReport/Index")} element={<SettlementReportComponent />} />
-                            <Route path={Site.resolveClientUrl("WagerReport/Index")} element={<WagerReportComponent />} />
+                            <Route path={Site.resolveClientUrl('')} />
+                            {
+                                this.getRoutesBaseUrl()
+                            }
                         </Routes>
                     </Suspense>
                 </LayoutNavigation>
