@@ -251,7 +251,7 @@ export class DataGrid extends Component {
         this.props.setGridParams(params);
     };
 
-    getMaxWidth = totalWidth => document.getElementById('right-row-container').clientWidth < totalWidth ?
+    getWidth = totalWidth => document.getElementById('right-row-container').clientWidth < totalWidth ?
                                 document.getElementById('right-row-container').clientWidth : totalWidth;
 
     render() {
@@ -269,10 +269,10 @@ export class DataGrid extends Component {
 
         const defaultWidth = 420;
         const totalWidth = defaultWidth + gridData.usernames.length * 155;
-        const maxWidth = this.getMaxWidth(totalWidth);
+        const width = this.getWidth(totalWidth);
 
         return (
-            <div style={{maxWidth:maxWidth}}>
+            <div style={{maxWidth:width}}>
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>{gridData.title}</span>
                     {
@@ -280,10 +280,10 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    maxWidth={maxWidth}
+                    maxWidth={totalWidth}
                     autoWidth={false}
                     isFixColumn
-                    width={totalWidth}
+                    width={width}
                     shouldUseMaxWidth
                     header={this.buildHeader(gridData)}
                     body={this.buildBody(gridData)}
