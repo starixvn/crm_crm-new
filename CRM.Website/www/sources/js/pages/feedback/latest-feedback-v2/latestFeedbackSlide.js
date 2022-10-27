@@ -5,7 +5,7 @@ const initialState = {
     viewRelatedCustomerDialog: { show: false },
     editFeedbackDialog: { show: false },
     editNoOfInquiryDialog: { show: false }
-}
+};
 const latestFeedbackSlice = createSlice({
     name: 'latestFeedback',
     initialState: initialState,

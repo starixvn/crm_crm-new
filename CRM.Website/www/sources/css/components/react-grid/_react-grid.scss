@@ -140,7 +140,7 @@ $paddingRightContainer: 17px;
     .table > thead > tr {
         > th {
             border: none;
-            border-left: 1px solid $colorBorderTable;
+            border-right: 1px solid $colorBorderTable;
 
             &.sortable {
                 cursor: pointer;

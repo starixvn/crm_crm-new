@@ -168,10 +168,6 @@ export class Details extends Component {
 
     renderForm = () =>{
         const { details } = this.props;
-        if (!details || !details.data) {
-            return null;
-        }
-
         const { pageIndex, pageSize } = this.props.gridParamDetails;
         const pagingOption = {
             PageIndex: pageIndex,
@@ -198,6 +194,10 @@ export class Details extends Component {
     };
 
     render() {
+        const { details } = this.props;
+        if (!details || !details.data) {
+            return null;
+        }
         return (
             <Fragment>
                 <Modal show className="feedback-detail-statistics" dialogAs={DraggableModalDialog}

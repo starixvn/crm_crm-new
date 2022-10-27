@@ -31,18 +31,6 @@
     .react-datepicker-wrapper input{
         width: 100% !important;
     }
-    
-    .ref-ticket-input {
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        /* Firefox */
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-    }
 }
 
 .modal-backdrop {
@@ -51,18 +39,14 @@
 
 .communication-modal-dialog {
     .modal-dialog {
-        min-width: 910px !important;
+        min-width: 950px !important;
 
         .modal-content {
-            // .extend-width .multiple-select-options-container{
-            //     width: 232px !important;
-            // }
-
             .panel-group {
                 border: 1px solid #b1b1b1;
 
                 .form-group {
-                    margin-bottom: 4px;
+                    margin-bottom: 2px;
 
                     .col-form-label {
                         padding-right: 0;
@@ -105,6 +89,18 @@
                         color: #0789d1;
                         position: absolute;
                         right: 0;
+                    }
+
+                    .ref-ticket-input {
+                        input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
+                        }
+                        /* Firefox */
+                        input[type=number] {
+                            -moz-appearance: textfield;
+                        }
                     }
                 }
             }

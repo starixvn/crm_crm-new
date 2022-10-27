@@ -34,7 +34,7 @@ export class DataGrid extends Component {
 
     buildHeader = gridData => {
         const header = [];
-        header.push(<HeaderCell className='first-column' colWidth={45}>{LangHelper.getResource('Subcategory')}</HeaderCell>);
+        header.push(<HeaderCell className='sticky-header' colWidth={45}>{LangHelper.getResource('Subcategory')}</HeaderCell>);
         gridData.usernames.forEach(item =>{
             header.push(<HeaderCell colWidth={15}>{item.name}</HeaderCell>);
         });
@@ -55,7 +55,7 @@ export class DataGrid extends Component {
             return rows;
         }
         return [
-            <Row key={`body${1}`} className="no-data" >
+            <Row className="no-data" >
                 <Cell className='text-center'>{LangHelper.getResource('ThereIsNoData')}</Cell>
             </Row>
         ];
@@ -128,7 +128,7 @@ export class DataGrid extends Component {
 
         if(!toggleRow.includes(parentId)){
             const cells = [];
-            cells.push(<Cell key={`sub-${sub.id}`} className='child pl-4 first-column'>{`${sub.name} (${sub.total})`}</Cell>);
+            cells.push(<Cell key={`sub-${sub.id}`} className='child pl-4'>{`${sub.name} (${sub.total})`}</Cell>);
             sub.resolves.forEach((count, index) =>{
                 cells.push(
                     <Cell key={`count-${index}`}
@@ -151,8 +151,12 @@ export class DataGrid extends Component {
         const cells = [];
         cells.push(<Cell className = 'first-column'>Grand Total</Cell>);
         gridData.grandTotals.forEach((item,index) =>{
-            cells.push(<Cell className={`${item > 0 ? this.styleCLick : this.styleDisableCLick } text-center`}
-            onClick={() => this.handleShowDetails(gridData.usernames[index].id,0,0)}>{item}</Cell>);
+            cells.push(
+            <Cell className={`${item > 0 ? this.styleCLick : this.styleDisableCLick } text-center`}
+                onClick={() => this.handleShowDetails(gridData.usernames[index].id,0,0)}
+            >
+                {item}
+            </Cell>);
         });
         return (
             [<Row key='footer' className='footer-container font-weight-bold'>
@@ -247,6 +251,9 @@ export class DataGrid extends Component {
         this.props.setGridParams(params);
     };
 
+    getMaxWidth = totalWidth => document.getElementById('right-row-container').clientWidth < totalWidth ?
+                                document.getElementById('right-row-container').clientWidth : totalWidth;
+
     render() {
         const {gridData, gridParams} = this.props;
         if(gridData === null){
@@ -262,10 +269,10 @@ export class DataGrid extends Component {
 
         const defaultWidth = 420;
         const totalWidth = defaultWidth + gridData.usernames.length * 155;
-        const width = document.getElementById('right-row-container').clientWidth -31 < totalWidth ? document.getElementById('right-row-container').clientWidth -31 : totalWidth;
+        const maxWidth = this.getMaxWidth(totalWidth);
 
         return (
-            <div style={{maxWidth:width}}>
+            <div style={{maxWidth:maxWidth}}>
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>{gridData.title}</span>
                     {
@@ -273,9 +280,10 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    maxWidth={totalWidth-3}
+                    maxWidth={maxWidth}
                     autoWidth={false}
                     isFixColumn
+                    width={totalWidth}
                     shouldUseMaxWidth
                     header={this.buildHeader(gridData)}
                     body={this.buildBody(gridData)}

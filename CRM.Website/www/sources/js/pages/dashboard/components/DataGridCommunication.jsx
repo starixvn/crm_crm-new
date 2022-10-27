@@ -23,8 +23,8 @@ export class DataGridCommunication extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={18}>{LangHelper.getResource('RunningNo')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
-                <HeaderCell colWidth={18}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
+                <HeaderCell colWidth={12}>{LangHelper.getResource('Update')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
                 <HeaderCell colWidth={50}>{LangHelper.getResource('MainCategoryAndSubCategory')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('Subject')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Status')}</HeaderCell>
@@ -219,7 +219,7 @@ export class DataGridCommunication extends Component {
         const cssColor = (cssStatus !== 'closed' && cssStatus !== 'pending') ? '' : cssStatus;
         return (
             <Row key={index} className={cssColor}>
-                <Cell className="text-left">
+                <Cell className="text-center">
                     <span className='link-detail' onClick={() => this.handleShowEditCommunication(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>
                 {

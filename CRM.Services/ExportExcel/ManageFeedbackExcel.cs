@@ -102,7 +102,10 @@
         protected internal virtual void SetStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
-            worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            if (!string.IsNullOrEmpty(excelNameManageFeedback))
+            {
+                worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            }
         }
 
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)

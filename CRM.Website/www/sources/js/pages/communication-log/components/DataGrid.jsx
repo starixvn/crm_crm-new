@@ -20,18 +20,18 @@ export class DataGrid extends Component {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <HeaderRow>
-                <HeaderCell colWidth={20} sortOrder='desc' sortBy='runningNo'>{LangHelper.getResource('RunningNo')}</HeaderCell>
+                <HeaderCell colWidth={18} sortOrder='desc' sortBy='runningNo'>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 {
                     hasCreateFeedbackPermission &&
-                    <HeaderCell colWidth={15}>{LangHelper.getResource('Update')}</HeaderCell>
+                    <HeaderCell colWidth={12}>{LangHelper.getResource('Update')}</HeaderCell>
                 }
                 <HeaderCell colWidth={25} sortOrder='desc' sortBy='feedbackDate'>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
-                <HeaderCell colWidth={55} sortOrder='desc' sortBy='mainCategoryValue'>{LangHelper.getResource('Category')}</HeaderCell>
-                <HeaderCell colWidth={40} sortOrder='desc' sortBy='subject'>{LangHelper.getResource('Subject')}</HeaderCell>
-                <HeaderCell colWidth={20} sortOrder='desc' sortBy='status'>{LangHelper.getResource('Status')}</HeaderCell>
-                <HeaderCell colWidth={20} sortOrder='desc' sortBy='duration'>{LangHelper.getResource('Duration')}</HeaderCell>
-                <HeaderCell colWidth={20} sortOrder='desc' sortBy='handler'>{LangHelper.getResource('Handler')}</HeaderCell>
-                <HeaderCell colWidth={20} sortOrder='desc' sortBy='reviewer'>{LangHelper.getResource('Reviewer')}</HeaderCell>
+                <HeaderCell colWidth={50} sortOrder='desc' sortBy='mainCategoryValue'>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={35} sortOrder='desc' sortBy='subject'>{LangHelper.getResource('Subject')}</HeaderCell>
+                <HeaderCell colWidth={18} sortOrder='desc' sortBy='status'>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={18} sortOrder='desc' sortBy='duration'>{LangHelper.getResource('Duration')}</HeaderCell>
+                <HeaderCell colWidth={18} sortOrder='desc' sortBy='handler'>{LangHelper.getResource('Handler')}</HeaderCell>
+                <HeaderCell colWidth={18} sortOrder='desc' sortBy='reviewer'>{LangHelper.getResource('Reviewer')}</HeaderCell>
             </HeaderRow>
         );
     };

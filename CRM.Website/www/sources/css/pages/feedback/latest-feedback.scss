@@ -12,6 +12,24 @@
             color: $draft-color !important;
         }
     }
+
+    .fa-pencil:before {
+        color: rgb(255,169,35);
+    }
+
+    .fa-pencil-square-o, .fa-pencil{
+        font-size: 1.27rem;
+        position: relative;
+    }
+
+    .fa-pencil-square-o{
+        top: 2px;
+    }
+
+    .fa-pencil{
+        top: -1px;
+        cursor: pointer;
+    }
     
     .header-content .table > thead > tr > th {
         border: none;

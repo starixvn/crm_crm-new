@@ -38,11 +38,6 @@
         }
         .body-content, .footer-content, .header-content {
             border: none; 
-            .table {
-                td:first-child {
-                    border-left: 1px solid rgb(183, 183, 183) !important;
-                }
-            }
         }
         .header-content {
             border-bottom: none;

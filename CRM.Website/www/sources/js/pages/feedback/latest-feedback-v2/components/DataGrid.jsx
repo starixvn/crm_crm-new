@@ -152,7 +152,7 @@ export class DataGrid extends Component {
                 {
                     isHost &&
                     <Cell className="text-center">
-                        <span className="rounded-circle fa fa-pencil icon-edit"
+                        <span className="edit-feedback cursor-pointer pr-1 fa fa-pencil"
                             onClick={() => this.handleEditNoOfInquiry(item.feedbackId)}
                         />
                     </Cell>
@@ -220,8 +220,8 @@ export class DataGrid extends Component {
                     </Tooltip>
                 }
             >
-                <div className='pb-1' onClick={() => this.handleEditFeedback(item.feedbackId)}>
-                    <span className="rounded-circle fa fa-pencil-square-o link-click" />
+                <div className='link-click cursor-pointer pb-1' onClick={() => this.handleEditFeedback(item.feedbackId)}>
+                    <span className="pr-1 fa fa-pencil-square-o" />
                     <strong className='link-click'> {item.subject}</strong>
                 </div>
             </OverlayTrigger>
