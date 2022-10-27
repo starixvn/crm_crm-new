@@ -218,7 +218,7 @@
 
 .communication-modal-dialog {
     .modal-dialog {
-        min-width: 950px;
+        min-width: 950px !important;
 
         .modal-content {
             .panel-group {
@@ -260,6 +260,18 @@
                             border-radius: 5px;
                             padding: 1px 4px;
                             margin: 0 0.5rem 0.5rem 0;
+                        }
+                    }
+
+                    .ref-ticket-input {
+                        input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
+                        }
+                        /* Firefox */
+                        input[type=number] {
+                            -moz-appearance: textfield;
                         }
                     }
 
