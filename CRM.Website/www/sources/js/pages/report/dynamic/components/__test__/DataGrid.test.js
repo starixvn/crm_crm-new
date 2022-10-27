@@ -2,12 +2,16 @@ import React from 'react';
 import { DataGrid } from '../DataGrid';
 import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { shallow, mount } from 'enzyme';
+import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
 
 describe('DataGrid', () => {
     beforeAll(() => {
         const appContainer = document.createElement('div');
         appContainer.setAttribute('id', 'right-row-container');
         document.body.appendChild(appContainer);
+        Site.blockUI = jest.fn();
+        Site.unblockUI = jest.fn();
     });
     
     afterAll(() => {
@@ -450,19 +454,25 @@ describe('DataGrid', () => {
     });
 
     describe('handleViewChart', () => {
-        it('should call exactly props function', () => {
-            // Arrange
+        it('should call exactly props function',async () => {
+            //Arrange
             const props = {
                 ...initProps,
                 setViewChartDialog: jest.fn()
             };
-
+            const chatInfo = {
+              id: 1, name: 'test'
+            };
+            Site.resolveClientUrl = jest.fn();
+            const promise = Promise.resolve({data: chatInfo});
+            DataService.postDataAsync = jest.fn(() => promise);
             const container = shallow(<DataGrid {...props}/>);
-            
-            // Act
-            container.instance().handleViewChart();
 
-            // Assert
+            //Act
+            container.instance().handleViewChart();
+            await promise;
+
+            //Assert
             expect(props.setViewChartDialog).toHaveBeenCalled();
         });
     });

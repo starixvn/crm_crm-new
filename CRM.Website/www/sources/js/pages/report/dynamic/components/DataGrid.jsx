@@ -7,6 +7,8 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { PAGING_SIZES } from '@jsroot/common/constants';
+import DataService from '@jsroot/common/dataService';
+import Site from '@jsroot/common/site';
 
 export class DataGrid extends Component {
 
@@ -237,9 +239,13 @@ export class DataGrid extends Component {
         this.props.exportExcel(params);
     };
 
-    handleViewChart = () => {
-        const data = this.props.dynamicReports.data;
-        this.props.setViewChartDialog({ show: true, chartInfo: data.chartInfo });
+    handleViewChart = async () => {
+        Site.blockUI();
+        const params = { ...this.props.gridParams };
+        const url = Site.resolveClientUrl('DynamicReport/GetChartInfo');
+        await DataService.postDataAsync(url, params).then(response => {
+            response.data && this.props.setViewChartDialog({ show: true, chartInfo: response.data });
+        }).then(() => Site.unblockUI());
     };
 
     onPaging = (pageIndex, pageSize) => {

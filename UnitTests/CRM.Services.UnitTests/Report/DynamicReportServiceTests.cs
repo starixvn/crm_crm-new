@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Core.Services;
@@ -43,6 +44,38 @@
 
             //Assert
             Assert.Equal(dynamicReportInfos, actual);
+        }
+
+        [Fact]
+        public async Task GetChartInfoAsync_WhenCalled_ReturnExpectedResult()
+        {
+            //Arrange
+            var param = fixture.Create<GetDynamicReportCriteria>();
+            param.ReportType = 1;
+            var dynamicReportInfos = new List<DynamicReportInfo>()
+            {
+                new DynamicReportInfo()
+                {
+                    FeedbackId = 1,
+                    FeedbackDate = new DateTime(2022,02,03),
+                    ChildReports = new List<DynamicReportInfo>()
+                }
+            };
+            var settingItems = fixture.Create<IEnumerable<SettingItem>>();
+
+            var tuple = (dynamicReportInfos, settingItems);
+            var service = GetService();
+            baseService.FetchMultipleAsync<DynamicReportInfo, SettingItem>(Arg.Do<GetDynamicReportCriteria>(x => param = x)).Returns(tuple);
+
+            var dynamicReport = new DynamicReportInfo();
+            dynamicReport.TotalChildReports = dynamicReportInfos.Count();
+
+
+            //Act
+            var actual = await service.GetChartInfoAsync(param);
+
+            //Assert
+            Assert.Equal(dynamicReport.TotalChildReports, actual.TotalChildReports);
         }
 
 

@@ -64,6 +64,13 @@
             return Json(allSettings);
         }
 
+        public async Task<IActionResult> GetChartInfo([FromBody] GetDynamicReportCriteria criteria)
+        {
+            var chatInfo = await dynamicReportService.GetChartInfoAsync(criteria);
+
+            return Json(chatInfo);
+        }
+
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] GetDynamicReportCriteria criteria)
         {

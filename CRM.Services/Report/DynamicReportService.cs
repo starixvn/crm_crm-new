@@ -16,6 +16,8 @@
     public interface IDynamicReportService
     {
         Task<DynamicReportInfo> GetDynamicReportAsync(GetDynamicReportCriteria criteria);
+
+        Task<DynamicReportInfo> GetChartInfoAsync(GetDynamicReportCriteria criteria);
     }
 
     public class DynamicReportService : IDynamicReportService
@@ -32,13 +34,28 @@
             this.commonService = commonService;
         }
 
-
         public async Task<DynamicReportInfo> GetDynamicReportAsync(GetDynamicReportCriteria criteria)
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var dynamicReport = await GetDynamicReportData(criteria);
-            var paging = GetPagingLogList(criteria, dynamicReport.ChildReports);
+            var dynamicPaging = GetPagingLogList(criteria, dynamicReport.ChildReports);
+
+            dynamicPaging.ForEach(x => x.ChildReports.ForEach(y => y.FeedbackDate = commonService.ConvertToClientDateTime(y.FeedbackDate)));
+
+            return new DynamicReportInfo
+            {
+                Id = dynamicReport.Id,
+                Name = dynamicReport.Name,
+                ShortName = dynamicReport.ShortName,
+                ChildReports = criteria.IsGetFullReport ? dynamicReport.ChildReports : dynamicPaging,
+                TotalChildReports = dynamicReport.TotalChildReports,
+            };
+        }
+
+        public async Task<DynamicReportInfo> GetChartInfoAsync(GetDynamicReportCriteria criteria)
+        {
+            var dynamicReport = await GetDynamicReportData(criteria);
             var chartInfo = new DynamicReportInfo
             {
                 Id = dynamicReport.Id,
@@ -47,8 +64,6 @@
                 TotalChildReports = dynamicReport.TotalChildReports,
                 ChildReports = new List<DynamicReportInfo>()
             };
-
-            dynamicReport.ChildReports.ForEach(x => x.ChildReports.ForEach(y => y.FeedbackDate = commonService.ConvertToClientDateTime(y.FeedbackDate)) );
 
             var childReportLength = dynamicReport.ChildReports.Count;
             for (var periodIndex = 0; periodIndex < childReportLength; periodIndex++)
@@ -60,18 +75,10 @@
                     Name = periodReport.Name,
                     ShortName = periodReport.ShortName,
                     TotalChildReports = periodReport.TotalChildReports
-            });
+                });
             }
 
-            return new DynamicReportInfo
-            {
-                Id = dynamicReport.Id,
-                Name = dynamicReport.Name,
-                ShortName = dynamicReport.ShortName,
-                ChildReports = criteria.IsGetFullReport ? dynamicReport.ChildReports : paging,
-                TotalChildReports = dynamicReport.TotalChildReports,
-                ChartInfo = chartInfo
-            };
+            return chartInfo;
         }
 
         public async Task<DynamicReportInfo> GetDynamicReportData(GetDynamicReportCriteria criteria)
