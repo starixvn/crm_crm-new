@@ -1,4 +1,4 @@
-﻿import React, { Component, Fragment } from 'react';
+﻿﻿import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { toast } from 'react-toastify';
@@ -11,12 +11,18 @@ import { Form } from 'react-bootstrap';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import EditGroupMappingPopup from './EditGroupMappingPopup';
 import EditPersonalMappingPopup from './EditPersonalMappingPopup';
+import EditRemark from './EditRemark';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
 export class DataGrid extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            data: null,
+            isShowRemark: false
+        };
     }
 
     onPaging = (pageIndex, pageSize) => {
@@ -63,6 +69,24 @@ export class DataGrid extends Component {
         } else {
             this.props.openUpdateGroupMappingPopup(chatMapping);
         }
+    };
+
+    handleOpenPopupEditRemark = item => {
+        this.setState({
+            isShowRemark: true,
+            data: item
+        });
+    };
+
+    onClosePopupEditRemark = isSuccessful => {
+        this.setState({
+            isShowRemark: false,
+            data: null
+        }, () => {
+            if (isSuccessful) {
+                this.props.getGridData(this.props.gridParams);
+            }
+        });
     };
 
     copyGroupIdToClipboard = conversationId => {
@@ -172,7 +196,12 @@ export class DataGrid extends Component {
                     <span className={Site.mappingStatusClass(item.mappingStatusId)}>{item.chatTypeId === ChatTypeMapping.Group ? item.mappingStatus : ''}</span>
                 </Cell>
                 {this.renderIsActiveCol(isHost, item)}
-                <Cell >{item.remark}</Cell>
+                <Cell>
+                    <div >
+                        <span className="pr-2 fa fa-pencil-square-o link-click" onClick={() => this.handleOpenPopupEditRemark(item)} />
+                        <span >{item.remark}</span>
+                    </div>
+                </Cell>
                 {
                     isHost &&
                     this.renderEditIcon(isBotRemovedStatus, item)
@@ -187,7 +216,7 @@ export class DataGrid extends Component {
             <div>
                 The Personal/Group shall be {!isChecked ? 'not ' : ''} received notification{!isChecked ? ' anymore' : ''}.
                 Are you sure you want to {isChecked ? 'activate' : 'deactivate'} it?
-             </div>
+            </div>
         );
     };
 
@@ -197,20 +226,20 @@ export class DataGrid extends Component {
     };
 
     renderExportExcelText = () => {
-        return(
+        return (
             <OverlayTrigger
-            placement="auto"
-            overlay= {
-                <Tooltip className="tooltipExport">
-                <span>
-                    Export to Excel
-                </span>
-                </Tooltip>
-            }
+                placement="auto"
+                overlay={
+                    <Tooltip className="tooltipExport">
+                        <span>
+                            Export to Excel
+                        </span>
+                    </Tooltip>
+                }
             >
-            {
-                <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcelMapping} />
-            }
+                {
+                    <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcelMapping} />
+                }
             </OverlayTrigger>
         );
     };
@@ -245,8 +274,9 @@ export class DataGrid extends Component {
                     header={this.buildHeader(isHost)}
                     body={this.buildChatTypeMappingBody(isHost)}
                     autoWidth
-                    maxWidth={document.getElementById('right-row-container').clientWidth}
+                    maxWidth={document.getElementById('app-container').clientWidth}
                     onPaging={this.onPaging}
+                    containerPadding={0}
                     shouldResetScrollPosition={false}
                     pageOption={pagingOptions}
                 />
@@ -267,6 +297,10 @@ export class DataGrid extends Component {
                 {
                     this.props.updateGroupMappingData.isShow &&
                     <EditGroupMappingPopup />
+                }
+                {
+                    this.state.isShowRemark &&
+                    <EditRemark data={this.state.data} onClose={this.onClosePopupEditRemark} />
                 }
             </Fragment>
         );

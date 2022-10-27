@@ -20,7 +20,7 @@ export class DataGrid extends Component {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <HeaderRow>
-                <HeaderCell colWidth={18} sortOrder='desc' sortBy='runningNo'>{LangHelper.getResource('RunningNo')}</HeaderCell>
+                <HeaderCell colWidth={18} sortOrder='desc' sortBy='feedbackId'>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 {
                     hasCreateFeedbackPermission &&
                     <HeaderCell colWidth={12}>{LangHelper.getResource('Update')}</HeaderCell>

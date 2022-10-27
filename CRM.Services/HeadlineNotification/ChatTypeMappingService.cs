@@ -78,5 +78,12 @@
             criteria.LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
+
+        public async Task<CommandResult> EditChatTypeMappingRemarkAsync(UpdateChatTypeMappingRemarkCommand criteria)
+        {
+            criteria.LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
     }
 }

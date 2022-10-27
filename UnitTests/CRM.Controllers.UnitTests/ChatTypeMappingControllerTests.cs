@@ -323,6 +323,24 @@
         }
 
         [Fact]
+        public async Task UpdateRemark_WhenCall_ReturnExpectedCommandResult()
+        {
+            var fixture = new Fixture();
+            var expected = fixture.Create<CommandResult>();
+            var viewModal = fixture.Create<PersonalMappingViewModel>();
+
+            var controller = GetController();
+
+            chatTypeMappingService.EditChatTypeMappingRemarkAsync(Arg.Any<UpdateChatTypeMappingRemarkCommand>()).Returns(expected);
+
+            var actual = await controller.UpdateRemark(viewModal);
+
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var commandResult = (CommandResult)jsonResult.Value;
+            Assert.Equal(expected, commandResult);
+        }
+
+        [Fact]
         public async Task ExportExcelReport_WhenCalled_ReturnsExpectedFile()
         {
             // Arrange

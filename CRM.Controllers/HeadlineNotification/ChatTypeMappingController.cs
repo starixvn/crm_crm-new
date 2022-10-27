@@ -197,6 +197,22 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Host)]
+        public async Task<IActionResult> UpdateRemark([FromBody] PersonalMappingViewModel data)
+        {
+            var criteria = new UpdateChatTypeMappingRemarkCommand
+            {
+                ConversationGroupId = data.ConversationGroupId,
+                Remark = data.Remark,
+                UserId = napSession.UserId
+            };
+            var result = await chatTypeMappingService.EditChatTypeMappingRemarkAsync(criteria);
+
+            return Json(result);
+        }
+
+
+        [HttpPost]
         public async Task<IActionResult> VerifyLetstalkInGroup([FromBody] LetstalkVerification data)
         {
             if (data.BotId > 0 && !string.IsNullOrWhiteSpace(data.GroupConversationId))

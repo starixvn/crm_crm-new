@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿﻿import React from 'react';
 import DataGridWrapper, { DataGrid } from '../DataGrid';
 import { shallow, mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
@@ -51,12 +51,12 @@ describe('DataGrid', () => {
 
     beforeEach(() => {
         const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'right-row-container');
+        appContainer.setAttribute('id', 'app-container');
         document.body.appendChild(appContainer);
     });
 
     afterEach(() => {
-        const appContainer = document.getElementById('right-row-container');
+        const appContainer = document.getElementById('app-container');
         if (appContainer) {
             document.body.removeChild(appContainer);
         }
@@ -156,7 +156,7 @@ describe('DataGrid', () => {
             expect(dataGrid.find(Table).props().autoWidth).toBeTrue;
             expect(dataGrid.find(Table).props().isPaging).toBeTrue;
             expect(dataGrid.find(Table).props().pageOption).toEqual(pagingOption);
-            expect(dataGrid.find(Table).props().containerPadding).toEqual(31);
+            expect(dataGrid.find(Table).props().containerPadding).toEqual(0);
         });
     });
 
@@ -308,6 +308,7 @@ describe('DataGrid', () => {
                 ],
                 totalItems: 1
             },
+            getGridData: jest.fn(),
             updateActiveStatusPopup: { isChecked: true },
             updateActiveStatusResult: {},
             updatePersonalMappingData: {},
@@ -373,6 +374,20 @@ describe('DataGrid', () => {
             const expectedParam = { isShowPopup: false };
             dataGrid.instance().onCloseConfirmPopupChangeActiveStaus();
             expect(props.setUpateActivePopup).toHaveBeenCalledWith(expectedParam);
+        });
+
+        it('handleOpenPopupEditRemark should set exact state', () => {
+            const dataGrid = shallow(<DataGrid {...props} />);
+            dataGrid.instance().handleOpenPopupEditRemark({});
+            expect(dataGrid.instance().state.data).toEqual({});
+            expect(dataGrid.instance().state.isShowRemark).toBeTrue;
+        });
+
+        it('onClosePopupEditRemark should call exact function if successful', () => {
+            const dataGrid = shallow(<DataGrid {...props} />);
+            dataGrid.instance().onClosePopupEditRemark(true);
+            expect(dataGrid.instance().state.data).toEqual(null);
+            expect(dataGrid.instance().state.isShowRemark).toBeFalse;
         });
     });
 

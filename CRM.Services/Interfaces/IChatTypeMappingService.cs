@@ -18,5 +18,7 @@
         Task<CommandResult> CreatePersonalMappingAsync(InsertPersonalMappingCommand criteria);
 
         Task<CommandResult> EditChatTypeMappingAsync(UpdateChatTypeMappingCommand criteria);
+
+        Task<CommandResult> EditChatTypeMappingRemarkAsync(UpdateChatTypeMappingRemarkCommand criteria);
     }
 }

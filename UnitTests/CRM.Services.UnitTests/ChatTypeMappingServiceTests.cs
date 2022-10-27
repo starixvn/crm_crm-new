@@ -115,6 +115,22 @@
             Assert.Equal(result, actual);
         }
 
+        [Fact]
+        public async Task EditChatTypeMappingRemarkAsync_WhenCalled_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var result = fixture.Create<CommandResult>();
+
+            var service = GetService();
+            baseService.ExecuteNonQueryAsync(Arg.Any<UpdateChatTypeMappingRemarkCommand>()).Returns(result);
+            // Act
+            var actual = await service.EditChatTypeMappingRemarkAsync(fixture.Create<UpdateChatTypeMappingRemarkCommand>());
+
+            // Assert
+            Assert.Equal(result, actual);
+        }
+
         #region Helpers
 
         private ChatTypeMappingService GetService()

@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using CRM.Core.Services;
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Letstalk.Core.Services;
     using CRM.Letstalk.Core.Services.Interfaces;
+    using Fanex.Logging;
     using Microsoft.AspNetCore.Http;
     using NSubstitute;
     using Xunit;
@@ -16,11 +18,13 @@
         private readonly IJwtService jwtService;
         private readonly IEventHandler eventHandler;
         private readonly List<BotConfig> botConfigs;
+        private readonly ICRMLogService logService;
 
         public WebhookReceiverTests()
         {
             jwtService = Substitute.For<IJwtService>();
             eventHandler = Substitute.For<IEventHandler>();
+            logService = Substitute.For<ICRMLogService>();
             var func = Substitute.For<Func<string, IEventHandler>>();
             func(Arg.Any<string>()).Returns(eventHandler);
 
@@ -28,7 +32,7 @@
             {
                 new BotConfig { BotAccountId = 1000, SecureKey = "SecureKey" }
             };
-            webhookReceiver = new WebhookReceiver(jwtService, func, botConfigs);
+            webhookReceiver = new WebhookReceiver(jwtService, logService, func, botConfigs);
         }
 
         [Fact]
