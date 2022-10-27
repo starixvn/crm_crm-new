@@ -38,6 +38,7 @@
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var dynamicReport = await GetDynamicReportData(criteria);
+            var paging = GetPagingLogList(criteria, dynamicReport.ChildReports);
             var chartInfo = new DynamicReportInfo
             {
                 Id = dynamicReport.Id,
@@ -67,9 +68,7 @@
                 Id = dynamicReport.Id,
                 Name = dynamicReport.Name,
                 ShortName = dynamicReport.ShortName,
-                ChildReports = criteria.IsGetFullReport ?
-                   dynamicReport.ChildReports :
-                   GetPagingLogList(criteria, dynamicReport.ChildReports),
+                ChildReports = criteria.IsGetFullReport ? dynamicReport.ChildReports : paging,
                 TotalChildReports = dynamicReport.TotalChildReports,
                 ChartInfo = chartInfo
             };
