@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.Core.Services;
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Letstalk.Core.Extensions;
@@ -16,14 +17,17 @@
     public class WebhookReceiver : IWebhookReceiver
     {
         private readonly IJwtService jwtService;
+        private readonly ICRMLogService logService;
         private readonly Func<string, IEventHandler> eventHandler;
         private readonly List<BotConfig> botConfigs;
 
         public WebhookReceiver(IJwtService jwtService,
+            ICRMLogService logService,
             Func<string, IEventHandler> eventHandler,
             List<BotConfig> botConfigs)
         {
             this.jwtService = jwtService;
+            this.logService = logService;
             this.eventHandler = eventHandler;
             this.botConfigs = botConfigs;
         }
@@ -40,6 +44,7 @@
             }
 
             var rawData = jwtService.Decode(botConfig.SecureKey, requestJson.Trim());
+            logService.LogInformation(rawData);
             var data = JObject.Parse(rawData);
             var hookEvent = data.ToObject<HookEvent>();
             await eventHandler(hookEvent.Type).EventHandleAsync(hookEvent, botConfig);
