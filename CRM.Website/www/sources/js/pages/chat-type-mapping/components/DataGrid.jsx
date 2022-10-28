@@ -197,8 +197,10 @@ export class DataGrid extends Component {
                 </Cell>
                 {this.renderIsActiveCol(isHost, item)}
                 <Cell>
-                    <div >
-                        <span className="pr-2 fa fa-pencil-square-o link-click" onClick={() => this.handleOpenPopupEditRemark(item)} />
+                    <div>
+                        {
+                            isHost && <span className="pr-2 fa fa-pencil-square-o link-click" onClick={() => this.handleOpenPopupEditRemark(item)} />
+                        }
                         <span >{item.remark}</span>
                     </div>
                 </Cell>
