@@ -68,7 +68,7 @@ export default class CkEditor extends PureComponent {
             }
         });
 
-        CKEDITOR.addCss('body {margin: 0 !important;}');
+        CKEDITOR.addCss('body {margin: 2 !important;}');
     };
 
 
