@@ -21,5 +21,26 @@
             func(Arg.Any<int>()).Returns(letstalkService);
             receiveMessageEventHandler = new ReceiveMessageEventHandler(func);
         }
+
+        [Fact]
+        public async Task EventHandleAsync_WhenCalled_WillCallsExpectedServiceWithExpectedArgurment()
+        {
+            var hookEvent = new HookEvent
+            {
+                Source = new EventSource
+                {
+                    UserId = "letstalk"
+                }
+            };
+
+            var botConfig = new BotConfig
+            {
+                BotAccountId = 10000,
+            };
+
+            await receiveMessageEventHandler.EventHandleAsync(hookEvent, botConfig);
+
+            await letstalkService.Received().PushAsync(Arg.Is(hookEvent.Source.UserId), Arg.Is("Hello, I am Bot."));
+        }
     }
 }
