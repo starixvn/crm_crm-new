@@ -15,6 +15,7 @@
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Fanex.RemotingRef;
+    using Microsoft.AspNetCore.Hosting;
 
     public interface ICommonFeedback
     {
@@ -63,16 +64,19 @@
     {
         private readonly IRemotingRefService remotingRefService;
         private readonly ISystemSettingService systemSetting;
+        private readonly IWebHostEnvironment hostingEnvironment;
 
-        private const string path = "Format_Templates\\AutoCreateFeedback";
+        private const string path = "Format_Templates/AutoCreateFeedback";
 
         public CommonFeedback(
             IRemotingRefService remotingRefService,
-            ISystemSettingService systemSetting
+            ISystemSettingService systemSetting,
+            IWebHostEnvironment hostingEnvironment
             )
         {
             this.remotingRefService = remotingRefService;
             this.systemSetting = systemSetting;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         public string GetProductName(string productId, string languageCode)
@@ -119,8 +123,7 @@
      
         public T GetFeedbackTemplates<T>(string fileXml)
         {
-            var currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            var templatePath = Path.Combine(currentDirectory, path, fileXml);
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, path, fileXml);
             var template = XMLIO.DeserializeXMLFileToObject<T>(templatePath);
             return (T)Convert.ChangeType(template, typeof(T));
         }
