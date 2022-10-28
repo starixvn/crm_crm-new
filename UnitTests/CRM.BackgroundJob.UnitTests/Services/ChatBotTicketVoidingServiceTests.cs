@@ -63,9 +63,7 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var voidingHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
             var expected = fixture.Create<IEnumerable<ChatBotUserNameList>>();
-            var xml = voidingHis.ToXML("root").ToString();
             var criteria = new GetChatBotAbnormalAccountGetUsernameListCriteria();
             var service = GetService();
             baseService.GetDataFromSiteDbAsync<ChatBotUserNameList>(Arg.Do<GetChatBotAbnormalAccountGetUsernameListCriteria>(x => criteria = x)).Returns(expected);

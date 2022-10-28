@@ -68,7 +68,7 @@
             baseService.FetchMultipleAsync<DynamicReportInfo, SettingItem>(Arg.Do<GetDynamicReportCriteria>(x => param = x)).Returns(tuple);
 
             var dynamicReport = new DynamicReportInfo();
-            dynamicReport.TotalChildReports = dynamicReportInfos.Count();
+            dynamicReport.TotalChildReports = dynamicReportInfos.Count;
 
 
             //Act
