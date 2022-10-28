@@ -10,6 +10,7 @@
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Services;
     using Fanex.RemotingRef;
+    using Microsoft.AspNetCore.Hosting;
     using NSubstitute;
     using Xunit;
 
@@ -17,7 +18,7 @@
     {
         private IRemotingRefService remotingRefService;
         private ISystemSettingService systemSetting;
-
+        private IWebHostEnvironment hostingEnvironment;
 
         #region CheckFeedbackValidParams
 
@@ -434,10 +435,12 @@
         {
             remotingRefService = Substitute.For<IRemotingRefService>();
             systemSetting = Substitute.For<ISystemSettingService>();
+            hostingEnvironment = Substitute.For<IWebHostEnvironment>();
             return new CommonFeedback(
                 remotingRefService,
-                systemSetting
-                );
+                systemSetting,
+                hostingEnvironment
+            );
         }
 
         #endregion Helpers
