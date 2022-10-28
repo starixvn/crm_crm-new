@@ -67,6 +67,8 @@ export default class CkEditor extends PureComponent {
                 });
             }
         });
+
+        CKEDITOR.addCss('body {margin: 0 !important;}');
     };
 
 
@@ -88,6 +90,7 @@ export default class CkEditor extends PureComponent {
                         language: 'en',
                         enterMode: 2
                     }}
+                    style={{body: 'margin: 0'}}
                     onLoaded={editor => this.editor = editor}
                     onNamespaceLoaded={this.onLoadPlugin}
                 />

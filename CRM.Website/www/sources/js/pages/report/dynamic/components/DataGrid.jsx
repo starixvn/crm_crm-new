@@ -70,8 +70,8 @@ export class DataGrid extends Component {
     renderGroupRow = (group,index, keyToggle) => {
         const keyToggleRow = keyToggle + index + 1;
         return (
-            <React.Fragment>
-                <Row key={keyToggleRow}>
+            <React.Fragment key={keyToggleRow}>
+                <Row>
                     <Cell colSpan={10} className="group-collapse-expand" onClick={() => this.handleToggleEach(keyToggleRow)}>
                         <span className={`pr-2 fa ${this.state.toggles.includes(keyToggleRow) ? 'fa-caret-right' : 'fa-caret-down'}`}/>
                         <span>{keyToggleRow}</span>
@@ -163,13 +163,13 @@ export class DataGrid extends Component {
         return groupCategory.map((value,key) => {
             const filterMainCategory = mainCategories.find(element => element.settingId === value.mainCategoryId);
             return (
-                <React.Fragment>
-                    <div key={key} className="font-weight-bold">{filterMainCategory.settingValue}</div>
+                <React.Fragment key={`main-${key}`}>
+                    <div className="font-weight-bold">{filterMainCategory.settingValue}</div>
                     {
                         value.subCategoryId.map((subId,index) => {
                             const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === subId);
                             return(
-                                <div key={index} className="font-italic ml-3">{filterSubCategory ? filterSubCategory.name : 'N/A'}</div>
+                                <div key={`sub-${index}`} className="font-italic ml-3">{filterSubCategory ? filterSubCategory.name : 'N/A'}</div>
                             );
                         })
                     }

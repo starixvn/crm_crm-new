@@ -11,13 +11,13 @@ import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
     static propTypes = {
-        viewCommunicationDialog: PropTypes.shape({ show: PropTypes.bool, chartInfo: PropTypes.object }).isRequired,
-        viewChartDialog: PropTypes.shape({ show: PropTypes.bool, chartInfo: {} }).isRequired
+        viewChartDialog: PropTypes.shape({ show: PropTypes.bool, chartInfo: PropTypes.objectOf(PropTypes.any) }).isRequired,
+        viewCommunicationDialog: PropTypes.shape({ show: PropTypes.bool }).isRequired
     };
 
     static defaultProps = {
-        viewCommunicationDialog: { show: false },
-        viewChartDialog: { show: false, chartInfo: {} }
+        viewChartDialog: { show: false, chartInfo: {} },
+        viewCommunicationDialog: { show: false }
     };
 
     componentDidMount() {
