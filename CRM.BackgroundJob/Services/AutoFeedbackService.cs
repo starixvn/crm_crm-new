@@ -45,7 +45,7 @@
 
 #pragma warning disable S107 // Methods should not have too many parameters
         public AutoFeedbackService(
-            IOptionsSnapshot<AppJobSettings> appSettings,
+            IOptions<AppJobSettings> appSettings,
             IJobRunningChecker jobRunningChecker,
             ISystemSettingService systemSettingService,
             IWinLossFeedbackService winLossService,

@@ -46,7 +46,6 @@
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            logService.LogInformation("StartAsync");
             return base.StartAsync(cancellationToken);
         }
 

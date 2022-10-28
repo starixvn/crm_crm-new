@@ -8,6 +8,7 @@
     using CRM.BackgroundJob.Workers;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
+    using CRM.Core.Models;
     using CRM.Letstalk.Services.Extentions;
     using CRM.Letstalk.Services.Services;
     using CRM.Letstalk.Services.Services.Interfaces;
@@ -24,6 +25,7 @@
     using Fanex.Logging.Sentry;
     using Fanex.RemotingRef;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.DataProtection;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
@@ -90,7 +92,9 @@
 
             services.Configure<AppJobSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
             services.Configure<List<JobSetting>>(Configuration.GetSection("JobSettings"));
-
+            var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
+            ConfigDataProtection(services, redisConfig);
+            ConfigRedisCache(services, redisConfig);
             services.ResolveCoreDI();
             services.ResolveLetstalkServiceDI(Configuration);
             AddDependencyInjection(services, Configuration);
@@ -180,6 +184,40 @@
             services.AddHostedService<AutoFbVoidingSettledTicketsWorker>();
 
             services.AddHostedService<MonitorLetstalkWorker>();
+        }
+
+        private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
+        {
+            var configRedix = new ConfigurationOptions
+            {
+                EndPoints =
+                {
+                    { redisConfig.Server, redisConfig.Port }
+                },
+                Password = redisConfig.Password,
+                DefaultDatabase = redisConfig.DefaultDatabase
+            };
+            var redis = ConnectionMultiplexer.Connect(configRedix);
+            services.AddDataProtection()
+                .PersistKeysToStackExchangeRedis(redis, redisConfig.Password)
+                .SetApplicationName(redisConfig.ApplicationName + ":DataProtection:Keys");
+        }
+
+        private static void ConfigRedisCache(IServiceCollection services, RedisConfig redisConfig)
+        {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.ConfigurationOptions = new ConfigurationOptions
+                {
+                    EndPoints =
+                    {
+                        { redisConfig.Server, redisConfig.Port }
+                    },
+                    Password = redisConfig.Password,
+                    DefaultDatabase = redisConfig.DefaultDatabase
+                };
+                options.InstanceName = redisConfig.ApplicationName + ":Session:";
+            });
         }
     }
 }

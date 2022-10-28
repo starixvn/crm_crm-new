@@ -40,7 +40,7 @@
 #pragma warning disable S107 // Methods should not have too many parameters
 
         public FeedbackService(
-            IOptionsSnapshot<AppJobSettings> appSettings,
+            IOptions<AppJobSettings> appSettings,
             IBaseService baseService,
             ISettingService settingService,
             IMessageService messageService,
