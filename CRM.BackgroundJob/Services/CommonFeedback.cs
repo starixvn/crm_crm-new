@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
@@ -118,7 +119,7 @@
      
         public T GetFeedbackTemplates<T>(string fileXml)
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
+            var currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             var templatePath = Path.Combine(currentDirectory, path, fileXml);
             var template = XMLIO.DeserializeXMLFileToObject<T>(templatePath);
             return (T)Convert.ChangeType(template, typeof(T));
