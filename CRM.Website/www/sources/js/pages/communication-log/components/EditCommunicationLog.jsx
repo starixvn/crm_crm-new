@@ -169,6 +169,8 @@ export class EditCommunicationLog extends Component {
                 review: log.review, reviewer: log.reviewer
             }
         });
+        const communicationJoins = logSettings.communicationToolIds.join(',');
+        const isExistCommunication = this.state.communicationToolOptions.filter( x => communicationJoins.includes(x.id.toString())).length > 0;
         this.handleChangeVerifySection('subject', log.subject);
         return {
             feedbackId: log.feedbackId,
@@ -177,7 +179,7 @@ export class EditCommunicationLog extends Component {
             startTime: new Date(log.feedbackDate),
             endTime: new Date(log.resolutionDate),
             extensionIds: logSettings.extensionIds.join(','),
-            communicationToolIds: logSettings.communicationToolIds.join(','),
+            communicationToolIds: isExistCommunication ? communicationJoins : '',
             mainCategoryIds: logSettings.mainCategoryIds.join(','),
             subCategoryIds: logSettings.subCategoryIds.join(','),
             productIds: logSettings.productIds.join(','),
