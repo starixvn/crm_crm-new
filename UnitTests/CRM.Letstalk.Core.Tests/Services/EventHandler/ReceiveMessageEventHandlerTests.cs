@@ -1,6 +1,7 @@
 ﻿namespace CRM.Letstalk.Core.Tests.Services.EventHandler
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Services.Interfaces;
@@ -39,8 +40,7 @@
             };
 
             await receiveMessageEventHandler.EventHandleAsync(hookEvent, botConfig);
-
-            await letstalkService.Received().PushAsync(Arg.Is(hookEvent.Source.UserId), Arg.Is("Hello, I am Bot."));
+            await letstalkService.Received().PushAsync("letstalk","Hello, I am Bot.");
         }
     }
 }

@@ -43,7 +43,7 @@
 
             await addContactEventHandler.EventHandleAsync(hookEvent, botConfig);
 
-            await letstalkService.Received().PushAsync(Arg.Is(hookEvent.Source.UserId), Arg.Is(string.Format("Hello, I am {0}!", botConfig.BotUserId)));
+            await letstalkService.Received().PushAsync("letstalk", string.Format("Hello, I am {0}!", botConfig.BotUserId));
         }
     }
 }
