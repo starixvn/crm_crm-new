@@ -142,7 +142,7 @@
             {
                 Extensions = extentions.Where(x => x.Id != NAConstants.ExtentionNA),
                 ExtensionNA = extentions.FirstOrDefault(x => x.Id == NAConstants.ExtentionNA),
-                Statuses = statuses.Where(s => s.StatusId != (int)FeedbackStatus.Deleted),
+                Statuses = statuses,
                 CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active),
                 Languages = await settingService.GetLanguageAsync(SettingConstants.Active, true),
                 Responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),

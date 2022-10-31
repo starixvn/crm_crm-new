@@ -235,7 +235,7 @@ export const getParams = (values, customerDetail, settings, state) =>{
         Description: content.description,
         Solution: content.solution,
         NoInquiries: values.noOfInquiries === '' ? 0 : values.noOfInquiries,
-        RelatedCustId: listOfCustomerValid.length > 1 ? listOfCustomerValid.map(x => x.custId).join(',') : null
+        RelatedCustID: listOfCustomerValid.length > 0 ? listOfCustomerValid.map(x => x.custId).join(',') : null
     };
 
     return params;

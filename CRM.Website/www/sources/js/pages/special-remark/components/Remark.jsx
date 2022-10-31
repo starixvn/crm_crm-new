@@ -223,7 +223,7 @@ export class Remark extends Component {
                     )
                 }
                 {
-                    <FormCheckDirtyComponent isDirty={isDirty} tab={LangHelper.getResource('RemarkTab')}/>
+                   !this.state.isSubmitting && <FormCheckDirtyComponent isDirty={isDirty} tab={LangHelper.getResource('RemarkTab')}/>
                 }
             </div>
         );
