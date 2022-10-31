@@ -117,7 +117,7 @@
             worksheet.Column(ColumnCategory).Width = WidthLarge;
             worksheet.Column(ColumnStatus).Width = WidthNormal;
             worksheet.Column(ColumnRelCustomer).Width = WidthLarge;
-            for (var index = 0; index < feedbacks.Count() - 1; index++)
+            for (var index = 0; index < feedbacks.Count(); index++)
             {
                 worksheet.Row(RowStartBody + index).Height = RowHeight;
                 DrawBorderCell(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalColumn]);

@@ -22,7 +22,7 @@ export class DataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={7}>{LangHelper.getResource('RunningNo.')}</HeaderCell>
+                <HeaderCell colWidth={7}>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 {
                     this.props.isHost &&
                     <HeaderCell colWidth={5}>{LangHelper.getResource('Update')}</HeaderCell>
