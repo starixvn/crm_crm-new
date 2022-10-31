@@ -1,6 +1,7 @@
 ﻿namespace CRM.Services
 {
     using System.Collections.Generic;
+    using System.Drawing;
     using System.Linq;
     using CRM.Core;
     using CRM.Models.Feedback;
@@ -19,6 +20,9 @@
         private const byte RowStartHeader = 4;
         private const byte RowStartBody = 6;
         private const byte TotalCols = 5;
+        protected static readonly Color PendingColor = Color.FromArgb(240, 237, 196);
+        protected static readonly Color ClosedColor = Color.FromArgb(221, 221, 221);
+        protected static readonly Color NormalColor = Color.FromArgb(255, 255, 255);
 
         public LatestFeedbackExcel(
             string templatePath,
@@ -69,10 +73,17 @@
             worksheet.Cells[rowIndex, colIndex++].Value = categoryCellValue;
             worksheet.Cells[rowIndex, colIndex++].Value = feedback.Status;
             worksheet.Cells[rowIndex, colIndex].Value = feedback.RelatedCustomer.Replace(",", ", ");
-
-            if ((index & 1) == 0)
+            if (feedback.Status == "Pending")
             {
-                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], EvenRowColor);
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], PendingColor);
+            }
+            else if (feedback.Status == "Closed")
+            {
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], ClosedColor);
+            }
+            else
+            {
+                SetBackgroundColor(worksheet.Cells[rowIndex, 1, rowIndex, colIndex], NormalColor);
             }
         }
 
