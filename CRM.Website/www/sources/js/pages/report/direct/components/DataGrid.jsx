@@ -64,7 +64,7 @@ export class DataGrid extends Component {
 
     renderRows = (item, index) => {
         return (
-            <Row key={index}>
+            <Row key={item.rowNum}>
                 <Cell className='text-center height-row'>{item.rowNum}</Cell>
                 <Cell className='text-center'>{item.headline ?? 'not assign group'}</Cell>
                 <Cell className='text-center'>{item.username}</Cell>

@@ -47,10 +47,9 @@
         private async Task<DirectCustomerReportInfo> GetReport(DirectCustomerReportCriteria criteria)
         {
             var rawData = await baseService.GetDataAsync<DirectCustomerInfo>(criteria);
-            IEnumerable<DirectCustomerInfo> customerList = rawData.ToList();
             return new DirectCustomerReportInfo
             {
-                CustomerList = customerList,
+                CustomerList = rawData,
                 TotalCustomer = criteria.TotalRows
             };
         }
