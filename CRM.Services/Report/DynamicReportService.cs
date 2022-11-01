@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using CRM.Core;
     using CRM.Core.Constants;
+    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Report.DynamicReport;
     using CRM.Models;
@@ -38,15 +39,15 @@
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            var dynamicReport = await GetDynamicReportData(criteria);
+            var(dynamicReport, settingItems)   = await GetDynamicReportData(criteria);
             var dynamicPaging = GetPagingLogList(criteria, dynamicReport.ChildReports);
-
-            dynamicPaging.ForEach(x => x.ChildReports.ForEach(y =>
+            foreach(var dynamic in dynamicPaging)
             {
-                y.FeedbackDate = commonService.ConvertToClientDateTime(y.FeedbackDate);
-                y.PeriodRange.FromDateString = y.PeriodRange.FromDate.ToShortDateFormat();
-                y.PeriodRange.ToDateString = y.PeriodRange.ToDate.ToShortDateFormat();
-            }));
+                foreach (var child in dynamic.ChildReports)
+                {
+                    child.DynamicSettings = settingItems.Where(x => x.FeedbackId == child.FeedbackId).ToList();
+                }
+            }
 
             return new DynamicReportInfo
             {
@@ -60,7 +61,8 @@
 
         public async Task<DynamicReportInfo> GetChartInfoAsync(GetDynamicReportCriteria criteria)
         {
-            var dynamicReport = await GetDynamicReportData(criteria);
+            var dynamicReportInfo = await GetDynamicReportData(criteria);
+            var dynamicReport = dynamicReportInfo.Item1;
             var chartInfo = new DynamicReportInfo
             {
                 Id = dynamicReport.Id,
@@ -86,9 +88,9 @@
             return chartInfo;
         }
 
-        public async Task<DynamicReportInfo> GetDynamicReportData(GetDynamicReportCriteria criteria)
+        public async Task<ValueTuple<DynamicReportInfo, IEnumerable<SettingItem>>> GetDynamicReportData(GetDynamicReportCriteria criteria)
         {
-            var dynamicReportInfos = await GetDynamicReportDataAsync(criteria);
+            var (dynamicReportInfos, settingItems) = await GetDynamicReportDataAsync(criteria);
             DynamicReportInfo dynamicReport;
             switch (criteria.ReportType)
             {
@@ -114,24 +116,25 @@
 
             dynamicReport.ReportTypeId = criteria.ReportType;
             dynamicReport.TotalChildReports = dynamicReportInfos.Count();
-            return dynamicReport;
+            return new ValueTuple<DynamicReportInfo, IEnumerable<SettingItem>>(dynamicReport, settingItems);
         }
 
 
-        public async Task<IEnumerable<DynamicReportInfo>> GetDynamicReportDataAsync(GetDynamicReportCriteria criteria)
+        public async Task<ValueTuple<IEnumerable<DynamicReportInfo>, IEnumerable<SettingItem>>> GetDynamicReportDataAsync(GetDynamicReportCriteria criteria)
         {
             var (dynamicReportInfos, settingItems) = await baseService.FetchMultipleAsync<DynamicReportInfo, SettingItem>(criteria);
             foreach (var dynamicReportInfo in dynamicReportInfos)
             {
                 var convertFromdate = commonService.ConvertToClientDateTime(dynamicReportInfo.FeedbackDate);
-                dynamicReportInfo.DynamicSettings = settingItems.Where(x => x.FeedbackId == dynamicReportInfo.FeedbackId).ToList();
+                dynamicReportInfo.FeedbackDate = convertFromdate;
                 dynamicReportInfo.PeriodRange = new PeriodRange
                 {
                     FromDate = convertFromdate,
-                    FromDateString = convertFromdate.ToShortDateFormat()
+                    FromDateString = convertFromdate.ToShortDateFormat(),
                 };
             }
-            return dynamicReportInfos;
+            var result = new ValueTuple<IEnumerable<DynamicReportInfo>, IEnumerable<SettingItem>>(dynamicReportInfos, settingItems);
+            return result;
         }
 
         private DynamicReportInfo GetDynamicReportByDaily(IEnumerable<DynamicReportInfo> dynamicReportInfos, GetDynamicReportCriteria criteria)
