@@ -97,7 +97,7 @@
             Assert.Equal(categoryCellValue, worksheet.Cells[1, 3].Value);
             Assert.Equal(feedback.Status, worksheet.Cells[1, 4].Value);
             Assert.Equal(feedback.RelatedCustomer.Replace(",", ", "), worksheet.Cells[1, 5].Value);
-            service.DidNotReceive().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
+            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
         }
 
         [Fact]
@@ -126,7 +126,7 @@
             Assert.Equal(categoryCellValue, worksheet.Cells[1, 3].Value);
             Assert.Equal(feedback.Status, worksheet.Cells[1, 4].Value);
             Assert.Equal(feedback.RelatedCustomer.Replace(",", ", "), worksheet.Cells[1, 5].Value);
-            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Color.FromArgb(228, 242, 253));
+            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
         }
 
         #region Helpers

@@ -91,7 +91,7 @@
                 "{0}\n{1}\n{2}\n{3}\n{4}",
                 feedback.Subject,
                 "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
-                "By " + feedback.Creator + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
+                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
                 "Solving Duration: " + feedback.DurationTime,
                 string.Format("Reviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDate.ToShortDateTimeFormat()));
             var categoryCellValue = "Special Notification\n  Abnormal Bets";
@@ -109,7 +109,7 @@
             Assert.Equal(categoryCellValue, worksheet.Cells[1, 4].Value);
             Assert.Equal(feedback.Status, worksheet.Cells[1, 5].Value);
             Assert.Equal(feedback.RelatedCustomer.Replace(",", ", "), worksheet.Cells[1, 6].Value);
-            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Color.FromArgb(221, 221, 221));
+            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
         }
 
         [Fact]
@@ -122,7 +122,7 @@
                 "{0}\n{1}\n{2}\n{3}\n{4}",
                 feedback.Subject,
                 "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
-                "By " + feedback.Creator + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
+                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
                 "Solving Duration: " + feedback.DurationTime,
                 string.Format("Reviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDate.ToShortDateTimeFormat()));
             var categoryCellValue = "Special Notification\n  Abnormal Bets";
@@ -140,7 +140,7 @@
             Assert.Equal(categoryCellValue, worksheet.Cells[1, 4].Value);
             Assert.Equal(feedback.Status, worksheet.Cells[1, 5].Value);
             Assert.Equal(feedback.RelatedCustomer.Replace(",", ", "), worksheet.Cells[1, 6].Value);
-            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Color.FromArgb(240, 237, 196));
+            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
         }
 
         [Fact]
@@ -153,7 +153,7 @@
                 "{0}\n{1}\n{2}\n{3}\n{4}",
                 feedback.Subject,
                 "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
-                "By " + feedback.Creator + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
+                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
                 "Solving Duration: " + feedback.DurationTime,
                 string.Format("Reviewed by {0} on {1}", feedback.ReviewerName, feedback.SolveDate.ToShortDateTimeFormat()));
             var categoryCellValue = "Special Notification\n  Abnormal Bets";
@@ -171,7 +171,7 @@
             Assert.Equal(categoryCellValue, worksheet.Cells[1, 4].Value);
             Assert.Equal(feedback.Status, worksheet.Cells[1, 5].Value);
             Assert.Equal(feedback.RelatedCustomer.Replace(",", ", "), worksheet.Cells[1, 6].Value);
-            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Color.FromArgb(255, 255, 255));
+            service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), Arg.Any<Color>());
         }
 
         [Fact]

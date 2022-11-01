@@ -43,7 +43,7 @@
             var actual = await service.GetDynamicReportDataAsync(param);
 
             //Assert
-            Assert.Equal(dynamicReportInfos, actual);
+            Assert.Equal(tuple, actual);
         }
 
         [Fact]
@@ -105,7 +105,7 @@
             var actual = await service.GetDynamicReportData(param);
 
             //Assert
-            Assert.Equal(dynamicReportInfos[0].ReportTypeId, actual.ReportTypeId);
+            Assert.Equal(dynamicReportInfos[0].ReportTypeId, actual.Item1.ReportTypeId);
         }
 
         [Fact]
@@ -132,7 +132,7 @@
             var actual = await service.GetDynamicReportData(param);
 
             //Assert
-            Assert.Equal(dynamicReportInfos[0].ReportTypeId, actual.ReportTypeId);
+            Assert.Equal(dynamicReportInfos[0].ReportTypeId, actual.Item1.ReportTypeId);
         }
 
         [Fact]
@@ -159,7 +159,7 @@
             var actual = await service.GetDynamicReportData(param);
 
             //Assert
-            Assert.Equal(dynamicReportInfos[0].ReportTypeId, actual.ReportTypeId);
+            Assert.Equal(dynamicReportInfos[0].ReportTypeId, actual.Item1.ReportTypeId);
         }
 
         [Fact]
@@ -186,7 +186,7 @@
             var actual = await service.GetDynamicReportData(param);
 
             //Assert
-            Assert.Equal(dynamicReportInfos[0].ReportTypeId, actual.ReportTypeId);
+            Assert.Equal(dynamicReportInfos[0].ReportTypeId, actual.Item1.ReportTypeId);
         }
 
         #region Helpers
