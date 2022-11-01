@@ -41,7 +41,12 @@
             var dynamicReport = await GetDynamicReportData(criteria);
             var dynamicPaging = GetPagingLogList(criteria, dynamicReport.ChildReports);
 
-            dynamicPaging.ForEach(x => x.ChildReports.ForEach(y => y.FeedbackDate = commonService.ConvertToClientDateTime(y.FeedbackDate)));
+            dynamicPaging.ForEach(x => x.ChildReports.ForEach(y =>
+            {
+                y.FeedbackDate = commonService.ConvertToClientDateTime(y.FeedbackDate);
+                y.PeriodRange.FromDateString = y.PeriodRange.FromDate.ToShortDateFormat();
+                y.PeriodRange.ToDateString = y.PeriodRange.ToDate.ToShortDateFormat();
+            }));
 
             return new DynamicReportInfo
             {
@@ -118,10 +123,12 @@
             var (dynamicReportInfos, settingItems) = await baseService.FetchMultipleAsync<DynamicReportInfo, SettingItem>(criteria);
             foreach (var dynamicReportInfo in dynamicReportInfos)
             {
+                var convertFromdate = commonService.ConvertToClientDateTime(dynamicReportInfo.FeedbackDate);
                 dynamicReportInfo.DynamicSettings = settingItems.Where(x => x.FeedbackId == dynamicReportInfo.FeedbackId).ToList();
                 dynamicReportInfo.PeriodRange = new PeriodRange
                 {
-                    FromDate = commonService.ConvertToClientDateTime(dynamicReportInfo.FeedbackDate)
+                    FromDate = convertFromdate,
+                    FromDateString = convertFromdate.ToShortDateFormat()
                 };
             }
             return dynamicReportInfos;
@@ -148,7 +155,7 @@
                 return dynamicReport;
             }
 
-            var periodGroups = dynamicReportInfos.GroupBy(data => data.PeriodRange.FromDate.ToShortDateFormat());
+            var periodGroups = dynamicReportInfos.GroupBy(data => data.PeriodRange.FromDateString);
             GetDynamicReportInfoByGroup(periodGroups, ref dynamicReport, ViewResources.Daily);
             return dynamicReport;
         }
@@ -214,21 +221,13 @@
                         ViewResources.Monthly,
                         periodGroup.Key.ToMonthYear()),
                     ShortName = periodGroup.Key.ToMonthYear(),
-                    ChildReports = new List<DynamicReportInfo>(),
+                    ChildReports = periodGroup.ToList(),
                     PeriodRange = new PeriodRange
                     {
                         FromDate = periodGroup.Key,
                         ToDate = periodGroup.Key.LastDayOfMonth()
                     }
                 };
-
-                periodReport.PeriodRange.FromDateString = periodReport.PeriodRange.FromDate.ToShortDateFormat();
-                periodReport.PeriodRange.ToDateString = periodReport.PeriodRange.ToDate.ToShortDateFormat();
-                foreach (var data in periodGroup)
-                {
-                    data.PeriodRange.FromDateString = data.PeriodRange.FromDate.ToShortDateFormat();
-                    periodReport.ChildReports.Add(data);
-                }
 
                 periodReport.TotalChildReports = periodReport.ChildReports.Count;
                 dynamicReport.TotalChildReports += periodReport.TotalChildReports;
@@ -270,21 +269,13 @@
                         ViewResources.Yearly,
                         periodGroup.Key),
                     ShortName = periodGroup.Key.ToString(),
-                    ChildReports = new List<DynamicReportInfo>(),
+                    ChildReports = periodGroup.ToList(),
                     PeriodRange = new PeriodRange
                     {
                         FromDate = new DateTime(periodGroup.Key, 1, 1),
                         ToDate = new DateTime(periodGroup.Key, 12, 31)
                     }
                 };
-
-                periodReport.PeriodRange.FromDateString = periodReport.PeriodRange.FromDate.ToShortDateFormat();
-                periodReport.PeriodRange.ToDateString = periodReport.PeriodRange.ToDate.ToShortDateFormat();
-                foreach (var data in periodGroup)
-                {
-                    data.PeriodRange.FromDateString = data.PeriodRange.FromDate.ToLongDateTimeFormat();
-                    periodReport.ChildReports.Add(data);
-                }
 
                 periodReport.TotalChildReports = periodReport.ChildReports.Count;
                 dynamicReport.TotalChildReports += periodReport.TotalChildReports;
@@ -305,14 +296,8 @@
                         groupTypeName,
                         periodGroup.Key),
                     ShortName = periodGroup.Key,
-                    ChildReports = new List<DynamicReportInfo>()
+                    ChildReports = periodGroup.ToList()
                 };
-
-                foreach (var data in periodGroup)
-                {
-                    data.PeriodRange.FromDateString = data.PeriodRange.FromDate.ToShortDateTimeFormat();
-                    periodReport.ChildReports.Add(data);
-                }
 
                 periodReport.TotalChildReports = periodReport.ChildReports.Count;
                 dynamicReport.TotalChildReports += periodReport.TotalChildReports;
