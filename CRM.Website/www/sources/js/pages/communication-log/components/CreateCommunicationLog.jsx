@@ -142,7 +142,7 @@ export class CreateCommunicationLog extends Component {
     };
 
     getInitDataTool = (options, allSettings) => {
-        const isExistCommunication = this.state.allSettings.communicationTools.filter( x => options.communicationToolIds.includes(x.id.toString())).length > 0;
+        const isExistCommunication = this.state.allSettings.communicationTools.filter( x => options?.communicationToolIds.includes(x.id.toString())).length > 0;
         return {
             extensionIds: options ? options.extensionIds : allSettings.extensions[0].id.toString(),
             languageId: options ? options.languageId : allSettings.languages[1].languageId,

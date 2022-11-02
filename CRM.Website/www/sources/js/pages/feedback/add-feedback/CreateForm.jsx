@@ -306,6 +306,16 @@ export default class CreateForm extends Component {
         }
     };
 
+    validateRefInput = event =>{
+        if ([8, 46, 37, 39, 35, 36].includes(event.which)) {
+            return;
+        }
+
+        if (!event.ctrlKey && !event.key.match(/^\d+$/)) {
+            event.preventDefault();
+        }
+    }
+
     handleClickFillEvent = (ticketRefInput, setFieldValue) =>{
         Site.blockUI();
         const description = this.state.content.description;
@@ -552,6 +562,7 @@ export default class CreateForm extends Component {
                         <Col sm="8" md="8" className="ref-ticket-input">
                             <Form.Control type="number" size="sm"
                                 value={values.ticketRefInput}
+                                onKeyDown={event => this.validateRefInput(event)}
                                 onPaste={event => this.onPasteRefTicketHandler(event)}
                                 id="refNo" name="refNo" className="shadow-none" autoComplete="off"
                                 onChange={e =>this.handleChangeRefTicket(e, setFieldValue)}

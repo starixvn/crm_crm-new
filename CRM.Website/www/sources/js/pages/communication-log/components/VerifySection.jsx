@@ -7,6 +7,16 @@ import { validateNoOfInquiry } from '../../feedback/common.functions';
 import { handleGetFeedbackSubjectTemplates } from '../common.functions';
 
 export default class VerifySection extends PureComponent {
+    validateRefInput = event =>{
+        if ([8, 46, 37, 39, 35, 36].includes(event.which)) {
+            return;
+        }
+
+        if (!event.ctrlKey && !event.key.match(/^\d+$/)) {
+            event.preventDefault();
+        }
+    }
+    
     render() {
     const { handleVerifyCreateRelatedCustomer, relatedCustomers, deleteVerifyCreateCustomer, balanceUpday,
         handleChangeRefTicket, handleClickFillEvent, feedbackSubjectTemplates, verifySection, onPasteRefTicketHandler,
@@ -79,6 +89,7 @@ export default class VerifySection extends PureComponent {
                         <Col sm="4" md="4" className="ref-ticket-input">
                                 <Form.Control type="number" size="sm" value={verifySection.ticketRefInput}
                                     id="refNo" name="refNo" className="shadow-none" autoComplete="off"
+                                    onKeyDown={event => this.validateRefInput(event)}
                                     onPaste={event => onPasteRefTicketHandler(event)}
                                     onChange={handleChangeRefTicket}
                                 />
