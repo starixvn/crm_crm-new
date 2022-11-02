@@ -103,8 +103,19 @@ export const handlePasteCustomer = (setFieldValue, event, data) => {
 };
 
 export const isValidCustomer = customers => {
-    if (customers.length > 50)
+    if(customers.includes(',')){
+        const customersSplit = customers.split(',');
+        const isAnyOverTextLong = customersSplit.filter(x=> x.length > 50).length > 0;
+        if (isAnyOverTextLong)
+        {
+            return false;
+        }
+    }else if(customers.length > 50){
         return false;
+    }else{
+        return true;
+    }
+
     return true;
 };
 

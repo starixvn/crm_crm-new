@@ -19,6 +19,7 @@ import AutoComplete from '@jsroot/components/AutoComplete';
 import VerifyCustomer from '@jsroot/components/verifyCustomer';
 import { BorderStyle  } from '@jsroot/common/constants';
 import DataService from '@jsroot/common/dataService';
+import { toast } from 'react-toastify';
 const CustomerInfo = lazy(() => import('./CustomerInfo'));
 const Content = lazy(() => import('./Content'));
 
@@ -245,6 +246,8 @@ export default class CreateForm extends Component {
                 });
             });
             setFieldValue('isVerifiedCustomers', true);
+        }else{
+            toast.error('Customer Name must not over 50 characters long!');
         }
         setFieldValue('customerNameInput', '');
     };

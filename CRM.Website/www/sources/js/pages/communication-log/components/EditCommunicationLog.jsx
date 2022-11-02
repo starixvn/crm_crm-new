@@ -469,6 +469,17 @@ export class EditCommunicationLog extends Component {
         setFieldValue('endTime', selectedTime);
     };
 
+    handlePasteCustomer = (event, data) => {
+        const customer = data?.trim();
+        const item = (event.clipboardData || window.clipboardData).getData('text')
+            .replace(/ /g, ',').replace(/\r\n/g, ',').replace(/\n/g, ',').replace(/\t/g, ',')
+            .split(',').filter(item => item !== '');
+        setTimeout(() => {
+            const customerInput = (customer && customer.length > 0 ? customer + ',' : '').concat(item.join(','));
+            this.handleChangeVerifySection('customerNameInput', customerInput);
+        }, 100);
+    };
+
     renderForm = ({
         errors,
         values,

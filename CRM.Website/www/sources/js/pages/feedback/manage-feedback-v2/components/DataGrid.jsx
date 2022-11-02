@@ -108,7 +108,7 @@ export class DataGrid extends Component {
         const totalItems = item.length;
         if (totalItems > MaximumDisplayRelatedCustomer) {
             return (
-                <a href="#" onClick={() => this.handleOpenViewRelatedCustomer(item.join(', '))}>
+                <a onClick={() => this.handleOpenViewRelatedCustomer(item.join(', '))}>
                     {totalItems} customers
                 </a>
             );

@@ -363,7 +363,7 @@ export default class AppContainer extends Component {
     };
 
     handlePasteCustomer = (event, customerNameInput) => {
-        const customer = customerNameInput.trim();
+        const customer = customerNameInput?.trim();
         this.setState({editResult: null});
         const items = (event.clipboardData || window.clipboardData).getData('text')
             .replace(/ /g, ',')
@@ -373,7 +373,7 @@ export default class AppContainer extends Component {
             .split(',').filter(item => item !== '');
 
         setTimeout(() => {
-            const customerInput = (customer.length > 0 ? customer + ',' : '').concat(items.join(','));
+            const customerInput = (customer && customer.length > 0 ? customer + ',' : '').concat(items.join(','));
             this.setState({
                 fieldInput: {
                     ...this.state.fieldInput,
