@@ -75,7 +75,8 @@ export class EditMultipleLogs extends Component {
                 remark: false,
                 description: false,
                 solution: false,
-                reviewed: false
+                reviewed: false,
+                review: false
             },
             editResult: null
         };
@@ -307,7 +308,8 @@ export class EditMultipleLogs extends Component {
                 remark: isChecked,
                 description: isChecked,
                 solution: isChecked,
-                reviewed: isChecked
+                reviewed: isChecked,
+                review: isChecked
             }
         });
     };
@@ -430,22 +432,33 @@ export class EditMultipleLogs extends Component {
         const {isCheck} = this.state;
         return (
             <div className="panel-group">
-                <Form.Group as={Row} className={`panel-title ${!isCheck.reviewed ? 'border-bottom-0' : ''}`}>
-                    <Form.Label className={values.reviewed ? 'required' : ''}>{LangHelper.getResource('Review')}</Form.Label>
-                    <input className="ml-2" type='checkbox' name="reviewed"
-                        onChange={this.handleChangeCheckbox}
-                        checked={isCheck.reviewed}
-                    />
-                    <span className="font-italic ml-2">
-                        {values.reviewer ? LangHelper.formatString(LangHelper.getResource('ReviewerBy'), values.reviewer, values.solveDate) : ''}
+                <Form.Group as={Row} className={`panel-title justify-content-between ${!isCheck.reviewed ? 'border-bottom-0' : ''}`}>
+                    <span>
+                        <Form.Label className={values.reviewed ? 'required' : ''}>{LangHelper.getResource('Review')}</Form.Label>
+                        <input className="ml-2" type='checkbox' name="reviewed"
+                            disabled={!isCheck.review}
+                            onChange={this.handleChangeCheckbox}
+                            checked={isCheck.reviewed}
+                        />
+                        <span className="font-italic ml-2">
+                            {values.reviewer ? LangHelper.formatString(LangHelper.getResource('ReviewerBy'), values.reviewer, values.solveDate) : ''}
+                        </span>
                     </span>
+                    <input type='checkbox'
+                        name='review'
+                        onChange={this.handleChangeCheckbox}
+                        checked={isCheck.review}
+                    />
                 </Form.Group>
                 <Collapse in={isCheck.reviewed}>
                     <div className="panel-content">
-                        <CkEditor isInvalid={touched.review && errors.review}
-                            data={values.review} username={window.currentUsername}
-                            onChange={value => setFieldValue('review', value)}
-                        />
+                        {
+                            !isCheck.review ? <div dangerouslySetInnerHTML={{ __html: values.review }} /> :
+                            <CkEditor isInvalid={touched.review && errors.review}
+                                data={values.review} username={window.currentUsername}
+                                onChange={value => setFieldValue('review', value)}
+                            />
+                        }
                     </div>
                 </Collapse>
             </div>
@@ -1027,7 +1040,7 @@ export class EditMultipleLogs extends Component {
 
     initFormik = (communicationLog, settings) => {
         const communicationSettings = this.getCommunicationSettings(communicationLog, settings);
-        const usernames = this.state.feedbackArr.map(x => x.username).join(' ,');
+        const usernames = this.state.feedbackArr.map(x => x.username).join(', ');
         const init = getInitFormik(communicationLog, communicationSettings, usernames);
         return init;
     };

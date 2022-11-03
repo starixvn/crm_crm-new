@@ -225,7 +225,7 @@ export class AddRelatedCustomerDialog extends Component {
                 };
             });
 
-            errMsgs.push(this.getErrMsgs(errMsgs, response.data));
+            this.getErrMsgs(errMsgs, response.data);
 
             if (errMsgs.length > 0) {
                 relatedCustomerResults = [];
