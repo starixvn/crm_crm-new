@@ -41420,32 +41420,9 @@ class Site {
   !*** ./www/sources/js/components/Layout.jsx ***!
   \**********************************************/
 /*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Layout; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/lib/index.js");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_toastify__WEBPACK_IMPORTED_MODULE_1__);
-
-
-class Layout extends react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
-  render() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_toastify__WEBPACK_IMPORTED_MODULE_1__["ToastContainer"], {
-      limit: 1,
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      transition: react_toastify__WEBPACK_IMPORTED_MODULE_1__["Slide"],
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: false
-    }), this.props.children);
-  }
-
-}
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nError: ENOENT: no such file or directory, open 'D:\\Project\\crm-new\\CRM.Website\\www\\sources\\js\\components\\Layout.jsx'");
 
 /***/ }),
 
