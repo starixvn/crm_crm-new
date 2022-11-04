@@ -45,7 +45,7 @@ export default class Chart extends Component {
                     <Modal.Title as="div">{chartInfo.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <ResponsiveContainer width="100%" height={data.length > 5 ? 740 : 780}>
+                <ResponsiveContainer width="100%" height={data.length > 5 ? 820 : 700}>
                     <BarChart
                         width={1100}
                         data={data}
@@ -55,8 +55,8 @@ export default class Chart extends Component {
                         barCategoryGap={0}
                         barGap={0}
                     >
-                        <XAxis dataKey="name" scaleToFit="true" verticalAnchor= "middle"
-                            interval={0} angle= {data.length > 5 ? -90 : 0} dy={data.length > 5 ? 120 : 0}
+                        <XAxis dataKey="name" scaleToFit={true} verticalAnchor= "start" textAnchor="end"
+                            interval={0} angle= {data.length > 5 ? -90 : 0} dy={10}
                         />
                         <YAxis label={{ position: 'top', dy: -10, value: 'Feedback(s)'}} allowDataOverflow={true}/>
                         <Legend wrapperStyle={{ bottom: 5, left: 75 }} />

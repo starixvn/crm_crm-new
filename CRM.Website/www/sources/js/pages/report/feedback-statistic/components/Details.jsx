@@ -66,7 +66,7 @@ export class Details extends Component {
                         value.subSettingId.map((subId, index) => {
                             const filterSub = filterCategory.childSettings.find(el => el.subCategoryId === subId);
                             return (
-                                <div key={index} className="ml-3 py-1 font-italic">{filterSub.name}</div>
+                                <div key={index} className="ml-3 py-1 font-italic">{filterSub?.name}</div>
                             );
                         })
                     }
