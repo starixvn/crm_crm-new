@@ -55,10 +55,10 @@ export default class Chart extends Component {
                         barCategoryGap={0}
                         barGap={0}
                     >
-                        <XAxis dataKey="name" scaleToFit="true" verticalAnchor= "start"
+                        <XAxis dataKey="name" scaleToFit="true" verticalAnchor= "middle"
                             interval={0} angle= {data.length > 5 ? -90 : 0} dy={data.length > 5 ? 120 : 0}
                         />
-                        <YAxis label={{ position: 'top', dy: -10, value: 'Feedback(s)'}} />
+                        <YAxis label={{ position: 'top', dy: -10, value: 'Feedback(s)'}} allowDataOverflow={true}/>
                         <Legend wrapperStyle={{ bottom: 5, left: 75 }} />
                         {labels.map((label, key) => (
                             <Bar label={{ position: 'top'}} dataKey={label} key={key}
