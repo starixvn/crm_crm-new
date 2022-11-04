@@ -76,7 +76,7 @@ export class Filter extends Component {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
             pageIndex: 1,
-            pageSize: 100
+            pageSize: this.props.gridParams.pageSize
         };
         if(this.validateDuration(fromDuration, toDuration)){
             this.props.setGridParams(params);
@@ -225,5 +225,8 @@ export class Filter extends Component {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
-
-export default connect(null, mapDispatchToProps)(Filter);
+const mapStateToProps = state => {
+    const { gridParams } = state;
+    return { gridParams };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);

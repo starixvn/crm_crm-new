@@ -1,6 +1,8 @@
 @import '../../../abstracts/variables';
 .feedback-statistic{
     .form-filter {
+        min-width: 1120px;
+        
         .react-datepicker__input-container input{
             width: 100% !important;
         }
@@ -30,17 +32,8 @@
         }
     }
     
-    .form-filter {
-         min-width: 1120px;
-    }
-    
     .cursor-pointer{
         cursor: pointer;
-    }
-    .fix-table-container .fix-table .header-content {
-        position: sticky;
-        top: 0;
-        z-index: 0;
     }
 
     .fix-table-container{
@@ -68,8 +61,6 @@
         }
     
         .body-content{
-            overflow-y: unset;
-            overflow-x: unset;
             tbody .child{ 
                 background-color: #fff !important;
             }
@@ -86,6 +77,11 @@
             }
     
             .disable-click{
+                pointer-events: none;
+            }
+
+            .disable-click-subtotal{
+                font-weight: 600;
                 pointer-events: none;
             }
         }

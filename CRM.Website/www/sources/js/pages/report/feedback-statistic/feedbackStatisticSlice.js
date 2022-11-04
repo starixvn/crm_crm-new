@@ -1,6 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
-    gridParams: null,
+    gridParams: {
+        pageIndex: 1,
+        pageSize: 100
+    },
     gridParamDetails: {
         pageIndex: 1,
         pageSize: 100

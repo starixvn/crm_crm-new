@@ -188,11 +188,12 @@
 
         protected static string GetFeedbackCellValue(FeedbackDetail feedback)
         {
+            var creatorName = feedback.CreatorName != null ? feedback.CreatorName : feedback.Creator;
             var cellValue = string.Format(
                 "{0}\n{1}\n{2}\n{3}",
                 feedback.Subject,
                 "Feedback date " + feedback.FeedbackDate.ToShortDateTimeFormat(),
-                "By " + feedback.CreatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
+                "By " + creatorName + " on " + feedback.CreateDate.ToShortDateTimeFormat(),
                 "Solving Duration: " + feedback.DurationTime);
 
             if (!string.IsNullOrEmpty(feedback.ReviewerName))
