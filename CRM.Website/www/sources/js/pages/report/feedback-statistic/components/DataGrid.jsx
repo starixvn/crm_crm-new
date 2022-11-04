@@ -80,14 +80,14 @@ export class DataGrid extends Component {
         const {toggleRow} = this.state;
         const usernames = this.props.gridData.usernames;
         cells.push(
-            <Cell className='subcategory first-column'>
+            <Cell key={`subcategory-${index}`} className='subcategory first-column'>
                 <span className={`expand-icon fa pr-2 ${!toggleRow.includes(item.id) ? 'fa-caret-down' : 'fa-caret-right'}`} />
                 <span >{`${item.name} - ${item.feedbackSubcategories.length} item(s)`}</span>
             </Cell>
         );
-        usernames.forEach(() =>{
+        usernames.forEach(username =>{
             cells.push(
-                <Cell className='subcategory' />
+                <Cell key={`subcategory-userName-${username.id}`} className='subcategory' />
             );
         });
         rows.push(
@@ -101,7 +101,7 @@ export class DataGrid extends Component {
             );
             if(!toggleRow.includes(item.id)){
                 cellsSubTotal.push(
-                    <Cell className='child sub-total pl-4 first-column'>{`Sub Total (${item.subTotal.total})`}</Cell>
+                    <Cell key={`sub-total-${item.id}`} className='child sub-total pl-4 first-column'>{`Sub Total (${item.subTotal.total})`}</Cell>
                 );
                 item.subTotal.resolves.forEach((count, index) =>{
                     cellsSubTotal.push(
@@ -152,7 +152,7 @@ export class DataGrid extends Component {
         cells.push(<Cell className = 'first-column'>Grand Total</Cell>);
         gridData.grandTotals.forEach((item,index) =>{
             cells.push(
-            <Cell className={`${item > 0 ? this.styleCLick : this.styleDisableCLick } text-center`}
+            <Cell key={`grand-total-${index}`} className={`${item > 0 ? this.styleCLick : this.styleDisableCLick } text-center`}
                 onClick={() => this.handleShowDetails(gridData.usernames[index].id,0,0)}
             >
                 {item}

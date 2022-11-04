@@ -60,8 +60,8 @@ export class Details extends Component {
         return categories.map((value, key) => {
             const filterCategory = mainCategories.find(el => el.settingId === value.settingId);
             return (
-                <div>
-                    <div className="font-weight-bold" key={key}>{filterCategory.settingValue}</div>
+                <div key={key}>
+                    <div className="font-weight-bold" >{filterCategory.settingValue}</div>
                     {
                         value.subSettingId.map((subId, index) => {
                             const filterSub = filterCategory.childSettings.find(el => el.subCategoryId === subId);
@@ -104,7 +104,7 @@ export class Details extends Component {
                     </div>
                     <div className="pl-3">
                         <div className="py-1">Feedback date <strong>{feedbackDateFormat}</strong></div>
-                        <div className="py-1">By<strong> {item.creatorName} </strong>on {createDateFormatDate}</div>
+                        <div className="py-1">By<strong> {item.creator} </strong>on {createDateFormatDate}</div>
                         <div className="py-1">Solving Duration: {item.durationTime}</div>
                         {
                             item.reviewerName &&
