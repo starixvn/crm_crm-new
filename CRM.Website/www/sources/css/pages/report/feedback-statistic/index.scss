@@ -132,6 +132,10 @@
 
         .recharts-default-legend{
             width: 98%;
+
+            li{
+                width: 100px !important;
+            }
         }
 
         .recharts-legend-wrapper{

@@ -55,7 +55,7 @@ export default class Chart extends Component {
                         barCategoryGap={0}
                         barGap={0}
                     >
-                        <XAxis dataKey="name" scaleToFit={true} verticalAnchor= "start" textAnchor="end"
+                        <XAxis dataKey="name" scaleToFit={true} verticalAnchor= "start" textAnchor="end" height={labels.length > 50 ? 300 : 20}
                             interval={0} angle= {data.length > 5 ? -90 : 0} dy={10}
                         />
                         <YAxis label={{ position: 'top', dy: -10, value: 'Feedback(s)'}} allowDataOverflow={true}/>
