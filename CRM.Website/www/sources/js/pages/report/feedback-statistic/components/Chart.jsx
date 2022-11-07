@@ -7,6 +7,22 @@ import { Bar, BarChart, Legend, XAxis, YAxis, ResponsiveContainer } from 'rechar
 export default class Chart extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            data: [],
+            labels: []
+        };
+    }
+
+    componentDidMount() {
+        const { chartInfo } = this.props;
+        const data = this.getDataChart(chartInfo);
+        const labels = this.getLabels(chartInfo);
+        this.setStateData(data, labels);
+    }
+
+    setStateData = (data, labels) =>{
+        this.setState({data, labels});
     }
 
     getDataChart = chartInfo => {
@@ -33,9 +49,11 @@ export default class Chart extends Component {
     };
 
     render() {
+        const {data, labels} = this.state;
+        if(!data || !labels || (data.length === 0 || labels.length === 0)){
+            return null;
+        }
         const { chartInfo } = this.props;
-        const data = this.getDataChart(chartInfo);
-        const labels = this.getLabels(chartInfo);
         return (
             <Modal className='chart-modal-feedback-statistics' show dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl"
@@ -55,11 +73,11 @@ export default class Chart extends Component {
                         barCategoryGap={0}
                         barGap={0}
                     >
-                        <XAxis dataKey="name" scaleToFit={true} verticalAnchor= "start" textAnchor="end" height={labels.length > 50 ? 300 : 20}
+                        <XAxis dataKey="name" scaleToFit verticalAnchor= "start" textAnchor="end" height={labels.length > 50 ? 300 : 20}
                             interval={0} angle= {data.length > 5 ? -90 : 0} dy={10}
                         />
-                        <YAxis label={{ position: 'top', dy: -10, value: 'Feedback(s)'}} allowDataOverflow={true}/>
-                        <Legend wrapperStyle={{ bottom: 5, left: 75 }} />
+                        <YAxis label={{ position: 'top', dy: -10, value: 'Feedback(s)'}} allowDataOverflow/>
+                        <Legend wrapperStyle={{ bottom: 5, left: 75, top: labels.length > 50 ? 500 : 760}} />
                         {labels.map((label, key) => (
                             <Bar label={{ position: 'top'}} dataKey={label} key={key}
                                 maxBarSize={20} fill={getBackGroundColor(key)}
