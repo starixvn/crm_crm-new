@@ -62,14 +62,15 @@
         }
 
         public async Task<IEnumerable<VoidingMessageUserName>> VoidingHisMessageUserNameList(
-           IEnumerable<VoidingHisMessage>  messageImportCheck
+           IEnumerable<VoidingHisMessage> messageImportCheck
             )
         {
             var criteria = new GetVoidingHisMessageUserNameCriteria
             {
                 Messages = messageImportCheck.ToXML("root").ToString()
             };
-            return await baseService.GetDataAsync<VoidingMessageUserName>(criteria);
+
+            return await baseService.GetDataFromSiteDbAsync<VoidingMessageUserName>(criteria);
         }
 
         public async Task<IEnumerable<VoidingMessageUserName>> ImportVoidingMessageAsync(
@@ -81,9 +82,16 @@
         {
             const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' UsernameList='{2}' CustIdList='{3}'/>";
             var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag);
+            var voidingMessageGroupBy = voidingMessageUserName.GroupBy(x => new { x.RequestId, x.MessageId }).Select(y => new VoidingMessageUserName
+            {
+                CustIdList = String.Join(",", y.Select(u => u.CustIdList)),
+                RequestId = y.Key.RequestId,
+                MessageId = y.Key.MessageId,
+                UsernameList = String.Join(",", y.Select(u => u.UsernameList))
+            });
             foreach (var message in voidingMessages)
             {
-                VoidingMessageUserName userName = voidingMessageUserName.FirstOrDefault(x => x.MessageId == message.MessageId && x.RequestId == message.RequestId);
+                VoidingMessageUserName userName = voidingMessageGroupBy.FirstOrDefault(x => x.MessageId == message.MessageId && x.RequestId == message.RequestId);
 
                 stringBuilder.AppendFormat(XmlTemplate,
                     message.MessageId,
@@ -129,7 +137,7 @@
         {
             const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' />";
             var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag);
-            foreach(var voidingMessageUserName in voidingMessageUserNames)
+            foreach (var voidingMessageUserName in voidingMessageUserNames)
             {
                 stringBuilder.AppendFormat(XmlTemplate, voidingMessageUserName.MessageId, voidingMessageUserName.RequestId);
             }
