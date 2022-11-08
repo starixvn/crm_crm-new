@@ -1,5 +1,6 @@
 ﻿namespace CRM.Letstalk.Core.Models
 {
+    using CRM.Letstalk.Client.Models;
     using Newtonsoft.Json;
 
     public class HookEvent

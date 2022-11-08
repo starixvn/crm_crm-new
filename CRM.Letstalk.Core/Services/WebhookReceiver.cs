@@ -38,16 +38,19 @@
 
             string requestJson;
             var botConfig = botConfigs.FirstOrDefault(config => config.BotAccountId == botId);
-            using (TextReader reader = new StreamReader(request.Body))
+            if (botConfig is not null)
             {
-                requestJson = await reader.ReadToEndAsync();
-            }
+                using (TextReader reader = new StreamReader(request.Body))
+                {
+                    requestJson = await reader.ReadToEndAsync();
+                }
 
-            var rawData = jwtService.Decode(botConfig.SecureKey, requestJson.Trim());
-            logService.LogInformation(rawData);
-            var data = JObject.Parse(rawData);
-            var hookEvent = data.ToObject<HookEvent>();
-            await eventHandler(hookEvent.Type).EventHandleAsync(hookEvent, botConfig);
+                var rawData = jwtService.Decode(botConfig.SecureKey, requestJson.Trim());
+                logService.LogInformation(rawData);
+                var data = JObject.Parse(rawData);
+                var hookEvent = data.ToObject<HookEvent>();
+                await eventHandler(hookEvent.Type).EventHandleAsync(hookEvent, botConfig);
+            }
         }
     }
 }

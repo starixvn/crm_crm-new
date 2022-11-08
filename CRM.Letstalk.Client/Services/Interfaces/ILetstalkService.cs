@@ -8,13 +8,13 @@
 
     public interface ILetstalkService
     {
-        Task<PushMessageResult> PushAsync(IEnumerable<string> accountIds, Payload payload);
-
         Task<PushMessageResult> PushAsync(IEnumerable<string> accountIds, string message, DateTime? expiredTime = null);
 
         Task<PushMessageResult> PushAsync(string accountId, string message, DateTime? expiredTime = null);
 
         Task<PushMessageResult> PushAsync(IEnumerable<string> accountIds, Message message, DateTime? expiredTime = null);
+
+        Task<PushMessageResult> PushImageAsync(IEnumerable<string> accountIds, ImageModel message, DateTime? expiredTime = null);
 
         Task<BaseResult> PushRoomAsync(string chatroomToken, string message, DateTime? expiredTime = null);
 

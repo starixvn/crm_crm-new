@@ -99,7 +99,7 @@
             return result;
         }
 
-        public async Task<PushMessageResult> PushAsync(IEnumerable<string> accountIds, Payload payload)
+        private async Task<PushMessageResult> PushAsync(IEnumerable<string> accountIds, Payload payload, string type = MessageType.Text)
         {
             ValidateInputParam(nameof(accountIds), accountIds);
             ValidateInputParam(nameof(payload), payload);
@@ -110,7 +110,7 @@
             payload.Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             payload.HashType = botConfig.EncryptionMode;
             payload.From = botConfig.BusinessAccountType;
-            payload.Type = MessageType.Text;
+            payload.Type = type;
             payload.Id = payloadId;
             payload.Receiver = accountIdToLowerList.ElementAt(0);
             payload.HashId = botConfig.ChatKeyVersion;
@@ -143,6 +143,19 @@
             payload.HashContent = cryptographyService.Encrypt(formattedMessage, botConfig.ChatKey, payload.HashContentKey);
 
             return await PushAsync(accountIds, payload);
+        }
+
+        public async Task<PushMessageResult> PushImageAsync(IEnumerable<string> accountIds, ImageModel message, DateTime? expiredTime = null)
+        {
+            ValidateInputParam(nameof(accountIds), accountIds);
+            ValidateInputParam(nameof(message), message);
+
+            var payload = new Payload();
+            var formattedMessage = JsonConvert.SerializeObject(message, DefaultJsonSerializeSetting);
+            payload.HashContentKey = cryptographyService.Hash(formattedMessage);
+            payload.HashContent = cryptographyService.Encrypt(formattedMessage, botConfig.ChatKey, payload.HashContentKey);
+
+            return await PushAsync(accountIds, payload, MessageType.Image);
         }
 
         public async Task<BaseResult> PushRoomAsync(string chatroomToken, string message, DateTime? expiredTime = null)

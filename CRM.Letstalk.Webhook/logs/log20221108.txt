@@ -1,0 +1,131 @@
+2022-11-08 10:44:22.226 +07:00 [INF] {"type":"message","timestamp":1667879058393,"source":{"type":"user","user_id":"t381023"},"payload":"{\"id\":34506,\"uuid\":\"4DEC2746-8220-441A-BE90-49E6D4E88051-4609-000003DB205B591E\",\"hash_id\":1,\"hash_content_key\":\"d5f69333fe5d11ca4911b236cfe03eef3aa3ac8a\",\"hash_type\":5,\"receiver\":\"@ow_local_2\",\"send_time\":\"1667879058207\",\"hash_content\":\"OOH\\/4r8anezEgm7q5wTNg1fYaJKDJQk133quFEV0woA=\",\"time\":\"1667879058196\",\"type\":0,\"user_id\":\"t381023\",\"from\":0,\"duplicate_check_mode\":1,\"display_name\":\"Oliver Dang\",\"read_to_delete_millisecond\":0}","deviceInfo":{"device":"ios","osVer":"15.6.1","clietVer":"1.4.267"},"iat":1667879058,"exp":1667884058}
+2022-11-08 10:44:22.597 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Security.Cryptography.CryptographicException: Padding is invalid and cannot be removed.
+   at Internal.Cryptography.UniversalCryptoDecryptor.GetPaddingLength(ReadOnlySpan`1 block)
+   at Internal.Cryptography.UniversalCryptoDecryptor.UncheckedTransformFinalBlock(ReadOnlySpan`1 inputBuffer, Span`1 outputBuffer)
+   at Internal.Cryptography.UniversalCryptoDecryptor.UncheckedTransformFinalBlock(Byte[] inputBuffer, Int32 inputOffset, Int32 inputCount)
+   at Internal.Cryptography.UniversalCryptoTransform.TransformFinalBlock(Byte[] inputBuffer, Int32 inputOffset, Int32 inputCount)
+   at System.Security.Cryptography.CryptoStream.ReadAsyncCore(Memory`1 buffer, CancellationToken cancellationToken, Boolean useAsync)
+   at System.Security.Cryptography.CryptoStream.Read(Byte[] buffer, Int32 offset, Int32 count)
+   at System.IO.StreamReader.ReadBuffer()
+   at System.IO.StreamReader.ReadToEnd()
+   at CRM.Letstalk.Client.Services.CryptographyService.Decrypt(String encryptedMessage, String key, String salt) in D:\Project\crm-new\CRM.Letstalk.Client\Services\CryptographyService.cs:line 42
+   at CRM.Letstalk.Core.Services.EventHandler.ReceiveMessageEventHandler.EventHandleAsync(HookEvent hookEvent, BotConfig botConfig) in D:\Project\crm-new\CRM.Letstalk.Core\Services\EventHandler\ReceiveMessageEventHandler.cs:line 29
+   at CRM.Letstalk.Core.Services.WebhookReceiver.ReceiveAsync(HttpRequest request, Int32 botId) in D:\Project\crm-new\CRM.Letstalk.Core\Services\WebhookReceiver.cs:line 52
+   at CRM.Letstalk.Webhook.Controllers.LetstalkWebhookController.WebhookReceiver(Int32 id) in D:\Project\crm-new\CRM.Letstalk.Webhook\Controllers\LetstalkWebhookController.cs:line 31
+   at lambda_method4(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Ro2022-11-08 11:24:09.276 +07:00 [INF] {"type":"message","timestamp":1667881448701,"source":{"type":"user","user_id":"t381023"},"payload":"{\"id\":34519,\"uuid\":\"4DEC2746-8220-441A-BE90-49E6D4E88051-4609-000003DB205B591E\",\"hash_id\":1,\"hash_content_key\":\"42d0946094e72ce3472d96f7d93ff9c8ed0c48f2\",\"hash_type\":5,\"receiver\":\"@ow_local_2\",\"send_time\":\"1667881448587\",\"hash_content\":\"3TmnHpjcjiwB8aWkRLC67g==\",\"time\":\"1667881448581\",\"type\":0,\"user_id\":\"t381023\",\"from\":0,\"duplicate_check_mode\":1,\"display_name\":\"Oliver Dang\",\"read_to_delete_millisecond\":0}","deviceInfo":{"device":"ios","osVer":"15.6.1","clietVer":"1.4.267"},"iat":1667881448,"exp":1667886448}
+2022-11-08 11:24:42.826 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Security.Cryptography.CryptographicException: Padding is invalid and cannot be removed.
+   at Internal.Cryptography.UniversalCryptoDecryptor.GetPaddingLength(ReadOnlySpan`1 block)
+   at Internal.Cryptography.UniversalCryptoDecryptor.UncheckedTransformFinalBlock(ReadOnlySpan`1 inputBuffer, Span`1 outputBuffer)
+   at Internal.Cryptography.UniversalCryptoDecryptor.UncheckedTransformFinalBlock(Byte[] inputBuffer, Int32 inputOffset, Int32 inputCount)
+   at Internal.Cryptography.UniversalCryptoTransform.TransformFinalBlock(Byte[] inputBuffer, Int32 inputOffset, Int32 inputCount)
+   at System.Security.Cryptography.CryptoStream.ReadAsyncCore(Memory`1 buffer, CancellationToken cancellationToken, Boolean useAsync)
+   at System.Security.Cryptography.CryptoStream.Read(Byte[] buffer, Int32 offset, Int32 count)
+   at System.IO.StreamReader.ReadBuffer()
+   at System.IO.StreamReader.ReadToEnd()
+   at CRM.Letstalk.Client.Services.CryptographyService.Decrypt(String encryptedMessage, String key, String salt) in D:\Project\crm-new\CRM.Letstalk.Client\Services\CryptographyService.cs:line 42
+   at CRM.Letstalk.Core.Services.EventHandler.ReceiveMessageEventHandler.EventHandleAsync(HookEvent hookEvent, BotConfig botConfig) in D:\Project\crm-new\CRM.Letstalk.Core\Services\EventHandler\ReceiveMessageEventHandler.cs:line 31
+   at CRM.Letstalk.Core.Services.WebhookReceiver.ReceiveAsync(HttpRequest request, Int32 botId) in D:\Project\crm-new\CRM.Letstalk.Core\Services\WebhookReceiver.cs:line 52
+   at CRM.Letstalk.Webhook.Controllers.LetstalkWebhookController.WebhookReceiver(Int32 id) in D:\Project\crm-new\CRM.Letstalk.Webhook\Controllers\LetstalkWebhookController.cs:line 31
+   at lambda_method41(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-11-08 11:24:47.596 +07:00 [INF] {"type":"message","timestamp":1667881487430,"source":{"type":"user","user_id":"t381023"},"payload":"{\"id\":34520,\"uuid\":\"4DEC2746-8220-441A-BE90-49E6D4E88051-4609-000003DB205B591E\",\"hash_id\":1,\"hash_content_key\":\"fd24f58405b52d78164419086ddc650e73e66063\",\"hash_type\":5,\"receiver\":\"@ow_local_2\",\"send_time\":\"1667881486973\",\"hash_content\":\"v7CIgXTOx5MObN\\/oJ8v07Q==\",\"time\":\"1667881486967\",\"type\":0,\"user_id\":\"t381023\",\"from\":0,\"duplicate_check_mode\":1,\"display_name\":\"Oliver Dang\",\"read_to_delete_millisecond\":0}","deviceInfo":{"device":"ios","osVer":"15.6.1","clietVer":"1.4.267"},"iat":1667881487,"exp":1667886487}
+2022-11-08 11:25:11.198 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Security.Cryptography.CryptographicException: Padding is invalid and cannot be removed.
+   at Internal.Cryptography.UniversalCryptoDecryptor.GetPaddingLength(ReadOnlySpan`1 block)
+   at Internal.Cryptography.UniversalCryptoDecryptor.UncheckedTransformFinalBlock(ReadOnlySpan`1 inputBuffer, Span`1 outputBuffer)
+   at Internal.Cryptography.UniversalCryptoDecryptor.UncheckedTransformFinalBlock(Byte[] inputBuffer, Int32 inputOffset, Int32 inputCount)
+   at Internal.Cryptography.UniversalCryptoTransform.TransformFinalBlock(Byte[] inputBuffer, Int32 inputOffset, Int32 inputCount)
+   at System.Security.Cryptography.CryptoStream.ReadAsyncCore(Memory`1 buffer, CancellationToken cancellationToken, Boolean useAsync)
+   at System.Security.Cryptography.CryptoStream.Read(Byte[] buffer, Int32 offset, Int32 count)
+   at System.IO.StreamReader.ReadBuffer()
+   at System.IO.StreamReader.ReadToEnd()
+   at CRM.Letstalk.Client.Services.CryptographyService.Decrypt(String encryptedMessage, String key, String salt) in D:\Project\crm-new\CRM.Letstalk.Client\Services\CryptographyService.cs:line 42
+   at CRM.Letstalk.Core.Services.EventHandler.ReceiveMessageEventHandler.EventHandleAsync(HookEvent hookEvent, BotConfig botConfig) in D:\Project\crm-new\CRM.Letstalk.Core\Services\EventHandler\ReceiveMessageEventHandler.cs:line 31
+   at CRM.Letstalk.Core.Services.WebhookReceiver.ReceiveAsync(HttpRequest request, Int32 botId) in D:\Project\crm-new\CRM.Letstalk.Core\Services\WebhookReceiver.cs:line 52
+   at CRM.Letstalk.Webhook.Controllers.LetstalkWebhookController.WebhookReceiver(Int32 id) in D:\Project\crm-new\CRM.Letstalk.Webhook\Controllers\LetstalkWebhookController.cs:line 31
+   at lambda_method41(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   a2022-11-08 11:36:17.266 +07:00 [INF] {"type":"message","timestamp":1667882172988,"source":{"type":"user","user_id":"t381023"},"payload":"{\"id\":34525,\"uuid\":\"4DEC2746-8220-441A-BE90-49E6D4E88051-4609-000003DB205B591E\",\"hash_id\":1,\"hash_content_key\":\"4357ba4621f847d1c27a8fb86b9d41fac1868393\",\"hash_type\":5,\"receiver\":\"@ow_local_2\",\"send_time\":\"1667882172859\",\"hash_content\":\"PPP8BO+k2+W2fGKG68RW4Q==\",\"time\":\"1667882172852\",\"type\":0,\"user_id\":\"t381023\",\"from\":0,\"duplicate_check_mode\":1,\"display_name\":\"Oliver Dang\",\"read_to_delete_millisecond\":0}","deviceInfo":{"device":"ios","osVer":"15.6.1","clietVer":"1.4.267"},"iat":1667882173,"exp":1667887173}
+2022-11-08 11:36:17.674 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Security.Cryptography.CryptographicException: The input data is not a complete block.
+   at Internal.Cryptography.UniversalCryptoDecryptor.UncheckedTransformFinalBlock(ReadOnlySpan`1 inputBuffer, Span`1 outputBuffer)
+   at Internal.Cryptography.UniversalCryptoDecryptor.UncheckedTransformFinalBlock(Byte[] inputBuffer, Int32 inputOffset, Int32 inputCount)
+   at Internal.Cryptography.UniversalCryptoTransform.TransformFinalBlock(Byte[] inputBuffer, Int32 inputOffset, Int32 inputCount)
+   at System.Security.Cryptography.CryptoStream.FlushFinalBlockAsync(Boolean useAsync, CancellationToken cancellationToken)
+   at System.Security.Cryptography.CryptoStream.FlushFinalBlock()
+   at CRM.Letstalk.Client.Services.CryptographyService.Decrypt(String encryptedMessage, String key, String salt) in D:\Project\crm-new\CRM.Letstalk.Client\Services\CryptographyService.cs:line 42
+   at CRM.Letstalk.Core.Services.EventHandler.ReceiveMessageEventHandler.EventHandleAsync(HookEvent hookEvent, BotConfig botConfig) in D:\Project\crm-new\CRM.Letstalk.Core\Services\EventHandler\ReceiveMessageEventHandler.cs:line 31
+   at CRM.Letstalk.Core.Services.WebhookReceiver.ReceiveAsync(HttpRequest request, Int32 botId) in D:\Project\crm-new\CRM.Letstalk.Core\Services\WebhookReceiver.cs:line 52
+   at CRM.Letstalk.Webhook.Controllers.LetstalkWebhookController.WebhookReceiver(Int32 id) in D:\Project\crm-new\CRM.Letstalk.Webhook\Controllers\LetstalkWebhookController.cs:line 31
+   at lambda_method4(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-11-08 11:36:30.788 +07:02022-11-08 14:17:36.902 +07:00 [INF] {"type":"message","timestamp":1667891856302,"source":{"type":"user","user_id":"t381023"},"payload":"{\"id\":34559,\"uuid\":\"4DEC2746-8220-441A-BE90-49E6D4E88051-4609-000003DB205B591E\",\"hash_id\":1,\"hash_content_key\":\"b2bf9338569f7d7fe04e4b6aaff01e64e20b71fa\",\"hash_type\":5,\"receiver\":\"@ow_local_2\",\"send_time\":\"1667891856193\",\"hash_content\":\"Wq0b0S2SiCF8NYMsZc03iw==\",\"time\":\"1667891856185\",\"type\":0,\"user_id\":\"t381023\",\"from\":0,\"duplicate_check_mode\":1,\"display_name\":\"Oliver Dang\",\"read_to_delete_millisecond\":0}","deviceInfo":{"device":"ios","osVer":"15.6.1","clietVer":"1.4.267"},"iat":1667891856,"exp":1667896856}
+2022-11-08 14:17:48.786 +07:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Security.Cryptography.CryptographicException: Padding is invalid and cannot be removed.
+   at Internal.Cryptography.UniversalCryptoDecryptor.GetPaddingLength(ReadOnlySpan`1 block)
+   at Internal.Cryptography.UniversalCryptoDecryptor.UncheckedTransformFinalBlock(ReadOnlySpan`1 inputBuffer, Span`1 outputBuffer)
+   at Internal.Cryptography.UniversalCryptoDecryptor.UncheckedTransformFinalBlock(Byte[] inputBuffer, Int32 inputOffset, Int32 inputCount)
+   at Internal.Cryptography.UniversalCryptoTransform.TransformFinalBlock(Byte[] inputBuffer, Int32 inputOffset, Int32 inputCount)
+   at System.Security.Cryptography.CryptoStream.ReadAsyncCore(Memory`1 buffer, CancellationToken cancellationToken, Boolean useAsync)
+   at System.Security.Cryptography.CryptoStream.Read(Byte[] buffer, Int32 offset, Int32 count)
+   at System.IO.StreamReader.ReadBuffer()
+   at System.IO.StreamReader.ReadToEnd()
+   at CRM.Letstalk.Client.Services.CryptographyService.Decrypt(String encryptedMessage, String key, String salt) in D:\Project\crm-new\CRM.Letstalk.Client\Services\CryptographyService.cs:line 42
+   at CRM.Letstalk.Core.Services.EventHandler.ReceiveMessageEventHandler.EventHandleAsync(HookEvent hookEvent, BotConfig botConfig) in D:\Project\crm-new\CRM.Letstalk.Core\Services\EventHandler\ReceiveMessageEventHandler.cs:line 31
+   at CRM.Letstalk.Core.Services.WebhookReceiver.ReceiveAsync(HttpRequest request, Int32 botId) in D:\Project\crm-new\CRM.Letstalk.Core\Services\WebhookReceiver.cs:line 52
+   at CRM.Letstalk.Webhook.Controllers.LetstalkWebhookController.WebhookReceiver(Int32 id) in D:\Project\crm-new\CRM.Letstalk.Webhook\Controllers\LetstalkWebhookController.cs:line 31
+   at lambda_method41(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddlew
