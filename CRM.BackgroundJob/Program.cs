@@ -32,9 +32,8 @@
             WebHost.CreateDefaultBuilder(args)
                 .UseUrls($"http://*:5000")
                 .UseStartup<Startup>()
-                .ConfigureLogging(logging =>
-                {
-                    logging.AddSerilog();
-                });
+                .UseSerilog((hostingContext, loggerConfiguration) =>
+                    loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration)
+                );
     }
 }
