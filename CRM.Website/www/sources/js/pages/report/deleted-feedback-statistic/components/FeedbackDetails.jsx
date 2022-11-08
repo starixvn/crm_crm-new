@@ -86,7 +86,7 @@ export default class FeedbackDetails extends Component {
                 return {
                     id: sub.id,
                     value: sub.value,
-                    checked: settings.productIds.includes(sub.id)
+                    checked: settings.subProductIds.includes(sub.id)
                 };
             });
             const bettypes = data.settings.bettypes.filter(item => settings.subProductIds.includes(item.parentId) && item.parentId !== 0);

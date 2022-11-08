@@ -62,6 +62,10 @@
         }
     }
 
+    .icon {
+        cursor: pointer;
+    }
+
     .no-data {
         font-weight: bold;
     }
@@ -94,10 +98,6 @@
 
     .inprogress{
         background-color: #f5f5f5;
-    }
-
-    .icon {
-        cursor: pointer;
     }
 
     .table-container {

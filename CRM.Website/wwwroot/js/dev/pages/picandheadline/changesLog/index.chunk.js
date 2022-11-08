@@ -41022,7 +41022,10 @@ const LogActions = {
   UpdateCreditTerm: 910,
   RemoveCustomerFromCreditTermGroup: 911,
   SetCustomerToCreditTermGroup: 912,
-  AddTheGeneralInformationForSuperFromExistingSuper: 913
+  AddTheGeneralInformationForSuperFromExistingSuper: 913,
+  UpdateChatTypeMapping: 1008,
+  UpdateChatTypeMappingStatus: 1009,
+  InsertChatTypeMapping: 1007
 };
 const DefaultLanguages = {
   NotApply: 0,
@@ -44318,7 +44321,7 @@ class PicDataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         dangerouslySetInnerHTML: {
           __html: item.logTime
         }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.editBy), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.picTypeName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.pic), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.action), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, detailValuePic));
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.editBy), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.picTypeName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, item.action), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_react_grid_index__WEBPACK_IMPORTED_MODULE_4__["Cell"], null, detailValuePic));
     });
 
     _defineProperty(this, "renderDetailsValuePic", item => {
@@ -44624,6 +44627,7 @@ class PicFilter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     _defineProperty(this, "handleSubmit", () => {
       const {
         picName,
+        letstalkName,
         fromDate,
         toDate,
         editBy
@@ -44631,6 +44635,7 @@ class PicFilter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       const params = {
         picName: picName !== '' ? picName : null,
         editBy: editBy !== '' ? editBy : null,
+        letstalkName: letstalkName !== '' ? letstalkName : null,
         fromDate: _jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_6__["default"].toShortDateFormat(fromDate),
         toDate: _jsroot_common_dateTimeService__WEBPACK_IMPORTED_MODULE_6__["default"].toShortDateFormat(toDate),
         pageIndex: 1,
@@ -44651,6 +44656,7 @@ class PicFilter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     this.minToDate = _fromDate;
     this.state = {
       picName: '',
+      letstalkName: '',
       editBy: '',
       fromDate: _fromDate,
       toDate: currentDate
@@ -44660,6 +44666,7 @@ class PicFilter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
     const {
       picName,
+      letstalkName,
       fromDate,
       toDate,
       editBy
@@ -44679,6 +44686,16 @@ class PicFilter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       value: picName,
       name: "picName",
       id: "picName",
+      onChange: this.handleChange
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, {
+      className: "col-auto col-form-label"
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('LetstalkName')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Control, {
+      type: "text",
+      size: "sm",
+      className: "shadow-none",
+      name: "letstalkName",
+      id: "letstalkName",
+      value: letstalkName,
       onChange: this.handleChange
     })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Label, {
       htmlFor: "fromDate"
@@ -44715,13 +44732,11 @@ class PicFilter extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       autoComplete: "off",
       value: editBy,
       onChange: this.handleChange
-    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Group, {
-      className: "submit"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Button"], {
       size: "sm",
       variant: "primary",
       onClick: this.handleSubmit
-    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('Submit')))));
+    }, _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_7__["default"].getResource('Submit'))));
   }
 
 }

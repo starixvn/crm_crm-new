@@ -82,8 +82,8 @@ export class DataGrid extends Component {
         this.setState({
             isShowRemark: false,
             data: null
-        }, () => {
-            if (isSuccessful) {
+        },() => {
+            if(isSuccessful) {
                 this.props.getGridData(this.props.gridParams);
             }
         });

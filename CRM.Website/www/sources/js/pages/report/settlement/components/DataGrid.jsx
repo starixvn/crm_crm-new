@@ -45,7 +45,6 @@ export class DataGrid extends PureComponent {
             return [
                 <Fragment key={'body'}>
                     {childReports.map(item => this.renderRow(item))}
-                    {this.renderLastRow(total)}
                 </Fragment>
             ];
         }
@@ -74,7 +73,7 @@ export class DataGrid extends PureComponent {
         });
     };
 
-    renderLastRow = total => {
+    renderFooter = total => {
         return total.childReports.map((item, index) => {
             if (index === 0) {
                 return (
@@ -130,6 +129,7 @@ export class DataGrid extends PureComponent {
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
+                    footer={this.renderFooter(this.props.gridData.total)}
                     containerPadding={0}
                     adjustedHeight={10}
                 />

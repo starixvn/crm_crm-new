@@ -23822,7 +23822,10 @@ const LogActions = {
   UpdateCreditTerm: 910,
   RemoveCustomerFromCreditTermGroup: 911,
   SetCustomerToCreditTermGroup: 912,
-  AddTheGeneralInformationForSuperFromExistingSuper: 913
+  AddTheGeneralInformationForSuperFromExistingSuper: 913,
+  UpdateChatTypeMapping: 1008,
+  UpdateChatTypeMappingStatus: 1009,
+  InsertChatTypeMapping: 1007
 };
 const DefaultLanguages = {
   NotApply: 0,

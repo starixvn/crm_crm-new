@@ -41,7 +41,8 @@
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var(dynamicReport, settingItems)   = await GetDynamicReportData(criteria);
             var dynamicPaging = GetPagingLogList(criteria, dynamicReport.ChildReports);
-            foreach(var dynamic in dynamicPaging)
+            var dynamics = criteria.IsGetFullReport ? dynamicReport.ChildReports : dynamicPaging;
+            foreach (var dynamic in dynamics)
             {
                 foreach (var child in dynamic.ChildReports)
                 {
@@ -54,7 +55,7 @@
                 Id = dynamicReport.Id,
                 Name = dynamicReport.Name,
                 ShortName = dynamicReport.ShortName,
-                ChildReports = criteria.IsGetFullReport ? dynamicReport.ChildReports : dynamicPaging,
+                ChildReports = dynamics,
                 TotalChildReports = dynamicReport.TotalChildReports,
             };
         }

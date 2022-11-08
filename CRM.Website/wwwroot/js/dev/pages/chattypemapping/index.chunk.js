@@ -35277,7 +35277,10 @@ const LogActions = {
   UpdateCreditTerm: 910,
   RemoveCustomerFromCreditTermGroup: 911,
   SetCustomerToCreditTermGroup: 912,
-  AddTheGeneralInformationForSuperFromExistingSuper: 913
+  AddTheGeneralInformationForSuperFromExistingSuper: 913,
+  UpdateChatTypeMapping: 1008,
+  UpdateChatTypeMappingStatus: 1009,
+  InsertChatTypeMapping: 1007
 };
 const DefaultLanguages = {
   NotApply: 0,
@@ -37913,7 +37916,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!******************************************************************************!*\
   !*** ./www/sources/js/pages/chat-type-mapping/actions/dataHandlerActions.js ***!
   \******************************************************************************/
-/*! exports provided: setSettings, getSettings, setGridParams, setGridData, getGridData, setUpateActivePopup, updateActiveStatus, setRecipientData, getRecipientByRecipientType, setGroupHeadlineData, getGroupHeadlineByRecipient, exportExcelMapping, default */
+/*! exports provided: setSettings, getSettings, setGridParams, setGridData, getGridData, setUpateActivePopup, updateActiveStatus, deleteConversationGroup, setRecipientData, getRecipientByRecipientType, setGroupHeadlineData, getGroupHeadlineByRecipient, exportExcelMapping, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37925,6 +37928,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getGridData", function() { return getGridData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setUpateActivePopup", function() { return setUpateActivePopup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateActiveStatus", function() { return updateActiveStatus; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteConversationGroup", function() { return deleteConversationGroup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRecipientData", function() { return setRecipientData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRecipientByRecipientType", function() { return getRecipientByRecipientType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setGroupHeadlineData", function() { return setGroupHeadlineData; });
@@ -37986,9 +37990,15 @@ const setUpateActivePopup = data => {
 };
 const updateActiveStatus = params => async dispatch => {
   _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].blockUI();
-  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__["default"].postDataAsync(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('ChatTypeMapping/UpdateActiveStatus'), params).then(response => {
+  await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__["default"].getDataAsync(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('ChatTypeMapping/UpdateActiveStatus'), params).then(response => {
     dispatch(setUpateActiveResult(response.data));
   }).catch(_jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].handleAxiosError).then(() => _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].unblockUI());
+};
+const deleteConversationGroup = conversationId => async () => {
+  const url = _jsroot_common_site__WEBPACK_IMPORTED_MODULE_1__["default"].resolveClientUrl('ChatTypeMapping/DeleteConversationGroup');
+  return await _jsroot_common_dataService__WEBPACK_IMPORTED_MODULE_2__["default"].getDataAsync(url, {
+    conversationId
+  }).then(response => response);
 }; // Get Recipient by Recipient Type
 
 const setRecipientData = data => {
@@ -38043,6 +38053,7 @@ const actions = {
   setGridParams,
   setUpateActivePopup,
   updateActiveStatus,
+  deleteConversationGroup,
   getRecipientByRecipientType,
   getGroupHeadlineByRecipient,
   exportExcelMapping
@@ -38490,6 +38501,44 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }
     });
 
+    _defineProperty(this, "handleOpenDelete", conversationGroupId => {
+      this.setState({
+        deletePopup: {
+          isShow: true,
+          id: conversationGroupId
+        }
+      });
+    });
+
+    _defineProperty(this, "handleDelete", () => {
+      this.props.deleteConversationGroup(this.state.deletePopup.id).then(response => {
+        if (!response || !response.data) {
+          return;
+        }
+
+        if (response.data.isSuccessful) {
+          this.onClosePopupDelete(true);
+          react_toastify__WEBPACK_IMPORTED_MODULE_3__["toast"].success(_jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('DeleteChatTypeMappingSuccessfully'));
+        } else {
+          this.onClosePopupDelete(false);
+          react_toastify__WEBPACK_IMPORTED_MODULE_3__["toast"].error(response.data.message);
+        }
+      });
+    });
+
+    _defineProperty(this, "onClosePopupDelete", isSuccessful => {
+      this.setState({
+        deletePopup: {
+          isShow: false,
+          id: null
+        }
+      }, () => {
+        if (isSuccessful) {
+          this.props.getGridData(this.props.gridParams);
+        }
+      });
+    });
+
     _defineProperty(this, "handleOpenPopupEditRemark", item => {
       this.setState({
         isShowRemark: true,
@@ -38599,6 +38648,9 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: `fa fa-pencil icon-edit ${isBotRemovedStatus ? 'pointer-event-none' : ''}`,
         onClick: () => this.handleEdit(chatMapping)
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: `${chatMapping.isActive ? 'pointer-event-none' : 'rounded-circle'} fa fa-trash icon-delete`,
+        onClick: () => this.handleOpenDelete(chatMapping.conversationGroupId)
       })));
     });
 
@@ -38652,7 +38704,11 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     this.state = {
       data: null,
-      isShowRemark: false
+      isShowRemark: false,
+      deletePopup: {
+        isShow: false,
+        id: null
+      }
     };
   }
 
@@ -38697,6 +38753,12 @@ class DataGrid extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       content: confirmMsg,
       onSubmit: this.updateActiveStatus,
       onClose: this.onCloseConfirmPopupChangeActiveStaus
+    }), this.state.deletePopup.isShow && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_jsroot_components_ConfirmPopup__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      size: "lg",
+      title: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('Confirmation'),
+      content: _jsroot_common_langHelper__WEBPACK_IMPORTED_MODULE_6__["default"].getResource('ConfirmDeleteChatTypeMapping'),
+      onSubmit: this.handleDelete,
+      onClose: () => this.onClosePopupDelete(false)
     }), this.props.updatePersonalMappingData.isShow && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EditPersonalMappingPopup__WEBPACK_IMPORTED_MODULE_12__["default"], null), this.props.updateGroupMappingData.isShow && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EditGroupMappingPopup__WEBPACK_IMPORTED_MODULE_11__["default"], null), this.state.isShowRemark && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EditRemark__WEBPACK_IMPORTED_MODULE_13__["default"], {
       data: this.state.data,
       onClose: this.onClosePopupEditRemark

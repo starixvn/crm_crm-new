@@ -188,7 +188,7 @@
 
         protected static string GetFeedbackCellValue(FeedbackDetail feedback)
         {
-            var creatorName = feedback.CreatorName != null ? feedback.CreatorName : feedback.Creator;
+            var creatorName = feedback.CreatorName ?? feedback.Creator;
             var cellValue = string.Format(
                 "{0}\n{1}\n{2}\n{3}",
                 feedback.Subject,

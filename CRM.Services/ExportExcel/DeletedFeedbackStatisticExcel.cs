@@ -108,7 +108,6 @@
         protected internal virtual void SetStyle(ExcelWorksheet worksheet)
         {
             StyleDefault(worksheet);
-            worksheet.Cells.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
