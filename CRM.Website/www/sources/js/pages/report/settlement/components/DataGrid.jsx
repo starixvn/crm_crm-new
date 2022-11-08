@@ -40,7 +40,7 @@ export class DataGrid extends PureComponent {
     };
 
     buildBody = () => {
-        const { childReports, total } = this.props.gridData;
+        const { childReports } = this.props.gridData;
         if (childReports.length > 0) {
             return [
                 <Fragment key={'body'}>
