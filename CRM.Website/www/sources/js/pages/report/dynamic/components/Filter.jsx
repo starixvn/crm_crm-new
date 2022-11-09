@@ -80,11 +80,20 @@ export class Filter extends Component {
         maxDateEndWeek.setDate(maxDate.getDate() - maxDate.getDay() + 6);
         maxDate = maxDateEndWeek;
 
+        let currentToDate = new Date();
+        if(currentToDate < fromDate){
+            currentToDate = fromDate;
+        }else if(currentToDate > maxDate){
+            currentToDate = maxDate;
+        }else{
+            currentToDate = new Date(this.state.toDate);
+        }
+
         this.minToDate = fromDate;
-        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate;
+        this.maxToDate = maxDate < this.currentDate ? maxDate : this.currentDate;
         this.setState({
-            fromDate: fromDate,
-            toDate: this.maxToDate
+            fromDate,
+            toDate: currentToDate
         });
     };
 
@@ -92,7 +101,7 @@ export class Filter extends Component {
         const firstDayOfWeek = toDate.getDate() - toDate.getDay();
         const lastDayOfWeek = firstDayOfWeek + 6;
         toDate.setDate(lastDayOfWeek);
-        this.setState({ toDate: toDate });
+        this.setState({ toDate });
     };
 
     handleUpdateFromMonth = firstDateMonth => {
@@ -123,18 +132,28 @@ export class Filter extends Component {
         });
     };
 
-    handleHighlightDates = () => {
+    handleHighlightDates = datetime => {
         const highlightDates = [];
         for (let i = 0; i < 7; i++) {
-            const date = new Date(this.state.fromDate);
+            const date = new Date(datetime);
             date.setDate(date.getDate() + i);
             highlightDates[i] = date;
         }
         return highlightDates;
     };
 
-    getWeekYear(){
-        const date = new Date(this.state.fromDate);
+    handleHighlightToDates = datetime => {
+        const highlightDates = [];
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(datetime);
+            date.setDate(date.getDate() - i);
+            highlightDates[i] = date;
+        }
+        return highlightDates;
+    };
+
+    getWeekYear = dateTime => {
+        const date = new Date(dateTime);
         let oneJan = new Date(date.getFullYear(),0,1);
         let numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000)) - 7;
         let result = Math.ceil(( date.getDay() + 1 + numberOfDays) / 7);
@@ -149,6 +168,8 @@ export class Filter extends Component {
     renderFilterDate = () => {
         let resFromDate = {}, resToDate = {};
         let dateFormat = '';
+        let fromDateFormat = 'MMM dd, yyyy';
+        let toDateFormat = 'MMM dd, yyyy';
         switch (this.state.reportType) {
             case 1:
                 dateFormat = 'MMM dd, yyyy';
@@ -161,15 +182,17 @@ export class Filter extends Component {
                 break;
             case 2:
                 const propsDate = { showWeekNumbers: true };
-                dateFormat = this.getWeekYear() + ' (MMM dd, yyyy)';
+                fromDateFormat = this.getWeekYear(this.state.fromDate) + ' (MMM dd, yyyy)';
+                toDateFormat = this.getWeekYear(this.state.toDate) + ' (MMM dd, yyyy)';
                 resFromDate = {
                     ...propsDate,
                     onChange: this.handleUpdateFromWeek,
-                    highlightDates: this.handleHighlightDates()
+                    highlightDates: this.handleHighlightDates(this.state.fromDate)
                 };
                 resToDate = {
                     ...propsDate,
-                    onChange: this.handleUpdateToWeek
+                    onChange: this.handleUpdateToWeek,
+                    highlightDates: this.handleHighlightToDates(this.state.toDate)
                 };
                 break;
             case 3:
@@ -213,7 +236,7 @@ export class Filter extends Component {
                             showMonthDropdown
                             showYearDropdown useShortMonthInDropdown
                             selected={this.state.fromDate}
-                            dateFormat={dateFormat}
+                            dateFormat={fromDateFormat}
                             maxDate={new Date(this.maxFromDate)}
                             {...resFromDate}
                         />
@@ -225,7 +248,7 @@ export class Filter extends Component {
                     <div className="react-datepicker-wrapper-container form-control-wrapper">
                         <DatePicker
                             selected={this.state.toDate}
-                            dateFormat={dateFormat} useShortMonthInDropdown
+                            dateFormat={toDateFormat} useShortMonthInDropdown
                             minDate={new Date(this.minToDate)}
                             maxDate={new Date(this.maxToDate)}
                             showMonthDropdown
