@@ -182,19 +182,29 @@
 }
 
 .chart-modal-dynamic{
-    .modal-content {
-        .recharts-xAxis {
-            .recharts-text {
-                tspan {
-                    fill: #5e5a5a;
-                    font-size: 18px;
-                    display: block;
+    .modal-dialog {
+        max-width: 1300px !important;
+        .modal-content {
+            .recharts-xAxis {
+                .recharts-text {
+                    tspan {
+                        fill: #5e5a5a;
+                        font-size: 18px;
+                        display: block;
+                    }
                 }
             }
-        }
-        .recharts-default-legend li {
-            width: 225px;
-            margin-left: 10px;
+
+            .weekly-chart{
+                .recharts-default-legend li {
+                    width: 185px !important;
+                }
+            }
+
+            .recharts-default-legend li {
+                width: 100px;
+                margin-left: 7px;
+            }
         }
     }
 }

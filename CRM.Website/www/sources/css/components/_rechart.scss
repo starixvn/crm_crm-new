@@ -13,4 +13,12 @@
             float: left;
         }
     }
+
+    .recharts-legend-wrapper{
+        overflow: auto;
+    }
+
+    .recharts-legend-item .recharts-surface{
+        margin-top: 2px;
+    }
 }

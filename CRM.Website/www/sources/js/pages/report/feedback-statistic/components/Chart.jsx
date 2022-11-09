@@ -1,10 +1,10 @@
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Modal } from 'react-bootstrap';
 import { getBackGroundColor } from '@jsroot/common/shareScripts';
 import { Bar, BarChart, Legend, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 
-export default class Chart extends Component {
+export default class Chart extends PureComponent {
     constructor(props) {
         super(props);
 

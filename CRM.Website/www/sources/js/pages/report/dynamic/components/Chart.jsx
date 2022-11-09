@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import { Modal } from 'react-bootstrap';
 import { getBackGroundColor } from '@jsroot/common/shareScripts';
 import { Bar, BarChart, Legend, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 
-export class Chart extends Component {
-
+export class Chart extends PureComponent {
     getDataChart = data => {
         const dataChart = [];
         data.childReports.map(item => {
@@ -23,10 +22,10 @@ export class Chart extends Component {
     };
 
     render() {
-        const { chartInfo } = this.props;
+        const { chartInfo, reportType } = this.props;
         const data = this.getDataChart(chartInfo);
         const labels = this.getLabelChart(chartInfo);
-
+        const weekly = 2;
         return (
             <Modal className='chart-modal-dynamic' show dialogAs={DraggableModalDialog}
                 onHide={this.props.onClose} backdrop="static" keyboard={false} size="xl"
@@ -35,24 +34,24 @@ export class Chart extends Component {
                 <Modal.Title as="div">{chartInfo.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <ResponsiveContainer width="100%" height={700}>
+                <ResponsiveContainer className={reportType === weekly ? 'weekly-chart' : ''} width="100%" height={data.length > 5 ? 800 : 720}>
                     <BarChart
-                        width={1100}
+                        width={1300}
                         data={data}
                         margin={{
-                            top: 30, right: 30, left: 30, bottom: 20
+                            top: 25, right: 25, left: 25, bottom: 20
                         }}
                         barCategoryGap={0}
                         barGap={0}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis label={{ value: chartInfo.shortName, dy: 5 }} tick={false}/>
-                        <YAxis label={{ value: 'Log(s)', position: 'top', dy: -10 }} />
-                        <Legend wrapperStyle={{ bottom: 5, left: 87, width: 998 }} />
+                        <XAxis scaleToFit label={{ value: chartInfo.shortName, dy: 5 }} tick={false}/>
+                        <YAxis allowDataOverflow label={{ value: 'Log(s)', position: 'top', dy: -10 }} />
+                        <Legend wrapperStyle={{ bottom: 5, left: 70, width: 1175 }} />
                         {
                             labels.map((label, index) => (
                                 <Bar dataKey={label} key={index} label={{ position: 'top'}}
-                                    fill={getBackGroundColor(index)} maxBarSize={20}
+                                    fill={getBackGroundColor(index)}
                                 />
                             ))
                         }

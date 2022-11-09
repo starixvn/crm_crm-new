@@ -37,7 +37,7 @@ export class AppContainer extends Component {
     };
 
     render() {
-        const { viewCommunicationDialog, viewChartDialog } = this.props;
+        const { viewCommunicationDialog, viewChartDialog, gridParams} = this.props;
         return (
             <div>
                 <Filter />
@@ -55,6 +55,7 @@ export class AppContainer extends Component {
                     <Chart
                         onClose={this.handleCloseViewChart}
                         chartInfo={viewChartDialog.chartInfo}
+                        reportType={gridParams.reportType}
                     />
                 }
             </div>
@@ -65,8 +66,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { viewCommunicationDialog, viewChartDialog } = state;
-    return { viewCommunicationDialog, viewChartDialog };
+    const { viewCommunicationDialog, viewChartDialog, gridParams } = state;
+    return { viewCommunicationDialog, viewChartDialog, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
