@@ -196,6 +196,7 @@
                 SubProductNA = subProductsTask.Result.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.SubProductNA),
                 BettypeNA = betTypesTask.Result.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.BettypeNA),
                 ExtensionNA = extentionsTask.Result.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.ExtentionNA),
+                SubCategoryNA = subCategoriesTask.Result.FirstOrDefault(x => x.SubCategoryId == NAConstants.SubCategoryNA),
                 CommunicationToolNA = communicationToolsTask.Result.FirstOrDefault(x => x.IsActive && x.Id == NAConstants.CommunicationNA)
             };
 

@@ -41,7 +41,7 @@ export class Filter extends Component {
             notificationTypeId: parseInt(this.state.notificationTypeId, 10),
             notificationTemplateName: this.state.notificationTemplateName,
             pageIndex: 1,
-            pageSize: 100
+            pageSize: this.props.gridParams.pageSize
         };
     };
 
@@ -100,8 +100,8 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { notificationTypes } = state;
-    return { notificationTypes };
+    const { notificationTypes, gridParams } = state;
+    return { notificationTypes, gridParams };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

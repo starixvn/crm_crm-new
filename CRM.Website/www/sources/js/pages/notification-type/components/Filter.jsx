@@ -95,7 +95,7 @@ export class Filter extends Component {
             recipientTypeIds: this.state.filter.recipientTypes,
             systemId: this.state.filter.systems,
             pageIndex: 1,
-            pageSize: 100
+            pageSize: this.props.gridParams.pageSize
         };
     };
 
@@ -206,12 +206,14 @@ const mapStateToProps = state => {
     const {
         notificationTypeGridParams,
         settings,
-        getSettings
+        getSettings,
+        pageSize
     } = state;
     return {
         notificationTypeGridParams,
         settings,
-        getSettings
+        getSettings,
+        pageSize
     };
 };
 

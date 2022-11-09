@@ -24,11 +24,13 @@ describe('connect ', () => {
     it('props should be mapped correctly', () => {
         // Arrange
         const expected = {
-            notificationTypes: []
+            notificationTypes: [],
+            gridParams: { pageIndex: 1, pageSize: 100}
         };
         const state = {
             anotherState: 123,
-            notificationTypes: []
+            notificationTypes: [],
+            gridParams: { pageIndex: 1, pageSize: 100}
         };
 
         // Act

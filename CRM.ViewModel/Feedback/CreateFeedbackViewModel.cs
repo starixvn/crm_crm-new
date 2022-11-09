@@ -27,5 +27,6 @@
         public Product BettypeNA { get; set; }
         public SettingRelation ExtensionNA { get; set; }
         public Setting CommunicationToolNA { get; set; }
+        public Setting SubCategoryNA { get; set; }
     }
 }

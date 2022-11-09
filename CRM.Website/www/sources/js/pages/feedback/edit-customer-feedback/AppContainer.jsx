@@ -167,13 +167,15 @@ export default class AppContainer extends Component {
                     }
                     break;
                 case 'Communication':
-                    if (x.settingId !== settings.communicationToolNA?.id) {
+                    if (x.isActive && x.settingId !== settings.communicationToolNA?.id) {
                         selectedCommunicationToolIds.push(x.settingId);
                     }
                     break;
                 case 'Category':
                     selectedMainCategoryIds.push(x.settingId);
-                    selectedSubCategoryIds.push(x.subSettingId);
+                    if (x.subSettingId !== settings.subCategoryNA?.subCategoryId) {
+                        selectedSubCategoryIds.push(x.subSettingId);
+                    }
                     break;
                 case 'Product':
                     if (x.settingId !== settings.productNA?.id) {
