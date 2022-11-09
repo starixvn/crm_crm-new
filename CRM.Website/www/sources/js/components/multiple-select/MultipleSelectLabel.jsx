@@ -37,13 +37,12 @@ export default class MultipleSelectLabel extends Component {
 
     get selectedItemsString() {
         const { isAllTextShown, selectedItems, maxDisplayItemCount, textOptions, dataSourceSize, isNAOption } = this.props;
-
         const selectedValues = this.handleSelectedItem(selectedItems);
-
         let displayText = textOptions['SelectOptions'];
         const selectedItemCount = selectedValues.length;
+        const isOnlyNA = selectedValues.filter(x=> x === textOptions['NA']).length > 0;
 
-        if (isAllTextShown && selectedItemCount === dataSourceSize) {
+        if (!isOnlyNA && isAllTextShown && selectedItemCount === dataSourceSize) {
             displayText = textOptions['Texts'];
         } else if (selectedItemCount > maxDisplayItemCount) {
             displayText = textOptions['SelectedItemCount'].replace('#', selectedItemCount);
@@ -51,7 +50,7 @@ export default class MultipleSelectLabel extends Component {
             displayText = selectedValues.join(', ');
         } else if (!dataSourceSize && !isNAOption) {
             displayText = textOptions['NoData'];
-        } else if (isNAOption && selectedItemCount === 0) {
+        } else if ((isNAOption && selectedItemCount === 0) || isOnlyNA ) {
             displayText = textOptions['NA'];
         }
 

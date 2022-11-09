@@ -98,9 +98,10 @@ export class AppContainer extends Component {
       return null;
     }
     const isHost = this.state.policy === Policy.Host;
+    const isRead = this.state.policy === Policy.Read;
     return (
         <Fragment>
-              <Filter isHost={isHost}/>
+              <Filter isHost={isHost} isRead={isRead}/>
               <DataGrid isHost={isHost} />
               {
                 insertNewSettingPopup.show &&
@@ -120,6 +121,7 @@ export class AppContainer extends Component {
               {
                 licenseeMappingPopup.show &&
                 <LicenseeMapping
+                    isHost={isHost}
                     onSuccess={this.handleSuccessUpdateLicenseeMapping}
                     onClose={this.handleCloseLicenseeMapping}
                     oncloseConfirm={this.handleCloseConfirmLicenseeMapping}

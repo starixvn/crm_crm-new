@@ -127,7 +127,7 @@ export class EditRemark extends Component {
         setFieldValue,
         isSubmitting
     }) => {
-        const { allSettings, remarkTitles, popupEdit, editResult } = this.props;
+        const { allSettings, remarkTitles, popupEdit, editResult, isHost } = this.props;
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -170,7 +170,7 @@ export class EditRemark extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     {
-                        !popupEdit.isViewHistory &&
+                        !popupEdit.isViewHistory && isHost &&
                         <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
                             {LangHelper.getResource('Save')}
                         </Button>

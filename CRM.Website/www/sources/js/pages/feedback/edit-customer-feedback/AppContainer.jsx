@@ -173,9 +173,7 @@ export default class AppContainer extends Component {
                     break;
                 case 'Category':
                     selectedMainCategoryIds.push(x.settingId);
-                    if (x.subSettingId !== settings.subCategoryNA?.subCategoryId) {
-                        selectedSubCategoryIds.push(x.subSettingId);
-                    }
+                    selectedSubCategoryIds.push(x.subSettingId);
                     break;
                 case 'Product':
                     if (x.settingId !== settings.productNA?.id) {

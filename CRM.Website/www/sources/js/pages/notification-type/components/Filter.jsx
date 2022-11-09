@@ -207,13 +207,13 @@ const mapStateToProps = state => {
         notificationTypeGridParams,
         settings,
         getSettings,
-        pageSize
+        gridParams
     } = state;
     return {
         notificationTypeGridParams,
         settings,
         getSettings,
-        pageSize
+        gridParams
     };
 };
 

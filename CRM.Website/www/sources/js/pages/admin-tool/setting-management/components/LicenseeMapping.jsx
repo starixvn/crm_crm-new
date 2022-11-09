@@ -228,7 +228,7 @@ export class LicenseeMapping extends PureComponent {
     };
 
     render() {
-        const {licensees, licenseesMapping, confirmCancelPopup, oncloseConfirm}= this.props;
+        const {licensees, licenseesMapping, confirmCancelPopup, oncloseConfirm, isHost}= this.props;
         if(!licensees || !licenseesMapping){
             return null;
         }
@@ -250,6 +250,7 @@ export class LicenseeMapping extends PureComponent {
                             <div>Are you sure you want to remove Source Mapping and Licensee Manager of <strong>{confirmCancelPopup.setting}</strong>?</div>
                         }
                         buttons={[
+                            isHost &&
                             <Button onClick={() => this.handleCancelSetting(confirmCancelPopup.settingId)} variant="primary" size="sm" >
                                 {LangHelper.getResource('OK')}
                             </Button>,

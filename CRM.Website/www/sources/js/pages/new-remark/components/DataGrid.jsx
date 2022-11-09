@@ -42,19 +42,19 @@ export class DataGrid extends Component {
         );
     };
 
-    buildBody = isHost => {
+    buildBody = (isHost, isRead) => {
         if (this.props.gridData.data.length > 0) {
-            return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
+            return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost, isRead));
         }
 
         return [<Row key='new-remark-body' className="no-data" ><Cell colSpan={isHost ? 16 : 15}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
-    renderRow = (item, index, isHost) => {
+    renderRow = (item, index, isHost, isRead) => {
         const userNameFormat = `${item.isGroupHeadLine ? item.userName + ' (Headline)' : item.userName}`;
         return (
             <Row key={index}>
-                <Cell className={`text-center ${isHost ? 'link-click' : 'disable-edit'}`} onClick={() =>this.handleOpenEdit(item)}>{item.remarkID}</Cell>
+                <Cell className={`text-center ${isRead ? 'link-click' : 'disable-edit'}`} onClick={() =>this.handleOpenEdit(item)}>{item.remarkID}</Cell>
                 <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
                 <Cell>{item.creator}</Cell>
                 <Cell>{item.headlineName}</Cell>
@@ -68,7 +68,7 @@ export class DataGrid extends Component {
                         </Tooltip>
                     }
                 >
-                    <Cell className={`remark-content ${isHost ? 'link-click' : 'disable-edit'}`}
+                    <Cell className={`remark-content ${isRead ? 'link-click' : 'disable-edit'}`}
                         onClick={() =>this.handleOpenEdit(item)}
                         dangerouslySetInnerHTML={{__html: item.remark}}
                     />
@@ -186,7 +186,7 @@ export class DataGrid extends Component {
 
         const { totalItems } = this.props.gridData;
         const { pageIndex, pageSize } = this.props.gridParams;
-        const { isHost, popupDeleteConfirm} = this.props;
+        const { isHost,isRead, popupDeleteConfirm} = this.props;
 
         const pagingOptions = {
             PageIndex: pageIndex,
@@ -202,7 +202,7 @@ export class DataGrid extends Component {
                     shouldUseMaxWidth
                     width={document.getElementById('right-row-container').clientWidth}
                     header={this.buildHeader(isHost)}
-                    body={this.buildBody(isHost)}
+                    body={this.buildBody(isHost, isRead)}
                     isPaging
                     isFixColumn
                     title={this.renderTitle()}

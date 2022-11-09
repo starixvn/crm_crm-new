@@ -55,7 +55,7 @@ export class AppContainer extends Component {
         this.props.setEditResult(null);
     };
     render() {
-        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch, isHost } = this.props;
+        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch, isHost, isRead } = this.props;
         if(remarkTitles === null || !remarkTitles){
             return null;
         }
@@ -65,7 +65,7 @@ export class AppContainer extends Component {
                 {
                     showHistory.show ?
                     <History/> :
-                    <DataGrid isHost={isHost}/>
+                    <DataGrid isHost={isHost} isRead={isRead}/>
                 }
                 {
                     popupAdd.show &&
@@ -80,6 +80,7 @@ export class AppContainer extends Component {
                 {
                     popupEdit.show &&
                     <EditRemark
+                        isHost={isHost}
                         onClose={this.handleCloseEditPopup}
                         onSuccess={this.handleEditSuccess}
                     />

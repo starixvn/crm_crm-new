@@ -12,12 +12,14 @@ import '@cssroot/pages/new-remark/index.scss';
 class index extends React.Component {
     render(){
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
+        const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         return(
             <Provider store={store}>
                 <div className='new-remark'>
                     {
                         <AppContainer 
                             isHost={hasCreateFeedbackPermission}
+                            isRead={hasReadFeedbackPermission}
                             customerName=''
                             custId={0}
                             isGuestSearch={false}
