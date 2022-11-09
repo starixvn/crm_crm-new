@@ -70,8 +70,8 @@ export default class Chart extends PureComponent {
                         margin={{
                             top: 30, right: 30, left: 30, bottom: data.length > 5 ? 250 : 30
                         }}
-                        barCategoryGap={0}
-                        barGap={0}
+                        barCategoryGap={data.length > 5 ? -10 : 0}
+                        barGap={data.length > 5 ? -10 : 0}
                     >
                         <XAxis dataKey="name" scaleToFit verticalAnchor= "start" textAnchor="end" height={labels.length > 50 ? 60 : 20}
                             interval={0} angle= {data.length > 5 ? -90 : 0} dy={10}

@@ -41,10 +41,9 @@ export class Chart extends PureComponent {
                         margin={{
                             top: 25, right: 25, left: 25, bottom: 20
                         }}
-                        barCategoryGap={0}
-                        barGap={0}
+                        barCategoryGap={data.length > 5 ? -10 : 0}
+                        barGap={data.length > 5 ? -10 : 0}
                     >
-                        <CartesianGrid strokeDasharray="3 3" />
                         <XAxis scaleToFit label={{ value: chartInfo.shortName, dy: 5 }} tick={false}/>
                         <YAxis allowDataOverflow label={{ value: 'Log(s)', position: 'top', dy: -10 }} />
                         <Legend wrapperStyle={{ bottom: 5, left: 70, width: 1175 }} />

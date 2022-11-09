@@ -226,7 +226,6 @@ export class Filter extends Component {
                         <DatePicker
                             selected={this.state.toDate}
                             dateFormat={dateFormat} useShortMonthInDropdown
-                            weekNumber
                             minDate={new Date(this.minToDate)}
                             maxDate={new Date(this.maxToDate)}
                             showMonthDropdown
@@ -554,7 +553,7 @@ export class Filter extends Component {
                 }
 
                 <div className="toggle-filter">
-                    <span className={`${showFilter ? 'fa fa-caret-up' : 'fa fa-caret-down'} icon`} onClick={this.handleToggleFilter}></span>
+                    <span className={`${showFilter ? 'fa fa-caret-up' : 'fa fa-caret-down'} icon`} onClick={this.handleToggleFilter} />
                 </div>
             </Form>
         );
