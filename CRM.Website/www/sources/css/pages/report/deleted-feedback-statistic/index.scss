@@ -55,6 +55,12 @@
     .word-break{
         word-break: break-all;
     }
+
+    .table-container .body-content a{
+        cursor: pointer;
+        color: #147ccc;
+        text-decoration: none;
+    }
 }
 
 .feedback-detail-deleted {

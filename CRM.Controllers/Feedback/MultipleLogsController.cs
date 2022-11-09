@@ -22,7 +22,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
     public class MultipleLogsController : BaseController
     {
         private readonly INapSession napSession;
@@ -52,6 +52,7 @@
             this.commonService = commonService;
         }
 
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateMultipleLogsCommand command)
         {
@@ -99,6 +100,7 @@
             return Json(result);
         }
 
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         [HttpPost]
         public async Task<ActionResult> EditMultipleLogStatuses([FromBody] EditMultipleLogStatusCommand command)
         {
@@ -160,6 +162,7 @@
             return Json(new { communicationLog, settings, hasReviewFeedbackPermission });
         }
 
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         [HttpPost]
         public async Task<ActionResult> EditMultipleLogs([FromBody] EditMultipleLogsCommand command)
         {
