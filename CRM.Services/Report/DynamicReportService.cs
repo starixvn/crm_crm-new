@@ -139,7 +139,7 @@
             foreach (var dynamicReportInfo in dynamicReportInfos)
             {
                 dynamicReportInfo.FeedbackDate = commonService.ConvertToClientDateTime(dynamicReportInfo.FeedbackDate);
-                dynamicReportInfo.DynamicSettings = settingItems.Where(x => x.FeedbackId == dynamicReportInfo.FeedbackId).ToList();
+                //dynamicReportInfo.DynamicSettings = settingItems.Where(x => x.FeedbackId == dynamicReportInfo.FeedbackId).ToList();
             }
             return dynamicReportInfos;
         }
