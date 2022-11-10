@@ -127,10 +127,7 @@
             <Mapping DataField="MainCategory" ObjectProperty="SettingId" />
             <Mapping DataField="SubCategory" ObjectProperty="SubSettingId" />
         </Setting>
-        <Setting Key="Acc_CRM_Rpt_DynamicFeedback" SpName="Acc_CRM_Rpt_DynamicFeedback" DbName="DBCRM.bodb_CRM.bodbAdminNet" >
-            <Mapping DataField="HandledBy" ObjectProperty="Handler" />
-            <Mapping DataField="ReviewedBy" ObjectProperty="Reviewer" />
-        </Setting>
+        <Setting Key="Acc_CRM_Rpt_DynamicFeedback" SpName="Acc_CRM_Rpt_DynamicFeedback" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_Crm_Rpt_RedemptionStatistics" SpName="Acc_Crm_Rpt_RedemptionStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_Crm_Rpt_RedemptionStatisticsDetail" SpName="Acc_Crm_Rpt_RedemptionStatisticsDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_Crm_Rpt_CustomerReport" SpName="Acc_Crm_Rpt_CustomerReport" DbName="DBCRM.bodb_CRM.bodbAdminNet" >

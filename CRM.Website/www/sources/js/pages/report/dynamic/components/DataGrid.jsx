@@ -99,8 +99,8 @@ export class DataGrid extends Component {
                 <Cell className="text-center">{item.status}</Cell>
                 <Cell className="text-center">{item.duration.replace(/\s+/g, '')}</Cell>
                 <Cell>{item.userName}</Cell>
-                <Cell>{item.handler}</Cell>
-                <Cell>{item.reviewer}</Cell>
+                <Cell>{item.handledBy}</Cell>
+                <Cell>{item.reviewedBy}</Cell>
             </Row>
         );
     };

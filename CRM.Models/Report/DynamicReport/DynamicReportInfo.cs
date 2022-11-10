@@ -13,6 +13,8 @@
         public string ShortName { get; set; }
 
         public int ReportTypeId { get; set; }
+        public string HandledBy { get; set; }
+        public string ReviewedBy { get; set; }
 
         public PeriodRange PeriodRange { get; set; }
 

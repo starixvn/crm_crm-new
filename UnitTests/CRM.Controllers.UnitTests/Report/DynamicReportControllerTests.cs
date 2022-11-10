@@ -104,29 +104,6 @@
         }
 
         [Fact]
-        public async Task GetChartInfo_WhenCalled_ReturnAsExpectedResult()
-        {
-            // Arrange
-            var param = fixture.Create<GetDynamicReportCriteria>();
-            param.PageIndex = 1;
-            param.PageSize = 100;
-            var chartInfo = new DynamicReportInfo()
-            {
-                Id = "1",
-                Name = "Daily report"
-            };
-            var controller = GetController();
-            dynamicReportService.GetChartInfoAsync(param).Returns(chartInfo);
-
-            // Act
-            var result = await controller.GetChartInfo(param);
-
-            // Assert
-            var jsonResult = Assert.IsType<JsonResult>(result);
-            Assert.Equal(chartInfo, jsonResult.Value);
-        }
-
-        [Fact]
         public async Task ExportExcel_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange

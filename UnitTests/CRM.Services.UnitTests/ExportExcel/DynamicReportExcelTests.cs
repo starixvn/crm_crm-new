@@ -98,8 +98,8 @@
             Assert.Equal(data.Status, worksheet.Cells[1, 6].Value);
             Assert.Equal(data.Duration, worksheet.Cells[1, 7].Value);
             Assert.Equal(data.UserName, worksheet.Cells[1, 8].Value);
-            Assert.Equal(data.Handler, worksheet.Cells[1, 9].Value);
-            Assert.Equal(data.Reviewer, worksheet.Cells[1, 10].Value);
+            Assert.Equal(data.HandledBy, worksheet.Cells[1, 9].Value);
+            Assert.Equal(data.ReviewedBy, worksheet.Cells[1, 10].Value);
 
             service.Received().Protected("SetBackgroundColor", Arg.Any<ExcelRange>(), ColorTranslator.FromHtml("#dddddd"));
         }

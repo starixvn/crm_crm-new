@@ -103,8 +103,8 @@
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = Regex.Replace(dynamic.Duration, @"[\s+g]", "");
                 worksheet.Cells[rowIndex, colIndex++].Value = dynamic.UserName;
-                worksheet.Cells[rowIndex, colIndex++].Value = dynamic.Handler;
-                worksheet.Cells[rowIndex, colIndex].Value = dynamic.Reviewer;
+                worksheet.Cells[rowIndex, colIndex++].Value = dynamic.HandledBy;
+                worksheet.Cells[rowIndex, colIndex].Value = dynamic.ReviewedBy;
 
                 if (dynamic.Status == "Closed")
                 {
