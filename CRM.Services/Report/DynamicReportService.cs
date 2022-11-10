@@ -16,8 +16,6 @@
     public interface IDynamicReportService
     {
         Task<DynamicReportInfo> GetDynamicReportAsync(GetDynamicReportCriteria criteria);
-
-        Task<DynamicReportInfo> GetChartInfoAsync(GetDynamicReportCriteria criteria);
     }
 
     public class DynamicReportService : IDynamicReportService
@@ -38,7 +36,7 @@
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            var dynamicReport   = await GetDynamicReportData(criteria);
+            var dynamicReport  = await GetDynamicReportData(criteria);
             var chartInfo = new DynamicReportInfo
             {
                 Id = dynamicReport.Id,
@@ -66,44 +64,16 @@
                 Id = dynamicReport.Id,
                 Name = dynamicReport.Name,
                 ShortName = dynamicReport.ShortName,
+                DynamicSettings = dynamicReport.DynamicSettings,
                 ChildReports = criteria.IsGetFullReport ? dynamicReport.ChildReports : GetPagingLogList(criteria, dynamicReport.ChildReports),
                 TotalChildReports = dynamicReport.TotalChildReports,
                 ChartInfo = chartInfo
             };
         }
 
-        public async Task<DynamicReportInfo> GetChartInfoAsync(GetDynamicReportCriteria criteria)
+        public async Task<DynamicReportInfo> GetDynamicReportData(GetDynamicReportCriteria criteria)
         {
-            var dynamicReport = await GetDynamicReportData(criteria);
-            var chartInfo = new DynamicReportInfo
-            {
-                Id = dynamicReport.Id,
-                Name = dynamicReport.Name,
-                ShortName = dynamicReport.ShortName,
-                TotalChildReports = dynamicReport.TotalChildReports,
-                ChildReports = new List<DynamicReportInfo>()
-            };
-
-            var childReportLength = dynamicReport.ChildReports.Count;
-            for (var periodIndex = 0; periodIndex < childReportLength; periodIndex++)
-            {
-                var periodReport = dynamicReport.ChildReports[periodIndex];
-                chartInfo.ChildReports.Add(new DynamicReportInfo
-                {
-                    Id = periodReport.Id,
-                    Name = periodReport.Name,
-                    ShortName = periodReport.ShortName,
-                    TotalChildReports = periodReport.TotalChildReports
-                });
-            }
-
-            return chartInfo;
-        }
-
-        public async Task<DynamicReportInfo> GetDynamicReportData
-            (GetDynamicReportCriteria criteria)
-        {
-            var dynamicReportInfos = await GetDynamicReportDataAsync(criteria);
+            var (dynamicReportInfos, settingItems) = await GetDynamicReportDataAsync(criteria);
             DynamicReportInfo dynamicReport;
             switch (criteria.ReportType)
             {
@@ -126,22 +96,22 @@
                 default:
                     throw new ArgumentException("Invalid report type.");
             }
-
+            dynamicReport.DynamicSettings = settingItems.ToList();
             dynamicReport.ReportTypeId = criteria.ReportType;
-            dynamicReport.TotalChildReports = dynamicReportInfos.Count();
+            dynamicReport.TotalChildReports = dynamicReportInfos.ToList().Count;
             return dynamicReport;
         }
 
 
-        public async Task<IEnumerable<DynamicReportInfo>> GetDynamicReportDataAsync(GetDynamicReportCriteria criteria)
+        public async Task<ValueTuple<IEnumerable<DynamicReportInfo>, IEnumerable<SettingItem>>> GetDynamicReportDataAsync(GetDynamicReportCriteria criteria)
         {
             var (dynamicReportInfos, settingItems) = await baseService.FetchMultipleAsync<DynamicReportInfo, SettingItem>(criteria);
             foreach (var dynamicReportInfo in dynamicReportInfos)
             {
                 dynamicReportInfo.FeedbackDate = commonService.ConvertToClientDateTime(dynamicReportInfo.FeedbackDate);
-                //dynamicReportInfo.DynamicSettings = settingItems.Where(x => x.FeedbackId == dynamicReportInfo.FeedbackId).ToList();
             }
-            return dynamicReportInfos;
+            var result = new ValueTuple<IEnumerable<DynamicReportInfo>, IEnumerable<SettingItem>>(dynamicReportInfos, settingItems);
+            return result;
         }
 
         private DynamicReportInfo GetDynamicReportByDaily(IEnumerable<DynamicReportInfo> dynamicReportInfos, GetDynamicReportCriteria criteria)

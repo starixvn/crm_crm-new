@@ -88,7 +88,7 @@
             foreach (var dynamic in dynamicReportInfo.ChildReports)
             {
                 var colIndex = 1;
-                var categoryContents = BuildCategoryContent(dynamic);
+                var categoryContents = BuildCategoryContent(dynamic.FeedbackId);
                 var categoryCellValue = string.Join("\n\n", categoryContents);
                 worksheet.Cells[rowIndex, colIndex].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[rowIndex, colIndex++].Value = indexNumber;
@@ -167,9 +167,9 @@
             }
         }
 
-        private string[] BuildCategoryContent(DynamicReportInfo dynamicReportInfo)
+        private string[] BuildCategoryContent(int feedbackId)
         {
-            var settings = dynamicReportInfo.DynamicSettings;
+            var settings =  dynamicReportInfos.DynamicSettings.Where(x => x.FeedbackId == feedbackId);
             return settings.GroupBy(s => s.MainCategoryId)
                     .Select(s =>
                     {

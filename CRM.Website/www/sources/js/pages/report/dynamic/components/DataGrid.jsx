@@ -7,8 +7,6 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { MEDIUM_PAGING_SIZES } from '@jsroot/common/constants';
-import DataService from '@jsroot/common/dataService';
-import Site from '@jsroot/common/site';
 
 export class DataGrid extends Component {
 
@@ -94,7 +92,7 @@ export class DataGrid extends Component {
                 <Cell>{keyToggle + index + 1}</Cell>
                 <Cell className='link-click' onClick={() => this.handleViewCommunication(item.feedbackId)}>{item.feedbackId}</Cell>
                 <Cell className="text-center">{DateTimeService.toShortDateTimeFormat(item.feedbackDate)}</Cell>
-                <Cell>{this.renderCategoryColumn(item)}</Cell>
+                <Cell>{this.renderCategoryColumn(item.feedbackId)}</Cell>
                 <Cell>{item.subject}</Cell>
                 <Cell className="text-center">{item.status}</Cell>
                 <Cell className="text-center">{item.duration.replace(/\s+/g, '')}</Cell>
@@ -143,7 +141,8 @@ export class DataGrid extends Component {
         }
     };
 
-    handleGroupCategory = filterCategory => {
+    handleGroupCategory = (dynamicSettings, feedbackId) => {
+        const filterCategory = dynamicSettings.filter(x=> x.feedbackId === feedbackId);
         const groupCategory = filterCategory.reduce((accumulator, currentValue) => {
             const itemExist = accumulator.find(item => currentValue.mainCategoryId === item.mainCategoryId);
             if(itemExist){
@@ -156,10 +155,10 @@ export class DataGrid extends Component {
         return groupCategory;
     };
 
-    renderCategoryColumn = item => {
-        const { mainCategories } = this.props.dynamicReports;
-        const groupCategory = this.handleGroupCategory(item.dynamicSettings);
-
+    renderCategoryColumn = feedbackId => {
+        const { mainCategories, data } = this.props.dynamicReports;
+        const dynamicSettings = data.dynamicSettings;
+        const groupCategory = this.handleGroupCategory(dynamicSettings, feedbackId);
         return groupCategory.map((value,key) => {
             const filterMainCategory = mainCategories.find(element => element.settingId === value.mainCategoryId);
             return (

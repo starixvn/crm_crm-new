@@ -3,7 +3,6 @@ import { DataGrid } from '../DataGrid';
 import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { shallow, mount } from 'enzyme';
 import Site from '@jsroot/common/site';
-import DataService from '@jsroot/common/dataService';
 
 describe('DataGrid', () => {
     beforeAll(() => {
@@ -25,6 +24,7 @@ describe('DataGrid', () => {
     const initProps = {
         dynamicReports: {
             data: {
+                dynamicSettings: [{ mainCategoryId: 0, subCategoryId : 0 }],
                 childReports: [
                     {
                         feedbackId: null ,
@@ -277,23 +277,6 @@ describe('DataGrid', () => {
         });
     });
 
-    describe('renderCategoryColumn', () => {
-        it('should return expected result', () => {
-            // Arrange
-            const props = {...initProps};
-            const param = [{ mainCategoryId: 0, subCategoryId : 0 }];
-
-            const container = shallow(<DataGrid {...props}/>);
-            container.instance().handleGroupCategory = jest.fn(() => [{ mainCategoryId: 0, subCategoryId: [0] }]);
-
-            // Act
-            const actual = container.instance().renderCategoryColumn(param);
-
-            // Assert
-           // expect(actual[0]).toEqual(<React.Fragment><div className="font-weight-bold">test</div><div className="font-italic ml-3">All</div></React.Fragment>);
-        });
-    });
-
     describe('renderToolBox', () => {
         it('click view chart call exact function', () => {
             // Arrange
@@ -456,7 +439,7 @@ describe('DataGrid', () => {
     describe('handleViewChart', () => {
         it('should call exactly props function',() => {
             //Arrange
-            const container = shallow(<DataGrid {...props}/>);
+            const container = shallow(<DataGrid {...initProps}/>);
 
             //Act
             container.instance().handleViewChart();
