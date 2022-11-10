@@ -167,12 +167,12 @@ export class Filter extends Component {
 
     renderFilterDate = () => {
         let resFromDate = {}, resToDate = {};
-        let dateFormat = '';
-        let fromDateFormat = 'MMM dd, yyyy';
-        let toDateFormat = 'MMM dd, yyyy';
+        let fromDateFormat = '';
+        let toDateFormat = '';
         switch (this.state.reportType) {
             case 1:
-                dateFormat = 'MMM dd, yyyy';
+                fromDateFormat = 'MMM dd, yyyy';
+                toDateFormat = 'MMM dd, yyyy';
                 resFromDate = {
                     onChange: this.handleUpdateFromDate
                 };
@@ -201,7 +201,8 @@ export class Filter extends Component {
                     showFullMonthYearPicker: true,
                     showTwoColumnMonthYearPicker: true
                 };
-                dateFormat = 'MMM yyyy';
+                fromDateFormat = 'MMM yyyy';
+                toDateFormat = 'MMM yyyy';
                 resFromDate = {
                     ...propsMonth,
                     onChange: this.handleUpdateFromMonth
@@ -213,7 +214,8 @@ export class Filter extends Component {
                 break;
             case 4:
                 const propsYear = { showYearPicker: true };
-                dateFormat = 'yyyy';
+                fromDateFormat = 'yyyy';
+                toDateFormat = 'yyyy';
                 resFromDate = {
                     ...propsYear,
                     onChange: this.handleUpdateFromYear

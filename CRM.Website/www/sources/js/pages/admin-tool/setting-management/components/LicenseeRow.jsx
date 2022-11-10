@@ -41,7 +41,7 @@ export default class LicenseeRow extends PureComponent {
     };
 
     render() {
-        const {item, index, sourceMappingDefault, licenseesOption, handleDelete,
+        const {item, index, sourceMappingDefault, licenseesOption, handleDelete, isHost,
             licenseesManagerOption, handleEdit, debounceHandleLicenseeManagerChange, isChangeableValue, isEdit} = this.props;
         const licenseeManagerDefault = [{value: item.licenseeManager, label: item.licenseeManager}];
         const {settingSource, licenseeManager}= this.state;
@@ -92,24 +92,26 @@ export default class LicenseeRow extends PureComponent {
                 }
                 <Cell>{item.settingId}</Cell>
                 {
-                    isChangeableValue ?
-                    <Cell className="text-center">
-                        <span className='rounded-circle fa fa-floppy-o icon-edit'
-                            onClick={() => this.onSave(item.settingId)}
-                        />
-                        <span  className='rounded-circle fa fa-times icon-delete'
-                            onClick={() => this.onCancel()}
-                        />
-                    </Cell>
-                    :
-                    <Cell className={`text-center ${isEditClass}`}>
-                        <span className={`fa fa-pencil icon-edit ${isDisableClass}`}
-                            onClick={() => handleEdit(item.settingId)}
-                        />
-                        <span  className={`fa fa-trash icon-delete ${isDisableClass}`}
-                            onClick={() => handleDelete(item.setting, item.settingId)}
-                        />
-                    </Cell>
+                    isHost && (
+                        isChangeableValue ?
+                        <Cell className="text-center">
+                            <span className='rounded-circle fa fa-floppy-o icon-edit'
+                                onClick={() => this.onSave(item.settingId)}
+                            />
+                            <span  className='rounded-circle fa fa-times icon-delete'
+                                onClick={() => this.onCancel()}
+                            />
+                        </Cell>
+                        :
+                        <Cell className={`text-center ${isEditClass}`}>
+                            <span className={`fa fa-pencil icon-edit ${isDisableClass}`}
+                                onClick={() => handleEdit(item.settingId)}
+                            />
+                            <span  className={`fa fa-trash icon-delete ${isDisableClass}`}
+                                onClick={() => handleDelete(item.setting, item.settingId)}
+                            />
+                        </Cell>
+                    )
                 }
             </Row>
         );

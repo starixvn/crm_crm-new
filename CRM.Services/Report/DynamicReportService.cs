@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
     using CRM.Core;
     using CRM.Core.Constants;
-    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Report.DynamicReport;
     using CRM.Models;
@@ -39,15 +38,27 @@
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            var(dynamicReport, settingItems)   = await GetDynamicReportData(criteria);
-            var dynamicPaging = GetPagingLogList(criteria, dynamicReport.ChildReports);
-            var dynamics = criteria.IsGetFullReport ? dynamicReport.ChildReports : dynamicPaging;
-            foreach (var dynamic in dynamics)
+            var dynamicReport   = await GetDynamicReportData(criteria);
+            var chartInfo = new DynamicReportInfo
             {
-                foreach (var child in dynamic.ChildReports)
+                Id = dynamicReport.Id,
+                Name = dynamicReport.Name,
+                ShortName = dynamicReport.ShortName,
+                TotalChildReports = dynamicReport.TotalChildReports,
+                ChildReports = new List<DynamicReportInfo>()
+            };
+
+            var childReportLength = dynamicReport.ChildReports.Count;
+            for (var periodIndex = 0; periodIndex < childReportLength; periodIndex++)
+            {
+                var periodReport = dynamicReport.ChildReports[periodIndex];
+                chartInfo.ChildReports.Add(new DynamicReportInfo
                 {
-                    child.DynamicSettings = settingItems.Where(x => x.FeedbackId == child.FeedbackId).ToList();
-                }
+                    Id = periodReport.Id,
+                    Name = periodReport.Name,
+                    ShortName = periodReport.ShortName,
+                    TotalChildReports = periodReport.TotalChildReports
+                });
             }
 
             return new DynamicReportInfo
@@ -55,15 +66,15 @@
                 Id = dynamicReport.Id,
                 Name = dynamicReport.Name,
                 ShortName = dynamicReport.ShortName,
-                ChildReports = dynamics,
+                ChildReports = criteria.IsGetFullReport ? dynamicReport.ChildReports : GetPagingLogList(criteria, dynamicReport.ChildReports),
                 TotalChildReports = dynamicReport.TotalChildReports,
+                ChartInfo = chartInfo
             };
         }
 
         public async Task<DynamicReportInfo> GetChartInfoAsync(GetDynamicReportCriteria criteria)
         {
-            var dynamicReportInfo = await GetDynamicReportData(criteria);
-            var dynamicReport = dynamicReportInfo.Item1;
+            var dynamicReport = await GetDynamicReportData(criteria);
             var chartInfo = new DynamicReportInfo
             {
                 Id = dynamicReport.Id,
@@ -89,9 +100,10 @@
             return chartInfo;
         }
 
-        public async Task<ValueTuple<DynamicReportInfo, IEnumerable<SettingItem>>> GetDynamicReportData(GetDynamicReportCriteria criteria)
+        public async Task<DynamicReportInfo> GetDynamicReportData
+            (GetDynamicReportCriteria criteria)
         {
-            var (dynamicReportInfos, settingItems) = await GetDynamicReportDataAsync(criteria);
+            var dynamicReportInfos = await GetDynamicReportDataAsync(criteria);
             DynamicReportInfo dynamicReport;
             switch (criteria.ReportType)
             {
@@ -117,25 +129,19 @@
 
             dynamicReport.ReportTypeId = criteria.ReportType;
             dynamicReport.TotalChildReports = dynamicReportInfos.Count();
-            return new ValueTuple<DynamicReportInfo, IEnumerable<SettingItem>>(dynamicReport, settingItems);
+            return dynamicReport;
         }
 
 
-        public async Task<ValueTuple<IEnumerable<DynamicReportInfo>, IEnumerable<SettingItem>>> GetDynamicReportDataAsync(GetDynamicReportCriteria criteria)
+        public async Task<IEnumerable<DynamicReportInfo>> GetDynamicReportDataAsync(GetDynamicReportCriteria criteria)
         {
             var (dynamicReportInfos, settingItems) = await baseService.FetchMultipleAsync<DynamicReportInfo, SettingItem>(criteria);
             foreach (var dynamicReportInfo in dynamicReportInfos)
             {
-                var convertFromdate = commonService.ConvertToClientDateTime(dynamicReportInfo.FeedbackDate);
-                dynamicReportInfo.FeedbackDate = convertFromdate;
-                dynamicReportInfo.PeriodRange = new PeriodRange
-                {
-                    FromDate = convertFromdate,
-                    FromDateString = convertFromdate.ToShortDateFormat(),
-                };
+                dynamicReportInfo.FeedbackDate = commonService.ConvertToClientDateTime(dynamicReportInfo.FeedbackDate);
+                dynamicReportInfo.DynamicSettings = settingItems.Where(x => x.FeedbackId == dynamicReportInfo.FeedbackId).ToList();
             }
-            var result = new ValueTuple<IEnumerable<DynamicReportInfo>, IEnumerable<SettingItem>>(dynamicReportInfos, settingItems);
-            return result;
+            return dynamicReportInfos;
         }
 
         private DynamicReportInfo GetDynamicReportByDaily(IEnumerable<DynamicReportInfo> dynamicReportInfos, GetDynamicReportCriteria criteria)
@@ -159,7 +165,7 @@
                 return dynamicReport;
             }
 
-            var periodGroups = dynamicReportInfos.GroupBy(data => data.PeriodRange.FromDateString);
+            var periodGroups = dynamicReportInfos.GroupBy(data => data.FeedbackDate.ToShortDateFormat());
             GetDynamicReportInfoByGroup(periodGroups, ref dynamicReport, ViewResources.Daily);
             return dynamicReport;
         }
@@ -186,9 +192,9 @@
             }
 
             var periodGroups = dynamicReportInfos.GroupBy(data =>
-                data.PeriodRange.FromDate.FirstDayOfWeek().ToShortDateFormat() +
+                data.FeedbackDate.FirstDayOfWeek().ToShortDateFormat() +
                 " - " +
-                data.PeriodRange.FromDate.LastDayOfWeek().ToShortDateFormat());
+                data.FeedbackDate.LastDayOfWeek().ToShortDateFormat());
             GetDynamicReportInfoByGroup(periodGroups, ref dynamicReport, ViewResources.Weekly);
             return dynamicReport;
         }
@@ -215,7 +221,7 @@
                 return dynamicReport;
             }
 
-            var periodGroups = dynamicReportInfos.GroupBy(data => new DateTime(data.PeriodRange.FromDate.Year, data.PeriodRange.FromDate.Month, 1));
+            var periodGroups = dynamicReportInfos.GroupBy(data => new DateTime(data.FeedbackDate.Year, data.FeedbackDate.Month, 1));
             foreach (var periodGroup in periodGroups)
             {
                 var periodReport = new DynamicReportInfo
@@ -225,12 +231,7 @@
                         ViewResources.Monthly,
                         periodGroup.Key.ToMonthYear()),
                     ShortName = periodGroup.Key.ToMonthYear(),
-                    ChildReports = periodGroup.ToList(),
-                    PeriodRange = new PeriodRange
-                    {
-                        FromDate = periodGroup.Key,
-                        ToDate = periodGroup.Key.LastDayOfMonth()
-                    }
+                    ChildReports = periodGroup.ToList()
                 };
 
                 periodReport.TotalChildReports = periodReport.ChildReports.Count;
@@ -263,7 +264,7 @@
                 return dynamicReport;
             }
 
-            var periodGroups = rawData.GroupBy(data => data.PeriodRange.FromDate.Year);
+            var periodGroups = rawData.GroupBy(data => data.FeedbackDate.Year);
             foreach (var periodGroup in periodGroups)
             {
                 var periodReport = new DynamicReportInfo
@@ -273,12 +274,7 @@
                         ViewResources.Yearly,
                         periodGroup.Key),
                     ShortName = periodGroup.Key.ToString(),
-                    ChildReports = periodGroup.ToList(),
-                    PeriodRange = new PeriodRange
-                    {
-                        FromDate = new DateTime(periodGroup.Key, 1, 1),
-                        ToDate = new DateTime(periodGroup.Key, 12, 31)
-                    }
+                    ChildReports = periodGroup.ToList()
                 };
 
                 periodReport.TotalChildReports = periodReport.ChildReports.Count;

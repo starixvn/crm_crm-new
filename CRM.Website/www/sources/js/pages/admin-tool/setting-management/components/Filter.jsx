@@ -72,7 +72,7 @@ export class Filter extends Component {
                             </Button>
                         }
                         {
-                            this.props.isRead &&
+                            (this.props.isRead || this.props.isHost) &&
                             <Button variant="primary" onClick={this.handleLicenseeMapping}>
                                 {LangHelper.getResource('LicenseeMapping')}
                             </Button>

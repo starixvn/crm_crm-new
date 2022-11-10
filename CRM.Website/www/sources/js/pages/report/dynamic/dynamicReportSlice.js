@@ -4,7 +4,7 @@ const initialState = {
     allSettings: null,
     gridParams: {
         pageIndex: 1,
-        pageSize: 100
+        pageSize: 50
     },
     feedbackSubjectTemplates: [],
     viewCommunicationDialog: { show: false },

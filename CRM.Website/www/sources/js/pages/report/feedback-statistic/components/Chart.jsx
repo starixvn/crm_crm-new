@@ -70,14 +70,14 @@ export default class Chart extends PureComponent {
                         margin={{
                             top: 30, right: 30, left: 30, bottom: data.length > 5 ? 250 : 30
                         }}
-                        barCategoryGap={data.length > 5 ? -10 : 0}
-                        barGap={data.length > 5 ? -10 : 0}
+                        barCategoryGap={data.length > 30 ? -10 : 0}
+                        barGap={data.length > 30 ? -10 : 0}
                     >
-                        <XAxis dataKey="name" scaleToFit verticalAnchor= "start" textAnchor="end" height={labels.length > 50 ? 60 : 20}
+                        <XAxis dataKey="name" scaleToFit verticalAnchor= "start" textAnchor="end" height={labels.length > 30 ? 60 : 20}
                             interval={0} angle= {data.length > 5 ? -90 : 0} dy={10}
                         />
                         <YAxis label={{ position: 'top', dy: -10, value: 'Feedback(s)'}} allowDataOverflow/>
-                        <Legend wrapperStyle={{ bottom: 5, left: 75, height: labels.length > 50 ? 300 : 100}}/>
+                        <Legend wrapperStyle={{ bottom: 5, left: 75, height: labels.length > 30 ? 300 : 100}}/>
                         {labels.map((label, key) => (
                             <Bar label={{ position: 'top'}} dataKey={label} key={key}
                                 maxBarSize={20} fill={getBackGroundColor(key)}

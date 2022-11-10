@@ -43,7 +43,9 @@ export class LicenseeMapping extends PureComponent {
                 <HeaderCell colWidth={30}>{LangHelper.getResource('SourceMapping')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('LicenseeManager')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('SettingId')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Edit')}</HeaderCell>
+                {
+                    this.props.isHost && <HeaderCell colWidth={15}>{LangHelper.getResource('Edit')}</HeaderCell>
+                }
             </HeaderRow>
         );
     };
@@ -63,7 +65,7 @@ export class LicenseeMapping extends PureComponent {
     };
 
     renderRow = (item, index) => {
-        const {licensees, licenseesManager}= this.props;
+        const {licensees, licenseesManager, isHost}= this.props;
         const licenseesOption = licensees.map(item =>{
             return {
                 value: item,
@@ -75,6 +77,7 @@ export class LicenseeMapping extends PureComponent {
 
         return (
             <LicenseeRow
+                isHost={isHost}
                 item={item} index={index}
                 sourceMappingDefault={sourceMappingDefault}
                 licenseesOption={licenseesOption}

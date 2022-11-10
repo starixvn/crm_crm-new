@@ -454,23 +454,12 @@ describe('DataGrid', () => {
     });
 
     describe('handleViewChart', () => {
-        it('should call exactly props function',async () => {
+        it('should call exactly props function',() => {
             //Arrange
-            const props = {
-                ...initProps,
-                setViewChartDialog: jest.fn()
-            };
-            const chatInfo = {
-              id: 1, name: 'test'
-            };
-            Site.resolveClientUrl = jest.fn();
-            const promise = Promise.resolve({data: chatInfo});
-            DataService.postDataAsync = jest.fn(() => promise);
             const container = shallow(<DataGrid {...props}/>);
 
             //Act
             container.instance().handleViewChart();
-            await promise;
 
             //Assert
             expect(props.setViewChartDialog).toHaveBeenCalled();

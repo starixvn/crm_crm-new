@@ -6,7 +6,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import { PAGING_SIZES } from '@jsroot/common/constants';
+import { MEDIUM_PAGING_SIZES } from '@jsroot/common/constants';
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
@@ -240,12 +240,7 @@ export class DataGrid extends Component {
     };
 
     handleViewChart = async () => {
-        Site.blockUI();
-        const params = { ...this.props.gridParams };
-        const url = Site.resolveClientUrl('DynamicReport/GetChartInfo');
-        await DataService.postDataAsync(url, params).then(response => {
-            response.data && this.props.setViewChartDialog({ show: true, chartInfo: response.data });
-        }).then(() => Site.unblockUI());
+        this.props.setViewChartDialog({ show: true, chartInfo: this.props.dynamicReports.data.chartInfo });
     };
 
     onPaging = (pageIndex, pageSize) => {
@@ -269,7 +264,7 @@ export class DataGrid extends Component {
             PageIndex: pageIndex,
             PageSize: pageSize,
             TotalItem: dynamicReports.data.totalChildReports,
-            PageList: PAGING_SIZES
+            PageList: MEDIUM_PAGING_SIZES
         };
 
         return (

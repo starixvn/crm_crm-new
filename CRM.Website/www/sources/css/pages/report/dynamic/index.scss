@@ -1,4 +1,5 @@
 @import '../../../abstracts/variables';
+
 .dynamic {
     min-width: 1142px !important;
 
@@ -204,6 +205,10 @@
             .recharts-default-legend li {
                 width: 100px;
                 margin-left: 7px;
+            }
+
+            .recharts-legend-wrapper{
+                overflow: auto;
             }
         }
     }

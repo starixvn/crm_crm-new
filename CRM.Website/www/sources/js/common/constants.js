@@ -2,6 +2,9 @@
 
 export const PAGING_SIZES = [100, 200, 300, 400, 500, 1000];
 
+
+export const MEDIUM_PAGING_SIZES = [50, 100, 200, 500];
+
 export const SMALL_PAGING_SIZES = [1, 5, 7, 10];
 
 export const DefaultPageSize = 100;
