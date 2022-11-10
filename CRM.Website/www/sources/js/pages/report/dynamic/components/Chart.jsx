@@ -46,7 +46,7 @@ export class Chart extends PureComponent {
                     >
                         <XAxis scaleToFit label={{ value: chartInfo.shortName, dy: 30 }} height={labels.length > 30 ? 30 : 20}/>
                         <YAxis allowDataOverflow label={{ value: 'Log(s)', position: 'top', dy: -10 }} />
-                        <Legend wrapperStyle={{ bottom: 5, left: 70, width: 1175, height: labels.length > 30 ? 280 : 50}} />
+                        <Legend wrapperStyle={{ bottom: 5, left: 70, width: 1175, height: labels.length > 30 ? 400 : 50}} />
                         {
                             labels.map((label, index) => (
                                 <Bar dataKey={label} key={index} label={{ position: 'top'}} fill={getBackGroundColor(index)} />
