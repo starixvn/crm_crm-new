@@ -58,8 +58,8 @@ export class Chart extends Component {
                         margin={{
                             top: 30, right: 30, left: 30, bottom: 20
                         }}
-                        barCategoryGap={data.length > 5 ? -10 : 0}
-                        barGap={data.length > 5 ? -10 : 0}
+                        barCategoryGap={0}
+                        barGap={0}
                     >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
