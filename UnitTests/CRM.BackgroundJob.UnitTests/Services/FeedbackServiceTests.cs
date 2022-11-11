@@ -960,6 +960,7 @@
             // Arrange
             var messageId = fixture.Create<int>();
             var requestIds = fixture.Create<string>();
+            fixture.Customize<MatchInfo>(x => x.With(b => b.IssueTypeId, 1));
             var matchInfo = fixture.Create<MatchInfo>();
             var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
             var description = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
