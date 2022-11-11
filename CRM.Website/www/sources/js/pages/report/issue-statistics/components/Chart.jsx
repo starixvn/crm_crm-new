@@ -66,8 +66,8 @@ export default class Chart extends PureComponent {
                         margin={{
                             top: 30, right: 30, left: 30, bottom: data.length > 5 ? 200 : 30
                         }}
-                        barCategoryGap={data.length > 5 ? -10 : 0}
-                        barGap={data.length > 5 ? -10 : 0}
+                        barCategoryGap={data.length > 30 ? -20 : 0}
+                        barGap={0}
                     >
                         <CartesianGrid strokeDasharray="3 3"/>
                         <YAxis label={{ value: 'Issue(s)', position: 'top', dy: -10}}/>
