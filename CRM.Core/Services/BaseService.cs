@@ -5,14 +5,12 @@
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
-    using CRM.Core.Extensions;
     using CRM.Core.Models;
     using CRM.Core.Repositories;
     using Fanex.Caching;
     using Fanex.Data;
     using Fanex.Data.Repository;
     using Fanex.Data.SqlServer;
-    using Microsoft.AspNetCore.Mvc;
 
     public interface IBaseService
     {

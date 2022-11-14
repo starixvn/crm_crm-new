@@ -2,7 +2,7 @@
 {
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
-    using Serilog;
+    using NLog.Web;
 
     public static class Program
     {
@@ -14,7 +14,7 @@
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
             .UseUrls($"http://*:5000")
-            .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration))
+            .UseNLog()
             .UseStartup<Startup>();
     }
 }

@@ -37,7 +37,6 @@
     using ONEbook.UM.Services;
     using ONEbook.UM.Transport;
     using Sentry;
-    using Serilog;
     using StackExchange.Redis;
 
     public class Startup
@@ -79,10 +78,6 @@
             .ConnectTo(new Uri(Configuration.GetSection("RemotingRefService:Fanex.RemotingRef.Service.Url").Value))
             .FromApplication("CRM.BackgroundJob");
 
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(Configuration)
-                .CreateLogger();
-
             ExceptionHandler
                .UseConfig(new LoggingConfiguration())
                .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
@@ -111,6 +106,8 @@
             {
                 app.UseHsts();
             }
+
+
             app.UseMiddleware<ErrorHandler>();
             app.UseStaticFiles();
             app.UseRouting();

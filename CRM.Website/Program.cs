@@ -1,47 +1,37 @@
 ﻿namespace CRM.Website
 {
     using System;
-    using System.IO;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
-    using Serilog;
-    using Serilog.Enrichers;
-    using Serilog.Events;
+    using NLog;
+    using NLog.Web;
 
     public static class Program
     {
         public static void Main(string[] args)
         {
-            const string loggerTemplate = @"{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u4}]<{ThreadId}> [{SourceContext:l}] {Message:lj}{NewLine}{Exception}";
-            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            var logfile = Path.Combine(baseDir, "logs", "log.txt");
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .Enrich.With(new ThreadIdEnricher())
-                .Enrich.FromLogContext()
-                .WriteTo.Async(a => a.File(logfile, LogEventLevel.Information, loggerTemplate, rollingInterval: RollingInterval.Day, shared: true))
-                .CreateLogger();
-
+            var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
             try
             {
                 CreateWebHostBuilder(args).Build().Run();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Log.Fatal(ex, "Application terminated unexpectedly.");
+                logger.Error(exception, "Stopped program because of exception");
+                throw;
             }
             finally
             {
-                Log.CloseAndFlush();
+                NLog.LogManager.Shutdown();
             }
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
+                .UseNLog()
                 .UseUrls($"http://*:5000")
-                .UseStartup<Startup>()
-                .UseSerilog();
+                .UseStartup<Startup>();
         }
     }
 }

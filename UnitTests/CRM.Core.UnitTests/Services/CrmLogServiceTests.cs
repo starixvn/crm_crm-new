@@ -13,7 +13,6 @@
 
     public class CrmLogServiceTests
     {
-        private ILogger<CRMLogService> filelogger;
         private Fanex.Logging.ILogger logger;
 
         [Fact]
@@ -48,25 +47,11 @@
             await logger.Received().ErrorAsync(logMessage);
         }
 
-        ////[Fact]
-        ////public void LogInformation_WithMessage_WillCallsFileLogInformat()
-        ////{
-        ////    // Arrange
-        ////    var message = "This is error message";
-        ////    var service = GetService();
-
-        ////    // Act
-        ////    service.LogInformation(message);
-
-        ////    // Assert
-        ////    filelogger.Received().LogInformation(message);
-        ////}
 
         private CRMLogService GetService()
         {
-            filelogger = Substitute.For<ILogger<CRMLogService>>();
             logger = Substitute.For<Fanex.Logging.ILogger>();
-            return new CRMLogService(logger, filelogger);
+            return new CRMLogService(logger);
         }
     }
 }

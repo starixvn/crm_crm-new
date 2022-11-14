@@ -6,8 +6,9 @@
     using Fanex.Data.Repository;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
-    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
+    using NLog;
+    using NLog.Web;
 
     public interface ICRMLogService
     {
@@ -20,15 +21,13 @@
 
     public class CRMLogService : ICRMLogService
     {
-        private readonly ILogger filelogger;
         private readonly Fanex.Logging.ILogger logger;
+        private readonly Logger nlog = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 
         public CRMLogService(
-            Fanex.Logging.ILogger logger,
-            ILogger<CRMLogService> filelogger)
+            Fanex.Logging.ILogger logger)
         {
             this.logger = logger;
-            this.filelogger = filelogger;
         }
 
         public async Task ErrorAsync(Exception exception)
@@ -51,7 +50,7 @@
 
         public void LogInformation(string message)
         {
-            filelogger.LogInformation(message);
+            nlog.Info(message);
         }
     }
 }
