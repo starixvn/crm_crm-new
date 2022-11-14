@@ -4,6 +4,7 @@
     using System.Linq;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
+    using CRM.Core.Models;
     using CRM.Letstalk.Core.Extensions;
     using Fanex.Data;
     using Fanex.Data.SqlServer;
@@ -13,11 +14,13 @@
     using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Sentry;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.DataProtection;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Sentry;
+    using StackExchange.Redis;
 
     public class Startup
     {
@@ -59,6 +62,10 @@
                 .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
 
+            var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
+            ConfigDataProtection(services, redisConfig);
+            ConfigRedisCache(services, redisConfig);
+
             services.AddControllers();
             services.ResolveCoreDI();
             services.ResolveLetstalkServices(Configuration);
@@ -86,6 +93,40 @@
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Auth}/{action=Index}/{id?}");
+            });
+        }
+
+        private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
+        {
+            var configRedix = new ConfigurationOptions
+            {
+                EndPoints =
+                {
+                    { redisConfig.Server, redisConfig.Port }
+                },
+                Password = redisConfig.Password,
+                DefaultDatabase = redisConfig.DefaultDatabase
+            };
+            var redis = ConnectionMultiplexer.Connect(configRedix);
+            services.AddDataProtection()
+                .PersistKeysToStackExchangeRedis(redis, redisConfig.Password)
+                .SetApplicationName(redisConfig.ApplicationName + ":DataProtection:Keys");
+        }
+
+        private static void ConfigRedisCache(IServiceCollection services, RedisConfig redisConfig)
+        {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.ConfigurationOptions = new ConfigurationOptions
+                {
+                    EndPoints =
+                    {
+                        { redisConfig.Server, redisConfig.Port }
+                    },
+                    Password = redisConfig.Password,
+                    DefaultDatabase = redisConfig.DefaultDatabase
+                };
+                options.InstanceName = redisConfig.ApplicationName + ":Session:";
             });
         }
     }

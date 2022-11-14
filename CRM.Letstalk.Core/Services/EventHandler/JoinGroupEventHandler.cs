@@ -37,7 +37,7 @@
             };
 
             var result = await baseService.ExecuteNonQueryAsync(command);
-            string greeting = $"Hi, I am {botConfig.DisplayName}";
+            string greeting = $"Hi, I am {botConfig.DisplayName}, your ID: {hookEvent.Source.GroupId}";
             await letstalkService(botConfig.BotAccountId).PushRoomAsync(hookEvent.Source.GroupId, greeting);
 
             if (!result.IsSuccessful)

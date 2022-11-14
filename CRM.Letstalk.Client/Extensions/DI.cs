@@ -9,6 +9,7 @@
     using CRM.Letstalk.Client.Constants;
     using CRM.Letstalk.Client.Services;
     using CRM.Letstalk.Client.Services.Interfaces;
+    using Fanex.Caching;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +23,7 @@
             services.AddSingleton<IJwtService, JwtService>();
             services.AddTransient<HttpClientService>();
             services.AddTransient<LetstalkService>();
+            services.AddSingleton<ICacheService, CacheService>();
             services.AddTransient<Func<int, ILetstalkService>>(serviceProvider => botId =>
             {
                 var botConfig = botConfigs.FirstOrDefault(config => config.BotAccountId == botId);
@@ -33,7 +35,11 @@
 
                 var httpClientService = new HttpClientService(serviceProvider.GetRequiredService<IHttpClientFactory>(), serviceProvider.GetService<IJwtService>(), botConfig);
 
-                return new LetstalkService(serviceProvider.GetRequiredService<ICryptographyService>(), httpClientService, botConfig);
+                return new LetstalkService(
+                    serviceProvider.GetRequiredService<ICryptographyService>(),
+                    httpClientService,
+                    serviceProvider.GetRequiredService<ICacheService>(),
+                    botConfig);
             });
         }
 

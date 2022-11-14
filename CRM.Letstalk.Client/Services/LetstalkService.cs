@@ -5,28 +5,34 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Letstalk.Client.Configurations;
+    using CRM.Letstalk.Client.Enum;
     using CRM.Letstalk.Client.Models;
     using CRM.Letstalk.Client.Models.Results;
     using CRM.Letstalk.Client.Services.Interfaces;
+    using Fanex.Caching;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
     public class LetstalkService : ILetstalkService
     {
         private const int payloadId = 100;
+        private const string LetstalkCacheKey = "CRM-Letstalk-API-Token";
         private readonly BotConfig botConfig;
         private readonly IHttpClientService httpClientService;
         private readonly ICryptographyService cryptographyService;
+        private readonly ICacheService cacheService;
 
-        private readonly JsonSerializerSettings DefaultJsonSerializeSetting = new JsonSerializerSettings
+        private readonly JsonSerializerSettings DefaultJsonSerializeSetting = new()
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
 
         public LetstalkService(ICryptographyService cryptographyService,
             IHttpClientService httpClientService,
+            ICacheService cacheService,
             BotConfig botConfig)
         {
+            this.cacheService = cacheService;
             this.cryptographyService = cryptographyService;
             this.httpClientService = httpClientService;
             this.botConfig = botConfig;
@@ -145,24 +151,68 @@
             return await PushAsync(accountIds, payload);
         }
 
-        public async Task<PushMessageResult> PushImageAsync(IEnumerable<string> accountIds, ImageModel message, DateTime? expiredTime = null)
+        public async Task<PushMessageResult> PushRoomAsync(string roomToken, OutgoingMessage message)
         {
-            ValidateInputParam(nameof(accountIds), accountIds);
+            ValidateInputParam(nameof(roomToken), roomToken);
             ValidateInputParam(nameof(message), message);
+            ValidateMultiCastMessage(message);
 
-            var payload = new Payload();
-            var formattedMessage = JsonConvert.SerializeObject(message, DefaultJsonSerializeSetting);
-            payload.HashContentKey = cryptographyService.Hash(formattedMessage);
-            payload.HashContent = cryptographyService.Encrypt(formattedMessage, botConfig.ChatKey, payload.HashContentKey);
+            var token = await GetSignAccessTokenAsync();
+            var result = await httpClientService.ExecutePostAsync<PushMessageResult>(
+                $"bot/v3/message/chatroom",
+                new Dictionary<string, object>
+                {
+                    { "msg", message },
+                    { "receiver", roomToken }
+                },
+                token,
+                encodeData: false);
 
-            return await PushAsync(accountIds, payload, MessageType.Image);
+            return result;
+        }
+
+        private static void ValidateMultiCastMessage(OutgoingMessage message)
+        {
+            if (message.MessageType == MessageTypeEnum.Text && string.IsNullOrWhiteSpace(message.Text))
+            {
+                throw new ArgumentNullException(message.Text);
+            }
+
+            if ((message.MessageType == MessageTypeEnum.Image && message.MessageType == MessageTypeEnum.FullImage)
+                && string.IsNullOrWhiteSpace(message.ImageUrl))
+            {
+                throw new ArgumentNullException(message.ImageUrl);
+            }
+        }
+
+        private async Task<string> GetSignAccessTokenAsync()
+        {
+            var token = await cacheService.GetAsync<string>(LetstalkCacheKey);
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                var result = await httpClientService.ExecutePostAsync<TokenResult>(
+              $"bot/v3/sign-token",
+              new Dictionary<string, object>
+              {
+                    { "id", botConfig.BotAccountId },
+                    { "token", botConfig.ApiKey }
+              },
+              encodeData: false);
+                token = result.Token;
+                await cacheService.SetAsync(
+                    LetstalkCacheKey,
+                    token,
+                    new CacheItemOptions().SetAbsoluteExpiration(TimeSpan.FromDays(5)));
+            }
+
+            return token;
         }
 
         public async Task<BaseResult> PushRoomAsync(string chatroomToken, string message, DateTime? expiredTime = null)
         {
             ValidateInputParam(nameof(chatroomToken), chatroomToken);
             ValidateInputParam(nameof(message), message);
-
             var result = await httpClientService.ExecutePostAsync<BaseResult>(
                $"bot/push_chatroom/{botConfig.BotAccountId}",
                new Dictionary<string, object>

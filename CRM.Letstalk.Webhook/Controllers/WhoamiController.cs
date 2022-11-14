@@ -1,9 +1,10 @@
 ﻿namespace CRM.Letstalk.Webhook.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.Core.Extensions;
+    using CRM.Letstalk.Client.Enum;
+    using CRM.Letstalk.Client.Models;
     using CRM.Letstalk.Client.Models.Results;
     using CRM.Letstalk.Client.Services.Interfaces;
     using Microsoft.AspNetCore.Authorization;
@@ -34,8 +35,10 @@
             var result = new PushMessageResult();
             try
             {
-                result = await letstalkService(100035).PushAsync(new List<string> { "t381023" },
-                    "Hello");
+                var msg = new OutgoingMessage { MessageType = MessageTypeEnum.Image, ImageUrl = url };
+                result = await letstalkService(100035).PushRoomAsync("BgIyNH5EG4tN1zqmXsjPlvVUG5H8jurIgvhA9F0ecmfenFQHnZqfq8rKdJyFdjQV",
+                    msg);
+                var chatRoom = await letstalkService(100035).GetChatRoomData("BgIyNH5EG4tN1zqmXsjPlvVUG5H8jurIgvhA9F0ecmfenFQHnZqfq8rKdJyFdjQV");
             }
             catch (System.Exception ex)
             {

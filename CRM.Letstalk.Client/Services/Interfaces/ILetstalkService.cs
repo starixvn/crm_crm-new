@@ -14,7 +14,7 @@
 
         Task<PushMessageResult> PushAsync(IEnumerable<string> accountIds, Message message, DateTime? expiredTime = null);
 
-        Task<PushMessageResult> PushImageAsync(IEnumerable<string> accountIds, ImageModel message, DateTime? expiredTime = null);
+        Task<PushMessageResult> PushRoomAsync(string roomToken, OutgoingMessage message);
 
         Task<BaseResult> PushRoomAsync(string chatroomToken, string message, DateTime? expiredTime = null);
 
