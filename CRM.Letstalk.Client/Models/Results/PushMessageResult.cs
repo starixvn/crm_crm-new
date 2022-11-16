@@ -10,5 +10,13 @@
 
         [JsonProperty(PropertyName = "blockList")]
         public List<string> BlockList { get; set; } = new List<string>();
+
+        public List<GlobalIdObject> GlobalIds { get; set; } = new List<GlobalIdObject>();
+    }
+
+    public class GlobalIdObject
+    {
+        public string Receiver { get; set; }
+        public string GlobalId { get; set; }
     }
 }

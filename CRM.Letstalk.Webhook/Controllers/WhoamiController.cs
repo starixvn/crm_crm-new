@@ -31,14 +31,13 @@
         [AllowAnonymous]
         public async Task<IActionResult> SendImage()
         {
-            var url = "https://pngimg.com/uploads/batman/batman_PNG13.png";
+            var url = "https://i.natgeofe.com/n/2a832501-483e-422f-985c-0e93757b7d84/6.jpg";
             var result = new PushMessageResult();
             try
             {
                 var msg = new OutgoingMessage { MessageType = MessageTypeEnum.Image, ImageUrl = url };
                 result = await letstalkService(100035).PushRoomAsync("BgIyNH5EG4tN1zqmXsjPlvVUG5H8jurIgvhA9F0ecmfenFQHnZqfq8rKdJyFdjQV",
                     msg);
-                var chatRoom = await letstalkService(100035).GetChatRoomData("BgIyNH5EG4tN1zqmXsjPlvVUG5H8jurIgvhA9F0ecmfenFQHnZqfq8rKdJyFdjQV");
             }
             catch (System.Exception ex)
             {
