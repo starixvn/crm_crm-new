@@ -46,7 +46,7 @@
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            logService.LogInformation($"{jobSetting.JobName}: StartAsync}");
+            logService.LogInformation($"{jobSetting.JobName}: StartAsync");
             return base.StartAsync(cancellationToken);
         }
 
