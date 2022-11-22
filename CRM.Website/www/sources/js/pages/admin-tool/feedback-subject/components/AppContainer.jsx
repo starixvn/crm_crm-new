@@ -45,6 +45,7 @@ export class AppContainer extends Component {
 
     componentDidMount() {
         this.props.getAllActiveFeedbackSubject();
+        this.props.getFeedBackSubject(this.props.gridParams);
         getPermission(FunctionKey.FeedbackSubject).then(response => {
             this.setState({policy: response});
         });

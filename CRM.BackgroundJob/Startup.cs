@@ -154,6 +154,7 @@
             services.AddSingleton<ICommonFeedback, CommonFeedback>();
             services.AddSingleton<ITOControlFeedbackService, TOControlFeedbackService>();
             services.AddSingleton<IChatBotCTOService, ChatBotCTOService>();
+            services.AddSingleton<IChatBotArchivingDAService, ChatBotArchivingDAService>();
             services.AddSingleton<IProblemsAccountFeedbackService, ProblemsAccountFeedbackService>();
             services.AddSingleton<IResultAmendmentService, ResultAmendmentService>();
             services.AddSingleton<IChatBotProblemAccountService, ChatBotProblemAccountService>();
@@ -176,6 +177,7 @@
             services.AddHostedService<AutoChatbotCTOWoker>();
             services.AddHostedService<AutoChatbotProblemAccountWorker>();
             services.AddHostedService<AutoChatbotResultAmendmentWoker>();
+            services.AddHostedService<AutoChatbotArchivingDAWoker>();
             services.AddHostedService<ScanAndSendLetstalkNotificationWorker>();
             services.AddHostedService<SynchronizeNewLicenseeWorker>();
             services.AddHostedService<AutoFbVoidingSettledTicketsWorker>();

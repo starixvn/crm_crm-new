@@ -25,6 +25,7 @@
         Task PullMessageCTOAndSendNotificationToHeadlineAsync();
         Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync();
         Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
+        Task PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
     }
 
     public class ChatBotJobService : IChatBotJobService
@@ -37,6 +38,7 @@
         private readonly IChatBotCTOService chatBotCTOService;
         private readonly IChatBotProblemAccountService chatBotProblemAccountService;
         private readonly IChatBotResultAmendmentService chatBotResultAmendmentService;
+        private readonly IChatBotArchivingDAService chatBotArchivingDAService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -52,7 +54,8 @@
             IConfiguration configuration,
             IChatBotCTOService chatBotCTOService,
             IChatBotProblemAccountService chatBotProblemAccountService,
-            IChatBotResultAmendmentService chatBotResultAmendmentService
+            IChatBotResultAmendmentService chatBotResultAmendmentService,
+            IChatBotArchivingDAService chatBotArchivingDAService
             )
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -64,6 +67,7 @@
             this.chatBotCTOService = chatBotCTOService;
             this.chatBotProblemAccountService = chatBotProblemAccountService;
             this.chatBotResultAmendmentService = chatBotResultAmendmentService;
+            this.chatBotArchivingDAService = chatBotArchivingDAService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -256,6 +260,34 @@
                 {
                     logService.LogInformation(commandResult.Item1.Message);
                     await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
+                }
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        public async Task PullMessagArchivingDAAndSendNotificationToHeadlineAsync()
+        {
+            try
+            {
+                AbnormalBetSystemSetting archivingDASetting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ArchivedAccounts, Environment);
+                if (!archivingDASetting.ServiceFlag)
+                {
+                    logService.LogInformation("Chat Bot Archiving Dormant Accounts Service is shutdown.");
+                    return;
+                }
+                var archivingDAInfors = await chatBotArchivingDAService.GetChatbotArchivingDASettingInfoAsync(archivingDASetting.LastLogId, archivingDASetting.BatchSize);
+                var (commandResult, command) = await chatBotArchivingDAService.ImportArchivedAccountsAsync(archivingDAInfors, Environment);
+                if (commandResult.IsSuccessful)
+                {
+                    await sendNotificationService.SendNotificationToLetstalk();
+                }
+                else
+                {
+                    logService.LogInformation(commandResult.Message);
+                    await logService.ErrorAsync(commandResult, command);
                 }
             }
             catch (Exception ex)

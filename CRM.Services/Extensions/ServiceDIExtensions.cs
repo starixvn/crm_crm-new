@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CRM.Letstalk.Client.Configurations;
-using CRM.Letstalk.Client.Services;
-using CRM.Letstalk.Client.Services.Interfaces;
-using CRM.Repositories;
-using CRM.Services.Feedback;
-using CRM.Services.Customer;
-using Microsoft.Extensions.DependencyInjection;
-using CRM.Services.InformHeadline;
-using CRM.Services.Communication;
-using CRM.Services.Remark;
-using CRM.Services.Redemption;
+﻿using CRM.Repositories;
 using CRM.Services.ActionLog;
+using CRM.Services.Communication;
+using CRM.Services.Customer;
 using CRM.Services.Dashboard;
+using CRM.Services.Feedback;
+using CRM.Services.InformHeadline;
+using CRM.Services.Redemption;
+using CRM.Services.Remark;
 using CRM.Services.Report;
 using CRM.Services.Report.CategoriesSummaryReport;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CRM.Services.Extensions
 {
@@ -23,37 +17,37 @@ namespace CRM.Services.Extensions
     {
         public static void ResolveServiceDI(this IServiceCollection services)
         {
-            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
-            services.AddTransient<IRemarkRepository, RemarkRepository>();
+            services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+            services.AddScoped<IRemarkRepository, RemarkRepository>();
 
-            services.AddTransient<IAuthService, AuthService>();
-            services.AddTransient<ISettingService, SettingService>();
-            services.AddTransient<INotificationListService, NotificationListService>();
-            services.AddTransient<INotificationTemplateService, NotificationTemplateService>();
-            services.AddTransient<INotificationTypeService, NotificationTypeService>();
-            services.AddTransient<ICommonService, CommonService>();
-            services.AddTransient<IChatTypeMappingService, ChatTypeMappingService>();
-            services.AddTransient<ICommunicationToolSettingService, CommunicationToolSettingService>();
-            services.AddTransient<IPicAssignmentService, PicAssignmentService>();
-            services.AddTransient<ISettlementReportService, SettlementReportService>();
-            services.AddTransient<IFeedbackSubjectService, FeedbackSubjectService>();
-            services.AddTransient<IPicManagementService, PicManagementService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ISettingService, SettingService>();
+            services.AddScoped<INotificationListService, NotificationListService>();
+            services.AddScoped<INotificationTemplateService, NotificationTemplateService>();
+            services.AddScoped<INotificationTypeService, NotificationTypeService>();
+            services.AddScoped<ICommonService, CommonService>();
+            services.AddScoped<IChatTypeMappingService, ChatTypeMappingService>();
+            services.AddScoped<ICommunicationToolSettingService, CommunicationToolSettingService>();
+            services.AddScoped<IPicAssignmentService, PicAssignmentService>();
+            services.AddScoped<ISettlementReportService, SettlementReportService>();
+            services.AddScoped<IFeedbackSubjectService, FeedbackSubjectService>();
+            services.AddScoped<IPicManagementService, PicManagementService>();
             services.AddScoped<IExportExcelService, ExportExcelService>();
-            services.AddTransient<IFeedbackService, FeedbackService>();
-            services.AddTransient<ITicketRefService, TicketRefService>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<ITicketRefService, TicketRefService>();
             services.AddScoped<ICustomerService, CustomerService>();
-            services.AddTransient<IInformHeadlineService, InformHeadlineService>();
-            services.AddTransient<ICommunicationService, CommunicationService>();
-            services.AddTransient<IRemarkService, RemarkService>();
-            services.AddTransient<IRedemptionService, RedemptionService>();
-            services.AddTransient<IActionLogService, ActionLogService>();
-            services.AddTransient<IDashboardService, DashboardService>();
-            services.AddTransient<ILogStatisticsService, LogStatisticsService>();
-            services.AddTransient<ISummaryReportService, SummaryReportService>();
-            services.AddTransient<IIssueStatisticsService, IssueStatisticsService>();
-            services.AddTransient<IDynamicReportService, DynamicReportService>();
-            services.AddTransient<ICustomerReportService, CustomerReportService>();
-            services.AddTransient<IHomeService, HomeService>();
+            services.AddScoped<IInformHeadlineService, InformHeadlineService>();
+            services.AddScoped<ICommunicationService, CommunicationService>();
+            services.AddScoped<IRemarkService, RemarkService>();
+            services.AddScoped<IRedemptionService, RedemptionService>();
+            services.AddScoped<IActionLogService, ActionLogService>();
+            services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<ILogStatisticsService, LogStatisticsService>();
+            services.AddScoped<ISummaryReportService, SummaryReportService>();
+            services.AddScoped<IIssueStatisticsService, IssueStatisticsService>();
+            services.AddScoped<IDynamicReportService, DynamicReportService>();
+            services.AddScoped<ICustomerReportService, CustomerReportService>();
+            services.AddScoped<IHomeService, HomeService>();
         }
     }
 }

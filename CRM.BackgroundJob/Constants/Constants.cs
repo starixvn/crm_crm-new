@@ -25,6 +25,8 @@
         public const string ServiceName_ChatBot_CWL = "ChatBot - CWL";
         public const string ServiceName_ChatBot_ProblemAccounts = "ChatBot - ProblemAccounts";
         public const string ServiceName_ChatBot_ResultAmendment = "ChatBot - ResultAmendment";
+        public const string ServiceName_ChatBot_ArchivedAccounts = "ChatBot - ArchivedAccounts";
+        
         public const string ServiceName_WinLimitFB = "WinLimitFB";
         public const string ServiceName_TOControlFB = "TOControlFB";
         public const string ServiceName_ProblemsAccount = "ProblemAccountFB";
