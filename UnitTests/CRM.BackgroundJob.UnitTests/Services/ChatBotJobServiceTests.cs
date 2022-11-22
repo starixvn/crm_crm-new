@@ -27,6 +27,7 @@
     using CRM.BackgroundJob.Criteria.ChatbotProblemAccount;
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
     using CRM.BackgroundJob.Criteria.ChatBot;
+    using CRM.BackgroundJob.Criteria.ChatBot_ArchivingDA;
 
     public class ChatBotJobServiceTests
     {
@@ -39,6 +40,7 @@
         private IChatBotCTOService chatBotCTOService;
         private IChatBotProblemAccountService chatBotProblemAccountService;
         private IChatBotResultAmendmentService chatBotResultAmendmentService;
+        private IChatBotArchivingDAService chatBotArchivingDAService;
 
         private readonly IFixture fixture = new Fixture();
 
@@ -434,6 +436,63 @@
             await sendNotificationService.Received().SendNotificationToLetstalk();
         }
 
+        [Fact]
+        public async Task PullMessagArchivingDAAndSendNotificationToHeadlineAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ArchivedAccounts, Constants.DefaultEnvironment).Returns(setting);
+
+            // Act
+            await service.PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            logService.Received().LogInformation("Chat Bot Archiving Dormant Accounts Service is shutdown.");
+        }
+
+        [Fact]
+        public async Task PullMessagArchivingDAAndSendNotificationToHeadlineAsync_ImportArchivedAccountsAsyncSuccessful_ExpectedToCallSendNotificationToLetstalk()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true, LastLogId = 1, BatchSize = 3000 };
+            var command = fixture.Create<ImportArchivedAccountsCommand>();
+            var commandResult = new CommandResult { Code = 0 };
+            var valueTupe = new ValueTuple<CommandResult, ImportArchivedAccountsCommand>(commandResult, command);
+            var archivingDAInfors = fixture.Create<IEnumerable<ChatbotArchivingDAInfor>>();
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ArchivedAccounts, Constants.DefaultEnvironment).Returns(setting);
+            chatBotArchivingDAService.GetChatbotArchivingDASettingInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(archivingDAInfors);
+            chatBotArchivingDAService.ImportArchivedAccountsAsync(archivingDAInfors, Constants.DefaultEnvironment).Returns(valueTupe);
+            // Act
+            await service.PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            await sendNotificationService.Received().SendNotificationToLetstalk();
+        }
+
+        [Fact]
+        public async Task PullMessagArchivingDAAndSendNotificationToHeadlineAsync_ImportArchivedAccountsAsyncIsFail_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new AbnormalBetSystemSetting { ServiceFlag = true, LastLogId = 1, BatchSize = 3000 };
+            var command = fixture.Create<ImportArchivedAccountsCommand>();
+            var commandResult = new CommandResult { Code = 1 };
+            var valueTupe = new ValueTuple<CommandResult, ImportArchivedAccountsCommand>(commandResult, command);
+            var archivingDAInfors = fixture.Create<IEnumerable<ChatbotArchivingDAInfor>>();
+            var service = GetService();
+            systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot_ArchivedAccounts, Constants.DefaultEnvironment).Returns(setting);
+            chatBotArchivingDAService.GetChatbotArchivingDASettingInfoAsync(Arg.Any<long>(), Arg.Any<int>()).Returns(archivingDAInfors);
+            chatBotArchivingDAService.ImportArchivedAccountsAsync(archivingDAInfors, Constants.DefaultEnvironment).Returns(valueTupe);
+            // Act
+            await service.PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
+
+            // Assert
+            logService.Received(1).LogInformation(Arg.Any<string>());
+            await logService.Received().ErrorAsync(valueTupe.Item1, valueTupe.Item2);
+        }
+
+
         #region Helpers
 
         private ChatBotJobService GetService()
@@ -447,6 +506,7 @@
             chatBotCTOService = Substitute.For<IChatBotCTOService>();
             chatBotProblemAccountService = Substitute.For<IChatBotProblemAccountService>();
             chatBotResultAmendmentService = Substitute.For<IChatBotResultAmendmentService>();
+            chatBotArchivingDAService = Substitute.For<IChatBotArchivingDAService>();
             return new ChatBotJobService(logService,
                 systemSettingService,
                 ticketVoidingService,
@@ -455,7 +515,8 @@
                 configuration,
                 chatBotCTOService,
                 chatBotProblemAccountService,
-                chatBotResultAmendmentService);
+                chatBotResultAmendmentService,
+                chatBotArchivingDAService);
         }
 
         #endregion Helpers
