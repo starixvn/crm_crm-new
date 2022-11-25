@@ -24,6 +24,26 @@ export class NewNotificationTemplate extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            uploadedFiles: []
+        };
+    }
+
+    handleUploadFiles = files => {
+        const uploaded = [...this.state.uploadedFiles];
+        files.some((file) => {
+            if (uploaded.findIndex((f) => f.name === file.name) === -1) {
+                uploaded.push(file);
+            }
+        });
+
+        this.setState({uploadedFiles: uploaded});
+    }
+
+    handleFileEvent = e => {
+        e.preventDefault();
+        const chosenFiles = Array.prototype.slice.call(e.target.files);
+        this.handleUploadFiles(chosenFiles);
     }
 
     renderForm = ({
@@ -35,6 +55,7 @@ export class NewNotificationTemplate extends Component {
         setFieldValue,
         isSubmitting
     }) => {
+        const {uploadedFiles} = this.state;
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -90,6 +111,25 @@ export class NewNotificationTemplate extends Component {
                                 onChange={handleChange}
                             />
                         </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} controlId="formFileMultiple">
+                        <Form.Label column sm="4" md="3"
+                            className="required"
+                        >
+                            File
+                        </Form.Label>
+                        <Col sm="8" md="9">
+                            <Form.Control type="file" multiple onChange={this.handleFileEvent} />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        {
+                            uploadedFiles.map(file => (
+                                <Col sm="8" md="9">
+                                    {file.name}
+                                </Col>
+                          ))}
+                       
                     </Form.Group>
                     {
                         this.props.languages !== null && this.props.languages.map(item => {
