@@ -10,11 +10,13 @@
     {
         Task<PushMessageResult> PushAsync(IEnumerable<string> accountIds, string message, DateTime? expiredTime = null);
 
+        Task<PushMessageResult> PushPersonalAsync(IEnumerable<string> accountIds, OutgoingMessage message);
+
         Task<PushMessageResult> PushAsync(string accountId, string message, DateTime? expiredTime = null);
 
         Task<PushMessageResult> PushAsync(IEnumerable<string> accountIds, Message message, DateTime? expiredTime = null);
 
-        Task<PushMessageResult> PushRoomAsync(string roomToken, OutgoingMessage message);
+        Task<PushMessageResult> PushMultiRoomAsync(IEnumerable<string> roomTokenList, OutgoingMessage message);
 
         Task<BaseResult> PushRoomAsync(string chatroomToken, string message, DateTime? expiredTime = null);
 

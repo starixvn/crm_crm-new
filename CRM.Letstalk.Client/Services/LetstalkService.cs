@@ -151,19 +151,19 @@
             return await PushAsync(accountIds, payload);
         }
 
-        public async Task<PushMessageResult> PushRoomAsync(string roomToken, OutgoingMessage message)
+        public async Task<PushMessageResult> PushMultiRoomAsync(IEnumerable<string> roomTokenList, OutgoingMessage message)
         {
-            ValidateInputParam(nameof(roomToken), roomToken);
+            ValidateInputParam(nameof(roomTokenList), roomTokenList);
             ValidateInputParam(nameof(message), message);
             ValidateMultiCastMessage(message);
 
             var token = await GetSignAccessTokenAsync();
             var result = await httpClientService.ExecutePostAsync<PushMessageResult>(
-                $"bot/v3/message/chatroom",
+                $"bot/v3/message/multi-chatroom",
                 new Dictionary<string, object>
                 {
                     { "msg", message },
-                    { "receiver", roomToken }
+                    { "receivers", roomTokenList }
                 },
                 token,
                 encodeData: false);
@@ -304,6 +304,26 @@
             }
 
             return string.Empty;
+        }
+
+        public async Task<PushMessageResult> PushPersonalAsync(IEnumerable<string> accountIds, OutgoingMessage message)
+        {
+            ValidateInputParam(nameof(accountIds), accountIds);
+            ValidateInputParam(nameof(message), message);
+            ValidateMultiCastMessage(message);
+
+            var token = await GetSignAccessTokenAsync();
+            var result = await httpClientService.ExecutePostAsync<PushMessageResult>(
+                $"bot/v3/message/multicast",
+                new Dictionary<string, object>
+                {
+                    { "msg", message },
+                    { "receivers", accountIds.ToArray() }
+                },
+                token,
+                encodeData: false);
+
+            return result;
         }
     }
 }
