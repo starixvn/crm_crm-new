@@ -4,6 +4,7 @@ import {
     resetState,
     setGridParams,
     setGridData,
+    setCreateAnnouncement,
     setLanguages,
     setNotificationTemplates,
     setOpenNewAnnouncementPopup
@@ -15,6 +16,13 @@ const getGridData = params => async dispatch => {
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setGridData(response.data));
     }).then(() => Site.unblockUI());
+};
+
+const createAnnouncement = data => async dispatch => {
+    const url = Site.resolveClientUrl('Announcement/Create');
+    await DataService.postDataFileAsync(url, data).then(response => {
+        dispatch(setCreateAnnouncement(response.data));
+    });
 };
 
 const getLanguages = () => async dispatch => {
@@ -36,6 +44,8 @@ export const ActionCreators = {
     setGridParams,
     setGridData,
     getGridData,
+    createAnnouncement,
+    setCreateAnnouncement,
     getLanguages,
     setLanguages,
     getNotificationTemplates,

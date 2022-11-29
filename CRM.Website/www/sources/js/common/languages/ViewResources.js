@@ -260,6 +260,7 @@
     IssueStatisticsReport: 'Issue Statistics Report',
     InvalidInputSMAUsernames: 'The number of usernames must not exceed 50!',
     JobSettingManagement: 'Job Settings Management',
+    InsertAnnouncementSuccessfully: 'Insert Announcement Successfully!',
     SettingExistedAlready: 'Setting existed already',
     UpdateSettingSuccess: 'Update Setting successfully!',
     KeepAssign: 'Keep Assign',

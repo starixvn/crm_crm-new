@@ -37,6 +37,10 @@ export class AppContainer extends Component {
 
     handleCloseNewAnnouncement = () => this.props.setOpenNewAnnouncementPopup({ show: false });
 
+    handleCreateSuccessAnnouncement = () =>{
+        this.handleCloseNewAnnouncement();
+    }
+
     handleCloseViewDetail = () => {
         this.props.setViewDetailPopup({ show: false });
         this.props.setIsRefresh(true);
@@ -53,7 +57,10 @@ export class AppContainer extends Component {
                 <Filter isHost={isHost}/>
                 {
                     this.props.newAnnouncementPopup.show &&
-                    <NewAnnouncement onClose={this.handleCloseNewAnnouncement}/>
+                    <NewAnnouncement
+                        onClose={this.handleCloseNewAnnouncement}
+                        onSuccess={this.handleCreateSuccessAnnouncement}
+                    />
                 }
                 {/* {
                     this.props.contentPopup.show &&

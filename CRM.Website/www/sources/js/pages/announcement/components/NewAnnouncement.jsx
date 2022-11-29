@@ -158,12 +158,12 @@ export class NewAnnouncement extends Component {
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
-                    {/* {
-                        this.props.createTemplateResult &&
-                        <ResponseMessage isSuccessful={this.props.createTemplateResult.isSuccessful}
-                            message={this.props.createTemplateResult.message || LangHelper.getResource('InsertNotificationTemplateSuccessfully')}
+                    {
+                        this.props.createAnnouncementResult &&
+                        <ResponseMessage isSuccessful={this.props.createAnnouncementResult.isSuccessful}
+                            message={this.props.createAnnouncementResult.message || LangHelper.getResource('InsertAnnouncementSuccessfully')}
                         />
-                    } */}
+                    }
                     <Form.Group as={Row}>
                         <Form.Label column sm="4" md="3" className="required" htmlFor="notificationTemplate">
                             {LangHelper.getResource('NotificationTemplate')}
@@ -243,6 +243,26 @@ export class NewAnnouncement extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
+        const files = [];
+        // this.state.uploadedFiles.forEach(file => {
+        //     const formData = new FormData();
+        //     formData.append('file', file);
+        //     files.push(formData);
+        // });
+        let formData = new FormData();
+        formData.append('file', this.state.uploadedFiles[0]);
+        const params = {
+            FormFiles: formData
+        };
+        this.props.createAnnouncement(params).then(() => {
+            if (this.props.createAnnouncementResult.isSuccessful) {
+                setTimeout(() => {
+                    this.props.onSuccess();
+                }, 3000);
+            } else {
+                setSubmitting(false);
+            }
+        });
     };
 
     validateFormik = values => {
@@ -283,8 +303,8 @@ export class NewAnnouncement extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { languages, notificationTemplates } = state;
-    return { languages, notificationTemplates };
+    const { languages, notificationTemplates, createAnnouncementResult } = state;
+    return { languages, notificationTemplates, createAnnouncementResult };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewAnnouncement);
