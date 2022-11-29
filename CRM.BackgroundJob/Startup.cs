@@ -177,7 +177,6 @@
             services.AddHostedService<AutoChatbotCTOWoker>();
             services.AddHostedService<AutoChatbotProblemAccountWorker>();
             services.AddHostedService<AutoChatbotResultAmendmentWoker>();
-            services.AddHostedService<AutoChatbotArchivingDAWoker>();
             services.AddHostedService<ScanAndSendLetstalkNotificationWorker>();
             services.AddHostedService<SynchronizeNewLicenseeWorker>();
             services.AddHostedService<AutoFbVoidingSettledTicketsWorker>();
