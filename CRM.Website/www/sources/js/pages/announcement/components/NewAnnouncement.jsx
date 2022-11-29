@@ -19,17 +19,27 @@ export class NewAnnouncement extends Component {
         };
     }
 
+    componentDidMount() {
+        this.props.getLanguages();
+        const param = {
+            notificationTypeId: null,
+            notificationTemplateName: '',
+            PageSize: 0
+        };
+        this.props.getNotificationTemplates(param);
+    }
+
     handleUploadFiles = files => {
         const uploaded = [...this.state.uploadedFiles];
         files.some(file => {
+            const isValidWidthHeigh = this.validateWidthHeigh(file);
             const isValidFileType = this.validFileType(file);
             const isValidSize = this.validFileSize(file);
             const isNotExist = uploaded.findIndex((f) => f.name === file.name) === -1;
-            if (isValidFileType && isNotExist && isValidSize) {
+            if (isValidFileType && isValidWidthHeigh && isValidSize && isNotExist) {
                 uploaded.push(file);
             }
         });
-
         this.setState({uploadedFiles: uploaded});
     }
 
@@ -37,6 +47,20 @@ export class NewAnnouncement extends Component {
         e.preventDefault();
         const chosenFiles = Array.prototype.slice.call(e.target.files);
         this.handleUploadFiles(chosenFiles);
+    }
+
+    validateWidthHeigh = file =>{
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        const maximumHeighWidth = 2560;
+        img.src = url;
+        const result = img.onload = function() {
+            if(img.width > maximumHeighWidth || img.height > maximumHeighWidth){
+                return false;
+            }
+            return true;
+        }();
+        return result;
     }
 
     validFileSize = file =>{
@@ -50,16 +74,16 @@ export class NewAnnouncement extends Component {
 
     validFileType = file =>{
         const fileTypes = [
-            "image/apng",
-            "image/bmp",
-            "image/gif",
-            "image/jpeg",
-            "image/pjpeg",
-            "image/png",
-            "image/svg+xml",
-            "image/tiff",
-            "image/webp",
-            "image/x-icon"
+            'image/apng',
+            'image/bmp',
+            'image/gif',
+            'image/jpeg',
+            'image/pjpeg',
+            'image/png',
+            'image/svg+xml',
+            'image/tiff',
+            'image/webp',
+            'image/x-icon'
         ];
         return fileTypes.includes(file.type);
     }
@@ -104,7 +128,8 @@ export class NewAnnouncement extends Component {
             >
                 <Form.Label column sm="4" md="3" />
                 <Col sm="8" md="9" className='list-file-image'>
-                    <span className="mr-2">
+                    <span className='fa fa-file-image-o mr-2' />
+                    <span className="mr-2 text-color">
                         {item.name}
                     </span>
                     <span className="rounded-circle fa fa-trash icon-delete" onClick={event => this.handleRemoveFile(event, item.name)} />
@@ -141,7 +166,7 @@ export class NewAnnouncement extends Component {
                     } */}
                     <Form.Group as={Row}>
                         <Form.Label column sm="4" md="3" className="required" htmlFor="notificationTemplate">
-                            {LangHelper.getResource('NotificationType')}
+                            {LangHelper.getResource('NotificationTemplate')}
                         </Form.Label>
                         <Col sm="8" md="9">
                             <Form.Control as="select" size="sm" className="shadow-none"
@@ -151,7 +176,7 @@ export class NewAnnouncement extends Component {
                                 onChange={handleChange}
                             >
                                 <option value="" hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>
-                                {/* {this.props.notificationTemplate.map((value, key) => <option key={key} value={value}>{value}</option>)} */}
+                                {this.props.notificationTemplates.map((value, key) => <option key={key} value={value.notificationTemplateId}>{value.notificationTemplateName}</option>)}
                             </Form.Control>
                         </Col>
                     </Form.Group>
@@ -176,8 +201,15 @@ export class NewAnnouncement extends Component {
                         >
                             {LangHelper.getResource('File')}
                         </Form.Label>
-                        <Col>
-                            <Form.Control type="file" multiple onChange={this.handleFileEvent} />
+                        <Col >
+                            <span className="fa fa-upload mr-2 mt-2" />
+                            <span className="btn-file">
+                                <span>Browse and attach image (limit: </span>
+                                <span className='text-color'>10MB</span>
+                                <span>, max size: </span>
+                                <span className='text-color'>2560*2560)</span>
+                                <input type="file" multiple onChange={this.handleFileEvent} />
+                            </span>
                         </Col>
                     </Form.Group>
                     <DragDropContext onDragEnd={this.onDragEnd}>
@@ -211,29 +243,11 @@ export class NewAnnouncement extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
-        // const template = {
-        //     notificationTypeId: values.notificationTypeId,
-        //     notificationTemplateName: values.notificationTemplateName,
-        //     title: values.title,
-        //     contents: []
-        // };
-        // this.props.languages !== null && this.props.languages.map(item => {
-        //     template.contents.push({
-        //         languageId: item.settingId,
-        //         content: values['language_' + item.settingId]
-        //     });
-        // });
-
-        // this.props.createTemplate(template).then(() => {
-        //     if (this.props.createTemplateResult.isSuccessful) {
-        //         setTimeout(() => {
-        //             this.props.onSuccess();
-        //         }, 3000);
-        //     } else {
-        //         setSubmitting(false);
-        //     }
-        // });
     };
+
+    validateFormik = values => {
+        
+    }
 
     render() {
         const initialValues = {
@@ -241,8 +255,13 @@ export class NewAnnouncement extends Component {
             title: ''
         };
 
+        const {languages, notificationTemplates} = this.props;
+        if(!languages || !notificationTemplates) {
+            return null;
+        }
+
         return (
-            <Modal show className="notification-template-modal" dialogAs={DraggableModalDialog}
+            <Modal show className="new-announcement-modal" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="lg" centered
                 onHide={this.props.onClose}
             >
@@ -251,7 +270,7 @@ export class NewAnnouncement extends Component {
                 </Modal.Header>
                 <Formik
                     initialValues={initialValues}
-                    validate={values => validateFormik(values)}
+                    validate={values => this.validateFormik(values)}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}
@@ -264,9 +283,8 @@ export class NewAnnouncement extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { } = state;
-    return {
-    };
+    const { languages, notificationTemplates } = state;
+    return { languages, notificationTemplates };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewAnnouncement);

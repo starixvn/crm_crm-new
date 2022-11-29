@@ -27,6 +27,29 @@
     }
 }
 
-.list-file-image .icon-delete::before{
-    padding-left: 6px;
+
+.new-announcement-modal{
+    .modal-content{
+        .list-file-image .icon-delete::before{
+            padding-left: 6px;
+        }
+
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+          }
+          .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: pointer;
+            display: block;
+        }
+
+        .text-color{
+            color: rgb(33,123,199);
+        }
+    }
 }

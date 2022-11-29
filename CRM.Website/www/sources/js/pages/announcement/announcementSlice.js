@@ -6,6 +6,8 @@ const initialState = {
         pageSize: 100
     },
     gridData: null,
+    languages: null,
+    notificationTemplates: null,
     newAnnouncementPopup: { show: false }
 };
 const announcementSlice = createSlice({
@@ -19,6 +21,12 @@ const announcementSlice = createSlice({
         setGridData: (state, action) => {
             state.gridData = action.payload;
         },
+        setNotificationTemplates: (state, action) => {
+            state.notificationTemplates = action.payload;
+        },
+        setLanguages: (state, action) => {
+            state.languages = action.payload;
+        },
         setOpenNewAnnouncementPopup: (state, action) => {
             state.newAnnouncementPopup = action.payload;
         }
@@ -31,6 +39,8 @@ export const {
     resetState,
     setGridParams,
     setGridData,
+    setNotificationTemplates,
+    setLanguages,
     setOpenNewAnnouncementPopup
 } = actions;
 

@@ -4,6 +4,8 @@ import {
     resetState,
     setGridParams,
     setGridData,
+    setLanguages,
+    setNotificationTemplates,
     setOpenNewAnnouncementPopup
 } from './announcementSlice';
 
@@ -15,11 +17,28 @@ const getGridData = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const getLanguages = () => async dispatch => {
+    const url = Site.resolveClientUrl('NotificationTemplate/GetLanguages');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setLanguages(response.data));
+    });
+};
+
+const getNotificationTemplates = params => async dispatch => {
+    const url = Site.resolveClientUrl('NotificationTemplate/GetNotificationTemplate');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setNotificationTemplates(response.data.data));
+    }).then(() => Site.unblockUI());
+};
 
 export const ActionCreators = {
     resetState,
     setGridParams,
     setGridData,
     getGridData,
+    getLanguages,
+    setLanguages,
+    getNotificationTemplates,
+    setNotificationTemplates,
     setOpenNewAnnouncementPopup
 };
