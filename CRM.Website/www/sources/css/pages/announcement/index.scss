@@ -1,0 +1,32 @@
+@import '../../abstracts/variables';
+.announcement{
+    .form-filter{
+        .form-group{
+            width: 283px !important;
+        }
+
+        label{
+            width: 112px !important;
+        }
+
+        .width-sm{
+            width: 50px !important;
+        }
+    }
+    .link-click {
+        cursor: pointer;
+        color: $link-color !important;
+    }
+    
+    .link-click:hover {
+        color: $draft-color !important;
+    }
+
+    .react-datepicker__input-container input{
+        width: 100% !important;
+    }
+}
+
+.list-file-image .icon-delete::before{
+    padding-left: 6px;
+}
