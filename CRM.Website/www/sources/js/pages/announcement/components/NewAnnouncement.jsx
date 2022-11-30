@@ -243,18 +243,12 @@ export class NewAnnouncement extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
-        const files = [];
-        // this.state.uploadedFiles.forEach(file => {
-        //     const formData = new FormData();
-        //     formData.append('file', file);
-        //     files.push(formData);
-        // });
-        let formData = new FormData();
-        formData.append('file', this.state.uploadedFiles[0]);
-        const params = {
-            FormFiles: formData
-        };
-        this.props.createAnnouncement(params).then(() => {
+        const formData = new FormData();
+        this.state.uploadedFiles.forEach(file => {
+            formData.append('formFile', file);
+        });
+        
+        this.props.createAnnouncement(formData).then(() => {
             if (this.props.createAnnouncementResult.isSuccessful) {
                 setTimeout(() => {
                     this.props.onSuccess();

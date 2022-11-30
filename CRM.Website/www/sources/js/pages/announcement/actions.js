@@ -20,7 +20,7 @@ const getGridData = params => async dispatch => {
 
 const createAnnouncement = data => async dispatch => {
     const url = Site.resolveClientUrl('Announcement/Create');
-    await DataService.postDataFileAsync(url, data).then(response => {
+    await DataService.postDataAsync(url, data).then(response => {
         dispatch(setCreateAnnouncement(response.data));
     });
 };

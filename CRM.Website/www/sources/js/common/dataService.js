@@ -20,20 +20,6 @@ export default class DataService {
             }).then(response => response).catch(Site.handleAxiosError);
     }
 
-    static async postDataFileAsync(url, params) {
-        return await axios.post(
-            url,
-            params,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'RequestVerificationToken': Site.getXsrfToken()
-                }
-            }).then(response => response).catch(Site.handleAxiosError);
-    }
-
-
     static async getFileAsync(url, params) {
         return await axios.post(
             url,
