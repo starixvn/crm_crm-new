@@ -35,6 +35,7 @@
         <None Remove="Deployment.ignore" />
         <None Remove="Format_Templates\AutoCreateFeedback\AmendmentDescriptionTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\AmendmentSolutionTemplate.xml" />
+        <None Remove="Format_Templates\AutoCreateFeedback\ArchivingDATemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\FeedbackTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\MixParlayTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\TODesctiptionTemplate.xml" />
@@ -84,6 +85,9 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="Format_Templates\AutoCreateFeedback\MixParlayTemplate.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Format_Templates\AutoCreateFeedback\ArchivingDATemplate.xml">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="Format_Templates\AutoCreateFeedback\ProblemsSolutionTemplate.xml">

@@ -63,7 +63,6 @@
             this.voidingSettledTicketsService = voidingSettledTicketsService;
             this.feedbackTransaction = feedbackTransaction;
         }
-
         public async Task CreateFeedbackForVoidingSettledTickets(ResultAmendmentSetting voidingSettledTicketSetting, bool isUAT,
             DateTime lastRuntimeEnv, string lastRuntimeNameEnv,
             string jobStatusNameEnv, string environment)

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+    <SolutionENSC>
+        Dear sir, kindly take note below announcement:{1}
+        Dear valued agents, please be informed that some of your Accounts were closed due to inactivity in the past 3 months.
+        If you wish them to continue their business, you can reopen these accounts, otherwise you can take back their given credit.
+        1 month after being closed, these accounts will be disabled, and you will not be able to recover the given credit from them, which will result in a shortage of your total credit.
+        Please note that disabled accounts will not be restored. Thank you. {1}
+        尊敬的代理们, 特此通知，由于您的一些总代理已长达近三个月无活跃操作，因此账号已被关闭。倘若关闭账号持有者有意继续进行生意，您可重启账号，除此以外也可以取回该账号的信用额。账号将在关闭后的一个月被禁用。您将无法从这些账号取回信用额，这将导致您的信用额度不足。请知悉，禁用后的账号将无法重启。谢谢。{1}
+        Affected users / 受影响会员: {0}
+    </SolutionENSC>
+    <Description>
+        Archiving Unused Credit Accounts - {0} - Stage 1 DONE {3}
+        - Close Inactive S/M/A and Member account.{3}
+        - Inactive/ No bets/ No members created for a period of 3 recent months from {1} to {2}.
+    </Description>
+</ROOT>

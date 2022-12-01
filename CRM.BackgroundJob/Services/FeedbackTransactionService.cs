@@ -29,10 +29,7 @@
                IEnumerable<CustomerWinLimit> cusWinLimit,
                IEnumerable<GroupHeadline> headlines);
 
-        Task<CommandResult> EditFeedbackWinLossInfoAsync(
-               int LogID,
-               string status,
-               string description);
+        Task<CommandResult> EditFeedbackWinLossInfoAsync(int LogID, string status, string description);
 
         Task<IEnumerable<TOControlFeedbackInfor>> ImportTOControllFeedbackInfoAsync(
              IEnumerable<GroupHeadline> headlines,
@@ -44,28 +41,27 @@
              IEnumerable<CustCategoryInfor> custCatogorys,
              string Environment);
 
-        Task<CommandResult> EditTOControlFeedbackInfoAsync(
-               string LogID,
-               string status,
-               string description);
+        Task<CommandResult> EditTOControlFeedbackInfoAsync( string LogID, string status, string description);
 
-        Task<CommandResult> EditProblemsAccountFeedbackInfoAsync(
-           string LogID,
-           string status,
-           string description);
+        Task<CommandResult> EditProblemsAccountFeedbackInfoAsync(string LogID, string status, string description);
 
         Task<IEnumerable<AmendmentAutoFeedbackInfor>> GetAmendmentNotiAutoFeedbackInfor(int BatchSize);
 
         Task<CommandResult> InserAmendmentNotiAutoFeedback(IEnumerable<CusReachAmendmentNotification> CustAmendments, string Environment);
 
-        Task<CommandResult> EditAmendmentNotiAutoFeedback(
-           int LogID,
-           string status,
-           string description);
+        Task<CommandResult> EditAmendmentNotiAutoFeedback(int LogID, string status, string description);
 
         Task<IEnumerable<Message>> GetMessageContentInfoAsync(int messageId);
 
-        Task<IEnumerable<ArchivingDAStatus>> GetArchivingDAStatus();
+        Task<bool> GetArchivingDAStatus();
+
+        Task<IEnumerable<ArchivingCustInfo>> GetArchivingCustInfo();
+
+        Task<IEnumerable<ArchivingAutoFbInfo>> ArchivingAutoFeedbackInfoInsAsync(ArchivingDASetting setting, string environment);
+
+        Task<CommandResult> ArchivingImportDirectAccountAsync(string achivedList, DateTime archivedDate);
+
+        Task<CommandResult> EditArchivingDAAutoFeedback(int logFeedbackId, string status, string description);
     }
 
     public class FeedbackTransactionService : IFeedbackTransactionService
@@ -373,6 +369,46 @@
         {
             var criteria = new GetArchivingDAStatusCriteria();
             return await baseService.GetDataEntityAsync<bool>(criteria);
+        }
+
+        public async Task<IEnumerable<ArchivingCustInfo>> GetArchivingCustInfo()
+        {
+            var criteria = new GetListArchivingAccountCriteria();
+            return await baseService.GetDataAsync<ArchivingCustInfo>(criteria);
+        }
+
+        public async Task<IEnumerable<ArchivingAutoFbInfo>> ArchivingAutoFeedbackInfoInsAsync(ArchivingDASetting setting, string environment)
+        {
+            var command = new ArchivingAutoFeedbackInfoInsCommand
+            {
+                BatchSize = setting.BatchSize,
+                MaxLogFBId = setting.MaxLogFBId,
+                BatchSizeAccount = setting.BatchSizeAccount,
+                Environment = environment,
+                ServiceID = setting.ServiceID
+            };
+            return await baseService.GetDataAsync<ArchivingAutoFbInfo>(command);
+        }
+
+        public async Task<CommandResult> ArchivingImportDirectAccountAsync(string achivedList, DateTime archivedDate)
+        {
+            var command = new ArchivingImportDirectAccountCommand
+            {
+                ArchivedDate = archivedDate,
+                ArchivedList = achivedList
+            };
+            return await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task<CommandResult> EditArchivingDAAutoFeedback(int logFeedbackId, string status,string description)
+        {
+            var criteria = new ArchivingAutoFeedbackUpdateCommand
+            {
+                LogFeedbackId = logFeedbackId,
+                Status = status,
+                Description = description
+            };
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
     }
 }

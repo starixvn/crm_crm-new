@@ -30,7 +30,6 @@
 
         string GetMatchCode(string matchCode, string languageCode);
         
-        
         string GetCategogyName(string categoryId, string languageCode);
         
         T GetFeedbackTemplates<T>(string fileXml);
@@ -59,7 +58,9 @@
 
         string GetMatchCodeFormat(string matchCode, string language);
 
-        Task<CommandResult> EditArchivingDAStatusSettingAsync(string serviceName, bool isSyncArchivedAccount);
+        Task<CommandResult> EditArchivingDAStatusSettingAsync(string serviceName, string isSyncArchivedAccount);
+
+        Task<CommandResult> EditArchivingDAMaxLogIdSettingAsync(string serviceName, string maxLogFBId);
     }
     public class CommonFeedback : ICommonFeedback
     {
@@ -247,11 +248,20 @@
             return MatchCodeReplace;
         }
 
-        public async Task<CommandResult> EditArchivingDAStatusSettingAsync(string serviceName, bool isSyncArchivedAccount)
+        public async Task<CommandResult> EditArchivingDAStatusSettingAsync(string serviceName, string isSyncArchivedAccount)
         {
             var settingJobStatus = new List<SystemSettingItem>
             {
-                new SystemSettingItem { SettingName = SystemSettingName.IsSyncArchivedAccount, Value =  Convert.ToInt32(isSyncArchivedAccount).ToString()}
+                new SystemSettingItem { SettingName = SystemSettingName.IsSyncArchivedAccount, Value =  isSyncArchivedAccount}
+            };
+            return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
+        }
+
+        public async Task<CommandResult> EditArchivingDAMaxLogIdSettingAsync(string serviceName, string maxLogFBId)
+        {
+            var settingJobStatus = new List<SystemSettingItem>
+            {
+                new SystemSettingItem { SettingName = SystemSettingName.MaxLogFBId, Value =  maxLogFBId}
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
         }

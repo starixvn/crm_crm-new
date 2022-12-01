@@ -63,6 +63,8 @@
         public string PALogID { get; set; }
         public int AmendmentLogID { get; set; }
         public int VoidingSettledID { get; set; }
+        public int LogFeedbackId { get; set; }
+        public int ServiceID { get; set; }
         public int ErrCode { get; set; }
         public string ErrMsg { get; set; }
 

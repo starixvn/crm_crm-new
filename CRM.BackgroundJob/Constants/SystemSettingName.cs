@@ -14,5 +14,6 @@
         public const string LastLogIdUAT = "LastLogIdUAT";
         public const string LastRuntimeUAT = "LastRuntimeUAT";
         public const string IsSyncArchivedAccount = "IsSyncArchivedAccount";
+        public const string MaxLogFBId = "MaxLogFBId";
     }
 }

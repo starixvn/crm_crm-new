@@ -95,7 +95,7 @@ export class DataGrid extends Component {
                         value.subSettingId.map((subId, index) => {
                             const filterSubCategory = filterMainCategory.childSettings.find(el => el.subCategoryId === subId);
                             return (
-                                <div key={index} className="font-italic ml-3 py-1">{filterSubCategory.name}</div>
+                                <div key={index} className="font-italic ml-3 py-1">{filterSubCategory?.name}</div>
                             );
                         })
                     }
