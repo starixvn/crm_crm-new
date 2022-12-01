@@ -17,5 +17,6 @@
         public const string CreateFeedbackForResultAmendment = "CreateFeedbackForResultAmendment";
         public const string SynchronizeNewLicenseeOICToSiteSetting = "SynchronizeNewLicenseeOICToSiteSetting";
         public const string CreateFeedbackForVoidingSettledTickets = "CreateFeedbackForVoidingSettledTickets";
+        public const string CreateFeedbackForArchivingDA = "CreateFeedbackForArchivingDA";
     }
 }

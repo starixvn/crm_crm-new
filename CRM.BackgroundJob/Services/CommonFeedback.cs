@@ -58,6 +58,8 @@
            string serviceName);
 
         string GetMatchCodeFormat(string matchCode, string language);
+
+        Task<CommandResult> EditArchivingDAStatusSettingAsync(string serviceName, bool isSyncArchivedAccount);
     }
     public class CommonFeedback : ICommonFeedback
     {
@@ -244,5 +246,15 @@
             }
             return MatchCodeReplace;
         }
+
+        public async Task<CommandResult> EditArchivingDAStatusSettingAsync(string serviceName, bool isSyncArchivedAccount)
+        {
+            var settingJobStatus = new List<SystemSettingItem>
+            {
+                new SystemSettingItem { SettingName = SystemSettingName.IsSyncArchivedAccount, Value =  Convert.ToInt32(isSyncArchivedAccount).ToString()}
+            };
+            return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
+        }
+
     }
 }

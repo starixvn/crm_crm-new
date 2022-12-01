@@ -162,6 +162,7 @@
             services.AddSingleton<ISynchronizeLicenseeService, SynchronizeLicenseeService>();
             services.AddSingleton<IVoidingSettledTicketsFeedbackService, VoidingSettledTicketsFeedbackService>();
             services.AddSingleton<IVoidingSettledTicketsService, VoidingSettledTicketsService>();
+            services.AddSingleton<IArchivingDAService, ArchivingDAService>();
         }
 
         private static void AddWorker(IServiceCollection services)
@@ -180,6 +181,7 @@
             services.AddHostedService<ScanAndSendLetstalkNotificationWorker>();
             services.AddHostedService<SynchronizeNewLicenseeWorker>();
             services.AddHostedService<AutoFbVoidingSettledTicketsWorker>();
+            services.AddHostedService<AutoFbArchivingDAWoker>();
 
             services.AddHostedService<MonitorLetstalkWorker>();
         }

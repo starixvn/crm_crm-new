@@ -1,9 +1,11 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
+    using CRM.BackgroundJob.Criteria.ArchivingDA;
     using CRM.BackgroundJob.Criteria.ProblemsAccount;
     using CRM.BackgroundJob.Criteria.ResultAmendment;
     using CRM.BackgroundJob.Criteria.TurnoverControll;
     using CRM.BackgroundJob.Criteria.WinLossLimit;
+    using CRM.BackgroundJob.Models.ArchivingDA;
     using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.BackgroundJob.Models.TurnoverControll;
@@ -62,6 +64,8 @@
            string description);
 
         Task<IEnumerable<Message>> GetMessageContentInfoAsync(int messageId);
+
+        Task<IEnumerable<ArchivingDAStatus>> GetArchivingDAStatus();
     }
 
     public class FeedbackTransactionService : IFeedbackTransactionService
@@ -363,6 +367,12 @@
             }
 
             return messages;
+        }
+
+        public async Task<bool> GetArchivingDAStatus()
+        {
+            var criteria = new GetArchivingDAStatusCriteria();
+            return await baseService.GetDataEntityAsync<bool>(criteria);
         }
     }
 }

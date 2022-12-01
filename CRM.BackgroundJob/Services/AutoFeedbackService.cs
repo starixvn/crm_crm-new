@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Models.ArchivingDA;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
     using global::CRM.BackgroundJob.Models.ResultAmendment;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
@@ -23,6 +24,7 @@
         Task ResultAmendmentExecuteJobAsync();
         Task SynchronizeNewLicenseeOICExecuteJobAsync();
         Task VoidingSettledTicketsExecuteJobAsync();
+        Task ArchivingDAExecuteJobAsync();
     }
 
     public class AutoFeedbackService : IAutoFeedbackService
@@ -38,6 +40,7 @@
         private readonly IFeedbackService feedbackService;
         private readonly ISynchronizeLicenseeService licenseeService;
         private readonly IVoidingSettledTicketsFeedbackService voidingSettledTicketsService;
+        private readonly IArchivingDAService archivingDAService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -56,6 +59,7 @@
             IFeedbackService feedbackService,
             ISynchronizeLicenseeService licenseeService,
             IVoidingSettledTicketsFeedbackService voidingSettledTicketsService,
+            IArchivingDAService archivingDAService,
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -70,6 +74,7 @@
             this.feedbackService = feedbackService;
             this.licenseeService = licenseeService;
             this.voidingSettledTicketsService = voidingSettledTicketsService;
+            this.archivingDAService = archivingDAService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -432,6 +437,72 @@
                            new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") },
                         };
                     await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_AutoVoidFB);
+                }
+            }
+        }
+
+        public async Task ArchivingDAExecuteJobAsync()
+        {
+            try
+            {
+                ArchivingDASetting setting = await systemSettingService.GetArchivingDASettingAsync();
+                if (!setting.ServiceFlag)
+                {
+                    logService.LogInformation("Service Archiving DA is shutdown.");
+                    return;
+                }
+
+                var isRunningLive = setting.JobStatus.Equals(JobStatus.Running, StringComparison.OrdinalIgnoreCase);
+                var isRunningUAT = setting.JobStatusUAT.Equals(JobStatus.Running, StringComparison.OrdinalIgnoreCase);
+
+                if (Environment == DefaultEnvironment)
+                {
+                    await ArchivingDARunJobByEnviromentAsync(false, isRunningUAT, isRunningLive, setting, Environment);
+                }
+                else
+                {
+                    await ArchivingDARunJobByEnviromentAsync(true, isRunningUAT, isRunningLive, setting, Environment);
+                }
+            }
+            catch (Exception ex)
+            {
+                await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForArchivingDA);
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        protected internal virtual async Task ArchivingDARunJobByEnviromentAsync(bool isUAT, bool isRunningUAT,
+            bool isRunningLive, ArchivingDASetting setting, string Environment)
+        {
+            var LastRuntimeEnv = isUAT ? setting.LastRuntimeUAT : setting.LastRuntime;
+            var LastRuntimeNameEnv = isUAT ? SystemSettingName.LastRuntimeUAT : SystemSettingName.LastRuntime;
+            var JobStatusNameEnv = isUAT ? SystemSettingName.JobStatusUAT : SystemSettingName.JobStatus;
+            var isRunning = isUAT ? isRunningUAT : isRunningLive;
+
+            if (!isRunning)
+            {
+                await Task.WhenAll(
+                    jobRunningChecker.MarkRunning(JobName.CreateFeedbackForArchivingDA),
+                    archivingDAService.CreateFeedbackForArchivingDAAsync(
+                            setting, isUAT, LastRuntimeEnv, LastRuntimeNameEnv,
+                            JobStatusNameEnv, Environment
+                        )
+                );
+                await jobRunningChecker.ClearRunning(JobName.CreateFeedbackForArchivingDA);
+            }
+            else
+            {
+                logService.LogInformation("Archiving DA service is running.");
+                isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForArchivingDA);
+                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                {
+                    logService.LogInformation("Update  status and return serive archiving DA.");
+                    var settingJobStatus = new List<SystemSettingItem>
+                        {
+                           new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
+                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(dateTimeParse) },
+                        };
+                    await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ArchivingDA);
                 }
             }
         }

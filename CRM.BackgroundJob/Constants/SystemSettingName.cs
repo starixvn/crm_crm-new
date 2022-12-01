@@ -13,5 +13,6 @@
         public const string JobStatusUAT = "JobStatusUAT";
         public const string LastLogIdUAT = "LastLogIdUAT";
         public const string LastRuntimeUAT = "LastRuntimeUAT";
+        public const string IsSyncArchivedAccount = "IsSyncArchivedAccount";
     }
 }

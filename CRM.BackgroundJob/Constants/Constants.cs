@@ -32,5 +32,6 @@
         public const string ServiceName_ProblemsAccount = "ProblemAccountFB";
         public const string ServiceName_ResultAmendment = "AmendmentNotiFB";
         public const string ServiceName_AutoVoidFB = "AutoVoidFB";
+        public const string ServiceName_ArchivingDA = "ArchivedAccountFB";
     }
 }

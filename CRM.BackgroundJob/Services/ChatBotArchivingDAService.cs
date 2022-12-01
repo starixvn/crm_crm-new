@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.ChatBot_ArchivingDA;
-    using CRM.BackgroundJob.Criteria.ChatbotProblemAccount;
     using CRM.BackgroundJob.Models.ChatBot;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
