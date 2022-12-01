@@ -34,6 +34,7 @@
         private IResultAmendmentService resultAmendmentService;
         private IFeedbackService feedbackService;
         private IVoidingSettledTicketsFeedbackService voidingSettledTicketsService;
+        private IArchivingDAService archivingDAService;
 
         private readonly IFixture fixture = new Fixture();
 
@@ -1098,6 +1099,7 @@
             licenseeService = Substitute.For<ISynchronizeLicenseeService>(); 
             configuration = Substitute.For<IConfiguration>();
             voidingSettledTicketsService = Substitute.For<IVoidingSettledTicketsFeedbackService>();
+            archivingDAService = Substitute.For<IArchivingDAService>();
             return Substitute.For<AutoFeedbackServiceTestable>(
                 appJobSettings,
                 jobRunningChecker,
@@ -1110,6 +1112,7 @@
                 feedbackService,
                 licenseeService,
                 voidingSettledTicketsService,
+                archivingDAService,
                 configuration);
         }
 

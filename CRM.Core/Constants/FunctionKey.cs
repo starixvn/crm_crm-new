@@ -40,5 +40,6 @@
 
         public const string SettingRelationManagement = "SettingRelationshipManagement";
         public const string SettingManagement = "SettingManagement";
+        public const string JobSettingManagement = "JobSettingManagement";
     }
 }

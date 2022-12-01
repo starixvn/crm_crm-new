@@ -25,6 +25,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             IFeedbackService feedbackService,
             ISynchronizeLicenseeService licenseeService,
             IVoidingSettledTicketsFeedbackService voidingSettledTicketsService,
+            IArchivingDAService archivingDAService,
             IConfiguration configuration
             )
             : base(appSettings,
@@ -38,6 +39,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
                 feedbackService,
                 licenseeService,
                 voidingSettledTicketsService,
+                archivingDAService,
                 configuration)
         {
 
