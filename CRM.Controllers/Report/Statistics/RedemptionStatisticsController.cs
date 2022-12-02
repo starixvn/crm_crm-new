@@ -6,16 +6,12 @@
     using System.Threading.Tasks;
     using CRM.Core;
     using CRM.Core.Constants;
-    using CRM.Core.Filters;
     using CRM.Core.Services;
     using CRM.Criteria.Report.RedemptionStatistics;
     using CRM.Models.Report.RedemptionStatistics;
     using CRM.Resources;
     using CRM.Services;
-    using Fanex.NAP.Client.AspNetCore.Attributes;
-    using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class RedemptionStatisticsController : BaseController
     {
@@ -24,6 +20,7 @@
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         private readonly byte SummaryByYear = 2;
+
         public RedemptionStatisticsController(
             ICommonService commonService,
             IBaseService baseService,
@@ -72,14 +69,14 @@
             var redemptionEntitys = await baseService.GetDataAsync<RedemptionStatisticsEntity>(criteria);
             foreach (var redemptionEntity in redemptionEntitys)
             {
-                redemptionEntity.ClaimTime = commonService.ConvertToClientDateTime(redemption.ClaimTime);
+                redemptionEntity.ClaimTime = commonService.ConvertToClientDateTime(redemptionEntity.ClaimTime);
                 redemptionEntity.Year = redemptionEntity.ClaimTime.Year;
                 if (criteria.ReportBy != SummaryByYear)
                 {
                     redemptionEntity.Month = redemptionEntity.ClaimTime.Month;
                 }
             }
-            var tuple = GetRedemptionAmount(redemptions.ToList());
+            var tuple = GetRedemptionAmount(redemptionEntitys.ToList());
 
             return Json(new { data = tuple.Item1, totals = tuple.Item2, title });
         }
@@ -90,7 +87,7 @@
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var details = await baseService.GetDataAsync<RedemptionStatisticsDetailEntity>(criteria);
-            foreach(var detail in details)
+            foreach (var detail in details)
             {
                 detail.ClaimTime = commonService.ConvertToClientDateTime(detail.ClaimTime);
             }
@@ -118,7 +115,7 @@
             }
             var tuple = GetRedemptionAmount(redemptions.ToList());
             var fileName = string.Format(ViewResources.RedemptionStatistics_ExcelFile, fromDateFormat, toDateFormat);
-            
+
             var bytes = excelService.ExportRedemptionStatisticsSumary(tuple.Item1, tuple.Item2, title, criteria.ReportBy);
             return File(bytes, MimeType.XLSX, $"{fileName}.xlsx");
         }

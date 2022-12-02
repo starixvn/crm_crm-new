@@ -134,34 +134,34 @@
             logService.LogInformation("begin CreateVoidingSettledTicketsAsync!!!");
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
-            var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
-                && x.SettingValue.Equals(DefaultValue.Closed, StringComparison.OrdinalIgnoreCase));
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
-                 && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
+                && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
                 && x.SettingId == Constants.ExtentionNA);
+            var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
+                && x.SettingValue.Equals(DefaultValue.Closed, StringComparison.OrdinalIgnoreCase));
 
             var category = GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended);
             var sportTypeIds = eventDetails.Select(x => x.Sporttype);
             var productIds = eventDetails.Select(x => x.ProductId).Distinct();
             var criteria = new CreateMutipleFeedbackCommand
             {
+                IsCheckedDefaultComm = true,
+                StationId = station != null ? station.SettingId.ToString() : string.Empty,
+                StatusId = status != null ? status.SettingId : 0,
                 FeedbackDate = feedbackDate.Subtract(timeSpan),
                 ResolutionDate = feedbackDate.AddMinutes(1).Subtract(timeSpan),
                 CreatorId = appSettings.CreatorId,
                 UserId = appSettings.CreatorId,
-                IsCheckedDefaultComm = true,
-                StationId = station != null ? station.SettingId.ToString() : string.Empty,
-                StatusId = status != null ? status.SettingId : 0,
                 CategoryXml = category.Item3,
                 CategoryIds = category.Item1.ToString(),
                 SubCategoryIds = category.Item2.ToString(),
                 ResponseId = response != null ? response.SettingId : 0,
-                UserRole = Constants.UserRole,
-                Subject = DefaultValue.ResultAmended,
                 AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField = string.Empty,
                 AutoField1 = string.Empty,
+                UserRole = Constants.UserRole,
+                Subject = DefaultValue.ResultAmended,
                 AutoField3 = $"{Environment.NewLine}System ID: ",
                 CustomerXml = string.Format(DefaultValue.CustomerXml, feedbackInfo.HeadlineId, feedbackInfo.HeadlineName),
                 ProductXml = GetVoidingSettledTicketsProductXml(productIds, sportTypeIds, feedbackInfo.Listbettype, settings, settingMappings),
