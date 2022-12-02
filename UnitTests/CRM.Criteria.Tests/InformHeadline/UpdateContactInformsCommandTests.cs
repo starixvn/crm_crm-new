@@ -28,7 +28,7 @@
                 TitleId = 100,
                 UserId = 8,
                 IP = "1.0.0.0",
-                Informs = null
+                listInforms = null
             };
 
             // Act

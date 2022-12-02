@@ -21,12 +21,6 @@
 
         public string Language { get; set; }
 
-        public string Phone { get; set; }
-
-        public string PhoneCountryCode { get; set; }
-
-        public string PhoneAreaCode { get; set; }
-
         public string Phone2 { get; set; }
 
         public string Phone2CountryCode { get; set; }
@@ -38,6 +32,12 @@
         public string Phone3CountryCode { get; set; }
 
         public string Phone3AreaCode { get; set; }
+
+        public string Phone { get; set; }
+
+        public string PhoneCountryCode { get; set; }
+
+        public string PhoneAreaCode { get; set; }
 
         public string MobilePhone { get; set; }
 

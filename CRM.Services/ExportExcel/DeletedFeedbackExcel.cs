@@ -108,17 +108,7 @@
             }
         }
 
-        protected static string[] BuildCategoryContent(FeedbackDetail feedback, IEnumerable<Setting> mainCategories)
-        {
-            return GetCategoryContent(feedback.Settings, mainCategories);
-        }
-
-        private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
-        {
-            return GetCategoryContentWithoutSettingType(settings.Where(i => i.SettingType == "Category"), mainCategories);
-        }
-
-        public static string[] GetCategoryContentWithoutSettingType(
+        public static string[] GetCategoryContent(
             IEnumerable<FeedbackSettingRelation> settings,
             IEnumerable<Setting> mainCategories)
         {
@@ -136,6 +126,11 @@
                         return con;
                     })
                     .ToArray();
+        }
+
+        protected static string[] BuildCategoryContent(FeedbackDetail feedback, IEnumerable<Setting> mainCategories)
+        {
+            return GetCategoryContent(feedback.Settings, mainCategories);
         }
 
         private static string GetMainCategoryName(int mainCategoryId, IEnumerable<Setting> mainCategories)
@@ -170,6 +165,11 @@
             }
 
             return cellValue;
+        }
+
+        private static string[] GetCategoryContent(IList<FeedbackSettingRelation> settings, IEnumerable<Setting> mainCategories)
+        {
+            return GetCategoryContent(settings.Where(i => i.SettingType == "Category"), mainCategories);
         }
     }
 }

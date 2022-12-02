@@ -17,30 +17,30 @@
         public string IP { get; set; }
 
         [SpParam(Ignored = true)]
-        public IEnumerable<EditInform> Informs { get; set; } = new List<EditInform>();
+        public IEnumerable<EditInform> listInforms { get; set; } = new List<EditInform>();
 
         [SpParam(SqlParamName = "Content")]
         public string ContentXml
         {
             get
             {
-                var xml = new StringBuilder();
-                if (Informs.Any())
+                var stringBuilder = new StringBuilder();
+                if (listInforms.Any())
                 {
-                    xml.Append("<Content>");
-                    foreach (EditInform inform in Informs)
+                    stringBuilder.Append("<Content>");
+                    foreach (EditInform inform in listInforms)
                     {
-                        xml.AppendFormat("<Headline HeadlineID='{0}' StatusID='{1}' Remark='{2}' Extension='{3}' ProductStatus='{4}'/>", 
+                        stringBuilder.AppendFormat("<Headline HeadlineID='{0}' StatusID='{1}' Remark='{2}' Extension='{3}' ProductStatus='{4}'/>", 
                             inform.HeadlineId,
                             inform.InformHeadlineStatusId,
                             HtmlHelper.ReplaceBreaklineXml(inform.Remark), 
                             inform.Extension, 
                             inform.ProductStatus);
                     }
-                    xml.Append("</Content>");
+                    stringBuilder.Append("</Content>");
                 }
 
-                return xml.ToString();
+                return stringBuilder.ToString();
             }
         }
 

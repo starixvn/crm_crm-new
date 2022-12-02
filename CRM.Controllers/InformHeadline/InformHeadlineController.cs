@@ -202,7 +202,7 @@
             await baseService.ExecuteNonQueryAsync(command);
             var editContactCriteria = new EditContactInformsCommand
             {
-                Informs = command.Informs,
+                listInforms = command.Informs,
                 TitleId = command.TitleId,
                 IP = ClientIP,
                 UserId = napSession.UserId

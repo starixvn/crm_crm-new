@@ -10,21 +10,14 @@
 
     public class CreateCommunicationLogCommand : BaseNonQueryCommand
     {
-        public int LanguageId { get; set; }
-
-        public int CountryId { get; set; }
-
         [SpParam(SqlParamName = "FeedbackDate")]
         public DateTime StartTime { get; set; }
 
         [SpParam(SqlParamName = "ResolutionDate")]
+        public int LanguageId { get; set; }
+
+        public int CountryId { get; set; }
         public DateTime EndTime { get; set; }
-
-        [SpParam(SqlParamName = "CommunicationId")]
-        public string CommunicationToolIds { get; set; }
-
-        [SpParam(SqlParamName = "StationId")]
-        public string ExtensionIds { get; set; }
 
         [SpParam(Ignored = true)]
         public IEnumerable<ProductSubProductBettypeSetting> Products { get; set; } = new List<ProductSubProductBettypeSetting>();
@@ -43,6 +36,12 @@
 
         [SpParam(SqlParamName = "RelatedCustId")]
         public string RelatedCustomerIds { get; set; }
+
+        [SpParam(SqlParamName = "CommunicationId")]
+        public string CommunicationToolIds { get; set; }
+
+        [SpParam(SqlParamName = "StationId")]
+        public string ExtensionIds { get; set; }
 
         public int SiteId { get; set; }
 

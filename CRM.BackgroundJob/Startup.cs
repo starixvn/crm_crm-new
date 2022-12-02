@@ -50,6 +50,16 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
+            LogManager
+               .SetDefaultLogCategory(Configuration.GetSection("Fanex.Logging:LogCategory").Value)
+               .Use(new List<ILogEngine>
+               {
+                    new SentryLogging(new SentryEngineOptions
+                    {
+                        Dsn = new Dsn(Configuration.GetSection("Fanex.Logging:SentryEngineOptions:Dsn").Value)
+                    })
+               });
+
             var connections = Configuration.GetSection("ConnectionStrings")
                 .GetChildren()
                 .AsEnumerable()
@@ -64,15 +74,7 @@
                .UseDefaultDbSettingProvider("~/App_Data/SpNames.xml")
                .Run();
 
-            LogManager
-                .SetDefaultLogCategory(Configuration.GetSection("Fanex.Logging:LogCategory").Value)
-                .Use(new List<ILogEngine>
-                {
-                    new SentryLogging(new SentryEngineOptions
-                    {
-                        Dsn = new Dsn(Configuration.GetSection("Fanex.Logging:SentryEngineOptions:Dsn").Value)
-                    })
-                });
+           
 
             RefDataTypeContainer
             .ConnectTo(new Uri(Configuration.GetSection("RemotingRefService:Fanex.RemotingRef.Service.Url").Value))
