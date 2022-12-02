@@ -57,44 +57,37 @@ namespace CRM.BackgroundJob.Services
             DateTime LastRuntimeEnv, string LastRuntimeNameEnv, string JobStatusNameEnv, string Environment
         )
         {
-            try
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_ArchivingDA);
+            var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
+            IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
+            IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
+            var isStatgeOne = await feedbackTransactionService.GetArchivingDAStatus();
+
+            if (isStatgeOne)
             {
-                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_ArchivingDA);
-                var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
-                IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
-                IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
-                var isStatgeOne = await feedbackTransactionService.GetArchivingDAStatus();
-                if (isStatgeOne)
+                IEnumerable<ArchivingAutoFbInfo> archivingAutoFbInfos;
+                if (archivingDASetting.IsSyncArchivedAccount)
                 {
-                    var archivingAutoFbInfos = Enumerable.Empty<ArchivingAutoFbInfo>();
-                    if (archivingDASetting.IsSyncArchivedAccount)
-                    {
-                        archivingAutoFbInfos = await feedbackTransactionService.ArchivingAutoFeedbackInfoInsAsync(archivingDASetting, Environment);
-                    }
-                    else
-                    {
-                        var custInfor = await feedbackTransactionService.GetArchivingCustInfo();
-                        var archivedDate = custInfor.FirstOrDefault().ArchivedDate;
-                        var custIdsJoin = string.Join(",", custInfor.Select(x => x.CustID));
-
-                        await feedbackTransactionService.ArchivingImportDirectAccountAsync(custIdsJoin, archivedDate);
-                        await commonFeedback.EditArchivingDAStatusSettingAsync(Constants.ServiceName_ArchivingDA, "1");
-                        archivingAutoFbInfos = await feedbackTransactionService.ArchivingAutoFeedbackInfoInsAsync(archivingDASetting, Environment);
-                    }
-
-                    await CheckExistAnyArchivingFb(archivingAutoFbInfos, settings, settingMappings, JobStatusNameEnv, LastRuntimeNameEnv);
+                    archivingAutoFbInfos = await feedbackTransactionService.ArchivingAutoFeedbackInfoInsAsync(archivingDASetting, Environment);
                 }
                 else
                 {
-                    await UpdateArchivingStatus(archivingDASetting.IsSyncArchivedAccount, LastRuntimeNameEnv, JobStatusNameEnv);
-                }
-                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ArchivingDA);
-            }
-            catch (Exception e)
-            {
+                    var custInfor = await feedbackTransactionService.GetArchivingCustInfo();
+                    var archivedDate = custInfor.FirstOrDefault().ArchivedDate;
+                    var custIdsJoin = string.Join(",", custInfor.Select(x => x.CustID));
 
-                throw;
+                    await feedbackTransactionService.ArchivingImportDirectAccountAsync(custIdsJoin, archivedDate);
+                    await commonFeedback.EditArchivingDAStatusSettingAsync(Constants.ServiceName_ArchivingDA, "1");
+                    archivingAutoFbInfos = await feedbackTransactionService.ArchivingAutoFeedbackInfoInsAsync(archivingDASetting, Environment);
+                }
+
+                await CheckExistAnyArchivingFb(archivingAutoFbInfos, settings, settingMappings, JobStatusNameEnv, LastRuntimeNameEnv);
             }
+            else
+            {
+                await UpdateArchivingStatus(archivingDASetting.IsSyncArchivedAccount, LastRuntimeNameEnv, JobStatusNameEnv);
+            }
+            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_ArchivingDA);
         }
 
         protected internal virtual async Task CheckExistAnyArchivingFb(

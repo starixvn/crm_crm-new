@@ -11,6 +11,9 @@ describe('Filter', () => {
 
     const initProps = {
         statusFilter: [{ sites: {id: 1}}],
+        gridParams: {
+            pageSize: 100
+        },
         getLogsByCustomerId: jest.fn(),
         setGridParams: jest.fn(),
         getStatusForFilter: jest.fn()

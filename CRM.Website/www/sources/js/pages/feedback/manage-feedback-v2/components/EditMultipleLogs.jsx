@@ -703,6 +703,10 @@ export class EditMultipleLogs extends Component {
         return '';
     };
 
+    handleStartTime = value => this.formik.setFieldValue('startTime', value);
+
+    handleEndTime = value => this.formik.setFieldValue('endTime', value);
+
     renderMultipleLogs = (errors, values, handleChange, touched, setFieldValue) => {
         const { settings, extensionOptions, communicationToolOptions, feedbackSubjectTemplates } = this.state;
         const { isCheck } = this.state;
@@ -741,10 +745,10 @@ export class EditMultipleLogs extends Component {
                             </Form.Label>
                             <Col sm="4" md="4" className="d-flex">
                                 <div className={`react-datepicker-wrapper-container form-control-wrapper pr-2 ${this.isDisabledField(isCheck.startTime)}`}>
-                                    <DatePicker timeInputLabel="Time:" showTimeInput
+                                    <DatePicker timeInputLabel="Time:" showTimeInput isInvalid={touched.startTime && errors.startTime}
                                         selected={values.startTime} useShortMonthInDropdown
                                         peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
-                                        onChange={value => setFieldValue('startTime', value)}
+                                        onChange={value => this.handleStartTime(value)}
                                     />
                                 </div>
                                 <input type='checkbox'
@@ -785,7 +789,7 @@ export class EditMultipleLogs extends Component {
                                     <DatePicker timeInputLabel="Time:" showTimeInput
                                         selected={values.endTime} useShortMonthInDropdown
                                         peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
-                                        onChange={value => setFieldValue('endTime', value)}
+                                        onChange={value => this.handleEndTime(value)}
                                     />
                                 </div>
                                 <input type='checkbox'

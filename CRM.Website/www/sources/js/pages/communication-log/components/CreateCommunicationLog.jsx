@@ -142,7 +142,7 @@ export class CreateCommunicationLog extends Component {
     };
 
     getInitDataTool = (options, allSettings) => {
-        const isExistCommunication = this.state.allSettings.communicationTools.filter( x => options?.communicationToolIds.includes(x.id.toString())).length > 0;
+        const isExistCommunication = this.state.allSettings?.communicationTools.filter( x => options?.communicationToolIds.includes(x.id.toString())).length > 0;
         return {
             extensionIds: options ? options.extensionIds : allSettings.extensions[0].id.toString(),
             languageId: options ? options.languageId : allSettings.languages[1].languageId,
@@ -164,22 +164,24 @@ export class CreateCommunicationLog extends Component {
         this.setState({ verifySection: {...this.state.verifySection, [name]: value }});
     };
 
-    onChangeStartTime = (setFieldValue, selectedTime, endTime) => {
-        setFieldValue('startTime', selectedTime);
+    onChangeStartTime = selectedTime => {
+        let endTime = this.formik.values.endTime;
+        this.formik.setFieldValue('startTime', selectedTime);
         if (moment(selectedTime).isAfter(moment(endTime))) {
             endTime = new Date(DateTimeService.toLongDateTimeFormat(new Date(selectedTime)));
             endTime.setMinutes(endTime.getMinutes() + 1);
-            setFieldValue('endTime', endTime);
+            this.formik.setFieldValue('endTime', endTime);
         }
         setTimeout(() => this.updateTimeAndToolPrefix(), 100);
     };
 
-    onChangeEndTime = (setFieldValue, selectedTime, startTime) => {
-        setFieldValue('endTime', selectedTime);
+    onChangeEndTime = selectedTime => {
+        let startTime = this.formik.values.startTime;
+        this.formik.setFieldValue('endTime', selectedTime);
         if (moment(startTime).isAfter(moment(selectedTime))) {
             startTime = new Date(DateTimeService.toLongDateTimeFormat(new Date(selectedTime)));
             startTime.setMinutes(startTime.getMinutes() - 1);
-            setFieldValue('startTime', startTime);
+            this.formik.setFieldValue('startTime', startTime);
         }
     };
 

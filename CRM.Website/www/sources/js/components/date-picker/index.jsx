@@ -28,6 +28,12 @@ export default class DatePickerField extends React.Component {
         this.setState({ selected: new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))) });
     };
 
+    handleClickDone = () =>{
+        this.ref.current.setOpen(false);
+        this.props.onChange(this.state.selected);
+    }
+
+
     render() {
         const { className, selected, isInvalid, ...rest } = this.props;
 
@@ -44,7 +50,7 @@ export default class DatePickerField extends React.Component {
                     this.props.showTimeInput &&
                     <div>
                         <div className="btn-now" type='button' onClick={this.handleTimeNow}>{LangHelper.getResource('Now')}</div>
-                        <div className="btn-close" type='button' onClick={() => this.ref.current.setOpen(false)}>{LangHelper.getResource('Done')}</div>
+                        <div className="btn-close" type='button' onClick={() => this.handleClickDone()}>{LangHelper.getResource('Done')}</div>
                     </div>
                 }
             </DatePicker >

@@ -81,7 +81,8 @@ export const FunctionKey = {
     RedemptionStatistics: 'RedemptionStatistics',
     CustomerReport: 'CustomerReport',
     SettingRelationManagement: 'SettingRelationshipManagement',
-    SettingManagement: 'SettingManagement'
+    SettingManagement: 'SettingManagement',
+    JobSettingManagement: 'JobSettingManagement'
 };
 
 export const BorderStyle = {

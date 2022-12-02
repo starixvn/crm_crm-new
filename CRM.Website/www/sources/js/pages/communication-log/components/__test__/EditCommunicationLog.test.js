@@ -244,7 +244,7 @@ describe('EditCommunicationLog', () => {
 
             //Arrange
             expect(actual.extensionIds).toBe('2022');
-            expect(actual.communicationToolIds).toBe('1001');
+            expect(actual.communicationToolIds).toBe('');
             expect(actual.mainCategoryIds).toBe('3020');
             expect(actual.subCategoryIds).toBe('4029');
             expect(actual.productIds).toBe('46000');

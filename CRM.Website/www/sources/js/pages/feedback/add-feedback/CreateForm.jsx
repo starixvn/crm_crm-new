@@ -26,6 +26,7 @@ const Content = lazy(() => import('./Content'));
 export default class CreateForm extends Component {
     constructor(props) {
         super(props);
+        this.formik = React.createRef();
         const currentClientTime = window.currentClientTime;
         this.state = {
             feedbackDate: new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime))),
@@ -109,14 +110,14 @@ export default class CreateForm extends Component {
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
-    handleChangeFeedbackTime = (setFieldValue, feedbackDate, resolutionTime) => {
-        setFieldValue('feedbackDate', feedbackDate);
+    handleChangeFeedbackTime = feedbackDate => {
+        let resolutionTime = this.formik.values.resolutionTime;
+        this.formik.setFieldValue('feedbackDate', feedbackDate);
 
         if (moment(feedbackDate).isAfter(moment(resolutionTime))) {
             resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(feedbackDate)));
             resolutionTime.setMinutes(resolutionTime.getMinutes() + 1);
-
-            setFieldValue('resolutionTime', resolutionTime);
+            this.formik.setFieldValue('resolutionTime', resolutionTime);
         }
 
         this.setState({ feedbackDate }, () => {
@@ -125,14 +126,15 @@ export default class CreateForm extends Component {
         });
     };
 
-    handleChangeResolutionTime = (setFieldValue, feedbackDate, resolutionTime) => {
-        setFieldValue('resolutionTime', resolutionTime);
+    handleChangeResolutionTime = (resolutionTime) => {
+        let feedbackDate = this.formik.values.feedbackDate;
+        this.formik.setFieldValue('resolutionTime', resolutionTime);
 
         if (moment(feedbackDate).isAfter(moment(resolutionTime))) {
             feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(resolutionTime)));
             feedbackDate.setMinutes(feedbackDate.getMinutes() - 1);
 
-            setFieldValue('feedbackDate', feedbackDate);
+            this.formik.setFieldValue('feedbackDate', feedbackDate);
         }
     };
 
@@ -741,6 +743,7 @@ export default class CreateForm extends Component {
         const initialValues = customerDetail !== null ? initValuesAddCustomerFb(settings, customerDetail) : initValues(settings);
         return (
             <Formik
+                innerRef={el => this.formik = el}
                 initialValues={initialValues}
                 validate={values => validateFormik(values, customerDetail, settings, this.state.content)}
                 onSubmit={this.handleSubmit}

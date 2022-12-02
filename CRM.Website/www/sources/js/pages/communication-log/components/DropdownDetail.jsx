@@ -24,7 +24,7 @@ export default class DropdownDetail extends PureComponent {
                                     showYearDropdown
                                     showTimeInput
                                     selected={values.startTime}
-                                    onChange={value => onChangeStartTime(setFieldValue, value, values.endTime)}
+                                    onChange={value => onChangeStartTime(value)}
                                 />
                             </Col>
                         </Form.Group>
@@ -60,7 +60,7 @@ export default class DropdownDetail extends PureComponent {
                                     showMonthDropdown
                                     showYearDropdown
                                     selected={values.endTime}
-                                    onChange={value => onChangeEndTime(setFieldValue, value, values.startTime )}
+                                    onChange={value => onChangeEndTime(value)}
                                 />
                             </Col>
                         </Form.Group>

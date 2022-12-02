@@ -182,27 +182,25 @@ export class CreateForm extends Component {
         });
     };
 
-    handleChangeStartTime = (setFieldValue, startTime, endTime) => {
-        setFieldValue('startTime', startTime);
-
+    handleChangeStartTime = startTime => {
+        let endTime = this.formik.values.endTime;
+        this.formik.setFieldValue('startTime', startTime);
         if (moment(startTime).isAfter(moment(endTime))) {
             endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(startTime)));
             endTime.setMinutes(endTime.getMinutes() + 1);
 
-            setFieldValue('endTime', endTime);
+            this.formik.setFieldValue('endTime', endTime);
         }
-
         setTimeout(() => this.updateTimeAndToolPrefix(), 100);
     };
 
-    handleChangeEndTime = (setFieldValue, startTime, endTime) => {
-        setFieldValue('endTime', endTime);
-
+    handleChangeEndTime = endTime => {
+        let startTime = this.formik.values.startTime;
+        this.formik.setFieldValue('endTime', endTime);
         if (moment(startTime).isAfter(moment(endTime))) {
             startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(endTime)));
             startTime.setMinutes(startTime.getMinutes() - 1);
-
-            setFieldValue('startTime', startTime);
+            this.formik.setFieldValue('startTime', startTime);
         }
     };
 
@@ -552,7 +550,7 @@ export class CreateForm extends Component {
                                     useShortMonthInDropdown
                                     dateFormat="MMM dd, yyyy hh:mm aa"
                                     showTimeInput peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
-                                    onChange={value => this.handleChangeStartTime(setFieldValue, value, values.endTime)}
+                                    onChange={value => this.handleChangeStartTime(value)}
                                 />
                             </Col>
                             <Col sm="1" md="1" />
@@ -579,7 +577,7 @@ export class CreateForm extends Component {
                                     useShortMonthInDropdown
                                     dateFormat="MMM dd, yyyy hh:mm aa"
                                     showTimeInput peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
-                                    onChange={value => this.handleChangeEndTime(setFieldValue, values.startTime, value)}
+                                    onChange={value => this.handleChangeEndTime(value)}
                                 />
                             </Col>
                             <Col sm="1" md="1" />

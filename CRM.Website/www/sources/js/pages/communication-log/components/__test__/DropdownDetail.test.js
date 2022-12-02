@@ -80,7 +80,7 @@ describe('DropdownDetail', () => {
             renderCommunication.find(DatePicker).at(0).simulate('change', 'value');
 
             // Assert
-            expect(props.onChangeStartTime).toHaveBeenCalledWith(props.setFieldValue, 'value', '2021-11-20T00:00');
+            expect(props.onChangeStartTime).toHaveBeenCalledWith('2021-11-20T00:00');
         });
 
         it('should handle onChange endTime call exact function', () => {
@@ -92,7 +92,7 @@ describe('DropdownDetail', () => {
             renderCommunication.find(DatePicker).at(1).simulate('change', 'value');
 
             // Assert
-            expect(props.onChangeEndTime).toHaveBeenCalledWith(props.setFieldValue, 'value', '2021-10-20T00:00');
+            expect(props.onChangeEndTime).toHaveBeenCalledWith('2021-10-20T00:00');
         });
 
         it('should handle onChange extension call exact function', () => {

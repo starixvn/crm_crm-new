@@ -158,37 +158,44 @@ describe('CreateForm', () => {
     describe('handleChangeStartTime', () => {
         it('should not update endTime when startTime is before endTime', () => {
             // Arrange
-            const setFieldValue = jest.fn();
             const startTime = '7/28/2021 2:26:28 PM';
-            const endTime = '7/28/2021 2:26:29 PM';
             const container = shallow(<CreateForm {...defaultProps} />).instance();
             container.updateTimeAndToolPrefix = jest.fn();
-
+            container.formik = {
+                values:{
+                    endTime: '7/28/2021 2:26:29 PM'
+                },
+                setFieldValue: jest.fn()
+            };
             // Act
-            container.handleChangeStartTime(setFieldValue, startTime, endTime);
+            container.handleChangeStartTime(startTime);
             jest.runAllTimers();
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('startTime', startTime);
+            expect(container.formik.setFieldValue).toHaveBeenCalledWith("startTime", "7/28/2021 2:26:28 PM");
             expect(container.updateTimeAndToolPrefix).toHaveBeenCalled();
         });
 
         it('should update endTime when startTime is before endTime', () => {
             // Arrange
-            const setFieldValue = jest.fn();
-            const startTime = '7/28/2021 2:26:28 PM';
-            const endTime = '7/28/2021 2:26:27 PM';
+            const endTime = '7/28/2021 2:26:28 PM';
             DateTimeService.toShortDateTimeFormat = jest.fn(() => '7/28/2021 2:26:28 PM');
             const container = shallow(<CreateForm {...defaultProps} />).instance();
+            container.formik = {
+                values:{
+                    startTime: '7/28/2021 2:26:28 PM'
+                },
+                setFieldValue: jest.fn()
+            };
             container.updateTimeAndToolPrefix = jest.fn();
 
             // Act
-            container.handleChangeStartTime(setFieldValue, startTime, endTime);
+            container.handleChangeStartTime(endTime);
             jest.runAllTimers();
 
             // Assert
-            expect(setFieldValue.mock.calls[0]).toEqual(['startTime', startTime]);
-            expect(setFieldValue).toHaveBeenLastCalledWith('endTime', new Date('7/28/2021 2:27:28 PM'));
+            expect(container.formik.setFieldValue.mock.calls[0]).toEqual(['startTime', '7/28/2021 2:26:27 PM']);
+            expect(container.formik.setFieldValue).toHaveBeenLastCalledWith('endTime', new Date('7/28/2021 2:27:28 PM'));
             expect(container.updateTimeAndToolPrefix).toHaveBeenCalled();
         });
     });
@@ -196,34 +203,40 @@ describe('CreateForm', () => {
     describe('handleChangeEndTime', () => {
         it('should not update startTime when startTime is before endTime', () => {
             // Arrange
-            const setFieldValue = jest.fn();
-            const startTime = '7/28/2021 2:26:28 PM';
             const endTime = '7/28/2021 2:26:29 PM';
             const container = shallow(<CreateForm {...defaultProps} />).instance();
-
+            container.formik = {
+                values:{
+                    startTime: '7/28/2021 2:26:28 PM'
+                },
+                setFieldValue: jest.fn()
+            };
             // Act
-            container.handleChangeEndTime(setFieldValue, startTime, endTime);
+            container.handleChangeEndTime(endTime);
             jest.runAllTimers();
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('endTime', endTime);
+            expect(container.formik.setFieldValue).toHaveBeenCalledWith('endTime', endTime);
         });
 
         it('should update startTime when startTime is before endTime', () => {
             // Arrange
-            const setFieldValue = jest.fn();
-            const startTime = '7/28/2021 2:26:28 PM';
             const endTime = '7/28/2021 2:26:27 PM';
             DateTimeService.toShortDateTimeFormat = jest.fn(() => '7/28/2021 2:26:27 PM');
             const container = shallow(<CreateForm {...defaultProps} />).instance();
-
+            container.formik = {
+                values:{
+                    startTime: '7/28/2021 2:26:28 PM'
+                },
+                setFieldValue: jest.fn()
+            };
             // Act
-            container.handleChangeEndTime(setFieldValue, startTime, endTime);
+            container.handleChangeEndTime(endTime);
             jest.runAllTimers();
 
             // Assert
-            expect(setFieldValue.mock.calls[0]).toEqual(['endTime', endTime]);
-            expect(setFieldValue).toHaveBeenLastCalledWith('startTime', new Date('7/28/2021 2:25:27 PM'));
+            expect(container.formik.setFieldValue.mock.calls[0]).toEqual(['endTime', endTime]);
+            expect(container.formik.setFieldValue).toHaveBeenLastCalledWith('startTime', new Date('7/28/2021 2:25:27 PM'));
         });
     });
 

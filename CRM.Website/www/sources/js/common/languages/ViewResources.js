@@ -242,6 +242,7 @@
     InvalidDuration: 'Invalid Duration Time',
     InsertNewSettingSuccess: 'Insert new setting successfully!',
     IssueStatisticsReport: 'Issue Statistics Report',
+    JobSettingManagement: 'Job Settings Management',
     SettingExistedAlready: 'Setting existed already',
     UpdateSettingSuccess: 'Update Setting successfully!',
     KeepAssign: 'Keep Assign',

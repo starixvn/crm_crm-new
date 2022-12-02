@@ -449,7 +449,7 @@ export default class AppContainer extends Component {
         }
 
         if (moment(values.feedbackDate).isAfter(moment(values.resolutionDate))) {
-            errors.startTime = LangHelper.formatString(
+            errors.feedbackDate = LangHelper.formatString(
                 LangHelper.getResource('FieldLessThanOrEqualTo'),
                 LangHelper.getResource('FeedbackDate'),
                 LangHelper.getResource('ResolutionTime'));

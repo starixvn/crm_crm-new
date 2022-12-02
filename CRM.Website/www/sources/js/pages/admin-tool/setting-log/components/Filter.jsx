@@ -111,8 +111,7 @@ export class Filter extends Component {
                                 peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" useShortMonthInDropdown
                                 maxDate={new Date(this.maxFromDate)}
                                 selected={fromDate}
-                                onChange={value => this.handleChangeFromDate(value)
-                                }
+                                onChange={value => this.handleChangeFromDate(value)}
                             />
                         </div>
                     </Form.Group>

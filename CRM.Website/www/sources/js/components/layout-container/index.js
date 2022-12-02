@@ -21,6 +21,7 @@ const FeedbackSubjectComponent  = lazy(() => import('@jsroot/pages/admin-tool/fe
 const SettingLogComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-log/index'));
 const SettingManagementComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-management/index'));
 const SettingRelationComponent = lazy(() => import('@jsroot/pages/admin-tool/setting-relation/index'));
+const JobSettingManagementComponent = lazy(() => import('@jsroot/pages/admin-tool/job-setting-management/index'));
 
 const InformHeadlineComponent = lazy(() => import('@jsroot/pages/informheadline/index'));
 
@@ -68,6 +69,7 @@ const MenuRouteArray = [
     { url: 'ActionLog/SettingLog', component: SettingLogComponent },
     { url: 'SettingManagement', component: SettingManagementComponent },
     { url: 'SettingRelation', component: SettingRelationComponent },
+    { url: 'JobSettingManagement', component: JobSettingManagementComponent },
     { url: 'InformHeadline', component: InformHeadlineComponent },
     { url: 'AddFeedback', component: AddFeedbackComponent },
     { url: 'AddGuestFeedback', component: AddGuestFeedbackComponent },

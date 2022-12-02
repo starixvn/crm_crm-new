@@ -319,7 +319,7 @@ describe('common functions', () => {
         expect(params.StationId).toEqual(1);
         expect(params.CountryId).toEqual(0);
         expect(params.NoInquiries).toEqual(0);
-        expect(params.RelatedCustId).toEqual('1,2');
+        expect(params.RelatedCustID).toEqual('1,2');
     });
 
     it('getParams return exact params when values not null', () => {
@@ -363,6 +363,6 @@ describe('common functions', () => {
         expect(params.StationId).toEqual(1);
         expect(params.CountryId).toEqual(1);
         expect(params.NoInquiries).toEqual(1);
-        expect(params.RelatedCustId).toEqual(null);
+        expect(params.RelatedCustID).toEqual(null);
     });
 });

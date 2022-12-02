@@ -153,7 +153,6 @@ describe('AppContainer', () => {
 
             //Arrange
             expect(actual.extensionIds[0]).toBe(2022);
-            expect(actual.communicationToolIds[0]).toBe(1001);
             expect(actual.mainCategoryIds[0]).toBe(3020);
             expect(actual.subCategoryIds[0]).toBe(4029);
             expect(actual.productIds[0]).toBe(46000);
@@ -779,7 +778,7 @@ describe('AppContainer', () => {
                 languageId: "FieldRequired",
                 mainCategoryIds: "FieldRequired",
                 solution: "FieldRequired",
-                startTime: "FieldLessThanOrEqualTo",
+                feedbackDate: "FieldLessThanOrEqualTo",
                 subCategoryIds: "FieldRequired",
                 subject: "FieldRequired"
             };

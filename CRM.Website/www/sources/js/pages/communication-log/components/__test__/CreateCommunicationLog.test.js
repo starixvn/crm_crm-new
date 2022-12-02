@@ -93,7 +93,7 @@ describe('CreateCommunicationLog', () => {
             statusId: [{id: 0, name: 'N/A'}],
             subCategories: [{subCategoryId: 2, mainCategoryID: 1, name: 'N/A'}],
             subProductNA: {id: 0, value: 'N/A'},
-            subProducts: [{id: 2, value: 'N/A', parentId: 1}]
+            subProducts: [{id: 2, value: 'N/A', parentId: 1}],
         },
         hasReviewFeedbackPermission: true
     };
@@ -149,18 +149,22 @@ describe('CreateCommunicationLog', () => {
     describe('onChangeStartTime', () => {
         it('should not update endTime when startTime is before endTime', () => {
             // Arrange
-            const setFieldValue = jest.fn();
-            const startTime = '2021-12-20T00:00:00-06:00';
-            const endTime = '2021-12-20T00:00:00-07:00';
             const container = shallow(<CreateCommunicationLog />).instance();
+            const startTime = '2021-12-20T00:00:00-06:00';
+            container.formik = {
+                setFieldValue: jest.fn(),
+                values: {
+                    endTime: '2021-12-20T00:00:00-07:00'
+                }
+            };
             container.updateTimeAndToolPrefix = jest.fn();
 
             // Act
-            container.onChangeStartTime(setFieldValue, startTime, endTime);
+            container.onChangeStartTime(startTime);
             jest.runAllTimers();
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('startTime', startTime);
+            expect(container.formik.setFieldValue).toHaveBeenCalledWith('startTime', startTime);
             expect(container.updateTimeAndToolPrefix).toHaveBeenCalled();
         });
     });
@@ -168,17 +172,21 @@ describe('CreateCommunicationLog', () => {
     describe('onChangeEndTime', () => {
         it('should not update startTime when startTime is before endTime', () => {
             // Arrange
-            const setFieldValue = jest.fn();
-            const startTime = '2021-12-20T00:00:00-06:00';
-            const endTime = '2021-12-20T00:00:00-07:00';
             const container = shallow(<CreateCommunicationLog />).instance();
-
+            const endTime = '2021-12-20T00:00:00-07:00';
+            container.formik = {
+                setFieldValue: jest.fn(),
+                values: {
+                    startTime: '2021-12-20T00:00:00-06:00'
+                }
+            };
             // Act
-            container.onChangeEndTime(setFieldValue, startTime, endTime);
+            container.onChangeEndTime(endTime);
+            
             jest.runAllTimers();
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalledTimes(2);
+            expect(container.formik.setFieldValue).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -691,7 +699,7 @@ describe('CreateCommunicationLog', () => {
 
             // Assert
 
-            expect(container.state.duplicateFeedbackId).toBe(1);
+            expect(container.state.duplicateFeedbackId).toEqual(1);
         });
 
         it('should setState when handle check duplicate', async () => {
@@ -774,7 +782,7 @@ describe('CreateCommunicationLog', () => {
             // Act
             container['formik'] = { values: values };
             const actual = container.isOldEqualNewIdV1();
-
+            container.initFormikData = jest.fn(() => initData.settings);
             // Assert
             expect(actual).toEqual(false);
         });
@@ -795,7 +803,7 @@ describe('CreateCommunicationLog', () => {
             };
 
             const container = shallow(<CreateCommunicationLog {...props}/>).instance();
-
+            container.initFormikData = jest.fn(() => initData.settings);
             // Act
             container['formik'] = { values: values };
             const actual = container.isOldEqualNewIdV1();
@@ -822,7 +830,7 @@ describe('CreateCommunicationLog', () => {
             };
 
             const container = shallow(<CreateCommunicationLog {...props}/>).instance();
-
+            container.initFormikData = jest.fn(() => initData.settings);
             // Act
             container['formik'] = { values: values };
             const actual = container.isOldEqualNewIdV2();

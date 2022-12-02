@@ -120,6 +120,15 @@ class Details extends PureComponent {
             </div>
         );
     };
+
+    handleChangeFeedbackDate = value => {
+        this.props.setFieldValue('feedbackDate', value);
+    }
+
+    handleChangeResolutionDate = value => {
+        this.props.setFieldValue('resolutionDate', value);
+    }
+    
     render() {
         const {values, touched, errors, extensionOptions,
             communicationToolOptions, mainCategoryOptions, subCategoryOptions,
@@ -136,8 +145,8 @@ class Details extends PureComponent {
                                 <div className='react-datepicker-wrapper-container form-control-wrapper'>
                                     <DatePicker timeInputLabel="Time:" showTimeInput useShortMonthInDropdown
                                         peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
-                                        selected={values.feedbackDate}
-                                        onChange={value => setFieldValue('feedbackDate', value)}
+                                        selected={values.feedbackDate} isInvalid={touched.feedbackDate && errors.feedbackDate}
+                                        onChange={value => this.handleChangeFeedbackDate(value)}
                                     />
                                 </div>
                             </Col>
@@ -153,7 +162,7 @@ class Details extends PureComponent {
                                     <DatePicker timeInputLabel="Time:" showTimeInput useShortMonthInDropdown
                                         peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
                                         selected={values.resolutionDate}
-                                        onChange={value => setFieldValue('resolutionDate', value)}
+                                        onChange={value => this.handleChangeResolutionDate(value)}
                                     />
                                 </div>
                             </Col>

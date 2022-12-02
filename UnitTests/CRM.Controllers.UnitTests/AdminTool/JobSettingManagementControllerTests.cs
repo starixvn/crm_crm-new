@@ -23,26 +23,8 @@
     public class JobSettingManagementControllerTests
     {
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private IBaseService baseService;
         private readonly IFixture fixture = new Fixture();
-
-        [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
-        {
-            // Arrange
-            var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.JobSettingManagement, Policy.Host).Returns(true);
-
-            // Act
-            var result = controller.Index();
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var viewModel = Assert.IsType<bool>(viewResult.Model);
-            Assert.True(viewModel);
-        }
 
         [Fact]
         public async Task GetServiceNameSettings_WhenCalled_ReturnExpectedResult()
@@ -128,10 +110,8 @@
         private JobSettingManagementController GetController()
         {
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
             baseService = Substitute.For<IBaseService>();
-            return new JobSettingManagementController(napSession, napSettings, userService, baseService);
+            return new JobSettingManagementController(napSession, baseService);
         }
 
         #endregion Helpers

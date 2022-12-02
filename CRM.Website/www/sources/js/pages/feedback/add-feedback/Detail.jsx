@@ -167,7 +167,8 @@ export default class Detail extends PureComponent {
                                     showYearDropdown showTimeInput selected={values.feedbackDate}
                                     isInvalid={touched.feedbackDate && errors.feedbackDate}
                                     timeInputLabel="Time:" dateFormat="MMM dd, yyyy hh:mm aa"
-                                    onChange={value => handleChangeFeedbackTime(setFieldValue, value, values.resolutionTime)}/>
+                                    onChange={value => handleChangeFeedbackTime(value)}
+                                />
                             </Col>
                         </Form.Group>
                     </Col>
@@ -181,7 +182,7 @@ export default class Detail extends PureComponent {
                                     dateFormat="MMM dd, yyyy hh:mm aa"
                                     dropdownMode="select" showMonthDropdown useShortMonthInDropdown
                                     showYearDropdown showTimeInput
-                                    onChange={value => handleChangeResolutionTime(setFieldValue, values.feedbackDate, value)}
+                                    onChange={value => handleChangeResolutionTime(value)}
                                 />
                             </Col>
                         </Form.Group>

@@ -170,7 +170,7 @@ export class EditCommunicationLog extends Component {
             }
         });
         const communicationJoins = logSettings.communicationToolIds.join(',');
-        const isExistCommunication = this.state.logFeedback.settings.communicationTools.filter( x => communicationJoins.includes(x.id.toString())).length > 0;
+        const isExistCommunication = this.state.logFeedback?.settings?.communicationTools.filter( x => communicationJoins.includes(x.id.toString())).length > 0;
         this.handleChangeVerifySection('subject', log.subject);
         this.handleChangeVerifySection('noInquiries', log.noInquiries > 0 ? log.noInquiries : '');
         return {

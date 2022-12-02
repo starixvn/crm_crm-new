@@ -769,7 +769,7 @@ describe('EditMultipleLogs', () => {
                 container.handleChangeCheckbox = jest.fn();
                 // Act
                 const renderEdit = shallow(container.renderReview(values, touched, errors, setFieldValue));
-                renderEdit.find('input').simulate('change', {target: {checked: true}});
+                renderEdit.find('input').at(0).simulate('change', {target: {checked: true}});
 
                 // Assert
                 expect(container.handleChangeCheckbox).toHaveBeenCalled();
@@ -779,16 +779,16 @@ describe('EditMultipleLogs', () => {
                 // Arrange
                 const values = {
                     reviewed: true,
-                    isCheck:{
-                        reviewed : true
-                    },
                     reviewerName: 'review'
+                };
+                const state = {
+                    isCheck: {review: true}
                 };
                 const setFieldValue = jest.fn();
                 const touched = {};
                 const errors = {};
                 const container = shallow(<EditMultipleLogs />).instance();
-
+                container.setState(state);
                 // Act
                 const renderEdit = shallow(container.renderReview(values, touched, errors, setFieldValue));
                 renderEdit.find(CkEditor).simulate('change', 'review');
@@ -797,14 +797,14 @@ describe('EditMultipleLogs', () => {
                 expect(setFieldValue).toHaveBeenCalledWith('review' , 'review');
             });
 
-            it('invalid description correctly', () => {
+            it('invalid review correctly', () => {
                 // Arrange
                 const values = {
                     reviewed: true,
-                    isCheck:{
-                        reviewed : true
-                    },
                     reviewerName: 'review'
+                };
+                const state = {
+                    isCheck: {review: true}
                 };
                 const setFieldValue = jest.fn();
                 const errors = {
@@ -816,7 +816,7 @@ describe('EditMultipleLogs', () => {
                 };
     
                 const container = shallow(<EditMultipleLogs />).instance();
-
+                container.setState(state);
                 // Act
                 const renderEdit = shallow(container.renderReview(values, touched, errors, setFieldValue));
 
@@ -1215,6 +1215,9 @@ describe('EditMultipleLogs', () => {
 
             const {errors, values, handleChange, touched, setFieldValue} = params;
             const container = shallow(<EditMultipleLogs />).instance();
+            container.formik = {
+                setFieldValue: jest.fn()
+            };
             container.setState(state);
             container.renderDropdownDetail = jest.fn(() => 'div');
             container.renderSelectOptions = jest.fn(() => 'div');
@@ -1244,7 +1247,7 @@ describe('EditMultipleLogs', () => {
                 renderEdit.find(DatePicker).at(0).simulate('change', 'value');
                 
                 // Assert
-                expect(setFieldValue).toHaveBeenCalledWith('startTime', 'value');
+                expect(container.formik.setFieldValue).toHaveBeenCalledTimes(1);
             });
 
             it('should handle onChange checkbox startTime call exact function', () => {
@@ -1288,7 +1291,7 @@ describe('EditMultipleLogs', () => {
                 renderEdit.find(DatePicker).at(1).simulate('change', 'value');
 
                 // Assert
-                expect(setFieldValue).toHaveBeenCalledWith('endTime', 'value');
+                expect(container.formik.setFieldValue).toHaveBeenCalledTimes(2);
             });
 
             it('should handle onChange checkbox endTime call exact function', () => {
