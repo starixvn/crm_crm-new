@@ -125,17 +125,17 @@ namespace CRM.BackgroundJob.Services
 
             var criteria = new CreateMutipleFeedbackCommand
             {
-                FeedbackDate = feedbackDate.Subtract(timeSpan),
-                ResolutionDate = feedbackDate.AddMinutes(1).Subtract(timeSpan),
                 CreatorId = appSettings.CreatorId,
                 UserId = appSettings.CreatorId,
                 IsCheckedDefaultComm = true,
+                FeedbackDate = feedbackDate.Subtract(timeSpan),
+                ResolutionDate = feedbackDate.AddMinutes(1).Subtract(timeSpan),
                 StationId = station != null ? station.SettingId.ToString() : string.Empty,
                 StatusId = status != null ? status.SettingId : 0,
-                CategoryXml = category.Item3,
-                CategoryIds = category.Item1.ToString(),
                 SubCategoryIds = category.Item2.ToString(),
                 ResponseId = response != null ? response.SettingId : 0,
+                CategoryXml = category.Item3,
+                CategoryIds = category.Item1.ToString(),
                 UserRole = Constants.UserRole,
                 Subject = DefaultValue.Special_Notification,
                 AutoField2 = string.Format(DefaultValue.DateTimeTool, feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),

@@ -10,12 +10,6 @@
 
     public class CreateCommunicationLogCommand : BaseNonQueryCommand
     {
-        [SpParam(SqlParamName = "CustId")]
-        public int CustomerId { get; set; }
-
-        [SpParam(SqlParamName = "RelatedCustId")]
-        public string RelatedCustomerIds { get; set; }
-
         public int LanguageId { get; set; }
 
         public int CountryId { get; set; }
@@ -43,6 +37,12 @@
 
         [SpParam(SqlParamName = "Category")]
         public string CategoryXml => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
+
+        [SpParam(SqlParamName = "CustId")]
+        public int CustomerId { get; set; }
+
+        [SpParam(SqlParamName = "RelatedCustId")]
+        public string RelatedCustomerIds { get; set; }
 
         public int SiteId { get; set; }
 

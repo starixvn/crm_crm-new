@@ -14,12 +14,6 @@
         public string PicName { get; set; }
 
         public int Role { get; set; }
-
-        [SpParam(Ignored = true)]
-        public IEnumerable<PicCommunicationTool> PicCommunicationTools { get; set; }
-
-        public string CommunicationTools => XMLIO.ToXML(PicCommunicationTools, "ROOT").ToString();
-
         public string Language { get; set; }
 
         public int Country { get; set; }
@@ -29,6 +23,11 @@
         public int UserId { get; set; }
 
         public string LoginIP { get; set; }
+
+        [SpParam(Ignored = true)]
+        public IEnumerable<PicCommunicationTool> PicCommunicationTools { get; set; }
+
+        public string CommunicationTools => XMLIO.ToXML(PicCommunicationTools, "ROOT").ToString();
 
         public override string GetSettingKey()
         {

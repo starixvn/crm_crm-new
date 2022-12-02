@@ -9,6 +9,10 @@
 
         public string Subject { get; set; }
 
+        public decimal Amount { get; set; }
+
+        public string DoneBy { get; set; }
+
         public DateTime ClaimTime { get; set; }
 
         public string Remark { get; set; }
@@ -16,10 +20,6 @@
         public int StatusId { get; set; }
 
         public int CurrencyId { get; set; }
-
-        public decimal Amount { get; set; }
-
-        public string DoneBy { get; set; }
 
         public int UserId { get; set; }
 

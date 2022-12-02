@@ -67,16 +67,16 @@
         {
             var title = string.Format(ViewResources.RedemptionStatistics_Title,
                                         criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
-            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            var redemptions = await baseService.GetDataAsync<RedemptionStatisticsEntity>(criteria);
-            foreach (var redemption in redemptions)
+            criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
+            var redemptionEntitys = await baseService.GetDataAsync<RedemptionStatisticsEntity>(criteria);
+            foreach (var redemptionEntity in redemptionEntitys)
             {
-                redemption.ClaimTime = commonService.ConvertToClientDateTime(redemption.ClaimTime);
-                redemption.Year = redemption.ClaimTime.Year;
+                redemptionEntity.ClaimTime = commonService.ConvertToClientDateTime(redemption.ClaimTime);
+                redemptionEntity.Year = redemptionEntity.ClaimTime.Year;
                 if (criteria.ReportBy != SummaryByYear)
                 {
-                    redemption.Month = redemption.ClaimTime.Month;
+                    redemptionEntity.Month = redemptionEntity.ClaimTime.Month;
                 }
             }
             var tuple = GetRedemptionAmount(redemptions.ToList());

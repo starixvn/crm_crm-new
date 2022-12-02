@@ -43,20 +43,20 @@
 
         public async Task<ActionResult> AllSetting()
         {
+            var subproductsTask = settingService.GetSubProductAsync(active: SettingConstants.Active);
+            var bettypesTask = settingService.GetBetTypeAsync(active: SettingConstants.Active);
+            var mainCategorysTask = settingService.GetMainCategoryAsync(SettingConstants.Active);
+            var subCategorysTask = settingService.GetSubCategoryAsync(active: SettingConstants.Active);
+            var communicationToolsTask = settingService.GetCommunicationToolAsync(SettingConstants.Active);
+            var responsesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
+            var titlesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
+            var licenseeTypesTask = settingService.GetLicenseeTypeAsync();
             var hasCreateFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
             var languagesTask = settingService.GetLanguageAsync(SettingConstants.Active, true);
             var countriesTask = settingService.GetCountryAsync(SettingConstants.Active, true);
             var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var statusesTask = settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            var communicationToolsTask = settingService.GetCommunicationToolAsync(SettingConstants.Active);
-            var responsesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
-            var titlesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
-            var licenseeTypesTask = settingService.GetLicenseeTypeAsync();
             var productsTask = settingService.GetProductAsync(SettingConstants.Active);
-            var subproductsTask = settingService.GetSubProductAsync(active: SettingConstants.Active);
-            var bettypesTask = settingService.GetBetTypeAsync(active: SettingConstants.Active);
-            var mainCategorysTask = settingService.GetMainCategoryAsync(SettingConstants.Active);
-            var subCategorysTask = settingService.GetSubCategoryAsync(active: SettingConstants.Active);
 
             await Task.WhenAll(languagesTask, countriesTask, extentionsTask, statusesTask, communicationToolsTask, responsesTask, titlesTask, licenseeTypesTask,
                 productsTask, subproductsTask, bettypesTask, mainCategorysTask, subCategorysTask);
