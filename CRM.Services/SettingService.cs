@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Services;
+    using CRM.Criteria.PicAndHeadline;
     using CRM.Criteria.Setting;
     using CRM.Models;
     using CRM.Models.Setting;
@@ -284,6 +285,12 @@
         {
             return await baseService.GetDataAsync<BaseModel>(new GetAllCurrencyCriteria());
         }
+
+        public async Task<IEnumerable<CRM.Models.PicAndHeadline.SiteInfo>> GetSystemSiteAsync(GetSystemSiteCriteria criteria)
+        {
+            return await baseService.GetDataAsync<CRM.Models.PicAndHeadline.SiteInfo>(criteria);
+        }
+
 
         public async Task<IEnumerable<SettingMapping>> GetSettingMappingAsync(string settings)
         {

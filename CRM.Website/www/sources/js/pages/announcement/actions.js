@@ -7,6 +7,7 @@ import {
     setCreateAnnouncement,
     setLanguages,
     setNotificationTemplates,
+    setSettings,
     setOpenNewAnnouncementPopup
 } from './announcementSlice';
 
@@ -39,6 +40,18 @@ const getNotificationTemplates = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const getTemplateById = templateId => async () => {
+    const url = Site.resolveClientUrl(`NotificationTemplate/GetById/${templateId}`);
+    return await DataService.getDataAsync(url).then(response => response.data);
+};
+
+const getSettings = () => async dispatch => {
+    const url = Site.resolveClientUrl('Announcement/AllSetting');
+    await DataService.getDataAsync(url).then(response => {
+        dispatch(setSettings(response.data));
+    });
+};
+
 export const ActionCreators = {
     resetState,
     setGridParams,
@@ -50,5 +63,8 @@ export const ActionCreators = {
     setLanguages,
     getNotificationTemplates,
     setNotificationTemplates,
+    getTemplateById,
+    getSettings,
+    setSettings,
     setOpenNewAnnouncementPopup
 };

@@ -9,6 +9,7 @@ const initialState = {
     createAnnouncementResult: null,
     languages: null,
     notificationTemplates: null,
+    settings: null,
     newAnnouncementPopup: { show: false }
 };
 const announcementSlice = createSlice({
@@ -31,6 +32,9 @@ const announcementSlice = createSlice({
         setLanguages: (state, action) => {
             state.languages = action.payload;
         },
+        setSettings: (state, action) => {
+            state.settings = action.payload;
+        },
         setOpenNewAnnouncementPopup: (state, action) => {
             state.newAnnouncementPopup = action.payload;
         }
@@ -45,7 +49,9 @@ export const {
     setGridData,
     setCreateAnnouncement,
     setNotificationTemplates,
+    setSelectedTemplate,
     setLanguages,
+    setSettings,
     setOpenNewAnnouncementPopup
 } = actions;
 

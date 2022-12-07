@@ -29,6 +29,9 @@
 
 
 .new-announcement-modal{
+    .modal-dialog{
+        max-width: 1000px !important;
+    }
     .modal-content{
         .list-file-image .icon-delete::before{
             padding-left: 6px;
@@ -50,6 +53,67 @@
 
         .text-color{
             color: rgb(33,123,199);
+            cursor: pointer;
+        }
+
+        .languages-text{
+            .nav-item:not(:last-child){
+                width: 155px;
+                margin-right: 10px;
+            }
+
+            .nav-item:is(:last-child){
+                width: 144px;
+            }
+
+            .nav-link {
+                padding-left: 2px !important;
+                color: #495057;
+            }
+
+            .active{
+                color: rgb(33,123,199);
+            }
+        }
+
+        .headline-group-form{
+            overflow: auto;
+            max-height: 478px;
+            background-color: white;
+            min-height: 90px;
+            border: 1px solid #cccccc;
+            display: flex;
+            flex-wrap: wrap;
+
+            .headline-box{
+                height: 22px;
+                border: 1px solid #8e8e8e;
+                border-radius: 5px;
+                padding: 1px 4px;
+                margin: 2px;
+
+                .headline{
+                    color: #06c;
+                }
+                .fa-times{
+                    cursor: pointer;
+                }
+            }
+
+            .text-input-headline{
+                border: none !important;
+                outline: 0 !important;
+                padding-left: 2px;
+                height: 23px;
+            }
+        }
+
+        .form-option-wrapper{
+            display: flex;
+            flex-wrap: wrap;
+            .form-control-wrapper{
+                width: 178.5px !important;
+            }
         }
     }
 }

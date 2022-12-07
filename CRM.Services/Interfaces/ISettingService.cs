@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Criteria.PicAndHeadline;
     using CRM.Criteria.Setting;
     using CRM.Models;
     using CRM.Models.Setting;
@@ -57,6 +58,8 @@
         Task<IEnumerable<BaseModel>> GetLicenseeTypeAsync();
 
         Task<IEnumerable<BaseModel>> GetCurrencyAsync();
+
+        Task<IEnumerable<CRM.Models.PicAndHeadline.SiteInfo>> GetSystemSiteAsync(GetSystemSiteCriteria criteria);
 
         Task<IEnumerable<SettingMapping>> GetSettingMappingAsync(string settings);
 

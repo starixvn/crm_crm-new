@@ -5,7 +5,6 @@ import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import NewAnnouncement from './NewAnnouncement';
 import LangHelper from '@jsroot/common/langHelper';
-import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 
@@ -30,14 +29,10 @@ export class AppContainer extends Component {
 
     closeConfirmPopup = () => this.props.setConfirmPopup({ show: false });
 
-    handleCloseContent = () => {
-        this.props.setContentPopup({ show: false });
-        this.props.setIsRefresh(true);
-    };
-
     handleCloseNewAnnouncement = () => this.props.setOpenNewAnnouncementPopup({ show: false });
 
     handleCreateSuccessAnnouncement = () =>{
+        this.props.setCreateAnnouncement(null);
         this.handleCloseNewAnnouncement();
     }
 
