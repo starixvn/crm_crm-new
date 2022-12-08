@@ -66,7 +66,7 @@ export class Filter extends Component {
         };
 
         this.props.setGridParams(params);
-        this.props.getGridFeedbacks(params);
+        this.props.getGridData(params);
     };
 
     handleOpenNewAnnouncement = () => this.props.setOpenNewAnnouncementPopup({show: true});

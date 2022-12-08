@@ -1,6 +1,7 @@
 ﻿namespace CRM.Controllers.HeadlineNotification
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -9,10 +10,13 @@
     using CRM.Criteria.Announcement;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models;
+    using CRM.Models.Announcement;
     using CRM.Services;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
+    using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+    using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
     public class AnnouncementController : BaseController
     {
@@ -55,6 +59,29 @@
                 Message = string.Empty
             };
             return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetAnnouncement([FromForm] GetAnnouncementCriteria criteria)
+        {
+            var result = new List<AnnouncementInfo>
+            {
+                new AnnouncementInfo
+                {
+                    AnnouncementId = 1,
+                    NotificationTemplate = "Special Announcement",
+                    CreatedBy = "Teddy",
+                    SendDateString = "Jan 05, 2022",
+                    SendTimeString = "11:01:53 AM",
+                    Status = "Fail",
+                    Title = "Voided Settled Tickets Template - Accounting PIC"
+                }
+            };
+            return Json(new
+            {
+                data = result,
+                TotalItems = 1
+            });
         }
 
         public async Task<IActionResult> AllSetting()

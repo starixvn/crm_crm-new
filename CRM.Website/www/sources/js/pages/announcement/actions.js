@@ -8,7 +8,11 @@ import {
     setLanguages,
     setNotificationTemplates,
     setSettings,
-    setOpenNewAnnouncementPopup
+    setOpenNewAnnouncementPopup,
+    setContentPopup,
+    setViewDetailPopup,
+    setAutoRefresh,
+    setIsRefresh
 } from './announcementSlice';
 
 const getGridData = params => async dispatch => {
@@ -66,5 +70,9 @@ export const ActionCreators = {
     getTemplateById,
     getSettings,
     setSettings,
-    setOpenNewAnnouncementPopup
+    setOpenNewAnnouncementPopup,
+    setContentPopup,
+    setViewDetailPopup,
+    setAutoRefresh,
+    setIsRefresh
 };

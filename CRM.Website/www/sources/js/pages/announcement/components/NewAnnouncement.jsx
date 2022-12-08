@@ -558,15 +558,11 @@ export class NewAnnouncement extends Component {
         }
 
         const invalidFileSize = this.state.uploadedFiles.filter(x => !this.validFileSize(x));
-        if(invalidFileSize.length > 0){
+        const invalidFileWidthHeigh = this.state.uploadedFiles.filter(x => !this.validateWidthHeigh(x));
+
+        if(invalidFileSize.length > 0 || invalidFileWidthHeigh.length > 0){
             const nameFileError = invalidFileSize.map(x => x.name).join(', ');
             errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), nameFileError);
-        }
-
-        const invalidFileWidthHeigh = this.state.uploadedFiles.filter(x => !this.validateWidthHeigh(x));
-        if(invalidFileWidthHeigh.length > 0){
-            const nameFileError = invalidFileWidthHeigh.map(x => x.name).join(', ');
-            errors.imageFileWidthHeight = LangHelper.formatString(LangHelper.getResource('ImageFileWidthHeightError'), nameFileError);
         }
 
         return errors;
@@ -598,8 +594,7 @@ export class NewAnnouncement extends Component {
             sendType: '',
             sendDate: null,
             imageFileType: '',
-            imageFileSize: '',
-            imageFileWidthHeight: ''
+            imageFileSize: ''
         };
 
         return (

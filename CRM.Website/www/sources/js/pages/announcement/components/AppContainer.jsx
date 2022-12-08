@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import NewAnnouncement from './NewAnnouncement';
+import DataGrid from './DataGrid';
 import LangHelper from '@jsroot/common/langHelper';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
@@ -57,6 +58,7 @@ export class AppContainer extends Component {
                         onSuccess={this.handleCreateSuccessAnnouncement}
                     />
                 }
+                <DataGrid />
                 {/* {
                     this.props.contentPopup.show &&
                     <Content

@@ -1,5 +1,5 @@
 ﻿import { createSlice } from '@reduxjs/toolkit';
-
+import { AUTO_REFRESH_TIMES } from '@jsroot/common/constants';
 const initialState = {
     gridParams: {
         pageIndex: 1,
@@ -10,7 +10,15 @@ const initialState = {
     languages: null,
     notificationTemplates: null,
     settings: null,
-    newAnnouncementPopup: { show: false }
+    newAnnouncementPopup: { show: false },
+    contentPopup: { show: false },
+    viewDetailPopup: { show: false },
+    autoRefresh: {
+        value: AUTO_REFRESH_TIMES[0],
+        countDown: AUTO_REFRESH_TIMES[0],
+        isSubmit: false
+    },
+    isRefresh: true
 };
 const announcementSlice = createSlice({
     name: 'announcement',
@@ -37,6 +45,18 @@ const announcementSlice = createSlice({
         },
         setOpenNewAnnouncementPopup: (state, action) => {
             state.newAnnouncementPopup = action.payload;
+        },
+        setContentPopup: (state, action) => {
+            state.contentPopup = action.payload;
+        },
+        setViewDetailPopup: (state, action) => {
+            state.viewDetailPopup = action.payload;
+        },
+        setAutoRefresh: (state, action) => {
+            state.autoRefresh = action.payload;
+        },
+        setIsRefresh: (state, action) => {
+            state.autoRefresh = action.payload;
         }
     }
 });
@@ -52,7 +72,11 @@ export const {
     setSelectedTemplate,
     setLanguages,
     setSettings,
-    setOpenNewAnnouncementPopup
+    setOpenNewAnnouncementPopup,
+    setContentPopup,
+    setViewDetailPopup,
+    setAutoRefresh,
+    setIsRefresh
 } = actions;
 
 export default reducer;
