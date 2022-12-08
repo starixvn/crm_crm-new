@@ -12,7 +12,6 @@ export class AutoRefresh extends Component {
         this.state = {
             isOpenDropdown: false
         };
-
         this.autoRefresh = React.createRef();
     }
 
@@ -39,7 +38,6 @@ export class AutoRefresh extends Component {
                 ...this.props.gridParams,
                 pageIndex: 1
             };
-
             this.props.setGridParams(params);
             this.props.getGridData(params);
         }
@@ -48,12 +46,6 @@ export class AutoRefresh extends Component {
     componentWillUnmount = () => {
         clearInterval(this.countDownFunc);
         document.removeEventListener('mousedown', this.handleClickOutside);
-    };
-
-    handleClickOutside = event => {
-        if (this.autoRefresh && !this.autoRefresh.current.contains(event.target) && this.state.isOpenDropdown) {
-            this.setState({ isOpenDropdown: false });
-        }
     };
 
     countDownFunc = () => setInterval(() => {
@@ -65,13 +57,10 @@ export class AutoRefresh extends Component {
         }
     }, 1000);
 
-    handleAutoRefreshChange = value => {
-        this.setState({ isOpenDropdown: false });
-        this.props.setIsRefresh(value !== 0);
-        this.props.setAutoRefresh({
-            ...this.props.autoRefresh,
-            value: value
-        });
+    handleClickOutside = event => {
+        if (this.autoRefresh && !this.autoRefresh.current.contains(event.target) && this.state.isOpenDropdown) {
+            this.setState({ isOpenDropdown: false });
+        }
     };
 
     handleRefresh = () => {
@@ -85,6 +74,15 @@ export class AutoRefresh extends Component {
         this.props.setAutoRefresh({
             ...this.props.autoRefresh,
             countDown: this.props.autoRefresh.value
+        });
+    };
+
+    handleAutoRefreshChange = value => {
+        this.setState({ isOpenDropdown: false });
+        this.props.setIsRefresh(value !== 0);
+        this.props.setAutoRefresh({
+            ...this.props.autoRefresh,
+            value: value
         });
     };
 

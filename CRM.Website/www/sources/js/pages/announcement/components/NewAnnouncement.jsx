@@ -178,7 +178,7 @@ export class NewAnnouncement extends Component {
                 <Form.Label column sm="2" md="2" />
                 <Col sm="10" md="10" className='list-file-image'>
                     <span className='fa fa-file-image-o mr-2'/>
-                    <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, item)}>
+                    <span className="mr-2 text-color" onClick={event => this.handlePreviewImage(event, item)}>
                         {item.name}
                     </span>
                     <span className="rounded-circle fa fa-trash icon-delete" onClick={event => this.handleRemoveFile(event, item.name)} />

@@ -73,7 +73,33 @@
                     CreatedBy = "Teddy",
                     SendDateString = "Jan 05, 2022",
                     SendTimeString = "11:01:53 AM",
-                    Status = "Fail",
+                    CreatedTime = DateTime.Now,
+                    Status = "Completed",
+                    Title = "Voided Settled Tickets Template - Accounting PIC",
+                    ImageSource="images.jpg",
+                    GroupHeadline = "group 1, group 2",
+                    Content = "เรียน ลูกค้าที่เคารพ ฝ่ายบริการลูกค้าขอแจ้งให้ทราบว่าสมาชิภายใต้ ซุปเปอร์ \"12BETSuperUS$\" อาจจะมีการเสียยอดคงค้างตามรายละเอียดด้านล่าง:"
+                },
+                new AnnouncementInfo
+                {
+                    AnnouncementId = 2,
+                    NotificationTemplate = "Special Announcement",
+                    CreatedBy = "Teddy",
+                    SendDateString = "Jan 05, 2022",
+                    SendTimeString = "11:01:53 AM",
+                    CreatedTime = DateTime.Now,
+                    Status = "Planned",
+                    Title = "Voided Settled Tickets Template - Accounting PIC"
+                },
+                new AnnouncementInfo
+                {
+                    AnnouncementId = 2,
+                    NotificationTemplate = "Special Announcement",
+                    CreatedBy = "Teddy",
+                    SendDateString = "Jan 05, 2022",
+                    SendTimeString = "11:01:53 AM",
+                    CreatedTime = DateTime.Now,
+                    Status = "Cancelled",
                     Title = "Voided Settled Tickets Template - Accounting PIC"
                 }
             };

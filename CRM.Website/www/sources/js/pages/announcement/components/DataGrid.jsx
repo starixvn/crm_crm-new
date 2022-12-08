@@ -4,9 +4,10 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import { Form } from 'react-bootstrap';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 import AutoRefresh from './AutoRefresh';
+import DateTimeService from '@jsroot/common/dateTimeService';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -28,15 +29,15 @@ export class DataGrid extends Component {
     renderHeaderAnnouncement = isHost =>
         (<HeaderRow>
             <HeaderCell colWidth={5}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
-            <HeaderCell colWidth={15}>{LangHelper.getResource('AnnouncementId')}</HeaderCell>
-            <HeaderCell colWidth={23}>{LangHelper.getResource('NotificationTemplate')}</HeaderCell>
+            <HeaderCell colWidth={10}>{LangHelper.getResource('AnnouncementId')}</HeaderCell>
+            <HeaderCell colWidth={15}>{LangHelper.getResource('NotificationTemplate')}</HeaderCell>
             <HeaderCell colWidth={12}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
             <HeaderCell colWidth={20}>{LangHelper.getResource('Title')}/{LangHelper.getResource('Content')}</HeaderCell>
-            <HeaderCell colWidth={12}>{LangHelper.getResource('CreatedBy')}</HeaderCell>
-            <HeaderCell colWidth={12}>{LangHelper.getResource('CreatedTimeGM8')}</HeaderCell>
-            <HeaderCell colWidth={12}>{LangHelper.getResource('Status')}</HeaderCell>
+            <HeaderCell colWidth={10}>{LangHelper.getResource('CreatedBy')}</HeaderCell>
+            <HeaderCell colWidth={15}>{LangHelper.getResource('CreatedTimeGM8')}</HeaderCell>
+            <HeaderCell colWidth={10}>{LangHelper.getResource('Status')}</HeaderCell>
             {
-                isHost && <HeaderCell colWidth={10}>{LangHelper.getResource('Action')}</HeaderCell>
+                isHost && <HeaderCell colWidth={5}>{LangHelper.getResource('Action')}</HeaderCell>
             }
         </HeaderRow>);
 
@@ -86,10 +87,70 @@ export class DataGrid extends Component {
                 </Cell>
                 <Cell className='link-click' onClick={() => this.openContentPopup(item)}>{item.title}</Cell>
                 <Cell>{item.createdBy}</Cell>
-                <Cell className='text-center'>{item.status}</Cell>
-                <Cell className='text-center'>{item.status}</Cell>
+                <Cell>{DateTimeService.toLongDateTimeFormat(item.createdTime)}</Cell>
+                {
+                    item.status === 'Completed' ? 
+                    <Cell className={`text-center status ${item.status.toLowerCase()}`}>
+                        <div>{item.status}</div>
+                        <div>
+                            <span>(S:</span>
+                            <span className='sent'>10</span>
+                            <span>,E:</span>
+                            <span className='error'>2</span>
+                            <span>)</span>
+                        </div>
+                    </Cell> :
+                    <Cell className={`text-center status ${item.status.toLowerCase()}`}>{item.status}</Cell>
+                }
+                {
+                    isHost && this.renderAction(item)
+                }
             </Row>
         );
+    }
+
+    renderAction = item => {
+        switch (item.status) {
+            case 'Planned':
+                return(
+                    <OverlayTrigger placement="bottom-start" overlay={
+                        <Tooltip id="tooltip-cancel-announcement">
+                            {LangHelper.getResource('CancelThisAnnouncement')}
+                        </Tooltip>}
+                    >
+                        <Cell className="text-center">
+                            <span className='rounded-circle fa fa-ban icon-delete' onClick={() => this.handleCancel(item.announcementId)} />
+                        </Cell>
+                    </OverlayTrigger>
+                );
+            case 'Cancelled':
+                return(
+                    <OverlayTrigger placement="bottom-start" overlay={
+                        <Tooltip id="tooltip-cancel-announcement">
+                            {LangHelper.getResource('EditThisAnnouncement')}
+                        </Tooltip>}
+                    >
+                        <Cell className="text-center">
+                            <span className='rounded-circle fa fa-pencil icon-edit' onClick={() => this.handleEdit(item.announcementId)} />
+                        </Cell>
+                    </OverlayTrigger>
+                );
+            case 'Completed':
+                return(
+                    <OverlayTrigger placement="bottom-start" overlay={
+                        <Tooltip id="tooltip-cancel-announcement">
+                            {LangHelper.getResource('DuplicateThisAnnouncement')}
+                        </Tooltip>}
+                    >
+                        <Cell className="text-center">
+                            <span className='rounded-circle fa fa-files-o icon-duplicate' onClick={() => this.handleDuplicate(item.announcementId)} />
+                        </Cell>
+                    </OverlayTrigger>
+
+                );
+            default:
+                return null;
+        }
     }
 
     render() {

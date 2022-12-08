@@ -26,6 +26,31 @@
         width: 100% !important;
     }
 
+    .table-container .body-content{
+        .status{
+            font-weight: bold;
+        }
+        .planned{
+            color: rgb(118,148,70) !important;
+        }
+        .cancelled{
+            color: $draft-color !important;
+        }
+        .in-progress{
+            color: $sending-color !important;
+        }
+        .completed{
+            color: $black !important;
+
+            .sent{
+                color: $sent-color !important;
+            }
+            .error{
+                color: $error-color !important;
+            }
+        }
+    }
+
     .auto-refresh {
         width: 110px;
         margin-right: 10px;
@@ -159,5 +184,21 @@
                 width: 178.5px !important;
             }
         }
+    }
+}
+
+.announcement-content-modal{
+    .announcement-content{
+        white-space: pre-line;
+        word-break: break-word;
+    }
+
+    .text-color{
+        color: rgb(33,123,199);
+        cursor: pointer;
+    }
+
+    div{
+        padding-bottom: 5px;
     }
 }

@@ -5,9 +5,11 @@ import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import NewAnnouncement from './NewAnnouncement';
 import DataGrid from './DataGrid';
+import Content from './Content';
 import LangHelper from '@jsroot/common/langHelper';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -42,6 +44,11 @@ export class AppContainer extends Component {
         this.props.setIsRefresh(true);
     };
 
+    handleCloseContent = () => {
+        this.props.setContentPopup({ show: false });
+        this.props.setIsRefresh(true);
+    };
+
     render() {
         if(!this.state.policy){
             return null;
@@ -58,23 +65,13 @@ export class AppContainer extends Component {
                         onSuccess={this.handleCreateSuccessAnnouncement}
                     />
                 }
-                <DataGrid />
-                {/* {
+                <DataGrid isHost={isHost}/>
+                {
                     this.props.contentPopup.show &&
                     <Content
                         onClose={() => this.handleCloseContent()}
                         data={this.props.contentPopup.data}
                     />
-                }
-                {
-                    this.props.viewDetailPopup.show &&
-                    <ViewDetail
-                        onClose={() => this.handleCloseViewDetail()}
-                        data={this.props.viewDetailPopup.data}
-                    />
-                }
-                {
-                    this.props.validateResendResult.show && <ValidateResend />
                 }
                 {
                     this.props.confirmPopup.show &&
@@ -90,7 +87,7 @@ export class AppContainer extends Component {
                         }}
                         onClose={() => this.closeConfirmPopup()}
                     />
-                } */}
+                }
             </Fragment>
         );
     }
@@ -100,11 +97,13 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        newAnnouncementPopup
+        newAnnouncementPopup,
+        contentPopup
     } = state;
 
     return {
-        newAnnouncementPopup
+        newAnnouncementPopup,
+        contentPopup
     };
 };
 

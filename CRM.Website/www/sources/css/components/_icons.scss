@@ -1,4 +1,4 @@
-﻿.icon-edit, .icon-delete {
+﻿.icon-edit, .icon-delete, .icon-duplicate {
     height: 24px;
     width: 24px;
     line-height: 24px;
@@ -16,6 +16,10 @@
 
 .icon-delete:hover {
     background-color: #fe3a3a;
+}
+
+.icon-duplicate:hover {
+    background-color: #28a745;
 }
 
 .icon-excel {
