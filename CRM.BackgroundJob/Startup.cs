@@ -184,7 +184,7 @@
             services.AddHostedService<SynchronizeNewLicenseeWorker>();
             services.AddHostedService<AutoFbVoidingSettledTicketsWorker>();
             services.AddHostedService<AutoFbArchivingDAWoker>();
-
+            services.AddHostedService<AutoChatbotArchivingDAWoker>();
             services.AddHostedService<MonitorLetstalkWorker>();
         }
 
