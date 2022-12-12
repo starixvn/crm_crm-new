@@ -7,10 +7,11 @@ const initialState = {
     },
     gridData: null,
     createAnnouncementResult: null,
-    languages: null,
+    editAnnouncementResult: null,
     notificationTemplates: null,
     settings: null,
     newAnnouncementPopup: { show: false },
+    editAnnouncementPopup: { show: false, data: null, isEdit: false },
     contentPopup: { show: false },
     viewDetailPopup: { show: false },
     autoRefresh: {
@@ -34,17 +35,20 @@ const announcementSlice = createSlice({
         setCreateAnnouncement: (state, action) => {
             state.createAnnouncementResult = action.payload;
         },
+        setEditAnnouncement: (state, action) => {
+            state.editAnnouncementResult = action.payload;
+        },
         setNotificationTemplates: (state, action) => {
             state.notificationTemplates = action.payload;
-        },
-        setLanguages: (state, action) => {
-            state.languages = action.payload;
         },
         setSettings: (state, action) => {
             state.settings = action.payload;
         },
         setOpenNewAnnouncementPopup: (state, action) => {
             state.newAnnouncementPopup = action.payload;
+        },
+        setOpenEditAnnouncementPopup: (state, action) => {
+            state.editAnnouncementPopup = action.payload;
         },
         setContentPopup: (state, action) => {
             state.contentPopup = action.payload;
@@ -56,7 +60,7 @@ const announcementSlice = createSlice({
             state.autoRefresh = action.payload;
         },
         setIsRefresh: (state, action) => {
-            state.autoRefresh = action.payload;
+            state.isRefresh = action.payload;
         }
     }
 });
@@ -68,11 +72,13 @@ export const {
     setGridParams,
     setGridData,
     setCreateAnnouncement,
+    setEditAnnouncement,
     setNotificationTemplates,
     setSelectedTemplate,
     setLanguages,
     setSettings,
     setOpenNewAnnouncementPopup,
+    setOpenEditAnnouncementPopup,
     setContentPopup,
     setViewDetailPopup,
     setAutoRefresh,

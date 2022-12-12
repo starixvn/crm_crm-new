@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
 import NewAnnouncement from './NewAnnouncement';
+import EditAnnouncement from './EditAnnouncement';
 import DataGrid from './DataGrid';
 import Content from './Content';
 import LangHelper from '@jsroot/common/langHelper';
@@ -30,13 +31,24 @@ export class AppContainer extends Component {
         this.props.setGridData(null);
     }
 
-    closeConfirmPopup = () => this.props.setConfirmPopup({ show: false });
-
-    handleCloseNewAnnouncement = () => this.props.setOpenNewAnnouncementPopup({ show: false });
+    handleCloseNewAnnouncement = () => {
+        this.props.setOpenNewAnnouncementPopup({ show: false });
+        this.props.setIsRefresh(true);
+    }
 
     handleCreateSuccessAnnouncement = () =>{
         this.props.setCreateAnnouncement(null);
         this.handleCloseNewAnnouncement();
+    }
+
+    handleCloseEditAnnouncement = () => {
+        this.props.setOpenEditAnnouncementPopup({ show: false });
+        this.props.setIsRefresh(true);
+    }
+
+    handleEditSuccessAnnouncement = () =>{
+        this.props.setEditAnnouncement(null);
+        this.handleCloseEditAnnouncement();
     }
 
     handleCloseViewDetail = () => {
@@ -71,21 +83,14 @@ export class AppContainer extends Component {
                     <Content
                         onClose={() => this.handleCloseContent()}
                         data={this.props.contentPopup.data}
+                        getLanguages={this.props.getLanguages}
                     />
                 }
                 {
-                    this.props.confirmPopup.show &&
-                    <ConfirmPopup
-                        size='lg'
-                        title={LangHelper.getResource('Confirmation')}
-                        content={
-                            <div>{LangHelper.getResource('ThereAreSomeChangesConfirmMessage')}</div>
-                        }
-                        onSubmit={() => {
-                            this.closeConfirmPopup();
-                            this.props.confirmPopup.onOk();
-                        }}
-                        onClose={() => this.closeConfirmPopup()}
+                    this.props.editAnnouncementPopup.show &&
+                    <EditAnnouncement
+                        onClose={this.handleEditSuccessAnnouncement}
+                        onSuccess={this.handleEditSuccessAnnouncement}
                     />
                 }
             </Fragment>
@@ -98,11 +103,13 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 const mapStateToProps = state => {
     const {
         newAnnouncementPopup,
+        editAnnouncementPopup,
         contentPopup
     } = state;
 
     return {
         newAnnouncementPopup,
+        editAnnouncementPopup,
         contentPopup
     };
 };

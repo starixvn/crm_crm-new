@@ -76,8 +76,11 @@
                     CreatedTime = DateTime.Now,
                     Status = "Completed",
                     Title = "Voided Settled Tickets Template - Accounting PIC",
-                    ImageSource="images.jpg",
-                    GroupHeadline = "group 1, group 2",
+                    ImageSource= new List<string>{"images.jpg" },
+                    GroupHeadlines = "group 1, group 2",
+                    HeadlineType = "2",
+                    Sites = "23,16",
+                    Currencies="9,97",
                     Content = "เรียน ลูกค้าที่เคารพ ฝ่ายบริการลูกค้าขอแจ้งให้ทราบว่าสมาชิภายใต้ ซุปเปอร์ \"12BETSuperUS$\" อาจจะมีการเสียยอดคงค้างตามรายละเอียดด้านล่าง:"
                 },
                 new AnnouncementInfo
@@ -89,6 +92,10 @@
                     SendTimeString = "11:01:53 AM",
                     CreatedTime = DateTime.Now,
                     Status = "Planned",
+                    GroupHeadlines = "group 1, group 2",
+                    HeadlineType = "2",
+                    Sites = "222223",
+                    ImageSource= new List<string>{"images.jpg" },
                     Title = "Voided Settled Tickets Template - Accounting PIC"
                 },
                 new AnnouncementInfo
@@ -100,6 +107,8 @@
                     SendTimeString = "11:01:53 AM",
                     CreatedTime = DateTime.Now,
                     Status = "Cancelled",
+                    GroupHeadlines = "group 1, group 2",
+                    ImageSource= new List<string>{"images.jpg" },
                     Title = "Voided Settled Tickets Template - Accounting PIC"
                 }
             };

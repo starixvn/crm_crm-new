@@ -5,10 +5,11 @@ import {
     setGridParams,
     setGridData,
     setCreateAnnouncement,
-    setLanguages,
+    setEditAnnouncement,
     setNotificationTemplates,
     setSettings,
     setOpenNewAnnouncementPopup,
+    setOpenEditAnnouncementPopup,
     setContentPopup,
     setViewDetailPopup,
     setAutoRefresh,
@@ -30,11 +31,17 @@ const createAnnouncement = data => async dispatch => {
     });
 };
 
-const getLanguages = () => async dispatch => {
-    const url = Site.resolveClientUrl('NotificationTemplate/GetLanguages');
-    await DataService.getDataAsync(url).then(response => {
-        dispatch(setLanguages(response.data));
+
+const editAnnouncement = data => async dispatch => {
+    const url = Site.resolveClientUrl('Announcement/Edit');
+    await DataService.postDataAsync(url, data).then(response => {
+        dispatch(setEditAnnouncement(response.data));
     });
+};
+
+const getLanguages = () => async () => {
+    const url = Site.resolveClientUrl('NotificationTemplate/GetLanguages');
+    return await DataService.getDataAsync(url).then(response => response.data);
 };
 
 const getNotificationTemplates = params => async dispatch => {
@@ -63,14 +70,16 @@ export const ActionCreators = {
     getGridData,
     createAnnouncement,
     setCreateAnnouncement,
+    editAnnouncement,
+    setEditAnnouncement,
     getLanguages,
-    setLanguages,
     getNotificationTemplates,
     setNotificationTemplates,
     getTemplateById,
     getSettings,
     setSettings,
     setOpenNewAnnouncementPopup,
+    setOpenEditAnnouncementPopup,
     setContentPopup,
     setViewDetailPopup,
     setAutoRefresh,

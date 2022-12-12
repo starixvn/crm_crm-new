@@ -1,4 +1,27 @@
 @import '../../abstracts/variables';
+
+@mixin tab-language() {
+    .languages-text{
+        .nav-item:not(:last-child){
+            width: 155px;
+            margin-right: 10px;
+        }
+
+        .nav-item:is(:last-child){
+            width: 144px;
+        }
+
+        .nav-link {
+            padding-left: 2px !important;
+            color: #495057;
+        }
+
+        .active{
+            color: rgb(33,123,199);
+        }
+    }
+}
+
 .announcement{
     .form-filter{
         .form-group{
@@ -97,7 +120,7 @@
 }
 
 
-.new-announcement-modal{
+.new-announcement-modal, .edit-announcement-modal{
     .modal-dialog{
         max-width: 1000px !important;
     }
@@ -105,6 +128,12 @@
         .list-file-image .icon-delete::before{
             padding-left: 6px;
         }
+
+        .multiple-select-options{
+            max-height: 160px;
+        }
+
+        @include tab-language;
 
         .btn-file {
             position: relative;
@@ -123,26 +152,6 @@
         .text-color{
             color: rgb(33,123,199);
             cursor: pointer;
-        }
-
-        .languages-text{
-            .nav-item:not(:last-child){
-                width: 155px;
-                margin-right: 10px;
-            }
-
-            .nav-item:is(:last-child){
-                width: 144px;
-            }
-
-            .nav-link {
-                padding-left: 2px !important;
-                color: #495057;
-            }
-
-            .active{
-                color: rgb(33,123,199);
-            }
         }
 
         .headline-group-form{
@@ -188,7 +197,12 @@
 }
 
 .announcement-content-modal{
+    .modal-dialog{
+        max-width: 832px !important;
+    }
+
     .announcement-content{
+        min-height: 100px;
         white-space: pre-line;
         word-break: break-word;
     }
@@ -199,6 +213,8 @@
     }
 
     div{
-        padding-bottom: 5px;
+        padding-bottom: 10px;
     }
+
+    @include tab-language;
 }
