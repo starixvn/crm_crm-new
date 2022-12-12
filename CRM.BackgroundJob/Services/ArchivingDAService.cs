@@ -157,8 +157,8 @@ namespace CRM.BackgroundJob.Services
             var template = commonFeedback.GetFeedbackTemplates<ArchivingTemplate>(templateXml);
             stringBuilder.AppendFormat(template.Description, 
                 archivingAutoFbInfo.ArchivedDate.ToString("MMM-yyyy"),
-                archivingAutoFbInfo.ArchivedDate.AddDays(-fromArchiveDate).ToString("mm/dd/yyyy"),
-                archivingAutoFbInfo.ArchivedDate.ToString("mm/dd/yyyy"),
+                archivingAutoFbInfo.ArchivedDate.AddDays(-fromArchiveDate).ToString("MM/dd/yyyy"),
+                archivingAutoFbInfo.ArchivedDate.ToString("MM/dd/yyyy"),
                 Constants.LineBreak);
 
             return stringBuilder.ToString();
