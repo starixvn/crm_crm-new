@@ -163,6 +163,11 @@ export class DataGrid extends Component {
         this.props.setOpenEditAnnouncementPopup({show: true, data: item, isEdit: false});
     }
 
+    handleCancel = announcementId => {
+        this.props.setIsRefresh(false);
+        this.props.setOpenCancelAnnouncementPopup({show: true, announcementId: announcementId});
+    }
+
     render() {
         if (!this.props.gridData || !this.props.gridData.data) {
             return null;

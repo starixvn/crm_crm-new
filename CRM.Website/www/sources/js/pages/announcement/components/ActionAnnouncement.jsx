@@ -19,7 +19,7 @@ import {
 
 const portal = document.createElement("div");
 document.body.appendChild(portal);
-export class EditAnnouncement extends Component {
+export class ActionAnnouncement extends Component {
     constructor(props) {
         super(props);
         this.imageInputRef = React.createRef();
@@ -36,7 +36,7 @@ export class EditAnnouncement extends Component {
     }
 
     async componentDidMount() {
-        const {data} = this.props.editAnnouncementPopup;
+        const {data} = this.props.actionAnnouncementPopup;
         await this.props.getLanguages().then(response => {
             const firstLanguage = response?.[0]?.settingValue;
             this.setState({languages: response, tab: firstLanguage});
@@ -282,11 +282,11 @@ export class EditAnnouncement extends Component {
     }
 
     render() {
-        const {notificationTemplates, settings, editAnnouncementPopup} = this.props;
+        const {notificationTemplates, settings, actionAnnouncementPopup} = this.props;
         if(!this.state.languages || !notificationTemplates || !settings) {
             return null;
         }
-        const {data, isEdit} = editAnnouncementPopup;
+        const {data, isEdit} = actionAnnouncementPopup;
         const initialValues = {
             notificationTemplate: data.notificationTemplate,
             title: data.title,
@@ -343,8 +343,8 @@ export class EditAnnouncement extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { notificationTemplates, settings, editAnnouncementResult, editAnnouncementPopup } = state;
-    return { notificationTemplates, settings, editAnnouncementResult, editAnnouncementPopup };
+    const { notificationTemplates, settings, editAnnouncementResult, actionAnnouncementPopup } = state;
+    return { notificationTemplates, settings, editAnnouncementResult, actionAnnouncementPopup };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditAnnouncement);
+export default connect(mapStateToProps, mapDispatchToProps)(ActionAnnouncement);

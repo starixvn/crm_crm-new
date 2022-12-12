@@ -113,6 +113,7 @@
     ConfirmInsertAnnouncement: 'Confirm Insert Announcement',
     ConfirmEditAnnouncement: 'Confirm Edit Announcement',
     CancelThisAnnouncement: 'Cancel this announcement',
+    CancelAnnouncementSuccessfully: 'Cancel announcement successfully!',
     CloneAnnouncement: 'Clone Announcement',
     Danger: 'Danger',
     DangerOriginal: 'Original',

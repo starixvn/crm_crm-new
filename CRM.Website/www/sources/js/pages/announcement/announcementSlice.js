@@ -11,7 +11,8 @@ const initialState = {
     notificationTemplates: null,
     settings: null,
     newAnnouncementPopup: { show: false },
-    editAnnouncementPopup: { show: false, data: null, isEdit: false },
+    actionAnnouncementPopup: { show: false, data: null, isEdit: false },
+    cancelAnnouncementPopup: { show: false, announcementId: ''},
     contentPopup: { show: false },
     viewDetailPopup: { show: false },
     autoRefresh: {
@@ -48,7 +49,10 @@ const announcementSlice = createSlice({
             state.newAnnouncementPopup = action.payload;
         },
         setOpenEditAnnouncementPopup: (state, action) => {
-            state.editAnnouncementPopup = action.payload;
+            state.actionAnnouncementPopup = action.payload;
+        },
+        setOpenCancelAnnouncementPopup: (state, action) => {
+            state.cancelAnnouncementPopup = action.payload;
         },
         setContentPopup: (state, action) => {
             state.contentPopup = action.payload;
@@ -79,6 +83,7 @@ export const {
     setSettings,
     setOpenNewAnnouncementPopup,
     setOpenEditAnnouncementPopup,
+    setOpenCancelAnnouncementPopup,
     setContentPopup,
     setViewDetailPopup,
     setAutoRefresh,

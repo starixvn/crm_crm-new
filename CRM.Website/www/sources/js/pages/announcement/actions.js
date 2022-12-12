@@ -10,6 +10,7 @@ import {
     setSettings,
     setOpenNewAnnouncementPopup,
     setOpenEditAnnouncementPopup,
+    setOpenCancelAnnouncementPopup,
     setContentPopup,
     setViewDetailPopup,
     setAutoRefresh,
@@ -63,6 +64,11 @@ const getSettings = () => async dispatch => {
     });
 };
 
+const cancelAnnouncementId = announcementId => async () => {
+    const url = Site.resolveClientUrl(`NotificationTemplate/GetById/${announcementId}`);
+    return await DataService.getDataAsync(url).then(response => response.data);
+};
+
 export const ActionCreators = {
     resetState,
     setGridParams,
@@ -80,8 +86,10 @@ export const ActionCreators = {
     setSettings,
     setOpenNewAnnouncementPopup,
     setOpenEditAnnouncementPopup,
+    setOpenCancelAnnouncementPopup,
     setContentPopup,
     setViewDetailPopup,
     setAutoRefresh,
-    setIsRefresh
+    setIsRefresh,
+    cancelAnnouncementId
 };
