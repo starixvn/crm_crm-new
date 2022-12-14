@@ -125,7 +125,7 @@
 
             appSettings = new AppSettings
             {
-                CRMActionLogKey= "LanguageID,CountryID",
+                CRMActionLogKey = "LanguageID,CountryID",
                 CRMActionLogBoolValue = "IsVerifyEmail,IsVerifyPassport"
             };
             optionsAppSettings.Value.Returns(appSettings);

@@ -16,7 +16,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={17}>{LangHelper.getResource('Action')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Entity')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('ID')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('FieldName')}</HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('FieldName')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('OldValue')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('NewValue')}</HeaderCell>
             </HeaderRow>
@@ -97,7 +97,7 @@ export class DataGrid extends Component {
                     <span>{LangHelper.getResource('SettingLogs')}</span>
                 </div>
                 <Table
-                    width={1250}
+                    width={1500}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}

@@ -2,10 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using System.Xml;
+    using System.Xml.Serialization;
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -29,11 +32,12 @@
         private readonly IBaseService baseService;
         private readonly ICommonService commonService;
         private readonly ISettingService settingService;
-        private IDictionary<string,string> allSetting;
+        private IDictionary<string, string> allSetting;
         private readonly AppSettings appSettings;
         private IDictionary<string, bool> actionLogKeyHash;
         private IDictionary<string, string[]> actionLogBoolValueHash;
         private const int NUMBER_OF_INDEX = 2;
+        private const string ActionUpdateJobSettingLog = "Update Job Setting";
 
         public ActionLogService(
             IBaseService baseService,
@@ -160,7 +164,7 @@
             //// Convert bit value (1/0) to Yes/No.
             if (ActionLogBoolValue.TryGetValue(keyUpper, out string[] boolValues) && int.TryParse(value, out int index) && index < NUMBER_OF_INDEX)
             {
-               return boolValues[index];
+                return boolValues[index];
             }
 
             // Value isn't in Setting hash.
@@ -286,10 +290,56 @@
 
             foreach (var log in settingLogsFilter)
             {
-                FilterOldNewResults(log);
+                if (log.ActionName == ActionUpdateJobSettingLog)
+                {
+                    var oldSettingLog = ParseLogOldNewUpdateJobSetting(log.OldValues);
+                    var newSettingLog = ParseLogOldNewUpdateJobSetting(log.NewValues);
+                    FilterOldNewJobSettingResults(log, oldSettingLog, newSettingLog);
+                }
+                else
+                {
+                    FilterOldNewResults(log);
+                }
             }
 
             return settingLogsFilter;
+        }
+
+        private void FilterOldNewJobSettingResults(SettingLogInfo log, JobSettingLog oldSettingLog, JobSettingLog newSettingLog)
+        {
+            var fieldNames = new List<string>();
+            var oldValuesList = new List<string>();
+            var newValuesList = new List<string>();
+            for (var i = 0; i < newSettingLog.updateConfigs.Count; i++)
+            {
+                var newJobSettingLog = newSettingLog.updateConfigs[i];
+                var oldJobSettingLog = oldSettingLog.updateConfigs[i];
+                var fieldName = $"{newJobSettingLog.ServiceName} - {newJobSettingLog.SettingName}";
+                fieldNames.Add(fieldName);
+
+            }
+            var oldVal = oldSettingLog.updateConfigs.Select(x => x.Value);
+            oldValuesList.AddRange(oldVal);
+            log.OldValuesList = oldValuesList;
+            var newVal = newSettingLog.updateConfigs.Select(x => x.Value);
+            newValuesList.AddRange(newVal);
+            log.NewValuesList = newValuesList;
+            log.FieldNames = fieldNames;
+        }
+
+        private JobSettingLog ParseLogOldNewUpdateJobSetting(string xml)
+        {
+            var regexStart = new Regex(@"<\s*[A-Za-z]");
+            var matchStart = regexStart.Match(xml);
+            var regexEnd = new Regex(@"[_A-Za-z0-9][^_A-Za-z0-9]");
+            var matchEnd = regexEnd.Match(xml);
+            var root = xml.Substring(matchStart.Index + matchStart.Length - 1, matchEnd.Index);
+            XmlSerializer serializer = new XmlSerializer(typeof(JobSettingLog), new XmlRootAttribute(root));
+
+            using (var stringReader = new StringReader(xml))
+            {
+                return (JobSettingLog)serializer.Deserialize(stringReader);
+            }
         }
     }
 }
