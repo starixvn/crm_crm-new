@@ -57,31 +57,34 @@
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var actionLogs = await baseService.GetDataAsync<ActionLogInfo>(criteria);
-            actionLogs = actionLogs.Where(x => !string.Equals(x.OldValues, x.NewValues, StringComparison.OrdinalIgnoreCase));
-            allSetting = await GetAllSettings();
-
-            foreach (var actionLog in actionLogs)
+            if (actionLogs.Any())
             {
-                if (!string.IsNullOrWhiteSpace(actionLog.OldValues))
+                actionLogs = actionLogs.Where(x => !string.Equals(x.OldValues, x.NewValues, StringComparison.OrdinalIgnoreCase));
+                allSetting = await GetAllSettings();
+
+                foreach (var actionLog in actionLogs)
                 {
-                    actionLog.OldValues = actionLog.OldValues.Replace("<MSN>", "<Telegram>").Replace("</MSN>", "</Telegram>")
-                                                                 .Replace("<Yahoo>", "<Letstalk>").Replace("</Yahoo>", "</Letstalk>")
-                                                                 .Replace("<BBM>", "<Zalo>").Replace("</BBM>", "</Zalo>");
+                    if (!string.IsNullOrWhiteSpace(actionLog.OldValues))
+                    {
+                        actionLog.OldValues = actionLog.OldValues.Replace("<MSN>", "<Telegram>").Replace("</MSN>", "</Telegram>")
+                                                                     .Replace("<Yahoo>", "<Letstalk>").Replace("</Yahoo>", "</Letstalk>")
+                                                                     .Replace("<BBM>", "<Zalo>").Replace("</BBM>", "</Zalo>");
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(actionLog.NewValues))
+                    {
+                        actionLog.NewValues = actionLog.NewValues.Replace("<MSN>", "<Telegram>").Replace("</MSN>", "</Telegram>")
+                                                                    .Replace("<Yahoo>", "<Letstalk>").Replace("</Yahoo>", "</Letstalk>")
+                                                                    .Replace("<BBM>", "<Zalo>").Replace("</BBM>", "</Zalo>");
+                    }
+
+                    actionLog.LogDate = commonService.ConvertToClientDateTime(actionLog.LogDate);
+
+                    FilterOldNewResults(actionLog);
                 }
-
-                if (!string.IsNullOrWhiteSpace(actionLog.NewValues))
-                {
-                    actionLog.NewValues = actionLog.NewValues.Replace("<MSN>", "<Telegram>").Replace("</MSN>", "</Telegram>")
-                                                                .Replace("<Yahoo>", "<Letstalk>").Replace("</Yahoo>", "</Letstalk>")
-                                                                .Replace("<BBM>", "<Zalo>").Replace("</BBM>", "</Zalo>");
-                }
-
-                actionLog.LogDate = commonService.ConvertToClientDateTime(actionLog.LogDate);
-
-                FilterOldNewResults(actionLog);
             }
-
             return actionLogs;
+
         }
 
         public void FilterOldNewResults(ActionLogInfo log)
