@@ -9,8 +9,15 @@ export class DataGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            toggleRow: []
+            toggleRow: [],
+            shouldResetScrollPosition: false
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        if(prevProps.gridParams.settingName !== this.props.gridParams.settingName){
+            this.setState({shouldResetScrollPosition: true, toggleRow:[]});
+        }
     }
 
     buildHeader = isHost => {
@@ -101,7 +108,7 @@ export class DataGrid extends Component {
             toggleRow.push(settingId);
         }
 
-        this.setState({ toggleRow });
+        this.setState({ toggleRow, shouldResetScrollPosition: false });
     };
 
     handleOpenUpdate = (event, value, name) => {
@@ -136,6 +143,7 @@ export class DataGrid extends Component {
                     onSort={this.onSort}
                     containerPadding={0}
                     adjustedHeight={10}
+                    shouldResetScrollPosition={this.state.shouldResetScrollPosition}
                 />
             </Fragment>
         );
