@@ -213,7 +213,7 @@ export class DataGrid extends Component {
 
         return (
             <OverlayTrigger
-                placement="bottom"
+                placement="auto"
                 overlay={
                     <Tooltip className="tooltipFeedback">
                         <div dangerouslySetInnerHTML={{ __html: tooltipDescription + tooltipSolution }} />
