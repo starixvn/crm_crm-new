@@ -13,9 +13,7 @@
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Dashboard;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -25,8 +23,6 @@
     {
         private readonly IFixture fixture = new Fixture();
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private ISettingService settingService;
         private IDashboardService dashboardService;
       
@@ -140,11 +136,9 @@
         private DashboardController GetController()
         {
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
             settingService = Substitute.For<ISettingService>();
             dashboardService = Substitute.For<IDashboardService>();
-            return new DashboardController(napSession, napSettings, settingService, userService, dashboardService);
+            return new DashboardController(napSession, settingService, dashboardService);
         }
 
         #endregion Helpers
