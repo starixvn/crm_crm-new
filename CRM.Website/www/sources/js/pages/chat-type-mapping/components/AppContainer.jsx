@@ -1,4 +1,4 @@
-﻿import React, { Component } from 'react';
+﻿import React, { Component, Fragment } from 'react';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import { connect } from 'react-redux';
@@ -34,10 +34,10 @@ export class AppContainer extends Component {
         }
         const isHost = this.state.policy === Policy.Host;
         return (
-            <div>
+            <Fragment>
                 <Filter isHost={isHost} />
                 <DataGrid isHost={isHost} />
-            </div>
+            </Fragment>
         );
     }
 }
