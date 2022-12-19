@@ -55,10 +55,13 @@ export class AppContainer extends Component {
         this.props.setEditResult(null);
     };
     render() {
-        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch, isHost, isRead } = this.props;
+        const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch} = this.props;
         if(remarkTitles === null || !remarkTitles){
             return null;
         }
+        const isHost = document.getElementById('hasCreateFeedbackPermission').checked;
+        const isRead = document.getElementById('hasReadFeedbackPermission').checked;
+
         return (
             <Fragment>
                 <Filter isHost={isHost} customerName={customerName} isGuestSearch={isGuestSearch}/>
