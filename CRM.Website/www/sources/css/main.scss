@@ -182,8 +182,10 @@ body {
     
             .menu-title {
                 .title {
+                    color: white;
+                    outline: none;
                     text-decoration: none;
-                    color: #FFFFFF;
+                    text-shadow: 0 0 0.025em #d6dee9;
                 }
                 .icon {
                     padding-left: 10px;
