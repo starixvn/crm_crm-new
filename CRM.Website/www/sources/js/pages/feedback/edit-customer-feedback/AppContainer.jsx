@@ -168,7 +168,7 @@ export default class AppContainer extends Component {
                     }
                     break;
                 case 'Communication':
-                    if (x.isActive && x.settingId !== settings.communicationToolNA?.id) {
+                    if (x.settingId !== settings.communicationToolNA?.id) {
                         selectedCommunicationToolIds.push(x.settingId);
                     }
                     break;
