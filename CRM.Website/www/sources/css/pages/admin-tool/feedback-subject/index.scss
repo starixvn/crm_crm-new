@@ -12,12 +12,8 @@
     .page-container{
         max-width: 920px !important;
     }
-    
-    .modal-backdrop {
-        z-index: 1050 !important
-    }
-    
-    .modal-dialog {
-        max-width: 600px;
-    }
+}
+
+.feedback-subject-modal .modal-dialog {
+    max-width: 600px !important;
 }

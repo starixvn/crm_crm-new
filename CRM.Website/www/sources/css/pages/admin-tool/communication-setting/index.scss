@@ -53,21 +53,22 @@
                 width: fit-content !important;
                 border-radius: 5px;
                 border: 1px solid #8e8e8e;
-                
+                padding: 3px !important;
+
                 .fa-times {
                     cursor: pointer;
                 }
             }
     
-            .txt-customer {
+            .txt-customer, .txt-customer .fa-times{
                 color: green;
             }
     
-            .txt-guest {
+            .txt-guest, .txt-guest .fa-times {
                 color: #06c
             }
     
-            .txt-invalid {
+            .txt-invalid, .txt-invalid .fa-times {
                 color: red;
             }
     

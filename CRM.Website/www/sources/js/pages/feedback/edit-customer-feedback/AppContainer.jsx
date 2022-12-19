@@ -404,6 +404,7 @@ export default class AppContainer extends Component {
         if (this.isValidCustomer(customersInput)) {
             this.formik.errors.customerNameInput = '';
             this.setState({editResult:null});
+            Site.blockUI();
             const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
             await DataService.postDataAsync(url, { username: customersInput }).then(response => {
                 let customers = [...this.state.relatedCustomers, ...response.data];
@@ -422,7 +423,7 @@ export default class AppContainer extends Component {
                         customerNameInput: ''
                     }
                 });
-            });
+            }).then(() => Site.unblockUI());
         } else {
             this.formik.errors.customerNameInput = 'Customer Name must not over 50 characters long!';
         }
