@@ -65,6 +65,7 @@ export default class AppContainer extends Component {
     }
 
     async componentDidMount() {
+        Site.blockUI();
         const url = Site.resolveClientUrl(`Feedback/GetCustomerFeedbackById/${this.props.feedbackId}`);
         await DataService.getDataAsync(url).then(response => {
             const data = response.data;
@@ -147,7 +148,7 @@ export default class AppContainer extends Component {
                 betTypeOptions,
                 relatedCustomers
             });
-        });
+        }).then(() => Site.unblockUI());
     }
 
     getFeedbackSettings = (feedback, settings) => {
