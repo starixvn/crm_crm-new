@@ -139,6 +139,9 @@ export class Layout extends Component {
                 const params = this.getParams();
                 const url = Site.resolveClientUrl('CustomerInfo/GetCustomerAutoSuggestion');
                 await DataService.postDataAsync(url,params).then(response => {
+                    if(!response || !response.data){
+                        return;
+                    }
                     this.setState({customerSuggestions: response.data});
                 });
             } else {
