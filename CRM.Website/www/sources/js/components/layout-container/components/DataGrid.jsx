@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import LangHelper from '@jsroot/common/langHelper';
-import { renderSystemOption, validateFormik } from '../common.functions';
+import { renderSystemOption } from '../common.functions';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { RoleIds } from '@jsroot/common/constants';
@@ -550,34 +550,34 @@ export default class DataGrid extends PureComponent {
             countryId: customerInfo.countryId || 0,
             firstName: customerInfo.firstName || '',
             lastName: customerInfo.lastName || '',
-            nickname: customerInfo.nickname || '',
+            nickname: customerInfo.nickname,
             languageId: customerInfo.languages.map(x => x).toString(),
-            phoneInfo: customerInfo.phoneInfo,
-            phoneCountryCode: customerInfo.phoneCountryCode,
-            phoneAreaCode: customerInfo.phoneAreaCode,
-            phone: customerInfo.phone,
-            phone2CountryCode: customerInfo.phone2CountryCode,
-            phone2AreaCode: customerInfo.phone2AreaCode,
-            phone2: customerInfo.phone2,
-            phone3CountryCode: customerInfo.phone3CountryCode,
-            phone3AreaCode: customerInfo.phone3AreaCode,
-            phone3: customerInfo.phone3,
-            mobilePhoneCountryCode: customerInfo.mobilePhoneCountryCode,
-            mobilePhoneAreaCode: customerInfo.mobilePhoneAreaCode,
-            mobilePhone: customerInfo.mobilePhone,
-            email: customerInfo.email,
-            telegram: customerInfo.telegram,
-            msn: customerInfo.msn,
-            skype: customerInfo.skype,
-            pic1Name: customerInfo.pic1Name,
-            pic1: customerInfo.pic1,
-            pic2Name: customerInfo.pic2Name,
-            pic2: customerInfo.pic2,
-            pic3Name: customerInfo.pic3Name,
-            pic3: customerInfo.pic3,
-            pic4Name: customerInfo.pic4Name,
-            pic4: customerInfo.pic4,
-            pics: customerInfo.personalInfoContacts,
+            phoneInfo: customerInfo.phoneInfo || '',
+            phoneCountryCode: customerInfo.phoneCountryCode || '',
+            phoneAreaCode: customerInfo.phoneAreaCode || '',
+            phone: customerInfo.phone || '',
+            phone2CountryCode: customerInfo.phone2CountryCode || '',
+            phone2AreaCode: customerInfo.phone2AreaCode || '',
+            phone2: customerInfo.phone2 || '',
+            phone3CountryCode: customerInfo.phone3CountryCode || '',
+            phone3AreaCode: customerInfo.phone3AreaCode || '',
+            phone3: customerInfo.phone3 || '',
+            mobilePhoneCountryCode: customerInfo.mobilePhoneCountryCode || '',
+            mobilePhoneAreaCode: customerInfo.mobilePhoneAreaCode || '',
+            mobilePhone: customerInfo.mobilePhone || '',
+            email: customerInfo.email || '',
+            telegram: customerInfo.telegram || '',
+            msn: customerInfo.msn || '',
+            skype: customerInfo.skype || '',
+            pic1Name: customerInfo.pic1Name || '',
+            pic1: customerInfo.pic1 || '',
+            pic2Name: customerInfo.pic2Name || '',
+            pic2: customerInfo.pic2 || '',
+            pic3Name: customerInfo.pic3Name || '',
+            pic3: customerInfo.pic3 || '',
+            pic4Name: customerInfo.pic4Name || '',
+            pic4: customerInfo.pic4 || '',
+            pics: customerInfo.personalInfoContacts || '',
             roleId: customerInfo.roleId,
             roleName: customerInfo.roleName,
             uplineInfo: customerInfo.uplineInfo,
@@ -592,7 +592,6 @@ export default class DataGrid extends PureComponent {
                 enableReinitialize
                 innerRef={p => this.formik = p}
                 initialValues={initialValues}
-                validate={values => validateFormik(values)}
                 onSubmit={this.handleSubmit}
             >
                 {this.renderForm}

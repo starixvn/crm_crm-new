@@ -1,5 +1,4 @@
 import React from 'react';
-import LangHelper from '@jsroot/common/langHelper';
 
 export const renderSystemOption = item => {
     return (
@@ -7,20 +6,8 @@ export const renderSystemOption = item => {
     );
 };
 
-export const validateFormik = (values) => {
-    const errors = {};
-
-    if (!values.languageId) {
-        errors.languageId = LangHelper.getResource('LanguagesRequired');
-    }
-
-    return errors;
-};
-
-
 const functions = {
-    renderSystemOption,
-    validateFormik
+    renderSystemOption
 };
 
 export default functions;

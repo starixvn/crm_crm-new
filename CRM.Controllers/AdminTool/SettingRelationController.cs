@@ -21,21 +21,15 @@
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
 
         public SettingRelationController(
             IBaseService baseService,
             ISettingService settingService,
-            INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService)
+            INapSession napSession)
         {
             this.baseService = baseService;
             this.settingService = settingService;
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
         }
 
         public async Task<IActionResult> GetMainSettings()

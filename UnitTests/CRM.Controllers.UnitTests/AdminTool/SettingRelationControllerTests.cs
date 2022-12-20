@@ -27,8 +27,6 @@
         private IBaseService baseService;
         private ISettingService settingService;
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
 
         [Fact]
         public async Task GetMainSettings_WhenCalled_ReturnAsExpectedResult()
@@ -143,9 +141,7 @@
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
-            return new SettingRelationController(baseService, settingService, napSession, napSettings, userService);
+            return new SettingRelationController(baseService, settingService, napSession);
         }
     }
 }
