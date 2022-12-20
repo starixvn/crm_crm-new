@@ -1,6 +1,7 @@
 ﻿namespace CRM.Core.Filters
 {
     using System;
+    using CRM.Resources;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Authorization;
@@ -39,7 +40,7 @@
         {
             if (IsAjaxRequest(context.HttpContext.Request))
             {
-                context.Result = new UnauthorizedResult();
+                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
             }
             else
             {

@@ -178,10 +178,11 @@ export class Layout extends Component {
             if(!response || !response.data){
                 return;
             }
+
             this.setState({customerInfo: response.data});
             if(response !== undefined && response.data !== null){
                 const siteCredits = this.state.settings.sites.filter(site =>site.name === 'Credit');
-                const isCreditSite = siteCredits.filter(x => x.childSites.some(y => this.state.customerInfo.siteId === y.id)).length > 0;
+                const isCreditSite = siteCredits.filter(x => x.childSites.some(y => response.data?.siteId === y.id)).length > 0;
                 this.setState({isCreditSite});
                 if(this.props.location.pathname === '/'){
                     this.setState({isCreditSite}, () =>{
