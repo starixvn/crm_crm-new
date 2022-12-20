@@ -13,9 +13,7 @@
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.ViewModels;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -60,7 +58,6 @@
             var convertJsonResult = (IEnumerable<Setting>)jsonResult.Value;
             Assert.Equal(expected[0].SettingName, convertJsonResult.FirstOrDefault().SettingName);
             Assert.Equal(expected[0].ChildSettings.FirstOrDefault().ChildSettings, convertJsonResult.FirstOrDefault().ChildSettings);
-
         }
 
         [Fact]
@@ -78,7 +75,7 @@
                     SettingValue = "value"
                 }
             };
-            
+
             var controller = GetController();
             settingService.GetSettingByTypes(model.SettingName).Returns(settingByTypes);
 
@@ -88,7 +85,6 @@
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
             Assert.Equal(settingByTypes, jsonResult.Value);
-
         }
 
         [Fact]
@@ -97,7 +93,7 @@
             // Arrange
             var criteria = fixture.Create<GetSettingRelationByNameCriteria>();
             var mainRelations = fixture.Create<IEnumerable<SettingRelation>>();
-            
+
             var controller = GetController();
             settingService.GetMainSettingRelationAsync(criteria).Returns(mainRelations);
 

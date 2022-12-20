@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import LangHelper from '@jsroot/common/langHelper';
-import { renderSystemOption } from '../common.functions';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { RoleIds } from '@jsroot/common/constants';
@@ -50,6 +49,8 @@ export default class DataGrid extends PureComponent {
             languages
         });
     };
+
+    renderSystemOption = item => <option key={item.id} value={item.id} >{item.name}</option>;
 
     renderForm = ({
         errors,
@@ -188,7 +189,7 @@ export default class DataGrid extends PureComponent {
                             onChange={handleChange}
                         >
                             <option value="0">N/A</option>
-                            {settings.countries.map(renderSystemOption)}
+                            {settings.countries.map(this.renderSystemOption)}
                         </Form.Control>
                     </Col>
                 </Form.Group>
