@@ -138,10 +138,12 @@ export class Update extends Component {
     };
 
     onChangeSubSetting = event =>{
-       this.setState({subSettingName: event.target.value}, () =>{
-            this.handleSearch();
-       });
+        event.preventDefault();
+        this.setState({subSettingName: event.target.value}, () =>{
+                this.handleSearch();
+        });
     };
+
     handleSubmit = event => {
         event.preventDefault();
         const {subSettingName, settingRelation} = this.state;
@@ -200,7 +202,7 @@ export class Update extends Component {
 
     render() {
         const {subSettingOptions}= this.props;
-        if(this.state.settingRelation.length === 0 || subSettingOptions.length === 0){
+        if(subSettingOptions.length === 0){
             return null;
         }
 
