@@ -508,7 +508,7 @@ export default class DataGrid extends PureComponent {
             mobilePhoneAreaCode: values.mobilePhoneAreaCode,
             mobilePhone: values.mobilePhone,
             email: values.email,
-            msn: values.msn,
+            msn: !values.msn ? '' : values.msn,
             skype: values.skype,
             pic1Name: values.pic1Name,
             pic1: values.pic1,

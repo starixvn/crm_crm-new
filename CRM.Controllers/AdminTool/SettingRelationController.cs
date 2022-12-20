@@ -15,6 +15,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
+    [CrmPermission(FunctionKey = FunctionKey.SettingRelationManagement, Policy = Policy.Read)]
     public class SettingRelationController : BaseController
     {
         private readonly IBaseService baseService;

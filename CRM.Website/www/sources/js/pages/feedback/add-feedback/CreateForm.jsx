@@ -185,6 +185,7 @@ export default class CreateForm extends Component {
             this.setState({
                 subCategoriesOptions: []
             });
+            setFieldValue('category', '');
             setFieldValue('subCategory', '');
             setFieldValue('subject', '');
         }

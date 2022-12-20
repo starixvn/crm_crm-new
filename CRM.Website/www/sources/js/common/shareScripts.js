@@ -6,7 +6,12 @@ import moment from 'moment';
 
 export const getPermission = async functionKey =>{
     const url = Site.resolveClientUrl('Common/GetPermission');
-    return await DataService.postDataAsync(url, {functionKey : functionKey}).then(response => response.data);
+    return await DataService.postDataAsync(url, {functionKey : functionKey}).then(response =>{
+        if(!response || !response.data){
+            return;
+        }
+        return response.data;
+    });
 };
 
 export const generateTimeAndToolPrefix = (startTime, communicationTool) => {

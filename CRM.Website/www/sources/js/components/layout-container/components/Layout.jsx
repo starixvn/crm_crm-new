@@ -172,6 +172,9 @@ export class Layout extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
         await DataService.postDataAsync(url,params).then(response => {
+            if(!response || !response.data){
+                return;
+            }
             this.setState({customerInfo: response.data});
             if(response !== undefined && response.data !== null){
                 const siteCredits = this.state.settings.sites.filter(site =>site.name === 'Credit');
