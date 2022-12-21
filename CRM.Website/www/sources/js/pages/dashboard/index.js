@@ -14,12 +14,16 @@ import '@cssroot/pages/dashboard/index.scss';
 class index extends PureComponent {
     render(){
         const location = this.props.location;
+        if(!location || !location.state){
+            return;
+        }
+
         return(
             <Provider store={store}>
                 <div className='dashboard'>
                     <AppContainer 
                         currentCustomer={location.state}
-                        custId={location.state.custId}
+                        custId={location?.state?.custId}
                     />
                 </div>
             </Provider>
