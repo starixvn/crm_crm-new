@@ -14,6 +14,9 @@ import '@cssroot/pages/feedback/latest-feedback.scss';
 class index extends React.Component{
     render(){
         const location = this.props.location;
+        if(!location || !location.state){
+            return null;
+        }
         return(
             <Provider store={store}>
                 <div className='latest-feedback'>

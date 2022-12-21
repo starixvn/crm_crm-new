@@ -14,6 +14,10 @@ import '@cssroot/pages/customer/customer-info-detail/index.scss';
 class index extends React.PureComponent {
     render(){
         const location = this.props.location;
+        if(!location || !location.state){
+            return null;
+        }
+        
         return(
             <Provider store={store}>
                   <div className='customer-info-detail'>

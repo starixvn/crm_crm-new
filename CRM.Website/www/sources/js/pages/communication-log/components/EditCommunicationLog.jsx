@@ -461,12 +461,12 @@ export class EditCommunicationLog extends Component {
         setFieldValue('communicationToolIds', selectedItemsKey);
     };
 
-    onChangeStartTime = (setFieldValue, selectedTime) => {
-        setFieldValue('startTime', selectedTime);
+    onChangeStartTime = selectedTime => {
+        this.formik.setFieldValue('startTime', selectedTime);
     };
 
-    onChangeEndTime = (setFieldValue, selectedTime) => {
-        setFieldValue('endTime', selectedTime);
+    onChangeEndTime = selectedTime => {
+        this.formik.setFieldValue('endTime', selectedTime);
     };
 
     handlePasteCustomer = (event, data) => {

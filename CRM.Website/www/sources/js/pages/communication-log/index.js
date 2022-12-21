@@ -14,6 +14,9 @@ import '@cssroot/pages/communication-log/index.scss';
 class index extends React.PureComponent {
     render(){
         const location = this.props.location;
+        if(!location || !location.state){
+            return null;
+        }
         return(
             <Provider store={store}>
                 <div className='communication-log'>

@@ -17,7 +17,10 @@ class index extends React.Component {
         document.title = LangHelper.getResource('CRMSystem');
     }
     render(){
-        const data = this.props.location.state;
+        const data = this.props.location?.state;
+        if(!data){
+            return null;
+        }
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return(
             <Provider store={store}>
