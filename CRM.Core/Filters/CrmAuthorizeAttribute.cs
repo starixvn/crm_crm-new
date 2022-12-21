@@ -1,6 +1,7 @@
 ﻿namespace CRM.Core.Filters
 {
     using System;
+    using CRM.Core.Services;
     using CRM.Resources;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Helpers.Web;
@@ -13,14 +14,16 @@
     public class CrmAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
         private readonly INapSession napSession;
+        private readonly ICRMLogService logService;
 
-        public CrmAuthorizeAttribute() : this(null)
+        public CrmAuthorizeAttribute() : this(null, null)
         {
         }
 
-        public CrmAuthorizeAttribute(INapSession napSession)
+        public CrmAuthorizeAttribute(INapSession napSession, ICRMLogService logService)
         {
             this.napSession = napSession ?? NapClientManager.NapSession;
+            this.logService = logService;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -32,6 +35,7 @@
 
             if (napSession == null || napSession.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
             {
+                logService.LogInformation(String.Format("IsAjaxRequest: {0}", IsAjaxRequest(context.HttpContext.Request)));
                 CloseConnection(context);
             }
         }

@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import CustomInput from './CustomInput';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import CustomTimeInput from './CustomTimeInput';
 
 export default class DatePickerField extends React.Component {
     static defaultProps = {
@@ -33,7 +34,6 @@ export default class DatePickerField extends React.Component {
         this.props.onChange(this.state.selected);
     }
 
-
     render() {
         const { className, selected, isInvalid, ...rest } = this.props;
 
@@ -44,6 +44,7 @@ export default class DatePickerField extends React.Component {
                 dateFormat={this.props.showTimeInput ? 'MMM dd, yyyy hh:mm aa' : 'MMM dd, yyyy'}
                 customInput={<CustomInput isInvalid={isInvalid} />}
                 selected={this.state.selected}
+                customTimeInput={<CustomTimeInput />}
                 {...rest}
             >
                 {
