@@ -41,7 +41,7 @@ export class CustomTimeInput extends PureComponent {
                     <option value="" hidden disabled />
                     {minuteFormat.map(item => <option key={item} value={item}>{item}</option>)}
                 </Form.Control>
-                <Form.Control style={{width: 65}} type="text" size="sm" value={timeAmPm} disabled/>
+                <Form.Control style={{width: 70}} type="text" size="sm" value={timeAmPm} disabled/>
             </div>
         );
     }
