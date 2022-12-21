@@ -29,7 +29,7 @@ export class CustomTimeInput extends PureComponent {
         const timeAmPm = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
         return (
             <div className='d-flex'>
-                <Form.Control as="select" size="sm" className="shadow-none mr-2"
+                <Form.Control as="select" size="sm" className="shadow-none mr-1"
                     name="hour" id="hour" value={currentHour} onChange={this.handleChangeHour}
                 >
                     <option value="" hidden disabled />
