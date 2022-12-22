@@ -57,6 +57,7 @@ const SettlementReportComponent = lazy(() => import('@jsroot/pages/report/settle
 const WagerReportComponent = lazy(() => import('@jsroot/pages/report/wager/index'));
 
 const MenuRouteArray = [
+    { url: 'Home', component: DashboardComponent},
     { url: 'NotificationList', component: NotificationListComponent },
     { url: 'NotificationTemplate', component: NotificationTemplateComponent },
     { url: 'ChatTypeMapping', component: ChatTypeMappingComponent },

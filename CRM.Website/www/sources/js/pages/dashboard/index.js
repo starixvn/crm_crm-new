@@ -14,6 +14,9 @@ import '@cssroot/pages/dashboard/index.scss';
 class index extends PureComponent {
     render(){
         const location = this.props.location;
+        if(location.pathname.toLowerCase() === '/home'){
+            return null;
+        }
         return(
             <Provider store={store}>
                 <div className='dashboard'>
