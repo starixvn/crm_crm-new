@@ -18,24 +18,24 @@ const getSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('MultipleLogs/GetSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setSettings(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const verifyCustomers = params => async () => {
     const url = Site.resolveClientUrl('MultipleLogs/VerifyCustomer');
-    return await DataService.postDataAsync(url, params).then(response => response);
+    return await DataService.postDataAsync(url, params).then(response => response).catch(Site.handleAxiosError);
 };
 
 const verifyRelatedCustomers = params => async () => {
     const url = Site.resolveClientUrl('MultipleLogs/VerifyRelatedCustomer');
-    return await DataService.postDataAsync(url, params).then(response => response);
+    return await DataService.postDataAsync(url, params).then(response => response).catch(Site.handleAxiosError);
 };
 
 const getFeedbackSubjectTemplates = subject => async dispatch => {
     const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
     await DataService.getDataAsync(url, { subject }).then(response => {
         dispatch(setFeedbackSubjectTemplates(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const checkNotExistCommunicationToolSetting = params => async () => {

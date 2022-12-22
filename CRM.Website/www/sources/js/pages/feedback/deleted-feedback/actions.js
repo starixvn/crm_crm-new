@@ -14,7 +14,7 @@ const getAllSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('DeletedFeedback/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getDeletedFeedback = params => async dispatch => {
@@ -22,7 +22,7 @@ const getDeletedFeedback = params => async dispatch => {
     const url = Site.resolveClientUrl('DeletedFeedback/GetDeletedFeedback');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setDeletedFeedback(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const exportExcel = params => async () => {

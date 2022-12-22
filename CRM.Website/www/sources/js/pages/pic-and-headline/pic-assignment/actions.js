@@ -22,7 +22,7 @@ const getSettings = () => async dispatch => {
             return;
         }
         dispatch(setSettings(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getGridData = (params, callback) => async dispatch => {
@@ -34,7 +34,7 @@ const getGridData = (params, callback) => async dispatch => {
         }
         
         dispatch(setGridData(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const validateAssignPic = params => async dispatch => {

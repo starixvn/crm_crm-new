@@ -21,7 +21,7 @@ export const getSettings = () => async dispatch => {
 
 export const deleteNotificationType = data => async dispatch => {
     const url = Site.resolveClientUrl(`NotificationType/Delete`);
-    return await DataService.postDataAsync(url, data).then(response => response.data);
+    return await DataService.postDataAsync(url, data).then(response => response.data).catch(Site.handleAxiosError);
 };
 
 export const editNotificationType = data => async dispatch => {
@@ -29,14 +29,14 @@ export const editNotificationType = data => async dispatch => {
     const url = Site.resolveClientUrl('NotificationType/Edit');
     await DataService.postDataAsync(url, data).then(response => {
         dispatch(setEditNotificationTypeResult(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 export const getNotificationTypeGridData = params => async dispatch => {
     const url = Site.resolveClientUrl('NotificationType/GetNotificationType');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setNotificationTypeGridData(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 export const createNotificationType = data => async dispatch => {

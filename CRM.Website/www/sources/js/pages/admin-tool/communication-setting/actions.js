@@ -18,7 +18,7 @@ const getAllSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('CommunicationSetting/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getGridCommunicationSetting = params => async dispatch => {
@@ -36,7 +36,7 @@ const getCommunicationById = (communicaitonId, callback) => async dispatch => {
         if (typeof callback === 'function') {
             callback();
         }
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const createCommunication = data => async dispatch => {

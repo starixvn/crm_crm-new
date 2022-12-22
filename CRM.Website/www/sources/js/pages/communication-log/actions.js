@@ -25,21 +25,21 @@ const getLogsByCustomerId = params => async dispatch => {
             return item;
         });
         dispatch(setLogsByCustomerId({data, mainCategories}));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getStatusForFilter = () => async dispatch => {
     const url = Site.resolveClientUrl(`CommunicationLog/GetAllStatus?isEdit=false`);
     await DataService.getDataAsync(url).then(response => {
         dispatch(setStatusForFilter(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getFeedbackSubjectTemplates = subject => async dispatch => {
     const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
     await DataService.getDataAsync(url, { subject }).then(response => {
         dispatch(setFeedbackSubjectTemplates(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

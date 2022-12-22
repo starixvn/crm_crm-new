@@ -23,7 +23,7 @@ const getMainSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('SettingManagement/GetMainSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setMainSettings(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getParentSettings = () => async dispatch => {

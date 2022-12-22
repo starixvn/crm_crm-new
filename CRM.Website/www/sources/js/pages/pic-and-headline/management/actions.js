@@ -22,12 +22,12 @@ const getAllSetting = () => async dispatch => {
             return;
         }
         dispatch(setSetting(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getRolesByPic = id => async () => {
     const url = Site.resolveClientUrl(`PicManagement/GetRolesByPic/${id}`);
-    return await DataService.getDataAsync(url, id).then(response => response.data);
+    return await DataService.getDataAsync(url, id).then(response => response.data).catch(Site.handleAxiosError);
 };
 
 const getGridData = params => async dispatch => {
@@ -35,7 +35,7 @@ const getGridData = params => async dispatch => {
     const url = Site.resolveClientUrl('PicManagement/GetReport');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setGridData(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const exportExcel = params => async dispatch => {

@@ -12,7 +12,7 @@ const getAllLogAction = params => async dispatch => {
     const url = Site.resolveClientUrl(`ActionLog/GetAllLogAction`);
     await DataService.getDataAsync(url,params).then(response => {
         dispatch(setAllLogAction(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getActivityLog = params => async dispatch => {
@@ -20,7 +20,7 @@ const getActivityLog = params => async dispatch => {
     const url = Site.resolveClientUrl('ActionLog/GetActivityLog');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setActivityLog(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 export const ActionCreators = {

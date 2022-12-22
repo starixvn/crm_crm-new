@@ -15,7 +15,7 @@ const getDynamicReports = params => async dispatch => {
     const url = Site.resolveClientUrl('DynamicReport/GetDynamicReports');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setDynamicReports(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getAllSettings = () => async dispatch => {
@@ -23,7 +23,7 @@ const getAllSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('DynamicReport/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const exportExcel = params => async () => {
@@ -38,7 +38,7 @@ const getFeedbackSubjectTemplates = subject => async dispatch => {
     const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
     await DataService.getDataAsync(url, { subject }).then(response => {
         dispatch(setFeedbackSubjectTemplates(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

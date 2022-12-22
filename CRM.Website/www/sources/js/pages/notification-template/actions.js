@@ -19,14 +19,14 @@ const getNotificationTypes = () => async dispatch => {
     const url = Site.resolveClientUrl('Common/GetNotificationTypes');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setNotificationTypes(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getLanguages = () => async dispatch => {
     const url = Site.resolveClientUrl('NotificationTemplate/GetLanguages');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setLanguages(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getGridData = params => async dispatch => {
@@ -34,7 +34,7 @@ const getGridData = params => async dispatch => {
     const url = Site.resolveClientUrl('NotificationTemplate/GetNotificationTemplate');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setGridData(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getTemplateById = (templateId, callback) => async dispatch => {
@@ -44,7 +44,7 @@ const getTemplateById = (templateId, callback) => async dispatch => {
         if (typeof callback === 'function') {
             callback();
         }
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const createTemplate = data => async dispatch => {

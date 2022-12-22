@@ -31,14 +31,14 @@ const getInforms = () => async dispatch => {
     const url = Site.resolveClientUrl('InformHeadline/GetInforms');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setInforms(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getPermissions = () => async dispatch => {
     const url = Site.resolveClientUrl('InformHeadline/GetPermissions');
     return await DataService.getDataAsync(url).then(response => {
         dispatch(setPermissions(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 
@@ -56,12 +56,12 @@ const getTitleDetail = params => async dispatch => {
     const url = Site.resolveClientUrl('InformHeadline/GetTitleDetail');
     await DataService.getDataAsync(url, params).then(response => {
         dispatch(setTitleDetail(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getContactInformSettings = () => async () => {
     const url = Site.resolveClientUrl('InformHeadline/GetContactInformSettings');
-    return await DataService.getDataAsync(url).then(response => response);
+    return await DataService.getDataAsync(url).then(response => response).catch(Site.handleAxiosError);
 };
 
 const getContactInforms = params => async dispatch => {
@@ -69,7 +69,7 @@ const getContactInforms = params => async dispatch => {
     const url = Site.resolveClientUrl('InformHeadline/GetContactInforms');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setContactInforms(response.data));
-    }).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const editContactInforms = params => async dispatch => {
@@ -77,14 +77,14 @@ const editContactInforms = params => async dispatch => {
     const url = Site.resolveClientUrl('InformHeadline/EditContactInforms');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setResultEditContactInforms(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getAllSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('InformHeadline/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getEditInforms = params => async dispatch => {
@@ -92,7 +92,7 @@ const getEditInforms = params => async dispatch => {
     const url = Site.resolveClientUrl('InformHeadline/GetEditInforms');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setEditInforms(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const editInforms = params => async dispatch => {
@@ -100,7 +100,7 @@ const editInforms = params => async dispatch => {
     const url = Site.resolveClientUrl('InformHeadline/EditInforms');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setResultEditInforms(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const exportContactInforms = params => async () => {
@@ -134,7 +134,7 @@ const getRemovedAccountLogDetails = params => async dispatch => {
     const url = Site.resolveClientUrl('InformHeadline/GetRemovedAccountLogDetails');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setRemovedAccountLogDetails(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getNewInforms = params => async dispatch => {
@@ -142,7 +142,7 @@ const getNewInforms = params => async dispatch => {
     const url = Site.resolveClientUrl('InformHeadline/GetNewInforms');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setNewInforms(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const insertInforms = params => async dispatch => {

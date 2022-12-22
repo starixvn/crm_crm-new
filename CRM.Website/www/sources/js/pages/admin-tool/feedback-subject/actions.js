@@ -20,14 +20,14 @@ const getFeedBackSubject = params => async dispatch => {
     const url = Site.resolveClientUrl('FeedbackSubjectManagement/GetFeedbackSubject');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setFeedBackSubject(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getAllActiveFeedbackSubject = () => async dispatch => {
     const url = Site.resolveClientUrl('FeedbackSubjectManagement/GetAllActiveFeedbackSubject');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllActiveFeedbackSubject(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const createFeedbackSubject = data => async dispatch => {

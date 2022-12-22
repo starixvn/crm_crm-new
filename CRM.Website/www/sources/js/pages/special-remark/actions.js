@@ -10,7 +10,7 @@ const getRemarks = params => async dispatch => {
     const url = Site.resolveClientUrl('Remark/GetRemarks');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setRemarks(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const editRemarks = params => async () => {

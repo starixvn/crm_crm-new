@@ -19,28 +19,28 @@ const getCustomerRemarks = params => async dispatch => {
     const url = Site.resolveClientUrl(`Dashboard/GetCustomerRemarks`);
     await DataService.getDataAsync(url,params).then(response => {
         dispatch(setCustomerRemarks(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getRedemptionLogs = params => async dispatch => {
     const url = Site.resolveClientUrl(`Dashboard/GetRedemptionLogs`);
     await DataService.getDataAsync(url,params).then(response => {
         dispatch(setRedemptionLogs(response.data));
-    })
+    }).catch(Site.handleAxiosError);
 };
 
 const getCommunicationLogs = params => async dispatch => {
     const url = Site.resolveClientUrl('Dashboard/GetCommunicationLogs');
     await DataService.getDataAsync(url,params).then(response => {
         dispatch(setCommunicationLogs(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getCustomerInfoVerify = params => async dispatch => {
     const url = Site.resolveClientUrl('Dashboard/GetCustomerInfoVerify');
     await DataService.getDataAsync(url,params).then(response => {
         dispatch(setCustomerInfoVerify(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const editCustomerVerify = params => async () => {

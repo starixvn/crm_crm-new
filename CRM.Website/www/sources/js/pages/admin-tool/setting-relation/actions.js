@@ -14,7 +14,7 @@ const getMainSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('SettingRelation/GetMainSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setMainSettings(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const getSettingTypes = params => async dispatch => {

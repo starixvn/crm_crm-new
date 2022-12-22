@@ -27,7 +27,7 @@ const getPicReport = params => async dispatch => {
 
 const getActionTypes = () => async () => {
     const url = Site.resolveClientUrl('ChangesLog/GetActionTypes');
-    return DataService.getDataAsync(url).then(response => response.data);
+    return DataService.getDataAsync(url).then(response => response.data).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

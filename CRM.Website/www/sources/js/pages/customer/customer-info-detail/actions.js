@@ -13,7 +13,7 @@ const getCustomerById = params => async dispatch => {
     const url = Site.resolveClientUrl('CustomerInfoDetail/GetCustomerById');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setCustomerById(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const getAllSettings = () => async dispatch => {
@@ -21,7 +21,7 @@ const getAllSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('CustomerInfoDetail/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    }).then(() => Site.unblockUI());
+    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 };
 
 const editCustomerInfoDetail = params => async dispatch => {
