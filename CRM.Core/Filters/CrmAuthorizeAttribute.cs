@@ -14,16 +14,14 @@
     public class CrmAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
         private readonly INapSession napSession;
-        private readonly ICRMLogService logService;
 
-        public CrmAuthorizeAttribute() : this(null, null)
+        public CrmAuthorizeAttribute() : this(null)
         {
         }
 
-        public CrmAuthorizeAttribute(INapSession napSession, ICRMLogService logService)
+        public CrmAuthorizeAttribute(INapSession napSession)
         {
             this.napSession = napSession ?? NapClientManager.NapSession;
-            this.logService = logService;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -35,7 +33,6 @@
 
             if (napSession == null || napSession.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
             {
-                logService.LogInformation(String.Format("IsAjaxRequest: {0}", IsAjaxRequest(context.HttpContext.Request)));
                 CloseConnection(context);
             }
         }
