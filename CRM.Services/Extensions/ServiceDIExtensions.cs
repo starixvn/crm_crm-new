@@ -4,7 +4,9 @@ using CRM.Services.Communication;
 using CRM.Services.Customer;
 using CRM.Services.Dashboard;
 using CRM.Services.Feedback;
+using CRM.Services.HeadlineNotification;
 using CRM.Services.InformHeadline;
+using CRM.Services.Interfaces;
 using CRM.Services.Redemption;
 using CRM.Services.Remark;
 using CRM.Services.Report;
@@ -27,6 +29,7 @@ namespace CRM.Services.Extensions
             services.AddScoped<INotificationTypeService, NotificationTypeService>();
             services.AddScoped<ICommonService, CommonService>();
             services.AddScoped<IChatTypeMappingService, ChatTypeMappingService>();
+            services.AddScoped<IAnnouncementService, AnnouncementService>();
             services.AddScoped<ICommunicationToolSettingService, CommunicationToolSettingService>();
             services.AddScoped<IPicAssignmentService, PicAssignmentService>();
             services.AddScoped<ISettlementReportService, SettlementReportService>();

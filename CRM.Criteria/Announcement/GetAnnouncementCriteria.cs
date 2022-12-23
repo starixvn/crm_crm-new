@@ -6,7 +6,7 @@ namespace CRM.Criteria.Announcement
 
     public class GetAnnouncementCriteria: CriteriaBase
     {
-        public int AnnouncementId { get; set; }
+        public int? AnnouncementId { get; set; }
 
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
@@ -19,7 +19,7 @@ namespace CRM.Criteria.Announcement
 
         public int TotalRows { get; set; }
 
-        public override string GetSettingKey() => "Acc_CRM_ChatBot_ChatTypeMapping_Sel";
+        public override string GetSettingKey() => "Acc_CRM_ChatBot_Announcement_Sel";
 
         public override bool IsValid() => true;
     }

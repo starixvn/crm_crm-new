@@ -22,7 +22,7 @@ export class AppContainer extends Component {
     }
 
     componentDidMount(){
-        getPermission(FunctionKey.NotificationList).then(response => {
+        getPermission(FunctionKey.Announcement).then(response => {
             this.setState({policy: response});
         });
         document.title = LangHelper.getResource('Announcement');

@@ -83,7 +83,8 @@ export const FunctionKey = {
     SettingRelationManagement: 'SettingRelationshipManagement',
     SettingManagement: 'SettingManagement',
     JobSettingManagement: 'JobSettingManagement',
-    SMAPersonalMessage: 'SMAPersonalMessage'
+    SMAPersonalMessage: 'SMAPersonalMessage',
+    Announcement: 'Announcement'
 };
 
 export const BorderStyle = {

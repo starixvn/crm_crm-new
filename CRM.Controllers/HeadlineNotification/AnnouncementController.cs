@@ -1,7 +1,6 @@
 ﻿namespace CRM.Controllers.HeadlineNotification
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -10,16 +9,15 @@
     using CRM.Criteria.Announcement;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models;
-    using CRM.Models.Announcement;
     using CRM.Services;
+    using CRM.Services.Interfaces;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
-    using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
-    using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
     public class AnnouncementController : BaseController
     {
+        private readonly IAnnouncementService announcementService;
         private readonly INapSession napSession;
         private readonly ISettingService settingService;
         private readonly ICommonService commonService;
@@ -27,12 +25,14 @@
         private readonly string pathImages = "www/dist/css/images/announcement";
 
         public AnnouncementController(
-           INapSession napSession,
-           ISettingService settingService,
-           ICommonService commonService,
-           IWebHostEnvironment hostingEnvironment
+            IAnnouncementService announcementService,
+            INapSession napSession,
+            ISettingService settingService,
+            ICommonService commonService,
+            IWebHostEnvironment hostingEnvironment
             )
         {
+            this.announcementService = announcementService;
             this.napSession = napSession;
             this.settingService = settingService;
             this.commonService = commonService;
@@ -62,60 +62,14 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetAnnouncement([FromForm] GetAnnouncementCriteria criteria)
+        public async Task<IActionResult> GetAnnouncement([FromBody]  GetAnnouncementCriteria criteria)
         {
-            var result = new List<AnnouncementInfo>
-            {
-                new AnnouncementInfo
-                {
-                    AnnouncementId = 1,
-                    NotificationTemplate = "Special Announcement",
-                    CreatedBy = "Teddy",
-                    SendDateString = "Jan 05, 2022",
-                    SendTimeString = "11:01:53 AM",
-                    CreatedTime = DateTime.Now,
-                    Status = "Completed",
-                    Title = "Voided Settled Tickets Template - Accounting PIC",
-                    ImageSource= new List<string>{"images.jpg" },
-                    GroupHeadlines = "group 1, group 2",
-                    HeadlineType = "2",
-                    Sites = "23,16",
-                    Currencies="9,97",
-                    Content = "เรียน ลูกค้าที่เคารพ ฝ่ายบริการลูกค้าขอแจ้งให้ทราบว่าสมาชิภายใต้ ซุปเปอร์ \"12BETSuperUS$\" อาจจะมีการเสียยอดคงค้างตามรายละเอียดด้านล่าง:"
-                },
-                new AnnouncementInfo
-                {
-                    AnnouncementId = 2,
-                    NotificationTemplate = "Special Announcement",
-                    CreatedBy = "Teddy",
-                    SendDateString = "Jan 05, 2022",
-                    SendTimeString = "11:01:53 AM",
-                    CreatedTime = DateTime.Now,
-                    Status = "Planned",
-                    GroupHeadlines = "group 1, group 2",
-                    HeadlineType = "2",
-                    Sites = "222223",
-                    ImageSource= new List<string>{"images.jpg" },
-                    Title = "Voided Settled Tickets Template - Accounting PIC"
-                },
-                new AnnouncementInfo
-                {
-                    AnnouncementId = 2,
-                    NotificationTemplate = "Special Announcement",
-                    CreatedBy = "Teddy",
-                    SendDateString = "Jan 05, 2022",
-                    SendTimeString = "11:01:53 AM",
-                    CreatedTime = DateTime.Now,
-                    Status = "Cancelled",
-                    GroupHeadlines = "group 1, group 2",
-                    ImageSource= new List<string>{"images.jpg" },
-                    Title = "Voided Settled Tickets Template - Accounting PIC"
-                }
-            };
+            var announcements = await announcementService.GetAnnouncementAsync(criteria);
+            var announcementsOrderBy = announcements.OrderByDescending(x => x.AnnouncementId);
             return Json(new
             {
-                data = result,
-                TotalItems = 1
+                data = announcementsOrderBy,
+                TotalItems = criteria.TotalRows
             });
         }
 

@@ -11,6 +11,7 @@ export class Filter extends Component {
     constructor(props) {
         super(props);
         this.currentClientTime = window.currentClientTime;
+        this.statuses = ['All', 'Planned', 'Cancelled', 'Completed', 'In-Progress'];
         const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
         const fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
         fromDate.setDate(fromDate.getDate() - 7);
@@ -18,11 +19,11 @@ export class Filter extends Component {
         this.maxToDate = currentDate;
         this.minToDate = fromDate;
         this.state = {
-            announcementId: '',
+            announcementId: null,
             fromDate: fromDate,
             toDate: currentDate,
             title: '',
-            status: null
+            status: this.statuses.join(',')
         };
     }
 
@@ -47,7 +48,7 @@ export class Filter extends Component {
     handleChange = evt => {
         this.setState({
             ...this.state,
-            [evt.target.name]: evt.target.type === 'select-one' ? parseInt(evt.target.value, 10) : evt.target.value
+            [evt.target.name]: evt.target.value
         });
     };
 
@@ -74,9 +75,7 @@ export class Filter extends Component {
         this.props.setOpenNewAnnouncementPopup({show: true});
     }
 
-
     render() {
-        const statuses = ['All', 'Planned', 'Cancelled', 'Completed'];
         const {announcementId, fromDate, toDate, title, status} = this.state;
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
@@ -131,7 +130,7 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label className='width-sm' htmlFor="announcementId">{LangHelper.getResource('Status')}</Form.Label>
+                        <Form.Label className='width-sm' htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="status" id="status"
                             className="shadow-none"
@@ -139,7 +138,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         >
                             {
-                                statuses.map((value, key) => <option key={key} value={value}>{value}</option>)
+                                this.statuses.map((value, key) => <option key={key} value={value}>{value}</option>)
                             }
                         </Form.Control>
                     </Form.Group>

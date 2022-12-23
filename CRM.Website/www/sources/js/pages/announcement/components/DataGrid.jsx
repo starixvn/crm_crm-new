@@ -29,10 +29,10 @@ export class DataGrid extends Component {
     renderHeaderAnnouncement = isHost =>
         (<HeaderRow>
             <HeaderCell colWidth={5}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
-            <HeaderCell colWidth={10}>{LangHelper.getResource('AnnouncementId')}</HeaderCell>
-            <HeaderCell colWidth={15}>{LangHelper.getResource('NotificationTemplate')}</HeaderCell>
-            <HeaderCell colWidth={12}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
-            <HeaderCell colWidth={20}>{LangHelper.getResource('Title')}/{LangHelper.getResource('Content')}</HeaderCell>
+            <HeaderCell colWidth={8}>{LangHelper.getResource('AnnouncementId')}</HeaderCell>
+            <HeaderCell colWidth={12}>{LangHelper.getResource('NotificationTemplate')}</HeaderCell>
+            <HeaderCell colWidth={10}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
+            <HeaderCell colWidth={30}>{LangHelper.getResource('Title')}/{LangHelper.getResource('Content')}</HeaderCell>
             <HeaderCell colWidth={10}>{LangHelper.getResource('CreatedBy')}</HeaderCell>
             <HeaderCell colWidth={15}>{LangHelper.getResource('CreatedTimeGM8')}</HeaderCell>
             <HeaderCell colWidth={10}>{LangHelper.getResource('Status')}</HeaderCell>
@@ -80,7 +80,7 @@ export class DataGrid extends Component {
             <Row key={index} >
                 <Cell className='text-center'>{index + this.startIndex}</Cell>
                 <Cell>{item.announcementId}</Cell>
-                <Cell>{item.notificationTemplate}</Cell>
+                <Cell>{item.notificationTemplateName}</Cell>
                 <Cell className='text-center'>
                     <div>{item.sendDateString}</div>
                     <div>{item.sendTimeString}</div>
@@ -149,7 +149,7 @@ export class DataGrid extends Component {
 
                 );
             default:
-                return null;
+                return <Cell />;
         }
     }
 
