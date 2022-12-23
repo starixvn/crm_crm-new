@@ -113,7 +113,8 @@
 
                 .panel-content {
                     padding: 4px 9px;
-
+                    word-break: break-word;
+                    
                     .phone-container {
                         display: flex;
 
@@ -147,6 +148,8 @@
 
                     .customersList {
                         padding: 5px;
+                        max-height: 250px;
+                        overflow: auto;
 
                         .txt-customer, .txt-guest, .txt-invalid {
                             width: auto;

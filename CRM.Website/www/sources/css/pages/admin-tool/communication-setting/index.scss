@@ -45,6 +45,8 @@
     
             .customersList {
                 border: 1px solid #ced4da;
+                max-height: 250px;
+                overflow: auto;
             }
     
             .txt-customer, .txt-guest, .txt-invalid {

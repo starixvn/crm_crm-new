@@ -74,6 +74,8 @@
 
                     .customersList {
                         padding: 5px;
+                        max-height: 250px;
+                        overflow: auto;
 
                         .txt-customer, .txt-guest, .txt-invalid, .txt-inactive {
                             width: auto;

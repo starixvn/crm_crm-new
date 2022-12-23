@@ -253,7 +253,9 @@
 
                     .customersList {
                         padding: 5px;
-
+                        max-height: 250px;
+                        overflow: auto;
+                        
                         .txt-customer, .txt-guest, .txt-invalid, .txt-inactive {
                             width: auto;
                             border: 1px solid #8e8e8e;
