@@ -11,7 +11,7 @@ export const getPermission = async functionKey =>{
             return;
         }
         return response.data;
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 export const generateTimeAndToolPrefix = (startTime, communicationTool) => {

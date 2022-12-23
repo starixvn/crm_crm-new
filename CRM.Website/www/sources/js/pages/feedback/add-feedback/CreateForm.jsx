@@ -731,7 +731,7 @@ export default class CreateForm extends Component {
                             window.location = Site.resolveClientUrl('');
                         }, 3000);
                     }
-                });
+                }).catch(Site.handleAxiosError);
             }
         });
     };

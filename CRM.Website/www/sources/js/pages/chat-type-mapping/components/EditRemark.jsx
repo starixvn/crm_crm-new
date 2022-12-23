@@ -77,7 +77,7 @@ export class EditRemark extends Component {
             } else {
                 this.setState({ isSubmitting: true });
             }
-        });
+        }).catch(Site.handleAxiosError);
     };
 
     render() {

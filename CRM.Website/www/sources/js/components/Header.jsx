@@ -24,7 +24,7 @@ export class Header extends Component {
             if (response.data) {
                 this.initDataMenu(response.data);
             }
-        });
+        }).catch(Site.handleAxiosError);
     }
 
     initDataMenu = menus => {

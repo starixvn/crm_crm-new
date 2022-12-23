@@ -38,7 +38,7 @@ export default class EditMultipleReviewAndStatus extends Component {
         const url = Site.resolveClientUrl(`MultipleLogs/GetLogByFeedbackId/${id}`);
         await DataService.getDataAsync(url).then(response => {
             this.setState({ logInfo: response.data, isReviewed: response.data.isReviewed });
-        });
+        }).catch(Site.handleAxiosError);
     }
 
     handleSubmit = async values => {
@@ -60,7 +60,7 @@ export default class EditMultipleReviewAndStatus extends Component {
             } else {
                 this.setState({ isSubmitting: false });
             }
-        });
+        }).catch(Site.handleAxiosError);
     };
 
     handleChangeCheckBox = () => {

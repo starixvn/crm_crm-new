@@ -159,7 +159,7 @@ export class EditMultipleLogs extends Component {
                     ... this.state.isCheck, reviewed: data.communicationLog.isReviewed
                 }
             });
-        });
+        }).catch(Site.handleAxiosError);
     }
 
     getCommunicationSettings = (communicationLog, settings) => {
@@ -272,7 +272,7 @@ export class EditMultipleLogs extends Component {
             const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
             await DataService.getDataAsync(url, { searchText }).then(response => {
                 this.setState({ feedbackSubjectTemplates: response.data });
-            });
+            }).catch(Site.handleAxiosError);
         } else {
             this.setState({ feedbackSubjectTemplates: [] });
         }
@@ -1036,7 +1036,7 @@ export class EditMultipleLogs extends Component {
             } else {
                 this.formik.setSubmitting(false);
             }
-        }).then(() => Site.unblockUI());
+        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     };
 
     initFormik = (communicationLog, settings) => {

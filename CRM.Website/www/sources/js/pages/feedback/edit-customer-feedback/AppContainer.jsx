@@ -67,7 +67,7 @@ export default class AppContainer extends Component {
     async componentDidMount() {
         Site.blockUI();
         const url = Site.resolveClientUrl(`Feedback/GetCustomerFeedbackById/${this.props.feedbackId}`);
-        await DataService.getDataAsync(url).then(response => {
+            await DataService.getDataAsync(url).then(response => {
             const data = response.data;
             const feedbackSettings = this.getFeedbackSettings(data.feedback, data.settings);
             const relatedCustomers = data.feedback.relatedCustomers.map(customer => {
@@ -148,7 +148,7 @@ export default class AppContainer extends Component {
                 betTypeOptions,
                 relatedCustomers
             });
-        }).then(() => Site.unblockUI());
+        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     }
 
     getFeedbackSettings = (feedback, settings) => {
@@ -423,7 +423,7 @@ export default class AppContainer extends Component {
                         customerNameInput: ''
                     }
                 });
-            }).then(() => Site.unblockUI());
+            }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
         } else {
             this.formik.errors.customerNameInput = 'Customer Name must not over 50 characters long!';
         }
@@ -434,7 +434,7 @@ export default class AppContainer extends Component {
             const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
             await DataService.getDataAsync(url, { searchText }).then(response => {
                 this.setState({ feedbackSubjectTemplates: response.data });
-            });
+            }).catch(Site.handleAxiosError);
         } else {
             this.setState({ feedbackSubjectTemplates: [] });
         }
@@ -567,7 +567,7 @@ export default class AppContainer extends Component {
             } else {
                 this.formik.setSubmitting(false);
             }
-        }).then(() => Site.unblockUI());
+        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     };
 
     handleSubmit = (values, { setSubmitting }) => {
@@ -679,7 +679,7 @@ export default class AppContainer extends Component {
                     this.setState({editResult: null});
                     this.confirmEditFeedback(params);
                 }
-            });
+            }).catch(Site.handleAxiosError);
         } else{
             this.setState({editResult: null});
             this.confirmEditFeedback(params);

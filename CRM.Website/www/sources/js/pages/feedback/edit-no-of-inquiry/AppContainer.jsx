@@ -37,7 +37,7 @@ export class AppContainer extends Component {
         const url = Site.resolveClientUrl(`Feedback/GetNoOfInquiryByFeedbackId/${this.state.feedbackId}`);
         await DataService.getDataAsync(url).then(response => {
             this.setState({ noInquiries: response.data.noInquiries });
-        });
+        }).catch(Site.handleAxiosError);
     }
 
     handleSubmit = async values => {
@@ -58,7 +58,7 @@ export class AppContainer extends Component {
             } else {
                 this.setState({ isSubmitting: true });
             }
-        });
+        }).catch(Site.handleAxiosError);
     };
 
     renderForm = ({
