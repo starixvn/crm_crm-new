@@ -696,7 +696,7 @@ export default class CreateForm extends Component {
                     this.setState({ checkDuplicateDialog: {show: true} });
                 }
             });
-        }).then(() => Site.unblockUI());
+        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     };
 
     handleCloseCheckDuplicateDialog = () => {

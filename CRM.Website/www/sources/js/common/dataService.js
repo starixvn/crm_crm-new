@@ -4,7 +4,7 @@ import Site from './site';
 export default class DataService {
     static async getDataAsync(url, params) {
         return await axios.get(url, { params: params, headers: {'X-Requested-With': 'XMLHttpRequest'}})
-            .then(response => response).catch(Site.handleAxiosError);
+            .then(response => response);
     }
 
 
@@ -17,7 +17,7 @@ export default class DataService {
                     'X-Requested-With': 'XMLHttpRequest',
                     'RequestVerificationToken': Site.getXsrfToken()
                 }
-            }).then(response => response).catch(Site.handleAxiosError);
+            }).then(response => response);
     }
 
 

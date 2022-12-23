@@ -33,11 +33,11 @@ export class EditRedemptionLog extends Component {
             this.setState({
                 redemptionLog: this.initFormikData(response.data)
             });
-        }).then(() => Site.unblockUI());
+        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
 
         await DataService.getDataAsync(urlGetAllStatus).then(response => {
             this.setState({ allStatus: response.data });
-        });
+        }).catch(Site.handleAxiosError);
     }
 
     initFormikData = data => {
@@ -77,7 +77,7 @@ export class EditRedemptionLog extends Component {
             } else {
                 setSubmitting(false);
             }
-        });
+        }).catch(Site.handleAxiosError);
     };
 
     isNewEqualOldId = () => {
