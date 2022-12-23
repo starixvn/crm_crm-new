@@ -37,11 +37,11 @@
                 </div>
             </div>
             <div class="auth">
-                <form action="@Url.Content("~/Auth/SignIn")" method="POST" id="frmLogin" name="frmLogin">
+                <form action="@Url.Content("~/Auth/SignIn")" method="POST" id="frmLogin" name="frmLogin" autocomplete="off">
                     @Html.AntiForgeryToken()
                     <input id="loginToken" name="loginToken" value="@ViewBag.LoginToken" type="hidden" />
                     <input type="text" id="username" name="username" autocomplete="off" required />
-                    <input type="password" id="password" name="password" required />
+                    <input type="password" id="password" name="password" required autocomplete="new-password" />
                     <input type="submit" id="btnLogin" value="Sign in" />
 
                     <div class="bestview">
