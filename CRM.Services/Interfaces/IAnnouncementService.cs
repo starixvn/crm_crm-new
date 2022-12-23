@@ -14,5 +14,6 @@ namespace CRM.Services.Interfaces
     public interface IAnnouncementService
     {
         Task<IEnumerable<AnnouncementInfo>> GetAnnouncementAsync(GetAnnouncementCriteria criteria);
+        Task<ValueTuple<IEnumerable<AnnouncementDetail>, IEnumerable<ContentInfo>>> GetContentByIdAsync(int id);
     }
 }

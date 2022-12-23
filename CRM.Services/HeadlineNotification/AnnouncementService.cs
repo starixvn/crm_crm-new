@@ -32,5 +32,14 @@ namespace CRM.Services.HeadlineNotification
         {
             return await baseService.GetDataAsync<AnnouncementInfo>(criteria);
         }
+
+        public async Task<ValueTuple<IEnumerable<AnnouncementDetail>, IEnumerable<ContentInfo>>> GetContentByIdAsync(int id)
+        {
+            var criteria = new GetContentByIdCriteria
+            {
+                AnnouncementId = id
+            };
+            return await baseService.FetchMultipleAsync<AnnouncementDetail, ContentInfo>(criteria);
+        }
     }
 }

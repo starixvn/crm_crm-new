@@ -16,6 +16,7 @@
         public string Title { get; set; }
         public string Status { get; set; }
         public string Content { get; set; }
+        public string Description { get; set; }
         public List<String> ImageSource { get; set; }
         public string GroupHeadlines { get; set; }
         public string HeadlineType { get; set; }

@@ -76,6 +76,7 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index, isHost) =>{
+        const statusMatch = item.status === 'Completed' ? item.description.match(/(?<=\[)[^\][]*(?=])/g) : [];
         return(
             <Row key={index} >
                 <Cell className='text-center'>{index + this.startIndex}</Cell>
@@ -94,9 +95,11 @@ export class DataGrid extends Component {
                         <div>{item.status}</div>
                         <div>
                             <span>(S:</span>
-                            <span className='sent'>10</span>
+                            <span className='sent'>{statusMatch[0]}</span>
+                            <span>,D:</span>
+                            <span>{statusMatch[1]}</span>
                             <span>,E:</span>
-                            <span className='error'>2</span>
+                            <span className='error'>{statusMatch[2]}</span>
                             <span>)</span>
                         </div>
                     </Cell> :

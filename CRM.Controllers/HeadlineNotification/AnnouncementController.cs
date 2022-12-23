@@ -65,7 +65,7 @@
         public async Task<IActionResult> GetAnnouncement([FromBody]  GetAnnouncementCriteria criteria)
         {
             var announcements = await announcementService.GetAnnouncementAsync(criteria);
-            var announcementsOrderBy = announcements.OrderByDescending(x => x.AnnouncementId);
+            var announcementsOrderBy = announcements.OrderBy(x => x.AnnouncementId);
             return Json(new
             {
                 data = announcementsOrderBy,
