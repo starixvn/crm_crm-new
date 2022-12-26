@@ -643,7 +643,7 @@ export default class AppContainer extends Component {
             isReviewed: values.isReviewed,
             review: values.review,
              // 0: do nothing, 1: update, 2: remove
-            updateReviewMode: !this.state.hasReviewFeedbackPermission
+            updateReviewedMode: !this.state.hasReviewFeedbackPermission
                 ? 0 : this.isReviewed(values),
             isDeletedFeedbackView: this.props.isDeletedFeedbackView
         };
