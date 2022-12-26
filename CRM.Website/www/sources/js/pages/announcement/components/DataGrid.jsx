@@ -53,19 +53,10 @@ export class DataGrid extends Component {
         return [<Row key='body-announcement' className='no-data' ><Cell colSpan={isHost ? 9 : 8}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
-    openContentPopup = item => {
+    openContentPopup = announcementId => {
         this.props.setContentPopup({
             show: true,
-            data: item
-        });
-
-        this.setIsRefresh(false);
-    };
-
-    openViewDetailPopup = item => {
-        this.props.setViewDetailPopup({
-            show: true,
-            data: item
+            announcementId: announcementId
         });
 
         this.setIsRefresh(false);
@@ -76,7 +67,7 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index, isHost) =>{
-        const statusMatch = item.status === 'Completed' ? item.description.match(/(?<=\[)[^\][]*(?=])/g) : [];
+        const statusMatch = item.status === 'Completed' && item.description ? item.description.match(/(?<=\[)[^\][]*(?=])/g) : [];
         return(
             <Row key={index} >
                 <Cell className='text-center'>{index + this.startIndex}</Cell>
@@ -86,7 +77,7 @@ export class DataGrid extends Component {
                     <div>{item.sendDateString}</div>
                     <div>{item.sendTimeString}</div>
                 </Cell>
-                <Cell className='link-click' onClick={() => this.openContentPopup(item)}>{item.title}</Cell>
+                <Cell className='link-click' onClick={() => this.openContentPopup(item.announcementId)}>{item.title}</Cell>
                 <Cell>{item.createdBy}</Cell>
                 <Cell>{DateTimeService.toLongDateTimeFormat(item.createdTime)}</Cell>
                 {

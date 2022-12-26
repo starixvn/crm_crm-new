@@ -11,6 +11,7 @@
     using CRM.Models;
     using CRM.Services;
     using CRM.Services.Interfaces;
+    using Fanex.Data.Repository;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
@@ -72,6 +73,17 @@
                 TotalItems = criteria.TotalRows
             });
         }
+
+        public async Task<IActionResult> GetAnnouncementById(int id)
+        {
+            var (announcement, contents) = await announcementService.GetContentByIdAsync(id);
+            return Json(new
+            {
+                data = announcement,
+                contents = contents
+            });
+        }
+
 
         public async Task<IActionResult> AllSetting()
         {

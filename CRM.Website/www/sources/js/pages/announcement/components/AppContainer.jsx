@@ -84,7 +84,7 @@ export class AppContainer extends Component {
         }
 
         const isHost = this.state.policy === Policy.Host;
-        const {newAnnouncementPopup, contentPopup, actionAnnouncementPopup, cancelAnnouncementPopup} = this.props;
+        const {newAnnouncementPopup, contentPopup, actionAnnouncementPopup, cancelAnnouncementPopup, getAnnouncementById} = this.props;
         return (
             <Fragment>
                 <Filter isHost={isHost}/>
@@ -99,9 +99,8 @@ export class AppContainer extends Component {
                 {
                    contentPopup.show &&
                     <Content
+                        id={contentPopup.announcementId}
                         onClose={() => this.handleCloseContent()}
-                        data={this.props.contentPopup.data}
-                        getLanguages={this.props.getLanguages}
                     />
                 }
                 {

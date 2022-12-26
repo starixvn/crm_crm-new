@@ -25,6 +25,11 @@ const getGridData = params => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const getAnnouncementById = id => async () => {
+    const url = Site.resolveClientUrl(`Announcement/GetAnnouncementById/${id}`);
+    return await DataService.getDataAsync(url).then(response => response);
+};
+
 const createAnnouncement = data => async dispatch => {
     const url = Site.resolveClientUrl('Announcement/Create');
     await DataService.postDataAsync(url, data).then(response => {
@@ -74,6 +79,7 @@ export const ActionCreators = {
     setGridParams,
     setGridData,
     getGridData,
+    getAnnouncementById,
     createAnnouncement,
     setCreateAnnouncement,
     editAnnouncement,

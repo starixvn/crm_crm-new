@@ -14,7 +14,6 @@ const initialState = {
     actionAnnouncementPopup: { show: false, data: null, isEdit: false },
     cancelAnnouncementPopup: { show: false, announcementId: ''},
     contentPopup: { show: false },
-    viewDetailPopup: { show: false },
     autoRefresh: {
         value: AUTO_REFRESH_TIMES[0],
         countDown: AUTO_REFRESH_TIMES[0],
@@ -56,9 +55,6 @@ const announcementSlice = createSlice({
         },
         setContentPopup: (state, action) => {
             state.contentPopup = action.payload;
-        },
-        setViewDetailPopup: (state, action) => {
-            state.viewDetailPopup = action.payload;
         },
         setAutoRefresh: (state, action) => {
             state.autoRefresh = action.payload;

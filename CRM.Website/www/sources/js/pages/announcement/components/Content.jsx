@@ -2,40 +2,39 @@ import React, { Component } from 'react';
 import LangHelper from '@jsroot/common/langHelper';
 import { Button, Modal, Tabs, Tab } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import Site from '@jsroot/common/site';
 
-export default class Content extends Component {
+class Content extends Component {
     constructor(props) {
         super(props);
         this.state = {
             languages: null,
             tab: '',
-            content: ''
+            content: '',
+            data: null
         };
     }
 
     async componentDidMount() {
         await this.props.getLanguages().then(response => {
             const firstLanguage = response?.[0]?.settingValue;
-            this.setState({languages: response, tab: firstLanguage, content:this.props.data.content});
+            this.setState({languages: response, tab: firstLanguage});
         });
-        
-    }
 
-    handleChangeContentById = id => {
-        this.props.getTemplateById(id).then(data =>{
-            const contentLanguage = data.contents.filter(x => x.language === this.state.tab);
-            const content = !contentLanguage ? '' : contentLanguage[0].content;
-            this.setState({content});
-        });
+        Site.blockUI();
+        await this.props.getAnnouncementById(this.props.id).then(response => {
+            this.setState({data: response.data});
+        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     }
 
     handleChangeTab = selected =>{
         this.setState({tab: selected});
-        const templateId = this.props.data.notificationTemplateId;
-        if(templateId){
-            this.handleChangeContentById(templateId);
-        }
+        const contentLanguage = this.state.data.contents.filter(x => x.language === this.state.tab);
+        const content = !contentLanguage ? '' : contentLanguage[0].content;
+        this.setState({content});
     }
 
     handlePreviewImage = (event, fileName) => {
@@ -45,10 +44,12 @@ export default class Content extends Component {
     }
 
     render() {
-        const { data, onClose } = this.props;
-        if(!this.state.languages || !data){
+        const {data} = this.state;
+        if(!this.state.data){
             return null;
         }
+
+        const fileNames = data.fileName.split(',');
         return (
             <Modal show backdrop='static' keyboard={false} size='lg' centered
                 onHide={onClose} className='announcement-content-modal'
@@ -75,7 +76,7 @@ export default class Content extends Component {
                         }
                     </Tabs> 
                         {
-                            data.imageSource.map((image, key) =>(
+                            fileNames.map((image, key) =>(
                                 <div key={key} className='d-flex'>
                                     <span className='fa fa-file-image-o mr-2  pt-1'/>
                                         <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image)}>
@@ -84,7 +85,7 @@ export default class Content extends Component {
                                 </div>
                             ))
                         }
-                    <div>{`${LangHelper.getResource('GroupHeadline')}: ${data.groupHeadlines}`}</div>
+                    <div>{`${LangHelper.getResource('GroupHeadline')}: ${data.headlineNameList}`}</div>
                     <div>{`${LangHelper.getResource('SendDateTimeGMTA8')}: ${data.sendDateString} ${data.sendTimeString} `}</div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -94,3 +95,6 @@ export default class Content extends Component {
         );
     }
 }
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+export default connect(null, mapDispatchToProps)(Content);
