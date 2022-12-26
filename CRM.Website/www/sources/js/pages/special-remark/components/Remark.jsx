@@ -126,6 +126,19 @@ export class Remark extends Component {
         });
     };
 
+    checkIsDirtyForm = () =>{
+        const {dataSpecialRemarks, dataNormalRemarks} = this.state;
+        const {specialRemarks, normalRemarks} = this.props.gridData;
+        const specialRemarksExtend = [...specialRemarks, ''];
+        const normalRemarksExtend = [...normalRemarks,''];
+        if(JSON.stringify(dataSpecialRemarks) !== JSON.stringify(specialRemarksExtend) ||
+            JSON.stringify(dataNormalRemarks) !== JSON.stringify(normalRemarksExtend)
+        ){
+            return true;
+        }
+        return false;
+    };
+
     render() {
         const { collapse, specialRemarks, dataSpecialRemarks, normalRemarks, dataNormalRemarks, editRemarkResult
         } = this.state;
@@ -134,6 +147,7 @@ export class Remark extends Component {
             return null;
         }
         const canEditRemark = this.state.policy === Policy.Host;
+        const isDirty = this.checkIsDirtyForm();
         return (
             <div>
                 {
@@ -210,7 +224,7 @@ export class Remark extends Component {
                     )
                 }
                 {
-                   !this.state.isSubmitting && <FormCheckDirtyComponent isDirty tab={LangHelper.getResource('RemarkTab')}/>
+                   !this.state.isSubmitting && <FormCheckDirtyComponent isDirty={isDirty} tab={LangHelper.getResource('RemarkTab')}/>
                 }
             </div>
         );
