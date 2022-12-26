@@ -64,7 +64,8 @@ export class EditCommunicationLog extends Component {
             deleteRelatedCust: [],
             logFeedback: null,
             statusEdit: null,
-            isShowEditPopup: false
+            isShowEditPopup: false,
+            feedbackSubjectTemplates: []
         };
     }
 
@@ -480,6 +481,21 @@ export class EditCommunicationLog extends Component {
         }, 100);
     };
 
+    handleGetFeedbackSubjectTemplates = Site.debounce(searchText => {
+        if (searchText.length >= 2) {
+            this.getFeedbackSubjectTemplates(searchText);
+        } else {
+            this.setState({feedbackSubjectTemplates: []});
+        }
+    });
+
+    getFeedbackSubjectTemplates = async subject =>{
+        const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
+        await DataService.getDataAsync(url, { subject }).then(response => {
+            this.setState({feedbackSubjectTemplates: response.data});
+        }).catch(Site.handleAxiosError);
+    }
+
     renderForm = ({
         errors,
         values,
@@ -517,7 +533,7 @@ export class EditCommunicationLog extends Component {
                                 handleVerifyCreateRelatedCustomer={this.handleVerifyRelatedCustomer} relatedCustomers={relatedCustomers}
                                 deleteVerifyCreateCustomer={this.deleteVerifyEditCustomer} handlePasteCustomer={this.handlePasteCustomer}
                                 handleChangeVerifySection={this.handleChangeVerifySection} verifySection={verifySection}
-                                feedbackSubjectTemplates={this.props.feedbackSubjectTemplates}
+                                feedbackSubjectTemplates={this.state.feedbackSubjectTemplates} handleGetFeedbackSubjectTemplates={this.handleGetFeedbackSubjectTemplates}
                                 isValidSubject={touched.subject && errors.subject} isValidCustomerInput={touched.customerNameInput && errors.customerNameInput}
                             />
                         </div>

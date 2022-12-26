@@ -4,7 +4,6 @@ import { Button, Form, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap
 import LangHelper from '@jsroot/common/langHelper';
 import VerifyCustomer from '@jsroot/components/verifyCustomer';
 import { validateNoOfInquiry } from '../../feedback/common.functions';
-import { handleGetFeedbackSubjectTemplates } from '../common.functions';
 
 export default class VerifySection extends PureComponent {
     validateRefInput = event =>{
@@ -20,7 +19,7 @@ export default class VerifySection extends PureComponent {
     render() {
     const { handleVerifyCreateRelatedCustomer, relatedCustomers, deleteVerifyCreateCustomer, balanceUpday,
         handleChangeRefTicket, handleClickFillEvent, feedbackSubjectTemplates, verifySection, onPasteRefTicketHandler,
-        handlePasteCustomer, handleChangeVerifySection, isValidSubject, isValidCustomerInput } = this.props;
+        handlePasteCustomer, handleChangeVerifySection, isValidSubject, isValidCustomerInput, handleGetFeedbackSubjectTemplates } = this.props;
 
         return(
             <Fragment>
@@ -112,7 +111,7 @@ export default class VerifySection extends PureComponent {
                                 <AutoComplete isInvalid={isValidSubject}
                                     value={verifySection.subject}
                                     options={feedbackSubjectTemplates} displayField="subject"
-                                    onChange={value => handleChangeVerifySection('subject', value)}
+                                    onChange={value => handleChangeVerifySection('subject', value.subject)}
                                     onInputChange={handleGetFeedbackSubjectTemplates}
                                 />
                             </Col>

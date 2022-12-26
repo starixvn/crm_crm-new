@@ -56,7 +56,8 @@ export class CreateCommunicationLog extends Component {
             allSettings: null,
             balanceUpday: null,
             duplicateFeedbackId: 0,
-            isShowCreatePopup: false
+            isShowCreatePopup: false,
+            feedbackSubjectTemplates:[]
         };
     }
 
@@ -497,6 +498,21 @@ export class CreateCommunicationLog extends Component {
         this.setState({ isShowCreatePopup: false });
     };
 
+    handleGetFeedbackSubjectTemplates = Site.debounce(searchText => {
+        if (searchText.length >= 2) {
+            this.getFeedbackSubjectTemplates(searchText);
+        } else {
+            this.setState({feedbackSubjectTemplates: []});
+        }
+    });
+
+    getFeedbackSubjectTemplates = async subject =>{
+        const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
+        await DataService.getDataAsync(url, { subject }).then(response => {
+            this.setState({feedbackSubjectTemplates: response.data});
+        }).catch(Site.handleAxiosError);
+    }
+
     renderForm = ({
         values,
         errors,
@@ -533,8 +549,8 @@ export class CreateCommunicationLog extends Component {
                                 handleVerifyCreateRelatedCustomer={this.handleVerifyCreateRelatedCustomer} relatedCustomers={relatedCustomers}
                                 deleteVerifyCreateCustomer={this.deleteVerifyCreateCustomer} balanceUpday={balanceUpday} handlePasteCustomer={this.handlePasteCustomer}
                                 onPasteRefTicketHandler={this.onPasteRefTicketHandler} handleChangeRefTicket={this.handleChangeRefTicket}
-                                handleClickFillEvent={this.handleClickFillEvent} feedbackSubjectTemplates={this.props.feedbackSubjectTemplates}
-                                handleChangeVerifySection={this.handleChangeVerifySection} verifySection={verifySection}
+                                handleClickFillEvent={this.handleClickFillEvent} feedbackSubjectTemplates={this.state.feedbackSubjectTemplates}
+                                handleChangeVerifySection={this.handleChangeVerifySection} verifySection={verifySection} handleGetFeedbackSubjectTemplates={this.handleGetFeedbackSubjectTemplates}
                                 isValidSubject={touched.subject && errors.subject} isValidCustomerInput={touched.customerNameInput && errors.customerNameInput}
                             />
                         </div>

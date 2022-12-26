@@ -6,7 +6,6 @@ import {
     setGridParams,
     setEditNoOfInquiryDialog,
     setEditCommunicationDialog,
-    setFeedbackSubjectTemplates,
     setCreateCommunicationDialog,
     resetState
 } from './communicationLogSlice';
@@ -35,13 +34,6 @@ const getStatusForFilter = () => async dispatch => {
     }).catch(Site.handleAxiosError);
 };
 
-const getFeedbackSubjectTemplates = subject => async dispatch => {
-    const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
-    await DataService.getDataAsync(url, { subject }).then(response => {
-        dispatch(setFeedbackSubjectTemplates(response.data));
-    }).catch(Site.handleAxiosError);
-};
-
 export const ActionCreators = {
     setLogsByCustomerId,
     getLogsByCustomerId,
@@ -49,8 +41,6 @@ export const ActionCreators = {
     setGridParams,
     setEditNoOfInquiryDialog,
     setEditCommunicationDialog,
-    setFeedbackSubjectTemplates,
-    getFeedbackSubjectTemplates,
     setCreateCommunicationDialog,
     resetState
 };

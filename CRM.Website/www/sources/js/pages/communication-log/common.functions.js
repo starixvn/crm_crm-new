@@ -118,11 +118,3 @@ export const isValidCustomer = customers => {
 
     return true;
 };
-
-export const handleGetFeedbackSubjectTemplates = Site.debounce(searchText => {
-    if (searchText.length >= 2) {
-        ActionCreators.getFeedbackSubjectTemplates(searchText);
-    } else {
-        ActionCreators.setFeedbackSubjectTemplates([]);
-    }
-});

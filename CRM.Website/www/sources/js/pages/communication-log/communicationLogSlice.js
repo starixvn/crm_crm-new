@@ -7,7 +7,6 @@ const initialState = {
     editNoOfInquiryDialog: { show: false },
     editCommunicationDialog: { show: false },
     logFeedback: null,
-    feedbackSubjectTemplates: [],
     createCommunicationDialog: { show: false }
 };
 const communicationLogSlice = createSlice({
@@ -36,9 +35,6 @@ const communicationLogSlice = createSlice({
         setLogByFeedbackId: (state, action) => {
             state.logFeedback = action.payload;
         },
-        setFeedbackSubjectTemplates: (state, action) => {
-            state.feedbackSubjectTemplates = action.payload;
-        },
         setCreateCommunicationDialog: (state, action) => {
             state.createCommunicationDialog = action.payload;
         }
@@ -56,7 +52,6 @@ export const {
     setEditNoOfInquiryDialog,
     setEditCommunicationDialog,
     setLogByFeedbackId,
-    setFeedbackSubjectTemplates,
     setCreateCommunicationDialog
 } = actions;
 

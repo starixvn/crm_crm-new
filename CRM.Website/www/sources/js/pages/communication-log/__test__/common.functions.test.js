@@ -202,32 +202,4 @@ describe('commonFunctions', () => {
             expect(validCustomer).toBe(false);
         });
     });
-
-    describe('handleGetFeedbackSubjectTemplates', () => {
-        it('should call correct function when search text length >= 2', () => {
-            // Arrange
-            const searchText = 'search text';
-            ActionCreators.getFeedbackSubjectTemplates = jest.fn();
-
-            // Act
-            commonFunction.handleGetFeedbackSubjectTemplates(searchText);
-            jest.runAllTimers();
-
-            // Assert
-            expect(ActionCreators.getFeedbackSubjectTemplates).toHaveBeenCalledWith(searchText);
-        });
-
-        it('should call correct function when search text length < 2', () => {
-            // Arrange
-            const searchText = 's';
-            ActionCreators.setFeedbackSubjectTemplates = jest.fn();
-
-            // Act
-            commonFunction.handleGetFeedbackSubjectTemplates(searchText);
-            jest.runAllTimers();
-
-            // Assert
-            expect(ActionCreators.setFeedbackSubjectTemplates).toHaveBeenCalledWith([]);
-        });
-    });
 });
