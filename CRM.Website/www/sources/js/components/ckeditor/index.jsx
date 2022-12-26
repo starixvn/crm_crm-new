@@ -50,17 +50,17 @@ export default class CkEditor extends PureComponent {
 
         CKEDITOR.plugins.add('editblock', {
             init: function (editor) {
-                editor.addCommand('insertEditBlock', {
+                editor?.addCommand('insertEditBlock', {
                     exec: function (editor) {
                         const currentDate = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
                         const html = LangHelper.formatString(textTemplateEditBlock,
                             username,
                             moment(currentDate).format('MM/DD/YYYY, hh:mm:ss A'),
                             editText);
-                        editor.insertHtml(html);
+                        editor?.insertHtml(html);
                     }
                 });
-                editor.ui.addButton('EditBlock', {
+                editor?.ui?.addButton('EditBlock', {
                     label: 'Insert Edit Block',
                     command: 'insertEditBlock',
                     toolbar: 'insert'
