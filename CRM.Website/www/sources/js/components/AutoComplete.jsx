@@ -157,7 +157,7 @@ export default class AutoComplete extends Component {
         const { options, displayField, isInvalid } = this.props;
         return (
             <div className="autocomplete-container" ref={this.wrapperRef}>
-                <input type="text" size="sm" autoComplete="off" name="autocomplete-search-value"
+                <Form.Control type="text" size="sm" autoComplete="off" name="autocomplete-search-value"
                     className="shadow-none" isInvalid={isInvalid}
                     value={searchValue}
                     placeholder ={placeholder}

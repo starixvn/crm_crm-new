@@ -12,11 +12,10 @@
     {
         [SpParam(SqlParamName = "FeedbackDate")]
         public DateTime StartTime { get; set; }
+        public int LanguageId { get; set; }
+        public int CountryId { get; set; }
 
         [SpParam(SqlParamName = "ResolutionDate")]
-        public int LanguageId { get; set; }
-
-        public int CountryId { get; set; }
         public DateTime EndTime { get; set; }
 
         [SpParam(Ignored = true)]
