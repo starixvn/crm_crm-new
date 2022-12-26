@@ -269,6 +269,9 @@ const handleSortStringDesc = (sortBy, first, second) => first[`${sortBy}`] < sec
 
 export const handleSort = (cloneGridData, sortBy, sortOrder) => {
     let gridDataSortAsc = null;
+    if(!cloneGridData || cloneGridData.length === 0) {
+        return cloneGridData;
+    }
     const findSortType = cloneGridData[0][`${sortBy}`];
     const isDateType = moment(findSortType, moment.ISO_8601, true).isValid();
     if (isDateType) {

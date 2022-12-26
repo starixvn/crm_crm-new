@@ -30,14 +30,15 @@ export class Remark extends Component {
     }
 
     async componentDidMount() {
-        await this.props.getRemarks({
-            customerId: this.props.id
-        });
+        await this.props.getRemarks({customerId: this.props.id});
         getPermission(FunctionKey.NotificationList).then(response => {
             this.setState({policy: response});
         });
         document.title = LangHelper.getResource('CRMSystem');
         const { gridData } = this.props;
+        if(!gridData){
+            return;
+        }
         this.setState({
             specialRemarks: [...gridData.specialRemarks,''],
             dataSpecialRemarks: [...gridData.specialRemarks,''],
