@@ -26,13 +26,15 @@ class Content extends Component {
 
         Site.blockUI();
         await this.props.getAnnouncementById(this.props.id).then(response => {
-            this.setState({data: response.data});
+            const data = response?.data;
+            const content = data.contents[0].content;
+            this.setState({data, content});
         }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     }
 
     handleChangeTab = selected =>{
         this.setState({tab: selected});
-        const contentLanguage = this.state.data.contents.filter(x => x.language === this.state.tab);
+        const contentLanguage = this.state.data.contents.filter(x => x.content === this.state.tab);
         const content = !contentLanguage ? '' : contentLanguage[0].content;
         this.setState({content});
     }
@@ -44,33 +46,33 @@ class Content extends Component {
     }
 
     render() {
-        const {data} = this.state;
-        if(!this.state.data){
+        const {data, languages, content, tab} = this.state;
+        if(!this.state.data || !languages){
             return null;
         }
-
-        const fileNames = data.fileName.split(',');
+        const announcement = data.data[0];
+        const fileNames = announcement.fileName.split(',');
         return (
             <Modal show backdrop='static' keyboard={false} size='lg' centered
-                onHide={onClose} className='announcement-content-modal'
+                onHide={this.props.onClose} className='announcement-content-modal'
                 dialogAs={DraggableModalDialog}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title as='div'>{`${LangHelper.getResource('AnnouncementID')}: ${data.announcementId}`}</Modal.Title>
+                    <Modal.Title as='div'>{`${LangHelper.getResource('AnnouncementId')}: ${this.props.id}`}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div>{`${LangHelper.getResource('NotificationTemplate')}: ${data.notificationTemplate}`}</div>
-                    <div>{`${LangHelper.getResource('Title')}: ${data.title}`}</div>
+                    <div>{`${LangHelper.getResource('NotificationTemplate')}: ${announcement.notificationTemplateName}`}</div>
+                    <div>{`${LangHelper.getResource('Title')}: ${announcement.title}`}</div>
                     <Tabs
                         className='languages-text'
                         id="controlled-tab"
-                        activeKey={this.state.tab}
+                        activeKey={tab}
                         onSelect={selected => this.handleChangeTab(selected)}
                     >
                         {
-                            this.state.languages.map((language, key) =>
+                            languages.map((language, key) =>
                                 (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
-                                    <div className='border mb-3 announcement-content'>{data.content}</div>
+                                    <div className='border mb-3 announcement-content'>{content}</div>
                                 </Tab>)
                             )
                         }
@@ -85,11 +87,11 @@ class Content extends Component {
                                 </div>
                             ))
                         }
-                    <div>{`${LangHelper.getResource('GroupHeadline')}: ${data.headlineNameList}`}</div>
-                    <div>{`${LangHelper.getResource('SendDateTimeGMTA8')}: ${data.sendDateString} ${data.sendTimeString} `}</div>
+                    <div>{`${LangHelper.getResource('GroupHeadline')}: ${announcement.headlineNameList}`}</div>
+                    <div>{`${LangHelper.getResource('SendDateTimeGMTA8')}: ${announcement.sendDateString} ${announcement.sendTimeString} `}</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={onClose} variant='primary' size='sm'>{LangHelper.getResource('Close')}</Button>
+                    <Button onClick={this.props.onClose} variant='primary' size='sm'>{LangHelper.getResource('Close')}</Button>
                 </Modal.Footer>
             </Modal>
         );

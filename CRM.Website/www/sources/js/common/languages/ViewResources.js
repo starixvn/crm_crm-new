@@ -191,7 +191,6 @@
     EditSettingValue: 'Edit Setting Value',
     EditJobSettingValue: 'Edit Job Setting Value',
     EditNewSettingSuccess: 'Edit new setting successfully!',
-    EditJobSettingValue: 'Edit Job Setting Value',
     EditConfigSettingSuccess: 'Edit config successfully!',
     EditThisAnnouncement: 'Edit this announcement',
     Envr: 'Envr.',
