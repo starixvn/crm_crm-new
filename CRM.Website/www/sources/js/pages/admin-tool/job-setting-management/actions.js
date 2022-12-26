@@ -15,7 +15,7 @@ const getServiceNameSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('JobSettingManagement/GetServiceNameSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setServiceNameSetting(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getSettingNames = params=> async dispatch => {
@@ -30,7 +30,7 @@ const getConfigSettings = params=> async dispatch => {
     const url = Site.resolveClientUrl('JobSettingManagement/GetConfigSettings');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setConfigSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const editJobSetting = params=> async dispatch => {
@@ -38,7 +38,7 @@ const editJobSetting = params=> async dispatch => {
     const url = Site.resolveClientUrl('JobSettingManagement/EditJobSetting');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setEditJobSetting(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 

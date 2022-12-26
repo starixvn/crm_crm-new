@@ -148,7 +148,7 @@ export default class AppContainer extends Component {
                 betTypeOptions,
                 relatedCustomers
             });
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 
     getFeedbackSettings = (feedback, settings) => {
@@ -423,7 +423,7 @@ export default class AppContainer extends Component {
                         customerNameInput: ''
                     }
                 });
-            }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+            }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
         } else {
             this.formik.errors.customerNameInput = 'Customer Name must not over 50 characters long!';
         }
@@ -567,7 +567,7 @@ export default class AppContainer extends Component {
             } else {
                 this.formik.setSubmitting(false);
             }
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
     handleSubmit = (values, { setSubmitting }) => {

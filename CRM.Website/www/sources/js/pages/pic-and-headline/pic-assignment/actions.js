@@ -34,7 +34,7 @@ const getGridData = (params, callback) => async dispatch => {
         }
         
         dispatch(setGridData(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const validateAssignPic = params => async dispatch => {
@@ -42,7 +42,7 @@ const validateAssignPic = params => async dispatch => {
     const url = Site.resolveClientUrl('PicAssignment/ValidateAssignPic');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setValidateAssignPicResult(response.data));
-    }).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

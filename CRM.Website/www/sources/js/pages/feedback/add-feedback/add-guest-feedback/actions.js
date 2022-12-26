@@ -14,14 +14,14 @@ const getAllSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('AddGuestFeedback/AllSetting');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getBalanceUpday = () => async dispatch => {
     const url = Site.resolveClientUrl('Feedback/GetBalanceUpday');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setBalanceUpday(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 
@@ -37,7 +37,7 @@ const addFeedback =  params => async dispatch => {
     const url = Site.resolveClientUrl('AddGuestFeedback/Create');
     return await DataService.postDataAsync(url, params).then(response => {
         dispatch(setAddFeedback(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const verifyUserName = data => async () => {

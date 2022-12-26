@@ -111,7 +111,7 @@ export default class FeedbackDetails extends Component {
                 subCategoryOptions,
                 sitesOptions
             });
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());;
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);;
     }
 
     getSettings = (communicationLog, settings) => {

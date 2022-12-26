@@ -37,7 +37,7 @@ export const getGridData = (params, callback) => async dispatch => {
         }
         
         dispatch(setGridData(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const setContentPopup = data => {
@@ -105,7 +105,7 @@ export const validateResend = params => async dispatch => {
             show: true,
             result: response.data
         }));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const setValidateResend = data => {

@@ -372,7 +372,7 @@ export class CreateCommunicationLog extends Component {
             startTime: params.startTime
         }).then(response => {
             this.setState({ duplicateFeedbackId: response.data});
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 
         if (this.state.duplicateFeedbackId === 0) {
             this.handleCreateLog();

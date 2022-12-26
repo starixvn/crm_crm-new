@@ -26,7 +26,7 @@ const getGridCommunicationSetting = params => async dispatch => {
     const url = Site.resolveClientUrl('CommunicationSetting/GetCommunicationToolSetting');
     DataService.postDataAsync(url, params).then(response => {
         dispatch(setGridCommunicationSetting(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getCommunicationById = (communicaitonId, callback) => async dispatch => {
@@ -50,17 +50,17 @@ const editCommunication = data => async dispatch => {
     const url = Site.resolveClientUrl('CommunicationSetting/Edit');
     await DataService.postDataAsync(url, data).then(response => {
         dispatch(setEditCommunicationResult(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const deleteCommunication = id => async () => {
     const url = Site.resolveClientUrl(`CommunicationSetting/Delete/${id}`);
-    return await DataService.postDataAsync(url).then(response => response.data);
+    return await DataService.postDataAsync(url).then(response => response.data).catch(Site.handleAxiosError);
 };
 
 const verifyUsername = data => async () => {
     const url = Site.resolveClientUrl('CustomerSetting/VerifyUsername');
-    return await DataService.postDataAsync(url, data).then(response => response.data);
+    return await DataService.postDataAsync(url, data).then(response => response.data).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

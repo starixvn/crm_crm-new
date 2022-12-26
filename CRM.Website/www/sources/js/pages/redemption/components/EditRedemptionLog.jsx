@@ -33,7 +33,7 @@ export class EditRedemptionLog extends Component {
             this.setState({
                 redemptionLog: this.initFormikData(response.data)
             });
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 
         await DataService.getDataAsync(urlGetAllStatus).then(response => {
             this.setState({ allStatus: response.data });

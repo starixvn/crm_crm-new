@@ -25,7 +25,7 @@ const getGridFeedbacks = params => async dispatch => {
     const url = Site.resolveClientUrl('ManageFeedback/SearchManageFeedback');
     DataService.postDataAsync(url, params).then(response => {
         dispatch(setGridFeedbacks(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const exportExcel = params => async () => {

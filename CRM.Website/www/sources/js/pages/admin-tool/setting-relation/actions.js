@@ -22,7 +22,7 @@ const getSettingTypes = params => async dispatch => {
     const url = Site.resolveClientUrl('SettingRelation/GetSettingByType');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setSettingTypes(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getMainSettingRelation = params => async dispatch => {
@@ -30,7 +30,7 @@ const getMainSettingRelation = params => async dispatch => {
     const url = Site.resolveClientUrl('SettingRelation/GetMainSettingRelation');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setMainSettingRelation(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const updateRelation = params => async dispatch => {
@@ -38,7 +38,7 @@ const updateRelation = params => async dispatch => {
     const url = Site.resolveClientUrl('SettingRelation/Update');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setUpdateResult(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

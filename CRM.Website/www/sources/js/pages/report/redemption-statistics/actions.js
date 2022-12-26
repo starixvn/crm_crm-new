@@ -16,7 +16,7 @@ const getAllSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('RedemptionStatistics/getAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getRedemptionSummary = params => async dispatch => {
@@ -24,7 +24,7 @@ const getRedemptionSummary = params => async dispatch => {
     const url = Site.resolveClientUrl('RedemptionStatistics/GetRedemptionSummary');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setRedemptionSummary(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getRedemptionDetails = params => async dispatch => {
@@ -32,7 +32,7 @@ const getRedemptionDetails = params => async dispatch => {
     const url = Site.resolveClientUrl('RedemptionStatistics/GetRedemptionDetails');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setRedemptionDetails(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const exportExcel = params => async () => {

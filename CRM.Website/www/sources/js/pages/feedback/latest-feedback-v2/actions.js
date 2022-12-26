@@ -14,7 +14,7 @@ const getLatestFeedback = params => async dispatch => {
     const url = Site.resolveClientUrl('LatestFeedback/GetLatestFeedback');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setLatestFeedback(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getLatestFeedbackByCustId = params => async dispatch => {
@@ -22,7 +22,7 @@ const getLatestFeedbackByCustId = params => async dispatch => {
     const url = Site.resolveClientUrl('LatestFeedback/GetLatestFeedbackByCustId');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setLatestFeedback(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const exportExcel = params => async () => {

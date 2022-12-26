@@ -22,7 +22,7 @@ const getRemarkTitles= () => async dispatch => {
     const url = Site.resolveClientUrl('NewRemark/GetRemarkTitles');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setRemarkTitle(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getAllSettings= () => async dispatch => {
@@ -30,7 +30,7 @@ const getAllSettings= () => async dispatch => {
     const url = Site.resolveClientUrl('NewRemark/GetAllSetting');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const validateUsername = params => async dispatch => {
@@ -38,7 +38,7 @@ const validateUsername = params => async dispatch => {
     const url = Site.resolveClientUrl('NewRemark/ValidateUsername');
     return await DataService.postDataAsync(url, params).then(response => {
         dispatch(setValidateResult(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getNewRemarks = params => async dispatch => {
@@ -46,26 +46,26 @@ const getNewRemarks = params => async dispatch => {
     const url = Site.resolveClientUrl('NewRemark/GetNewRemarks');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setRemarks(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getRelatedPics = params => async () => {
     const url = Site.resolveClientUrl('NewRemark/GetRelatedPicsByCustId');
-    return await DataService.postDataAsync(url,params).then(response => response.data).catch(Site.handleAxiosError);
+    return await DataService.postDataAsync(url,params).catch(Site.handleAxiosError).then(response => response.data);
 };
 
 const editNewRemarks = params => async dispatch => {
     const url = Site.resolveClientUrl('NewRemark/Edit');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setEditResult(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const createNewRemarks = params => async dispatch => {
     const url = Site.resolveClientUrl('NewRemark/Create');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setCreateResult(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const deleteNewRemark = params => async () => {
@@ -78,7 +78,7 @@ const getNewRemarkHistory = params => async dispatch => {
     const url = Site.resolveClientUrl('NewRemark/GetNewRemarkHistory');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setRemarksHistory(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

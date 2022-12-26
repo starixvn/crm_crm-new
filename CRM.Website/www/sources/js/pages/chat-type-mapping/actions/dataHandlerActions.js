@@ -37,7 +37,7 @@ export const getGridData = params => async dispatch => {
     const url = Site.resolveClientUrl('ChatTypeMapping/GetChatTypeMapping');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setGridData(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 // Update Active Status
@@ -60,7 +60,7 @@ export const updateActiveStatus = params => async dispatch => {
     await DataService.postDataAsync(Site.resolveClientUrl('ChatTypeMapping/UpdateActiveStatus'), params)
         .then(response => {
             dispatch(setUpateActiveResult(response.data));
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 // Get Recipient by Recipient Type

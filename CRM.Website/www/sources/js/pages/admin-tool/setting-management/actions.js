@@ -31,7 +31,7 @@ const getParentSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('SettingManagement/GetParentSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setParentSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getLicensees = () => async dispatch => {
@@ -39,7 +39,7 @@ const getLicensees = () => async dispatch => {
     const url = Site.resolveClientUrl('SettingManagement/GetLicensees');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setLicensees(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getLicenseeManager = username => async dispatch => {
@@ -57,7 +57,7 @@ const getLicenseesMapping = params => async dispatch => {
     const url = Site.resolveClientUrl('SettingManagement/GetLicenseesMapping');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setLicenseeMapping(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getSettingTypes = params => async dispatch => {
@@ -65,7 +65,7 @@ const getSettingTypes = params => async dispatch => {
     const url = Site.resolveClientUrl('SettingManagement/GetSettingByType');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setSettingTypes(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const editStatusSetting = params => async () => {
@@ -99,7 +99,7 @@ const getSourceMapping = params => async dispatch => {
     const url = Site.resolveClientUrl('SettingManagement/GetSourceMappingByType');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setSourceMapping(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

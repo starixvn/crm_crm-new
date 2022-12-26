@@ -53,7 +53,7 @@ export const resendNotifications = async (params, callback) => {
         else {
             toast.error(message);
         }
-    }).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const functions = {

@@ -30,7 +30,7 @@ export const assignPic = async (params, done) => {
     const url = Site.resolveClientUrl('PicAssignment/AssignPIC');
     await DataService.postDataAsync(url, params).then(response => {
         done(response.data);
-    }).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const removePicAssignment = async (params, message, done) => {
@@ -44,7 +44,7 @@ export const removePicAssignment = async (params, message, done) => {
         else {
             toast.error(response.data.message);
         }
-    }).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const removeDefaultPic = async (params, done) => {
@@ -52,7 +52,7 @@ export const removeDefaultPic = async (params, done) => {
     const url = Site.resolveClientUrl('PicAssignment/RemoveDefaultPIC');
     await DataService.postDataAsync(url, params).then(response => {
         done(response.data);
-    }).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const setDefaultPic = async (params, done) => {
@@ -60,7 +60,7 @@ export const setDefaultPic = async (params, done) => {
     const url = Site.resolveClientUrl('PicAssignment/SetDefaultPIC');
     await DataService.postDataAsync(url, params).then(response => {
         done(response.data);
-    }).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const exportExcel = async params => {

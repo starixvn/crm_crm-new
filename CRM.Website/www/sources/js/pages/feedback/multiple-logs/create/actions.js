@@ -18,7 +18,7 @@ const getSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('MultipleLogs/GetSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const verifyCustomers = params => async () => {

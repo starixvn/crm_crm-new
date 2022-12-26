@@ -25,7 +25,7 @@ const getLogsByCustomerId = params => async dispatch => {
             return item;
         });
         dispatch(setLogsByCustomerId({data, mainCategories}));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getStatusForFilter = () => async dispatch => {

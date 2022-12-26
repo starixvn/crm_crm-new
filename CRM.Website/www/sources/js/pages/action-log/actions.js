@@ -20,7 +20,7 @@ const getActivityLog = params => async dispatch => {
     const url = Site.resolveClientUrl('ActionLog/GetActivityLog');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setActivityLog(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

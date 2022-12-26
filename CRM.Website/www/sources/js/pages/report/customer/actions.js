@@ -12,7 +12,7 @@ const getCustomerReport = params => async dispatch => {
     const url = Site.resolveClientUrl('CustomerReport/GetCustomerReport');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setCustomerReport(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getAllSettings = () => async dispatch => {
@@ -20,7 +20,7 @@ const getAllSettings = () => async dispatch => {
     const url = Site.resolveClientUrl('CustomerReport/GetAllSettings');
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const exportExcel = params => async () => {

@@ -55,7 +55,7 @@ const getLastFiveRemark = params => async dispatch => {
     const url = Site.resolveClientUrl('NewRemark/GetLastFiveRemark');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setLastFiveRemark(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

@@ -29,7 +29,7 @@ export const editNotificationType = data => async dispatch => {
     const url = Site.resolveClientUrl('NotificationType/Edit');
     await DataService.postDataAsync(url, data).then(response => {
         dispatch(setEditNotificationTypeResult(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const getNotificationTypeGridData = params => async dispatch => {
@@ -44,7 +44,7 @@ export const createNotificationType = data => async dispatch => {
     const url = Site.resolveClientUrl('NotificationType/Create');
     await DataService.postDataAsync(url, data).then(response => {
         dispatch(setCreateNotificationTypeResult(response.data));
-    }).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

@@ -17,7 +17,7 @@ const getLogsByCustomerId = params => async dispatch => {
     const url = Site.resolveClientUrl('Redemption/GetLogsByCustomerId');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setLogsByCustomerId(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getAllStatus = () => async dispatch => {
@@ -25,7 +25,7 @@ const getAllStatus = () => async dispatch => {
     const url = Site.resolveClientUrl(`Redemption/GetAllStatus?isEdit=true`);
     await DataService.getDataAsync(url).then(response => {
         dispatch(setAllStatus(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getLogById = params => async dispatch => {
@@ -33,12 +33,12 @@ const getLogById = params => async dispatch => {
     const url = Site.resolveClientUrl('Redemption/GetLogById');
     await DataService.getDataAsync(url,params).then(response => {
         dispatch(setLogById(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const editRedemptionLog = params => async () => {
     const url = Site.resolveClientUrl('Redemption/EditRedemptionLog');
-    return await DataService.postDataAsync(url,params).then(response => response);
+    return await DataService.postDataAsync(url,params).catch(Site.handleAxiosError).then(response => response);
 };
 
 const getSettings = () => async dispatch => {
@@ -46,12 +46,12 @@ const getSettings = () => async dispatch => {
     const url = Site.resolveClientUrl(`Redemption/GetAllStatus?isEdit=false`);
     await DataService.getDataAsync(url).then(response => {
         dispatch(setSettings(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const createRedemptionLog = params => async () => {
     const url = Site.resolveClientUrl('Redemption/CreateRedemptionLog');
-    return await DataService.postDataAsync(url,params).then(response => response);
+    return await DataService.postDataAsync(url,params).catch(Site.handleAxiosError).then(response => response);
 };
 
 export const ActionCreators = {

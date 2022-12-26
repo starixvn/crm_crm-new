@@ -19,7 +19,7 @@ const getGridSettingLogs = params => async dispatch => {
     const url = Site.resolveClientUrl('SettingLog/GetSettingLog');
     DataService.postDataAsync(url, params).then(response => {
         dispatch(setGridSettingLogs(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 

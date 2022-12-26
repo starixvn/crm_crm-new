@@ -35,7 +35,7 @@ const getGridData = params => async dispatch => {
     const url = Site.resolveClientUrl('PicManagement/GetReport');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setGridData(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const exportExcel = params => async dispatch => {
@@ -43,35 +43,35 @@ const exportExcel = params => async dispatch => {
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split("\"")[1];
         Site.downloadFile(response.data, fileName);
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const changeActiveStatus = params => async dispatch => {
     const url = Site.resolveClientUrl('PicManagement/ChangePicState');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setActiveResult(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const createPic = params => async dispatch => {
     const url = Site.resolveClientUrl('PicManagement/CreatePic');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setCreatePicResult(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const editPic = params => async dispatch => {
     const url = Site.resolveClientUrl('PicManagement/EditPic');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setEditPicResult(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const validateEditPic = params => async dispatch => {
     const url = Site.resolveClientUrl('PicManagement/ValidateEditPic');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setValidateEditPicResult(response.data));
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {

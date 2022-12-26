@@ -1036,7 +1036,7 @@ export class EditMultipleLogs extends Component {
             } else {
                 this.formik.setSubmitting(false);
             }
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
     initFormik = (communicationLog, settings) => {

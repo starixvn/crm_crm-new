@@ -52,7 +52,7 @@ export class Layout extends Component {
         const url = Site.resolveClientUrl('CustomerInfo/GetSettings');
         await DataService.getDataAsync(url).then(response => {
              this.setState({ settings: response.data});
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
     getCurrentCustomer = async () =>{
@@ -65,7 +65,7 @@ export class Layout extends Component {
             this.setState({username: response.data.name, isGuest: response.data.isGuest} , () =>{
                 this.getCustomerInfo();
             });
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
     initDataMenu = menus => {
@@ -198,7 +198,7 @@ export class Layout extends Component {
                 showEmptyCustomerInfoPopup: true
             });
             }
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
     getCurrentCustomerInfo = () =>{

@@ -128,7 +128,7 @@ export const verifyLetstalkInGroup = params => async dispatch => {
         const url = Site.resolveClientUrl('ChatTypeMapping/VerifyLetstalkInGroup');
         await DataService.postDataAsync(url, params).then(response => {
             dispatch(setLetstalkVerifationData(response.data));
-        });
+        }).catch(Site.handleAxiosError);
     } else {
         dispatch(setLetstalkVerifationData({ isBotRemoved: false, recipients: [] }));
     }

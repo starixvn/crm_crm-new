@@ -534,7 +534,7 @@ export default class DataGrid extends PureComponent {
                 this.props.handleCloseEditCustomerInfoPopup();
                 setSubmitting(false);
             }
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
     render() {

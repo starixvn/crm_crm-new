@@ -24,7 +24,7 @@ const getMainReport = params => async dispatch => {
     const url = Site.resolveClientUrl('LogStatistics/GetMainReport');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setMainReport(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const getReportDetails = params => async dispatch => {
@@ -32,7 +32,7 @@ const getReportDetails = params => async dispatch => {
     const url = Site.resolveClientUrl('LogStatistics/GetReportDetails');
     await DataService.postDataAsync(url,params).then(response => {
         dispatch(setReportDetails(response.data));
-    }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const exportExcel = params => async () => {
