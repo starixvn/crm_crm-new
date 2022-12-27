@@ -174,7 +174,7 @@ export default class FeedbackInfo extends PureComponent {
                 {
                     <CommentInfo
                         collapse={collapse} values={values} touched={touched} errors={errors}
-                        setFieldValue={setFieldValue} onCollapseExpand={onCollapseExpand}
+                        setFieldValue={setFieldValue} onCollapseExpand={onCollapseExpand} handleChange={handleChange}
                     />
                 }
             </Fragment>
