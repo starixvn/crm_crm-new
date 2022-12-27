@@ -1,9 +1,12 @@
 ﻿namespace CRM.Services.ExportExcel
 {
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using CRM.Core;
     using CRM.Models.Report.CustomerReport;
     using CRM.Resources;
+    using Microsoft.AspNetCore.DataProtection.KeyManagement;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
 
@@ -16,6 +19,7 @@
         private const byte TotalCols = 31;
         private const int MaxRowPerSheet = 20000;
         private readonly int numberOfSheet;
+        private readonly List<CustomerInfo> customerList;
 
         public CustomerReportExcel(
             string templatePath,
@@ -24,7 +28,8 @@
         {
             this.customerReportInfo = customerReportInfo;
 
-            var totalRows = customerReportInfo.CustomerList.ToList().Count;
+            customerList = customerReportInfo.CustomerList.ToList();
+            var totalRows = customerList.Count;
             numberOfSheet = (totalRows / MaxRowPerSheet) + (totalRows % MaxRowPerSheet != 0 ? 1 : 0);
         }
 
@@ -58,21 +63,41 @@
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            var customers = customerReportInfo.CustomerList.ToList();
+            //var customers = customerReportInfo.CustomerList.ToList();
 
-            int rowIndex = RowStartBody;
-            int index = 1;
-            int key = 0;
-            foreach (var customer in customers)
+            //int rowIndex = RowStartBody;
+            //int index = 1;
+            //int key = 0;
+            //foreach (var customer in customers)
+            //{
+            //    if (index == MaxRowPerSheet)
+            //    {
+            //        key++;
+            //        index = 1;
+            //        rowIndex = RowStartBody;
+            //    }
+            //    RenderRow(worksheet.Workbook.Worksheets[key], customer, index, rowIndex++);
+            //    index++;
+            //}
+            try
             {
-                if (index == MaxRowPerSheet)
+                for (var sheetIndex = 0; sheetIndex < numberOfSheet; sheetIndex++)
                 {
-                    key++;
-                    index = 1;
-                    rowIndex = RowStartBody;
+                    int rowIndex = RowStartBody;
+                    var startIndex = sheetIndex * MaxRowPerSheet;
+                    var endIndex = startIndex + MaxRowPerSheet;
+                    for (var i = startIndex; i < endIndex && i < customerList.Count; i++)
+                    {
+                        var customer = customerList[i];
+                        RenderRow(worksheet.Workbook.Worksheets[sheetIndex], customer, i, rowIndex++);
+                    }
+
                 }
-                RenderRow(worksheet.Workbook.Worksheets[key], customer, index, rowIndex++);
-                index++;
+            }
+            catch (System.Exception e)
+            {
+
+                throw;
             }
         }
 
