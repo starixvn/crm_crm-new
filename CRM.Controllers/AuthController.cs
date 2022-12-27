@@ -32,6 +32,7 @@
         private readonly INapSettings napSettings;
         private readonly ISiteService siteService;
         private readonly AppSettings appSettings;
+        private const int SSOExpiredTimeInSeconds = 30;
 
         public AuthController(
             IUserService userService,
@@ -219,6 +220,44 @@
             }
 
             return new RedirectResult("~/Auth/SignIn");
+        }
+
+        public async Task<IActionResult> SSO(SsoLogin ssoLogin)
+        {
+            var isValidTime = await IsValidateTime(ssoLogin.Time);
+            if (isValidTime)
+            {
+                var userId = int.Parse(Cryptography.DecryptPassword(ssoLogin.UserId.Replace(" ", "+")));
+                var onUserid = int.Parse(Cryptography.DecryptPassword(ssoLogin.OnUserId.Replace(" ", "+")));
+
+                var newOnUserId = await SSOLogin(userId, onUserid);
+
+                if (newOnUserId > 0)
+                {
+                    var user = await userService.GetAsync(userId);
+                    if (user != null)
+                    {
+                        await DoSignInAsync(user, newOnUserId);
+
+                        var url = napSession.MenuItemList.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.Url))?.Url;
+                        var urlContent = Url.Content($"~{(!string.IsNullOrEmpty(url) ? url : "/Error/AccessDenied")}");
+
+                        return Redirect(!string.IsNullOrWhiteSpace(ssoLogin.RedirectUrl) && Url.IsLocalUrl(ssoLogin.RedirectUrl) ? ssoLogin.RedirectUrl : urlContent);
+                    }
+                }
+            }
+
+            return new RedirectResult("~/Auth/SignIn");
+        }
+
+        private async Task<bool> IsValidateTime(string time)
+        {
+            var cfsDescryptTime = Cryptography.DecryptPassword(time.Replace(" ", "+"));
+            var serverTime = await securityService.GetTimeAsync();
+            var serverDateTime = DateTime.Parse(serverTime);
+            var expiration = serverDateTime - DateTime.Parse(cfsDescryptTime);
+
+            return expiration.TotalSeconds <= SSOExpiredTimeInSeconds;
         }
 
         private async Task<int> SSOLogin(int userId, int onuserId)
