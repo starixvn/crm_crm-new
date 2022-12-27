@@ -190,6 +190,7 @@
             return CultureInfo.CreateSpecificCulture(defaultLang);
         }
 
+        [Route("UserLogin/SSO")]
         public async Task<IActionResult> SingleSignOn(SingleSignOn model)
         {
             var isValidTime = await IsValidTime(model.Time);
