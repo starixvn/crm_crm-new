@@ -84,35 +84,30 @@
                 .UseConfig(new LoggingConfiguration())
                 .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(options =>
-            {
-                options.LoginPath = Configuration.GetSection("AuthSettings:SignInPath").Value;
-                options.LogoutPath = Configuration.GetSection("AuthSettings:SignOutPath").Value;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["AuthSettings:SessionTimeout"]));
-                options.SlidingExpiration = true;
-                options.Events.OnSigningOut = context =>
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
                 {
-                    context.Response.Redirect(options.LoginPath);
-                    return Task.CompletedTask;
-                };
-            });
+                    options.LoginPath = Configuration.GetSection("AuthSettings:SignInPath").Value;
+                    options.LogoutPath = Configuration.GetSection("AuthSettings:SignOutPath").Value;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["AuthSettings:SessionTimeout"]));
+                    options.SlidingExpiration = true;
+                    options.Cookie = new CookieBuilder
+                    {
+                        Name = "Fanex.CRM.Cookie",
+                        SecurePolicy = CookieSecurePolicy.SameAsRequest
+                    };
+                    options.Events.OnSigningOut = context =>
+                    {
+                        context.Response.Redirect(options.LoginPath);
+                        return Task.CompletedTask;
+                    };
+                });
 
             services.AddSession(options =>
             {
                 options.Cookie.IsEssential = true;
                 options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(Configuration.GetSection("AuthSettings:SessionTimeout").Value));
+                options.Cookie.Name = "Fanex.CRM.Session";
             });
 
             services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
