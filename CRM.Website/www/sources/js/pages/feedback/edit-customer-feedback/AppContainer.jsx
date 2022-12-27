@@ -432,7 +432,7 @@ export default class AppContainer extends Component {
     handleGetFeedbackSubjectTemplates = Site.debounce(async searchText => {
         if (searchText.length >= 2) {
             const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
-            await DataService.getDataAsync(url, { searchText }).then(response => {
+            await DataService.getDataAsync(url, {subject: searchText}).then(response => {
                 this.setState({ feedbackSubjectTemplates: response.data });
             }).catch(Site.handleAxiosError);
         } else {

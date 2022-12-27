@@ -565,7 +565,7 @@ export class Filter extends Component {
                                     <AutoComplete
                                         value={this.state.subject}
                                         options={this.props.feedbackSubjectTemplates} displayField="subject"
-                                        onChange={value => this.handleChangeSubject(value.subject)}
+                                        onChange={value => this.handleChangeSubject(value.subject || value)}
                                         onInputChange={this.handleGetFeedbackSubjectTemplates}
                                     />
                                 </div>

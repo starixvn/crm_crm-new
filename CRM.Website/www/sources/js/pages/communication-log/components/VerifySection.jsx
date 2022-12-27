@@ -111,7 +111,7 @@ export default class VerifySection extends PureComponent {
                                 <AutoComplete isInvalid={isValidSubject}
                                     value={verifySection.subject}
                                     options={feedbackSubjectTemplates} displayField="subject"
-                                    onChange={value => handleChangeVerifySection('subject', value.subject)}
+                                    onChange={value => handleChangeVerifySection('subject', value.subject || value)}
                                     onInputChange={handleGetFeedbackSubjectTemplates}
                                 />
                             </Col>

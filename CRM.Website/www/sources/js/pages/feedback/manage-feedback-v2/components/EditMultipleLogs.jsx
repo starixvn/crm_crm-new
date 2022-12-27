@@ -270,7 +270,7 @@ export class EditMultipleLogs extends Component {
     onGetFeedbackSubjectTemplates = Site.debounce(async searchText => {
         if (searchText.length >= 2) {
             const url = Site.resolveClientUrl('Common/GetFeedbackSubjectTemplate');
-            await DataService.getDataAsync(url, { searchText }).then(response => {
+            await DataService.getDataAsync(url, {subject: searchText}).then(response => {
                 this.setState({ feedbackSubjectTemplates: response.data });
             }).catch(Site.handleAxiosError);
         } else {
@@ -883,7 +883,7 @@ export class EditMultipleLogs extends Component {
                                     <AutoComplete isInvalid={touched.subject && errors.subject}
                                         value={values.subject}
                                         options={feedbackSubjectTemplates} displayField="subject"
-                                        onChange={value => setFieldValue('subject', value)}
+                                        onChange={value => setFieldValue('subject', value.subject || value)}
                                         onInputChange={this.onGetFeedbackSubjectTemplates}
                                     />
                                 </div>

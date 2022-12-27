@@ -79,7 +79,7 @@ export default class AutoComplete extends Component {
             selectedItem: -1
         }, () => {
             this.props.onInputChange(value.trim());
-            this.props.onChange && this.props.onChange(value.trim());
+            this.props.onChange && this.props.onChange(value);
         });
     };
 
