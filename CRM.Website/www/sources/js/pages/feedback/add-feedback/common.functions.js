@@ -153,7 +153,7 @@ export const initValuesAddCustomerFb = (settings, customerDetail) =>{
         subProduct: '',
         betType: '',
         role: customerDetail.roleId, 
-        country: customerDetail.country.id,
+        country: customerDetail.countryId,
         siteName: customerDetail.siteSetting.name,
         refCodes: customerDetail.bettingCode[1],
         secretCode: customerDetail.bettingCode[0],
