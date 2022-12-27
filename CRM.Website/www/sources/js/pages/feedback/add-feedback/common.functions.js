@@ -242,15 +242,15 @@ export const getParams = (values, customerDetail, settings, state) =>{
 };
 
 const getDefaultLanguage = languages =>{
-    let language = '';
-    languages.forEach(lang => {
-        const isDefault = DefaultLanguages.NotApply === lang ||DefaultLanguages.English === lang
-                        || DefaultLanguages.Mandarin === lang || DefaultLanguages.Cantonese === lang;
-        if(isDefault && (language === '' || language.languageId >  lang)){
-            language = lang;
+    let language = null;
+    const defaultId = [ DefaultLanguages.English, DefaultLanguages.Mandarin, DefaultLanguages.Cantonese];
+    for (let i = 0; i < languages.length; i++) {
+        const langue = languages[i];
+        const isDefaultLanguage = defaultId.includes(langue?.id);
+        if (isDefaultLanguage && (language === null || defaultLanguage.id > langue.id)) {
+            defaultLanguage = langue;
         }
-    });
-
+    }
     language = language || languages[0];
     return language;
 };
