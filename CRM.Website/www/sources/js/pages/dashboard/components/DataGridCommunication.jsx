@@ -199,7 +199,7 @@ export class DataGridCommunication extends Component {
 
             return (
                 <Fragment key={key}>
-                    <div className="font-weight-bold">{filterMainCategory.settingValue}</div>
+                    <div className="font-weight-bold">{filterMainCategory?.settingValue || ''}</div>
                     {
                         value.subSettingId.map((elementId,index) => {
                             const filterSubCategory = filterMainCategory.childSettings.find(element => element.subCategoryId === elementId);
