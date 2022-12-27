@@ -5,8 +5,10 @@ const _rootUrl = document.getElementById('RootUrl') ? document.getElementById('R
 const recheckin = async function () {
     const url = Site.resolveClientUrl('Auth/CheckUserOnlineStatus');
     await DataService.postDataAsync(url).then(response => {
-        if(response.data.errCode === 1){
+        if (response.data.errCode === 1) {
             window.location = _rootUrl + 'auth/SignOut';
+        } else {
+            setTimeout(recheckin, 60000);
         }
     });
 };
