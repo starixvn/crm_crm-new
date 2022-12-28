@@ -655,7 +655,7 @@ export default class AppContainer extends Component {
         if (!values.isReviewed) {
             return 2;
         }
-        return this.formik.values.review === values.review ? 0 : 1;
+        return this.state.feedback.review === values.review ? 0 : 1;
     };
 
     handleReVerifyInactiveAndConfirm = async (params, setSubmitting) =>{
