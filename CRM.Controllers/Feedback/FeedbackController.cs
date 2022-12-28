@@ -86,7 +86,6 @@
                 if (command.IsReviewed)
                 {
                     command.ReviewerId = napSession.UserId;
-                    command.UpdateReviewedMode = 1;
                 }
                 else
                 {
