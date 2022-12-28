@@ -169,24 +169,12 @@ export class CreateCommunicationLog extends Component {
     };
 
     onChangeStartTime = selectedTime => {
-        let endTime = this.formik.values.endTime;
         this.formik.setFieldValue('startTime', selectedTime);
-        if (moment(selectedTime).isAfter(moment(endTime))) {
-            endTime = new Date(DateTimeService.toLongDateTimeFormat(new Date(selectedTime)));
-            endTime.setMinutes(endTime.getMinutes() + 1);
-            this.formik.setFieldValue('endTime', endTime);
-        }
         setTimeout(() => this.updateTimeAndToolPrefix(), 100);
     };
 
     onChangeEndTime = selectedTime => {
-        let startTime = this.formik.values.startTime;
         this.formik.setFieldValue('endTime', selectedTime);
-        if (moment(startTime).isAfter(moment(selectedTime))) {
-            startTime = new Date(DateTimeService.toLongDateTimeFormat(new Date(selectedTime)));
-            startTime.setMinutes(startTime.getMinutes() - 1);
-            this.formik.setFieldValue('startTime', startTime);
-        }
     };
 
     updateTimeAndToolPrefix = () => {

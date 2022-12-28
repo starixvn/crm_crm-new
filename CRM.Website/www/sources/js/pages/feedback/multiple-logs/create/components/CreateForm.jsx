@@ -182,25 +182,12 @@ export class CreateForm extends Component {
     };
 
     handleChangeStartTime = startTime => {
-        let endTime = this.formik.values.endTime;
         this.formik.setFieldValue('startTime', startTime);
-        if (moment(startTime).isAfter(moment(endTime))) {
-            endTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(startTime)));
-            endTime.setMinutes(endTime.getMinutes() + 1);
-
-            this.formik.setFieldValue('endTime', endTime);
-        }
         setTimeout(() => this.updateTimeAndToolPrefix(), 100);
     };
 
     handleChangeEndTime = endTime => {
-        let startTime = this.formik.values.startTime;
         this.formik.setFieldValue('endTime', endTime);
-        if (moment(startTime).isAfter(moment(endTime))) {
-            startTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(endTime)));
-            startTime.setMinutes(startTime.getMinutes() - 1);
-            this.formik.setFieldValue('startTime', startTime);
-        }
     };
 
     handleChangeCommunicationTool = (setFieldValue, currentItem, selectedItemsKey) => {

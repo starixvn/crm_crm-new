@@ -12,7 +12,7 @@ export const validateFormik = (values, customerDetail, settings, content) => {
     }
 
     if (moment(values.feedbackDate).isAfter(moment(values.resolutionTime))) {
-        errors.feedbackDate = LangHelper.formatString(LangHelper.getResource('FieldLessThanOrEqualTo'), LangHelper.getResource('StartTime'), LangHelper.getResource('EndTime'));
+        errors.feedbackDate = LangHelper.formatString(LangHelper.getResource('FieldLessThanOrEqualTo'), LangHelper.getResource('FeedbackDate'), LangHelper.getResource('ResolutionTime'));
     }
 
     if (values.communication.length === 0) {
