@@ -3,12 +3,16 @@ import { getInvalidCategoryParams } from '@jsroot/common/shareScripts';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { getProductParams, getCategoryParams }from '@jsroot/common/shareScripts';
 import { DefaultLanguages }from '@jsroot/common/constants';
-
+import moment from 'moment';
 
 export const validateFormik = (values, customerDetail, settings, content) => {
     const errors = {};
     if (customerDetail === null && values.identityInformation ==='') {
         errors.identityInformation = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Identity'));
+    }
+
+    if (moment(values.feedbackDate).isAfter(moment(values.resolutionTime))) {
+        errors.feedbackDate = LangHelper.formatString(LangHelper.getResource('FieldLessThanOrEqualTo'), LangHelper.getResource('StartTime'), LangHelper.getResource('EndTime'));
     }
 
     if (values.communication.length === 0) {

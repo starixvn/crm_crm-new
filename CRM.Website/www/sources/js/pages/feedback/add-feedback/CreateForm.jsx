@@ -1,5 +1,4 @@
 import React, { Component, lazy, Suspense } from 'react';
-import moment from 'moment';
 import { Button, Col, Form, Row, OverlayTrigger, Tooltip, Collapse } from 'react-bootstrap';
 import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
@@ -129,30 +128,14 @@ export default class CreateForm extends Component {
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
     handleChangeFeedbackTime = feedbackDate => {
-        let resolutionTime = this.formik.values.resolutionTime;
         this.formik.setFieldValue('feedbackDate', feedbackDate);
-
-        if (moment(feedbackDate).isAfter(moment(resolutionTime))) {
-            resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(feedbackDate)));
-            resolutionTime.setMinutes(resolutionTime.getMinutes() + 1);
-            this.formik.setFieldValue('resolutionTime', resolutionTime);
-        }
-
         this.setState({ feedbackDate }, () => {
             setTimeout(() => this.updateTimeAndToolPrefix(), 100);
         });
     };
 
     handleChangeResolutionTime = (resolutionTime) => {
-        let feedbackDate = this.formik.values.feedbackDate;
         this.formik.setFieldValue('resolutionTime', resolutionTime);
-
-        if (moment(feedbackDate).isAfter(moment(resolutionTime))) {
-            feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(resolutionTime)));
-            feedbackDate.setMinutes(feedbackDate.getMinutes() - 1);
-
-            this.formik.setFieldValue('feedbackDate', feedbackDate);
-        }
     };
 
     handleCommunicationChange = (currentItem, selectedItemsKey, setFieldValue) => {
