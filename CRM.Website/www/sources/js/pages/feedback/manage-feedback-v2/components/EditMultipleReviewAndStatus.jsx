@@ -71,7 +71,7 @@ export default class EditMultipleReviewAndStatus extends Component {
 
     validateFormik = values => {
         const errors = {};
-        if (this.state.isReviewed && values.review === '') {
+        if (this.state.isReviewed && !values.review) {
             errors.review = LangHelper.getResource('ReviewRequired');
         }
 

@@ -10,7 +10,7 @@ const recheckin = async function () {
         } else {
             setTimeout(recheckin, 60000);
         }
-    });
+    }).catch(Site.handleAxiosError);
 };
 
 const isHost = document.getElementById('isEnableReCheckIn').checked;

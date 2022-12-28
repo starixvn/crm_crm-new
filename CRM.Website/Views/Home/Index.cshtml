@@ -19,7 +19,6 @@
         <script src="~/www/dist/js/pro/pages/auth/recheckin.chunk.js" asp-append-version="true"></script>
     </environment>
 }
-@Html.AntiForgeryToken()
 <input type="checkbox" hidden id="isEnableReCheckIn" @(napSettings.EnableReCheckIn ? "checked" : string.Empty) />
 <div id="app-container"></div>
 <input type="checkbox" hidden id="hasCreateFeedbackPermission" @(Model ? "checked" : string.Empty) />
