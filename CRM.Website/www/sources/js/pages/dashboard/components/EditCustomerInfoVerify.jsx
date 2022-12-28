@@ -28,6 +28,9 @@ export class EditCustomerInfoVerify extends Component {
 
     componentDidUpdate(prevProps){
         if(JSON.stringify(prevProps.customerInfoVerify) !== JSON.stringify(this.props.customerInfoVerify)){
+            if(!this.props.customerInfoVerify){
+                return;
+            }
             this.handleInitData();
         }
     }
