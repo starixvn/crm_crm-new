@@ -88,6 +88,7 @@ export default class CkEditor extends PureComponent {
                         allowedContent: true,
                         removePlugins: REMOVE_PLUGINS,
                         language: 'en',
+                        disableNativeSpellChecker:false,
                         enterMode: 2
                     }}
                     style={{body: 'margin: 0'}}
