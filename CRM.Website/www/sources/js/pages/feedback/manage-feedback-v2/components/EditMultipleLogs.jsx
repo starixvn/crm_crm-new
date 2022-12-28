@@ -986,21 +986,16 @@ export class EditMultipleLogs extends Component {
             isUpdateCategory: isCheck.mainCategory,
             noInquiries: values.noInquiries === '' ? 0 : parseInt(values.noInquiries, 10),
             isUpdateNoInquiries: isCheck.inquiry,
-            updateReviewedMode: this.reviewMode(isCheck)
+            updateReviewedMode: !this.state.hasReviewFeedbackPermission ? 0 : this.reviewMode(isCheck.reviewed, values.review)
         };
         this.confirmEditMultipleLogs(params);
     };
 
-    reviewMode = isCheck => {
-        if (!this.state.hasReviewFeedbackPermission) {
-            return 0;
-        } else {
-            if (!isCheck.reviewed) {
-                return 2;
-            } else {
-                return 1;
-            }
+    reviewMode = (isReviewed, review) => {
+        if (!isReviewed) {
+            return 2;
         }
+        return this.state.communication.review === review ? 0 : 1;
     };
 
     confirmEditMultipleLogs = params => {
