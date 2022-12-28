@@ -213,6 +213,7 @@
                 feedback.DurationTime = calculationDuration(feedback.ResolutionDate, feedback.FeedbackDate);
                 feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
                 feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
+                feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
             }
             return feedbacks;
         }
