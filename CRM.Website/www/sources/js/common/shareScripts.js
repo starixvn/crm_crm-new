@@ -263,11 +263,10 @@ const handleSortDateAsc = (sortBy, first, second) => new Date(first[`${sortBy}`]
 
 const handleSortDateDesc = (sortBy, first, second) => new Date(first[`${sortBy}`]) < new Date(second[`${sortBy}`]) ? 1 : -1;
 
-const handleSortStringAsc = (sortBy, first, second) =>  checkNullSort(sortBy, first, second) ? -1 : first[`${sortBy}`] > second[`${sortBy}`] ? 1 : -1;
+const handleSortStringAsc = (sortBy, first, second) => first[`${sortBy}`] > (second[`${sortBy}`] || '') ? 1 : -1;
 
-const handleSortStringDesc = (sortBy, first, second) => checkNullSort(sortBy, first, second) ? 1 : first[`${sortBy}`] < second[`${sortBy}`] ? 1 : -1;
+const handleSortStringDesc = (sortBy, first, second) => first[`${sortBy}`] < (second[`${sortBy}`] || '') ? 1 : -1;
 
-const checkNullSort = (sortBy, first, second) => (!first[`${sortBy}`]  || !second[`${sortBy}`]);
 
 export const handleSort = (cloneGridData, sortBy, sortOrder) => {
     let gridDataSortAsc = null;
