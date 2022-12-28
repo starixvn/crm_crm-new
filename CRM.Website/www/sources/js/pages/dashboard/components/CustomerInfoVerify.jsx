@@ -35,6 +35,9 @@ export class CustomerInfoVerify extends Component {
 
     handleInitData = () =>{
         const { customerInfoVerify } = this.props;
+        if(!customerInfoVerify){
+            return;
+        }
         const listVerify = [];
         let countVerified = 0;
         listVerify.push(customerInfoVerify.isVerifyEmail);
