@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import functions from '../functions';
 export default class Pager extends Component {
     static propTypes = {
         pageOption: PropTypes.shape({
@@ -42,6 +42,7 @@ export default class Pager extends Component {
 
     goToPage(index, pageSize) {
         this.props.onPaging && this.props.onPaging(index, pageSize);
+        functions.scrollToTop(this.props.bodyWrapper, 200);
     }
 
     onKeyUpHandle = (e, totalPage) => {

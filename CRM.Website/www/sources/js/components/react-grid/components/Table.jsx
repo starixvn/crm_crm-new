@@ -55,6 +55,7 @@ class Table extends Component {
         this.headerWrapper = null;
         this.bodyWrapper = null;
         this.footerWrapper = null;
+        this.refFixTable = null;
 
         const headerContainerProps = { className: 'header-content', isHeader: true, getRef: element => this.headerWrapper = element };
         this.Header = createTableSection(headerContainerProps);
@@ -248,7 +249,7 @@ class Table extends Component {
         return (
             <div className='fix-table-container' style={{ maxWidth: maxWidthCal }}>
                 <div style={{ maxWidth: maxWidthCal }}>{this.props.title}</div>
-                <div className='fix-table'
+                <div className='fix-table' ref={element => this.refFixTable = element}
                     style={{ maxWidth: maxWidthCal, maxHeight: maxHeightContainer }}
                 >
                     <Header {...fixHeaderSectionProps}>
@@ -257,7 +258,7 @@ class Table extends Component {
                     </Header>
                     {
                         body &&
-                        <Body {...fixSectionProps}>
+                        <Body {...fixSectionProps} >
                             {rowLayout}
                             {body}
                         </Body>
@@ -272,7 +273,7 @@ class Table extends Component {
                 </div>
                 {
                     isPaging && pageOption &&
-                    <Pager pageOption={pageOption} onPaging={onPaging} {...footerSectionProps} />
+                    <Pager pageOption={pageOption} onPaging={onPaging} {...footerSectionProps} bodyWrapper={this.refFixTable}/>
                 }
             </div>
         );
@@ -331,7 +332,7 @@ class Table extends Component {
                     </div>
                     {
                         isPaging && pageOption &&
-                        <Pager pageOption={pageOption} onPaging={onPaging} {...sectionProps} />
+                        <Pager pageOption={pageOption} onPaging={onPaging} {...sectionProps} bodyWrapper={this.bodyWrapper}/>
                     }
                 </div>
         );
