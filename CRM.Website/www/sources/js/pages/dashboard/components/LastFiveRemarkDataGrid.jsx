@@ -62,7 +62,6 @@ export class LastFiveRemarkDataGrid extends Component {
                     }
                 >
                     <Cell className='remark-content'
-                        onClick={() =>this.handleOpenEdit(item)}
                         dangerouslySetInnerHTML={{__html: item.remark}}
                     />
                 </OverlayTrigger>
@@ -71,10 +70,6 @@ export class LastFiveRemarkDataGrid extends Component {
                 <Cell>{userNameFormat}</Cell>
             </Row>
         );
-    };
-
-    handleOpenEdit = item =>{
-        this.props.setOpenEditPopup({show: true, data: item, isViewHistory: false});
     };
 
     handleViewNewRemark = event =>{
