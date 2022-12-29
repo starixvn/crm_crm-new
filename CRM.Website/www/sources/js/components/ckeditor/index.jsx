@@ -36,6 +36,14 @@ export default class CkEditor extends PureComponent {
         }
     };
 
+    onKeyPress = event => {
+        if(event.data.keyCode === 1114195){
+            const keyDownEvent = new KeyboardEvent('keydown', {'key':'s', ctrlKey: true});
+            document.dispatchEvent(keyDownEvent);
+            event.cancel();
+        }
+    };
+
     onLoadPlugin = CKEDITOR => {
         let editText = '';
         let textTemplateEditBlock = EDIT_BLOCK_TEMPLATE;
@@ -94,6 +102,7 @@ export default class CkEditor extends PureComponent {
                     style={{body: 'margin: 0'}}
                     onLoaded={editor => this.editor = editor}
                     onNamespaceLoaded={this.onLoadPlugin}
+                    onKey={this.onKeyPress}
                 />
             </div>
         );
