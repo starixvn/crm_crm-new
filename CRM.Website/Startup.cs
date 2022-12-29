@@ -214,7 +214,7 @@
             };
             var redis = ConnectionMultiplexer.Connect(configRedix);
             services.AddDataProtection()
-                .PersistKeysToStackExchangeRedis(redis, redisConfig.Password)
+                .PersistKeysToStackExchangeRedis(redis, redisConfig.ApplicationName + ":DataProtection:Keys")
                 .SetApplicationName(redisConfig.ApplicationName + ":DataProtection:Keys");
         }
 
