@@ -203,7 +203,8 @@ export class Layout extends Component {
             custId: customerInfo?.custId,
             isGuest: isGuest,
             username: customerInfo?.username,
-            isCreditSite: isCreditSite
+            isCreditSite: isCreditSite,
+            customerInfo: customerInfo
         };
         return currentCustomer;
     };

@@ -53,8 +53,8 @@ export class CreateForm extends Component {
 
     initFormData = () => {
         const settings = this.props.settings;
-        const startTime = new Date(DateTimeService.toLongDateTimeFormat(new Date()));
-        const endTime = new Date(DateTimeService.toLongDateTimeFormat(new Date()));
+        const startTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+        const endTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         endTime.setMinutes(endTime.getMinutes() + 1);
 
         return {

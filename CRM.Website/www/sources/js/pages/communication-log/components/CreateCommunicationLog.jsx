@@ -113,7 +113,7 @@ export class CreateCommunicationLog extends Component {
     };
 
     initFormikData = () => {
-        const { options } = this.props;
+        const { options, customerInfo } = this.props;
         const { allSettings } = this.state;
         const date = new Date();
         const startTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(date)));
@@ -130,8 +130,8 @@ export class CreateCommunicationLog extends Component {
             startTime,
             endTime,
             statusId: options ? options.statusId : allSettings.statuses[0].statusId,
-            roleId: options ? options.roleId : allSettings.roles[4].id,
-            licenseeTypeId: options ? options.licenseeTypeId : allSettings.licenseeTypes[0].id,
+            roleId: options ? options.roleId : customerInfo.roleId,
+            licenseeTypeId: options ? options.licenseeTypeId : customerInfo.licenseeType,
             responseId: options ? options.responseId : allSettings.responses[0].id,
             solution: '',
             remark: ''

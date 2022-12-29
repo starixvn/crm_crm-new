@@ -20,7 +20,7 @@ class index extends React.PureComponent {
         return(
             <Provider store={store}>
                 <div className='communication-log'>
-                    <AppContainer id={location.state.custId}/>
+                    <AppContainer id={location.state.custId} customerInfo={location.state.customerInfo}/>
                 </div>
             </Provider>
         );

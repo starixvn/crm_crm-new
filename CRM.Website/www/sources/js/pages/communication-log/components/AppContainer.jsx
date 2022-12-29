@@ -63,7 +63,7 @@ export class AppContainer extends Component {
     };
 
     render() {
-        const { editNoOfInquiryDialog, editCommunicationDialog, createCommunicationDialog } = this.props;
+        const { editNoOfInquiryDialog, editCommunicationDialog, createCommunicationDialog, customerInfo } = this.props;
         const {customerInfoPolicy} = this.state;
         if(!customerInfoPolicy){
             return null;
@@ -89,6 +89,7 @@ export class AppContainer extends Component {
                     createCommunicationDialog.show &&
                     <CreateCommunicationLog
                         id={this.props.id}
+                        customerInfo={customerInfo}
                         onClose={this.handleCloseCreateCommunicationDiaLog}
                     />
                 }
