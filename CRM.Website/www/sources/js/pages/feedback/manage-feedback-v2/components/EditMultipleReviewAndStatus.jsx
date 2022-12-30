@@ -39,6 +39,23 @@ export default class EditMultipleReviewAndStatus extends Component {
         await DataService.getDataAsync(url).then(response => {
             this.setState({ logInfo: response.data, isReviewed: response.data.isReviewed });
         }).catch(Site.handleAxiosError);
+
+        document.addEventListener("keydown", this.handleKeyDownFunc, false);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.handleKeyDownFunc, false);
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.formik.submitForm().then(() => {
+                if (this.formik.isValid) {
+                    this.handleSubmit(this.formik.values);
+                }
+            });
+        }
     }
 
     handleSubmit = async values => {
@@ -114,9 +131,9 @@ export default class EditMultipleReviewAndStatus extends Component {
                                     >
                                         {
                                             this.props.statuses.map(item =>
-                                                (<option key={item.statusId} value={item.statusId}>
-                                                    {item.name}
-                                                </option>)
+                                            (<option key={item.statusId} value={item.statusId}>
+                                                {item.name}
+                                            </option>)
                                             )
                                         }
 
@@ -130,7 +147,10 @@ export default class EditMultipleReviewAndStatus extends Component {
                                 checked={isReviewed}
                                 onChange={this.handleChangeCheckBox}
                             />
-                            {logInfo.isReviewed && <Form.Label column sm="5" md="5">{`(Reviewed by ${logInfo.reviewer} on ${dateFormat})`}</Form.Label>}
+                            {
+                                logInfo.isReviewed &&
+                                <Form.Label column sm="5" md="5">{`(Reviewed by ${logInfo.reviewer} on ${dateFormat})`}</Form.Label>
+                            }
                         </Form.Group>
                         {
                             isReviewed && <div className="text-editor">

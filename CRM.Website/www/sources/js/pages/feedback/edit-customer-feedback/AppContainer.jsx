@@ -148,7 +148,25 @@ export default class AppContainer extends Component {
                 betTypeOptions,
                 relatedCustomers
             });
-        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+            }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+
+        document.addEventListener("keydown", this.handleKeyDownFunc, false);
+
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.handleKeyDownFunc, false);
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.formik.submitForm().then(() => {
+                if (this.formik.isValid) {
+                    this.handleSubmit(this.formik.values);
+                }
+            });
+        }
     }
 
     getFeedbackSettings = (feedback, settings) => {
