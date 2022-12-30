@@ -68,7 +68,8 @@ export class Filter extends Component {
 
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
-    handleSubmit = () => {
+    handleSubmit = (e) => {
+        e.preventDefault();
         const { mainCategoryId, runningNumber, fromDate, toDate, username, handler, subCategoryId, communicationId,
             reviewer, statusId, responseId, isReviewed, isGuest } = this.state;
         const params = {
@@ -292,7 +293,7 @@ export class Filter extends Component {
                         />
                     </Form.Group>
                     <div>
-                        <Button variant="primary" size="sm" onClick={this.handleSubmit}>
+                        <Button variant="primary" size="sm" type="submit" onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>
                     </div>
