@@ -50,6 +50,8 @@ export default class EditMultipleReviewAndStatus extends Component {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
+            console.log(this);
+
             this.formik.submitForm().then(() => {
                 if (this.formik.isValid) {
                     this.handleSubmit(this.formik.values);
@@ -163,7 +165,7 @@ export default class EditMultipleReviewAndStatus extends Component {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button size="sm" type="submit" variant="primary" disabled={this.state.isSubmitting}>
+                    <Button size="sm" type="submit" variant="primary" disabled={this.state.isSubmitting} id='submit'>
                         {LangHelper.getResource('Save')}
                     </Button>
                 </Modal.Footer>
