@@ -191,6 +191,7 @@ export default class EditMultipleReviewAndStatus extends Component {
                     <Modal.Title as="div">{LangHelper.getResource('MultipleReviewAndUpdateStatus')}</Modal.Title>
                 </Modal.Header>
                 <Formik
+                    innerRef={el => this.formik = el}
                     initialValues={initialValues}
                     validate={this.validateFormik}
                     onSubmit={this.handleSubmit}
@@ -201,3 +202,4 @@ export default class EditMultipleReviewAndStatus extends Component {
         );
     }
 }
+
