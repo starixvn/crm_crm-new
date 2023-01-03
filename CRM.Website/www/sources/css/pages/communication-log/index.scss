@@ -2,7 +2,12 @@
 
 .communication-log{
     max-width: 1400px;
-    
+    .table-container table tr{
+        cursor: pointer;
+        &:hover td{
+            background-color: #E2FFFF !important;
+        }
+    }
     .pending{
         background-color: #f0edc4;
     }

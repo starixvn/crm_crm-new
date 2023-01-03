@@ -83,6 +83,12 @@ export class DataGrid extends Component {
         this.props.setEditCommunicationDialog({ show: true, feedbackId: id });
     };
 
+    handleDoubleClickShowEdit = (event, id) => {
+        if(event.detail === 2){
+            this.props.setEditCommunicationDialog({ show: true, feedbackId: id });
+        }
+    };
+
     handleCreate = () => {
         this.props.setCreateCommunicationDialog({ show: true });
     };
@@ -113,7 +119,7 @@ export class DataGrid extends Component {
             cssClass = (cssStatus !== 'pending' && cssStatus !== 'closed') ? '' : cssStatus;
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
-            <Row key={index} className={cssClass}>
+            <Row key={index} className={cssClass} onClick={event => this.handleDoubleClickShowEdit(event, item.feedbackId)}>
                 <Cell className="text-center">
                     <span className='link-click' onClick={() => this.handleEditCommunicationLog(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>

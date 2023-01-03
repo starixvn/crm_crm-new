@@ -55,6 +55,12 @@ export class DataGridCommunication extends Component {
         this.props.setEditCommunicationDialog({ show: true, id: id });
     };
 
+    handleDoubleClickShowEdit = (event, id) => {
+        if(event.detail === 2){
+            this.props.setEditCommunicationDialog({ show: true, id: id });
+        }
+    };
+
     handleShowNoOfInquiry = id => {
         this.props.setNoOfInquiryDialog({ show: true, feedbackId: id });
     };
@@ -220,7 +226,7 @@ export class DataGridCommunication extends Component {
         const cssStatus = item.status ? item.status.toLowerCase() : '';
         const cssColor = (cssStatus !== 'closed' && cssStatus !== 'pending') ? '' : cssStatus;
         return (
-            <Row key={index} className={cssColor}>
+            <Row key={index} className={cssColor} onClick={event => this.handleDoubleClickShowEdit(event, item.feedbackId)}>
                 <Cell className="text-center">
                     <span className='link-detail' onClick={() => this.handleShowEditCommunication(item.feedbackId)}>{item.feedbackId}</span>
                 </Cell>
