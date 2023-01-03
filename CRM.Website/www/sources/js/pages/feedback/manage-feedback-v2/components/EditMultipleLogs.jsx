@@ -175,7 +175,8 @@ export class EditMultipleLogs extends Component {
 
             this.formik.submitForm().then(() => {
                 if (this.formik.isValid) {
-                    this.handleSubmit(this.formik.values);
+                    var setSubmitting = this.formik.setSubmitting;
+                    this.handleSubmit(this.formik.values, { setSubmitting });
                 }
             });
         }

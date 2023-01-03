@@ -173,7 +173,8 @@ export class EditCommunicationLog extends Component {
             event.preventDefault();
             this.formik.submitForm().then(() => {
                 if (this.formik.isValid) {
-                    this.handleSubmit(this.formik.values);
+                    var setSubmitting = this.formik.setSubmitting;
+                    this.handleSubmit(this.formik.values, { setSubmitting });
                 }
             });
         }
