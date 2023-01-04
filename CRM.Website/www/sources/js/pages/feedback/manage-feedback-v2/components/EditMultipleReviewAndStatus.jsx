@@ -104,7 +104,7 @@ export default class EditMultipleReviewAndStatus extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isPopup/>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         editResult &&

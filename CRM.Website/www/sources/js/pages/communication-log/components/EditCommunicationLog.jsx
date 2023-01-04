@@ -21,6 +21,7 @@ import {
     validateFormik, handleChangeProduct, handleChangeSubProduct, isValidCustomer
 } from '../common.functions';
 import { toast } from 'react-toastify';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class EditCommunicationLog extends Component {
     constructor(props) {
@@ -161,12 +162,6 @@ export class EditCommunicationLog extends Component {
             relatedCustomers,
             oldReLatedCust: relatedCustomers
         });
-
-        document.addEventListener("keydown", this.handleKeyDownFunc, false);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener("keydown", this.handleKeyDownFunc, false);
     }
 
     handleKeyDownFunc = event => {
@@ -532,6 +527,7 @@ export class EditCommunicationLog extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         editResult &&

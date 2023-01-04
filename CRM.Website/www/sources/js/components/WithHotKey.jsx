@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 export default class WithHotKey extends React.Component  {
     static propTypes = {
-        isPopup: PropTypes.bool
+        isDocumentHandle: PropTypes.bool
     };
 
     static defaultProps = {
-        isPopup: false
+        isDocumentHandle: false
     };
 
     componentDidMount() {
-        if(this.props.isPopup){
+        if(this.props.isDocumentHandle){
             document.addEventListener("keydown", this.props.handleKeyDownFunc, false);
         }else{
             const rightContainer = document.getElementById('right-row-container');
@@ -19,7 +19,7 @@ export default class WithHotKey extends React.Component  {
     }
 
     componentWillUnmount(){
-        if(this.props.isPopup){
+        if(this.props.isDocumentHandle){
             document.removeEventListener("keydown", this.props.handleKeyDownFunc, false);
         }else{
             const rightContainer = document.getElementById('right-row-container');

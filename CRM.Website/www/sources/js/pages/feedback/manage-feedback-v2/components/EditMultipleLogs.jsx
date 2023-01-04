@@ -22,6 +22,9 @@ import {
     getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories,
     getProductParams, getCategoryParams
 } from '@jsroot/common/shareScripts';
+import { toast } from 'react-toastify';
+
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class EditMultipleLogs extends Component {
     static propTypes = {
@@ -161,12 +164,6 @@ export class EditMultipleLogs extends Component {
                 }
             });
         }).catch(Site.handleAxiosError);
-
-        document.addEventListener("keydown", this.handleKeyDownFunc, false);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener("keydown", this.handleKeyDownFunc, false);
     }
 
     handleKeyDownFunc = event => {
@@ -936,6 +933,7 @@ export class EditMultipleLogs extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.state.editResult &&

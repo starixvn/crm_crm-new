@@ -22,6 +22,7 @@ import DataService from '@jsroot/common/dataService';
 import { toast } from 'react-toastify';
 const CustomerInfo = lazy(() => import('./CustomerInfo'));
 const Content = lazy(() => import('./Content'));
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export default class CreateForm extends Component {
     constructor(props) {
@@ -107,12 +108,6 @@ export default class CreateForm extends Component {
             const customerInfo = initCustomerInfo(this.props.customerDetail);
             this.setState({customerInfo});
         }
-
-        document.addEventListener("keydown", this.handleKeyDownFunc, false);
-    }
-
-    componentWillUnmount(){
-        document.removeEventListener("keydown", this.handleKeyDownFunc, false);
     }
 
     handleKeyDownFunc = event =>{
@@ -654,6 +649,7 @@ export default class CreateForm extends Component {
     }) => {
         return (
             <Form noValidate onSubmit={handleSubmit}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                 {
                     this.props.addFeedbackResult &&
