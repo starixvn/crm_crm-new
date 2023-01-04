@@ -11,9 +11,11 @@ export default class WithHotKey extends React.Component  {
 
     componentDidMount() {
         if(this.props.isDocumentHandle){
+            document.removeEventListener("keydown", this.props.handleKeyDownFunc, false);
             document.addEventListener("keydown", this.props.handleKeyDownFunc, false);
         }else{
             const rightContainer = document.getElementById('right-row-container');
+            rightContainer.removeEventListener("keydown", this.props.handleKeyDownFunc, false);
             rightContainer.focus();
             rightContainer.addEventListener("keydown", this.props.handleKeyDownFunc, false);
         }

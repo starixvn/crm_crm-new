@@ -11,9 +11,9 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import { validateFormik } from '../common.functions';
 import CreateEditForm from './CreateEditForm';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class EditRedemptionLog extends Component {
-
     constructor(props) {
         super(props);
 
@@ -38,6 +38,13 @@ export class EditRedemptionLog extends Component {
         await DataService.getDataAsync(urlGetAllStatus).then(response => {
             this.setState({ allStatus: response.data });
         }).catch(Site.handleAxiosError);
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.formik.submitForm();
+        }
     }
 
     initFormikData = data => {
@@ -132,6 +139,7 @@ export class EditRedemptionLog extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         editRedemptionResult &&

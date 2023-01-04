@@ -113,11 +113,7 @@ export default class CreateForm extends Component {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            this.formik.submitForm().then(() => {
-                if (this.formik.isValid) {
-                    this.handleSubmit(this.formik.values);
-                }
-            });
+            this.formik.submitForm();
         }
 
         if(event.ctrlKey && event.key === 'e' && this.state.collapse.isVerifyCustomer){

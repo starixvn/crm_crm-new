@@ -35,13 +35,7 @@ export class NewRemark extends Component {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            this.formik.submitForm().then(() => {
-                if (this.formik.isValid) {
-                    const {values, setSubmitting} = this.formik;
-                    this.handleSubmit(values, { setSubmitting });
-                }
-            });
-           
+            this.formik.submitForm();
         }
     }
 

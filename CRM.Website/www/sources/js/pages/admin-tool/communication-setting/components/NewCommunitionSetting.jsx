@@ -41,13 +41,7 @@ export class NewCommunitionSetting extends PureComponent {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-
-            this.formik.submitForm().then(() => {
-                if (this.formik.isValid) {
-                    const {setSubmitting, resetForm} = this.formik;
-                    this.handleSubmit(this.formik.values, { setSubmitting, resetForm });
-                }
-            });
+            this.formik.submitForm();
         }
 
         if(event.ctrlKey && event.key === 'e'){

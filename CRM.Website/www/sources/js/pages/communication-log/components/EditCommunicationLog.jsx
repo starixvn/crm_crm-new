@@ -167,12 +167,7 @@ export class EditCommunicationLog extends Component {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            this.formik.submitForm().then(() => {
-                if (this.formik.isValid) {
-                    const setSubmitting = this.formik.setSubmitting;
-                    this.handleSubmit(this.formik.values, { setSubmitting });
-                }
-            });
+            this.formik.submitForm();
         }
 
         if(event.ctrlKey && event.key === 'e'){

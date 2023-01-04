@@ -13,6 +13,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { validateFormik } from '../common.functions';
 import CreateEditForm from './CreateEditForm';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class CreateRedemptionLog extends Component {
 
@@ -27,6 +28,13 @@ export class CreateRedemptionLog extends Component {
 
     componentDidMount() {
         this.props.getSettings();
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.formik.submitForm();
+        }
     }
 
     initFormikData = () => {
@@ -118,6 +126,7 @@ export class CreateRedemptionLog extends Component {
         const { settings } = this.props;
         return (
             <Form noValidate onSubmit={handleSubmit}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <Modal.Body>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
