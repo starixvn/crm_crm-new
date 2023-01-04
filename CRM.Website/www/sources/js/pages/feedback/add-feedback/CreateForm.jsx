@@ -116,8 +116,8 @@ export default class CreateForm extends Component {
             this.formik.submitForm();
         }
 
-        if(event.ctrlKey && event.key === 'e' && this.state.collapse.isVerifyCustomer){
-            const {setFieldValue, values} = this.formik;
+        if (event.ctrlKey && event.key === 'e' && this.state.collapse.isVerifyCustomer) {
+            const { setFieldValue, values } = this.formik;
             this.handleVerify(event, setFieldValue, values.customerNameInput);
         }
     }
@@ -223,7 +223,7 @@ export default class CreateForm extends Component {
 
     handleVerify = (event, setFieldValue, value) => {
         event.preventDefault();
-        if(value === ''){
+        if (value === '') {
             return;
         }
         const regex1 = new RegExp(/,\s+/g);
@@ -652,7 +652,7 @@ export default class CreateForm extends Component {
         setFieldValue
     }) => {
         return (
-            <Form noValidate onSubmit={handleSubmit}>
+            <Form noValidate onSubmit={handleSubmit} action="javascript:void(0)" >
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle />
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                 {

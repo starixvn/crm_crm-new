@@ -10,7 +10,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class NewSettingValue extends Component {
-    componentDidMount(){
+    componentDidMount() {
         this.props.getParentSettings();
     }
     handleSubmit = (values, { setSubmitting }) => {
@@ -32,27 +32,27 @@ export class NewSettingValue extends Component {
         });
     };
 
-    validateFormik = values =>{
+    validateFormik = values => {
         const errors = {};
-        if(values.settingName === ''){
+        if (values.settingName === '') {
             errors.settingName = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingName'));
         }
-        if(values.settingValue === ''){
+        if (values.settingValue === '') {
             errors.settingValue = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SettingValue'));
         }
-        if(!this.isCheckSettingValue(values)){
+        if (!this.isCheckSettingValue(values)) {
             errors.settingValue = LangHelper.getResource('SettingExistedAlready');
         }
         return errors;
     };
 
-    isCheckSettingValue = values =>{
-        const {mainSettings} = this.props;
+    isCheckSettingValue = values => {
+        const { mainSettings } = this.props;
         let checkValue = true;
         mainSettings.map(item => {
-            if(item.settingName === values.settingName){
+            if (item.settingName === values.settingName) {
                 item.childSettings.map(check => {
-                    if(check.settingValue === values.settingValue){
+                    if (check.settingValue === values.settingValue) {
                         checkValue = false;
                     }
                 });
@@ -71,7 +71,7 @@ export class NewSettingValue extends Component {
         isSubmitting
     }) => {
         return (
-            <Form noValidate onSubmit={handleSubmit}>
+            <Form noValidate onSubmit={handleSubmit} action="javascript:void(0)" >
                 <Modal.Body>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
@@ -88,7 +88,7 @@ export class NewSettingValue extends Component {
                             <Form.Control type="text" size="sm" value={values.settingName}
                                 name="settingName" id="settingName"
                                 disabled={this.props.settingName !== ''}
-                                className="shadow-none" autoComplete="off"
+                                className="shadow-none" autoComplete="on"
                                 isInvalid={touched.settingName && errors.settingName}
                                 onChange={handleChange}
                             />
@@ -101,7 +101,7 @@ export class NewSettingValue extends Component {
                         <Col sm="8" md="9">
                             <Form.Control type="text" size="sm" value={values.settingValue}
                                 name="settingValue" id="settingValue"
-                                className="shadow-none" autoComplete="off"
+                                className="shadow-none" autoComplete="on"
                                 isInvalid={touched.settingValue && errors.settingValue}
                                 onChange={handleChange}
                             />
@@ -112,16 +112,16 @@ export class NewSettingValue extends Component {
                             {LangHelper.getResource('Parent')}
                         </Form.Label>
                         <Col sm="8" md="9">
-                        <Form.Control as="select" size="sm" className="shadow-none"
-                            name="picType" id="picType"
-                            onChange={event => setFieldValue('parentId', event.target.value)}
-                            value={values.parentId}
-                        >
-                            <option value='0'>{LangHelper.getResource('NotApply')}</option>
-                            {
-                                this.props.parents.map((item, key) => <option key={key} value={item.settingId}>{`${item.settingName} - ${item.settingValue}`}</option>)
-                            }
-                        </Form.Control>
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                name="picType" id="picType"
+                                onChange={event => setFieldValue('parentId', event.target.value)}
+                                value={values.parentId}
+                            >
+                                <option value='0'>{LangHelper.getResource('NotApply')}</option>
+                                {
+                                    this.props.parents.map((item, key) => <option key={key} value={item.settingId}>{`${item.settingName} - ${item.settingValue}`}</option>)
+                                }
+                            </Form.Control>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
@@ -139,10 +139,10 @@ export class NewSettingValue extends Component {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit"  size="sm" variant="primary" disabled={isSubmitting}>
+                    <Button type="submit" size="sm" variant="primary" disabled={isSubmitting}>
                         {LangHelper.getResource('Save')}
                     </Button>
-                    <Button size="sm"  variant="primary" onClick={this.props.onClose}>
+                    <Button size="sm" variant="primary" onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}
                     </Button>
                 </Modal.Footer>
@@ -151,8 +151,8 @@ export class NewSettingValue extends Component {
     };
 
     render() {
-        const {parents, settingName} = this.props;
-        if(parents === null || !parents){
+        const { parents, settingName } = this.props;
+        if (parents === null || !parents) {
             return null;
         }
 
