@@ -106,8 +106,9 @@ export default class Index extends PureComponent {
         return (
             MenuRouteArray.map(menu =>{
                 const nestedPath = menu.hasOwnProperty('nestedUrl') ? menu.nestedUrl : 'Index';
+                const id = `menu-${menu.url}`;
                 return(
-                    <Route path={Site.resolveClientUrl(menu.url)} element={<menu.component />}>
+                    <Route key={id} path={Site.resolveClientUrl(menu.url)} element={<menu.component />}>
                     {
                         nestedPath &&
                         <Route path={nestedPath} element={<menu.component />} />

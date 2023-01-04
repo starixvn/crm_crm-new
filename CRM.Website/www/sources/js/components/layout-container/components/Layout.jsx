@@ -237,9 +237,9 @@ export class Layout extends Component {
                 {
                     customerInfo !== null && settings !== null &&
                     <DataGrid
-                        customerInfo={customerInfo} settings = {settings} gridParams={gridParams} setGridParams={this.setGridParams}
+                        customerInfo={customerInfo} settings={settings} gridParams={gridParams} setGridParams={this.setGridParams}
                         handleSearchUplineInfo={this.handleSearchUplineInfo} getCustomerInfo={this.getCustomerInfo}
-                        handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup} handleNavigate = {this.handleNavigate}
+                        handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup} handleNavigate={this.handleNavigate}
                     />
                 }
                 </div>
