@@ -93,7 +93,7 @@ export class Filter extends Component {
 
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter">
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
                         <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('Handler')}</Form.Label>

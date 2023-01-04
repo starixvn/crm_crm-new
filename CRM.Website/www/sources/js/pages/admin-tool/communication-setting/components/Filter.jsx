@@ -177,7 +177,7 @@ export class Filter extends Component {
     render() {
         return (
             <Form className="form-filter">
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label className="communication-setting" htmlFor="customerInput">{LangHelper.getResource('Customer')}</Form.Label>

@@ -202,7 +202,7 @@ export class Filter extends Component {
         const { remarkContent, userName, isGuestFiler, isShowHeadline, relatedToPICs, fromDate, toDate, dateTypeSelect, remarkTitleOptions } = this.state;
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group style={{width: 850}}>
                         <Form.Label htmlFor="remarkContent">

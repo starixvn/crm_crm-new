@@ -10,6 +10,7 @@ import Site from '@jsroot/common/site';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 import { FormCheckDirtyComponent } from '@jsroot/components/UseBlocker';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Remark extends Component {
     constructor(props) {
@@ -49,7 +50,14 @@ export class Remark extends Component {
 
     componentWillUnmount(){
         this.props.resetState();
-     }
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit();
+        }
+    }
 
     handleChange = (value, key, name, dataRemark) => {
         const newDataRemark = [...dataRemark];
@@ -150,6 +158,7 @@ export class Remark extends Component {
         const isDirty = this.checkIsDirtyForm();
         return (
             <div>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 {
                     editRemarkResult &&
                     <ResponseMessage isSuccessful={editRemarkResult.isSuccessful}

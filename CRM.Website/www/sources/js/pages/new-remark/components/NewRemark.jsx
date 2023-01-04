@@ -9,6 +9,7 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import RemarkInfo from './RemarkInfo';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class NewRemark extends Component {
     constructor(props) {
@@ -30,6 +31,20 @@ export class NewRemark extends Component {
             });
         }
     }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.formik.submitForm().then(() => {
+                if (this.formik.isValid) {
+                    const {values, setSubmitting} = this.formik;
+                    this.handleSubmit(values, { setSubmitting });
+                }
+            });
+           
+        }
+    }
+
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
@@ -112,6 +127,7 @@ export class NewRemark extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.createResult &&

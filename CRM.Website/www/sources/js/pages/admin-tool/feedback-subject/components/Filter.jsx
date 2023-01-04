@@ -70,7 +70,7 @@ export class Filter extends Component {
 
         return (
             <Form className="form-filter" id="filter-form-subject" onSubmit={this.handleSubmit}>
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <AutoComplete

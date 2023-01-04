@@ -110,7 +110,7 @@ export class Filter extends PureComponent {
         const { filter, settingRoles } = this.state;
         return (
             <Form className="form-filter" onSubmit={this.submitHandler}>
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix="form-row">
                     <Form.Group className='field-name'>
                         <Form.Label htmlFor="NamePIC">{LangHelper.getResource('Name')}</Form.Label>

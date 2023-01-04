@@ -11,6 +11,7 @@ import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import { Policy } from '@jsroot/common/constants';
 import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class EditForm extends Component {
 
@@ -100,6 +101,12 @@ export class EditForm extends Component {
         const { customerInfo } = this.props;
         const params = ParamsCustomerInfo(customerInfo);
         this.setState(params);
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            this.handleSubmit(event);
+        }
     }
 
     handleCollapseExpand = (section = '') => {
@@ -947,6 +954,7 @@ export class EditForm extends Component {
 
         return (
             <Form onSubmit={this.handleSubmit}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 {this.renderPersonalInfo(values)}
                 {
                     (customerInfo.isGroupHeadLine && (updatePolicy === Policy.Read || canEditHeadline))
