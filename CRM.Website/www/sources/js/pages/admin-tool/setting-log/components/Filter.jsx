@@ -61,7 +61,7 @@ export class Filter extends Component {
 
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
-    handleSubmit = () => {
+    handleSubmit = e => {
         const { handler, fromDate, toDate, actionId } = this.state;
 
         const params = {
@@ -78,7 +78,7 @@ export class Filter extends Component {
     };
 
     render() {
-        if(this.props.actionLogs === null || !this.props.actionLogs){
+        if (this.props.actionLogs === null || !this.props.actionLogs) {
             return null;
         }
 
@@ -89,7 +89,7 @@ export class Filter extends Component {
 
         const actionLogs = [...all, ...this.props.actionLogs];
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="handler">
@@ -98,7 +98,7 @@ export class Filter extends Component {
                         <Form.Control size="sm" type="text"
                             name="handler" id="handler"
                             value={handler}
-                            className="shadow-none" autoComplete="off"
+                            className="shadow-none" autoComplete="on"
                             onChange={this.handleChange}
                         />
                     </Form.Group>
@@ -142,7 +142,7 @@ export class Filter extends Component {
                         </Form.Control>
                     </Form.Group>
                     <Form.Group className="width-60">
-                        <Button variant="primary" size="sm" onClick={this.handleSubmit}>
+                        <Button variant="primary" size="sm" type="submit">
                             {LangHelper.getResource('Submit')}
                         </Button>
                     </Form.Group>

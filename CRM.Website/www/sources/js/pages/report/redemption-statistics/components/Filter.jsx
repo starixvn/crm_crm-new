@@ -8,7 +8,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import { toast } from 'react-toastify';
-import { ReportBy }from '@jsroot/common/constants';
+import { ReportBy } from '@jsroot/common/constants';
 
 export class Filter extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ export class Filter extends Component {
         const currentClientTime = window.currentClientTime;
         this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const currentDate = this.currentDate;
-        const firstDateFirstMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() , 1);
+        const firstDateFirstMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
         const firstDateOfMonthFormat = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDateFirstMonth)));
         this.maxFromDate = currentDate;
         this.maxToDate = currentDate;
@@ -33,7 +33,7 @@ export class Filter extends Component {
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.handleSettingOptions(this.props.settings);
     }
 
@@ -50,10 +50,10 @@ export class Filter extends Component {
         this.minToDate = fromDate;
         let toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
         const isOverOneYear = DateTimeService.toDiffDays(currentTime, fromDate) > 365;
-        if(isOverOneYear) {
+        if (isOverOneYear) {
             toDate = this.maxToDate;
         }
-        this.setState({fromDate, toDate});
+        this.setState({ fromDate, toDate });
     };
 
     handleChangeDropdown = (name, selectedItemsKey) => {
@@ -70,12 +70,12 @@ export class Filter extends Component {
         });
     };
 
-    handleSettingOptions = settings =>{
-        const { statuses, currencies} = settings;
+    handleSettingOptions = settings => {
+        const { statuses, currencies } = settings;
         const statusIdFilters = [];
         const currencyIdFilters = [];
 
-        const statusOptions = statuses.map(item =>{
+        const statusOptions = statuses.map(item => {
             statusIdFilters.push(item.statusId);
             return {
                 id: item.statusId,
@@ -84,7 +84,7 @@ export class Filter extends Component {
             };
         });
 
-        const currencyOptions = currencies.map(item =>{
+        const currencyOptions = currencies.map(item => {
             currencyIdFilters.push(item.id);
             return {
                 id: item.id,
@@ -107,14 +107,13 @@ export class Filter extends Component {
         window.dispatchEvent(new Event('resize'));
     };
 
-
-    handleSubmit = () => {
-        const { fromDate, toDate, reportBy, statusIds, currencyIds, subject} = this.state;
-        if(statusIds === ''){
+    handleSubmit = e => {
+        const { fromDate, toDate, reportBy, statusIds, currencyIds, subject } = this.state;
+        if (statusIds === '') {
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Status')));
             return;
         }
-        if(currencyIds === ''){
+        if (currencyIds === '') {
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency')));
             return;
         }
@@ -126,14 +125,14 @@ export class Filter extends Component {
             statusId: statusIds,
             reportBy: reportBy
         };
-        this.props.setOpenDetails({show: false});
+        this.props.setOpenDetails({ show: false });
         this.props.setGridParams(params);
         this.props.getRedemptionSummary(params);
     };
     render() {
-        const {fromDate, toDate, statusOptions, currencyOptions, reportBy, subject, showFilter }= this.state;
+        const { fromDate, toDate, statusOptions, currencyOptions, reportBy, subject, showFilter } = this.state;
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
                 {
                     showFilter &&
                     <Fragment>
@@ -209,17 +208,17 @@ export class Filter extends Component {
                             </Form.Group>
                         </Form.Row>
                         <Form.Row bsPrefix='form-row'>
-                            <Form.Group style={{width: 533}}>
+                            <Form.Group style={{ width: 533 }}>
                                 <Form.Label htmlFor='subject'>{LangHelper.getResource('Subject')}</Form.Label>
                                 <Form.Control type='text' size='sm'
                                     value={subject}
                                     name='subject' id='subject'
-                                    className='shadow-none subject-width' autoComplete='off'
+                                    className='shadow-none subject-width' autoComplete='on'
                                     onChange={this.handleChange}
                                 />
                             </Form.Group>
                             <Form.Group className='submit'>
-                                <Button variant='primary' size='sm' onClick={this.handleSubmit}>
+                                <Button variant='primary' size='sm' type='submit' onClick={this.handleSubmit}>
                                     {LangHelper.getResource('Submit')}
                                 </Button>
                             </Form.Group>
@@ -242,5 +241,5 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 const mapStateToProps = state => {
     const { settings } = state;
     return { settings };
-  };
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

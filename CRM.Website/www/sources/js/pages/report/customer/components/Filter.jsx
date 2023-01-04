@@ -7,7 +7,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 
 export class Filter extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -58,7 +57,7 @@ export class Filter extends Component {
                 siteId: item.id,
                 name: item.name,
                 checked: true,
-                subItem: item.childSites.map(x => ({key: x.id, value: x.name, checked: true}))
+                subItem: item.childSites.map(x => ({ key: x.id, value: x.name, checked: true }))
             });
         });
         siteOptions.unshift({ siteId: 0, name: 'N/A', checked: true });
@@ -100,7 +99,6 @@ export class Filter extends Component {
 
     handleSubmit = event => {
         this.setState({ checkValidatePosition: true });
-        event.preventDefault();
 
         const { username, headline, vipId, languageIds, siteIds, positionIds, excludeIgnoredAccounts } = this.state;
         const params = {
@@ -135,7 +133,7 @@ export class Filter extends Component {
     render() {
         const { languageOptions, positionOptions, siteOptions, vipOptions, excludeIgnoredAccounts, isShowFilter } = this.state;
         return (
-            <Form className="form-filter" onSubmit={this.handleSubmit}>
+            <Form className="form-filter" onSubmit={this.handleSubmit} action="javascript:void(0)">
                 {
                     isShowFilter &&
                     <Fragment>
@@ -152,8 +150,9 @@ export class Filter extends Component {
                             <Form.Group>
                                 <Form.Label htmlFor="username" className="col-auto col-form-label">{LangHelper.getResource('Username')}</Form.Label>
                                 <Form.Control type="text" size="sm" className="shadow-none input-field"
-                                    autoComplete="off"
+                                    autoComplete="on"
                                     name="username"
+                                    id="username"
                                     onChange={this.handleChange}
                                 />
                             </Form.Group>
@@ -189,7 +188,7 @@ export class Filter extends Component {
                                         isCheckedNA
                                         maxDisplayItemCount={2}
                                         hasAllOption={languageOptions.length > 0}
-                                        onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('languageIds' ,currentItem, selectedItemsKey)}
+                                        onChange={(currentItem, selectedItemsKey) => this.handleChangeMultipleSelect('languageIds', currentItem, selectedItemsKey)}
                                     />
                                 </div>
                             </Form.Group>
@@ -226,9 +225,9 @@ export class Filter extends Component {
                         <Form.Row className='form-row'>
                             <Form.Group>
                                 <Form.Check type="checkbox" className="check-exclude"
-                                        checked={excludeIgnoredAccounts}
-                                        onChange={this.handleCheckExclude}
-                                    />
+                                    checked={excludeIgnoredAccounts}
+                                    onChange={this.handleCheckExclude}
+                                />
                                 <Form.Label htmlFor="excludeIgAccounts" className="col-form-label label-exclude">{LangHelper.getResource('ExcludeIgnoredAccounts')}</Form.Label>
                             </Form.Group>
                             <Form.Group>

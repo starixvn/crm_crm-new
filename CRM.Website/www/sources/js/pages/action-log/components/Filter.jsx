@@ -9,7 +9,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
-
     constructor(props) {
         super(props);
         const date = new Date();
@@ -33,7 +32,7 @@ export class Filter extends Component {
         document.title = LangHelper.getResource('CRMSystem');
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.resetState();
     }
 
@@ -60,7 +59,6 @@ export class Filter extends Component {
     };
 
     handleSubmit = event => {
-        event.preventDefault();
         const { handler, fromDate, toDate, actionLogId } = this.state;
         const params = {
             actionId: actionLogId,
@@ -83,13 +81,13 @@ export class Filter extends Component {
             return null;
         }
         return (
-            <Form className="form-filter" onSubmit={this.handleSubmit}>
+            <Form className="form-filter" onSubmit={this.handleSubmit} action="javascript:void(0)">
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
                         <Form.Label className='col-form-label col-auto'>{LangHelper.getResource('Handler')}</Form.Label>
                         <Form.Control as="input" size="sm" value={this.state.handler} className="shadow-none"
-                            name="handler" id="handler" autoComplete="off" onChange={this.handleChange}
+                            name="handler" id="handler" autoComplete="on" onChange={this.handleChange}
                         />
                     </Form.Group>
                     <Form.Group>

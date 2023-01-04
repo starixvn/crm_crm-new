@@ -70,7 +70,6 @@ export class Filter extends Component {
     };
 
     handleSubmit = event => {
-        event.preventDefault();
         const { username, isGuest, fromDate, toDate, mainCategoryId, subCategoryId, communicationId, responseId, isReviewed } = this.state;
 
         const params = {
@@ -90,8 +89,8 @@ export class Filter extends Component {
         this.props.getDeletedFeedback(params);
     };
 
-    filterSubCategories = (subCate,mainCateId) =>{
-        if(mainCateId === 0){
+    filterSubCategories = (subCate, mainCateId) => {
+        if (mainCateId === 0) {
             const subCategory = [{ name: 'All', subCategoryId: 0 }];
             return subCategory;
         }
@@ -117,14 +116,14 @@ export class Filter extends Component {
         ];
 
         return (
-            <Form onSubmit={this.handleSubmit} className="form-filter">
+            <Form onSubmit={this.handleSubmit} className="form-filter" action="javascript:void(0)">
                 <Form.Group as={Row}>
                     <Form.Label className="filter-title col-form-label">
                         {LangHelper.getResource('Username')}
                     </Form.Label>
                     <Col sm="2" md="2" className="filter-col">
                         <Form.Control type="text" size="sm" className="shadow-none"
-                            autoComplete="off"
+                            autoComplete="on"
                             name="username"
                             onChange={this.handleChange}
                         />
@@ -135,7 +134,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         >
                             {
-                                customerTypes.map((value,key) => this.renderOptions(value.settingValue,value.settingId,key))
+                                customerTypes.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
                             }
                         </Form.Control>
                     </Col>
@@ -185,7 +184,7 @@ export class Filter extends Component {
                         >
                             <option value="0">All</option>
                             {
-                                data.mainCategories.map((value,key) => this.renderOptions(value.name, value.mainCategoryID, key))
+                                data.mainCategories.map((value, key) => this.renderOptions(value.name, value.mainCategoryID, key))
                             }
                         </Form.Control>
                     </Col>
@@ -199,7 +198,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         >
                             {
-                                subCategories.map((value,key) => this.renderOptions(value.name, value.subCategoryId, key))
+                                subCategories.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
                             }
                         </Form.Control>
                     </Col>
@@ -215,7 +214,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         >
                             {
-                                data.communications.map((value,key) => this.renderOptions(value.name, value.id, key))
+                                data.communications.map((value, key) => this.renderOptions(value.name, value.id, key))
                             }
                         </Form.Control>
                     </Col>
@@ -229,7 +228,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         >
                             {
-                                data.customerResponses.map((value,key) => this.renderOptions(value.value, value.id, key))
+                                data.customerResponses.map((value, key) => this.renderOptions(value.value, value.id, key))
                             }
                         </Form.Control>
                     </Col>
@@ -243,7 +242,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         >
                             {
-                                reviews.map((value,key) => this.renderOptions(value.settingValue, value.settingId, key))
+                                reviews.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
                             }
                         </Form.Control>
                     </Col>
@@ -259,7 +258,7 @@ export class Filter extends Component {
 
     render() {
         const { settings } = this.props;
-        if (settings === null){
+        if (settings === null) {
             return null;
         }
 

@@ -35,8 +35,8 @@ export class Filter extends Component {
         };
     }
 
-    isCheckGuest(){
-        if(this.props.currentCustomer.isGuest){
+    isCheckGuest() {
+        if (this.props.currentCustomer.isGuest) {
             return 1;
         }
         return 0;
@@ -77,7 +77,6 @@ export class Filter extends Component {
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
     handleSubmit = e => {
-        e.preventDefault();
         const { mainCategoryId, runningNumber, fromDate, toDate, username, handler, subCategoryId, communicationId,
             reviewer, statusId, responseId, isReviewed, isGuest } = this.state;
         const params = {
@@ -142,8 +141,8 @@ export class Filter extends Component {
         const subCategoryOptions = this.filterSubCategories(mainCategoryOptions, mainCategoryId);
 
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
+            <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="runningNumber">{LangHelper.getResource('RunningNumber')}</Form.Label>
@@ -191,7 +190,7 @@ export class Filter extends Component {
                             disabled={this.props.currentCustomer}
                             value={username}
                             name="username" id="username"
-                            className="shadow-none username-width" autoComplete="off"
+                            className="shadow-none username-width" autoComplete="on"
                             onChange={this.handleChange}
                         />
                         <Form.Control as="select" size="sm"

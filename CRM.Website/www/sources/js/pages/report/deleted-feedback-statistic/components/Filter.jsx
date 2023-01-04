@@ -13,10 +13,10 @@ export class Filter extends Component {
         const currentClientTime = window.currentClientTime;
         this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
         const currentDate = this.currentDate;
-        const firstDayLastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1 , 1);
-        const firstDateFirstMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() , 1);
+        const firstDayLastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+        const firstDateFirstMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         const firstDateOfMonthFormat = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDayLastMonth)));
-        const toDate =  firstDateFirstMonth.setDate(firstDateFirstMonth.getDate() - 1);
+        const toDate = firstDateFirstMonth.setDate(firstDateFirstMonth.getDate() - 1);
         this.maxFromDate = currentDate;
         this.maxToDate = currentDate;
         this.minToDate = firstDateOfMonthFormat;
@@ -40,10 +40,10 @@ export class Filter extends Component {
         this.maxToDate = maxDate < currentTime ? maxDate : currentTime;
         let toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
         const isOver1Year = DateTimeService.toDiffDays(currentTime, fromDate) > 365;
-        if(isOver1Year) {
+        if (isOver1Year) {
             toDate = this.maxToDate;
         }
-        this.setState({fromDate, toDate});
+        this.setState({ fromDate, toDate });
     };
 
     handleChangeToDate = toDate => {
@@ -57,7 +57,7 @@ export class Filter extends Component {
         });
     };
 
-    handleSubmit = () => {
+    handleSubmit = e => {
         const { handler, fromDate, toDate, deletedBy } = this.state;
         const params = {
             handler: handler !== '' ? handler : null,
@@ -71,16 +71,15 @@ export class Filter extends Component {
     };
 
     render() {
-
         const { handler, fromDate, toDate, deletedBy } = this.state;
 
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="handler">{LangHelper.getResource('Handler')}</Form.Label>
                         <Form.Control type="text" size="sm"
-                            className="shadow-none" autoComplete="off"
+                            className="shadow-none" autoComplete="on"
                             value={handler}
                             name="handler" id="handler"
                             onChange={this.handleChange}
@@ -120,7 +119,7 @@ export class Filter extends Component {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Button variant="primary" size="sm" onClick={this.handleSubmit}>
+                        <Button variant="primary" size="sm" type="submit" onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>
                     </Form.Group>
