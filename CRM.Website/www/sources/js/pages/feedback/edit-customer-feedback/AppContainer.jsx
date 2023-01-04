@@ -12,6 +12,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import DataService from '@jsroot/common/dataService';
+import SaveButton from '@jsroot/components/SaveButton';
 
 import Site from '@jsroot/common/site';
 import {
@@ -765,7 +766,7 @@ export default class AppContainer extends Component {
                     {
                         hasCreateFeedbackPermission &&
                         <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
-                            {LangHelper.getResource('Save')}
+                            <SaveButton />
                         </Button>
                     }
                     <Button size="sm" type="button" variant="primary" onClick={this.props.onClose}>

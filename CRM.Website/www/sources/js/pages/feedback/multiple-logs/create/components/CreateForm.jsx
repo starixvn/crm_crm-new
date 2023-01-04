@@ -1,4 +1,4 @@
-﻿﻿import React, { Component, Fragment } from 'react';
+﻿import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Col, Form, Row, OverlayTrigger, Tooltip, Collapse } from 'react-bootstrap';
@@ -17,6 +17,8 @@ import AddRelatedCustomerDialog from './AddRelatedCustomerDialog';
 import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import SaveButton from '@jsroot/components/SaveButton';
+
 import {
     getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories,
     getProductParams, getCategoryParams, generateTimeAndToolPrefix
@@ -49,6 +51,27 @@ export class CreateForm extends Component {
 
         this.dateTimeAndToolPattern = 'Date Time & Tool: \\d{8}\\/\\d{2}:\\d{2}\\D{2}\\/';
         this.formikValues = this.initFormData();
+    }
+
+    componentDidMount() {
+        document.addEventListener("keydown", this.handleKeyDownFunc, false);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.handleKeyDownFunc, false);
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+
+            this.formik.submitForm().then(() => {
+                if (this.formik.isValid) {
+                    var setSubmitting = this.formik.setSubmitting;
+                    this.handleSubmit(this.formik.values, { setSubmitting });
+                }
+            });
+        }
     }
 
     initFormData = () => {
@@ -151,7 +174,7 @@ export class CreateForm extends Component {
             return;
         }
 
-        this.setState({createMultipleLogsResult: null});
+        this.setState({ createMultipleLogsResult: null });
         Site.blockUI();
         this.props.verifyCustomers({ username }).then(response => {
             this.props.setVerifyCustomerResults(response.data);
@@ -164,17 +187,17 @@ export class CreateForm extends Component {
     reVerifyInactiveSiteAndConfirm = (username, params, setSubmitting, values) => {
         Site.blockUI();
         this.props.verifyCustomers({ username }).then(response => {
-            const inactiveCustomers = response.data.filter(customer=> !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
-            this.setState({createMultipleLogsResult: null});
+            const inactiveCustomers = response.data.filter(customer => !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
+            this.setState({ createMultipleLogsResult: null });
             this.props.setReVerifyCustomerResults(response.data);
-            if(inactiveCustomers.length > 0){
-                const inactiveUserName = inactiveCustomers.map(x=>x.username).join(',');
+            if (inactiveCustomers.length > 0) {
+                const inactiveUserName = inactiveCustomers.map(x => x.username).join(',');
                 const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
-                this.setState({ createMultipleLogsResult: {isSuccessful: false, message}});
+                this.setState({ createMultipleLogsResult: { isSuccessful: false, message } });
                 setSubmitting(false);
             } else if (values.isUseDefaultCommunicationTool) {
                 this.checkNotExistCommunicationToolSetting(params);
-            } else{
+            } else {
                 this.confirmCreateMultipleLogs(params, 'Are you sure you want to Add or Update the Feedback/Log?');
             }
             Site.unblockUI();
@@ -428,7 +451,7 @@ export class CreateForm extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
-        const usernames = this.props.verifyCustomerResults.map(x=>x.username).join(',');
+        const usernames = this.props.verifyCustomerResults.map(x => x.username).join(',');
         const { extensionNA, subCategories } = this.props.settings;
         const autoFields = this.splitAutoFieldWhenUseDefaultCommunicationTool(values);
         const params = {
@@ -475,7 +498,7 @@ export class CreateForm extends Component {
         isSubmitting
     }) => {
         const { createMultipleLogsResult } = this.state;
-        const { settings, verifyCustomerResults} = this.props;
+        const { settings, verifyCustomerResults } = this.props;
         const { extensions, countries } = settings;
 
         return (
@@ -595,16 +618,16 @@ export class CreateForm extends Component {
                             </Col>
                         </Form.Group>
 
-                        { this.renderCommunicationToolSection(values, touched, errors, setFieldValue, handleChange) }
-                        { this.renderProductSection(values, touched, errors, setFieldValue, handleChange) }
+                        {this.renderCommunicationToolSection(values, touched, errors, setFieldValue, handleChange)}
+                        {this.renderProductSection(values, touched, errors, setFieldValue, handleChange)}
                     </div>
                 </div>
 
-                { this.renderCollapseSection(values, touched, errors, setFieldValue, handleChange) }
+                {this.renderCollapseSection(values, touched, errors, setFieldValue, handleChange)}
                 <Form.Group as={Row} className="mt-3">
                     <Col>
                         <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
-                            {LangHelper.getResource('Save')}
+                            <SaveButton />
                         </Button>
                     </Col>
                 </Form.Group>
@@ -708,8 +731,6 @@ export class CreateForm extends Component {
         );
     };
 
-    
-
     renderProductSection = (values, touched, errors, setFieldValue, handleChange) => {
         const { subProductOptions, betTypeOptions } = this.state;
         const { settings, feedbackSubjectTemplates } = this.props;
@@ -786,15 +807,15 @@ export class CreateForm extends Component {
                     </Col>
                     <Col sm="1" md="1" />
                     <Form.Label column sm="2" md="2">{LangHelper.getResource('Site')}</Form.Label>
-                    <Col  md="3" sm="3">
-                        <Form.Control as="select" size="sm"  disabled className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
+                    <Col md="3" sm="3">
+                        <Form.Control as="select" size="sm" disabled className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
                         </Form.Control>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
                     <Form.Label column md="2" sm="2">{LangHelper.getResource('Response')}</Form.Label>
                     <Col sm="3" md="3">
-                        <Form.Control as="select" size="sm" className="shadow-none" name="responseId" id="responseId"onChange={handleChange}>
+                        <Form.Control as="select" size="sm" className="shadow-none" name="responseId" id="responseId" onChange={handleChange}>
                             <option value={values.responseId} hidden disabled />
                             {
                                 responses.map(item =>
@@ -844,11 +865,11 @@ export class CreateForm extends Component {
                     <Form.Group as={Row} className="panel-title">
                         <Form.Label>{LangHelper.getResource('AutoGenerated')}</Form.Label>
                     </Form.Group>
-                        <div className="panel-content">
-                            <Form.Control as="textarea" rows={3} className="shadow-none" name="autoGenerated" id="autoGenerated"
-                                value={values.autoGenerated} onChange={handleChange}
-                            />
-                        </div>
+                    <div className="panel-content">
+                        <Form.Control as="textarea" rows={3} className="shadow-none" name="autoGenerated" id="autoGenerated"
+                            value={values.autoGenerated} onChange={handleChange}
+                        />
+                    </div>
                 </div>
                 <div className='panel-group border-bottom-0'>
                     <Form.Group as={Row} className="panel-title border-bottom-0" onClick={() => this.handleCollapseExpand('remark')}

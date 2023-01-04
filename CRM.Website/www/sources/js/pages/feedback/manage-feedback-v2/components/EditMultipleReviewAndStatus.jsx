@@ -6,6 +6,7 @@ import CkEditor from '@jsroot/components/ckeditor/index';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
+import SaveButton from '@jsroot/components/SaveButton';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
@@ -160,7 +161,7 @@ export default class EditMultipleReviewAndStatus extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button size="sm" type="submit" variant="primary" disabled={this.state.isSubmitting} id='submit'>
-                        {LangHelper.getResource('Save')}
+                        <SaveButton />
                     </Button>
                 </Modal.Footer>
             </Form>
@@ -196,4 +197,3 @@ export default class EditMultipleReviewAndStatus extends Component {
         );
     }
 }
-

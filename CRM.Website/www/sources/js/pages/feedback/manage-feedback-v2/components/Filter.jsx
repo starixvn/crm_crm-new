@@ -150,7 +150,7 @@ export class Filter extends Component {
                         <Form.Control type="text" size="sm"
                             value={runningNumber}
                             name="runningNumber" id="runningNumber"
-                            className="shadow-none" autoComplete="off"
+                            className="shadow-none" autoComplete="on"
                             onChange={this.handleChange}
                         />
                     </Form.Group>
@@ -287,8 +287,9 @@ export class Filter extends Component {
                     <Form.Group className='sm-width'>
                         <Form.Label htmlFor="handler">{LangHelper.getResource('Handler')}</Form.Label>
                         <Form.Control type="text" size="sm" value={handler}
+                            id="handler"
                             name="handler"
-                            autoComplete="off"
+                            autoComplete="on"
                             className="shadow-none select-options"
                             onChange={this.handleChange}
                         />
@@ -296,7 +297,7 @@ export class Filter extends Component {
                     <Form.Group className='sm-width'>
                         <Form.Label htmlFor="reviewer">{LangHelper.getResource('Reviewer')}</Form.Label>
                         <Form.Control type="text" size="sm" value={reviewer}
-                            name="reviewer" autoComplete="off"
+                            name="reviewer" autoComplete="on"
                             className="shadow-none select-options"
                             onChange={this.handleChange}
                         />
