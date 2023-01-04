@@ -1,11 +1,9 @@
-﻿import React, { Component, Fragment } from 'react';
+﻿import React, { Fragment } from 'react';
 
-export class SaveButton extends Component {
-    render() {
-        return (
-            <Fragment><span style={{ textDecoration: 'underline'}}>S</span>ave</Fragment>
-        );
-    }
+function SaveButton() {
+    return (
+        <Fragment><u>S</u>ave</Fragment>
+    );
 }
 
 export default SaveButton;

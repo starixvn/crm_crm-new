@@ -9,6 +9,71 @@ import { toast } from 'react-toastify';
 import BreadcrumbTime from './BreadcrumbTime';
 
 export default class Filter extends Component {
+    componentDidMount() {
+        document.addEventListener('keydown', this.handleKeyDownFunc, false);
+    }
+
+    componentWillUnmount(){
+        document.removeEventListener('keydown', this.handleKeyDownFunc, false);
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey) {
+            const pathname = window.location.pathname;
+            switch (event.key) {
+                case 'm':
+                    if(document.getElementById('li-main')) {
+                        event.preventDefault();
+                        this.isCheckActive(pathname, 0);
+                        this.props.handleNavigate('Dashboard');
+                    }
+                    break;
+                case 'd':
+                    if(document.getElementById('li-detail')) {
+                        event.preventDefault();
+                        this.isCheckActive(pathname, 1);
+                        this.props.handleNavigate('Detail');
+                    }
+                    break;
+                case 'l':
+                    if(document.getElementById('li-communication-log')) {
+                        event.preventDefault();
+                        this.isCheckActive(pathname, 2);
+                        this.props.handleNavigate('Communication');
+                    }
+                    break;
+                case 'k':
+                    if(document.getElementById('li-special-remark')) {
+                        event.preventDefault();
+                        this.isCheckActive(pathname, 3);
+                        this.props.handleNavigate('SpecialRemark');
+                    }
+                    break;
+                case 'r':
+                    if(document.getElementById('li-special-new-remark')) {
+                        event.preventDefault();
+                        this.isCheckActive(pathname, 4);
+                        this.props.handleNavigate('Remark');
+                    }
+                    break;
+                case 'p':
+                    if(document.getElementById('li-redemption')) {
+                        event.preventDefault();
+                        this.isCheckActive(pathname, 5);
+                        this.props.handleNavigate('Redemption');
+                    }
+                    break;
+                case 't':
+                    if(document.getElementById('li-activity-log')) {
+                        event.preventDefault();
+                        this.isCheckActive(pathname, 6);
+                        this.props.handleNavigate('ActionLog');
+                    }
+                    break;
+            }            
+        }
+    }
+
     handleSubmit = event => {
         event.preventDefault();
         if(this.props.username === '' || this.props.username === null){
@@ -109,47 +174,48 @@ export default class Filter extends Component {
                  {this.renderIconHome()}
                 <li id="li-main" className={this.isCheckActive(pathname, 0)}>
                     <a onClick = {() => handleNavigate('Dashboard')}>
-                        {LangHelper.getResource('Main')}
+                        <u>M</u>ain
                     </a>
                 </li>
                 <li id="li-detail" className={this.isCheckActive(pathname, 1)}>
                     <a onClick = {() => handleNavigate('Detail')}>
-                        {LangHelper.getResource('Detail')}
+                        <u>D</u>etail
                     </a>
                 </li>
                 <li id="li-communication-log" className={this.isCheckActive(pathname, 2)}>
                     <a onClick = {() => handleNavigate('Communication')}>
-                        {LangHelper.getResource('CommunicationLog')}
+                        Communication <u>L</u>og
                     </a>
                 </li>
                     <li id="li-special-remark" className={this.isCheckActive(pathname, 3)}>
                     <a onClick = {() => handleNavigate('SpecialRemark')}>
-                        {LangHelper.getResource('SpecialRemark')}
+                        Special Remar<u>k</u>
                     </a>
                 </li>
                 {
                     this.props.isCreditSite &&
                     <li id="li-special-new-remark" className={this.isCheckActive(pathname, 4)}>
                         <a onClick = {() => handleNavigate('Remark')}>
-                            {LangHelper.getResource('Remark')}
+                            Rema<u>r</u>k
                         </a>
                     </li>
                 }
                 <li id="li-redemption" className={this.isCheckActive(pathname, 5)}>
                     <a onClick = {() => handleNavigate('Redemption')}>
-                        {LangHelper.getResource('Redemption')}
+                        Redem<u>p</u>tion
                     </a>
                 </li>
                 <li id="li-activity-log" className={this.isCheckActive(pathname, 6)}>
                     <a onClick = {() => handleNavigate('ActionLog')}>
-                        {LangHelper.getResource('ActivityLog')}
+                        Ac<u>t</u>ivity Log
                     </a>
                 </li>
             </ul> :
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}
                 <li id="li-main" className='active'>
-                    <a onClick = {() => handleNavigate('Dashboard')}>{LangHelper.getResource('Main')}
+                    <a onClick = {() => handleNavigate('Dashboard')}>
+                        {LangHelper.getResource('Main')}
                     </a>
                 </li>
             </ul>
