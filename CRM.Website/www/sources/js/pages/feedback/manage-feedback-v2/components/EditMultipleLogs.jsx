@@ -14,7 +14,7 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DatePicker from '@jsroot/components/date-picker/index';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import AutoComplete from '@jsroot/components/AutoComplete';
-import SaveButton from '@jsroot/components/SaveButton';
+import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
 import { validateNoOfInquiry } from '../../common.functions';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import { getInitFormik, getValidateFormik } from '../common.functions.js';
@@ -942,7 +942,7 @@ export class EditMultipleLogs extends Component {
                 </Modal.Body >
                 <Modal.Footer>
                     <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
-                        <SaveButton />
+                        <SaveButtonUnderline />
                     </Button>
                     <Button size="sm" type="button" variant="primary" onClick={() => this.props.onClose(false)}>
                         {LangHelper.getResource('Cancel')}

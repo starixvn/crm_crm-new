@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import SaveButton from '@jsroot/components/SaveButton';
+import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
 import { validateFormik, initValues, initCustomerInfo, initValuesAddCustomerFb, getParams } from './common.functions';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import {
@@ -699,7 +699,7 @@ export default class CreateForm extends Component {
                 <Form.Group as={Row} className="mt-3">
                     <Col>
                         <Button type="submit" variant="primary" size="sm">
-                            <SaveButton />
+                            <SaveButtonUnderline />
                         </Button>
                     </Col>
                 </Form.Group>

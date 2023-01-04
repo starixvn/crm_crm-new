@@ -17,7 +17,7 @@ import AddRelatedCustomerDialog from './AddRelatedCustomerDialog';
 import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
-import SaveButton from '@jsroot/components/SaveButton';
+import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
 import {
     getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories,
     getProductParams, getCategoryParams, generateTimeAndToolPrefix
@@ -620,7 +620,7 @@ export class CreateForm extends Component {
                 <Form.Group as={Row} className="mt-3">
                     <Col>
                         <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
-                            <SaveButton />
+                            <SaveButtonUnderline />
                         </Button>
                     </Col>
                 </Form.Group>
