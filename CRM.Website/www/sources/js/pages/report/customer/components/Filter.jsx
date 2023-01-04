@@ -34,7 +34,8 @@ export class Filter extends Component {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            this.handleSubmit(event);
+            const btn = document.getElementById('btn-submit-customer-report');
+            btn.click();
         }
     }
 
@@ -241,7 +242,7 @@ export class Filter extends Component {
                                 <Form.Label htmlFor="excludeIgAccounts" className="col-form-label label-exclude">{LangHelper.getResource('ExcludeIgnoredAccounts')}</Form.Label>
                             </Form.Group>
                             <Form.Group>
-                                <Button type="submit" className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</Button>
+                                <Button type="submit" id='btn-submit-customer-report' className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</Button>
                             </Form.Group>
                         </Form.Row>
                     </Fragment>

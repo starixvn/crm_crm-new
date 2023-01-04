@@ -43,7 +43,8 @@ export class PicFilter extends Component {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            this.handleSubmit();
+            const btn = document.getElementById('btn-submit-pic-changelog');
+            btn.click();
         }
     }
 
@@ -123,7 +124,7 @@ export class PicFilter extends Component {
                         />
                     </Form.Group>
                     <Form.Group className="submit">
-                        <Button  size="sm" variant="primary" onClick={this.handleSubmit}>
+                        <Button id='btn-submit-pic-changelog' size="sm" variant="primary" onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>
                     </Form.Group>

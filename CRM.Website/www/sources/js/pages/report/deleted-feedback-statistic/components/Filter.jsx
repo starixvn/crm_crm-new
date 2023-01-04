@@ -50,7 +50,8 @@ export class Filter extends Component {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            this.handleSubmit();
+            const btn = document.getElementById('btn-submit-deleted-report');
+            btn.click();
         }
     }
 
@@ -128,7 +129,7 @@ export class Filter extends Component {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Button variant="primary" size="sm" type="submit" onClick={this.handleSubmit}>
+                        <Button variant="primary" id='btn-submit-deleted-report' size="sm" type="submit" onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>
                     </Form.Group>

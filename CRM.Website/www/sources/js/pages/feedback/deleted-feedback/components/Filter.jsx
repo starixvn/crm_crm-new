@@ -6,6 +6,7 @@ import { ActionCreators } from '../actions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -40,6 +41,14 @@ export class Filter extends Component {
             });
         }
     };
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            const btn = document.getElementById('btn-submit-deleted-fb');
+            btn.click();
+        }
+    }
 
     handleChangeFromDate = fromDate => {
         const currentClientTime = window.currentClientTime;
@@ -117,6 +126,7 @@ export class Filter extends Component {
 
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter" action="javascript:void(0)">
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Group as={Row}>
                     <Form.Label className="filter-title col-form-label">
                         {LangHelper.getResource('Username')}
@@ -248,7 +258,7 @@ export class Filter extends Component {
                     </Col>
 
                     <Col sm="2" md="2" className="filter-col">
-                        <button type="submit" className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</button>
+                        <button type="submit" id='btn-submit-deleted-fb' className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</button>
                     </Col>
 
                 </Form.Group>

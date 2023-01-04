@@ -39,7 +39,8 @@ export class Filter extends Component {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            this.handleSubmit(event);
+            const btn = document.getElementById('btn-submit-activity');
+            btn.click();
         }
     }
 
@@ -137,7 +138,7 @@ export class Filter extends Component {
                         </Form.Control>
                     </Form.Group>
                     <div className="form-group-button mb-3">
-                        <Button type="submit" variant="primary" size="sm">{LangHelper.getResource('Submit')}</Button>
+                        <Button id='btn-submit-activity' type="submit" variant="primary" size="sm">{LangHelper.getResource('Submit')}</Button>
                     </div>
                 </Form.Row>
             </Form>

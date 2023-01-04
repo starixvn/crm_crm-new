@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     static propTypes = {
@@ -38,6 +39,14 @@ export class Filter extends Component {
 
     componentDidMount() {
         this.props.getActionLogs();
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            const btn = document.getElementById('btn-submit-setting-log');
+            btn.click();
+        }
     }
 
     handleChangeFromDate = fromDate => {
@@ -90,6 +99,7 @@ export class Filter extends Component {
         const actionLogs = [...all, ...this.props.actionLogs];
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="handler">
@@ -142,7 +152,7 @@ export class Filter extends Component {
                         </Form.Control>
                     </Form.Group>
                     <Form.Group className="width-60">
-                        <Button variant="primary" size="sm" type="submit">
+                        <Button id='btn-submit-setting-log' variant="primary" size="sm" type="submit">
                             {LangHelper.getResource('Submit')}
                         </Button>
                     </Form.Group>

@@ -45,7 +45,8 @@ export class Filter extends Component {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            this.handleSubmit(event);
+            const btn = document.getElementById('btn-submit-manage-fb');
+            btn.click();
         }
     }
 
@@ -302,7 +303,7 @@ export class Filter extends Component {
                         />
                     </Form.Group>
                     <div>
-                        <Button variant="primary" size="sm" type="submit" onClick={this.handleSubmit}>
+                        <Button id='btn-submit-manage-fb' variant="primary" size="sm" type="submit" onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>
                     </div>
