@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Button, ProgressBar } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import { RoleIds } from '@jsroot/common/constants';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class CustomerInfoVerify extends Component {
 
@@ -30,6 +31,13 @@ export class CustomerInfoVerify extends Component {
 
         if(JSON.stringify(prevProps.customerInfoVerify) !== JSON.stringify(this.props.customerInfoVerify)){
             this.handleInitData();
+        }
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 'e') {
+            event.preventDefault();
+            this.handleEditCustomerVerifyDialog();
         }
     }
 
@@ -76,6 +84,7 @@ export class CustomerInfoVerify extends Component {
 
         return (
             <div className="customer-verify">
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <div className="process">
                     <span className="percent-process">{energy}%</span>
                     <ProgressBar now={energy} />

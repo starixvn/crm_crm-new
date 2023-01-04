@@ -7,6 +7,7 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Update extends Component {
 
@@ -23,6 +24,12 @@ export class Update extends Component {
     componentDidUpdate(prevProps) {
         if (JSON.stringify(prevProps.mainSettingRelation) !== JSON.stringify(this.props.mainSettingRelation)) {
             this.handleSetState(this.props.mainSettingRelation);
+        }
+    }
+
+    handleKeyDownFunc = event => {
+        if(event.ctrlKey && event.key === 'u'){
+            this.handleSubmit(event);
         }
     }
 
@@ -83,6 +90,7 @@ export class Update extends Component {
         return (
             <Form noValidate onSubmit={this.handleSubmit}>
                 <Modal.Body>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                     {
                         updateResult &&
                         <ResponseMessage isSuccessful={updateResult.isSuccessful}

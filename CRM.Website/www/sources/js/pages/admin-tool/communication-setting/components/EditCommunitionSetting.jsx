@@ -11,10 +11,12 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class EditCommunitionSetting extends PureComponent {
     constructor(props) {
         super(props);
+        this.formik = React.createRef();
         this.state = {
             mainCategoryOptionsEdit: [],
             subCategoryOptionsEdit: [],
@@ -61,6 +63,14 @@ export class EditCommunitionSetting extends PureComponent {
             communicationToolOptionsEdit: communicationToolOptionsEdit,
             selectedSubCategoryIdsEdit: selectedData.subCategory === '0' ? selectedSubCatagories.join(',') : selectedData.subCategory
         });
+    }
+
+    handleKeyDownFunc = event => {
+        if(event.ctrlKey && event.key === 'u'){
+            event.preventDefault();
+            const {values, setSubmitting} = this.formik;
+            this.handleSubmit(values, { setSubmitting });
+        }
     }
 
     isCheckCatagories = (selectedData, id) => {
@@ -156,6 +166,7 @@ export class EditCommunitionSetting extends PureComponent {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.editCommunicationResult &&
@@ -163,7 +174,6 @@ export class EditCommunitionSetting extends PureComponent {
                             message={this.props.editCommunicationResult.message || LangHelper.getResource('UpdateCommunicationSettingSuccessfully')}
                         />
                     }
-
                     <Form.Group as={Row}>
                         <Form.Label column sm="2" md="2" htmlFor="customerNameInput">
                             {LangHelper.getResource('Customer')}
@@ -265,6 +275,7 @@ export class EditCommunitionSetting extends PureComponent {
                     <Modal.Title as="div">{LangHelper.getResource('UpdateSetting')}</Modal.Title>
                 </Modal.Header>
                 <Formik
+                    innerRef={p => (this.formik = p)}
                     initialValues={initialValuesEditForm}
                     validate={this.validateEditCommunication}
                     onSubmit={this.handleSubmit}

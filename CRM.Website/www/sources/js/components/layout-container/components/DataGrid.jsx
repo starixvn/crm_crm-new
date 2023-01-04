@@ -27,11 +27,28 @@ export default class DataGrid extends PureComponent {
 
     componentDidMount() {
         this.handleCheckLanguage();
+        const leftContainer = document.getElementById('left-form-container');
+        leftContainer.addEventListener("keydown", this.handleKeyDownFunc, false);
     }
 
     componentDidUpdate(prevProps) {
         if(JSON.stringify(prevProps.customerInfo) !== JSON.stringify(this.props.customerInfo)){
             this.handleCheckLanguage();
+        }
+    }
+
+    componentWillUnmount(){
+        const leftContainer = document.getElementById('left-form-container');
+        if(leftContainer){
+            leftContainer.removeEventListener("keydown", this.handleKeyDownFunc, false);
+        }
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 'u') {
+            event.preventDefault();
+            const {values, setSubmitting} = this.formik;
+            this.handleSubmit(values, { setSubmitting });
         }
     }
 

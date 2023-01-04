@@ -81,7 +81,7 @@ export class Filter extends Component {
         const { mainCategoryId, runningNumber, fromDate, toDate, username, handler, subCategoryId, communicationId,
             reviewer, statusId, responseId, isReviewed, isGuest } = this.state;
         const params = {
-            feedbackId: runningNumber !== '' ? runningNumber : null,
+            feedbackId: !parseInt(runningNumber, 10) ? null : parseInt(runningNumber, 10),
             userName: username,
             isGuest: isGuest === -1 ? null : isGuest,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
