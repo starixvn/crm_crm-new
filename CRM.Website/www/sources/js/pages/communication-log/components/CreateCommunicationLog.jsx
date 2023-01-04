@@ -93,6 +93,24 @@ export class CreateCommunicationLog extends Component {
         await DataService.getDataAsync(urlBalanceUpday).then(response => {
             this.setState({ balanceUpday: response.data });
         });
+
+        document.addEventListener("keydown", this.handleKeyDownFunc, false);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.handleKeyDownFunc, false);
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.formik.submitForm().then(() => {
+                if (this.formik.isValid) {
+                    var setSubmitting = this.formik.setSubmitting;
+                    this.handleSubmit(this.formik.values, { setSubmitting });
+                }
+            });
+        }
     }
 
     handleSetInitContent = options =>{
