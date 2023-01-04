@@ -7,6 +7,7 @@ import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -63,6 +64,12 @@ export class Filter extends Component {
             });
         }
     };
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            this.searchHandler(event);
+        }
+    }
 
     mainCategoriesChangeFilter = (currentItem, selectedItemsKey) => {
         this.setState(prevState => ({
@@ -165,6 +172,7 @@ export class Filter extends Component {
     render() {
         return (
             <Form className="form-filter">
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label className="communication-setting" htmlFor="customerInput">{LangHelper.getResource('Customer')}</Form.Label>

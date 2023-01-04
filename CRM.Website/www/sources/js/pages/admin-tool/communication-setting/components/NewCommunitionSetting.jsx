@@ -14,10 +14,12 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class NewCommunitionSetting extends PureComponent {
     constructor(props) {
         super(props);
+        this.formik = React.createRef();
         this.state = {
             mainCategoryOptionsNew: [],
             subCategoryOptionsNew: [],
@@ -36,6 +38,25 @@ export class NewCommunitionSetting extends PureComponent {
         });
     }
 
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+
+            this.formik.submitForm().then(() => {
+                if (this.formik.isValid) {
+                    const {setSubmitting, resetForm} = this.formik;
+                    this.handleSubmit(this.formik.values, { setSubmitting, resetForm });
+                }
+            });
+        }
+
+        if(event.ctrlKey && event.key === 'e'){
+            event.preventDefault();
+            const {setFieldValue, values} = this.formik;
+            this.handleVerifyCustomer(event, setFieldValue, values.customerNameInput);
+        }
+    }
+
     handleVerifyCustomer = (event, setFieldValue, value) => {
         event.preventDefault();
         const regex1 = new RegExp(/,\s+/g);
@@ -46,6 +67,9 @@ export class NewCommunitionSetting extends PureComponent {
             .replace(regex2, '') // NOSONAR
             .replace(regex3, ','); // NOSONAR
 
+        if(customersInput === ''){
+            return;
+        }
         const isValidCustomer = customersInput.split(',').filter(value => value.length > 50).length === 0;
 
         if (isValidCustomer) {
@@ -165,6 +189,7 @@ export class NewCommunitionSetting extends PureComponent {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.createCommunicationResult &&
@@ -359,6 +384,7 @@ export class NewCommunitionSetting extends PureComponent {
                     <Modal.Title as="div">{LangHelper.getResource('InsertNewSetting')}</Modal.Title>
                 </Modal.Header>
                 <Formik
+                    innerRef={p => (this.formik = p)}
                     initialValues={initialValuesNewForm}
                     validate={this.validateNewCommunication}
                     onSubmit={this.handleSubmit}

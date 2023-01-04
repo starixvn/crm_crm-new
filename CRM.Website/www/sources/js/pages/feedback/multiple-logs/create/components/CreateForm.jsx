@@ -18,12 +18,12 @@ import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import SaveButton from '@jsroot/components/SaveButton';
-
 import {
     getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories,
     getProductParams, getCategoryParams, generateTimeAndToolPrefix
 } from '@jsroot/common/shareScripts';
 import { validateNoOfInquiry, validateMainCategorySubCategory } from '../../../common.functions';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class CreateForm extends Component {
     static defaultProps = {
@@ -53,24 +53,22 @@ export class CreateForm extends Component {
         this.formikValues = this.initFormData();
     }
 
-    componentDidMount() {
-        document.addEventListener("keydown", this.handleKeyDownFunc, false);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener("keydown", this.handleKeyDownFunc, false);
-    }
-
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
 
             this.formik.submitForm().then(() => {
                 if (this.formik.isValid) {
-                    var setSubmitting = this.formik.setSubmitting;
+                    const setSubmitting = this.formik.setSubmitting;
                     this.handleSubmit(this.formik.values, { setSubmitting });
                 }
             });
+        }
+
+        if(event.ctrlKey && event.key === 'e'){
+            event.preventDefault();
+            const {setFieldValue, values} = this.formik;
+            this.verifyCustomers(setFieldValue, values.customerNameInput);
         }
     }
 
@@ -503,6 +501,7 @@ export class CreateForm extends Component {
 
         return (
             <Form noValidate onSubmit={handleSubmit}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                 {
                     createMultipleLogsResult &&

@@ -119,6 +119,11 @@ export default class CreateForm extends Component {
                 }
             });
         }
+
+        if(event.ctrlKey && event.key === 'e' && this.state.collapse.isVerifyCustomer){
+            const {setFieldValue, values} = this.formik;
+            this.handleVerify(event, setFieldValue, values.customerNameInput);
+        }
     }
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
@@ -222,6 +227,9 @@ export default class CreateForm extends Component {
 
     handleVerify = (event, setFieldValue, value) => {
         event.preventDefault();
+        if(value === ''){
+            return;
+        }
         const regex1 = new RegExp(/,\s+/g);
         const regex2 = new RegExp(/^,+|,+$/g);
         const regex3 = new RegExp(/,{2,}/g);

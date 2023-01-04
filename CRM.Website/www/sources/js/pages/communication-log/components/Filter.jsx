@@ -6,6 +6,7 @@ import { Form, Button } from 'react-bootstrap';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
 
@@ -38,6 +39,12 @@ export class Filter extends Component {
         this.props.getLogsByCustomerId(params);
         this.props.setGridParams(params);
         this.props.getStatusForFilter();
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            this.handleSubmit(event);
+        }
     }
 
     handleChange = event => {
@@ -81,6 +88,7 @@ export class Filter extends Component {
 
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter">
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
                         <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('Handler')}</Form.Label>

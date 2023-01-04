@@ -102,10 +102,15 @@ export class CreateCommunicationLog extends Component {
             event.preventDefault();
             this.formik.submitForm().then(() => {
                 if (this.formik.isValid) {
-                    var setSubmitting = this.formik.setSubmitting;
+                    const setSubmitting = this.formik.setSubmitting;
                     this.handleSubmit(this.formik.values, { setSubmitting });
                 }
             });
+        }
+
+        if(event.ctrlKey && event.key === 'e'){
+            event.preventDefault();
+            this.handleVerifyCreateRelatedCustomer(this.state.verifySection.customerNameInput);
         }
     }
 
@@ -308,6 +313,9 @@ export class CreateCommunicationLog extends Component {
         const url = 'CustomerSetting/VerifyUsername';
         const customersInput = customerNameInput.trim()
             .replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',');
+        if(customersInput === ''){
+            return;
+        }
         if (isValidCustomer(customersInput)) {
             this.setState({ createResult: null });
             await DataService.postDataAsync(url, { username: customersInput }).then(response => {

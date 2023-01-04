@@ -163,6 +163,10 @@ export default class AppContainer extends Component {
                 }
             });
         }
+
+        if(event.ctrlKey && event.key === 'e' && this.formik.values.hasRelated){
+            this.handleVerifyRelatedCustomer(event);
+        }
     }
 
     getFeedbackSettings = (feedback, settings) => {
@@ -406,6 +410,9 @@ export default class AppContainer extends Component {
 
     handleVerifyRelatedCustomer = async event => {
         event.preventDefault();
+        if(this.state.fieldInput.customerNameInput === ''){
+            return;
+        }
         const regex1 = new RegExp(/,\s+/g),
             regex2 = new RegExp(/^,+|,+$/g),
             regex3 = new RegExp(/,{2,}/g);
