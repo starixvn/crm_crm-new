@@ -23,6 +23,7 @@ import { toast } from 'react-toastify';
 const CustomerInfo = lazy(() => import('./CustomerInfo'));
 const Content = lazy(() => import('./Content'));
 import WithHotKey from '@jsroot/components/WithHotKey';
+import VerifyButtonUnderline from '@jsroot/components/VerifyButtonUnderline';
 
 export default class CreateForm extends Component {
     constructor(props) {
@@ -593,7 +594,7 @@ export default class CreateForm extends Component {
                             <Button name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
                                 disabled={!this.state.collapse.isVerifyCustomer}
                                 size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}>
-                                {LangHelper.getResource('Verify')}
+                                <VerifyButtonUnderline />
                             </Button>
                         </Col>
                     </Row>

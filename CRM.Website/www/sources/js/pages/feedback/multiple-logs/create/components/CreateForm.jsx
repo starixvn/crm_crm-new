@@ -24,6 +24,7 @@ import {
 } from '@jsroot/common/shareScripts';
 import { validateNoOfInquiry, validateMainCategorySubCategory } from '../../../common.functions';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import VerifyButtonUnderline from '@jsroot/components/VerifyButtonUnderline';
 
 export class CreateForm extends Component {
     static defaultProps = {
@@ -522,7 +523,7 @@ export class CreateForm extends Component {
                                     disabled={values.customerNameInput.trim() === ''}
                                     onClick={() => this.verifyCustomers(setFieldValue, values.customerNameInput)}
                                 >
-                                    {LangHelper.getResource('Verify')}
+                                    <VerifyButtonUnderline />
                                 </Button>
                             </Col>
                             <Col sm="1" md="1">

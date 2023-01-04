@@ -7,6 +7,7 @@ import RelatedCustomerGrid from './RelatedCustomerGrid';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import Site from '@jsroot/common/site';
 import LangHelper from '@jsroot/common/langHelper';
+import VerifyButtonUnderline from '@jsroot/components/VerifyButtonUnderline';
 
 export class AddRelatedCustomerDialog extends Component {
     static defaultProps = {
@@ -290,7 +291,7 @@ export class AddRelatedCustomerDialog extends Component {
                         <Form.Group as={Row}>
                             <Col className="text-right">
                                 <Button variant="primary" size="sm" onClick={this.verifyRelatedCustomers}>
-                                    {LangHelper.getResource('Verify')}
+                                    <VerifyButtonUnderline />
                                 </Button>
                             </Col>
                         </Form.Group>
