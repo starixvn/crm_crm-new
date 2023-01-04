@@ -5,7 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
 import AutoComplete from '@jsroot/components/AutoComplete';
-
+import WithHotKey from '@jsroot/components/WithHotKey';
 export class Filter extends Component {
     constructor(props) {
         super(props);
@@ -13,6 +13,17 @@ export class Filter extends Component {
             feedbackSubjectSearch: '',
             feedbackSubjectSuggestions: []
         };
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            this.handleSubmit(event);
+        }
+
+        if (event.ctrlKey && event.key === 'i') {
+            event.preventDefault();
+            this.props.setCreateFeedbackSubjectPopup({ show: true });
+        }
     }
 
     getParams = () => {
@@ -59,6 +70,7 @@ export class Filter extends Component {
 
         return (
             <Form className="form-filter" id="filter-form-subject" onSubmit={this.handleSubmit}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <AutoComplete

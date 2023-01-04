@@ -6,6 +6,7 @@ import { Form, Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import DatePicker from '@jsroot/components/date-picker/index';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -36,6 +37,17 @@ export class Filter extends Component {
         this.props.setGridParams(params);
         this.props.getLogsByCustomerId(params);
         this.props.getAllStatus();
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            this.handleSubmit(event);
+        }
+
+        if (event.ctrlKey && event.key === 'i') {
+            event.preventDefault();
+            this.props.setCreateRedemptionDialog({ show: true });
+        }
     }
 
     handleChangeToDate = toDate => {
@@ -74,6 +86,7 @@ export class Filter extends Component {
 
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter">
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
                         <Form.Label htmlFor="formDate" className='col-auto col-form-label'>

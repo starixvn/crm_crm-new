@@ -69,6 +69,11 @@ export class Filter extends Component {
         if (event.ctrlKey && event.key === 's') {
             this.searchHandler(event);
         }
+
+        if (event.ctrlKey && event.key === 'i') {
+            event.preventDefault();
+            this.handleOpenCreatePopup();
+        }
     }
 
     mainCategoriesChangeFilter = (currentItem, selectedItemsKey) => {
@@ -172,7 +177,7 @@ export class Filter extends Component {
     render() {
         return (
             <Form className="form-filter">
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label className="communication-setting" htmlFor="customerInput">{LangHelper.getResource('Customer')}</Form.Label>

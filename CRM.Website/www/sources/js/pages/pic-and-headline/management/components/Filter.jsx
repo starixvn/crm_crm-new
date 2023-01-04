@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { toast } from 'react-toastify';
 import { ActionCreators } from '../actions';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends PureComponent {
     static propTypes = {
@@ -62,6 +63,17 @@ export class Filter extends PureComponent {
         });
     }
 
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            this.submitHandler(event);
+        }
+
+        if (event.ctrlKey && event.key === 'i') {
+            event.preventDefault();
+            this.props.setCreatePicPopup({ show: true });
+        }
+    }
+
     handleOpenCreatePopup = () => {
         this.props.setCreatePicPopup({ show: true });
     };
@@ -98,6 +110,7 @@ export class Filter extends PureComponent {
         const { filter, settingRoles } = this.state;
         return (
             <Form className="form-filter" onSubmit={this.submitHandler}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <Form.Row bsPrefix="form-row">
                     <Form.Group className='field-name'>
                         <Form.Label htmlFor="NamePIC">{LangHelper.getResource('Name')}</Form.Label>

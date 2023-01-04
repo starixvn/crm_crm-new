@@ -45,6 +45,11 @@ export class Filter extends Component {
         if (event.ctrlKey && event.key === 's') {
             this.handleSubmit(event);
         }
+
+        if (event.ctrlKey && event.key === 'i') {
+            event.preventDefault();
+            this.props.setCreateCommunicationDialog({ show: true });
+        }
     }
 
     handleChange = event => {
@@ -88,7 +93,7 @@ export class Filter extends Component {
 
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter">
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
                         <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('Handler')}</Form.Label>

@@ -9,7 +9,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { DateTypeOption, DateType }from '@jsroot/common/constants';
-
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -53,6 +53,18 @@ export class Filter extends Component {
                 this.handleSubmit();
             }
         });
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit();
+        }
+
+        if (event.ctrlKey && event.key === 'i') {
+            event.preventDefault();
+            this.props.setOpenCreatePopup({show: true});
+        }
     }
 
     handleChangeFromDate = fromDate => {
@@ -190,6 +202,7 @@ export class Filter extends Component {
         const { remarkContent, userName, isGuestFiler, isShowHeadline, relatedToPICs, fromDate, toDate, dateTypeSelect, remarkTitleOptions } = this.state;
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group style={{width: 850}}>
                         <Form.Label htmlFor="remarkContent">
