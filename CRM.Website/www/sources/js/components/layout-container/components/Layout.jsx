@@ -233,7 +233,7 @@ export class Layout extends Component {
         const {settings, gridParams} = this.state;
         return (
             <div className="d-flex">
-                <div id={customerInfo !== null ? 'left-row-container' : 'left-row-hidden'}>
+                <div id={customerInfo !== null ? 'left-row-container' : 'left-row-hidden'} tabIndex="1">
                 {
                     customerInfo !== null && settings !== null &&
                     <DataGrid
@@ -243,7 +243,7 @@ export class Layout extends Component {
                     />
                 }
                 </div>
-                <div id='right-row-container' style={{width: customerInfo !== null ? '78%' : '100%'}}>
+                <div id='right-row-container' tabIndex="2" style={{width: customerInfo !== null ? '78%' : '100%'}}>
                     <div id='child-app-container'>
                         {this.props.children}
                     </div>
@@ -255,8 +255,8 @@ export class Layout extends Component {
     renderFullWidthContent = () =>{
         return (
             <div>
-                <div id='left-row-container' style={{width:0}} />
-                <div id='right-row-container' style={{width:'100%'}}>
+                <div id='left-row-container' style={{width:0}} tabIndex="1"/>
+                <div id='right-row-container' style={{width:'100%'}} tabIndex="2">
                     <div id='child-app-container'>
                     {this.props.children}
                     </div>

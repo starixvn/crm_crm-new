@@ -10,6 +10,7 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export default class EditMultipleReviewAndStatus extends Component {
     static propTypes = {
@@ -39,19 +40,11 @@ export default class EditMultipleReviewAndStatus extends Component {
         await DataService.getDataAsync(url).then(response => {
             this.setState({ logInfo: response.data, isReviewed: response.data.isReviewed });
         }).catch(Site.handleAxiosError);
-
-        document.addEventListener("keydown", this.handleKeyDownFunc, false);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener("keydown", this.handleKeyDownFunc, false);
     }
 
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            console.log(this);
-
             this.formik.submitForm().then(() => {
                 if (this.formik.isValid) {
                     this.handleSubmit(this.formik.values);
@@ -110,6 +103,7 @@ export default class EditMultipleReviewAndStatus extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isPopup/>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         editResult &&

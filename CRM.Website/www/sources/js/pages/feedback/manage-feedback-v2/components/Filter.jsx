@@ -6,6 +6,7 @@ import { ActionCreators } from '../actions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -41,6 +42,13 @@ export class Filter extends Component {
         return 0;
     }
 
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit(event);
+        }
+    }
+
     handleChangeFromDate = fromDate => {
         const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
         const maxDate = new Date(fromDate.getTime());
@@ -68,7 +76,7 @@ export class Filter extends Component {
 
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
-    handleSubmit = (e) => {
+    handleSubmit = e => {
         e.preventDefault();
         const { mainCategoryId, runningNumber, fromDate, toDate, username, handler, subCategoryId, communicationId,
             reviewer, statusId, responseId, isReviewed, isGuest } = this.state;
@@ -135,6 +143,7 @@ export class Filter extends Component {
 
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="runningNumber">{LangHelper.getResource('RunningNumber')}</Form.Label>

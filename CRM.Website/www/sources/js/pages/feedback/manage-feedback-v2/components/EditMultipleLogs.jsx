@@ -171,11 +171,10 @@ export class EditMultipleLogs extends Component {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            console.log(this);
 
             this.formik.submitForm().then(() => {
                 if (this.formik.isValid) {
-                    var setSubmitting = this.formik.setSubmitting;
+                    const setSubmitting = this.formik.setSubmitting;
                     this.handleSubmit(this.formik.values, { setSubmitting });
                 }
             });

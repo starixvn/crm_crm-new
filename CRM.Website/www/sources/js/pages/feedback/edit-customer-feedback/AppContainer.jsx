@@ -162,7 +162,7 @@ export default class AppContainer extends Component {
             event.preventDefault();
             this.formik.submitForm().then(() => {
                 if (this.formik.isValid) {
-                    var setSubmitting = this.formik.setSubmitting;
+                    const setSubmitting = this.formik.setSubmitting;
                     this.handleSubmit(this.formik.values, { setSubmitting });
                 }
             });
