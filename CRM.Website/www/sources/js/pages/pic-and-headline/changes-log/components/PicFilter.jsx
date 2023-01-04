@@ -6,6 +6,7 @@ import { ActionCreators } from '../actions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class PicFilter extends Component {
     constructor(props) {
@@ -39,6 +40,13 @@ export class PicFilter extends Component {
         });
     };
 
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit();
+        }
+    }
+
     handleChangeToDate = toDate => {
         this.setState({ toDate });
     };
@@ -70,6 +78,7 @@ export class PicFilter extends Component {
 
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="picName">{LangHelper.getResource('PIC')}</Form.Label>

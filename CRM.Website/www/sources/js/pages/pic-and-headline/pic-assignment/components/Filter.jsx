@@ -7,6 +7,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import functions from '../common.functions';
 import { toast } from 'react-toastify';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -137,6 +138,13 @@ export class Filter extends Component {
         };
     };
 
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit();
+        }
+    }
+
     handleSubmit = () => {
         const params = this.getParams();
         if (!this.state.filter.site) {
@@ -175,6 +183,7 @@ export class Filter extends Component {
                 {
                     this.state.showFilter &&
                     <Fragment>
+                        <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                         <Form.Row bsPrefix='form-row'>
                             <Form.Group>
                                 <Form.Label>{LangHelper.getResource('Site')}</Form.Label>

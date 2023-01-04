@@ -10,6 +10,7 @@ import functions from '../common.functions';
 import ConfirmAssignedDirectAccount from './ConfirmAssignedDirectAccount';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Select from '@jsroot/components/CustomReactSelect';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class AssignPic extends Component {
     constructor(props) {
@@ -282,6 +283,13 @@ export class AssignPic extends Component {
         return true;
     };
 
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit();
+        }
+    }
+
     handleSubmit = () => {
         this.setState({
             validate: {
@@ -481,6 +489,7 @@ export class AssignPic extends Component {
                     </Modal.Header>
                     <Form>
                         <Modal.Body>
+                            <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                             {
                                 this.state.validate.show &&
                                 <Alert variant='danger'>
