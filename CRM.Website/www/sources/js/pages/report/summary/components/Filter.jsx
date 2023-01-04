@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -20,6 +21,13 @@ export class Filter extends Component {
 
     componentDidMount() {
         this.handleSettingOptions(this.props.allSettingData);
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.submitHandler(event);
+        }
     }
 
     handleSettingOptions = allSettingData => {
@@ -53,6 +61,7 @@ export class Filter extends Component {
 
         return (
             <Form className="form-filter" onSubmit={this.submitHandler}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
                         <Form.Label htmlFor="year">Year</Form.Label>

@@ -9,6 +9,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import moment from 'moment';
 import { toast } from 'react-toastify';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -39,6 +40,13 @@ export class Filter extends Component {
     handleChangeToDate = toDate => {
         this.setState({ toDate });
     };
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit();
+        }
+    }
 
     handleChangeFromDate = fromDate => {
         const currentClientTime = window.currentClientTime;
@@ -129,6 +137,7 @@ export class Filter extends Component {
         const {fromDate, toDate, productOptions, mainCategoryOptions, communicationToolOptions}= this.state;
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
             <Form.Row bsPrefix='form-row'>
                 <Form.Group className='form-width'>
                     <Form.Label htmlFor="productIds">{LangHelper.getResource('Product')}</Form.Label>

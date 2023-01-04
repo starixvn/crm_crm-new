@@ -7,6 +7,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import { toast } from 'react-toastify';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -35,6 +36,13 @@ export class Filter extends Component {
             subCategoryId: -1,
             showFilter: true
         };
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit();
+        }
     }
 
     handleChangeFromDate = fromDate => {
@@ -171,6 +179,7 @@ export class Filter extends Component {
                 {
                     showFilter &&
                     <Fragment>
+                        <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                         <Form.Row bsPrefix='form-row'>
                             <Form.Group style={{width: '210px'}}>
                                 <Form.Label htmlFor="groupBy">{LangHelper.getResource('GroupBy')}</Form.Label>

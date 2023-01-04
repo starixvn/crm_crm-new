@@ -8,6 +8,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import { FeedbackSelectionType }from '@jsroot/common/constants';
 import { toast } from 'react-toastify';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -47,6 +48,13 @@ export class Filter extends Component {
     handleChangeToDate = toDate => {
         this.setState({ toDate });
     };
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit();
+        }
+    }
 
     handleChange = evt => {
         this.setState({
@@ -107,6 +115,7 @@ export class Filter extends Component {
 
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group className='small-width'>
                         <Form.Control as="select" size="sm" className="small-width"

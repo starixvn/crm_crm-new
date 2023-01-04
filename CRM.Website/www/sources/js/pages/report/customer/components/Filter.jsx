@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Form, Button, Alert } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -28,6 +29,13 @@ export class Filter extends Component {
 
     componentDidMount() {
         this.initSettingOptions();
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit(event);
+        }
     }
 
     initSettingOptions = () => {
@@ -146,6 +154,8 @@ export class Filter extends Component {
                                 </Alert>
                             )
                         }
+                        
+                        <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                         <Form.Row className='form-row'>
                             <Form.Group>
                                 <Form.Label htmlFor="username" className="col-auto col-form-label">{LangHelper.getResource('Username')}</Form.Label>

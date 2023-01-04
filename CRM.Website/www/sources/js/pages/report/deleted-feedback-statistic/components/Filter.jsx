@@ -6,6 +6,7 @@ import { ActionCreators } from '../actions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -46,6 +47,13 @@ export class Filter extends Component {
         this.setState({ fromDate, toDate });
     };
 
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit();
+        }
+    }
+
     handleChangeToDate = toDate => {
         this.setState({ toDate });
     };
@@ -75,6 +83,7 @@ export class Filter extends Component {
 
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="handler">{LangHelper.getResource('Handler')}</Form.Label>

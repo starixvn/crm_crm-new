@@ -4,6 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -29,6 +30,13 @@ export class Filter extends Component {
         this.props.getGridData(params);
     };
 
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.submitHandler();
+        }
+    }
+
     handleToggleFilter = value => {
         this.setState({ showFilter: value });
         window.dispatchEvent(new Event('resize'));
@@ -42,6 +50,7 @@ export class Filter extends Component {
                 {
                     showFilter &&
                     <Fragment>
+                        <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                         <Form.Row bsPrefix='form-row'>
                             <Form.Group>
                                 <Form.Label htmlFor="groupHeadlineInput">{LangHelper.getResource('GroupHeadline')}</Form.Label>

@@ -9,6 +9,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import Site from '@jsroot/common/site';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -67,6 +68,13 @@ export class Filter extends Component {
             toDate: toDate
         });
     };
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit(event);
+        }
+    }
 
     handleUpdateFromWeek = fromDate => {
         const firstDayOfWeek = fromDate.getDate() - fromDate.getDay();
@@ -397,6 +405,7 @@ export class Filter extends Component {
                 {
                     showFilter &&
                     <React.Fragment>
+                        <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                         <Form.Row className='form-row'>
                             <Form.Group>
                                 <Form.Label htmlFor="groupBy" className="col-auto col-form-label">{LangHelper.getResource('GroupBy')}</Form.Label>
