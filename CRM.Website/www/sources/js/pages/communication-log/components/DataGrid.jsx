@@ -8,6 +8,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { Policy, PAGING_SIZES } from '@jsroot/common/constants';
 import { handleSort } from '@jsroot/common/shareScripts';
+import InsertCaseButtonUnderline from '@jsroot/components/InsertCaseButtonUnderline';
 
 export class DataGrid extends Component {
 
@@ -184,7 +185,7 @@ export class DataGrid extends Component {
                 {
                     customerInfoPolicy === Policy.Host &&
                     <Button variant="primary" size="sm" className="mt-3" onClick={this.handleCreate}>
-                        {LangHelper.getResource('InsertCase')}
+                        {<InsertCaseButtonUnderline/>}
                     </Button>
                 }
             </Fragment>

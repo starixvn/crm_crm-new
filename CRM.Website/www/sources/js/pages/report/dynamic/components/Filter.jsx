@@ -10,6 +10,7 @@ import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import Site from '@jsroot/common/site';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import SubmitButtonUnderline from '@jsroot/components/SubmitButtonUnderline';
 
 export class Filter extends Component {
     constructor(props) {
@@ -580,7 +581,7 @@ export class Filter extends Component {
                                 </div>
                             </Form.Group>
                             <Form.Group>
-                                <Button type="submit" className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</Button>
+                                <Button type="submit" className="btn btn-primary btn-sm">{<SubmitButtonUnderline/>}</Button>
                             </Form.Group>
                         </Form.Row>
                     </React.Fragment>

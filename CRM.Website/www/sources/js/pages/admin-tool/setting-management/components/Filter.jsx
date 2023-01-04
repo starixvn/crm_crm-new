@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
+import SearchButtonUnderline from '@jsroot/components/SearchButtonUnderline';
 
 export class Filter extends Component {
     constructor(props) {
@@ -57,7 +58,7 @@ export class Filter extends Component {
                     </Form.Group>
                     <Form.Group style={{width: 700}}>
                         <Button variant="primary" size="sm" className='mr-3' onClick={this.handleSubmit}>
-                            {LangHelper.getResource('Search')}
+                            {<SearchButtonUnderline/>}
                         </Button>
                         {
                             this.props.isHost &&

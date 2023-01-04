@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import { handleSort } from '@jsroot/common/shareScripts';
+import InsertCaseButtonUnderline from '@jsroot/components/InsertCaseButtonUnderline';
 
 export class DataGrid extends Component {
 
@@ -97,7 +98,7 @@ export class DataGrid extends Component {
                 {
                     hasCreateFeedbackPermission && (
                         <Button variant="primary" size="sm" className="mt-3" onClick={() => this.handleCreateRedemptionLog()}>
-                            {LangHelper.getResource('InsertCase')}
+                            {<InsertCaseButtonUnderline/>}
                         </Button>
                     )
                 }

@@ -6,6 +6,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import SubmitButtonUnderline from '@jsroot/components/SubmitButtonUnderline';
 
 export class Filter extends Component {
     constructor(props) {
@@ -242,7 +243,7 @@ export class Filter extends Component {
                                 <Form.Label htmlFor="excludeIgAccounts" className="col-form-label label-exclude">{LangHelper.getResource('ExcludeIgnoredAccounts')}</Form.Label>
                             </Form.Group>
                             <Form.Group>
-                                <Button type="submit" id='btn-submit-customer-report' className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</Button>
+                                <Button id='btn-submit-customer-report' type="submit" className="btn btn-primary btn-sm">{<SubmitButtonUnderline/>}</Button>
                             </Form.Group>
                         </Form.Row>
                     </Fragment>

@@ -9,6 +9,7 @@ import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import { toast } from 'react-toastify';
+import UpdateButtonUnderline from '@jsroot/components/UpdateButtonUnderline';
 
 export default class DataGrid extends PureComponent {
     static defaultProps = {
@@ -448,7 +449,7 @@ export default class DataGrid extends PureComponent {
                         {
                             hasCreateFeedbackPermission &&
                             <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
-                                {LangHelper.getResource('Update')}
+                                {<UpdateButtonUnderline/>}
                             </Button>
                         }
                     </Col>
