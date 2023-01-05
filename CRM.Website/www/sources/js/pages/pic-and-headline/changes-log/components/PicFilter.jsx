@@ -23,36 +23,36 @@ export class PicFilter extends Component {
             editBy: '',
             fromDate: fromDate,
             toDate: currentDate
-          };
-        }
-  
-      handleChangeFromDate = fromDate => {
-          const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
-          const maxDate = new Date(fromDate.getTime());
-          maxDate.setMonth(fromDate.getMonth() + 1);
-  
-          this.minToDate = fromDate;
-          this.maxToDate = (maxDate < currentTime) ? maxDate : currentTime;
-          this.setState({
-              fromDate: fromDate,
-              toDate: maxDate < currentTime ? maxDate : currentTime
-          });
-      };
-  
-      handleChangeToDate = toDate => {
-          this.setState({ toDate });
-      };
-  
-      handleChange = evt => {
-          this.setState({
-              ...this.state,
-              [evt.target.name]: evt.target.value
-          });
-      };
-  
-      handleSubmit = () => {
-          const { picName, letstalkName, fromDate, toDate, editBy } = this.state;
-          const params = {
+        };
+    }
+
+    handleChangeFromDate = fromDate => {
+        const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(window.currentClientTime)));
+        const maxDate = new Date(fromDate.getTime());
+        maxDate.setMonth(fromDate.getMonth() + 1);
+
+        this.minToDate = fromDate;
+        this.maxToDate = (maxDate < currentTime) ? maxDate : currentTime;
+        this.setState({
+            fromDate: fromDate,
+            toDate: maxDate < currentTime ? maxDate : currentTime
+        });
+    };
+
+    handleChangeToDate = toDate => {
+        this.setState({ toDate });
+    };
+
+    handleChange = evt => {
+        this.setState({
+            ...this.state,
+            [evt.target.name]: evt.target.value
+        });
+    };
+
+    handleSubmit = (e) => {
+        const { picName, letstalkName, fromDate, toDate, editBy } = this.state;
+        const params = {
             picName: picName !== '' ? picName : null,
             editBy: editBy !== '' ? editBy : null,
             letstalkName: letstalkName !== '' ? letstalkName : null,
@@ -60,82 +60,83 @@ export class PicFilter extends Component {
             toDate: DateTimeService.toShortDateFormat(toDate),
             pageIndex: 1,
             pageSize: this.props.gridParamsPic.pageSize
-          };
-  
-          this.props.setGridParamsPic(params);
-          this.props.getPicReport(params);
-      };
-  
-      render() {
-          const { picName, letstalkName, fromDate, toDate, editBy } = this.state;
-  
-          return (
-              <Form className='form-filter' onSubmit={this.handleSubmit}>
-                  <Form.Row bsPrefix='form-row'>
-                      <Form.Group>
-                          <Form.Label htmlFor="picName">{LangHelper.getResource('PIC')}</Form.Label>
-                          <Form.Control type="text" size="sm"
-                              className="shadow-none" autoComplete="off"
-                              value={picName}
-                              name="picName" id="picName"
-                              onChange={this.handleChange}
-                          />
-                      </Form.Group>
-                      <Form.Group>
-                              <Form.Label className="col-auto col-form-label">{LangHelper.getResource('LetstalkName')}</Form.Label>
-                              <Form.Control type="text" size="sm" className="shadow-none"
-                                  name="letstalkName" id="letstalkName"
-                                  value={letstalkName}
-                                  onChange={this.handleChange}
-                              />
-                          </Form.Group>
-                      <Form.Group >
-                          <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
-                          <div className='react-datepicker-wrapper-container'>
-                              <DatePicker
-                                  selected={fromDate}
-                                  peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
-                                  maxDate={new Date(this.maxFromDate)}
-                                  minDate={new Date('1/1/2011')}
-                                  onChange={value => this.handleChangeFromDate(value)}
-                              />
-                          </div>
-                      </Form.Group>
-                      <Form.Group>
-                          <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
-                          <div className='react-datepicker-wrapper-container'>
-                              <DatePicker
-                                  peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
-                                  maxDate={new Date(this.maxToDate)}
-                                  minDate={new Date(this.minToDate)}
-                                  selected={toDate}
-                                  onChange={value => this.handleChangeToDate(value)}
-                              />
-                          </div>
-                      </Form.Group>
-                      <Form.Group>
-                          <Form.Label htmlFor="editBy">{LangHelper.getResource('EditBy')}</Form.Label>
-                          <Form.Control size="sm" type="text"
-                              name="editBy" id="editBy"
-                              className="shadow-none" autoComplete="off"
-                              value={editBy}
-                              onChange={this.handleChange}
-                          />
-                      </Form.Group>
-                      <Button  size="sm" variant="primary" onClick={this.handleSubmit}>
-                          {LangHelper.getResource('Submit')}
-                      </Button>
-                  </Form.Row>
-              </Form>
-          );
-      }
-  }
-  
-  const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
-  
-  const mapStateToProps = state => {
-      const { gridParamsPic, actionType } = state;
-      return { gridParamsPic, actionType };
-  };
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(PicFilter);  
+        };
+
+        this.props.setGridParamsPic(params);
+        this.props.getPicReport(params);
+    };
+
+    render() {
+        const { picName, letstalkName, fromDate, toDate, editBy } = this.state;
+
+        return (
+            <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
+                <Form.Row bsPrefix='form-row'>
+                    <Form.Group>
+                        <Form.Label htmlFor="picName">{LangHelper.getResource('PIC')}</Form.Label>
+                        <Form.Control type="text" size="sm"
+                            className="shadow-none" autoComplete="off"
+                            value={picName}
+                            name="picName" id="picName"
+                            onChange={this.handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label className="col-auto col-form-label">{LangHelper.getResource('LetstalkName')}</Form.Label>
+                        <Form.Control type="text" size="sm" className="shadow-none"
+                            name="letstalkName" id="letstalkName"
+                            value={letstalkName}
+                            onChange={this.handleChange}
+                            autoComplete="on"
+                        />
+                    </Form.Group>
+                    <Form.Group >
+                        <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
+                        <div className='react-datepicker-wrapper-container'>
+                            <DatePicker
+                                selected={fromDate}
+                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                                maxDate={new Date(this.maxFromDate)}
+                                minDate={new Date('1/1/2011')}
+                                onChange={value => this.handleChangeFromDate(value)}
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
+                        <div className='react-datepicker-wrapper-container'>
+                            <DatePicker
+                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                                maxDate={new Date(this.maxToDate)}
+                                minDate={new Date(this.minToDate)}
+                                selected={toDate}
+                                onChange={value => this.handleChangeToDate(value)}
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label htmlFor="editBy">{LangHelper.getResource('EditBy')}</Form.Label>
+                        <Form.Control size="sm" type="text"
+                            name="editBy" id="editBy"
+                            className="shadow-none" autoComplete="off"
+                            value={editBy}
+                            onChange={this.handleChange}
+                        />
+                    </Form.Group>
+                    <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit}>
+                        {LangHelper.getResource('Submit')}
+                    </Button>
+                </Form.Row>
+            </Form>
+        );
+    }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { gridParamsPic, actionType } = state;
+    return { gridParamsPic, actionType };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PicFilter);  
