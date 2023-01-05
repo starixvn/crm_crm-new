@@ -28,7 +28,7 @@ export default class DataGrid extends PureComponent {
 
     componentDidMount() {
         this.handleCheckLanguage();
-        const leftContainer = document.getElementById('left-form-container');
+        const leftContainer = document.getElementById('left-row-container');
         leftContainer.addEventListener("keydown", this.handleKeyDownFunc, false);
     }
 
@@ -39,7 +39,7 @@ export default class DataGrid extends PureComponent {
     }
 
     componentWillUnmount(){
-        const leftContainer = document.getElementById('left-form-container');
+        const leftContainer = document.getElementById('left-row-container');
         if(leftContainer){
             leftContainer.removeEventListener("keydown", this.handleKeyDownFunc, false);
         }
