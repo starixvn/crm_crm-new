@@ -226,7 +226,7 @@ export class DataGrid extends Component {
                     <span>{LangHelper.getResource('ChangesLog')}</span>
                 </div>
                 <Table
-                    width={1400}
+                    width={1500}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}

@@ -12,7 +12,7 @@
 
         public string LogTime => $"{LogDate.ToString("MMM dd, yyyy")}\n({LogDate.ToString("hh:mm:ss tt")})";
 
-        public string PIC { get; set; }
+        public string Name { get; set; }
 
         public string PicTypeName { get; set; }
 
@@ -30,11 +30,11 @@
 
         public DateTime LogDate { get; set; }
 
-        public PicInfoLog OldPicInfo => ConvertXmlToPicInfo(OldValues);
+        public PicInfoLog OldLogInfo => ConvertXmlToLogInfo(OldValues);
 
-        public PicInfoLog NewPicInfo => ConvertXmlToPicInfo(NewValues);
+        public PicInfoLog NewLogInfo => ConvertXmlToLogInfo(NewValues);
 
-        private static PicInfoLog ConvertXmlToPicInfo(string xml)
+        private static PicInfoLog ConvertXmlToLogInfo(string xml)
         {
             if (!string.IsNullOrEmpty(xml))
             {

@@ -103,7 +103,12 @@ export const LogActions = {
     UpdateCreditTerm: 910,
     RemoveCustomerFromCreditTermGroup: 911,
     SetCustomerToCreditTermGroup: 912,
-    AddTheGeneralInformationForSuperFromExistingSuper: 913
+    AddTheGeneralInformationForSuperFromExistingSuper: 913,
+    UpdateChatTypeMapping: 1008,
+    UpdateChatTypeMappingStatus: 1009,
+    UpdateChatTypeMappingRemark: 1010,
+    InsertChatTypeMapping: 1007,
+    DeleteConversationGroup: 1011
 };
 
 export const DefaultLanguages = {

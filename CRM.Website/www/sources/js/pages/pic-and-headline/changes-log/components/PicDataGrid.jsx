@@ -47,7 +47,7 @@ export class PicDataGrid extends Component {
                 <Cell className='text-center' style={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{ __html: item.logTime}} />
                 <Cell>{item.editBy}</Cell>
                 <Cell>{item.picTypeName}</Cell>
-                <Cell>{item.pic}</Cell>
+                <Cell>{item.name}</Cell>
                 <Cell >{item.action}</Cell>
                 <Cell>{detailValuePic}</Cell>
             </Row>
@@ -66,57 +66,107 @@ export class PicDataGrid extends Component {
             case LogActions.UpdatePicStatus:
                 detailValue = this.getDetailValueUpdatePicStatus(item);
                 break;
+            case LogActions.InsertChatTypeMapping:
+                detailValue = this.getDetailChatTypeMappingInsert(item);
+                break;
+            case LogActions.UpdateChatTypeMapping:
+                detailValue = this.getDetailChatTypeMappingUpdate(item);
+                break;
+            case LogActions.UpdateChatTypeMappingRemark:
+                detailValue = this.getDetailChaTypeMappingRemark(item);
+                break;
+            case LogActions.UpdateChatTypeMappingStatus:
+                detailValue = this.getDetailChaTypeMappingAction(item, true);
+                break;
+            case LogActions.DeleteConversationGroup:
+                detailValue = this.getDetailChaTypeMappingAction(item, false);
+                break;
         }
         return detailValue;
     };
 
     getDetailValueInsertNewPic = item =>{
-        const languageValue = this.getStringJoinArray(item.newPicInfo.languages);
-        const picTypes = this.getStringJoinArray(item.newPicInfo.picTypes);
-        const countryValue = item.newPicInfo.country ? item.newPicInfo.country.name : '-';
+        const languageValue = this.getStringJoinArray(item.newLogInfo.languages);
+        const picTypes = this.getStringJoinArray(item.newLogInfo.picTypes);
+        const countryValue = item.newLogInfo.country ? item.newLogInfo.country.name : '-';
         const newCommunicationTools = [];
-        this.recursiveCommunicationTools(item.newPicInfo.communicationTools, newCommunicationTools);
+        this.recursiveCommunicationTools(item.newLogInfo.communicationTools, newCommunicationTools);
         const newCommunicationToolValue = this.renderCommunicationTools(newCommunicationTools);
-        const remarkValue = this.getStringValue(item.newPicInfo.remark);
+        const remarkValue = this.getStringValue(item.newLogInfo.remark);
         const picTypeName = LangHelper.getResource('PicType');
         const communicationToolsName = LangHelper.getResource('CommunicationTool');
-        const name = LangHelper.getResource('name');
+        const name = LangHelper.getResource('Name');
         const roleName = LangHelper.getResource('Role');
         const languageName = LangHelper.getResource('Language');
         const countryName = LangHelper.getResource('country');
         const isActiveName = LangHelper.getResource('IsActive');
-        const remarkName = LangHelper.getResource('remark');
+        const remarkName = LangHelper.getResource('Remark');
 
         return (
             <div className='pic-container'>
                 {this.renderHtmlDetail(picTypeName, picTypes, communicationToolsName, newCommunicationToolValue)}
-                {this.renderHtmlDetail(name, item.newPicInfo.name, roleName, item.newPicInfo.role.name)}
+                {this.renderHtmlDetail(name, item.newLogInfo.name, roleName, item.newLogInfo.role.name)}
                 {this.renderHtmlDetail(languageName, languageValue, countryName, countryValue)}
                 {this.renderHtmlDetail(isActiveName, 'Yes', remarkName, remarkValue)}
             </div>
         );
     };
 
+    getDetailChatTypeMappingInsert = item =>{
+        const newLog = item.newLogInfo;
+        const botNameValue = this.getStringObject(newLog.bot);
+        const letstalkNameValue = this.getStringValue(newLog.conversationGroup.name);
+        const chatTypeValue = this.getStringObject(newLog.chatType);
+        const recipientTypeValue = this.getStringObject(newLog.recipientType);
+        const recipientValue = this.getStringJoinArray(newLog.recipients);
+        const letstalkIDValue = this.getStringValue(newLog.conversationGroup.letstalkID);
+        const groupHeadlineValue = this.getStringJoinArray(newLog.headlines);
+        const languageValue = this.getStringJoinArray(newLog.languages);
+        const remarkValue = this.getStringValue(newLog.conversationGroup.remark);
+        const activeValue = this.convertBoolToDecision(newLog.conversationGroup.active);
+
+        const botName = LangHelper.getResource('BotName');
+        const letstalkName = LangHelper.getResource('LetstalkName');
+        const chatTypeName = LangHelper.getResource('ChatType');
+        const recipientTypeName = LangHelper.getResource('RecipientType');
+        const recipientName = LangHelper.getResource('Recipient');
+        const letstalkID = LangHelper.getResource('LetstalkID');
+        const groupHeadline = LangHelper.getResource('GroupHeadline');
+        const languageName = LangHelper.getResource('Language');
+        const remarkName = LangHelper.getResource('Remark');
+        const activeNameName = LangHelper.getResource('Active');
+
+        return (
+            <div className='pic-container'>
+                {this.renderHtmlDetail(botName, botNameValue, letstalkName, letstalkNameValue)}
+                {this.renderHtmlDetail(chatTypeName, chatTypeValue, recipientTypeName, recipientTypeValue)}
+                {this.renderHtmlDetail(recipientName, recipientValue, letstalkID, letstalkIDValue)}
+                {this.renderHtmlDetail(groupHeadline, groupHeadlineValue, languageName, languageValue)}
+                {this.renderHtmlDetail(remarkName, remarkValue, activeNameName, activeValue)}
+            </div>
+        );
+    };
+
     getDetailValueUpdatePic = item =>{
-        const roleValue = this.changeValueToHtmlString(this.getStringObject(item.oldPicInfo.role), this.getStringObject(item.newPicInfo.role));
-        const nameValue = this.changeValueToHtmlString(item.oldPicInfo.name, item.newPicInfo.name);
-        const newPicType = this.getStringJoinArray(item.newPicInfo.picTypes);
-        const oldPicType = this.getStringJoinArray(item.oldPicInfo.picTypes);
+        const roleValue = this.changeValueToHtmlString(this.getStringObject(item.oldLogInfo.role), this.getStringObject(item.newLogInfo.role));
+        const nameValue = this.changeValueToHtmlString(item.oldLogInfo.name, item.newLogInfo.name);
+        const newPicType = this.getStringJoinArray(item.newLogInfo.picTypes);
+        const oldPicType = this.getStringJoinArray(item.oldLogInfo.picTypes);
         const picTypeValue = this.changeValueToHtmlString(oldPicType, newPicType);
-        const newLanguage = this.getStringJoinArray(item.newPicInfo.languages);
-        const oldLanguage = this.getStringJoinArray(item.oldPicInfo.languages);
+        const newLanguage = this.getStringJoinArray(item.newLogInfo.languages);
+        const oldLanguage = this.getStringJoinArray(item.oldLogInfo.languages);
         const languageValue = this.changeValueToHtmlString(oldLanguage, newLanguage);
-        const countryValue = this.changeValueToHtmlString(this.getStringObject(item.oldPicInfo.country), this.getStringObject(item.newPicInfo.country));
+        const countryValue = this.changeValueToHtmlString(this.getStringObject(item.oldLogInfo.country), this.getStringObject(item.newLogInfo.country));
         const newCommunicationTool = [];
-        this.recursiveCommunicationTools(item.newPicInfo.communicationTools, newCommunicationTool);
+        this.recursiveCommunicationTools(item.newLogInfo.communicationTools, newCommunicationTool);
         const newCommunicationToolValue = this.renderCommunicationTools(newCommunicationTool);
         const newCommunicationString = newCommunicationTool.map(tool => this.getStringCommunicationTools(tool)).join('');
         const oldCommunicationTool = [];
-        this.recursiveCommunicationTools(item.oldPicInfo.communicationTools, oldCommunicationTool);
+        this.recursiveCommunicationTools(item.oldLogInfo.communicationTools, oldCommunicationTool);
         const oldCommunicationToolValue = this.renderCommunicationTools(oldCommunicationTool);
         const oldCommunicationString = oldCommunicationTool.map(tool => this.getStringCommunicationTools(tool)).join('');
         const communicationToolValue = this.changeValueToHtmlString(oldCommunicationToolValue, newCommunicationToolValue, newCommunicationString !== oldCommunicationString, true);
-        const remarkValue = this.changeValueToHtmlString(this.getStringValue(item.oldPicInfo.remark), this.getStringValue(item.newPicInfo.remark));
+        const remarkValue = this.changeValueToHtmlString(this.getStringValue(item.oldLogInfo.remark), this.getStringValue(item.newLogInfo.remark));
         return (
             <div className='pic-container'>
                 {
@@ -131,8 +181,8 @@ export class PicDataGrid extends Component {
                     this.renderHtmlDetail(
                         LangHelper.getResource('Name'), nameValue,
                         LangHelper.getResource('Role'), roleValue,
-                        item.oldPicInfo.name !== item.newPicInfo.name,
-                        this.getStringObject(item.oldPicInfo.role) !== this.getStringObject(item.newPicInfo.role)
+                        item.oldLogInfo.name !== item.newLogInfo.name,
+                        this.getStringObject(item.oldLogInfo.role) !== this.getStringObject(item.newLogInfo.role)
                     )
                 }
                 {
@@ -140,14 +190,14 @@ export class PicDataGrid extends Component {
                         LangHelper.getResource('Language'), languageValue,
                         LangHelper.getResource('Country'), countryValue,
                         oldLanguage !== newLanguage,
-                        this.getStringObject(item.oldPicInfo.country) !== this.getStringObject(item.newPicInfo.country)
+                        this.getStringObject(item.oldLogInfo.country) !== this.getStringObject(item.newLogInfo.country)
                     )
                 }
                 {
                     this.renderHtmlDetail(
                         LangHelper.getResource('Remark'), remarkValue,
                         null, null,
-                        item.oldPicInfo.remark !== item.newPicInfo.remark,
+                        item.oldLogInfo.remark !== item.newLogInfo.remark,
                         false
                     )
                 }
@@ -155,17 +205,77 @@ export class PicDataGrid extends Component {
         );
     };
 
+    getDetailChatTypeMappingUpdate = item =>{
+        const {newLogInfo, oldLogInfo} = item;
+        const newLetstalkName = this.getStringValue(newLogInfo.conversationGroup.name);
+        const oldLetstalkName = this.getStringValue(oldLogInfo.conversationGroup.name);
+        const LetstalkNameValue = this.changeValueToHtmlString(oldLetstalkName, newLetstalkName);
+        const newRecipientType = this.getStringObject(newLogInfo.recipientType);
+        const oldRecipientType = this.getStringObject(oldLogInfo.recipientType);
+        const recipientTypeValue = this.changeValueToHtmlString(oldRecipientType, newRecipientType);
+        const newRecipient = this.getStringJoinArray(newLogInfo.recipients);
+        const oldRecipient = this.getStringJoinArray(oldLogInfo.recipients);
+        const recipientValue = this.changeValueToHtmlString(oldRecipient, newRecipient);
+        const newLetstalkID = this.getStringValue(newLogInfo.conversationGroup.letstalkID);
+        const oldLetstalkID = this.getStringValue(oldLogInfo.conversationGroup.letstalkID);
+        const letstalkIDValue = this.changeValueToHtmlString(oldLetstalkID, newLetstalkID);
+        const newBotName = this.getStringObject(newLogInfo.bot);
+        const oldBotName = this.getStringObject(oldLogInfo.bot);
+        const botNameValue = this.changeValueToHtmlString(oldBotName, newBotName);
+        const newGroupHeadline = this.getStringJoinArray(newLogInfo.headlines);
+        const oldGroupHeadline = this.getStringJoinArray(oldLogInfo.headlines);
+        const groupHeadlineValue = this.changeValueToHtmlString(oldGroupHeadline, newGroupHeadline);
+        const newLanguage = this.getStringJoinArray(newLogInfo.languages);
+        const oldLanguage = this.getStringJoinArray(oldLogInfo.languages);
+        const languageValue = this.changeValueToHtmlString(oldLanguage, newLanguage);
+        const oldRemark = this.getStringValue(oldLogInfo.conversationGroup.remark);
+        const newRemark = this.getStringValue(newLogInfo.conversationGroup.remark);
+        const remarkValue = this.changeValueToHtmlString(oldRemark, newRemark);
+        return (
+            <div className='pic-container'>
+                {
+                    this.renderHtmlDetail(
+                        LangHelper.getResource('BotName'), botNameValue,
+                        LangHelper.getResource('LetstalkName'), LetstalkNameValue,
+                        oldBotName !== newBotName, oldLetstalkName !== newLetstalkName
+                    )
+                }
+                {
+                    this.renderHtmlDetail(
+                        LangHelper.getResource('RecipientType'), recipientTypeValue,
+                        LangHelper.getResource('Recipient'), recipientValue,
+                        oldRecipientType !== newRecipientType,  oldRecipient !== newRecipient
+                    )
+                }
+                {
+                    this.renderHtmlDetail(
+                        LangHelper.getResource('GroupHeadline'), groupHeadlineValue,
+                        LangHelper.getResource('Language'), languageValue,
+                        oldGroupHeadline !== newGroupHeadline, oldLanguage !== newLanguage
+                    )
+                }
+                {
+                    this.renderHtmlDetail(
+                        LangHelper.getResource('Remark'), remarkValue,
+                        LangHelper.getResource('LetstalkID'), letstalkIDValue,
+                        oldRemark !== newRemark, oldLetstalkID !== newLetstalkID
+                    )
+                }
+            </div>
+        );
+    };
+
     getDetailValueUpdatePicStatus = item =>{
-        const newDirectAccountJoin = this.getStringJoinArray(item.newPicInfo.directAccounts);
-        const oldDirectAccountJoin = this.getStringJoinArray(item.oldPicInfo.directAccounts);
+        const newDirectAccountJoin = this.getStringJoinArray(item.newLogInfo.directAccounts);
+        const oldDirectAccountJoin = this.getStringJoinArray(item.oldLogInfo.directAccounts);
         const isChangeDirectAccount =  newDirectAccountJoin !== oldDirectAccountJoin;
         const directAccountValue = this.changeValueToHtmlString(oldDirectAccountJoin, newDirectAccountJoin);
         const isActiveValue = this.changeValueToHtmlString(
-                this.convertBoolToDecision(item.oldPicInfo.isActive),
-                this.convertBoolToDecision(item.newPicInfo.isActive)
+                this.convertBoolToDecision(item.oldLogInfo.isActive),
+                this.convertBoolToDecision(item.newLogInfo.isActive)
             );
-        const oldHeadlineJoin = this.getStringJoinArray(item.oldPicInfo.headlines);
-        const newHeadlineJoin = this.getStringJoinArray(item.newPicInfo.headlines);
+        const oldHeadlineJoin = this.getStringJoinArray(item.oldLogInfo.headlines);
+        const newHeadlineJoin = this.getStringJoinArray(item.newLogInfo.headlines);
         const isChangeHeadline = oldHeadlineJoin !== newHeadlineJoin;
         const headlineValue = this.changeValueToHtmlString(oldHeadlineJoin, newHeadlineJoin);
         return (
@@ -175,7 +285,7 @@ export class PicDataGrid extends Component {
                         LangHelper.getResource('DirectAccount'), directAccountValue,
                         LangHelper.getResource('IsActive'), isActiveValue,
                         isChangeDirectAccount,
-                        item.oldPicInfo.isActive !== item.newPicInfo.isActive
+                        item.oldLogInfo.isActive !== item.newLogInfo.isActive
                     )
                 }
                 <div className='container-detail'>
@@ -189,6 +299,39 @@ export class PicDataGrid extends Component {
             </div>
         );
     };
+
+    getDetailChaTypeMappingAction = (item, isUpdateStatus) =>{
+        const letstalkName = LangHelper.getResource('LetstalkName');
+        const letstalkNameValue = this.getStringObject(item.newLogInfo.conversationGroup);
+        const name = isUpdateStatus ?  LangHelper.getResource('Active') :  LangHelper.getResource('Deleted');
+        const changedValue = this.changeValueToHtmlString(
+                this.convertBoolToDecision(isUpdateStatus ? item.oldLogInfo.conversationGroup?.active : item.oldLogInfo.conversationGroup?.deleted),
+                this.convertBoolToDecision(isUpdateStatus ? item.newLogInfo.conversationGroup?.active : item.newLogInfo.conversationGroup?.deleted)
+            );
+        
+        return (
+            <div className='pic-container'>
+                { this.renderHtmlDetail(letstalkName, letstalkNameValue, name, changedValue) }
+            </div>
+        );
+    };
+
+    getDetailChaTypeMappingRemark = item =>{
+        const letstalkName = LangHelper.getResource('LetstalkName');
+        const letstalkNameValue = this.getStringObject(item.newLogInfo.conversationGroup);
+        const remarkName = LangHelper.getResource('Remark');
+        const changedValueRemark = this.changeValueToHtmlString(
+                item.oldLogInfo.conversationGroup?.remark,
+                item.newLogInfo.conversationGroup?.remark
+            );
+        
+        return (
+            <div className='pic-container'>
+                { this.renderHtmlDetail(letstalkName, letstalkNameValue, remarkName, changedValueRemark) }
+            </div>
+        );
+    };
+
 
     changeValueToHtmlString = (oldValue, newValue, isChangeCommunication, isCommunication = false) =>{
         const isChange = isCommunication ? isChangeCommunication : newValue !== oldValue;
@@ -306,7 +449,7 @@ export class PicDataGrid extends Component {
                 <Table
                     header={this.buildHeader()}
                     body={this.buildBody()}
-                    width={1400}
+                    width={1500}
                     autoWidth={false}
                     isPaging
                     adjustedHeight={10}

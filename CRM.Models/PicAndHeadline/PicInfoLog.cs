@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Xml.Serialization;
 
-    public class PicInfoLog
+    public class PicInfoLog : ChatTypeMappingGroupInfo
     {
         public BaseModel Role { get; set; }
 
