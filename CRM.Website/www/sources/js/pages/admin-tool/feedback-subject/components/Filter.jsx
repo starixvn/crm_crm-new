@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Form } from 'react-bootstrap';
@@ -6,6 +6,7 @@ import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import SearchButtonUnderline from '@jsroot/components/SearchButtonUnderline';
 export class Filter extends Component {
     constructor(props) {
         super(props);
@@ -82,14 +83,14 @@ export class Filter extends Component {
                     <Button className="mr-4" variant="primary" size="sm"
                         onClick={this.handleSubmit}
                     >
-                        {LangHelper.getResource('Search')}
+                        <SearchButtonUnderline />
                     </Button>
                     {
                         isHost &&
                         <Button variant="primary" size="sm"
                             onClick={this.handleOpenCreatePopup}
                         >
-                            {LangHelper.getResource('FeedbackSubjectInsert')}
+                            <Fragment><u>I</u>nsert New Feedback Subject</Fragment>
                         </Button>
                     }
                 </Form.Row>

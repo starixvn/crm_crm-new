@@ -8,6 +8,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import SubmitButtonUnderline from '@jsroot/components/SubmitButtonUnderline';
 
 export class Filter extends Component {
     static propTypes = {
@@ -153,7 +154,7 @@ export class Filter extends Component {
                     </Form.Group>
                     <Form.Group className="width-60">
                         <Button id='btn-submit-setting-log' variant="primary" size="sm" type="submit">
-                            {LangHelper.getResource('Submit')}
+                            <SubmitButtonUnderline />
                         </Button>
                     </Form.Group>
                 </Form.Row>
