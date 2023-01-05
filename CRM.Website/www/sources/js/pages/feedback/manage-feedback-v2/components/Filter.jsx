@@ -304,7 +304,7 @@ export class Filter extends Component {
                     </Form.Group>
                     <div>
                         <Button id='btn-submit-manage-fb' variant="primary" size="sm" type="submit" onClick={this.handleSubmit}>
-                            <UnderlineButton.saveButton />
+                            <UnderlineButton.submitButton />
                         </Button>
                     </div>
                 </Form.Row>

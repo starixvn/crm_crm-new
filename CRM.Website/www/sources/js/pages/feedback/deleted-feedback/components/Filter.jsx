@@ -259,7 +259,7 @@ export class Filter extends Component {
                     </Col>
 
                     <Col sm="2" md="2" className="filter-col">
-                        <button type="submit" id='btn-submit-deleted-fb' className="btn btn-primary btn-sm"><UnderlineButton.saveButton /></button>
+                        <button type="submit" id='btn-submit-deleted-fb' className="btn btn-primary btn-sm"><UnderlineButton.submitButton /></button>
                     </Col>
                 </Form.Group>
             </Form>
