@@ -11,7 +11,7 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class EditFeedbackSubject extends PureComponent {
     static propTypes = {
@@ -95,7 +95,7 @@ export class EditFeedbackSubject extends PureComponent {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
-                        <SaveButtonUnderline />
+                        <UnderlineButton.saveButton />
                     </Button>
                     <Button size="sm" type="button" variant="primary" onClick={this.handleConfirmCancelPopup}>
                         {LangHelper.getResource('Cancel')}

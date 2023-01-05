@@ -10,6 +10,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { DateTypeOption, DateType }from '@jsroot/common/constants';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class Filter extends Component {
     constructor(props) {
@@ -316,12 +317,12 @@ export class Filter extends Component {
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Button variant="primary" size="sm" className='mr-4' onClick={this.handleSubmit}>
-                            {LangHelper.getResource('Search')}
+                            <UnderlineButton.searchButton />
                         </Button>
                         {
                             isHost &&
                             <Button variant="primary" size="sm" onClick={this.handleOpenAdd}>
-                                {LangHelper.getResource('Insert')}
+                                <UnderlineButton.insertButton />
                             </Button>
                         }
                     </Form.Group>

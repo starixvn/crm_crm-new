@@ -10,7 +10,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class Edit extends Component {
     constructor(props) {
@@ -165,7 +165,7 @@ export class Edit extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" type="submit" size="sm" disabled={isSubmitting}>
-                        <SaveButtonUnderline />
+                        <UnderlineButton.saveButton />
                     </Button>
                     <Button size="sm" variant="primary" onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}

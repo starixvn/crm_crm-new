@@ -11,7 +11,7 @@ import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 import { FormCheckDirtyComponent } from '@jsroot/components/UseBlocker';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class Remark extends Component {
     constructor(props) {
@@ -229,7 +229,7 @@ export class Remark extends Component {
                 {
                     canEditRemark && (
                         <Button type="submit" className="mt-3" variant="primary" size="sm" onClick={this.handleSubmit} disabled={this.state.isSubmitting}>
-                            {<SaveButtonUnderline/>}
+                            <UnderlineButton.saveButton />
                         </Button>
                     )
                 }

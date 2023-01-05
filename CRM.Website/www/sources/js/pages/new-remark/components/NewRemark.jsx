@@ -10,6 +10,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import RemarkInfo from './RemarkInfo';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class NewRemark extends Component {
     constructor(props) {
@@ -194,7 +195,7 @@ export class NewRemark extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
-                        {LangHelper.getResource('Save')}
+                        <UnderlineButton.saveButton />
                     </Button>
                     <Button variant="primary" size="sm" onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}

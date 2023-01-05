@@ -6,7 +6,7 @@ import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import SearchButtonUnderline from '@jsroot/components/SearchButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 export class Filter extends Component {
     constructor(props) {
         super(props);
@@ -83,7 +83,7 @@ export class Filter extends Component {
                     <Button className="mr-4" variant="primary" size="sm"
                         onClick={this.handleSubmit}
                     >
-                        <SearchButtonUnderline />
+                        <UnderlineButton.searchButton />
                     </Button>
                     {
                         isHost &&

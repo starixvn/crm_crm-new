@@ -12,6 +12,7 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class EditCommunitionSetting extends PureComponent {
     constructor(props) {
@@ -247,7 +248,7 @@ export class EditCommunitionSetting extends PureComponent {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button size="sm" variant="primary" type="submit" disabled={isSubmitting}>
-                        {LangHelper.getResource('Update')}
+                        <UnderlineButton.updateButton />
                     </Button>
                     <Button size="sm" variant="primary" type="submit"   onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}

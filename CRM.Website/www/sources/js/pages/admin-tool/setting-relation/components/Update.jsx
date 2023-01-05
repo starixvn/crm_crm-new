@@ -8,7 +8,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import WithHotKey from '@jsroot/components/WithHotKey';
-
+import UnderlineButton from '@jsroot/common/underlineButton';
 export class Update extends Component {
 
     constructor(props) {
@@ -138,7 +138,7 @@ export class Update extends Component {
                     <Button type="submit" variant="primary" size="sm" onClick={this.handleSubmit}
                         disabled={this.state.isSubmitting}
                     >
-                        {LangHelper.getResource('Update')}
+                        <UnderlineButton.updateButton />
                     </Button>
                 </Modal.Footer>
             </Form>

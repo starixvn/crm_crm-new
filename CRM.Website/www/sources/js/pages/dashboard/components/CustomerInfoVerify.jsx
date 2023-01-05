@@ -6,7 +6,7 @@ import { Button, ProgressBar } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import { RoleIds } from '@jsroot/common/constants';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import VerifyButtonUnderline from '@jsroot/components/VerifyButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class CustomerInfoVerify extends Component {
 
@@ -92,7 +92,7 @@ export class CustomerInfoVerify extends Component {
                 </div>
                 <div className="info-text">{numberVerified}/{listVerify.length} Information Verified</div>
                 <Button variant="primary" size="sm" onClick={() => this.handleEditCustomerVerifyDialog()}>
-                    <VerifyButtonUnderline />
+                    <UnderlineButton.verifyButton />
                 </Button>
             </div>
         );

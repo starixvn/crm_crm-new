@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import SubmitButtonUnderline from '@jsroot/components/SubmitButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class Filter extends Component {
     constructor(props) {
@@ -77,9 +77,8 @@ export class Filter extends Component {
                                     autoComplete="off"
                                     onChange={evt => this.setState({ username: evt.target.value })}
                                 />
-                                <Button className="mr-4 btn-submit" variant="primary" size="sm" onClick={this.submitHandler}
-                                >
-                                    {<SubmitButtonUnderline/>}
+                                <Button className="mr-4 btn-submit" variant="primary" size="sm" onClick={this.submitHandler}>
+                                    <UnderlineButton.submitButton />
                                 </Button>
                             </Form.Group>
                         </Form.Row>

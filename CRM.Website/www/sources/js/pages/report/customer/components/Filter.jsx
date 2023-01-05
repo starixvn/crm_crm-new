@@ -6,7 +6,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import SubmitButtonUnderline from '@jsroot/components/SubmitButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class Filter extends Component {
     constructor(props) {
@@ -243,13 +243,13 @@ export class Filter extends Component {
                                 <Form.Label htmlFor="excludeIgAccounts" className="col-form-label label-exclude">{LangHelper.getResource('ExcludeIgnoredAccounts')}</Form.Label>
                             </Form.Group>
                             <Form.Group>
-                                <Button id='btn-submit-customer-report' type="submit" className="btn btn-primary btn-sm">{<SubmitButtonUnderline/>}</Button>
+                                <Button id='btn-submit-customer-report' type="submit" className="btn btn-primary btn-sm"><UnderlineButton.submitButton /></Button>
                             </Form.Group>
                         </Form.Row>
                     </Fragment>
                 }
                 <div className="show-filter">
-                    <span className={`${isShowFilter ? 'fa fa-caret-up' : 'fa fa-caret-down'} icon`} onClick={this.handleToggleFilter}></span>
+                    <span className={`${isShowFilter ? 'fa fa-caret-up' : 'fa fa-caret-down'} icon`} onClick={this.handleToggleFilter} />
                 </div>
             </Form>
         );

@@ -8,7 +8,7 @@ import AutoComplete from '@jsroot/components/AutoComplete';
 import { validateNoOfInquiry } from '../common.functions';
 import Details from './Details';
 import CommentInfo from './CommentInfo';
-import VerifyButtonUnderline from '@jsroot/components/VerifyButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export default class FeedbackInfo extends PureComponent {
     renderRoleSection = () => {
@@ -106,7 +106,7 @@ export default class FeedbackInfo extends PureComponent {
                                     disabled={!fieldInput.customerNameInput}
                                     onClick={onVerifyRelatedCustomer}
                                 >
-                                    <VerifyButtonUnderline />
+                                    <UnderlineButton.verifyButton />
                                 </Button>
                             </Col>
                         </Form.Group>

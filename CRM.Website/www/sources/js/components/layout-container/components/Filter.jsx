@@ -56,13 +56,6 @@ export default class Filter extends Component {
                         this.props.handleNavigate('Remark');
                     }
                     break;
-                case 'p':
-                    if(document.getElementById('li-redemption')) {
-                        event.preventDefault();
-                        this.isCheckActive(pathname, 5);
-                        this.props.handleNavigate('Redemption');
-                    }
-                    break;
                 case 't':
                     if(document.getElementById('li-activity-log')) {
                         event.preventDefault();

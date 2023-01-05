@@ -10,6 +10,8 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import RemarkInfo from './RemarkInfo';
+import WithHotKey from '@jsroot/components/WithHotKey';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class EditRemark extends Component {
     constructor(props) {
@@ -33,6 +35,13 @@ export class EditRemark extends Component {
             });
             this.setState({relatedPicsOption: picOptions});
         });
+    }
+
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.formik.submitForm();
+        }
     }
 
     handleSubmit = (values, { setSubmitting }) => {
@@ -131,6 +140,7 @@ export class EditRemark extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         editResult &&
@@ -172,7 +182,7 @@ export class EditRemark extends Component {
                     {
                         !popupEdit.isViewHistory && isHost &&
                         <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
-                            {LangHelper.getResource('Save')}
+                            <UnderlineButton.saveButton />
                         </Button>
                     }
                     <Button variant="primary" size="sm" onClick={this.props.onClose}>
@@ -211,6 +221,7 @@ export class EditRemark extends Component {
                     <Modal.Title as="div">{`${data.userName} > Remark ${data.remarkID}`}</Modal.Title>
                 </Modal.Header>
                 <Formik
+                    innerRef={p => this.formik = p}
                     initialValues={initialValues}
                     validate={this.validateFormik}
                     onSubmit={this.handleSubmit}

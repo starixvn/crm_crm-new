@@ -4,7 +4,6 @@ import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
 import { validateFormik, initValues, initCustomerInfo, initValuesAddCustomerFb, getParams } from './common.functions';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import {
@@ -23,7 +22,7 @@ import { toast } from 'react-toastify';
 const CustomerInfo = lazy(() => import('./CustomerInfo'));
 const Content = lazy(() => import('./Content'));
 import WithHotKey from '@jsroot/components/WithHotKey';
-import VerifyButtonUnderline from '@jsroot/components/VerifyButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export default class CreateForm extends Component {
     constructor(props) {
@@ -594,7 +593,7 @@ export default class CreateForm extends Component {
                             <Button name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
                                 disabled={!this.state.collapse.isVerifyCustomer}
                                 size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}>
-                                <VerifyButtonUnderline />
+                                <UnderlineButton.verifyButton />
                             </Button>
                         </Col>
                     </Row>
@@ -700,7 +699,7 @@ export default class CreateForm extends Component {
                 <Form.Group as={Row} className="mt-3">
                     <Col>
                         <Button type="submit" variant="primary" size="sm">
-                            <SaveButtonUnderline />
+                            <UnderlineButton.saveButton />
                         </Button>
                     </Col>
                 </Form.Group>

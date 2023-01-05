@@ -14,6 +14,7 @@ import { validateFormik } from '../common.functions';
 import CreateEditForm from './CreateEditForm';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class CreateRedemptionLog extends Component {
 
@@ -142,7 +143,7 @@ export class CreateRedemptionLog extends Component {
                 </Modal.Body >
                 <Modal.Footer>
                     <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
-                        {LangHelper.getResource('Save')}
+                        <UnderlineButton.saveButton />
                     </Button>
                 </Modal.Footer>
             </Form>

@@ -4,7 +4,7 @@ import { Button, Form, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap
 import LangHelper from '@jsroot/common/langHelper';
 import VerifyCustomer from '@jsroot/components/verifyCustomer';
 import { validateNoOfInquiry } from '../../feedback/common.functions';
-import VerifyButtonUnderline from '@jsroot/components/VerifyButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export default class VerifySection extends PureComponent {
     validateRefInput = event =>{
@@ -55,7 +55,7 @@ export default class VerifySection extends PureComponent {
                                     disabled={!verifySection.customerNameInput}
                                     onClick={() => handleVerifyCreateRelatedCustomer(verifySection.customerNameInput)}
                                 >
-                                    <VerifyButtonUnderline />
+                                    <UnderlineButton.verifyButton />
                                 </Button>
                             </Col>
                         </Form.Group>

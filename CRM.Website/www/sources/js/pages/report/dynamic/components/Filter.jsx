@@ -10,7 +10,7 @@ import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import Site from '@jsroot/common/site';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import SubmitButtonUnderline from '@jsroot/components/SubmitButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class Filter extends Component {
     constructor(props) {
@@ -581,7 +581,7 @@ export class Filter extends Component {
                                 </div>
                             </Form.Group>
                             <Form.Group>
-                                <Button type="submit" className="btn btn-primary btn-sm">{<SubmitButtonUnderline/>}</Button>
+                                <Button type="submit" className="btn btn-primary btn-sm"><UnderlineButton.submitButton /></Button>
                             </Form.Group>
                         </Form.Row>
                     </React.Fragment>

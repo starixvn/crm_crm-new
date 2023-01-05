@@ -17,14 +17,13 @@ import AddRelatedCustomerDialog from './AddRelatedCustomerDialog';
 import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
-import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
 import {
     getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories,
     getProductParams, getCategoryParams, generateTimeAndToolPrefix
 } from '@jsroot/common/shareScripts';
 import { validateNoOfInquiry, validateMainCategorySubCategory } from '../../../common.functions';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import VerifyButtonUnderline from '@jsroot/components/VerifyButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class CreateForm extends Component {
     static defaultProps = {
@@ -523,7 +522,7 @@ export class CreateForm extends Component {
                                     disabled={values.customerNameInput.trim() === ''}
                                     onClick={() => this.verifyCustomers(setFieldValue, values.customerNameInput)}
                                 >
-                                    <VerifyButtonUnderline />
+                                    <UnderlineButton.verifyButton />
                                 </Button>
                             </Col>
                             <Col sm="1" md="1">
@@ -621,7 +620,7 @@ export class CreateForm extends Component {
                 <Form.Group as={Row} className="mt-3">
                     <Col>
                         <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
-                            <SaveButtonUnderline />
+                            <UnderlineButton.saveButton />
                         </Button>
                     </Col>
                 </Form.Group>

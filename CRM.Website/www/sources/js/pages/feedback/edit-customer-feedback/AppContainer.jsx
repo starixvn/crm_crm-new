@@ -12,7 +12,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import DataService from '@jsroot/common/dataService';
-import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 import Site from '@jsroot/common/site';
 import {
@@ -764,7 +764,7 @@ export default class AppContainer extends Component {
                     {
                         hasCreateFeedbackPermission &&
                         <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
-                            <SaveButtonUnderline />
+                            <UnderlineButton.saveButton />
                         </Button>
                     }
                     <Button size="sm" type="button" variant="primary" onClick={this.props.onClose}>

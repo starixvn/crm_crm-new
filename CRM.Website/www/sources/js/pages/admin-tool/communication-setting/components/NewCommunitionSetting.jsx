@@ -15,7 +15,7 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import VerifyButtonUnderline from '@jsroot/components/VerifyButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class NewCommunitionSetting extends PureComponent {
     constructor(props) {
@@ -220,7 +220,7 @@ export class NewCommunitionSetting extends PureComponent {
                                     <Button disabled={values.customerNameInput.length === 0} name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
                                         size="sm" onClick={event => this.handleVerifyCustomer(event, setFieldValue, values.customerNameInput)}
                                     >
-                                        <VerifyButtonUnderline />
+                                        <UnderlineButton.verifyButton />
                                     </Button>
                                 </Col>
                             </Row>

@@ -12,7 +12,7 @@ import { Policy } from '@jsroot/common/constants';
 import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class EditForm extends Component {
 
@@ -968,7 +968,7 @@ export class EditForm extends Component {
                     customerPolicy === Policy.Host &&
                     (
                         <Button type="submit" variant="primary" size="sm" className="mt-3" disabled={this.state.isSubmitting}>
-                            {<SaveButtonUnderline/>}
+                            <UnderlineButton.saveButton />
                         </Button>
                     )
                 }

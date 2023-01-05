@@ -8,6 +8,5 @@ namespace CRM.Models.AdminTool.SettingLog
     {
         [XmlElement(ElementName = "UpdateConfig")]
         public List<JobSetting> updateConfigs { get; set; }
-
     }
 }

@@ -8,8 +8,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
 import WithHotKey from '@jsroot/components/WithHotKey';
-import SearchButtonUnderline from '@jsroot/components/SearchButtonUnderline';
-import InsertButtonUnderline from '@jsroot/components/InsertButtonUnderline';
+import UnderlineButton from '@jsroot/common/underlineButton';
 export class Filter extends Component {
     constructor(props) {
         super(props);
@@ -235,14 +234,14 @@ export class Filter extends Component {
                                 || this.state.filter.subCategoriesTypes.length === 0)}
                             onClick={this.searchHandler}
                         >
-                            <SearchButtonUnderline />
+                            <UnderlineButton.searchButton />
                         </Button>
                         {
                             this.props.isHost &&
                             <Button variant="primary" size="sm"
                                 onClick={this.handleOpenCreatePopup}
                             >
-                                <InsertButtonUnderline />
+                                <UnderlineButton.insertButton />
                             </Button>
                         }
                     </Form.Group>

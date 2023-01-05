@@ -7,6 +7,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class Filter extends Component {
     constructor(props) {
@@ -258,9 +259,8 @@ export class Filter extends Component {
                     </Col>
 
                     <Col sm="2" md="2" className="filter-col">
-                        <button type="submit" id='btn-submit-deleted-fb' className="btn btn-primary btn-sm">{LangHelper.getResource('Submit')}</button>
+                        <button type="submit" id='btn-submit-deleted-fb' className="btn btn-primary btn-sm"><UnderlineButton.saveButton /></button>
                     </Col>
-
                 </Form.Group>
             </Form>
         );

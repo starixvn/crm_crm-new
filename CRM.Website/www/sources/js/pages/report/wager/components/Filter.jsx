@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class Filter extends Component {
     constructor(props) {
@@ -55,7 +56,7 @@ export class Filter extends Component {
                     </Form.Group>
                     <Form.Group>
                         <Button variant="primary" size="sm" onClick={this.submitHandler }>
-                            {LangHelper.getResource('Submit' )}
+                            <UnderlineButton.submitButton />
                         </Button>
                     </Form.Group>
                 </Form.Row>
