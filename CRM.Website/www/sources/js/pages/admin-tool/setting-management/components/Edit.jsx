@@ -9,6 +9,8 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import WithHotKey from '@jsroot/components/WithHotKey';
+import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
 
 export class Edit extends Component {
     constructor(props) {
@@ -23,10 +25,17 @@ export class Edit extends Component {
         this.props.sourceMapping.length > 0 &&  this.handleOptionMapping();
     }
 
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.formik.submitForm();
+        }
+    }
+
     handleOptionMapping(){
         const {sourceMapping, editPopup} = this.props;
         let selectedMapping = [];
-        if(editPopup.data.settingSource != null){
+        if(editPopup.data.settingSource !== null){
             selectedMapping = editPopup.data.settingSource.split(', ').map(tool => {
                 return {
                     id: tool,
@@ -91,6 +100,7 @@ export class Edit extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.editNewSettingResult &&
@@ -155,7 +165,7 @@ export class Edit extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" type="submit" size="sm" disabled={isSubmitting}>
-                        {LangHelper.getResource('Save')}
+                        <SaveButtonUnderline />
                     </Button>
                     <Button size="sm" variant="primary" onClick={this.props.onClose}>
                         {LangHelper.getResource('Cancel')}
@@ -188,6 +198,7 @@ export class Edit extends Component {
                     <Modal.Title as="div" >{LangHelper.getResource('EditSettingValue')}</Modal.Title>
                 </Modal.Header>
                 <Formik
+                    innerRef={p => (this.formik = p)}
                     validate={this.validateFormik}
                     initialValues={initialValues}
                     onSubmit={this.handleSubmit}

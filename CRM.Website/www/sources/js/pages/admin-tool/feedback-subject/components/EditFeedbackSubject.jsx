@@ -10,6 +10,8 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
+import WithHotKey from '@jsroot/components/WithHotKey';
+import SaveButtonUnderline from '@jsroot/components/SaveButtonUnderline';
 
 export class EditFeedbackSubject extends PureComponent {
     static propTypes = {
@@ -34,6 +36,13 @@ export class EditFeedbackSubject extends PureComponent {
         };
     }
 
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.formik.submitForm();
+        }
+    }
+
     validateFormik = values => {
         const errors = {};
         if (!values.subject.trim().length) {
@@ -54,6 +63,7 @@ export class EditFeedbackSubject extends PureComponent {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.editFeedbackSubjectResult &&
@@ -85,7 +95,7 @@ export class EditFeedbackSubject extends PureComponent {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button size="sm" type="submit" variant="primary" disabled={isSubmitting}>
-                        {LangHelper.getResource('Save')}
+                        <SaveButtonUnderline />
                     </Button>
                     <Button size="sm" type="button" variant="primary" onClick={this.handleConfirmCancelPopup}>
                         {LangHelper.getResource('Cancel')}
@@ -160,6 +170,7 @@ export class EditFeedbackSubject extends PureComponent {
                 {
                     this.state.showConfirmClose &&
                     <SweetModalDialog size="lg"
+                        className='confirm-cancel-popup-edit'
                         title={LangHelper.getResource('Confirmation')}
                         contents={
                             <div>{LangHelper.getResource('ConfirmDirtyMessage')}</div>

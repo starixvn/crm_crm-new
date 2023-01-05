@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
-import LangHelper from '@jsroot/common/langHelper';
 import SearchButtonUnderline from '@jsroot/components/SearchButtonUnderline';
+import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     constructor(props) {
@@ -18,6 +18,13 @@ export class Filter extends Component {
         this.handleSubmit();
     }
 
+    handleKeyDownFunc = event => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            this.handleSubmit();
+        }
+    }
+
     handleSubmit = () => {
         const { settingName } = this.state;
         const params = {settingName};
@@ -28,6 +35,7 @@ export class Filter extends Component {
     render() {
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group style={{width: 210}}>
                         <Form.Control as="select" size="sm" style={{width: 210}}

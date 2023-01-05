@@ -14,6 +14,8 @@
     }
 }
 
-.feedback-subject-modal .modal-dialog {
-    max-width: 600px !important;
+.feedback-subject-modal, .confirm-cancel-popup-edit{
+    .modal-dialog{
+        max-width: 600px !important;
+    }
 }
