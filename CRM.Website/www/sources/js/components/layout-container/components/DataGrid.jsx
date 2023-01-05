@@ -544,6 +544,7 @@ export default class DataGrid extends PureComponent {
         const url = Site.resolveClientUrl('CustomerInfo/EditCustomerInfo');
         await DataService.postDataAsync(url,data).then(response => {
             if (response.data.isSuccessful) {
+                setSubmitting(false);
                 this.props.handleCloseEditCustomerInfoPopup();
                 this.props.getCustomerInfo();
                 toast.success(LangHelper.getResource('UpdateCRMInfoSuccessful'));
