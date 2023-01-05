@@ -88,7 +88,7 @@ export class NewSettingValue extends Component {
                             <Form.Control type="text" size="sm" value={values.settingName}
                                 name="settingName" id="settingName"
                                 disabled={this.props.settingName !== ''}
-                                className="shadow-none" autoComplete="on"
+                                className="shadow-none" autoComplete="off"
                                 isInvalid={touched.settingName && errors.settingName}
                                 onChange={handleChange}
                             />
@@ -101,7 +101,7 @@ export class NewSettingValue extends Component {
                         <Col sm="8" md="9">
                             <Form.Control type="text" size="sm" value={values.settingValue}
                                 name="settingValue" id="settingValue"
-                                className="shadow-none" autoComplete="on"
+                                className="shadow-none" autoComplete="off"
                                 isInvalid={touched.settingValue && errors.settingValue}
                                 onChange={handleChange}
                             />
