@@ -9,7 +9,6 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class Filter extends Component {
     static propTypes = {
@@ -38,13 +37,6 @@ export class Filter extends Component {
             actionTypeIds: '',
             actionTypeOptions: []
         };
-    }
-
-    handleKeyDownFunc = event => {
-        if (event.ctrlKey && event.key === 's') {
-            event.preventDefault();
-            this.handleSubmit();
-        }
     }
 
     componentDidMount() {
@@ -115,7 +107,6 @@ export class Filter extends Component {
 
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="headlineDA">{LangHelper.getResource('HeadlineDA')}</Form.Label>
