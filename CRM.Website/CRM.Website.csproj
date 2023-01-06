@@ -150,5 +150,8 @@
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="www\dist\js\dev\" />
+    </ItemGroup>
     <ProjectExtensions><VisualStudio><UserProperties appsettings_1sit_1json__JsonSchema="https://docs.strmprivacy.io/jsonschema/BatchJob.json" /></VisualStudio></ProjectExtensions>
 </Project>
