@@ -28,6 +28,11 @@ export class Update extends Component {
     }
 
     handleKeyDownFunc = event => {
+        if(event.ctrlKey && event.key === 's'){
+            event.preventDefault();
+            this.handleSearch();
+        }
+
         if(event.ctrlKey && event.key === 'u'){
             this.handleSubmit(event);
         }
@@ -120,7 +125,7 @@ export class Update extends Component {
                         </Col>
                         <Col sm="4" md="4">
                             <Button variant="primary" size="sm" onClick={this.handleSearch}>
-                            {LangHelper.getResource('Search')}
+                                <UnderlineButton.searchButton />
                         </Button>
                         </Col>
                     </div>
