@@ -62,7 +62,7 @@ export class EditContactInforms extends Component {
         const { editedInforms, titleDetail } = this.props;
         const editedContactInforms = remarkEncode(editedInforms);
         if (editedContactInforms.length > 0) {
-            this.props.editContactInforms({ titleId: titleDetail.titleId, informs: editedContactInforms }).then(() => {
+            this.props.editContactInforms({ titleId: titleDetail.titleId, listInforms: editedContactInforms }).then(() => {
                 this.setAlert();
             });
         }
