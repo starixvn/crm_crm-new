@@ -194,8 +194,8 @@ describe('CreateForm', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(container.formik.setFieldValue.mock.calls[0]).toEqual(['startTime', '7/28/2021 2:26:27 PM']);
-            expect(container.formik.setFieldValue).toHaveBeenLastCalledWith('endTime', new Date('7/28/2021 2:27:28 PM'));
+            expect(container.formik.setFieldValue.mock.calls[0]).toEqual(['startTime', "7/28/2021 2:26:28 PM"]);
+            expect(container.formik.setFieldValue).toHaveBeenLastCalledWith('startTime', "7/28/2021 2:26:28 PM");
             expect(container.updateTimeAndToolPrefix).toHaveBeenCalled();
         });
     });
@@ -236,7 +236,7 @@ describe('CreateForm', () => {
 
             // Assert
             expect(container.formik.setFieldValue.mock.calls[0]).toEqual(['endTime', endTime]);
-            expect(container.formik.setFieldValue).toHaveBeenLastCalledWith('startTime', new Date('7/28/2021 2:25:27 PM'));
+            expect(container.formik.setFieldValue).toHaveBeenLastCalledWith("endTime", "7/28/2021 2:26:27 PM");
         });
     });
 

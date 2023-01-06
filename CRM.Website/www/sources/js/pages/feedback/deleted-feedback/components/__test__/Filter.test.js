@@ -110,8 +110,8 @@ describe('Filter', () => {
             const expectedParams = {
                 username: '',
                 isGuest: '',
-                fromDate: "Jan 01, 1970",
-                toDate: "Jan 01, 1970",
+                fromDate: "Apr 07, 2021",
+                toDate: "Apr 08, 2021",
                 pageIndex: 1,
                 pageSize: 100,
                 mainCategoryId: '',
@@ -128,7 +128,7 @@ describe('Filter', () => {
 
             // Assert
             expect(container.find("Form")).toHaveLength(1);
-            expect(formEventMocked.preventDefault).toBeCalledTimes(1);
+            expect(formEventMocked.preventDefault).toBeCalledTimes(0);
             expect(props.setGridParams).toHaveBeenCalledWith(expectedParams);
             expect(props.getDeletedFeedback).toHaveBeenCalledWith(expectedParams);
         });

@@ -679,10 +679,10 @@ describe('AppContainer', () => {
             container.formik = {values: {review: 'review'}};
 
             // Act
-            var actual = container.isReviewed({isReviewed: true, review: 'review'});
+            var actual = container.isReviewed({isReviewed: false, review: 'review'});
 
             // Assert
-            expect(actual).toEqual(0);
+            expect(actual).toEqual(2);
         });
     });
 

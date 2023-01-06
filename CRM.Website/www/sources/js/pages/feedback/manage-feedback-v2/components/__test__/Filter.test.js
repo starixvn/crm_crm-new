@@ -154,7 +154,7 @@ describe('Filter', () => {
                     reviewer: ''
                 };
                 const expectedParams = {
-                    feedbackId: '1',
+                    feedbackId: 1,
                     userName: '',
                     isGuest: false,
                     fromDate: 'Apr 08, 2021',

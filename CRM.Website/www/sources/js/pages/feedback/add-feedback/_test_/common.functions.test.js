@@ -139,7 +139,7 @@ describe('common functions', () => {
         it('initValuesAddCustomerFb correctly', () => {
             // Arrange
             const expected = {...values};
-            expected.country = '';
+            expected.country = undefined;
             expected.languageId = 1200;
             expected.refCodes = '';
             expected.secretCode = '';

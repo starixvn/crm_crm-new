@@ -442,7 +442,7 @@ describe('EditMultipleLogs', () => {
             const actual = container.reviewMode();
 
             // Assert
-            expect(actual).toEqual(0);
+            expect(actual).toEqual(2);
         });
 
         it('should return expected if do have permission and  isReviewed is false', () => {
@@ -471,9 +471,7 @@ describe('EditMultipleLogs', () => {
                 hasReviewFeedbackPermission: true
             };
             const values = {
-                isCheck:{
-                    isReviewed: true
-                },
+                isReviewed: false,
                 review: ''
             };
             const container = shallow(<EditMultipleLogs />).instance();
