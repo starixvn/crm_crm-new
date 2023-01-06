@@ -68,7 +68,7 @@ describe('LicenseeMapping', () => {
             const header = shallow(container.buildHeader(true));
 
             // Assert
-            expect(header.find(HeaderCell).length).toBe(5);
+            expect(header.find(HeaderCell).length).toBe(4);
         });
     });
 

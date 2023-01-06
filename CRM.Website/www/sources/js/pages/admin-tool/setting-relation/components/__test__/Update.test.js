@@ -166,9 +166,13 @@ describe('Update', () => {
         it('should call setState',() => {
             // Arrange
             const container = shallow(<Update {...initProps} />).instance();
+            const event = {
+                target:{value: 'test'},
+                preventDefault: jest.fn()
+            };
             container.handleSearch = jest.fn();
             //Act
-            container.onChangeSubSetting({target:{value: 'test'}});
+            container.onChangeSubSetting(event);
             
             // Assert
             expect(container.state.subSettingName).toEqual('test');

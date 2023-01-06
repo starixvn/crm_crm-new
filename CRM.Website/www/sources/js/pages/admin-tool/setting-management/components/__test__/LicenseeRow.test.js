@@ -39,7 +39,8 @@ describe('DataGrid', () => {
             setting: "0sServices",
             settingId: 6727,
             settingSource: ""
-        }
+        },
+        isHost: true
     };
 
     describe('componentDidUpdate', () => {
