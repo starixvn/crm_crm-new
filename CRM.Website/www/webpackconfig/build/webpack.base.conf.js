@@ -63,21 +63,21 @@ function generateConfig(env) {
                 new OptimizeCssAssetsPlugin()
             ],
             splitChunks: {
-                chunks: 'all',
+                chunks: 'async',
                 minSize: 30000,
-                maxSize: 0,
-                minChunks: 2,
-                maxAsyncRequests: 5,
-                maxInitialRequests: 3,
+                minChunks: 1,
+                maxAsyncRequests: 30,
+                maxInitialRequests: 30,
                 cacheGroups: {
-                    default: false,
-                    vendors: false,
-                    vendor: {
-                        chunks: 'all',
-                        name:'vendor',
-                        test: /node_modules/,
-                        priority: 20,
-                        enforce: true
+                    defaultVendors: {
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10,
+                        reuseExistingChunk: true,
+                    },
+                    default: {
+                        minChunks: 2,
+                        priority: -20,
+                        reuseExistingChunk: true,
                     },
                     common: {
                         name: 'common',
