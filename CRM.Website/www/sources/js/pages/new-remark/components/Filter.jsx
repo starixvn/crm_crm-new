@@ -275,7 +275,7 @@ export class Filter extends Component {
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
                 <Form.Group >
-                        <Form.Label htmlFor="fromDate" style={{width: 115}}>
+                        <Form.Label htmlFor="fromDate">
                             {LangHelper.getResource('FromDate')}
                         </Form.Label>
                         <div className='react-datepicker-wrapper-container'>
@@ -289,7 +289,7 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label style={{width: 115}}>
+                        <Form.Label>
                             {LangHelper.getResource('ToDate')}
                         </Form.Label>
                         <div className='react-datepicker-wrapper-container'>

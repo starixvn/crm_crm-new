@@ -7,7 +7,7 @@ export default class CustomInput extends React.PureComponent {
 
         return (
             <Fragment>
-                <Form.Control as='input' className="shadow-none" isInvalid={isInvalid}
+                <Form.Control as='input' className="shadow-none" size="sm" isInvalid={isInvalid}
                     readOnly disabled={disabled} onClick={onClick} value={value}
                 />
                 <i className='date-picker-icon fa fa-calendar' onClick={onClick} />
