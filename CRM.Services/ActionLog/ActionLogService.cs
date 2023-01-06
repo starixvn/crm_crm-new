@@ -316,7 +316,6 @@
             for (var i = 0; i < newSettingLog.updateConfigs.Count; i++)
             {
                 var newJobSettingLog = newSettingLog.updateConfigs[i];
-                var oldJobSettingLog = oldSettingLog.updateConfigs[i];
                 var fieldName = $"{newJobSettingLog.ServiceName} - {newJobSettingLog.SettingName}";
                 fieldNames.Add(fieldName);
 
@@ -330,7 +329,7 @@
             log.FieldNames = fieldNames;
         }
 
-        private JobSettingLog ParseLogOldNewUpdateJobSetting(string xml)
+        private static JobSettingLog ParseLogOldNewUpdateJobSetting(string xml)
         {
             var regexStart = new Regex(@"<\s*[A-Za-z]");
             var matchStart = regexStart.Match(xml);
