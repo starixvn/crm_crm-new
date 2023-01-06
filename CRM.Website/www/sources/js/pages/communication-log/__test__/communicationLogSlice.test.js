@@ -6,22 +6,20 @@ import communicationLog, {
     setEditNoOfInquiryDialog,
     setEditCommunicationDialog,
     setLogByFeedbackId,
-    setFeedbackSubjectTemplates,
     setCreateCommunicationDialog
 } from '../communicationLogSlice';
 
 describe('communicationLog reducer', () => {
     it('show handle initial state', () => {
         expect(communicationLog(undefined, {})).toEqual({
-            gridData: null,
-            statusEdit: null,
-            statusFilter: null,
-            gridParams: { pageIndex: 1, pageSize: 100 },
-            editNoOfInquiryDialog: { show: false },
-            editCommunicationDialog: { show: false },
-            logFeedback: null,
-            feedbackSubjectTemplates: [],
-            createCommunicationDialog: { show: false }
+                gridData: null,
+                statusEdit: null,
+                statusFilter: null,
+                gridParams: { pageIndex: 1, pageSize: 100 },
+                editNoOfInquiryDialog: { show: false },
+                editCommunicationDialog: { show: false },
+                logFeedback: null,
+                createCommunicationDialog: { show: false }
         });
     });
 
@@ -107,17 +105,6 @@ describe('communicationLog reducer', () => {
             })
         ).toEqual({
             logFeedback: { feedback: [] }
-        });
-    });
-
-    it('should handle setFeedbackSubjectTemplates', () => {
-        expect(
-            communicationLog({}, {
-                type: setFeedbackSubjectTemplates.type,
-                payload: [{val: 'sa'}]
-            })
-        ).toEqual({
-            feedbackSubjectTemplates: [{val: 'sa'}]
         });
     });
 

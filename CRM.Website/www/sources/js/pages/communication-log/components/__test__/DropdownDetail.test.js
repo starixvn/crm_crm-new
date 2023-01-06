@@ -77,7 +77,7 @@ describe('DropdownDetail', () => {
 
             // Act
             const renderCommunication = shallow(container.renderCreateCommunication());
-            renderCommunication.find(DatePicker).at(0).simulate('change', 'value');
+            renderCommunication.find(DatePicker).at(0).simulate('change', '2021-11-20T00:00');
 
             // Assert
             expect(props.onChangeStartTime).toHaveBeenCalledWith('2021-11-20T00:00');

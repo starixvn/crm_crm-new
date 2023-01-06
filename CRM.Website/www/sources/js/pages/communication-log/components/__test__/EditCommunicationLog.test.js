@@ -794,28 +794,30 @@ describe('EditCommunicationLog', () => {
     describe('onChangeStartTime ', () => {
         it('should call exact function', () => {
             // Arrange
-            const setFieldValue = jest.fn();
             const container = shallow(<EditCommunicationLog />);
-
+            container.formik = {
+                setFieldValue: jest.fn()
+            };
             // Act
-            container.instance().onChangeStartTime(setFieldValue, 'selectedTime');
+            container.instance().onChangeStartTime('selectedTime');
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('startTime', 'selectedTime');
+            expect(container.formik.setFieldValue).toHaveBeenCalledWith('startTime', 'selectedTime');
         });
     });
 
     describe('onChangeStartTime ', () => {
         it('should call exact function', () => {
             // Arrange
-            const setFieldValue = jest.fn();
             const container = shallow(<EditCommunicationLog />);
-
+            container.formik = {
+                setFieldValue: jest.fn()
+            };
             // Act
-            container.instance().onChangeEndTime(setFieldValue, 'selectedTime');
+            container.instance().onChangeEndTime('selectedTime');
 
             // Assert
-            expect(setFieldValue).toHaveBeenCalledWith('endTime', 'selectedTime');
+            expect(container.formik.setFieldValue).toHaveBeenCalledWith('endTime', 'selectedTime');
         });
     });
 

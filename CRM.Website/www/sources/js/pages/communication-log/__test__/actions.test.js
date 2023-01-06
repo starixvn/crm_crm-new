@@ -77,23 +77,4 @@ describe('actionCreators', () => {
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
-
-    describe('getFeedbackSubjectTemplates', () => {
-        it('should handle setFeedbackSubjectTemplates when fetching data have been done', async () => {
-            // Arrange
-            const response = { countries: [] };
-            const expectedParams = 'sa';
-            const expectedActions = [{ type: setFeedbackSubjectTemplates.type, payload: response.data }];
-            const store = mockStore({ feedbackSubjectTemplates: null });
-            const promise = Promise.resolve(response);
-            DataService.getDataAsync = jest.fn(() => promise);
-
-            // Act
-            await store.dispatch(ActionCreators.getFeedbackSubjectTemplates(expectedParams));
-
-            // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith(`Common/GetFeedbackSubjectTemplate`, {subject: expectedParams});
-            expect(store.getActions()).toEqual(expectedActions);
-        });
-    });
 });

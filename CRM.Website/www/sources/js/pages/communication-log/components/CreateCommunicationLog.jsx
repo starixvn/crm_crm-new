@@ -429,13 +429,12 @@ export class CreateCommunicationLog extends Component {
             startTime: params.startTime
         }).then(response => {
             this.setState({ duplicateFeedbackId: response.data });
+            if (response.data === 0) {
+                this.handleCreateLog();
+            } else {
+                this.setState({ checkDuplicateDialog: { show: true } });
+            }
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
-
-        if (this.state.duplicateFeedbackId === 0) {
-            this.handleCreateLog();
-        } else {
-            this.setState({ checkDuplicateDialog: { show: true } });
-        }
     };
 
     handleCloseCheckDuplicateDialog = () => {
