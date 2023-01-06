@@ -308,7 +308,7 @@
             return settingLogsFilter;
         }
 
-        private void FilterOldNewJobSettingResults(SettingLogInfo log, JobSettingLog oldSettingLog, JobSettingLog newSettingLog)
+        private static void FilterOldNewJobSettingResults(SettingLogInfo log, JobSettingLog oldSettingLog, JobSettingLog newSettingLog)
         {
             var fieldNames = new List<string>();
             var oldValuesList = new List<string>();

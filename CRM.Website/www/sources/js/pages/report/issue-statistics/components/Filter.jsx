@@ -8,6 +8,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import { toast } from 'react-toastify';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class Filter extends Component {
     constructor(props) {
@@ -286,7 +287,7 @@ export class Filter extends Component {
                             </Form.Group>
                             <div>
                                 <Button variant="primary" size="sm" onClick={this.handleSubmit}>
-                                    {LangHelper.getResource('Submit')}
+                                    <UnderlineButton.submitButton />
                                 </Button>
                             </div>
                         </Form.Row>

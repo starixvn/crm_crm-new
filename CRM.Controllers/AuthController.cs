@@ -32,7 +32,6 @@
         private readonly INapSettings napSettings;
         private readonly ISiteService siteService;
         private readonly AppSettings appSettings;
-        private const int SSOExpiredTimeInSeconds = 30;
 
         public AuthController(
             IUserService userService,

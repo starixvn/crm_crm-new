@@ -10,6 +10,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class Filter extends Component {
     constructor(props) {
@@ -214,7 +215,7 @@ export class Filter extends Component {
                     </Form.Group>
                     <Form.Group className="submit">
                         <Button variant="primary" size="sm" onClick={this.handleSubmit}>
-                            {LangHelper.getResource('Submit')}
+                            <UnderlineButton.submitButton />
                         </Button>
                     </Form.Group>
                 </Form.Row>

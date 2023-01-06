@@ -13,7 +13,6 @@ import FilterContactInforms from './FilterContactInforms';
 import Site from '@jsroot/common/site';
 
 export class EditContactInforms extends Component {
-
     static propTypes = {
         titleId: PropTypes.number.isRequired
     };
