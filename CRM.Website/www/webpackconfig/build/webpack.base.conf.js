@@ -88,10 +88,7 @@ function generateConfig(env) {
                         enforce: true
                     }
                 }
-            },
-            concatenateModules: false,
-            providedExports: false,
-            usedExports: false,
+            }
         }
     };
 }

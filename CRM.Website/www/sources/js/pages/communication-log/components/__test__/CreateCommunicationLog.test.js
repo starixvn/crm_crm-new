@@ -102,12 +102,13 @@ describe('CreateCommunicationLog', () => {
     describe('componentDidMount', () => {
         it('should calls exactly function when componentDidMount when no options', async () => {
             // Arrange
+            const props = { options: { communicationToolOptions: { id: 1, name: 'test' } }};
             const response = { data: initData};
             const promise = Promise.resolve(response);
             DataService.getDataAsync = jest.fn(() => promise); 
 
             // Act
-            const container = shallow(<CreateCommunicationLog />).instance();
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
             await container.componentDidMount();
             await promise;
             jest.runAllTimers();

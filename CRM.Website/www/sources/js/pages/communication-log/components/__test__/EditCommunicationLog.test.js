@@ -794,12 +794,12 @@ describe('EditCommunicationLog', () => {
     describe('onChangeStartTime ', () => {
         it('should call exact function', () => {
             // Arrange
-            const container = shallow(<EditCommunicationLog />);
+            const container = shallow(<EditCommunicationLog />).instance();
             container.formik = {
                 setFieldValue: jest.fn()
             };
             // Act
-            container.instance().onChangeStartTime('selectedTime');
+            container.onChangeStartTime('selectedTime');
 
             // Assert
             expect(container.formik.setFieldValue).toHaveBeenCalledWith('startTime', 'selectedTime');
@@ -809,12 +809,12 @@ describe('EditCommunicationLog', () => {
     describe('onChangeStartTime ', () => {
         it('should call exact function', () => {
             // Arrange
-            const container = shallow(<EditCommunicationLog />);
+            const container = shallow(<EditCommunicationLog />).instance();
             container.formik = {
                 setFieldValue: jest.fn()
             };
             // Act
-            container.instance().onChangeEndTime('selectedTime');
+            container.onChangeEndTime('selectedTime');
 
             // Assert
             expect(container.formik.setFieldValue).toHaveBeenCalledWith('endTime', 'selectedTime');
