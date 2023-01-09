@@ -170,7 +170,8 @@ export default class AutoComplete extends Component {
                         <div className="autocomplete-items">
                             {
                                 options.map((item, index) => {
-                                    const reg = new RegExp(`(${searchValue})`, 'gi');
+                                    const escapeRegExp = searchValue.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+                                    const reg = new RegExp(`(${escapeRegExp})`, 'gi');
                                     const selected = this.state.selectedItem === index ? 'selected' : '';
                                     const displayValue = (displayField.length > 0 ? item[displayField] : item)
                                         .replace(reg, "<span class='text-matched'>$1</span>");
