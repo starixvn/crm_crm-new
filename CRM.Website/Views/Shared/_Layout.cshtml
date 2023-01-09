@@ -52,13 +52,11 @@
 </script>
     <environment include="Development">
         <script src="~/www/dist/js/dev/lib/lang-en-US.chunk.js" asp-append-version="true"></script>
-        <script src="~/www/dist/js/dev/lib/vendor.chunk.js" asp-append-version="true"></script>
         <script src="~/www/dist/js/dev/lib/common.chunk.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
         @Html.Raw(Fanex.Logging.LogManager.RenderJavascriptLogger())
         <script src="~/www/dist/js/pro/lib/lang-en-US.chunk.js" asp-append-version="true"></script>
-        <script src="~/www/dist/js/pro/lib/vendor.chunk.js" asp-append-version="true"></script>
         <script src="~/www/dist/js/pro/lib/common.chunk.js" asp-append-version="true"></script>
     </environment>
     @RenderSection("Scripts", required: false)
