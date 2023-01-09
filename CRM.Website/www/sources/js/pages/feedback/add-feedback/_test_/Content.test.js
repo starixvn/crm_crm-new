@@ -1,11 +1,11 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import { Col, Form, Row} from 'react-bootstrap';
 import DatePicker from '@jsroot/components/date-picker/index';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
 import Content from '../Content';
 import { shallow } from 'enzyme';
-const CkEditor = lazy(() => import('@jsroot/components/ckeditor/index'));
+import CkEditor from '@jsroot/components/ckeditor/index';
 
 describe('Content', () => {
     beforeAll(() => {

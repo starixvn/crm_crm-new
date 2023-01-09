@@ -1,14 +1,14 @@
-import React, { Component, Suspense,  lazy} from 'react';
+import React, { Component} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-const DataGrid = lazy(() => import('./DataGrid'));
-const EditContactInforms = lazy(() => import('./EditContactInforms'));
-const EditInforms = lazy(() => import('./EditInforms'));
-const RemovedAccountLogs = lazy(() => import('./RemovedAccountLogs'));
-const RemovedAccountLogDetails = lazy(() => import('./RemovedAccountLogDetails'));
-const NewInforms = lazy(() => import('./NewInforms'));
+import DataGrid from './DataGrid';
+import EditContactInforms from './EditContactInforms';
+import EditInforms from './EditInforms';
+import RemovedAccountLogs from './RemovedAccountLogs';
+import RemovedAccountLogDetails from './RemovedAccountLogDetails';
+import NewInforms from './NewInforms';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
@@ -82,51 +82,39 @@ export class AppContainer extends Component {
 
         return (
             <>
-                <Suspense fallback={<div />}>
-                    <DataGrid/>
-                </Suspense>
+                <DataGrid/>
                 {
                     editContactInformDialog.show &&
-                    <Suspense fallback={<div />}>
                         <EditContactInforms
                             titleId={editContactInformDialog.titleId}
                             status={editContactInformDialog.status}
                             onClose={this.handleCloseEditContactInformDialog}
                         />
-                    </Suspense>
                 }
                 {
                     editInformDialog.show &&
-                    <Suspense fallback={<div />}>
                         <EditInforms
                             titleId={editInformDialog.titleId}
                             onClose={this.handleCloseEditInformDialog}
                         />
-                    </Suspense>
                 }
                 {
                     removedLogDialog.show &&
-                    <Suspense fallback={<div />}>
                         <RemovedAccountLogs
                             onClose={this.handleCloseRemovedLogDialog}
                         />
-                    </Suspense>
                 }
                 {
                     removedLogDetailDialog.show &&
-                    <Suspense fallback={<div />}>
                         <RemovedAccountLogDetails
                             onClose={this.handleCloseRemovedLogDetailDialog}
                         />
-                    </Suspense>
                 }
                 {
                     newInformDialog.show &&
-                    <Suspense fallback={<div />}>
                         <NewInforms
                             onClose={this.handleCloseNewInformDialog}
                         />
-                    </Suspense>
                 }
             </>
         );

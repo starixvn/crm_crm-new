@@ -1,10 +1,10 @@
-import React, { Component, Fragment, lazy, Suspense } from 'react';
+import React, { Component, Fragment} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
-const DataGrid = lazy(() => import('./DataGrid'));
-const Detail = lazy(() => import('./Detail'));
+import DataGrid from './DataGrid';
+import Detail from './Detail';
 import Chart from './Chart';
 import LangHelper from '@jsroot/common/langHelper';
 
@@ -30,11 +30,9 @@ export class AppContainer extends Component {
     return (
       <Fragment>
         <Filter />
-          <Suspense fallback={<div />}>
             {
               details.show ? <Detail /> : <DataGrid />
             }
-          </Suspense>
         {
           chart.show &&
           <Chart chart={chart} onClose={this.handleCloseChartDialog} />

@@ -7,54 +7,54 @@ import {
 } from "react-router-dom";
 import Site from '@jsroot/common/site';
 
-const NotificationListComponent  = lazy(() => import('@jsroot/pages/notification-list/index'));
-const NotificationTemplateComponent = lazy(() => import('@jsroot/pages/notification-template/index'));
-const ChatTypeMappingComponent = lazy(() => import('@jsroot/pages/chat-type-mapping/index'));
-const NotificationTypeComponent = lazy(() => import('@jsroot/pages/notification-type/index'));
+const NotificationListComponent  = lazy(() => import(/* webpackChunkName: 'notification-list' */ '@jsroot/pages/notification-list/index'));
+const NotificationTemplateComponent = lazy(() => import(/* webpackChunkName: 'notification-template' */ '@jsroot/pages/notification-template/index'));
+const ChatTypeMappingComponent = lazy(() => import(/* webpackChunkName: 'chat-type-mapping' */ '@jsroot/pages/chat-type-mapping/index'));
+const NotificationTypeComponent = lazy(() => import(/* webpackChunkName: 'notification-type' */ '@jsroot/pages/notification-type/index'));
 
-const ManagementComponent  = lazy(() => import('@jsroot/pages/pic-and-headline/management/index'));
-const PicAssignmentComponent  = lazy(() => import('@jsroot/pages/pic-and-headline/pic-assignment/index'));
-const ChangesLogManagementComponent  = lazy(() => import('@jsroot/pages/pic-and-headline/changes-log/index'));
+const ManagementComponent  = lazy(() => import(/* webpackChunkName: 'pic-and-headline-management' */ '@jsroot/pages/pic-and-headline/management/index'));
+const PicAssignmentComponent  = lazy(() => import(/* webpackChunkName: 'pic-and-headline-pic-assignment' */ '@jsroot/pages/pic-and-headline/pic-assignment/index'));
+const ChangesLogManagementComponent  = lazy(() => import(/* webpackChunkName: 'changes-log' */ '@jsroot/pages/pic-and-headline/changes-log/index'));
 
-const CommunicationSettingComponent  = lazy(() => import('@jsroot/pages/admin-tool/communication-setting/index'));
-const FeedbackSubjectComponent  = lazy(() => import('@jsroot/pages/admin-tool/feedback-subject/index'));
-const SettingLogComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-log/index'));
-const SettingManagementComponent  = lazy(() => import('@jsroot/pages/admin-tool/setting-management/index'));
-const SettingRelationComponent = lazy(() => import('@jsroot/pages/admin-tool/setting-relation/index'));
-const JobSettingManagementComponent = lazy(() => import('@jsroot/pages/admin-tool/job-setting-management/index'));
+const CommunicationSettingComponent  = lazy(() => import(/* webpackChunkName: 'communication-setting' */ '@jsroot/pages/admin-tool/communication-setting/index'));
+const FeedbackSubjectComponent  = lazy(() => import(/* webpackChunkName: 'feedback-subject' */ '@jsroot/pages/admin-tool/feedback-subject/index'));
+const SettingLogComponent  = lazy(() => import(/* webpackChunkName: 'setting-log' */ '@jsroot/pages/admin-tool/setting-log/index'));
+const SettingManagementComponent  = lazy(() => import(/* webpackChunkName: 'setting-management' */ '@jsroot/pages/admin-tool/setting-management/index'));
+const SettingRelationComponent = lazy(() => import(/* webpackChunkName: 'setting-relation' */ '@jsroot/pages/admin-tool/setting-relation/index'));
+const JobSettingManagementComponent = lazy(() => import(/* webpackChunkName: 'job-setting-management' */ '@jsroot/pages/admin-tool/job-setting-management/index'));
 
-const InformHeadlineComponent = lazy(() => import('@jsroot/pages/informheadline/index'));
+const InformHeadlineComponent = lazy(() => import(/* webpackChunkName: 'inform-headline' */ '@jsroot/pages/informheadline/index'));
 
-const AddFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/add-feedback/add-customer-feedback/index'));
-const AddGuestFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/add-feedback/add-guest-feedback/index'));
-const LatestFeedbackV2Component = lazy(() => import('@jsroot/pages/feedback/latest-feedback-v2/index'));
-const LatestFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/latest-feedback/index'));
-const ManageFeedbackComponentV2 = lazy(() => import('@jsroot/pages/feedback/manage-feedback-v2/index'));
-const ManageFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/manage-feedback/index'));
+const AddFeedbackComponent = lazy(() => import(/* webpackChunkName: 'add-customer-feedback' */ '@jsroot/pages/feedback/add-feedback/add-customer-feedback/index'));
+const AddGuestFeedbackComponent = lazy(() => import(/* webpackChunkName: 'add-guest-feedback' */ '@jsroot/pages/feedback/add-feedback/add-guest-feedback/index'));
+const LatestFeedbackV2Component = lazy(() => import(/* webpackChunkName: 'latest-feedback-v2' */ '@jsroot/pages/feedback/latest-feedback-v2/index'));
+const LatestFeedbackComponent = lazy(() => import(/* webpackChunkName: 'latest-feedback' */ '@jsroot/pages/feedback/latest-feedback/index'));
+const ManageFeedbackComponentV2 = lazy(() => import(/* webpackChunkName: 'manage-feedback-v2' */ '@jsroot/pages/feedback/manage-feedback-v2/index'));
+const ManageFeedbackComponent = lazy(() => import(/* webpackChunkName: 'manage-feedback' */ '@jsroot/pages/feedback/manage-feedback/index'));
 
-const DeletedFeedbackComponent = lazy(() => import('@jsroot/pages/feedback/deleted-feedback/index'));
-const MultipleLogsComponent = lazy(() => import('@jsroot/pages/feedback/multiple-logs/create/index'));
+const DeletedFeedbackComponent = lazy(() => import(/* webpackChunkName: 'deleted-feedback' */ '@jsroot/pages/feedback/deleted-feedback/index'));
+const MultipleLogsComponent = lazy(() => import(/* webpackChunkName: 'multiple-logs' */ '@jsroot/pages/feedback/multiple-logs/create/index'));
 
-const DashboardComponent = lazy(() => import('@jsroot/pages/dashboard/index'));
-const CustomerInfoDetailComponent = lazy(() => import('@jsroot/pages/customer/customer-info-detail/index'));
-const CommunicationComponent = lazy(() => import('@jsroot/pages/communication-log/index'));
-const SpecialRemarkComponent = lazy(() => import('@jsroot/pages/special-remark/index'));
-const NewRemMarkComponent = lazy(() => import('@jsroot/pages/new-remark/index'));
-const ReMarkComponent = lazy(() => import('@jsroot/pages/remark/index'));
-const RedemptionComponent = lazy(() => import('@jsroot/pages/redemption/index'));
-const ActionLogComponent = lazy(() => import('@jsroot/pages/action-log/index'));
+const DashboardComponent = lazy(() => import(/* webpackChunkName: 'dashboard' */ '@jsroot/pages/dashboard/index'));
+const CustomerInfoDetailComponent = lazy(() => import(/* webpackChunkName: 'customer-info-detail' */ '@jsroot/pages/customer/customer-info-detail/index'));
+const CommunicationComponent = lazy(() => import(/* webpackChunkName: 'communication-log' */ '@jsroot/pages/communication-log/index'));
+const SpecialRemarkComponent = lazy(() => import(/* webpackChunkName: 'special-remark' */ '@jsroot/pages/special-remark/index'));
+const NewRemMarkComponent = lazy(() => import(/* webpackChunkName: 'new-remark' */ '@jsroot/pages/new-remark/index'));
+const ReMarkComponent = lazy(() => import(/* webpackChunkName: 'remark' */ '@jsroot/pages/remark/index'));
+const RedemptionComponent = lazy(() => import(/* webpackChunkName: 'redemption' */ '@jsroot/pages/redemption/index'));
+const ActionLogComponent = lazy(() => import(/* webpackChunkName: 'action-log' */ '@jsroot/pages/action-log/index'));
 
-const DeletedFeedbackStatisticsComponent = lazy(() => import('@jsroot/pages/report/deleted-feedback-statistic/index'));
-const LogStatisticsComponent = lazy(() => import('@jsroot/pages/report/log-statistics/index'));
-const StatisticReportComponent = lazy(() => import('@jsroot/pages/report/issue-statistics/index'));
-const FeedbackStatisticReportComponent = lazy(() => import('@jsroot/pages/report/feedback-statistic/index'));
-const RedemptionStatisticsReportComponent = lazy(() => import('@jsroot/pages/report/redemption-statistics/index'));
-const CustomerReportComponent = lazy(() => import('@jsroot/pages/report/customer/index'));
-const SummaryReportComponent = lazy(() => import('@jsroot/pages/report/summary/index'));
-const DirectCustomerReportComponent = lazy(() => import('@jsroot/pages/report/direct/index'));
-const DynamicReportComponent = lazy(() => import('@jsroot/pages/report/dynamic/index'));
-const SettlementReportComponent = lazy(() => import('@jsroot/pages/report/settlement/index'));
-const WagerReportComponent = lazy(() => import('@jsroot/pages/report/wager/index'));
+const DeletedFeedbackStatisticsComponent = lazy(() => import(/* webpackChunkName: 'deleted-feedback-statistic' */ '@jsroot/pages/report/deleted-feedback-statistic/index'));
+const LogStatisticsComponent = lazy(() => import(/* webpackChunkName: 'log-statistics' */ '@jsroot/pages/report/log-statistics/index'));
+const StatisticReportComponent = lazy(() => import(/* webpackChunkName: 'issue-statistics' */ '@jsroot/pages/report/issue-statistics/index'));
+const FeedbackStatisticReportComponent = lazy(() => import(/* webpackChunkName: 'feedback-statistic' */ '@jsroot/pages/report/feedback-statistic/index'));
+const RedemptionStatisticsReportComponent = lazy(() => import(/* webpackChunkName: 'redemption-statistics' */ '@jsroot/pages/report/redemption-statistics/index'));
+const CustomerReportComponent = lazy(() => import(/* webpackChunkName: 'customer-report' */ '@jsroot/pages/report/customer/index'));
+const SummaryReportComponent = lazy(() => import(/* webpackChunkName: 'summary-report' */ '@jsroot/pages/report/summary/index'));
+const DirectCustomerReportComponent = lazy(() => import(/* webpackChunkName: 'direct-report' */ '@jsroot/pages/report/direct/index'));
+const DynamicReportComponent = lazy(() => import(/* webpackChunkName: 'dynamic-report' */ '@jsroot/pages/report/dynamic/index'));
+const SettlementReportComponent = lazy(() => import(/* webpackChunkName: 'settlement-report' */ '@jsroot/pages/report/settlement/index'));
+const WagerReportComponent = lazy(() => import(/* webpackChunkName: 'wager-report' */ '@jsroot/pages/report/wager/index'));
 
 const MenuRouteArray = [
     { url: 'Home', component: DashboardComponent},

@@ -1,4 +1,4 @@
-import React, { Component, lazy, Suspense } from 'react';
+import React, { Component } from 'react';
 import { Button, Col, Form, Row, OverlayTrigger, Tooltip, Collapse } from 'react-bootstrap';
 import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
@@ -19,8 +19,8 @@ import VerifyCustomer from '@jsroot/components/verifyCustomer';
 import { BorderStyle } from '@jsroot/common/constants';
 import DataService from '@jsroot/common/dataService';
 import { toast } from 'react-toastify';
-const CustomerInfo = lazy(() => import('./CustomerInfo'));
-const Content = lazy(() => import('./Content'));
+import CustomerInfo from './CustomerInfo';
+import Content from './Content';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
 
@@ -478,16 +478,14 @@ export default class CreateForm extends Component {
                 <Collapse in={isCollapse}>
                     <div id="collapse-expand-show-identity">
                         {
-                            <Suspense fallback={<div />}>
-                                <CustomerInfo
-                                    customerDetail={customerDetail}
-                                    customerInfo={this.state.customerInfo}
-                                    handleChange={this.handleChangeCustomerInfo}
-                                    handleChangeValueInfo={this.handleChangeValueInfo}
-                                    settings={this.props.settings}
-                                    renderOptions={this.renderOptions}
-                                />
-                            </Suspense>
+                            <CustomerInfo
+                                customerDetail={customerDetail}
+                                customerInfo={this.state.customerInfo}
+                                handleChange={this.handleChangeCustomerInfo}
+                                handleChangeValueInfo={this.handleChangeValueInfo}
+                                settings={this.props.settings}
+                                renderOptions={this.renderOptions}
+                            />
                         }
                     </div>
                 </Collapse>
@@ -538,25 +536,21 @@ export default class CreateForm extends Component {
                         </Form.Group>
                         {
                             customerDetail === null &&
-                            <Suspense fallback={<div />}>
-                                <Content
-                                    editBlock={this.state.editBlock} collapse={this.state.collapse} isInValidSolution={touched.solution && errors.solution}
-                                    content={this.state.content} handleEditBlock={this.handleEditBlock} isValidDescription={touched.description && errors.description}
-                                    handleCollapseExpend={this.handleCollapseExpend} handleChangeContent={this.handleChangeContent}
-                                />
-                            </Suspense>
+                            <Content
+                                editBlock={this.state.editBlock} collapse={this.state.collapse} isInValidSolution={touched.solution && errors.solution}
+                                content={this.state.content} handleEditBlock={this.handleEditBlock} isValidDescription={touched.description && errors.description}
+                                handleCollapseExpend={this.handleCollapseExpend} handleChangeContent={this.handleChangeContent}
+                            />
                         }
                     </div>
                 </Collapse >
                 {
                     customerDetail !== null &&
-                    <Suspense fallback={<div />}>
-                        <Content
-                            editBlock={this.state.editBlock} collapse={this.state.collapse} isInValidSolution={touched.solution && errors.solution}
-                            content={this.state.content} handleEditBlock={this.handleEditBlock} isValidDescription={touched.description && errors.description}
-                            handleCollapseExpend={this.handleCollapseExpend} handleChangeContent={this.handleChangeContent}
-                        />
-                    </Suspense>
+                    <Content
+                        editBlock={this.state.editBlock} collapse={this.state.collapse} isInValidSolution={touched.solution && errors.solution}
+                        content={this.state.content} handleEditBlock={this.handleEditBlock} isValidDescription={touched.description && errors.description}
+                        handleCollapseExpend={this.handleCollapseExpend} handleChangeContent={this.handleChangeContent}
+                    />
                 }
             </div>
         );

@@ -1,8 +1,8 @@
-import React, { PureComponent, lazy, Suspense } from 'react';
+import React, { PureComponent } from 'react';
 import { Form, Row, Collapse} from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import { BorderStyle  } from '@jsroot/common/constants';
-const CkEditor = lazy(() => import('@jsroot/components/ckeditor/index'));
+import CkEditor from '@jsroot/components/ckeditor/index';
 
 export default class Content extends PureComponent {
     renderEditBlockDescription = (content, handleEditBlock, collapse, handleChangeContent, handleCollapseExpend) => {
@@ -32,17 +32,13 @@ export default class Content extends PureComponent {
                     </div>
                     <Collapse in={!collapse.description}>
                         <div id="collapse-expand-remark" className="pt-1 pb-1">
-                            {
-                                 <Suspense fallback={<div />}>
-                                    <CkEditor
-                                        name='description'
-                                        isInvalid={this.props.isValidDescription}
-                                        data={content.description}
-                                        username={window.currentUsername}
-                                        onChange={value => handleChangeContent('description', value)}
-                                    />
-                                 </Suspense>
-                            }
+                            <CkEditor
+                                name='description'
+                                isInvalid={this.props.isValidDescription}
+                                data={content.description}
+                                username={window.currentUsername}
+                                onChange={value => handleChangeContent('description', value)}
+                            />
                         </div>
                     </Collapse>
                 </div>
@@ -108,14 +104,12 @@ export default class Content extends PureComponent {
                                 />
                                 :
                                 <div id="collapse-expand-solution" className="pt-1 pb-1">
-                                     <Suspense fallback={<div>Loading...</div>}>
-                                        <CkEditor
-                                            name='solution'
-                                            isInvalid={isInValidSolution}
-                                            data={content.solution} username={window.currentUsername}
-                                            onChange={value => handleChangeContent('solution', value)}
-                                        />
-                                     </Suspense>
+                                    <CkEditor
+                                        name='solution'
+                                        isInvalid={isInValidSolution}
+                                        data={content.solution} username={window.currentUsername}
+                                        onChange={value => handleChangeContent('solution', value)}
+                                    />
                                 </div>
                         }
                     </Collapse>
