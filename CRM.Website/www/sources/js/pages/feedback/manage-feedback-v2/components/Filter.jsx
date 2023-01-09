@@ -11,7 +11,7 @@ import UnderlineButton from '@jsroot/common/underlineButton';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.currentClientTime = window.currentClientTime;
+        this.currentClientTime = new Date();
         const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
         const fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
         fromDate.setDate(fromDate.getDate() - 1);
@@ -59,8 +59,7 @@ export class Filter extends Component {
         this.minToDate = fromDate;
         this.maxToDate = (maxDate < currentTime) ? maxDate : currentTime;
         this.setState({
-            fromDate: fromDate,
-            toDate: maxDate < currentTime ? maxDate : currentTime
+            fromDate: fromDate
         });
     };
 

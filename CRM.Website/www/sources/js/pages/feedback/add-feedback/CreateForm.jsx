@@ -745,9 +745,9 @@ export default class CreateForm extends Component {
             startTime: params.FeedbackDate
         }).then(response => {
             this.setState({ duplicateFeedbackId: response.data }, () => {
-                if (this.state.duplicateFeedbackId === 0) {
-                    this.createFeedback();
-                } else {
+                if (response.data === 0) {
+                     this.createFeedback();
+                }else {
                     this.setState({ checkDuplicateDialog: { show: true } });
                 }
             });
@@ -771,8 +771,8 @@ export default class CreateForm extends Component {
     createFeedback = async () => {
         const { params } = this.props.confirmCreateGuestDialog;
         await this.props.addFeedback(params).then(() => {
-            this.handleCloseConfirmCreateGuestDialog();
-            if (this.props.addFeedbackResult.isSuccessful) {
+            this.handleCloseCheckDuplicateDialog();
+            if (this.props.addFeedbackResult && this.props.addFeedbackResult.isSuccessful) {
                 const paramsCustomer = {
                     username: params.UserName,
                     isGuest: !this.props.currentCustomer ? true : this.props.currentCustomer.isGuest
@@ -788,7 +788,7 @@ export default class CreateForm extends Component {
                     }
                 }).catch(Site.handleAxiosError);
             }
-        });
+        }).catch(Site.handleAxiosError);;
     };
 
     render() {
