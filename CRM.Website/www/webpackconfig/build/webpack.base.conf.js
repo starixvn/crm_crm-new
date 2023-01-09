@@ -64,10 +64,11 @@ function generateConfig(env) {
             ],
             splitChunks: {
                 chunks: 'async',
-                minSize: 30000,
+                minSize: 20000,
                 minChunks: 1,
                 maxAsyncRequests: 30,
                 maxInitialRequests: 30,
+                enforceSizeThreshold: 50000,
                 cacheGroups: {
                     defaultVendors: {
                         test: /[\\/]node_modules[\\/]/,
@@ -78,17 +79,10 @@ function generateConfig(env) {
                         minChunks: 2,
                         priority: -20,
                         reuseExistingChunk: true,
-                    },
-                    common: {
-                        name: 'common',
-                        minChunks: 2,
-                        chunks: 'async',
-                        priority: 10,
-                        reuseExistingChunk: true,
-                        enforce: true
                     }
                 }
-            }
+            },
+            runtimeChunk: false,
         }
     };
 }

@@ -51,13 +51,7 @@ export class Filter extends Component {
     }
 
     handleChangeFromDate = fromDate => {
-        const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
-        const maxDate = new Date(fromDate.getTime());
-        maxDate.setMonth(fromDate.getMonth() + 12);
-        maxDate.setDate(fromDate.getDate() - 1);
-
         this.minToDate = fromDate;
-        this.maxToDate = (maxDate < currentTime) ? maxDate : currentTime;
         this.setState({
             fromDate: fromDate
         });
