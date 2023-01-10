@@ -49,8 +49,16 @@ export class Filter extends Component {
     }
 
     handleChangeFromDate = fromDate => {
+        const fromDateTime = new Date(fromDate.getTime());
+        fromDateTime.setMonth(fromDate.getMonth() + 3);
+        fromDateTime.setDate(fromDate.getDate() - 1);
+        this.maxToDate = fromDateTime < this.currentDate ? fromDateTime : this.currentDate;
         this.minToDate = fromDate;
-        this.setState({fromDate});
+        const toDate = fromDate > this.state.toDate ? fromDate : this.state.toDate;
+        this.setState({
+            fromDate,
+            toDate: this.maxToDate < toDate ? this.maxToDate : toDate
+        });
     };
 
     handleChangeDropdown = (name, selectedKey) => {
