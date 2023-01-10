@@ -61,7 +61,18 @@ function generateConfig(env) {
                     }
                 }),
                 new OptimizeCssAssetsPlugin()
-            ]
+            ],
+            splitChunks: {
+                cacheGroups: {
+                    // disable default cache group
+                    default: false,
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: 'vendors',
+                        chunks: 'all'
+                    }
+                }
+            }
         }
     };
 }
