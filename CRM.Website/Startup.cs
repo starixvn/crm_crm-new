@@ -125,7 +125,7 @@
 
             services.AddControllersWithViews(
                 mvcOption => mvcOption.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
-                ).AddNewtonsoftJson();
+            ).AddNewtonsoftJson();
 
             RegisterDI(services, botConfigs.Get<List<BotConfig>>());
         }
@@ -148,13 +148,18 @@
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
+            
             app.UseStaticFiles();
+            var compositeProvider = new CompositeFileProvider(
+                env.WebRootFileProvider,
+                new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "www/dist")));
+            env.WebRootFileProvider = compositeProvider;
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(
-                Path.Combine(env.ContentRootPath, "www/dist")),
+                FileProvider = compositeProvider,
                 RequestPath = "/www/dist"
             });
+            
             app.UseCookiePolicy();
             app.UseSession();
             app.UseAuthentication();

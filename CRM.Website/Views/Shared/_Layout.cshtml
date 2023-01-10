@@ -13,7 +13,7 @@
     var currentUsername = napSession.UserName;
 }
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,13 +51,13 @@
         window.menus = @Json.Serialize(napSession.MenuItemList);
 </script>
     <environment include="Development">
-        <script src="~/www/dist/js/dev/lib/vendors.chunk.js" asp-append-version="true"></script>
-        <script src="~/www/dist/js/dev/lib/lang-en-US.chunk.js" asp-append-version="true"></script>
+        <script src="~/js/dev/lib/vendors.chunk.js" asp-append-version="true"></script>
+        <script src="~/js/dev/lib/lang-en-US.chunk.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
         @Html.Raw(Fanex.Logging.LogManager.RenderJavascriptLogger())
-        <script src="~/www/dist/js/pro/lib/vendors.chunk.js" asp-append-version="true"></script>
-        <script src="~/www/dist/js/pro/lib/lang-en-US.chunk.js" asp-append-version="true"></script>
+        <script src="~/js/pro/lib/vendors.chunk.js" asp-append-version="true"></script>
+        <script src="~/js/pro/lib/lang-en-US.chunk.js" asp-append-version="true"></script>
     </environment>
     @RenderSection("Scripts", required: false)
 </body>
