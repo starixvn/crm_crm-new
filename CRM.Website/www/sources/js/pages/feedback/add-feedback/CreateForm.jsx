@@ -113,7 +113,9 @@ export default class CreateForm extends Component {
     handleKeyDownFunc = event => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            this.formik.submitForm();
+            if(!this.formik.isSubmitting){
+                this.formik.submitForm();
+            }
         }
 
         if (event.ctrlKey && event.key === 'e' && this.state.collapse.isVerifyCustomer) {
@@ -298,6 +300,7 @@ export default class CreateForm extends Component {
     });
 
     handleCloseConfirmCreateGuestDialog = () => {
+        this.formik.setSubmitting(false);
         this.props.setConfirmCreateGuestDialog({ show: false });
     };
 
@@ -643,7 +646,8 @@ export default class CreateForm extends Component {
         touched,
         handleChange,
         handleSubmit,
-        setFieldValue
+        setFieldValue,
+        isSubmitting
     }) => {
         return (
             <Form noValidate onSubmit={handleSubmit} action="javascript:void(0)" >
@@ -692,7 +696,7 @@ export default class CreateForm extends Component {
                 }
                 <Form.Group as={Row} className="mt-3">
                     <Col>
-                        <Button type="submit" variant="primary" size="sm">
+                        <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
                             <UnderlineButton.saveButton />
                         </Button>
                     </Col>
@@ -749,6 +753,7 @@ export default class CreateForm extends Component {
     };
 
     handleCloseCheckDuplicateDialog = () => {
+        this.formik.setSubmitting(false);
         this.setState({ checkDuplicateDialog: { show: false } });
         this.props.setConfirmCreateGuestDialog({ show: false });
     };
@@ -764,8 +769,10 @@ export default class CreateForm extends Component {
 
     createFeedback = async () => {
         const { params } = this.props.confirmCreateGuestDialog;
+        this.formik.setSubmitting(true);
         await this.props.addFeedback(params).then(() => {
-            this.handleCloseCheckDuplicateDialog();
+            this.setState({ checkDuplicateDialog: { show: false } });
+            this.props.setConfirmCreateGuestDialog({ show: false });
             if (this.props.addFeedbackResult && this.props.addFeedbackResult.isSuccessful) {
                 const paramsCustomer = {
                     username: params.UserName,
@@ -781,8 +788,10 @@ export default class CreateForm extends Component {
                         }, 3000);
                     }
                 }).catch(Site.handleAxiosError);
+            }else{
+                this.formik.setSubmitting(false);
             }
-        }).catch(Site.handleAxiosError);;
+        }).catch(Site.handleAxiosError);
     };
 
     render() {

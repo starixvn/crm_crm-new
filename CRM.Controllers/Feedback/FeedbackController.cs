@@ -76,6 +76,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<IActionResult> EditCustomerFeedback([FromBody] EditCustomerFeedbackCommand command)
         {
             CommandResult commandResult = CheckEditCustomerFeedbackPermission(command);

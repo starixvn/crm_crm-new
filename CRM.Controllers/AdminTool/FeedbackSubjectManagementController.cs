@@ -7,9 +7,6 @@
     using CRM.Core.Models;
     using CRM.Models.FeedbackSubject;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -46,6 +43,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.FeedbackSubject, Policy = Policy.Host)]
         public async Task<IActionResult> EditFeedbackSubject([FromBody]EditFeedbackSubjectTemplate model)
         {
             CommandResult commandResult = await feedbackSubjectService.EditFeedbackSubjectTemplateAsync(model);
@@ -53,6 +51,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.FeedbackSubject, Policy = Policy.Host)]
         public async Task<IActionResult> EditStatusFeedbackSubject([FromBody]EditStatusFeedbackSubjectTemplate model)
         {
             CommandResult commandResult = await feedbackSubjectService.EditStatusFeedbackSubjectTemplateAsync(model);

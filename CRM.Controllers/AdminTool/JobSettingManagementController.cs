@@ -51,6 +51,7 @@ namespace CRM.Controllers.AdminTool
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.JobSettingManagement, Policy = Policy.Host)]
         public async Task<IActionResult> EditJobSetting([FromBody] EditJobSettingCommand command)
         {
             command.UserId = napSession.UserId;

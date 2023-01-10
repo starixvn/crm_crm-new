@@ -97,6 +97,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<IActionResult> Create([FromBody] AddGuestFeedbackCommand command)
         {
             command.CreatorId = napSession.UserId;

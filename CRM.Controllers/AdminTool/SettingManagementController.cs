@@ -81,6 +81,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.SettingManagement, Policy = Policy.Host)]
         public async Task<IActionResult> EditStatusSetting([FromBody] EditStatusCommand command)
         {
             command.UserId = napSession.UserId;
@@ -90,6 +91,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.SettingManagement, Policy = Policy.Host)]
         public async Task<IActionResult> InsertNewSetting([FromBody] AddNewSettingCommand command)
         {
             command.UserId = napSession.UserId;
@@ -100,6 +102,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.SettingManagement, Policy = Policy.Host)]
         public async Task<IActionResult> EditNewSetting([FromBody] EditNewSettingCommand command)
         {
             var criteria = new EditSourceSettingMappingCriteria
@@ -120,6 +123,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.SettingManagement, Policy = Policy.Host)]
         public async Task<IActionResult> EditLicenseeMapping([FromBody] EditLicenseeMappingCommand command)
         {
             command.UserId = napSession.UserId;
