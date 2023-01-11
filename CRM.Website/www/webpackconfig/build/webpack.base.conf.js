@@ -27,8 +27,8 @@ function generateConfig(env) {
         output: {
             publicPath: 'www/dist/',
             path: pathConfig.distPath,
-            filename: '[name].[contenthash].chunk.js',
-            chunkFilename: `${jsPath}/lib/[name].[contenthash].chunk.js`
+            filename: '[name].chunk.js',
+            chunkFilename: `${jsPath}/lib/[name].chunk.js`
         },
         module: {
             rules: [
