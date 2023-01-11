@@ -5,7 +5,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const pathConfig = require('../config/path');
 const environment = 'pro';
 const baseConfigs = baseWebpackConfigGenerator(environment);
-const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin');
 const cssRootPath = `www/dist/${pathConfig.cssPaths.build}/${environment}`;
 const jsRootPath = `www/dist/${pathConfig.scriptPaths.build}/${environment}`;
 module.exports = merge(baseConfigs,
@@ -30,9 +29,6 @@ module.exports = merge(baseConfigs,
             }),
             new CleanWebpackPlugin([`${cssRootPath}/pages/*/*/*.css`, `${cssRootPath}/pages/*/*/*.js`, `${cssRootPath}/pages/*/*/*.map`], {
                 root: process.cwd()
-            }),
-            new RetryChunkLoadPlugin({
-                maxRetries: 3,
             })
         ]
     },
