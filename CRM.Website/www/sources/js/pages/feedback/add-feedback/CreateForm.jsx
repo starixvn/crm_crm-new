@@ -670,7 +670,7 @@ export default class CreateForm extends Component {
                         title={LangHelper.getResource('Confirmation')}
                         contents={<div dangerouslySetInnerHTML={{ __html: this.props.confirmCreateGuestDialog.confirmMessage }} />}
                         buttons={[
-                            <Button variant="primary" size="sm" onClick={this.handleCreateFeedback}>
+                            <Button variant="primary" size="sm" disabled={isSubmitting} onClick={this.handleCreateFeedback}>
                                 {LangHelper.getResource('OK')}
                             </Button>,
                             <Button variant="primary" size="sm" onClick={this.handleCloseConfirmCreateGuestDialog}>
@@ -685,7 +685,7 @@ export default class CreateForm extends Component {
                         title={LangHelper.getResource('Warning')}
                         contents={<div>{`This customer has a similar log with running number ${this.state.duplicateFeedbackId}. Do you want to create this log?`}</div>}
                         buttons={[
-                            <Button variant="primary" size="sm" onClick={this.createFeedback}>
+                            <Button variant="primary" size="sm" disabled={isSubmitting} onClick={this.createFeedback}>
                                 {LangHelper.getResource('OK')}
                             </Button>,
                             <Button variant="primary" size="sm" onClick={this.handleCloseCheckDuplicateDialog}>
@@ -727,6 +727,7 @@ export default class CreateForm extends Component {
     };
 
     confirmCreateAddGuestFeedback = (params, confirmMessage) => {
+        this.formik.setSubmitting(false);
         this.props.setConfirmCreateGuestDialog({
             show: true,
             params,
