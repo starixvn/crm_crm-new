@@ -17,6 +17,10 @@
                 background-color: #E2FFFF !important;
             }
         }
+
+        .body-content{
+            max-height: 300px !important;
+        }
     }
 
     .table-last-five-remarks{
@@ -100,6 +104,7 @@
     .information {
         width: 20%;
         height: 140px;
+        z-index: 999 !important;
     }
     
     .customer-verify {
