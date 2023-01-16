@@ -767,10 +767,10 @@ export default class CreateForm extends Component {
         }
     };
 
-    createFeedback = async () => {
+    createFeedback = () => {
         const { params } = this.props.confirmCreateGuestDialog;
         this.formik.setSubmitting(true);
-        await this.props.addFeedback(params).then(() => {
+        this.props.addFeedback(params).then(() => {
             this.setState({ checkDuplicateDialog: { show: false } });
             this.props.setConfirmCreateGuestDialog({ show: false });
             if (this.props.addFeedbackResult && this.props.addFeedbackResult.isSuccessful) {
