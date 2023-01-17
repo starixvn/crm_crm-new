@@ -405,6 +405,7 @@ export class CreateCommunicationLog extends Component {
     handleCreateLog = async () => {
         const url = 'CommunicationLog/CreateCommunicationLog';
         Site.blockUI();
+        this.setState({ checkDuplicateDialog: { show: false } });
         const { params } = this.state.confirmCreateDialog;
         await DataService.postDataAsync(url, params).then(response => {
             Site.unblockUI();
