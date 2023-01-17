@@ -26,7 +26,7 @@ namespace CRM.Core.Middlewares
                     MaxAge = TimeSpan.FromMinutes(1)
                 };
             context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Expires] =
-                DateTime.UtcNow.AddMinutes(1).ToString("R", CultureInfo.InvariantCulture);
+                DateTime.UtcNow.AddMinutes(30).ToString("R", CultureInfo.InvariantCulture);
             await _next(context);
         }
     }

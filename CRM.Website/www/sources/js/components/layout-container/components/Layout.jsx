@@ -6,6 +6,7 @@ import DataGrid from './DataGrid';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import WithNavigation from '../../WithNavigation';
+import {CheckForIndexHTMLChange} from '../common.functions';
 
 export class Layout extends Component {
     constructor(props) {
@@ -44,6 +45,20 @@ export class Layout extends Component {
         }
         if(isShowingLeftPanel !== null){
             storage.removeItem('isShowingLeftPanel');
+        }
+
+        setTimeout(await this.handleCheckNewVersion, 10000);
+    }
+
+    handleCheckNewVersion = async () =>{
+        let reloadOnNextChange = false;
+        reloadOnNextChange = await CheckForIndexHTMLChange(Site.resolveClientUrl(''));
+        if (reloadOnNextChange) {
+            if (confirm('New version has released, please press OK to get latest!')) {
+                window.location.reload(true);
+            }
+        }else{
+            setTimeout(this.handleCheckNewVersion, 10000);
         }
     }
 
