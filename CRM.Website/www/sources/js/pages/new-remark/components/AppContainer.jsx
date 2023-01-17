@@ -27,7 +27,7 @@ export class AppContainer extends Component {
     };
     componentDidMount(){
         this.props.getRemarkTitles();
-        console.log('test console');
+        console.log('test console 123');
         document.title = LangHelper.getResource('Remarks');
     }
 
