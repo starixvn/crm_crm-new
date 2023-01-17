@@ -7,7 +7,6 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 function generateConfig(env) {
     const jsPath = `${pathConfig.scriptPaths.build}/${env}`;
     const cssPath = `${pathConfig.cssPaths.build}/${env}`;
-
     return {
         resolve: {
             alias: alias,
@@ -27,8 +26,8 @@ function generateConfig(env) {
         output: {
             publicPath: 'www/dist/',
             path: pathConfig.distPath,
-            filename: '[name].[contenthash].chunk.js',
-            chunkFilename: `${jsPath}/lib/[name].[contenthash].chunk.js`
+            filename: env === 'dev' ? '[name].chunk.js' : '[name].[contenthash].chunk.js',
+            chunkFilename: env === 'dev' ? `${jsPath}/lib/[name].chunk.js` : `${jsPath}/lib/[name].[contenthash].chunk.js`
         },
         module: {
             rules: [

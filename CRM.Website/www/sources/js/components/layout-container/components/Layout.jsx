@@ -7,6 +7,9 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import WithNavigation from '../../WithNavigation';
 import {CheckForIndexHTMLChange} from '../common.functions';
+import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import { Button } from 'react-bootstrap';
+import LangHelper from '@jsroot/common/langHelper';
 
 export class Layout extends Component {
     constructor(props) {
@@ -26,7 +29,8 @@ export class Layout extends Component {
             showEmptyCustomerInfoPopup: false,
             customerSuggestions: [],
             editCustomerInfoPopup: { show: false},
-            isShowingLeftPanel : true
+            isShowingLeftPanel : true,
+            isShowNewVersion: false
         };
     }
 
@@ -47,19 +51,22 @@ export class Layout extends Component {
             storage.removeItem('isShowingLeftPanel');
         }
 
-        setTimeout(this.handleCheckNewVersion, 10000);
+        setTimeout(this.handleCheckNewVersion, 60000);
     }
 
     handleCheckNewVersion = async () =>{
         let reloadOnNextChange = false;
         reloadOnNextChange = await CheckForIndexHTMLChange(Site.resolveClientUrl(''));
         if (reloadOnNextChange) {
-            if (confirm('New version has released, please press OK to get latest!')) {
-                window.location.reload(true);
-            }
-        }else {
-            setTimeout(this.handleCheckNewVersion, 10000);
+            this.setState({isShowNewVersion: true});
+        }else{
+            setTimeout(this.handleCheckNewVersion, 60000);
         }
+    }
+
+    handleCloseConfirmNewVersion = () => {
+        this.setState({isShowNewVersion: false});
+        setTimeout(this.handleCheckNewVersion, 60000);
     }
 
     getSetting = async () =>{
@@ -317,6 +324,22 @@ export class Layout extends Component {
                             this.renderFullWidthContent()
                         }
                     </div>
+                }
+                {
+                    this.state.isShowNewVersion &&
+                    <SweetModalDialog size="lg"
+                        title="Confirm Update Version"
+                        contents={<div>New version has released, please press OK to get latest!</div>}
+                        buttons={[
+                            <Button variant="primary" size="sm" onClick={() => window.location.reload(true)}>
+                                {LangHelper.getResource('OK')}
+                            </Button>,
+                            <Button variant="primary" size="sm" onClick={this.handleCloseConfirmNewVersion}>
+                                {LangHelper.getResource('Cancel')}
+                            </Button>
+                        ]}
+                        onClose={this.handleCloseConfirmNewVersion}
+                    />
                 }
                 <ToastContainer
                     limit={1}
