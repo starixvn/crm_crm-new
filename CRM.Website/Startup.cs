@@ -143,7 +143,6 @@
                     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
                 });
                 app.UseMiddleware<ErrorHandler>();
-                app.UseMiddleware<CacheControlMiddleware>();
                 app.UseHsts();
 
             }

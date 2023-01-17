@@ -34,7 +34,7 @@ export class AppContainer extends Component {
 
     componentDidMount(){
         document.title = LangHelper.getResource('CRMSystem');
-        console.log('test new version 8');
+        console.log('test new version 9');
     }
 
     componentWillUnmount(){
