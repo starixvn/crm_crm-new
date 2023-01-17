@@ -47,7 +47,7 @@ export class Layout extends Component {
             storage.removeItem('isShowingLeftPanel');
         }
 
-        setTimeout(await this.handleCheckNewVersion, 30000);
+        setTimeout(this.handleCheckNewVersion, 10000);
     }
 
     handleCheckNewVersion = async () =>{
@@ -57,8 +57,8 @@ export class Layout extends Component {
             if (confirm('New version has released, please press OK to get latest!')) {
                 window.location.reload(true);
             }
-        }else{
-            setTimeout(this.handleCheckNewVersion, 30000);
+        }else {
+            setTimeout(this.handleCheckNewVersion, 10000);
         }
     }
 
