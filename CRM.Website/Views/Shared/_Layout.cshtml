@@ -51,8 +51,8 @@
         window.menus = @Json.Serialize(napSession.MenuItemList);
 </script>
     <environment include="Development">
-        <script asp-src-include="~/js/dev/lib/vendors.*.js" asp-append-version="true"></script>
-        <script asp-src-include="~/js/dev/lib/lang-en-US.*.js" asp-append-version="true"></script>
+        <script asp-src-include="~/js/dev/lib/vendors.*.chunk.js" asp-append-version="true"></script>
+        <script asp-src-include="~/js/dev/lib/lang-en-US.*.chunk.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
         @Html.Raw(Fanex.Logging.LogManager.RenderJavascriptLogger())

@@ -17,7 +17,7 @@ class index extends PureComponent {
         if(location.pathname.toLowerCase() === '/home'){
             return null;
         }
-        console.log('test new version');
+        console.log('test new version 1');
         return(
             <Provider store={store}>
                 <div className='dashboard'>
