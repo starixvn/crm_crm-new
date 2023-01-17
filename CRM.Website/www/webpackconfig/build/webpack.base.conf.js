@@ -27,14 +27,21 @@ function generateConfig(env) {
         output: {
             publicPath: 'www/dist/',
             path: pathConfig.distPath,
-            filename: '[name].chunk.js',
-            chunkFilename: `${jsPath}/lib/[name].chunk.js`
+            filename: '[name].[hash].js',
+            chunkFilename: `${jsPath}/lib/[name].[hash].js`
         },
         module: {
             rules: [
                 {
                     test: /\.(js|jsx)$/,
-                    loader: ["babel-loader"],
+                    use: [
+                        {
+                          loader: 'babel-loader',
+                          options: {
+                            cacheDirectory: true
+                          }
+                        }
+                    ],
                     exclude: /node_modules/
                 }
             ]

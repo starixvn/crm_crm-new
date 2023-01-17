@@ -11,12 +11,12 @@
 }
 @section Scripts{
     <environment include="Development">
-        <script src="~/js/dev/pages/home/index.chunk.js" asp-append-version="true"></script>
-        <script src="~/js/dev/pages/auth/recheckin.chunk.js" asp-append-version="true"></script>
+        <script asp-src-include="~/js/dev/pages/home/index.*.js" asp-append-version="true"></script>
+        <script asp-src-include="~/js/dev/pages/auth/recheckin.*.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/js/pro/pages/home/index.chunk.js" asp-append-version="true"></script>
-        <script src="~/js/pro/pages/auth/recheckin.chunk.js" asp-append-version="true"></script>
+        <script asp-src-include="~/js/pro/pages/home/index.*.js" asp-append-version="true"></script>
+        <script asp-src-include="~/js/pro/pages/auth/recheckin.*.js" asp-append-version="true"></script>
     </environment>
 }
 <input type="checkbox" hidden id="isEnableReCheckIn" @(napSettings.EnableReCheckIn ? "checked" : string.Empty) />
