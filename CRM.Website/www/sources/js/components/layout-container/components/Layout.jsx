@@ -299,7 +299,7 @@ export class Layout extends Component {
 
         return (
             <div>
-                <div className='fix-header-menu'>
+                <div id='fix-header-menu'>
                     <Header menus={menus} currentCustomerInfo={currentCustomerInfo} handleNavigate={this.handleNavigate}
                         handleCollapseExpandLayout={this.handleCollapseExpandLayout}
                     />

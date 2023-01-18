@@ -1,8 +1,8 @@
-﻿import React, { PureComponent } from 'react';
+﻿import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'react-bootstrap';
 
-class ResponseMessage extends PureComponent {
+class ResponseMessage extends Component {
     static propTypes = {
         isSuccessful: PropTypes.bool,
         message: PropTypes.string,
@@ -14,6 +14,15 @@ class ResponseMessage extends PureComponent {
         message: '',
         messages: []
     };
+
+    componentDidUpdate(){
+        if(this.props.message !== '' || this.props.messages.length > 0) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    }
 
     render() {
         const { isSuccessful, message, messages } = this.props;

@@ -80,6 +80,7 @@ function generateConfig(env) {
                 new OptimizeCssAssetsPlugin()
             ],
             splitChunks: {
+                chunks: 'all',
                 cacheGroups: {
                     // disable default cache group
                     default: false,

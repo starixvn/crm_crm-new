@@ -650,7 +650,7 @@ export default class CreateForm extends Component {
         isSubmitting
     }) => {
         return (
-            <Form noValidate onSubmit={handleSubmit} action="javascript:void(0)" >
+            <Form noValidate onSubmit={handleSubmit} action="javascript:void(0)">
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle />
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                 {
