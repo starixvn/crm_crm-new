@@ -25,7 +25,7 @@ export default class CkEditor extends PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.data !== this.props.data && !this.editor.editor.focusManager.hasFocus) {
+        if (prevProps.data !== this.props.data && (this.editor && !this.editor.editor.focusManager.hasFocus)) {
             this.editor.editor.setData(this.props.data);
         }
     }

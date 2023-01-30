@@ -93,6 +93,8 @@ export class NewAnnouncement extends Component {
         this.props.getTemplateById(id).then(data =>{
             const contentLanguage = data.contents.filter(x => x.language === this.state.tab);
             const content = !contentLanguage ? '' : contentLanguage[0].content;
+            this.formik.setFieldValue('notificationTemplateId', data.notificationTemplateId);
+            this.formik.setFieldValue('languageId', contentLanguage[0].languageId);
             this.formik.setFieldValue('content', content);
         });
     }
@@ -151,6 +153,7 @@ export class NewAnnouncement extends Component {
         errors,
         touched,
         handleChange,
+        setFieldValue,
         handleSubmit,
         isSubmitting
     }) => {
@@ -201,7 +204,7 @@ export class NewAnnouncement extends Component {
                     </Form.Group>
                     {
                         <ContentTab
-                            isValidContent={touched.content && errors.content} content={values.content} handleChange={handleChange}
+                            isValidContent={touched.content && errors.content} content={values.content} setFieldValue={setFieldValue}
                             languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab}
                         />
                     }
@@ -241,11 +244,26 @@ export class NewAnnouncement extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
+        const {notificationTemplateId, languageId, content, headlineType, sendDate, sendType} = values;
         const formData = new FormData();
         this.state.uploadedFiles.forEach(file => {
             formData.append('formFile', file);
         });
-
+        formData.append('content[languageId]', languageId);
+        formData.append('content[value]', content);
+        const params = {
+            notificationTemplateId: notificationTemplateId,
+            headlineNameList: this.state.headlineGroups.join(','),
+            siteNameList: this.state.options.site,
+            currencyList: this.state.options.currency,
+            headlineType: headlineType,
+            title: values.title,
+            sendDate: sendDate,
+            sendImmediately: sendType !== 'Send At'
+        };
+        Object.keys(params).forEach(key => {
+            formData.append(key, params[key]);
+        });
         this.setState({confirmInsertDialog: { show: true, params: formData}});
     };
 
@@ -286,9 +304,11 @@ export class NewAnnouncement extends Component {
         }
 
         const initialValues = {
+            notificationTemplateId: '',
             notificationTemplate: '',
             title: '',
             content: '',
+            languageId: '',
             headlineType: '2',
             sendType: '',
             sendDate: null,

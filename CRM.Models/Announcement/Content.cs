@@ -12,7 +12,7 @@ namespace CRM.Models.Announcement
     public class Content
     {
         [XMLName("LanguageId")]
-        public string LanguageId { get; set; }
+        public int LanguageId { get; set; }
         [XMLName("Value")]
         public string Value { get; set; }
     }
