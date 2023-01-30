@@ -76,7 +76,7 @@ export class CreateForm extends Component {
             customerNameInput: '',
             startTime,
             endTime,
-            extensionIds: settings.extensions[0].id.toString(),
+            extensionIds: settings.extensionNA.id.toString(),
             languageId: settings.languages[0].languageId,
             countryId: settings.countries[0].id,
             communicationToolIds: '',
