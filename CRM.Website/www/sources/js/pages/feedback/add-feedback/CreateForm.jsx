@@ -260,6 +260,7 @@ export default class CreateForm extends Component {
             const inactiveCustomers = data.filter(customer => !customer.isSiteActive && customer.custId !== 0 && customer.isLicensee);
             this.setState({ listOfCustomer: data });
             if (inactiveCustomers.length > 0) {
+                this.formik.setSubmitting(false);
                 const inactiveUserName = inactiveCustomers.map(x => x.val).join(',');
                 const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + inactiveUserName;
                 this.props.setAddFeedback({ isSuccessful: false, message });
