@@ -7,26 +7,47 @@ class FormikErrorMessage extends PureComponent {
     static propTypes = {
         errors: PropTypes.object,
         fieldNames: PropTypes.arrayOf(PropTypes.string),
-        touched: PropTypes.object
+        touched: PropTypes.object,
+        isSubmitting: PropTypes.bool
     };
 
     static defaultProps = {
         touched: {},
         errors: {},
-        fieldNames: []
+        fieldNames: [],
+        isSubmitting: false
     };
 
     constructor(props) {
         super(props);
     }
 
+    componentDidUpdate() {
+        const { isSubmitting, errors, touched, fieldNames } = this.props;
+        const isError = this.isHasError(errors, touched);
+        const isInvalid = fieldNames.filter(field => errors[field]).length > 0;
+
+        if(isSubmitting && isError && isInvalid){
+            const modal = document.querySelector('.modal');
+            if(modal){
+                modal.scrollTop = 0;
+            }else{
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    }
+
+    isHasError = (errors, touched) => !isEmpty(errors) && !isEmpty(touched);
+
     validateFormikField = (touched, errors, fieldName) => !(touched[fieldName] && errors[fieldName]);
 
     render() {
         const { errors, touched, fieldNames } = this.props;
         return (
-            !isEmpty(errors)
-            && !isEmpty(touched)
+            this.isHasError(errors, touched)
             && <Alert variant='danger'>
                 <ul className='list-message-error'>
                     {

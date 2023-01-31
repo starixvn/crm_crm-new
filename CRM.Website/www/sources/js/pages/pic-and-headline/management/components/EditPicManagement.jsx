@@ -250,7 +250,7 @@ export class EditPicManagement extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.editPicResult &&
                         <ResponseMessage isSuccessful={this.props.editPicResult.isSuccessful}

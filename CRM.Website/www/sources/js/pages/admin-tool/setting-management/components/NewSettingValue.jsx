@@ -73,7 +73,7 @@ export class NewSettingValue extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit} action="javascript:void(0)" >
                 <Modal.Body>
-                    <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.insertNewSettingResult &&
                         <ResponseMessage isSuccessful={this.props.insertNewSettingResult.isSuccessful}

@@ -584,7 +584,7 @@ export class CreateCommunicationLog extends Component {
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
                     <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
-                    <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         createResult &&
                         <ResponseMessage isSuccessful={createResult.isSuccessful}

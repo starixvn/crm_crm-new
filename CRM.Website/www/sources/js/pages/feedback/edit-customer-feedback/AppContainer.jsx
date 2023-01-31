@@ -729,7 +729,7 @@ export default class AppContainer extends Component {
             <Form noValidate onSubmit={handleSubmit}>
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <Modal.Body>
-                    <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         editResult &&
                         <ResponseMessage isSuccessful={editResult.isSuccessful}

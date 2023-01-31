@@ -129,7 +129,7 @@ export class CreateRedemptionLog extends Component {
             <Form noValidate onSubmit={handleSubmit}>
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
                 <Modal.Body>
-                    <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         createRedemptionResult &&
                         <ResponseMessage isSuccessful={createRedemptionResult.isSuccessful}

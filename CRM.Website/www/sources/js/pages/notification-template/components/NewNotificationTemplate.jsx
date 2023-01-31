@@ -38,7 +38,7 @@ export class NewNotificationTemplate extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.createTemplateResult &&
                         <ResponseMessage isSuccessful={this.props.createTemplateResult.isSuccessful}

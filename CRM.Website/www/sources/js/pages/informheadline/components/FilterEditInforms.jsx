@@ -10,7 +10,6 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import ExcelIcon from '@jsroot/components/ExcelIcon';
 
 export class FilterEditInforms extends PureComponent {
-
     constructor(props) {
         super(props);
         this.initData = props.isNewInform ?

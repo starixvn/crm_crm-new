@@ -496,7 +496,7 @@ export class CreateForm extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
-                <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                <FormikErrorMessage isSubmitting ={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                 {
                     createMultipleLogsResult &&
                     <ResponseMessage isSuccessful={createMultipleLogsResult.isSuccessful}

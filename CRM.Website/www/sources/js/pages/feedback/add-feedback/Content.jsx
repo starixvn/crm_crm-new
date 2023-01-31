@@ -34,7 +34,7 @@ export default class Content extends PureComponent {
                         <div id="collapse-expand-remark" className="pt-1 pb-1">
                             <CkEditor
                                 name='description'
-                                isInvalid={this.props.isValidDescription}
+                                isInvalid={this.props.isInValidDescription}
                                 data={content.description}
                                 username={window.currentUsername}
                                 onChange={value => handleChangeContent('description', value)}

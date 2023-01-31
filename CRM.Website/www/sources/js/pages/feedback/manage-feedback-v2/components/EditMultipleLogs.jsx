@@ -929,7 +929,7 @@ export class EditMultipleLogs extends Component {
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
                     <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
-                    <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.state.editResult &&
                         <ResponseMessage isSuccessful={this.state.editResult.isSuccessful}

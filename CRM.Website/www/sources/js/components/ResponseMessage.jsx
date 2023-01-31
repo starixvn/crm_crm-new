@@ -17,10 +17,15 @@ class ResponseMessage extends Component {
 
     componentDidUpdate(){
         if(this.props.message !== '' || this.props.messages.length > 0) {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            const modal = document.querySelector('.modal');
+            if(modal){
+                modal.scrollTop = 0;
+            }else{
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
         }
     }
 
