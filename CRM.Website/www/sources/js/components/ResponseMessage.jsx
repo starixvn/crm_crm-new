@@ -15,7 +15,17 @@ class ResponseMessage extends Component {
         messages: []
     };
 
-    componentDidUpdate(){
+    componentDidMount(){
+        this.handleScrollToTop();
+    }
+
+    componentDidUpdate(prevProps) {
+        if(prevProps.message !== this.props.message || JSON.stringify(prevProps.message) !== JSON.stringify(this.props.message)) {
+            this.handleScrollToTop();
+        }
+    }
+
+    handleScrollToTop = () =>{
         if(this.props.message !== '' || this.props.messages.length > 0) {
             const modal = document.querySelector('.modal');
             if(modal){
