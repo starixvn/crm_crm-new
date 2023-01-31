@@ -30,7 +30,8 @@ export class FilterEditInforms extends PureComponent {
         touched,
         handleSubmit,
         handleChange,
-        setFieldValue
+        setFieldValue,
+        isSubmitting
     }) => {
         const { detail, allSettings, informData } = this.props;
 
@@ -70,7 +71,7 @@ export class FilterEditInforms extends PureComponent {
 
         return(
             <Form noValidate onSubmit={handleSubmit} className="form-filter form-filter-edit-inform">
-                <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                <FormikErrorMessage  isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
 
                 <Form.Group as={Row}>
                     <Col sm="12" md="12" className="group-input-excel">
@@ -172,7 +173,7 @@ export class FilterEditInforms extends PureComponent {
                     <Col sm="1" md="1" >
                         <Button variant="primary" size="sm" style={{width: '65px'}}
                             type="submit"
-                            onClick={() => setFieldValue('submit',false)}
+                            onClick={() => {setFieldValue('submit',false)}}
                         >
                             {LangHelper.getResource('Search')}
                         </Button>
