@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using CRM.Core.Models;
 using CRM.Core.Services;
 using CRM.Criteria.Announcement;
 using CRM.Models.Announcement;
@@ -31,6 +30,11 @@ namespace CRM.Services.HeadlineNotification
         public async Task<IEnumerable<AnnouncementInfo>> GetAnnouncementAsync(GetAnnouncementCriteria criteria)
         {
             return await baseService.GetDataAsync<AnnouncementInfo>(criteria);
+        }
+
+        public async Task<CommandResult> NewAnnouncementAsync(CreateAnnouncementCommand command)
+        {
+            return await baseService.ExecuteNonQueryAsync(command);
         }
 
         public async Task<ValueTuple<IEnumerable<AnnouncementDetail>, IEnumerable<ContentInfo>>> GetContentByIdAsync(int id)

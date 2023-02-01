@@ -258,7 +258,7 @@ export class NewAnnouncement extends Component {
             currencyList: this.state.options.currency,
             headlineType: headlineType,
             title: values.title,
-            sendDate: sendDate,
+            sendDate: DateTimeService.toShortDateFormat(sendDate),
             sendImmediately: sendType !== 'Send At'
         };
         Object.keys(params).forEach(key => {
@@ -276,7 +276,7 @@ export class NewAnnouncement extends Component {
                     this.props.onSuccess();
                 }, 3000);
             } else {
-                setSubmitting(false);
+                this.formik.setSubmitting(false);
             }
         });
     }

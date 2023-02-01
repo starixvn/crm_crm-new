@@ -31,7 +31,7 @@ const getAnnouncementById = id => async () => {
 };
 
 const createAnnouncement = data => async dispatch => {
-    const url = Site.resolveClientUrl('Announcement/Create');
+    const url = Site.resolveClientUrl('Announcement/SaveFilesAndCreateAnnouncement');
     await DataService.postDataAsync(url, data).then(response => {
         dispatch(setCreateAnnouncement(response.data));
     });

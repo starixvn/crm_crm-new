@@ -1,12 +1,10 @@
 ﻿
 namespace CRM.Criteria.Announcement
 {
-    using System.Collections;
     using System.Collections.Generic;
     using CRM.Core.Extensions.XML;
     using System.Linq;
     using CRM.Models.Announcement;
-    using CRM.Models.Feedback;
     using Fanex.Data;
     using Microsoft.AspNetCore.Http;
     using System;
@@ -25,6 +23,7 @@ namespace CRM.Criteria.Announcement
         public string Title { get; set; }
         [SpParam(Ignored = true)]
         public Content Content { get; set; }
+        [SpParam(Ignored = true)]
         public IEnumerable<Content> Contents => new List<Content> { Content };
 
         [SpParam(SqlParamName = "contents")]
@@ -37,6 +36,6 @@ namespace CRM.Criteria.Announcement
 
         public override string GetSettingKey() => "Acc_CRM_ChatBot_Announcement_Ins";
 
-        public override bool IsValid() => UserId > 0 && NotificationTemplateId > 0 && string.IsNullOrEmpty(Title) && Contents.Count() == 0;
+        public override bool IsValid() => UserId > 0 && NotificationTemplateId > 0 && !string.IsNullOrEmpty(Title) && Contents.Count() > 0;
     }
 }

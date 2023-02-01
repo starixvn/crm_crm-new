@@ -1,6 +1,7 @@
 ﻿namespace CRM.Controllers.HeadlineNotification
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -14,6 +15,7 @@
     using Fanex.Data.Repository;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     public class AnnouncementController : BaseController
@@ -41,25 +43,42 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] CreateAnnouncementCommand command)
+        public async Task<IActionResult> SaveFilesAndCreateAnnouncement([FromForm] CreateAnnouncementCommand command)
         {
-            foreach (var file in command.FormFile)
+            var origFileNames = string.Join(", ", command.FormFile.Select(x => x.FileName));
+            var fileNames = string.Join(", ", command.FormFile.Select(x => GetFileNames(x)));
+            command.OrigFileName = origFileNames;
+            command.FileName = fileNames;
+            command.UserId = napSession.UserId;
+            command.LoginIP = ClientIP;
+            var commandResult = await announcementService.NewAnnouncementAsync(command);
+            if (commandResult.IsSuccessful)
             {
-                string path = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, file.FileName);
-                var isExist = System.IO.File.Exists(path);
-                var fileName = isExist ? $"{DateTime.Now.ToString("yyyyMMddHHmmss")}-{file.FileName}" : file.FileName;
+                await SaveFile(command.FormFile);
+            }
+            return Json(commandResult);
+            
+        }
+
+        private string GetFileNames(IFormFile formFile)
+        {
+            string path = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, formFile.FileName);
+            var isExist = System.IO.File.Exists(path);
+            var fileName = isExist ? $"{DateTime.Now.ToString("yyyyMMddHHmmss")}-{formFile.FileName}" : formFile.FileName;
+            return fileName;
+        }
+
+        private async Task SaveFile(IList<IFormFile> formFiles)
+        {
+            foreach (var file in formFiles)
+            {
+                var fileName = GetFileNames(file);
                 var pathFile = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, fileName);
                 using (Stream stream = new FileStream(pathFile, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
             }
-            var result = new CommandResult
-            {
-                Code = 0,
-                Message = string.Empty
-            };
-            return Json(result);
         }
 
         [HttpPost]
