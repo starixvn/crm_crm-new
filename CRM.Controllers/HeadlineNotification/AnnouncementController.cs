@@ -60,27 +60,6 @@
             
         }
 
-        private string GetFileNames(IFormFile formFile)
-        {
-            string path = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, formFile.FileName);
-            var isExist = System.IO.File.Exists(path);
-            var fileName = isExist ? $"{DateTime.Now.ToString("yyyyMMddHHmmss")}-{formFile.FileName}" : formFile.FileName;
-            return fileName;
-        }
-
-        private async Task SaveFile(IList<IFormFile> formFiles)
-        {
-            foreach (var file in formFiles)
-            {
-                var fileName = GetFileNames(file);
-                var pathFile = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, fileName);
-                using (Stream stream = new FileStream(pathFile, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-            }
-        }
-
         [HttpPost]
         public async Task<IActionResult> GetAnnouncement([FromBody]  GetAnnouncementCriteria criteria)
         {
@@ -116,6 +95,27 @@
             };
 
             return Json(allSetting);
+        }
+
+        private string GetFileNames(IFormFile formFile)
+        {
+            string path = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, formFile.FileName);
+            var isExist = System.IO.File.Exists(path);
+            var fileName = isExist ? $"{DateTime.Now.ToString("yyyyMMddHHmmss")}-{formFile.FileName}" : formFile.FileName;
+            return fileName;
+        }
+
+        private async Task SaveFile(IList<IFormFile> formFiles)
+        {
+            foreach (var file in formFiles)
+            {
+                var fileName = GetFileNames(file);
+                var pathFile = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, fileName);
+                using (Stream stream = new FileStream(pathFile, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
         }
     }
 }

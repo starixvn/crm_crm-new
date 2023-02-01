@@ -258,7 +258,7 @@ export class NewAnnouncement extends Component {
             currencyList: this.state.options.currency,
             headlineType: headlineType,
             title: values.title,
-            sendDate: DateTimeService.toShortDateFormat(sendDate),
+            sendDate: DateTimeService.toLongDateTimeFormat(sendDate),
             sendImmediately: sendType !== 'Send At'
         };
         Object.keys(params).forEach(key => {

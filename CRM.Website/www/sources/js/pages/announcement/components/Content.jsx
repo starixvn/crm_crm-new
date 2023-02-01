@@ -51,7 +51,7 @@ class Content extends Component {
             return null;
         }
         const announcement = data.data[0];
-        const fileNames = announcement.fileName.split(',');
+        const fileNames = announcement.origFileName.split(',');
         return (
             <Modal show backdrop='static' keyboard={false} size='lg' centered
                 onHide={this.props.onClose} className='announcement-content-modal'
