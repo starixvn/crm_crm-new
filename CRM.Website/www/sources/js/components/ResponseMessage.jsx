@@ -19,10 +19,8 @@ class ResponseMessage extends Component {
         this.handleScrollToTop();
     }
 
-    componentDidUpdate(prevProps) {
-        if(prevProps.message !== this.props.message || JSON.stringify(prevProps.message) !== JSON.stringify(this.props.message)) {
-            this.handleScrollToTop();
-        }
+    componentDidUpdate() {
+        this.handleScrollToTop();
     }
 
     handleScrollToTop = () =>{
