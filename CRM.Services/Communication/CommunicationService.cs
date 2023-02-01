@@ -60,7 +60,7 @@
                 communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
                 communicationLog.ResolutionDate = commonService.ConvertToClientDateTime(communicationLog.ResolutionDate);
                 communicationLog.SolveDate = commonService.ConvertToClientDateTime(communicationLog.SolveDate);
-                communicationLog.RelatedCustomers = relatedCustomers;
+                communicationLog.RelatedCustomers = relatedCustomers.OrderBy(x => x.Username);
                 communicationLog.Settings = settingItems.ToList();
 
                 var siteSetting = await settingService.GetSiteByIdAsync(communicationLog.SiteId);

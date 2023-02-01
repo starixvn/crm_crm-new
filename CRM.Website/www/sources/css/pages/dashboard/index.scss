@@ -263,20 +263,6 @@
                 .panel-content {
                     padding: 4px 9px;
 
-                    .customersList {
-                        padding: 5px;
-                        max-height: 250px;
-                        overflow: auto;
-                        
-                        .txt-customer, .txt-guest, .txt-invalid, .txt-inactive {
-                            width: auto;
-                            border: 1px solid #8e8e8e;
-                            border-radius: 5px;
-                            padding: 1px 4px;
-                            margin: 0 0.5rem 0.5rem 0;
-                        }
-                    }
-
                     .ref-ticket-input {
                         input::-webkit-outer-spin-button,
                         input::-webkit-inner-spin-button {

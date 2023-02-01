@@ -64,7 +64,7 @@ export default class VerifySection extends PureComponent {
                 {
                     relatedCustomers.length > 0 &&
                     <div className="verify-customer">
-                        <VerifyCustomer listOfCustomers={relatedCustomers} onClick={deleteVerifyCreateCustomer} isCommunicationLog />
+                        <VerifyCustomer listOfCustomers={relatedCustomers} onClick={deleteVerifyCreateCustomer} isSmallWidth/>
                     </div>
                 }
                 {
