@@ -112,7 +112,7 @@
             {
                 options.Cookie.IsEssential = true;
                 options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(Configuration.GetSection("AuthSettings:SessionTimeout").Value));
-                options.Cookie.Name = "Fanex.CRM.Session";
+                options.Cookie.Name = "Fanex.CRM.Session1";
             });
 
             services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));

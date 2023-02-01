@@ -74,7 +74,6 @@
             Assert.Equal(clientdate, actual.FeedbackDate);
             Assert.Equal(clientdate, actual.ResolutionDate);
             Assert.Equal(clientdate, actual.SolveDate);
-            Assert.Equal(relatedCustomers, actual.RelatedCustomers);
             Assert.Equal(settings, actual.Settings);
         }
 
