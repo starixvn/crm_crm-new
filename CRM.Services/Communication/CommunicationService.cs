@@ -38,6 +38,7 @@
             {
                 communicationLog.CommunicationSettings = settingItems.Where(x => x.FeedbackId == communicationLog.FeedbackId).ToList();
                 communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
+                communicationLog.RelatedCustomers = communicationLog.RelatedCustomers.OrderBy(x => x.Username);
             }
             
             return communicationLogInfos;
