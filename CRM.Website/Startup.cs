@@ -242,7 +242,7 @@
                     Password = redisConfig.Password,
                     DefaultDatabase = redisConfig.DefaultDatabase
                 };
-                options.InstanceName = redisConfig.ApplicationName + ":Session:";
+                options.InstanceName = redisConfig.ApplicationName + ":Session1:";
             });
         }
     }
