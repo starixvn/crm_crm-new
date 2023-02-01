@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import Site from '@jsroot/common/site';
 
+const DashboardComponent = lazy(() => import(/* webpackChunkName: 'dashboard' */ '@jsroot/pages/dashboard/index'));
+
 const NotificationListComponent  = lazy(() => import(/* webpackChunkName: 'notification-list' */ '@jsroot/pages/notification-list/index'));
 const NotificationTemplateComponent = lazy(() => import(/* webpackChunkName: 'notification-template' */ '@jsroot/pages/notification-template/index'));
 const ChatTypeMappingComponent = lazy(() => import(/* webpackChunkName: 'chat-type-mapping' */ '@jsroot/pages/chat-type-mapping/index'));
@@ -35,7 +37,6 @@ const ManageFeedbackComponent = lazy(() => import(/* webpackChunkName: 'manage-f
 const DeletedFeedbackComponent = lazy(() => import(/* webpackChunkName: 'deleted-feedback' */ '@jsroot/pages/feedback/deleted-feedback/index'));
 const MultipleLogsComponent = lazy(() => import(/* webpackChunkName: 'multiple-logs' */ '@jsroot/pages/feedback/multiple-logs/create/index'));
 
-const DashboardComponent = lazy(() => import(/* webpackChunkName: 'dashboard' */ '@jsroot/pages/dashboard/index'));
 const CustomerInfoDetailComponent = lazy(() => import(/* webpackChunkName: 'customer-info-detail' */ '@jsroot/pages/customer/customer-info-detail/index'));
 const CommunicationComponent = lazy(() => import(/* webpackChunkName: 'communication-log' */ '@jsroot/pages/communication-log/index'));
 const SpecialRemarkComponent = lazy(() => import(/* webpackChunkName: 'special-remark' */ '@jsroot/pages/special-remark/index'));
