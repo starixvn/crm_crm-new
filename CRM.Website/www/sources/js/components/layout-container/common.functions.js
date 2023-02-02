@@ -13,9 +13,9 @@ const functions = {
 export default functions;
 
 export const CheckForIndexHTMLChange = async (indexHTMLURL) => {
-	await axios.get(indexHTMLURL, {headers: {'X-Requested-With': 'XMLHttpRequest'}}).then(resp => {
+	return await axios.get(indexHTMLURL, {headers: {'X-Requested-With': 'XMLHttpRequest'}}).then(resp => {
 		if(!resp || !resp.data) {
-			return false;
+			return;
 		}
 		let text =  resp.data;
 		let scriptMatch = /^.*<script.*\/(home.*\.js).*$/gim.exec(text);
@@ -39,8 +39,6 @@ export const CheckForIndexHTMLChange = async (indexHTMLURL) => {
 		if (localMainScript === null) {
 			return false;
 		}
-		console.log(remoteMainScript);
-		console.log(localMainScript);
 		return remoteMainScript !== localMainScript;
 	});
 };
