@@ -55,13 +55,13 @@ export class Layout extends Component {
     }
 
     handleCheckNewVersion = async () =>{
-        let reloadOnNextChange = false;
-        reloadOnNextChange = await CheckForIndexHTMLChange(Site.resolveClientUrl(''));
-        if (reloadOnNextChange) {
-            this.setState({isShowNewVersion: true});
-        }else{
-            setTimeout(this.handleCheckNewVersion, 60000);
-        }
+        await CheckForIndexHTMLChange(Site.resolveClientUrl('')).then(response => {
+            if(response) {
+                this.setState({isShowNewVersion: true});
+            }else{
+                setTimeout(this.handleCheckNewVersion, 60000);
+            }
+        });
     }
 
     handleCloseConfirmNewVersion = () => {

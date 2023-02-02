@@ -15,16 +15,16 @@ export default functions;
 export const CheckForIndexHTMLChange = async (indexHTMLURL) => {
 	await axios.get(indexHTMLURL, {headers: {'X-Requested-With': 'XMLHttpRequest'}}).then(resp => {
 		if(!resp || !resp.data) {
-			return;
+			return false;
 		}
 		let text =  resp.data;
 		let scriptMatch = /^.*<script.*\/(home.*\.js).*$/gim.exec(text);
 		if (!scriptMatch || scriptMatch .length < 2) {
-			return;
+			return false;
 		}
 		let remoteMainScript = scriptMatch.length > 1 ? scriptMatch[1] : null;
 		if (remoteMainScript === null) {
-			return;
+			return false;
 		}
 		let localMainScript = null;
 		let scripts = document.body.getElementsByTagName('script');
@@ -37,7 +37,7 @@ export const CheckForIndexHTMLChange = async (indexHTMLURL) => {
 			break;
 		}
 		if (localMainScript === null) {
-			return;
+			return false;
 		}
 		console.log(remoteMainScript);
 		console.log(localMainScript);
