@@ -68,7 +68,7 @@ export class DataGridCommunication extends Component {
     handleShowCreateCommunication = async id => {
         await DataService.getDataAsync(`CommunicationLog/GetLogByFeedbackId/${id}`).then(response => {
             const options = this.getOptions(response.data);
-            this.props.setCreateCommunicationDialog({ show: true, options: options });
+            this.props.setCreateCommunicationDialog({ show: true, custId:response.data.log.custId, options: options });
         });
     };
 
