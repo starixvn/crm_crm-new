@@ -39,6 +39,8 @@ export const CheckForIndexHTMLChange = async (indexHTMLURL) => {
 		if (localMainScript === null) {
 			return;
 		}
+		console.log(remoteMainScript);
+		console.log(localMainScript);
 		return remoteMainScript !== localMainScript;
 	});
 };
