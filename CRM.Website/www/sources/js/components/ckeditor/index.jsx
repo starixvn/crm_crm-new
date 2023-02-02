@@ -5,6 +5,7 @@ import moment from 'moment';
 import { TOOLBAR, EXTRA_TOOLBAR, REMOVE_PLUGINS, EDIT_BLOCK_TEMPLATE } from './constants';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import Site from '@jsroot/common/site';
 
 export default class CkEditor extends PureComponent {
     static propTypes = {
@@ -43,6 +44,17 @@ export default class CkEditor extends PureComponent {
             event.cancel();
         }
     };
+
+    onBeforeLoad = () =>{
+        Site.blockUI();
+    }
+
+    onLoaded = editor => {
+        this.editor = editor;
+        editor.editor.on('instanceReady', function(ev) {
+            Site.unblockUI();
+        });
+    }
 
     onLoadPlugin = CKEDITOR => {
         let editText = '';
@@ -100,7 +112,8 @@ export default class CkEditor extends PureComponent {
                         enterMode: 2
                     }}
                     style={{body: 'margin: 0'}}
-                    onLoaded={editor => this.editor = editor}
+                    onBeforeLoad={this.onBeforeLoad}
+                    onLoaded={editor => this.onLoaded(editor)}
                     onNamespaceLoaded={this.onLoadPlugin}
                     onKey={this.onKeyPress}
                 />

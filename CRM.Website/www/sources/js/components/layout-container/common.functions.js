@@ -1,6 +1,5 @@
 import React from 'react';
-import DataService from '@jsroot/common/dataService';
-
+import axios from 'axios';
 export const renderSystemOption = item => {
     return (
         <option key={item.id} value={item.id} >{item.name}</option>
@@ -14,13 +13,16 @@ const functions = {
 export default functions;
 
 export const CheckForIndexHTMLChange = async (indexHTMLURL) => {
-	await DataService.getDataAsync(indexHTMLURL).then(resp => {
-		let text =  resp.data;
-		let r = /^.*<script.*\/(home.*\.js).*$/gim.exec(text);
-		if (!r || r.length < 2) {
+	await axios.get(indexHTMLURL, {headers: {'X-Requested-With': 'XMLHttpRequest'}}).then(resp => {
+		if(!resp || !resp.data) {
 			return;
 		}
-		let remoteMainScript = r.length > 1 ? r[1] : null;
+		let text =  resp.data;
+		let scriptMatch = /^.*<script.*\/(home.*\.js).*$/gim.exec(text);
+		if (!scriptMatch || scriptMatch .length < 2) {
+			return;
+		}
+		let remoteMainScript = scriptMatch.length > 1 ? scriptMatch[1] : null;
 		if (remoteMainScript === null) {
 			return;
 		}
