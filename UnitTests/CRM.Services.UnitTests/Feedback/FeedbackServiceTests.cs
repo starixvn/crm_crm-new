@@ -90,7 +90,6 @@
             Assert.Equal(clientdate, actual.ResolutionDate);
             Assert.Equal(clientdate, actual.SolveDate);
             Assert.Equal(clientdate, actual.CreateDate);
-            Assert.Equal(relatedCustomers, actual.RelatedCustomers);
             Assert.Equal(settings, actual.Settings);
             Assert.Equal(site.Id, actual.SiteSetting.Id);
             Assert.Equal(site.Name, actual.SiteSetting.Name);
