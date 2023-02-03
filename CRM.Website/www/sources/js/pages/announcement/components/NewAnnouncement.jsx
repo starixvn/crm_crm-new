@@ -91,11 +91,16 @@ export class NewAnnouncement extends Component {
 
     handleChangeContentById = id => {
         this.props.getTemplateById(id).then(data =>{
+            const {setFieldValue} = this.formik;
+            const contentEN = data.contents.filter(x => x.language === 'EN')[0];
+            const contentArr = [contentEN];
             const contentLanguage = data.contents.filter(x => x.language === this.state.tab);
+            const contents = (!contentLanguage || this.state.tab ==='EN') ? contentArr : [...contentArr, contentLanguage[0]];
             const content = !contentLanguage ? '' : contentLanguage[0].content;
-            this.formik.setFieldValue('notificationTemplateId', data.notificationTemplateId);
-            this.formik.setFieldValue('languageId', contentLanguage[0].languageId);
-            this.formik.setFieldValue('content', content);
+            setFieldValue('notificationTemplateId', data.notificationTemplateId);
+            setFieldValue('languageId', contentLanguage[0].languageId);
+            setFieldValue(this.state.tab, content);
+            setFieldValue('contents', contents);
         });
     }
 
@@ -285,7 +290,6 @@ export class NewAnnouncement extends Component {
         this.setState({confirmInsertDialog: { show: false, params: null }});
     }
 
-
     renderContentConfirm = () =>{
         const {sendType, sendDate} = this.formik.values;
         const sendDateFormat = DateTimeService.toLongDateTimeFormat(sendDate);
@@ -308,6 +312,7 @@ export class NewAnnouncement extends Component {
             notificationTemplate: '',
             title: '',
             content: '',
+            contents: [],
             languageId: '',
             headlineType: '2',
             sendType: '',

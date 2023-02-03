@@ -22,9 +22,7 @@ namespace CRM.Criteria.Announcement
         public string HeadlineType { get; set; }
         public string Title { get; set; }
         [SpParam(Ignored = true)]
-        public Content Content { get; set; }
-        [SpParam(Ignored = true)]
-        public IEnumerable<Content> Contents => new List<Content> { Content };
+        public IList<Content> Contents { get; set; }
 
         [SpParam(SqlParamName = "contents")]
         public string ContentXml => Contents.Any() ? Contents.ToXML("Contents").ToString() : string.Empty;

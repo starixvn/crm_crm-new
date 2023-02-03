@@ -6,13 +6,11 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Enumerables;
-    using CRM.Core.Models;
     using CRM.Criteria.Announcement;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models;
     using CRM.Services;
     using CRM.Services.Interfaces;
-    using Fanex.Data.Repository;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;

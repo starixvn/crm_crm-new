@@ -23,11 +23,11 @@ export default class ContentTab extends PureComponent {
                             (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
                                 {
                                     <CkEditor
-                                        name='content'
+                                        name={language.settingValue}
                                         isInvalid={isValidContent}
                                         data={content}
                                         username={window.currentUsername}
-                                        onChange={value => setFieldValue('content', value)}
+                                        onChange={value => setFieldValue(language.settingValue, value)}
                                     />
                                 }
                             </Tab>)

@@ -6,38 +6,36 @@ import { ActionCreators } from '../actions';
 import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
+import {Statuses} from '@jsroot/common/constants';
 
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.currentClientTime = window.currentClientTime;
-        this.statuses = ['All', 'Planned', 'Cancelled', 'Completed', 'In-Progress'];
-        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
-        const fromDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
+        this.currentDate = new Date();
+        const fromDate = new Date();
         fromDate.setDate(fromDate.getDate() - 7);
-        this.maxFromDate = currentDate;
-        this.maxToDate = currentDate;
+        this.maxFromDate = this.currentDate;
+        this.maxToDate = this.currentDate;
         this.minToDate = fromDate;
         this.state = {
             announcementId: null,
             fromDate: fromDate,
-            toDate: currentDate,
+            toDate: this.currentDate,
             title: '',
-            status: this.statuses.join(',')
+            status: Statuses.join(',')
         };
     }
 
     handleChangeFromDate = fromDate => {
-        const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(this.currentClientTime)));
         const maxDate = new Date(fromDate.getTime());
         maxDate.setMonth(fromDate.getMonth() + 12);
         maxDate.setDate(fromDate.getDate() - 1);
 
         this.minToDate = fromDate;
-        this.maxToDate = (maxDate < currentTime) ? maxDate : currentTime;
+        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate;
         this.setState({
             fromDate: fromDate,
-            toDate: maxDate < currentTime ? maxDate : currentTime
+            toDate: maxDate < this.currentDate ? maxDate : this.currentDate
         });
     };
 
@@ -138,7 +136,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         >
                             {
-                                this.statuses.map((value, key) => <option key={key} value={value}>{value}</option>)
+                                Statuses.map((value, key) => <option key={key} value={value}>{value}</option>)
                             }
                         </Form.Control>
                     </Form.Group>

@@ -1,7 +1,17 @@
 ﻿import { createSlice } from '@reduxjs/toolkit';
 import { AUTO_REFRESH_TIMES } from '@jsroot/common/constants';
+import DateTimeService from '@jsroot/common/dateTimeService';
+import {Statuses} from '@jsroot/common/constants';
+const currentDate = new Date();
+const fromDate = new Date();
+fromDate.setDate(fromDate.getDate() - 7);
 const initialState = {
     gridParams: {
+        announcementId: '',
+        fromDate: DateTimeService.toShortDateFormat(fromDate.setDate(fromDate.getDate() - 7)),
+        toDate: DateTimeService.toShortDateFormat(currentDate),
+        title: '',
+        status: Statuses.join(','),
         pageIndex: 1,
         pageSize: 100
     },
