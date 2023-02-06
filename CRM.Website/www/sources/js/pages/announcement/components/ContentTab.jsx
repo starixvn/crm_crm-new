@@ -21,15 +21,13 @@ export default class ContentTab extends PureComponent {
                     {
                         languages.map((language, key) =>
                             (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
-                                {
-                                    <CkEditor
-                                        name={language.settingValue}
-                                        isInvalid={isValidContent}
-                                        data={content}
-                                        username={window.currentUsername}
-                                        onChange={value => setFieldValue(language.settingValue, value)}
-                                    />
-                                }
+                                <CkEditor
+                                    name={language.mapLabel}
+                                    isInvalid={isValidContent}
+                                    data={content[language.mapLabel]}
+                                    username={window.currentUsername}
+                                    onChange={value => setFieldValue(`content.${[language.mapLabel]}`, value)}
+                                />
                             </Tab>)
                         )
                     }

@@ -35,10 +35,10 @@ export class AppContainer extends Component {
     handleCloseNewAnnouncement = () => {
         this.props.setOpenNewAnnouncementPopup({ show: false });
         this.props.setIsRefresh(true);
+        this.props.setCreateAnnouncement(null);
     }
 
     handleCreateSuccessAnnouncement = () =>{
-        this.props.setCreateAnnouncement(null);
         this.handleCloseNewAnnouncement();
         this.props.getGridData(this.props.gridParams);
     }

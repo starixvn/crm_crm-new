@@ -125,7 +125,7 @@ export class DataGrid extends Component {
                         </Tooltip>}
                     >
                         <Cell className="text-center">
-                            <span className='rounded-circle fa fa-pencil icon-edit' onClick={() => this.handleEdit(item)} />
+                            <span className='rounded-circle fa fa-pencil icon-edit' onClick={() => this.handleEdit(item.announcementId)} />
                         </Cell>
                     </OverlayTrigger>
                 );
@@ -137,7 +137,7 @@ export class DataGrid extends Component {
                         </Tooltip>}
                     >
                         <Cell className="text-center">
-                            <span className='rounded-circle fa fa-files-o icon-duplicate' onClick={() => this.handleDuplicate(item)} />
+                            <span className='rounded-circle fa fa-files-o icon-duplicate' onClick={() => this.handleDuplicate(item.announcementId)} />
                         </Cell>
                     </OverlayTrigger>
 
@@ -147,14 +147,14 @@ export class DataGrid extends Component {
         }
     }
 
-    handleEdit = item => {
+    handleEdit = announcementId => {
         this.props.setIsRefresh(false);
-        this.props.setOpenEditAnnouncementPopup({show: true, data: item, isEdit: true});
+        this.props.setOpenEditAnnouncementPopup({show: true, announcementId: announcementId, isEdit: true});
     }
 
-    handleDuplicate = item => {
+    handleDuplicate = announcementId => {
         this.props.setIsRefresh(false);
-        this.props.setOpenEditAnnouncementPopup({show: true, data: item, isEdit: false});
+        this.props.setOpenEditAnnouncementPopup({show: true, announcementId: announcementId, isEdit: false});
     }
 
     handleCancel = announcementId => {

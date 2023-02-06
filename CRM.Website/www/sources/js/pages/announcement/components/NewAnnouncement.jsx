@@ -14,7 +14,7 @@ import Option from './Option';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import {
-    validateFormik, renderOption
+    validateFormik, renderOption, mapLabelLanguage
 } from '../common.functions';
 
 export class NewAnnouncement extends Component {
@@ -25,7 +25,7 @@ export class NewAnnouncement extends Component {
         this.state = {
             languages: null,
             uploadedFiles: [],
-            tab: '',
+            tab: 'EN',
             headlineGroups: [],
             siteOptions: [],
             currencyOptions: [],
@@ -40,14 +40,10 @@ export class NewAnnouncement extends Component {
     async componentDidMount() {
         await this.props.getLanguages().then(response => {
             const firstLanguage = response?.[0]?.settingValue;
-            this.setState({languages:response, tab: firstLanguage});
+            const languages = mapLabelLanguage(response);
+            this.setState({languages, tab: firstLanguage});
         });
-        const param = {
-            notificationTypeId: null,
-            notificationTemplateName: '',
-            PageSize: 0
-        };
-        await this.props.getNotificationTemplates(param);
+        await this.props.getAnnouncementTemplate();
         await this.props.getSettings().then(() =>{
             const siteIds = [];
             const siteOptions = this.props.settings.siteList.map(x => {
@@ -85,31 +81,22 @@ export class NewAnnouncement extends Component {
 
     handleChangeNotificationTemplate = event=> {
         event.preventDefault();
-        this.formik.setFieldValue('notificationTemplate', event.target.value);
-        this.handleChangeContentById(event.target.value);
+        const value = parseInt(event.target.value);
+        this.formik.setFieldValue('notificationTemplateId', value);
+        this.formik.setFieldValue('notificationTemplate', value);
+        this.getContentByTemplateId(value);
     }
 
-    handleChangeContentById = id => {
-        this.props.getTemplateById(id).then(data =>{
-            const {setFieldValue} = this.formik;
-            const contentEN = data.contents.filter(x => x.language === 'EN')[0];
-            const contentArr = [contentEN];
-            const contentLanguage = data.contents.filter(x => x.language === this.state.tab);
-            const contents = (!contentLanguage || this.state.tab ==='EN') ? contentArr : [...contentArr, contentLanguage[0]];
-            const content = !contentLanguage ? '' : contentLanguage[0].content;
-            setFieldValue('notificationTemplateId', data.notificationTemplateId);
-            setFieldValue('languageId', contentLanguage[0].languageId);
-            setFieldValue(this.state.tab, content);
-            setFieldValue('contents', contents);
+    getContentByTemplateId = id =>{
+        const contents = this.props.announcementTemplate.contents.filter(x => x.notificationTemplateId === id);
+        contents.length > 0 && contents.forEach(content =>{
+                const key = content.language === 'EN & SC' ? 'content.ENSC' : `content.${content.language}`;
+                this.formik.setFieldValue(key, content.content);
         });
     }
 
     handleChangeTab = selected =>{
         this.setState({tab: selected});
-        const templateId = this.formik.values.notificationTemplate;
-        if(templateId){
-            this.handleChangeContentById(templateId);
-        }
     }
 
     handlePasteGroupHeadline = event=>{
@@ -188,7 +175,7 @@ export class NewAnnouncement extends Component {
                                 onChange={this.handleChangeNotificationTemplate}
                             >
                                 <option value="" hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>
-                                {this.props.notificationTemplates.map((value, key) => renderOption(key, value.notificationTemplateId, value.notificationTemplateName))}
+                                {this.props.announcementTemplate.notificationTemplates.map((value, key) => renderOption(key, value.notificationTemplateId, value.notificationTemplateName))}
                             </Form.Control>
                         </Col>
                     </Form.Group>
@@ -249,13 +236,18 @@ export class NewAnnouncement extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
-        const {notificationTemplateId, languageId, content, headlineType, sendDate, sendType} = values;
+        const {notificationTemplateId, content, headlineType, sendDate, sendType} = values;
         const formData = new FormData();
         this.state.uploadedFiles.forEach(file => {
             formData.append('formFile', file);
         });
-        formData.append('content[languageId]', languageId);
-        formData.append('content[value]', content);
+
+        for (const [index, [key, value]] of Object.entries(content).entries()) {
+                const languageId = this.state.languages.filter(x => x.mapLabel === key)[0].settingId;
+                formData.append(`contents[${index}][languageId]`, languageId);
+                formData.append(`contents[${index}][value]`, value);
+        }
+
         const params = {
             notificationTemplateId: notificationTemplateId,
             headlineNameList: this.state.headlineGroups.join(','),
@@ -288,6 +280,7 @@ export class NewAnnouncement extends Component {
 
     handleCloseConfirmInsertDialog = () =>{
         this.setState({confirmInsertDialog: { show: false, params: null }});
+        this.formik.setSubmitting(false);
     }
 
     renderContentConfirm = () =>{
@@ -302,8 +295,8 @@ export class NewAnnouncement extends Component {
     }
 
     render() {
-        const {notificationTemplates, settings} = this.props;
-        if(!this.state.languages || !notificationTemplates || !settings) {
+        const {announcementTemplate, settings} = this.props;
+        if(!this.state.languages || !announcementTemplate || !settings) {
             return null;
         }
 
@@ -311,12 +304,16 @@ export class NewAnnouncement extends Component {
             notificationTemplateId: '',
             notificationTemplate: '',
             title: '',
-            content: '',
-            contents: [],
-            languageId: '',
+            content: {
+                EN:'',
+                SC:'',
+                ENSC:'',
+                TH:'',
+                YN:''
+            },
             headlineType: '2',
             sendType: '',
-            sendDate: null,
+            sendDate: new Date(),
             imageFileType: '',
             imageFileSize: ''
         };
@@ -333,7 +330,7 @@ export class NewAnnouncement extends Component {
                     <Formik
                         innerRef={p => (this.formik = p)}
                         initialValues={initialValues}
-                        validate={values => validateFormik(values, this.state, this.state.uploadedFiles)}
+                        validate={values => validateFormik(values, this.state.uploadedFiles)}
                         onSubmit={this.handleSubmit}
                     >
                         {this.renderForm}
@@ -363,8 +360,8 @@ export class NewAnnouncement extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { notificationTemplates, createAnnouncementResult, settings } = state;
-    return { notificationTemplates, createAnnouncementResult, settings };
+    const { announcementTemplate, createAnnouncementResult, settings } = state;
+    return { announcementTemplate, createAnnouncementResult, settings };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewAnnouncement);

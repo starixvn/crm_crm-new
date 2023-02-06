@@ -18,10 +18,10 @@ const initialState = {
     gridData: null,
     createAnnouncementResult: null,
     editAnnouncementResult: null,
-    notificationTemplates: null,
+    announcementTemplate: null,
     settings: null,
     newAnnouncementPopup: { show: false },
-    actionAnnouncementPopup: { show: false, data: null, isEdit: false },
+    actionAnnouncementPopup: { show: false, announcementId: '', isEdit: false },
     cancelAnnouncementPopup: { show: false, announcementId: ''},
     contentPopup: { show: false },
     autoRefresh: {
@@ -48,8 +48,8 @@ const announcementSlice = createSlice({
         setEditAnnouncement: (state, action) => {
             state.editAnnouncementResult = action.payload;
         },
-        setNotificationTemplates: (state, action) => {
-            state.notificationTemplates = action.payload;
+        setAnnouncementTemplate: (state, action) => {
+            state.announcementTemplate = action.payload;
         },
         setSettings: (state, action) => {
             state.settings = action.payload;
@@ -83,7 +83,7 @@ export const {
     setGridData,
     setCreateAnnouncement,
     setEditAnnouncement,
-    setNotificationTemplates,
+    setAnnouncementTemplate,
     setSelectedTemplate,
     setLanguages,
     setSettings,

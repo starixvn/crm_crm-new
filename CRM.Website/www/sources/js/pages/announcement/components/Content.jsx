@@ -19,6 +19,16 @@ class Content extends Component {
     }
 
     async componentDidMount() {
+        await this.initData(this.props.id);
+    }
+
+    async componentDidUpdate(prevProps) {
+        if(prevProps.id !== this.props.id){
+            await this.initData(this.props.id);
+        }
+    }
+
+    initData = async id => {
         await this.props.getLanguages().then(response => {
             const firstLanguage = response?.[0]?.settingValue;
             this.setState({languages: response, tab: firstLanguage});

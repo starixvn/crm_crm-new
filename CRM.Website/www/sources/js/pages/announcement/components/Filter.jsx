@@ -88,7 +88,7 @@ export class Filter extends Component {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label htmlFor="title" className='width-sm'>{LangHelper.getResource('Title')}</Form.Label>
+                        <Form.Label htmlFor="title">{LangHelper.getResource('Title')}</Form.Label>
                         <Form.Control type="text" size="sm"
                             value={title}
                             name="title" id="title"
@@ -113,7 +113,7 @@ export class Filter extends Component {
                             </div>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label className='width-sm'>{LangHelper.getResource('ToDate')}</Form.Label>
+                        <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
                                 dropdownMode="select"
@@ -128,7 +128,7 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label className='width-sm' htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
+                        <Form.Label  htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="status" id="status"
                             className="shadow-none"

@@ -6,7 +6,7 @@ import {
     setGridData,
     setCreateAnnouncement,
     setEditAnnouncement,
-    setNotificationTemplates,
+    setAnnouncementTemplate,
     setSettings,
     setOpenNewAnnouncementPopup,
     setOpenEditAnnouncementPopup,
@@ -31,10 +31,11 @@ const getAnnouncementById = id => async () => {
 };
 
 const createAnnouncement = data => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('Announcement/SaveFilesAndCreateAnnouncement');
     await DataService.postDataAsync(url, data).then(response => {
         dispatch(setCreateAnnouncement(response.data));
-    });
+    }).then(() => Site.unblockUI());
 };
 
 
@@ -50,16 +51,11 @@ const getLanguages = () => async () => {
     return await DataService.getDataAsync(url).then(response => response.data);
 };
 
-const getNotificationTemplates = params => async dispatch => {
-    const url = Site.resolveClientUrl('NotificationTemplate/GetNotificationTemplate');
+const getAnnouncementTemplate = params => async dispatch => {
+    const url = Site.resolveClientUrl('Announcement/GetAnnouncementTemplate');
     await DataService.postDataAsync(url, params).then(response => {
-        dispatch(setNotificationTemplates(response.data.data));
+        dispatch(setAnnouncementTemplate(response.data));
     }).then(() => Site.unblockUI());
-};
-
-const getTemplateById = templateId => async () => {
-    const url = Site.resolveClientUrl(`NotificationTemplate/GetById/${templateId}`);
-    return await DataService.getDataAsync(url).then(response => response.data);
 };
 
 const getSettings = () => async dispatch => {
@@ -84,12 +80,11 @@ export const ActionCreators = {
     setCreateAnnouncement,
     editAnnouncement,
     setEditAnnouncement,
-    getLanguages,
-    getNotificationTemplates,
-    setNotificationTemplates,
-    getTemplateById,
+    getAnnouncementTemplate,
+    setAnnouncementTemplate,
     getSettings,
     setSettings,
+    getLanguages,
     setOpenNewAnnouncementPopup,
     setOpenEditAnnouncementPopup,
     setOpenCancelAnnouncementPopup,

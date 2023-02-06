@@ -40,46 +40,27 @@
             this.hostingEnvironment = hostingEnvironment;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SaveFilesAndCreateAnnouncement([FromForm] CreateAnnouncementCommand command)
+        public async Task<IActionResult> GetAnnouncementTemplate()
         {
-            var origFileNames = string.Join(", ", command.FormFile.Select(x => x.FileName));
-            var fileNames = string.Join(", ", command.FormFile.Select(x => GetFileNames(x)));
-            command.OrigFileName = origFileNames;
-            command.FileName = fileNames;
-            command.UserId = napSession.UserId;
-            command.LoginIP = ClientIP;
-            var commandResult = await announcementService.NewAnnouncementAsync(command);
-            if (commandResult.IsSuccessful)
+            var (notificationTemplates, contents) = await announcementService.GetAnnouncementTemplateAsync();
+            return Json(new
             {
-                await SaveFile(command.FormFile);
-            }
-            return Json(commandResult);
-            
+                notificationTemplates,
+                contents
+            });
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetAnnouncement([FromBody]  GetAnnouncementCriteria criteria)
+        public async Task<IActionResult> GetAnnouncement([FromBody] GetAnnouncementCriteria criteria)
         {
             var announcements = await announcementService.GetAnnouncementAsync(criteria);
-            var announcementsOrderBy = announcements.OrderBy(x => x.AnnouncementId);
+            var announcementsOrderBy = announcements.OrderByDescending(x => x.AnnouncementId);
             return Json(new
             {
                 data = announcementsOrderBy,
                 TotalItems = criteria.TotalRows
             });
         }
-
-        public async Task<IActionResult> GetAnnouncementById(int id)
-        {
-            var (announcement, contents) = await announcementService.GetContentByIdAsync(id);
-            return Json(new
-            {
-                data = announcement,
-                contents = contents
-            });
-        }
-
 
         public async Task<IActionResult> AllSetting()
         {
@@ -93,6 +74,42 @@
             };
 
             return Json(allSetting);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveFilesAndCreateAnnouncement([FromForm] CreateAnnouncementCommand command)
+        {
+            try
+            {
+                var origFileNames = string.Join(", ", command.FormFile.Select(x => x.FileName));
+                var fileNames = string.Join(", ", command.FormFile.Select(x => GetFileNames(x)));
+                command.OrigFileName = origFileNames;
+                command.FileName = fileNames;
+                command.UserId = napSession.UserId;
+                command.LoginIP = ClientIP;
+                var commandResult = await announcementService.NewAnnouncementAsync(command);
+                if (commandResult.IsSuccessful)
+                {
+                    await SaveFile(command.FormFile);
+                }
+                return Json(commandResult);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
+        }
+
+
+        public async Task<IActionResult> GetAnnouncementById(int id)
+        {
+            var (announcement, contents) = await announcementService.GetContentByIdAsync(id);
+            return Json(new
+            {
+                data = announcement,
+                contents = contents
+            });
         }
 
         private string GetFileNames(IFormFile formFile)

@@ -1,7 +1,7 @@
 import LangHelper from '@jsroot/common/langHelper';
 import React from 'react';
 
-export const validateFormik = (values, state, files) => {
+export const validateFormik = (values, files) => {
     let errors = {};
     if (!values.notificationTemplate) {
         errors.notificationTemplate = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('NotificationTemplate'));
@@ -11,12 +11,11 @@ export const validateFormik = (values, state, files) => {
         errors.title = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title'));
     }
 
-    if (!values.content) {
-        const contentEnglish = `Content (${state.tab})`;
-        errors.content = LangHelper.formatString(LangHelper.getResource('FieldRequired'), contentEnglish);
+    if (!values.content.EN) {
+        errors.content = LangHelper.formatString(LangHelper.getResource('FieldRequired'), 'Content EN');
     }
 
-    if (state.tab === 'EN' && (values.content.includes('{') || values.content.includes('}'))) {
+    if ((values.content.EN.includes('{') || values.content.EN.includes('}'))) {
         errors.content = LangHelper.getResource('ContentLanguageError');
     }
 
@@ -46,6 +45,14 @@ export const validateFormik = (values, state, files) => {
 };
 
 export const renderOption = (key, value, label) => (<option key={key} value={value}>{label}</option>);
+
+export const mapLabelLanguage = languages =>{
+    return languages.map(data =>{
+        return {
+            ...data, mapLabel: data.settingValue === 'EN & SC' ? 'ENSC' : data.settingValue
+        };
+    });
+};
 
 function validateWidthHeigh(file){
     const url = URL.createObjectURL(file);

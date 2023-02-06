@@ -45,5 +45,11 @@ namespace CRM.Services.HeadlineNotification
             };
             return await baseService.FetchMultipleAsync<AnnouncementDetail, ContentInfo>(criteria);
         }
+
+        public async Task<ValueTuple<IEnumerable<NotificationTemplate>, IEnumerable<ContentLanguage>>> GetAnnouncementTemplateAsync()
+        {
+            var criteria = new GetAnnouncementTemplateCriteria();
+            return await baseService.FetchMultipleAsync<NotificationTemplate, ContentLanguage>(criteria);
+        }
     }
 }

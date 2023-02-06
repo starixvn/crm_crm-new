@@ -10,7 +10,7 @@ namespace CRM.Models.Announcement
         public string HeadlineNameList { get; set; }
         public string SiteNameList { get; set; }
         public string CurrencyIdList { get; set; }
-        public string SendImmediately { get; set; }
+        public bool SendImmediately { get; set; }
         public DateTime SendDate { get; set; }
         public string SendDateString => SendDate.ToString("MMM dd, yyyy");
         public string SendTimeString => SendDate.ToString("hh:mm:ss tt");
