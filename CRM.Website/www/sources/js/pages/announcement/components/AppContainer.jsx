@@ -51,6 +51,7 @@ export class AppContainer extends Component {
     handleEditSuccessAnnouncement = () =>{
         this.props.setEditAnnouncement(null);
         this.handleCloseEditAnnouncement();
+        this.props.setEditAnnouncement(null);
     }
 
     handleCloseViewDetail = () => {

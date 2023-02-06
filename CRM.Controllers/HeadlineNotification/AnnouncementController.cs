@@ -77,7 +77,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveFilesAndCreateAnnouncement([FromForm] CreateAnnouncementCommand command)
+        public async Task<IActionResult> SaveFilesAndCreate([FromForm] CreateAnnouncementCommand command)
         {
             try
             {
@@ -88,7 +88,7 @@
                 command.UserId = napSession.UserId;
                 command.LoginIP = ClientIP;
                 var commandResult = await announcementService.NewAnnouncementAsync(command);
-                if (commandResult.IsSuccessful)
+                if (commandResult.IsSuccessful && command.FormFile.Count > 0)
                 {
                     await SaveFile(command.FormFile);
                 }
@@ -99,6 +99,31 @@
                 throw;
             }
             
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromForm] EditAnnouncementCommand command)
+        {
+            try
+            {
+                var origFileNames = string.Join(", ", command.FormFile.Select(x => x.FileName));
+                var fileNames = string.Join(", ", command.FormFile.Select(x => GetFileNames(x)));
+                command.OrigFileName = origFileNames;
+                command.FileName = fileNames;
+                command.UserId = napSession.UserId;
+                command.LoginIP = ClientIP;
+                var commandResult = await announcementService.EditAnnouncementAsync(command);
+                if (commandResult.IsSuccessful && command.FormFile.Count > 0)
+                {
+                    await SaveFile(command.FormFile);
+                }
+                return Json(commandResult);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
         }
 
 

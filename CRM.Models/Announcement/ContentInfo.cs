@@ -2,7 +2,8 @@
 {
     public class ContentInfo
     {
-        public string LanguageId { get; set; }
+        public int LanguageId { get; set; }
         public string Content { get; set; }
+        public string LanguageCode { get; set; }
     }
 }

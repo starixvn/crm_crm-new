@@ -14,7 +14,7 @@ import ContentTab from './ContentTab';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import {
-    validateFormik, renderOption, mapLabelLanguage
+    validateFormik, renderOption, mapLabelLanguage, getParams
 } from '../common.functions';
 import Site from '@jsroot/common/site';
 
@@ -28,53 +28,85 @@ export class ActionAnnouncement extends Component {
         this.state = {
             data: null,
             languages: null,
+            content: null,
             uploadedFiles: [],
             tab: '',
             headlineGroups: [],
             siteOptions: [],
+            options: {
+                site: '1',
+                currency: '1'
+            },
             currencyOptions: [],
-            confirmEditDialog: { show: false, params: null}
+            confirmActionDialog: { show: false, params: null}
         };
     }
 
     async componentDidMount() {
-        const {announcementId} = this.props.actionAnnouncementPopup;
-        await this.props.getLanguages().then(response => {
-            const firstLanguage = response?.[0]?.settingValue;
-            const languages = mapLabelLanguage(response);
-            this.setState({languages, tab: firstLanguage});
-        });
+        await this.getLanguages();
         await this.props.getAnnouncementTemplate();
+        await this.getAnnounceDetail();
+    }
+
+    getAnnounceDetail = async () =>{
+        const {announcementId} = this.props.actionAnnouncementPopup;
         Site.blockUI();
         await this.props.getAnnouncementById(announcementId).then(response => {
             const {data, contents} = response.data;
             const announcement = data[0];
             this.setState({data: announcement});
-            this.props.getSettings().then(() =>{
-                const siteOptions = this.props.settings.siteList.map(x => {
-                    return {
-                        id: x.site,
-                        name: x.site,
-                        checked: announcement.siteNameList?.includes(x.site)
-                    };
-                });
-    
-                const currencyOptions = this.props.settings.currencyList.map(x => {
-                    return {
-                        id: x.id,
-                        name: x.name,
-                        checked: announcement.currencyIdList?.includes(x.id)
-                    };
-                });
-    
-                this.setState({
-                    siteOptions,
-                    currencyOptions,
-                    headlineGroups: !announcement.headlineNameList ? [] : announcement.headlineNameList.split(','),
-                    uploadedFiles: [announcement.origFileName]
-                });
-            });
+            this.getContentByLanguage(contents);
+            this.getSettingOption(announcement);
         }).catch(Site.handleAxiosError).then(() => Site.unblockUI());    
+    }
+
+    getContentByLanguage = contents =>{
+        const contentObj = {};
+        contents.length > 0 && contents.forEach(content =>{
+                const key = content.languageCode === 'EN & SC' ? 'ENSC' : content.languageCode;
+                contentObj[key] = content.content;
+        });
+        this.setState({content: contentObj});
+    }
+
+    getSettingOption = announcement =>{
+        this.props.getSettings().then(() =>{
+            const siteOptions = this.props.settings.siteList.map(x => {
+                return {
+                    id: x.site,
+                    name: x.site,
+                    checked: announcement.siteNameList?.includes(x.site)
+                };
+            });
+
+            const currencyOptions = this.props.settings.currencyList.map(x => {
+                return {
+                    id: x.id,
+                    name: x.name,
+                    checked: announcement.currencyIdList?.includes(x.id)
+                };
+            });
+
+            this.setState({
+                siteOptions,
+                currencyOptions,
+                options: {
+                    ...this.state.options,
+                    site: announcement.siteNameList,
+                    currency: announcement.currencyIdList
+                },
+                headlineGroups: !announcement.headlineNameList ? [] : announcement.headlineNameList.split(','),
+                uploadedFiles: !announcement.origFileName ? [] : announcement.origFileName.split(',')
+            });
+        });
+    }
+
+    getLanguages = async () =>{
+        await this.props.getLanguages().then(response => {
+            const firstLanguage = response?.[0]?.settingValue;
+            const languages = mapLabelLanguage(response);
+            this.setState({languages, tab: firstLanguage});
+        });
     }
 
     getContentTab = contents =>{
@@ -88,7 +120,7 @@ export class ActionAnnouncement extends Component {
         event.preventDefault();
         const value = parseInt(event.target.value);
         this.formik.setFieldValue('notificationTemplateId', value);
-        this.formik.setFieldValue('notificationTemplate', value);
+        this.formik.setFieldValue('notificationTemplateName', value);
         this.getContentByTemplateId(value);
     }
 
@@ -161,6 +193,7 @@ export class ActionAnnouncement extends Component {
         touched,
         handleChange,
         handleSubmit,
+        setFieldValue,
         isSubmitting
     }) => {
         const {uploadedFiles} = this.state;
@@ -178,14 +211,14 @@ export class ActionAnnouncement extends Component {
                         />
                     }
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" className="required" htmlFor="notificationTemplate">
+                        <Form.Label column sm="2" md="2" className="required" htmlFor="notificationTemplateName">
                             {LangHelper.getResource('NotificationTemplate')}
                         </Form.Label>
                         <Col sm="10" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
-                                isInvalid={touched.notificationTemplate && errors.notificationTemplate}
-                                name="notificationTemplate" id="notificationTemplate"
-                                value={values.notificationTemplate}
+                                isInvalid={touched.notificationTemplateName && errors.notificationTemplateName}
+                                name="notificationTemplateName" id="notificationTemplateName"
+                                value={values.notificationTemplateName}
                                 onChange={this.handleChangeNotificationTemplate}
                             >
                                 <option value="" hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>
@@ -210,8 +243,8 @@ export class ActionAnnouncement extends Component {
                     </Form.Group>
                     {
                         <ContentTab
-                            isValidContent={touched.content && errors.content} content={values.content} handleChange={handleChange}
-                            languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab}
+                            isValidContent={touched.content && errors.content} content={values.content} setFieldValue={setFieldValue}
+                            languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab} 
                         />
                     }
                     <UploadFileForwardingRef ref={this.imageInputRef}
@@ -252,19 +285,19 @@ export class ActionAnnouncement extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
-        const formData = new FormData();
-        this.state.uploadedFiles.forEach(file => {
-            formData.append('formFile', file);
-        });
-
-        this.setState({confirmEditDialog: { show: true, params: formData}});
+        const params = getParams(values, this.state);
+        this.setState({confirmActionDialog: { show: true, params}});
     };
 
     handleConfirmEditDialog = () =>{
         this.handleCloseConfirmEditDialog();
-        const formData = this.state.confirmEditDialog.params;
-        this.props.createAnnouncement(formData).then(() => {
-            if (this.props.createAnnouncementResult.isSuccessful) {
+        const formData = this.state.confirmActionDialog.params;
+        const {createAnnouncement, editAnnouncement, createAnnouncementResult, editAnnouncementResult, actionAnnouncementPopup} = this.props;
+        const {isEdit} = actionAnnouncementPopup;
+        const actionFunc = isEdit ? editAnnouncement : createAnnouncement;
+        const resultAction = isEdit ? editAnnouncementResult : createAnnouncementResult; 
+        actionFunc(formData).then(() => {
+            if (resultAction.isSuccessful) {
                 setTimeout(() => {
                     this.props.onSuccess();
                 }, 3000);
@@ -292,25 +325,21 @@ export class ActionAnnouncement extends Component {
     render() {
         const {settings, actionAnnouncementPopup, announcementTemplate} = this.props;
         const {data} = this.state; 
-        if(!data || !announcementTemplate || !this.state.languages || !settings) {
+        if(!data || !announcementTemplate || !this.state.languages || !settings || !this.state.content) {
             return null;
         }
         const {isEdit} = actionAnnouncementPopup;
         const initialValues = {
-            notificationTemplate: data.notificationTemplate,
+            notificationTemplate: data.notificationTemplateName,
+            notificationTemplateId: data.notificationTemplateId,
             title: data.title,
-            content: {
-                EN:'',
-                SC:'',
-                ENSC:'',
-                TH:'',
-                YN:''
-            },
+            content: this.state.content,
             headlineType: data.headlineType,
             sendType: data.sendImmediately ? 'Send immediately' : 'Send At' ,
             sendDate: new Date(data.sendDate),
             imageFileType: '',
-            imageFileSize: ''
+            imageFileSize: '',
+            origFileName: data.origFileName
         };
 
         const oldSourceImage = data.origFileName;
@@ -335,7 +364,7 @@ export class ActionAnnouncement extends Component {
                     </Formik>
                 </Modal>
                 {
-                    this.state.confirmEditDialog.show &&
+                    this.state.confirmActionDialog.show &&
                     <SweetModalDialog size="lg"
                         title={LangHelper.getResource('ConfirmEditAnnouncement')}
                         contents={this.renderContentConfirm()}

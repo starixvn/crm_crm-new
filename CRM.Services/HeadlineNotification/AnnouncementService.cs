@@ -13,18 +13,13 @@ namespace CRM.Services.HeadlineNotification
 {
     public class AnnouncementService : IAnnouncementService
     {
-        private readonly INapSession napSession;
         private readonly IBaseService baseService;
-        private readonly IHttpContextAccessor httpContextAccessor;
 
         public AnnouncementService(
-            INapSession napSession,
-            IBaseService baseService,
-            IHttpContextAccessor httpContextAccessor)
+            IBaseService baseService
+        )
         {
-            this.napSession = napSession;
             this.baseService = baseService;
-            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<AnnouncementInfo>> GetAnnouncementAsync(GetAnnouncementCriteria criteria)
@@ -33,6 +28,11 @@ namespace CRM.Services.HeadlineNotification
         }
 
         public async Task<CommandResult> NewAnnouncementAsync(CreateAnnouncementCommand command)
+        {
+            return await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task<CommandResult> EditAnnouncementAsync(EditAnnouncementCommand command)
         {
             return await baseService.ExecuteNonQueryAsync(command);
         }

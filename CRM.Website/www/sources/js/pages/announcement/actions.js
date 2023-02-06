@@ -32,12 +32,11 @@ const getAnnouncementById = id => async () => {
 
 const createAnnouncement = data => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('Announcement/SaveFilesAndCreateAnnouncement');
+    const url = Site.resolveClientUrl('Announcement/SaveFilesAndCreate');
     await DataService.postDataAsync(url, data).then(response => {
         dispatch(setCreateAnnouncement(response.data));
     }).then(() => Site.unblockUI());
 };
-
 
 const editAnnouncement = data => async dispatch => {
     const url = Site.resolveClientUrl('Announcement/Edit');

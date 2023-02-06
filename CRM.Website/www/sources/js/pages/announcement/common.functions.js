@@ -1,5 +1,6 @@
 import LangHelper from '@jsroot/common/langHelper';
 import React from 'react';
+import DateTimeService from '@jsroot/common/dateTimeService';
 
 export const validateFormik = (values, files) => {
     let errors = {};
@@ -42,6 +43,36 @@ export const validateFormik = (values, files) => {
     }
 
     return errors;
+};
+
+export const getParams = (values, state, isDupFile = false) => {
+    const {notificationTemplateId, content, headlineType, sendDate, sendType} = values;
+    const formData = new FormData();
+    !isDupFile && state.uploadedFiles.forEach(file => {
+        formData.append('formFile', file);
+    });
+
+    for (const [index, [key, value]] of Object.entries(content).entries()) {
+            const languageId = state.languages.filter(x => x.mapLabel === key)[0].settingId;
+            formData.append(`contents[${index}][languageId]`, languageId);
+            formData.append(`contents[${index}][value]`, value);
+    }
+
+    const params = {
+        notificationTemplateId: notificationTemplateId,
+        headlineNameList: state.headlineGroups.join(','),
+        siteNameList: !state.options.site ? '' : state.options.site,
+        currencyList: !state.options.currency ? '' : state.options.currency,
+        headlineType: headlineType,
+        title: values.title,
+        sendDate: DateTimeService.toLongDateTimeFormat(sendDate),
+        sendImmediately: sendType !== 'Send At'
+    };
+    Object.keys(params).forEach(key => {
+        formData.append(key, params[key]);
+    });
+
+    return formData;
 };
 
 export const renderOption = (key, value, label) => (<option key={key} value={value}>{label}</option>);

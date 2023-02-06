@@ -15,6 +15,8 @@ namespace CRM.Services.Interfaces
 
         Task<CommandResult> NewAnnouncementAsync(CreateAnnouncementCommand command);
 
+        Task<CommandResult> EditAnnouncementAsync(EditAnnouncementCommand command);
+
         Task<ValueTuple<IEnumerable<NotificationTemplate>, IEnumerable<ContentLanguage>>> GetAnnouncementTemplateAsync();
     }
 }

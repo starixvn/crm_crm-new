@@ -14,7 +14,7 @@ import Option from './Option';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import {
-    validateFormik, renderOption, mapLabelLanguage
+    validateFormik, renderOption, mapLabelLanguage, getParams
 } from '../common.functions';
 
 export class NewAnnouncement extends Component {
@@ -44,6 +44,10 @@ export class NewAnnouncement extends Component {
             this.setState({languages, tab: firstLanguage});
         });
         await this.props.getAnnouncementTemplate();
+        await this.handleOptionSettings();
+    }
+
+    handleOptionSettings = async () =>{
         await this.props.getSettings().then(() =>{
             const siteIds = [];
             const siteOptions = this.props.settings.siteList.map(x => {
@@ -236,32 +240,8 @@ export class NewAnnouncement extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
-        const {notificationTemplateId, content, headlineType, sendDate, sendType} = values;
-        const formData = new FormData();
-        this.state.uploadedFiles.forEach(file => {
-            formData.append('formFile', file);
-        });
-
-        for (const [index, [key, value]] of Object.entries(content).entries()) {
-                const languageId = this.state.languages.filter(x => x.mapLabel === key)[0].settingId;
-                formData.append(`contents[${index}][languageId]`, languageId);
-                formData.append(`contents[${index}][value]`, value);
-        }
-
-        const params = {
-            notificationTemplateId: notificationTemplateId,
-            headlineNameList: this.state.headlineGroups.join(','),
-            siteNameList: this.state.options.site,
-            currencyList: this.state.options.currency,
-            headlineType: headlineType,
-            title: values.title,
-            sendDate: DateTimeService.toLongDateTimeFormat(sendDate),
-            sendImmediately: sendType !== 'Send At'
-        };
-        Object.keys(params).forEach(key => {
-            formData.append(key, params[key]);
-        });
-        this.setState({confirmInsertDialog: { show: true, params: formData}});
+        const param = getParams(values, this.state);
+        this.setState({confirmInsertDialog: { show: true, params: param}});
     };
 
     handleConfirmInsertDialog = () =>{
