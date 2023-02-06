@@ -169,7 +169,7 @@ namespace CRM.BackgroundJob.Services
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(Constants.Break);
             var template = commonFeedback.GetFeedbackTemplates<ArchivingTemplate>(templateXml);
-            stringBuilder.AppendFormat(template.SolutionENSC, archivingAutoFbInfo.AffectedName, Constants.LineBreak);
+            stringBuilder.AppendFormat(template.SolutionENSC, archivingAutoFbInfo.AffectedName, Constants.LineBreak, Constants.Break);
             return stringBuilder.ToString();
         }
 
