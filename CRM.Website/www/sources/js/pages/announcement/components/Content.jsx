@@ -6,6 +6,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Site from '@jsroot/common/site';
+import {
+   mapLabelLanguage, setValueContent
+} from '../common.functions';
+
+import ContentTab from './ContentTab';
 
 class Content extends Component {
     constructor(props) {
@@ -14,7 +19,7 @@ class Content extends Component {
             languages: null,
             tab: '',
             content: '',
-            data: null
+            announcement: null
         };
     }
 
@@ -22,46 +27,49 @@ class Content extends Component {
         await this.initData(this.props.id);
     }
 
-    async componentDidUpdate(prevProps) {
-        if(prevProps.id !== this.props.id){
-            await this.initData(this.props.id);
-        }
-    }
-
     initData = async id => {
         await this.props.getLanguages().then(response => {
             const firstLanguage = response?.[0]?.settingValue;
-            this.setState({languages: response, tab: firstLanguage});
+            const languages = mapLabelLanguage(response);
+            this.setState({languages, tab: firstLanguage});
         });
 
         Site.blockUI();
-        await this.props.getAnnouncementById(this.props.id).then(response => {
-            const data = response?.data;
-            const content = data.contents[0].content;
-            this.setState({data, content});
+        await this.props.getAnnouncementById(id).then(response => {
+            const {data, contents} = response.data;
+            const announcement = data[0];
+            this.setState({announcement});
+            this.getContentByLanguage(contents);
         }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }
+
+    getContentByLanguage = contents =>{
+        const contentObj = {};
+        contents.length > 0 && contents.forEach(content =>{
+                const key = content.languageCode === 'EN & SC' ? 'ENSC' : content.languageCode;
+                contentObj[key] = content.content;
+        });
+        this.setState({content: contentObj});
     }
 
     handleChangeTab = selected =>{
         this.setState({tab: selected});
-        const contentLanguage = this.state.data.contents.filter(x => x.content === this.state.tab);
-        const content = !contentLanguage ? '' : contentLanguage[0].content;
-        this.setState({content});
     }
 
     handlePreviewImage = (event, fileName) => {
         event.preventDefault();
-        const url = Site.resolveClientUrl(`www/dist/css/images/announcement/${fileName}`);
+        const id = this.props.id;
+        const url = Site.resolveClientUrl(`www/dist/images/announcement/${id}/${fileName}`);
         window.open(url);
     }
 
+
     render() {
-        const {data, languages, content, tab} = this.state;
-        if(!this.state.data || !languages){
+        const {announcement, languages, content, tab} = this.state;
+        if(!this.state.announcement || !languages || !content){
             return null;
         }
-        const announcement = data.data[0];
-        const fileNames = announcement.origFileName.split(',');
+        const fileNames = announcement.fileName.split(',');
         return (
             <Modal show backdrop='static' keyboard={false} size='lg' centered
                 onHide={this.props.onClose} className='announcement-content-modal'
@@ -73,32 +81,30 @@ class Content extends Component {
                 <Modal.Body>
                     <div>{`${LangHelper.getResource('NotificationTemplate')}: ${announcement.notificationTemplateName}`}</div>
                     <div>{`${LangHelper.getResource('Title')}: ${announcement.title}`}</div>
-                    <Tabs
-                        className='languages-text'
-                        id="controlled-tab"
-                        activeKey={tab}
-                        onSelect={selected => this.handleChangeTab(selected)}
-                    >
-                        {
-                            languages.map((language, key) =>
-                                (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
-                                    <div className='border mb-3 announcement-content'>{content}</div>
-                                </Tab>)
-                            )
-                        }
-                    </Tabs> 
-                        {
-                            fileNames.map((image, key) =>(
-                                <div key={key} className='d-flex'>
-                                    <span className='fa fa-file-image-o mr-2  pt-1'/>
-                                        <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image)}>
-                                            {image}
-                                        </span>
-                                </div>
-                            ))
-                        }
-                    <div>{`${LangHelper.getResource('GroupHeadline')}: ${announcement.headlineNameList}`}</div>
-                    <div>{`${LangHelper.getResource('SendDateTimeGMTA8')}: ${announcement.sendDateString} ${announcement.sendTimeString} `}</div>
+                    {
+                        <ContentTab
+                            isValidContent={false} content={content} isReadOnly
+                            languages={languages} tab={tab} handleChangeTab={this.handleChangeTab} 
+                        />
+                    }
+                    {
+                        fileNames.map((image, key) =>(
+                            <div key={key} className='d-flex'>
+                                <span className='fa fa-file-image-o mr-2  pt-1'/>
+                                    <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image)}>
+                                        {image}
+                                    </span>
+                            </div>
+                        ))
+                    }
+                    <div>
+                        <span>{`${LangHelper.getResource('GroupHeadline')}: `}</span>
+                        <span style={{fontWeight:'bold'}}>{announcement.headlineNameList}</span>
+                    </div>
+                    <div>
+                        <span>{`${LangHelper.getResource('SendDateTimeGMTA8')}: `}</span>
+                        <span style={{fontWeight:'bold'}}>{announcement.sendDateString} {announcement.sendTimeString}</span>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.onClose} variant='primary' size='sm'>{LangHelper.getResource('Close')}</Button>

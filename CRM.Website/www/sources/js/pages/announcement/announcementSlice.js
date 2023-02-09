@@ -57,7 +57,7 @@ const announcementSlice = createSlice({
         setOpenNewAnnouncementPopup: (state, action) => {
             state.newAnnouncementPopup = action.payload;
         },
-        setOpenEditAnnouncementPopup: (state, action) => {
+        setOpenActionAnnouncementPopup: (state, action) => {
             state.actionAnnouncementPopup = action.payload;
         },
         setOpenCancelAnnouncementPopup: (state, action) => {
@@ -88,7 +88,7 @@ export const {
     setLanguages,
     setSettings,
     setOpenNewAnnouncementPopup,
-    setOpenEditAnnouncementPopup,
+    setOpenActionAnnouncementPopup,
     setOpenCancelAnnouncementPopup,
     setContentPopup,
     setViewDetailPopup,

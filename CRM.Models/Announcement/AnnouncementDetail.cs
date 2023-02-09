@@ -8,6 +8,7 @@ namespace CRM.Models.Announcement
         public string NotificationTemplateName { get; set; }
         public string Title { get; set; }
         public string HeadlineNameList { get; set; }
+        public int HeadlineType{ get; set; }
         public string SiteNameList { get; set; }
         public string CurrencyIdList { get; set; }
         public bool SendImmediately { get; set; }

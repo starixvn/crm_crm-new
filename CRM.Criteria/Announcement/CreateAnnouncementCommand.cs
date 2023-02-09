@@ -13,7 +13,11 @@ namespace CRM.Criteria.Announcement
     public class CreateAnnouncementCommand : BaseNonQueryCommand
     {
         [SpParam(Ignored = true)]
+        public int CloneAnnouncementId { get; set; }
+        [SpParam(Ignored = true)]
         public IList<IFormFile> FormFile { get; set; } = new List<IFormFile>();
+        [SpParam(Ignored = true)]
+        public IList<string> FileString { get; set; } = new List<string>();
         public int UserId { get; set; }
         public int NotificationTemplateId { get; set; }
         public string HeadlineNameList { get; set; }
@@ -27,10 +31,11 @@ namespace CRM.Criteria.Announcement
         [SpParam(SqlParamName = "contents")]
         public string ContentXml => Contents.Any() ? Contents.ToXML("Contents").ToString() : string.Empty;
         public string FileName { get; set; }
-        public string OrigFileName { get; set; }
         public DateTime? SendDate { get; set; }
         public bool SendImmediately { get; set; }
         public string LoginIP { get; set; }
+
+        public int AnnouncementId { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_ChatBot_Announcement_Ins";
 

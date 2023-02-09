@@ -5,7 +5,7 @@ import CkEditor from '@jsroot/components/ckeditor/index';
 
 export default class ContentTab extends PureComponent {
   render() {
-    const {languages, handleChangeTab, tab, isValidContent, content, setFieldValue} = this.props;
+    const {languages, handleChangeTab, tab, isValidContent, content, setFieldValue, isReadOnly = false} = this.props;
     return (
         <Form.Group as={Row}>
             <Form.Label column sm="2" md="2" className="required" htmlFor="content">
@@ -27,6 +27,7 @@ export default class ContentTab extends PureComponent {
                                     data={content[language.mapLabel]}
                                     username={window.currentUsername}
                                     onChange={value => setFieldValue(`content.${[language.mapLabel]}`, value)}
+                                    readOnly={isReadOnly}
                                 />
                             </Tab>)
                         )

@@ -12,8 +12,13 @@ namespace CRM.Criteria.Announcement
 
     public class EditAnnouncementCommand : BaseNonQueryCommand
     {
+        public int AnnouncementId { get; set; }
         [SpParam(Ignored = true)]
         public IList<IFormFile> FormFile { get; set; } = new List<IFormFile>();
+        [SpParam(Ignored = true)]
+        public IList<string> FileStringRemove { get; set; } = new List<string>();
+        [SpParam(Ignored = true)]
+        public IList<string> FileString { get; set; } = new List<string>();
         public int UserId { get; set; }
         public int NotificationTemplateId { get; set; }
         public string HeadlineNameList { get; set; }
@@ -27,13 +32,14 @@ namespace CRM.Criteria.Announcement
         [SpParam(SqlParamName = "contents")]
         public string ContentXml => Contents.Any() ? Contents.ToXML("Contents").ToString() : string.Empty;
         public string FileName { get; set; }
-        public string OrigFileName { get; set; }
         public DateTime? SendDate { get; set; }
         public bool SendImmediately { get; set; }
         public string LoginIP { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_ChatBot_Announcement_Upd";
 
-        public override bool IsValid() => UserId > 0 && NotificationTemplateId > 0 && !string.IsNullOrEmpty(Title) && Contents.Count() > 0;
+        public override bool IsValid() => IsValidParams() && NotificationTemplateId > 0 && !string.IsNullOrEmpty(Title) && Contents.Count() > 0;
+
+        public bool IsValidParams() => AnnouncementId > 0 && UserId > 0;
     }
 }

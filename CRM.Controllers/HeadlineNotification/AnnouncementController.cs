@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Enumerables;
+    using CRM.Core.Models;
     using CRM.Criteria.Announcement;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models;
@@ -15,6 +17,7 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using static System.Net.WebRequestMethods;
 
     public class AnnouncementController : BaseController
     {
@@ -23,7 +26,7 @@
         private readonly ISettingService settingService;
         private readonly ICommonService commonService;
         private readonly IWebHostEnvironment hostingEnvironment;
-        private readonly string pathImages = "www/dist/css/images/announcement";
+        private readonly string pathImages = "images/announcement";
 
         public AnnouncementController(
             IAnnouncementService announcementService,
@@ -81,16 +84,21 @@
         {
             try
             {
-                var origFileNames = string.Join(", ", command.FormFile.Select(x => x.FileName));
-                var fileNames = string.Join(", ", command.FormFile.Select(x => GetFileNames(x)));
-                command.OrigFileName = origFileNames;
-                command.FileName = fileNames;
+                var fileName = getFileName(command.FormFile, command.FileString);
+                command.FileName = fileName;
                 command.UserId = napSession.UserId;
                 command.LoginIP = ClientIP;
                 var commandResult = await announcementService.NewAnnouncementAsync(command);
-                if (commandResult.IsSuccessful && command.FormFile.Count > 0)
+                if (commandResult.IsSuccessful)
                 {
-                    await SaveFile(command.FormFile);
+                    if (command.FormFile.Count > 0 && command.AnnouncementId > 0)
+                    {
+                        await SaveFile(command.FormFile, command.AnnouncementId);
+                    }
+                    if (command.CloneAnnouncementId > 0)
+                    {
+                        CoppyOldFileToNewFile(command.FileString, command.CloneAnnouncementId, command.AnnouncementId);
+                    }
                 }
                 return Json(commandResult);
             }
@@ -106,16 +114,21 @@
         {
             try
             {
-                var origFileNames = string.Join(", ", command.FormFile.Select(x => x.FileName));
-                var fileNames = string.Join(", ", command.FormFile.Select(x => GetFileNames(x)));
-                command.OrigFileName = origFileNames;
-                command.FileName = fileNames;
+                var fileName = getFileName(command.FormFile, command.FileString);
+                command.FileName = fileName;
                 command.UserId = napSession.UserId;
                 command.LoginIP = ClientIP;
                 var commandResult = await announcementService.EditAnnouncementAsync(command);
-                if (commandResult.IsSuccessful && command.FormFile.Count > 0)
+                if (commandResult.IsSuccessful)
                 {
-                    await SaveFile(command.FormFile);
+                    if (command.FormFile.Count > 0 && command.AnnouncementId > 0)
+                    {
+                        await SaveFile(command.FormFile, command.AnnouncementId);
+                    }
+                    if (command.FileStringRemove.Count > 0)
+                    {
+                        DeleteFile(command.FileStringRemove, command.AnnouncementId);
+                    }
                 }
                 return Json(commandResult);
             }
@@ -125,7 +138,6 @@
             }
 
         }
-
 
         public async Task<IActionResult> GetAnnouncementById(int id)
         {
@@ -137,25 +149,96 @@
             });
         }
 
-        private string GetFileNames(IFormFile formFile)
+
+
+        public async Task<IActionResult> Cancel(int id)
         {
-            string path = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, formFile.FileName);
-            var isExist = System.IO.File.Exists(path);
-            var fileName = isExist ? $"{DateTime.Now.ToString("yyyyMMddHHmmss")}-{formFile.FileName}" : formFile.FileName;
-            return fileName;
+            var command = new CancelAnnouncementCommand
+            {
+                AnnouncementId = id,
+                UserId = napSession.UserId
+            };
+            CommandResult commandResult = await announcementService.CancelAnnouncementAsync(command);
+            return Json(commandResult);
         }
 
-        private async Task SaveFile(IList<IFormFile> formFiles)
+        private void CoppyOldFileToNewFile(IList<string> files, int cloneAnnouncementId, int announcementId)
+        {
+           
+            foreach (var file in files)
+            {
+                string targetFolder = getPathFile(announcementId.ToString());
+                var isExist = System.IO.File.Exists(targetFolder);
+                if (!isExist)
+                {
+                    Directory.CreateDirectory(targetFolder);
+                }
+                string targetFile = getPathFile(announcementId.ToString(), file);
+                var sourceStreamFile = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, cloneAnnouncementId.ToString(), file);
+                System.IO.File.Copy(sourceStreamFile, targetFile);
+            }
+        }
+
+        private async Task SaveFile(IList<IFormFile> formFiles, int announcementId)
         {
             foreach (var file in formFiles)
             {
-                var fileName = GetFileNames(file);
-                var pathFile = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, fileName);
-                using (Stream stream = new FileStream(pathFile, FileMode.Create))
+                var fileFolder = GetFileFolder(announcementId);
+                var pathFile = getPathFile(fileFolder, file.FileName);
+                using (Stream stream = new FileStream(pathFile, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                 {
                     await file.CopyToAsync(stream);
                 }
             }
+        }
+
+        private void DeleteFile(IList<string> filesString, int announcementId)
+        {
+            foreach (var file in filesString)
+            {
+                var fileFolder = announcementId.ToString();
+                string filePath = getPathFile(fileFolder, file);
+                var isExist = System.IO.File.Exists(filePath);
+                if (isExist)
+                {
+                    using (FileStream fileStream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
+                    {
+                        fileStream.Close();
+                    }
+                   System.IO.File.Delete(filePath);
+                }
+            }
+        }
+
+        private string getFileName(IList<IFormFile> formFiles, IList<string> fileNames)
+        {
+            var formFilesJoin= string.Join(", ", formFiles.Select(x => x.FileName));
+            var fileNameJoin = string.Join(',', fileNames.Select(x => x));
+            if(formFiles.Count > 0 && fileNames.Count > 0)
+            {
+                return fileNameJoin + "," + formFilesJoin;
+            }
+            else
+            {
+                return formFiles.Count > 0 ? formFilesJoin : fileNameJoin;
+            }
+        }
+
+        private string getPathFile(string folder, string fileName="")
+        {
+            return Path.Combine(hostingEnvironment.ContentRootPath, pathImages, folder, fileName);
+        }
+
+        private string GetFileFolder(int announcementId)
+        {
+            var fileFolder = announcementId.ToString();
+            string path = getPathFile(fileFolder);
+            var isExist = System.IO.File.Exists(path);
+            if (!isExist)
+            {
+                Directory.CreateDirectory(path);
+            }
+            return fileFolder;
         }
     }
 }

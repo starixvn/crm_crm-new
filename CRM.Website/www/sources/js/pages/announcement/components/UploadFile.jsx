@@ -28,7 +28,7 @@ class UploadFile extends PureComponent {
 
     handleRemoveFile = (event, fileName) => {
         event.stopPropagation();
-        const filterFiler = this.props.uploadedFiles.filter(x => x.name !== fileName);
+        const filterFiler = this.props.uploadedFiles.filter(x => (x.name || x) !== fileName);
         this.props.setStateUploadFile(filterFiler);
         this.props.imageInputRef.current.value = null;
     }
@@ -56,8 +56,10 @@ class UploadFile extends PureComponent {
 
     handlePreviewImage = (event, fileName) => {
         event.stopPropagation();
-        const urlSrc = typeof fileName === 'string' ? Site.resolveClientUrl(`www/dist/css/images/announcement/${fileName}`) : URL.createObjectURL(fileName);
-        window.open(urlSrc);
+        const url = typeof fileName === 'string' ? 
+                    Site.resolveClientUrl(`www/dist/images/announcement/${this.props.id}/${fileName}`) : 
+                    URL.createObjectURL(fileName);
+        window.open(url);
     }
     
     renderListPortalFile = (provided, snapshot, item) =>{
@@ -76,7 +78,7 @@ class UploadFile extends PureComponent {
                         <span className="mr-2 text-color" onClick={event => this.handlePreviewImage(event, item)}>
                             {item.name || item}
                         </span>
-                        <span className="rounded-circle fa fa-trash icon-delete" onClick={event => this.handleRemoveFile(event, item.name)} />
+                        <span className="rounded-circle fa fa-trash icon-delete" onClick={event => this.handleRemoveFile(event, (item.name || item))} />
                     </Col>
                 }
           </Form.Group>

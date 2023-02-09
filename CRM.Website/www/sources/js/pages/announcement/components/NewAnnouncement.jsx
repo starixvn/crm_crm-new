@@ -14,7 +14,7 @@ import Option from './Option';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import {
-    validateFormik, renderOption, mapLabelLanguage, getParams
+    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams
 } from '../common.functions';
 
 export class NewAnnouncement extends Component {
@@ -93,10 +93,7 @@ export class NewAnnouncement extends Component {
 
     getContentByTemplateId = id =>{
         const contents = this.props.announcementTemplate.contents.filter(x => x.notificationTemplateId === id);
-        contents.length > 0 && contents.forEach(content =>{
-                const key = content.language === 'EN & SC' ? 'content.ENSC' : `content.${content.language}`;
-                this.formik.setFieldValue(key, content.content);
-        });
+        setValueContent(this.formik.setFieldValue, contents);
     }
 
     handleChangeTab = selected =>{

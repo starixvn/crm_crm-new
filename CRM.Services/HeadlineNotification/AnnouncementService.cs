@@ -6,8 +6,6 @@ using CRM.Core.Services;
 using CRM.Criteria.Announcement;
 using CRM.Models.Announcement;
 using CRM.Services.Interfaces;
-using Fanex.NAP.Client.Helpers.Web;
-using Microsoft.AspNetCore.Http;
 
 namespace CRM.Services.HeadlineNotification
 {
@@ -33,6 +31,11 @@ namespace CRM.Services.HeadlineNotification
         }
 
         public async Task<CommandResult> EditAnnouncementAsync(EditAnnouncementCommand command)
+        {
+            return await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task<CommandResult> CancelAnnouncementAsync(CancelAnnouncementCommand command)
         {
             return await baseService.ExecuteNonQueryAsync(command);
         }

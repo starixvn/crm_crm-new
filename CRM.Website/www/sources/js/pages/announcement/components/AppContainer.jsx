@@ -35,23 +35,24 @@ export class AppContainer extends Component {
     handleCloseNewAnnouncement = () => {
         this.props.setOpenNewAnnouncementPopup({ show: false });
         this.props.setIsRefresh(true);
-        this.props.setCreateAnnouncement(null);
     }
 
     handleCreateSuccessAnnouncement = () =>{
         this.handleCloseNewAnnouncement();
         this.props.getGridData(this.props.gridParams);
+        this.props.setCreateAnnouncement(null);
     }
 
-    handleCloseEditAnnouncement = () => {
-        this.props.setOpenEditAnnouncementPopup({ show: false });
+    handleCloseActionAnnouncement = () => {
+        this.props.setOpenActionAnnouncementPopup({ show: false });
         this.props.setIsRefresh(true);
     }
 
-    handleEditSuccessAnnouncement = () =>{
+    handleActionSuccessAnnouncement = () =>{
+        this.handleCloseActionAnnouncement();
+        this.props.getGridData(this.props.gridParams);
         this.props.setEditAnnouncement(null);
-        this.handleCloseEditAnnouncement();
-        this.props.setEditAnnouncement(null);
+        this.props.setCreateAnnouncement(null);
     }
 
     handleCloseViewDetail = () => {
@@ -69,6 +70,7 @@ export class AppContainer extends Component {
             this.handleCloseCancelPopup();
             if(response.isSuccessful) {
                 toast.success(LangHelper.getResource('CancelAnnouncementSuccessfully'));
+                this.props.getGridData(this.props.gridParams);
             }else{
                 toast.error(response.message);
             }
@@ -86,7 +88,7 @@ export class AppContainer extends Component {
         }
 
         const isHost = this.state.policy === Policy.Host;
-        const {newAnnouncementPopup, contentPopup, actionAnnouncementPopup, cancelAnnouncementPopup, getAnnouncementById} = this.props;
+        const {newAnnouncementPopup, contentPopup, actionAnnouncementPopup, cancelAnnouncementPopup} = this.props;
         return (
             <Fragment>
                 <Filter isHost={isHost}/>
@@ -108,8 +110,8 @@ export class AppContainer extends Component {
                 {
                     actionAnnouncementPopup.show &&
                     <ActionAnnouncement
-                        onClose={this.handleEditSuccessAnnouncement}
-                        onSuccess={this.handleEditSuccessAnnouncement}
+                        onClose={this.handleCloseActionAnnouncement}
+                        onSuccess={this.handleActionSuccessAnnouncement}
                     />
                 }
                 {

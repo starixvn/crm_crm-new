@@ -149,12 +149,12 @@ export class DataGrid extends Component {
 
     handleEdit = announcementId => {
         this.props.setIsRefresh(false);
-        this.props.setOpenEditAnnouncementPopup({show: true, announcementId: announcementId, isEdit: true});
+        this.props.setOpenActionAnnouncementPopup({show: true, announcementId: announcementId, isEdit: true});
     }
 
     handleDuplicate = announcementId => {
         this.props.setIsRefresh(false);
-        this.props.setOpenEditAnnouncementPopup({show: true, announcementId: announcementId, isEdit: false});
+        this.props.setOpenActionAnnouncementPopup({show: true, announcementId: announcementId, isEdit: false});
     }
 
     handleCancel = announcementId => {

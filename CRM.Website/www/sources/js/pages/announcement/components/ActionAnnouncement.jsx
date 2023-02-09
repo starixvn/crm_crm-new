@@ -2,7 +2,7 @@ import React, { Component, lazy, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button, Col, Form, Modal, Row, Tabs, Tab } from 'react-bootstrap';
+import { Button, Col, Form, Modal, Row} from 'react-bootstrap';
 import { Formik } from 'formik';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
@@ -14,7 +14,7 @@ import ContentTab from './ContentTab';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import {
-    validateFormik, renderOption, mapLabelLanguage, getParams
+    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams
 } from '../common.functions';
 import Site from '@jsroot/common/site';
 
@@ -69,8 +69,8 @@ export class ActionAnnouncement extends Component {
         this.setState({content: contentObj});
     }
 
-    getSettingOption = announcement =>{
-        this.props.getSettings().then(() =>{
+    getSettingOption = async announcement =>{
+        await this.props.getSettings().then(() =>{
             const siteOptions = this.props.settings.siteList.map(x => {
                 return {
                     id: x.site,
@@ -96,7 +96,7 @@ export class ActionAnnouncement extends Component {
                     currency: announcement.currencyIdList
                 },
                 headlineGroups: !announcement.headlineNameList ? [] : announcement.headlineNameList.split(','),
-                uploadedFiles: !announcement.origFileName ? [] : announcement.origFileName.split(',')
+                uploadedFiles: !announcement.fileName ? [] : announcement.fileName.split(',')
             });
         });
     }
@@ -110,10 +110,7 @@ export class ActionAnnouncement extends Component {
     }
 
     getContentTab = contents =>{
-        contents.length > 0 && contents.forEach(content =>{
-            const key = content.language === 'EN & SC' ? 'content.ENSC' : `content.${content.language}`;
-            this.formik.setFieldValue(key, content.content);
-        });
+        setValueContent(this.formik.setFieldValue, contents);
     }
 
     handleChangeNotificationTemplate = event=> {
@@ -126,10 +123,7 @@ export class ActionAnnouncement extends Component {
 
     getContentByTemplateId = id =>{
         const contents = this.props.announcementTemplate.contents.filter(x => x.notificationTemplateId === id);
-        contents.length > 0 && contents.forEach(content =>{
-                const key = content.language === 'EN & SC' ? 'content.ENSC' : `content.${content.language}`;
-                this.formik.setFieldValue(key, content.content);
-        });
+        setValueContent(this.formik.setFieldValue, contents);
     }
 
     handleChangeTab = selected =>{
@@ -175,12 +169,6 @@ export class ActionAnnouncement extends Component {
             }
      }));
 
-    handlePreviewImage = (event, fileName) => {
-        event.preventDefault();
-        const url = Site.resolveClientUrl(`www/dist/css/images/announcement/${fileName}`);
-        window.open(url);
-    }
-
     handleDateChange = value =>{
         this.formik.setFieldValue('sendDate', value);
     }
@@ -200,14 +188,19 @@ export class ActionAnnouncement extends Component {
         const propsOption = {
             values, handleChange, errors, touched
         };
+        const {actionAnnouncementPopup, editAnnouncementResult, createAnnouncementResult} = this.props;
+        const result = actionAnnouncementPopup.isEdit ? editAnnouncementResult : createAnnouncementResult; 
+        const message = this.props.actionAnnouncementPopup.isEdit ? 
+                        LangHelper.getResource('EditAnnouncementSuccessfully') :
+                        LangHelper.getResource('CloneAnnouncementSuccessfully');
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
-                        this.props.editAnnouncementResult &&
-                        <ResponseMessage isSuccessful={this.props.editAnnouncementResult.isSuccessful}
-                            message={this.props.editAnnouncementResult.message || LangHelper.getResource('EditAnnouncementSuccessfully')}
+                        result &&
+                        <ResponseMessage isSuccessful={result.isSuccessful}
+                            message={result.message || message}
                         />
                     }
                     <Form.Group as={Row}>
@@ -220,6 +213,7 @@ export class ActionAnnouncement extends Component {
                                 name="notificationTemplateName" id="notificationTemplateName"
                                 value={values.notificationTemplateName}
                                 onChange={this.handleChangeNotificationTemplate}
+                                disabled={actionAnnouncementPopup.isEdit}
                             >
                                 <option value="" hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>
                                 {this.props.announcementTemplate.notificationTemplates.map((value, key) => renderOption(key, value.notificationTemplateId, value.notificationTemplateName))}
@@ -247,7 +241,7 @@ export class ActionAnnouncement extends Component {
                             languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab} 
                         />
                     }
-                    <UploadFileForwardingRef ref={this.imageInputRef}
+                    <UploadFileForwardingRef ref={this.imageInputRef} id={actionAnnouncementPopup.announcementId}
                         setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
                     />
                     <Form.Group as={Row}>
@@ -286,29 +280,32 @@ export class ActionAnnouncement extends Component {
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         const params = getParams(values, this.state);
+        const {announcementId, isEdit} = this.props.actionAnnouncementPopup;
+        params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
         this.setState({confirmActionDialog: { show: true, params}});
     };
 
-    handleConfirmEditDialog = () =>{
+    handleConfirmActionDialog = () =>{
         this.handleCloseConfirmEditDialog();
         const formData = this.state.confirmActionDialog.params;
-        const {createAnnouncement, editAnnouncement, createAnnouncementResult, editAnnouncementResult, actionAnnouncementPopup} = this.props;
+        const {createAnnouncement, editAnnouncement, actionAnnouncementPopup} = this.props;
         const {isEdit} = actionAnnouncementPopup;
         const actionFunc = isEdit ? editAnnouncement : createAnnouncement;
-        const resultAction = isEdit ? editAnnouncementResult : createAnnouncementResult; 
         actionFunc(formData).then(() => {
+            const resultAction = isEdit ? this.props.editAnnouncementResult : this.props.createAnnouncementResult; 
             if (resultAction.isSuccessful) {
                 setTimeout(() => {
                     this.props.onSuccess();
                 }, 3000);
             } else {
-                setSubmitting(false);
+                this.formik.setSubmitting(false);
             }
         });
     }
 
     handleCloseConfirmEditDialog = () =>{
-        this.setState({confirmEditDialog: { show: false, params: null }});
+        this.setState({confirmActionDialog: { show: false, params: null }});
+        this.formik.setSubmitting(false);
     }
 
     renderContentConfirm = () =>{
@@ -339,11 +336,10 @@ export class ActionAnnouncement extends Component {
             sendDate: new Date(data.sendDate),
             imageFileType: '',
             imageFileSize: '',
-            origFileName: data.origFileName
+            fileName: data.fileName,
+            oldFileName: data.fileName
         };
-
-        const oldSourceImage = data.origFileName;
-        const excludeOldImage = this.state.uploadedFiles.filter(x => !oldSourceImage.includes(x));
+        const excludeOldImage = this.state.uploadedFiles.filter(x => !initialValues.oldFileName.includes(x));
 
         return (
             <div>
@@ -369,7 +365,7 @@ export class ActionAnnouncement extends Component {
                         title={LangHelper.getResource('ConfirmEditAnnouncement')}
                         contents={this.renderContentConfirm()}
                         buttons={[
-                            <Button variant="primary" size="sm" onClick={this.handleConfirmEditDialog}>
+                            <Button variant="primary" size="sm" onClick={this.handleConfirmActionDialog}>
                                 {LangHelper.getResource('OK')}
                             </Button>,
                             <Button variant="primary" size="sm" onClick={this.handleCloseConfirmEditDialog}>
@@ -387,8 +383,8 @@ export class ActionAnnouncement extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup } = state;
-    return { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup };
+    const { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup, createAnnouncementResult } = state;
+    return { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup, createAnnouncementResult };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActionAnnouncement);

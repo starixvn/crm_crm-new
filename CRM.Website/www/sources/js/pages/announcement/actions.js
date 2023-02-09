@@ -9,7 +9,7 @@ import {
     setAnnouncementTemplate,
     setSettings,
     setOpenNewAnnouncementPopup,
-    setOpenEditAnnouncementPopup,
+    setOpenActionAnnouncementPopup,
     setOpenCancelAnnouncementPopup,
     setContentPopup,
     setViewDetailPopup,
@@ -65,7 +65,7 @@ const getSettings = () => async dispatch => {
 };
 
 const cancelAnnouncementId = announcementId => async () => {
-    const url = Site.resolveClientUrl(`NotificationTemplate/GetById/${announcementId}`);
+    const url = Site.resolveClientUrl(`Announcement/Cancel/${announcementId}`);
     return await DataService.getDataAsync(url).then(response => response.data);
 };
 
@@ -85,7 +85,7 @@ export const ActionCreators = {
     setSettings,
     getLanguages,
     setOpenNewAnnouncementPopup,
-    setOpenEditAnnouncementPopup,
+    setOpenActionAnnouncementPopup,
     setOpenCancelAnnouncementPopup,
     setContentPopup,
     setViewDetailPopup,

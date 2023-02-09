@@ -45,11 +45,18 @@ export const validateFormik = (values, files) => {
     return errors;
 };
 
-export const getParams = (values, state, isDupFile = false) => {
+export const getParams = (values, state) => {
     const {notificationTemplateId, content, headlineType, sendDate, sendType} = values;
+    const splitFiles = values.oldFileName?.split(',');
     const formData = new FormData();
-    !isDupFile && state.uploadedFiles.forEach(file => {
-        formData.append('formFile', file);
+    if(splitFiles){
+        const oldFileRemove = splitFiles && splitFiles.filter(x => !state.uploadedFiles.find(file => typeof file === 'string' ? file === x : file.name === x));
+        oldFileRemove.forEach(oldFile => {
+            formData.append('fileStringRemove', oldFile);
+        });
+    }
+    state.uploadedFiles.forEach(file => {
+        formData.append(typeof file === 'string' ? 'fileString' : 'formFile', file);
     });
 
     for (const [index, [key, value]] of Object.entries(content).entries()) {
@@ -76,6 +83,13 @@ export const getParams = (values, state, isDupFile = false) => {
 };
 
 export const renderOption = (key, value, label) => (<option key={key} value={value}>{label}</option>);
+
+export const setValueContent = (setFieldValue, contents) => {
+    contents.length > 0 && contents.forEach(content =>{
+        const key = content.language === 'EN & SC' ? 'content.ENSC' : `content.${content.language}`;
+        setFieldValue(key, content.content);
+    });
+};
 
 export const mapLabelLanguage = languages =>{
     return languages.map(data =>{
