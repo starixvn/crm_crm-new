@@ -26,7 +26,7 @@
         private readonly ISettingService settingService;
         private readonly ICommonService commonService;
         private readonly IWebHostEnvironment hostingEnvironment;
-        private readonly string pathImages = "images/announcement";
+        private readonly string pathImages = "www/dist/images/announcement";
 
         public AnnouncementController(
             IAnnouncementService announcementService,
