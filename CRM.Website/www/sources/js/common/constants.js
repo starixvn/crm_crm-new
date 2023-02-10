@@ -178,4 +178,10 @@ export const DetailMenu = [
 ];
 
 export const Languages = ['EN', 'SC', 'TC', 'TH', 'YN'];
-export const Statuses = ['All', 'Planned', 'Cancelled', 'Completed', 'In-Progress'];
+
+export const Statuses = [
+    {id: 'Planned', name: 'Planned', checked: true},
+    {id: 'Cancelled', name: 'Cancelled', checked: true},
+    {id: 'Completed', name: 'Completed', checked: true},
+    {id: 'In-Progress', name: 'In-Progress', checked: true}
+];

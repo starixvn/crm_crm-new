@@ -11,7 +11,7 @@ const initialState = {
         fromDate: DateTimeService.toShortDateFormat(fromDate.setDate(fromDate.getDate() - 7)),
         toDate: DateTimeService.toShortDateFormat(currentDate),
         title: '',
-        status: Statuses.join(','),
+        status: Statuses.map(x=> x.name).join(','),
         pageIndex: 1,
         pageSize: 100
     },

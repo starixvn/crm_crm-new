@@ -141,6 +141,12 @@ export class NewAnnouncement extends Component {
         this.formik.setFieldValue('sendDate', value);
     }
 
+    renderMessage = result =>{
+        if(!result.isSuccessful){
+            return result.message.split(',');
+        }
+    }
+
     renderForm = ({
         values,
         errors,
@@ -161,7 +167,7 @@ export class NewAnnouncement extends Component {
                     {
                         this.props.createAnnouncementResult &&
                         <ResponseMessage isSuccessful={this.props.createAnnouncementResult.isSuccessful}
-                            message={this.props.createAnnouncementResult.message || LangHelper.getResource('InsertAnnouncementSuccessfully')}
+                            message={this.renderMessage(this.props.createAnnouncementResult) || LangHelper.getResource('InsertAnnouncementSuccessfully')}
                         />
                     }
                     <Form.Group as={Row}>

@@ -175,6 +175,12 @@ export class ActionAnnouncement extends Component {
 
     setStateUploadFile = uploadedFiles => this.setState({uploadedFiles});
 
+    renderMessage = result =>{
+        if(!result.isSuccessful){
+            return result.message.split(',');
+        }
+    }
+
     renderForm = ({
         values,
         errors,
@@ -200,7 +206,7 @@ export class ActionAnnouncement extends Component {
                     {
                         result &&
                         <ResponseMessage isSuccessful={result.isSuccessful}
-                            message={result.message || message}
+                            message={this.renderMessage(result) || message}
                         />
                     }
                     <Form.Group as={Row}>

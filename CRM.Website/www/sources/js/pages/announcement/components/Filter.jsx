@@ -7,6 +7,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import {Statuses} from '@jsroot/common/constants';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
 
 export class Filter extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ export class Filter extends Component {
             fromDate: fromDate,
             toDate: this.currentDate,
             title: '',
-            status: Statuses.join(',')
+            status: Statuses.map(x=> x.name).join(',')
         };
     }
 
@@ -50,6 +51,10 @@ export class Filter extends Component {
         });
     };
 
+    handleChangeStatus = (currentItem, selectedItemsKey) =>{
+        this.setState({ status: selectedItemsKey });
+    }
+
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
     handleSubmit = () => {
@@ -74,16 +79,16 @@ export class Filter extends Component {
     }
 
     render() {
-        const {announcementId, fromDate, toDate, title, status} = this.state;
+        const {announcementId, fromDate, toDate, title} = this.state;
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group>
+                    <Form.Group className='announcement-num'>
                         <Form.Label htmlFor="announcementId">{LangHelper.getResource('AnnouncementId')}</Form.Label>
-                        <Form.Control type="text" size="sm"
+                        <Form.Control as='input' type="number" size='sm'
                             value={announcementId}
                             name="announcementId" id="announcementId"
-                            className="shadow-none" autoComplete="off"
+                            className="shadow-none"
                             onChange={this.handleChange}
                         />
                     </Form.Group>
@@ -129,16 +134,18 @@ export class Filter extends Component {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label  htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
-                        <Form.Control as="select" size="sm"
-                            name="status" id="status"
-                            className="shadow-none"
-                            value={status}
-                            onChange={this.handleChange}
-                        >
-                            {
-                                Statuses.map((value, key) => <option key={key} value={value}>{value}</option>)
-                            }
-                        </Form.Control>
+                        <div className='form-control-wrapper'>
+                            <MultipleSelect
+                                dataSource={Statuses}
+                                keyField='id'
+                                valueField='name'
+                                maxDisplayItemCount={2}
+                                isAllTextShown
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    this.handleChangeStatus(currentItem, selectedItemsKey);
+                                }}
+                            />
+                        </div>
                     </Form.Group>
                 </Form.Row>
                 <Form.Row>
