@@ -20,6 +20,8 @@
         [XmlAttribute("Value")]
         public string SettingValue { get; set; }
 
+        public string ExtraInfo { get; set; }
+
         public int DisplayOrder { get; set; }
 
         public bool IsActive { get; set; }
