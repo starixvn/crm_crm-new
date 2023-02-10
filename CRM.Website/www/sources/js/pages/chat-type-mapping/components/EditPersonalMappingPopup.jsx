@@ -10,6 +10,8 @@ import LangHelper from '@jsroot/common/langHelper';
 import CustomReactSelect from '@jsroot/components/CustomReactSelect';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Loading from '@jsroot/components/Loading';
+import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
 const AccountingPIC = 'Accounting PIC';
 
 export class EditPersonalMappingPopup extends Component {
@@ -31,6 +33,7 @@ export class EditPersonalMappingPopup extends Component {
                 letstalkId: this.props.updatePersonalMappingData.data.conversationId,
                 languageId: this.props.updatePersonalMappingData.data.languageId,
                 remark: this.props.updatePersonalMappingData.data.remark,
+                ignoredNotification: this.props.updatePersonalMappingData.data.ignoredNotificationTypeList,
                 isTest: this.props.updatePersonalMappingData.data.isTest === 1 ? true : false
             },
             groupHeadlineDefault: [{ id: '', name: LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
@@ -45,7 +48,8 @@ export class EditPersonalMappingPopup extends Component {
                 errMsgs: []
             },
             isShowConfirmDirtyForm: false,
-            isLoading: false
+            isLoading: false,
+            ignoreNotificationTypes: null
         };
 
         this.conversationGroupId = this.props.updatePersonalMappingData.data.conversationGroupId;
@@ -85,7 +89,7 @@ export class EditPersonalMappingPopup extends Component {
         return null;
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.initEditPersonalMappingState = Object.assign({}, this.state.form);
         const initData = this.props.updatePersonalMappingData.data;
         const recipientTypeId = initData.recipients.length > 0 ? initData.recipients[0].recipientTypeId : '';
@@ -93,6 +97,16 @@ export class EditPersonalMappingPopup extends Component {
 
         this.props.getRecipientByRecipientType(recipientTypeId);
         this.props.getGroupHeadlineByRecipient(selectedRecipientId);
+
+        await this.getIgnoreNotificationType();
+    }
+
+    getIgnoreNotificationType = async () =>{
+        Site.blockUI();
+        const url = Site.resolveClientUrl('ChatTypeMapping/GetIgnoreNotificationType');
+        await DataService.getDataAsync(url).then(response => {
+            this.setState({ignoreNotificationTypes: response.data});
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 
     handleChange = (fieldName, fieldValue) => {
@@ -103,6 +117,10 @@ export class EditPersonalMappingPopup extends Component {
 
     handleGroupHeadlineChange = (currentItem, selectedItemsKey) => {
         this.handleChange('groupHeadlines', selectedItemsKey);
+    };
+
+    handleIgnoreNotificationChange = (currentItem, selectedItemsKey) => {
+        this.handleChange('ignoredNotification', selectedItemsKey);
     };
 
     handleRecipientTypeChange = e => {
@@ -242,6 +260,7 @@ export class EditPersonalMappingPopup extends Component {
             recipientIds: this.state.form.recipient.value,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark,
+            ignoredNotificationTypeList: this.state.form.ignoredNotification,
             isTest: this.state.form.recipientName !== AccountingPIC ? null : isTest
         };
     };
@@ -416,6 +435,22 @@ export class EditPersonalMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
+                        <Form.Label column sm="3" md="2">
+                            {LangHelper.getResource('IgnoredNotificationType')}
+                        </Form.Label>
+                        <Col sm="9" md="10">
+                            <MultipleSelect
+                                width={'100%'}
+                                name="ignoredNotification"
+                                dataSource={this.state.ignoreNotificationTypes}
+                                keyField='notificationTypeId'
+                                valueField='notificationTypeName'
+                                onChange={this.handleIgnoreNotificationChange}
+                                hasSearchBox
+                            />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
                         <Form.Label column md="2" sm="3" />
                         <Col sm="9" md="10" name="checkbox-isTest">
                             <Form.Group className={this.state.form.recipientName !== AccountingPIC ? 'hidden-isTest' : ''} controlId="isTest-edit-personal">
@@ -442,6 +477,10 @@ export class EditPersonalMappingPopup extends Component {
     };
 
     render() {
+        const {ignoreNotificationTypes} = this.state;
+        if(!ignoreNotificationTypes){
+            return null;
+        }
         return (
             <Fragment>
                 <Modal show className="chat-type-mapping-modal edit-personal-mapping" dialogAs={DraggableModalDialog}

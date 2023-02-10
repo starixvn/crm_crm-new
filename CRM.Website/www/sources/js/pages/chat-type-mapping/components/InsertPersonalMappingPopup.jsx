@@ -10,6 +10,8 @@ import LangHelper from '@jsroot/common/langHelper';
 import CustomReactSelect from '@jsroot/components/CustomReactSelect';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Loading from '@jsroot/components/Loading';
+import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
 const AccountingPIC = 'Accounting PIC';
 
 export class InsertPersonalMappingPopup extends Component {
@@ -27,6 +29,7 @@ export class InsertPersonalMappingPopup extends Component {
                 letstalkId: '',
                 languageId: '',
                 remark: '',
+                ignoredNotification: '',
                 isTest: false
             },
             groupHeadlineDefault: [{ id: '', name: LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
@@ -39,14 +42,24 @@ export class InsertPersonalMappingPopup extends Component {
             isLoading: false,
             dirtyFormConfirmation: {
                 isShow: false
-            }
+            },
+            ignoreNotificationTypes: null
         };
 
         this.initState = null;
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.initState = Object.assign({}, this.state.form);
+        await this.getIgnoreNotificationType();
+    }
+
+    getIgnoreNotificationType = async () =>{
+        Site.blockUI();
+        const url = Site.resolveClientUrl('ChatTypeMapping/GetIgnoreNotificationType');
+        await DataService.getDataAsync(url).then(response => {
+            this.setState({ignoreNotificationTypes: response.data});
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 
     handleChange = (fieldName, fieldValue) => {
@@ -66,6 +79,10 @@ export class InsertPersonalMappingPopup extends Component {
 
     handleGroupHeadlineChange = (currentItem, selectedItemsKey) => {
         this.handleChange('groupHeadlines', selectedItemsKey);
+    };
+
+    handleIgnoreNotificationChange = (currentItem, selectedItemsKey) => {
+        this.handleChange('ignoredNotification', selectedItemsKey);
     };
 
     handleRecipientTypeChange = e => {
@@ -190,6 +207,7 @@ export class InsertPersonalMappingPopup extends Component {
             recipientIds: this.state.form.recipient.value,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark,
+            ignoredNotificationTypeList: this.state.form.ignoredNotification,
             isTest: this.state.form.recipientName !== AccountingPIC ? null : isTest
         };
     };
@@ -388,6 +406,22 @@ export class InsertPersonalMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
+                        <Form.Label column sm="3" md="2">
+                            {LangHelper.getResource('IgnoredNotificationType')}
+                        </Form.Label>
+                        <Col sm="9" md="10">
+                            <MultipleSelect
+                                width={'100%'}
+                                name="ignoredNotification"
+                                dataSource={this.state.ignoreNotificationTypes}
+                                keyField='notificationTypeId'
+                                valueField='notificationTypeName'
+                                onChange={this.handleIgnoreNotificationChange}
+                                hasSearchBox
+                            />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2" />
                         <Col sm="9" md="10" name="checkbox-isTest">
                             <Form.Group controlId="isTest-insert" className={this.state.form.recipientName !== AccountingPIC ? 'hidden-isTest' : ''}>
@@ -414,6 +448,10 @@ export class InsertPersonalMappingPopup extends Component {
     };
 
     render() {
+        const {ignoreNotificationTypes} = this.state;
+        if(!ignoreNotificationTypes){
+            return null;
+        }
         return (
             <Fragment>
                 <Modal show className="chat-type-mapping-modal" dialogAs={DraggableModalDialog}

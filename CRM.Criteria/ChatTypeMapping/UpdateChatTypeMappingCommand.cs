@@ -28,6 +28,8 @@
 
         public string LoginIP { get; set; }
 
+        public string IgnoredNotificationTypeList { get; set; }
+
         public override string GetSettingKey() => "Acc_CRM_ChatBot_ChatTypeMapping_Upd";
 
         private bool IsValidStringProps() => !string.IsNullOrWhiteSpace(ConversationGroupName) &&

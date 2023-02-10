@@ -576,6 +576,7 @@
     NewValue: 'New Value',
     RowNum:'No.',
     IntroduceBy:'Introduce by',
+    IgnoredNotificationType: 'Ignored Notification Type',
     Languages: 'Languages',
     Welcome: 'Welcome',
     SignOut: 'Sign Out',

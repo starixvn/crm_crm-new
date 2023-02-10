@@ -15,6 +15,8 @@
 
         Task<IEnumerable<GroupHeadlineDirectAccountModel>> GetHeadlineByRecipientAsync(string recipientIds);
 
+        Task<IEnumerable<IgnoreNotificationType>> GetIgnoreNotificationTypeAsync();
+
         Task<CommandResult> CreatePersonalMappingAsync(InsertPersonalMappingCommand criteria);
 
         Task<CommandResult> EditChatTypeMappingAsync(UpdateChatTypeMappingCommand criteria);

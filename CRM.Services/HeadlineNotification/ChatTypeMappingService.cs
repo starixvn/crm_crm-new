@@ -8,7 +8,6 @@
     using CRM.Core.Services;
     using CRM.Criteria.ChatTypeMapping;
     using CRM.Models.ChatTypeMapping;
-    using CRM.Services.Interfaces;
     using Microsoft.AspNetCore.Http;
 
     public class ChatTypeMappingService : IChatTypeMappingService
@@ -65,6 +64,12 @@
                 }
             }
             return tuple.Item1;
+        }
+
+        public async Task<IEnumerable<IgnoreNotificationType>> GetIgnoreNotificationTypeAsync()
+        {
+            var criteria = new GetIgnoredNotificationTypeCriteria();
+            return await baseService.GetDataAsync<IgnoreNotificationType>(criteria);
         }
 
         public async Task<CommandResult> CreatePersonalMappingAsync(InsertPersonalMappingCommand criteria)

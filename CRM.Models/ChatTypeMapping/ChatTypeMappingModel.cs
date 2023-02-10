@@ -46,6 +46,8 @@ namespace CRM.Models.ChatTypeMapping
 
         public byte IsTest { get; set; }
 
+        public string IgnoredNotificationTypeList { get; set; }
+
         public IEnumerable<ConversationRecipient> Recipients { get; set; }
 
         public IEnumerable<ConversationHeadlineModel> Headlines { get; set; }

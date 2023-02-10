@@ -118,6 +118,7 @@
                     LanguageId = data.LanguageId,
                     Remark = data.Remark,
                     UserId = napSession.UserId,
+                    IgnoredNotificationTypeList = data.IgnoredNotificationTypeList,
                     IsTest = data.IsTest
                 };
                 result = await chatTypeMappingService.CreatePersonalMappingAsync(criteria);
@@ -150,6 +151,7 @@
                     LanguageId = data.LanguageId,
                     Remark = data.Remark,
                     UserId = napSession.UserId,
+                    IgnoredNotificationTypeList = data.IgnoredNotificationTypeList,
                     IsTest = data.IsTest
                 };
                 result = await chatTypeMappingService.EditChatTypeMappingAsync(criteria);
@@ -174,6 +176,13 @@
             return Json(headlines);
         }
 
+        public async Task<IActionResult> GetIgnoreNotificationType()
+        {
+            var notificationTypes = await chatTypeMappingService.GetIgnoreNotificationTypeAsync();
+            return Json(notificationTypes);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> UpdateGroupMapping([FromBody] PersonalMappingViewModel data)
         {
@@ -189,6 +198,7 @@
                 LanguageId = data.LanguageId,
                 Remark = data.Remark,
                 UserId = napSession.UserId,
+                IgnoredNotificationTypeList = data.IgnoredNotificationTypeList,
                 IsTest = data.IsTest
             };
             var result = await chatTypeMappingService.EditChatTypeMappingAsync(criteria);

@@ -20,6 +20,8 @@
 
         public string Remark { get; set; }
 
+        public string IgnoredNotificationTypeList { get; set; }
+
         public byte? IsTest { get; set; }
     }
 }

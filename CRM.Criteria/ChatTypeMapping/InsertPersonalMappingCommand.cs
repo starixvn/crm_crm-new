@@ -20,6 +20,8 @@
 
         public string LetstalkId { get; set; }
 
+        public string IgnoredNotificationTypeList { get; set; }
+
         public int LanguageId { get; set; }
 
         public string Remark { get; set; }
