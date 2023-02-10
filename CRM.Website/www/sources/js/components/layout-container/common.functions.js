@@ -13,7 +13,14 @@ const functions = {
 export default functions;
 
 export const CheckForIndexHTMLChange = async (indexHTMLURL) => {
-	return await axios.get(indexHTMLURL, {headers: {'X-Requested-With': 'XMLHttpRequest'}}).then(resp => {
+	return await axios.get(indexHTMLURL, {
+		headers: {
+			'X-Requested-With': 'XMLHttpRequest',
+			"Access-Control-Allow-Origin": "*",
+			'Access-Control-Allow-Credentials': true,
+			'Content-Type': 'text/plain'
+		}
+	}).then(resp => {
 		if(!resp || !resp.data) {
 			return;
 		}
