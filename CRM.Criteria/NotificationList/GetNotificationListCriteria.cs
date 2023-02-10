@@ -26,7 +26,7 @@
         public string Content { get; set; }
 
         public string Status { get; set; }
-
+        public int? AnnouncementId { get; set; }
         public int TotalRows { get; set; }
 
         public int PageIndex { get; set; }

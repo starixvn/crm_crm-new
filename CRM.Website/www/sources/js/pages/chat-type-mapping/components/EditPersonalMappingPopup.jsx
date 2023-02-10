@@ -97,15 +97,23 @@ export class EditPersonalMappingPopup extends Component {
 
         this.props.getRecipientByRecipientType(recipientTypeId);
         this.props.getGroupHeadlineByRecipient(selectedRecipientId);
-
         await this.getIgnoreNotificationType();
     }
 
     getIgnoreNotificationType = async () =>{
         Site.blockUI();
         const url = Site.resolveClientUrl('ChatTypeMapping/GetIgnoreNotificationType');
+        const { ignoredNotificationTypeList } = this.props.updatePersonalMappingData.data;
         await DataService.getDataAsync(url).then(response => {
-            this.setState({ignoreNotificationTypes: response.data});
+            const ignoreNotificationTypes = !ignoredNotificationTypeList ? response.data :
+                    response.data.map(item =>{
+                        return{
+                            ...item,
+                            checked: ignoredNotificationTypeList.includes(item.notificationTypeId)
+                        };
+                    });
+            this.setState({ignoreNotificationTypes});
+            this.setState({ignoreNotificationTypes});
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 

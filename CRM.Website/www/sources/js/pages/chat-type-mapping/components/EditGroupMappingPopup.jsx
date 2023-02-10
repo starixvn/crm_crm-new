@@ -10,7 +10,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import Site from '@jsroot/common/site';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Loading from '@jsroot/components/Loading';
-
+import DataService from '@jsroot/common/dataService';
 const AccountingPIC = 'Accounting PIC';
 
 export class EditGroupMappingPopup extends Component {
@@ -35,6 +35,7 @@ export class EditGroupMappingPopup extends Component {
                 },
                 languageId: this.props.updateGroupMappingData.data.languageId || '',
                 remark: this.props.updateGroupMappingData.data.remark || '',
+                ignoredNotification: this.props.updateGroupMappingData.data.ignoredNotificationTypeList,
                 isTest: this.props.updateGroupMappingData.data.isTest === 1 ? true : false
             },
             groupHeadlineDefault: [{ id: '', name: LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
@@ -50,7 +51,8 @@ export class EditGroupMappingPopup extends Component {
             },
             isShowConfirmDirtyForm: false,
             isBotRemoved: false,
-            isLoading: false
+            isLoading: false,
+            ignoreNotificationTypes: null
         };
 
         this.conversationGroupId = this.props.updateGroupMappingData.data.conversationGroupId;
@@ -85,7 +87,7 @@ export class EditGroupMappingPopup extends Component {
         return null;
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.initUpdateGroupMappingState = Object.assign({}, this.state.form);
         const initData = this.props.updateGroupMappingData.data;
         const recipientTypeId = initData.recipients.length > 0 ? initData.recipients[0].recipientTypeId : '';
@@ -97,6 +99,24 @@ export class EditGroupMappingPopup extends Component {
                 this.verifyLetstalk(selectedRecipientIds.split(','));
             });
         }
+
+        await this.getIgnoreNotificationType();
+    }
+
+    getIgnoreNotificationType = async () =>{
+        Site.blockUI();
+        const url = Site.resolveClientUrl('ChatTypeMapping/GetIgnoreNotificationType');
+        const { ignoredNotificationTypeList } = this.props.updateGroupMappingData.data;
+        await DataService.getDataAsync(url).then(response => {
+            const ignoreNotificationTypes = !ignoredNotificationTypeList ? response.data :
+                    response.data.map(item =>{
+                        return{
+                            ...item,
+                            checked: ignoredNotificationTypeList.includes(item.notificationTypeId)
+                        };
+                    });
+            this.setState({ignoreNotificationTypes});
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 
     handleChange = (fieldName, fieldValue) => {
@@ -125,6 +145,10 @@ export class EditGroupMappingPopup extends Component {
         this.handleChange('groupHeadlines', '');
         this.verifyLetstalk(selectedItemsKey.split(','));
         this.props.getGroupHeadlineByRecipient(selectedItemsKey);
+    };
+
+    handleIgnoreNotificationChange = (currentItem, selectedItemsKey) => {
+        this.handleChange('ignoredNotification', selectedItemsKey);
     };
 
     verifyLetstalk = recipientIds => {
@@ -253,6 +277,7 @@ export class EditGroupMappingPopup extends Component {
             recipientIds: this.state.form.recipientIds,
             languageId: this.state.form.languageId,
             remark: this.state.form.remark,
+            ignoredNotificationTypeList: this.state.form.ignoredNotification,
             isTest: this.state.form.recipientName !== AccountingPIC ? null : isTest
         };
     };
@@ -426,6 +451,22 @@ export class EditGroupMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
+                        <Form.Label column sm="3" md="2">
+                            {LangHelper.getResource('IgnoredNotificationType')}
+                        </Form.Label>
+                        <Col sm="9" md="10">
+                            <MultipleSelect
+                                width={'100%'}
+                                name="ignoredNotification"
+                                dataSource={this.state.ignoreNotificationTypes}
+                                keyField='notificationTypeId'
+                                valueField='notificationTypeName'
+                                onChange={this.handleIgnoreNotificationChange}
+                                hasSearchBox
+                            />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
                         <Form.Label column md="2" sm="3" />
                         <Col sm="9" md="10" name="checkbox-isTest">
                             <Form.Group controlId="isTest-edit-group" className={isHiddenIsTest}>
@@ -450,6 +491,10 @@ export class EditGroupMappingPopup extends Component {
     };
 
     render() {
+        const {ignoreNotificationTypes} = this.state;
+        if(!ignoreNotificationTypes){
+            return null;
+        }
         const isHiddenIsTest = this.state.form.recipientName !== AccountingPIC ? 'hidden-isTest' : '';
         return (
             <Fragment>

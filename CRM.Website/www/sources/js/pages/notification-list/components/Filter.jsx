@@ -28,7 +28,8 @@ export class Filter extends Component {
                 notificationIdLower: '',
                 notificationIdUpper: '',
                 messageId: '',
-                content: ''
+                content: '',
+                announcementId: ''
             },
             maxDate: now,
             minToDate: now,
@@ -145,17 +146,20 @@ export class Filter extends Component {
     };
 
     getParams = () => {
+        const {notificationTypes, fromDate, toDate, headline, recipient, messageId, statuses,
+            notificationIdLower, notificationIdUpper, content, announcementId }= this.state.filter;
         return {
-            notificationTypeIds: this.state.filter.notificationTypes,
-            fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(this.state.filter.fromDate)),
-            toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.endOfDay(this.state.filter.toDate)),
-            headline: this.state.filter.headline ? this.state.filter.headline.value : '',
-            recipientName: this.state.filter.recipient ? this.state.filter.recipient.value : '',
-            messageId: this.state.filter.messageId,
-            notificationIdLower: this.state.filter.notificationIdLower,
-            notificationIdUpper: this.state.filter.notificationIdUpper,
-            content: this.state.filter.content,
-            status: this.state.filter.statuses,
+            notificationTypeIds: notificationTypes,
+            fromDate: !announcementId ? DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)) : null,
+            toDate: !announcementId ? DateTimeService.toLongDateTimeFormat(DateTimeService.endOfDay(toDate)) : null,
+            headline: headline ? headline.value : '',
+            recipientName: recipient ? recipient.value : '',
+            messageId: messageId,
+            notificationIdLower: notificationIdLower,
+            notificationIdUpper: notificationIdUpper,
+            content: content,
+            status: statuses,
+            announcementId: parseInt(announcementId, 10),
             pageIndex: this.props.gridParams.pageIndex,
             pageSize: this.props.gridParams.pageSize
         };
@@ -185,7 +189,7 @@ export class Filter extends Component {
 
     isDisabledDateParam = () =>
         this.state.filter.messageId !== '' || this.state.filter.notificationIdLower
-        !== '' || this.state.filter.notificationIdUpper !== '';
+        !== '' || this.state.filter.notificationIdUpper !== '' || this.state.filter.announcementId.length > 0;
 
     isValidateParams = params => {
         if (params.notificationTypeIds === '') {
@@ -314,6 +318,13 @@ export class Filter extends Component {
                         <Form.Label>{LangHelper.getResource('MessageID')}</Form.Label>
                         <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none' name='messageId'
                             value={this.state.filter.messageId}
+                            onChange={e => this.handleChangeFilterControl(e)}
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>{LangHelper.getResource('AnnouncementId')}</Form.Label>
+                        <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none' name='announcementId'
+                            value={this.state.filter.announcementId}
                             onChange={e => this.handleChangeFilterControl(e)}
                         />
                     </Form.Group>

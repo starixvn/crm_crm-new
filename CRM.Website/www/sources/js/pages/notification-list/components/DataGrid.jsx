@@ -168,12 +168,28 @@ export class DataGrid extends Component {
     renderReferenceId = item => {
         return  <Cell className='text-center'>
                     <div>{item.notificationId}</div>
-                    <div>{item.dataSource === 'DBMSG.bodb_Message.dbo.Msg' ? `(Msg: ${item.referenceIdList})` : item.referenceIdList > 0 && `(Log: ${item.referenceIdList})`}</div>
+                    <div>{this.getReferenceText(item)}</div>
                     {
                         this.isDuplicated(item.status) && <div>{`(Related ID: ${item.relatedNotificationIds})`}</div>
                     }
                 </Cell>;
     };
+
+    getReferenceText = item =>{
+        let reference = '';
+        switch(item.dataSource) {
+            case 'DBMSG.bodb_Message.dbo.Msg':
+                reference = `(Msg: ${item.referenceId})`;
+            break;
+            case 'AnnouncementId':
+                reference = `(Ann: ${item.referenceId})`;
+            break;
+            default:
+                reference = item.referenceId > 0 && `(Log: ${item.referenceId})`;
+        }
+
+        return reference;
+    }
 
     handleChangeResendCheckbox = index => {
         const dataList = [...this.props.resendOptions.dataList];
