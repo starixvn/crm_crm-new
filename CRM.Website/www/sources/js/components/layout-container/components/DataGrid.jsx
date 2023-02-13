@@ -122,58 +122,6 @@ export default class DataGrid extends PureComponent {
                         {values.status}
                     </Col>
                 </Form.Group>
-                {
-                    (values.roleId === RoleIds.Member || values.roleId === RoleIds.CRMMember) &&
-                    <Form.Group className="row item">
-                        <Form.Label column md="3" className="pl-1" htmlFor="name" >
-                            {LangHelper.getResource('Danger')}
-                        </Form.Label>
-                        <Col md="9">
-                            <Row>
-                                <Col md="3">
-                                    {LangHelper.getResource('DangerOriginal')}
-                                </Col>
-                                <Col md="4">
-                                    {LangHelper.getResource('DangerNonLive')}
-                                </Col>
-                                <Col md="5">
-                                    {LangHelper.getResource('DangerOtherSports')}
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col md="3" >
-                                    <span className={'lv' + values.originalDangerLevel}>
-                                        {
-                                            values.originalDangerLevel !== 0
-                                                ? `${LangHelper.getResource('Lv1')} ${values.originalDangerLevel}`
-                                                : LangHelper.getResource('None')
-                                        }
-                                    </span>
-                                </Col>
-                                <Col md="4">
-                                    <span className={'lv' + values.abtDangerLevel}>
-                                        {
-                                            values.abtDangerLevel !== 0
-                                                ? `${LangHelper.getResource('Lv1')} ${values.abtDangerLevel}`
-                                                : LangHelper.getResource('None')
-                                        }
-                                    </span>
-                                </Col>
-                                <Col md="5">
-                                    <span className={'lv' + values.otherSportsDangerLevel}>
-                                        {
-                                            values.otherSportsDangerLevel !== 0
-                                                ? `${LangHelper.getResource('Lv1')} ${values.otherSportsDangerLevel}`
-                                                : LangHelper.getResource('None')
-                                        }
-                                    </span>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Form.Group>
-                }
-
                 <Form.Group className="row item no-border-bg">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('Site')}
@@ -605,9 +553,6 @@ export default class DataGrid extends PureComponent {
             roleName: customerInfo.roleName,
             uplineInfo: customerInfo.uplineInfo,
             status: customerInfo.status,
-            originalDangerLevel: customerInfo.originalDangerLevel,
-            abtDangerLevel: customerInfo.abtDangerLevel,
-            otherSportsDangerLevel: customerInfo.otherSportsDangerLevel,
             isGroupHeadLine: customerInfo.isGroupHeadLine
         };
         return (
