@@ -302,6 +302,7 @@
         public async Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync()
         {
             var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());
+
             var allSites = (from n in sites
                             where n.IsActive
                             group n by n.IsLicensee into g
@@ -311,11 +312,12 @@
                                 Id = g.Key ? SiteConstants.LicenseeGroup : SiteConstants.IBCGroup,
                                 Name = g.Key ? Constants.Licensee : Constants.Credit,
                                 ChildSites = (from c in g
-                                              orderby c.Name
+                                              orderby c.SiteLabel
+                                              group c by c.SiteLabel into s
                                               select new SiteInfo
                                               {
-                                                  Id = c.Id,
-                                                  Name = c.Name
+                                                  Name = s.Key,
+                                                  ChildSites= s.ToList()
                                               }).ToList()
                             }).ToList();
             return allSites;

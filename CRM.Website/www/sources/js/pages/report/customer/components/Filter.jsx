@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Form, Button, Alert } from 'react-bootstrap';
+import { changeSiteSetting } from '@jsroot/common/shareScripts';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import WithHotKey from '@jsroot/components/WithHotKey';
@@ -59,17 +60,28 @@ export class Filter extends Component {
                 checked: true
             };
         });
-        allSettings.sites.forEach(item => {
-            item.childSites.forEach(element => {
-                siteIds.push(element.id);
-            });
+
+        allSettings.sites.forEach((item, index) => {
             siteOptions.push({
                 siteId: item.id,
                 name: item.name,
                 checked: true,
-                subItem: item.childSites.map(x => ({ key: x.id, value: x.name, checked: true }))
+                subItem: item.childSites.map((element, key) => {
+                    const childList = element.childSites.map(child => {
+                        siteIds.push(child.id);
+                        return { key: child.id, value: child.name, checked: true }
+                    });
+                    return {
+                        key: element.id > 0 ? element.id : key,
+                        value: element.name,
+                        name: element.name,
+                        checked: true,
+                        childList: childList
+                    };
+                })
             });
         });
+
         siteOptions.unshift({ siteId: 0, name: 'N/A', checked: true });
         const vipOptions = [
             { id: -1, name: 'All' },
@@ -142,6 +154,8 @@ export class Filter extends Component {
 
     render() {
         const { languageOptions, positionOptions, siteOptions, vipOptions, excludeIgnoredAccounts, isShowFilter } = this.state;
+        siteOptions.length > 0 && changeSiteSetting(siteOptions, 'subItem', 'childList');
+
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit} action="javascript:void(0)">
                 {

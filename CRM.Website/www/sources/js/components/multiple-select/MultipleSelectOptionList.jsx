@@ -7,6 +7,8 @@ export default class MultipleSelectOptionList extends Component {
         dataSource: PropTypes.arrayOf(PropTypes.object).isRequired,
         id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
         onChange: PropTypes.func,
+        onChangeSub: PropTypes.func,
+        onChangeChild: PropTypes.func,
         isAllExpand: PropTypes.bool,
         isCheckedNA:  PropTypes.bool
     };
@@ -47,7 +49,7 @@ export default class MultipleSelectOptionList extends Component {
     };
 
     _renderOptionList() {
-        const { dataSource, onChange, onChangeSub, id, isAllExpand, isCheckedNA } = this.props;
+        const { dataSource, onChange, onChangeSub, onChangeChild, id, isAllExpand, isCheckedNA } = this.props;
         if (!dataSource || !dataSource.length) {
             return <span>No information</span>;
         }
@@ -62,6 +64,7 @@ export default class MultipleSelectOptionList extends Component {
                     itemData={item}
                     onChange={onChange}
                     onChangeSub={onChangeSub}
+                    onChangeChild={onChangeChild}
                     isAllExpand={isAllExpand}
                 />
             );

@@ -18,6 +18,7 @@
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
+    using Microsoft.AspNetCore.DataProtection.KeyManagement;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -61,7 +62,7 @@
             var headlines = await baseService.GetDataAsync<BaseModel>(new GetHeadlinesCriteria());
             var allSetting = new
             {
-                SiteList = sites,
+                SiteList = sites.GroupBy(item => item.SiteLabel).Select(g => new { Name = g.Key, ChildSites = g.ToList() }),
                 CurrencyList = currency,
                 StatusList = Enum.GetValues(typeof(CustomerStatus)).Cast<CustomerStatus>().Select(status => status.ToString()),
                 HeadlineTypeList = Enum.GetValues(typeof(HeadlineType)).Cast<HeadlineType>().Select(status => new BaseModel { Id = (int)status, Name = status.ToString() }),

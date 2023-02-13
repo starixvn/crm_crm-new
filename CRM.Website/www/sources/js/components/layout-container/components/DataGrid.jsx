@@ -5,6 +5,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { RoleIds } from '@jsroot/common/constants';
+import { changeSiteSetting } from '@jsroot/common/shareScripts';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
@@ -81,6 +82,8 @@ export default class DataGrid extends PureComponent {
     }) => {
         const {customerInfo, settings} = this.props;
         const isShowInactiveMsg = settings.sitesLicenseeInactive.filter(x=> x.id === customerInfo.siteId).length > 0;
+        const siteOptions = JSON.parse(JSON.stringify(settings.sites));
+        changeSiteSetting(siteOptions, 'childSites', 'childSites');
 
         return (
             <Form className="left-form-customer" id="left-form-container" noValidate onSubmit={handleSubmit}>
@@ -179,7 +182,7 @@ export default class DataGrid extends PureComponent {
                         <SelectWithSearch
                             className='basic-single'
                             onChange={handleChange}
-                            options={settings.sites}
+                            options={siteOptions}
                             value={values.siteId}
                             name={values.site.name}
                             isHideNA={false}

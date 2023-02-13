@@ -122,6 +122,20 @@ $sub-menu-border: 1px solid #b7b7b7;
                 left: -3px;
             }
         }
+
+        .child-item {
+            padding-left: 30px;
+        }
+
+        .child-item:before {
+            top: 15px !important;
+            left: 20px !important;
+        }
+
+        .child-item:after {
+            top: -5px !important;
+            left: 18px !important;
+        }
     }
 
     &-option-all {

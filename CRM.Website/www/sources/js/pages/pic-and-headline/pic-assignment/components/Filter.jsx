@@ -36,14 +36,23 @@ export class Filter extends Component {
 
     componentDidMount = () => {
         this.props.getSettings().then(() => {
-            const siteIds = [];
-            const siteOptions = this.props.settings.siteList.map(x => {
-                siteIds.push(x.site);
-                return {
-                    id: x.site,
-                    name: x.site,
-                    checked: true
-                };
+            const siteIds = [], siteOptions = [];
+
+            this.props.settings.siteList.map((item, key) => {
+                siteOptions.push({
+                    name: item.name,
+                    checked: true,
+                    id: key,
+                    subItem: item.childSites.map(element => {
+                        siteIds.push(element.siteID);
+                        return {
+                            key: element.siteID,
+                            value: element.site,
+                            name: element.site,
+                            checked: true
+                        };
+                    })
+                });
             });
 
             const currencyIds = [];

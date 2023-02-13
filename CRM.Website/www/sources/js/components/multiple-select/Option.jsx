@@ -50,6 +50,17 @@ export default class Option extends Component {
         onChangeSub && onChangeSub(itemData, newSubItem);
     };
 
+    onChangeSubChild = (childItem, subItem) => {
+        const { itemData, onChangeChild } = this.props;
+
+        const newChildItem = {
+            key: childItem.key,
+            value: childItem.value,
+            checked: !childItem.checked
+        };
+        onChangeChild && onChangeChild(itemData, subItem, newChildItem);
+    };
+
     onClickExpandIcon = () => {
         this.setState(prevState => ({
             isExpandedSubData: !prevState.isExpandedSubData
@@ -78,16 +89,32 @@ export default class Option extends Component {
             this.state.isExpandedSubItem && <div className='sub-select'>
                 {
                     subItemList.map((item, key) => (
-                        <div key={key} className='sub-select-item'>
-                            <input
-                                id={item.key}
-                                type="checkbox"
-                                className="option-checkbox"
-                                checked={item.checked}
-                                onChange={() => this.onChangeSubItem(item)}
-                            />
-                            <label className="sub-select-item-label" htmlFor={item.key}>{item.value}</label>
-                        </div>
+                        <>
+                            <div key={key} className='sub-select-item'>
+                                <input
+                                    id={item.key}
+                                    type="checkbox"
+                                    className="option-checkbox"
+                                    checked={item.checked}
+                                    onChange={() => this.onChangeSubItem(item)}
+                                />
+                                <label className="sub-select-item-label" htmlFor={item.key}>{item.value}</label>
+                            </div>
+                            {
+                                item.childList && item.childList.map((element, index) => (
+                                    <div key={index + element.id} className='sub-select-item child-item'>
+                                        <input
+                                            id={element.key}
+                                            type="checkbox"
+                                            className="option-checkbox"
+                                            checked={element.checked}
+                                            onChange={() => this.onChangeSubChild(element, item)}
+                                        />
+                                        <label className="sub-select-item-label" htmlFor={element.key}>{element.value}</label>
+                                    </div>
+                                ))
+                            }
+                        </>
                     ))
                 }
             </div>
@@ -98,6 +125,7 @@ export default class Option extends Component {
         const { itemData, id } = this.props;
         const isHasSubData = itemData.subData && itemData.subData.length > 0;
         const isHasSubItem = itemData.subItem && itemData.subItem.length > 0;
+
         return (
             <div>
                 <li className={`${isHasSubItem ? 'toggle-select-item' : ''} multiple-select-item`}>

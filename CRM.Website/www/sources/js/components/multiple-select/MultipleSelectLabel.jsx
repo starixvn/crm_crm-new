@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { element } from 'prop-types';
 import { MAX_SELECTED_ITEM_FOR_DISPLAY } from './constants';
 
 export default class MultipleSelectLabel extends Component {
@@ -23,9 +23,17 @@ export default class MultipleSelectLabel extends Component {
         const selected = [];
         selectedItems.forEach(item => {
             if (item.subItem.length > 0) {
-                item.subItem.forEach(x => {
-                    if (x.checked) {
-                        selected.push(x.value);
+                item.subItem.forEach(element => {
+                    if (element.childList && element.childList.length > 0) {
+                        element.childList.forEach(data => {
+                            if (data.checked) {
+                                selected.push(data.value);
+                            }
+                        })
+                    } else {
+                        if (element.checked) {
+                            selected.push(element.value);
+                        }
                     }
                 });
             } else {

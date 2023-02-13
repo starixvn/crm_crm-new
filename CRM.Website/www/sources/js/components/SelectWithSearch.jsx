@@ -74,9 +74,25 @@ export default class SelectWithSearch extends Component {
         const value = event.target.value;
 
         const options = this.props.options.map(item => {
-            const childSites = item.childSites.filter(site => site.name.toLowerCase().includes(value.toLowerCase()));
-            return { name: item.name, id: item.id, childSites };
+            const layer2 = item.childSites.filter(site => site.name.toLowerCase().includes(value.toLowerCase()));
+
+            if (layer2.length === 0) {
+                const newLayer2 = item.childSites;
+
+                if (newLayer2 && newLayer2.length > 0) {
+                    const child = newLayer2.map(element => {
+                        if (element.childSites && element.childSites.length > 0) {
+                            const layer3 = element.childSites.filter(site => site.name.toLowerCase().includes(value.toLowerCase()));
+                            return { name: element.name, id: element.id, childSites: layer3 };
+                        } else return { name: element.name, id: element.id, childSites: [] };
+                    });
+                    return { name: item.name, id: item.id, childSites: child.filter(item => item.childSites.length > 0) };
+                } else {
+                    return { name: item.name, id: item.id, childSites: [] };
+                }
+            } else return { name: item.name, id: item.id, childSites: layer2 };
         });
+
         this.setState({
             options,
             filter: value
@@ -116,15 +132,33 @@ export default class SelectWithSearch extends Component {
         }
     };
 
+    getSiteLabel = (sites, siteId) => {
+        let siteLabel = '';
+        sites.forEach(item => {
+            if (item.childSites && item.childSites.length > 0) {
+                item.childSites.forEach(element => {
+                    if (element.childSites && element.childSites.length > 0) {
+                        if (element.childSites.find(data => data.id === siteId))
+                        {
+                            siteLabel = element.childSites.find(data => data.id === siteId).siteLabel;
+                        }
+                    }
+                })
+            }
+        });
+        return siteLabel;
+    };
+
     render() {
         const { options } = this.state;
+        const siteLabel = this.getSiteLabel(options, this.state.selectedItem.id);
 
         return (
             <div className={'dropdown selectwithsearchtree ' + this.state.selectFormStatus} ref={this.wrapperRef}>
                 <button type="button" className="btn" onClick={this.toggleSelect}>
-                    <span className="pull-left">{this.state.selectedItem.name}</span><span className="fa fa-caret-down pull-right" />
+                    <span className="pull-left">{`${this.state.selectedItem.name} ${siteLabel && `(${siteLabel})`}`}</span><span className="fa fa-caret-down pull-right" />
                 </button>
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu" style={{"width": `${this.props.maxWidth}`}}>
                     <li>
                         <div>
                             <Form.Control type="text" size="sm" className="filter shadow-none" name="filter"
@@ -171,7 +205,7 @@ export default class SelectWithSearch extends Component {
                                         }
 
                                         return (
-                                            <li className="parent" key={index}>
+                                            <li className="parent" key={item.name + index}>
                                                 <a>
                                                     <span className="group-text">{item.name}</span>
                                                 </a>
@@ -180,10 +214,28 @@ export default class SelectWithSearch extends Component {
                                                         this.state.collapsedAll &&
                                                         item.childSites.map((item1, index1) => {
                                                             return (
-                                                                <li key={index1}>
-                                                                    <a onClick={() => this.selectItem(item1)}>
+                                                                <li key={index1 + item1.name}>
+                                                                    <a onClick={() => !item1.childSites && this.selectItem(item1)}>
                                                                         <span>{item1.name}</span>
                                                                     </a>
+                                                                    {
+                                                                        item1.childSites && item1.childSites.length > 0 &&
+                                                                        (
+                                                                            <ul className="list-unstyled">
+                                                                                {
+                                                                                    item1.childSites.map((item2, index2) => {
+                                                                                        return (
+                                                                                            <li key={index2 + item2.name}>
+                                                                                                <a onClick={() => this.selectItem(item2)}>
+                                                                                                    <span>{item2.name}</span>
+                                                                                                </a>
+                                                                                            </li>
+                                                                                        )
+                                                                                    })
+                                                                                }
+                                                                            </ul>
+                                                                        )
+                                                                    }
                                                                 </li>
                                                             );
                                                         })

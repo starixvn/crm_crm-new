@@ -291,3 +291,20 @@ export const handleSort = (cloneGridData, sortBy, sortOrder) => {
 
     return gridDataSortAsc;
 };
+
+export const changeSiteSetting = (sites, subItem, childList) => {
+    sites.map(item => {
+        if (item[`${subItem}`] && item[`${subItem}`].length > 0) {
+            const data = item[`${subItem}`].reduce((accumulator, currentValue) => {
+                if (currentValue.name === null) {
+                    currentValue[`${childList}`].map(item => accumulator.push(item));
+                } else {
+                    accumulator.push(currentValue);
+                }
+                return accumulator;
+            }, []);
+            item[`${subItem}`].splice(0, item[`${subItem}`].length);
+            data.map(element => item[`${subItem}`].push(element));
+        }
+    });
+};

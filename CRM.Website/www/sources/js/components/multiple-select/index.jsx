@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { element } from 'prop-types';
 import MultipleSelectLabel from './MultipleSelectLabel';
 import MultipleSelectOptionList from './MultipleSelectOptionList';
 import OptionAll from './OptionAll';
@@ -83,53 +83,77 @@ export default class MultipleSelect extends Component {
         return this.state.dataSource.filter(item => item.subItem.length <= 0 ? item.checked : true);
     }
 
-    onChangeHandler = item => {
+    getFieldItem = item => {
         const { keyField, valueField, statusField } = this.props;
 
-        const selectedItem = {
+        return {
             [keyField]: item.key,
             [valueField]: item.value,
             [statusField]: item.checked
         };
+    };
 
-        const newDataSource = this.state.dataSource.slice(0);
+    onChangeHandler = item => {
+        const selectedItem = this.getFieldItem(item);
+
+        const newDataSource = JSON.parse(JSON.stringify(this.state.dataSource));
         const itemToUpdate = newDataSource.find(x => x.key === item.key);
         itemToUpdate.checked = item.checked;
 
         if (itemToUpdate.subItem.length > 0) {
-            itemToUpdate.subItem.map(x => x.checked = item.checked);
+            itemToUpdate.subItem.map(element => {
+                if (element.childList && element.childList.length > 0) {
+                    element.childList.map(data => data.checked = item.checked);
+                }
+                return element.checked = item.checked;
+            });
         }
 
-        this._callBackToParent(selectedItem);
+        this._callBackToParent(selectedItem, newDataSource);
 
         this.setState({ dataSource: newDataSource });
     };
 
-    checkParentItem = item => {
-        if (item.subItem.some(x => x.checked === false)) {
+    checkParentItem = (item, subList) => {
+        if (subList.some(x => x.checked === false)) {
             item.checked = false;
         }
-        if (item.subItem.every(x => x.checked === true)) {
+        if (subList.every(x => x.checked === true)) {
             item.checked = true;
         }
     };
 
     onChangeSubHandler = (parentItem, subItem) => {
-        const { keyField, valueField, statusField } = this.props;
+        const selectedItem = this.getFieldItem(subItem);
 
-        const selectedItem = {
-            [keyField]: subItem.key,
-            [valueField]: subItem.value,
-            [statusField]: subItem.checked
-        };
-
-        const newDataSource = [...this.state.dataSource];
+        const newDataSource = JSON.parse(JSON.stringify(this.state.dataSource));
         const itemToUpdate = newDataSource.find(x => x.key === parentItem.key);
         const subItemToUpdate = itemToUpdate.subItem.find(x => x.key === subItem.key);
         subItemToUpdate.checked = subItem.checked;
 
-        this.checkParentItem(itemToUpdate);
-        this._callBackToParent(selectedItem);
+        if (subItemToUpdate.childList && subItemToUpdate.childList.length > 0) {
+            subItemToUpdate.childList.map(x => x.checked = subItem.checked);
+        }
+
+        this.checkParentItem(itemToUpdate, itemToUpdate.subItem);
+        this._callBackToParent(selectedItem, newDataSource);
+        this.setState({ dataSource: newDataSource });
+    };
+
+    onChangeChildHandler = (parentItem, subItem, childItem) => {
+        const selectedItem = this.getFieldItem(childItem);
+
+        const newDataSource = JSON.parse(JSON.stringify(this.state.dataSource));
+        const itemToUpdate = newDataSource.find(x => x.key === parentItem.key);
+        const subItemToUpdate = itemToUpdate.subItem.find(x => x.key === subItem.key);
+
+        const childItemToUpdate = subItemToUpdate.childList.find(x => x.key === childItem.key);
+        childItemToUpdate.checked = childItem.checked;
+
+        this.checkParentItem(subItemToUpdate, subItemToUpdate.childList);
+        this.checkParentItem(itemToUpdate, itemToUpdate.subItem);
+        this._callBackToParent(selectedItem, newDataSource);
+
         this.setState({ dataSource: newDataSource });
     };
 
@@ -154,26 +178,32 @@ export default class MultipleSelect extends Component {
         const dataSource = this.state.dataSource.slice(0);
         dataSource.forEach(item => {
             item.checked = checked;
+
             if (item.subItem.length > 0) {
-                item.subItem.map(x => x.checked = checked);
+                item.subItem.map(element => {
+                    if (element.childList && element.childList.length > 0) {
+                        element.childList.map(data => data.checked = checked);
+                    }
+                    return element.checked = checked;
+                });
             }
         });
         this.setState({
             dataSource: dataSource
         }, () => {
-            this._callBackToParent(null);
+            this._callBackToParent(null, dataSource);
         });
     };
 
     onChangeSearchText = value => {
         this.setState(() => {
             const dataSource = this.state.dataSource.slice(0);
+
             if (value.length > 1) {
                 dataSource.forEach(item => item.visible = item[VALUE_NAME].toLowerCase().indexOf(value.toLowerCase()) !== -1);
             } else {
                 dataSource.forEach(item => item.visible = true);
             }
-
             return {
                 searchText: value,
                 dataSource: dataSource
@@ -192,21 +222,29 @@ export default class MultipleSelect extends Component {
         }));
     };
 
-    _callBackToParent(selectedItem) {
-        const selectedItemsKey = this._getSelectedItemKey();
+    _callBackToParent(selectedItem, dataSource) {
+        const selectedItemsKey = this._getSelectedItemKey(dataSource);
         this.props.onChange && this.props.onChange(selectedItem, selectedItemsKey);
     }
 
-    _getSelectedItemKey() {
+    _getSelectedItemKey(dataSource) {
         const selectedItemKey = [];
-        const dataSource = this.state.dataSource;
+
         for (let i = 0; i < dataSource.length; i++) {
             const item = dataSource[i];
 
             if (item.subItem.length > 0) {
-                item.subItem.forEach(x => {
-                    if (x.checked) {
-                        selectedItemKey.push(x.key);
+                item.subItem.forEach(element => {
+                    if (element.childList && element.childList.length > 0) {
+                        element.childList.forEach(data => {
+                            if (data.checked) {
+                                selectedItemKey.push(data.key);
+                            }
+                        });
+                    } else {
+                        if (element.checked) {
+                            selectedItemKey.push(element.key);
+                        }
                     }
                 });
             } else {
@@ -277,6 +315,11 @@ export default class MultipleSelect extends Component {
         this.state.dataSource.forEach(item => {
             if (item.subItem.length > 0) {
                 count += item.subItem.length;
+                item.subItem.forEach(element => {
+                    if (element.childList && element.childList.length > 0) {
+                        count += element.childList.length;
+                    }
+                })
             } else {
                 count += 1;
             }
@@ -286,6 +329,7 @@ export default class MultipleSelect extends Component {
 
     render() {
         const { maxDisplayItemCount } = this.props;
+
         return (
             <div className={`multiple-select-container ${this.props.isInvalid ? 'invalid' : ''}`}
                 id={this.id} ref={element => this.wrapper = element}
@@ -310,6 +354,7 @@ export default class MultipleSelect extends Component {
                         dataSource={this.state.dataSource}
                         onChange={this.onChangeHandler}
                         onChangeSub={this.onChangeSubHandler}
+                        onChangeChild={this.onChangeChildHandler}
                         isAllExpand={this.state.isAllExpand}
                         isCheckedNA={this.props.isCheckedNA}
                     />

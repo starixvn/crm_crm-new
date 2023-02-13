@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Form, Button, Row } from 'react-bootstrap';
+import { changeSiteSetting } from '@jsroot/common/shareScripts';
 import DatePicker from '@jsroot/components/date-picker/index';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
@@ -400,6 +401,8 @@ export class Filter extends Component {
         }
         const subCategoryOptions = this.filterSubCategoryOptions(allSettings.subCategories, this.state.mainCategoryId);
         const subProductOptions = this.filterSubProductOptions(allSettings.subProducts, this.state.productId);
+        const siteOptions = JSON.parse(JSON.stringify(allSettings.sites));
+        changeSiteSetting(siteOptions, 'childSites', 'childSites');
 
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit}>
@@ -477,8 +480,9 @@ export class Filter extends Component {
                                 <Form.Label htmlFor="site" className="col-auto col-form-label col-label-tool">{LangHelper.getResource('Site')}</Form.Label>
                                 <div className="form-control-wrapper">
                                     <SelectWithSearch className='basic-single'
+                                        maxWidth="140%"
                                         OnChangeValue={this.handleChangeSite}
-                                        options={allSettings.sites}
+                                        options={siteOptions}
                                     />
                                 </div>
                             </Form.Group>
