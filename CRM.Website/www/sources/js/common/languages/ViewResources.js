@@ -356,6 +356,7 @@
     NumberOfRemovedEditedAccounts: 'Number Of Removed Edited Accounts',
     NoResultFound : 'No results found',
     NewAnnouncement: 'New Announcement',
+    No: 'No',
     OK: 'OK',
     OnlyShowUnassignedDirectAccounts: 'Only show unassigned direct accounts',
     Open: 'Open',
@@ -582,5 +583,6 @@
     SignOut: 'Sign Out',
     PleaseInputUseCommunicationType: 'Communication Type',
     PostCode: 'Post Code',
-    Parameters: 'Parameters'
+    Parameters: 'Parameters',
+    Yes: 'Yes'
 };

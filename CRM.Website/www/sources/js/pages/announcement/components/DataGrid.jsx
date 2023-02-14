@@ -199,6 +199,7 @@ export class DataGrid extends Component {
                     header={this.renderHeaderAnnouncement(isHost)}
                     body={this.renderBodyAnnouncement(isHost)}
                     isPaging
+                    shouldResetScrollPosition={false}
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
                 />

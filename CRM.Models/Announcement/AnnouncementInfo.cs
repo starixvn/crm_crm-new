@@ -9,8 +9,8 @@
         public string NotificationTemplateName { get; set; }
         public int NotificationTemplateId { get; set; }
         public DateTime SendDate { get; set; }
-        public string SendDateString => SendDate.ToString("MMM dd, yyyy");
-        public string SendTimeString => SendDate.ToString("hh:mm:ss tt");
+        public string SendDateString { get; set; }
+        public string SendTimeString { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedTime { get; set; }
         public string Title { get; set; }

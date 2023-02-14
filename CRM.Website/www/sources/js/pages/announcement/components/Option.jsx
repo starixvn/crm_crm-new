@@ -63,7 +63,7 @@ export default class Option extends PureComponent {
 
     renderSendTime = (values, handleChange, errors, touched) =>{
         const sendOption = ['Send At', 'Send immediately'];
-        const dateTimeNow = new Date(DateTimeService.toLongDateTimeFormat(new Date()));
+        const dateTimeNow =  new Date(DateTimeService.toClientDateTime(new Date()));
         const isSendAt = values.sendType === 'Send At';
         return(
             <Form.Group as={Row}>
@@ -92,6 +92,7 @@ export default class Option extends PureComponent {
                                     showTimeInput
                                     useShortMonthInDropdown
                                     minDate={dateTimeNow}
+                                    isDisabledTime
                                     selected={isSendAt ? values.sendDate : null}
                                     onChange={value => this.props.handleDateChange(value)}
                                 />

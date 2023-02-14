@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LangHelper from '@jsroot/common/langHelper';
-import { Button, Modal, Tabs, Tab } from 'react-bootstrap';
+import { Button, Modal} from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -69,7 +69,7 @@ class Content extends Component {
         if(!this.state.announcement || !languages || !content){
             return null;
         }
-        const fileNames = announcement.fileName.split(',');
+        const fileNames = !announcement.fileName ? '' : announcement.fileName.split(',');
         return (
             <Modal show backdrop='static' keyboard={false} size='lg' centered
                 onHide={this.props.onClose} className='announcement-content-modal'

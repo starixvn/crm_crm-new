@@ -102,6 +102,8 @@ export class NewAnnouncement extends Component {
 
     getContentByTemplateId = id =>{
         const contents = this.props.announcementTemplate.contents.filter(x => x.notificationTemplateId === id);
+        const title = this.props.announcementTemplate.notificationTemplates.filter(x => x.notificationTemplateId === id)[0].title;
+        this.formik.setFieldValue('title', title);
         setValueContent(this.formik.setFieldValue, contents);
         this.handleGetParameters(contents);
     }
@@ -169,7 +171,7 @@ export class NewAnnouncement extends Component {
 
     renderMessage = result =>{
         if(!result.isSuccessful){
-            const messages = result.message.split(',');
+            const messages = result.message.split(';');
             return messages;
         }else{
             return [result.message || LangHelper.getResource('InsertAnnouncementSuccessfully')];
@@ -358,7 +360,7 @@ export class NewAnnouncement extends Component {
             },
             headlineType: '2',
             sendType: '',
-            sendDate: new Date(),
+            sendDate: new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))),
             imageFileType: '',
             imageFileSize: '',
             cloneContentEN: ''
@@ -389,10 +391,10 @@ export class NewAnnouncement extends Component {
                         contents={this.renderContentConfirm()}
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleConfirmInsertDialog}>
-                                {LangHelper.getResource('OK')}
+                                {LangHelper.getResource('Yes')}
                             </Button>,
                             <Button variant="primary" size="sm" onClick={this.handleCloseConfirmInsertDialog}>
-                                {LangHelper.getResource('Cancel')}
+                                {LangHelper.getResource('No')}
                             </Button>
                         ]}
                         onClose={this.handleCloseConfirmInsertDialog}

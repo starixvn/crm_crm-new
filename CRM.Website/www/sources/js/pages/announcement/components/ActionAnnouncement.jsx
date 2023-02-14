@@ -145,7 +145,7 @@ export class ActionAnnouncement extends Component {
             .replace(/ /g, ',').replace(/\r\n/g, ',').replace(/\n/g, ',').replace(/\t/g, ',')
             .split(',').filter(item => item !== '');
 
-        const concatHeadline = [...this.state.headlineGroups, item];
+        const concatHeadline = [...this.state.headlineGroups, ...item];
         setTimeout(() => {
             this.setState({headlineGroups: concatHeadline});
             this.headlineInputRef.current.focus();
@@ -189,7 +189,7 @@ export class ActionAnnouncement extends Component {
 
     renderMessage = (result, message) =>{
         if(!result.isSuccessful){
-            return result.message.split(',');
+            return result.message.split(';');
         }else{
             return [result.message || message];
         }
@@ -235,7 +235,7 @@ export class ActionAnnouncement extends Component {
                     {
                         result &&
                         <ResponseMessage isSuccessful={result.isSuccessful}
-                            message={this.renderMessage(result, message)}
+                            messages={this.renderMessage(result, message)}
                         />
                     }
                     <Form.Group as={Row}>
@@ -434,10 +434,10 @@ export class ActionAnnouncement extends Component {
                         contents={this.renderContentConfirm()}
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleConfirmActionDialog}>
-                                {LangHelper.getResource('OK')}
+                                {LangHelper.getResource('Yes')}
                             </Button>,
                             <Button variant="primary" size="sm" onClick={this.handleCloseConfirmEditDialog}>
-                                {LangHelper.getResource('Cancel')}
+                                {LangHelper.getResource('No')}
                             </Button>
                         ]}
                         onClose={this.handleCloseConfirmEditDialog}

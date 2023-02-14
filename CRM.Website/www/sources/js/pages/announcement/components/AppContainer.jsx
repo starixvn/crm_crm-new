@@ -35,24 +35,24 @@ export class AppContainer extends Component {
     handleCloseNewAnnouncement = () => {
         this.props.setOpenNewAnnouncementPopup({ show: false });
         this.props.setIsRefresh(true);
+        this.props.setCreateAnnouncement(null);
     }
 
     handleCreateSuccessAnnouncement = () =>{
         this.handleCloseNewAnnouncement();
         this.props.getGridData(this.props.gridParams);
-        this.props.setCreateAnnouncement(null);
     }
 
     handleCloseActionAnnouncement = () => {
         this.props.setOpenActionAnnouncementPopup({ show: false });
         this.props.setIsRefresh(true);
+        this.props.setEditAnnouncement(null);
+        this.props.setCreateAnnouncement(null);
     }
 
     handleActionSuccessAnnouncement = () =>{
         this.handleCloseActionAnnouncement();
         this.props.getGridData(this.props.gridParams);
-        this.props.setEditAnnouncement(null);
-        this.props.setCreateAnnouncement(null);
     }
 
     handleCloseViewDetail = () => {

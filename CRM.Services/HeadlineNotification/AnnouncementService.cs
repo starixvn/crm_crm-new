@@ -12,17 +12,30 @@ namespace CRM.Services.HeadlineNotification
     public class AnnouncementService : IAnnouncementService
     {
         private readonly IBaseService baseService;
+        private readonly ICommonService commonService;
+
 
         public AnnouncementService(
-            IBaseService baseService
+            IBaseService baseService,
+            ICommonService commonService
         )
         {
             this.baseService = baseService;
+            this.commonService = commonService;
         }
 
         public async Task<IEnumerable<AnnouncementInfo>> GetAnnouncementAsync(GetAnnouncementCriteria criteria)
         {
-            return await baseService.GetDataAsync<AnnouncementInfo>(criteria);
+            var announcements = await baseService.GetDataAsync<AnnouncementInfo>(criteria);
+            foreach(var announcement in announcements)
+            {
+                var convertSendDateToClient = commonService.ConvertToClientDateTime(announcement.SendDate);
+                announcement.SendDate = convertSendDateToClient;
+                announcement.SendDateString = convertSendDateToClient.ToString("MMM dd, yyyy");
+                announcement.SendTimeString = convertSendDateToClient.ToString("hh:mm:ss tt");
+                announcement.CreatedTime = commonService.ConvertToClientDateTime(announcement.CreatedTime);
+            }
+            return announcements;
         }
 
         public async Task<CommandResult> NewAnnouncementAsync(CreateAnnouncementCommand command)
