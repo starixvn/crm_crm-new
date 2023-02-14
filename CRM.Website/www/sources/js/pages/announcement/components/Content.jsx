@@ -88,7 +88,7 @@ class Content extends Component {
                         />
                     }
                     {
-                        fileNames.map((image, key) =>(
+                        fileNames.length > 0 && fileNames.map((image, key) =>(
                             <div key={key} className='d-flex'>
                                 <span className='fa fa-file-image-o mr-2  pt-1'/>
                                     <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image)}>
