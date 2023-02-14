@@ -18,9 +18,11 @@ export class NewSettingValue extends Component {
         const params = {
             settingName: values.settingName,
             settingValue: values.settingValue,
+            extraInfo: values.extraInfo,
             displayOrder: values.displayOrder === '' ? 0 : values.displayOrder,
             parentId: this.props.settingName !== '' ? 0 : parseInt(values.parentId, 10)
         };
+
         this.props.insertNewSetting(params).then(() => {
             if (this.props.insertNewSettingResult.isSuccessful) {
                 setTimeout(() => {
@@ -95,6 +97,18 @@ export class NewSettingValue extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
+                        <Form.Label column sm="4" md="3" htmlFor="extraInfo">
+                            {LangHelper.getResource('ExtraInfo')}
+                        </Form.Label>
+                        <Col sm="8" md="9">
+                            <Form.Control type="text" size="sm" value={values.extraInfo}
+                                name="extraInfo" id="extraInfo"
+                                className="shadow-none" autoComplete="off"
+                                onChange={handleChange}
+                            />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
                         <Form.Label column sm="4" md="3" className="required" htmlFor="settingValue">
                             {LangHelper.getResource('SettingValue')}
                         </Form.Label>
@@ -159,6 +173,7 @@ export class NewSettingValue extends Component {
         const initialValues = {
             settingName: settingName,
             settingValue: '',
+            extraInfo: '',
             parentId: 0,
             displayOrder: ''
         };

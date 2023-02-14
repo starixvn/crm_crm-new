@@ -18,8 +18,9 @@ export class DataGrid extends Component {
                 {
                     checkShowSourceMapping && <HeaderCell colWidth={45}>{LangHelper.getResource('SourceMapping')}</HeaderCell>
                 }
-                <HeaderCell colWidth={13}>{LangHelper.getResource('SettingId')}</HeaderCell>
-                <HeaderCell colWidth={13}>{LangHelper.getResource('Order')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('ExtraInfo')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('SettingId')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('Order')}</HeaderCell>
                 {
                     isHost && <HeaderCell colWidth={13}>{LangHelper.getResource('Edit')}</HeaderCell>
                 }
@@ -38,6 +39,7 @@ export class DataGrid extends Component {
                 {
                     checkShowSourceMapping && <Cell>{item.settingSource}</Cell>
                 }
+                <Cell className='text-left'>{item.extraInfo}</Cell>
                 <Cell className='text-right'>{item.settingId}</Cell>
                 <Cell className='text-right'>{item.displayOrder}</Cell>
                 {

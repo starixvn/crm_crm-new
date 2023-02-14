@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes, { element } from 'prop-types';
+import PropTypes from 'prop-types';
 import MultipleSelectLabel from './MultipleSelectLabel';
 import MultipleSelectOptionList from './MultipleSelectOptionList';
 import OptionAll from './OptionAll';

@@ -162,6 +162,7 @@
     ExcludeIgnoredAccounts: 'Exclude ignored accounts',
     ExcludeTestAccounts: 'Exclude test accounts',
     Extension: 'Extension',
+    ExtraInfo: 'Extra Info',
     Email: 'Email',
     Emails: 'Emails',
     EmptyData: 'There is no information',
