@@ -130,7 +130,7 @@ export class NewAnnouncement extends Component {
 
     handleChangeInputHeadline = event => {
         const value = event.target.value;
-        if(value.includes(',')){
+        if(value.includes(',') || value.includes(' ')){
             let headlineGroups = [... this.state.headlineGroups, value.slice(0, -1)];
             this.handleSetValueHeadline(headlineGroups);
         }

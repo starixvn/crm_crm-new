@@ -20,10 +20,6 @@ export default class CkEditor extends PureComponent {
         isInvalid: false
     };
 
-    constructor(props) {
-        super(props);
-    }
-
     componentDidUpdate(prevProps) {
         if (prevProps.data !== this.props.data && (this.editor && !this.editor.editor.focusManager.hasFocus)) {
             this.editor.editor.setData(this.props.data);

@@ -77,45 +77,61 @@
         [HttpPost]
         public async Task<IActionResult> SaveFilesAndCreate([FromForm] CreateAnnouncementCommand command)
         {
-            var fileName = getFileName(command.FormFile, command.FileString);
-            command.FileName = fileName;
-            command.UserId = napSession.UserId;
-            command.LoginIP = ClientIP;
-            var commandResult = await announcementService.NewAnnouncementAsync(command);
-            if (commandResult.IsSuccessful)
+            try
             {
-                if (command.FormFile.Count > 0 && command.AnnouncementId > 0)
+                var fileName = getFileName(command.FormFile, command.FileString);
+                command.FileName = fileName;
+                command.UserId = napSession.UserId;
+                command.LoginIP = ClientIP;
+                var commandResult = await announcementService.NewAnnouncementAsync(command);
+                if (commandResult.IsSuccessful)
                 {
-                    await SaveFile(command.FormFile, command.AnnouncementId);
+                    if (command.FormFile.Count > 0 && command.AnnouncementId > 0)
+                    {
+                        await SaveFile(command.FormFile, command.AnnouncementId);
+                    }
+                    if (command.CloneAnnouncementId > 0)
+                    {
+                        CoppyOldFileToNewFile(command.FileString, command.CloneAnnouncementId, command.AnnouncementId);
+                    }
                 }
-                if (command.CloneAnnouncementId > 0)
-                {
-                    CoppyOldFileToNewFile(command.FileString, command.CloneAnnouncementId, command.AnnouncementId);
-                }
+                return Json(commandResult);
             }
-            return Json(commandResult);
+            catch (Exception e)
+            {
+
+                throw;
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit([FromForm] EditAnnouncementCommand command)
         {
-            var fileName = getFileName(command.FormFile, command.FileString);
-            command.FileName = fileName;
-            command.UserId = napSession.UserId;
-            command.LoginIP = ClientIP;
-            var commandResult = await announcementService.EditAnnouncementAsync(command);
-            if (commandResult.IsSuccessful)
+            try
             {
-                if (command.FormFile.Count > 0 && command.AnnouncementId > 0)
+                var fileName = getFileName(command.FormFile, command.FileString);
+                command.FileName = fileName;
+                command.UserId = napSession.UserId;
+                command.LoginIP = ClientIP;
+                var commandResult = await announcementService.EditAnnouncementAsync(command);
+                if (commandResult.IsSuccessful)
                 {
-                    await SaveFile(command.FormFile, command.AnnouncementId);
+                    if (command.FormFile.Count > 0 && command.AnnouncementId > 0)
+                    {
+                        await SaveFile(command.FormFile, command.AnnouncementId);
+                    }
+                    if (command.FileStringRemove.Count > 0)
+                    {
+                        DeleteFile(command.FileStringRemove, command.AnnouncementId);
+                    }
                 }
-                if (command.FileStringRemove.Count > 0)
-                {
-                    DeleteFile(command.FileStringRemove, command.AnnouncementId);
-                }
+                return Json(commandResult);
             }
-            return Json(commandResult);
+            catch (Exception e)
+            {
+
+                throw;
+            }
         }
 
         public async Task<IActionResult> GetAnnouncementById(int id)

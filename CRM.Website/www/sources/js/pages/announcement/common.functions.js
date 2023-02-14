@@ -47,7 +47,7 @@ export const validateFormik = (values, files) => {
 
 export const getParams = (values, state) => {
     const {notificationTemplateId, content, headlineType, sendDate, sendType} = values;
-    const splitFiles = values.oldFileName?.split(',');
+    const splitFiles = !values.oldFileName ? values.oldFileName : values.oldFileName?.split(',');
     const formData = new FormData();
     if(splitFiles){
         const oldFileRemove = splitFiles && splitFiles.filter(x => !state.uploadedFiles.find(file => typeof file === 'string' ? file === x : file.name === x));
@@ -87,9 +87,10 @@ export const renderOption = (key, value, label) => (<option key={key} value={val
 export const setValueContent = (setFieldValue, contents) => {
     contents.length > 0 && contents.forEach(content =>{
         const key = content.language === 'EN & SC' ? 'content.ENSC' : `content.${content.language}`;
-        setFieldValue(key, content.content);
+        const contentReplace = content.content.replace( /\n/g, '<br />');
+        setFieldValue(key, contentReplace);
         if(content.language === 'EN'){
-            setFieldValue('cloneContentEN', content.content);
+            setFieldValue('cloneContentEN', contentReplace);
         }
     });
 };

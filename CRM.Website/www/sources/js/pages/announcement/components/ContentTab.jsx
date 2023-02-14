@@ -4,7 +4,7 @@ import { Col, Form, Row, Tabs, Tab } from 'react-bootstrap';
 import CkEditor from '@jsroot/components/ckeditor/index';
 
 export default class ContentTab extends PureComponent {
-  render() {
+    render() {
     const {languages, handleChangeTab, tab, isValidContent, content, setFieldValue, isReadOnly = false} = this.props;
     return (
         <Form.Group as={Row}>
@@ -26,7 +26,11 @@ export default class ContentTab extends PureComponent {
                                     isInvalid={isValidContent}
                                     data={content[language.mapLabel]}
                                     username={window.currentUsername}
-                                    onChange={value => setFieldValue(`content.${[language.mapLabel]}`, value)}
+                                    onChange={value => {
+                                        setFieldValue(`content.${[language.mapLabel]}`, value);
+                                        if(language.mapLabel === 'EN')
+                                        setFieldValue('cloneContentEN', value);
+                                    }}
                                     readOnly={isReadOnly}
                                 />
                             </Tab>)
