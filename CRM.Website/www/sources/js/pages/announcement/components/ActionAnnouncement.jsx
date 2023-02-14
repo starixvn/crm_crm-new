@@ -38,7 +38,9 @@ export class ActionAnnouncement extends Component {
                 currency: '1'
             },
             currencyOptions: [],
-            confirmActionDialog: { show: false, params: null}
+            confirmActionDialog: { show: false, params: null},
+            isChangeTemplate: false,
+            parameters: null
         };
     }
 
@@ -119,11 +121,19 @@ export class ActionAnnouncement extends Component {
         this.formik.setFieldValue('notificationTemplateId', value);
         this.formik.setFieldValue('notificationTemplateName', value);
         this.getContentByTemplateId(value);
+        this.setState({isChangeTemplate: true});
+    }
+
+    handleGetParameters = contents =>{
+        const contentEn = contents.filter(x=> x.language === 'EN')[0].content;
+        const parameters = contentEn.match(/\{.*?\}/g);
+        this.setState({parameters});
     }
 
     getContentByTemplateId = id =>{
         const contents = this.props.announcementTemplate.contents.filter(x => x.notificationTemplateId === id);
         setValueContent(this.formik.setFieldValue, contents);
+        this.handleGetParameters(contents);
     }
 
     handleChangeTab = selected =>{
@@ -134,8 +144,10 @@ export class ActionAnnouncement extends Component {
         const item = (event.clipboardData || window.clipboardData).getData('text')
             .replace(/ /g, ',').replace(/\r\n/g, ',').replace(/\n/g, ',').replace(/\t/g, ',')
             .split(',').filter(item => item !== '');
+
+        const concatHeadline = [...this.state.headlineGroups, item];
         setTimeout(() => {
-            this.setState({headlineGroups: item});
+            this.setState({headlineGroups: concatHeadline});
             this.headlineInputRef.current.focus();
             this.headlineInputRef.current.value = '';
         }, 100);
@@ -149,7 +161,7 @@ export class ActionAnnouncement extends Component {
 
     handleChangeInputHeadline = event => {
         const value = event.target.value;
-        if(value.includes(',')){
+        if(value.includes(',') || value.includes(' ')){
             let headlineGroups = [... this.state.headlineGroups, value.slice(0, -1)];
             this.handleSetValueHeadline(headlineGroups);
         }
@@ -175,10 +187,27 @@ export class ActionAnnouncement extends Component {
 
     setStateUploadFile = uploadedFiles => this.setState({uploadedFiles});
 
-    renderMessage = result =>{
+    renderMessage = (result, message) =>{
         if(!result.isSuccessful){
             return result.message.split(',');
+        }else{
+            return [result.message || message];
         }
+    }
+
+    handleChangeParameter = (event, param, removeSpaceParam) =>{
+        const {value, name} = event.target;
+        const {setFieldValue, values} = this.formik;
+        let replaceContent = values.cloneContentEN;
+        setFieldValue(name, value);
+        replaceContent = replaceContent.replace(param, value);
+        removeSpaceParam.forEach(parameter =>{
+            const removeSpaceParam = parameter.replace(/\s+/g, "");
+            if(values[removeSpaceParam] && removeSpaceParam !== name){
+                replaceContent = replaceContent.replace(parameter, values[removeSpaceParam]);
+            }
+        });
+        setFieldValue('content.EN', replaceContent);
     }
 
     renderForm = ({
@@ -190,10 +219,10 @@ export class ActionAnnouncement extends Component {
         setFieldValue,
         isSubmitting
     }) => {
-        const {uploadedFiles} = this.state;
         const propsOption = {
             values, handleChange, errors, touched
         };
+        const {parameters, isChangeTemplate, uploadedFiles} = this.state;
         const {actionAnnouncementPopup, editAnnouncementResult, createAnnouncementResult} = this.props;
         const result = actionAnnouncementPopup.isEdit ? editAnnouncementResult : createAnnouncementResult; 
         const message = this.props.actionAnnouncementPopup.isEdit ? 
@@ -206,7 +235,7 @@ export class ActionAnnouncement extends Component {
                     {
                         result &&
                         <ResponseMessage isSuccessful={result.isSuccessful}
-                            message={this.renderMessage(result) || message}
+                            message={this.renderMessage(result, message)}
                         />
                     }
                     <Form.Group as={Row}>
@@ -246,6 +275,30 @@ export class ActionAnnouncement extends Component {
                             isValidContent={touched.content && errors.content} content={values.content} setFieldValue={setFieldValue}
                             languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab} 
                         />
+                    }
+                    {
+                        !actionAnnouncementPopup.isEdit && isChangeTemplate && parameters &&
+                        <Form.Group as={Row} className='pt-2'>
+                            <Form.Label column sm="2" md="2" />
+                            <div className='parameters'>
+                                <div className='text-parameters'>Parameters</div>
+                                {
+                                    parameters.map((param,index) =>{
+                                        const removeSpaceParam = param.replace(/\s+/g, "");
+                                        return (
+                                            <div key={index} className='d-flex box-param'>
+                                                <div className='param pt-1'>{param}</div>
+                                                <Form.Control as="textarea"  value={values[removeSpaceParam] || ''}
+                                                    name={removeSpaceParam} id={removeSpaceParam}
+                                                    className="shadow-none form-input-param" autoComplete="off"
+                                                    onChange={event => this.handleChangeParameter(event, param, parameters)}
+                                                />
+                                            </div>
+                                        );
+                                    })
+                                }
+                            </div>
+                        </Form.Group>
                     }
                     <UploadFileForwardingRef ref={this.imageInputRef} id={actionAnnouncementPopup.announcementId}
                         setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
@@ -343,7 +396,8 @@ export class ActionAnnouncement extends Component {
             imageFileType: '',
             imageFileSize: '',
             fileName: data.fileName,
-            oldFileName: data.fileName
+            oldFileName: data.fileName,
+            cloneContentEN: ''
         };
         const excludeOldImage = this.state.uploadedFiles.filter(x => !initialValues.oldFileName.includes(x));
 

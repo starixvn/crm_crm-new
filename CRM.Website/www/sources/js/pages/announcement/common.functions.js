@@ -88,6 +88,9 @@ export const setValueContent = (setFieldValue, contents) => {
     contents.length > 0 && contents.forEach(content =>{
         const key = content.language === 'EN & SC' ? 'content.ENSC' : `content.${content.language}`;
         setFieldValue(key, content.content);
+        if(content.language === 'EN'){
+            setFieldValue('cloneContentEN', content.content);
+        }
     });
 };
 

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -17,14 +16,12 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using static System.Net.WebRequestMethods;
 
     public class AnnouncementController : BaseController
     {
         private readonly IAnnouncementService announcementService;
         private readonly INapSession napSession;
         private readonly ISettingService settingService;
-        private readonly ICommonService commonService;
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly string pathImages = "www/dist/images/announcement";
 
@@ -32,14 +29,12 @@
             IAnnouncementService announcementService,
             INapSession napSession,
             ISettingService settingService,
-            ICommonService commonService,
             IWebHostEnvironment hostingEnvironment
             )
         {
             this.announcementService = announcementService;
             this.napSession = napSession;
             this.settingService = settingService;
-            this.commonService = commonService;
             this.hostingEnvironment = hostingEnvironment;
         }
 
@@ -99,7 +94,6 @@
                 }
             }
             return Json(commandResult);
-            
         }
 
         [HttpPost]
@@ -122,7 +116,6 @@
                 }
             }
             return Json(commandResult);
-
         }
 
         public async Task<IActionResult> GetAnnouncementById(int id)
@@ -134,8 +127,6 @@
                 contents
             });
         }
-
-
 
         public async Task<IActionResult> Cancel(int id)
         {
@@ -150,7 +141,6 @@
 
         private void CoppyOldFileToNewFile(IList<string> files, int cloneAnnouncementId, int announcementId)
         {
-           
             foreach (var file in files)
             {
                 string targetFolder = getPathFile(announcementId.ToString());
@@ -191,16 +181,16 @@
                     {
                         fileStream.Close();
                     }
-                   System.IO.File.Delete(filePath);
+                    System.IO.File.Delete(filePath);
                 }
             }
         }
 
         private static string getFileName(IList<IFormFile> formFiles, IList<string> fileNames)
         {
-            var formFilesJoin= string.Join(",", formFiles.Select(x => x.FileName));
+            var formFilesJoin = string.Join(",", formFiles.Select(x => x.FileName));
             var fileNameJoin = string.Join(',', fileNames.Select(x => x));
-            if(formFiles.Count > 0 && fileNames.Count > 0)
+            if (formFiles.Count > 0 && fileNames.Count > 0)
             {
                 return fileNameJoin + "," + formFilesJoin;
             }
@@ -210,7 +200,7 @@
             }
         }
 
-        private string getPathFile(string folder, string fileName="")
+        private string getPathFile(string folder, string fileName = "")
         {
             return Path.Combine(hostingEnvironment.ContentRootPath, pathImages, folder, fileName);
         }

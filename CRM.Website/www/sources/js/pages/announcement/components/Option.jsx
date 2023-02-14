@@ -19,6 +19,7 @@ export default class Option extends PureComponent {
                                 isDisable={headlineGroups.length > 0}
                                 dataSource={siteOptions}
                                 keyField='id'
+                                hasSearchBox
                                 valueField='name'
                                 statusField='checked'
                                 isSummited={false}
@@ -35,6 +36,7 @@ export default class Option extends PureComponent {
                                 isDisable={headlineGroups.length > 0}
                                 keyField='id'
                                 valueField='name'
+                                hasSearchBox
                                 statusField='checked'
                                 isSummited={false}
                                 isAllTextShown

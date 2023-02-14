@@ -110,7 +110,7 @@
     ContentLanguageError: "Brace(s) ('{' or '}') found in the field. All parameters must be replaced before being sent.",
     ConfirmSendImmediately: 'Do you want to send the notification to the selected recipient(s) immediately? [Yes] [ No]',
     ConfirmSendAt: 'Do you want to send the notification to the selected recipient(s) at {0} ? [Yes] [ No]',
-    ConfirmInsertAnnouncement: 'Confirm Insert Announcement',
+    ConfirmNewAnnouncement: 'Confirm Create New Announcement',
     ConfirmEditAnnouncement: 'Confirm Edit Announcement',
     CancelThisAnnouncement: 'Cancel this announcement',
     CancelAnnouncementSuccessfully: 'Cancel announcement successfully!',
@@ -255,7 +255,6 @@
     InsertPICSuccess: 'Insert PIC successfully!',
     InsertRedemptionLog: 'Insert Redemption Log',
     InsertRedemptionLogSuccessfully: 'Insert redemption log successfully',
-    InsertAnnouncement: 'Insert Announcement',
     InternalAccount: 'Internal account',
     Invalid: 'Invalid',
     InvalidCategoryField: 'There is no Sub-Category for Category [{0}]. Please add a Sub-Category or choose another Category.',
@@ -581,5 +580,6 @@
     Welcome: 'Welcome',
     SignOut: 'Sign Out',
     PleaseInputUseCommunicationType: 'Communication Type',
-    PostCode: 'Post Code'
+    PostCode: 'Post Code',
+    Parameters: 'Parameters'
 };

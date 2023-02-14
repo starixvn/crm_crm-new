@@ -29,7 +29,7 @@ export class Filter extends Component {
                 notificationIdUpper: '',
                 messageId: '',
                 content: '',
-                announcementId: ''
+                announcementId: this.props.announcementId || ''
             },
             maxDate: now,
             minToDate: now,
@@ -69,7 +69,12 @@ export class Filter extends Component {
                     notificationTypes: notificationTypeIds.toString(),
                     statuses: this.props.settings.statuses.toString()
                 }
-            }));
+            }), ()=>{
+                if(this.props.announcementId){
+                    const btn = document.getElementById('btn-submit-notification');
+                    btn.click();
+                }
+            });
         });
     }
 
@@ -373,7 +378,7 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group>
-                        <Button variant='primary' size='sm' type='submit'>
+                        <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
                             {LangHelper.getResource('Submit')}
                         </Button>
                     </Form.Group>

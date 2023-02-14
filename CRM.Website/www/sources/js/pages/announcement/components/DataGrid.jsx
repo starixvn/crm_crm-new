@@ -8,6 +8,8 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 import AutoRefresh from './AutoRefresh';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import WithNavigation from '@jsroot/components/WithNavigation';
+import Site from '@jsroot/common/site';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -62,16 +64,22 @@ export class DataGrid extends Component {
         this.setIsRefresh(false);
     };
 
+    handleOpenNotificationList = announcementId => {
+        this.props.navigate(Site.resolveClientUrl('NotificationList'), {state: announcementId});
+    };
+
     setIsRefresh = isRefresh => {
         this.props.setIsRefresh(isRefresh);
     };
 
     renderRow = (item, index, isHost) =>{
         const statusMatch = item.status === 'Completed' && item.description ? item.description.match(/(?<=\[)[^\][]*(?=])/g) : [];
+        const statusLowerCase = item.status.toLowerCase();
+        const classLinkAnn = `text-center ${statusLowerCase === 'completed' ? 'link-click' : 'disable-click'}`;
         return(
             <Row key={index} >
                 <Cell className='text-center'>{index + this.startIndex}</Cell>
-                <Cell>{item.announcementId}</Cell>
+                <Cell className={classLinkAnn} onClick={() => this.handleOpenNotificationList(item.announcementId)}>{item.announcementId}</Cell>
                 <Cell>{item.notificationTemplateName}</Cell>
                 <Cell className='text-center'>
                     <div>{item.sendDateString}</div>
@@ -82,7 +90,7 @@ export class DataGrid extends Component {
                 <Cell>{DateTimeService.toLongDateTimeFormat(item.createdTime)}</Cell>
                 {
                     item.status === 'Completed' ? 
-                    <Cell className={`text-center status ${item.status.toLowerCase()}`}>
+                    <Cell className={`text-center status ${statusLowerCase}`}>
                         <div>{item.status}</div>
                         <div>
                             <span>(S:</span>
@@ -94,7 +102,7 @@ export class DataGrid extends Component {
                             <span>)</span>
                         </div>
                     </Cell> :
-                    <Cell className={`text-center status ${item.status.toLowerCase()}`}>{item.status}</Cell>
+                    <Cell className={`text-center status ${statusLowerCase}`}>{item.status}</Cell>
                 }
                 {
                     isHost && this.renderAction(item)
@@ -215,4 +223,6 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataGrid);
+const DataGridNavigation = WithNavigation(DataGrid);
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataGridNavigation);

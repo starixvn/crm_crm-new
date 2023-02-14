@@ -33,7 +33,9 @@ export class NewAnnouncement extends Component {
                 site: '1',
                 currency: '1'
             },
-            confirmInsertDialog: { show: false, params: null}
+            confirmInsertDialog: { show: false, params: null},
+            isChangeTemplate: false,
+            parameters: null
         };
     }
 
@@ -89,11 +91,19 @@ export class NewAnnouncement extends Component {
         this.formik.setFieldValue('notificationTemplateId', value);
         this.formik.setFieldValue('notificationTemplate', value);
         this.getContentByTemplateId(value);
+        this.setState({isChangeTemplate: true});
+    }
+
+    handleGetParameters = contents =>{
+        const contentEn = contents.filter(x=> x.language === 'EN')[0].content;
+        const parameters = contentEn.match(/\{.*?\}/g);
+        this.setState({parameters});
     }
 
     getContentByTemplateId = id =>{
         const contents = this.props.announcementTemplate.contents.filter(x => x.notificationTemplateId === id);
         setValueContent(this.formik.setFieldValue, contents);
+        this.handleGetParameters(contents);
     }
 
     handleChangeTab = selected =>{
@@ -101,11 +111,12 @@ export class NewAnnouncement extends Component {
     }
 
     handlePasteGroupHeadline = event=>{
-        const headlineGroups = (event.clipboardData || window.clipboardData).getData('text')
+        const item = (event.clipboardData || window.clipboardData).getData('text')
             .replace(/ /g, ',').replace(/\r\n/g, ',').replace(/\n/g, ',').replace(/\t/g, ',')
             .split(',').filter(item => item !== '');
+        const concatHeadline = [...this.state.headlineGroups, ...item];
         setTimeout(() => {
-            this.handleSetValueHeadline(headlineGroups);
+            this.handleSetValueHeadline(concatHeadline);
         }, 100);
     }
 
@@ -141,9 +152,27 @@ export class NewAnnouncement extends Component {
         this.formik.setFieldValue('sendDate', value);
     }
 
+    handleChangeParameter = (event, param, removeSpaceParam) =>{
+        const {value, name} = event.target;
+        const {setFieldValue, values} = this.formik;
+        let replaceContent = values.cloneContentEN;
+        setFieldValue(name, value);
+        replaceContent = replaceContent.replace(param, value);
+        removeSpaceParam.forEach(parameter =>{
+            const removeSpaceParam = parameter.replace(/\s+/g, "");
+            if(values[removeSpaceParam] && removeSpaceParam !== name){
+                replaceContent = replaceContent.replace(parameter, values[removeSpaceParam]);
+            }
+        });
+        setFieldValue('content.EN', replaceContent);
+    }
+
     renderMessage = result =>{
         if(!result.isSuccessful){
-            return result.message.split(',');
+            const messages = result.message.split(',');
+            return messages;
+        }else{
+            return [result.message || LangHelper.getResource('InsertAnnouncementSuccessfully')];
         }
     }
 
@@ -160,6 +189,7 @@ export class NewAnnouncement extends Component {
         const propsOption = {
             values, handleChange, errors, touched
         };
+        const {parameters, isChangeTemplate} = this.state;
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -167,7 +197,7 @@ export class NewAnnouncement extends Component {
                     {
                         this.props.createAnnouncementResult &&
                         <ResponseMessage isSuccessful={this.props.createAnnouncementResult.isSuccessful}
-                            message={this.renderMessage(this.props.createAnnouncementResult) || LangHelper.getResource('InsertAnnouncementSuccessfully')}
+                            messages={this.renderMessage(this.props.createAnnouncementResult)}
                         />
                     }
                     <Form.Group as={Row}>
@@ -206,6 +236,30 @@ export class NewAnnouncement extends Component {
                             isValidContent={touched.content && errors.content} content={values.content} setFieldValue={setFieldValue}
                             languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab}
                         />
+                    }
+                    {
+                        isChangeTemplate && parameters &&
+                        <Form.Group as={Row} className='pt-2'>
+                            <Form.Label column sm="2" md="2" />
+                            <div className='parameters'>
+                                <div className='text-parameters'>Parameters</div>
+                                {
+                                    parameters.map((param,index) =>{
+                                        const removeSpaceParam = param.replace(/\s+/g, "");
+                                        return (
+                                            <div key={index} className='d-flex box-param'>
+                                                <div className='param pt-1'>{param}</div>
+                                                <Form.Control as="textarea"  value={values[removeSpaceParam] || ''}
+                                                    name={removeSpaceParam} id={removeSpaceParam}
+                                                    className="shadow-none form-input-param" autoComplete="off"
+                                                    onChange={event => this.handleChangeParameter(event, param, parameters)}
+                                                />
+                                            </div>
+                                        );
+                                    })
+                                }
+                            </div>
+                        </Form.Group>
                     }
                     <UploadFileForwardingRef ref={this.imageInputRef} setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}/>
                     <Form.Group as={Row}>
@@ -298,7 +352,8 @@ export class NewAnnouncement extends Component {
             sendType: '',
             sendDate: new Date(),
             imageFileType: '',
-            imageFileSize: ''
+            imageFileSize: '',
+            cloneContentEN: ''
         };
 
         return (
@@ -308,7 +363,7 @@ export class NewAnnouncement extends Component {
                     onHide={this.props.onClose}
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title as="div">{LangHelper.getResource('InsertAnnouncement')}</Modal.Title>
+                        <Modal.Title as="div">{LangHelper.getResource('NewAnnouncement')}</Modal.Title>
                     </Modal.Header>
                     <Formik
                         innerRef={p => (this.formik = p)}
@@ -322,7 +377,7 @@ export class NewAnnouncement extends Component {
                 {
                     this.state.confirmInsertDialog.show &&
                     <SweetModalDialog size="lg"
-                        title={LangHelper.getResource('ConfirmInsertAnnouncement')}
+                        title={LangHelper.getResource('ConfirmNewAnnouncement')}
                         contents={this.renderContentConfirm()}
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleConfirmInsertDialog}>

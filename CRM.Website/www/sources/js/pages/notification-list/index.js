@@ -4,6 +4,7 @@ import Store from '@jsroot/common/store';
 import AppContainer from './components/AppContainer';
 import reducer from './reducers/index';
 import { AUTO_REFRESH_TIMES } from '@jsroot/common/constants';
+import WithNavigation from '@jsroot/components/WithNavigation';
 import '@cssroot/pages/notification-list/index.scss';
 
 const store = Store.createStore(reducer, {
@@ -55,14 +56,18 @@ const store = Store.createStore(reducer, {
     isRefresh: true
 });
 
-export default class index extends Component {
+class index extends Component {
     render(){
+        const location = this.props.location;
         return(
             <Provider store={store}>
                 <div className='notification-list'>
-                    <AppContainer />
+                    <AppContainer announcementId={location?.state || null}/>
                 </div>
             </Provider>
         );
     }
 }
+
+const FunctionBarWithNavigation = WithNavigation(index);
+export default FunctionBarWithNavigation;

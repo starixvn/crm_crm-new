@@ -53,6 +53,10 @@
         color: $draft-color !important;
     }
 
+    .disable-click{
+        pointer-events: none;
+    }
+
     .react-datepicker__input-container input{
         width: 100% !important;
     }
@@ -92,7 +96,7 @@
         &-value {
             height: 28px;
             background-color: $white;
-            border: 1px solid #ced4da;
+            border: 1px solid $border-input-color;
             cursor: pointer;
     
             div {
@@ -110,7 +114,7 @@
             position: absolute;
             z-index: 1000;
             background-color: $white;
-            border: 1px solid #ced4da;
+            border: 1px solid $border-input-color;
             list-style-type: none;
             width: 100%;
             padding: 0;
@@ -143,23 +147,64 @@
 
         @include tab-language;
 
-        .btn-file {
-            position: relative;
-            overflow: hidden;
-          }
-          .btn-file input[type=file] {
-            position: absolute;
-            top: 0;
-            opacity: 0;
-            outline: none;
-            background: white;
+        .file-upload-label {
             cursor: pointer;
-            display: block;
-        }
+            border: 1px solid #6c757d;
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 13px;
+            margin-right: 5px;
 
+            &:hover{
+                background-color: #e7dfdf;
+            }
+            span{
+                color: black;
+            }
+
+            input[type="file"] {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                opacity: 0;
+                filter: alpha(opacity=0);
+                font-size: 23px;
+                cursor: pointer;
+              }
+        }
+        
         .text-color{
             color: rgb(33,123,199);
             cursor: pointer;
+        }
+
+        .parameters{
+            margin-left: 15px;
+            border: 1px solid $border-input-color;
+            width: 80.3%;
+            position: relative;
+
+            .text-parameters{
+                position: absolute;
+                padding: 0px 18px;
+                position: absolute;
+                padding: 0px 18px;
+                top: -10px;
+                left: 50px;
+                background-color: white;
+            }
+            .box-param{
+                padding: 10px;
+                
+                .param{
+                    width: 20%;
+                }
+                .form-input-param{
+                    width: 80%;
+                    height: calc(1.5em + 0.5rem + 2px) !important;
+                }
+            }
         }
 
         .headline-group-form{

@@ -53,7 +53,7 @@ export class AppContainer extends Component {
         const isHost = this.state.policy === Policy.Host;
         return (
             <Fragment>
-                <Filter />
+                <Filter announcementId={this.props.announcementId}/>
                 <DataGrid isHost={isHost} />
                 {
                     this.props.contentPopup.show &&

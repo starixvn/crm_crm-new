@@ -17,7 +17,7 @@ class UploadFile extends PureComponent {
             }
         });
         this.props.setStateUploadFile(uploaded);
-        this.props.imageInputRef.current.value = null;
+        //this.props.imageInputRef.current.value = null;
     }
 
     handleFileEvent = e => {
@@ -30,7 +30,7 @@ class UploadFile extends PureComponent {
         event.stopPropagation();
         const filterFiler = this.props.uploadedFiles.filter(x => (x.name || x) !== fileName);
         this.props.setStateUploadFile(filterFiler);
-        this.props.imageInputRef.current.value = null;
+        //this.props.imageInputRef.current.value = null;
     }
 
     onDragEnd = result =>{
@@ -92,18 +92,25 @@ class UploadFile extends PureComponent {
     }
 
     render() {
+        const { uploadedFiles } = this.props;
         return (
         <Fragment>
             <Form.Group as={Row} controlId="formFileMultiple">
                     <Form.Label column sm="2" md="2" />
                     <Col >
-                        <span className="fa fa-upload mr-2 mt-2" />
-                        <span className="btn-file">
-                            <span>Browse and attach image (limit: </span>
-                            <span className='text-color'>10MB</span>
+                        <span className='file-upload'>
+                            <label htmlFor="file-btn" className="file-upload-label">
+                            <span>Choose Files</span>
+                                <input id='file-btn' type='file' ref={this.props.imageInputRef} multiple onChange={this.handleFileEvent} />
+                            </label>
+                            {
+                                uploadedFiles.length > 0 ?
+                                    <span className='count-file pr-5'>{uploadedFiles.length} files</span>
+                                :   <span className='count-file pr-5'>No files chosen</span>
+                            }
+                            <span className='text-color'>limit: 10MB</span>
                             <span>, max size: </span>
                             <span className='text-color'>2560*2560)</span>
-                            <input ref={this.props.imageInputRef} type="file" multiple onChange={this.handleFileEvent} />
                         </span>
                     </Col>
                 </Form.Group>
@@ -115,7 +122,7 @@ class UploadFile extends PureComponent {
                                 {...droppableProvided.droppableProps}
                             >
                         {
-                            this.props.uploadedFiles.map((item, index) => (
+                            uploadedFiles.map((item, index) => (
                                 <Draggable key={index} draggableId={`draggableId-${index}`} index={index}>
                                     {(draggableProvided, draggableSnapshot)  => (
                                         this.renderListPortalFile(draggableProvided, draggableSnapshot, item)
