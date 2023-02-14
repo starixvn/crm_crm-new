@@ -218,6 +218,7 @@
     FeedbackStatisticsv2: 'Feedback Statistics v2',
     File:'File',
     GroupHeadline: 'Group Headline',
+    GroupHeadlineEnterNotice: "Enter usernames separated by ',' or space",
     GroupHeadlineRequired: 'Group Headline is required!',
     Guest: 'Guest',
     GroupBy: 'Group By',

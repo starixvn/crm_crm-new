@@ -323,6 +323,14 @@ export class ActionAnnouncement extends Component {
                             </div>
                         </Col>
                     </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="2" md="2" />
+                        <Col sm="10" md="10">
+                            <Form.Label>
+                                {LangHelper.getResource('GroupHeadlineEnterNotice')}
+                            </Form.Label>
+                        </Col>
+                    </Form.Group>
                     <Option 
                         {...propsOption} stateValue={this.state} settings={this.props.settings}
                         handleDateChange={this.handleDateChange} handleOptionChange={this.handleOptionChange}
