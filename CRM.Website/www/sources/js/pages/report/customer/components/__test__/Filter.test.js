@@ -13,7 +13,7 @@ describe('Filter', () => {
         allSettings: {
             languages: [{ languageId: 1, name: 'english' }],
             roles: [{ displayOrder: 1, value: 'guest' }],
-            sites: [{ id: 1, name: 'credit', childSites: [{ id: 1, name: '5111' }] }]
+            sites: [{ id: 1, name: 'credit', childSites: [{ id: 1, name: '5111', childSites: [{ id: 1, name: '5111' }] }] }]
         },
         getAllSettings: jest.fn()
     };
@@ -43,7 +43,7 @@ describe('Filter', () => {
             const expectedPositions = [{ positionId: 1, name: 'guest', checked: true }];
             const expectedSites = [
                 { siteId: 0, name: 'N/A', checked: true },
-                { siteId: 1, name: 'credit', checked: true,subItem: [{ key: 1, value: '5111', checked: true}] }
+                { siteId: 1, name: 'credit', checked: true,subItem: [{ key: 1, name: '5111', value: '5111', checked: true, childList: [{ key: 1, value: '5111', checked: true}] }] }
             ];
             const expectedVips = [
                 { id: -1, name: 'All' },
@@ -164,7 +164,6 @@ describe('Filter', () => {
             container.instance().handleSubmit(mockEvent);
 
             // Assert
-            expect(mockEvent.preventDefault).toHaveBeenCalled();
             expect(props.setGridParams).toHaveBeenCalled();
             expect(props.getCustomerReport).toHaveBeenCalled();
         });

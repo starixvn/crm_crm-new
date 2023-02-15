@@ -24,7 +24,8 @@ describe('Filter', () => {
             roles: [{ id: 1, value: 'guest'} ],
             communicationTools: [{ id: 1001, name: 'emails' }],
             extensions: [{ id: 1, value: 5121 }],
-            mainCategories: [{ mainCategoryID: 3000, name: 'General Net'}]
+            mainCategories: [{ mainCategoryID: 3000, name: 'General Net'}],
+            sites: [{ id: 1, name: 'credit', childSites: [{ id: 1, name: '5111', childSites: [{ id: 1, name: '5111' }] }] }]
         },
         getAllSettings: jest.fn()
     };
@@ -113,7 +114,7 @@ describe('Filter', () => {
 
             // Assert
             expect(container.state().fromDate).toEqual(new Date('12/5/2021 5:20:25 PM'));
-            expect(container.state().toDate).toEqual(new Date('2022-04-08T03:05:20.000Z'));
+            expect(container.state().toDate).toEqual(new Date('2022-12-09T17:00:00.000Z'));
             expect(container.instance().minToDate).toEqual(new Date('12/5/2021 5:20:25 PM'));
             expect(container.instance().maxToDate).toEqual(new Date('4/8/2022 10:05:20 AM'));
         });

@@ -210,6 +210,33 @@ describe('SelectWithSearch', () => {
                 expect(container.state().filter).toEqual('ch');
                 expect(container.state().options).toEqual(newProps.options);
             });
+
+            it('should setState exactly when length\'s layer2 is 0', () => {
+                //Arrange
+                const event = { target: { value: 'yUT', name: 'filter' } };
+                const propOptions = {
+                    ...props,
+                    options: [
+                        {   
+                            id: 6006,
+                            name: 'Credit',
+                            childSites: [
+                                { name: '789y', id: 1, childSites: [{ name: 'yUT', id: 2 }, { name: '879y', id: 3 }] },
+                                { name: '889y', id: 4, childSites: null }
+                            ]
+                        }
+                    ]
+                };
+                const newProps = [{ childSites: [{ childSites: [{ id : 2, name: 'yUT'}], id: 1, name: '789y'}], id: 6006, name: 'Credit'}];
+                const container = shallow(<SelectWithSearch {...propOptions} />);
+
+                //Act
+                container.instance().handleChangeSearchInput(event);
+
+                //Assert
+                expect(container.state().filter).toEqual('yUT');
+                expect(container.state().options).toEqual(newProps);
+            })
         });
 
         describe('clearSearchBox', () => {
@@ -345,6 +372,20 @@ describe('SelectWithSearch', () => {
 
                 //Assert
                 expect(container.instance().state.selectFormStatus).toEqual('');
+            });
+        });
+
+        describe('getSiteLabel', () => {
+            it('should return exactly result', () => {
+                //Arrange
+                const siteOptions = [{ childSites: [{ key: 1, checked: true, childSites: [{ id: 6006, siteLabel: '789y' }] }] }];
+                const container = shallow(<SelectWithSearch {...props}/>);
+                
+                //Act
+                const result = container.instance().getSiteLabel(siteOptions, 6006);
+
+                //Assert
+                expect(result).toBe('789y');
             });
         });
 

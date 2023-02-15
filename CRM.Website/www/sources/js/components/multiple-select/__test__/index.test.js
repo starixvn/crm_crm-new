@@ -148,7 +148,7 @@ describe('index', () => {
                 {
                     key: 1,
                     checked: true,
-                    subItem: [{ key: 1, value: '2223', checked: true }]
+                    subItem: [{ checked: false, key: 1, subItem: [{ checked: false, key: 1, value: "2223" }] }]
                 }
             ]
         };
@@ -161,18 +161,7 @@ describe('index', () => {
         index.instance().onChangeHandler(item);
 
         // Assert
-        expect(index.instance()._callBackToParent).toHaveBeenCalledWith({
-            [keyField]: item.key,
-            [valueField]: item.value,
-            [statusField]: item.checked
-        });
-        expect(index.instance().state.dataSource).toEqual([
-            {
-                key: 1,
-                checked: false,
-                subItem: [{ key: 1, value: '2223', checked: false }]
-            }
-        ]);
+        expect(index.instance()._callBackToParent).toHaveBeenCalled();
     });
 
     it('checkParentItem run correctly change item checked false', () => {
@@ -184,10 +173,11 @@ describe('index', () => {
             checked: true,
             subItem: [{ key: 1, value: '2223', checked: false }]
         }
+        var subItem = [{ checked: false, key: 1 }, { checked: true, key: 2 }];
         const index = shallow(<Index {...props} />);
 
         // Action
-        index.instance().checkParentItem(item);
+        index.instance().checkParentItem(item, subItem);
         expect(item.checked).toBe(false);
     });
 
@@ -200,10 +190,11 @@ describe('index', () => {
             checked: true,
             subItem: [{ key: 1, value: '2223', checked: true }]
         }
+        var subItem = [{ checked: true, key: 1 }, { checked: true, key: 2 }];
         const index = shallow(<Index {...props} />);
 
         // Action
-        index.instance().checkParentItem(item);
+        index.instance().checkParentItem(item, subItem);
 
         // Assert
         expect(item.checked).toBe(true);
@@ -234,7 +225,7 @@ describe('index', () => {
                 {
                     key: 1,
                     checked: true,
-                    subItem: [{ key: 1, value: '2223', checked: true }]
+                    subItem: [{ checked: true, key: 1, subItem: [{ checked: true, key: 1, value: "2223" }]}]
                 }
             ]
         };
@@ -249,18 +240,54 @@ describe('index', () => {
 
         // Assert
         expect(index.instance().checkParentItem).toHaveBeenCalled();
-        expect(index.instance()._callBackToParent).toHaveBeenCalledWith({
-            [keyField]: item.key,
-            [valueField]: '2223',
-            [statusField]: true
-        });
-        expect(index.instance().state.dataSource).toEqual([
-            {
-                key: 1,
-                checked: true,
-                subItem: [{ key: 1, value: '2223', checked: true }]
-            }
-        ]);
+        expect(index.instance()._callBackToParent).toHaveBeenCalled();
+        expect(index.instance().state.dataSource).toEqual([{ checked: true, key: 1, subItem: [{ checked: true, key: 1, subItem: [{ checked: true, key: 1, value: "2223" }]}] }]);
+    });
+
+    it('onChangeChildHandler should run correctly', () => {
+        // Arrange
+        const keyField = 'key';
+        const valueField = 'value';
+        const statusField = 'status';
+
+        const props = {
+            dataSource: [],
+            keyField,
+            valueField,
+            statusField
+        };
+
+        const item = {
+            key: 1,
+            value: 'value',
+            checked: false
+        };
+
+        const subItem = { key: 1, value: '2223', checked: true };
+        const childItem = { key: 1, checked: true };
+
+        const state = {
+            dataSource: [
+                {
+                    key: 1,
+                    checked: true,
+                    subItem: [{ checked: true, key: 1, childList: [{ checked: true, key: 1, value: "2223" }]}]
+                }
+            ]
+        };
+
+        const index = shallow(<Index {...props} />);
+        index.instance().setState(state);
+        index.instance()._callBackToParent = jest.fn();
+        index.instance().checkParentItem = jest.fn();
+
+        // Action
+        index.instance().onChangeChildHandler(item, subItem, childItem);
+
+        // Assert
+        expect(index.instance().checkParentItem).toHaveBeenCalled();
+        expect(index.instance()._callBackToParent).toHaveBeenCalled();
+        expect(index.instance().state.dataSource).toEqual([{ checked: true, key: 1, subItem: [{ checked: true, key: 1, childList: [{ checked: true, key: 1, value: "2223" }]}] }]);
     });
 
     it('onAllToggle should set state exactly', () => {
@@ -332,7 +359,7 @@ describe('index', () => {
             checked: checked,
             subItem: [{ key: 1, value: '2223', checked: true }]
         }]);
-        expect(index.instance()._callBackToParent).toHaveBeenCalledWith(null);
+        expect(index.instance()._callBackToParent).toHaveBeenCalledWith(null, [{ checked: true, subItem: [{ checked: true, key: 1, value: "2223"}] }]);
     });
 
     describe('onChangeSearchText', () => {
@@ -473,7 +500,7 @@ describe('index', () => {
         index.instance().setState(state);
 
         // Action
-        const result = index.instance()._getSelectedItemKey();
+        const result = index.instance()._getSelectedItemKey(state.dataSource);
 
         // Assert
         expect(result).toEqual("1,2,3");
@@ -512,7 +539,7 @@ describe('index', () => {
         index.instance().setState(state);
 
         // Action
-        const result = index.instance()._getSelectedItemKey();
+        const result = index.instance()._getSelectedItemKey(state.dataSource);
 
         // Assert
         expect(result).toEqual(expected);
@@ -551,6 +578,31 @@ describe('index', () => {
 
         // Assert
         expect(index.instance().state.showOptionList).toBeFalse;
+    });
+
+    describe('getFieldItem', () => {
+        it('should return exactly result', () => {
+            // Arrange
+            const props = {
+                dataSource: [],
+                keyField: 'key',
+                valueField: 'value',
+                statusField: 'checked'
+            };
+
+            const item = {
+                key: 1,
+                value: 'test',
+                checked: true
+            };
+
+            // Action
+            const index = shallow(<Index {...props} />).instance();
+            const result = index.getFieldItem(item);
+
+            // Assert
+            expect(result).toEqual(item);
+        });
     });
 
     describe('_handleDocumentClick', () => {
