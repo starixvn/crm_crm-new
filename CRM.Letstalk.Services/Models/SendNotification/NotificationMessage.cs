@@ -4,17 +4,14 @@
 
     public class NotificationMessage
     {
+        public int AnnouncementId { get; set; }
         public int NotificationId { get; set; }
-
         public string Content { get; set; }
-
         public int ConversationGroupId { get; set; }
-
         public int ChatTypeId { get; set; }
-
         public int BotId { get; set; }
-
         public string ConversationId { get; set; }
+        public string FileName { get; set; }
 
         public ChatType ChatType
         {

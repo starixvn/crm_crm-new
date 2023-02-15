@@ -2,23 +2,28 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Enumerables;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Services;
+    using CRM.Letstalk.Client.Enum;
+    using CRM.Letstalk.Client.Models;
     using CRM.Letstalk.Client.Models.Results;
     using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Letstalk.Services.Constants;
     using CRM.Letstalk.Services.Criteria;
     using CRM.Letstalk.Services.Models.SendNotification;
     using CRM.Letstalk.Services.Services.Interfaces;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
 
     public class SendNotificationService : ISendNotificationService
     {
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
+        private readonly IWebHostEnvironment webHostEnvironment;
         private readonly Func<int, ILetstalkService> letstalkService;
         private readonly int ItemEachBatch;
         private const int DefaultItemEachBatch = 10;
@@ -26,11 +31,13 @@
         public SendNotificationService(IBaseService baseService,
             ICRMLogService logService,
             IConfiguration configuration,
+            IWebHostEnvironment webHostEnvironment,
             Func<int, ILetstalkService> letstalkService)
         {
             this.baseService = baseService;
             this.logService = logService;
             this.letstalkService = letstalkService;
+            this.webHostEnvironment = webHostEnvironment;
             ItemEachBatch = configuration.GetValue<int?>("SendNotificationItemEachBatch") ?? DefaultItemEachBatch;
         }
 
@@ -123,7 +130,20 @@
 
         private async Task SendToPersonal(NotificationMessage notification, SendNotificationResult sendResult)
         {
-            var result = await letstalkService(notification.BotId).PushAsync(notification.ConversationId, notification.Content);
+            var result = new PushMessageResult();
+            if (string.IsNullOrWhiteSpace(notification.FileName))
+            {
+                result = await letstalkService(notification.BotId).PushAsync(notification.ConversationId, notification.Content);
+            }
+            else
+            {
+                var outGoingMsg = new OutgoingMessage
+                {
+                    MessageType = MessageTypeEnum.Html,
+                    Text = BuildContent(notification)
+                };
+                result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outGoingMsg);
+            }
 
             if (result.IsSuccess && !result.BlockList.Any())
             {
@@ -148,10 +168,50 @@
 
         private async Task SendToGroup(NotificationMessage notification, SendNotificationResult sendResult)
         {
-            var result = await letstalkService(notification.BotId).PushRoomAsync(notification.ConversationId, notification.Content);
+            var result = new BaseResult();
+            if (string.IsNullOrWhiteSpace(notification.FileName))
+            {
+                result = await letstalkService(notification.BotId).PushRoomAsync(notification.ConversationId, notification.Content);
+            }
+            else
+            {
+                var outGoingMsg = new OutgoingMessage
+                {
+                    MessageType = MessageTypeEnum.Html,
+                    Text = BuildContent(notification)
+                };
+                result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
+            }
+
             sendResult.Status = result.IsSuccess ? SendNotificationStatus.Sent : SendNotificationStatus.Retrying;
             sendResult.ErrMsg = result.IsSuccess ? string.Empty : SendNotificationErrMsg.BotServiceErrorMsg;
             await WriteLogMessage(notification, result, sendResult.Status);
+        }
+
+        private string BuildContent(NotificationMessage notification)
+        {
+            var content = notification.Content;
+            if (!string.IsNullOrWhiteSpace(notification.FileName))
+            {
+                var files = notification.FileName.Split(",");
+                foreach (var file in files)
+                {
+                    string imageUrl = BuildImageBase64Html(file, notification.AnnouncementId);
+                    content += "</br>";
+                    content += imageUrl;
+                }
+            }
+            return content;
+        }
+
+        private string BuildImageBase64Html(string file, int announcementId)
+        {
+            var path = Path.Combine(webHostEnvironment.ContentRootPath, "wwwroot", "announcement", announcementId.ToString(), file);
+            logService.LogInformation(path);
+            byte[] imageArray = File.ReadAllBytes(path);
+            string base64ImageRepresentation = "data:image/jpeg;base64," + Convert.ToBase64String(imageArray);
+            var html = "<img style=\"width: 100%;\" src=\"" + base64ImageRepresentation + "\" Alt=\"" + file + "\">";
+            return html;
         }
 
         private async Task UpdateRecipientStatus(IEnumerable<SendNotificationResult> sentResults)
