@@ -197,7 +197,7 @@
                 foreach (var file in files)
                 {
                     string imageUrl = BuildImageBase64Html(file, notification.AnnouncementId);
-                    content += "</br>";
+                    content += "<br/>";
                     content += imageUrl;
                 }
             }
