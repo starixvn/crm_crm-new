@@ -22,6 +22,7 @@ export class NewAnnouncement extends Component {
         super(props);
         this.imageInputRef = React.createRef();
         this.headlineInputRef = React.createRef();
+        this.paramInputRef = React.createRef();
         this.state = {
             languages: null,
             uploadedFiles: [],
@@ -92,12 +93,9 @@ export class NewAnnouncement extends Component {
         this.formik.setFieldValue('notificationTemplate', value);
         this.getContentByTemplateId(value);
         this.setState({isChangeTemplate: true});
-    }
-
-    handleGetParameters = contents =>{
-        const contentEn = contents.filter(x=> x.language === 'EN')[0].content;
-        const parameters = contentEn.match(/\{.*?\}/g);
-        this.setState({parameters});
+        if(this.paramInputRef?.current){
+            this.paramInputRef.current.value = '';
+        }
     }
 
     getContentByTemplateId = id =>{
@@ -105,11 +103,20 @@ export class NewAnnouncement extends Component {
         const title = this.props.announcementTemplate.notificationTemplates.filter(x => x.notificationTemplateId === id)[0].title;
         this.formik.setFieldValue('title', title);
         setValueContent(this.formik.setFieldValue, contents);
-        this.handleGetParameters(contents);
+        const content = contents.filter(x=> x.language === this.state.tab)[0].content;
+        this.handleGetParameters(content);
+    }
+    
+    handleGetParameters = content =>{
+        const parameters = content.match(/\{.*?\}/g);
+        this.setState({parameters});
     }
 
     handleChangeTab = selected =>{
         this.setState({tab: selected});
+        const replaceTab = selected.replace(/[^A-Z0-9]/ig, '');
+        const content = this.formik.values.content[replaceTab];
+        this.handleGetParameters(content);
     }
 
     handlePasteGroupHeadline = event=>{
@@ -157,7 +164,8 @@ export class NewAnnouncement extends Component {
     handleChangeParameter = (event, param, removeSpaceParam) =>{
         const {value, name} = event.target;
         const {setFieldValue, values} = this.formik;
-        let replaceContent = values.cloneContentEN;
+        const replaceTab = this.state.tab.replace(/[^A-Z0-9]/ig, '');
+        let replaceContent = values.cloneContent[replaceTab];
         setFieldValue(name, value);
         replaceContent = replaceContent.replace(param, value);
         removeSpaceParam.forEach(parameter =>{
@@ -166,7 +174,7 @@ export class NewAnnouncement extends Component {
                 replaceContent = replaceContent.replace(parameter, values[removeSpaceParam]);
             }
         });
-        setFieldValue('content.EN', replaceContent);
+        setFieldValue(`content.${replaceTab}`, replaceContent);
     }
 
     renderMessage = result =>{
@@ -251,7 +259,7 @@ export class NewAnnouncement extends Component {
                                         return (
                                             <div key={index} className='d-flex box-param'>
                                                 <div className='param pt-1'>{param}</div>
-                                                <Form.Control as="textarea"  value={values[removeSpaceParam] || ''}
+                                                <Form.Control ref={this.paramInputRef} as="textarea"  value={values[removeSpaceParam] || ''}
                                                     name={removeSpaceParam} id={removeSpaceParam}
                                                     className="shadow-none form-input-param" autoComplete="off"
                                                     onChange={event => this.handleChangeParameter(event, param, parameters)}
@@ -363,7 +371,13 @@ export class NewAnnouncement extends Component {
             sendDate: new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))),
             imageFileType: '',
             imageFileSize: '',
-            cloneContentEN: ''
+            cloneContent:{
+                EN:'',
+                SC:'',
+                ENSC:'',
+                TH:'',
+                YN:''
+            }
         };
 
         return (

@@ -65,8 +65,8 @@ export class ActionAnnouncement extends Component {
     getContentByLanguage = contents =>{
         const contentObj = {};
         contents.length > 0 && contents.forEach(content =>{
-                const key = content.languageCode === 'EN & SC' ? 'ENSC' : content.languageCode;
-                contentObj[key] = content.content;
+            const replaceContent = content.languageCode.replace(/[^A-Z0-9]/ig, '');
+            contentObj[replaceContent] = content.content;
         });
         this.setState({content: contentObj});
     }
@@ -97,7 +97,7 @@ export class ActionAnnouncement extends Component {
                     site: announcement.siteNameList,
                     currency: announcement.currencyIdList
                 },
-                headlineGroups: !announcement.headlineNameList ? [] : announcement.headlineNameList.split(','),
+                headlineGroups: !announcement.siteNameList ? announcement.headlineNameList.split(',') : [] ,
                 uploadedFiles: !announcement.fileName ? [] : announcement.fileName.split(',')
             });
         });

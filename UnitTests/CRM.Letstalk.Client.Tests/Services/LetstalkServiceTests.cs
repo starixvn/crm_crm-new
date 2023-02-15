@@ -9,6 +9,7 @@
     using CRM.Letstalk.Client.Models.Results;
     using CRM.Letstalk.Client.Services;
     using CRM.Letstalk.Client.Services.Interfaces;
+    using Fanex.Caching;
     using Newtonsoft.Json;
     using NSubstitute;
     using Xunit;
@@ -20,6 +21,7 @@
         private readonly ICryptographyService cryptographyService;
         private readonly IHttpClientService restClientService;
         private readonly IJwtService jwtService;
+        private readonly ICacheService cacheService;
 
         public LetstalkServiceTests()
         {
@@ -38,7 +40,8 @@
             cryptographyService = Substitute.For<ICryptographyService>();
             jwtService = Substitute.For<IJwtService>();
             restClientService = Substitute.For<IHttpClientService>();
-            letstalkService = new LetstalkService(cryptographyService, restClientService, botConfig);
+            cacheService = Substitute.For<ICacheService>();
+            letstalkService = new LetstalkService(cryptographyService, restClientService, cacheService, botConfig);
         }
 
         [Fact]

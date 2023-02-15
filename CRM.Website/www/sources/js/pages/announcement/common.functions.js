@@ -86,19 +86,20 @@ export const renderOption = (key, value, label) => (<option key={key} value={val
 
 export const setValueContent = (setFieldValue, contents) => {
     contents.length > 0 && contents.forEach(content =>{
-        const key = content.language === 'EN & SC' ? 'content.ENSC' : `content.${content.language}`;
+        const replaceLanguage = content.language.replace(/[^A-Z0-9]/ig, '');
+        const key = `content.${replaceLanguage}`;
+        const cloneKey =  `cloneContent.${replaceLanguage}`;
         const contentReplace = content.content.replace( /\n/g, '<br />');
         setFieldValue(key, contentReplace);
-        if(content.language === 'EN'){
-            setFieldValue('cloneContentEN', contentReplace);
-        }
+        setFieldValue(cloneKey, contentReplace);
     });
 };
 
 export const mapLabelLanguage = languages =>{
     return languages.map(data =>{
+        const replaceLanguage = data.settingValue.replace(/[^A-Z0-9]/ig, '');
         return {
-            ...data, mapLabel: data.settingValue === 'EN & SC' ? 'ENSC' : data.settingValue
+            ...data, mapLabel: replaceLanguage
         };
     });
 };

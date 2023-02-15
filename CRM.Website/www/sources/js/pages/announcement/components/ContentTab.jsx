@@ -28,8 +28,7 @@ export default class ContentTab extends PureComponent {
                                     username={window.currentUsername}
                                     onChange={value => {
                                         setFieldValue(`content.${[language.mapLabel]}`, value);
-                                        if(language.mapLabel === 'EN')
-                                        setFieldValue('cloneContentEN', value);
+                                        setFieldValue(`cloneContent.${[language.mapLabel]}`, value);
                                     }}
                                     readOnly={isReadOnly}
                                 />
