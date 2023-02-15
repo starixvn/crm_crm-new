@@ -61,8 +61,8 @@ export class Filter extends Component {
         const { announcementId, title, fromDate, toDate, status } = this.state;
         const params = {
             announcementId: announcementId,
-            fromDate: DateTimeService.toShortDateFormat(fromDate),
-            toDate: DateTimeService.toShortDateFormat(toDate),
+            fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(fromDate)),
+            toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(toDate)),
             title: title,
             status: status,
             pageIndex: 1,

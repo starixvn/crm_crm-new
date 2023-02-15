@@ -26,25 +26,30 @@ namespace CRM.Services.HeadlineNotification
 
         public async Task<IEnumerable<AnnouncementInfo>> GetAnnouncementAsync(GetAnnouncementCriteria criteria)
         {
+            criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
+            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
             var announcements = await baseService.GetDataAsync<AnnouncementInfo>(criteria);
             foreach(var announcement in announcements)
             {
                 var convertSendDateToClient = commonService.ConvertToClientDateTime(announcement.SendDate);
+                var convertCreatedTimeToClient = commonService.ConvertToClientDateTime(announcement.CreatedTime);
                 announcement.SendDate = convertSendDateToClient;
                 announcement.SendDateString = convertSendDateToClient.ToString("MMM dd, yyyy");
                 announcement.SendTimeString = convertSendDateToClient.ToString("hh:mm:ss tt");
-                announcement.CreatedTime = commonService.ConvertToClientDateTime(announcement.CreatedTime);
+                announcement.CreatedTime = convertCreatedTimeToClient;
             }
             return announcements;
         }
 
         public async Task<CommandResult> NewAnnouncementAsync(CreateAnnouncementCommand command)
         {
+            command.SendDate = commonService.ConvertToServerDateTime((DateTime)command.SendDate);
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
         public async Task<CommandResult> EditAnnouncementAsync(EditAnnouncementCommand command)
         {
+            command.SendDate = commonService.ConvertToServerDateTime((DateTime)command.SendDate);
             return await baseService.ExecuteNonQueryAsync(command);
         }
 

@@ -8,8 +8,8 @@ fromDate.setDate(fromDate.getDate() - 7);
 const initialState = {
     gridParams: {
         announcementId: '',
-        fromDate: DateTimeService.toShortDateFormat(fromDate.setDate(fromDate.getDate() - 7)),
-        toDate: DateTimeService.toShortDateFormat(currentDate),
+        fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(fromDate)),
+        toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(currentDate)),
         title: '',
         status: Statuses.map(x=> x.name).join(','),
         pageIndex: 1,
