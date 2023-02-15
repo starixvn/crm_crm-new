@@ -37,7 +37,7 @@ export default class ContentTab extends PureComponent {
                     }
                 </Tabs>               
             </Col>
-    </Form.Group>
+        </Form.Group>
     );
   }
 }

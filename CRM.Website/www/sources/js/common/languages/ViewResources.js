@@ -35,6 +35,7 @@
     Announcement: 'Announcement',
     AnnouncementId: 'Announcement ID',
     AnnouncementList: 'Announcement List',
+    AffectedGroupHeadline: 'Affected Group Headline',
     BankInfo: 'Bank Info',
     BankName: 'Bank\'s Name',
     BotBlocked: 'Bot Blocked',

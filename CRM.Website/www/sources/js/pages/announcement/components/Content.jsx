@@ -19,7 +19,9 @@ class Content extends Component {
             languages: null,
             tab: '',
             content: '',
-            announcement: null
+            announcement: null,
+            currencies: '',
+            headlineType: ''
         };
     }
 
@@ -40,7 +42,32 @@ class Content extends Component {
             const announcement = data[0];
             this.setState({announcement});
             this.getContentByLanguage(contents);
+            if(announcement.siteNameList.length > 0){
+                this.getSettingOption(announcement);
+            }
         }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
+    }
+
+    getSettingOption = async announcement =>{
+        await this.props.getSettings().then(() =>{
+            const currencies = [];
+            let headlineType = '';
+            this.props.settings.currencyList.map(x => {
+                if(announcement.currencyIdList.includes(x.id)){
+                    currencies.push(x.name);
+                }
+            });
+
+            const headlineTypes = [...this.props.settings.headlineTypeList, {id: 2, name: 'All'}];
+
+            headlineTypes.map(x => {
+                if(announcement.headlineType === x.id){
+                    headlineType = x.name;
+                }
+            });
+
+            this.setState({currencies: currencies.join(', '), headlineType});
+        });
     }
 
     getContentByLanguage = contents =>{
@@ -63,10 +90,9 @@ class Content extends Component {
         window.open(url);
     }
 
-
     render() {
         const {announcement, languages, content, tab} = this.state;
-        if(!this.state.announcement || !languages || !content){
+        if(!this.state.announcement || !languages || !content || !this.props.settings){
             return null;
         }
         const fileNames = !announcement.fileName ? '' : announcement.fileName.split(',');
@@ -97,9 +123,37 @@ class Content extends Component {
                             </div>
                         ))
                     }
+                    {
+                        !announcement.siteNameList ?
+                        <>
+                            <div>
+                                <span>{`${LangHelper.getResource('Site')}: N/A`}</span>
+                            </div>
+                            <div>
+                                <span>{`${LangHelper.getResource('Currency')}: N/A`}</span>
+                            </div>
+                            <div>
+                                <span>{`${LangHelper.getResource('HeadlineType')}: N/A`}</span>
+                            </div>
+                        </> :
+                        <>
+                            <div>
+                                <span>{`${LangHelper.getResource('Site')}: `}</span>
+                                <span style={{fontWeight:'bold'}}>{announcement.siteNameList.replaceAll(',', ', ')}</span>
+                            </div>
+                            <div>
+                                <span>{`${LangHelper.getResource('Currency')}: `}</span>
+                                <span style={{fontWeight:'bold'}}>{this.state.currencies}</span>
+                            </div>
+                            <div>
+                                <span>{`${LangHelper.getResource('HeadlineType')}: `}</span>
+                                <span style={{fontWeight:'bold'}}>{this.state.headlineType}</span>
+                            </div>
+                        </>
+                    }
                     <div>
-                        <span>{`${LangHelper.getResource('GroupHeadline')}: `}</span>
-                        <span style={{fontWeight:'bold'}}>{announcement.headlineNameList}</span>
+                        <span>{`${LangHelper.getResource('AffectedGroupHeadline')}: `}</span>
+                        <span style={{fontWeight:'bold'}}>{announcement.headlineNameList.replaceAll(',', ', ')}</span>
                     </div>
                     <div>
                         <span>{`${LangHelper.getResource('SendDateTimeGMTA8')}: `}</span>
@@ -113,6 +167,12 @@ class Content extends Component {
         );
     }
 }
+
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
-export default connect(null, mapDispatchToProps)(Content);
+const mapStateToProps = state => {
+    const { settings } = state;
+    return { settings };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Content);
