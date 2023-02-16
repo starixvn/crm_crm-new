@@ -18,6 +18,7 @@
     using CRM.Letstalk.Services.Services.Interfaces;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
+    using Newtonsoft.Json;
 
     public class SendNotificationService : ISendNotificationService
     {
@@ -163,12 +164,15 @@
         private async Task SendToGroup(NotificationMessage notification, SendNotificationResult sendResult)
         {
             var result = new BaseResult();
-
+            var content = BuildContent(notification);
             var outGoingMsg = new OutgoingMessage
             {
                 MessageType = MessageTypeEnum.Html,
-                Text = BuildContent(notification)
+                Text = content
             };
+            logService.LogInformation("============================================================");
+            logService.LogInformation(JsonConvert.SerializeObject(notification));
+            logService.LogInformation(content);
             result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
             sendResult.Status = result.IsSuccess ? SendNotificationStatus.Sent : SendNotificationStatus.Retrying;
