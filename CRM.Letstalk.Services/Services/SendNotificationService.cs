@@ -131,19 +131,13 @@
         private async Task SendToPersonal(NotificationMessage notification, SendNotificationResult sendResult)
         {
             var result = new PushMessageResult();
-            if (string.IsNullOrWhiteSpace(notification.FileName) && notification.AnnouncementId == 0)
+
+            var outGoingMsg = new OutgoingMessage
             {
-                result = await letstalkService(notification.BotId).PushAsync(notification.ConversationId, notification.Content);
-            }
-            else
-            {
-                var outGoingMsg = new OutgoingMessage
-                {
-                    MessageType = MessageTypeEnum.Html,
-                    Text = BuildContent(notification)
-                };
-                result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outGoingMsg);
-            }
+                MessageType = MessageTypeEnum.Html,
+                Text = BuildContent(notification)
+            };
+            result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
             if (result.IsSuccess && !result.BlockList.Any())
             {
@@ -169,19 +163,13 @@
         private async Task SendToGroup(NotificationMessage notification, SendNotificationResult sendResult)
         {
             var result = new BaseResult();
-            if (string.IsNullOrWhiteSpace(notification.FileName) && notification.AnnouncementId == 0)
+
+            var outGoingMsg = new OutgoingMessage
             {
-                result = await letstalkService(notification.BotId).PushRoomAsync(notification.ConversationId, notification.Content);
-            }
-            else
-            {
-                var outGoingMsg = new OutgoingMessage
-                {
-                    MessageType = MessageTypeEnum.Html,
-                    Text = BuildContent(notification)
-                };
-                result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
-            }
+                MessageType = MessageTypeEnum.Html,
+                Text = BuildContent(notification)
+            };
+            result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
             sendResult.Status = result.IsSuccess ? SendNotificationStatus.Sent : SendNotificationStatus.Retrying;
             sendResult.ErrMsg = result.IsSuccess ? string.Empty : SendNotificationErrMsg.BotServiceErrorMsg;
