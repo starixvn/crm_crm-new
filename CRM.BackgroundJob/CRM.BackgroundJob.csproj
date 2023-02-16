@@ -44,6 +44,7 @@
         <None Remove="Format_Templates\AutoCreateFeedback\VoidingSettledTicketDescriptionTemplate.xml" />
         <None Remove="Format_Templates\AutoCreateFeedback\VoidingSettledTicketSolutionTemplate.xml" />
         <None Remove="logs\log.txt" />
+        <None Remove="wwwroot\announcement\favicon.ico" />
     </ItemGroup>
 
     <ItemGroup>
@@ -108,6 +109,9 @@
         <Content Include="logs\log.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <Content Include="wwwroot\announcement\favicon.ico">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -139,9 +143,5 @@
 
     <ItemGroup>
       <None Include="appsettings.LOCAL_1.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="wwwroot\announcement\" />
     </ItemGroup>
 </Project>
