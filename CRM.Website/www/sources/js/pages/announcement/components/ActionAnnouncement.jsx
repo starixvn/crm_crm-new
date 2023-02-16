@@ -85,7 +85,7 @@ export class ActionAnnouncement extends Component {
                 return {
                     id: x.id,
                     name: x.name,
-                    checked: announcement.currencyIdList?.includes(x.id)
+                    checked: announcement.currencyIdList?.split(',').includes(x.id.toString())
                 };
             });
 

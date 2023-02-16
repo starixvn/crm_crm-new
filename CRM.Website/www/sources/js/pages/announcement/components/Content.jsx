@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Site from '@jsroot/common/site';
 import {
-   mapLabelLanguage, setValueContent
+   mapLabelLanguage
 } from '../common.functions';
 
 import ContentTab from './ContentTab';
@@ -53,7 +53,7 @@ class Content extends Component {
             const currencies = [];
             let headlineType = '';
             this.props.settings.currencyList.map(x => {
-                if(announcement.currencyIdList.includes(x.id)){
+                if(announcement.currencyIdList.split(',').includes(x.id.toString())){
                     currencies.push(x.name);
                 }
             });
