@@ -28,7 +28,6 @@ export class NewNotificationTemplate extends Component {
         touched,
         handleChange,
         handleSubmit,
-        setFieldValue,
         isSubmitting
     }) => {
         return (
