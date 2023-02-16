@@ -9,6 +9,7 @@
     using CRM.Letstalk.Services.Criteria;
     using CRM.Letstalk.Services.Models.SendNotification;
     using CRM.Letstalk.Services.Services;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using NSubstitute;
     using Xunit;
@@ -20,6 +21,7 @@
         private readonly IConfiguration configuration;
         private readonly ICRMLogService logService;
         private readonly ILetstalkService letstalkService;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
         public SendNotificationServiceTests()
         {
@@ -30,7 +32,8 @@
             configuration = Substitute.For<IConfiguration>();
             baseService = Substitute.For<IBaseService>();
             logService = Substitute.For<ICRMLogService>();
-            service = new SendNotificationService(baseService, logService, configuration, func);
+            webHostEnvironment = Substitute.For<IWebHostEnvironment>();
+            service = new SendNotificationService(baseService, logService, configuration, webHostEnvironment, func);
         }
 
         [Fact]

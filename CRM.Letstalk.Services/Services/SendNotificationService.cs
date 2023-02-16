@@ -131,7 +131,7 @@
         private async Task SendToPersonal(NotificationMessage notification, SendNotificationResult sendResult)
         {
             var result = new PushMessageResult();
-            if (string.IsNullOrWhiteSpace(notification.FileName))
+            if (string.IsNullOrWhiteSpace(notification.FileName) && notification.AnnouncementId == 0)
             {
                 result = await letstalkService(notification.BotId).PushAsync(notification.ConversationId, notification.Content);
             }
@@ -169,7 +169,7 @@
         private async Task SendToGroup(NotificationMessage notification, SendNotificationResult sendResult)
         {
             var result = new BaseResult();
-            if (string.IsNullOrWhiteSpace(notification.FileName))
+            if (string.IsNullOrWhiteSpace(notification.FileName) && notification.AnnouncementId == 0)
             {
                 result = await letstalkService(notification.BotId).PushRoomAsync(notification.ConversationId, notification.Content);
             }
@@ -209,7 +209,9 @@
             var path = Path.Combine(webHostEnvironment.ContentRootPath, "wwwroot", "announcement", announcementId.ToString(), file);
             logService.LogInformation(path);
             byte[] imageArray = File.ReadAllBytes(path);
-            string base64ImageRepresentation = "data:image/jpeg;base64," + Convert.ToBase64String(imageArray);
+            string fileType = file.EndsWith("png", StringComparison.OrdinalIgnoreCase) ? "png" : "jpeg";
+
+            string base64ImageRepresentation = $"data:image/{fileType};base64,{Convert.ToBase64String(imageArray)}";
             var html = "<img style=\"width: 100%;\" src=\"" + base64ImageRepresentation + "\" Alt=\"" + file + "\">";
             return html;
         }
