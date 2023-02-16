@@ -132,12 +132,18 @@
         private async Task SendToPersonal(NotificationMessage notification, SendNotificationResult sendResult)
         {
             var result = new PushMessageResult();
+            var content = BuildContent(notification);
 
             var outGoingMsg = new OutgoingMessage
             {
                 MessageType = MessageTypeEnum.Html,
-                Text = BuildContent(notification)
+                Text = content
             };
+
+            logService.LogInformation("============================================================");
+            logService.LogInformation(JsonConvert.SerializeObject(notification));
+            logService.LogInformation(content);
+
             result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
             if (result.IsSuccess && !result.BlockList.Any())
