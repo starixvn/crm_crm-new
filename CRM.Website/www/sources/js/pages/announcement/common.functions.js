@@ -3,6 +3,7 @@ import React from 'react';
 import DateTimeService from '@jsroot/common/dateTimeService';
 
 export const validateFormik = (values, files) => {
+    const dateTimeNowClient= new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     let errors = {};
     if (!values.notificationTemplate) {
         errors.notificationTemplate = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('NotificationTemplate'));
@@ -26,6 +27,10 @@ export const validateFormik = (values, files) => {
 
     if (!values.sendType) {
         errors.sendType = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SendTime'));
+    }
+
+    if (values.sendType === 'Send At' && values.sendDate < dateTimeNowClient) {
+        errors.sendType = LangHelper.getResource('SendDateSmallerThanNow');
     }
 
     const invalidFileType = files.filter(x => !validFileType(x));
@@ -65,6 +70,8 @@ export const getParams = (values, state) => {
             formData.append(`contents[${index}][value]`, value);
     }
 
+    const isSendImmediately = sendType !== 'Send At';
+
     const params = {
         notificationTemplateId: notificationTemplateId,
         headlineNameList: state.headlineGroups.join(','),
@@ -72,8 +79,8 @@ export const getParams = (values, state) => {
         currencyList: !state.options.currency ? '' : state.options.currency,
         headlineType: headlineType,
         title: values.title,
-        sendDate: DateTimeService.toLongDateTimeFormat(sendDate),
-        sendImmediately: sendType !== 'Send At'
+        sendDate: isSendImmediately ? null : DateTimeService.toLongDateTimeFormat(sendDate),
+        sendImmediately: isSendImmediately
     };
     Object.keys(params).forEach(key => {
         formData.append(key, params[key]);

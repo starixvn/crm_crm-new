@@ -43,13 +43,13 @@ namespace CRM.Services.HeadlineNotification
 
         public async Task<CommandResult> NewAnnouncementAsync(CreateAnnouncementCommand command)
         {
-            command.SendDate = commonService.ConvertToServerDateTime((DateTime)command.SendDate);
+            command.SendDate = command.SendImmediately ? command.SendDate : commonService.ConvertToServerDateTime((DateTime)command.SendDate);
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
         public async Task<CommandResult> EditAnnouncementAsync(EditAnnouncementCommand command)
         {
-            command.SendDate = commonService.ConvertToServerDateTime((DateTime)command.SendDate);
+            command.SendDate = command.SendImmediately ? command.SendDate : commonService.ConvertToServerDateTime((DateTime)command.SendDate);
             return await baseService.ExecuteNonQueryAsync(command);
         }
 
