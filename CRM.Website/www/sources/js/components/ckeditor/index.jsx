@@ -20,6 +20,13 @@ export default class CkEditor extends PureComponent {
         isInvalid: false
     };
 
+    componentDidMount(){
+        const modal = document.getElementsByClassName("modal");
+        if(modal && modal.length > 0 && modal[0].getAttribute('tabindex')){
+            modal[0].removeAttribute('tabindex');
+        }
+    }
+
     componentDidUpdate(prevProps) {
         if (prevProps.data !== this.props.data && (this.editor && !this.editor.editor.focusManager.hasFocus)) {
             this.editor.editor.setData(this.props.data);

@@ -8,6 +8,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import {Statuses} from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import { toast } from 'react-toastify';
 
 export class Filter extends Component {
     constructor(props) {
@@ -15,9 +16,6 @@ export class Filter extends Component {
         this.currentDate = new Date();
         const fromDate = new Date();
         fromDate.setDate(fromDate.getDate() - 7);
-        this.maxFromDate = this.currentDate;
-        this.maxToDate = this.currentDate;
-        this.minToDate = fromDate;
         this.state = {
             announcementId: null,
             fromDate: fromDate,
@@ -28,16 +26,7 @@ export class Filter extends Component {
     }
 
     handleChangeFromDate = fromDate => {
-        const maxDate = new Date(fromDate.getTime());
-        maxDate.setMonth(fromDate.getMonth() + 12);
-        maxDate.setDate(fromDate.getDate() - 1);
-
-        this.minToDate = fromDate;
-        this.maxToDate = (maxDate < this.currentDate) ? maxDate : this.currentDate;
-        this.setState({
-            fromDate: fromDate,
-            toDate: maxDate < this.currentDate ? maxDate : this.currentDate
-        });
+        this.setState({ fromDate });
     };
 
     handleChangeToDate = toDate => {
@@ -59,6 +48,10 @@ export class Filter extends Component {
 
     handleSubmit = () => {
         const { announcementId, title, fromDate, toDate, status } = this.state;
+        if(fromDate > toDate){
+            toast.error(LangHelper.getResource('FromDateMustSmallerThanToDate'));
+            return;
+        }
         const params = {
             announcementId: announcementId,
             fromDate: DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(fromDate)),
@@ -112,7 +105,6 @@ export class Filter extends Component {
                                     useShortMonthInDropdown
                                     showYearDropdown
                                     selected={fromDate}
-                                    maxDate={new Date(this.maxFromDate)}
                                     onChange={value => this.handleChangeFromDate(value)}
                                 />
                             </div>
@@ -126,8 +118,6 @@ export class Filter extends Component {
                                 showMonthDropdown
                                 useShortMonthInDropdown
                                 showYearDropdown
-                                minDate={new Date(this.minToDate)}
-                                maxDate={new Date(this.maxToDate)}
                                 onChange={value => this.handleChangeToDate(value)}
                             />
                         </div>

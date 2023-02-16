@@ -218,6 +218,7 @@
     FeedbackSubjectManagementv2 : 'Feedback Subject Management v2',
     FeedbackStatisticsv2: 'Feedback Statistics v2',
     File:'File',
+    FromDateMustSmallerThanToDate: 'From date must be smaller than to date',
     GroupHeadline: 'Group Headline',
     GroupHeadlineEnterNotice: "Enter usernames separated by ',' or space",
     GroupHeadlineRequired: 'Group Headline is required!',
