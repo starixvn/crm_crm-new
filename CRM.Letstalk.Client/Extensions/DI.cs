@@ -21,10 +21,10 @@
 
             services.AddSingleton<ICryptographyService, CryptographyService>();
             services.AddSingleton<IJwtService, JwtService>();
-            services.AddTransient<HttpClientService>();
-            services.AddTransient<LetstalkService>();
+            services.AddSingleton<HttpClientService>();
+            services.AddSingleton<LetstalkService>();
             services.AddSingleton<ICacheService, CacheService>();
-            services.AddTransient<Func<int, ILetstalkService>>(serviceProvider => botId =>
+            services.AddSingleton<Func<int, ILetstalkService>>(serviceProvider => botId =>
             {
                 var botConfig = botConfigs.FirstOrDefault(config => config.BotAccountId == botId);
 
