@@ -142,7 +142,6 @@
 
             logService.LogInformation("============================================================");
             logService.LogInformation(JsonConvert.SerializeObject(notification));
-            logService.LogInformation(content);
 
             result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
@@ -177,8 +176,8 @@
                 Text = content
             };
             logService.LogInformation("============================================================");
-            logService.LogInformation(JsonConvert.SerializeObject(notification));
-            logService.LogInformation(content);
+            logService.LogInformation(JsonConvert.SerializeObject(notification.BotId));
+            logService.LogInformation(JsonConvert.SerializeObject(notification.ConversationId));
             result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
             sendResult.Status = result.IsSuccess ? SendNotificationStatus.Sent : SendNotificationStatus.Retrying;
