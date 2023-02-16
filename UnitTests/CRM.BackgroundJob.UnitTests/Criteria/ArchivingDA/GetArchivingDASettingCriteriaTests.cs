@@ -2,13 +2,13 @@
 {
     using CRM.BackgroundJob.Criteria.ArchivingDA;
     using Xunit;
-    public class GetArchivingDASettingCriteriaTests
+    public class GetSystemSettingByServiceNameCriteriaTests
     {
         [Fact]
         public void GetSettingKey_WhenCalled_ReturnExpectedSettingKey()
         {
             // Arrange
-            var criteria = new GetArchivingDASettingCriteria();
+            var criteria = new GetSystemSettingByServiceNameCriteria();
             var expected = "Acc_CRM_Service_SystemSettingSel";
 
             // Act
@@ -22,7 +22,7 @@
         public void IsValid_WhenCalled_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetArchivingDASettingCriteria();
+            var criteria = new GetSystemSettingByServiceNameCriteria();
 
             // Act
             var actual = criteria.IsValid();

@@ -18,6 +18,6 @@
         public DateTime SubmitDate { get; set; }
         public int BatchSizeGetMsg { get; set; }
         public int Seq { get; set; }
-        public int LastVoidingHistoryCollectionId { get; set; }
+         public int MaxVoidingHistoryCollectionId { get; set; }
     }
 }

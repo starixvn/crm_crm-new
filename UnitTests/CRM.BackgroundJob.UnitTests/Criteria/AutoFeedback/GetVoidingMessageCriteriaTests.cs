@@ -20,10 +20,29 @@
         }
 
         [Fact]
+        public void IsValid_WhenCalled_ReturnFalse()
+        {
+            // Arrange
+            var criteria = new GetVoidingMessageCriteria
+            {
+                MaxVoidingHistoryCollectionId = 0
+            };
+
+            // Act
+            var actual = criteria.IsValid();
+
+            // Assert
+            Assert.True(actual);
+        }
+
+        [Fact]
         public void IsValid_WhenCalled_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetVoidingMessageCriteria();
+            var criteria = new GetVoidingMessageCriteria
+            {
+                MaxVoidingHistoryCollectionId = 1
+            };
 
             // Act
             var actual = criteria.IsValid();

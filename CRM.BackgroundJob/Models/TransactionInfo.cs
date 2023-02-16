@@ -2,6 +2,7 @@
 {
     public class TransactionInfo
     {
+        public int VoidingHistoryCollectionId { get; set; }
         public int MessageId { get; set; }
         public int RequestId { get; set; }
         public long TransId { get; set; }

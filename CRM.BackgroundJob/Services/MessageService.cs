@@ -15,7 +15,7 @@
 
     public interface IMessageService
     {
-        Task<ValueTuple<IEnumerable<VoidingMessage>, IEnumerable<VoidingHisMessage>>> GetVoidingMessageAsync();
+        Task<ValueTuple<IEnumerable<VoidingMessage>, IEnumerable<VoidingHisMessage>>> GetVoidingMessageAsync(int maxVoidingHistoryCollectionId);
 
         Task<IEnumerable<VoidingHisMessage>> ImportVoidingMessageHistoryCheckAsync(IEnumerable<VoidingHisMessage> voidingHisMessage);
 
@@ -44,9 +44,12 @@
             this.baseService = baseService;
         }
 
-        public async Task<ValueTuple<IEnumerable<VoidingMessage>, IEnumerable<VoidingHisMessage>>> GetVoidingMessageAsync()
+        public async Task<ValueTuple<IEnumerable<VoidingMessage>, IEnumerable<VoidingHisMessage>>> GetVoidingMessageAsync(int maxVoidingHistoryCollectionId)
         {
-            var criteria = new GetVoidingMessageCriteria();
+            var criteria = new GetVoidingMessageCriteria
+            {
+                MaxVoidingHistoryCollectionId = maxVoidingHistoryCollectionId
+            };
             return await baseService.FetchMultipleAsync<VoidingMessage, VoidingHisMessage>(criteria);
         }
 
@@ -80,10 +83,11 @@
             string Environment,
             DateTime LastDateUAT)
         {
-            const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' UsernameList='{2}' CustIdList='{3}'/>";
+            const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MsgID='{1}' ReqID='{2}' UsernameList='{3}' CustIdList='{4}'/>";
             var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag);
-            var voidingMessageGroupBy = voidingMessageUserName.GroupBy(x => new { x.RequestId, x.MessageId }).Select(y => new VoidingMessageUserName
+            var voidingMessageGroupBy = voidingMessageUserName.GroupBy(x => new { x.VoidingHistoryCollectionId ,x.RequestId, x.MessageId }).Select(y => new VoidingMessageUserName
             {
+                VoidingHistoryCollectionId = y.Key.VoidingHistoryCollectionId,
                 CustIdList = String.Join(",", y.Select(u => u.CustIdList)),
                 RequestId = y.Key.RequestId,
                 MessageId = y.Key.MessageId,
@@ -91,9 +95,13 @@
             });
             foreach (var message in voidingMessages)
             {
-                VoidingMessageUserName userName = voidingMessageGroupBy.FirstOrDefault(x => x.MessageId == message.MessageId && x.RequestId == message.RequestId);
+                VoidingMessageUserName userName = voidingMessageGroupBy.FirstOrDefault(
+                   x => x.VoidingHistoryCollectionId == message.VoidingHistoryCollectionId &&
+                   x.MessageId == message.MessageId && x.RequestId == message.RequestId
+                );
 
                 stringBuilder.AppendFormat(XmlTemplate,
+                    userName.VoidingHistoryCollectionId,
                     message.MessageId,
                     message.RequestId,
                     userName?.UsernameList,
@@ -135,11 +143,11 @@
 
         public async Task<CommandResult> EditStatusVoidingMessageAsync(IEnumerable<VoidingMessageUserName> voidingMessageUserNames, string environment)
         {
-            const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' />";
+            const string XmlTemplate = "<r VoidingHistoryCollectionId={0} MsgID='{1}' ReqID='{2}' />";
             var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag);
             foreach (var voidingMessageUserName in voidingMessageUserNames)
             {
-                stringBuilder.AppendFormat(XmlTemplate, voidingMessageUserName.MessageId, voidingMessageUserName.RequestId);
+                stringBuilder.AppendFormat(XmlTemplate, voidingMessageUserName.VoidingHistoryCollectionId, voidingMessageUserName.MessageId, voidingMessageUserName.RequestId);
             }
             stringBuilder.Append(Constants.Constants.EndRootTag);
             var criteria = new EditStatusVoidingMessageCommand

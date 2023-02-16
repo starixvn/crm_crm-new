@@ -22,7 +22,7 @@
 
     public interface ISystemSettingService
     {
-        Task<AbnormalBetSystemSetting> GetAbnormalBetSettingAsync();
+        Task<AbnormalBetSystemSetting> GetAbnormalBetSettingAsync(string serviceName);
 
         Task<CommandResult> EditSystemSettingAsync(
             IEnumerable<SystemSettingItem> settings, 
@@ -56,9 +56,12 @@
             this.baseService = baseService;
         }
 
-        public async Task<AbnormalBetSystemSetting> GetAbnormalBetSettingAsync()
+        public async Task<AbnormalBetSystemSetting> GetAbnormalBetSettingAsync(string serviceName)
         {
-            var criteria = new GetAbnormalBetSystemSettingCriteria();
+            var criteria = new GetSystemSettingByServiceNameCriteria
+            {
+                ServiceName = serviceName
+            };
             return await baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(criteria);
         }
 
@@ -127,7 +130,7 @@
 
         public async Task<ArchivingDASetting> GetArchivingDASettingAsync()
         {
-            var criteria = new GetArchivingDASettingCriteria
+            var criteria = new GetSystemSettingByServiceNameCriteria
             {
                 ServiceName = Constants.ServiceName_ArchivingDA
             };

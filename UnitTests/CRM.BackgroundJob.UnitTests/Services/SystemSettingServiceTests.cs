@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Criteria.ArchivingDA;
     using CRM.BackgroundJob.Criteria.TurnoverControll;
     using CRM.BackgroundJob.Criteria.WinLossLimit;
     using CRM.BackgroundJob.Models.WinLossLimit;
@@ -28,7 +29,7 @@
             var fixture = new Fixture();
             var expected = fixture.Create<AbnormalBetSystemSetting>();
             var service = GetSystemSettingService();
-            baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(Arg.Any<GetAbnormalBetSystemSettingCriteria>()).Returns(expected);
+            baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(Arg.Any<GetSystemSettingByServiceNameCriteria>()).Returns(expected);
 
             // Act
             var actual = await service.GetAbnormalBetSettingAsync();

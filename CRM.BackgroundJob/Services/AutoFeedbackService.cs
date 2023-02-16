@@ -83,7 +83,7 @@
             try
             {
                 logService.LogInformation("Abnormal Bet - Service is Start.");
-                AbnormalBetSystemSetting setting = await systemSettingService.GetAbnormalBetSettingAsync();
+                AbnormalBetSystemSetting setting = await systemSettingService.GetAbnormalBetSettingAsync(Constants.ServiceName_AutoFB);
                 if (!setting.ServiceFlag)
                 {
                     logService.LogInformation("Abnormal Bet - Service is shutdown.");

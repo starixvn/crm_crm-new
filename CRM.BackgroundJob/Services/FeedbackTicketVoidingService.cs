@@ -64,12 +64,13 @@
                IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
                AbnormalBetSystemSetting setting)
         {
-            const string XmlTemplate = "<r MsgID='{0}' ReqID='{1}' UsernameList='{2}' CustIdList='{3}' />";
+            const string XmlTemplate = "<r VoidingHistoryCollectionId={0} MsgID='{1}' ReqID='{2}' UsernameList='{3}' CustIdList='{4}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
 
             foreach (var voidingMessageUserName in voidingMessageUserNames)
             {
                 stringBuilder.AppendFormat(XmlTemplate,
+                    voidingMessageUserName.VoidingHistoryCollectionId,
                     voidingMessageUserName.MessageId,
                     voidingMessageUserName.RequestId,
                     voidingMessageUserName.UsernameList,
@@ -88,12 +89,14 @@
             };
             var ticketInfo = await baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, string>(criteria);
 
-            var messageIds = ticketInfo.Item1.Where(x => !ticketInfo.Item2.Any(y => x.MessageId == y.MessageId)).Select(x => x.MessageId).ToList();
-            if (messageIds.Any())
+            var collectionId = ticketInfo.Item1.Where(x => 
+                    !ticketInfo.Item2.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId))
+                    .Select(x => x.VoidingHistoryCollectionId).ToList();
+            if (collectionId.Any())
             {
-                var messages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
-                await messageService.EditStatusVoidingMessageAsync(messages, Environment);
-                logService.LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", messageIds)));
+                var collectionIds = voidingMessageUserNames.Where(x => collectionId.Any(y => x.VoidingHistoryCollectionId == y));
+                await messageService.EditStatusVoidingMessageAsync(collectionIds, Environment);
+                logService.LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", collectionIds)));
             }
 
             return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>(ticketInfo.Item1, ticketInfo.Item2, ticketInfo.Item3);

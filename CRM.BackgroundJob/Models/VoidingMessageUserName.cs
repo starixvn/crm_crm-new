@@ -7,6 +7,8 @@
     [XMLName("r")]
     public class VoidingMessageUserName
     {
+        [XMLName("VoidingHistoryCollectionId")]
+        public int VoidingHistoryCollectionId { get; set; }
         [XMLName("MessageId")]
         public int MessageId { get; set; }
         [XMLName("RequestId")]
