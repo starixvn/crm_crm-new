@@ -14,7 +14,7 @@ COPY . .
 
 WORKDIR "/src/CRM.BackgroundJob"
 
-RUN dotnet publish -r linux-x64 --self-contained false -o /app
+RUN dotnet publish CRM.sln -r linux-x64 --self-contained false -o /app
 
 FROM hub.nexdev.net/base/dotnet/core/aspnet:6.0-final AS base
 
