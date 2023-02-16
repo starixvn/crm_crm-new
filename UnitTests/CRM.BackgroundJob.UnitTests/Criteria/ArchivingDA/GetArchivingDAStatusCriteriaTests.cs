@@ -2,6 +2,7 @@
 {
     using CRM.BackgroundJob.Criteria.ArchivingDA;
     using Xunit;
+
     public class GetArchivingDAStatusCriteriaTests
     {
         [Fact]

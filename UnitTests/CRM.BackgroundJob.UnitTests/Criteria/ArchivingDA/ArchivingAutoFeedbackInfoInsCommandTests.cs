@@ -3,6 +3,7 @@
     using AutoFixture;
     using CRM.BackgroundJob.Criteria.ArchivingDA;
     using Xunit;
+
     public class ArchivingAutoFeedbackInfoInsCommandTests
     {
         [Fact]

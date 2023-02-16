@@ -23,7 +23,8 @@
         public void IsValid_WhenCalled_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetImportMessageCriteria {
+            var criteria = new GetImportMessageCriteria
+            {
                 BatchSize = 10
             };
 

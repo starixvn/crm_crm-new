@@ -38,7 +38,7 @@
             // Assert
             Assert.False(actual);
         }
-        
+
         [Fact]
         public void IsValid_ParamIsValid_ReturnTrue()
         {

@@ -2,6 +2,7 @@
 {
     using CRM.BackgroundJob.Criteria.ChatBot_ArchivingDA;
     using Xunit;
+
     public class GetChatbotArchivedAccountsCriteriaTests
     {
         [Fact]

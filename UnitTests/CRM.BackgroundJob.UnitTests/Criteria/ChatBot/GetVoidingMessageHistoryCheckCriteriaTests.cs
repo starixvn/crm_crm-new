@@ -1,5 +1,4 @@
-﻿
-namespace CRM.BackgroundJob.UnitTests.Criteria.ChatBot
+﻿namespace CRM.BackgroundJob.UnitTests.Criteria.ChatBot
 {
     using CRM.BackgroundJob.Criteria.ChatBot;
     using Xunit;
