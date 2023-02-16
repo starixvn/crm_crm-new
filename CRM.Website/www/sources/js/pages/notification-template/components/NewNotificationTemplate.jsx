@@ -162,7 +162,7 @@ export class NewNotificationTemplate extends Component {
                 </Modal.Header>
                 <Formik
                     initialValues={initialValues}
-                    validate={values => validateFormik(values, this.props.languages)}
+                    validate={values => validateFormik(values, this.props.languages, this.props.notificationTypes)}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}

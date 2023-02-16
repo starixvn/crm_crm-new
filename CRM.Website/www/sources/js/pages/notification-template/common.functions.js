@@ -9,7 +9,9 @@ export const renderNotificationTypeOption = item => {
     );
 };
 
-export const validateFormik = (values, languages = []) => {
+export const validateFormik = (values, languages = [], notificationTypes) => {
+    const isUploadAnnouncement = notificationTypes.filter(x=>x.notificationTypeId === parseInt(values.notificationTypeId, 10) 
+        && x.notificationTypeName === 'Upload Announcement').length > 0;
     const errors = {};
     if (!values.notificationTypeId) {
         errors.notificationTypeId = LangHelper.getResource('NotificationTypeRequired');
@@ -38,10 +40,17 @@ export const validateFormik = (values, languages = []) => {
     }
 
     languages.map(item => {
-        if (!values['language_' + item.settingId] || values['language_' + item.settingId].trim().length === 0) {
+        if(isUploadAnnouncement){
+            if(item.settingValue === 'EN' && (!values['language_' + item.settingId] || values['language_' + item.settingId].trim().length === 0))
             errors['language_' + item.settingId] = LangHelper.formatString(
                 LangHelper.getResource('FieldRequired'),
                 `${LangHelper.getResource('Content')} (${item.settingValue})`);
+        }else{
+            if(!values['language_' + item.settingId] || values['language_' + item.settingId].trim().length === 0){
+                errors['language_' + item.settingId] = LangHelper.formatString(
+                    LangHelper.getResource('FieldRequired'),
+                    `${LangHelper.getResource('Content')} (${item.settingValue})`);
+            }
         }
     });
 

@@ -184,7 +184,7 @@ export class EditNotificationTemplate extends Component {
                     <Modal.Title as="div">{LangHelper.getResource('EditNotificationTemplate')}</Modal.Title>
                 </Modal.Header>
                 <Formik
-                    validate={values => validateFormik(values, this.props.languages)}
+                    validate={values => validateFormik(values, this.props.languages, this.props.notificationTypes)}
                     onSubmit={this.handleSubmit}
                     initialValues={initialValues}
                 >
