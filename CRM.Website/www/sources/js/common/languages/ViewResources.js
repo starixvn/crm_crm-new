@@ -496,7 +496,7 @@
     SettlementIssuesReport: 'Settlement Issues Report',
     ServiceName: 'Service Name',
     SMAPersonalMessage: 'SMA Personal Message',
-    SendDateSmallerThanNow: 'Send date cannot smaller than date time now',
+    SendDateSmallerThanNow: 'The schedule must be greater than current time.',
     SMAUsernames: 'SMA Username(s)',
     SMATitleInputError: 'Title must not exceed 300 characters!',
     TemplateContent: 'Template Content',

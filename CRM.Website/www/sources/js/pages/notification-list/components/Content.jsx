@@ -25,7 +25,7 @@ export default class Content extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <div>{`${LangHelper.getResource('LetstalkName')}: ${data.letstalkName}`}</div>
-                    <div className='border p-2 mt-2 mb-3 notification-content'>{data.content}</div>
+                    <div className='border p-2 mt-2 mb-3 notification-content' dangerouslySetInnerHTML={{ __html: data.content }} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={onClose} variant='primary' size='sm'>{LangHelper.getResource('Close')}</Button>
