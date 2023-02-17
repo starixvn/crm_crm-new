@@ -82,7 +82,7 @@
             {
                 var result = await SendMessage(batch);
 
-                //await UpdateRecipientStatus(result);
+                await UpdateRecipientStatus(result);
             }
         }
 
