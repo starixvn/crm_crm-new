@@ -8,6 +8,7 @@
         public byte UserRole { get; } = Constants.UserRole;
         public int UserId { get; set; }
         public string SettingName { get; set; }
+        public string ExtraInfo { get; set; }
         public string SettingValue { get; set; }
         public int DisplayOrder { get; set; }
         public int SettingId { get; set; }

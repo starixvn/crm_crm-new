@@ -73,6 +73,7 @@ export class Edit extends Component {
         const params = {
             settingId: values.settingId,
             settingName: values.settingName,
+            extraInfo: values.extraInfo,
             settingValue: values.settingValue,
             settingSource: this.state.sourceMappings === ''? null : this.state.sourceMappings,
             displayOrder: values.displayOrder === '' ? 0 : values.displayOrder
@@ -117,6 +118,17 @@ export class Edit extends Component {
                                 name="settingName" id="settingName"
                                 disabled
                                 className="shadow-none" autoComplete="off"
+                            />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column md="3"  sm="4" htmlFor="extraInfo" >
+                            {LangHelper.getResource('ExtraInfo')}
+                        </Form.Label>
+                        <Col sm="8" md="9">
+                            <Form.Control type="text" size="sm" value={values.extraInfo}
+                                name="extraInfo" id="extraInfo" className="shadow-none" autoComplete="off"
+                                onChange={handleChange}
                             />
                         </Col>
                     </Form.Group>
@@ -184,6 +196,7 @@ export class Edit extends Component {
         const initialValues = {
             settingId: editPopup.data.settingId,
             settingName: editPopup.data.settingName,
+            extraInfo: editPopup.data.extraInfo,
             settingValue: editPopup.data.settingValue,
             settingSource: editPopup.data.settingSource,
             displayOrder: editPopup.data.displayOrder
