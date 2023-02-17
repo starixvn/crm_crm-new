@@ -51,21 +51,13 @@
         [HttpPost]
         public async Task<IActionResult> GetAnnouncement([FromBody] GetAnnouncementCriteria criteria)
         {
-            try
+            var announcements = await announcementService.GetAnnouncementAsync(criteria);
+            var announcementsOrderBy = announcements.OrderByDescending(x => x.SendDate);
+            return Json(new
             {
-                var announcements = await announcementService.GetAnnouncementAsync(criteria);
-                var announcementsOrderBy = announcements.OrderByDescending(x => x.SendDate);
-                return Json(new
-                {
-                    data = announcementsOrderBy,
-                    TotalItems = criteria.TotalRows
-                });
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
+                data = announcementsOrderBy,
+                TotalItems = criteria.TotalRows
+            });
         }
 
         public async Task<IActionResult> AllSetting()

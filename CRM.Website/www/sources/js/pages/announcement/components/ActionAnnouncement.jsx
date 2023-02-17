@@ -124,20 +124,25 @@ export class ActionAnnouncement extends Component {
         this.setState({isChangeTemplate: true});
     }
 
-    handleGetParameters = contents =>{
-        const contentEn = contents.filter(x=> x.language === 'EN')[0].content;
-        const parameters = contentEn.match(/\{.*?\}/g);
+    handleGetParameters = content =>{
+        const parameters = content.match(/\{.*?\}/g);
         this.setState({parameters});
     }
 
     getContentByTemplateId = id =>{
         const contents = this.props.announcementTemplate.contents.filter(x => x.notificationTemplateId === id);
+        const title = this.props.announcementTemplate.notificationTemplates.filter(x => x.notificationTemplateId === id)[0].title;
+        this.formik.setFieldValue('title', title);
         setValueContent(this.formik.setFieldValue, contents);
-        this.handleGetParameters(contents);
+        const content = contents.filter(x=> x.language === this.state.tab)[0].content;
+        this.handleGetParameters(content);
     }
 
     handleChangeTab = selected =>{
         this.setState({tab: selected});
+        const replaceTab = selected.replace(/[^A-Z0-9]/ig, '');
+        const content = this.formik.values.content[replaceTab];
+        this.handleGetParameters(content);
     }
 
     handlePasteGroupHeadline = event=>{
@@ -198,8 +203,10 @@ export class ActionAnnouncement extends Component {
     handleChangeParameter = (event, param, removeSpaceParam) =>{
         const {value, name} = event.target;
         const {setFieldValue, values} = this.formik;
-        let replaceContent = values.cloneContentEN;
+        const replaceTab = this.state.tab.replace(/[^A-Z0-9]/ig, '');
+        let replaceContent = values.cloneContent[replaceTab];
         setFieldValue(name, value);
+        replaceContent = replaceContent.replace(param, value);
         replaceContent = replaceContent.replace(param, value);
         removeSpaceParam.forEach(parameter =>{
             const removeSpaceParam = parameter.replace(/\s+/g, "");
@@ -207,7 +214,7 @@ export class ActionAnnouncement extends Component {
                 replaceContent = replaceContent.replace(parameter, values[removeSpaceParam]);
             }
         });
-        setFieldValue('content.EN', replaceContent);
+        setFieldValue(`content.${replaceTab}`, replaceContent);
     }
 
     renderForm = ({
@@ -405,7 +412,13 @@ export class ActionAnnouncement extends Component {
             imageFileSize: '',
             fileName: data.fileName,
             oldFileName: data.fileName,
-            cloneContentEN: ''
+            cloneContent:{
+                EN:'',
+                SC:'',
+                ENSC:'',
+                TH:'',
+                YN:''
+            }
         };
         const excludeOldImage = this.state.uploadedFiles.filter(x => !initialValues.oldFileName.includes(x));
 

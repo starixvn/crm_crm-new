@@ -65,9 +65,11 @@ export const getParams = (values, state) => {
     });
 
     for (const [index, [key, value]] of Object.entries(content).entries()) {
+        if(value && value.length > 0){
             const languageId = state.languages.filter(x => x.mapLabel === key)[0].settingId;
             formData.append(`contents[${index}][languageId]`, languageId);
             formData.append(`contents[${index}][value]`, value);
+        }
     }
 
     const isSendImmediately = sendType !== 'Send At';

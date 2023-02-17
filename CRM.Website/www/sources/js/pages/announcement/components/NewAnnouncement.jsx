@@ -22,7 +22,6 @@ export class NewAnnouncement extends Component {
         super(props);
         this.imageInputRef = React.createRef();
         this.headlineInputRef = React.createRef();
-        this.paramInputRef = React.createRef();
         this.state = {
             languages: null,
             uploadedFiles: [],
@@ -93,9 +92,6 @@ export class NewAnnouncement extends Component {
         this.formik.setFieldValue('notificationTemplate', value);
         this.getContentByTemplateId(value);
         this.setState({isChangeTemplate: true});
-        if(this.paramInputRef?.current){
-            this.paramInputRef.current.value = '';
-        }
     }
 
     getContentByTemplateId = id =>{
@@ -259,7 +255,7 @@ export class NewAnnouncement extends Component {
                                         return (
                                             <div key={index} className='d-flex box-param'>
                                                 <div className='param pt-1'>{param}</div>
-                                                <Form.Control ref={this.paramInputRef} as="textarea"  value={values[removeSpaceParam] || ''}
+                                                <Form.Control as="textarea"  value={values[removeSpaceParam] || ''}
                                                     name={removeSpaceParam} id={removeSpaceParam}
                                                     className="shadow-none form-input-param" autoComplete="off"
                                                     onChange={event => this.handleChangeParameter(event, param, parameters)}
