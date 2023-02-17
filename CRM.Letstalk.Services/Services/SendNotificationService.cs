@@ -183,10 +183,10 @@
         private string BuildContent(NotificationMessage notification)
         {
             var content = notification.Content;
+            logService.LogInformation(notification.FileName);
             if (!string.IsNullOrWhiteSpace(notification.FileName))
             {
                 logService.LogInformation("======================================================");
-                logService.LogInformation(notification.FileName);
 
                 var files = notification.FileName.Split(",");
                 foreach (var file in files)
