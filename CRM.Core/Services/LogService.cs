@@ -19,12 +19,14 @@
         Task ErrorAsync(Exception exception, ICriteria criteria);
 
         void LogInformation(string message);
+
+        void LogFileError(Exception exception);
     }
 
     public class CRMLogService : ICRMLogService
     {
         private readonly Fanex.Logging.ILogger logger;
-        private readonly Logger nlog = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+        private readonly Logger nlog = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 
         public CRMLogService(
             Fanex.Logging.ILogger logger)
@@ -59,6 +61,11 @@
                       .AddMessage(JsonConvert.SerializeObject(criteria, Formatting.Indented))
                       .ToString();
             await logger.ErrorAsync(logMessage);
+        }
+
+        public void LogFileError(Exception exception)
+        {
+            nlog.Error(exception);
         }
 
         public void LogInformation(string message)

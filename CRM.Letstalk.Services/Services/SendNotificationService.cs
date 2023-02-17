@@ -18,7 +18,6 @@
     using CRM.Letstalk.Services.Services.Interfaces;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
-    using Newtonsoft.Json;
 
     public class SendNotificationService : ISendNotificationService
     {
@@ -122,6 +121,7 @@
             {
                 sendResult.Status = SendNotificationStatus.Retrying;
                 sendResult.ErrMsg = SendNotificationErrMsg.BotServiceErrorMsg;
+                logService.LogFileError(exception);
                 await WriteLogMessage(notification, new BaseResult { Status = 0, Message = exception.Message }, sendResult.Status);
                 await logService.ErrorAsync(exception);
             }
@@ -139,9 +139,6 @@
                 MessageType = MessageTypeEnum.Html,
                 Text = content
             };
-
-            logService.LogInformation("============================================================");
-            logService.LogInformation(JsonConvert.SerializeObject(notification));
 
             result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
@@ -175,9 +172,7 @@
                 MessageType = MessageTypeEnum.Html,
                 Text = content
             };
-            logService.LogInformation("============================================================");
-            logService.LogInformation(JsonConvert.SerializeObject(notification.BotId));
-            logService.LogInformation(JsonConvert.SerializeObject(notification.ConversationId));
+
             result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
             sendResult.Status = result.IsSuccess ? SendNotificationStatus.Sent : SendNotificationStatus.Retrying;
