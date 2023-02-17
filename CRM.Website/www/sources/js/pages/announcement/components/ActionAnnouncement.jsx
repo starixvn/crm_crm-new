@@ -40,7 +40,8 @@ export class ActionAnnouncement extends Component {
             currencyOptions: [],
             confirmActionDialog: { show: false, params: null},
             isChangeTemplate: false,
-            parameters: null
+            parameters: null,
+            invalidWidthHeight: []
         };
     }
 
@@ -190,7 +191,32 @@ export class ActionAnnouncement extends Component {
         this.formik.setFieldValue('sendDate', value);
     }
 
-    setStateUploadFile = uploadedFiles => this.setState({uploadedFiles});
+    setStateUploadFile = (uploadedFiles, fileNameRemove) => {
+        if(!fileNameRemove){
+            uploadedFiles.forEach((file) => {
+                const maximumHeightWidth = 2560;
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const image = new Image();
+                    image.src = e.target.result;
+                    image.onload = () => {
+                    const {
+                        height,
+                        width
+                    } = image;
+                    if (height > maximumHeightWidth || width > maximumHeightWidth) {
+                        this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, file.name]});
+                    }
+                }};
+            });
+        }else{
+            const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x !== fileNameRemove);
+            this.setState({invalidWidthHeight});
+        }
+        
+        this.setState({uploadedFiles});
+    }
 
     renderMessage = (result, message) =>{
         if(!result.isSuccessful){
@@ -434,7 +460,7 @@ export class ActionAnnouncement extends Component {
                     <Formik
                         innerRef={p => (this.formik = p)}
                         initialValues={initialValues}
-                        validate={values => validateFormik(values, excludeOldImage)}
+                        validate={values => validateFormik(values, excludeOldImage, this.state.invalidWidthHeight)}
                         onSubmit={this.handleSubmit}
                     >
                         {this.renderForm}

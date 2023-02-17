@@ -17,20 +17,18 @@ class UploadFile extends PureComponent {
             }
         });
         this.props.setStateUploadFile(uploaded);
-        //this.props.imageInputRef.current.value = null;
     }
 
     handleFileEvent = e => {
         e.preventDefault();
         const chosenFiles = Array.prototype.slice.call(e.target.files);
-        this.handleUploadFiles(chosenFiles);
+        this.handleUploadFiles(chosenFiles, null);
     }
 
     handleRemoveFile = (event, fileName) => {
         event.stopPropagation();
         const filterFiler = this.props.uploadedFiles.filter(x => (x.name || x) !== fileName);
-        this.props.setStateUploadFile(filterFiler);
-        //this.props.imageInputRef.current.value = null;
+        this.props.setStateUploadFile(filterFiler, fileName);
     }
 
     onDragEnd = result =>{

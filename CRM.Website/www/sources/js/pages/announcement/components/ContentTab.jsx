@@ -8,7 +8,7 @@ export default class ContentTab extends PureComponent {
     const {languages, handleChangeTab, tab, isValidContent, content, setFieldValue, isReadOnly = false} = this.props;
     return (
         <Form.Group as={Row}>
-            <Form.Label column sm="2" md="2" className="required" htmlFor="content">
+            <Form.Label column sm="2" md="2" className={isReadOnly ? '' : 'required'} htmlFor="content">
                 {LangHelper.getResource('Content')}
             </Form.Label>
             <Col sm="10" md="10">

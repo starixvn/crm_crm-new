@@ -96,6 +96,7 @@ class Content extends Component {
             return null;
         }
         const fileNames = !announcement.fileName ? '' : announcement.fileName.split(',');
+        const styleBold = {fontWeight:'bold'};
         return (
             <Modal show backdrop='static' keyboard={false} size='lg' centered
                 onHide={this.props.onClose} className='announcement-content-modal'
@@ -105,8 +106,14 @@ class Content extends Component {
                     <Modal.Title as='div'>{`${LangHelper.getResource('AnnouncementId')}: ${this.props.id}`}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div>{`${LangHelper.getResource('NotificationTemplate')}: ${announcement.notificationTemplateName}`}</div>
-                    <div>{`${LangHelper.getResource('Title')}: ${announcement.title}`}</div>
+                    <div>
+                        <span>{LangHelper.getResource('NotificationTemplate')}: </span>
+                        <span style={styleBold}>{announcement.notificationTemplateName}</span>
+                    </div>
+                    <div>
+                        <span>{LangHelper.getResource('Title')}: </span>
+                        <span style={styleBold}>{announcement.title}</span>
+                    </div>
                     {
                         <ContentTab
                             isValidContent={false} content={content} isReadOnly
@@ -139,15 +146,15 @@ class Content extends Component {
                         <>
                             <div>
                                 <span>{`${LangHelper.getResource('Site')}: `}</span>
-                                <span style={{fontWeight:'bold'}}>{announcement.siteNameList.replaceAll(',', ', ')}</span>
+                                <span style={styleBold}>{announcement.siteNameList.replaceAll(',', ', ')}</span>
                             </div>
                             <div>
                                 <span>{`${LangHelper.getResource('Currency')}: `}</span>
-                                <span style={{fontWeight:'bold'}}>{this.state.currencies}</span>
+                                <span style={styleBold}>{this.state.currencies}</span>
                             </div>
                             <div>
                                 <span>{`${LangHelper.getResource('HeadlineType')}: `}</span>
-                                <span style={{fontWeight:'bold'}}>{this.state.headlineType}</span>
+                                <span style={styleBold}>{this.state.headlineType}</span>
                             </div>
                         </>
                     }

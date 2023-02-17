@@ -2,7 +2,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import React from 'react';
 import DateTimeService from '@jsroot/common/dateTimeService';
 
-export const validateFormik = (values, files) => {
+export const validateFormik = (values, files, invalidWidthHeight) => {
     const dateTimeNowClient= new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     let errors = {};
     if (!values.notificationTemplate) {
@@ -17,7 +17,8 @@ export const validateFormik = (values, files) => {
         errors.content = LangHelper.formatString(LangHelper.getResource('FieldRequired'), 'Content EN');
     }
 
-    if ((values.content.EN.includes('{') || values.content.EN.includes('}'))) {
+    const isInvalidContent = Object.entries(values.content).filter(([key, value]) => value.includes('{') || value.includes('}')).length > 0;
+    if(isInvalidContent){
         errors.content = LangHelper.getResource('ContentLanguageError');
     }
 
@@ -40,10 +41,14 @@ export const validateFormik = (values, files) => {
     }
 
     const invalidFileSize = files.filter(x => !validFileSize(x));
-    const invalidFileWidthHeigh = files.filter(x => !validateWidthHeigh(x));
 
-    if(invalidFileSize.length > 0 || invalidFileWidthHeigh.length > 0){
+    if(invalidFileSize.length > 0){
         const nameFileError = invalidFileSize.map(x => x.name).join(', ');
+        errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), nameFileError);
+    }
+
+    if(invalidWidthHeight.length > 0){
+        const nameFileError = invalidWidthHeight.map(x => x).join(', ');
         errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), nameFileError);
     }
 
@@ -113,18 +118,40 @@ export const mapLabelLanguage = languages =>{
     });
 };
 
-function validateWidthHeigh(file){
-    const url = URL.createObjectURL(file);
-    const img = new Image();
-    const maximumHeighWidth = 2560;
-    img.src = url;
-    const result = img.onload = function() {
-        if(img.width > maximumHeighWidth || img.height > maximumHeighWidth){
-            return false;
-        }
-        return true;
-    }();
-    return result;
+function validateWidthHeight(file) {
+    return new Promise((resolve, reject) => {
+      const maximumHeightWidth = 2560;
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        const image = new Image();
+        image.src = e.target.result;
+        image.onload = () => {
+          const {
+            height,
+            width
+          } = image;
+          if (height > maximumHeightWidth || width > maximumHeightWidth) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        };
+        image.onerror = () => {
+          reject(new Error('Failed to load image'));
+        };
+      };
+      reader.onerror = () => {
+        reject(new Error('Failed to read file'));
+      };
+    });
+  }
+  
+  async function callValidateWidthHeight(file) {
+      const result = await validateWidthHeight(file);
+      if (result !== undefined) {
+        return result;
+      }
 }
 
 function validFileSize(file){

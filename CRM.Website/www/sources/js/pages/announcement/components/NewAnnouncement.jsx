@@ -20,7 +20,6 @@ import {
 export class NewAnnouncement extends Component {
     constructor(props) {
         super(props);
-        this.imageInputRef = React.createRef();
         this.headlineInputRef = React.createRef();
         this.state = {
             languages: null,
@@ -35,7 +34,8 @@ export class NewAnnouncement extends Component {
             },
             confirmInsertDialog: { show: false, params: null},
             isChangeTemplate: false,
-            parameters: null
+            parameters: null,
+            invalidWidthHeight: []
         };
     }
 
@@ -83,7 +83,32 @@ export class NewAnnouncement extends Component {
         });
     }
 
-    setStateUploadFile = uploadedFiles => this.setState({uploadedFiles});
+    setStateUploadFile = (uploadedFiles, fileNameRemove) => {
+        if(!fileNameRemove){
+            uploadedFiles.forEach((file) => {
+                const maximumHeightWidth = 2560;
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const image = new Image();
+                    image.src = e.target.result;
+                    image.onload = () => {
+                    const {
+                        height,
+                        width
+                    } = image;
+                    if (height > maximumHeightWidth || width > maximumHeightWidth) {
+                        this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, file.name]});
+                    }
+                }};
+            });
+        }else{
+            const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x !== fileNameRemove);
+            this.setState({invalidWidthHeight});
+        }
+        
+        this.setState({uploadedFiles});
+    }
 
     handleChangeNotificationTemplate = event=> {
         event.preventDefault();
@@ -267,7 +292,7 @@ export class NewAnnouncement extends Component {
                             </div>
                         </Form.Group>
                     }
-                    <UploadFileForwardingRef ref={this.imageInputRef} setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}/>
+                    <UploadFileForwardingRef setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}/>
                     <Form.Group as={Row}>
                         <Form.Label column sm="2" md="2" htmlFor="groupHeadline">
                             {LangHelper.getResource('GroupHeadline')}
@@ -388,7 +413,7 @@ export class NewAnnouncement extends Component {
                     <Formik
                         innerRef={p => (this.formik = p)}
                         initialValues={initialValues}
-                        validate={values => validateFormik(values, this.state.uploadedFiles)}
+                        validate={values => validateFormik(values, this.state.uploadedFiles, this.state.invalidWidthHeight)}
                         onSubmit={this.handleSubmit}
                     >
                         {this.renderForm}
