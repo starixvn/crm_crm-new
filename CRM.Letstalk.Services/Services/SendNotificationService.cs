@@ -18,6 +18,7 @@
     using CRM.Letstalk.Services.Services.Interfaces;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
+    using Newtonsoft.Json;
 
     public class SendNotificationService : ISendNotificationService
     {
@@ -165,38 +166,40 @@
 
         private async Task SendToGroup(NotificationMessage notification, SendNotificationResult sendResult)
         {
-            var result = new BaseResult();
-            var content = BuildContent(notification);
-            var outGoingMsg = new OutgoingMessage
+            try
             {
-                MessageType = MessageTypeEnum.Html,
-                Text = content
-            };
+                var result = new PushMessageResult();
+                var content = BuildContent(notification);
+                var outGoingMsg = new OutgoingMessage
+                {
+                    MessageType = MessageTypeEnum.Html,
+                    Text = content
+                };
 
-            result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
-
-            sendResult.Status = result.IsSuccess ? SendNotificationStatus.Sent : SendNotificationStatus.Retrying;
-            sendResult.ErrMsg = result.IsSuccess ? string.Empty : SendNotificationErrMsg.BotServiceErrorMsg;
-            await WriteLogMessage(notification, result, sendResult.Status);
+                result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
+                logService.LogInformation(JsonConvert.SerializeObject(result));
+                sendResult.Status = result.IsSuccess ? SendNotificationStatus.Sent : SendNotificationStatus.Retrying;
+                sendResult.ErrMsg = result.IsSuccess ? string.Empty : SendNotificationErrMsg.BotServiceErrorMsg;
+                await WriteLogMessage(notification, result, sendResult.Status);
+            }
+            catch (Exception ex)
+            {
+                logService.LogFileError(ex);
+                throw;
+            }
         }
 
         private string BuildContent(NotificationMessage notification)
         {
             var content = notification.Content;
-            logService.LogInformation(notification.FileName);
             if (!string.IsNullOrWhiteSpace(notification.FileName))
             {
-                logService.LogInformation("======================================================");
-
                 var files = notification.FileName.Split(",");
                 foreach (var file in files)
                 {
-                    logService.LogInformation(file);
-
                     content += "<br/>";
                     string imageUrl = BuildImageBase64Html(file, notification.AnnouncementId);
                     content += imageUrl;
-                    logService.LogInformation(content);
                 }
             }
             return content;
@@ -205,11 +208,10 @@
         private string BuildImageBase64Html(string file, int announcementId)
         {
             var path = Path.Combine(webHostEnvironment.ContentRootPath, "wwwroot", "announcement", announcementId.ToString(), file);
-            logService.LogInformation(path);
             byte[] imageArray = File.ReadAllBytes(path);
             string fileType = file.EndsWith("png", StringComparison.OrdinalIgnoreCase) ? "png" : "jpeg";
 
-            string base64ImageRepresentation = $"data:image/{fileType};base64,{Convert.ToBase64String(imageArray)}";
+            string base64ImageRepresentation = $"http://new-crm1.nexdev.net/www/dist/images/announcement/{announcementId}/{file}";
             var html = "<img style=\"width: 100%;\" src=\"" + base64ImageRepresentation + "\" Alt=\"" + file + "\">";
             return html;
         }
