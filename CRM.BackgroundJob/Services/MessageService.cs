@@ -143,7 +143,7 @@
 
         public async Task<CommandResult> EditStatusVoidingMessageAsync(IEnumerable<VoidingMessageUserName> voidingMessageUserNames, string environment)
         {
-            const string XmlTemplate = "<r VoidingHistoryCollectionId={0} MsgID='{1}' ReqID='{2}' />";
+            const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MsgID='{1}' ReqID='{2}' />";
             var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag);
             foreach (var voidingMessageUserName in voidingMessageUserNames)
             {

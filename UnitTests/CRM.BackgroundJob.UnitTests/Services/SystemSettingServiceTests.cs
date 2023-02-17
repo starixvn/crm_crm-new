@@ -32,7 +32,7 @@
             baseService.GetDataEntityAsync<AbnormalBetSystemSetting>(Arg.Any<GetSystemSettingByServiceNameCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetAbnormalBetSettingAsync();
+            var actual = await service.GetAbnormalBetSettingAsync(Constants.ServiceName_AutoFB);
 
             // Assert
             Assert.Equal(expected, actual);

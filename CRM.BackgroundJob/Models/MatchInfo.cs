@@ -5,7 +5,7 @@
     public class MatchInfo
     {
         public int VoidingHistoryCollectionId { get; set; }
-        public int MessageId { get; set; }
+        public string MessageId { get; set; }
         public DateTime EventDate { get; set; }
         public string KickOffTime { get; set; }
         public string LeagueName { get; set; }

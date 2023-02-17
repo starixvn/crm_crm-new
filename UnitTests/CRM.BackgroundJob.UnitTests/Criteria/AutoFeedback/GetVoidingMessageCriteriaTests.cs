@@ -32,7 +32,7 @@
             var actual = criteria.IsValid();
 
             // Assert
-            Assert.True(actual);
+            Assert.False(actual);
         }
 
         [Fact]

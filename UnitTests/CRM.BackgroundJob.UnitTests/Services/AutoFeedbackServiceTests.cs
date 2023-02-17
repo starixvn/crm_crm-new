@@ -45,7 +45,7 @@
             // Arrange
             var exception = fixture.Create<Exception>();
             var service = GetService();
-            systemSettingService.When(x => x.GetAbnormalBetSettingAsync()).Throw(exception);
+            systemSettingService.When(x => x.GetAbnormalBetSettingAsync(Arg.Any<string>())).Throw(exception);
 
             // Assert
             await service.AbnormalbetExecuteJobAsync();
@@ -61,7 +61,7 @@
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = false };
             var service = GetService();
-            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            systemSettingService.GetAbnormalBetSettingAsync(Arg.Any<string>()).Returns(setting);
 
             // Act
             await service.AbnormalbetExecuteJobAsync();
@@ -82,7 +82,7 @@
             };
             var service = GetService();
             var env = Constants.DefaultEnvironment;
-            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            systemSettingService.GetAbnormalBetSettingAsync(Arg.Any<string>()).Returns(setting);
             configuration.GetValue<string>("SiteEnvironment").Returns(env);
 
             // Act
@@ -106,7 +106,7 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            systemSettingService.GetAbnormalBetSettingAsync(Arg.Any<string>()).Returns(setting);
             jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet).Returns(false);
 
             // Act
@@ -149,7 +149,7 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            systemSettingService.GetAbnormalBetSettingAsync(Arg.Any<string>()).Returns(setting);
             jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet).Returns(false);
 
             // Act
@@ -171,7 +171,7 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            systemSettingService.GetAbnormalBetSettingAsync(Arg.Any<string>()).Returns(setting);
             jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet).Returns(false);
 
             // Act
@@ -193,7 +193,7 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            systemSettingService.GetAbnormalBetSettingAsync(Arg.Any<string>()).Returns(setting);
             jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet).Returns(false);
 
             // Act
@@ -217,7 +217,7 @@
                 JobStatusUAT = JobStatus.Running
             };
             var service = GetService();
-            systemSettingService.GetAbnormalBetSettingAsync().Returns(setting);
+            systemSettingService.GetAbnormalBetSettingAsync(Arg.Any<string>()).Returns(setting);
             jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet).Returns(false);
 
             // Act

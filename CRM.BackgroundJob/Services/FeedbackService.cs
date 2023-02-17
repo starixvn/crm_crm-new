@@ -108,10 +108,9 @@
                 transactionTickets = await ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item3.FirstOrDefault());
             }
 
-            logService.LogInformation(string.Format("Acc_CRM_AbnormalTicketsCheck: {0}", string.Join(",", transactionTickets.Select(x => x.MessageId))));
 
             var transactionTicketsCombine = transactionTickets.Concat(ticketInfo.Item2);
-            IEnumerable<MatchInfo> matchInfos = ticketInfo.Item1.Where(x => transactionTicketsCombine.Any(y => x.MessageId == y.MessageId)).ToList();
+            IEnumerable<MatchInfo> matchInfos = ticketInfo.Item1.Where(x => transactionTicketsCombine.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId)).ToList();
 
             if (!matchInfos.Any())
             {
@@ -121,7 +120,9 @@
                 return;
             }
 
-            logService.LogInformation(string.Format("Abnormal Bet - Create feedback for messages: {0}", string.Join(",", ticketInfo.Item1.Select(x => x.MessageId))));
+            logService.LogInformation(string.Format("Abnormal Bet - Create feedback for voidingHistoryCollectionId: {0}",
+                string.Join(",", ticketInfo.Item1.Select(x => x.VoidingHistoryCollectionId)))
+            );
 
             await CreateFeedbackForCreditDepositSiteAsync(
                 messages,
@@ -160,14 +161,14 @@
 
             foreach (MatchInfo matchInfo in newMatchInfos)
             {
-                Message message = messages.FirstOrDefault(x => x.MessageId == matchInfo.MessageId);
-                IEnumerable<TransactionInfo> credits = newTransactionInfos.Where(x => x.MessageId == matchInfo.MessageId && !x.IsDeposit);
-                IEnumerable<TransactionInfo> deposits = newTransactionInfos.Where(x => x.MessageId == matchInfo.MessageId && x.IsDeposit);
+                IEnumerable<Message> getMessageContents = messages.Where(x => matchInfo.MessageId.Contains(x.MessageId.ToString()));
+                IEnumerable<TransactionInfo> credits = newTransactionInfos.Where(x => x.VoidingHistoryCollectionId == matchInfo.VoidingHistoryCollectionId && !x.IsDeposit);
+                IEnumerable<TransactionInfo> deposits = newTransactionInfos.Where(x => x.VoidingHistoryCollectionId == matchInfo.VoidingHistoryCollectionId && x.IsDeposit);
 
                 if (credits.Any())
                 {
                     await CreateFeedbackForCreditSiteAsync(
-                        message,
+                        getMessageContents,
                         matchInfo,
                         credits,
                         headlines.Where(x => credits.Any(y => x.CustId == y.CustId)),
@@ -180,7 +181,7 @@
                     GetLicenseeManager(deposits, siteSettingMappings);
                     await CreateFeedbackForDepositSiteAsync(
                         licenseeInfo,
-                        message,
+                        getMessageContents,
                         matchInfo,
                         deposits,
                         settings,
@@ -194,14 +195,14 @@
         }
 
         protected internal virtual async Task CreateFeedbackForCreditSiteAsync(
-            Message message,
+            IEnumerable<Message> messages,
             MatchInfo matchInfo,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<GroupHeadline> headlines,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation("Abnormal Bet - Begin mapping common setting for MessageId: " + message.MessageId);
+            logService.LogInformation("Abnormal Bet - Begin mapping common setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
@@ -232,7 +233,7 @@
                 AutoField2 = string.Format("Date Time & Tool: {0}/{1}/", feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
                 AutoField3 = $"{Environment.NewLine}System ID: "
             };
-            logService.LogInformation("Abnormal Bet - End mapping common setting for MessageId: " + message.MessageId);
+            logService.LogInformation("Abnormal Bet - End mapping common setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
 
             var headlineIds = headlines.Select(x => x.HeadlineId).Distinct();
             foreach (var headlineId in headlineIds)
@@ -244,7 +245,7 @@
                 await CreateFeedbackForCreditSiteByBatchAsync(
                     headline,
                     relatedCustomerIds,
-                    message,
+                    messages,
                     matchInfo,
                     transactionInfos,
                     settings,
@@ -258,7 +259,7 @@
         protected internal virtual async Task CreateFeedbackForCreditSiteByBatchAsync(
             GroupHeadline headline,
             IEnumerable<int> relatedCustomerIds,
-            Message message,
+            IEnumerable<Message> messages,
             MatchInfo matchInfo,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<SettingItem> settings,
@@ -268,12 +269,13 @@
         {
             int itemEachBatch = appSettings.NoOfRelatedCustomerPerFeedback;
             int totalBatch = (int)Math.Ceiling((double)relatedCustomerIds.Count() / itemEachBatch);
+            var messageJoin = string.Join(",", messages.Select(x => x.MessageId));
             for (int i = 0; i < totalBatch; i++)
             {
                 List<int> batch = relatedCustomerIds.Skip(i * itemEachBatch).Take(itemEachBatch).ToList();
 
-                logService.LogInformation(string.Format("Abnormal Bet - Begin mapping setting for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
-                    message.MessageId,
+                logService.LogInformation(string.Format("Abnormal Bet - Begin mapping setting for VoidingHistoryCollectionId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
+                    matchInfo.VoidingHistoryCollectionId,
                     headline.HeadlineId,
                     string.Join(",", batch)));
 
@@ -281,55 +283,56 @@
                 var isVip = headline.IsVip && headline.Site == "789y";
                 var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
                 criteria.ProductXml = GetProductXml(isMixParlay, matchInfo, transactions, settings, settingMappings);
-                var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(message, transactions, isVip) :
-                                             GetSolutionForCreditSite(message, transactions, matchInfo.IssueTypeId);
+                var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(messages.FirstOrDefault(), transactions, isVip) :
+                                             GetSolutionForCreditSite(messages.FirstOrDefault(), transactions, matchInfo.IssueTypeId);
                 criteria.Solution = solution;
                 criteria.RelatedCustomerXml = GetRelatedCustomerXml(headline.HeadlineId, transactions, matchInfo.IssueTypeId);
-                criteria.MessageId = message.MessageId;
+                criteria.MessageId = messageJoin;
+                criteria.VoidingHistoryCollectionId = matchInfo.VoidingHistoryCollectionId;
                 criteria.ListOrigCustIds = string.Join(",", batch);
 
-                logService.LogInformation(string.Format("Abnormal Bet - End mapping setting for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
-                    message.MessageId,
+                logService.LogInformation(string.Format("Abnormal Bet - End mapping setting for VoidingHistoryCollectionId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
+                    matchInfo.VoidingHistoryCollectionId,
                     headline.HeadlineId,
                     string.Join(",", batch)));
                 IEnumerable<int> requestIds = transactions.Select(x => x.RequestId).Distinct().ToList();
                 criteria.RequestIds = string.Join(",", requestIds);
-                var description = isMixParlay ? GetDescriptionMixParlayForCreditSite(message.MessageId, criteria.RequestIds, matchInfo)
-                                                : GetDescriptionForCreditSite(message.MessageId, criteria.RequestIds, matchInfo, transactions);
+                var description = isMixParlay ? GetDescriptionMixParlayForCreditSite(string.Join(",", messages.Select(x => x.MessageId)), criteria.RequestIds, matchInfo)
+                                                : GetDescriptionForCreditSite(string.Join(",", messages.Select(x => x.MessageId)), criteria.RequestIds, matchInfo, transactions);
                 criteria.Description = description;
                 try
                 {
-                    logService.LogInformation(string.Format("Abnormal Bet - Begin create feedback for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
-                        message.MessageId,
+                    logService.LogInformation(string.Format("Abnormal Bet - Begin create feedback for VoidingHistoryCollectionId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
+                        matchInfo.VoidingHistoryCollectionId,
                         headline.HeadlineId,
                         string.Join(",", batch)));
                     CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
                     if (commandResult.IsSuccessful)
                     {
-                        logService.LogInformation(string.Format("Abnormal Bet - Create feedback successfully. MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
-                            message.MessageId,
+                        logService.LogInformation(string.Format("Abnormal Bet - Create feedback successfully. VoidingHistoryCollectionId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}",
+                            matchInfo.VoidingHistoryCollectionId,
                             headline.HeadlineId,
                             string.Join(",", batch)));
                     }
                     else
                     {
-                        logService.LogInformation(string.Format("Abnormal Bet - {0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}",
+                        logService.LogInformation(string.Format("Abnormal Bet - {0}. VoidingHistoryCollectionId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}",
                             commandResult.Message,
-                            message.MessageId,
+                            matchInfo.VoidingHistoryCollectionId,
                             headline.HeadlineId,
                             string.Join(",", batch)));
-                        await ticketVoidingService.EditFeedbackInfoAsync(message.MessageId, requestIds, batch, CreateFeedbackJobStatus.Fail, commandResult.Message);
+                        await ticketVoidingService.EditFeedbackInfoAsync(messageJoin, requestIds, batch, CreateFeedbackJobStatus.Fail, commandResult.Message);
                         await logService.ErrorAsync(commandResult, criteria);
                     }
                 }
                 catch (Exception ex)
                 {
-                    logService.LogInformation(string.Format("Abnormal Bet - {0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}",
+                    logService.LogInformation(string.Format("Abnormal Bet - {0}. VoidingHistoryCollectionId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}",
                         ex.Message,
-                        message.MessageId,
+                        matchInfo.VoidingHistoryCollectionId,
                         headline.HeadlineId,
                         string.Join(",", batch)));
-                    await ticketVoidingService.EditFeedbackInfoAsync(message.MessageId, requestIds, batch, CreateFeedbackJobStatus.Fail, ex.Message);
+                    await ticketVoidingService.EditFeedbackInfoAsync(messageJoin, requestIds, batch, CreateFeedbackJobStatus.Fail, ex.Message);
                     await logService.ErrorAsync(ex);
                 }
             }
@@ -337,13 +340,13 @@
 
         protected internal virtual async Task CreateFeedbackForDepositSiteAsync(
             CustomerInfo licenseeInfo,
-            Message message,
+            IEnumerable<Message> messages,
             MatchInfo matchInfo,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            logService.LogInformation("Abnormal Bet - Begin mapping setting for MessageId: " + message.MessageId);
+            logService.LogInformation("Abnormal Bet - Begin mapping setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
             var communicationTool = GetCommunicationTool(settings);
@@ -374,16 +377,16 @@
                 RoleId = licenseeInfo.RoleId,
                 CountryId = licenseeInfo.CountryId,
                 Subject = "Special Notification",
-                Solution = GetSolution(message),
+                Solution = GetSolution(messages.FirstOrDefault()),
                 LicenseeType = licenseeInfo.LicenseeType,
                 TitleId = licenseeInfo.TitleId,
                 SiteId = licenseeInfo.SiteId
             };
-            logService.LogInformation("Abnormal Bet - End mapping setting for MessageId: " + message.MessageId);
+            logService.LogInformation("Abnormal Bet - End mapping setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
 
             await CreateFeedbackForDepositByBatchAsync(
                 licenseeInfo,
-                message,
+                messages,
                 transactionInfos,
                 feedbackDate,
                 communicationTool.SettingValue,
@@ -392,12 +395,13 @@
 
         protected internal virtual async Task CreateFeedbackForDepositByBatchAsync(
             CustomerInfo licenseeInfo,
-            Message message,
+            IEnumerable<Message> messages,
             IEnumerable<TransactionInfo> transactionInfos,
             DateTime feedbackDate,
             string communicationTool,
             CreateFeedbackCommand criteria)
         {
+            var joinMessageString = string.Join(",", messages.Select(x => x.MessageId));
             IList<int> licenseeManagerIds = transactionInfos.Select(x => x.LicenseeManagerId).Distinct().ToList();
             int itemEachBatch = appSettings.NoOfRelatedCustomerPerFeedback;
             int totalBatch = (int)Math.Ceiling((double)licenseeManagerIds.Count() / itemEachBatch);
@@ -410,15 +414,15 @@
 
                 criteria.RelatedCustId = string.Join(", ", batch.Where(x => x != 0).Select(x => x));
                 criteria.AutoField = GetAutoField(feedbackDate, communicationTool, licenseeManagers);
-                criteria.MessageId = message.MessageId;
+                criteria.MessageId = joinMessageString;
                 criteria.ListOrigCustIds = string.Join(",", custIds);
                 IEnumerable<int> requestIds = transactions.Select(x => x.RequestId).Distinct().ToList();
                 criteria.RequestIds = string.Join(",", requestIds);
-                criteria.Description = GetDescriptionForDepositeSite(message.MessageId, criteria.RequestIds);
+                criteria.Description = GetDescriptionForDepositeSite(joinMessageString, criteria.RequestIds);
                 try
                 {
                     logService.LogInformation(string.Format("Abnormal Bet - Begin create feedback for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}\n\rCustIds: {3}",
-                            message.MessageId,
+                            joinMessageString,
                             licenseeInfo.CustId,
                             string.Join(",", batch),
                             string.Join(",", custIds)));
@@ -427,7 +431,7 @@
                     {
                         logService.LogInformation(string.Format("Abnormal Bet - {0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}\n\rCustIds: {4}",
                             "Create feedback successfully",
-                            message.MessageId,
+                            joinMessageString,
                             licenseeInfo.CustId,
                             string.Join(",", batch),
                             string.Join(",", custIds)));
@@ -436,11 +440,11 @@
                     {
                         logService.LogInformation(string.Format("Abnormal Bet - {0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}\n\rCustIds: {4}",
                             commandResult.Message,
-                            message.MessageId,
+                            joinMessageString,
                             licenseeInfo.CustId,
                             string.Join(",", batch),
                             string.Join(",", custIds)));
-                        await ticketVoidingService.EditFeedbackInfoAsync(message.MessageId, requestIds, custIds, CreateFeedbackJobStatus.Fail, commandResult.Message);
+                        await ticketVoidingService.EditFeedbackInfoAsync(joinMessageString, requestIds, custIds, CreateFeedbackJobStatus.Fail, commandResult.Message);
                         await logService.ErrorAsync(commandResult, criteria);
                     }
                 }
@@ -448,11 +452,11 @@
                 {
                     logService.LogInformation(string.Format("{0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}\n\rCustIds: {4}",
                         ex.Message,
-                        message.MessageId,
+                        joinMessageString,
                         licenseeInfo.CustId,
                         string.Join(",", batch),
                         string.Join(",", custIds)));
-                    await ticketVoidingService.EditFeedbackInfoAsync(message.MessageId, requestIds, custIds, CreateFeedbackJobStatus.Fail, ex.Message);
+                    await ticketVoidingService.EditFeedbackInfoAsync(joinMessageString, requestIds, custIds, CreateFeedbackJobStatus.Fail, ex.Message);
                     await logService.ErrorAsync(ex);
                 }
             }
@@ -657,7 +661,7 @@
             return stringBuilder.ToString();
         }
 
-        protected internal virtual string GetDescriptionForDepositeSite(int messageId, string requestIds)
+        protected internal virtual string GetDescriptionForDepositeSite(string messageId, string requestIds)
         {
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
             stringBuilder.AppendFormat(DefaultValue.messageDescription, messageId, requestIds);
@@ -666,7 +670,7 @@
             return stringBuilder.ToString();
         }
 
-        protected internal virtual string GetDescriptionForCreditSite(int messageId, string requestIds, MatchInfo matchInfo, IEnumerable<TransactionInfo> transactionInfos)
+        protected internal virtual string GetDescriptionForCreditSite(string messageId, string requestIds, MatchInfo matchInfo, IEnumerable<TransactionInfo> transactionInfos)
         {
             if (matchInfo.IssueTypeId != abnormalAccount)
             {
@@ -694,7 +698,7 @@
             }
         }
 
-        protected internal virtual string GetDescriptionMixParlayForCreditSite(int messageId, string requestIds, MatchInfo matchInfo)
+        protected internal virtual string GetDescriptionMixParlayForCreditSite(string messageId, string requestIds, MatchInfo matchInfo)
         {
             var template = commonFeedback.GetFeedbackTemplates<MixParlayTemplate>(templateXml);
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);

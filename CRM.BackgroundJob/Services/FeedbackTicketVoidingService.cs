@@ -30,7 +30,7 @@
             CustomerInfo licenseeInfo);
 
         Task<CommandResult> EditFeedbackInfoAsync(
-            int messageId,
+            string messageIds,
             IEnumerable<int> requestIds,
             IEnumerable<int> custIds,
             string status,
@@ -64,7 +64,7 @@
                IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
                AbnormalBetSystemSetting setting)
         {
-            const string XmlTemplate = "<r VoidingHistoryCollectionId={0} MsgID='{1}' ReqID='{2}' UsernameList='{3}' CustIdList='{4}' />";
+            const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MsgID='{1}' ReqID='{2}' UsernameList='{3}' CustIdList='{4}' />";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
 
             foreach (var voidingMessageUserName in voidingMessageUserNames)
@@ -120,16 +120,18 @@
             };
             var feedbackInfos = await baseService.GetDataAsync<AutoFeedbackInfo>(criteria);
 
-            var messageIds = matchInfos.Where(x => !feedbackInfos.Any(y => y.MessageId == x.MessageId)).Select(x => x.MessageId).ToList();
-            if (messageIds.Any())
+            var voidingHistoryCollectionIds = matchInfos.Where(x => !feedbackInfos.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId))
+                .Select(x => x.VoidingHistoryCollectionId).ToList();
+            if (voidingHistoryCollectionIds.Any())
             {
-                var messages = voidingMessageUserNames.Where(x => messageIds.Any(y => x.MessageId == y));
+                var messages = voidingMessageUserNames.Where(x => voidingHistoryCollectionIds.Any(y => x.VoidingHistoryCollectionId == y));
                 await messageService.EditStatusVoidingMessageAsync(messages, Environment);
-                logService.LogInformation(string.Format("Abnormal Bet - Don't have ticket info or created: {0}", string.Join(",", messageIds)));
+                logService.LogInformation(string.Format("Abnormal Bet - Don't have ticket info or created: {0}", string.Join(",", voidingHistoryCollectionIds)));
             }
 
-            matchInfos = matchInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId) && x.MessageId != 0);
-            transactionInfos = transactionInfos.Where(x => feedbackInfos.Any(y => y.MessageId == x.MessageId && y.CustId == x.CustId) && x.MessageId != 0);
+            matchInfos = matchInfos.Where(x => feedbackInfos.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId) && x.VoidingHistoryCollectionId != 0);
+            transactionInfos = transactionInfos.Where(x => feedbackInfos.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId
+                                                            && y.CustId == x.CustId) && x.VoidingHistoryCollectionId != 0);
             logService.LogInformation("Abnormal Bet - End import ticket info");
             return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
         }
@@ -154,7 +156,7 @@
             }).Distinct();
             foreach (var transaction in transactionInfosDistinct)
             {
-                var matchInfo = matchInfos.FirstOrDefault(x => x.MessageId == transaction.MessageId);
+                var matchInfo = matchInfos.FirstOrDefault(x => x.MessageId == transaction.MessageId.ToString());
                 var headlineId = 0;
                 var relatedCustId = 0;
 
@@ -186,7 +188,7 @@
         }
 
         public async Task<CommandResult> EditFeedbackInfoAsync(
-            int messageId,
+            string messageIds,
             IEnumerable<int> requestIds,
             IEnumerable<int> custIds,
             string status,
@@ -194,7 +196,7 @@
         {
             var criteria = new EditFeedbackInfoCommand
             {
-                MessageId = messageId,
+                MessageId = messageIds,
                 RequestIds = string.Join(",", requestIds),
                 CustIds = string.Join(",", custIds),
                 Status = status,

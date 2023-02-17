@@ -31,7 +31,7 @@
             baseService.FetchMultipleAsync<VoidingMessage, VoidingHisMessage>(Arg.Any<GetVoidingMessageCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetVoidingMessageAsync();
+            var actual = await service.GetVoidingMessageAsync(1);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -67,7 +67,8 @@
                 new VoidingMessage
                 {
                     MessageId = 1,
-                    RequestId = 1
+                    RequestId = 1,
+                    VoidingHistoryCollectionId = 1
                 }
             };
 
@@ -75,13 +76,14 @@
             {
                 new VoidingMessageUserName
                 {
+                    VoidingHistoryCollectionId = 1,
                     MessageId = 1,
                     RequestId = 1,
                     CustIdList = "CustIdList",
                     UsernameList = "UsernameList"
                 }
             };
-            const string XmlTemplate = "<r MsgID='1' ReqID='1' UsernameList='UsernameList' CustIdList='CustIdList'/>";
+            const string XmlTemplate = "<r VoidingHistoryCollectionId='1' MsgID='1' ReqID='1' UsernameList='UsernameList' CustIdList='CustIdList'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
             stringBuilder.Append(XmlTemplate);
             stringBuilder.Append(Constants.EndRootTag);
@@ -155,9 +157,9 @@
             var fixture = new Fixture();
             var expected = fixture.Create<CommandResult>();
             var voidingMessageUserNames = new List<VoidingMessageUserName>{
-                new VoidingMessageUserName { MessageId = 1, RequestId = 1}
+                new VoidingMessageUserName { MessageId = 1, RequestId = 1, VoidingHistoryCollectionId= 1}
             };
-            var xml = "<ROOT><r MsgID='1' ReqID='1' /></ROOT>";
+            var xml = "<ROOT><r VoidingHistoryCollectionId='1' MsgID='1' ReqID='1' /></ROOT>";
             var criteria = new EditStatusVoidingMessageCommand();
             var service = GetMessageService();
             baseService.ExecuteNonQueryAsync(Arg.Do<EditStatusVoidingMessageCommand>(x => criteria = x)).Returns(expected);

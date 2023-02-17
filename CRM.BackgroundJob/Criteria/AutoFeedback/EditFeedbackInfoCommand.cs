@@ -4,7 +4,7 @@
 
     public class EditFeedbackInfoCommand : NonQueryCommand
     {
-        public int MessageId { get; set; }
+        public string MessageId { get; set; }
         public string RequestIds { get; set; }
         public string CustIds { get; set; }
         public string Status { get; set; }

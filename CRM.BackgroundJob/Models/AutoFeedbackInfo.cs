@@ -2,6 +2,7 @@
 {
     public class AutoFeedbackInfo
     {
+        public int VoidingHistoryCollectionId { get; set; }
         public int MessageId { get; set; }
         public int CustId { get; set; }
         public int RequestID { get; set; }

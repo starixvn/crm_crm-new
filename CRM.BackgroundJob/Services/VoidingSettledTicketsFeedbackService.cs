@@ -167,7 +167,7 @@
                 ProductXml = GetVoidingSettledTicketsProductXml(productIds, sportTypeIds, feedbackInfo.Listbettype, settings, settingMappings),
                 Solution = GetVoidingSettledTicketSolution(feedbackInfo, messages),
                 RelatedCustomerXml = GetRelatedCustomerXml(feedbackInfo),
-                MessageId = feedbackInfo.MessageId,
+                MessageId = feedbackInfo.MessageId.ToString(),
                 ListOrigCustIds = feedbackInfo.AffectedId,
                 VoidingSettledID = feedbackInfo.LogVoidingID,
                 Description = GetVoidingSettledTicketDescription(feedbackInfo, eventDetails)

@@ -45,7 +45,7 @@
             var voidingMessageUserName = fixture.Create<IEnumerable<VoidingMessageUserName>>();
             var transactionTickets = fixture.Create<IEnumerable<TransactionInfo>>();
             var service = MockService();
-            messageService.GetVoidingMessageAsync().Returns(voidingMessages);
+            messageService.GetVoidingMessageAsync(Arg.Any<int>()).Returns(voidingMessages);
             messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2).Returns(messageImportCheck);
             messageService.ImportVoidingMessageAsync(voidingMessageUserName, voidingMessages.Item1, setting.BatchSize, "Live", setting.LastDateUAT).Returns(voidingMessageUserName);
             messageService.GetFailMessageAsync().Returns(failMessages);
@@ -80,7 +80,7 @@
             var transactionTickets = fixture.Create<IEnumerable<TransactionInfo>>();
             var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>(matchInfos, transactionInfos, transCheck);
             var service = MockService();
-            messageService.GetVoidingMessageAsync().Returns(voidingMessages);
+            messageService.GetVoidingMessageAsync(Arg.Any<int>()).Returns(voidingMessages);
             messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2).Returns(messageImportCheck);
             messageService.ImportVoidingMessageAsync(voidingMessageUserName, voidingMessages.Item1, setting.BatchSize, "Live", setting.LastDateUAT).Returns(voidingMessageUserName);
             messageService.GetFailMessageAsync().Returns(failMessages);
@@ -110,7 +110,7 @@
             var setting = fixture.Create<AbnormalBetSystemSetting>();
             var matchInfos = new List<MatchInfo>
             {
-                new MatchInfo { MessageId = 1 }
+                new MatchInfo { MessageId = "1" }
             };
             var transactionInfos = new List<TransactionInfo>
             {
@@ -125,7 +125,7 @@
             var transactionTickets = fixture.Create<IEnumerable<TransactionInfo>>();
             var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>(matchInfos, transactionInfos, transCheck);
             var service = MockService();
-            messageService.GetVoidingMessageAsync().Returns(voidingMessages);
+            messageService.GetVoidingMessageAsync(Arg.Any<int>()).Returns(voidingMessages);
             messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2).Returns(messageImportCheck);
             messageService.ImportVoidingMessageAsync(voidingMessageUserName, voidingMessages.Item1, setting.BatchSize, "Live", setting.LastDateUAT).Returns(voidingMessageUserName);
             messageService.GetFailMessageAsync().Returns(failMessages);
@@ -159,7 +159,7 @@
             // Arrange
             var matchInfos = new List<MatchInfo>
             {
-                new MatchInfo { MessageId = 1 }
+                new MatchInfo { MessageId = "1" }
             };
             var transactionInfos = new List<TransactionInfo>
             {
@@ -208,7 +208,7 @@
             // Assert
             service.Received().Protected(
                     "CreateFeedbackForCreditSiteAsync",
-                Arg.Any<Message>(),
+                Arg.Any<IEnumerable<Message>>(),
                 Arg.Any<MatchInfo>(),
                 Arg.Any<IEnumerable<TransactionInfo>>(),
                 Arg.Any<IEnumerable<GroupHeadline>>(),
@@ -217,7 +217,7 @@
             service.Received().Protected(
                     "CreateFeedbackForDepositSiteAsync",
                 licenseeInfo,
-                Arg.Any<Message>(),
+                Arg.Any<IEnumerable<Message>>(),
                 Arg.Any<MatchInfo>(),
                 Arg.Any<IEnumerable<TransactionInfo>>(),
                 settings,
@@ -230,7 +230,7 @@
         public async Task CreateFeedbackForCreditSiteAsync_WhenCalled_ExpectedCallCreateFeedbackForCreditSiteByBatchAsync()
         {
             // Arrange
-            var message = fixture.Create<Message>();
+            var messages = fixture.Create<IEnumerable<Message>>();
             var matchInfo = fixture.Create<MatchInfo>();
             var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
             var headlines = new List<GroupHeadline>
@@ -249,7 +249,7 @@
 
             // Act
             await service.Public_CreateFeedbackForCreditSiteAsync(
-                message,
+                messages,
                 matchInfo,
                 transactionInfos,
                 headlines,
@@ -262,7 +262,7 @@
                 "CreateFeedbackForCreditSiteByBatchAsync",
                 Arg.Any<GroupHeadline>(),
                 Arg.Any<IEnumerable<int>>(),
-                message,
+                messages,
                 matchInfo,
                 transactionInfos,
                 settings,
@@ -279,7 +279,12 @@
             // Arrange
             var headline = new GroupHeadline { HeadlineId = 1 };
             var relatedCustomerIds = new List<int> { 1 };
-            var message = new Message { MessageId = 1, RequestId = 1 };
+            var messages = new List<Message>{
+                new Message
+                {
+                    MessageId = 1, RequestId = 1
+                }
+            };
             var matchInfo = fixture.Create<MatchInfo>();
             var settings = fixture.Create<IEnumerable<SettingItem>>();
             var transactionInfos = new List<TransactionInfo>
@@ -292,15 +297,15 @@
             var service = MockService();
             baseService.ExecuteNonQueryAsync(criteria).Returns(commandResult);
             service.Protected("GetProductXml", false, matchInfo, Arg.Any<IEnumerable<TransactionInfo>>(), settings, settingMappings).Returns("product xml");
-            service.Protected("GetSolutionForCreditSite", message, Arg.Any<IEnumerable<TransactionInfo>>(), Arg.Any<int>()).Returns("solution");
+            service.Protected("GetSolutionForCreditSite", messages.FirstOrDefault(), Arg.Any<IEnumerable<TransactionInfo>>(), Arg.Any<int>()).Returns("solution");
             service.Protected("GetRelatedCustomerXml", headline.HeadlineId, Arg.Any<IEnumerable<TransactionInfo>>(), matchInfo.IssueTypeId).Returns("related customer xml");
-            service.Protected("GetDescriptionForCreditSite", message.MessageId, "1", matchInfo, Arg.Any<IEnumerable<TransactionInfo>>()).Returns("description");
+            service.Protected("GetDescriptionForCreditSite", Arg.Any<string>(), "1", matchInfo, Arg.Any<IEnumerable<TransactionInfo>>()).Returns("description");
 
             // Act
             await service.Public_CreateFeedbackForCreditSiteByBatchAsync(
                 headline,
                 relatedCustomerIds,
-                message,
+                messages,
                 matchInfo,
                 transactionInfos,
                 settings,
@@ -311,7 +316,7 @@
             Assert.Equal("product xml", criteria.ProductXml);
             Assert.Equal("solution", criteria.Solution);
             Assert.Equal("related customer xml", criteria.RelatedCustomerXml);
-            Assert.Equal(message.MessageId, criteria.MessageId);
+            Assert.Equal("1", criteria.MessageId);
             Assert.Equal("1", criteria.ListOrigCustIds);
             Assert.Equal("description", criteria.Description);
             logService.Received(4).LogInformation(Arg.Any<string>());
@@ -323,7 +328,12 @@
             // Arrange
             var headline = new GroupHeadline { HeadlineId = 1 };
             var relatedCustomerIds = new List<int> { 1 };
-            var message = new Message { MessageId = 1, RequestId = 1 };
+            var messages = new List<Message>{
+                new Message
+                {
+                    MessageId = 1, RequestId = 1
+                }
+            };
             var matchInfo = fixture.Create<MatchInfo>();
             var transactionInfos = new List<TransactionInfo>
             {
@@ -340,7 +350,7 @@
             await service.Public_CreateFeedbackForCreditSiteByBatchAsync(
                 headline,
                 relatedCustomerIds,
-                message,
+                messages,
                 matchInfo,
                 transactionInfos,
                 settings,
@@ -349,7 +359,7 @@
 
             // Assert
             logService.Received(4).LogInformation(Arg.Any<string>());
-            await ticketVoidingService.EditFeedbackInfoAsync(message.MessageId, Arg.Any<IEnumerable<int>>(), Arg.Any<IEnumerable<int>>(), CreateFeedbackJobStatus.Fail, commandResult.Message);
+            await ticketVoidingService.EditFeedbackInfoAsync(Arg.Any<string>(), Arg.Any<IEnumerable<int>>(), Arg.Any<IEnumerable<int>>(), CreateFeedbackJobStatus.Fail, commandResult.Message);
             await logService.ErrorAsync(commandResult, criteria);
         }
 
@@ -360,7 +370,9 @@
             var exception = fixture.Create<Exception>();
             var headline = new GroupHeadline { HeadlineId = 1 };
             var relatedCustomerIds = new List<int> { 1 };
-            var message = new Message { MessageId = 1, RequestId = 1 };
+            var messages = new List<Message>{
+                new Message { MessageId = 1, RequestId = 1 }
+            };
             var matchInfo = fixture.Create<MatchInfo>();
             var transactionInfos = new List<TransactionInfo>
             {
@@ -376,7 +388,7 @@
             await service.Public_CreateFeedbackForCreditSiteByBatchAsync(
                 headline,
                 relatedCustomerIds,
-                message,
+                messages,
                 matchInfo,
                 transactionInfos,
                 settings,
@@ -385,7 +397,7 @@
 
             // Assert
             logService.Received(4).LogInformation(Arg.Any<string>());
-            await ticketVoidingService.EditFeedbackInfoAsync(message.MessageId, Arg.Any<IEnumerable<int>>(), Arg.Any<IEnumerable<int>>(), CreateFeedbackJobStatus.Fail, exception.Message);
+            await ticketVoidingService.EditFeedbackInfoAsync(Arg.Any<string>(), Arg.Any<IEnumerable<int>>(), Arg.Any<IEnumerable<int>>(), CreateFeedbackJobStatus.Fail, exception.Message);
             await logService.ErrorAsync(exception);
         }
 
@@ -397,7 +409,7 @@
         {
             // Arrange
             var licenseeInfo = fixture.Create<CustomerInfo>();
-            var message = fixture.Create<Message>();
+            var messages = fixture.Create<IEnumerable<Message>>();
             var matchInfo = fixture.Create<MatchInfo>();
             var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
             var communicationTool = fixture.Create<SettingItem>();
@@ -414,7 +426,7 @@
             // Act
             await service.Public_CreateFeedbackForDepositSiteAsync(
                 licenseeInfo,
-                message,
+                messages,
                 matchInfo,
                 transactionInfos,
                 settings,
@@ -424,7 +436,7 @@
             logService.Received(2).LogInformation(Arg.Any<string>());
             service.Received().Protected("GetCategorySubCategory", settings, matchInfo.IssueTypeId);
             service.Received().Protected("GetProductXml", false, matchInfo, transactionInfos, settings, settingMappings);
-            service.Received().Protected("CreateFeedbackForDepositByBatchAsync", licenseeInfo, message, transactionInfos, Arg.Any<DateTime>(), Arg.Any<string>(), Arg.Any<CreateFeedbackCommand>());
+            service.Received().Protected("CreateFeedbackForDepositByBatchAsync", licenseeInfo, messages, transactionInfos, Arg.Any<DateTime>(), Arg.Any<string>(), Arg.Any<CreateFeedbackCommand>());
         }
         #endregion CreateFeedbackForDepositSiteAsync
 
@@ -939,7 +951,7 @@
         public void GetDescriptionForDepositeSite_WhenCalled_ReturnExpectedDescription()
         {
             // Arrange
-            var messageId = fixture.Create<int>();
+            var messageId = fixture.Create<string>();
             var requestIds = fixture.Create<string>();
             var description = new StringBuilder("<span style=\"color: rgb(255, 0, 0);\">This is an auto-generated entry.</span>");
             description.AppendFormat("<br /><span style=\"color: rgb(255, 0, 0);\">Msg ID: {0}, Request No.: {1}</span>", messageId, requestIds);
@@ -958,7 +970,7 @@
         public void GetDescriptionForCreditSite_WhenCalled_ReturnExpectedDescription()
         {
             // Arrange
-            var messageId = fixture.Create<int>();
+            var messageId = fixture.Create<string>();
             var requestIds = fixture.Create<string>();
             fixture.Customize<MatchInfo>(x => x.With(b => b.IssueTypeId, 1));
             var matchInfo = fixture.Create<MatchInfo>();
@@ -983,7 +995,7 @@
         public void GetDescriptionForCreditSite_IssuesTypeAbnormalAccount_ReturnExpectedDescription()
         {
             // Arrange
-            var messageId = fixture.Create<int>();
+            var messageId = fixture.Create<string>();
             var requestIds = fixture.Create<string>();
             var matchInfo = new MatchInfo
             {
@@ -1055,7 +1067,7 @@
             {
                 DescriptionCredit = "DescriptionCredit"
             };
-            var messageId = fixture.Create<int>();
+            var messageId = fixture.Create<string>();
             var requestIds = fixture.Create<string>();
             var matchInfo = fixture.Create<MatchInfo>();
 
