@@ -81,7 +81,7 @@
             {
                 var result = await SendMessage(batch);
 
-                await UpdateRecipientStatus(result);
+                //await UpdateRecipientStatus(result);
             }
         }
 
@@ -185,12 +185,18 @@
             var content = notification.Content;
             if (!string.IsNullOrWhiteSpace(notification.FileName))
             {
+                logService.LogInformation("======================================================");
+                logService.LogInformation(notification.FileName);
+
                 var files = notification.FileName.Split(",");
                 foreach (var file in files)
                 {
-                    string imageUrl = BuildImageBase64Html(file, notification.AnnouncementId);
+                    logService.LogInformation(file);
+
                     content += "<br/>";
+                    string imageUrl = BuildImageBase64Html(file, notification.AnnouncementId);
                     content += imageUrl;
+                    logService.LogInformation(content);
                 }
             }
             return content;
