@@ -78,7 +78,7 @@ export class EditCommunicationLog extends Component {
 
         await DataService.getDataAsync(`${urlLogByFeedbackId}/${this.props.feedbackId}`).then(response => {
             this.setState({ logFeedback: response.data });
-        }).then(() => Site.unblockUI());
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
         await DataService.getDataAsync(urlStatusForEdit).then(response => {
             this.setState({ statusEdit: response.data });
         });

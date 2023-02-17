@@ -69,7 +69,7 @@ export class DataGridCommunication extends Component {
         await DataService.getDataAsync(`CommunicationLog/GetLogByFeedbackId/${id}`).then(response => {
             const options = this.getOptions(response.data);
             this.props.setCreateCommunicationDialog({ show: true, custId:response.data.log.custId, options: options });
-        });
+        }).catch(Site.handleAxiosError);
     };
 
     getOptions = data => {
