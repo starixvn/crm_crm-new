@@ -77,7 +77,7 @@ export class EditCommunicationLog extends Component {
         const urlStatusForEdit = 'CommunicationLog/GetAllStatus?isEdit=true';
 
         await DataService.getDataAsync(`${urlLogByFeedbackId}/${this.props.feedbackId}`).then(response => {
-            if(!response &&  !response.data){
+            if(!response || !response.data){
                 return;
             }
             this.setState({ logFeedback: response.data });
