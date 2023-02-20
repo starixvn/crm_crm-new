@@ -112,7 +112,7 @@
             {
                 options.Cookie.IsEssential = true;
                 options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(Configuration.GetSection("AuthSettings:SessionTimeout").Value));
-                options.Cookie.Name = "Fanex.CRM.Session1";
+                options.Cookie.Name = "Fanex.CRM.Session";
             });
 
             services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
@@ -241,7 +241,7 @@
                     Password = redisConfig.Password,
                     DefaultDatabase = redisConfig.DefaultDatabase
                 };
-                options.InstanceName = redisConfig.ApplicationName + ":Session:1";
+                options.InstanceName = redisConfig.ApplicationName + ":Session:";
             });
         }
     }
