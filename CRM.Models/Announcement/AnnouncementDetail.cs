@@ -13,8 +13,8 @@ namespace CRM.Models.Announcement
         public string CurrencyIdList { get; set; }
         public bool SendImmediately { get; set; }
         public DateTime SendDate { get; set; }
-        public string SendDateString => SendDate.ToString("MMM dd, yyyy");
-        public string SendTimeString => SendDate.ToString("hh:mm:ss tt");
+        public string SendDateString { get; set; }
+        public string SendTimeString { get; set; }
         public string FileName { get; set; }
         public string OrigFileName { get; set; }
     }

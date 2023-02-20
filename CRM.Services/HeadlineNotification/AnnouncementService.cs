@@ -64,7 +64,15 @@ namespace CRM.Services.HeadlineNotification
             {
                 AnnouncementId = id
             };
-            return await baseService.FetchMultipleAsync<AnnouncementDetail, ContentInfo>(criteria);
+            var (announcements, contents) = await baseService.FetchMultipleAsync<AnnouncementDetail, ContentInfo>(criteria);
+            foreach (var announcement in announcements)
+            {
+                var convertSendDateToClient = commonService.ConvertToClientDateTime(announcement.SendDate);
+                announcement.SendDate = convertSendDateToClient;
+                announcement.SendDateString = convertSendDateToClient.ToString("MMM dd, yyyy");
+                announcement.SendTimeString = convertSendDateToClient.ToString("hh:mm:ss tt");
+            }
+            return new ValueTuple<IEnumerable<AnnouncementDetail>, IEnumerable<ContentInfo>>(announcements, contents);
         }
 
         public async Task<ValueTuple<IEnumerable<NotificationTemplate>, IEnumerable<ContentLanguage>>> GetAnnouncementTemplateAsync()
