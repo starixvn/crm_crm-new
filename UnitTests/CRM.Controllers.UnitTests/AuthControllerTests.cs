@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using CRM.Core.Models;
     using CRM.Models.Auth;
@@ -69,6 +71,7 @@
         public async Task SSO_IsValidTimeAndCannotSSOLogin_RedirectToAction()
         {
             var controller = FakeDoCheckInController();
+            controller.ControllerContext.HttpContext.Request.Headers["Accept-Language"] = "us";
             var sso = new SingleSignOn
             {
                 OnUserId = Cryptography.EncryptPassword("8"),
@@ -90,6 +93,7 @@
         public async Task SSO_IsValidTimeAndSSOLoginSuccess_ButNoUser_RedirectAction()
         {
             var controller = FakeDoCheckInController();
+            controller.ControllerContext.HttpContext.Request.Headers["Accept-Language"] = "us";
             var sso = new SingleSignOn
             {
                 OnUserId = Cryptography.EncryptPassword("8"),
@@ -111,6 +115,7 @@
         public async Task SSO_IsValidTimeAndSSOLoginSuccess_GetUserSuccess_RedirectAction()
         {
             var controller = FakeDoCheckInController();
+            controller.ControllerContext.HttpContext.Request.Headers["Accept-Language"] = "us";
             var sso = new SingleSignOn
             {
                 OnUserId = Cryptography.EncryptPassword("8"),
@@ -214,6 +219,7 @@
         public async Task SignIn_Valid_ReturnExpectedResult()
         {
             var controller = FakeDoCheckInController();
+            controller.ControllerContext.HttpContext.Request.Headers["Accept-Language"] = "us";
             var userLogin = new SignIn
             {
                 Username = "sa",
