@@ -186,8 +186,9 @@
         {
             var userLangs = request.Headers["Accept-Language"].ToString();
             var firstLang = userLangs.Split(',').FirstOrDefault();
-            var defaultLang = string.IsNullOrEmpty(firstLang) ? "en" : firstLang;
-            return CultureInfo.CreateSpecificCulture(defaultLang);
+            CultureInfo culture = new CultureInfo(firstLang);
+            var isValidCulture = CultureInfo.GetCultures(CultureTypes.AllCultures).Contains(culture);
+            return isValidCulture ? CultureInfo.CreateSpecificCulture(firstLang) : CultureInfo.CreateSpecificCulture("en");
         }
 
         [Route("UserLogin/SSO")]
