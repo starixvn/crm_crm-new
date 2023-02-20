@@ -271,4 +271,13 @@
     }
 
     @include tab-language;
+    .languages-text{
+        .nav-item:not(:last-child){
+            width: 123px !important;
+        }
+
+        .nav-item:is(:last-child){
+            width: 125px !important;
+        }
+    }
 }

@@ -4,14 +4,24 @@ import LangHelper from '@jsroot/common/langHelper';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 
 export default class Content extends Component {
-    constructor(props) {
-        super(props);
-    }
+    getReferenceText = data =>{
+        let reference = '';
+        switch(data.dataSource) {
+            case 'DBMSG.bodb_Message.dbo.Msg':
+                reference = `(MessageID: ${data.referenceId})`;
+            break;
+            case 'AnnouncementId':
+                reference = `(AnnId: ${data.referenceId})`;
+            break;
+            default:
+                reference = data.referenceId > 0 && `(LogID: ${data.referenceId})`;
+        }
 
+        return reference;
+    }
     render() {
         const { data, onClose } = this.props;
-        const LogIdDisplay = `(${LangHelper.getResource('LogID')}: ${data.referenceIdList})`;
-        const messageIdDisplay = `(${LangHelper.getResource('MessageID')}: ${data.referenceIdList})`;
+        const messageIdDisplay = this.getReferenceText(data);
         return (
             <Modal show backdrop='static' keyboard={false} size='lg' centered
                 onHide={onClose} className='notification-list-modal'
@@ -20,7 +30,7 @@ export default class Content extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title as='div'>
                     {`${LangHelper.getResource('NotificationID')}: ${data.notificationId} `}
-                        {data.dataSource === 'DBMSG.bodb_Message.dbo.Msg' ? messageIdDisplay : data.referenceIdList > 0 && LogIdDisplay}
+                        {messageIdDisplay}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
