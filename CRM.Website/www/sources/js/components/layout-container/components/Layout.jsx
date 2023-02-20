@@ -29,7 +29,8 @@ export class Layout extends Component {
             showEmptyCustomerInfoPopup: false,
             customerSuggestions: [],
             editCustomerInfoPopup: { show: false},
-            isShowingLeftPanel : true
+            isShowingLeftPanel : true,
+            isShowNewVersion: false
         };
     }
 
@@ -49,6 +50,22 @@ export class Layout extends Component {
         if(isShowingLeftPanel !== null){
             storage.removeItem('isShowingLeftPanel');
         }
+        setTimeout(this.handleCheckNewVersion, 60000);
+    }
+
+    handleCheckNewVersion = async () =>{
+        await CheckForIndexHTMLChange(Site.resolveClientUrl('')).then(response => {
+            if(response) {
+                this.setState({isShowNewVersion: true});
+            }else{
+                setTimeout(this.handleCheckNewVersion, 60000);
+            }
+        });
+    }
+
+    handleCloseConfirmNewVersion = () => {
+        this.setState({isShowNewVersion: false});
+        setTimeout(this.handleCheckNewVersion, 60000);
     }
 
     getSetting = async () =>{
@@ -306,6 +323,22 @@ export class Layout extends Component {
                             this.renderFullWidthContent()
                         }
                     </div>
+                }
+                {
+                    this.state.isShowNewVersion &&
+                    <SweetModalDialog size="lg"
+                        title="Confirm Update Version"
+                        contents={<div>New version has released, please press OK to get latest!</div>}
+                        buttons={[
+                            <Button variant="primary" size="sm" onClick={() => window.location.reload(true)}>
+                                {LangHelper.getResource('OK')}
+                            </Button>,
+                            <Button variant="primary" size="sm" onClick={this.handleCloseConfirmNewVersion}>
+                                {LangHelper.getResource('Cancel')}
+                            </Button>
+                        ]}
+                        onClose={this.handleCloseConfirmNewVersion}
+                    />
                 }
                 <ToastContainer
                     limit={1}
