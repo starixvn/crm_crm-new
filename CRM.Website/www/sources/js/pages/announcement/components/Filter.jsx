@@ -46,7 +46,8 @@ export class Filter extends Component {
 
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
-    handleSubmit = () => {
+    handleSubmit = event => {
+        event.preventDefault();
         const { announcementId, title, fromDate, toDate, status } = this.state;
         if(fromDate > toDate){
             toast.error(LangHelper.getResource('FromDateMustSmallerThanToDate'));
@@ -74,7 +75,7 @@ export class Filter extends Component {
     render() {
         const {announcementId, fromDate, toDate, title} = this.state;
         return (
-            <Form className='form-filter' onSubmit={this.handleSubmit}>
+            <Form className='form-filter' onSubmit={e => this.handleSubmit(e)}>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group className='announcement-num'>
                         <Form.Label htmlFor="announcementId">{LangHelper.getResource('AnnouncementId')}</Form.Label>
@@ -140,12 +141,12 @@ export class Filter extends Component {
                 </Form.Row>
                 <Form.Row>
                     <Form.Group>
-                        <Button variant="primary" size="sm" className='mr-3' onClick={this.handleSubmit}>
+                        <Button variant="primary" type="submit" size="sm" className='mr-3' onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>
                         {
                             this.props.isHost &&
-                            <Button variant="primary" size="sm" onClick={this.handleOpenNewAnnouncement}>
+                            <Button variant="primary" size="sm" onClick={() => this.handleOpenNewAnnouncement()}>
                                 {LangHelper.getResource('NewAnnouncement')}
                             </Button>
                         }

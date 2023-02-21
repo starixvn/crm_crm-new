@@ -158,7 +158,8 @@ export class NewAnnouncement extends Component {
 
     handleChangeInputHeadline = event => {
         const value = event.target.value;
-        if(value.includes(',') || value.includes(' ') || event.keyCode === 13){
+        const isDownKey = value.includes(',') || value.includes(' ') || event.keyCode === 13;
+        if(value.length > 0 && isDownKey){
             event.preventDefault();
             const headlineGroups = [... this.state.headlineGroups, value.slice(0, -1)];
             this.handleSetValueHeadline(headlineGroups);
@@ -167,9 +168,11 @@ export class NewAnnouncement extends Component {
 
     handleBlurInputHeadline = event => {
         const value = event.target.value;
-        const headlineGroups = [... this.state.headlineGroups, value];
-        this.setState({headlineGroups});
-        this.headlineInputRef.current.value = '';
+        if(value && value.length > 0){
+            const headlineGroups = [... this.state.headlineGroups, value];
+            this.setState({headlineGroups});
+            this.headlineInputRef.current.value = '';
+        }
     }
 
     handleRemoveHeadline = (event, headline) =>{
