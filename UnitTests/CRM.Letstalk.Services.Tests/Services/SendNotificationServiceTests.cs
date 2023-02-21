@@ -4,12 +4,12 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.Core.Services;
+    using CRM.Letstalk.Client.Models;
     using CRM.Letstalk.Client.Models.Results;
     using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Letstalk.Services.Criteria;
     using CRM.Letstalk.Services.Models.SendNotification;
     using CRM.Letstalk.Services.Services;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using NSubstitute;
     using Xunit;
@@ -21,7 +21,6 @@
         private readonly IConfiguration configuration;
         private readonly ICRMLogService logService;
         private readonly ILetstalkService letstalkService;
-        private readonly IWebHostEnvironment webHostEnvironment;
 
         public SendNotificationServiceTests()
         {
@@ -32,8 +31,7 @@
             configuration = Substitute.For<IConfiguration>();
             baseService = Substitute.For<IBaseService>();
             logService = Substitute.For<ICRMLogService>();
-            webHostEnvironment = Substitute.For<IWebHostEnvironment>();
-            service = new SendNotificationService(baseService, logService, configuration, webHostEnvironment, func);
+            service = new SendNotificationService(baseService, logService, configuration, func);
         }
 
         [Fact]
@@ -73,8 +71,8 @@
             await service.SendNotificationToLetstalk();
 
             await baseService.Received(1).GetDataAsync<NotificationMessage>(Arg.Any<GetNotificationToSendCriteria>());
-            await letstalkService.Received(3).PushAsync(Arg.Any<string>(), Arg.Any<string>());
-            await letstalkService.Received(2).PushRoomAsync(Arg.Any<string>(), Arg.Any<string>());
+            await letstalkService.Received(3).PushPersonalAsync(Arg.Any<List<string>>(), Arg.Any<OutgoingMessage>());
+            await letstalkService.Received(2).PushMultiRoomAsync(Arg.Any<List<string>>(), Arg.Any<OutgoingMessage>());
             await baseService.Received(1).ExecuteNonQueryAsync(Arg.Any<UpdateNotificationStatusCommand>());
             await logService.Received(5).ErrorAsync(Arg.Any<Exception>());
         }
@@ -84,11 +82,11 @@
         {
             var notifications = FakeNotiftcation();
             baseService.GetDataAsync<NotificationMessage>(Arg.Any<GetNotificationToSendCriteria>()).Returns(notifications);
-            letstalkService.PushRoomAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(new BaseResult { Status = 1 });
+            letstalkService.PushMultiRoomAsync(Arg.Any<List<string>>(), Arg.Any<OutgoingMessage>()).Returns(new PushMessageResult { Status = 1 });
             await service.SendNotificationToLetstalk();
 
-            await letstalkService.Received(3).PushAsync(Arg.Any<string>(), Arg.Any<string>());
-            await letstalkService.Received(2).PushRoomAsync(Arg.Any<string>(), Arg.Any<string>());
+            await letstalkService.Received(3).PushPersonalAsync(Arg.Any<List<string>>(), Arg.Any<OutgoingMessage>());
+            await letstalkService.Received(2).PushMultiRoomAsync(Arg.Any<List<string>>(), Arg.Any<OutgoingMessage>());
             await logService.Received(3).ErrorAsync(Arg.Any<Exception>());
         }
 
@@ -97,10 +95,10 @@
         {
             var notifications = FakeNotiftcation();
             baseService.GetDataAsync<NotificationMessage>(Arg.Any<GetNotificationToSendCriteria>()).Returns(notifications);
-            letstalkService.PushAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(new PushMessageResult { Status = 1 });
+            letstalkService.PushMultiRoomAsync(Arg.Any<List<string>>(), Arg.Any<OutgoingMessage>()).Returns(new PushMessageResult { Status = 1 });
             await service.SendNotificationToLetstalk();
 
-            await logService.Received(2).ErrorAsync(Arg.Any<Exception>());
+            await logService.Received(3).ErrorAsync(Arg.Any<Exception>());
         }
 
         [Fact]
@@ -108,8 +106,10 @@
         {
             var notifications = FakeNotiftcation();
             baseService.GetDataAsync<NotificationMessage>(Arg.Any<GetNotificationToSendCriteria>()).Returns(notifications);
-            letstalkService.PushAsync(Arg.Is("4"), Arg.Any<string>()).Returns(new PushMessageResult { Status = 1, BlockList = new List<string> { "4" } });
-            letstalkService.PushAsync(Arg.Is("5"), Arg.Any<string>()).Returns(new PushMessageResult { Status = 1, FailList = new List<string> { "5" } });
+            letstalkService.PushPersonalAsync(Arg.Is(new List<string> { "4" }), Arg.Any<OutgoingMessage>()).Returns(new PushMessageResult { Status = 1, BlockList = new List<string> { "4" } });
+            letstalkService.PushPersonalAsync(Arg.Is(new List<string> { "5" }), Arg.Any<OutgoingMessage>()).Returns(new PushMessageResult { Status = 1, FailList = new List<string> { "5" } });
+            letstalkService.PushMultiRoomAsync(Arg.Any<List<string>>(), Arg.Any<OutgoingMessage>()).Returns(new PushMessageResult { Status = 1 });
+
             await service.SendNotificationToLetstalk();
             await logService.Received(3).ErrorAsync(Arg.Any<Exception>());
         }
@@ -119,8 +119,8 @@
         {
             var notifications = FakeNotiftcation();
             baseService.GetDataAsync<NotificationMessage>(Arg.Any<GetNotificationToSendCriteria>()).Returns(notifications);
-            letstalkService.PushRoomAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(new BaseResult { Status = 1 });
-            letstalkService.PushAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(new PushMessageResult { Status = 1 });
+            letstalkService.PushMultiRoomAsync(Arg.Any<List<string>>(), Arg.Any<OutgoingMessage>()).Returns(new PushMessageResult { Status = 1 });
+            letstalkService.PushPersonalAsync(Arg.Any<List<string>>(), Arg.Any<OutgoingMessage>()).Returns(new PushMessageResult { Status = 1 });
 
             await service.SendNotificationToLetstalk();
 
