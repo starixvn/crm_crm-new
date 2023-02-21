@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using CRM.Core.Enumerables;
     using CRM.Core.Extensions.XML;
@@ -137,7 +138,7 @@
 
             var outGoingMsg = new OutgoingMessage
             {
-                MessageType = MessageTypeEnum.Html,
+                MessageType = MessageTypeNumber.Html,
                 Text = content
             };
 
@@ -172,7 +173,7 @@
                 var content = BuildContent(notification);
                 var outGoingMsg = new OutgoingMessage
                 {
-                    MessageType = MessageTypeEnum.Html,
+                MessageType = MessageTypeNumber.Html,
                     Text = content
                 };
 
@@ -197,9 +198,11 @@
                 var files = notification.FileName.Split(",");
                 foreach (var file in files)
                 {
-                    content += "<br/>";
-                    string imageUrl = BuildImageBase64Html(file, notification.AnnouncementId);
-                    content += imageUrl;
+                    var strBuilder = new StringBuilder();
+                    strBuilder.Append(content);
+                    strBuilder.Append("<br />");
+                    strBuilder.Append(imageUrl);
+                    content = strBuilder.ToString();
                 }
             }
             return content;

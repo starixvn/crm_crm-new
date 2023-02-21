@@ -13,28 +13,17 @@
     public class ReceiveMessageEventHandler : IEventHandler
     {
         private readonly Func<int, ILetstalkService> letstalkService;
-        private readonly ICryptographyService cryptographyService;
         private const string ReplayChat = "Hello, I am Bot. Your ID: {0}";
 
-        public ReceiveMessageEventHandler(Func<int, ILetstalkService> letstalkService,
-            ICryptographyService cryptographyService)
+        public ReceiveMessageEventHandler(Func<int, ILetstalkService> letstalkService)
         {
             this.letstalkService = letstalkService;
-            this.cryptographyService = cryptographyService;
         }
 
         public async Task EventHandleAsync(HookEvent hookEvent, BotConfig botConfig)
         {
-            try
-            {
-                hookEvent.PayloadObject = JsonConvert.DeserializeObject<Payload>(hookEvent.EncodedPayload);
-                var msgContent = cryptographyService.Decrypt(hookEvent.PayloadObject.HashContent, botConfig.ChatKey, hookEvent.PayloadObject.HashContentKey);
-                await letstalkService(botConfig.BotAccountId).PushAsync(hookEvent.Source.UserId, string.Format(ReplayChat, hookEvent.Source.UserId));
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            hookEvent.PayloadObject = JsonConvert.DeserializeObject<Payload>(hookEvent.EncodedPayload);
+            await letstalkService(botConfig.BotAccountId).PushAsync(hookEvent.Source.UserId, string.Format(ReplayChat, hookEvent.Source.UserId));
         }
     }
 }

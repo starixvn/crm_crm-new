@@ -1,6 +1,6 @@
 ﻿namespace CRM.Letstalk.Client.Enum
 {
-    public enum MessageTypeEnum
+    public enum MessageTypeNumber
     {
         Text = 0,
         Image,

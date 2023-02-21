@@ -6,7 +6,7 @@
     public class OutgoingMessage
     {
         [JsonIgnore]
-        public MessageTypeEnum MessageType { get; set; }
+        public MessageTypeNumber MessageType { get; set; }
 
         [JsonProperty(PropertyName = "type")]
         public string Type
@@ -15,16 +15,16 @@
             {
                 switch (MessageType)
                 {
-                    case MessageTypeEnum.Text:
+                    case MessageTypeNumber.Text:
                         return MulticastType.Text;
 
-                    case MessageTypeEnum.Image:
+                    case MessageTypeNumber.Image:
                         return MulticastType.Image;
 
-                    case MessageTypeEnum.FullImage:
+                    case MessageTypeNumber.FullImage:
                         return MulticastType.FullImage;
 
-                    case MessageTypeEnum.Html:
+                    case MessageTypeNumber.Html:
                         return MulticastType.HTML;
 
                     default:

@@ -105,7 +105,7 @@
             return result;
         }
 
-        private async Task<PushMessageResult> PushAsync(IEnumerable<string> accountIds, Payload payload, string type = MessageType.Text)
+        private async Task<PushMessageResult> PushAsync(IEnumerable<string> accountIds, Payload payload, string type = Models.MessageType.Text)
         {
             ValidateInputParam(nameof(accountIds), accountIds);
             ValidateInputParam(nameof(payload), payload);
@@ -173,12 +173,12 @@
 
         private static void ValidateMultiCastMessage(OutgoingMessage message)
         {
-            if (message.MessageType == MessageTypeEnum.Text && string.IsNullOrWhiteSpace(message.Text))
+            if (message.MessageType == MessageTypeNumber.Text && string.IsNullOrWhiteSpace(message.Text))
             {
                 throw new ArgumentNullException(message.Text);
             }
 
-            if ((message.MessageType == MessageTypeEnum.Image && message.MessageType == MessageTypeEnum.FullImage)
+            if ((message.MessageType == MessageTypeNumber.Image && message.MessageType == MessageTypeNumber.FullImage)
                 && string.IsNullOrWhiteSpace(message.ImageUrl))
             {
                 throw new ArgumentNullException(message.ImageUrl);
