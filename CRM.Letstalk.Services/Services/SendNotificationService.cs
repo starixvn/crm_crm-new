@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using CRM.Core.Enumerables;
     using CRM.Core.Extensions.XML;
@@ -165,7 +164,8 @@
                 };
                 logService.LogInformation(string.Format("{0}/{1}/{2}", BaseImageUrl, notification.AnnouncementId, img));
 
-                await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outgoingMsg);
+                var result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outgoingMsg);
+                logService.LogInformation(JsonConvert.SerializeObject(result));
             }
         }
 
@@ -197,11 +197,10 @@
             try
             {
                 var result = new PushMessageResult();
-                var content = BuildContent(notification);
                 var outGoingMsg = new OutgoingMessage
                 {
                 MessageType = MessageTypeNumber.Html,
-                    Text = content
+                Text = notification.Content
                 };
 
                 result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
@@ -230,8 +229,8 @@
                 };
                 logService.LogInformation(string.Format("{0}/{1}/{2}", BaseImageUrl, notification.AnnouncementId, img));
 
-                await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outgoingMsg);
-            }
+                var result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outgoingMsg);
+                logService.LogInformation(JsonConvert.SerializeObject(result));
             }
             catch (Exception ex)
             {
@@ -239,34 +238,10 @@
                 throw;
             }
         }
-
-        private string BuildContent(NotificationMessage notification)
-        {
-            var content = notification.Content;
-            if (!string.IsNullOrWhiteSpace(notification.FileName))
-            {
-                var files = notification.FileName.Split(",");
-                foreach (var file in files)
-                {
-                    var strBuilder = new StringBuilder();
-                    strBuilder.Append(content);
-                    strBuilder.Append("<br />");
-                    strBuilder.Append(imageUrl);
-                    content = strBuilder.ToString();
-                }
-            }
-            return content;
-        }
-
-        private string BuildImageBase64Html(string file, int announcementId)
-        {
-            var path = Path.Combine(webHostEnvironment.ContentRootPath, "wwwroot", "announcement", announcementId.ToString(), file);
-            byte[] imageArray = File.ReadAllBytes(path);
             string fileType = file.EndsWith("png", StringComparison.OrdinalIgnoreCase) ? "png" : "jpeg";
 
             string base64ImageRepresentation = $"http://new-crm1.nexdev.net/www/dist/images/announcement/{announcementId}/{file}";
             var html = "<img style=\"width: 100%;\" src=\"" + base64ImageRepresentation + "\" Alt=\"" + file + "\">";
-            return html;
         }
 
         private async Task UpdateRecipientStatus(IEnumerable<SendNotificationResult> sentResults)
