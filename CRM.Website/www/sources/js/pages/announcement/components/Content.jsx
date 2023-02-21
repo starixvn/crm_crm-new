@@ -146,7 +146,7 @@ class Content extends Component {
                         <>
                             <div>
                                 <span>{`${LangHelper.getResource('Site')}: `}</span>
-                                <span style={styleBold}>{announcement.siteNameList.replaceAll(',', ', ')}</span>
+                                <span style={styleBold}>{announcement.siteNameList ? announcement.siteNameList.replaceAll(',', ', ') : ''}</span>
                             </div>
                             <div>
                                 <span>{`${LangHelper.getResource('Currency')}: `}</span>
@@ -160,7 +160,7 @@ class Content extends Component {
                     }
                     <div>
                         <span>{`${LangHelper.getResource('AffectedGroupHeadline')}: `}</span>
-                        <span style={{fontWeight:'bold'}}>{announcement.headlineNameList.replaceAll(',', ', ')}</span>
+                        <span style={{fontWeight:'bold'}}>{announcement.headlineNameList ? announcement.headlineNameList.replaceAll(',', ', ') : ''}</span>
                     </div>
                     <div>
                         <span>{`${LangHelper.getResource('SendDateTimeGMTA8')}: `}</span>
