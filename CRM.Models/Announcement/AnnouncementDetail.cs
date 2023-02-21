@@ -16,6 +16,6 @@ namespace CRM.Models.Announcement
         public string SendDateString { get; set; }
         public string SendTimeString { get; set; }
         public string FileName { get; set; }
-        public string OrigFileName { get; set; }
+        public string DirectAccounts { get; set; }
     }
 }

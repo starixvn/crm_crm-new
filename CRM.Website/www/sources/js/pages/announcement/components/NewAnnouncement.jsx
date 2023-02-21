@@ -158,14 +158,22 @@ export class NewAnnouncement extends Component {
 
     handleChangeInputHeadline = event => {
         const value = event.target.value;
-        if(value.includes(',') || value.includes(' ')){
-            let headlineGroups = [... this.state.headlineGroups, value.slice(0, -1)];
+        if(value.includes(',') || value.includes(' ') || event.keyCode === 13){
+            event.preventDefault();
+            const headlineGroups = [... this.state.headlineGroups, value.slice(0, -1)];
             this.handleSetValueHeadline(headlineGroups);
         }
     }
 
+    handleBlurInputHeadline = event => {
+        const value = event.target.value;
+        const headlineGroups = [... this.state.headlineGroups, value];
+        this.setState({headlineGroups});
+        this.headlineInputRef.current.value = '';
+    }
+
     handleRemoveHeadline = (event, headline) =>{
-        event.preventDefault();
+        event.stopPropagation();
         const headlineFilter = this.state.headlineGroups.filter(x => x !== headline);
         this.setState({headlineGroups: headlineFilter});
     }
@@ -308,7 +316,10 @@ export class NewAnnouncement extends Component {
                                     ))
                                 }
                                 <input className='text-input-headline' ref={this.headlineInputRef}
-                                    onChange={this.handleChangeInputHeadline} onPaste={this.handlePasteGroupHeadline}
+                                    onChange={this.handleChangeInputHeadline}
+                                    onKeyDown={this.handleChangeInputHeadline}
+                                    onBlur={event => this.handleBlurInputHeadline(event)}
+                                    onPaste={this.handlePasteGroupHeadline}
                                 />
                             </div>
                         </Col>

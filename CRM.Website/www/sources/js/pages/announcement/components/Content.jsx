@@ -92,7 +92,8 @@ class Content extends Component {
 
     render() {
         const {announcement, languages, content, tab} = this.state;
-        if(!this.state.announcement || !languages || !content || !this.props.settings){
+        const isValidOption = this.state.announcement?.siteNameList?.length > 0 && !this.props.settings;
+        if(!this.state.announcement || !languages || !content || isValidOption){
             return null;
         }
         const fileNames = !announcement.fileName ? '' : announcement.fileName.split(',');
@@ -160,11 +161,13 @@ class Content extends Component {
                     }
                     <div>
                         <span>{`${LangHelper.getResource('AffectedGroupHeadline')}: `}</span>
-                        <span style={{fontWeight:'bold'}}>{announcement.headlineNameList ? announcement.headlineNameList.replaceAll(',', ', ') : ''}</span>
+                        <span style={styleBold}>{announcement.headlineNameList ? announcement.headlineNameList.replaceAll(',', ', ') : ''}</span>
+                        <span>{` ${LangHelper.getResource('DirectAccount')}: `}</span>
+                        <span>{announcement.directAccounts}</span>
                     </div>
                     <div>
                         <span>{`${LangHelper.getResource('SendDateTimeGMTA8')}: `}</span>
-                        <span style={{fontWeight:'bold'}}>{announcement.sendDateString} {announcement.sendTimeString}</span>
+                        <span style={styleBold}>{announcement.sendDateString} {announcement.sendTimeString}</span>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

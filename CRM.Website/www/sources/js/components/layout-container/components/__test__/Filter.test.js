@@ -77,6 +77,46 @@ describe('filter', () => {
     };
 
     describe('methods', () => {
+        describe('componentWillUnmount', () => {
+            it('should remove event listener on unmount', () => {
+                //Arrange
+                document.removeEventListener = jest.fn();
+                const wrapper = shallow(<Filter {...initProps} />);
+                wrapper.instance().handleKeyDownFunc = jest.fn();
+                //Act
+                wrapper.instance().componentWillUnmount();
+                //Assert
+                expect(document.removeEventListener).toHaveBeenCalledWith('keydown', wrapper.instance().handleKeyDownFunc, false);
+            });
+        });
+
+        describe('handleKeyDownFunc', () => {
+            const cases = [['m', 'li-main', 'Dashboard'], ['d', 'li-detail', 'Detail'],
+                ['l', 'li-communication-log', 'Communication'], ['k', 'li-special-remark', 'SpecialRemark'],
+                ['r', 'li-special-new-remark', 'Remark'], ['t', 'li-activity-log', 'ActionLog']
+            ];
+            it.each(cases)(
+                "should call handleNavigate when %s is pressed",
+                (key, id , pathname) => {
+                    //Arrange
+                    const div_main = document.createElement('div');
+                    div_main.setAttribute('id', id);
+                    document.body.appendChild(div_main);
+                    window.location.pathname = pathname;
+                    const props = {...initProps, handleNavigate: jest.fn()};
+                    const wrapper = shallow(<Filter {...props} />);
+                    const event = { key: key, ctrlKey: true, preventDefault: jest.fn() };
+                    wrapper.instance().isCheckActive = jest.fn();
+                    //Act
+                    wrapper.instance().handleKeyDownFunc(event);
+                    //Assert
+                    expect(wrapper.instance().isCheckActive).toHaveBeenCalled();
+                    expect(props.handleNavigate).toHaveBeenCalledWith(pathname);
+                
+                    expect(event.preventDefault).toHaveBeenCalled();
+            });
+          });
+
         describe('handleSubmit', () => {
             it('should return error when username is null', () => {
                 //Arrange

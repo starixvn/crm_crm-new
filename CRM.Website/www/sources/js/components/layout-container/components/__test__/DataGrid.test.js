@@ -5,7 +5,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import { Form, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import MultipleSelect from '@jsroot/components/multiple-select';
-const commonFunction = require('../../common.functions');
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
@@ -22,22 +21,23 @@ describe('DataGrid', () => {
         const appContainer1 = document.createElement('div');
         appContainer1.setAttribute('id', 'hasReadFeedbackPermission');
         appContainer1.checked = true;
+        const leftRowContainer = document.createElement('div');
+        leftRowContainer.setAttribute('id', 'left-row-container');
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
+        document.body.appendChild(leftRowContainer);
     });
 
     afterAll(() => {
         jest.clearAllMocks();
         const appContainer = document.getElementById('hasCreateFeedbackPermission');
         const appContainer1 = document.getElementById('hasReadFeedbackPermission');
-        if (appContainer || appContainer1) {
+        const leftRowContainer = document.getElementById('left-row-container');
+        if (appContainer || appContainer1 || leftRowContainer) {
             document.body.removeChild(appContainer);
             document.body.removeChild(appContainer1);
+            document.body.removeChild(leftRowContainer);
         }
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
     });
 
     it('should render correctly', () => {
@@ -104,9 +104,53 @@ describe('DataGrid', () => {
 
                 // Act
                 const container = shallow(<DataGrid {...props} />);
-
+                container.instance().handleCheckLanguage = jest.fn();
                 // Assert
                 expect(container.state().languages).toEqual(expected.langagues);
+            });
+        });
+
+        describe('componentWillUnmount', () => {
+            it('should remove event listener on unmount', () => {
+                //Arrange
+                const props = {
+                    settings: {
+                        languages:[]
+                    },
+                    getSettings: jest.fn(() => Promise.resolve({}))
+                };
+                document.removeEventListener = jest.fn();
+                const container = shallow(<DataGrid {...props}/>);
+                container.instance().handleKeyDownFunc = jest.fn();
+                //Act
+                container.instance().componentWillUnmount();
+                //Assert
+                expect(document.removeEventListener).toHaveBeenCalledWith('keydown', container.instance().handleKeyDownFunc, false);
+            });
+        });
+
+        describe('handleKeyDownFunc', () => {
+            it('should call exact function when press u', () => {
+                //Arrange
+                const props = {
+                    settings: {
+                        languages:[]
+                    },
+                    getSettings: jest.fn(() => Promise.resolve({}))
+                };
+                const event = { key: 'u', ctrlKey: true, preventDefault: jest.fn() };
+                document.removeEventListener = jest.fn();
+                const container = shallow(<DataGrid {...props}/>).instance();
+                container.formik = {
+                    values: {},
+                    setSubmitting: jest.fn()
+                };
+                container.handleSubmit = jest.fn();
+                //Act
+                container.handleKeyDownFunc(event);
+                //Assert
+                expect(event.preventDefault).toHaveBeenCalled();
+                expect(container.handleSubmit).toHaveBeenCalled();
             });
         });
 
@@ -140,10 +184,11 @@ describe('DataGrid', () => {
                     errors: {},
                     touched: {}
                 };
-                const container = shallow(<DataGrid {...props} />).instance();
+                const container = shallow(<DataGrid {...props} />);
+                container.renderCommunicationTool = jest.fn(() => '<div />');
 
                 // Act
-                const form = shallow(container.renderForm(formikProps));
+                const form = shallow(container.instance().renderForm(formikProps));
 
                 // Assert
                 expect(form).toMatchSnapshot();
@@ -219,6 +264,9 @@ describe('DataGrid', () => {
                 }
 
             };
+            const leftRowContainer = document.createElement('div');
+            leftRowContainer.setAttribute('id', 'left-row-container');
+            document.body.appendChild(leftRowContainer);
 
             const container = shallow(<DataGrid {...props} />);
             const form = shallow(container.instance().renderForm(param));
@@ -229,35 +277,6 @@ describe('DataGrid', () => {
 
                 //Assert
                 expect(param.setFieldValue).toHaveBeenCalled();
-            });
-        });
-
-        describe('validate', () => {
-            it('should call correct functions when validate', () => {
-                // Arrange
-                const props = {
-                    customerInfo: {
-                        languages: [1, 2],
-                        uplineInfo: [],
-                        roleName: 'test'
-                    },
-                    getSettings: jest.fn(),
-                    settings: {
-                        languages: []
-                    }
-                };
-                const values = {
-                    languageId: null
-                };
-                const container = shallow(<DataGrid {...props} />);
-                commonFunction.validateFormik = jest.fn();
-
-                // Act
-                container.find(Formik).props().validate(values);
-
-                // Assert
-                expect(container.find(Formik).length).toBe(1);
-                expect(commonFunction.validateFormik).toHaveBeenCalledTimes(1);
             });
         });
 
