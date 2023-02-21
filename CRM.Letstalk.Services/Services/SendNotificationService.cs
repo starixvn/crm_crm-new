@@ -160,7 +160,7 @@
             {
                 var outgoingMsg = new OutgoingMessage
                 {
-                    MessageType = MessageTypeNumber.Image,
+                    MessageType = MessageTypeNumber.FullImage,
                     ImageUrl = string.Format("{0}/{1}/{2}", BaseImageUrl, notification.AnnouncementId, img)
                 };
                 logService.LogInformation(string.Format("{0}/{1}/{2}", BaseImageUrl, notification.AnnouncementId, img));
@@ -225,7 +225,7 @@
             {
                 var outgoingMsg = new OutgoingMessage
                 {
-                    MessageType = MessageTypeNumber.Image,
+                    MessageType = MessageTypeNumber.FullImage,
                     ImageUrl = string.Format("{0}/{1}/{2}", BaseImageUrl, notification.AnnouncementId, img)
                 };
                 logService.LogInformation(string.Format("{0}/{1}/{2}", BaseImageUrl, notification.AnnouncementId, img));
