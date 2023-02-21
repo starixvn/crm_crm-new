@@ -21,6 +21,7 @@ describe('CreateForm - validateFormik', () => {
     const defaultProps = {
         verifyCustomerResults: [{ custId: 1 }],
         settings: {
+            extensionNA: { id: 1 },
             extensions: [{ id: 1 }],
             languages: [{ languageId: 1 }],
             countries: [{ id: 1, name: 'eng' }],

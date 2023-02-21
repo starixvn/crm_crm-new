@@ -31,6 +31,21 @@ describe('CustomerInfoVerify', () => {
         });
     });
 
+    describe('handleKeyDownFunc', () => {
+        it('should call exact function when press s', () => {
+            //Arrange
+            const event = { key: 'e', ctrlKey: true, preventDefault: jest.fn() };
+            document.removeEventListener = jest.fn();
+            const container = shallow(<CustomerInfoVerify {...initProps}/>).instance();
+            container.handleEditCustomerVerifyDialog = jest.fn();
+            //Act
+            container.handleKeyDownFunc(event);
+            //Assert
+            expect(event.preventDefault).toHaveBeenCalled();
+            expect(container.handleEditCustomerVerifyDialog).toHaveBeenCalled();
+        });
+    });
+
     describe('componentDidUpdate', () => {
         it('should setState correctly', () => {
             // Arrange

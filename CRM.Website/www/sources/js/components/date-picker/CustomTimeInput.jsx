@@ -35,51 +35,51 @@ function CustomTimeInput({ date, dateTimeNow, isDisabledTime, onChange }) {
   return (
     <div className="d-flex">
       <Form.Control
-        as="select"
-        size="sm"
-        className="shadow-none mr-1"
-        name="hour"
-        id="hour"
-        value={currentHour}
-        onChange={handleChangeHour}
+          as="select"
+          size="sm"
+          className="shadow-none mr-1"
+          name="hour"
+          id="hour"
+          value={currentHour}
+          onChange={handleChangeHour}
       >
         <option value="" hidden disabled />
         {hourFormat.map((item) => (
           <option
-            key={item}
-            value={item}
-            disabled={isDisabledTime && currentHourNow > item}
+              key={item}
+              value={item}
+              disabled={isDisabledTime && parseInt(currentHourNow, 10) > parseInt(item, 10)}
           >
             {item}
           </option>
         ))}
       </Form.Control>
       <Form.Control
-        as="select"
-        size="sm"
-        className="shadow-none mr-4"
-        name="minute"
-        id="minute"
-        value={currentMinute}
-        onChange={handleChangeMinute}
+          as="select"
+          size="sm"
+          className="shadow-none mr-4"
+          name="minute"
+          id="minute"
+          value={currentMinute}
+          onChange={handleChangeMinute}
       >
         <option value="" hidden disabled />
         {minuteFormat.map((item) => (
           <option
-            key={item}
-            value={item}
-            disabled={isDisabledTime && currentMinuteNow > item}
+              key={item}
+              value={item}
+              disabled={isDisabledTime && parseInt(currentMinuteNow, 10) > parseInt(item, 10) && parseInt(currentHour, 10)  <= parseInt(currentHourNow, 10)}
           >
             {item}
           </option>
         ))}
       </Form.Control>
       <Form.Control
-        style={{ width: 70 }}
-        type="text"
-        size="sm"
-        value={timeAmPm}
-        disabled
+          style={{ width: 70 }}
+          type="text"
+          size="sm"
+          value={timeAmPm}
+          disabled
       />
     </div>
   );

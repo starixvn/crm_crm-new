@@ -46,6 +46,50 @@ describe('CreateForm', () => {
     LangHelper.formatString = jest.fn(value => value);
     LangHelper.getResource = jest.fn(value => value);
 
+    describe('handleKeyDownFunc', () => {
+        it('should call exact function when press s', () => {
+            //Arrange
+            const event = { key: 's', ctrlKey: true, preventDefault: jest.fn() };
+            document.removeEventListener = jest.fn();
+            const createForm = shallow(<CreateForm  {...props} />).instance();
+            createForm.formik = {
+                isSubmitting: false,
+                submitForm: jest.fn()
+            };
+            createForm.handleSubmit = jest.fn();
+            //Act
+            createForm.handleKeyDownFunc(event);
+            //Assert
+            expect(event.preventDefault).toHaveBeenCalled();
+            expect(createForm.formik.submitForm).toHaveBeenCalled();
+        });
+
+        it('should call exact function when press e', () => {
+            //Arrange
+            const event = { key: 'e', ctrlKey: true, preventDefault: jest.fn() };
+            document.removeEventListener = jest.fn();
+            const state = {
+                collapse:{
+                    isVerifyCustomer: true
+                }
+            };
+            const createForm = shallow(<CreateForm  {...props} />).instance();
+            createForm.setState(state);
+            createForm.formik = {
+                isSubmitting: false,
+                values: {
+                    customerNameInput: ''
+                },
+                setFieldValue: jest.fn()
+            };
+            createForm.handleVerify = jest.fn();
+            //Act
+            createForm.handleKeyDownFunc(event);
+            //Assert
+            expect(createForm.handleVerify).toHaveBeenCalled();
+        });
+    });
+
     describe('render', () => {
         it('renders Formik components', () => {
             //Arrange
@@ -372,7 +416,7 @@ describe('CreateForm', () => {
             const formRender = shallow(createForm.instance().renderDetails(values, errors, touched, handleChange, setFieldValue));
 
             // Action
-            formRender.find(AutoComplete).first().props().onChange();
+            formRender.find(AutoComplete).first().props().onChange({subject: 'test'});
             formRender.find(AutoComplete).first().props().onInputChange();
 
             //Assert
@@ -445,6 +489,9 @@ describe('CreateForm', () => {
         it('should call exact function', () => {
             props.setConfirmCreateGuestDialog = jest.fn();
             const createForm = shallow(<CreateForm {...props}/>).instance();
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
             createForm.handleCloseConfirmCreateGuestDialog();
             expect(props.setConfirmCreateGuestDialog).toHaveBeenCalledWith({ show: false });
         });
@@ -1029,10 +1076,12 @@ describe('CreateForm', () => {
         it('should call exact function ', () => {
             // Arrange
             const createForm = shallow(<CreateForm {...props}/>).instance();
-
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
             // Act
             createForm.handleCloseCheckDuplicateDialog();
-
+            
             // Assert
             expect(createForm.state.checkDuplicateDialog).toEqual({show: false});
             expect(props.setConfirmCreateGuestDialog).toHaveBeenCalledWith({show: false});
@@ -1047,6 +1096,9 @@ describe('CreateForm', () => {
         commonFunction.getParams = jest.fn(() => params);
         const createForm = shallow(<CreateForm {...props} />).instance();
         createForm.confirmCreateAddGuestFeedback = jest.fn(() =>'test');
+        createForm.formik = {
+            setSubmitting: jest.fn()
+        };
 
         // Act
         createForm.handleConfirm([{username: 'test'}]);
@@ -1068,7 +1120,6 @@ describe('CreateForm', () => {
             // Act
             createForm.handleConfirm([{userName: 'test'}]);
 
-
             // Assert
             expect(createForm.confirmCreateAddGuestFeedback).toHaveBeenCalledWith(params,
                 LangHelper.getResource('ConfirmAddGuestFeedback'));
@@ -1081,10 +1132,12 @@ describe('CreateForm', () => {
             props.setConfirmCreateGuestDialog = jest.fn();
             const expected = {show: true, params:'params', confirmMessage:'confirmMessage'};
             const createForm = shallow(<CreateForm {...props} />).instance();
-    
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
             // Act
             createForm.confirmCreateAddGuestFeedback ('params', 'confirmMessage');
-    
+            
             // Assert
             expect(props.setConfirmCreateGuestDialog).toHaveBeenCalledWith(expected);
         });
@@ -1103,7 +1156,9 @@ describe('CreateForm', () => {
             Site.resolveClientUrl = jest.fn(url => url);
             const createForm = shallow(<CreateForm {...props} />).instance();
             createForm.handleCloseConfirmCreateGuestDialog = jest.fn();
-
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
             // Act
             createForm.createFeedback();
             await promise;
@@ -1123,7 +1178,9 @@ describe('CreateForm', () => {
             Site.resolveClientUrl = jest.fn(url => url);
             const createForm = shallow(<CreateForm {...props} />).instance();
             createForm.handleCloseConfirmCreateGuestDialog = jest.fn();
-
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
             // Act
             createForm.createFeedback();
             await promise;

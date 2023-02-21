@@ -17,7 +17,6 @@ export default class DatePickerField extends React.Component {
         this.state = {
             selected: this.props.selected
         };
-        this.dateTimeNow = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         this.ref = React.createRef();
     }
 
@@ -28,7 +27,8 @@ export default class DatePickerField extends React.Component {
     }
 
     handleTimeNow = () => {
-        this.setState({ selected: this.dateTimeNow });
+        const dateTimeNow = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+        this.setState({ selected: dateTimeNow });
     };
 
     handleClickDone = () =>{
@@ -38,7 +38,7 @@ export default class DatePickerField extends React.Component {
 
     render() {
         const { className, selected, isInvalid, isDisabledTime, ...rest } = this.props;
-
+        const dateTimeNow = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         return (
             <DatePicker
                 ref={this.ref}
@@ -50,7 +50,7 @@ export default class DatePickerField extends React.Component {
                     <CustomTimeInput 
                         date={this.state.selected} 
                         isDisabledTime={isDisabledTime}
-                        dateTimeNow={this.dateTimeNow}
+                        dateTimeNow={dateTimeNow}
                     />
                 }
                 {...rest}

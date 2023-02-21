@@ -156,7 +156,7 @@ export class Filter extends Component {
         return {
             notificationTypeIds: notificationTypes,
             fromDate: !announcementId ? DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)) : null,
-            toDate: !announcementId ? DateTimeService.toLongDateTimeFormat(DateTimeService.endOfDay(toDate)) : null,
+            toDate: !announcementId ? DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)) : null,
             headline: headline ? headline.value : '',
             recipientName: recipient ? recipient.value : '',
             messageId: messageId,

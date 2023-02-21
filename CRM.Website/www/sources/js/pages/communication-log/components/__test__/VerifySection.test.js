@@ -32,6 +32,23 @@ describe('VerifySection', () => {
         }
     };
 
+    describe('validateRefInput', () => {
+        it('should prevent when invalid input ref', () => {
+            // Arrange
+            const verify = shallow(<VerifySection {...props}/>);
+            const event ={
+                target: {name: 'noInquiries', value: 'test'}
+                , which: 1, preventDefault: jest.fn(), key: ''
+            };
+
+            // Act
+            verify.instance().validateRefInput(event);
+
+            // Assert
+            expect(event.preventDefault).toHaveBeenCalled();
+        });
+    });
+
     describe('VerifySection', () => {
         it('should handle onChange when no inquiries is changed', () => {
             // Arrange

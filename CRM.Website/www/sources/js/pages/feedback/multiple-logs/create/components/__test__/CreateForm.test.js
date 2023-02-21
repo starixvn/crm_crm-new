@@ -9,6 +9,7 @@ import * as shareScripts from '@jsroot/common/shareScripts';
 describe('CreateForm', () => {
     const defaultProps = {
         settings: {
+            extensionNA:{id: 1},
             extensions: [{ id: 1 }],
             languages: [{ languageId: 1 }],
             countries: [{ id: 1, name: 'eng' }],
@@ -75,6 +76,42 @@ describe('CreateForm', () => {
             // Assert
             expect(shareScripts.generateTimeAndToolPrefix).toHaveBeenCalledWith(startTime, '');
             expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('handleKeyDownFunc', () => {
+        it('should call exact function when press s', () => {
+            //Arrange
+            const event = { key: 's', ctrlKey: true, preventDefault: jest.fn() };
+            document.removeEventListener = jest.fn();
+            const container = shallow(<CreateForm {...defaultProps} />).instance();
+
+            container.formik = {
+                values: {},
+                submitForm: jest.fn()
+            };
+            //Act
+            container.handleKeyDownFunc(event);
+            //Assert
+            expect(event.preventDefault).toHaveBeenCalled();
+            expect(container.formik.submitForm).toHaveBeenCalled();
+        });
+
+        it('should call exact function when press e', () => {
+            //Arrange
+            const event = { key: 'e', ctrlKey: true, preventDefault: jest.fn() };
+            document.removeEventListener = jest.fn();
+            const container = shallow(<CreateForm {...defaultProps} />).instance();
+            container.formik = {
+                setFieldValue : jest.fn(),
+                values: {}
+            };
+            container.verifyCustomers = jest.fn();
+            //Act
+            container.handleKeyDownFunc(event);
+            //Assert
+            expect(event.preventDefault).toHaveBeenCalled();
+            expect(container.verifyCustomers).toHaveBeenCalled();
         });
     });
 

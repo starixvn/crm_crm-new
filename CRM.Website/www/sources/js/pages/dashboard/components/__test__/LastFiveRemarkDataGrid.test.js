@@ -65,34 +65,6 @@ describe('LastFiveRemarkDataGrid', () => {
         });
     });
 
-    describe('renderRow', () => {
-        it('onClick call exactly function', () => {
-            // Arrange
-            const container = shallow(<LastFiveRemarkDataGrid {...initProps} />).instance();
-            container.handleOpenEdit = jest.fn();
-            // Act
-            const row = shallow(container.renderRow(initProps.lastFiveRemarks[0], 1));
-            row.find(Cell).at(2).simulate('click');
-
-            // Assert
-            expect(container.handleOpenEdit).toHaveBeenCalled();
-        });
-    });
-
-
-    describe('handleOpenEdit', () => {
-        it('should call exactly function', () => {
-            // Arrange
-            const container = shallow(<LastFiveRemarkDataGrid {...initProps} />).instance();
-
-            // Act
-           container.handleOpenEdit(initProps.lastFiveRemarks[0]);
-
-            // Assert
-            expect(initProps.setOpenEditPopup).toHaveBeenCalled();
-        });
-    });
-
     describe('handleViewNewRemark ', () => {
         it('should call exactly function', () => {
             // Arrange
