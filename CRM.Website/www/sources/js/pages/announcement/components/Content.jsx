@@ -162,8 +162,13 @@ class Content extends Component {
                     <div>
                         <span>{`${LangHelper.getResource('AffectedGroupHeadline')}: `}</span>
                         <span style={styleBold}>{announcement.headlineNameList ? announcement.headlineNameList.replaceAll(',', ', ') : ''}</span>
-                        <span>{` ${LangHelper.getResource('DirectAccount')}: `}</span>
-                        <span style={styleBold}>{announcement.directAccounts}</span>
+                        {
+                            announcement.directAccounts && announcement.directAccounts.length > 0 &&
+                            <>
+                                <span>{` ${LangHelper.getResource('DirectAccount')}: `}</span>
+                                <span style={styleBold}>{announcement.directAccounts}</span>
+                            </>
+                        }
                     </div>
                     <div>
                         <span>{`${LangHelper.getResource('SendDateTimeGMTA8')}: `}</span>

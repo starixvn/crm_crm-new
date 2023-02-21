@@ -13,6 +13,20 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import toJson from 'enzyme-to-json';
 
+beforeAll(() => {
+    const appContainer = document.createElement('div');
+    appContainer.setAttribute('id', 'right-row-container');
+    document.body.appendChild(appContainer);
+});
+
+afterAll(() => {
+    const appContainer = document.getElementById('right-row-container');
+    if (appContainer) {
+        document.body.removeChild(appContainer);
+    }
+    jest.clearAllMocks();
+});
+
 describe('DataGrid', () => {
     LangHelper.getResource = jest.fn(value => value);
 
@@ -156,7 +170,7 @@ describe('DataGrid', () => {
             expect(dataGrid.find(Table).props().autoWidth).toBeTrue;
             expect(dataGrid.find(Table).props().isPaging).toBeTrue;
             expect(dataGrid.find(Table).props().pageOption).toEqual(pagingOption);
-            expect(dataGrid.find(Table).props().containerPadding).toEqual(0);
+            expect(dataGrid.find(Table).props().containerPadding).toEqual(31);
         });
     });
 

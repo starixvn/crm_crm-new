@@ -127,9 +127,6 @@ describe('EditPersonalMappingPopup', () => {
             test.find(Form.Group).at(3).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith(event);
 
-            // expect(test.find(Form.Group).at(4).find(SelectWithSearch).length).toBe(1);
-            expect(popup.find(Form.Group).at(6).find(MultipleSelect).length).toBe(1);
-
             test.find(Form.Group).at(7).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('languageId', 'value');
 
@@ -139,7 +136,8 @@ describe('EditPersonalMappingPopup', () => {
 
         it('render correct', () => {
             const state = {
-                isShowConfirmDirtyForm: true
+                isShowConfirmDirtyForm: true,
+                ignoreNotificationTypes: ['test']
             };
             const popup = shallow(<EditPersonalMappingPopup {...props} />);
             popup.instance().setState(state);

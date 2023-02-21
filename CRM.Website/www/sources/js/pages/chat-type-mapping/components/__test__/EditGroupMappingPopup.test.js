@@ -174,7 +174,8 @@ describe('EditGroupMappingPopup', () => {
 
         it('render correct', () => {
             const state = {
-                isShowConfirmDirtyForm: true
+                isShowConfirmDirtyForm: true,
+                ignoreNotificationTypes: ['test']
             };
             const popup = shallow(<EditGroupMappingPopup {...props} />);
             popup.instance().setState(state);
