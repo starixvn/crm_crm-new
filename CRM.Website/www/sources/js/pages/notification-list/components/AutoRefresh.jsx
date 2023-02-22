@@ -18,7 +18,14 @@ export class AutoRefresh extends Component {
     }
 
     componentDidMount = () => {
-        this.countDownFunc();
+        this.intervalCountDown =  setInterval(() => {
+            if (this.props.isRefresh) {
+                this.props.setAutoRefresh({
+                    ...this.props.autoRefresh,
+                    countDown: this.props.autoRefresh.countDown - 1
+                });
+            }
+        }, 1000);
         document.addEventListener('mousedown', this.handleClickOutside);
     };
 
@@ -47,7 +54,7 @@ export class AutoRefresh extends Component {
     };
 
     componentWillUnmount = () => {
-        clearInterval(this.countDownFunc);
+        clearInterval(this.intervalCountDown);
         document.removeEventListener('mousedown', this.handleClickOutside);
     };
 
@@ -56,15 +63,6 @@ export class AutoRefresh extends Component {
             this.setState({ isOpenDropdown: false });
         }
     };
-
-    countDownFunc = () => setInterval(() => {
-        if (this.props.isRefresh) {
-            this.props.setAutoRefresh({
-                ...this.props.autoRefresh,
-                countDown: this.props.autoRefresh.countDown - 1
-            });
-        }
-    }, 1000);
 
     handleAutoRefreshChange = value => {
         this.setState({ isOpenDropdown: false });

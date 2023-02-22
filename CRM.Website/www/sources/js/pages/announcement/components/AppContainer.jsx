@@ -30,6 +30,7 @@ export class AppContainer extends Component {
 
     componentWillUnmount(){
         this.props.setGridData(null);
+        this.props.resetState();
     }
 
     handleCloseNewAnnouncement = () => {
