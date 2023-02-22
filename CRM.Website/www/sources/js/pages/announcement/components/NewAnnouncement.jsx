@@ -249,8 +249,8 @@ export class NewAnnouncement extends Component {
                         <Col sm="10" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 isInvalid={touched.notificationTemplate && errors.notificationTemplate}
-                                name="notificationTemplate" id="notificationTemplate"
-                                value={values.notificationTemplate}
+                                name="notificationTemplateId" id="notificationTemplateId"
+                                value={values.notificationTemplateId}
                                 onChange={this.handleChangeNotificationTemplate}
                             >
                                 <option value="" hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>

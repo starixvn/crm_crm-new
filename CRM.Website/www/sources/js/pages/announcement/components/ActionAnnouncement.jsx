@@ -289,8 +289,8 @@ export class ActionAnnouncement extends Component {
                         <Col sm="10" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 isInvalid={touched.notificationTemplateName && errors.notificationTemplateName}
-                                name="notificationTemplateName" id="notificationTemplateName"
-                                value={values.notificationTemplateName}
+                                name="notificationTemplateId" id="notificationTemplateId"
+                                value={values.notificationTemplateId}
                                 onChange={this.handleChangeNotificationTemplate}
                                 disabled={actionAnnouncementPopup.isEdit}
                             >

@@ -14,7 +14,7 @@ describe('Filter', () => {
         // Arrange
         const props = {
             allSettingData: {
-                yearRange: [{ value: 2022 }],
+                yearRange: [{ value: new Date().getFullYear() }],
                 siteTypes: [{ id: 0 }],
                 categories: [{ mainCategoryID: 3000, name: "General Network/Database Issues" }]
             }
@@ -30,7 +30,7 @@ describe('Filter', () => {
     it('componentDidMount should run correctly', () => {
         const props = {           
             allSettingData: {
-                yearRange: [{ value: 2022 }],
+                yearRange: [{ value: new Date().getFullYear() }],
                 siteTypes: [{ id: 0 }],
                 categories: [{ mainCategoryID: 3000, name: "General Network/Database Issues" }]
             }
@@ -46,12 +46,12 @@ describe('Filter', () => {
             ],
             siteOptions: [
                 {
-                    id: 0,
-                },
+                    id: 0
+                }
             ],
             siteType: 0,
-            year: 2022
-        }
+            year: new Date().getFullYear()
+        };
         const handleSettingOptions = jest.fn();
         document.addEventListener = jest.fn();
         const container = shallow(<Filter {...props} />);
@@ -70,13 +70,13 @@ describe('Filter', () => {
             getGridData: jest.fn(),
             setGridParams: jest.fn(),         
             allSettingData: {
-                yearRange: [{ value: 2022 }],
+                yearRange: [{ value: new Date().getFullYear() }],
                 siteTypes: [{ id: 0 }],
                 categories: [{ mainCategoryID: 3000, name: "General Network/Database Issues" }]
             }
         };
         const expected = {
-            year: 2022,
+            year: new Date().getFullYear(),
             categories:'3000',
             siteType: 0
         }
@@ -93,7 +93,7 @@ describe('Filter', () => {
         // Arrange
         const props = {
             allSettingData: {
-                yearRange: [{ value: 2022 }],
+                yearRange: [{ value: new Date().getFullYear() }],
                 siteTypes: [{ id: 1 }],
                 categories: [{ mainCategoryID: 3000, name: "General Network/Database Issues" }]
             }

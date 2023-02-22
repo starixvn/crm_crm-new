@@ -6,6 +6,10 @@ exports[`Filter render filter component 1`] = `
   inline={false}
   onSubmit={[Function]}
 >
+  <WithHotKey
+    handleKeyDownFunc={[Function]}
+    isDocumentHandle={false}
+  />
   <FormRow
     bsPrefix="form-row"
   >
@@ -60,11 +64,12 @@ exports[`Filter render filter component 1`] = `
       >
         <DatePickerField
           dropdownMode="select"
+          isDisabledTime={false}
           isInvalid={false}
-          maxDate={2021-04-08T03:05:00.000Z}
+          maxDate={2023-02-22T09:42:00.000Z}
           onChange={[Function]}
           peekNextMonth={true}
-          selected={2021-04-03T17:00:00.000Z}
+          selected={2023-02-18T17:00:00.000Z}
           showMonthDropdown={true}
           showYearDropdown={true}
           useShortMonthInDropdown={true}
@@ -84,12 +89,13 @@ exports[`Filter render filter component 1`] = `
       >
         <DatePickerField
           dropdownMode="select"
+          isDisabledTime={false}
           isInvalid={false}
-          maxDate={2021-04-08T03:05:00.000Z}
-          minDate={2021-04-03T17:00:00.000Z}
+          maxDate={2023-02-22T09:42:00.000Z}
+          minDate={2023-02-18T17:00:00.000Z}
           onChange={[Function]}
           peekNextMonth={true}
-          selected={2021-04-08T03:05:00.000Z}
+          selected={2023-02-22T09:42:00.000Z}
           showMonthDropdown={true}
           showYearDropdown={true}
           useShortMonthInDropdown={true}
@@ -185,7 +191,7 @@ exports[`Filter render filter component 1`] = `
         size="sm"
         variant="primary"
       >
-        Submit
+        <submitButton />
       </Button>
     </FormGroup>
   </FormRow>

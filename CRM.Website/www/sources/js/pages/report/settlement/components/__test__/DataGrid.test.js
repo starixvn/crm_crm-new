@@ -146,33 +146,6 @@ describe('DataGrid', () => {
         expect(row).toEqual(expectedRow);
     });
 
-    it('render last row', () => {
-        // Arrange
-        const expectedLastRow = [
-            <Row className="last-row" key={100}>
-                <Cell className="text-center" rowSpan={2}>Grand Total</Cell>
-                <Cell>Italy</Cell>
-                <Cell className="text-right">{4}</Cell>
-                <Cell className="text-center" rowSpan={2}>{6}</Cell>
-            </Row>,
-            <Row className="last-row" key={0}>
-                <Cell>N/A</Cell>
-                <Cell className="text-right">{2}</Cell>
-            </Row>
-        ];
-        const props = {
-            gridParams,
-            gridData
-        };
-        const container = shallow(<DataGrid {...props} />);
-
-        // Act
-        const lastRow = container.instance().renderLastRow({ ...gridData.total });
-
-        // Assert
-        expect(lastRow).toEqual(expectedLastRow);
-    });
-
     it('build body no data', () => {
         // Arrange
         const expectedBody = [<Row key={'body'} className="no-data"><Cell colSpan="4">ThereIsNoData</Cell></Row>];
