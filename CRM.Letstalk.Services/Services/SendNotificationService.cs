@@ -160,9 +160,9 @@
                 var outgoingMsg = new OutgoingMessage
                 {
                     MessageType = MessageTypeNumber.FullImage,
-                    ImageUrl = string.Format("{0}/{1}/{2}", BaseImageUrl, notification.AnnouncementId, img)
+                    ImageUrl = string.Format("{0}{1}/{2}", BaseImageUrl, notification.AnnouncementId, img)
                 };
-                logService.LogInformation(string.Format("{0}/{1}/{2}", BaseImageUrl, notification.AnnouncementId, img));
+                logService.LogInformation(string.Format("{0}{1}/{2}", BaseImageUrl, notification.AnnouncementId, img));
 
                 var result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outgoingMsg);
                 logService.LogInformation(JsonConvert.SerializeObject(result));
@@ -225,9 +225,9 @@
                 var outgoingMsg = new OutgoingMessage
                 {
                     MessageType = MessageTypeNumber.FullImage,
-                    ImageUrl = string.Format("{0}/{1}/{2}", BaseImageUrl, notification.AnnouncementId, img)
+                    ImageUrl = string.Format("{0}{1}/{2}", BaseImageUrl, notification.AnnouncementId, img)
                 };
-                logService.LogInformation(string.Format("{0}/{1}/{2}", BaseImageUrl, notification.AnnouncementId, img));
+                logService.LogInformation(string.Format("{0}{1}/{2}", BaseImageUrl, notification.AnnouncementId, img));
 
                 var result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outgoingMsg);
                 logService.LogInformation(JsonConvert.SerializeObject(result));
