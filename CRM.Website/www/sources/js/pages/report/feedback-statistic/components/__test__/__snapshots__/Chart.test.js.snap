@@ -27,7 +27,7 @@ exports[`Chart render chart component 1`] = `
   <ModalBody>
     <ResponsiveContainer
       debounce={0}
-      height={780}
+      height={700}
       width="100%"
     >
       <BarChart
@@ -66,8 +66,8 @@ exports[`Chart render chart component 1`] = `
               "auto",
             ]
           }
-          dy={0}
-          height={30}
+          dy={10}
+          height={20}
           hide={false}
           interval={0}
           mirror={false}
@@ -80,7 +80,8 @@ exports[`Chart render chart component 1`] = `
           }
           reversed={false}
           scale="auto"
-          scaleToFit="true"
+          scaleToFit={true}
+          textAnchor="end"
           tickCount={5}
           type="category"
           verticalAnchor="start"
@@ -88,7 +89,7 @@ exports[`Chart render chart component 1`] = `
           xAxisId={0}
         />
         <YAxis
-          allowDataOverflow={false}
+          allowDataOverflow={true}
           allowDecimals={true}
           allowDuplicatedCategory={true}
           domain={
@@ -129,6 +130,7 @@ exports[`Chart render chart component 1`] = `
           wrapperStyle={
             Object {
               "bottom": 5,
+              "height": 100,
               "left": 75,
             }
           }

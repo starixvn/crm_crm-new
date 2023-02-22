@@ -61,7 +61,8 @@ describe('Filter', () => {
                 // Arrange
                 const props = {
                     setGridParams: jest.fn(),
-                    getGridData: jest.fn()
+                    getGridData: jest.fn(),
+                    gridParams:{pageSize: 100}
                 };
                 const state = {
                     selectionType: '1',
@@ -95,7 +96,8 @@ describe('Filter', () => {
                 // Arrange
                 const props = {
                     setGridParams: jest.fn(),
-                    getGridData: jest.fn()
+                    getGridData: jest.fn(),
+                    gridParams:{pageSize: 100}
                 };
                 const state = {
                     selectionType: '1',

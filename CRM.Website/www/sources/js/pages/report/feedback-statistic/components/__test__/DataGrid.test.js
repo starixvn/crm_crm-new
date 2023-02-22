@@ -74,7 +74,7 @@ describe('DataGrid', () => {
                 },
                 gridParams: { pageIndex: 1, pageSize: 100 }
             };
-            const expectedBody = [<Row key='body1' className='no-data' ><Cell className='text-center'>ThereIsNoData</Cell></Row>];
+            const expectedBody = [<Row className='no-data' ><Cell className='text-center'>ThereIsNoData</Cell></Row>];
             const container = shallow(<DataGrid {...props} />).instance();
             // Act
             const actual = container.buildBody(props.gridData);

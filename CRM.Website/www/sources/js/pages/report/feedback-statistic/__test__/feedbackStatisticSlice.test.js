@@ -11,7 +11,10 @@ import feedbackStatistic, {
 describe('feedbackStatistic reducer', () => {
     it('should handle initial state', () => {
         expect(feedbackStatistic(undefined, {})).toEqual({
-            gridParams: null,
+            gridParams: {
+                pageIndex: 1,
+                pageSize: 100
+            },
             gridParamDetails: {
                 pageIndex: 1,
                 pageSize: 100
