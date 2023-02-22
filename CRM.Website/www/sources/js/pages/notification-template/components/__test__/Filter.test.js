@@ -58,13 +58,18 @@ describe('Filter', () => {
         describe('getParams', () => {
             it('should return expected params', () => {
                 // Arrange
+                const props = {
+                    gridParams: {
+                        pageSize : 100
+                    }
+                };
                 const expected = {
                     notificationTypeId: NaN,
                     notificationTemplateName: '',
                     pageIndex: 1,
                     pageSize: 100
                 };
-                const container = shallow(<Filter />).instance();
+                const container = shallow(<Filter {...props}/>).instance();
 
                 // Act
                 const actual = container.getParams();

@@ -98,12 +98,14 @@ describe('PicFilter', () => {
         it('should call exactly function when handle submit', () => {
             // Arrange
             const state = {
+                letstalkName: null,
                 picName: '',
                 editBy: '',
                 fromDate: 'Sep 01, 2021',
                 toDate: 'Sep 01, 2021'
             };
             const expectParams = {
+                letstalkName: null,
                 picName: null,
                 editBy: null,
                 fromDate: 'Sep 01, 2021',

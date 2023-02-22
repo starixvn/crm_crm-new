@@ -36,9 +36,13 @@ describe('common functions', () => {
                 notificationTypeId: 'NotificationTypeRequired',
                 title: 'TitleRequired'
             };
+            const notificationType = [{
+                notificationTypeId: 1,
+                notificationTypeName: 'void abnormal bet'
+            }];
 
             // Act
-            const errors = commonFuns.validateFormik(values);
+            const errors = commonFuns.validateFormik(values, [], notificationType);
 
             // Assert
             expect(errors).toEqual(expected);
@@ -51,8 +55,13 @@ describe('common functions', () => {
                 notificationTemplateName: 'TemplateNameRequired'
             };
 
+            const notificationType = [{
+                notificationTypeId: 1,
+                notificationTypeName: 'void abnormal bet'
+            }];
+
             // Act
-            const errors = commonFuns.validateFormik(values);
+            const errors = commonFuns.validateFormik(values, [], notificationType);
 
             // Assert
             expect(errors).toEqual(expected);
@@ -60,6 +69,11 @@ describe('common functions', () => {
 
         it('return expected errors when notificationTemplateName is over 1000 characters', () => {
             // Arrange
+            const notificationType = [{
+                notificationTypeId: 1,
+                notificationTypeName: 'void abnormal bet'
+            }];
+
             let name = '';
             for (let i = 0; i < 1001; i++) {
                 name += 'a';
@@ -71,7 +85,7 @@ describe('common functions', () => {
             LangHelper.formatString = jest.fn(() => 'over characters');
 
             // Act
-            const errors = commonFuns.validateFormik(values);
+            const errors = commonFuns.validateFormik(values, [], notificationType);
 
             // Assert
             expect(errors).toEqual(expected);
@@ -84,9 +98,13 @@ describe('common functions', () => {
             const expected = {
                 title: 'TitleRequired'
             };
+            const notificationType = [{
+                notificationTypeId: 1,
+                notificationTypeName: 'void abnormal bet'
+            }];
 
             // Act
-            const errors = commonFuns.validateFormik(values);
+            const errors = commonFuns.validateFormik(values, [], notificationType);
 
             // Assert
             expect(errors).toEqual(expected);
@@ -102,10 +120,15 @@ describe('common functions', () => {
             const expected = {
                 title: 'over characters'
             };
+            const notificationType = [{
+                notificationTypeId: 1,
+                notificationTypeName: 'void abnormal bet'
+            }];
+
             LangHelper.formatString = jest.fn(() => 'over characters');
 
             // Act
-            const errors = commonFuns.validateFormik(values);
+            const errors = commonFuns.validateFormik(values, [], notificationType);
 
             // Assert
             expect(errors).toEqual(expected);
@@ -119,6 +142,10 @@ describe('common functions', () => {
                 notificationTypeId: 1,
                 title: 'void abnormal bet'
             };
+            const notificationType = [{
+                notificationTypeId: 1,
+                notificationTypeName: 'void abnormal bet'
+            }];
             const expected = {
                 language_1: 'required'
             };
@@ -126,7 +153,7 @@ describe('common functions', () => {
             LangHelper.formatString = jest.fn(() => 'required');
 
             // Act
-            const errors = commonFuns.validateFormik(values, languages);
+            const errors = commonFuns.validateFormik(values, languages, notificationType);
 
             // Assert
             expect(errors).toEqual(expected);

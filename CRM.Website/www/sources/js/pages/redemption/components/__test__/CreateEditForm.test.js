@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Form } from 'react-bootstrap';
-import { CreateEditForm } from '../CreateEditForm'
+import { CreateEditForm } from '../CreateEditForm';
 import DatePicker from '@jsroot/components/date-picker/index';
 import CkEditor from '@jsroot/components/ckeditor/index';
 

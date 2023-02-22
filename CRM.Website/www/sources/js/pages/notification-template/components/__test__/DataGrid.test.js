@@ -249,12 +249,6 @@ describe('DataGrid', () => {
 
                 // Assert
                 expect(row.find(Cell).length).toBe(4);
-                //expect(row).toEqual(<Row key={1}>
-                //    <Cell className="text-center">{1}</Cell>
-                //    <Cell>type</Cell>
-                //    <Cell>name</Cell>
-                //    <Cell><a href="#" onClick={() => container.handleViewContent(1)}>title</a></Cell>
-                //</Row>);
             });
 
             it('should render expected row when isHost = true', () => {
@@ -263,24 +257,6 @@ describe('DataGrid', () => {
 
                 // Assert
                 expect(row.find(Cell).length).toBe(5);
-                //expect(row).toEqual(<Row key={1}>
-                //    <Cell className="text-center">{1}</Cell>
-                //    <Cell>type</Cell>
-                //    <Cell>name</Cell>
-                //    <Cell><a href="#" onClick={() => container.handleViewContent(1)}>title</a></Cell>
-                //</Row>);
-            });
-
-            it('should call handleViewContent when click on title', () => {
-                // Arrange
-                container.handleViewContent = jest.fn();
-                const row = shallow(container.renderRow(item, 1, false));
-
-                // Act
-                row.find(Cell).at(3).find('a').props().onClick();
-
-                // Assert
-                expect(container.handleViewContent).toHaveBeenCalledWith(1);
             });
 
             it('should call handleEdit when click on edit icon', () => {

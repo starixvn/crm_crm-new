@@ -4,8 +4,24 @@ import { AppContainer } from '../AppContainer';
 import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
+    beforeAll(() => {
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'hasCreateFeedbackPermission');
+        appContainer.checked = true;
+        const appContainer1 = document.createElement('div');
+        appContainer1.setAttribute('id', 'hasReadFeedbackPermission');
+        appContainer1.checked = true;
+        document.body.appendChild(appContainer);
+        document.body.appendChild(appContainer1);
+    });
     afterAll(() => {
         jest.clearAllMocks();
+        const appContainer = document.getElementById('hasCreateFeedbackPermission');
+        const appContainer1 = document.getElementById('hasReadFeedbackPermission');
+        if (appContainer || appContainer1) {
+            document.body.removeChild(appContainer);
+            document.body.removeChild(appContainer1);
+        }
     });
 
     describe('componentDidMount', () => {

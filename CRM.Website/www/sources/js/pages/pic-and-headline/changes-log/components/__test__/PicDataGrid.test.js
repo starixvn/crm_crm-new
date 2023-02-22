@@ -2,6 +2,7 @@ import React from 'react';
 import { PicDataGrid } from '../PicDataGrid';
 import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { shallow } from 'enzyme';
+import { LogActions } from '@jsroot/common/constants';
 
 describe('PicDataGrid', () => {
     afterAll(() => {
@@ -37,6 +38,40 @@ describe('PicDataGrid', () => {
                     picTypes: [{id: 51000, name: 'Headline PIC'}],
                     remark: 't',
                     role: {id: 48000, name: 'PIC'}
+                },
+                newLogInfo:{
+                    communicationTools: [{
+                        id: 49000,
+                        name: 'Letstalk',
+                        value: 'test'
+                        }
+                    ],
+                    country:{
+                        id: 4,
+                        name: 'Albania' 
+                    },
+                    conversationGroup: {name: ''},
+                    directAccounts: [],
+                    headlines: [],
+                    isActive: false,
+                    languages: [{id: 12001,name: 'Mandarin'}],
+                    name: 'PIC_ruby',
+                    picTypes: [{id: 51000, name: 'Headline PIC'}],
+                    remark: 't',
+                    role: {id: 48000, name: 'PIC'}
+                },
+                oldLogInfo:{
+                    communicationTools: [],
+                    country: null,
+                    conversationGroup: {name: ''},
+                    directAccounts: [],
+                    headlines: [],
+                    isActive: false,
+                    languages: [],
+                    name: null,
+                    picTypes: [],
+                    remark: null,
+                    role: null
                 },
                 oldPicInfo:{
                     communicationTools: [],
@@ -97,7 +132,7 @@ describe('PicDataGrid', () => {
         });
     });
 
-    describe('renderRow ', () => {
+    describe('renderRow', () => {
         it('should return exactly row when has data', () => {
             // Arrange
             const item = initProp.picReport.picInfo[0];
@@ -112,43 +147,29 @@ describe('PicDataGrid', () => {
         });
     });
 
-    describe('renderDetailsValuePic  ', () => {
-        it('should return exactly value when log action is InsertNewPic', () => {
-            // Arrange
-            const item = initProp.picReport.picInfo[0];
-            const container = shallow(<PicDataGrid {...initProp}/>).instance();
-            container.getDetailValueInsertNewPic = jest.fn(() => '<div>details</div>');
-            // Act
-            const actual = container.renderDetailsValuePic (item);
+    describe('renderDetailsValuePic', () => {
+        const cases = [[LogActions.InsertNewPic], [LogActions.UpdatePic], [LogActions.UpdatePicStatus], [LogActions.InsertChatTypeMapping],
+        [LogActions.UpdateChatTypeMapping], [LogActions.UpdateChatTypeMappingRemark],[LogActions.UpdateChatTypeMappingStatus],  [LogActions.DeleteConversationGroup]];
+        test.each(cases)(
+            "should return exactly value when log action is %s",
+            (actionId) => {
+                // Arrange
+                const item = initProp.picReport.picInfo[0];
+                item.actionId = actionId;
+                const container = shallow(<PicDataGrid {...initProp}/>).instance();
+                container.getDetailValueInsertNewPic = jest.fn(() => '<div>details</div>');
+                container.getDetailValueUpdatePic = jest.fn(() => '<div>details</div>');
+                container.getDetailChatTypeMappingInsert = jest.fn(() => '<div>details</div>');
+                container.getDetailValueUpdatePicStatus = jest.fn(() => '<div>details</div>');
+                container.getDetailChatTypeMappingUpdate = jest.fn(() => '<div>details</div>');
+                container.getDetailChaTypeMappingRemark = jest.fn(() => '<div>details</div>');
+                container.getDetailChaTypeMappingAction = jest.fn(() => '<div>details</div>');
 
-            // Assert
-            expect(actual).toEqual('<div>details</div>');
-        });
+                // Act
+                const actual = container.renderDetailsValuePic(item);
 
-        it('should return exactly value when log action is UpdatePic', () => {
-            // Arrange
-            const item = initProp.picReport.picInfo[0];
-            item.actionId  = 902;
-            const container = shallow(<PicDataGrid {...initProp}/>).instance();
-            container.getDetailValueUpdatePic = jest.fn(() => '<div>details</div>');
-            // Act
-            const actual = container.renderDetailsValuePic (item);
-
-            // Assert
-            expect(actual).toEqual('<div>details</div>');
-        });
-
-        it('should return exactly value when log action is UpdatePicStatus', () => {
-            // Arrange
-            const item = initProp.picReport.picInfo[0];
-            item.actionId  = 903;
-            const container = shallow(<PicDataGrid {...initProp}/>).instance();
-            container.getDetailValueUpdatePicStatus = jest.fn(() => '<div>details</div>');
-            // Act
-            const actual = container.renderDetailsValuePic (item);
-
-            // Assert
-            expect(actual).toEqual('<div>details</div>');
+                // Assert
+                expect(actual).toEqual('<div>details</div>');
         });
     });
 
@@ -166,7 +187,7 @@ describe('PicDataGrid', () => {
         });
     });
 
-    describe('convertBoolToDecision ', () => {
+    describe('convertBoolToDecision', () => {
         it('should return exact value when true', () => {
             // Arrange
             const container = shallow(<PicDataGrid {...initProp} />).instance();
@@ -201,7 +222,7 @@ describe('PicDataGrid', () => {
         });
     });
 
-    describe('getStringCommunicationTools ', () => {
+    describe('getStringCommunicationTools', () => {
         it('should return exact value when has data', () => {
             // Arrange
             const container = shallow(<PicDataGrid {...initProp} />).instance();
