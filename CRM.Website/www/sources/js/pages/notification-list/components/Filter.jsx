@@ -150,6 +150,12 @@ export class Filter extends Component {
         this.handleFilterChangeProps(e.target.name, e.target.value);
     };
 
+    handlePasteAnnouncementId = event =>{
+        if (event.clipboardData.getData('Text').match(/[^\d]/)) {
+            event.preventDefault();
+        }
+    };
+
     getParams = () => {
         const {notificationTypes, fromDate, toDate, headline, recipient, messageId, statuses,
             notificationIdLower, notificationIdUpper, content, announcementId }= this.state.filter;
@@ -331,6 +337,7 @@ export class Filter extends Component {
                         <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none' name='announcementId'
                             value={this.state.filter.announcementId}
                             onChange={e => this.handleChangeFilterControl(e)}
+                            onPaste={this.handlePasteAnnouncementId}
                         />
                     </Form.Group>
                     <Form.Group>
