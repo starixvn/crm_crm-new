@@ -44,9 +44,9 @@ export class Filter extends Component {
                     checked: true,
                     id: key,
                     subItem: item.childSites.map(element => {
-                        siteIds.push(element.siteID);
+                        siteIds.push(element.site);
                         return {
-                            key: element.siteID,
+                            key: element.site,
                             value: element.site,
                             name: element.site,
                             checked: true
