@@ -160,8 +160,13 @@ class Content extends Component {
                         </>
                     }
                     <div>
-                        <span>{`${LangHelper.getResource('AffectedGroupHeadline')}: `}</span>
-                        <span style={styleBold}>{announcement.headlineNameList ? announcement.headlineNameList.replaceAll(',', ', ') : ''}</span>
+                        {
+                            announcement.headlineNameList && announcement.headlineNameList.length > 0 &&
+                            <>
+                                <span>{`${LangHelper.getResource('AffectedGroupHeadline')}: `}</span>
+                                <span style={styleBold}>{announcement.headlineNameList ? announcement.headlineNameList.replaceAll(',', ', ') : ''}</span>
+                            </>
+                        }
                         {
                             announcement.directAccounts && announcement.directAccounts.length > 0 &&
                             <>
