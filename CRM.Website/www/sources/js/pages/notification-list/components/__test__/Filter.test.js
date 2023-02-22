@@ -54,6 +54,7 @@ describe('Filter', () => {
         const now = new Date(date);
         const initialState = {
             filter: {
+                announcementId:'',
                 notificationTypes: '',
                 statuses: '',
                 fromDate: now,
@@ -720,6 +721,7 @@ describe('Filter', () => {
             // Arrange
             const state = {
                 filter: {
+                    announcementId: 1,
                     notificationTypes: 'notification types',
                     fromDate: '09/03/2020',
                     toDate: '09/03/2020',
@@ -738,6 +740,7 @@ describe('Filter', () => {
             };
 
             const props = {
+                announcementId: 1,
                 gridParams: {
                     pageIndex: 1,
                     pageSize: 100
@@ -750,9 +753,10 @@ describe('Filter', () => {
             };
 
             const expected = {
+                announcementId: 1,
                 notificationTypeIds: state.filter.notificationTypes,
-                fromDate: DateTimeService.startOfDay(state.filter.fromDate),
-                toDate: DateTimeService.endOfDay(state.filter.toDate),
+                fromDate: null,
+                toDate: null,
                 headline: state.filter.headline.value,
                 recipientName: state.filter.recipient.value,
                 messageId: state.filter.messageId,
@@ -778,6 +782,7 @@ describe('Filter', () => {
             // Arrange
             const state = {
                 filter: {
+                    announcementId: 1,
                     notificationTypes: 'notification types',
                     fromDate: '09/03/2020',
                     toDate: '09/03/2020',
@@ -792,6 +797,7 @@ describe('Filter', () => {
             };
 
             const props = {
+                announcementId: 1,
                 gridParams: {
                     pageIndex: 1,
                     pageSize: 100
@@ -804,9 +810,10 @@ describe('Filter', () => {
             };
 
             const expected = {
+                announcementId: 1,
                 notificationTypeIds: state.filter.notificationTypes,
-                fromDate: DateTimeService.startOfDay(state.filter.fromDate),
-                toDate: DateTimeService.endOfDay(state.filter.toDate),
+                fromDate: null,
+                toDate: null,
                 headline: '',
                 recipientName: '',
                 messageId: state.filter.messageId,
@@ -1301,37 +1308,37 @@ describe('Filter', () => {
             expect(filter.find(Form.Group).at(5).find(Form.Control).props().className).toBe('shadow-none');
             expect(filter.find(Form.Group).at(5).find(Form.Control).props().name).toBe('messageId');
             expect(filter.find(Form.Group).at(5).find(Form.Control).props().value).toBe(initialState.filter.messageId);
-            expect(filter.find(Form.Group).at(6).find(Form.Label).html()).toContain('NotificationID');
-            expect(filter.find(Form.Group).at(6).find('div').at(0).props().className)
+            expect(filter.find(Form.Group).at(7).find(Form.Label).html()).toContain('NotificationID');
+            expect(filter.find(Form.Group).at(7).find('div').at(0).props().className)
                 .toBe('form-control-wrapper d-flex align-items-center notification-id-container');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(0).props().as).toBe('input');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(0).props().type).toBe('text');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(0).props().pattern).toBe('[0-9]*');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(0).props().size).toBe('sm');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(0).props().name).toBe('notificationIdLower');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(0).props().value)
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(0).props().as).toBe('input');
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(0).props().type).toBe('text');
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(0).props().pattern).toBe('[0-9]*');
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(0).props().size).toBe('sm');
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(0).props().name).toBe('notificationIdLower');
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(0).props().value)
                 .toEqual(initialState.filter.notificationIdLower);
-            expect(filter.find(Form.Group).at(6).find('div').at(1).html())
+            expect(filter.find(Form.Group).at(7).find('div').at(1).html())
                 .toEqual('<div class="notification-concate text-center">-</div>');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(1).props().as).toBe('input');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(1).props().type).toBe('text');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(1).props().pattern).toBe('[0-9]*');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(1).props().size).toBe('sm');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(1).props().name).toBe('notificationIdUpper');
-            expect(filter.find(Form.Group).at(6).find(Form.Control).at(1).props().value)
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(1).props().as).toBe('input');
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(1).props().type).toBe('text');
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(1).props().pattern).toBe('[0-9]*');
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(1).props().size).toBe('sm');
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(1).props().name).toBe('notificationIdUpper');
+            expect(filter.find(Form.Group).at(7).find(Form.Control).at(1).props().value)
                 .toEqual(initialState.filter.notificationIdUpper);
-            expect(filter.find(Form.Group).at(7).find(Form.Label).html()).toContain('Content');
-            expect(filter.find(Form.Group).at(7).find(Form.Control).props().as).toBe('input');
-            expect(filter.find(Form.Group).at(7).find(Form.Control).props().type).toBe('text');
-            expect(filter.find(Form.Group).at(7).find(Form.Control).props().size).toBe('sm');
-            expect(filter.find(Form.Group).at(7).find(Form.Control).props().className).toBe('shadow-none');
-            expect(filter.find(Form.Group).at(7).find(Form.Control).props().name).toBe('content');
-            expect(filter.find(Form.Group).at(7).find(Form.Control).props().value)
+            expect(filter.find(Form.Group).at(8).find(Form.Label).html()).toContain('Content');
+            expect(filter.find(Form.Group).at(8).find(Form.Control).props().as).toBe('input');
+            expect(filter.find(Form.Group).at(8).find(Form.Control).props().type).toBe('text');
+            expect(filter.find(Form.Group).at(8).find(Form.Control).props().size).toBe('sm');
+            expect(filter.find(Form.Group).at(8).find(Form.Control).props().className).toBe('shadow-none');
+            expect(filter.find(Form.Group).at(8).find(Form.Control).props().name).toBe('content');
+            expect(filter.find(Form.Group).at(8).find(Form.Control).props().value)
                 .toEqual(initialState.filter.content);
-            expect(filter.find(Form.Group).at(7).find(Form.Control).props().autoComplete).toBe('off');
-            expect(filter.find(Form.Group).at(8).find(Form.Label).html()).toContain('Status');
-            expect(filter.find(Form.Group).at(8).find('div').props().className).toBe('form-control-wrapper');
-            expect(filter.find(Form.Group).at(8).find('div').find(MultipleSelect).props().dataSource)
+            expect(filter.find(Form.Group).at(8).find(Form.Control).props().autoComplete).toBe('off');
+            expect(filter.find(Form.Group).at(9).find(Form.Label).html()).toContain('Status');
+            expect(filter.find(Form.Group).at(9).find('div').props().className).toBe('form-control-wrapper');
+            expect(filter.find(Form.Group).at(9).find('div').find(MultipleSelect).props().dataSource)
                 .toEqual(initialState.statusOptions);
             expect(filter.find(Form.Group).at(8).find('div').find(MultipleSelect).props().keyField).toBe('id');
             expect(filter.find(Form.Group).at(8).find('div').find(MultipleSelect).props().statusField).toBe('checked');
@@ -1342,7 +1349,7 @@ describe('Filter', () => {
             expect(filter.find(Form.Group).at(9).find(Button).props().size).toBe('sm');
         });
 
-        describe('has Form.Group 6', () => {
+        describe('has Form.Group 7', () => {
             describe('has Form.Control 0', () => {
                 it('has correct valid className', () => {
                     // Arrange
@@ -1361,7 +1368,7 @@ describe('Filter', () => {
                     const filter = shallow(<Filter {...props} />);
 
                     // Assert
-                    expect(filter.find(Form.Group).at(6).find(Form.Control).at(0).props().className)
+                    expect(filter.find(Form.Group).at(7).find(Form.Control).at(0).props().className)
                         .toBe('shadow-none valid-input notification-id-input');
                 });
 
@@ -1382,7 +1389,7 @@ describe('Filter', () => {
                     const filter = shallow(<Filter {...props} />);
 
                     // Assert
-                    expect(filter.find(Form.Group).at(6).find(Form.Control).at(0).props().className)
+                    expect(filter.find(Form.Group).at(7).find(Form.Control).at(0).props().className)
                         .toBe('shadow-none invalid-input notification-id-input');
                 });
             });
@@ -1405,7 +1412,7 @@ describe('Filter', () => {
                     const filter = shallow(<Filter {...props} />);
 
                     // Assert
-                    expect(filter.find(Form.Group).at(6).find(Form.Control).at(1).props().className)
+                    expect(filter.find(Form.Group).at(7).find(Form.Control).at(1).props().className)
                         .toBe('shadow-none valid-input notification-id-input');
                 });
 
@@ -1426,7 +1433,7 @@ describe('Filter', () => {
                     const filter = shallow(<Filter {...props} />);
 
                     // Assert
-                    expect(filter.find(Form.Group).at(6).find(Form.Control).at(1).props().className)
+                    expect(filter.find(Form.Group).at(7).find(Form.Control).at(1).props().className)
                         .toBe('shadow-none invalid-input notification-id-input');
                 });
             });

@@ -102,7 +102,7 @@ describe('EditContactInforms', () => {
             await promise;
 
             // Assert
-            expect(props.editContactInforms).toHaveBeenCalledWith({ titleId: 123, informs: [{ headlineId: 1234, groupId: 122, remark: '&amp;test'}] });
+            expect(props.editContactInforms).toHaveBeenCalledWith({ titleId: 123, listInforms: [{ headlineId: 1234, groupId: 122, remark: '&amp;test'}] });
         });
     });
 

@@ -7,6 +7,39 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import toJson from 'enzyme-to-json';
 
 describe('Content', () => {
+    it('getReferenceText dataSource is MessageId  return text correctly', () => {
+        // Arrange
+        const props = {
+            data: {
+                headlines: []
+            }
+        };
+
+        // Action
+        const content = shallow(<Content {...props} />).instance();
+        const result = content.getReferenceText({dataSource: 'MessageId', referenceId: '1'});
+
+        // Assert
+        expect(result).toEqual('(MessageID: 1)');
+    });
+
+    it('getReferenceText dataSource is AnnouncementId  return text correctly', () => {
+        // Arrange
+        const props = {
+            data: {
+                headlines: []
+            }
+        };
+
+        // Action
+        const content = shallow(<Content {...props} />).instance();
+        const result = content.getReferenceText({dataSource: 'AnnouncementId', referenceId: '1'});
+
+        // Assert
+        expect(result).toEqual('(AnnId: 1)');
+    });
+
+
     it('renders component correctly', () => {
         // Arrange
         const props = {
