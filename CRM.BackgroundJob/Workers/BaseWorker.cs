@@ -58,6 +58,7 @@
                 if (jobSetting.IsEnabled
                     && (!jobSetting.HasCheckUM || !isUM))
                 {
+                    logService.LogInformation($"{jobSetting.JobName} running");
                     await ExecuteJobAsync();
                 }
             }
