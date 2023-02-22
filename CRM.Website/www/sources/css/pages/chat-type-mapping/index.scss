@@ -58,42 +58,6 @@
         margin-top: 3px;
     }
     
-    .letstalk-group-mapping {
-        border-bottom: 1px solid #b7b7b7;
-    
-        .letstalk-wrapper {
-            display: inline-block;
-            width: calc(100% - 200px);
-        }
-    
-        .common-letstalk-display {
-            display: inline-block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-    
-        .recipient-name {
-            vertical-align: top;
-            padding-right: 10px;
-            font-weight: 600;
-            width: 200px;
-        }
-    
-        .letstalk-name {
-            width: 120px;
-        }
-    
-        .icon {
-            color: #05b15b;
-            padding-left: 10px;
-        }
-    }
-    
-    .modal-backdrop {
-        z-index: 1050 !important;
-    }
-    
     .react-select__control, .react-select__control--is-focused {
         height: 28px;
     
@@ -147,6 +111,38 @@
 
         .react-select__indicator{
             padding: 0;
+        }
+    }
+
+    .letstalk-group-mapping {
+        border-bottom: 1px solid #b7b7b7;
+    
+        .letstalk-wrapper {
+            display: inline-block;
+            width: calc(100% - 200px);
+        }
+    
+        .common-letstalk-display {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    
+        .recipient-name {
+            vertical-align: top;
+            padding-right: 10px;
+            font-weight: 600;
+            width: 200px;
+        }
+    
+        .letstalk-name {
+            width: 120px;
+        }
+    
+        .icon {
+            color: #05b15b;
+            padding-left: 10px;
         }
     }
 }

@@ -5,6 +5,10 @@ exports[`Filter render filter component 1`] = `
   className="form-filter"
   inline={false}
 >
+  <WithHotKey
+    handleKeyDownFunc={[Function]}
+    isDocumentHandle={false}
+  />
   <FormRow
     bsPrefix="form-row"
   >
@@ -68,7 +72,7 @@ exports[`Filter render filter component 1`] = `
         size="sm"
         variant="primary"
       >
-        Submit
+        <submitButton />
       </Button>
     </FormGroup>
   </FormRow>
