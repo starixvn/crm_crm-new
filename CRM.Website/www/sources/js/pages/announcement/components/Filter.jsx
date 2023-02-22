@@ -42,7 +42,7 @@ export class Filter extends Component {
 
     handleChangeStatus = (currentItem, selectedItemsKey) =>{
         this.setState({ status: selectedItemsKey });
-    }
+    };
 
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
@@ -70,8 +70,14 @@ export class Filter extends Component {
     handleOpenNewAnnouncement = () =>{
         this.props.setIsRefresh(false);
         this.props.setOpenNewAnnouncementPopup({show: true});
-    }
+    };
 
+    handlePasteAnnouncementId = event =>{
+        if (event.clipboardData.getData('Text').match(/[^\d]/)) {
+            event.preventDefault();
+        }
+    };
+    
     render() {
         const {announcementId, fromDate, toDate, title} = this.state;
         return (
@@ -83,6 +89,7 @@ export class Filter extends Component {
                             value={announcementId}
                             name="announcementId" id="announcementId"
                             className="shadow-none"
+                            onPaste={this.handlePasteAnnouncementId}
                             onChange={this.handleChange}
                         />
                     </Form.Group>
