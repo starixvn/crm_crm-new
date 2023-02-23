@@ -7,7 +7,7 @@ import Site from '@jsroot/common/site';
 const portal = document.createElement("div");
 document.body.appendChild(portal);
 
-class UploadFile extends PureComponent {
+export default class UploadFile extends PureComponent {
     handleUploadFiles = files => {
         const uploaded = [...this.props.uploadedFiles];
         files.some(file => {
@@ -138,7 +138,3 @@ class UploadFile extends PureComponent {
         );
     }
 }
-
-export const UploadFileForwardingRef = React.forwardRef((props, ref) => 
-    <UploadFile {...props} imageInputRef={ref}/>
-);

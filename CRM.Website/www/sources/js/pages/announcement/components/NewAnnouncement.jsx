@@ -8,7 +8,7 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import {UploadFileForwardingRef} from './UploadFile';
+import UploadFile from './UploadFile';
 import ContentTab from './ContentTab';
 import Option from './Option';
 import DateTimeService from '@jsroot/common/dateTimeService';
@@ -303,7 +303,7 @@ export class NewAnnouncement extends Component {
                             </div>
                         </Form.Group>
                     }
-                    <UploadFileForwardingRef setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}/>
+                    <UploadFile setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}/>
                     <Form.Group as={Row}>
                         <Form.Label column sm="2" md="2" htmlFor="groupHeadline">
                             {LangHelper.getResource('GroupHeadline')}

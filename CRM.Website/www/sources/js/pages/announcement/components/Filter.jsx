@@ -9,7 +9,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import {Statuses} from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { toast } from 'react-toastify';
-import { AUTO_REFRESH_TIMES } from '@jsroot/common/constants';
 
 export class Filter extends Component {
     constructor(props) {

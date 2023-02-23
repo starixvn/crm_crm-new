@@ -8,7 +8,7 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import {UploadFileForwardingRef} from './UploadFile';
+import UploadFile from './UploadFile';
 import Option from './Option';
 import ContentTab from './ContentTab';
 import DateTimeService from '@jsroot/common/dateTimeService';
@@ -18,12 +18,9 @@ import {
 } from '../common.functions';
 import Site from '@jsroot/common/site';
 
-const portal = document.createElement("div");
-document.body.appendChild(portal);
 export class ActionAnnouncement extends Component {
     constructor(props) {
         super(props);
-        this.imageInputRef = React.createRef();
         this.headlineInputRef = React.createRef();
         this.state = {
             data: null,
@@ -205,21 +202,23 @@ export class ActionAnnouncement extends Component {
     setStateUploadFile = (uploadedFiles, fileNameRemove) => {
         if(!fileNameRemove){
             uploadedFiles.forEach((file) => {
-                const maximumHeightWidth = 2560;
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (e) => {
-                    const image = new Image();
-                    image.src = e.target.result;
-                    image.onload = () => {
-                    const {
-                        height,
-                        width
-                    } = image;
-                    if (height > maximumHeightWidth || width > maximumHeightWidth) {
-                        this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, file.name]});
-                    }
-                }};
+                if(typeof file !== 'string'){
+                    const maximumHeightWidth = 2560;
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = (e) => {
+                        const image = new Image();
+                        image.src = e.target.result;
+                        image.onload = () => {
+                        const {
+                            height,
+                            width
+                        } = image;
+                        if (height > maximumHeightWidth || width > maximumHeightWidth) {
+                            this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, file.name]});
+                        }
+                    }};
+                }
             });
         }else{
             const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x !== fileNameRemove);
@@ -344,7 +343,7 @@ export class ActionAnnouncement extends Component {
                             </div>
                         </Form.Group>
                     }
-                    <UploadFileForwardingRef ref={this.imageInputRef} id={actionAnnouncementPopup.announcementId}
+                    <UploadFile id={actionAnnouncementPopup.announcementId}
                         setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
                     />
                     <Form.Group as={Row}>
