@@ -13,6 +13,8 @@
 
         Task<CommandResult> EditActiveStatusAsync(int conversationId, bool IsActive, int userId);
 
+        Task<CommandResult> DeleteConversationGroupAsync(int conversationId, int userId);
+
         Task<IEnumerable<GroupHeadlineDirectAccountModel>> GetHeadlineByRecipientAsync(string recipientIds);
 
         Task<IEnumerable<IgnoreNotificationType>> GetIgnoreNotificationTypeAsync();

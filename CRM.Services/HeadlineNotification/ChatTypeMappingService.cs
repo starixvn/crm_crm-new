@@ -49,6 +49,20 @@
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
+        public async Task<CommandResult> DeleteConversationGroupAsync(int conversationId, int userId)
+        {
+            var criteria = new DeleteConversationGroupCommand
+            {
+                ConversationGroupId = conversationId,
+                UserId = userId,
+                IsDeleted = true,
+                LoginIP = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()
+            };
+
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+
         public async Task<IEnumerable<GroupHeadlineDirectAccountModel>> GetHeadlineByRecipientAsync(string recipientIds)
         {
             var criteria = new GetGroupHeadlineByRecipientCriteria

@@ -63,6 +63,11 @@ export const updateActiveStatus = params => async dispatch => {
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
+export const deleteConversationGroup = conversationId => async () => {
+    const url = Site.resolveClientUrl('ChatTypeMapping/DeleteConversationGroup');
+    return await DataService.getDataAsync(url, { conversationId }).then(response => response);
+};
+
 // Get Recipient by Recipient Type
 export const setRecipientData = data => {
     return {
@@ -119,6 +124,7 @@ const actions = {
     setGridParams,
     setUpateActivePopup,
     updateActiveStatus,
+    deleteConversationGroup,
     getRecipientByRecipientType,
     getGroupHeadlineByRecipient,
     exportExcelMapping

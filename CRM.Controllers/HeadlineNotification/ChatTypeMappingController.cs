@@ -98,6 +98,15 @@
             return Json(commandResult);
         }
 
+        [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Host)]
+        public async Task<IActionResult> DeleteConversationGroup(int conversationId)
+        {
+            var commandResult = await chatTypeMappingService.DeleteConversationGroupAsync(conversationId, napSession.UserId);
+
+            return Json(commandResult);
+        }
+
+
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Host)]
         public async Task<IActionResult> InsertPersonalMapping([FromBody] PersonalMappingViewModel data)

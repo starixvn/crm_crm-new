@@ -21,7 +21,11 @@ export class DataGrid extends Component {
 
         this.state = {
             data: null,
-            isShowRemark: false
+            isShowRemark: false,
+            deletePopup: {
+                isShow: false,
+                id: null
+            }
         };
     }
 
@@ -70,6 +74,40 @@ export class DataGrid extends Component {
             this.props.openUpdateGroupMappingPopup(chatMapping);
         }
     };
+
+    
+    handleOpenDelete = conversationGroupId => {
+        this.setState({
+            deletePopup:{ isShow: true, id: conversationGroupId}
+        });
+    };
+
+    handleDelete = () =>{
+        this.props.deleteConversationGroup(this.state.deletePopup.id).then(response => {
+            if(!response || !response.data){
+                return;
+            }
+            if (response.data.isSuccessful) {
+                this.onClosePopupDelete(true);
+                toast.success(LangHelper.getResource('DeleteChatTypeMappingSuccessfully'));
+            } else {
+                this.onClosePopupDelete(false);
+                toast.error(response.data.message);
+            }
+        });
+    }
+
+    onClosePopupDelete = isSuccessful => {
+        this.setState({
+            deletePopup:{ isShow: false, id: null}
+        }, () => {
+            if (isSuccessful) {
+                this.props.getGridData(this.props.gridParams);
+            }
+        });
+    };
+
+
 
     handleOpenPopupEditRemark = item => {
         this.setState({
@@ -161,10 +199,14 @@ export class DataGrid extends Component {
                     <span className={`fa fa-pencil icon-edit ${isBotRemovedStatus ? 'pointer-event-none' : ''}`}
                         onClick={() => this.handleEdit(chatMapping)}
                     />
+                    <span className={`${chatMapping.isActive ? 'pointer-event-none' : 'rounded-circle'} fa fa-trash icon-delete`}
+                        onClick={() => this.handleOpenDelete(chatMapping.conversationGroupId)}
+                    />
                 </div>
             </Cell>
         );
     };
+
 
     renderRow = (item, index, isHost) => {
         const isBotRemovedStatus = (item.chatTypeId === ChatTypeMapping.Group) && (item.mappingStatusId === MappingStatus.BotRemoved);
@@ -289,6 +331,16 @@ export class DataGrid extends Component {
                         content={confirmMsg}
                         onSubmit={this.updateActiveStatus}
                         onClose={this.onCloseConfirmPopupChangeActiveStaus}
+                    />
+                }
+                {
+                    this.state.deletePopup.isShow &&
+                    <ConfirmPopup
+                        size='lg'
+                        title={LangHelper.getResource('Confirmation')}
+                        content={LangHelper.getResource('ConfirmDeleteChatTypeMapping')}
+                        onSubmit={this.handleDelete}
+                        onClose={() => this.onClosePopupDelete(false)}
                     />
                 }
                 {
