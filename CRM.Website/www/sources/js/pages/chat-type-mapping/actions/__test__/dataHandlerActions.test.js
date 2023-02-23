@@ -105,6 +105,22 @@ describe('dataHandlerActions', () => {
         });
     });
 
+    it('should return exact result when delete chat type mapping has been done', async () => {
+        const response = { data: { isSuccessful: false } };
+        Site.blockUI = jest.fn();
+        Site.unblockUI = jest.fn();
+        const promise = Promise.resolve(response);
+        DataService.postDataAsync = jest.fn(() => promise);
+        const store = mockStore({ });
+        //Act
+        const actual = await store.dispatch(actions.deleteConversationGroup(1));
+
+        // Assert
+        expect(DataService.getDataAsync).toHaveBeenCalledWith('ChatTypeMapping/DeleteConversationGroup', {"conversationGroupId": 1});
+        expect(actual).toEqual(response);
+    });
+
+
     it('should create an action to set Recipient Data', () => {
         const data = 'Test set Recipient data';
         const expectedAction = {

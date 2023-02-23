@@ -106,6 +106,22 @@
         }
 
         [Fact]
+        public async Task DeleteConversation_WhenCalled_ReturnExpectedJsonCommandResult()
+        {
+            var expected = new CommandResult { Code = 0 };
+            var controller = GetController();
+
+            chatTypeMappingService.DeleteConversationGroupAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(expected);
+
+            var actual = await controller.DeleteConversationGroup(1);
+
+            var jsonResult = Assert.IsType<JsonResult>(actual);
+            var result = (CommandResult)jsonResult.Value;
+            Assert.Equal(expected, result);
+        }
+
+
+        [Fact]
         public async Task InsertPersonalMapping_WhenInvalidLetstalkId_ReturnExpectedCommandResult()
         {
             var fixture = new Fixture();

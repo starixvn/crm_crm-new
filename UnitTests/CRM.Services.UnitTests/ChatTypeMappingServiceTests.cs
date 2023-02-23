@@ -62,6 +62,23 @@
         }
 
         [Fact]
+        public async Task DeleteConversationGroupAsync_WhenCalled_ReturnExpectedCommandResult()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var result = fixture.Create<CommandResult>();
+
+            var service = GetService();
+            baseService.ExecuteNonQueryAsync(Arg.Any<DeleteConversationGroupCommand>()).Returns(result);
+            // Act
+            var actual = await service.DeleteConversationGroupAsync(1, 10);
+
+            // Assert
+            Assert.Equal(result, actual);
+        }
+
+
+        [Fact]
         public async Task GetHeadlineByRecipientAsync_WhenCalled_ReturnExpectedCommandResult()
         {
             // Arrange
