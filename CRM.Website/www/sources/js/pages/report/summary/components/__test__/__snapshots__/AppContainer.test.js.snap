@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AppContainer render should render correctly when gridData null 1`] = `
-<Fragment>
-  <Connect(Filter) />
-</Fragment>
-`;

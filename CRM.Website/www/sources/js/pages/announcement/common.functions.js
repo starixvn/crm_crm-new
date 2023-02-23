@@ -69,11 +69,15 @@ export const getParams = (values, state) => {
         formData.append(typeof file === 'string' ? 'fileString' : 'formFile', file);
     });
 
-    for (const [index, [key, value]] of Object.entries(content).entries()) {
+    let index = 0;
+    for (const [key, value] of Object.entries(content)) {
         if(value && value.length > 0){
             const languageId = state.languages.filter(x => x.mapLabel === key)[0].settingId;
-            formData.append(`contents[${index}][languageId]`, languageId);
-            formData.append(`contents[${index}][value]`, value);
+            if(languageId){
+                formData.append(`contents[${index}][languageId]`, languageId);
+                formData.append(`contents[${index}][value]`, value);
+                index++;
+            }
         }
     }
 
@@ -117,42 +121,6 @@ export const mapLabelLanguage = languages =>{
         };
     });
 };
-
-function validateWidthHeight(file) {
-    return new Promise((resolve, reject) => {
-      const maximumHeightWidth = 2560;
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (e) => {
-        const image = new Image();
-        image.src = e.target.result;
-        image.onload = () => {
-          const {
-            height,
-            width
-          } = image;
-          if (height > maximumHeightWidth || width > maximumHeightWidth) {
-            resolve(false);
-          } else {
-            resolve(true);
-          }
-        };
-        image.onerror = () => {
-          reject(new Error('Failed to load image'));
-        };
-      };
-      reader.onerror = () => {
-        reject(new Error('Failed to read file'));
-      };
-    });
-  }
-  
-  async function callValidateWidthHeight(file) {
-      const result = await validateWidthHeight(file);
-      if (result !== undefined) {
-        return result;
-      }
-}
 
 function validFileSize(file){
     const convertSize = Math.round(file.size / 1024).toFixed(2);
