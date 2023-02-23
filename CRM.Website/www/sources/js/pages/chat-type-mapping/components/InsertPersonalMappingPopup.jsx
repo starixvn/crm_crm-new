@@ -393,19 +393,6 @@ export class InsertPersonalMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" >
-                            {LangHelper.getResource('Remark')}
-                        </Form.Label>
-                        <Col sm="9" md="10" name="insert-personal">
-                            <Form.Control as="textarea" size="sm" className="shadow-none"
-                                rows={5}
-                                name="remark"
-                                onChange={e => this.handleChange('remark', e.target.value)}
-                                value={this.state.form.remark}
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2">
                             {LangHelper.getResource('IgnoredNotificationType')}
                         </Form.Label>
@@ -418,6 +405,19 @@ export class InsertPersonalMappingPopup extends Component {
                                 valueField='notificationTypeName'
                                 onChange={this.handleIgnoreNotificationChange}
                                 hasSearchBox
+                            />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3" md="2" >
+                            {LangHelper.getResource('Remark')}
+                        </Form.Label>
+                        <Col sm="9" md="10" name="insert-personal">
+                            <Form.Control as="textarea" size="sm" className="shadow-none"
+                                rows={5}
+                                name="remark"
+                                onChange={e => this.handleChange('remark', e.target.value)}
+                                value={this.state.form.remark}
                             />
                         </Col>
                     </Form.Group>

@@ -438,19 +438,6 @@ export class EditGroupMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" htmlFor="groupEditRemark" >
-                            {LangHelper.getResource('Remark')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <Form.Control as="textarea" className="shadow-none" size="sm"
-                                name="remark"
-                                rows={5}
-                                value={this.state.form.remark}
-                                onChange={e => this.handleChange('remark', e.target.value)}
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2">
                             {LangHelper.getResource('IgnoredNotificationType')}
                         </Form.Label>
@@ -463,6 +450,19 @@ export class EditGroupMappingPopup extends Component {
                                 valueField='notificationTypeName'
                                 onChange={this.handleIgnoreNotificationChange}
                                 hasSearchBox
+                            />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3" md="2" htmlFor="groupEditRemark" >
+                            {LangHelper.getResource('Remark')}
+                        </Form.Label>
+                        <Col sm="9" md="10">
+                            <Form.Control as="textarea" className="shadow-none" size="sm"
+                                name="remark"
+                                rows={5}
+                                value={this.state.form.remark}
+                                onChange={e => this.handleChange('remark', e.target.value)}
                             />
                         </Col>
                     </Form.Group>

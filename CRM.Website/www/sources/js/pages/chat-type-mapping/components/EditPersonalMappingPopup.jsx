@@ -429,20 +429,6 @@ export class EditPersonalMappingPopup extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" >
-                            {LangHelper.getResource('Remark')}
-                        </Form.Label>
-                        <Col sm="9" md="10" name="personal-edit">
-                            <Form.Control as="textarea" size="sm" className="shadow-none"
-                                name="remark"
-                                value={this.state.form.remark}
-                                rows={5}
-                                onChange={e => this.handleChange('remark', e.target.value)}
-
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2">
                             {LangHelper.getResource('IgnoredNotificationType')}
                         </Form.Label>
@@ -455,6 +441,20 @@ export class EditPersonalMappingPopup extends Component {
                                 valueField='notificationTypeName'
                                 onChange={this.handleIgnoreNotificationChange}
                                 hasSearchBox
+                            />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3" md="2" >
+                            {LangHelper.getResource('Remark')}
+                        </Form.Label>
+                        <Col sm="9" md="10" name="personal-edit">
+                            <Form.Control as="textarea" size="sm" className="shadow-none"
+                                name="remark"
+                                value={this.state.form.remark}
+                                rows={5}
+                                onChange={e => this.handleChange('remark', e.target.value)}
+
                             />
                         </Col>
                     </Form.Group>
