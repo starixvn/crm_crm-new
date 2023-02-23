@@ -71,19 +71,23 @@ export class ActionAnnouncement extends Component {
 
     getSettingOption = async announcement =>{
         await this.props.getSettings().then(() =>{
+            const siteNameListId = [];
+            const currencyIdListId = [];
             const siteOptions = this.props.settings.siteList.map(x => {
+                siteNameListId.push(x.site);
                 return {
                     id: x.site,
                     name: x.site,
-                    checked: announcement.siteNameList?.includes(x.site)
+                    checked: !announcement.headlineNameList ? announcement.siteNameList?.includes(x.site) : true
                 };
             });
 
             const currencyOptions = this.props.settings.currencyList.map(x => {
+                currencyIdListId.push(x.id);
                 return {
                     id: x.id,
                     name: x.name,
-                    checked: announcement.currencyIdList?.split(',').includes(x.id.toString())
+                    checked: !announcement.headlineNameList ? announcement.currencyIdList?.split(',').includes(x.id.toString()) : true
                 };
             });
 
@@ -92,10 +96,10 @@ export class ActionAnnouncement extends Component {
                 currencyOptions,
                 options: {
                     ...this.state.options,
-                    site: announcement.siteNameList,
-                    currency: announcement.currencyIdList
+                    site: !announcement.headlineNameList ? announcement.siteNameList : siteNameListId,
+                    currency: !announcement.headlineNameList ? announcement.currencyIdList : currencyIdListId
                 },
-                headlineGroups: !announcement.siteNameList ? announcement.headlineNameList.split(',') : [] ,
+                headlineGroups: !announcement.headlineNameList ? [] : announcement.headlineNameList.split(','),
                 uploadedFiles: !announcement.fileName ? [] : announcement.fileName.split(',')
             });
         });
@@ -444,7 +448,7 @@ export class ActionAnnouncement extends Component {
             notificationTemplateId: data.notificationTemplateId,
             title: data.title,
             content: this.state.content,
-            headlineType: data.headlineType,
+            headlineType: !data.headlineNameList ? data.headlineType : 2,
             sendType: data.sendImmediately ? 'Send immediately' : 'Send At' ,
             sendDate: new Date(data.sendDate),
             imageFileType: '',
