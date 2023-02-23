@@ -417,7 +417,7 @@
             var content_en = messages?.FirstOrDefault()?.Content_en;
             var content_cs = messages?.FirstOrDefault()?.Content_cs;
             logService.LogInformation(string.Format("GetVoidingSettledTicketSolution, Site: {0} IsVip:{1}", feedbackInfo.Site, feedbackInfo.IsVip));
-            if (feedbackInfo.Site == "789y" && feedbackInfo.IsVip)
+            if (feedbackInfo.SiteLabel == "789y" && feedbackInfo.IsVip)
             {
                 stringBuilder.AppendFormat(ticketSolTemplate.SolutionENYN,
                    content_en, feedbackInfo.AffectedName, Constants.Break, Constants.LineBreak

@@ -538,7 +538,7 @@
         protected internal virtual string GetAmenmendSolution(AmendmentAutoFeedbackInfor amendment, IEnumerable<Message> messageContent, bool isNoResultTemplate)
         {
             var amendmentSolTemplate = commonFeedback.GetFeedbackTemplates<AmendmentSolutionTemplate>(solTemplateXml);
-            var isVipCust = amendment.Site == "789y" && amendment.IsVip;
+            var isVipCust = amendment.SiteLabel == "789y" && amendment.IsVip;
             var stringBuilder = new StringBuilder();
             if (isNoResultTemplate)
             {

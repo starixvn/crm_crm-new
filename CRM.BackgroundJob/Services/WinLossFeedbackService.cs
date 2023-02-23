@@ -88,7 +88,7 @@
 
             foreach (WinLimitFeedBackInfo winLimit in winlossInfo.Item1)
             {
-                var isVipHeadline = winLimit.Site == "789y" && winLimit.IsVip;
+                var isVipHeadline = winLimit.SiteLabel == "789y" && winLimit.IsVip;
                 await CreateWinLossFeedbackCreditAsync(
                         isVipHeadline,
                         winLimit,

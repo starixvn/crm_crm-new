@@ -20,6 +20,7 @@
         public string Listbettype { get; set; }
         public string Currency { get; set; }
         public string Site { get; set; }
+        public string SiteLabel { get; set; }
         public byte Sporttype { get; set; }
         public int LeagueId { get; set; }
         public string Leaguenametc { get; set; }

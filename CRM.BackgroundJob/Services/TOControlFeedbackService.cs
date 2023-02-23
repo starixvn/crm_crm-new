@@ -321,7 +321,7 @@
 
         protected internal virtual string GetTOSolution(TOControlFeedbackInfor ToInfor)
         {
-            var isVipCust = ToInfor.Site == "789y" && ToInfor.IsVip;
+            var isVipCust = ToInfor.SiteLabel == "789y" && ToInfor.IsVip;
 
             var TOSolTemplate = commonFeedback.GetFeedbackTemplates<TOSolutionTemplate>(solTemplateXml);
             var smaLevelEN = "";

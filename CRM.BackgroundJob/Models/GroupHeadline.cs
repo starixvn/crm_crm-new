@@ -7,5 +7,6 @@
         public string HeadlineName { get; set; }
         public bool IsVip { get; set; }
         public string Site { get; set; }
+        public string SiteLabel { get; set; }
     }
 }
