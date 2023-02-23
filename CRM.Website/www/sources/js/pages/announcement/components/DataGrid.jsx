@@ -12,18 +12,10 @@ import WithNavigation from '@jsroot/components/WithNavigation';
 import Site from '@jsroot/common/site';
 
 export class DataGrid extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
         params.pageIndex = pageIndex;
         params.pageSize = pageSize;
-        this.getGridData(params);
-    };
-
-    getGridData = params => {
         this.props.setGridParams(params);
         this.props.getGridData({ ...params });
     };
