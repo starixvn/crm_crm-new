@@ -2,7 +2,7 @@
     { name: 'document', items: ['Source'] },
     { name: 'colors', items: ['TextColor', 'BGColor'] },
     { name: 'basic styles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
-    { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+    { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
     { name: 'links', items: ['Link', 'Unlink'] },
     { name: 'styles', items: ['Format', 'Font', 'FontSize'] },
     { name: 'insert', items: ['Image', 'HorizontalRule'] },
