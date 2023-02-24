@@ -78,7 +78,7 @@ export class ActionAnnouncement extends Component {
                 return {
                     id: x.site,
                     name: x.site,
-                    checked: !announcement.headlineNameList ? announcement.siteNameList?.includes(x.site) : true
+                    checked: announcement.siteNameList ? announcement.siteNameList?.includes(x.site) : true
                 };
             });
 
@@ -87,7 +87,7 @@ export class ActionAnnouncement extends Component {
                 return {
                     id: x.id,
                     name: x.name,
-                    checked: !announcement.headlineNameList ? announcement.currencyIdList?.split(',').includes(x.id.toString()) : true
+                    checked: announcement.siteNameList ? announcement.currencyIdList?.split(',').includes(x.id.toString()) : true
                 };
             });
 
@@ -96,10 +96,10 @@ export class ActionAnnouncement extends Component {
                 currencyOptions,
                 options: {
                     ...this.state.options,
-                    site: !announcement.headlineNameList ? announcement.siteNameList : siteNameListId,
-                    currency: !announcement.headlineNameList ? announcement.currencyIdList : currencyIdListId
+                    site: announcement.siteNameList ? announcement.siteNameList : siteNameListId,
+                    currency: announcement.siteNameList ? announcement.currencyIdList : currencyIdListId
                 },
-                headlineGroups: !announcement.headlineNameList ? [] : announcement.headlineNameList.split(','),
+                headlineGroups: announcement.siteNameList ? [] : announcement.headlineNameList.split(','),
                 uploadedFiles: !announcement.fileName ? [] : announcement.fileName.split(',')
             });
         });
@@ -448,7 +448,7 @@ export class ActionAnnouncement extends Component {
             notificationTemplateId: data.notificationTemplateId,
             title: data.title,
             content: this.state.content,
-            headlineType: !data.headlineNameList ? data.headlineType : 2,
+            headlineType: data.siteNameList ? data.headlineType : 2,
             sendType: data.sendImmediately ? 'Send immediately' : 'Send At' ,
             sendDate: new Date(data.sendDate),
             imageFileType: '',
