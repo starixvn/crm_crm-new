@@ -2,11 +2,8 @@ import React from 'react';
 import DataGridWrapper, { DataGrid } from '../DataGrid';
 import { Table, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import configureMockStore from 'redux-mock-store';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow } from 'enzyme';
-import { PAGING_SIZES } from '@jsroot/common/constants';
 import toJson from 'enzyme-to-json';
 
 describe('DataGrid', () => {

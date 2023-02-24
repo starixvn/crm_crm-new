@@ -105,7 +105,7 @@ export class AppContainer extends Component {
                    contentPopup.show &&
                     <Content
                         id={contentPopup.announcementId}
-                        onClose={() => this.handleCloseContent()}
+                        onClose={this.handleCloseContent}
                     />
                 }
                 {
