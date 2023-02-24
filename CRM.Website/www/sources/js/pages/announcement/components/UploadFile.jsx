@@ -11,7 +11,7 @@ export default class UploadFile extends PureComponent {
     handleUploadFiles = files => {
         const uploaded = [...this.props.uploadedFiles];
         files.some(file => {
-            const isNotExist = uploaded.findIndex((f) => f.name === file.name) === -1;
+            const isNotExist = uploaded.findIndex((f) => (f.name || f) === file.name) === -1;
             if (isNotExist) {
                 uploaded.push(file);
             }
