@@ -55,8 +55,8 @@ export class Filter extends Component {
         }
         const params = {
             announcementId: announcementId,
-            fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
-            toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
+            fromDate: announcementId ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
+            toDate: announcementId ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
             title: title,
             status: status,
             pageIndex: 1,
@@ -109,6 +109,7 @@ export class Filter extends Component {
                                 <DatePicker
                                     dropdownMode="select"
                                     showMonthDropdown
+                                    disabled={announcementId}
                                     useShortMonthInDropdown
                                     showYearDropdown
                                     selected={fromDate}
@@ -122,6 +123,7 @@ export class Filter extends Component {
                             <DatePicker
                                 dropdownMode="select"
                                 selected={toDate}
+                                disabled={announcementId}
                                 showMonthDropdown
                                 useShortMonthInDropdown
                                 showYearDropdown

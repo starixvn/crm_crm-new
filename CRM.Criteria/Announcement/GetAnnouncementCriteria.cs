@@ -8,8 +8,8 @@ namespace CRM.Criteria.Announcement
     {
         public int? AnnouncementId { get; set; }
 
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
         public string Title { get; set; }
         public string Status { get; set; }
 

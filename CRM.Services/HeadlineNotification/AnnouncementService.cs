@@ -26,8 +26,11 @@ namespace CRM.Services.HeadlineNotification
 
         public async Task<IEnumerable<AnnouncementInfo>> GetAnnouncementAsync(GetAnnouncementCriteria criteria)
         {
-            criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
-            criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate);
+            if (criteria.FromDate.HasValue && criteria.ToDate.HasValue)
+            {
+                criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate.Value);
+                criteria.ToDate = commonService.ConvertToServerDateTime(criteria.ToDate.Value);
+            }
             var announcements = await baseService.GetDataAsync<AnnouncementInfo>(criteria);
             foreach(var announcement in announcements)
             {
