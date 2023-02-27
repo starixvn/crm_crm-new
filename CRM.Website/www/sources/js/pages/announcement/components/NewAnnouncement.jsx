@@ -100,7 +100,8 @@ export class NewAnnouncement extends Component {
                     if (height > maximumHeightWidth || width > maximumHeightWidth) {
                         this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, file.name]});
                     }
-                }};
+                };
+            };
             });
         }else{
             const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x !== fileNameRemove);

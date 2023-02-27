@@ -9,6 +9,7 @@ export default class Option extends PureComponent {
     renderOption = (values, handleChange) =>{
         const {headlineGroups, siteOptions, currencyOptions} = this.props.stateValue;
         const {handleOptionChange} = this.props;
+        const headlineTypeList = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
         return(
             <Form.Group as={Row}>
                 <Form.Label column sm="2" md="2">{LangHelper.getResource('Site')}</Form.Label>
@@ -50,9 +51,8 @@ export default class Option extends PureComponent {
                             name='headlineType' value={values.headlineType} disabled={headlineGroups.length > 0}
                             onChange={handleChange}
                         >
-                            <option value=''>{LangHelper.getResource('All')}</option>
                             {
-                                this.props.settings.headlineTypeList.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
+                                headlineTypeList.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
                             }
                         </Form.Control>
                     </div>
