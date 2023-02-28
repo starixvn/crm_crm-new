@@ -136,6 +136,7 @@ export class NewAnnouncement extends Component {
 
     handleChangeTab = selected =>{
         this.setState({tab: selected});
+        this.formik.setFieldValue('cloneContent', this.formik.values.content);
         const replaceTab = selected.replace(/[^A-Z0-9]/ig, '');
         const content = this.formik.values.content[replaceTab];
         this.handleGetParameters(content);
@@ -152,7 +153,8 @@ export class NewAnnouncement extends Component {
     }
 
     handleSetValueHeadline = headlineGroups =>{
-        this.setState({headlineGroups});
+        const headlineGroupsRemoveSpace =  headlineGroups.filter(word => word.trim().length > 0);
+        this.setState({headlineGroups: headlineGroupsRemoveSpace});
         this.headlineInputRef.current.focus();
         this.headlineInputRef.current.value = '';
     }
@@ -160,7 +162,7 @@ export class NewAnnouncement extends Component {
     handleChangeInputHeadline = event => {
         const value = event.target.value;
         const isDownKey = value.includes(',') || value.includes(' ') || event.keyCode === 13;
-        if(value.length > 0 && isDownKey){
+        if(value.trim().length > 0 && isDownKey){
             event.preventDefault();
             const headlineGroups = [... this.state.headlineGroups, value.slice(0, -1)];
             this.handleSetValueHeadline(headlineGroups);
@@ -169,7 +171,7 @@ export class NewAnnouncement extends Component {
 
     handleBlurInputHeadline = event => {
         const value = event.target.value;
-        if(value && value.length > 0){
+        if(value && value.trim().length > 0){
             const headlineGroups = [... this.state.headlineGroups, value];
             this.setState({headlineGroups});
             this.headlineInputRef.current.value = '';
