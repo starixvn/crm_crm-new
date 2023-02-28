@@ -153,7 +153,8 @@ describe('AppContainer', () => {
             // Arrange
             const newAnnouncement = shallow(<NewAnnouncement />).instance();
             newAnnouncement.formik = {
-                values: { content: {EN: 'test'} }
+                values: { content: {EN: 'test'} },
+                setFieldValue: jest.fn()
             };
             newAnnouncement.handleGetParameters = jest.fn();
             //Act

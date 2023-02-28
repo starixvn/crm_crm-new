@@ -12,7 +12,7 @@ import {
 
 import ContentTab from './ContentTab';
 
-class Content extends Component {
+export class Content extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -92,8 +92,8 @@ class Content extends Component {
 
     render() {
         const {announcement, languages, content, tab} = this.state;
-        const isValidOption = this.state.announcement?.siteNameList?.length > 0 && !this.props.settings;
-        if(!this.state.announcement || !languages || !content || isValidOption){
+        const isInValidOption = this.state.announcement?.siteNameList?.length > 0 && !this.props.settings;
+        if(!this.state.announcement || !languages || !content || isInValidOption){
             return null;
         }
         const fileNames = !announcement.fileName ? '' : announcement.fileName.split(',');

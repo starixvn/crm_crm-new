@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import ContentTab from '../ContentTab';
 import LangHelper from '@jsroot/common/langHelper';
-import { Col, Form, Row, Tabs, Tab } from 'react-bootstrap';
+import { Tabs } from 'react-bootstrap';
 import CkEditor from '@jsroot/components/ckeditor/index';
 
 describe('ContentTab', () => {

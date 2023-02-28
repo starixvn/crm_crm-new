@@ -473,7 +473,6 @@ describe('AutoComplete', () => {
                     container.find('div div div').find('.autocomplete-item').at(index).simulate('mouseOver', index);
 
                     //Assert
-                    //expect(container.find('div div div').find('.autocomplete-item').at(index).html()).toContain('123');
                     expect(container.instance().selectOption).toHaveBeenCalledWith(value);
                     expect(container.instance().handleSetSelectedItem).toHaveBeenCalledWith(index);
                 });
@@ -488,78 +487,6 @@ describe('AutoComplete', () => {
 
 
         });
-
-        // describe('render', () => {
-        //     it('returns correct first div', () => {
-
-        //         //Act
-        //         const container = shallow(<AutoComplete {...props} />);
-
-        //         //Assert
-        //         expect(container.find('div').first().props().className).toBe('autocomplete-w1');
-        //     });
-
-        //     it('returns correct second div', () => {
-        //         //Arrange
-
-        //         //Act
-        //         const container = shallow(<AutoComplete {...props} />);
-
-        //         //Assert
-        //         expect(container.find('div').at(1).props().className).toBe('autocomplete');
-        //     });
-
-        //     it('has div with correct option', () => {
-        //         //Arrange 
-        //         const state = {
-        //             options: ["option1", "option2"],
-        //             display: true
-        //         };
-
-        //         //Act
-        //         const container = shallow(<AutoComplete {...props} />);
-        //         container.instance().setState(state);
-
-        //         //Assert
-        //         expect(container.find('div').at(2).props().className).toBe('child');
-        //         for(let index = 0; index < state.options.length; index++) {
-        //             expect(container.find('div.child').at(index).html()).toContain(state.options[index])
-        //         }
-        //     });
-
-        //     function simulateClickChild(index, value) {
-        //         it(`at index ${index}`, () => {
-        //             //Arrange 
-        //             const state = {
-        //                 options: ["option1", "option2"],
-        //                 display: true
-        //             };
-
-        //             const container = shallow(<AutoComplete {...props} />);
-        //             container.instance().setState(state);
-        //             container.instance().selectOption = jest.fn();
-
-        //             // Action
-        //             container.find('div.child').at(index).simulate('click', value);
-
-        //             // Assert
-        //             expect(container.instance().selectOption).toHaveBeenCalledWith(value);
-        //         });
-        //     }
-
-        //     describe('has option with onclick', () => {
-        //         //Arrange 
-        //         const state = {
-        //             options: ["option1", "option2"],
-        //             display: true
-        //         };
-
-        //         //Act
-        //         for(let index = 0; index < state.options.length; index++) {
-        //             simulateClickChild(index, state.options[index]);
-        //         }
-        //     });
-        // });
     });
 
 });

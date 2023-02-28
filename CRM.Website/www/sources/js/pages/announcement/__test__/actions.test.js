@@ -5,22 +5,11 @@ import DataService from '@jsroot/common/dataService';
 import { ActionCreators } from '../actions';
 
 import {
-    resetState,
-    setGridParams,
     setGridData,
     setCreateAnnouncement,
     setEditAnnouncement,
     setAnnouncementTemplate,
-    setSelectedTemplate,
-    setLanguages,
-    setSettings,
-    setOpenNewAnnouncementPopup,
-    setOpenActionAnnouncementPopup,
-    setOpenCancelAnnouncementPopup,
-    setContentPopup,
-    setViewDetailPopup,
-    setAutoRefresh,
-    setIsRefresh
+    setSettings
 } from '../announcementSlice';
 
 const middlewares = [thunk];
