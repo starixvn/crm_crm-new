@@ -1,11 +1,10 @@
 import { Form } from 'react-bootstrap';
 import React from 'react';
+import moment from 'moment';
 
 function CustomTimeInput({ date, dateTimeNow, isDisabledTime, onChange }) {
   const hours = date.getHours();
   const minutes = date.getMinutes();
-  const currentHourNow= ("0" + dateTimeNow.getHours()).slice(-2);
-  const currentMinuteNow = ("0" + dateTimeNow.getMinutes()).slice(-2);
   const currentHour = hours.toString().padStart(2, '0');
   const currentMinute = minutes.toString().padStart(2, '0');
   const hourFormat = [...Array(24).keys()].map((item) =>
@@ -32,6 +31,19 @@ function CustomTimeInput({ date, dateTimeNow, isDisabledTime, onChange }) {
     onChange(time);
   };
 
+  const isDisableHour = (hour) =>{
+    const dateCopy = new Date(date);
+    dateCopy.setHours(hour + 1);
+    return moment(dateTimeNow).isAfter(new Date(dateCopy));
+  };
+
+  const isDisableMinute = (hour, minute) =>{
+    const dateCopy = new Date(date);
+    dateCopy.setHours(hour);
+    dateCopy.setMinutes(minute);
+    return moment(dateTimeNow).isAfter(new Date(dateCopy));
+  };
+
   return (
     <div className="d-flex">
       <Form.Control
@@ -48,7 +60,7 @@ function CustomTimeInput({ date, dateTimeNow, isDisabledTime, onChange }) {
           <option
               key={item}
               value={item}
-              disabled={isDisabledTime && parseInt(currentHourNow, 10) > parseInt(item, 10)}
+              disabled={isDisabledTime && isDisableHour(parseInt(item, 10))}
           >
             {item}
           </option>
@@ -68,7 +80,7 @@ function CustomTimeInput({ date, dateTimeNow, isDisabledTime, onChange }) {
           <option
               key={item}
               value={item}
-              disabled={isDisabledTime && parseInt(currentMinuteNow, 10) > parseInt(item, 10) && parseInt(currentHour, 10)  <= parseInt(currentHourNow, 10)}
+              disabled={isDisabledTime && isDisableMinute(parseInt(currentHour, 10), parseInt(item, 10))}
           >
             {item}
           </option>
