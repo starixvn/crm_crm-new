@@ -1,18 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { NewAnnouncement } from '../NewAnnouncement';
-import { toast } from 'react-toastify';
 import LangHelper from '@jsroot/common/langHelper';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
-import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
-import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
-import ResponseMessage from '@jsroot/components/ResponseMessage';
-import UploadFile from '../UploadFile';
-import ContentTab from '../ContentTab';
-import Option from '../Option';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import * as commonFunc from '../../common.functions';
 
 describe('AppContainer', () => {
@@ -60,7 +51,7 @@ describe('AppContainer', () => {
             const newAnnouncement = shallow(<NewAnnouncement  {...props}/>);
             newAnnouncement.instance().setState = jest.fn();
             //Act
-            newAnnouncement.instance().handleOptionSettings ();
+            newAnnouncement.instance().handleOptionSettings();
             await promise;
             jest.runAllTimers();
 
@@ -191,25 +182,7 @@ describe('AppContainer', () => {
             expect(newAnnouncement.handleSetValueHeadline).toHaveBeenCalledWith(['text']);
         });
     });
-
-    describe('handlePasteGroupHeadline', () => {
-        it('should do as expected if copy string', () => {
-            // Arrange
-            const state = {
-                headlineGroups: []
-            };
-            const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('text') }, preventDefault: jest.fn() };
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
-            newAnnouncement.handleSetValueHeadline = jest.fn();
-            newAnnouncement.setState(state);
-            // Act
-            newAnnouncement.handlePasteGroupHeadline(event);
-            jest.runAllTimers();
-            // Assert
-            expect(newAnnouncement.handleSetValueHeadline).toHaveBeenCalledWith(['text']);
-        });
-    });
-
+    
     describe('handleSetValueHeadline', () => {
         it('should setState and reset current value', () => {
             // Arrange
@@ -364,9 +337,259 @@ describe('AppContainer', () => {
             const newAnnouncement = shallow(<NewAnnouncement />).instance();
             newAnnouncement.setState = jest.fn();
             // Act
-            const actual = newAnnouncement.handleSubmit({}, {setSubmitting});
+            newAnnouncement.handleSubmit({}, {setSubmitting});
             // Assert
             expect(newAnnouncement.setState).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleConfirmInsertDialog', () => {
+        it('should call exact function when create is successful', async () => {
+            // Arrange
+            const promise = Promise.resolve({isSuccessful: true});
+            const props = {
+                onSuccess: jest.fn(),
+                createAnnouncement: jest.fn(() => promise),
+                createAnnouncementResult: {isSuccessful: true}
+            };
+            const state = {
+                confirmInsertDialog: {
+                    params: {}
+                }
+            };
+            const newAnnouncement = shallow(<NewAnnouncement {...props} />).instance();
+            newAnnouncement.setState(state);
+            newAnnouncement.handleCloseConfirmInsertDialog = jest.fn();
+            // Act
+            newAnnouncement.handleConfirmInsertDialog();
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(props.onSuccess).toHaveBeenCalled();
+            expect(newAnnouncement.handleCloseConfirmInsertDialog).toHaveBeenCalled();
+        });
+
+        it('should call exact function when create is not successful', async () => {
+            // Arrange
+            const promise = Promise.resolve({isSuccessful: false});
+            const props = {
+                createAnnouncement: jest.fn(() => promise),
+                createAnnouncementResult: {isSuccessful: false}
+            };
+            const state = {
+                confirmInsertDialog: {
+                    params: {}
+                }
+            };
+            const newAnnouncement = shallow(<NewAnnouncement {...props} />).instance();
+            newAnnouncement.setState(state);
+            newAnnouncement.formik = {
+                setSubmitting: jest.fn()
+            };
+            newAnnouncement.handleCloseConfirmInsertDialog = jest.fn();
+            // Act
+            newAnnouncement.handleConfirmInsertDialog();
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(newAnnouncement.formik.setSubmitting).toHaveBeenCalled();
+            expect(newAnnouncement.handleCloseConfirmInsertDialog).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleCloseConfirmInsertDialog', () => {
+        it('should call exact function', () => {
+            // Arrange
+            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            newAnnouncement.formik = {
+                setSubmitting: jest.fn()
+            };
+            // Act
+            newAnnouncement.handleCloseConfirmInsertDialog();
+            // Assert
+            expect(newAnnouncement.state.confirmInsertDialog).toEqual({ show: false, params: null });
+            expect(newAnnouncement.formik.setSubmitting).toHaveBeenCalledWith(false);
+        });
+    });
+
+    describe('renderContentConfirm', () => {
+        it('should return exact content when send type is Send At', () => {
+            // Arrange
+            DateTimeService.toLongDateTimeFormat = jest.fn(() => new Date('2023-01-01'));
+            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            newAnnouncement.formik = {
+                values:{
+                    sendType: 'Send At',
+                    sendDate: new Date('2023-01-01')
+                }
+            };
+
+            // Act
+            const actual = newAnnouncement.renderContentConfirm();
+            // Assert
+            expect(actual).toEqual(<div>{LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), new Date('2023-01-01'))}</div>);
+        });
+
+        it('should return exact content when send type is not Send At', () => {
+            // Arrange
+            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            newAnnouncement.formik = {
+                values:{
+                    sendType: 'Send Immediately'
+                }
+            };
+
+            // Act
+            const actual = newAnnouncement.renderContentConfirm();
+            // Assert
+            expect(actual).toEqual(<div>{LangHelper.getResource('ConfirmSendImmediately')}</div>);
+        });
+    });
+
+    describe('Render', () => {
+        it('render formik component', () => {
+            // Arrange
+            const state = {
+                languages: [{settingId:50000, settingName: 'NotificationTemplateLanguage', settingValue: 'EN'}],
+                invalidWidthHeight: false,
+                uploadedFiles: ['file1, file2']
+            };
+            const props = {
+                announcementTemplate: [{announcementId: 65014, notificationTemplateName: "Special Announcement s" }],
+                settings: {
+                    currencyList: [{id: 11, name: "ABC"}, {id: 18, name: "ADA1"}, {id: 9, name: "AUD"}, {id: 97, name: "BDT"}],
+                    headlineTypeList: [{id: 0, name: "Normal"}, {id: 1, name: "VIP"}],
+                    siteList: [{siteID: 23, site: "222223"}, {siteID: 16, site: "611111"}, {siteID: 20, site: "722222"}]
+                }
+            };
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>);
+            newAnnouncement.instance().setState(state);
+            newAnnouncement.instance().formik = {
+                values:{
+                    sendType: 'Send At',
+                    sendDate: new Date('2023-01-01')
+                }
+            };
+
+            // Act
+            newAnnouncement.instance().render();
+            // Assert
+            expect(newAnnouncement.find(Formik).length).toBe(1);
+        });
+
+        it('should call correct functions when validate', () => {
+            // Arrange
+            const values = {
+                languageId: 0
+            };
+           
+            const state = {
+                languages: [{settingId:50000, settingName: 'NotificationTemplateLanguage', settingValue: 'EN'}],
+                invalidWidthHeight: false,
+                uploadedFiles: ['file1, file2']
+            };
+            const props = {
+                announcementTemplate: [{announcementId: 65014, notificationTemplateName: "Special Announcement s" }],
+                settings: {
+                    currencyList: [{id: 11, name: "ABC"}, {id: 18, name: "ADA1"}, {id: 9, name: "AUD"}, {id: 97, name: "BDT"}],
+                    headlineTypeList: [{id: 0, name: "Normal"}, {id: 1, name: "VIP"}],
+                    siteList: [{siteID: 23, site: "222223"}, {siteID: 16, site: "611111"}, {siteID: 20, site: "722222"}]
+                }
+            };
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>);
+            newAnnouncement.instance().setState(state);
+            
+            commonFunc.validateFormik = jest.fn(() => 'test');
+
+            // Act
+            newAnnouncement.instance().render();
+            newAnnouncement.find(Formik).props().validate(values);
+
+            // Assert
+            expect(newAnnouncement.find(Formik).length).toBe(1);
+            expect(commonFunc.validateFormik).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('renderForm', () => {
+        const formikProps = {
+            values: {},
+            errors: {},
+            touched: {},
+            handleChange: jest.fn(),
+            setFieldValue: jest.fn(),
+            handleSubmit: jest.fn(),
+            isSubmitting: false
+        };
+        const state = {
+            languages: [{settingId:50000, settingName: 'NotificationTemplateLanguage', settingValue: 'EN'}],
+            invalidWidthHeight: false,
+            uploadedFiles: ['file1, file2'],
+            isChangeTemplate: true,
+            parameters: ['param1', 'param2'],
+            headlineGroups: ['headline1']
+        };
+        const props = {
+            announcementTemplate: {announcementId: 65014, notificationTemplateName: "Special Announcement s", 
+                notificationTemplates: [{notificationTemplateId: 1, notificationTemplateName: ''}] 
+            },
+            settings: {
+                currencyList: [{id: 11, name: "ABC"}, {id: 18, name: "ADA1"}, {id: 9, name: "AUD"}, {id: 97, name: "BDT"}],
+                headlineTypeList: [{id: 0, name: "Normal"}, {id: 1, name: "VIP"}],
+                siteList: [{siteID: 23, site: "222223"}, {siteID: 16, site: "611111"}, {siteID: 20, site: "722222"}]
+            }
+        };
+
+        it('should call exact function when change parameter ', () => {
+            // Arrange
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>).instance();
+            newAnnouncement.handleChangeParameter = jest.fn();
+            newAnnouncement.setState(state);
+            // Act
+            const form = shallow(newAnnouncement.renderForm(formikProps));
+            form.find('.form-input-param').at(0).simulate('change');
+            // Assert
+            expect(newAnnouncement.handleChangeParameter).toHaveBeenCalled();
+        });
+
+        it('should call exact function when onblur input', () => {
+            // Arrange
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>).instance();
+            newAnnouncement.handleBlurInputHeadline = jest.fn();
+            newAnnouncement.setState(state);
+            // Act
+            const form = shallow(newAnnouncement.renderForm(formikProps));
+            form.find('.text-input-headline').simulate('blur', {});
+            // Assert
+            expect(newAnnouncement.handleBlurInputHeadline).toHaveBeenCalled();
+        });
+
+        it('should focus when click', () => {
+            // Arrange
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>).instance();
+            newAnnouncement.headlineInputRef = {
+                current: {focus: jest.fn()}
+            };
+            newAnnouncement.setState(state);
+            // Act
+            const form = shallow(newAnnouncement.renderForm(formikProps));
+            form.find('.headline-group-form').simulate('click');
+            // Assert
+            expect(newAnnouncement.headlineInputRef.current.focus).toHaveBeenCalled();
+        });
+
+        it('should call remove headline', () => {
+            // Arrange
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>).instance();
+            newAnnouncement.handleRemoveHeadline = jest.fn();
+            newAnnouncement.setState(state);
+            // Act
+            const form = shallow(newAnnouncement.renderForm(formikProps));
+            form.find('.fa-times').simulate('click');
+            // Assert
+            expect( newAnnouncement.handleRemoveHeadline).toHaveBeenCalled();
         });
     });
 });

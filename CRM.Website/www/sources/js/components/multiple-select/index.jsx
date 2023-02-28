@@ -200,7 +200,7 @@ export default class MultipleSelect extends Component {
             const dataSource = this.state.dataSource.slice(0);
 
             if (value.length > 1) {
-                dataSource.forEach(item => item.visible = item[VALUE_NAME].toLowerCase().indexOf(value.toLowerCase()) !== -1);
+                dataSource.forEach(item => item.visible = !item[VALUE_NAME] ? false : item[VALUE_NAME].toLowerCase().indexOf(value.toLowerCase()) !== -1);
             } else {
                 dataSource.forEach(item => item.visible = true);
             }

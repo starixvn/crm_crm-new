@@ -90,7 +90,6 @@ export class ActionAnnouncement extends Component {
                     checked: announcement.siteNameList ? announcement.currencyIdList?.split(',').includes(x.id.toString()) : true
                 };
             });
-
             this.setState({
                 siteOptions,
                 currencyOptions,
