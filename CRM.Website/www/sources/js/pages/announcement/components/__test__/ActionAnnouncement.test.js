@@ -128,11 +128,7 @@ describe('<ActionAnnouncement', () => {
     describe('getAnnounceDetail', () => {
         it('should call exact function', async() => {
             // Arrange
-            const data = {
-                data: [{announcementId: 65014, notificationTemplateName: "Special Announcement s" }],
-                contents: {}
-            };
-            const promise = Promise.resolve(data);
+            const promise = Promise.resolve({data: {data: [{siteNameList: '123'}], contents: [{EN: 'test en'}]}});
             const props = {
                 actionAnnouncementPopup: {id: 1},
                 getAnnouncementById: jest.fn(() => promise)

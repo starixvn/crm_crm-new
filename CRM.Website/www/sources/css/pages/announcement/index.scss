@@ -261,10 +261,13 @@
         word-break: break-word;
     }
 
-    .text-color{
-        color: rgb(33,123,199);
+    .image-section{
+        cursor: pointer;
+        .text-color{
+            color: rgb(33,123,199);
+        }
     }
-
+    
     div{
         padding-bottom: 10px;
     }

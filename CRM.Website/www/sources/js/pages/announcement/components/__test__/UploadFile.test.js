@@ -91,7 +91,7 @@ describe('UploadFile', () => {
         };
         const uploadFile = shallow(<UploadFile {...props} />).instance();
 
-        test('should render exact', () => {
+        test('should call exact function when click preview image', () => {
             // Arrange
             const provider = {
                 draggableProps: {},
@@ -100,10 +100,29 @@ describe('UploadFile', () => {
             };
             const snapshot = {isDragging: false};
             const item = {name: 'name'};
+            uploadFile.handlePreviewImage = jest.fn();
             //Act
             const result = shallow(uploadFile.renderListPortalFile(provider, snapshot, item));
+            result.find('.text-color').simulate('click');
             //Assert 
-            expect(result).toEqual({});
+            expect(uploadFile.handlePreviewImage).toHaveBeenCalled();
+        });
+
+        test('should call exact function when click remove image', () => {
+            // Arrange
+            const provider = {
+                draggableProps: {},
+                dragHandleProps: {},
+                innerRef: {}
+            };
+            const snapshot = {isDragging: false};
+            const item = {name: 'name'};
+            uploadFile.handleRemoveFile = jest.fn();
+            //Act
+            const result = shallow(uploadFile.renderListPortalFile(provider, snapshot, item));
+            result.find('.icon-delete').simulate('click');
+            //Assert 
+            expect(uploadFile.handleRemoveFile).toHaveBeenCalled();
         });
     });
 
