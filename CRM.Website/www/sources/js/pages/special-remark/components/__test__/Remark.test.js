@@ -4,12 +4,12 @@ import { Button, Form } from 'react-bootstrap';
 import Site from '@jsroot/common/site';
 import CkEditor from '@jsroot/components/ckeditor/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
+import * as shareScripts from '@jsroot/common/shareScripts';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
 describe('Remark', () => {
     beforeAll(() => {
-        window.customerInfoPolicy = 2;
         jest.useFakeTimers();
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
@@ -27,10 +27,15 @@ describe('Remark', () => {
                 getRemarks: jest.fn(),
                 id: 1754
             };
+            const promise = Promise.resolve(2);
+            shareScripts.getPermission = jest.fn(() => promise);
 
             // Act
             const container = shallow(<Remark {...props} />).instance();
-            await container.componentDidMount();
+            container.componentDidMount();
+            await promise;
+
+             // Assert
             expect(await props.getRemarks).toHaveBeenCalledWith({ customerId: 1754 });
             expect(container.state.specialRemarks).toEqual(['test','']);
             expect(container.state.dataSpecialRemarks).toEqual(['test','']);
@@ -209,7 +214,7 @@ describe('Remark', () => {
         it('should render not correctly', () => {
             // Arrange
             const props = {
-                gridData: null
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 policy : 2
@@ -217,13 +222,13 @@ describe('Remark', () => {
             const container = shallow(<Remark {...props}/>);
             container.instance().setState(state);
             // Assert
-            expect(container.type()).toEqual(null);
+            expect(container).toEqual({});
         });
 
         it('should render correctly', () => {
             //Act
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 policy : 2
@@ -238,7 +243,7 @@ describe('Remark', () => {
         it('handle message responses if unsuccessful', () => {
             // Arrange
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 editRemarkResult: {
@@ -258,7 +263,7 @@ describe('Remark', () => {
         it('handle message responses if successful', () => {
             // Arrange
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 editRemarkResult: {
@@ -278,7 +283,7 @@ describe('Remark', () => {
         it('handle default message responses if successful', () => {
             // Arrange
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 editRemarkResult: {
@@ -298,7 +303,7 @@ describe('Remark', () => {
         it('onClick should call exact function when handleCollapse specialRemark', () => {
             //Act
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 policy : 2
@@ -317,7 +322,7 @@ describe('Remark', () => {
         it('onClick should call exact function when handleCollapse normalRemark', () => {
             //Act
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 policy : 2
@@ -336,7 +341,7 @@ describe('Remark', () => {
         it('onChange should call exact function when handleChange specialRemark', () => {
             //Act
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 specialRemarks: ['test'],
@@ -358,7 +363,7 @@ describe('Remark', () => {
         it('onChange should call exact function when handleChange normalRemark', () => {
             //Act
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 specialRemarks: ['test'],
@@ -380,7 +385,7 @@ describe('Remark', () => {
         it('should render plus-icon specialRemark', () => {
             //Act
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 specialRemarks: ['test'],
@@ -402,7 +407,7 @@ describe('Remark', () => {
         it('should render cross-icon specialRemark', () => {
             //Act
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 specialRemarks: ['test','test1'],
@@ -424,7 +429,7 @@ describe('Remark', () => {
         it('should render plus-icon normalRemark', () => {
             //Act
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 specialRemarks: ['test'],
@@ -446,7 +451,7 @@ describe('Remark', () => {
         it('should render cross-icon normalRemark', () => {
             //Act
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 specialRemarks: ['test'],
@@ -468,7 +473,7 @@ describe('Remark', () => {
         it('should render button correctly', () => {
             //Act
             const props = {
-                gridData: ''
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
             };
             const state = {
                 specialRemarks: ['test'],

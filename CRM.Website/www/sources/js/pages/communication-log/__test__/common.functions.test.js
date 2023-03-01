@@ -1,7 +1,6 @@
 import LangHelper from '@jsroot/common/langHelper';
 import * as commonFunction from '../common.functions';
 import * as shareScripts from '@jsroot/common/shareScripts';
-import { ActionCreators } from '../actions';
 
 describe('commonFunctions', () => {
     beforeAll(() => {

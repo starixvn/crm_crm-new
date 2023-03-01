@@ -8,7 +8,7 @@ import Site from '@jsroot/common/site';
 import * as commonFunc from '../../common.functions';
 import DateTimeService from '@jsroot/common/dateTimeService';
 
-describe('<ActionAnnouncement', () => {
+describe('ActionAnnouncement', () => {
     beforeAll(() =>{
         jest.useFakeTimers();
         Site.blockUI = jest.fn();
