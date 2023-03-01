@@ -162,6 +162,10 @@ export class NewAnnouncement extends Component {
     handleChangeInputHeadline = event => {
         const value = event.target.value;
         const isDownKey = value.includes(',') || value.includes(' ') || event.keyCode === 13;
+        if(event.keyCode === 8){
+            this.state.headlineGroups.pop();
+            this.setState({headlineGroups: this.state.headlineGroups});
+        }
         if(value.trim().length > 0 && isDownKey){
             event.preventDefault();
             const headlineGroups = [... this.state.headlineGroups, value.slice(0, -1)];
