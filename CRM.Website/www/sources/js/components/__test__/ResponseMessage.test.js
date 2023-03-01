@@ -13,6 +13,38 @@ describe('ResponseMessage', () => {
         expect(toJson(component)).toMatchSnapshot();
     });
 
+    describe('componentDidMount', () => {
+        it('should call exact function', () => {
+            const props = {
+                message: 'message'
+            };
+
+            // Action
+            const component = shallow(<ResponseMessage {...props} />).instance();
+            component.handleScrollToTop = jest.fn();
+            component.componentDidMount();
+            // Assert
+            expect(component.handleScrollToTop).toHaveBeenCalled();
+
+        });
+    });
+
+    describe('componentDidUpdate', () => {
+        it('should call exact function', () => {
+            const props = {
+                message: 'message'
+            };
+
+            // Action
+            const component = shallow(<ResponseMessage {...props} />).instance();
+            component.handleScrollToTop = jest.fn();
+            component.componentDidUpdate();
+            // Assert
+            expect(component.handleScrollToTop).toHaveBeenCalled();
+
+        });
+    });
+
     describe('render', () => {
         it('has regular children', () => {
             const props = {

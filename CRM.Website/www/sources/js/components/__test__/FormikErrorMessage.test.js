@@ -13,6 +13,41 @@ describe('FormikErrorMessage', () => {
         expect(toJson(component)).toMatchSnapshot();
     });
 
+    describe('componentDidUpdate', () => {
+        it('scrolls to top if submitting and there are errors and invalid fields', () => {
+          const props = {
+            isSubmitting: true,
+            errors: {
+              username: 'Username is required',
+              password: 'Password is required'
+            },
+            touched: {
+              username: true,
+              password: true
+            },
+            fieldNames: ['username', 'password']
+          };
+      
+          const wrapper = shallow(<FormikErrorMessage {...props} />);
+          const instance = wrapper.instance();
+      
+          const mockModal = { scrollTop: 0 };
+          jest.spyOn(document, 'querySelector').mockReturnValue(mockModal);
+          jest.spyOn(window, 'scrollTo');
+      
+          instance.componentDidUpdate();
+      
+          expect(document.querySelector).toHaveBeenCalledWith('.modal');
+          expect(mockModal.scrollTop).toBe(0);
+          expect(window.scrollTo).not.toHaveBeenCalled();
+      
+          document.querySelector.mockReturnValue(null);
+          instance.componentDidUpdate();
+      
+          expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+        });
+    });
+
     describe('render', () => {
         it('returns null with empty errors', () => {
             // Arrange

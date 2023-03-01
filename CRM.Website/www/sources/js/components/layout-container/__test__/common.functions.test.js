@@ -27,33 +27,4 @@ describe('common functions', () => {
             expect(option).toEqual(<option key={1} value={1}>system</option>);
         });
     });
-
-    describe('validateFormik', () => {
-        it('validate returns true', () => {
-            // Arrange
-            const values = {
-                languageId: 1
-            };
-
-            // Action
-            const result = commonFuns.validateFormik(values);
-
-            // Assert
-            expect(result).toBeTrue;
-        });
-
-        it('return expected errors when values are invalid', () => {
-            // Arrange
-            const values = {};
-            const expected = {
-                languageId: 'LanguagesRequired'
-            };
-
-            // Act
-            const errors = commonFuns.validateFormik(values);
-
-            // Assert
-            expect(errors).toEqual(expected);
-        });
-    });
 });

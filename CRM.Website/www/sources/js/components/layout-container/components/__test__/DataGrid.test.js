@@ -9,7 +9,7 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
 describe('DataGrid', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.useFakeTimers();
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
@@ -28,7 +28,7 @@ describe('DataGrid', () => {
         document.body.appendChild(leftRowContainer);
     });
 
-    afterAll(() => {
+    afterEach(() => {
         jest.clearAllMocks();
         const appContainer = document.getElementById('hasCreateFeedbackPermission');
         const appContainer1 = document.getElementById('hasReadFeedbackPermission');
