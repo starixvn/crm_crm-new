@@ -26,15 +26,13 @@ describe('connect ', () => {
         const expected = {
             notificationTypeGridParams: {},
             settings: {},
-            getSettings: {},
-            gridParams: { pageIndex: 1, pageSize: 100}
+            getSettings: {}
         };
         const state = {
             anotherState: 123,
             notificationTypeGridParams: {},
             settings: {},
-            getSettings: {},
-            gridParams: { pageIndex: 1, pageSize: 100}
+            getSettings: {}
         };
 
         // Act

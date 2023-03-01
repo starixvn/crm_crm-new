@@ -50,7 +50,7 @@ describe('summaryReport reducer', () => {
             })
         ).toEqual({
             gridParams: {
-                year: 2022,
+                year: new Date().getFullYear(),
                 categories: '3003',
                 siteType: 0
             }

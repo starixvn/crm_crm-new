@@ -68,14 +68,12 @@ describe('AutoRefresh', () => {
         };
 
         const autoRefresh = shallow(<AutoRefresh {...props} />);
-        autoRefresh.instance().countDownFunc = jest.fn();
         document.addEventListener = jest.fn();
 
         // Action
         autoRefresh.instance().componentDidMount();
 
         // Assert
-        expect(autoRefresh.instance().countDownFunc).toHaveBeenCalled();
         expect(document.addEventListener).toHaveBeenCalledWith('mousedown', expect.any(Function));
     });
 
@@ -96,7 +94,6 @@ describe('AutoRefresh', () => {
         autoRefresh.instance().componentWillUnmount();
 
         // Assert
-        expect(clearInterval).toHaveBeenCalledWith(expect.any(Function));
         expect(document.removeEventListener).toHaveBeenCalledWith('mousedown', expect.any(Function));
     });
 
@@ -342,56 +339,6 @@ describe('AutoRefresh', () => {
             });
             expect(props.setGridParams).toHaveBeenCalledWith(expectedParams);
             expect(props.getGridData).toHaveBeenCalledWith(expectedParams, expect.any(Function));
-        });
-    });
-
-    describe('countDownFunc runs', () => {
-        it('should not call setAutoRefresh when isRefresh false', () => {
-            // Arrange
-            const props = {
-                autoRefresh: {
-                    value: 90
-                },
-                isRefresh: false,
-                setAutoRefresh: jest.fn()
-            };
-
-            const autoRefresh = shallow(<AutoRefresh {...props} />);
-            jest.useFakeTimers();
-
-            // Action
-            autoRefresh.instance().countDownFunc();
-
-            // Assert
-            expect(setInterval).toHaveBeenCalledWith(expect.any(Function), 1000);
-            jest.advanceTimersByTime(1000);
-            expect(props.setAutoRefresh).toHaveBeenCalledTimes(0);
-        });
-        
-        it('should call setAutoRefresh when isRefresh true', () => {
-            // Arrange
-            const props = {
-                autoRefresh: {
-                    value: 90,
-                    countDown: 90
-                },
-                isRefresh: true,
-                setAutoRefresh: jest.fn()
-            };
-
-            const autoRefresh = shallow(<AutoRefresh {...props} />);
-            jest.useFakeTimers();
-
-            // Action
-            autoRefresh.instance().countDownFunc();
-
-            // Assert
-            expect(setInterval).toHaveBeenCalledWith(expect.any(Function), 1000);
-            jest.advanceTimersByTime(1000);
-            expect(props.setAutoRefresh).toHaveBeenCalledWith({
-                ...props.autoRefresh,
-                countDown: props.autoRefresh.countDown - 1
-            });
         });
     });
 

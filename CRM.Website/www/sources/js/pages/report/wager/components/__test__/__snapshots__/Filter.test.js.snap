@@ -6,6 +6,10 @@ exports[`Filter render filter component 1`] = `
   inline={false}
   onSubmit={[Function]}
 >
+  <WithHotKey
+    handleKeyDownFunc={[Function]}
+    isDocumentHandle={false}
+  />
   <FormRow
     bsPrefix="form-row"
   >
@@ -23,7 +27,7 @@ exports[`Filter render filter component 1`] = `
         id="year"
         onChange={[Function]}
         size="sm"
-        value={2022}
+        value={2023}
       >
         <option
           key="2011"
@@ -97,6 +101,12 @@ exports[`Filter render filter component 1`] = `
         >
           2022
         </option>
+        <option
+          key="2023"
+          value={2023}
+        >
+          2023
+        </option>
       </FormControl>
     </FormGroup>
     <FormGroup>
@@ -107,7 +117,7 @@ exports[`Filter render filter component 1`] = `
         size="sm"
         variant="primary"
       >
-        Submit
+        <submitButton />
       </Button>
     </FormGroup>
   </FormRow>

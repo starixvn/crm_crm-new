@@ -170,7 +170,7 @@ export class Content extends Component {
                         {
                             announcement.directAccounts && announcement.directAccounts.length > 0 &&
                             <>
-                                <span>{` ${LangHelper.getResource('DirectAccount')}: `}</span>
+                                <span>{`. ${LangHelper.getResource('DirectAccount')}: `}</span>
                                 <span style={styleBold}>{announcement.directAccounts ? announcement.directAccounts.replaceAll(',', ', ') : ''}</span>
                             </>
                         }

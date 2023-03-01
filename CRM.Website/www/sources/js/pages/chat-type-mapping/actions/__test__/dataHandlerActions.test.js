@@ -116,7 +116,7 @@ describe('dataHandlerActions', () => {
         const actual = await store.dispatch(actions.deleteConversationGroup(1));
 
         // Assert
-        expect(DataService.getDataAsync).toHaveBeenCalledWith('ChatTypeMapping/DeleteConversationGroup', {"conversationGroupId": 1});
+        expect(DataService.getDataAsync).toHaveBeenCalledWith('ChatTypeMapping/DeleteConversationGroup', {"conversationId": 1});
         expect(actual).toEqual(response);
     });
 

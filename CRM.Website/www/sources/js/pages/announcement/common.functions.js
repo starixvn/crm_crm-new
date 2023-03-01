@@ -48,7 +48,8 @@ export const validateFormik = (values, files, invalidWidthHeight) => {
     }
 
     if(invalidWidthHeight.length > 0){
-        const nameFileError = invalidWidthHeight.map(x => x).join(', ');
+        const uniqInvalidImage = [...new Set(invalidWidthHeight)];
+        const nameFileError = uniqInvalidImage.map(x => x).join(', ');
         errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), nameFileError);
     }
 
