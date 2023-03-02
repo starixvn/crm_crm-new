@@ -54,8 +54,9 @@
         {
             try
             {
+                var isUM = await IsUM();
                 if (jobSetting.IsEnabled
-                    && (!jobSetting.HasCheckUM || !IsUM()))
+                    && (!jobSetting.HasCheckUM || !isUM))
                 {
                     await ExecuteJobAsync();
                 }
@@ -82,9 +83,9 @@
             base.Dispose();
         }
 
-        private bool IsUM()
+        private async Task<bool> IsUM()
         {
-            var maintanceTime = maintenanceService.GetUnderMaintenanceTime();
+            var maintanceTime = await maintenanceService.GetUnderMaintenanceTimeAsync();
             logService.LogInformation($"IsUM: {maintanceTime.IsUnderMaintenanceTime}");
             return maintanceTime.IsUnderMaintenanceTime;
         }
