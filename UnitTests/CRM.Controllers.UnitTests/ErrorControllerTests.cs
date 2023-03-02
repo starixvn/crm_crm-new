@@ -1,15 +1,17 @@
 namespace CRM.Controllers.UnitTests
 {
     using Microsoft.AspNetCore.Mvc;
+    using ONEbook.UM.Services;
     using Xunit;
 
     public class ErrorControllerTests
     {
+        private IMaintenanceService maintenanceService;
         [Fact]
         public void PageNotFound_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
-            var controller = new ErrorController();
+            var controller = new ErrorController(maintenanceService);
 
             //Act
             var actual = controller.PageNotFound();
@@ -23,7 +25,7 @@ namespace CRM.Controllers.UnitTests
         public void AccessDenied_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
-            var controller = new ErrorController();
+            var controller = new ErrorController(maintenanceService);
 
             // Act
             var actual = controller.AccessDenied();
@@ -37,7 +39,7 @@ namespace CRM.Controllers.UnitTests
         public void InternalError_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
-            var controller = new ErrorController();
+            var controller = new ErrorController(maintenanceService);
 
             // Act
             var actual = controller.InternalError();
