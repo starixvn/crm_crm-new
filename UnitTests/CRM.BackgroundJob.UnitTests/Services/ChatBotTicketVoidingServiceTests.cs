@@ -165,7 +165,7 @@
             // Arrange
             const string XmlTemplate = "<r MessageID='{0}' UsernameList='{1}' CustId='{2}' " +
                 "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' IsTest='{6}' " +
-                "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' Type='{11}' VoidingHistoryCollectionId='{12}' />";
+                "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' Type='{11}' VoidingHistoryCollectionId='{12}'/>";
             const string messageTemplate = "<r MessageID='{0}' RequestID='{1}' VoidingHistoryCollectionId='{2}'/>";
             var messageStringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             var fixture = new Fixture();
