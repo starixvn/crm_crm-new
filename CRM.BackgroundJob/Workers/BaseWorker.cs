@@ -85,6 +85,7 @@
         private bool IsUM()
         {
             var maintanceTime = maintenanceService.GetUnderMaintenanceTime();
+            logService.LogInformation($"IsUM: {maintanceTime.IsUnderMaintenanceTime}");
             return maintanceTime.IsUnderMaintenanceTime;
         }
     }
