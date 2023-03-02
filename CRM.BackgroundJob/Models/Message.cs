@@ -8,5 +8,6 @@
         public string Content_cs { get; set; }
         public string Content_th { get; set; }
         public string Content_vn { get; set; }
+        public int VoidingHistoryCollectionId { get; set; }
     }
 }

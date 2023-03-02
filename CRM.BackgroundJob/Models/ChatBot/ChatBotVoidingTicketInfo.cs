@@ -18,5 +18,6 @@ namespace Fanex.CRM.BackgroundJob.Models.ChatBot
         [XMLName("IsTest")]
         public bool IsTest { get; set; }
         public byte Type { get; set; }
+        public int VoidingHistoryCollectionId { get; set; }
     }
 }

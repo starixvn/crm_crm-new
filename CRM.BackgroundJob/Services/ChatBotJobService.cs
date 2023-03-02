@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
-    using Fanex.CRM.BackgroundJob.Models.ChatBot;
     using global::CRM.BackgroundJob.Criteria.ChatBot;
     using global::CRM.BackgroundJob.Models.ChatBot;
     using global::CRM.BackgroundJob.Models.ChatBotCTO;
@@ -82,45 +81,46 @@
                     return;
                 }
 
-                var voidingInfo = await ticketVoidingService.GetVoidingMessageAsync();
-                IEnumerable<ChatBotVoidingMessage> voidingMessages = voidingInfo.Item1;
-                var voidingHis = await ticketVoidingService.ImportVoidingMessageHistoryCheckAsync(voidingInfo.Item2);
+                var voidingInfo = await ticketVoidingService.GetVoidingMessageAsync(setting.LastVoidingHistoryCollectionId, setting.BatchSize);
                 var userNameList = Enumerable.Empty<ChatBotUserNameList>();
-                if (voidingHis.Any() && voidingInfo.Item2.Any())
+                if (voidingInfo.Item2.Any())
                 {
                     var criteria = new GetChatBotAbnormalAccountGetUsernameListCriteria
                     {
-                        Messages = voidingHis.ToXML("root").ToString()
+                        Messages = voidingInfo.Item2.ToXML("root").ToString()
                     };
                     userNameList = await ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(criteria);
                 }
-
-                var commandResult = await ticketVoidingService.ImportVoidingMessageAsync(voidingMessages, userNameList);
-                if (commandResult.Item1.IsSuccessful)
+                var groupsHistoryCollectionId = userNameList.GroupBy(p => p.VoidingHistoryCollectionId).Select(x => new ChatBotUserNameList
                 {
-                    var messageImport = await ticketVoidingService.GetImportMessageByBatchSize(setting.BatchSize);
-                    IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(messageImport);
-                    var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(messageImport, Environment, setting.IncludeUUSCurrency);
-                    var commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(
-                        messages,
-                        ticketInfos.Item1,
-                        ticketInfos.Item2,
-                        Environment);
-                    if (commandResultImportTicket.Item1.IsSuccessful)
+                    VoidingHistoryCollectionId = x.Key,
+                    UsernameList = string.Join(", ", x.Select(p => p.UsernameList))
+                });
+                var voidingHistoryCollectionIds = voidingInfo.Item1
+                    .Select(voidingCollectionId => new ChatBotUserNameList
                     {
-                        logService.LogInformation("Import ChatBot - AbnormalBets Successful!!!");
-                        await sendNotificationService.SendNotificationToLetstalk();
-                    }
-                    else
-                    {
-                        await logService.ErrorAsync(commandResultImportTicket.Item1, commandResultImportTicket.Item2);
-                        logService.LogInformation(string.Format("Import ChatBot - AbnormalBets Fail: {0}", commandResultImportTicket.Item1.Message));
-                    }
+                        VoidingHistoryCollectionId = voidingCollectionId,
+                        UsernameList = ""
+                    })
+                    .ToList();
+                var combineHistoryCollectionIds = groupsHistoryCollectionId.Concat(voidingHistoryCollectionIds);
+                var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(combineHistoryCollectionIds, Environment, setting.IncludeUUSCurrency);
+                IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2);
+
+                var commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(
+                    messages,
+                    ticketInfos.Item1,
+                    ticketInfos.Item2,
+                    Environment);
+                if (commandResultImportTicket.Item1.IsSuccessful)
+                {
+                    logService.LogInformation("Import ChatBot - AbnormalBets Successful!!!");
+                    await sendNotificationService.SendNotificationToLetstalk();
                 }
                 else
                 {
-                    logService.LogInformation(commandResult.Item1.Message);
-                    await logService.ErrorAsync(commandResult.Item1, commandResult.Item2);
+                    await logService.ErrorAsync(commandResultImportTicket.Item1, commandResultImportTicket.Item2);
+                    logService.LogInformation(string.Format("Import ChatBot - AbnormalBets Fail: {0}", commandResultImportTicket.Item1.Message));
                 }
             }
             catch (Exception ex)

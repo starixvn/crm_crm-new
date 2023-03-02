@@ -23,7 +23,7 @@
         public void IsValid_WhenCalled_ReturnTrue()
         {
             // Arrange
-            var criteria = new GetChatBotVoidingMessageCriteria();
+            var criteria = new GetChatBotVoidingMessageCriteria { BatchSize = 1, LastVoidingHistoryCollectionId = 1};
 
             // Act
             var actual = criteria.IsValid();
