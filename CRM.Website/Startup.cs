@@ -37,6 +37,7 @@
     using Microsoft.Extensions.FileProviders;
     using Microsoft.Extensions.Hosting;
     using ONEbook.UM.AspNetCore;
+    using ONEbook.UM.AspNetCore.Filters;
     using ONEbook.UM.Configurations;
     using ONEbook.UM.Helpers;
     using ONEbook.UM.Services;
@@ -84,29 +85,29 @@
                 .UseConfig(new LoggingConfiguration())
                 .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
-                services.AddAuthentication(options =>
+            services.AddAuthentication(options =>
+            {
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie(options =>
+            {
+                options.LoginPath = Configuration.GetSection("AuthSettings:SignInPath").Value;
+                options.LogoutPath = Configuration.GetSection("AuthSettings:SignOutPath").Value;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["AuthSettings:SessionTimeout"]));
+                options.SlidingExpiration = true;
+                options.Cookie = new CookieBuilder
                 {
-                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
-                .AddCookie(options =>
+                    Name = "Fanex.CRM.Cookie",
+                    SecurePolicy = CookieSecurePolicy.SameAsRequest
+                };
+                options.Events.OnSigningOut = context =>
                 {
-                    options.LoginPath = Configuration.GetSection("AuthSettings:SignInPath").Value;
-                    options.LogoutPath = Configuration.GetSection("AuthSettings:SignOutPath").Value;
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["AuthSettings:SessionTimeout"]));
-                    options.SlidingExpiration = true;
-                    options.Cookie = new CookieBuilder
-                    {
-                        Name = "Fanex.CRM.Cookie",
-                        SecurePolicy = CookieSecurePolicy.SameAsRequest
-                    };
-                    options.Events.OnSigningOut = context =>
-                    {
-                        context.Response.Redirect(options.LoginPath);
-                        return Task.CompletedTask;
-                    };
-                });
+                    context.Response.Redirect(options.LoginPath);
+                    return Task.CompletedTask;
+                };
+            });
 
             services.AddSession(options =>
             {
@@ -149,7 +150,6 @@
                 });
                 app.UseMiddleware<ErrorHandler>();
                 app.UseHsts();
-
             }
 
             app.UseHttpsRedirection();
@@ -192,6 +192,7 @@
 
             services.AddSingleton(new UMClientConfiguration().Initialize(Configuration));
             services.AddSingleton<IHttpContextHelper, HttpContextHelper>();
+            services.AddSingleton<CheckUMFilterAttribute>();
             services.AddSingleton<IUMCacheService, UMCacheService>();
             services.AddSingleton<IUMRestClient, UMRestClient>();
             services.AddSingleton<IMaintenanceService, MaintenanceService>();

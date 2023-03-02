@@ -22,7 +22,9 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
+    using ONEbook.UM.AspNetCore.Filters;
 
+    [ServiceFilter(typeof(CheckUMFilterAttribute))]
     public class AuthController : Controller
     {
         private readonly IUserService userService;

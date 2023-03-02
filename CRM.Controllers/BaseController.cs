@@ -2,7 +2,9 @@
 {
     using CRM.Core.Filters;
     using Microsoft.AspNetCore.Mvc;
+    using ONEbook.UM.AspNetCore.Filters;
 
+    [ServiceFilter(typeof(CheckUMFilterAttribute))]
     [CrmAuthorize]
     public class BaseController : Controller
     {

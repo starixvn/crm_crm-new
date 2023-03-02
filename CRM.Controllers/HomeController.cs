@@ -6,8 +6,10 @@
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
+    using ONEbook.UM.AspNetCore.Filters;
     using static Fanex.NAP.Core.Business.Constant;
 
+    [ServiceFilter(typeof(CheckUMFilterAttribute))]
     [CrmAuthorize]
     public class HomeController : Controller
     {

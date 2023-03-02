@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="CRM" content="width=device-width" />
+    <title>CRM - System</title>
+</head>
+<style>
+   
+    html, body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+    }
+
+    html {
+        font-size: 85%;
+        -webkit-tap-highlight-color: rgba(0,0,0,0)
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Arial, Sans-Serif;
+        color: #333;
+        background: #f1f1f1;
+    }
+
+    .container {
+        margin: 0 auto;
+        padding: 20px;
+        width: 960px;
+        background-color: #549cba;
+    }
+
+    h1 {
+        font-size: 30px;
+        color: #fff;
+        padding: 0 0 10px;
+        font-weight: normal;
+        border-bottom: solid 1px #fff;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+</style>
+<body>
+    <div class="container">
+        <h1>
+            Maintenance
+        </h1>
+        <p>
+            CRM is currently unavailable due to scheduled maintenance.<br />
+            This downtime will last from <span class="em">@(ViewBag.UmtFrom)</span> &rarr; <span class="em">@(ViewBag.UmtTo)</span> (GMT+8). Thanks for your patience!
+        </p>
+    </div>
+    <script type="text/javascript">
+        if (window.parent != window) {
+            window.parent.location = location.href;
+        }
+    </script>
+</body>
+</html>
