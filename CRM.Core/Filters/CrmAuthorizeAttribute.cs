@@ -31,7 +31,7 @@
                 return;
             }
 
-            if (napSession == null || napSession.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
+            if (napSession == null || napSession?.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
             {
                 CloseConnection(context);
             }

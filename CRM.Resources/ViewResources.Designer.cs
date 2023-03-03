@@ -997,6 +997,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No session available, please refresh and try again!.
+        /// </summary>
+        public static string NoSessionAvailable {
+            get {
+                return ResourceManager.GetString("NoSessionAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification List.
         /// </summary>
         public static string NotificationList {

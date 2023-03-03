@@ -11,6 +11,7 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
+    using Fanex.NAP.Client.AspNetCore.Session;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -121,6 +122,15 @@
                 {
                     Code = 1,
                     Message = ViewResources.DoNotEditFeedbackPermission
+                };
+            }
+
+            if (napSession == null || napSession?.UserId == null || napSession?.UserId <= 0)
+            {
+                commandResult = new CommandResult
+                {
+                    Code = 1,
+                    Message = ViewResources.NoSessionAvailable
                 };
             }
 

@@ -606,4 +606,7 @@
   <data name="FeedbackFromUsernameExcelName" xml:space="preserve">
     <value>Feedback From {0}</value>
   </data>
+  <data name="NoSessionAvailable" xml:space="preserve">
+    <value>No session available, please refresh and try again!</value>
+  </data>
 </root>
