@@ -18,7 +18,7 @@
         <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Sel" SpName="Acc_CRM_ChatBot_NotificationTemplate_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Ins" SpName="Acc_CRM_ChatBot_NotificationTemplate_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Upd" SpName="Acc_CRM_ChatBot_NotificationTemplate_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Del" SpName="Acc_CRM_ChatBot_NotificationTemplate_Del" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Del" SpName="Acc_CRM_ChatBot_NotificationTemplate_Del_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Notification Type">
         <Setting Key="Acc_CRM_ChatBot_NotificationType_Sel" SpName="Acc_CRM_ChatBot_NotificationType_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -205,7 +205,7 @@
         <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="CustStatus" ObjectProperty="Status" />
         </Setting>
-        <Setting Key="Acc_CRM_CustomerUpdUserSearch" SpName="Acc_CRM_CustomerUpdateBasicInfo_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerUpdUserSearch" SpName="Acc_CRM_CustomerUpdateBasicInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_RelatedCustomerVerify" SpName="Acc_CRM_RelatedCustomerVerify" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerSelUserSearch" SpName="Acc_CRM_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CheckDirectAccount" SpName="Acc_CRM_CheckDirectAccount" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -242,7 +242,7 @@
             <Mapping DataField="ReviewBy" ObjectProperty="Reviewer" />
         </Setting>
         <Setting Key="Acc_CRM_CommunicationLogUpd" SpName="Acc_CRM_CommunicationLogUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_CommunicationLogIns" SpName="Acc_CRM_CommunicationLogIns_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CommunicationLogIns" SpName="Acc_CRM_CommunicationLogIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Funtcion>
     <Function Name="Multiple Logs">
         <Setting Key="CRM_MultipleLogs_VerifyCustomer" SpName="CRM_MultipleLogs_VerifyCustomer" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -282,9 +282,9 @@
     <Function Name="NewRemark">
         <Setting Key="Acc_CRM_CustomerRemarkNewSearch" SpName="Acc_CRM_CustomerRemarkNewSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerRemarkNewCheck" SpName="Acc_CRM_CustomerRemarkNewCheck" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_CustomerRemarkNewDel" SpName="Acc_CRM_CustomerRemarkNewDel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_CustomerRemarkNewIns" SpName="Acc_CRM_CustomerRemarkNewIns_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_CustomerRemarkNewUpd" SpName="Acc_CRM_CustomerRemarkNewUpd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerRemarkNewDel" SpName="Acc_CRM_CustomerRemarkNewDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerRemarkNewIns" SpName="Acc_CRM_CustomerRemarkNewIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerRemarkNewUpd" SpName="Acc_CRM_CustomerRemarkNewUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerRemarkNewHistory" SpName="Acc_CRM_CustomerRemarkNewHistory" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerPicSel" SpName="Acc_CRM_CustomerPicSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerRemarkNewSel" SpName="Acc_CRM_CustomerRemarkNewSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
