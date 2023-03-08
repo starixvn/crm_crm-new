@@ -16,6 +16,8 @@
 
         Task ErrorAsync(CommandResult commandResult, ICriteria criteria);
 
+        Task ErrorAsync(Exception exception, ICriteria criteria);
+
         void LogInformation(string message);
     }
 
@@ -45,6 +47,17 @@
             var logMessage = new LogMessage(string.Format("{0}: {1}", commandResult.Code, commandResult.Message))
                        .AddMessage(JsonConvert.SerializeObject(criteria, Formatting.Indented))
                        .ToString();
+            await logger.ErrorAsync(logMessage);
+        }
+
+        public async Task ErrorAsync(Exception exception, ICriteria criteria)
+        {
+            var logMessage = new LogMessage(exception.Message)
+                      .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(exception))
+                      .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
+                      .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
+                      .AddMessage(JsonConvert.SerializeObject(criteria, Formatting.Indented))
+                      .ToString();
             await logger.ErrorAsync(logMessage);
         }
 

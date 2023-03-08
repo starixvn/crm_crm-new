@@ -11,7 +11,6 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
-    using Fanex.NAP.Client.AspNetCore.Session;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -27,6 +26,7 @@
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
         private readonly ICommonService commonService;
+        private readonly ICRMLogService logService;
 
         public AddCustomerFeedbackController(
             INapSession napSession,
@@ -34,7 +34,8 @@
             IBaseService baseService,
             INapSettings napSettings,
             IUserService userService,
-            ICommonService commonService)
+            ICommonService commonService,
+            ICRMLogService logService)
         {
             this.napSession = napSession;
             this.settingService = settingService;
@@ -42,6 +43,7 @@
             this.napSettings = napSettings;
             this.userService = userService;
             this.commonService = commonService;
+            this.logService = logService;
         }
 
         public async Task<ActionResult> AllSetting()
@@ -98,18 +100,30 @@
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
         public async Task<IActionResult> Create([FromBody] AddCustomerFeedbackCommand command)
         {
-            CommandResult commandResult = CheckAddCustomerFeedbackPermission();
-            if (commandResult.IsSuccessful)
+            try
             {
-                command.CreatorId = napSession.UserId;
-                command.UserId = napSession.UserId;
-                command.IP = ClientIP;
-                command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
-                command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
-                var result = await baseService.ExecuteNonQueryAsync(command);
-                return Json(result);
+                CommandResult commandResult = CheckAddCustomerFeedbackPermission();
+                if (commandResult.IsSuccessful)
+                {
+                    command.CreatorId = napSession.UserId;
+                    command.UserId = napSession.UserId;
+                    command.IP = ClientIP;
+                    command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
+                    command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
+                    var result = await baseService.ExecuteNonQueryAsync(command);
+                    return Json(result);
+                }
+                return Json(commandResult);
             }
-            return Json(commandResult);
+            catch (System.Exception ex)
+            {
+                await logService.ErrorAsync(ex, command);
+                return Json(new CommandResult
+                {
+                    Code = 1,
+                    Message = ex.Message
+                });
+            }
         }
 
         private CommandResult CheckAddCustomerFeedbackPermission()
@@ -122,15 +136,6 @@
                 {
                     Code = 1,
                     Message = ViewResources.DoNotEditFeedbackPermission
-                };
-            }
-
-            if (napSession == null || napSession?.UserId == null || napSession?.UserId <= 0)
-            {
-                commandResult = new CommandResult
-                {
-                    Code = 1,
-                    Message = ViewResources.NoSessionAvailable
                 };
             }
 
