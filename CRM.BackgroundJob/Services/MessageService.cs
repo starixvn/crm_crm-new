@@ -101,7 +101,7 @@
                 );
 
                 stringBuilder.AppendFormat(XmlTemplate,
-                    userName.VoidingHistoryCollectionId,
+                    userName?.VoidingHistoryCollectionId,
                     message.MessageId,
                     message.RequestId,
                     userName?.UsernameList,
