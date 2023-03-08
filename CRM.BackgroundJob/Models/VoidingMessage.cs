@@ -9,10 +9,9 @@
     {
         [XMLName("VoidingHistoryCollectionId")]
         public int VoidingHistoryCollectionId { get; set; }
-        [XMLName("MsgID")]
+        [XMLName("MessageId")]
         public int MessageId { get; set; }
-
-        [XMLName("ReqID")]
+        [XMLName("RequestId")]
         public int RequestId { get; set; }
 
     }
