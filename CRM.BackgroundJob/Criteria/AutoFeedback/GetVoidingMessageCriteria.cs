@@ -7,6 +7,6 @@
         public int MaxVoidingHistoryCollectionId { get; set; }
         public override string GetSettingKey() => "Acc_CRM_VoidingMessageSel";
 
-        public override bool IsValid() => MaxVoidingHistoryCollectionId > 0;
+        public override bool IsValid() => true;
     }
 }
