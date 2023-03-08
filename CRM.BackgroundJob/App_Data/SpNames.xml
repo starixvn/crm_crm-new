@@ -64,11 +64,11 @@
         <Setting Key="Acc_CRM_VodingMessage_GetSettledTickets" SpName="Acc_CRM_VodingMessage_GetSettledTickets" DbName="DBTXN.bodb02.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot ArchivedAccounts">
-        <Setting Key="Acc_CRM_Chatbot_ArchivedAccounts_Sel" SpName="Acc_CRM_Chatbot_ArchivedAccounts_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_ArchivedAccounts_Sel" SpName="Acc_CRM_Chatbot_ArchivedAccounts_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_ArchivedAccounts_Import" SpName="Acc_CRM_Chatbot_ArchivedAccounts_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Send Notification">
-        <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_Chatbot_SendNotification_Status_Upd" SpName="Acc_CRM_Chatbot_SendNotification_Status_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_NotificationMsgLog_Ins" SpName="Acc_CRM_ChatBot_NotificationMsgLog_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
     </Function>
@@ -112,7 +112,7 @@
         <Setting Key="Acc_CRM_AutoVoidingTicketSel" SpName="Acc_CRM_AutoVoidingTicketSel" DbName="DBACC.bodb02.bodbAdminNet" />
     </Function>
     <Function Name="ArchivingDA">
-        <Setting Key="Acc_CRM_Service_SystemSettingSel" SpName="Acc_CRM_Service_SystemSettingSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Service_SystemSettingSel" SpName="Acc_CRM_Service_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ArchivedAccount_CheckStatus" SpName="Acc_CRM_ArchivedAccount_CheckStatus" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_ArchivedAccount_GetListAccount" SpName="Acc_CRM_ArchivedAccount_GetListAccount" DbName="DBCUST.CustDB.bodbAdminNet" />
         <Setting Key="Acc_CRM_ArchivedAccount_AutoFBInfoIns" SpName="Acc_CRM_ArchivedAccount_AutoFBInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
