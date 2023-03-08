@@ -5,6 +5,7 @@
         <Setting Key="Acc_CRM_SettingRelationSel" SpName="Acc_CRM_SettingRelationSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="System Setting">
+        <Setting Key="Acc_CRM_SystemSettingSel" SpName="Acc_CRM_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SystemSettingUpd" SpName="Acc_CRM_SystemSettingUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SystemSettingByServiceUpd" SpName="Acc_CRM_SystemSettingByServiceUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_WinLimit_SystemSettingSel" SpName="Acc_CRM_WinLimit_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -112,7 +113,7 @@
         <Setting Key="Acc_CRM_AutoVoidingTicketSel" SpName="Acc_CRM_AutoVoidingTicketSel" DbName="DBACC.bodb02.bodbAdminNet" />
     </Function>
     <Function Name="ArchivingDA">
-        <Setting Key="Acc_CRM_Service_SystemSettingSel" SpName="Acc_CRM_Service_SystemSettingSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Service_SystemSettingSel" SpName="Acc_CRM_Service_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ArchivedAccount_CheckStatus" SpName="Acc_CRM_ArchivedAccount_CheckStatus" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_ArchivedAccount_GetListAccount" SpName="Acc_CRM_ArchivedAccount_GetListAccount" DbName="DBCUST.CustDB.bodbAdminNet" />
         <Setting Key="Acc_CRM_ArchivedAccount_AutoFBInfoIns" SpName="Acc_CRM_ArchivedAccount_AutoFBInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
