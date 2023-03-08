@@ -1,0 +1,35 @@
+.add-sma-personal-message{
+    .table-container{
+        .body-content{
+            table tr td{
+                word-break: break-all;
+            }
+        }
+    }
+}
+
+.add-sma-message-modal{
+    .modal-dialog{
+        max-width: 858px !important;
+    }
+    .languages-text{
+        .nav-item:not(:last-child){
+            width: 115px;
+            margin-right: 10px;
+        }
+
+        .nav-item:is(:last-child){
+            width: 115px;
+        }
+
+        .nav-link {
+            padding-left: 2px !important;
+            color: #495057;
+        }
+
+        .active{
+            font-weight: 600;
+            color: rgb(33,123,199);
+        }
+    }
+}
