@@ -35,6 +35,7 @@
         private INapSettings napSettings;
         private IUserService userService;
         private ICommonService commonService;
+        private ICRMLogService logService;
 
         private readonly Fixture fixture = new Fixture();
 
@@ -48,7 +49,8 @@
             napSettings = Substitute.For<INapSettings>();
             userService = Substitute.For<IUserService>();
             commonService = Substitute.For<ICommonService>();
-            return new AddCustomerFeedbackController(napSession, settingService, baseService, napSettings, userService, commonService);
+            logService = Substitute.For<ICRMLogService>();
+            return new AddCustomerFeedbackController(napSession, settingService, baseService, napSettings, userService, commonService, logService);
         }
 
         [Fact]

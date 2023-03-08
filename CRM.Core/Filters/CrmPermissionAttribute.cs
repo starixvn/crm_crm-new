@@ -35,34 +35,27 @@
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            if (context?.HttpContext == null)
+            if (napSession == null || napSession?.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
             {
-                context.Result = new UnauthorizedResult();
+                CloseConnection(context);
             }
-            else
+
+            int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
+            bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
+
+            if (policy < (int)Policy)
             {
-                if (napSession == null || napSession?.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
+                if (isAjaxRequest)
                 {
-                    CloseConnection(context);
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+                    await context.HttpContext.Response.WriteAsync(ViewResources.Forbidden_Permission);
                 }
 
-                int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
-                bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
-
-                if (policy < (int)Policy)
+                else
                 {
-                    if (isAjaxRequest)
-                    {
-                        context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
-                        await context.HttpContext.Response.WriteAsync(ViewResources.Forbidden_Permission);
-                    }
-
-                    else
-                    {
-                        context.Result = new RedirectToActionResult("405", "error", null);
-                    }
+                    context.Result = new RedirectToActionResult("405", "error", null);
                 }
-            } 
+            }
         }
 
         private static void CloseConnection(AuthorizationFilterContext context)

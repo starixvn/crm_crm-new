@@ -26,16 +26,9 @@
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (context?.HttpContext == null)
+            if (napSession == null || napSession?.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
             {
-                context.Result = new UnauthorizedResult();
-            }
-            else
-            {
-                if (napSession == null || napSession?.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
-                {
-                    CloseConnection(context);
-                }
+                CloseConnection(context);
             }
         }
 
