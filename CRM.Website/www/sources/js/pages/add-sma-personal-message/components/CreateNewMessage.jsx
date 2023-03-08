@@ -7,22 +7,17 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
+import { Languages }from '@jsroot/common/constants';
+import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 
 export default class CreateNewMessage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             tab: 'EN',
-            languages: [],
-            createMessageResult: null
+            createMessageResult: null,
+            confirmPopup: {isShowing: false, params: null}
         };
-    }
-
-    async componentDidMount() {
-        const url = Site.resolveClientUrl('NotificationTemplate/GetLanguages');
-        await DataService.getDataAsync(url).then(response => {
-            this.setState({languages: response.data});
-        }).catch(Site.handleAxiosError);
     }
 
     handleChangeTab = selected => this.setState({tab: selected});
@@ -33,6 +28,7 @@ export default class CreateNewMessage extends Component {
         touched,
         handleChange,
         handleSubmit,
+        setFieldValue,
         isSubmitting
     }) => {
         return (
@@ -65,10 +61,11 @@ export default class CreateNewMessage extends Component {
                             {LangHelper.getResource('SMAUsernames')}
                         </Form.Label>
                         <Col sm="8" md="9">
-                            <Form.Control type="text" size="sm" value={values.username}
+                            <Form.Control as="textarea" size="sm" value={values.username}
                                 name="username" id="username"
                                 autoComplete="off" className="required shadow-none"
                                 isInvalid={touched.username && errors.username}
+                                onPaste={event => this.onPasteUsernameHandler(event, values.username, setFieldValue)}
                                 onChange={handleChange}
                             />
                             <div className='pt-1'>{LangHelper.getResource('MaximumSMAUsernameInput')}</div>
@@ -89,13 +86,13 @@ export default class CreateNewMessage extends Component {
                                 onSelect={selected => this.handleChangeTab(selected)}
                             >
                                 {
-                                    this.state.languages !== null && this.state.languages.map((item, key) => {
+                                    Languages !== null && Languages.map((item, key) => {
                                     return (
-                                        <Tab key={key} eventKey={item.settingValue} title={item.settingValue}>
+                                        <Tab key={key} eventKey={item} title={item}>
                                             <Form.Control as="textarea" className="shadow-none form-control"
-                                                value={values['language_' + item.settingId]}
-                                                name={'language_' + item.settingId} id={'language_' + item.settingId} rows="4"
-                                                isInvalid={touched['language_' + item.settingId] && errors['language_' + item.settingId]}
+                                                value={values['language_' + item]}
+                                                name={'language_' + item} id={'language_' + item} rows="4"
+                                                isInvalid={touched['language_' + item] && errors['language_' + item]}
                                                 onChange={handleChange}
                                             />
                                         </Tab>
@@ -108,74 +105,141 @@ export default class CreateNewMessage extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>{LangHelper.getResource('Save')}</Button>
+                    <Button type="submit" variant="primary" size="sm" onClick={this.handleResetField}>{LangHelper.getResource('Reset')}</Button>
                     <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
                 </Modal.Footer>
             </Form>
         );
     };
 
+    initialValues = () =>{
+        const initialValues = {
+            title: '',
+            username: ''
+        };
+        Languages !== null && Languages.map(item => {
+            initialValues['language_' + item] = '';
+        });
+        return initialValues;
+    }
+
+    handleResetField = () =>{
+        this.formik.resetForm();
+    }
+
     validateFormik = values => {
         const errors = {};
+        const isValidLengthUsername = this.validateUsernameInput(values.username);
         if (values.username === '') {
             errors.username = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SMAUsernames'));
+        }
+
+        if(isValidLengthUsername){
+            errors.username = 'SMA usernames must not over 50 characters long!';
+        }
+
+        if(values.language_EN === ''){
+            errors.language_EN = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('ContentEN'));
         }
 
         return errors;
     };
 
+    validateUsernameInput = username =>{
+        const customersInput = username.trim()
+            .replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',');
+        return customersInput.length > 50;
+    }
+
+    onPasteUsernameHandler = (event, usernames, setFieldValue) => {
+        const usernamesTrim = usernames.trim();
+        const items = (event.clipboardData || window.clipboardData).getData('text').replace(/ /g, ',')
+            .replace(/\r\n/g, ',').replace(/\n/g, ',').replace(/\t/g, ',').split(',').filter(item => item !== '');
+        setTimeout(() => {
+            const usernamesInput = (usernamesTrim.length > 0 ? usernamesTrim + ',' : '').concat(items.join(','));
+            setFieldValue('username', usernamesInput);
+        }, 100);
+    };
+
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         const template = {
-            username: values.username,
             title: values.title,
+            Usernames: values.username,
             contents: []
         };
-        this.state.languages !== null && this.props.state.map(item => {
+        Languages.map(item => {
             template.contents.push({
-                languageId: item.settingId,
-                content: values['language_' + item.settingId]
+                content: values['language_' + item]
             });
         });
 
-        this.props.createTemplate(template).then(() => {
-            if (this.props.createMessageResult.isSuccessful) {
+        this.handleConfirmAddMessage(template);
+    };
+
+    handleConfirmAddMessage = params =>{
+        this.setState({confirmPopup: {isShow: true, params}});
+    }
+
+    handleCancelConfirmAddMessage = () =>{
+        this.setState({confirmPopup: {isShow: false, params: null}});
+        this.formik.setSubmitting(false);
+    }
+
+    handleCreateNewMessage = async() => {
+        this.handleCancelConfirmAddMessage();
+        const params = this.state.confirmPopup.params;
+        const url = Site.resolveClientUrl('SMAPersonalMessage/CreateNewMessage');
+        await DataService.postDataAsync(url, params).then(response => {
+            const data = response.data;
+            this.setState({createMessageResult: data});
+            if (data.isSuccessful) {
                 setTimeout(() => {
                     this.props.onSuccess();
                 }, 3000);
             } else {
-                setSubmitting(false);
+                this.formik.setSubmitting(false);
             }
-        });
-    };
+        }).catch(Site.handleAxiosError);
+    }
 
     render() {
-        if(this.state.languages.length === 0 ){
-            return null;
-        }
-        const initialValues = {
-            title: '',
-            username: ''
-        };
-        this.state.languages !== null && this.state.languages.map(item => {
-            initialValues['language_' + item.settingId] = '';
-        });
-
+        const initValues = this.initialValues(); 
         return (
-            <Modal show className="add-sma-message-modal" dialogAs={DraggableModalDialog}
-                backdrop="static" keyboard={false} size="lg" centered
-                onHide={this.props.onClose}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title as="div">{LangHelper.getResource('AddSMAPersonalMessage')}</Modal.Title>
-                </Modal.Header>
-                <Formik
-                    initialValues={initialValues}
-                    validate={values => this.validateFormik(values)}
-                    onSubmit={this.handleSubmit}
+            <div>
+                <Modal show className="add-sma-message-modal" dialogAs={DraggableModalDialog}
+                    backdrop="static" keyboard={false} size="lg" centered
+                    onHide={this.props.onClose}
                 >
-                    {this.renderForm}
-                </Formik>
-            </Modal>
+                    <Modal.Header closeButton>
+                        <Modal.Title as="div">{LangHelper.getResource('AddSMAPersonalMessage')}</Modal.Title>
+                    </Modal.Header>
+                    <Formik
+                        innerRef={p => this.formik = p}
+                        initialValues={initValues}
+                        validate={values => this.validateFormik(values)}
+                        onSubmit={this.handleSubmit}
+                    >
+                        {this.renderForm}
+                    </Formik>
+                </Modal>
+                {
+                    this.state.confirmPopup.isShow &&
+                    <SweetModalDialog size="lg"
+                        title={LangHelper.getResource('ConfirmMultipleUpdates')}
+                        contents={<div>{LangHelper.formatString(LangHelper.getResource('ConfirmCreateNewMessageSMA'), this.formik.values.username)}</div>}
+                        buttons={[
+                            <Button variant="primary" size="sm" onClick={this.handleCreateNewMessage}>
+                                {LangHelper.getResource('OK')}
+                            </Button>,
+                            <Button variant="primary" size="sm" onClick={this.handleCancelConfirmAddMessage}>
+                                {LangHelper.getResource('Cancel')}
+                            </Button>
+                        ]}
+                        onClose={this.handleCancelConfirmAddMessage}
+                    />
+                }
+            </div>
         );
     }
 }

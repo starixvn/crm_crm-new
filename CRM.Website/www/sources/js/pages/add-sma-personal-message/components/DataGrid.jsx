@@ -14,7 +14,7 @@ export default class DataGrid extends Component {
     };
 
     handleDelete = id => {
-        this.props.setDeletePopup({ show: true, id });
+        this.props.setDeletePopup(id);
     };
 
     buildHeader = isHost => {
@@ -43,7 +43,7 @@ export default class DataGrid extends Component {
 
     renderRow = (item, index, isHost) => (
         <Row key={index} >
-            <Cell>{item.messageId}</Cell>
+            <Cell>{item.id}</Cell>
             <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
             <Cell>{item.creator}</Cell>
             <Cell>{item.title}</Cell>

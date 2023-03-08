@@ -5,10 +5,13 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
+    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.NotificationList;
+    using CRM.Criteria.SMAPersonalMessage;
     using CRM.Models.SMAPersonalMessage;
     using CRM.Services;
+    using CRM.ViewModels.ChatTypeMapping;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
     using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
@@ -34,7 +37,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.PICManagement, Policy = Policy.Host)]
-        public async Task<IActionResult> GetGridData()
+        public IActionResult GetGridData()
         {
             var data = new SMAMessageInfor
             {
@@ -54,6 +57,23 @@
             }
 
             return Json(new { totalItems = datas.Count, data = datas });
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.PICManagement, Policy = Policy.Host)]
+        public async Task<IActionResult> CreateNewMessage([FromBody] AddPersonalMessageCommand command)
+        {
+            var commandResult = new CommandResult { Code = 1, Message = "Invalid Username" };
+
+            return Json(commandResult);
+        }
+
+        [CrmPermission(FunctionKey = FunctionKey.PICManagement, Policy = Policy.Host)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var commandResult = new CommandResult { Code = 0 };
+
+            return Json(commandResult);
         }
     }
 }

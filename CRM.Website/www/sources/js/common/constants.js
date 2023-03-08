@@ -174,3 +174,5 @@ export const DetailMenu = [
     {id: 2, url: '/AddFeedback'},
     {id: 3, url: '/ManageFeedback'}
 ];
+
+export const Languages = ['EN', 'SC', 'TC', 'TH', 'YN'];

@@ -7,6 +7,9 @@ import DataService from '@jsroot/common/dataService';
 import { getPermission } from '@jsroot/common/shareScripts';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import LangHelper from '@jsroot/common/langHelper';
+import { Button } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 
 export class AppContainer extends Component {
   constructor(props) {
@@ -22,7 +25,8 @@ export class AppContainer extends Component {
         isShow: false
       },
       deleteMessagePopUp:{
-        isShow: false
+        isShow: false,
+        id: null
       }
     };
   }
@@ -54,9 +58,31 @@ export class AppContainer extends Component {
     this.setState({createMessagePopUp: {isShow: false}});
   }
 
-  setDeletePopup = () =>{
-    this.setState({deleteMessagePopUp: {isShow: true}});
+  handleSuccessNewMessage = async () =>{
+    this.handleCloseNewMessage();
+    await this.handleGetSMAPersonalMessage(this.state.params);
   }
+
+  setDeletePopup = id =>{
+    this.setState({deleteMessagePopUp: {isShow: true, id}});
+  }
+
+  handleCloseDeletePopup = () =>{
+    this.setState({deleteMessagePopUp: {isShow: false, id: null}});
+  }
+
+  handleDelete = async () => {
+    const url = Site.resolveClientUrl(`SMAPersonalMessage/Delete/${this.state.deleteMessagePopUp.id}`);
+    await DataService.postDataAsync(url).then(response => {
+      if(response.data.isSuccessful) {
+          toast.success(LangHelper.getResource('DeleteSMAPersonalMessageSuccessfully'));
+          this.handleGetSMAPersonalMessage(this.state.gridParams);
+      } else {
+          toast.error(response.data.message);
+      }
+      this.handleCloseDeletePopup();
+    }).catch(Site.handleAxiosError);
+};
 
 
   render() {
@@ -84,7 +110,26 @@ export class AppContainer extends Component {
           createMessagePopUp.isShow &&
           <CreateNewMessage
               onClose={this.handleCloseNewMessage}
+              onSuccess={this.handleSuccessNewMessage}
           />
+        }
+        {
+            this.state.deleteMessagePopUp.isShow &&
+            <SweetModalDialog size='md'
+                title={LangHelper.getResource('Confirmation')}
+                contents={
+                    <div>Are you sure you want to delete this message<strong>{this.state.deleteMessagePopUp.id}</strong>? This action is permanent and cannot be undone.</div>
+                }
+                buttons={[
+                    <Button variant="primary" size="sm" onClick={this.handleDelete}>
+                        {LangHelper.getResource('OK')}
+                    </Button>,
+                    <Button variant="primary" size="sm" onClick={this.handleCloseDeletePopup}>
+                        {LangHelper.getResource('Cancel')}
+                    </Button>
+                ]}
+                onClose={this.handleCloseDeletePopup}
+            />
         }
       </Fragment>
     );
