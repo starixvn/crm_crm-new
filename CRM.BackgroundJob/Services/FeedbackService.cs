@@ -82,7 +82,7 @@
                 voidingMessages.Item1,
                 setting.BatchSize,
                 Environment,
-                setting.LastDateUAT);
+                LastRuntimeEnv);
 
             logService.LogInformation("after ImportVoidingMessageAsync!!!");
 
