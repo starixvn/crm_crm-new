@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading.Tasks;
-    using CRM.Core.Models;
     using CRM.Resources;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Configuration;
@@ -36,26 +35,45 @@
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            if (context?.HttpContext == null || napSession == null || napSession.UserId <= 0)
+            if (context?.HttpContext == null)
             {
-                return;
+                context.Result = new UnauthorizedResult();
             }
-
-            int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
-            bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
-
-            if (policy < (int)Policy)
+            else
             {
-                if (isAjaxRequest)
+                if (napSession == null || napSession?.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
                 {
-                    context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
-                    await context.HttpContext.Response.WriteAsync(ViewResources.Forbidden_Permission);
+                    CloseConnection(context);
                 }
 
-                else
+                int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
+                bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
+
+                if (policy < (int)Policy)
                 {
-                    context.Result = new RedirectToActionResult("405", "error", null);
+                    if (isAjaxRequest)
+                    {
+                        context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+                        await context.HttpContext.Response.WriteAsync(ViewResources.Forbidden_Permission);
+                    }
+
+                    else
+                    {
+                        context.Result = new RedirectToActionResult("405", "error", null);
+                    }
                 }
+            } 
+        }
+
+        private static void CloseConnection(AuthorizationFilterContext context)
+        {
+            if (IsAjaxRequest(context.HttpContext.Request))
+            {
+                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            }
+            else
+            {
+                context.Result = new RedirectToActionResult("SignIn", "Auth", null);
             }
         }
 

@@ -28,12 +28,14 @@
         {
             if (context?.HttpContext == null)
             {
-                return;
+                context.Result = new UnauthorizedResult();
             }
-
-            if (napSession == null || napSession?.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
+            else
             {
-                CloseConnection(context);
+                if (napSession == null || napSession?.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
+                {
+                    CloseConnection(context);
+                }
             }
         }
 
