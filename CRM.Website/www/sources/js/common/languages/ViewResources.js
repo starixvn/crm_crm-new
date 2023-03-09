@@ -31,6 +31,7 @@
     AddFeedback: 'Add Feedback',
     ActivityLog: 'Activity Log',
     AddSMAPersonalMessage: 'Add SMA Personal Message',
+    AddSendMessageSMASuccessfully: 'Add SMA Personal Message successfully!',
     BankInfo: 'Bank Info',
     BankName: 'Bank\'s Name',
     BotBlocked: 'Bot Blocked',

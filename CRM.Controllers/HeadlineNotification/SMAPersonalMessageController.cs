@@ -17,7 +17,7 @@
     using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.PICManagement, Policy = Policy.Host)]
+    [CrmPermission(FunctionKey = FunctionKey.AddSMAPersonalMessage, Policy = Policy.Host)]
     public class SMAPersonalMessageController : BaseController
     {
         private readonly INapSession napSession;
@@ -36,7 +36,7 @@
 
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.PICManagement, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.AddSMAPersonalMessage, Policy = Policy.Host)]
         public IActionResult GetGridData()
         {
             var data = new SMAMessageInfor
@@ -60,15 +60,15 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.PICManagement, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.AddSMAPersonalMessage, Policy = Policy.Host)]
         public async Task<IActionResult> CreateNewMessage([FromBody] AddPersonalMessageCommand command)
         {
-            var commandResult = new CommandResult { Code = 1, Message = "Invalid Username" };
+            var commandResult = new CommandResult { Code = 0, Message = "" };
 
             return Json(commandResult);
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.PICManagement, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.AddSMAPersonalMessage, Policy = Policy.Host)]
         public async Task<IActionResult> Delete(int id)
         {
             var commandResult = new CommandResult { Code = 0 };

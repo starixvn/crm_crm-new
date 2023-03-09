@@ -38,7 +38,7 @@ export default class CreateNewMessage extends Component {
                     {
                         this.state.createMessageResult &&
                         <ResponseMessage isSuccessful={this.state.createMessageResult.isSuccessful}
-                            message={this.state.createMessageResult.message || LangHelper.getResource('InsertNotificationTemplateSuccessfully')}
+                            message={this.state.createMessageResult.message || LangHelper.getResource('AddSendMessageSMASuccessfully')}
                         />
                     }
                     <Form.Group as={Row}>
@@ -147,7 +147,7 @@ export default class CreateNewMessage extends Component {
 
     validateUsernameInput = username =>{
         const customersInput = username.trim()
-            .replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',');
+            .replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',').split(',');
         return customersInput.length > 50;
     }
 
@@ -188,6 +188,7 @@ export default class CreateNewMessage extends Component {
 
     handleCreateNewMessage = async() => {
         this.handleCancelConfirmAddMessage();
+        this.formik.setSubmitting(true);
         const params = this.state.confirmPopup.params;
         const url = Site.resolveClientUrl('SMAPersonalMessage/CreateNewMessage');
         await DataService.postDataAsync(url, params).then(response => {
