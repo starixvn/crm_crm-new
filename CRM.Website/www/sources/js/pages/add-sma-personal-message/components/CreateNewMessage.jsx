@@ -105,7 +105,6 @@ export default class CreateNewMessage extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>{LangHelper.getResource('Save')}</Button>
-                    <Button type="submit" variant="primary" size="sm" onClick={this.handleResetField}>{LangHelper.getResource('Reset')}</Button>
                     <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
                 </Modal.Footer>
             </Form>
@@ -121,10 +120,6 @@ export default class CreateNewMessage extends Component {
             initialValues['language_' + item] = '';
         });
         return initialValues;
-    }
-
-    handleResetField = () =>{
-        this.formik.resetForm();
     }
 
     validateFormik = values => {

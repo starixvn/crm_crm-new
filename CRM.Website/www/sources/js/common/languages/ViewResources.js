@@ -466,7 +466,6 @@
     SettlementIssuesReport: 'Settlement Issues Report',
     ServiceName: 'Service Name',
     SMAPersonalMessage: 'SMA Personal Message',
-    SMAUsername: 'SMA Username',
     SMAUsernames: 'SMA Username(s)',
     TemplateContent: 'Template Content',
     TemplateId: 'Template Id',

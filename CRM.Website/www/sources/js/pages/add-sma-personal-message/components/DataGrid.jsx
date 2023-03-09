@@ -3,8 +3,18 @@ import LangHelper from '@jsroot/common/langHelper';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import Panel, { PanelHeader } from '@jsroot/components/panel/index';
 
 export default class DataGrid extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            expandPanels: false
+        };
+        this.panels = [];
+    }
+
     onPaging = (pageIndex, pageSize) => {
         const params = { ...this.props.gridParams };
         params['pageIndex'] = pageIndex;
@@ -17,17 +27,32 @@ export default class DataGrid extends Component {
         this.props.setDeletePopup(id);
     };
 
+    toggleExpandPanels = () => {
+        this.setState(prevState => ({ expandPanels: !prevState.expandPanels }), () => {
+            if (this.props.gridData.data.length) {
+                this.panels.filter(x => x && (x.state.isOpen !== this.state.expandPanels)).forEach(panel => {
+                    panel.set(this.state.expandPanels);
+                });
+            }
+        });
+    }
+
     buildHeader = isHost => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('MessageID')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('Creator')}</HeaderCell>
+                <HeaderCell colWidth={6}>{LangHelper.getResource('MessageID')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
+                <HeaderCell colWidth={7}>{LangHelper.getResource('Creator')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Title')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('SMAUsername')}</HeaderCell>
-                <HeaderCell colWidth={50}>{LangHelper.getResource('Content')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('SMAUsernames')}</HeaderCell>
+                <HeaderCell colWidth={50}>
+                    <div className="has-icons">
+                        {LangHelper.getResource('Content')}
+                        <span className={this.state.expandPanels ? 'fa fa-expand' : 'fa fa-compress'} onClick={this.toggleExpandPanels} />
+                    </div>
+                </HeaderCell>
                 {
-                    isHost && <HeaderCell colWidth={5}>{LangHelper.getResource('Action')}</HeaderCell>
+                    isHost && <HeaderCell colWidth={6}>{LangHelper.getResource('Action')}</HeaderCell>
                 }
             </HeaderRow>
         );
@@ -43,12 +68,19 @@ export default class DataGrid extends Component {
 
     renderRow = (item, index, isHost) => (
         <Row key={index} >
-            <Cell>{item.id}</Cell>
+            <Cell className='text-center'>{item.id}</Cell>
             <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
             <Cell>{item.creator}</Cell>
             <Cell>{item.title}</Cell>
             <Cell>{item.username}</Cell>
-            <Cell>{item.content}</Cell>
+            <Cell className="col-content">
+                <Panel ref={panel => this.panels[index] = panel}>
+                    <PanelHeader>
+                        <div className='split-content'>{item.content.slice(0, 72)}</div>
+                    </PanelHeader>
+                    <div className='content'>{item.content}</div>
+                </Panel>
+            </Cell>
             {
                 isHost &&
                 <Cell className="text-center">
