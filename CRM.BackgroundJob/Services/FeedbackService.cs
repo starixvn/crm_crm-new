@@ -129,8 +129,8 @@
                 matchInfos,
                 transactionTicketsCombine,
                 messagesImportCombineDistinct,
-                JobStatusNameEnv,
-                LastRuntimeNameEnv
+                isUAT,
+                setting
             );
         }
 
@@ -139,8 +139,8 @@
             IEnumerable<MatchInfo> matchInfos,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<VoidingMessageUserName> messagesImportCombineDistinct,
-            string JobStatusNameEnv,
-            string LastRuntimeNameEnv
+            bool isUAT,
+            AbnormalBetSystemSetting setting
         )
         {
             var settingNames = new[] { SettingName.SubProduct, SettingName.Bettype };
@@ -190,8 +190,18 @@
             }
             logService.LogInformation("Abnormal Bet - Update job and time");
             logService.LogInformation("end CreateFeedbackForCreditDepositSiteAsync!!!");
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
+            var voidingHistoryCollectionId = isUAT ? setting.MaxVoidingHistoryCollectionIdUAT : setting.MaxVoidingHistoryCollectionId;
+            var maxVoidingHistoryCollectionId = transactionInfos.Any() ? transactionInfos.Max(x => x.VoidingHistoryCollectionId) : voidingHistoryCollectionId;
 
+            await UpdateSystemSetting(isUAT, setting, maxVoidingHistoryCollectionId);
+        }
+
+        protected internal virtual async Task UpdateSystemSetting(bool isUAT, AbnormalBetSystemSetting setting, int maxVoidingHistoryCollectionId)
+        {
+            var LastRuntimeNameEnv = isUAT ? SystemSettingName.LastRuntimeUAT : SystemSettingName.LastRuntime;
+            var JobStatusNameEnv = isUAT ? SystemSettingName.JobStatusUAT : SystemSettingName.JobStatus;
+            var VoidingHistoryCollectionNameEnv = isUAT ? SystemSettingName.MaxVoidingHistoryCollectionIdUAT : SystemSettingName.MaxVoidingHistoryCollectionId;
+            await commonFeedback.AutoFbEditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, VoidingHistoryCollectionNameEnv, maxVoidingHistoryCollectionId);
         }
 
         protected internal virtual async Task CreateFeedbackForCreditSiteAsync(

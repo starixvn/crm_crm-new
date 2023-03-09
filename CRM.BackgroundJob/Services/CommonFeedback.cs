@@ -43,6 +43,9 @@
         Task<CommandResult> EditSystemSettingAsyncByEnv(string JobStatusNameEnv,
             string LastRuntimeNameEnv, string JobStatusValue, string serviceName);
 
+        Task<CommandResult> AutoFbEditSystemSettingAsyncByEnv(string JobStatusNameEnv, string LastRuntimeNameEnv,
+            string VoidingHistoryCollectionNameEnv, int MaxVoidingHistoryCollectionId);
+
         Task<CommandResult> EditSystemSettingAsyncByEnvFormatDate(string JobStatusNameEnv,
             string LastRuntimeNameEnv, string JobStatusValue, string serviceName);
 
@@ -174,7 +177,7 @@
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString(Constants.FormatDatetimeString) },
                 new SystemSettingItem { SettingName = SystemSettingName.LastLogID, Value = LastLogID.ToString() }
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, ServiceName);
@@ -186,9 +189,21 @@
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatusValue},
-                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(Constants.FormatDatetimeString) },
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
+        }
+
+        public async Task<CommandResult> AutoFbEditSystemSettingAsyncByEnv(string JobStatusNameEnv, string LastRuntimeNameEnv,
+            string VoidingHistoryCollectionNameEnv, int MaxVoidingHistoryCollectionId)
+        {
+            var settingJobStatus = new List<SystemSettingItem>
+            {
+                new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed},
+                new SystemSettingItem { SettingName = VoidingHistoryCollectionNameEnv, Value = MaxVoidingHistoryCollectionId.ToString()},
+                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(Constants.FormatDatetimeString) },
+            };
+            return await systemSetting.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_AutoFB);
         }
 
         public async Task<CommandResult> EditSystemSettingAsyncByEnvFormatDate(string JobStatusNameEnv,
@@ -208,7 +223,7 @@
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
-                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(Constants.FormatDatetimeString) },
                 new SystemSettingItem { SettingName = lastLogIdName, Value = maxLastLogId.ToString() },
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);

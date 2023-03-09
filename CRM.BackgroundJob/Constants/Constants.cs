@@ -18,6 +18,7 @@
 
         public const string BeginRootTag = "<ROOT>";
         public const string EndRootTag = "</ROOT>";
+        public const string FormatDatetimeString = "yyyy-MM-dd hh:mm:ss.fff tt";
 
         public const string ServiceName_AutoFB = "AutoFB";
         public const string ServiceName_ChatBot = "ChatBot - AbnormalBets";

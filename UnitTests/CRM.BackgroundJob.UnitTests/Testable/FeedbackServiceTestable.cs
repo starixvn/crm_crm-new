@@ -37,10 +37,10 @@
             IEnumerable<MatchInfo> matchInfos,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<VoidingMessageUserName> messagesImportCombineDistinct,
-            string JobStatusNameEnv,
-            string LastRuntimeNameEnv)
+             bool isUAT,
+            AbnormalBetSystemSetting setting)
         {
-            await base.CreateFeedbackForCreditDepositSiteAsync(messages, matchInfos, transactionInfos, messagesImportCombineDistinct, JobStatusNameEnv, LastRuntimeNameEnv);
+            await base.CreateFeedbackForCreditDepositSiteAsync(messages, matchInfos, transactionInfos, messagesImportCombineDistinct, isUAT, setting);
         }
 
         public async Task Public_CreateFeedbackForCreditSiteAsync(
@@ -95,6 +95,11 @@
             CreateFeedbackCommand criteria)
         {
             await base.CreateFeedbackForDepositByBatchAsync(licenseeInfo, messages, transactionInfos, feedbackDate, communicationTool, criteria);
+        }
+
+        public async Task Public_UpdateSystemSetting(bool isUAT, AbnormalBetSystemSetting setting, int maxVoidingHistoryCollectionId)
+        {
+            await base.UpdateSystemSetting(isUAT, setting, maxVoidingHistoryCollectionId);
         }
 
         public void Public_GetLicenseeManager(

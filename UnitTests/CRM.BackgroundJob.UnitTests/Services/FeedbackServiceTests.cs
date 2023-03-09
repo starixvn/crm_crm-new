@@ -61,8 +61,8 @@
                Arg.Any<IEnumerable<MatchInfo>>(),
                Arg.Any<IEnumerable<TransactionInfo>>(),
                Arg.Any<List<VoidingMessageUserName>>(),
-               Arg.Any<string>(),
-               Arg.Any<string>()
+               Arg.Any<bool>(),
+               Arg.Any<AbnormalBetSystemSetting>()
                );
         }
         [Fact]
@@ -98,8 +98,8 @@
                Arg.Any<IEnumerable<MatchInfo>>(),
                Arg.Any<IEnumerable<TransactionInfo>>(),
                Arg.Any<List<VoidingMessageUserName>>(),
-               Arg.Any<string>(),
-               Arg.Any<string>()
+               Arg.Any<bool>(),
+               Arg.Any<AbnormalBetSystemSetting>()
                );
         }
 
@@ -144,8 +144,8 @@
                Arg.Any<IEnumerable<MatchInfo>>(),
                Arg.Any<IEnumerable<TransactionInfo>>(),
                Arg.Any<List<VoidingMessageUserName>>(),
-               Arg.Any<string>(),
-               Arg.Any<string>()
+               Arg.Any<bool>(),
+               Arg.Any<AbnormalBetSystemSetting>()
                );
         }
 
@@ -157,6 +157,7 @@
         public async Task CreateFeedbackForCreditDepositSiteAsync_WhenCalled_ExpectedCallExpectedCreateFeedbackForCreditAndDeposit()
         {
             // Arrange
+            var setting = fixture.Create<AbnormalBetSystemSetting>();
             var matchInfos = new List<MatchInfo>
             {
                 new MatchInfo { MessageId = "1" }
@@ -202,8 +203,9 @@
                         ticketInfo.Item1,
                         ticketInfo.Item2,
                         voidingMessageUserName,
-                        "JobStatusNameEnv",
-                        "LastRuntimeNameEnv");
+                        false,
+                        setting
+                        );
 
             // Assert
             service.Received().Protected(
