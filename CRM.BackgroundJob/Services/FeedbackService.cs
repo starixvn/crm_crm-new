@@ -231,7 +231,8 @@
                 AutoField = string.Empty,
                 AutoField1 = string.Empty,
                 AutoField2 = string.Format("Date Time & Tool: {0}/{1}/", feedbackDate.ToString("yyyyMMdd"), feedbackDate.ToString("hh:mmtt")),
-                AutoField3 = $"{Environment.NewLine}System ID: "
+                AutoField3 = $"{Environment.NewLine}System ID: ",
+                VoidingHistoryCollectionId = matchInfo.VoidingHistoryCollectionId
             };
             logService.LogInformation("Abnormal Bet - End mapping common setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
 
@@ -380,7 +381,8 @@
                 Solution = GetSolution(messages.FirstOrDefault()),
                 LicenseeType = licenseeInfo.LicenseeType,
                 TitleId = licenseeInfo.TitleId,
-                SiteId = licenseeInfo.SiteId
+                SiteId = licenseeInfo.SiteId,
+                VoidingHistoryCollectionId = matchInfo.VoidingHistoryCollectionId
             };
             logService.LogInformation("Abnormal Bet - End mapping setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
 
