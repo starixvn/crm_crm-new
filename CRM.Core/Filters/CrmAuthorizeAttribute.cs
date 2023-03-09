@@ -1,8 +1,8 @@
 ﻿namespace CRM.Core.Filters
 {
     using System;
-    using CRM.Core.Services;
-    using CRM.Resources;
+    using Fanex.Logging;
+    using Fanex.Logging.Extensions;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Authorization;
@@ -14,21 +14,33 @@
     public class CrmAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
         private readonly INapSession napSession;
+        private readonly ILogger logger;
 
-        public CrmAuthorizeAttribute() : this(null)
+        public CrmAuthorizeAttribute() : this(null, null)
         {
         }
 
-        public CrmAuthorizeAttribute(INapSession napSession)
+        public CrmAuthorizeAttribute(INapSession napSession, ILogger logger)
         {
             this.napSession = napSession ?? NapClientManager.NapSession;
+            this.logger = logger ?? new Logger();
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (napSession == null || napSession?.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
+            try
             {
-                CloseConnection(context);
+                if (napSession == null || napSession?.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
+                {
+                    CloseConnection(context);
+                }
+            }
+            catch (Exception exception)
+            {
+                var logMessage = new LogMessage(exception.Message)
+                       .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
+                       .ToString();
+                logger.Error(logMessage);
             }
         }
 
