@@ -83,6 +83,7 @@
                 var result = await GetDataByIpConfigAsync<T>(siteConfig.AGIP, siteConfig.LinkedServerName, criteria);
                 results.AddRange(result);
             }
+
             return results;
         }
 
