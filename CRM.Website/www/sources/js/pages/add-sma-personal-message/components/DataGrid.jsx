@@ -74,12 +74,17 @@ export default class DataGrid extends Component {
             <Cell>{item.title}</Cell>
             <Cell>{item.targetNames}</Cell>
             <Cell className="col-content">
-                <Panel ref={panel => this.panels[index] = panel}>
-                    <PanelHeader>
-                        <div className='split-content'>{item.content_en.slice(0, 100)}</div>
-                    </PanelHeader>
-                    <div className='content'>{item.content_en}</div>
-                </Panel>
+                {
+                    item.content_en.length > 100 ?
+                    <Panel ref={panel => this.panels[index] = panel}>
+                        <PanelHeader>
+                            <div className='split-content'>{item.content_en.slice(0, 100)}</div>
+                        </PanelHeader>
+                        <div className='content'>{item.content_en}</div>
+                    </Panel> :
+                    item.content_en
+                }
+                
             </Cell>
             {
                 isHost &&
