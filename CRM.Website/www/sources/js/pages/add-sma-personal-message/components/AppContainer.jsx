@@ -32,7 +32,7 @@ export class AppContainer extends Component {
   }
 
   async componentDidMount() {
-    getPermission(FunctionKey.PICManagement).then((response) => {
+    getPermission(FunctionKey.SMAPersonalMessage).then((response) => {
       this.setState({ policy: response });
     });
 
@@ -109,6 +109,7 @@ export class AppContainer extends Component {
         {
           createMessagePopUp.isShow &&
           <CreateNewMessage
+              isHost={isHost}
               onClose={this.handleCloseNewMessage}
               onSuccess={this.handleSuccessNewMessage}
           />

@@ -82,7 +82,8 @@ export const FunctionKey = {
     CustomerReport: 'CustomerReport',
     SettingRelationManagement: 'SettingRelationshipManagement',
     SettingManagement: 'SettingManagement',
-    JobSettingManagement: 'JobSettingManagement'
+    JobSettingManagement: 'JobSettingManagement',
+    SMAPersonalMessage: 'SMAPersonalMessage'
 };
 
 export const BorderStyle = {

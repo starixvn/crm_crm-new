@@ -7,7 +7,7 @@
         public const string NotificationTemplate = "NotificationTemplate";
         public const string NotificationType = "NotificationType";
         public const string DefaultCommunicationSetting = "DefaultCommunicationSetting";
-        public const string AddSMAPersonalMessage = "AddSMAPersonalMessage";
+        public const string SMAPersonalMessage = "SMAPersonalMessage";
 
         public const string SettlementIssuesReport = "SettlementIssuesReport";
         public const string CategoriesSummaryReport = "CategoriesSummaryReport";
