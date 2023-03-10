@@ -158,9 +158,10 @@ export default class CreateNewMessage extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
+        const username = values.username.replace(/\s+/g, '');
         const params = {
             title: values.title,
-            userName: values.username,
+            userName: username.split(',').filter(x => x !== '').join(','),
             content_en : values['language_' + 'EN'],
             content_cs : values['language_' + 'SC'],
             content_ch : values['language_' + 'TC'],
@@ -221,7 +222,7 @@ export default class CreateNewMessage extends Component {
                 {
                     this.state.confirmPopup.isShow &&
                     <SweetModalDialog size="lg"
-                        title={LangHelper.getResource('ConfirmMultipleUpdates')}
+                        title={LangHelper.getResource('ConfirmAddSMAPersonalMessage')}
                         contents={<div>{LangHelper.formatString(LangHelper.getResource('ConfirmCreateNewMessageSMA'), this.formik.values.username)}</div>}
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleCreateNewMessage}>

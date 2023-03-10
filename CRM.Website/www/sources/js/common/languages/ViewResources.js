@@ -101,6 +101,7 @@
     CreateRedemptionLogSuccessfully: 'Create redemption log successfully!',
     ContentSendMessageSMA: '(The content will be sent to SMA via Personal Message in Alpha site immediately)',
     ContentEN: 'Content EN',
+    ConfirmAddSMAPersonalMessage: 'Confirm Add SMA Personal Message',
     Danger: 'Danger',
     DangerOriginal: 'Original',
     DangerNonLive: 'None-Live',
