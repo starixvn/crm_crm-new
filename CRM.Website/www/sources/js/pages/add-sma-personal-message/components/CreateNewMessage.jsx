@@ -15,6 +15,7 @@ export default class CreateNewMessage extends Component {
         super(props);
         this.state = {
             tab: 'EN',
+            checkUsernameValidResult: null,
             createMessageResult: null,
             confirmPopup: {isShowing: false, params: null}
         };
@@ -41,12 +42,18 @@ export default class CreateNewMessage extends Component {
                             message={this.state.createMessageResult.message || LangHelper.getResource('AddSendMessageSMASuccessfully')}
                         />
                     }
+                    {
+                        this.state.checkUsernameValidResult && !this.state.checkUsernameValidResult.isSuccessful &&
+                        <ResponseMessage isSuccessful={this.state.checkUsernameValidResult.isSuccessful}
+                            message={this.state.checkUsernameValidResult.message}
+                        />
+                    }
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" htmlFor="title"
+                        <Form.Label column sm="2" md="2" htmlFor="title"
                         >
                             {LangHelper.getResource('Title')}
                         </Form.Label>
-                        <Col sm="8" md="9">
+                        <Col sm="10" md="10">
                             <Form.Control type="text" size="sm" value={values.title}
                                 name="title" id="title"
                                 className="shadow-none" autoComplete="off"
@@ -55,12 +62,12 @@ export default class CreateNewMessage extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3"
+                        <Form.Label column sm="2" md="2"
                             className="required" htmlFor="username"
                         >
                             {LangHelper.getResource('SMAUsernames')}
                         </Form.Label>
-                        <Col sm="8" md="9">
+                        <Col sm="10" md="10">
                             <Form.Control as="textarea" size="sm" value={values.username}
                                 name="username" id="username"
                                 autoComplete="off" className="required shadow-none"
@@ -72,12 +79,12 @@ export default class CreateNewMessage extends Component {
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3"
+                        <Form.Label column sm="2" md="2"
                             className="required" htmlFor="content"
                         >
                             {LangHelper.getResource('Content')}
                         </Form.Label>
-                        <Col sm="8" md="9">
+                        <Col sm="10" md="10">
                             <div className='pb-1'>{LangHelper.getResource('ContentSendMessageSMA')}</div>
                             <Tabs
                                 className='languages-text'
@@ -161,7 +168,6 @@ export default class CreateNewMessage extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
-        const username = values.username.replace(/\s+/g, '');
         const params = {
             title: values.title,
             userName: this.handleGetUsername(),
@@ -190,12 +196,25 @@ export default class CreateNewMessage extends Component {
         this.formik.setSubmitting(false);
     }
 
-    handleCreateNewMessage = async() => {
+    handleCheckUsername = async() => {
         this.handleCancelConfirmAddMessage();
         this.formik.setSubmitting(true);
         const params = this.state.confirmPopup.params;
+        const urlCheckValid = Site.resolveClientUrl('SMAPersonalMessage/CheckValidUsername');
+        await DataService.postDataAsync(urlCheckValid, {UserName: params.userName}).then(response => {
+            const data = response.data;
+            this.setState({checkUsernameValidResult: data});
+            if (data.isSuccessful) {
+                this.handleCreateNewMessage(params);
+            } else {
+                this.formik.setSubmitting(false);
+            }
+        }).catch(Site.handleAxiosError);
+    }
+
+    handleCreateNewMessage= async params => {
         const url = Site.resolveClientUrl('SMAPersonalMessage/CreateNewMessage');
-        await DataService.postDataAsync(url, params).then(response => {
+        DataService.postDataAsync(url, params).then(response => {
             const data = response.data;
             this.setState({createMessageResult: data});
             if (data.isSuccessful) {
@@ -234,7 +253,7 @@ export default class CreateNewMessage extends Component {
                         title={LangHelper.getResource('ConfirmAddSMAPersonalMessage')}
                         contents={<div>{LangHelper.formatString(LangHelper.getResource('ConfirmCreateNewMessageSMA'), this.handleGetUsername().replaceAll(',', ', '))}</div>}
                         buttons={[
-                            <Button variant="primary" size="sm" onClick={this.handleCreateNewMessage}>
+                            <Button variant="primary" size="sm" onClick={this.handleCheckUsername}>
                                 {LangHelper.getResource('OK')}
                             </Button>,
                             <Button variant="primary" size="sm" onClick={this.handleCancelConfirmAddMessage}>

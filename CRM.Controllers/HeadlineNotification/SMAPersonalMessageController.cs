@@ -42,6 +42,13 @@
             return Json(new { totalItems = criteria.TotalRows, data = messageInfors });
         }
 
+        [CrmPermission(FunctionKey = FunctionKey.SMAPersonalMessage, Policy = Policy.Host)]
+        public async Task<IActionResult> CheckValidUsername([FromBody] CheckValidUsernameCommand command)
+        {
+            var commandResult = await baseService.ExecuteNonQueryAsync(command);
+            return Json(commandResult);
+        }
+
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.SMAPersonalMessage, Policy = Policy.Host)]
         public async Task<IActionResult> CreateNewMessage([FromBody] AddPersonalMessageCommand command)

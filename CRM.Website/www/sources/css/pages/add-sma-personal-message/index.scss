@@ -32,16 +32,20 @@
 
 .add-sma-message-modal{
     .modal-dialog{
-        max-width: 858px !important;
+        max-width: 950px !important;
+    }
+
+    #username{
+        min-height: 70px;
     }
     .languages-text{
         .nav-item:not(:last-child){
-            width: 115px;
+            width: 145px;
             margin-right: 10px;
         }
 
         .nav-item:is(:last-child){
-            width: 115px;
+            width: 143px;
         }
 
         .nav-link {
@@ -53,5 +57,9 @@
             font-weight: 600;
             color: rgb(33,123,199);
         }
+    }
+
+    .tab-content textarea{
+        min-height: 150px;
     }
 }

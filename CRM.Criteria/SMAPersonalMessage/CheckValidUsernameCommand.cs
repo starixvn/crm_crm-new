@@ -1,0 +1,12 @@
+﻿namespace CRM.Criteria.SMAPersonalMessage
+{
+    using CRM.Core.Models;
+
+    public class CheckValidUsernameCommand : BaseNonQueryCommand
+    {
+        public string UserName { get; set; }
+        public override string GetSettingKey() => "Acc_CRM_PersonalMessageCheck";
+
+        public override bool IsValid() => !string.IsNullOrEmpty(UserName);
+    }
+}
