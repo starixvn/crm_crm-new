@@ -158,18 +158,17 @@ export default class CreateNewMessage extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
-        const template = {
+        const params = {
             title: values.title,
-            Usernames: values.username,
-            contents: []
+            userName: values.username,
+            content_en : values['language_' + 'EN'],
+            content_cs : values['language_' + 'SC'],
+            content_ch : values['language_' + 'TC'],
+            content_th : values['language_' + 'TH'],
+            content_vn : values['language_' + 'YN']
         };
-        Languages.map(item => {
-            template.contents.push({
-                content: values['language_' + item]
-            });
-        });
 
-        this.handleConfirmAddMessage(template);
+        this.handleConfirmAddMessage(params);
     };
 
     handleConfirmAddMessage = params =>{

@@ -40,19 +40,19 @@ export default class DataGrid extends Component {
     buildHeader = isHost => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={6}>{LangHelper.getResource('MessageID')}</HeaderCell>
+                <HeaderCell colWidth={8}>{LangHelper.getResource('MessageID')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
                 <HeaderCell colWidth={7}>{LangHelper.getResource('Creator')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Title')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('SMAUsernames')}</HeaderCell>
-                <HeaderCell colWidth={50}>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('SMAUsernames')}</HeaderCell>
+                <HeaderCell colWidth={40}>
                     <div className="has-icons">
                         {LangHelper.getResource('Content')}
                         <span className={this.state.expandPanels ? 'fa fa-expand' : 'fa fa-compress'} onClick={this.toggleExpandPanels} />
                     </div>
                 </HeaderCell>
                 {
-                    isHost && <HeaderCell colWidth={6}>{LangHelper.getResource('Action')}</HeaderCell>
+                    isHost && <HeaderCell colWidth={5}>{LangHelper.getResource('Action')}</HeaderCell>
                 }
             </HeaderRow>
         );
@@ -68,24 +68,24 @@ export default class DataGrid extends Component {
 
     renderRow = (item, index, isHost) => (
         <Row key={index} >
-            <Cell className='text-center'>{item.id}</Cell>
-            <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
-            <Cell>{item.creator}</Cell>
+            <Cell className='text-center'>{item.messageId}</Cell>
+            <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createTime)}</Cell>
+            <Cell>{item.creatorName}</Cell>
             <Cell>{item.title}</Cell>
-            <Cell>{item.username}</Cell>
+            <Cell>{item.targetNames}</Cell>
             <Cell className="col-content">
                 <Panel ref={panel => this.panels[index] = panel}>
                     <PanelHeader>
-                        <div className='split-content'>{item.content.slice(0, 72)}</div>
+                        <div className='split-content'>{item.content_en.slice(0, 100)}</div>
                     </PanelHeader>
-                    <div className='content'>{item.content}</div>
+                    <div className='content'>{item.content_en}</div>
                 </Panel>
             </Cell>
             {
                 isHost &&
                 <Cell className="text-center">
                     <span className="rounded-circle fa fa-trash icon-delete"
-                        onClick={() => this.handleDelete(item.id)}
+                        onClick={() => this.handleDelete(item.messageId)}
                     />
                 </Cell>
             }

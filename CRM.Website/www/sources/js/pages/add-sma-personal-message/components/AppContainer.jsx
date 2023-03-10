@@ -36,7 +36,7 @@ export class AppContainer extends Component {
       this.setState({ policy: response });
     });
 
-    await this.handleGetSMAPersonalMessage(this.state.params);
+    await this.handleGetSMAPersonalMessage(this.state.gridParams);
     document.title = LangHelper.getResource("AddSMAPersonalMessage");
   }
 
@@ -60,7 +60,7 @@ export class AppContainer extends Component {
 
   handleSuccessNewMessage = async () =>{
     this.handleCloseNewMessage();
-    await this.handleGetSMAPersonalMessage(this.state.params);
+    await this.handleGetSMAPersonalMessage(this.state.gridParams);
   }
 
   setDeletePopup = id =>{
