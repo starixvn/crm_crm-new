@@ -164,7 +164,7 @@ export default class CreateNewMessage extends Component {
         const username = values.username.replace(/\s+/g, '');
         const params = {
             title: values.title,
-            userName: username.split(',').filter(x => x !== '').join(','),
+            userName: this.handleGetUsername(),
             content_en : values['language_' + 'EN'],
             content_cs : values['language_' + 'SC'],
             content_ch : values['language_' + 'TC'],
@@ -174,6 +174,12 @@ export default class CreateNewMessage extends Component {
 
         this.handleConfirmAddMessage(params);
     };
+
+    handleGetUsername = () =>{
+        const username = this.formik.values.username.replace(/\s+/g, '');
+        const removeSpaceUsername = username.split(',').filter(x => x !== '').join(',');
+        return removeSpaceUsername;
+    }
 
     handleConfirmAddMessage = params =>{
         this.setState({confirmPopup: {isShow: true, params}});
@@ -226,7 +232,7 @@ export default class CreateNewMessage extends Component {
                     this.state.confirmPopup.isShow &&
                     <SweetModalDialog size="lg"
                         title={LangHelper.getResource('ConfirmAddSMAPersonalMessage')}
-                        contents={<div>{LangHelper.formatString(LangHelper.getResource('ConfirmCreateNewMessageSMA'), this.formik.values.username)}</div>}
+                        contents={<div>{LangHelper.formatString(LangHelper.getResource('ConfirmCreateNewMessageSMA'), this.handleGetUsername().replaceAll(',', ', '))}</div>}
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleCreateNewMessage}>
                                 {LangHelper.getResource('OK')}
