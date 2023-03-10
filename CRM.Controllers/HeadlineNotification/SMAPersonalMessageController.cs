@@ -11,7 +11,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.AddSMAPersonalMessage, Policy = Policy.Host)]
+    [CrmPermission(FunctionKey = FunctionKey.SMAPersonalMessage, Policy = Policy.Host)]
     public class SMAPersonalMessageController : BaseController
     {
         private readonly INapSession napSession;
@@ -30,7 +30,7 @@
 
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.AddSMAPersonalMessage, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.SMAPersonalMessage, Policy = Policy.Read)]
         public async Task<IActionResult> GetGridData([FromBody] GetPersonalMessageCriteria criteria)
         {
             var messageInfors = await baseService.GetDataAsync<SMAMessageInfor>(criteria);
@@ -43,7 +43,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.AddSMAPersonalMessage, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.SMAPersonalMessage, Policy = Policy.Host)]
         public async Task<IActionResult> CreateNewMessage([FromBody] AddPersonalMessageCommand command)
         {
             command.Creator = napSession.UserId;
@@ -54,7 +54,7 @@
             return Json(commandResult);
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.AddSMAPersonalMessage, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.SMAPersonalMessage, Policy = Policy.Host)]
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeletePersonalMessageCommand
