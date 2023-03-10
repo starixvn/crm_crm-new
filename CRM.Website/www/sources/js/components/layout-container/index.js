@@ -13,7 +13,7 @@ const NotificationListComponent  = lazy(() => import(/* webpackChunkName: 'notif
 const NotificationTemplateComponent = lazy(() => import(/* webpackChunkName: 'notification-template' */ '@jsroot/pages/notification-template/index'));
 const ChatTypeMappingComponent = lazy(() => import(/* webpackChunkName: 'chat-type-mapping' */ '@jsroot/pages/chat-type-mapping/index'));
 const NotificationTypeComponent = lazy(() => import(/* webpackChunkName: 'notification-type' */ '@jsroot/pages/notification-type/index'));
-const AddSMAPersonalMessage = lazy(() => import(/* webpackChunkName: 'add-sma-personal-message' */ '@jsroot/pages/add-sma-personal-message/index'));
+const SMAPersonalMessage = lazy(() => import(/* webpackChunkName: 'add-sma-personal-message' */ '@jsroot/pages/add-sma-personal-message/index'));
 
 const ManagementComponent  = lazy(() => import(/* webpackChunkName: 'pic-and-headline-management' */ '@jsroot/pages/pic-and-headline/management/index'));
 const PicAssignmentComponent  = lazy(() => import(/* webpackChunkName: 'pic-and-headline-pic-assignment' */ '@jsroot/pages/pic-and-headline/pic-assignment/index'));
@@ -64,7 +64,7 @@ const MenuRouteArray = [
     { url: 'NotificationTemplate', component: NotificationTemplateComponent },
     { url: 'ChatTypeMapping', component: ChatTypeMappingComponent },
     { url: 'NotificationType', component: NotificationTypeComponent },
-    { url: 'AddSMAPersonalMessage', component: AddSMAPersonalMessage },
+    { url: 'SMAPersonalMessage', component: SMAPersonalMessage },
     { url: 'PicManagement', component: ManagementComponent },
     { url: 'PicOfHeadline', component: PicAssignmentComponent },
     { url: 'ChangesLog', component: ChangesLogManagementComponent },
