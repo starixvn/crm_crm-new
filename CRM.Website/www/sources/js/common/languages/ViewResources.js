@@ -253,6 +253,7 @@
     InvalidDuration: 'Invalid Duration Time',
     InsertNewSettingSuccess: 'Insert new setting successfully!',
     IssueStatisticsReport: 'Issue Statistics Report',
+    InvalidInputSMAUsernames: 'The number of usernames must not exceed 50!',
     JobSettingManagement: 'Job Settings Management',
     SettingExistedAlready: 'Setting existed already',
     UpdateSettingSuccess: 'Update Setting successfully!',

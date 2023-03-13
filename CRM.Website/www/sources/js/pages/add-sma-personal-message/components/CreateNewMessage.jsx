@@ -140,7 +140,7 @@ export default class CreateNewMessage extends Component {
         }
 
         if(isValidLengthUsername){
-            errors.username = 'SMA usernames must not over 50 characters long!';
+            errors.username = LangHelper.getResource('InvalidInputSMAUsernames');
         }
 
         if(values.language_EN === ''){

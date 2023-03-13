@@ -119,7 +119,7 @@ export class AppContainer extends Component {
             <SweetModalDialog size='md'
                 title={LangHelper.getResource('Confirmation')}
                 contents={
-                    <div>Are you sure you want to delete this message<strong>{this.state.deleteMessagePopUp.id}</strong>? This action is permanent and cannot be undone.</div>
+                    <div>Are you sure you want to delete this message <strong>{this.state.deleteMessagePopUp.id}</strong>? This action is permanent and cannot be undone.</div>
                 }
                 buttons={[
                     <Button variant="primary" size="sm" onClick={this.handleDelete}>
