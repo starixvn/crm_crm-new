@@ -1,7 +1,7 @@
 ﻿import React, { Component, Fragment } from 'react';
 import LangHelper from '@jsroot/common/langHelper';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
-import { SMALL_PAGING_SIZES } from '@jsroot/common/constants';
+import { PAGING_SIZES } from '@jsroot/common/constants';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Panel, { PanelHeader } from '@jsroot/components/panel/index';
 
@@ -110,7 +110,7 @@ export default class DataGrid extends Component {
             PageIndex: pageIndex,
             PageSize: pageSize,
             TotalItem: totalItems,
-            PageList: SMALL_PAGING_SIZES
+            PageList: PAGING_SIZES
         };
 
         return (
