@@ -4,6 +4,7 @@
     using System.Net;
     using System.Threading.Tasks;
     using CRM.Core.Filters;
+    using Fanex.Logging;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
@@ -25,6 +26,7 @@
             var userService = Substitute.For<IUserService>();
             var napSettings = Substitute.For<INapSettings>();
             var napSession = Substitute.For<INapSession>();
+            var logger = Substitute.For<ILogger>();
             napSession.UserId.Returns(1);
 
             userService.GetPermissionAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns((int)Constant.Policy.Read);
@@ -37,7 +39,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmPermissionAttribute(userService, napSettings, napSession)
+            var filter = new CrmPermissionAttribute(userService, napSettings, napSession, logger)
             {
                 Policy = Constant.Policy.Host
             };
@@ -58,6 +60,7 @@
             var userService = Substitute.For<IUserService>();
             var napSettings = Substitute.For<INapSettings>();
             var napSession = Substitute.For<INapSession>();
+            var logger = Substitute.For<ILogger>();
 
             userService.GetPermissionAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns((int)Constant.Policy.Host);
 
@@ -69,7 +72,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmPermissionAttribute(userService, napSettings, napSession)
+            var filter = new CrmPermissionAttribute(userService, napSettings, napSession, logger)
             {
                 Policy = Constant.Policy.Host
             };
