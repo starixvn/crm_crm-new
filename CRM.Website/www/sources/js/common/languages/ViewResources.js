@@ -469,6 +469,7 @@
     ServiceName: 'Service Name',
     SMAPersonalMessage: 'SMA Personal Message',
     SMAUsernames: 'SMA Username(s)',
+    SMATitleInputError: 'Title must not exceed 300 characters!',
     TemplateContent: 'Template Content',
     TemplateId: 'Template Id',
     TemplateName: 'Template Name',

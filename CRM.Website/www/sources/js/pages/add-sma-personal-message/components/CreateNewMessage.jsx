@@ -135,6 +135,10 @@ export default class CreateNewMessage extends Component {
     validateFormik = values => {
         const errors = {};
         const isValidLengthUsername = this.validateUsernameInput(values.username);
+        if (values.title.length > 300) {
+            errors.username = LangHelper.getResource('SMATitleInputError');
+        }
+
         if (values.username === '') {
             errors.username = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SMAUsernames'));
         }
