@@ -55,6 +55,7 @@ export default class CreateNewMessage extends Component {
                         </Form.Label>
                         <Col sm="10" md="10">
                             <Form.Control type="text" size="sm" value={values.title}
+                                isInvalid={touched.title && errors.title}
                                 name="title" id="title"
                                 className="shadow-none" autoComplete="off"
                                 onChange={handleChange}
@@ -136,7 +137,7 @@ export default class CreateNewMessage extends Component {
         const errors = {};
         const isValidLengthUsername = this.validateUsernameInput(values.username);
         if (values.title.length > 300) {
-            errors.username = LangHelper.getResource('SMATitleInputError');
+            errors.title = LangHelper.getResource('SMATitleInputError');
         }
 
         if (values.username === '') {
