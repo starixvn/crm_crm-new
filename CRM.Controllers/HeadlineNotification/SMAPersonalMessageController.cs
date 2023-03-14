@@ -11,7 +11,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.SMAPersonalMessage, Policy = Policy.Host)]
+    [CrmPermission(FunctionKey = FunctionKey.SMAPersonalMessage, Policy = Policy.Read)]
     public class SMAPersonalMessageController : BaseController
     {
         private readonly INapSession napSession;
