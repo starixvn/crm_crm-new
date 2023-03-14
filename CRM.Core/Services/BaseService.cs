@@ -11,6 +11,7 @@
     using Fanex.Data;
     using Fanex.Data.Repository;
     using Fanex.Data.SqlServer;
+    using Microsoft.AspNetCore.Http;
 
     public interface IBaseService
     {
@@ -75,30 +76,29 @@
         {
             var siteDbCriteria = new GetSiteDbConfigCriteria();
             var siteConfigs = await GetSiteDbConfigAsync(siteDbCriteria);
-            var tasks = new List<Task<IEnumerable<T>>>();
             var results = new List<T>();
             foreach (var siteConfig in siteConfigs)
             {
-                try
-                {
-                    criteria.SiteDBGroupID = siteConfig.SiteDBGroupID;
-                    var result = await GetDataByIpConfigAsync<T>(siteConfig.AGIP, siteConfig.LinkedServerName, criteria);
-                    results.AddRange(result);
-                }
-                catch (Exception ex)
-                {
-                    var taskEmpty = Task.FromResult<IEnumerable<T>>(null);
-                    tasks.Add(taskEmpty);
-                    await logService.ErrorAsync(ex);
-                }
+                criteria.SiteDBGroupID = siteConfig.SiteDBGroupID;
+                var result = await GetDataByIpConfigAsync<T>(siteConfig.AGIP, siteConfig.LinkedServerName, criteria);
+                results.AddRange(result);
             }
             return results;
         }
 
         public virtual async Task<IEnumerable<T>> GetDataByIpConfigAsync<T>(string ipConfig, string connectionAlias, CriteriaBaseSiteDb criteria)
         {
-            (var sqlRunner, var dbCommand) = CreateNewDbcommand(ipConfig, connectionAlias, criteria);
-            return await sqlRunner.QueryAsync<T>(dbCommand);
+            try
+            {
+                (var sqlRunner, var dbCommand) = CreateNewDbcommand(ipConfig, connectionAlias, criteria);
+                return await sqlRunner.QueryAsync<T>(dbCommand);
+            }
+            catch (Exception ex)
+            {
+                var taskEmpty = Enumerable.Empty<T>();
+                await logService.ErrorAsync(ex);
+                return taskEmpty;
+            }
         }
 
         private static ValueTuple<SqlStoredProcedureRunner, DbCommandDefinition> CreateNewDbcommand(string ipConfig, string connectionAlias, CriteriaBaseSiteDb criteria)

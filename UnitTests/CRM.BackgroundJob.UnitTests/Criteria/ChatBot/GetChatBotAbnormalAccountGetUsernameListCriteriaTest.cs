@@ -10,7 +10,7 @@
         {
             // Arrange
             var criteria = new GetChatBotAbnormalAccountGetUsernameListCriteria();
-            var expected = "Acc_CRM_AbnormalAccount_GetUsernameList";
+            var expected = "Acc_CRM_ChatBot_AbnormalAccount_GetUsernameList";
 
             // Act
             var actual = criteria.GetSettingKey();
