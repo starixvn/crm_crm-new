@@ -5,7 +5,7 @@ import '@cssroot/pages/add-sma-personal-message/index.scss';
 export default class index extends React.Component {
     render(){
         return(
-            <div className='add-sma-personal-message'>
+            <div className='sma-personal-message'>
                 <AppContainer />
             </div>
         );
