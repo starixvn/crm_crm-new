@@ -10,8 +10,8 @@ export default class Content extends Component {
 
     render() {
         const { data, onClose } = this.props;
-        const LogIdDisplay = `(${LangHelper.getResource('LogID')}: ${data.referenceId})`;
-        const messageIdDisplay = `(${LangHelper.getResource('MessageID')}: ${data.referenceId})`;
+        const LogIdDisplay = `(${LangHelper.getResource('LogID')}: ${data.referenceIdList})`;
+        const messageIdDisplay = `(${LangHelper.getResource('MessageID')}: ${data.referenceIdList})`;
         return (
             <Modal show backdrop='static' keyboard={false} size='lg' centered
                 onHide={onClose} className='notification-list-modal'
@@ -19,8 +19,8 @@ export default class Content extends Component {
             >
                 <Modal.Header closeButton>
                     <Modal.Title as='div'>
-                    {`${LangHelper.getResource('NotificationID')}: ${data.notificationId} `}
-                        {data.dataSource === 'MessageId' ? messageIdDisplay : data.referenceId > 0 && LogIdDisplay}
+                    {`${LangHelper.getResource('NotificationID')}: ${data.referenceIdList} `}
+                        {data.dataSource === 'MessageId' ? messageIdDisplay : data.referenceIdList > 0 && LogIdDisplay}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
