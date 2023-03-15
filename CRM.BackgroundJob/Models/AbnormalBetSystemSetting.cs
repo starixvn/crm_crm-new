@@ -20,5 +20,6 @@
         public int Seq { get; set; }
         public int MaxVoidingHistoryCollectionId { get; set; }
         public int MaxVoidingHistoryCollectionIdUAT { get; set; }
+        public int LastVoidingHistoryCollectionId { get; set; }
     }
 }

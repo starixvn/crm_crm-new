@@ -13,8 +13,5 @@
         public int MessageId { get; set; }
         [XMLName("RequestId")]
         public int RequestId { get; set; }
-
-        [XMLName("VoidingHistoryCollectionId")]
-        public int VoidingHistoryCollectionId { get; set; }
     }
 }

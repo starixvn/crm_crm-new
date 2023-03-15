@@ -156,7 +156,7 @@
             }).Distinct();
             foreach (var transaction in transactionInfosDistinct)
             {
-                var matchInfo = matchInfos.FirstOrDefault(x => x.MessageId == transaction.MessageId.ToString());
+                var matchInfo = matchInfos.FirstOrDefault(x => x.MessageId.Contains(transaction.MessageId.ToString()));
                 var headlineId = 0;
                 var relatedCustId = 0;
 
