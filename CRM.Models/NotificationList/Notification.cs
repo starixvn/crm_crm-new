@@ -7,7 +7,7 @@
     {
         public int NotificationId { get; set; }
 
-        public int ReferenceIdList { get; set; }
+        public string ReferenceIdList { get; set; }
 
         public string DataSource { get; set; }
 
