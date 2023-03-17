@@ -47,7 +47,7 @@ export class DataGrid extends Component {
                 </HeaderCell>
                 }
                 <HeaderCell colWidth={10}>{LangHelper.getResource('ServiceName')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('SettingName')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('SettingName')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Value')}</HeaderCell>
                 {
                      isHost && <HeaderCell colWidth={3}>{LangHelper.getResource('Edit')}</HeaderCell>
