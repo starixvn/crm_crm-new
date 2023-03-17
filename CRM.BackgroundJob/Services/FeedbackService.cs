@@ -69,8 +69,8 @@
             logService.LogInformation("CreateFeedbackForVoidingAbnormalBetAsync start!!!");
 
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AutoFB);
-
-            var voidingMessages = await messageService.GetVoidingMessageAsync(setting.MaxVoidingHistoryCollectionId);
+            var MaxVoidingHistoryCollectionId = isUAT ? setting.MaxVoidingHistoryCollectionIdUAT : setting.MaxVoidingHistoryCollectionId;
+            var voidingMessages = await messageService.GetVoidingMessageAsync(MaxVoidingHistoryCollectionId);
             var messageImportCheck = await messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2);
             var voidingMessageUserName = Enumerable.Empty<VoidingMessageUserName>();
             if (messageImportCheck.Any())
