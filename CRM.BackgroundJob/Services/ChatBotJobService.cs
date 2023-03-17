@@ -94,7 +94,7 @@
                 var groupsHistoryCollectionId = userNameList.GroupBy(p => p.VoidingHistoryCollectionId).Select(x => new ChatBotUserNameList
                 {
                     VoidingHistoryCollectionId = x.Key,
-                    UsernameList = string.Join(", ", x.Select(p => p.UsernameList))
+                    UsernameList = string.Join(",", x.Select(p => p.UsernameList))
                 });
                 var voidingHistoryCollectionIds = voidingInfo.Item1
                     .Select(voidingCollectionId => new ChatBotUserNameList
