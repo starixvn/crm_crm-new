@@ -189,3 +189,12 @@
         word-break: break-word;
     }
 }
+
+.view-detail-remark {
+    width: 100%;
+    border: 1px solid $border-input-color;
+}
+
+.view-detail-remark:focus {
+    outline: none;
+}
