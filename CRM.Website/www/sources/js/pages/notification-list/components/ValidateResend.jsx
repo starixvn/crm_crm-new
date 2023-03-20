@@ -60,7 +60,7 @@ export class ValidateResend extends Component {
                 );
             } else {
                 if (isAllValidate) {
-                    return LangHelper.formatString(LangHelper.getResource('ComfirmResendNotification'), 's', resendIdsString);
+                    return LangHelper.formatString(LangHelper.getResource('ConfirmResendNotification'), 's', resendIdsString);
                 } else {
                     return <div>
                         <div>{LangHelper.formatString(
