@@ -1,6 +1,11 @@
-.checkbox-edit{
-    cursor: pointer;
+.job-setting-management{
+    .form-filter{
+        .form-group{
+            width: 325px !important;
+        }
+    }
 }
+
 .job-setting-modal{
     .modal-content{
         #serviceName{
@@ -23,4 +28,8 @@
 
 .confirm-edit-modal .modal-dialog{
     max-width: 600px !important;
+}
+
+.checkbox-edit{
+    cursor: pointer;
 }

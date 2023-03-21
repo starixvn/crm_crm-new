@@ -31,7 +31,7 @@ export class DataGrid extends Component {
             <HeaderRow>
                 {
                     isHost &&
-                    <HeaderCell colWidth={5}>
+                    <HeaderCell colWidth={7}>
                         <div className='d-flex justify-content-center pb-2'>
                             <input className='d-block mx-auto' type='button' disabled={isDisableButtonEditMultiple || !this.props.gridParams.settingName}
                                 value={LangHelper.getResource('MultipleEdit')}
