@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Enumerables;
@@ -16,7 +15,6 @@
     using CRM.Letstalk.Services.Criteria;
     using CRM.Letstalk.Services.Models.SendNotification;
     using CRM.Letstalk.Services.Services.Interfaces;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
 
@@ -24,22 +22,21 @@
     {
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
-        private readonly IWebHostEnvironment webHostEnvironment;
         private readonly Func<int, ILetstalkService> letstalkService;
         private readonly int ItemEachBatch;
         private const int DefaultItemEachBatch = 10;
+        private readonly string BaseImageUrl;
 
         public SendNotificationService(IBaseService baseService,
             ICRMLogService logService,
             IConfiguration configuration,
-            IWebHostEnvironment webHostEnvironment,
             Func<int, ILetstalkService> letstalkService)
         {
             this.baseService = baseService;
             this.logService = logService;
             this.letstalkService = letstalkService;
-            this.webHostEnvironment = webHostEnvironment;
             ItemEachBatch = configuration.GetValue<int?>("SendNotificationItemEachBatch") ?? DefaultItemEachBatch;
+            BaseImageUrl = configuration.GetValue<string>("BaseImageUrl");
         }
 
         public async Task SendNotificationToLetstalk()
@@ -122,7 +119,7 @@
             {
                 sendResult.Status = SendNotificationStatus.Retrying;
                 sendResult.ErrMsg = SendNotificationErrMsg.BotServiceErrorMsg;
-                logService.LogFileError(exception);
+
                 await WriteLogMessage(notification, new BaseResult { Status = 0, Message = exception.Message }, sendResult.Status);
                 await logService.ErrorAsync(exception);
             }
@@ -194,25 +191,23 @@
 
         private async Task SendToGroup(NotificationMessage notification, SendNotificationResult sendResult)
         {
-            try
+            var result = new PushMessageResult();
+            var outGoingMsg = new OutgoingMessage
             {
-                var result = new PushMessageResult();
-                var outGoingMsg = new OutgoingMessage
-                {
                 MessageType = MessageTypeNumber.Html,
                 Text = notification.Content
-                };
+            };
 
-                result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
+            result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
             if (!string.IsNullOrEmpty(notification.FileName))
             {
                 await SendImagesToGroup(notification);
             }
 
-                sendResult.Status = result.IsSuccess ? SendNotificationStatus.Sent : SendNotificationStatus.Retrying;
-                sendResult.ErrMsg = result.IsSuccess ? string.Empty : SendNotificationErrMsg.BotServiceErrorMsg;
-                await WriteLogMessage(notification, result, sendResult.Status);
+            sendResult.Status = result.IsSuccess ? SendNotificationStatus.Sent : SendNotificationStatus.Retrying;
+            sendResult.ErrMsg = result.IsSuccess ? string.Empty : SendNotificationErrMsg.BotServiceErrorMsg;
+            await WriteLogMessage(notification, result, sendResult.Status);
         }
 
         private async Task SendImagesToGroup(NotificationMessage notification)
@@ -232,16 +227,6 @@
                 var result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outgoingMsg);
                 logService.LogInformation(JsonConvert.SerializeObject(result));
             }
-            catch (Exception ex)
-            {
-                logService.LogFileError(ex);
-                throw;
-            }
-        }
-            string fileType = file.EndsWith("png", StringComparison.OrdinalIgnoreCase) ? "png" : "jpeg";
-
-            string base64ImageRepresentation = $"http://new-crm1.nexdev.net/www/dist/images/announcement/{announcementId}/{file}";
-            var html = "<img style=\"width: 100%;\" src=\"" + base64ImageRepresentation + "\" Alt=\"" + file + "\">";
         }
 
         private async Task UpdateRecipientStatus(IEnumerable<SendNotificationResult> sentResults)
@@ -267,9 +252,7 @@
         }
 
         private async Task<IEnumerable<NotificationMessage>> GetNotificationToSend()
-        {
-            return await baseService.GetDataAsync<NotificationMessage>(new GetNotificationToSendCriteria());
-        }
+            => await baseService.GetDataAsync<NotificationMessage>(new GetNotificationToSendCriteria());
 
         private async Task WriteLogMessage(NotificationMessage notification, BaseResult result, string status, bool isBlocked = false)
         {
