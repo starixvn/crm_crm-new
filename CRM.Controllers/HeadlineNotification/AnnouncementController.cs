@@ -5,7 +5,9 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.Core.Constants;
     using CRM.Core.Enumerables;
+    using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Criteria.Announcement;
     using CRM.Criteria.PicAndHeadline;
@@ -16,7 +18,9 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Core.Business.Constant;
 
+    [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Read)]
     public class AnnouncementController : BaseController
     {
         private readonly IAnnouncementService announcementService;
@@ -74,6 +78,7 @@
             return Json(allSetting);
         }
 
+        [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Host)]
         [HttpPost]
         public async Task<IActionResult> SaveFilesAndCreate([FromForm] CreateAnnouncementCommand command)
         {
@@ -96,6 +101,7 @@
             return Json(commandResult);
         }
 
+        [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Host)]
         [HttpPost]
         public async Task<IActionResult> Edit([FromForm] EditAnnouncementCommand command)
         {
@@ -128,6 +134,7 @@
             });
         }
 
+        [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Host)]
         public async Task<IActionResult> Cancel(int id)
         {
             var command = new CancelAnnouncementCommand
