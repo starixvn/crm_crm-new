@@ -179,13 +179,13 @@ export class DataGrid extends Component {
         let reference = '';
         switch(item.dataSource) {
             case 'DBMSG.bodb_Message.dbo.Msg':
-                reference = `(Msg: ${item.referenceId})`;
+                reference = `(Msg: ${item.referenceIdList})`;
             break;
             case 'DBCRM.bodb_CRM.dbo.crmAnnouncement':
-                reference = `(Ann: ${item.referenceId})`;
+                reference = `(Ann: ${item.referenceIdList})`;
             break;
             default:
-                reference = item.referenceId > 0 && `(Log: ${item.referenceId})`;
+                reference = item.referenceIdList > 0 && `(Log: ${item.referenceIdList})`;
         }
 
         return reference;

@@ -8,13 +8,13 @@ export default class Content extends Component {
         let reference = '';
         switch(data.dataSource) {
             case 'DBMSG.bodb_Message.dbo.Msg':
-                reference = `(MessageID: ${data.referenceId})`;
+                reference = `(MessageID: ${data.referenceIdList})`;
             break;
             case 'DBCRM.bodb_CRM.dbo.crmAnnouncement':
-                reference = `(AnnId: ${data.referenceId})`;
+                reference = `(AnnId: ${data.referenceIdList})`;
             break;
             default:
-                reference = data.referenceId > 0 && `(LogID: ${data.referenceId})`;
+                reference = data.referenceIdList > 0 && `(LogID: ${data.referenceIdList})`;
         }
 
         return reference;
