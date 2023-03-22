@@ -181,7 +181,7 @@ export class DataGrid extends Component {
             case 'DBMSG.bodb_Message.dbo.Msg':
                 reference = `(Msg: ${item.referenceId})`;
             break;
-            case 'AnnouncementId':
+            case 'DBCRM.bodb_CRM.dbo.crmAnnouncement':
                 reference = `(Ann: ${item.referenceId})`;
             break;
             default:

@@ -10,7 +10,7 @@ export default class Content extends Component {
             case 'DBMSG.bodb_Message.dbo.Msg':
                 reference = `(MessageID: ${data.referenceId})`;
             break;
-            case 'AnnouncementId':
+            case 'DBCRM.bodb_CRM.dbo.crmAnnouncement':
                 reference = `(AnnId: ${data.referenceId})`;
             break;
             default:
