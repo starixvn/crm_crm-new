@@ -9,11 +9,15 @@
     <ItemGroup>
         <None Remove="App_Data\SpNames.LOCAL_1.xml" />
         <None Remove="App_Data\SpNames.LOCAL_2.xml" />
+        <None Remove="App_Data\SpNames.PROD_1.xml" />
         <None Remove="App_Data\SpNames.SIT_1.xml" />
         <None Remove="logs\log.txt" />
     </ItemGroup>
     <ItemGroup>
         <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+        <Content Include="App_Data\SpNames.PROD_1.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="App_Data\SpNames.SIT_1.xml">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
