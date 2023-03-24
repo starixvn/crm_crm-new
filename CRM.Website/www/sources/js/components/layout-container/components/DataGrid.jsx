@@ -82,8 +82,7 @@ export default class DataGrid extends PureComponent {
     }) => {
         const {customerInfo, settings} = this.props;
         const isShowInactiveMsg = settings.sitesLicenseeInactive.filter(x=> x.id === customerInfo.siteId).length > 0;
-        const siteOptions = JSON.parse(JSON.stringify(settings.sites));
-        changeSiteSetting(siteOptions, 'childSites', 'childSites');
+        const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
 
         return (
             <Form className="left-form-customer" id="left-form-container" noValidate onSubmit={handleSubmit}>

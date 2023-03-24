@@ -89,10 +89,12 @@ export class Filter extends Component {
             { id: 0, name: 'No' }
         ];
 
+        const siteOptionsFilter = changeSiteSetting(siteOptions, 'subItem', 'childList');
+
         this.setState({
             languageOptions: languageOptions,
             positionOptions: positionOptions,
-            siteOptions: siteOptions,
+            siteOptions: siteOptionsFilter,
             vipOptions: vipOptions,
             languageIds: languageIds.join(','),
             positionIds: positionIds.join(','),
@@ -154,7 +156,6 @@ export class Filter extends Component {
 
     render() {
         const { languageOptions, positionOptions, siteOptions, vipOptions, excludeIgnoredAccounts, isShowFilter } = this.state;
-        siteOptions.length > 0 && changeSiteSetting(siteOptions, 'subItem', 'childList');
 
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit} action="javascript:void(0)">

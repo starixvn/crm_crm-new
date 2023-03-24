@@ -401,8 +401,7 @@ export class Filter extends Component {
         }
         const subCategoryOptions = this.filterSubCategoryOptions(allSettings.subCategories, this.state.mainCategoryId);
         const subProductOptions = this.filterSubProductOptions(allSettings.subProducts, this.state.productId);
-        const siteOptions = JSON.parse(JSON.stringify(allSettings.sites));
-        changeSiteSetting(siteOptions, 'childSites', 'childSites');
+        const siteOptions = changeSiteSetting(allSettings.sites, 'childSites', 'childSites');
 
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit}>
