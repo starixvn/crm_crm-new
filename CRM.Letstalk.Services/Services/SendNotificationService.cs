@@ -174,6 +174,12 @@
                 sendResult.ErrMsg = string.Empty;
             }
 
+            if (!result.IsSuccess)
+            {
+                sendResult.Status = SendNotificationStatus.Retrying;
+                sendResult.ErrMsg = result.Message;
+            }
+
             if (result.FailList.Any())
             {
                 sendResult.Status = SendNotificationStatus.Error;
