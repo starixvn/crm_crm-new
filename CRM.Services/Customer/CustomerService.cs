@@ -68,7 +68,7 @@
         {
             var criteria = new GetUplineInfoOfUserCriteria { CustId = custId };
             var uplineInfos = new List<CustomerInfoDetails>();
-            var customers = await baseService.GetDataAsync<CustomerInfoDetails>(criteria);
+            var customers = (await baseService.GetDataAsync<CustomerInfoDetails>(criteria)).OrderByDescending(x => x.RoleId);
             foreach (var item in customers)
             {
                 if (criteria.CustId == item.CustId || item.RoleId == RoleIdConstants.Headline)
@@ -138,7 +138,6 @@
                 };
                 customerInfo.IsDirectAccount = await CheckDirectAccount(customerInfo.CustId);
             }
-            
 
             return customerInfo;
         }
