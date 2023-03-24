@@ -310,3 +310,20 @@ export const changeSiteSetting = (siteOptions, subItem, childList) => {
     });
     return sites;
 };
+
+export const getSiteLabel = (sites, siteId) => {
+    let siteLabel = '';
+    sites.forEach(item => {
+        if (item.childSites && item.childSites.length > 0) {
+            item.childSites.forEach(element => {
+                if (element.childSites && element.childSites.length > 0) {
+                    if (element.childSites.find(data => data.id === siteId))
+                    {
+                        siteLabel = element.childSites.find(data => data.id === siteId).siteLabel;
+                    }
+                }
+            })
+        }
+    });
+    return siteLabel;
+};

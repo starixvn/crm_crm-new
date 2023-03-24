@@ -11,6 +11,7 @@ import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import { Policy } from '@jsroot/common/constants';
 import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
+import { changeSiteSetting, getSiteLabel } from '@jsroot/common/shareScripts';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
 
@@ -189,6 +190,9 @@ export class EditForm extends Component {
                 checked: values.languages.includes(item.languageId)
             };
         });
+        const siteOptions = changeSiteSetting(this.props.allSettings.sites, 'childSites', 'childSites');
+        const siteLabel = getSiteLabel(siteOptions, customerInfo.siteSetting.id);
+
         return (
             <div className="panel-group border-bottom-0">
                 <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('personalInfo')}
@@ -295,9 +299,9 @@ export class EditForm extends Component {
                                     <Col sm="8" md="8">
                                         <SelectWithSearch
                                             className='basic-single'
-                                            options={this.props.allSettings.sites}
+                                            options={siteOptions}
                                             value={values.siteId}
-                                            name={customerInfo.siteSetting.name}
+                                            name={`${customerInfo.siteSetting.name} ${siteLabel && `(${siteLabel})`}`}
                                             isHideNA={false}
                                             OnChangeValue={item => this.handleChangeValue('siteId', item.id)}
                                         />

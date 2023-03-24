@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { getSiteLabel } from '@jsroot/common/shareScripts';
 import LangHelper from '@jsroot/common/langHelper';
 
 export default class SelectWithSearch extends Component {
@@ -132,26 +133,9 @@ export default class SelectWithSearch extends Component {
         }
     };
 
-    getSiteLabel = (sites, siteId) => {
-        let siteLabel = '';
-        sites.forEach(item => {
-            if (item.childSites && item.childSites.length > 0) {
-                item.childSites.forEach(element => {
-                    if (element.childSites && element.childSites.length > 0) {
-                        if (element.childSites.find(data => data.id === siteId))
-                        {
-                            siteLabel = element.childSites.find(data => data.id === siteId).siteLabel;
-                        }
-                    }
-                })
-            }
-        });
-        return siteLabel;
-    };
-
     render() {
         const { options } = this.state;
-        const siteLabel = this.getSiteLabel(options, this.state.selectedItem.id);
+        const siteLabel = getSiteLabel(options, this.state.selectedItem.id);
 
         return (
             <div className={'dropdown selectwithsearchtree ' + this.state.selectFormStatus} ref={this.wrapperRef}>
