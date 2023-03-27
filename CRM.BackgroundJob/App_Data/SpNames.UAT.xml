@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Functions>
     <Function Name="System Setting">
-        <Setting Key="Acc_CRM_SettingSel" SpName="Acc_CRM_SettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingSel" SpName="Acc_CRM_SettingSel_UAT3" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SettingRelationSel" SpName="Acc_CRM_SettingRelationSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="System Setting">
@@ -20,7 +20,7 @@
         <Setting Key="Acc_CRM_MessageAbnormalTicketsSel" SpName="Acc_CRM_MessageAbnormalTicketsSel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
         <Setting Key="Acc_CRM_AbnormalTicketsSel" SpName="Acc_CRM_AbnormalTicketsSel" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_GroupHeadlineSel" SpName="Acc_CRM_GroupHeadlineSel" DbName="DBACC.bodb02.bodbAdminNet" />
-        <Setting Key="Acc_CRM_GroupHeadlineVipSel" SpName="Acc_CRM_GroupHeadlineVipSel" DbName="DBEXT.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_CRM_GroupHeadlineVipSel" SpName="Acc_CRM_GroupHeadlineVipSel_UAT3" DbName="DBEXT.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_SystemSettingMappingSel" SpName="Acc_CRM_SystemSettingMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerFeedbackIns" SpName="Acc_CRM_CustomerFeedbackIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_GuestFeedbackIns_Multiple" SpName="Acc_CRM_GuestFeedbackIns_Multiple" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -50,7 +50,7 @@
         <Setting Key="Acc_CRM_Chatbot_TOControl_Import" SpName="Acc_CRM_Chatbot_TOControl_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot ProblemAccount">
-        <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Sel" SpName="Acc_CRM_Chatbot_ProblemAccounts_Sel" DbName="DBCUST.CustDB.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Sel" SpName="Acc_CRM_Chatbot_ProblemAccounts_Sel_UAT3" DbName="DBCUST.CustDB.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Import" SpName="Acc_CRM_Chatbot_ProblemAccounts_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot Result Amendment">
@@ -74,26 +74,26 @@
     </Function>
     <Function Name="WinLoss Limit">
         <Setting Key="Acc_CRM_CustWinLimitSel" SpName="Acc_CRM_CustWinLimitSel" DbName="DBCUST.CustDB.bodbAdminNet" />
-        <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoIns" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoIns" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoIns_UAT3" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Turnover Controll">
         <Setting Key="Acc_CRM_TOControl_CustOutstandingSel" SpName="Acc_CRM_TOControl_CustOutstandingSel" DbName="DBEXT.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_TOControl_SystemSettingSel" SpName="Acc_CRM_TOControl_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_TOControl_AutoFeedbackInfoIns" SpName="Acc_CRM_TOControl_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_TOControl_AutoFeedbackInfoIns" SpName="Acc_CRM_TOControl_AutoFeedbackInfoIns_UAT3" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_TOControl_AutoFeedbackInfoUpd" SpName="Acc_CRM_TOControl_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_TOControl_CustNotificationSel" SpName="Acc_CRM_TOControl_CustNotificationSel" DbName="DBCUST.CustDB.bodbAdminNet" />
     </Function>
     <Function Name="ProblemsAccount">
         <Setting Key="Acc_CRM_ProblemAccount_SystemSettingSel" SpName="Acc_CRM_ProblemAccount_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ProblemAccount_CustCategorySel" SpName="Acc_CRM_ProblemAccount_CustCategorySel" DbName="DBCUST.CustDB.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ProblemAccount_CustCategorySel" SpName="Acc_CRM_ProblemAccount_CustCategorySel_UAT3" DbName="DBCUST.CustDB.bodbAdminNet" />
         <Setting Key="Acc_CRM_ProblemAccount_AutoFeedbackInfoIns" SpName="Acc_CRM_ProblemAccount_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ProblemAccount_AutoFeedbackInfoUpd" SpName="Acc_CRM_ProblemAccount_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Result Amendment">
         <Setting Key="Acc_CRM_AmendmentNoti_SystemSettingSel" SpName="Acc_CRM_AmendmentNoti_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AmendmentNotificationSel" SpName="Acc_CRM_AmendmentNotificationSel" DbName="DBEXT.bodb02.bodbAdminNet" />
-        <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel_UAT3" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
@@ -105,7 +105,7 @@
         <Setting Key="Acc_CRM_FailVoidingMessageSel" SpName="Acc_CRM_FailVoidingMessageSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_BatchUpd" SpName="Acc_CRM_VoidingAutoFeedbackInfo_BatchUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Ins" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Sel" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Sel" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Sel_UAT3" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Voiding_SystemSettingSel" SpName="Acc_CRM_Voiding_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AutoVoidingMessageSel" SpName="Acc_CRM_AutoVoidingMessageSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AutoVoidingMessageUpd" SpName="Acc_CRM_AutoVoidingMessageUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
