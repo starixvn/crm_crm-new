@@ -5,9 +5,6 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 export const validateFormik = (values, files, invalidWidthHeight) => {
     const dateTimeNowClient= new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     let errors = {};
-    if (!values.notificationTemplate) {
-        errors.notificationTemplate = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('NotificationTemplate'));
-    }
 
     if (!values.title) {
         errors.title = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title'));

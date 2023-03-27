@@ -250,12 +250,11 @@ export class NewAnnouncement extends Component {
                         />
                     }
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" className="required" htmlFor="notificationTemplate">
+                        <Form.Label column sm="2" md="2" htmlFor="notificationTemplate">
                             {LangHelper.getResource('NotificationTemplate')}
                         </Form.Label>
                         <Col sm="10" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
-                                isInvalid={touched.notificationTemplate && errors.notificationTemplate}
                                 name="notificationTemplateId" id="notificationTemplateId"
                                 value={values.notificationTemplateId}
                                 onChange={this.handleChangeNotificationTemplate}

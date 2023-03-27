@@ -11,6 +11,8 @@
         public DateTime SendDate { get; set; }
         public string SendDateString { get; set; }
         public string SendTimeString { get; set; }
+        public string CreatedDateString { get; set; }
+        public string CreatedTimeString { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedTime { get; set; }
         public string Title { get; set; }

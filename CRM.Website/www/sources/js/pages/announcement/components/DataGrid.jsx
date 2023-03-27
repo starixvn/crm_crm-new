@@ -24,10 +24,10 @@ export class DataGrid extends Component {
         (<HeaderRow>
             <HeaderCell colWidth={4}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
             <HeaderCell colWidth={6}>{LangHelper.getResource('AnnouncementId')}</HeaderCell>
-            <HeaderCell colWidth={6}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
+            <HeaderCell colWidth={5}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
             <HeaderCell colWidth={30}>{LangHelper.getResource('Title')}/{LangHelper.getResource('Content')}</HeaderCell>
-            <HeaderCell colWidth={6}>{LangHelper.getResource('CreatedBy')}</HeaderCell>
-            <HeaderCell colWidth={10}>{LangHelper.getResource('CreatedTimeGM8')}</HeaderCell>
+            <HeaderCell colWidth={5}>{LangHelper.getResource('CreatedBy')}</HeaderCell>
+            <HeaderCell colWidth={5}>{LangHelper.getResource('CreatedTimeGM8')}</HeaderCell>
             <HeaderCell colWidth={6}>{LangHelper.getResource('Status')}</HeaderCell>
             {
                 isHost && <HeaderCell colWidth={4}>{LangHelper.getResource('Action')}</HeaderCell>
@@ -77,7 +77,10 @@ export class DataGrid extends Component {
                 </Cell>
                 <Cell className='link-click' onClick={() => this.openContentPopup(item.announcementId)}>{item.title}</Cell>
                 <Cell>{item.createdBy}</Cell>
-                <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdTime)}</Cell>
+                <Cell className='text-center'>
+                    <div>{item.createdDateString}</div>
+                    <div>{item.createdTimeString}</div>
+                </Cell>
                 {
                     item.status === 'Completed' ? 
                     <Cell className={`text-center status ${statusLowerCase}`}>

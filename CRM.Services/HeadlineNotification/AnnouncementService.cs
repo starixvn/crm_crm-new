@@ -39,7 +39,10 @@ namespace CRM.Services.HeadlineNotification
                 announcement.SendDate = convertSendDateToClient;
                 announcement.SendDateString = convertSendDateToClient.ToString("MMM dd, yyyy");
                 announcement.SendTimeString = convertSendDateToClient.ToString("hh:mm:ss tt");
+
                 announcement.CreatedTime = convertCreatedTimeToClient;
+                announcement.CreatedDateString = convertCreatedTimeToClient.ToString("MMM dd, yyyy");
+                announcement.CreatedTimeString = convertCreatedTimeToClient.ToString("hh:mm:ss tt");
             }
             return announcements;
         }
