@@ -11,7 +11,7 @@ namespace CRM.Controllers.AdminTool
     using System.Linq;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.SettingLog, Policy = Policy.Read)]
     public class SettingLogController : BaseController
     {
         private readonly ISettingService settingService;
