@@ -4,6 +4,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import LangHelper from '@jsroot/common/langHelper';
 import { Form, Row, Col } from 'react-bootstrap';
+import { changeSiteSetting } from '@jsroot/common/shareScripts';
 export default class DropdownDetail extends PureComponent {
     renderCreateCommunication = () => {
         const { values, touched, errors, handleChange, setFieldValue, onChangeStartTime, onChangeEndTime,
@@ -120,6 +121,7 @@ export default class DropdownDetail extends PureComponent {
         const { subCategories, subProducts, betTypes, allSettings, values, touched, errors, handleChange, setFieldValue, setStateSubProduct,
                 setStateBetType, handleChangeProduct, handleChangeSubProduct, handleChangeMainCategory, mainCategories, products } = this.props;
         const { countries, statuses, roles, sites, licenseeTypes } = allSettings;
+        const siteOptions = changeSiteSetting(sites, 'childSites', 'childSites');
         return(
             <div>
                 <Form.Group as={Row}>
@@ -256,7 +258,7 @@ export default class DropdownDetail extends PureComponent {
                             <Col sm="8" md="8">
                                 <SelectWithSearch className='basic-single'
                                     OnChangeValue={value => setFieldValue('siteId', value.id)}
-                                    options={sites}
+                                    options={siteOptions}
                                     isHideNA={false}
                                     name={values.siteName}
                                     value={values.siteId}

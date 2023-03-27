@@ -4,6 +4,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import { changeSiteSetting } from '@jsroot/common/shareScripts';
 
 export class CustomerInfo extends PureComponent{
     renderCustomerInformation = (customerInfo, handleChange) => {
@@ -340,6 +341,7 @@ export class CustomerInfo extends PureComponent{
     render() {
         const {customerInfo, handleChange, settings, renderOptions, customerDetail, handleChangeValueInfo} = this.props;
         const maxDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
+        const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
         return (
             <div>
                 <Form.Group as={Row} className="pt-2" >
@@ -428,7 +430,7 @@ export class CustomerInfo extends PureComponent{
                                 <Col sm="8" md="8">
                                     <SelectWithSearch
                                         className='basic-single'
-                                        options={settings.sites}
+                                        options={siteOptions}
                                         value={customerInfo.siteId}
                                         name={customerInfo.siteName}
                                         isSelectOption

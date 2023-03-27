@@ -3,6 +3,7 @@ import { Col, Form, Row, Collapse } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
+import { changeSiteSetting } from '@jsroot/common/shareScripts';
 
 export default class CustomerInfo extends PureComponent {
     renderCommunicationToolSection = () => {
@@ -387,6 +388,7 @@ export default class CustomerInfo extends PureComponent {
     render() {
         const { collapse, fieldInput, settings, values, handleChangeInput, setFieldValue
         } = this.props;
+        const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
 
         return (
             <div className="panel-group">
@@ -476,7 +478,7 @@ export default class CustomerInfo extends PureComponent {
                                     <Col sm="8" md="8">
                                         <SelectWithSearch className='basic-single'
                                             OnChangeValue ={value => setFieldValue('siteId', value.id)}
-                                            options={settings.sites}
+                                            options={siteOptions}
                                             name={values.siteName} value={values.siteId}
                                         />
                                     </Col>
