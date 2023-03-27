@@ -138,8 +138,16 @@
         max-width: 1000px !important;
     }
     .modal-content{
+        .form-group{
+            margin-bottom: 0 !important;
+        }
+
         .list-file-image .icon-delete::before{
             padding-left: 6px;
+        }
+
+        .list-file-image:last-child{
+            padding-bottom: 5px
         }
 
         .multiple-select-options{
@@ -248,10 +256,10 @@
             }
         }
 
-        .multiple-select-options-container{
-            top: -227px !important;
-            left: -2px !important;
-        }
+        // .multiple-select-options-container{
+        //     top: -227px !important;
+        //     left: -2px !important;
+        // }
     }
 }
 
@@ -281,14 +289,15 @@
         }
     }
 
+    .announcement-content{
+        white-space: pre-line;
+        word-break: break-word;
+    }
+
     @include tab-language;
     .languages-text{
-        .nav-item:not(:last-child){
-            width: 151px !important;
-        }
-
-        .nav-item:is(:last-child){
-            width: 157px !important;
+        .nav-item {
+            width: 138px !important;
         }
     }
 }

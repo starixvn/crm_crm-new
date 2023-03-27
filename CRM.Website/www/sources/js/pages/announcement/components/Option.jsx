@@ -25,6 +25,7 @@ export default class Option extends PureComponent {
                                 statusField='checked'
                                 isSummited={false}
                                 isAllTextShown
+                                isPlacementTop
                                 onChange={
                                     (currentItem, selectedItemsKey) => handleOptionChange('site', selectedItemsKey)
                                 }
@@ -39,6 +40,7 @@ export default class Option extends PureComponent {
                                 valueField='name'
                                 hasSearchBox
                                 statusField='checked'
+                                isPlacementTop
                                 isSummited={false}
                                 isAllTextShown
                                 onChange={

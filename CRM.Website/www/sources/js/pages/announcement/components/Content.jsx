@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LangHelper from '@jsroot/common/langHelper';
-import { Button, Modal} from 'react-bootstrap';
+import { Button, Modal, Form, Col, Row, Tabs, Tab} from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -9,8 +9,6 @@ import Site from '@jsroot/common/site';
 import {
    mapLabelLanguage
 } from '../common.functions';
-
-import ContentTab from './ContentTab';
 
 export class Content extends Component {
     constructor(props) {
@@ -116,10 +114,31 @@ export class Content extends Component {
                         <span style={styleBold}>{announcement.title}</span>
                     </div>
                     {
-                        <ContentTab
-                            isValidContent={false} content={content} isReadOnly
-                            languages={languages} tab={tab} handleChangeTab={this.handleChangeTab} 
-                        />
+                        <Form.Group as={Row}>
+                            <Form.Label column sm="1" md="1" htmlFor="content">
+                                {LangHelper.getResource('Content')}
+                            </Form.Label>
+                            <Col sm='11' md='11'>
+                                <Tabs
+                                    className='languages-text'
+                                    id="controlled-tab"
+                                    activeKey={tab}
+                                    onSelect={selected => this.handleChangeTab(selected)}
+                                >
+                                    {
+                                        languages.map((language, key) =>
+                                            (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
+                                                <div
+                                                    className='border p-2 mt-2 mb-3 announcement-content'
+                                                    name={language.mapLabel}
+                                                    dangerouslySetInnerHTML={{ __html: content[language.mapLabel] }}
+                                                />
+                                            </Tab>)
+                                        )
+                                    }
+                                </Tabs>               
+                            </Col>
+                        </Form.Group>
                     }
                     <div className="content-border">
                         {

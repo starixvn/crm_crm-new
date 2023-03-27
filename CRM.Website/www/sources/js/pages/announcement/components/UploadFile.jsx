@@ -95,7 +95,7 @@ export default class UploadFile extends PureComponent {
         <Fragment>
             <Form.Group as={Row} controlId="formFileMultiple">
                     <Form.Label column sm="2" md="2" />
-                    <Col >
+                    <Col className='mt-2'>
                         <span className='file-upload'>
                             <label htmlFor="file-btn" className="file-upload-label">
                             <span>Choose Files</span>

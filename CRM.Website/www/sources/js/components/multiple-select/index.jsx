@@ -25,7 +25,8 @@ export default class MultipleSelect extends Component {
         isDisable: PropTypes.bool,
         isNAOption: PropTypes.bool,
         isAllToggle: PropTypes.bool,
-        isCheckedNA: PropTypes.bool
+        isCheckedNA: PropTypes.bool,
+        isPlacementTop: PropTypes.bool
     };
 
     static defaultProps = {
@@ -38,7 +39,8 @@ export default class MultipleSelect extends Component {
         textOptions: MULTI_SELECT_TEXT_OPTIONS,
         isNAOption: false,
         isAllToggle: false,
-        isCheckedNA: false
+        isCheckedNA: false,
+        isPlacementTop: false
     };
 
     constructor(props) {
@@ -328,7 +330,7 @@ export default class MultipleSelect extends Component {
     };
 
     render() {
-        const { maxDisplayItemCount } = this.props;
+        const { maxDisplayItemCount, isPlacementTop } = this.props;
 
         return (
             <div className={`multiple-select-container ${this.props.isInvalid ? 'invalid' : ''}`}
@@ -345,7 +347,7 @@ export default class MultipleSelect extends Component {
                     isDisable = {this.props.isDisable}
                     isNAOption = {this.props.isNAOption}
                 />
-                <div className='multiple-select-default multiple-select-options-container'
+                <div className={`multiple-select-default multiple-select-options-container ${isPlacementTop ? 'multiple-select-options-container-top' : ''}`}
                     style={{ display: this.state.showOptionList ? 'block' : 'none' }}
                 >
                     {this._renderSearchBox()}
