@@ -268,18 +268,22 @@
         }
     }
     
-    div{
-        padding-bottom: 10px;
+    .content-border{
+        border: 1px solid $border-input-color;
+        padding: 5px;
+        div{
+            padding-bottom: 10px;
+        }
     }
 
     @include tab-language;
     .languages-text{
         .nav-item:not(:last-child){
-            width: 123px !important;
+            width: 151px !important;
         }
 
         .nav-item:is(:last-child){
-            width: 125px !important;
+            width: 157px !important;
         }
     }
 }

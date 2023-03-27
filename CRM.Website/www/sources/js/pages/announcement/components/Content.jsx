@@ -107,11 +107,11 @@ export class Content extends Component {
                     <Modal.Title as='div'>{`${LangHelper.getResource('AnnouncementId')}: ${this.props.id}`}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div>
+                    <div className='pb-2'>
                         <span>{LangHelper.getResource('NotificationTemplate')}: </span>
                         <span style={styleBold}>{announcement.notificationTemplateName}</span>
                     </div>
-                    <div>
+                    <div className='pb-2'>
                         <span>{LangHelper.getResource('Title')}: </span>
                         <span style={styleBold}>{announcement.title}</span>
                     </div>
@@ -121,65 +121,67 @@ export class Content extends Component {
                             languages={languages} tab={tab} handleChangeTab={this.handleChangeTab} 
                         />
                     }
-                    {
-                        fileNames.length > 0 && fileNames.map((image, key) =>(
-                            <div key={key} className='d-flex image-section'>
-                                <span className='fa fa-file-image-o mr-2  pt-1'/>
-                                    <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image)}>
-                                        {image}
-                                    </span>
-                            </div>
-                        ))
-                    }
-                    {
-                        !announcement.siteNameList ?
-                        <>
-                            <div>
-                                <span>{`${LangHelper.getResource('Site')}: N/A`}</span>
-                            </div>
-                            <div>
-                                <span>{`${LangHelper.getResource('Currency')}: N/A`}</span>
-                            </div>
-                            <div>
-                                <span>{`${LangHelper.getResource('HeadlineType')}: N/A`}</span>
-                            </div>
-                        </> :
-                        <>
-                            <div>
-                                <span>{`${LangHelper.getResource('Site')}: `}</span>
-                                <span style={styleBold}>{announcement.siteNameList ? announcement.siteNameList.replaceAll(',', ', ') : ''}</span>
-                            </div>
-                            <div>
-                                <span>{`${LangHelper.getResource('Currency')}: `}</span>
-                                <span style={styleBold}>{this.state.currencies}</span>
-                            </div>
-                            <div>
-                                <span>{`${LangHelper.getResource('HeadlineType')}: `}</span>
-                                <span style={styleBold}>{this.state.headlineType}</span>
-                            </div>
-                        </>
-                    }
-                    <div>
+                    <div className="content-border">
                         {
-                            announcement.headlineNameList && announcement.headlineNameList.length > 0 &&
+                            fileNames.length > 0 && fileNames.map((image, key) =>(
+                                <div key={key} className='d-flex image-section'>
+                                    <span className='fa fa-file-image-o mr-2  pt-1'/>
+                                        <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image)}>
+                                            {image}
+                                        </span>
+                                </div>
+                            ))
+                        }
+                        {
+                            !announcement.siteNameList ?
                             <>
-                                <span>{`${LangHelper.getResource('AffectedGroupHeadline')}: `}</span>
-                                <span style={styleBold}>{announcement.headlineNameList ? announcement.headlineNameList.replaceAll(',', ', ') : ''}</span>
+                                <div>
+                                    <span>{`${LangHelper.getResource('Site')}: N/A`}</span>
+                                </div>
+                                <div>
+                                    <span>{`${LangHelper.getResource('Currency')}: N/A`}</span>
+                                </div>
+                                <div>
+                                    <span>{`${LangHelper.getResource('HeadlineType')}: N/A`}</span>
+                                </div>
+                            </> :
+                            <>
+                                <div>
+                                    <span>{`${LangHelper.getResource('Site')}: `}</span>
+                                    <span style={styleBold}>{announcement.siteNameList ? announcement.siteNameList.replaceAll(',', ', ') : ''}</span>
+                                </div>
+                                <div>
+                                    <span>{`${LangHelper.getResource('Currency')}: `}</span>
+                                    <span style={styleBold}>{this.state.currencies}</span>
+                                </div>
+                                <div>
+                                    <span>{`${LangHelper.getResource('HeadlineType')}: `}</span>
+                                    <span style={styleBold}>{this.state.headlineType}</span>
+                                </div>
                             </>
                         }
-                    </div>
-                    <div>
-                        {
-                            announcement.directAccounts && announcement.directAccounts.length > 0 &&
-                            <>
-                                <span>{`${LangHelper.getResource('DirectAccount')}: `}</span>
-                                <span style={styleBold}>{announcement.directAccounts ? announcement.directAccounts.replaceAll(',', ', ') : ''}</span>
-                            </>
-                        }
-                    </div>
-                    <div>
-                        <span>{`${LangHelper.getResource('SendDateTimeGMTA8')}: `}</span>
-                        <span style={styleBold}>{announcement.sendDateString} {announcement.sendTimeString}</span>
+                        <div>
+                            {
+                                announcement.headlineNameList && announcement.headlineNameList.length > 0 &&
+                                <>
+                                    <span>{`${LangHelper.getResource('AffectedGroupHeadline')}: `}</span>
+                                    <span style={styleBold}>{announcement.headlineNameList ? announcement.headlineNameList.replaceAll(',', ', ') : ''}</span>
+                                </>
+                            }
+                        </div>
+                        <div>
+                            {
+                                announcement.directAccounts && announcement.directAccounts.length > 0 &&
+                                <>
+                                    <span>{`${LangHelper.getResource('DirectAccount')}: `}</span>
+                                    <span style={styleBold}>{announcement.directAccounts ? announcement.directAccounts.replaceAll(',', ', ') : ''}</span>
+                                </>
+                            }
+                        </div>
+                        <div>
+                            <span>{`${LangHelper.getResource('SendDateTimeGMTA8')}: `}</span>
+                            <span style={styleBold}>{announcement.sendDateString} {announcement.sendTimeString}</span>
+                        </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
