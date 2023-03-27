@@ -306,7 +306,7 @@
             return string.Empty;
         }
 
-        public async Task<PushMessageResult> PushPersonalAsync(IEnumerable<string> accountIds, OutgoingMessage message)
+        public async Task<PushMessageResult> PushPersonalAsync(IEnumerable<string> accountIds, OutgoingMessage message, bool isForcePush = true)
         {
             ValidateInputParam(nameof(accountIds), accountIds);
             ValidateInputParam(nameof(message), message);
@@ -318,7 +318,8 @@
                 new Dictionary<string, object>
                 {
                     { "msg", message },
-                    { "receivers", accountIds.ToArray() }
+                    { "receivers", accountIds.ToArray() },
+                    { "forcePush", isForcePush ? 1 : 0 }
                 },
                 token,
                 encodeData: false);

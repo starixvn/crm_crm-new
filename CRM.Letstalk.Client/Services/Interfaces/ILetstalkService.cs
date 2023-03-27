@@ -10,7 +10,7 @@
     {
         Task<PushMessageResult> PushAsync(IEnumerable<string> accountIds, string message, DateTime? expiredTime = null);
 
-        Task<PushMessageResult> PushPersonalAsync(IEnumerable<string> accountIds, OutgoingMessage message);
+        Task<PushMessageResult> PushPersonalAsync(IEnumerable<string> accountIds, OutgoingMessage message, bool isForcePush = true);
 
         Task<PushMessageResult> PushAsync(string accountId, string message, DateTime? expiredTime = null);
 
