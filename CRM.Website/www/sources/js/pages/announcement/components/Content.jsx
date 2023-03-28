@@ -106,10 +106,6 @@ export class Content extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <div className='pb-2'>
-                        <span>{LangHelper.getResource('NotificationTemplate')}: </span>
-                        <span style={styleBold}>{announcement.notificationTemplateName}</span>
-                    </div>
-                    <div className='pb-2'>
                         <span>{LangHelper.getResource('Title')}: </span>
                         <span style={styleBold}>{announcement.title}</span>
                     </div>
