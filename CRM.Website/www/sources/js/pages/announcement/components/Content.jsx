@@ -114,31 +114,26 @@ export class Content extends Component {
                         <span style={styleBold}>{announcement.title}</span>
                     </div>
                     {
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="1" md="1" htmlFor="content">
-                                {LangHelper.getResource('Content')}
-                            </Form.Label>
-                            <Col sm='11' md='11'>
-                                <Tabs
-                                    className='languages-text'
-                                    id="controlled-tab"
-                                    activeKey={tab}
-                                    onSelect={selected => this.handleChangeTab(selected)}
-                                >
-                                    {
-                                        languages.map((language, key) =>
-                                            (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
-                                                <div
-                                                    className='border p-2 mt-2 mb-3 announcement-content'
-                                                    name={language.mapLabel}
-                                                    dangerouslySetInnerHTML={{ __html: content[language.mapLabel] }}
-                                                />
-                                            </Tab>)
-                                        )
-                                    }
-                                </Tabs>               
-                            </Col>
-                        </Form.Group>
+                        <div className='pb-2'>
+                            <Tabs
+                                className='languages-text'
+                                id="controlled-tab"
+                                activeKey={tab}
+                                onSelect={selected => this.handleChangeTab(selected)}
+                            >
+                                {
+                                    languages.map((language, key) =>
+                                        (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
+                                            <div
+                                                className='border p-2 mt-2 mb-3 announcement-content'
+                                                name={language.mapLabel}
+                                                dangerouslySetInnerHTML={{ __html: content[language.mapLabel] }}
+                                            />
+                                        </Tab>)
+                                    )
+                                }
+                            </Tabs>
+                        </div>    
                     }
                     <div className="content-border">
                         {
