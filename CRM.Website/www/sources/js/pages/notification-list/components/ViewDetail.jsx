@@ -97,7 +97,7 @@ export class ViewDetail extends Component {
                         <b>{data.notificationId}</b>
                     </div>
                     <div>
-                        {`${LangHelper.getResource('NotificationTemplate')}: `}
+                        {`${LangHelper.getResource('Title')}: `}
                         <b>{data.title}</b>
                     </div>
                     <div>

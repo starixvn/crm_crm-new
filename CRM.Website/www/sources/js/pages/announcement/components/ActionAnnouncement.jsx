@@ -280,6 +280,7 @@ export class ActionAnnouncement extends Component {
         const message = this.props.actionAnnouncementPopup.isEdit ? 
                         LangHelper.getResource('EditAnnouncementSuccessfully') :
                         LangHelper.getResource('CloneAnnouncementSuccessfully');
+        const notificationTemplates = [{notificationTemplateId: 0, notificationTemplateName: LangHelper.getResource('PleaseSelect')}, ...this.props.announcementTemplate.notificationTemplates];
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -302,7 +303,7 @@ export class ActionAnnouncement extends Component {
                                 disabled={actionAnnouncementPopup.isEdit}
                             >
                                 <option value="" hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>
-                                {this.props.announcementTemplate.notificationTemplates.map((value, key) => renderOption(key, value.notificationTemplateId, value.notificationTemplateName))}
+                                {notificationTemplates.map((value, key) => renderOption(key, value.notificationTemplateId, value.notificationTemplateName))}
                             </Form.Control>
                         </Col>
                     </Form.Group>

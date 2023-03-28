@@ -106,8 +106,8 @@ export default class UploadFile extends PureComponent {
                                     <span className='count-file pr-5'>{uploadedFiles.length} files</span>
                                 :   <span className='count-file pr-5'>No files chosen</span>
                             }
-                            <span>(</span>
-                            <span className='text-color'>limit: 10MB</span>
+                            <span>(limit: </span>
+                            <span className='text-color'>10MB</span>
                             <span>, max size: </span>
                             <span className='text-color'>2560*2560</span>
                             <span>)</span>
