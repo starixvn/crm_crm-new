@@ -121,7 +121,7 @@ export class Content extends Component {
                                     languages.map((language, key) =>
                                         (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
                                             <div
-                                                className='border p-2 mt-2 mb-3 announcement-content'
+                                                className='border p-2 mt-2 announcement-content'
                                                 name={language.mapLabel}
                                                 dangerouslySetInnerHTML={{ __html: content[language.mapLabel] }}
                                             />
@@ -131,7 +131,7 @@ export class Content extends Component {
                             </Tabs>
                         </div>    
                     }
-                    <div className="content-border">
+                    <div className={fileNames.length > 0 ? 'content-border pb-2 mb-2' : ''}>
                         {
                             fileNames.length > 0 && fileNames.map((image, key) =>(
                                 <div key={key} className='d-flex image-section'>
@@ -142,8 +142,10 @@ export class Content extends Component {
                                 </div>
                             ))
                         }
-                        {
-                            !announcement.siteNameList ?
+                    </div>
+                    <div>
+                    {
+                        !announcement.siteNameList ?
                             <>
                                 <div>
                                     <span>{`${LangHelper.getResource('Site')}: N/A`}</span>

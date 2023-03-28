@@ -17,7 +17,8 @@ export default class CkEditor extends PureComponent {
         colorEditBlock: '',
         username: window.currentUsername,
         className: '',
-        isInvalid: false
+        isInvalid: false,
+        isRemoveToolbarForChatbot: false
     };
 
     componentDidMount(){
@@ -60,43 +61,47 @@ export default class CkEditor extends PureComponent {
     }
 
     onLoadPlugin = CKEDITOR => {
-        let editText = '';
-        let textTemplateEditBlock = EDIT_BLOCK_TEMPLATE;
-        const { username, colorEditBlock, data } = this.props;
-        if (data === '') {
-            editText = '&nbsp;';
-        }
-
-        if (colorEditBlock !== null) {
-            textTemplateEditBlock = EDIT_BLOCK_TEMPLATE.replace('#105289', colorEditBlock);
-        }
-
-        CKEDITOR.plugins.add('editblock', {
-            init: function (editor) {
-                editor?.addCommand('insertEditBlock', {
-                    exec: function (editor) {
-                        const currentDate = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
-                        const html = LangHelper.formatString(textTemplateEditBlock,
-                            username,
-                            moment(currentDate).format('MM/DD/YYYY, hh:mm:ss A'),
-                            editText);
-                        editor?.insertHtml(html);
-                    }
-                });
-                editor?.ui?.addButton('EditBlock', {
-                    label: 'Insert Edit Block',
-                    command: 'insertEditBlock',
-                    toolbar: 'insert'
-                });
+        if(!this.props.isRemoveToolbarForChatbot){
+            let editText = '';
+            let textTemplateEditBlock = EDIT_BLOCK_TEMPLATE;
+            const { username, colorEditBlock, data } = this.props;
+            if (data === '') {
+                editText = '&nbsp;';
             }
-        });
+
+            if (colorEditBlock !== null) {
+                textTemplateEditBlock = EDIT_BLOCK_TEMPLATE.replace('#105289', colorEditBlock);
+            }
+        
+            CKEDITOR.plugins.add('editblock', {
+                init: function (editor) {
+                    editor?.addCommand('insertEditBlock', {
+                        exec: function (editor) {
+                            const currentDate = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+                            const html = LangHelper.formatString(textTemplateEditBlock,
+                                username,
+                                moment(currentDate).format('MM/DD/YYYY, hh:mm:ss A'),
+                                editText);
+                            editor?.insertHtml(html);
+                        }
+                    });
+                    editor?.ui?.addButton('EditBlock', {
+                        label: 'Insert Edit Block',
+                        command: 'insertEditBlock',
+                        toolbar: 'insert'
+                    });
+                }
+            });
+        }
 
         CKEDITOR.addCss('body {margin: 2 !important;}');
     };
 
 
     render() {
-        const { className, isInvalid, ...rest } = this.props;
+        const { className, isInvalid, isRemoveToolbarForChatbot , ...rest } = this.props;
+        const toolbar = isRemoveToolbarForChatbot ? TOOLBAR.filter(x => x.name !=='document' && x.name !== 'links') : TOOLBAR;
+        const removePlugins = isRemoveToolbarForChatbot ? REMOVE_PLUGINS.concat(', image2').concat(', editblock'): REMOVE_PLUGINS;
         return (
             <div className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
                 <CKEditor
@@ -107,9 +112,9 @@ export default class CkEditor extends PureComponent {
                         removeButtons: '',
                         colorButton_enableMore: true,
                         extraPlugins: EXTRA_TOOLBAR,
-                        toolbar: TOOLBAR,
+                        toolbar: toolbar,
                         allowedContent: true,
-                        removePlugins: REMOVE_PLUGINS,
+                        removePlugins: removePlugins,
                         language: 'en',
                         disableNativeSpellChecker:false,
                         enterMode: 2

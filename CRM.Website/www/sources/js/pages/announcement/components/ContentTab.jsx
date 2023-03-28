@@ -33,6 +33,7 @@ export default class ContentTab extends PureComponent {
                                         setFieldValue(`content.${[language.mapLabel]}`, value);
                                         setFieldValue(`cloneContent.${[language.mapLabel]}`, value);
                                     }}
+                                    isRemoveToolbarForChatbot
                                     readOnly={isReadOnly}
                                 />
                             </Tab>)

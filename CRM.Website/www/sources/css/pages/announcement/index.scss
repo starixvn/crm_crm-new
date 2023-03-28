@@ -280,14 +280,14 @@
         border: 1px solid $border-input-color;
         padding: 5px;
         div{
-            padding-bottom: 10px;
+            padding-bottom: 5px;
         }
     }
 
     @include tab-language;
     .languages-text{
         .nav-item {
-            width: 138px !important;
+            width: 152px !important;
         }
     }
 }
