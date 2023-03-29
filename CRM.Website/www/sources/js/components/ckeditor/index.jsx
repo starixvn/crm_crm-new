@@ -115,8 +115,9 @@ export default class CkEditor extends PureComponent {
                         toolbar: toolbar,
                         allowedContent: true,
                         removePlugins: removePlugins,
-                        defaultLanguage: 'en',
-                        language: 'vi',
+                        entities: false,
+                        basicEntities: false,
+                        language: 'en',
                         disableNativeSpellChecker:false,
                         enterMode: 2
                     }}
