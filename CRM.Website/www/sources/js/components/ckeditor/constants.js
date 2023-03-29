@@ -12,7 +12,7 @@
 
 export const REMOVE_PLUGINS = 'magicline, elementspath, image, contextmenu, tabletools, liststyle, tableselection';
 
-export const EXTRA_TOOLBAR = "justify, font, colorbutton, colordialog, image2, uploadimage, editblock";
+export const EXTRA_TOOLBAR = "justify, font, colorbutton, colordialog, image2, uploadimage, editblock, language";
 
 export const EDIT_BLOCK_TEMPLATE = `<div>
     <div style="background-color: #FFFFD0; padding-left: 10px; border-left: 1px solid #CCCCCC;">
