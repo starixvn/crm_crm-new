@@ -15,7 +15,7 @@ export default class CkEditor extends PureComponent {
 
     static defaultProps = {
         colorEditBlock: '',
-        username: '',
+        username: window.currentUsername,
         className: '',
         isInvalid: false
     };
