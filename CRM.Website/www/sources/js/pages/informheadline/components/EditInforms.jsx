@@ -61,7 +61,7 @@ export class EditInforms extends Component {
 
         const { titleDetail, allSettings } = this.props;
         const includeCurrencies = this.getIncludeInSetting(titleDetail.currencies, allSettings.currencies);
-        const includeSites = this.getIncludeInSetting(titleDetail.sites, allSettings.sites[0].childSites);
+        const includeSites = titleDetail.sites;
         const params = {
             titleId: this.props.titleId, typeAccount: titleDetail.typeAccount,
             currencies: includeCurrencies, levels: titleDetail.positions,

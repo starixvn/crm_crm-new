@@ -9,6 +9,7 @@ import Site from '@jsroot/common/site';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
+import { changeSiteSetting } from '@jsroot/common/shareScripts';
 
 export default class FeedbackDetails extends Component {
     static propTypes = {
@@ -42,6 +43,7 @@ export default class FeedbackDetails extends Component {
         const url = Site.resolveClientUrl(`MultipleLogs/GetLogSettingByFeedbackId/${id}`);
         await DataService.getDataAsync(url).then(response => {
             const data = response.data;
+            data.settings.sites = changeSiteSetting(data.settings.sites, 'childSites', 'childSites');
             const settings = this.getSettings(data.communicationLog, data.settings);
             const extensionOptions = data.settings.extensions.map(item => {
                 return {
@@ -51,6 +53,7 @@ export default class FeedbackDetails extends Component {
                 };
             });
             const sitesOptions = data.settings.sites;
+
             const communicationToolOptions = data.settings.communicationTools.map(item => {
                 return {
                     id: item.id,
@@ -114,17 +117,30 @@ export default class FeedbackDetails extends Component {
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);;
     }
 
-    getSettings = (communicationLog, settings) => {
-        const communicationLogSettings = communicationLog.settings;
+    getSiteInfo = (sites, siteId) => {
         const siteInfos = [];
-
-        settings.sites.forEach(site => {
-            const siteFilter = site.childSites.filter(item => item.id === communicationLog.siteId);
-            if (siteFilter.length > 0) {
-                siteInfos.push(siteFilter[0]);
+        sites.forEach(item => {
+            if (item.childSites && item.childSites.length > 0) {
+                item.childSites.forEach(element => {
+                    if (element.childSites && element.childSites.length > 0) {
+                        if (element.childSites.find(data => data.id === siteId))
+                        {
+                            siteInfos.push(element.childSites.find(data => data.id === siteId));
+                        }
+                    } else {
+                        if (element.id === siteId) {
+                            siteInfos.push(element);
+                        }
+                    }
+                })
             }
         });
+        return siteInfos;
+    };
 
+    getSettings = (communicationLog, settings) => {
+        const communicationLogSettings = communicationLog.settings;
+        const siteInfos = this.getSiteInfo(settings.sites, communicationLog.siteId);
         const selectedExtensionIds = [],
             selectedProductIds = [],
             selectedBetTypeIds = [],
@@ -365,6 +381,7 @@ export default class FeedbackDetails extends Component {
     renderDropdownDetail = communication => {
         const { settings, mainCategoryOptions, subCategoryOptions, productOptions, subProductOptions, betTypeOptions, sitesOptions } = this.state;
         const { statuses, roles } = settings;
+
         return (
             <div>
                 <Form.Group as={Row}>

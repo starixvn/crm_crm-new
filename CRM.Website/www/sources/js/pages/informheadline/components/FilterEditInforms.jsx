@@ -16,13 +16,56 @@ export class FilterEditInforms extends PureComponent {
                         this.initNewFormData()
                         : this.initFormData(props.includeCurrencies, props.includeSites);
         this.state = {
-            isSave: false
+            isSave: false,
+            siteOptions: []
         };
     }
 
     componentDidMount() {
         this.props.isNewInform && this.props.setFilterData({ errors: { title: 'err' }});
+
+        const sites = [];
+        this.props.allSettings.sites[0].childSites.map((item, key) => {
+            sites.push({
+                id: key,
+                name: item.name,
+                checked: this.isCheckItem(item),
+                subItem: item.childSites.map(element => {
+                    return {
+                        key: element.id,
+                        value: element.name,
+                        name: element.name,
+                        checked: this.initData.sites.split(',').includes(element.id.toString())
+                    };
+                })
+            });
+        });
+
+        const siteItem = JSON.parse(JSON.stringify(sites));
+        const siteOptions = siteItem.reduce((accumulator, currentValue) => {
+            if (currentValue.name === null || currentValue.name === '') {
+                currentValue.subItem.map(data => accumulator.push({...data, id: data.key}));
+            } else {
+                accumulator.push(currentValue);
+            }
+            return accumulator;
+        }, []);
+
+        this.setState({ siteOptions: siteOptions });
     }
+
+    isCheckItem = data => {
+        let result = true;
+        if (data.childSites && data.childSites.length > 0) {
+            data.childSites.map(item => {
+                let checked = this.initData.sites.split(',').includes(item.id.toString());
+                if (!checked) {
+                    result = false;
+                }
+            })
+        }
+        return result;
+    };
 
     renderFilterForm = ({
         values,
@@ -34,6 +77,7 @@ export class FilterEditInforms extends PureComponent {
         isSubmitting
     }) => {
         const { detail, allSettings, informData } = this.props;
+        const { siteOptions } = this.state;
 
         const allPositions = [
             { id: 4, name: 'Super' }, { id: 3, name: 'Master' },
@@ -58,14 +102,6 @@ export class FilterEditInforms extends PureComponent {
                 id: item.id,
                 name: item.name,
                 checked: values.levels.split(',').includes(item.id.toString())
-            };
-        });
-
-        const filterSites = allSettings.sites[0].childSites.map(item => {
-            return {
-                id: item.id,
-                name: item.name,
-                checked: values.sites.split(',').includes(item.id.toString())
             };
         });
 
@@ -141,13 +177,15 @@ export class FilterEditInforms extends PureComponent {
                     <Col sm="2" md="2">
                         <MultipleSelect
                             isInvalid={touched.sites && errors.sites}
-                            dataSource={filterSites}
+                            dataSource={siteOptions}
                             keyField='id' valueField='name'
-                            hasAllOption={filterSites.length > 0}
-                            isAllTextShown={filterSites.length > 0}
+                            hasAllOption={siteOptions.length > 0}
+                            isAllTextShown={siteOptions.length > 0}
                             maxDisplayItemCount={1}
                             hasSearchBox
                             onChange={(currentItem, selectedItemsKey) => {
+                                console.log('currentItem', currentItem);
+                                console.log('selectedItemsKey', selectedItemsKey);
                                 setFieldValue('sites', selectedItemsKey);
                             }}
                         />
