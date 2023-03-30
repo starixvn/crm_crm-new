@@ -184,8 +184,6 @@ export class FilterEditInforms extends PureComponent {
                             maxDisplayItemCount={1}
                             hasSearchBox
                             onChange={(currentItem, selectedItemsKey) => {
-                                console.log('currentItem', currentItem);
-                                console.log('selectedItemsKey', selectedItemsKey);
                                 setFieldValue('sites', selectedItemsKey);
                             }}
                         />
