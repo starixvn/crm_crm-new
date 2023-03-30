@@ -148,7 +148,7 @@ export default class EditMultipleReviewAndStatus extends Component {
                         {
                             isReviewed && <div className="text-editor">
                                 <CkEditor isInvalid={touched.review && errors.review}
-                                    data={values.review}
+                                    data={values.review} username={window.currentUsername}
                                     onChange={value => setFieldValue('review', value)}
                                 />
                             </div>
