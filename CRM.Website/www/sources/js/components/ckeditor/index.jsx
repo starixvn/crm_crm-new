@@ -101,7 +101,8 @@ export default class CkEditor extends PureComponent {
     render() {
         const { className, isInvalid, isRemoveToolbarForChatbot , ...rest } = this.props;
         const toolbar = isRemoveToolbarForChatbot ? TOOLBAR.filter(x => x.name !=='document' && x.name !== 'links') : TOOLBAR;
-        const removePlugins = isRemoveToolbarForChatbot ? REMOVE_PLUGINS.concat(', image2').concat(', editblock'): REMOVE_PLUGINS;
+        const removePluginForChatBot = ', image2, editblock, format';
+        const removePlugins = isRemoveToolbarForChatbot ? REMOVE_PLUGINS.concat(removePluginForChatBot) : REMOVE_PLUGINS;
         return (
             <div className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
                 <CKEditor
