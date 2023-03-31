@@ -168,7 +168,7 @@ export class CreateCommunicationLog extends Component {
         if (this.props.isBaseInsert) {
             siteId = customerInfo.siteSetting.id,
             siteName = customerInfo.siteSetting.name,
-            languageId = customerInfo.languages.length > 0 && customerInfo.languages[customerInfo.languages.length - 1].toString(),
+            languageId = customerInfo.languages.length > 0 ? customerInfo.languages[customerInfo.languages.length - 1].toString() : languageId,
             countryId = customerInfo.countryId
         }
         return { siteId, siteName, languageId, countryId };
