@@ -735,7 +735,7 @@
         {
             // Arrange
             var service = MockService();
-            var feedbackInfo = new VoidingAutoFeedbackInfo { IsVip = true, Site = "789y"};
+            var feedbackInfo = new VoidingAutoFeedbackInfo { IsVip = true, SiteLabel = "789y"};
             var ticketSolTemplate = new VoidingSettledTicketSolutionTemplate
             {
                 SolutionENSC = "SolutionENSC",

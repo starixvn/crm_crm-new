@@ -1410,7 +1410,7 @@
                 NoResultENSC = "NoResultENSC",
                 NoResultENYN = "NoResultENYN"
             };
-            var amendment = new AmendmentAutoFeedbackInfor { Site = site, IsVip = isVip };
+            var amendment = new AmendmentAutoFeedbackInfor { SiteLabel = site, IsVip = isVip };
             var messageContent = fixture.Create<IEnumerable<Message>>();
             var stringBuilder = new StringBuilder();
             commonFeedback.GetFeedbackTemplates<AmendmentSolutionTemplate>("AmendmentSolutionTemplate.xml").Returns(amendmentSolTemplate);

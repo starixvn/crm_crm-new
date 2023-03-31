@@ -598,7 +598,7 @@
                 Usage = 1,
                 Outstanding = 1,
                 UserName = "test",
-                Site = Site,
+                SiteLabel = Site,
                 IsVip = IsVip,
                 MatchID = 1
             };
