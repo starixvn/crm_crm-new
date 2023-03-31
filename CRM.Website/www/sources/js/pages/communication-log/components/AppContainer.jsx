@@ -90,6 +90,7 @@ export class AppContainer extends Component {
                     <CreateCommunicationLog
                         id={this.props.id}
                         customerInfo={customerInfo}
+                        isBaseInsert
                         onClose={this.handleCloseCreateCommunicationDiaLog}
                     />
                 }

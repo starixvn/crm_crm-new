@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import moment from 'moment';
 import { Button, Form, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
@@ -62,6 +62,13 @@ export class CreateCommunicationLog extends Component {
             isShowCreatePopup: false,
             feedbackSubjectTemplates: []
         };
+    }
+
+    static propTypes = {
+        isBaseInsert: PropTypes.bool
+    }
+    static defaultProps = {
+        isBaseInsert: false
     }
 
     async componentDidMount() {
@@ -152,10 +159,25 @@ export class CreateCommunicationLog extends Component {
         };
     };
 
+    getBaseInsert = () => {
+        const allSettings = this.state.allSettings;
+        const customerInfo = this.props.customerInfo;
+        let siteId = 0, siteName = 'N/A',
+            languageId = allSettings.languages[1].languageId,
+            countryId = allSettings.countries[0].id;
+        if (this.props.isBaseInsert) {
+            siteId = customerInfo.siteSetting.id,
+            siteName = customerInfo.siteSetting.name,
+            languageId = customerInfo.languages.length > 0 && customerInfo.languages[customerInfo.languages.length - 1].toString(),
+            countryId = customerInfo.countryId
+        }
+        return { siteId, siteName, languageId, countryId };
+    };
+
     getInitDataSite = options => {
         return {
-            siteId: options ? options.siteId : 0,
-            siteName: options ? options.siteName : 'N/A'
+            siteId: options ? options.siteId : this.getBaseInsert().siteId,
+            siteName: options ? options.siteName : this.getBaseInsert().siteName
         };
     };
 
@@ -163,8 +185,8 @@ export class CreateCommunicationLog extends Component {
         const isExistCommunication = this.state.allSettings?.communicationTools.filter(x => options?.communicationToolIds.includes(x.id.toString())).length > 0;
         return {
             extensionIds: options ? options.extensionIds : allSettings.extensions[0].id.toString(),
-            languageId: options ? options.languageId : allSettings.languages[1].languageId,
-            countryId: options ? options.countryId : allSettings.countries[0].id,
+            languageId: options ? options.languageId : this.getBaseInsert().languageId,
+            countryId: options ? options.countryId : this.getBaseInsert().countryId,
             communicationToolIds: options && isExistCommunication ? options.communicationToolIds : '',
             mainCategoryIds: options ? options.mainCategoryIds : '',
             subCategoryIds: options ? options.subCategoryIds : '',
