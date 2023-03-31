@@ -14,7 +14,7 @@ export const validateFormik = (values, files, invalidWidthHeight) => {
         errors.content = LangHelper.formatString(LangHelper.getResource('FieldRequired'), 'Content EN');
     }
 
-    const isInvalidContent = Object.entries(values.content).filter(([key, value]) => value.includes('{') || value.includes('}')).length > 0;
+    const isInvalidContent = Object.entries(values.content).filter(([key, value]) => value && (value.includes('{') || value.includes('}'))).length > 0;
     if(isInvalidContent){
         errors.content = LangHelper.getResource('ContentLanguageError');
     }
