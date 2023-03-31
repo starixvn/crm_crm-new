@@ -61,38 +61,36 @@ export default class CkEditor extends PureComponent {
     }
 
     onLoadPlugin = CKEDITOR => {
-        if(!this.props.isRemoveToolbarForChatbot){
-            let editText = '';
-            let textTemplateEditBlock = EDIT_BLOCK_TEMPLATE;
-            const { username, colorEditBlock, data } = this.props;
-            if (data === '') {
-                editText = '&nbsp;';
-            }
-
-            if (colorEditBlock !== null) {
-                textTemplateEditBlock = EDIT_BLOCK_TEMPLATE.replace('#105289', colorEditBlock);
-            }
-        
-            CKEDITOR.plugins.add('editblock', {
-                init: function (editor) {
-                    editor?.addCommand('insertEditBlock', {
-                        exec: function (editor) {
-                            const currentDate = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
-                            const html = LangHelper.formatString(textTemplateEditBlock,
-                                username,
-                                moment(currentDate).format('MM/DD/YYYY, hh:mm:ss A'),
-                                editText);
-                            editor?.insertHtml(html);
-                        }
-                    });
-                    editor?.ui?.addButton('EditBlock', {
-                        label: 'Insert Edit Block',
-                        command: 'insertEditBlock',
-                        toolbar: 'insert'
-                    });
-                }
-            });
+        let editText = '';
+        let textTemplateEditBlock = EDIT_BLOCK_TEMPLATE;
+        const { username, colorEditBlock, data } = this.props;
+        if (data === '') {
+            editText = '&nbsp;';
         }
+
+        if (colorEditBlock !== null) {
+            textTemplateEditBlock = EDIT_BLOCK_TEMPLATE.replace('#105289', colorEditBlock);
+        }
+    
+        CKEDITOR.plugins.add('editblock', {
+            init: function (editor) {
+                editor?.addCommand('insertEditBlock', {
+                    exec: function (editor) {
+                        const currentDate = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+                        const html = LangHelper.formatString(textTemplateEditBlock,
+                            username,
+                            moment(currentDate).format('MM/DD/YYYY, hh:mm:ss A'),
+                            editText);
+                        editor?.insertHtml(html);
+                    }
+                });
+                editor?.ui?.addButton('EditBlock', {
+                    label: 'Insert Edit Block',
+                    command: 'insertEditBlock',
+                    toolbar: 'insert'
+                });
+            }
+        });
 
         CKEDITOR.addCss('body {margin: 2 !important;}');
     };
