@@ -203,7 +203,7 @@
                 new SystemSettingItem { SettingName = VoidingHistoryCollectionNameEnv, Value = MaxVoidingHistoryCollectionId.ToString()},
                 new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(Constants.FormatDatetimeString) },
             };
-            return await systemSetting.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_AutoFB);
+            return await systemSetting.EditSystemSettingAsync(settingJobStatus);
         }
 
         public async Task<CommandResult> EditSystemSettingAsyncByEnvFormatDate(string JobStatusNameEnv,
