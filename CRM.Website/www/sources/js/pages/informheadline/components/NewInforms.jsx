@@ -35,13 +35,16 @@ export class NewInforms extends Component {
     handleSubmit = async () => {
         const { editedInforms } = this.props;
         const newData = remarkEncode(editedInforms);
+        const values = this.props.filterData.values;
 
-        if (this.props.filterData.errors.title === 'err') {
-            this.saveNew.current.handleValidate();
-        } else {
-            await this.props.insertInforms({...this.props.filterData.values, informs: newData});
-            this.setAlert();
-        }
+        if (values.currencies !== '' && values.levels !== '' && values.sites !== '') {
+            if (this.props.filterData.errors.title === 'err') {
+                this.saveNew.current.handleValidate();
+            } else {
+                await this.props.insertInforms({...values, informs: newData});
+                this.setAlert();
+            }
+        } else this.saveNew.current.handleValidate();
     };
 
     render() {
