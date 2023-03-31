@@ -37,14 +37,16 @@ export class NewInforms extends Component {
         const newData = remarkEncode(editedInforms);
         const values = this.props.filterData.values;
 
-        if (values.currencies !== '' && values.levels !== '' && values.sites !== '') {
+        if (values && values.currencies !== '' && values.levels !== '' && values.sites !== '') {
             if (this.props.filterData.errors.title === 'err') {
                 this.saveNew.current.handleValidate();
             } else {
                 await this.props.insertInforms({...values, informs: newData});
                 this.setAlert();
             }
-        } else this.saveNew.current.handleValidate();
+        } else {
+            this.saveNew.current.handleValidate();
+        }
     };
 
     render() {
