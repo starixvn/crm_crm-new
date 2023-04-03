@@ -66,15 +66,11 @@
                 var client = clientFactory.CreateClient(HttpClientName.DefaultHttpClientWithProxy);
                 using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead, CancellationToken.None))
                 {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var responseData = await response.Content.ReadAsStringAsync();
-                        var result = JsonConvert.DeserializeObject<T>(responseData);
+                    response.EnsureSuccessStatusCode();
+                    var responseData = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<T>(responseData);
 
-                        return result;
-                    }
-
-                    return default;
+                    return result;
                 }
             }
         }
