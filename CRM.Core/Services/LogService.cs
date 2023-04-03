@@ -14,6 +14,8 @@
     {
         Task ErrorAsync(Exception exception);
 
+        Task ErrorMessageAsync(string error);
+
         Task ErrorAsync(CommandResult commandResult, ICriteria criteria);
 
         Task ErrorAsync(Exception exception, ICriteria criteria);
@@ -42,6 +44,11 @@
                        .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
                        .ToString();
             await logger.ErrorAsync(logMessage);
+        }
+
+        public async Task ErrorMessageAsync(string error)
+        {
+            await logger.ErrorAsync(error);
         }
 
         public async Task ErrorAsync(CommandResult commandResult, ICriteria criteria)

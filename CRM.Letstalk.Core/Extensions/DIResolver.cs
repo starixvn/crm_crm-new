@@ -56,6 +56,8 @@
                         throw new KeyNotFoundException($"The event type {key} have not implements!");
                 }
             });
+
+            RegisterTelegramBots(services, configuration);
         }
 
         public static void ResolveLetstalkServices(this IServiceCollection services, IConfiguration configuration)
@@ -65,6 +67,17 @@
             var botConfigs = botConfigSections.Get<List<BotConfig>>();
             services.AddSingleton(botConfigs);
             services.RegisterLetstalkBotService(configuration, botConfigs);
+        }
+
+        private static void RegisterTelegramBots(IServiceCollection services, IConfiguration configuration)
+        {
+            var configs = configuration.GetSection("TelegramBotConfigurations");
+            services.Configure<List<TelegramBotConfigurations>>(configs);
+            var bots = configs.Get<List<TelegramBotConfigurations>>();
+            services.AddSingleton(bots);
+
+            services.AddTransient<ITelegramBotService, TelegramBotService>();
+
         }
     }
 }
