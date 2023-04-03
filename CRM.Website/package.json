@@ -46,6 +46,7 @@
         "test": "jest --coverage --config ./jest.config.js",
         "test:watch": "npm test -- --watch",
         "jest-update-snapshot": "jest --updateSnapshot",
+        "test-coverage": "jest --ci -u --coverage",
         "lint": "eslint ./www/sources/js/",
         "lint-fix": "eslint --fix ./www/sources/js/"
     },
