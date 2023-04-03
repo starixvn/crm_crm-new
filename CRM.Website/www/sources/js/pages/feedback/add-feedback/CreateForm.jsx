@@ -15,7 +15,7 @@ import Site from '@jsroot/common/site';
 import Detail from './Detail';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import AutoComplete from '@jsroot/components/AutoComplete';
-import VerifyCustomer from '@jsroot/components/verifyCustomer';
+import VerifyCustomer from '@jsroot/components/VerifyCustomer';
 import { BorderStyle } from '@jsroot/common/constants';
 import DataService from '@jsroot/common/dataService';
 import { toast } from 'react-toastify';

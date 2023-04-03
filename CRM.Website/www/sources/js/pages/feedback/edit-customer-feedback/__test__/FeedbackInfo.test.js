@@ -1,7 +1,7 @@
 import React from 'react';
 import FeedbackInfo from '../FeedbackInfo';
 import {Form } from 'react-bootstrap';
-import VerifyCustomer from '@jsroot/components/verifyCustomer';
+import VerifyCustomer from '@jsroot/components/VerifyCustomer';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow } from 'enzyme';

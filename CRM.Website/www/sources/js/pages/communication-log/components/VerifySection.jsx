@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import { Button, Form, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
-import VerifyCustomer from '@jsroot/components/verifyCustomer';
+import VerifyCustomer from '@jsroot/components/VerifyCustomer';
 import { validateNoOfInquiry } from '../../feedback/common.functions';
 import UnderlineButton from '@jsroot/common/underlineButton';
 

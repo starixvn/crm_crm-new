@@ -3,7 +3,7 @@ import { Button, Col, Form, Row, Collapse } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import VerifyCustomer from '@jsroot/components/verifyCustomer';
+import VerifyCustomer from '@jsroot/components/VerifyCustomer';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import { validateNoOfInquiry } from '../common.functions';
 import Details from './Details';
