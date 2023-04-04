@@ -22,25 +22,12 @@ WORKDIR "/src/CRM.Website"
 
 RUN dotnet publish -r linux-x64 --self-contained false -o /app
 
-FROM hub.nexdev.net/base/dotnet/core/aspnet:6.0-final AS base
+FROM hub.nexdev.net/nexus/crm_aspnet6 AS base
 
 WORKDIR /app
 
 COPY --from=builder /app .
 ENV TZ="America/La_Paz"
 
-RUN set -x \
- 	&& apt-get update \
-     && apt-get -y install nano \
-     && apt-get -y install curl \
-     && apt-get -y install telnet
-
-# install System.Drawing native dependencies
-RUN apt-get update \
-    && apt-get install -y --allow-unauthenticated \
-        libc6-dev \
-        libgdiplus \
-        libx11-dev \
-     && rm -rf /var/lib/apt/lists/* 
 
 ENTRYPOINT ["dotnet", "CRM.Website.dll"]
