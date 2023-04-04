@@ -10,7 +10,6 @@
     using CRM.Letstalk.Core.Services.Interfaces;
     using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Extensions;
-    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using Telegram.Bot.Types.Enums;
