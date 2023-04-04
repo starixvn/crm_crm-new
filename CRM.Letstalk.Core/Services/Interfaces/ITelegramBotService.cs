@@ -10,7 +10,7 @@
     using Telegram.Bot.Types.Enums;
     public interface ITelegramBotService
     {
-        Task SetWebhookAsync();
+        Task SetWebhookAsync(string url);
 
         Task<User> GetBotInfoAsync(long botId);
 

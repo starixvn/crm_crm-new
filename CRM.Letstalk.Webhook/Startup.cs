@@ -66,10 +66,11 @@
             ConfigDataProtection(services, redisConfig);
             ConfigRedisCache(services, redisConfig);
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.ResolveCoreDI();
             services.ResolveLetstalkServices(Configuration);
             services.ResolveWebhookServices(Configuration);
+
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

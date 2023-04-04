@@ -1,5 +1,6 @@
 ﻿namespace CRM.Letstalk.Webhook
 {
+    using System;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using NLog.Web;
@@ -8,7 +9,21 @@
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var logger = NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
+            try
+            {
+                logger.Info("Application start");
+                CreateWebHostBuilder(args).Build().Run();
+            }
+            catch (Exception exception)
+            {
+                logger.Error(exception, "Stopped program because of exception");
+                throw;
+            }
+            finally
+            {
+                NLog.LogManager.Shutdown();
+            }
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

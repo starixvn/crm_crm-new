@@ -24,11 +24,11 @@
 
         [AllowAnonymous]
         [Route("api/telegram/bot/setWebhook")]
-        public async Task<IActionResult> SetWebhook()
+        public async Task<IActionResult> SetWebhook(string url)
         {
             try
             {
-                await telegramBotService.SetWebhookAsync();
+                await telegramBotService.SetWebhookAsync(url);
             }
             catch (Exception ex)
             {

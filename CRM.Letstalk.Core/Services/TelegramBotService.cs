@@ -53,11 +53,11 @@
             }
         }
 
-        public async Task SetWebhookAsync()
+        public async Task SetWebhookAsync(string url)
         {
             foreach (var bot in botConfigurations)
             {
-                var webhook = $"{bot.Domain}/api/telegram/webhook/{bot.BotId}/update";
+                var webhook = $"{url}api/telegram/webhook/{bot.BotId}/update";
                 await bot.BotClient.DeleteWebhookAsync();
                 await bot.BotClient.SetWebhookAsync(webhook);
             }
@@ -69,7 +69,7 @@
             return await bot.BotClient.GetMeAsync();
         }
 
-        public async Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.MarkdownV2)
+        public async Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html)
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
             var message = await bot.BotClient.SendTextMessageAsync(new ChatId(chatId), messageContent, parseMode);
