@@ -330,6 +330,29 @@
             return allSites;
         }
 
+        public async Task<IEnumerable<SiteInfo>> GetAllSitesGroupByIsLicenseeAsync()
+        {
+            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());
+            var allSites = (from n in sites
+                            where n.IsActive
+                            group n by n.IsLicensee into g
+                            orderby g.Key
+                            select new SiteInfo
+                            {
+                                Id = g.Key ? SiteConstants.LicenseeGroup : SiteConstants.IBCGroup,
+                                Name = g.Key ? Constants.Licensee : Constants.Credit,
+                                ChildSites = (from c in g
+                                              orderby c.Name
+                                              select new SiteInfo
+                                              {
+                                                  Id = c.Id,
+                                                  Name = c.Name
+                                              }).ToList()
+                            }).ToList();
+            return allSites;
+        }
+
+
         public async Task<IEnumerable<SiteInfo>> GetAllSitesLicenseeInactive()
         {
             var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());

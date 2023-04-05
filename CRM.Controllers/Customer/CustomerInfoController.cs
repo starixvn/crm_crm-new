@@ -63,7 +63,7 @@
         {
             var settings = new
             {
-                sites = await settingService.GetAllSitesWithGroupAsync(),
+                sites = await settingService.GetAllSitesGroupByIsLicenseeAsync(),
                 countries = await settingService.GetCountryAsync(SettingConstants.Active),
                 languages = await settingService.GetLanguageAsync(SettingConstants.Active),
                 sitesLicenseeInactive = await settingService.GetAllSitesLicenseeInactive()
