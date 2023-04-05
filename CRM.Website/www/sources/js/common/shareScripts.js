@@ -7,10 +7,15 @@ import moment from 'moment';
 export const getPermission = async functionKey =>{
     const url = Site.resolveClientUrl('Common/GetPermission');
     return await DataService.postDataAsync(url, {functionKey : functionKey}).then(response =>{
-        if(!response || !response.data){
+        if(!response){
             return;
         }
-        return response.data;
+
+        if(response.data === 0){
+            window.location = Site.resolveClientUrl('error/AccessDenied');
+        }else{
+            return response.data;
+        }
     }).catch(Site.handleAxiosError);
 };
 
