@@ -198,8 +198,8 @@ export default class SelectWithSearch extends Component {
                                                         this.state.collapsedAll &&
                                                         item.childSites.map((item1, index1) => {
                                                             return (
-                                                                <li key={index1 + item1.name}>
-                                                                    <a onClick={() => !item1.childSites && this.selectItem(item1)}>
+                                                                <li className={`${!item1.childSites && 'list-parent'}`} key={index1 + item1.name}>
+                                                                    <a className={`${!item1.childSites && 'list-child'}`} onClick={() => !item1.childSites && this.selectItem(item1)}>
                                                                         <span>{item1.name}</span>
                                                                     </a>
                                                                     {
@@ -209,8 +209,8 @@ export default class SelectWithSearch extends Component {
                                                                                 {
                                                                                     item1.childSites.map((item2, index2) => {
                                                                                         return (
-                                                                                            <li key={index2 + item2.name}>
-                                                                                                <a onClick={() => this.selectItem(item2)}>
+                                                                                            <li className='list-parent' key={index2 + item2.name}>
+                                                                                                <a className='list-child' onClick={() => this.selectItem(item2)}>
                                                                                                     <span>{item2.name}</span>
                                                                                                 </a>
                                                                                             </li>

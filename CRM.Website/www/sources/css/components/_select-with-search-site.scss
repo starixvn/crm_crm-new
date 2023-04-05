@@ -143,6 +143,32 @@
     .list-unstyled {
         list-style: none;
         padding-left: 30px !important;
+
+        a.list-child {
+            width: 100%;
+            display: block;
+            padding: 3px 0;
+        }
+
+        li.list-parent::before {
+            height: 18px !important;
+            width: 100%;
+            z-index: -1;
+        }
+
+        li.list-parent:hover {
+            a.list-child {
+                background-color: #007bff;
+    
+                span {
+                    color: #f8f9fa !important;
+                }
+            }
+        }
+
+        li.list-parent:hover::before {
+            background-color: #007bff !important;
+        }
     }
 
     &.open > .dropdown-menu {
