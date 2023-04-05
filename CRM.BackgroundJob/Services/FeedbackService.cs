@@ -71,6 +71,7 @@
             await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AutoFB);
             var MaxVoidingHistoryCollectionId = isUAT ? setting.MaxVoidingHistoryCollectionIdUAT : setting.MaxVoidingHistoryCollectionId;
             var voidingMessages = await messageService.GetVoidingMessageAsync(MaxVoidingHistoryCollectionId);
+
             var messageImportCheck = await messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2);
             var voidingMessageUserName = Enumerable.Empty<VoidingMessageUserName>();
             if (messageImportCheck.Any())
@@ -79,7 +80,7 @@
             }
 
             var messagesImport = await messageService.ImportVoidingMessageAsync(voidingMessageUserName,
-                voidingMessages.Item1,
+                voidingMessages.Item1.Where(x => x.MessageId != 0),
                 setting.BatchSize,
                 Environment,
                 LastRuntimeEnv);
@@ -149,8 +150,10 @@
             IEnumerable<SiteSettingMapping> siteSettingMappings = await settingService.GetSiteSettingMappingAsync();
             CustomerInfo licenseeInfo = (await customerService.GetCustomerInfoAsync(appSettings.LicenseeUsername, true)) ?? new CustomerInfo();
             var custIds = transactionInfos.Where(x => !x.IsDeposit).Select(x => x.CustId).Distinct();
-            IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineVipAsync(custIds);
 
+            var custIds1 = transactionInfos.Select(x => x.CustId).Distinct();
+            IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineVipAsync(custIds);
+            IEnumerable<GroupHeadline> headlines1 = await customerService.GetGroupHeadlineVipAsync(custIds);
             var transactionByHeadline = transactionInfos.Where(x => headlines.Any(y => y.CustId == x.CustId));
 
             (IEnumerable<MatchInfo> newMatchInfos, IEnumerable<TransactionInfo> newTransactionInfos) = await ticketVoidingService.ImportTicketVoidingInfoAsync(
@@ -182,9 +185,11 @@
                 if (deposits.Any())
                 {
                     GetLicenseeManager(deposits, siteSettingMappings);
+
+                    var messageByLicenseeManager = getMessageContents.Where(x=> deposits.Any(y => y.MessageId == x.MessageId));
                     await CreateFeedbackForDepositSiteAsync(
                         licenseeInfo,
-                        messageByHeadline,
+                        messageByLicenseeManager,
                         matchInfo,
                         deposits,
                         settings,
