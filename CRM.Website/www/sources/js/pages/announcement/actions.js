@@ -46,7 +46,7 @@ const editAnnouncement = data => async dispatch => {
 };
 
 const getLanguages = () => async () => {
-    const url = Site.resolveClientUrl('NotificationTemplate/GetLanguages');
+    const url = Site.resolveClientUrl('Announcement/GetLanguages');
     return await DataService.getDataAsync(url).then(response => response.data);
 };
 

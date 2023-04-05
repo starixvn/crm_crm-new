@@ -12,6 +12,7 @@
     using CRM.Criteria.Announcement;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models;
+    using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Interfaces;
     using Fanex.NAP.Client.Helpers.Web;
@@ -50,6 +51,12 @@
                 notificationTemplates,
                 contents
             });
+        }
+
+        public async Task<IActionResult> GetLanguages()
+        {
+            IEnumerable<Setting> settings = await settingService.GetSettingAsync(SettingName.NotificationTemplateLanguage, true);
+            return Json(settings);
         }
 
         [HttpPost]
