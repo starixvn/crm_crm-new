@@ -135,13 +135,13 @@
 
             var outGoingMsg = new OutgoingMessage
             {
-                MessageType = MessageTypeNumber.Html,
+                MessageType = notification.AnnouncementId > 0 ? MessageTypeNumber.Html : MessageTypeNumber.Text,
                 Text = notification.Content
             };
 
             result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
-            if (!string.IsNullOrEmpty(notification.FileName))
+            if (!string.IsNullOrEmpty(notification.FileName) && notification.AnnouncementId > 0)
             {
                 await SendImagesToPersonal(notification);
             }
@@ -202,13 +202,13 @@
             var result = new PushMessageResult();
             var outGoingMsg = new OutgoingMessage
             {
-                MessageType = MessageTypeNumber.Html,
+                MessageType = notification.AnnouncementId > 0 ? MessageTypeNumber.Html : MessageTypeNumber.Text,
                 Text = notification.Content
             };
 
             result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
-            if (!string.IsNullOrEmpty(notification.FileName))
+            if (!string.IsNullOrEmpty(notification.FileName) && notification.AnnouncementId > 0)
             {
                 await SendImagesToGroup(notification);
             }
