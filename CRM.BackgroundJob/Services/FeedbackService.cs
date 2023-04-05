@@ -151,6 +151,8 @@
             var custIds = transactionInfos.Where(x => !x.IsDeposit).Select(x => x.CustId).Distinct();
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineVipAsync(custIds);
 
+            var transactionByHeadline = transactionInfos.Where(x => headlines.Any(y => y.CustId == x.CustId));
+
             (IEnumerable<MatchInfo> newMatchInfos, IEnumerable<TransactionInfo> newTransactionInfos) = await ticketVoidingService.ImportTicketVoidingInfoAsync(
                 messagesImportCombineDistinct,
                 matchInfos,
@@ -162,13 +164,14 @@
             foreach (MatchInfo matchInfo in newMatchInfos)
             {
                 IEnumerable<Message> getMessageContents = messages.Where(x => matchInfo.MessageId.Contains(x.MessageId.ToString()));
+                IEnumerable<Message> messageByHeadline = getMessageContents.Where(x => transactionByHeadline.Any(y => y.MessageId == x.MessageId)).DistinctBy(x => x.MessageId);
                 IEnumerable<TransactionInfo> credits = newTransactionInfos.Where(x => x.VoidingHistoryCollectionId == matchInfo.VoidingHistoryCollectionId && !x.IsDeposit);
                 IEnumerable<TransactionInfo> deposits = newTransactionInfos.Where(x => x.VoidingHistoryCollectionId == matchInfo.VoidingHistoryCollectionId && x.IsDeposit);
 
                 if (credits.Any())
                 {
                     await CreateFeedbackForCreditSiteAsync(
-                        getMessageContents,
+                        messageByHeadline,
                         matchInfo,
                         credits,
                         headlines.Where(x => credits.Any(y => x.CustId == y.CustId)),
@@ -181,7 +184,7 @@
                     GetLicenseeManager(deposits, siteSettingMappings);
                     await CreateFeedbackForDepositSiteAsync(
                         licenseeInfo,
-                        getMessageContents,
+                        messageByHeadline,
                         matchInfo,
                         deposits,
                         settings,
