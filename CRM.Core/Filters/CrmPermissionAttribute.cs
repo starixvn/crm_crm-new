@@ -56,7 +56,6 @@
                     if (isAjaxRequest)
                     {
                         context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
-                        await context.HttpContext.Response.WriteAsync(ViewResources.Forbidden_Permission);
                     }
 
                     else
