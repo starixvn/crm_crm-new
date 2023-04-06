@@ -23,7 +23,7 @@ import {
     getProductParams, getCategoryParams
 } from '@jsroot/common/shareScripts';
 import { toast } from 'react-toastify';
-
+import { changeSiteSetting } from '@jsroot/common/shareScripts';
 import WithHotKey from '@jsroot/components/WithHotKey';
 
 export class EditMultipleLogs extends Component {
@@ -477,6 +477,7 @@ export class EditMultipleLogs extends Component {
         const { settings, mainCategoryOptions, subCategoryOptions, productOptions, subProductOptions, betTypeOptions, sitesOptions } = this.state;
         const { statuses, roles } = settings;
         const { isCheck } = this.state;
+        const siteOptions = changeSiteSetting(sitesOptions, 'childSites', 'childSites');
         return (
             <div>
                 <Form.Group as={Row}>
@@ -644,7 +645,7 @@ export class EditMultipleLogs extends Component {
                         <div className={`mr-2 select-width-sm ${this.isDisabledField(isCheck.site)}`}>
                             <SelectWithSearch
                                 className='basic-single'
-                                options={sitesOptions}
+                                options={siteOptions}
                                 value={values.siteInfo.id}
                                 name={values.siteInfo.name}
                                 OnChangeValue={value => setFieldValue('siteInfo', value)}
