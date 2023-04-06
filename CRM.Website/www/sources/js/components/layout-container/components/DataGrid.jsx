@@ -458,7 +458,7 @@ export default class DataGrid extends PureComponent {
     handleSubmit = async (values, { setSubmitting }) => {
         const data = {
             custId: values.custId,
-            site: this.state.siteId || values.siteId,
+            site: this.state.siteId,
             countryId: values.countryId,
             provinceId: this.props.customerInfo.provinceId,
             firstName: values.firstName,

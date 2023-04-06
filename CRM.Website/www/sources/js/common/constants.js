@@ -185,3 +185,5 @@ export const Statuses = [
     {id: 'Completed', name: 'Completed', checked: true},
     {id: 'In-Progress', name: 'In-Progress', checked: true}
 ];
+
+export const IsRemoveDatagridRedemption = true;

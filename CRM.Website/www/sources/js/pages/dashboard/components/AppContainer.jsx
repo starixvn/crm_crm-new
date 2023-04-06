@@ -14,6 +14,7 @@ import CustomerInfoVerify from './CustomerInfoVerify';
 import EditCustomerInfoVerify from './EditCustomerInfoVerify';
 import LastFiveRemarkDataGrid from './LastFiveRemarkDataGrid';
 import LangHelper from '@jsroot/common/langHelper';
+import {IsRemoveDatagridRedemption} from '@jsroot/common/constants';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -98,7 +99,10 @@ export class AppContainer extends Component {
                     }
                     <div className="information"><CustomerInfoVerify id={custId}/></div>
                 </div>
-                <DataGridRedemption id={custId} />
+                {
+                    !IsRemoveDatagridRedemption && 
+                    <DataGridRedemption id={custId} />
+                }
                 <DataGridCommunication id={custId} isHost={hasCreateFeedbackPermission}/>
                 {
                     editRedemptionDialog.show &&
