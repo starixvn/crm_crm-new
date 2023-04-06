@@ -30,6 +30,11 @@
         {
             try
             {
+                if (context?.HttpContext == null)
+                {
+                    context.Result = new RedirectToActionResult("SignIn", "Auth", null);
+                }
+
                 if (napSession == null || napSession?.UserId <= 0 || string.IsNullOrEmpty(napSession.UserName))
                 {
                     CloseConnection(context);
@@ -38,7 +43,7 @@
             catch (Exception exception)
             {
                 var logMessage = new LogMessage(exception.Message)
-                       .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
+                       .AddSection("Exception Info Authorize", CommonInfoGetters.GetExceptionInfo(exception))
                        .ToString();
                 logger.Error(logMessage);
             }
