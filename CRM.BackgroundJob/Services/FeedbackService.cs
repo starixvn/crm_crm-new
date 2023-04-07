@@ -151,10 +151,10 @@
             CustomerInfo licenseeInfo = (await customerService.GetCustomerInfoAsync(appSettings.LicenseeUsername, true)) ?? new CustomerInfo();
             var custIds = transactionInfos.Where(x => !x.IsDeposit).Select(x => x.CustId).Distinct();
 
-            var custIds1 = transactionInfos.Select(x => x.CustId).Distinct();
+            var getAllcustIds = transactionInfos.Select(x => x.CustId).Distinct();
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineVipAsync(custIds);
-            IEnumerable<GroupHeadline> headlines1 = await customerService.GetGroupHeadlineVipAsync(custIds);
-            var transactionByHeadline = transactionInfos.Where(x => headlines.Any(y => y.CustId == x.CustId));
+            IEnumerable<GroupHeadline> headlinesByAllCustId = await customerService.GetGroupHeadlineVipAsync(getAllcustIds);
+            var transactionByHeadline = transactionInfos.Where(x => headlinesByAllCustId.Any(y => y.CustId == x.CustId));
 
             (IEnumerable<MatchInfo> newMatchInfos, IEnumerable<TransactionInfo> newTransactionInfos) = await ticketVoidingService.ImportTicketVoidingInfoAsync(
                 messagesImportCombineDistinct,
