@@ -6,6 +6,7 @@
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.Workers;
+    using CRM.BotService.Services.Telegram.Extensions;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
@@ -86,13 +87,13 @@
             services.AddControllers();
 
             services.Configure<AppJobSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
-            services.Configure<TelegramSettings>(options => Configuration.GetSection("TelegramSettings").Bind(options));
             services.Configure<List<JobSetting>>(Configuration.GetSection("JobSettings"));
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
             ConfigRedisCache(services, redisConfig);
             services.ResolveCoreDI();
             services.ResolveLetstalkServiceDI(Configuration);
+            services.ResolveTelegramBotServices(Configuration);
             AddDependencyInjection(services, Configuration);
             AddWorker(services);
         }

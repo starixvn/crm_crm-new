@@ -54,8 +54,11 @@
             Uri url = new(endPoint);
 
             var request = new HttpRequestMessage(method, url);
-            request.Headers.Accept.Clear();
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            if (!string.IsNullOrEmpty(token))
+            {
+                request.Headers.Accept.Clear();
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
 
             return request;
         }

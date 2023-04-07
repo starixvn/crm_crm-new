@@ -5,5 +5,7 @@
     public interface ISendNotificationService
     {
         Task SendNotificationToLetstalk();
+
+        Task SendToPersonalLetstalk();
     }
 }

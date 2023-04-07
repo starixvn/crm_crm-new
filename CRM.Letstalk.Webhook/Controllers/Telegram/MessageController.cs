@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
     using CRM.Core.Services;
     using CRM.Letstalk.Core.Constants;
-    using CRM.Letstalk.Core.Enum;
     using CRM.Letstalk.Core.Models;
     using CRM.Letstalk.Core.Services.Interfaces;
     using Fanex.Logging.Extensions;
@@ -19,16 +18,13 @@
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MessageController : Controller
     {
-        private readonly TelegramAppSettings telegramAppSettings;
         private readonly ICRMLogService logService;
         private readonly ITelegramBotService botService;
 
         public MessageController(
-            IOptions<TelegramAppSettings> telegramAppSettings,
             ICRMLogService logService,
             ITelegramBotService botService)
         {
-            this.telegramAppSettings = telegramAppSettings.Value;
             this.logService = logService;
             this.botService = botService;
         }
@@ -40,16 +36,10 @@
             var errorMessage = string.Empty;
             try
             {
-                if (!telegramAppSettings.EnableChannels.Any(x => x == (byte)ConversationChannel.Telegram))
-                {
-                    errorMessage = ErrorMessageTelegram.DisableChannelErrorMessage;
-                }
-                else
-                {
-                    _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
-                    _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
-                    await botService.SendTextMessageAsync(botId, chatId, conversationInfo.Message);
-                }
+                
+                _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
+                _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
+                await botService.SendTextMessageAsync(botId, chatId, conversationInfo.Message);
             }
             catch (Exception ex)
             {
@@ -102,29 +92,22 @@
             logService.LogInformation(logMessage.ToString());
 
             var result = new SendMessageResult();
-            if (!telegramAppSettings.EnableChannels.Any(x => x == (byte)ConversationChannel.Telegram))
+            
+            try
+            {
+                _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
+                _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
+                await botService.SendTextMessageAsync(botId, chatId, conversationInfo.Message);
+            }
+            catch (Exception exception)
             {
                 result.ErrorCode = 1;
-                result.ErrorMessage = ErrorMessageTelegram.DisableChannelErrorMessage;
-            }
-            else
-            {
-                try
-                {
-                    _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
-                    _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
-                    await botService.SendTextMessageAsync(botId, chatId, conversationInfo.Message);
-                }
-                catch (Exception exception)
-                {
-                    result.ErrorCode = 1;
-                    result.ErrorMessage = exception.Message;
+                result.ErrorMessage = exception.Message;
 
-                    logMessage = new LogMessage(exception.Message)
-                        .AddSection("Params", param)
-                        .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception));
-                    logService.LogInformation(logMessage.ToString());
-                }
+                logMessage = new LogMessage(exception.Message)
+                    .AddSection("Params", param)
+                    .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception));
+                logService.LogInformation(logMessage.ToString());
             }
 
             return Ok(result);
@@ -224,16 +207,16 @@
         //    }
         //}
 
-        private static SendMessageResult DuplicatedResult(int notificationId, string conversationId)
-            => new()
-            {
-                ConversationId = conversationId,
-                SentTime = DateTime.UtcNow,
-                ErrorCode = -1,
-                ErrorMessage = ErrorMessageTelegram.DuplicatedErrorMessage,
-                NotificationId = notificationId,
-                IsIgnoreRetry = true
-            };
+        //private static SendMessageResult DuplicatedResult(int notificationId, string conversationId)
+        //    => new()
+        //    {
+        //        ConversationId = conversationId,
+        //        SentTime = DateTime.UtcNow,
+        //        ErrorCode = -1,
+        //        ErrorMessage = ErrorMessageTelegram.DuplicatedErrorMessage,
+        //        NotificationId = notificationId,
+        //        IsIgnoreRetry = true
+        //    };
 
         //protected internal virtual async Task AddMessageLogToDatabaseAsync(ConversationInfo conversationInfo, SendMessageResult result)
         //{

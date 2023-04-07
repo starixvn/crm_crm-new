@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.BotService.Services.Telegram.Services.Interfaces;
     using CRM.Core.Enumerables;
     using CRM.Core.Extensions.XML;
-    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Letstalk.Client.Enum;
     using CRM.Letstalk.Client.Models;
@@ -17,14 +17,13 @@
     using CRM.Letstalk.Services.Models.SendNotification;
     using CRM.Letstalk.Services.Services.Interfaces;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Options;
 
     public class SendNotificationService : ISendNotificationService
     {
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
         private readonly Func<int, ILetstalkService> letstalkService;
-        private readonly TelegramSettings telegramSettings;
+        private readonly ITelegramClientService telegramClientService;
         private readonly int ItemEachBatch;
         private const int DefaultItemEachBatch = 10;
 
@@ -32,12 +31,12 @@
             ICRMLogService logService,
             IConfiguration configuration,
             Func<int, ILetstalkService> letstalkService,
-            IOptions<TelegramSettings> telegramSettings)
+            ITelegramClientService telegramClientService)
         {
             this.baseService = baseService;
             this.logService = logService;
             this.letstalkService = letstalkService;
-            this.telegramSettings = telegramSettings.Value;
+            this.telegramClientService = telegramClientService;
             ItemEachBatch = configuration.GetValue<int?>("SendNotificationItemEachBatch") ?? DefaultItemEachBatch;
         }
 
@@ -171,7 +170,7 @@
             };
             try
             {
-                 await SendToPersonalLetstalk(notification, sendResult);
+                 await SendToPersonalLetstalk();
                 
             }
             catch (Exception exception)
@@ -203,13 +202,9 @@
             await HandleSendPersonalResponse(notification, result, sendResult);
         }
 
-        private async Task SendToPersonalLetstalk(NotificationMessage notification, SendNotificationResult sendResult)
+        public async Task SendToPersonalLetstalk()
         {
-            var result = new PushMessageResult();
-          
-
-            result = await letstalkService(notification.BotTeleId).PushPersonalAsync(new List<string> { notification.ConversationId });
-            await HandleSendPersonalResponse(notification, result, sendResult);
+            var result  = await telegramClientService.PushPersonalByTelegramAsync(6296493916, -923698329, "test send noti");
         }
 
         private async Task HandleSendPersonalResponse(NotificationMessage notification, PushMessageResult result, SendNotificationResult sendResult)

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Enum;
@@ -10,6 +11,7 @@
     using CRM.Letstalk.Client.Models.Results;
     using CRM.Letstalk.Client.Services.Interfaces;
     using Fanex.Caching;
+    using Jose;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
@@ -323,6 +325,24 @@
                 },
                 token,
                 encodeData: false);
+
+            return result;
+        }
+
+        public async Task<PushMessageResult> PushPersonalByTelegramAsync(IEnumerable<string> chatIds, string message)
+        {
+            ValidateInputParam(nameof(chatIds), chatIds);
+            ValidateInputParam(nameof(message), message);
+
+            var token = await GetSignAccessTokenAsync();
+            var result = await httpClientService.ExecutePostAsync<PushMessageResult>(
+                $"bot/v3/message/multicast",
+                new Dictionary<string, object>
+                {
+                    { "msg", message },
+                    { "chatIds", chatIds.ToArray() },
+                },
+                token);
 
             return result;
         }
