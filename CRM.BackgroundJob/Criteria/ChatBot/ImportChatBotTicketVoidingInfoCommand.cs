@@ -6,12 +6,11 @@
     {
         public string XmlData { get; set; }
         public string Environment { get; set; }
-        public string Messages { get; set; }
         public int ErrCode { get; set; }
         public string ErrMsg { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_Chatbot_AbnormalBets_Import";
 
-        public override bool IsValid() => !string.IsNullOrWhiteSpace(Messages) && !string.IsNullOrWhiteSpace(XmlData);
+        public override bool IsValid() => !string.IsNullOrWhiteSpace(XmlData);
     }
 }

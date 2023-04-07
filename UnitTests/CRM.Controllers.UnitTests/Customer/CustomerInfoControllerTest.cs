@@ -61,11 +61,13 @@
             var countries = fixture.Create<IEnumerable<Country>>();
             var languages = fixture.Create<IEnumerable<Language>>();
             var sitesLicenseeInactive = fixture.Create<IEnumerable<SiteInfo>>();
+            var sitesByIsLicensee = fixture.Create<IEnumerable<SiteInfo>>();
             var controller = GetController();
             settingService.GetAllSitesWithGroupAsync().Returns(sites);
             settingService.GetCountryAsync(SettingConstants.Active).Returns(countries);
             settingService.GetLanguageAsync(SettingConstants.Active).Returns(languages);
             settingService.GetAllSitesLicenseeInactive().Returns(sitesLicenseeInactive);
+            settingService.GetAllSitesGroupByIsLicenseeAsync().Returns(sitesByIsLicensee);
 
             //Act
             var result = await controller.GetSettings();
@@ -76,7 +78,6 @@
             var countriesJson = (IEnumerable<Country>)jsonResult.Value.GetType().GetProperty("countries").GetValue(jsonResult.Value);
             var languagesJson = (IEnumerable<Language>)jsonResult.Value.GetType().GetProperty("languages").GetValue(jsonResult.Value);
             var siteInforJson = (IEnumerable<SiteInfo>)jsonResult.Value.GetType().GetProperty("sitesLicenseeInactive").GetValue(jsonResult.Value);
-
             Assert.Equal(sitesJson, sites);
             Assert.Equal(countriesJson, countries);
             Assert.Equal(languagesJson, languages);

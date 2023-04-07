@@ -28,7 +28,6 @@
             // Arrange
             var criteria = new ImportChatBotTicketVoidingInfoCommand
             {
-                Messages = messages,
                 XmlData = XmlData
             };
 
@@ -45,7 +44,6 @@
             // Arrange
             var criteria = new ImportChatBotTicketVoidingInfoCommand
             {
-                Messages = "Messages",
                 XmlData = "XmlData",
                 Environment = "Environment"
             };

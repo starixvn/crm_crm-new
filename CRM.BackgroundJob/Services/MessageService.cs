@@ -93,7 +93,7 @@
                 MessageId = y.Key.MessageId,
                 UsernameList = String.Join(",", y.Select(u => u.UsernameList))
             });
-            foreach (var message in voidingMessages)
+            foreach (var message in voidingMessages.Where(x => x.MessageId != 0))
             {
                 VoidingMessageUserName userName = voidingMessageGroupBy.FirstOrDefault(
                    x => x.VoidingHistoryCollectionId == message.VoidingHistoryCollectionId &&

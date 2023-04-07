@@ -80,7 +80,7 @@
             }
 
             var messagesImport = await messageService.ImportVoidingMessageAsync(voidingMessageUserName,
-                voidingMessages.Item1.Where(x => x.MessageId != 0),
+                voidingMessages.Item1,
                 setting.BatchSize,
                 Environment,
                 LastRuntimeEnv);

@@ -163,10 +163,9 @@
         public async Task ImportTicketVoidingAsync_WhenCalled_ReturnExpectedCommandResult()
         {
             // Arrange
-            const string XmlTemplate = "<r MessageID='{0}' UsernameList='{1}' CustId='{2}' " +
-                "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' IsTest='{6}' " +
-                "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' Type='{11}' VoidingHistoryCollectionId='{12}'/>";
-            const string messageTemplate = "<r MessageID='{0}' RequestID='{1}' VoidingHistoryCollectionId='{2}'/>";
+            const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MessageId='{1}' UsernameList='{2}' CustId='{3}' " +
+                "Recommend='{4}' Mrecommend='{5}' Srecommend='{6}' IsTest='{7}' " +
+                "Content_en='{8}' Content_cs='{9}' Content_th='{10}' Content_vn='{11}' Type='{12}'/>";
             var messageStringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             var fixture = new Fixture();
             var voidings = new List<VoidingMessage> {
@@ -178,7 +177,6 @@
                 }
             };
 
-            messageStringBuilder.AppendFormat(messageTemplate, 1, 1, 1);
             messageStringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
 
             var messages = new List<Message>
@@ -200,6 +198,7 @@
             var message = messages.FirstOrDefault();
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             stringBuilder.AppendFormat(XmlTemplate,
+                    ticketInfo.VoidingHistoryCollectionId,
                     ticketInfo.MessageId,
                     ticketInfo.UsernameList,
                     ticketInfo.CustId,
@@ -211,8 +210,7 @@
                     HttpUtility.HtmlEncode(message?.Content_cs),
                     HttpUtility.HtmlEncode(message?.Content_th),
                     HttpUtility.HtmlEncode(message?.Content_vn),
-                    ticketInfo.Type,
-                    ticketInfo.VoidingHistoryCollectionId);
+                    ticketInfo.Type);
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
             var commandResult = fixture.Create<CommandResult>();
             var criteria = new ImportChatBotTicketVoidingInfoCommand();
@@ -227,7 +225,6 @@
             // Assert
             Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(stringBuilder.ToString(), criteria.XmlData);
-            Assert.Equal(messageStringBuilder.ToString(), criteria.Messages);
             Assert.Equal(Constants.DefaultEnvironment, criteria.Environment);
             Assert.Equal(0, criteria.ErrCode);
             Assert.Null(criteria.ErrMsg);
@@ -237,9 +234,9 @@
         public async Task ImportTicketVoidingAsync_WhenMessageIdNotEqual_ReturnExpectedXml()
         {
             // Arrange
-            const string XmlTemplate = "<r MessageID='{0}' UsernameList='{1}' CustId='{2}' " +
-                "Recommend='{3}' Mrecommend='{4}' Srecommend='{5}' IsTest='{6}' " +
-                "Content_en='{7}' Content_cs='{8}' Content_th='{9}' Content_vn='{10}' Type='{11}' VoidingHistoryCollectionId='{12}'/>";
+            const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MessageId='{1}' UsernameList='{2}' CustId='{3}' " +
+                "Recommend='{4}' Mrecommend='{5}' Srecommend='{6}' IsTest='{7}' " +
+                "Content_en='{8}' Content_cs='{9}' Content_th='{10}' Content_vn='{11}' Type='{12}'/>";
             var fixture = new Fixture();
             var voidings = new List<VoidingMessage> {
                 new VoidingMessage
@@ -272,6 +269,7 @@
             var ticketInfo = ticketInfos.FirstOrDefault();
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             stringBuilder.AppendFormat(XmlTemplate,
+                    ticketInfo.VoidingHistoryCollectionId,
                     ticketInfo.MessageId,
                     ticketInfo.UsernameList,
                     ticketInfo.CustId,
@@ -283,8 +281,7 @@
                     "",
                     "",
                     "",
-                    ticketInfo.Type,
-                    ticketInfo.VoidingHistoryCollectionId);
+                    ticketInfo.Type);
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
             var commandResult = fixture.Create<CommandResult>();
             var criteria = new ImportChatBotTicketVoidingInfoCommand();
