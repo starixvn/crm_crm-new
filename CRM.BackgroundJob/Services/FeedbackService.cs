@@ -103,7 +103,7 @@
                 messagesImportCombineDistinct, setting
             );
 
-            var transactionTickets = Enumerable.Empty<TransactionInfo>();
+           var transactionTickets = Enumerable.Empty<TransactionInfo>();
             if (ticketInfo.Item3.Any() && !string.IsNullOrEmpty(ticketInfo.Item3.FirstOrDefault()))
             {
                 transactionTickets = await ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item3.FirstOrDefault());
@@ -150,11 +150,8 @@
             IEnumerable<SiteSettingMapping> siteSettingMappings = await settingService.GetSiteSettingMappingAsync();
             CustomerInfo licenseeInfo = (await customerService.GetCustomerInfoAsync(appSettings.LicenseeUsername, true)) ?? new CustomerInfo();
             var custIds = transactionInfos.Where(x => !x.IsDeposit).Select(x => x.CustId).Distinct();
-
-            var getAllcustIds = transactionInfos.Select(x => x.CustId).Distinct();
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineVipAsync(custIds);
-            IEnumerable<GroupHeadline> headlinesByAllCustId = await customerService.GetGroupHeadlineVipAsync(getAllcustIds);
-            var transactionByHeadline = transactionInfos.Where(x => headlinesByAllCustId.Any(y => y.CustId == x.CustId));
+            var transactionByHeadline = transactionInfos.Where(x => headlines.Any(y => y.CustId == x.CustId));
 
             (IEnumerable<MatchInfo> newMatchInfos, IEnumerable<TransactionInfo> newTransactionInfos) = await ticketVoidingService.ImportTicketVoidingInfoAsync(
                 messagesImportCombineDistinct,
