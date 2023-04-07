@@ -10,6 +10,7 @@
         public int ConversationGroupId { get; set; }
         public int ChatTypeId { get; set; }
         public int BotId { get; set; }
+        public int BotTeleId { get; set; } = -923698329;
         public string ConversationId { get; set; }
         public string FileName { get; set; }
 

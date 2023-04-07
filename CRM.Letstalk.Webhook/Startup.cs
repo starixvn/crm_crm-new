@@ -2,10 +2,12 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
     using CRM.Letstalk.Core.Extensions;
+    using CRM.Letstalk.Core.Models;
     using Fanex.Data;
     using Fanex.Data.SqlServer;
     using Fanex.Logging;
@@ -13,12 +15,14 @@
     using Fanex.Logging.Extensions.AspNetCore;
     using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Sentry;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.DataProtection;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Tokens;
     using Sentry;
     using StackExchange.Redis;
 
@@ -61,6 +65,24 @@
                 .UseConfig(new LoggingConfiguration())
                 .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
+            var telegramAppSettingsSection = Configuration.GetSection("TelegramAppSettings");
+            services.Configure<TelegramAppSettings>(telegramAppSettingsSection);
+
+            var telegramAppSettings = telegramAppSettingsSection.Get<TelegramAppSettings>();
+            var key = Encoding.ASCII.GetBytes(telegramAppSettings.Secret);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);

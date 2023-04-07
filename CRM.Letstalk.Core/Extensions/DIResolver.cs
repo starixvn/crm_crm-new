@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Extensions;
     using CRM.Letstalk.Client.Services;
@@ -18,11 +19,6 @@
     {
         public static void ResolveWebhookServices(this IServiceCollection services, IConfiguration configuration)
         {
-            var webhookConfigurationSection = configuration.GetSection("WebhookConfigurations");
-            services.Configure<List<WebhookConfiguration>>(options => webhookConfigurationSection.Bind(options));
-            var webhookConfigs = webhookConfigurationSection.Get<List<WebhookConfiguration>>();
-            services.AddSingleton(webhookConfigs);
-
             services.AddTransient<IWebhookReceiver, WebhookReceiver>();
             services.AddTransient<ICryptographyService, CryptographyService>();
             services.AddTransient<IJwtService, JwtService>();
@@ -55,7 +51,7 @@
                     default:
                         throw new KeyNotFoundException($"The event type {key} have not implements!");
                 }
-            });
+            });  
 
             RegisterTelegramBots(services, configuration);
         }
@@ -71,10 +67,9 @@
 
         private static void RegisterTelegramBots(IServiceCollection services, IConfiguration configuration)
         {
-            var configs = configuration.GetSection("TelegramBotConfigurations");
-            services.Configure<List<TelegramBotConfigurations>>(configs);
-            var bots = configs.Get<List<TelegramBotConfigurations>>();
-            services.AddSingleton(bots);
+            services.Configure<TelegramAppSettings>(options => configuration.GetSection("TelegramAppSettings").Bind(options));
+            services.Configure<List<WebhookConfiguration>>(options => configuration.GetSection("WebhookConfigurations").Bind(options));
+            services.Configure<List<TelegramBotConfigurations>>(options => configuration.GetSection("TelegramBotConfigurations").Bind(options));
 
             services.AddTransient<ITelegramBotService, TelegramBotService>();
 

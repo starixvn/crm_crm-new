@@ -23,18 +23,18 @@
     {
         private readonly HttpClient httpClient;
         private readonly SendIndirectMessageSettings sendIndirectMessageSettings;
-        private readonly IEnumerable<TelegramBotConfigurations> botConfigurations;
+        private readonly IList<TelegramBotConfigurations> botConfigurations;
         private readonly ICRMLogService logService;
 
         public TelegramBotService(
             IHttpClientFactory httpClientFactory,
             IOptions<SendIndirectMessageSettings> sendIndirectMessageSettings,
             IOptions<HttpClientSetting> proxySettings,
-            List<TelegramBotConfigurations> botConfigurations,
+            IOptions<List<TelegramBotConfigurations>> botConfigurations,
             ICRMLogService logService)
         {
             this.sendIndirectMessageSettings = sendIndirectMessageSettings.Value;
-            this.botConfigurations = botConfigurations;
+            this.botConfigurations = botConfigurations.Value;
             this.logService = logService;
 
             if (proxySettings.Value.IsUseProxy)
@@ -47,7 +47,7 @@
                 httpClient = httpClientFactory.CreateClient();
             }
 
-            foreach (var bot in botConfigurations)
+            foreach (var bot in botConfigurations.Value)
             {
                 bot.BotClient = new TelegramBotClient(bot.Token, httpClient);
             }

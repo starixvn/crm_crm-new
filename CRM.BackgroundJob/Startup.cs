@@ -86,6 +86,7 @@
             services.AddControllers();
 
             services.Configure<AppJobSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
+            services.Configure<TelegramSettings>(options => Configuration.GetSection("TelegramSettings").Bind(options));
             services.Configure<List<JobSetting>>(Configuration.GetSection("JobSettings"));
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);

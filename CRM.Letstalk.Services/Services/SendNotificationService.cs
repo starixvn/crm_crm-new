@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using CRM.Core.Enumerables;
     using CRM.Core.Extensions.XML;
+    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Letstalk.Client.Enum;
     using CRM.Letstalk.Client.Models;
@@ -16,23 +17,27 @@
     using CRM.Letstalk.Services.Models.SendNotification;
     using CRM.Letstalk.Services.Services.Interfaces;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Options;
 
     public class SendNotificationService : ISendNotificationService
     {
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
         private readonly Func<int, ILetstalkService> letstalkService;
+        private readonly TelegramSettings telegramSettings;
         private readonly int ItemEachBatch;
         private const int DefaultItemEachBatch = 10;
 
         public SendNotificationService(IBaseService baseService,
             ICRMLogService logService,
             IConfiguration configuration,
-            Func<int, ILetstalkService> letstalkService)
+            Func<int, ILetstalkService> letstalkService,
+            IOptions<TelegramSettings> telegramSettings)
         {
             this.baseService = baseService;
             this.logService = logService;
             this.letstalkService = letstalkService;
+            this.telegramSettings = telegramSettings.Value;
             ItemEachBatch = configuration.GetValue<int?>("SendNotificationItemEachBatch") ?? DefaultItemEachBatch;
         }
 
@@ -45,6 +50,16 @@
                 await UpdateBotRemovedStatus(notifications.Where(noti => noti.BotId == 0 && noti.ChatType == ChatType.Group));
 
                 await SendNotification(notifications.Where(noti => noti.BotId > 0));
+            }
+        }
+
+        public async Task SendNotificationToTelegram()
+        {
+            var notifications = await GetNotificationToSend();
+
+            if (notifications.Any())
+            {
+                await SendNotificationByTelegram(notifications);
             }
         }
 
@@ -80,6 +95,15 @@
             }
         }
 
+        private async Task SendNotificationByTelegram(IEnumerable<NotificationMessage> notifications)
+        {
+            var batches = DivideBatchToSend(notifications);
+            foreach (var batch in batches)
+            {
+                await SendMessageTelegram(batch);
+            }
+        }
+
         private async Task<IEnumerable<SendNotificationResult>> SendMessage(List<NotificationMessage> notifications)
         {
             var tasks = new List<Task<SendNotificationResult>>();
@@ -87,6 +111,20 @@
             foreach (var notification in notifications)
             {
                 tasks.Add(Task.Run(() => SendToLestalk(notification)));
+            }
+
+            var results = (await Task.WhenAll(tasks)).ToList();
+
+            return results;
+        }
+
+        private async Task<IEnumerable<SendNotificationResult>> SendMessageTelegram(List<NotificationMessage> notifications)
+        {
+            var tasks = new List<Task<SendNotificationResult>>();
+
+            foreach (var notification in notifications)
+            {
+                tasks.Add(Task.Run(() => SendToTelegram(notification)));
             }
 
             var results = (await Task.WhenAll(tasks)).ToList();
@@ -124,6 +162,31 @@
             return sendResult;
         }
 
+        private async Task<SendNotificationResult> SendToTelegram(NotificationMessage notification)
+        {
+            var sendResult = new SendNotificationResult
+            {
+                NotificationId = notification.NotificationId,
+                ConversationGroupId = notification.ConversationGroupId,
+            };
+            try
+            {
+                 await SendToPersonalLetstalk(notification, sendResult);
+                
+            }
+            catch (Exception exception)
+            {
+                sendResult.Status = SendNotificationStatus.Retrying;
+                sendResult.ErrMsg = SendNotificationErrMsg.BotServiceErrorMsg;
+
+                await WriteLogMessage(notification, new BaseResult { Status = 0, Message = exception.Message }, sendResult.Status);
+                await logService.ErrorAsync(exception);
+            }
+
+            return sendResult;
+        }
+
+
         private async Task SendToPersonal(NotificationMessage notification, SendNotificationResult sendResult)
         {
             var result = new PushMessageResult();
@@ -136,6 +199,16 @@
 
             result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
+
+            await HandleSendPersonalResponse(notification, result, sendResult);
+        }
+
+        private async Task SendToPersonalLetstalk(NotificationMessage notification, SendNotificationResult sendResult)
+        {
+            var result = new PushMessageResult();
+          
+
+            result = await letstalkService(notification.BotTeleId).PushPersonalAsync(new List<string> { notification.ConversationId });
             await HandleSendPersonalResponse(notification, result, sendResult);
         }
 
