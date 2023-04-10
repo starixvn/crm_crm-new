@@ -16,7 +16,14 @@ describe('FilterEditInforms', () => {
     const initProps = {
         allSettings: {
             currencies: [{id: 1, name: 'test'},{id: 2, name: 'test'},{id: 3, name: 'test'},{id: 4, name: 'test'}],
-            sites: [{childSites: [{id: 1, name: '123'},{id: 2, name: '123'},{id: 3, name: '123'},{id: 4, name: '123'}]}]
+            sites: [{
+                childSites: [
+                    {id: 1, name: '123', childSites: [{id: 66, name: '666'}]},
+                    {id: 2, name: '123', childSites: [{id: 67, name: '667'}]},
+                    {id: 3, name: '123', childSites: [{id: 68, name: '668'}]},
+                    {id: 4, name: '123', childSites: [{id: 69, name: '669'}]}
+                ]
+            }]
         },
         filterData: {values: {currencies: '1,2'}, errors: {}},
         detail: {

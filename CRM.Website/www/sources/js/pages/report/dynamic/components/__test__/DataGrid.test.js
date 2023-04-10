@@ -439,7 +439,11 @@ describe('DataGrid', () => {
     describe('handleViewChart', () => {
         it('should call exactly props function',() => {
             //Arrange
-            const container = shallow(<DataGrid {...initProps}/>);
+            const props = {
+                ...initProps,
+                setViewChartDialog: jest.fn()
+            };
+            const container = shallow(<DataGrid {...props}/>);
 
             //Act
             container.instance().handleViewChart();

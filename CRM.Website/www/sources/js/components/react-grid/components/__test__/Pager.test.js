@@ -91,7 +91,10 @@ describe('Pager', () => {
                 PageIndex: 1,
                 PageList: []
             },
-            onPaging: jest.fn()
+            onPaging: jest.fn(),
+            bodyWrapper: {
+                scrollTop: 100
+            }
         };
 
         const pager = shallow(<Pager {...props} />);
@@ -566,7 +569,10 @@ describe('Pager', () => {
                 },
                 minWidth,
                 maxWidth,
-                isAllowInputPageIndex: true
+                isAllowInputPageIndex: true,
+                bodyWrapper: {
+                    scrollTop: 100
+                }
             };
 
             const state = { inputValue: '10' };

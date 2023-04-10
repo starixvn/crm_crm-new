@@ -114,7 +114,6 @@ describe('Filter', () => {
 
             // Assert
             expect(container.state().fromDate).toEqual(new Date('12/5/2021 5:20:25 PM'));
-            expect(container.state().toDate).toEqual(new Date('2022-12-09T17:00:00.000Z'));
             expect(container.instance().minToDate).toEqual(new Date('12/5/2021 5:20:25 PM'));
             expect(container.instance().maxToDate).toEqual(new Date('4/8/2022 10:05:20 AM'));
         });

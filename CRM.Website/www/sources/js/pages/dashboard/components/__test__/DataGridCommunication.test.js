@@ -10,7 +10,6 @@ describe('DataGridCommunication', () => {
     beforeAll(() => {
         window.createUpdateFeedbackPermission = 2;
         LangHelper.getResource = jest.fn(key => key);
-        jest.useFakeTimers();
         const appContainer = document.createElement('div');
         appContainer.setAttribute('id', 'hasCreateFeedbackPermission');
         appContainer.checked = true;
@@ -215,7 +214,7 @@ describe('DataGridCommunication', () => {
                 ...initProps,
                 setCreateCommunicationDialog: jest.fn()
             };
-            const response = { data: ['test'] };
+            const response = { data: {log: { custId: 1 }} };
             const promise = Promise.resolve(response);
             DataService.getDataAsync = jest.fn(() => promise);
             const container = shallow(<DataGridCommunication {...props} />).instance();
@@ -224,7 +223,6 @@ describe('DataGridCommunication', () => {
             // Act
             container.handleShowCreateCommunication(123);
             await promise;
-            jest.runAllTimers();
 
             // Assert
             expect(props.setCreateCommunicationDialog).toHaveBeenCalled();

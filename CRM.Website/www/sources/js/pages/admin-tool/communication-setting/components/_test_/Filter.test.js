@@ -67,8 +67,8 @@ describe('Filter', () => {
                 const state = {
                     filter: {
                         customerNameInput: '',
-                        mainCategoriesTypes: '1',
-                        subCategoriesTypes: '2',
+                        mainCategoriesTypes: '',
+                        subCategoriesTypes: '',
                         isDisableCategorySubCategory: true
                     }
                 };

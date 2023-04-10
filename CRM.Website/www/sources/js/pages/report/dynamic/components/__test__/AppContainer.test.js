@@ -43,7 +43,8 @@ describe('AppContainer', () => {
             // Arrange
             const props = {
                 viewCommunicationDialog: { show: true, feedbackId: 1 },
-                viewChartDialog: { show: true, chartInfo: [{ id: 1, value: 'test' }] }
+                viewChartDialog: { show: true, chartInfo: [{ id: 1, value: 'test' }] },
+                gridParams: { reportType: 1 }
             };
 
             const container = shallow(<AppContainer {...props}/>);

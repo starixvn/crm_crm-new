@@ -150,6 +150,7 @@ describe('EditGroupMappingPopup', () => {
                 preventDefault: jest.fn()
             };
             const popup = shallow(<EditGroupMappingPopup {...props} />);
+            popup.instance().setState({ ignoreNotificationTypes: true });
             popup.instance().handleGroupHeadlineChange = jest.fn();
             popup.instance().handleRecipientTypeChange = jest.fn();
             popup.instance().handleRecipientChange = jest.fn();
@@ -168,7 +169,7 @@ describe('EditGroupMappingPopup', () => {
             popup.find(Form.Group).at(8).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('languageId', 'value');
 
-            popup.find(Form.Group).at(9).find(Form.Control).at(0).simulate('change', event);
+            popup.find(Form.Group).at(10).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('remark', 'value');
         });
 

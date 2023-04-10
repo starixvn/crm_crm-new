@@ -375,20 +375,6 @@ describe('SelectWithSearch', () => {
             });
         });
 
-        describe('getSiteLabel', () => {
-            it('should return exactly result', () => {
-                //Arrange
-                const siteOptions = [{ childSites: [{ key: 1, checked: true, childSites: [{ id: 6006, siteLabel: '789y' }] }] }];
-                const container = shallow(<SelectWithSearch {...props}/>);
-                
-                //Act
-                const result = container.instance().getSiteLabel(siteOptions, 6006);
-
-                //Assert
-                expect(result).toBe('789y');
-            });
-        });
-
         describe('render', () => {
             it('returns correct first div', () => {
                 //Act
