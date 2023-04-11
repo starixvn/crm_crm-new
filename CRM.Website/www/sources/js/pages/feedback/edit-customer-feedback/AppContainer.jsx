@@ -21,8 +21,9 @@ import {
 } from '@jsroot/common/shareScripts';
 import { validateMainCategorySubCategory } from '../common.functions';
 import WithHotKey from '@jsroot/components/WithHotKey';
+import WithNavigation from '@jsroot/components/WithNavigation';
 
-export default class AppContainer extends Component {
+class AppContainer extends Component {
     static propTypes = {
         feedbackId: PropTypes.number.isRequired,
         onClose: PropTypes.func.isRequired
@@ -559,6 +560,8 @@ export default class AppContainer extends Component {
             confirmOverwriteCustomerInfoDialog: { show: false }
         });
 
+        this.handleCloseConfirmEditFeedbackDialog();
+
         this.formik.setSubmitting(false);
     };
 
@@ -567,6 +570,7 @@ export default class AppContainer extends Component {
         this.setState({
             confirmOverwriteCustomerInfoDialog: { show: false }
         });
+        this.handleCloseConfirmEditFeedbackDialog();
         this.handleEditFeedback(params);
     };
 
@@ -579,6 +583,11 @@ export default class AppContainer extends Component {
             if (data.isSuccessful) {
                 setTimeout(() => {
                     this.props.onClose(true);
+                    if(params.isOverwrite){
+                        window.localStorage.setItem('updateLeftPanel', params.custId);
+                        const pathname = Site.resolveClientUrl(this.props.location.pathname.slice(1, this.props.location.pathname.length));
+                        this.props.navigate(pathname);
+                    }
                 }, 3000);
             } else {
                 this.formik.setSubmitting(false);
@@ -835,3 +844,6 @@ export default class AppContainer extends Component {
         );
     }
 }
+
+const FunctionBarWithNavigation = WithNavigation(AppContainer);
+export default FunctionBarWithNavigation;

@@ -11,10 +11,13 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
+    using Fanex.Data.Repository;
+    using Fanex.Logging.Extensions;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
@@ -112,7 +115,10 @@
                     command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
                     command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
                     var result = await baseService.ExecuteNonQueryAsync(command);
-                    await logService.LogInfoSentry("Add Customer Feedback Params:", command);
+                    var logMessage = new LogMessage("Add Customer Feedback Params:")
+                       .AddMessage(JsonConvert.SerializeObject(command, Formatting.Indented))
+                       .ToString();
+                    logService.LogInformation(logMessage);
                     return Json(result);
                 }
 

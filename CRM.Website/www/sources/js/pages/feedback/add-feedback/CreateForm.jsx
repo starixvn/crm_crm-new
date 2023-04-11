@@ -787,8 +787,12 @@ class CreateForm extends Component {
                 DataService.postDataAsync(url, paramsCustomer).then(response => {
                     if (!response || !response.data) {
                         return;
-                    } else {
+                    }
+                    if(this.props.addFeedbackResult.isSuccessful){
                         setTimeout(() => {
+                            if(params.IsOverWrite){
+                                window.localStorage.setItem('updateLeftPanel', params.CustId);
+                            }
                             this.props.navigate(Site.resolveClientUrl('Dashboard'), {state: this.props.currentCustomer});
                         }, 3000);
                     }

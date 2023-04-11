@@ -21,8 +21,6 @@
         void LogInformation(string message);
 
         void LogFileError(Exception exception);
-
-        Task LogInfoSentry(string message, ICriteria criteria);
     }
 
     public class CRMLogService : ICRMLogService
@@ -73,14 +71,6 @@
         public void LogInformation(string message)
         {
             nlog.Info(message);
-        }
-
-        public async Task LogInfoSentry(string message, ICriteria criteria)
-        {
-            var logMessage = new LogMessage(message)
-                       .AddMessage(JsonConvert.SerializeObject(criteria, Formatting.Indented))
-                       .ToString();
-            await logger.InfoAsync(logMessage);
         }
     }
 }

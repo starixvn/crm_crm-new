@@ -53,9 +53,11 @@ export class Layout extends Component {
         setTimeout(this.handleCheckNewVersion, 60000);
     }
 
-    async componentDidUpdate(prevProps) {
-        if(prevProps.location.pathname === '/AddFeedback' && this.props.location.pathname === '/Dashboard'){
+    async componentDidUpdate() {
+        const updateLeftPanelCustId = window.localStorage.getItem('updateLeftPanel');
+        if(updateLeftPanelCustId !== null && parseInt(updateLeftPanelCustId, 10) === this.state.customerInfo?.custId){
             await this.getCurrentCustomer();
+            window.localStorage.removeItem('updateLeftPanel');
         }
     }
 

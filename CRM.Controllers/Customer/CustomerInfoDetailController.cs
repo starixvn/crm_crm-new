@@ -27,7 +27,7 @@
         private readonly ICustomerService customerService;
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
-        private readonly Fanex.Logging.ILogger logger;
+        private readonly ICRMLogService logService;
 
         public CustomerInfoDetailController(
             INapSession napSession,
@@ -36,7 +36,7 @@
             ICustomerService customerService,
             ISettingService settingService,
             IBaseService baseService,
-            Fanex.Logging.ILogger logger)
+            ICRMLogService logService)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
@@ -44,7 +44,7 @@
             this.customerService = customerService;
             this.settingService = settingService;
             this.baseService = baseService;
-            this.logger = logger;
+            this.logService = logService;
         }
 
         [HttpPost]
@@ -54,7 +54,8 @@
             var logMessage = new LogMessage("Get Customer Feedback Info:")
                        .AddMessage(JsonConvert.SerializeObject(customerInfo, Formatting.Indented))
                        .ToString();
-            await logger.InfoAsync(logMessage);
+           
+            logService.LogInformation(logMessage);
             return Json(customerInfo);
         }
 
