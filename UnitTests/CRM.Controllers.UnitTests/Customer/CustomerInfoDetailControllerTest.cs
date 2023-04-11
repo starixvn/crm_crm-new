@@ -32,7 +32,7 @@
         private ICustomerService customerService;
         private ISettingService settingService;
         private IBaseService baseService;
-        private Fanex.Logging.ILogger logger;
+        private ICRMLogService logService;
 
 
         [Fact]
@@ -123,8 +123,8 @@
             napSettings = Substitute.For<INapSettings>();
             userService = Substitute.For<IUserService>();
             baseService = Substitute.For<IBaseService>();
-            logger = Substitute.For<Fanex.Logging.ILogger>();
-            return new CustomerInfoDetailController(napSession, napSettings, userService, customerService, settingService, baseService, logger);
+            logService = Substitute.For<ICRMLogService>();
+            return new CustomerInfoDetailController(napSession, napSettings, userService, customerService, settingService, baseService, logService);
         }
 
         #endregion Helpers

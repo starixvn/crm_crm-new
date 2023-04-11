@@ -8,6 +8,7 @@
     using CRM.Controllers.Feedback;
     using CRM.Core.Constants;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Feedback;
     using CRM.Models;
     using CRM.Models.Feedback;
@@ -33,6 +34,7 @@
         private ISettingService settingService;
         private IFeedbackService feedbackService;
         private ITicketRefService ticketRefService;
+        private ICRMLogService logService;
 
         [Fact]
         public async Task GetNoOfInquiryByFeedbackId_WhenCalled_ReturnAsExpectedResult()
@@ -349,7 +351,8 @@
             settingService = Substitute.For<ISettingService>();
             feedbackService = Substitute.For<IFeedbackService>();
             ticketRefService = Substitute.For<ITicketRefService>();
-            return new FeedbackController(napSession, napSettings, userService, settingService, feedbackService, ticketRefService);
+            logService = Substitute.For<ICRMLogService>();
+            return new FeedbackController(napSession, napSettings, userService, settingService, feedbackService, ticketRefService, logService);
         }
 
         #endregion Helpers

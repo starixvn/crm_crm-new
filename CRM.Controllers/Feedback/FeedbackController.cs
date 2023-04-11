@@ -9,6 +9,7 @@
     using CRM.Core.Extensions;
     using CRM.Core.Filters;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Feedback;
     using CRM.Criteria.Setting;
     using CRM.Models.Feedback;
@@ -17,10 +18,13 @@
     using CRM.Services;
     using CRM.Services.Feedback;
     using CRM.ViewModels.Feedback;
+    using Fanex.Logging.Extensions;
+    using Fanex.Logging;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
 
     public class FeedbackController : BaseController
@@ -31,7 +35,7 @@
         private readonly ISettingService settingService;
         private readonly IFeedbackService feedbackService;
         private readonly ITicketRefService ticketRefService;
-
+        private readonly ICRMLogService logService;
 
         public FeedbackController(
             INapSession napSession,
@@ -39,7 +43,8 @@
             IUserService userService,
             ISettingService settingService,
             IFeedbackService feedbackService,
-            ITicketRefService ticketRefService)
+            ITicketRefService ticketRefService,
+            ICRMLogService logService)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
@@ -47,6 +52,7 @@
             this.settingService = settingService;
             this.feedbackService = feedbackService;
             this.ticketRefService = ticketRefService;
+            this.logService = logService;
         }
 
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
@@ -94,6 +100,11 @@
                 }
 
                 commandResult = await feedbackService.EditCustomerFeedbackAsync(command);
+
+                var logMessage = new LogMessage("Update Feedback Params:")
+                   .AddMessage(JsonConvert.SerializeObject(command, Formatting.Indented))
+                   .ToString();
+                logService.LogInformation(logMessage);
             }
 
             return Json(commandResult);
