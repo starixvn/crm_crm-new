@@ -28,6 +28,7 @@
         private readonly ICommonService commonService;
         private readonly ICRMLogService logService;
 
+
         public AddCustomerFeedbackController(
             INapSession napSession,
             ISettingService settingService,
@@ -111,8 +112,10 @@
                     command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
                     command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
                     var result = await baseService.ExecuteNonQueryAsync(command);
+                    await logService.LogInfoSentry(command);
                     return Json(result);
                 }
+
                 return Json(commandResult);
             }
             catch (System.Exception ex)
