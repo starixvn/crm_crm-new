@@ -9,10 +9,13 @@
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
+    using Fanex.Logging;
+    using Fanex.Logging.Extensions;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
@@ -24,6 +27,7 @@
         private readonly ICustomerService customerService;
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
+        private readonly Fanex.Logging.ILogger logger;
 
         public CustomerInfoDetailController(
             INapSession napSession,
@@ -31,7 +35,8 @@
             IUserService userService,
             ICustomerService customerService,
             ISettingService settingService,
-            IBaseService baseService)
+            IBaseService baseService,
+            Fanex.Logging.ILogger logger)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
@@ -39,12 +44,17 @@
             this.customerService = customerService;
             this.settingService = settingService;
             this.baseService = baseService;
+            this.logger = logger;
         }
 
         [HttpPost]
         public async Task<IActionResult> GetCustomerById([FromBody] GetCustomerInfoDetailByIdCriteria criteria)
         {
             var customerInfo = await customerService.GetCustomerByIdAsync(criteria);
+            var logMessage = new LogMessage("Get Customer Feedback Info:")
+                       .AddMessage(JsonConvert.SerializeObject(customerInfo, Formatting.Indented))
+                       .ToString();
+            await logger.InfoAsync(logMessage);
             return Json(customerInfo);
         }
 

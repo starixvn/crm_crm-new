@@ -22,7 +22,7 @@
 
         void LogFileError(Exception exception);
 
-        Task LogInfoSentry(ICriteria criteria);
+        Task LogInfoSentry(string message, ICriteria criteria);
     }
 
     public class CRMLogService : ICRMLogService
@@ -75,9 +75,9 @@
             nlog.Info(message);
         }
 
-        public async Task LogInfoSentry(ICriteria criteria)
+        public async Task LogInfoSentry(string message, ICriteria criteria)
         {
-            var logMessage = new LogMessage("Add Customer Feedback Params:")
+            var logMessage = new LogMessage(message)
                        .AddMessage(JsonConvert.SerializeObject(criteria, Formatting.Indented))
                        .ToString();
             await logger.InfoAsync(logMessage);

@@ -112,7 +112,7 @@
                     command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
                     command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
                     var result = await baseService.ExecuteNonQueryAsync(command);
-                    await logService.LogInfoSentry(command);
+                    await logService.LogInfoSentry("Add Customer Feedback Params:", command);
                     return Json(result);
                 }
 
