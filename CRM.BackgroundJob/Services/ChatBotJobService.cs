@@ -91,11 +91,7 @@
                     };
                     userNameList = await ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(criteria);
                 }
-                var groupsHistoryCollectionId = userNameList.GroupBy(p => p.VoidingHistoryCollectionId).Select(x => new ChatBotUserNameList
-                {
-                    VoidingHistoryCollectionId = x.Key,
-                    UsernameList = string.Join(",", x.Select(p => p.UsernameList))
-                });
+                
                 var voidingHistoryCollectionIds = voidingInfo.Item1
                     .Select(voidingCollectionId => new ChatBotUserNameList
                     {
@@ -103,7 +99,7 @@
                         UsernameList = ""
                     })
                     .ToList();
-                var combineHistoryCollectionIds = groupsHistoryCollectionId.Concat(voidingHistoryCollectionIds);
+                var combineHistoryCollectionIds = userNameList.Concat(voidingHistoryCollectionIds);
                 var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(combineHistoryCollectionIds, Environment, setting.IncludeUUSCurrency);
                 IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2);
 

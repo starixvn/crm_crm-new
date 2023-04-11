@@ -12,5 +12,7 @@
         public string UsernameList { get; set; }
         [XMLName("VoidingHistoryCollectionId")]
         public int VoidingHistoryCollectionId { get; set; }
+        [XMLName("VoidingHistoryID")]
+        public int? VoidingHistoryId { get; set; }
     }
 }
