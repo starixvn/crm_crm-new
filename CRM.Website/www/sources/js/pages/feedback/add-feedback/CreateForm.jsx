@@ -23,8 +23,9 @@ import CustomerInfo from './CustomerInfo';
 import Content from './Content';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import WithNavigation from '@jsroot/components/WithNavigation';
 
-export default class CreateForm extends Component {
+class CreateForm extends Component {
     constructor(props) {
         super(props);
         this.formik = React.createRef();
@@ -788,7 +789,7 @@ export default class CreateForm extends Component {
                         return;
                     } else {
                         setTimeout(() => {
-                            window.location = Site.resolveClientUrl('');
+                            this.props.navigate(Site.resolveClientUrl('Dashboard'), {state: this.props.currentCustomer});
                         }, 3000);
                     }
                 }).catch(Site.handleAxiosError);
@@ -816,3 +817,6 @@ export default class CreateForm extends Component {
         );
     }
 }
+
+const FunctionBarWithNavigation = WithNavigation(CreateForm);
+export default FunctionBarWithNavigation;

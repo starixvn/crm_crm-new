@@ -53,6 +53,12 @@ export class Layout extends Component {
         setTimeout(this.handleCheckNewVersion, 60000);
     }
 
+    async componentDidUpdate(prevProps) {
+        if(prevProps.location.pathname === '/AddFeedback' && this.props.location.pathname === '/Dashboard'){
+            await this.getCurrentCustomer();
+        }
+    }
+
     handleCheckNewVersion = async () =>{
         await CheckForIndexHTMLChange(Site.resolveClientUrl('')).then(response => {
             if(response) {
