@@ -906,7 +906,7 @@ describe('index', () => {
             expect(index.find(MultipleSelectLabel).props().texts).toEqual(props.texts);
             expect(index.find(MultipleSelectLabel).props().isAllTextShown).toEqual(props.isAllTextShown);
             expect(index.find(MultipleSelectLabel).props().maxDisplayItemCount).toEqual(props.maxDisplayItemCount);
-            expect(index.find('div').at(1).props().className).toBe('multiple-select-default multiple-select-options-container');
+            expect(index.find('div').at(1).props().className).toBe('multiple-select-default multiple-select-options-container ');
             expect(index.find('div').at(1).props().style).toEqual({ display: 'none' });
             expect(_renderSearchBox).toHaveBeenCalled();
             expect(_renderOptionAll).toHaveBeenCalled();

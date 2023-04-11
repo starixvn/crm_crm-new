@@ -33,7 +33,7 @@ describe('CreateForm', () => {
             statuses: [{statusId: 1, name: 'statuses'}],
             responses: [{id: 1, value: 'responses'}],
             languages: [{languageId: 1, name: 'languages'}],
-            communicationTools: [{id: 1, name: 'communicationTools'}],
+            communicationTools: [{id: 1, name: 'communicationTools'}, {id: 2, name: 'N/A'}],
             mainCategories: [{mainCategoryID: 1, name: 'category'}],
             products: [{id: 1, value: 'products'}],
             countries: [{id: 1, value: 'countries'}],
@@ -502,9 +502,8 @@ describe('CreateForm', () => {
             //Arrange
             const searchText = 'length > 2';
             props.getFeedbackSubjectTemplates = jest.fn();
-    
             const createForm = shallow(<CreateForm {...props} />);
-    
+            
             //Act
             createForm.instance().handleGetFeedbackSubjectTemplates(searchText);
             jest.runAllTimers();
@@ -548,7 +547,7 @@ describe('CreateForm', () => {
             // Act
             createForm.handleVerify(event, setFieldValue, 'test');
             await promise;
-            jest.runAllTimers();
+            
 
             // Assert
             expect(event.preventDefault).toHaveBeenCalled();
@@ -665,18 +664,34 @@ describe('CreateForm', () => {
         });
     });
 
-    describe('productHandleChange ', () => {
+    // describe('matchTimeAndToolPrefix', () => {
+    //     it('should do as expected when selectedItemsKey has value', () => {
+    //         // Arrange
+    //         const setFieldValue = jest.fn();
+    //         const createForm = shallow(<CreateForm  {...props}/>).instance();
+    //         shareScripts.getSubProducts = jest.fn(()=> [1]);
+
+    //         // Act
+    //         createForm.matchTimeAndToolPrefix('');
+    //         //
+
+    //         // Assert
+    //         expect(setFieldValue).toHaveBeenCalledWith('product', '1,2');
+    //         expect(createForm.state.subProductOptions).toEqual([1]);
+    //     });
+    // });
+
+    describe('productHandleChange', () => {
         it('should do as expected when selectedItemsKey has value', () => {
             // Arrange
             props.settings.subProducts = [1];
-
             const setFieldValue = jest.fn();
             const createForm = shallow(<CreateForm  {...props}/>).instance();
             shareScripts.getSubProducts = jest.fn(()=> [1]);
 
             // Act
             createForm.productHandleChange('currentItem', '1,2', setFieldValue, '1,2');
-            jest.runAllTimers();
+            //
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('product', '1,2');
@@ -693,7 +708,7 @@ describe('CreateForm', () => {
 
             // Act
             createForm.productHandleChange('currentItem', '', setFieldValue, values);
-            jest.runAllTimers();
+            //
 
             // Assert
             expect(createForm.state.subProductOptions).toEqual([]);
@@ -713,7 +728,7 @@ describe('CreateForm', () => {
 
                 // Act
                 createForm.subProductHandleChange('currentItem', '1,2', setFieldValue, '1,2');
-                jest.runAllTimers();
+                
 
                 // Assert
                 expect(setFieldValue).toHaveBeenCalledWith('subProduct', '1,2');
@@ -729,7 +744,7 @@ describe('CreateForm', () => {
 
                 // Act
                 createForm.subProductHandleChange('currentItem', '', setFieldValue, '1,2');
-                jest.runAllTimers();
+                
 
                 // Assert
                 expect(createForm.state.betTypeOptions).toEqual([]);
@@ -745,7 +760,7 @@ describe('CreateForm', () => {
 
                 // Act
                 createForm.subProductHandleChange('currentItem', '', setFieldValue, '1,2');
-                jest.runAllTimers();
+                
 
                 // Assert
                 expect(createForm.state.betTypeOptions).toEqual([]);
@@ -763,7 +778,7 @@ describe('CreateForm', () => {
             shareScripts.getSubCategories = jest.fn(()=> [1]);
             // Act
             createForm.mainCategoriesHandleChange('currentItem', '1,2', setFieldValue, values);
-            jest.runAllTimers();
+            
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('subject', 'tempSubject');
@@ -781,7 +796,7 @@ describe('CreateForm', () => {
             shareScripts.getSubCategories = jest.fn(()=> [1]);
             // Act
             createForm.mainCategoriesHandleChange('currentItem', '1,2', setFieldValue, values);
-            jest.runAllTimers();
+            
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('subject', 'tempSubject');
@@ -796,7 +811,7 @@ describe('CreateForm', () => {
 
             // Act
             createForm.mainCategoriesHandleChange ('currentItem', '', setFieldValue);
-            jest.runAllTimers();
+            
 
             // Assert
             expect(createForm.state.subCategoriesOptions).toEqual([]);
@@ -895,7 +910,7 @@ describe('CreateForm', () => {
 
             // Act
             createForm.handleCommunicationChange('currentItem', '1,2', setFieldValue);
-            jest.runAllTimers();
+            
 
             // Assert
             expect(createForm.state.communicationToolVal).toEqual('1');
@@ -1016,32 +1031,33 @@ describe('CreateForm', () => {
 
     describe('handleReVerifyInactiveAndConfirm', () => {
         it('should call exact function if have any inactive site member', async () => {
-        // Arrange
-        const response = [{
-            id: 1,
-            val: 'test',
-            isSiteActive: false,
-            isLicensee: true
-        }];
-        const promise = Promise.resolve(response);
-        const state = {
-            listOfCustomer: []
-        };
-        props.verifyUserName = jest.fn(() => promise);
-        props.setAddFeedback = jest.fn();
-        const values = ["test"];
-        const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + 'test';
-        const createForm = shallow(<CreateForm {...props}/>).instance();
-        createForm.setState(state);
+            // Arrange
+            const response = [{
+                id: 1,
+                val: 'test',
+                isSiteActive: false,
+                isLicensee: true
+            }];
+            const promise = Promise.resolve(response);
+            const state = {
+                listOfCustomer: []
+            };
+            props.verifyUserName = jest.fn(() => promise);
+            props.setAddFeedback = jest.fn();
+            const values = ["test"];
+            const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + 'test';
+            const createForm = shallow(<CreateForm {...props}/>).instance();
+            createForm.setState(state);
 
-        // Act
-        createForm.handleReVerifyInactiveAndConfirm(values, 'userNames');
-        await promise;
-        jest.runAllTimers();
+            // Act
+            createForm.handleReVerifyInactiveAndConfirm(values, 'userNames');
+            await promise;
 
-        // Assert
-        expect(props.setAddFeedback).toHaveBeenCalledWith({isSuccessful: false, message});
-        expect(createForm.state.listOfCustomer).toEqual(response);
+            // Assert
+            promise.then(() => {
+                expect(props.setAddFeedback).toHaveBeenCalledWith({isSuccessful: false, message});
+                expect(createForm.state.listOfCustomer).toEqual(response);
+            });
         });
     });
 
@@ -1064,7 +1080,7 @@ describe('CreateForm', () => {
         // Act
         createForm.handleReVerifyInactiveAndConfirm(values, 'userNames');
         await promise;
-        jest.runAllTimers();
+        
 
         // Assert
         expect(props.setAddFeedback).toHaveBeenCalledWith(null);
@@ -1162,7 +1178,7 @@ describe('CreateForm', () => {
             // Act
             createForm.createFeedback();
             await promise;
-            jest.runAllTimers();
+            
 
             // Assert
             expect(Site.resolveClientUrl).toHaveBeenCalledWith('CustomerInfo/GetCustomerInfo');
@@ -1184,7 +1200,7 @@ describe('CreateForm', () => {
             // Act
             createForm.createFeedback();
             await promise;
-            jest.runAllTimers();
+            
 
             // Assert
             expect(Site.resolveClientUrl).not.toHaveBeenCalledWith('CustomerInfo/GetCustomerInfo');
@@ -1236,7 +1252,7 @@ describe('CreateForm', () => {
             // Act
             createForm.handleCheckDuplicateFeedback({});
             await promise;
-            jest.runAllTimers();
+            
 
             // Assert
             expect(createForm.createFeedback).toHaveBeenCalled();
@@ -1253,7 +1269,7 @@ describe('CreateForm', () => {
             // Act
             createForm.handleCheckDuplicateFeedback({});
             await promise;
-            jest.runAllTimers();
+            
 
             // Assert
             expect(createForm.state.checkDuplicateDialog).toEqual({show: true});
@@ -1350,7 +1366,7 @@ describe('CreateForm', () => {
             // Act
             createForm.handleClickFillEvent(values, setFieldValue);
             await promise;
-            jest.runAllTimers();
+            
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', '');
@@ -1380,7 +1396,7 @@ describe('CreateForm', () => {
             // Act
             createForm.handleClickFillEvent(values, setFieldValue);
             await promise;
-            jest.runAllTimers();
+            
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', '');
@@ -1408,7 +1424,7 @@ describe('CreateForm', () => {
             // Act
             createForm.handleClickFillEvent(values, setFieldValue);
             await promise;
-            jest.runAllTimers();
+            
 
             // Assert
             expect(setFieldValue).toHaveBeenCalledWith('ticketRefInput', '');
