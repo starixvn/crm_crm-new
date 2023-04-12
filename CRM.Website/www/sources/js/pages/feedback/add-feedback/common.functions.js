@@ -39,7 +39,7 @@ export const validateFormik = (values, customerDetail, settings, content) => {
         }
     }
 
-    if (values.languageId === 0) {
+    if (!values.languageId || values.languageId === 0) {
         errors.languageId = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Language'));
     }
 

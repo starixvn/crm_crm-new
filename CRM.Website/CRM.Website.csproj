@@ -45,7 +45,7 @@
         <Content Include="App_Data\SpNames.UAT.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="logs\log.txt">
+        <Content Include="logs\nlog\log.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="www\dist\**">
