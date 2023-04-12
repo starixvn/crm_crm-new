@@ -586,7 +586,7 @@ class AppContainer extends Component {
                     if(params.isOverwrite){
                         window.localStorage.setItem('updateLeftPanel', params.custId);
                         const pathname = Site.resolveClientUrl(this.props.location.pathname.slice(1, this.props.location.pathname.length));
-                        this.props.navigate(pathname);
+                        this.props.navigate(pathname, {state: this.props.currentCustomer});
                     }
                 }, 3000);
             } else {

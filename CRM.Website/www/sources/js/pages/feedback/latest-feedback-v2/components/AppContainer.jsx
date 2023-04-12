@@ -90,10 +90,11 @@ export class AppContainer extends Component {
         }
 
         const isHost = this.state.policy === Policy.Host;
-        const {viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog } = this.props;
+        const {viewRelatedCustomerDialog, editNoOfInquiryDialog, editFeedbackDialog, custId, username } = this.props;
+        const currentCustomer = { custId:custId, username:username };
         return (
             <Fragment>
-                <Filter custId={this.props.custId} username={this.props.username}/>
+                <Filter custId={custId} username={username}/>
                 <DataGrid isHost={isHost} />
                 {
                     viewRelatedCustomerDialog.show &&
@@ -118,7 +119,7 @@ export class AppContainer extends Component {
                 }
                 {
                     editFeedbackDialog.show &&
-                    <EditFeedback feedbackId={editFeedbackDialog.feedbackId}
+                    <EditFeedback feedbackId={editFeedbackDialog.feedbackId} currentCustomer={currentCustomer}
                         onClose={this.handleCloseEditFeedbackDialog}
                     />
                 }

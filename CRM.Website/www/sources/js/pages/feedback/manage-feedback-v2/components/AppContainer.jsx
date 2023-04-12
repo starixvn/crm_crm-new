@@ -93,6 +93,7 @@ export class AppContainer extends Component {
                 {
                     editFeedbackDialog.show &&
                     <EditFeedback feedbackId={editFeedbackDialog.feedbackId}
+                        currentCustomer={currentCustomer}
                         onClose={this.handleCloseEditFeedbackDialog}
                     />
                 }
