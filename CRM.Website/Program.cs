@@ -13,7 +13,6 @@
             var logger = NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
             try
             {
-                logger.Info("Web Start");
                 CreateWebHostBuilder(args).Build().Run();
             }
             catch (Exception exception)
