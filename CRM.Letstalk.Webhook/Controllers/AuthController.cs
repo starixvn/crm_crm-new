@@ -30,7 +30,10 @@
                 var key = Encoding.ASCII.GetBytes(webSettings.Secret);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    Subject = new ClaimsIdentity(),
+                    Subject = new ClaimsIdentity(new[] {
+                        new Claim(ClaimTypes.Name, auth.AppId)
+                    }),
+
                     Expires = DateTime.UtcNow.AddDays(webSettings.ExpirationByDay),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };

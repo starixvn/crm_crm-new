@@ -20,16 +20,12 @@
         }
 
         [HttpPost]
-        [Route("api/letstalk/get-profile")]
-        public async Task<IActionResult> CheckPersonalProfileAsync([FromBody] PersonalProfileViewModel profileInfo)
+        [Route("api/letstalk/get-letstalk-name")]
+        public async Task<IActionResult> CheckPersonalProfileAsync([FromBody] GetLetstalkDisplayNameViewModel profileInfo)
         {
             var profile = await letstalkClientService(profileInfo.BotId).GetProfileAsync(profileInfo.LetstalkId);
-
-            return Ok(new
-            {
-                IsExisted = profile is not null,
-                Contact = profile
-            });
+            string displayName = profile is not null ? profile.DisplayName : string.Empty;
+            return Ok(displayName);
         }
 
         [HttpPost]
