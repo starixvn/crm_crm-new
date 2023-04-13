@@ -74,51 +74,51 @@
         {
             try
             {
-                await sendNotificationService.SendToPersonalLetstalk();
-                //AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Environment);
-                //if (!setting.ServiceFlag)
-                //{
-                //    logService.LogInformation("ChatBot - AbnormalBets Service is shutdown.");
-                //    return;
-                //}
+                //await sendNotificationService.SendToPersonalLetstalk();
+                AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Environment);
+                if (!setting.ServiceFlag)
+                {
+                    logService.LogInformation("ChatBot - AbnormalBets Service is shutdown.");
+                    return;
+                }
 
-                //var voidingInfo = await ticketVoidingService.GetVoidingMessageAsync(setting.LastVoidingHistoryCollectionId, setting.BatchSize);
-                //var userNameList = Enumerable.Empty<ChatBotUserNameList>();
-                //if (voidingInfo.Item2.Any())
-                //{
-                //    var criteria = new GetChatBotAbnormalAccountGetUsernameListCriteria
-                //    {
-                //        Messages = voidingInfo.Item2.ToXML("root").ToString()
-                //    };
-                //    userNameList = await ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(criteria);
-                //}
+                var voidingInfo = await ticketVoidingService.GetVoidingMessageAsync(setting.LastVoidingHistoryCollectionId, setting.BatchSize);
+                var userNameList = Enumerable.Empty<ChatBotUserNameList>();
+                if (voidingInfo.Item2.Any())
+                {
+                    var criteria = new GetChatBotAbnormalAccountGetUsernameListCriteria
+                    {
+                        Messages = voidingInfo.Item2.ToXML("root").ToString()
+                    };
+                    userNameList = await ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(criteria);
+                }
                 
-                //var voidingHistoryCollectionIds = voidingInfo.Item1
-                //    .Select(voidingCollectionId => new ChatBotUserNameList
-                //    {
-                //        VoidingHistoryCollectionId = voidingCollectionId,
-                //        UsernameList = ""
-                //    })
-                //    .ToList();
+                var voidingHistoryCollectionIds = voidingInfo.Item1
+                    .Select(voidingCollectionId => new ChatBotUserNameList
+                    {
+                        VoidingHistoryCollectionId = voidingCollectionId,
+                        UsernameList = ""
+                    })
+                    .ToList();
                 var combineHistoryCollectionIds = userNameList.Concat(voidingHistoryCollectionIds);
-                //var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(combineHistoryCollectionIds, Environment, setting.IncludeUUSCurrency);
-                //IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2);
+                var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(combineHistoryCollectionIds, Environment, setting.IncludeUUSCurrency);
+                IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2);
 
-                //var commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(
-                //    messages,
-                //    ticketInfos.Item1,
+                var commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(
+                    messages,
+                    ticketInfos.Item1,
                     ticketInfos.Item3,
-                //    Environment);
-                //if (commandResultImportTicket.Item1.IsSuccessful)
-                //{
-                //    logService.LogInformation("Import ChatBot - AbnormalBets Successful!!!");
-                //    await sendNotificationService.SendNotificationToLetstalk();
-                //}
-                //else
-                //{
-                //    await logService.ErrorAsync(commandResultImportTicket.Item1, commandResultImportTicket.Item2);
-                //    logService.LogInformation(string.Format("Import ChatBot - AbnormalBets Fail: {0}", commandResultImportTicket.Item1.Message));
-                //}
+                    Environment);
+                if (commandResultImportTicket.Item1.IsSuccessful)
+                {
+                    logService.LogInformation("Import ChatBot - AbnormalBets Successful!!!");
+                    await sendNotificationService.SendNotificationToLetstalk();
+                }
+                else
+                {
+                    await logService.ErrorAsync(commandResultImportTicket.Item1, commandResultImportTicket.Item2);
+                    logService.LogInformation(string.Format("Import ChatBot - AbnormalBets Fail: {0}", commandResultImportTicket.Item1.Message));
+                }
             }
             catch (Exception ex)
             {

@@ -6,6 +6,7 @@
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.BotService.Endpoint.Controllers;
+    using CRM.Core.Models;
     using CRM.Letstalk.Client.Models.Results;
     using CRM.Letstalk.Client.Services.Interfaces;
     using Microsoft.AspNetCore.Http;
@@ -18,7 +19,6 @@
     {
         private readonly IWebhookReceiver webhookReceiver;
         private readonly ILetstalkService letstalkService;
-        private readonly List<WebhookConfiguration> webhookConfigurations;
         private readonly LetstalkWebhookController controller;
 
         public LetstalkWebhookControllerTests()
@@ -27,13 +27,16 @@
             var func = Substitute.For<Func<int, ILetstalkService>>();
             letstalkService = Substitute.For<ILetstalkService>();
             func(Arg.Any<int>()).Returns(letstalkService);
-            webhookConfigurations = new List<WebhookConfiguration>
+            var webhookConfigurationsList = new List<WebhookConfiguration>
             {
                 new WebhookConfiguration {BotId = 1, IsAllowedGet = true, IsAllowedSet = true, WebhookBaseUrl = "abc.com/"},
                 new WebhookConfiguration {BotId = 2, IsAllowedGet = false, IsAllowedSet = false, WebhookBaseUrl = "test.com/"}
             };
 
-            controller = new LetstalkWebhookController(webhookReceiver, func, (IOptions<List<WebhookConfiguration>>)webhookConfigurations);
+            var webhookConfigurations = Substitute.For<IOptions<List<WebhookConfiguration>>>();
+            webhookConfigurations.Value.Returns(webhookConfigurationsList);
+
+            controller = new LetstalkWebhookController(webhookReceiver, func, webhookConfigurations);
         }
 
         [Fact]

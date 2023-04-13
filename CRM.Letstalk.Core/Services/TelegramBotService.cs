@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Net.Http.Json;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Models;
@@ -14,7 +12,6 @@
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
     using Microsoft.Extensions.Options;
-    using Newtonsoft.Json;
     using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
@@ -22,18 +19,15 @@
     public class TelegramBotService : ITelegramBotService
     {
         private readonly HttpClient httpClient;
-        private readonly SendIndirectMessageSettings sendIndirectMessageSettings;
         private readonly IList<TelegramBotConfigurations> botConfigurations;
         private readonly ICRMLogService logService;
 
         public TelegramBotService(
             IHttpClientFactory httpClientFactory,
-            IOptions<SendIndirectMessageSettings> sendIndirectMessageSettings,
             IOptions<HttpClientSetting> proxySettings,
             IOptions<List<TelegramBotConfigurations>> botConfigurations,
             ICRMLogService logService)
         {
-            this.sendIndirectMessageSettings = sendIndirectMessageSettings.Value;
             this.botConfigurations = botConfigurations.Value;
             this.logService = logService;
 
@@ -89,10 +83,6 @@
                 await WriteLogAsync(conversationInfo, exception);
 
                 var result = new SendMessageResult { ErrorCode = 1 };
-                if (sendIndirectMessageSettings.IsEnabled)
-                {
-                    result = await SendIndirectTextMessageAsync(conversationInfo);
-                }
 
                 return result.ErrorCode == 0 ? result : GetSendMessageResult(conversationInfo, exception);
             }
@@ -103,57 +93,6 @@
                 NotificationId = conversationInfo.NotificationId,
                 SentTime = DateTime.UtcNow
             };
-        }
-
-        protected internal virtual async Task<SendMessageResult> SendIndirectTextMessageAsync(ConversationInfo conversationInfo)
-        {
-            try
-            {
-                var token = await GetTokenAsync();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
-                var url = new Uri($"{sendIndirectMessageSettings.TelegramUrl}");
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync(url, conversationInfo);
-                response.EnsureSuccessStatusCode();
-                var responseData = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<SendMessageResult>(responseData);
-
-                result.ConversationId = conversationInfo.ConversationId;
-                result.NotificationId = conversationInfo.NotificationId;
-                result.SentTime = DateTime.UtcNow;
-
-                return result;
-            }
-            catch (Exception exception)
-            {
-                var logMessage = new LogMessage(exception.Message)
-                    .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception));
-                logService.LogInformation(logMessage.ToString());
-
-                return new SendMessageResult
-                {
-                    ConversationId = conversationInfo.ConversationId,
-                    NotificationId = conversationInfo.NotificationId,
-                    ErrorCode = 1,
-                    ErrorMessage = exception.Message,
-                    SentTime = DateTime.UtcNow
-                };
-            }
-        }
-
-        protected internal virtual async Task<ChatbotToken> GetTokenAsync()
-        {
-            var url = new Uri($"{sendIndirectMessageSettings.AuthenticateUrl}");
-            var authData = new Dictionary<string, string>
-            {
-                { "username", sendIndirectMessageSettings.AppCredentialId },
-                { "password", sendIndirectMessageSettings.AppCredentialPassword }
-            };
-            using var authDataContent = new FormUrlEncodedContent(authData);
-            HttpResponseMessage response = await httpClient.PostAsync(url, authDataContent);
-            response.EnsureSuccessStatusCode();
-            var responseData = await response.Content.ReadAsStringAsync();
-            var token = JsonConvert.DeserializeObject<ChatbotToken>(responseData);
-            return token;
         }
 
         protected internal virtual SendMessageResult GetSendMessageResult(ConversationInfo conversationInfo, Exception exception)
