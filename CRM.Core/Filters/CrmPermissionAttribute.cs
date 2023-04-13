@@ -43,7 +43,7 @@
         {
             try
             {
-                if (context?.HttpContext == null)
+                if (context.HttpContext == null)
                 {
                     context.Result = new RedirectToActionResult("SignIn", "Auth", null);
                 }
