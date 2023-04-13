@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Core.Enum
+﻿namespace CRM.BotService.Core.Enum
 {
     public enum ConversationChannel
     {

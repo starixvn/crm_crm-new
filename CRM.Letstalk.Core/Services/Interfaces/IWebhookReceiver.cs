@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Core.Services.Interfaces
+﻿namespace CRM.BotService.Core.Services.Interfaces
 {
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;

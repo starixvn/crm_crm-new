@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Core.Models.Letstalk.BotConfig
+﻿namespace CRM.BotService.Core.Models.Letstalk.BotConfig
 {
     public class LetstalkBotConfig
     {

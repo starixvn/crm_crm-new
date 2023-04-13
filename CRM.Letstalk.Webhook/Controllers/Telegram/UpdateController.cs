@@ -1,17 +1,13 @@
-﻿namespace CRM.Letstalk.Webhook.Controllers.Telegram
+﻿namespace CRM.BotService.Endpoint.Controllers.Telegram
 {
-    using System.Threading.Tasks;
-    using CRM.Core.Services;
-    using CRM.Letstalk.Core.Services.Interfaces;
-    using global::Telegram.Bot.Types.Enums;
-    using global::Telegram.Bot.Types;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.VisualBasic;
-    using System.Linq;
-    using CRM.Core.Models;
-    using CRM.Letstalk.Core.Criteria;
-    using System.Text.RegularExpressions;
     using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using CRM.BotService.Core.Services.Interfaces;
+    using CRM.Core.Services;
+    using global::Telegram.Bot.Types;
+    using global::Telegram.Bot.Types.Enums;
+    using Microsoft.AspNetCore.Mvc;
 
     public class UpdateController : Controller
     {

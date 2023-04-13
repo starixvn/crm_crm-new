@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Core.Criteria
+﻿namespace CRM.BotService.Core.Criteria
 {
     using CRM.Core.Models;
 

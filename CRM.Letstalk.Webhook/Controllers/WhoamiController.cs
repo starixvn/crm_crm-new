@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Webhook.Controllers
+﻿namespace CRM.BotService.Endpoint.Controllers
 {
     using CRM.Core.Extensions;
     using Microsoft.AspNetCore.Authorization;

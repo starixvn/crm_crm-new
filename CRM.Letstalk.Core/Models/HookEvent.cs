@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Core.Models
+﻿namespace CRM.BotService.Core.Models
 {
     using CRM.Letstalk.Client.Models;
     using Newtonsoft.Json;

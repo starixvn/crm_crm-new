@@ -1,8 +1,8 @@
-﻿namespace CRM.Letstalk.Core.Services.Interfaces
+﻿namespace CRM.BotService.Core.Services.Interfaces
 {
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Models;
     using CRM.Letstalk.Client.Configurations;
-    using CRM.Letstalk.Core.Models;
 
     public interface IEventHandler
     {

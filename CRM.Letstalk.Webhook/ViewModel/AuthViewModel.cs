@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Webhook.ViewModel
+﻿namespace CRM.BotService.Endpoint.ViewModel
 {
     public class AuthViewModel
     {

@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.Website", "CRM.Website\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CRM.BotService", "CRM.BotService", "{507F3C93-16FB-44CC-ACE7-C0B63EBABB69}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.Letstalk.Core", "CRM.Letstalk.Core\CRM.Letstalk.Core.csproj", "{2274D0B6-E6FD-4CD8-B34D-8A12350B6B90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.BotService.Core", "CRM.Letstalk.Core\CRM.BotService.Core.csproj", "{2274D0B6-E6FD-4CD8-B34D-8A12350B6B90}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.Letstalk.Webhook", "CRM.Letstalk.Webhook\CRM.Letstalk.Webhook.csproj", "{8EC00146-1881-4B5E-A6E4-ADFE3C4DCC03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.BotService.Endpoint", "CRM.Letstalk.Webhook\CRM.BotService.Endpoint.csproj", "{8EC00146-1881-4B5E-A6E4-ADFE3C4DCC03}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM.BackgroundJob", "CRM.BackgroundJob\CRM.BackgroundJob.csproj", "{D459840F-A2C9-4148-A345-6AEF9E2FFF29}"
 EndProject

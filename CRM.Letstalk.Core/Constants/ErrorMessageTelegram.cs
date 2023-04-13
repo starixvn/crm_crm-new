@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Core.Constants
+﻿namespace CRM.BotService.Core.Constants
 {
     public static class ErrorMessageTelegram
     {

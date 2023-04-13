@@ -1,19 +1,18 @@
-﻿namespace CRM.Letstalk.Core.Extensions
+﻿namespace CRM.BotService.Core.Extensions
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using CRM.BotService.Core.Constants;
+    using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Models.Letstalk.BotConfig;
+    using CRM.BotService.Core.Services;
+    using CRM.BotService.Core.Services.EventHandler;
+    using CRM.BotService.Core.Services.Interfaces;
     using CRM.Letstalk.Client.Services;
     using CRM.Letstalk.Client.Services.Interfaces;
-    using CRM.Letstalk.Core.Constants;
-    using CRM.Letstalk.Core.Models;
-    using CRM.Letstalk.Core.Models.Letstalk.BotConfig;
-    using CRM.Letstalk.Core.Services;
-    using CRM.Letstalk.Core.Services.EventHandler;
-    using CRM.Letstalk.Core.Services.Interfaces;
     using Fanex.Caching;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +53,7 @@
                     default:
                         throw new KeyNotFoundException($"The event type {key} have not implements!");
                 }
-            });  
+            });
 
             RegisterTelegramBots(services, configuration);
         }
@@ -100,7 +99,6 @@
 
         private static void RegisterTelegramBots(IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<TelegramAppSettings>(options => configuration.GetSection("TelegramAppSettings").Bind(options));
             services.Configure<List<WebhookConfiguration>>(options => configuration.GetSection("WebhookConfigurations").Bind(options));
             services.Configure<List<TelegramBotConfigurations>>(options => configuration.GetSection("TelegramBotConfigurations").Bind(options));
 

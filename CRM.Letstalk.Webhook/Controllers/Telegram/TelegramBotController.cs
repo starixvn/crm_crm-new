@@ -1,13 +1,13 @@
-﻿namespace CRM.Letstalk.Webhook.Controllers.Telegram
+﻿namespace CRM.BotService.Endpoint.Controllers.Telegram
 {
-    using CRM.Letstalk.Core.Models;
+    using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Services.Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
-    using Microsoft.AspNetCore.Authorization;
-    using System.Threading.Tasks;
-    using System;
-    using CRM.Letstalk.Core.Services.Interfaces;
 
     public class TelegramBotController : Controller
     {

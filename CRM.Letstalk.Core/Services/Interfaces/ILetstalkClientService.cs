@@ -1,9 +1,9 @@
-﻿namespace CRM.Letstalk.Core.Services.Interfaces
+﻿namespace CRM.BotService.Core.Services.Interfaces
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using CRM.Letstalk.Core.Models.Letstalk;
-    using CRM.Letstalk.Core.Models.Letstalk.Results;
+    using CRM.BotService.Core.Models.Letstalk;
+    using CRM.BotService.Core.Models.Letstalk.Results;
 
     public interface ILetstalkClientService
     {

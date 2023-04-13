@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Core.Extensions
+﻿namespace CRM.BotService.Core.Extensions
 {
     using System.Collections.Generic;
     using System.Linq;

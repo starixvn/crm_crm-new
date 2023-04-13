@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Core.Models.Letstalk.Results
+﻿namespace CRM.BotService.Core.Models.Letstalk.Results
 {
     public class TokenResult : BaseResult
     {

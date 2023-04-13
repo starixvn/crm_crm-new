@@ -1,16 +1,16 @@
-﻿namespace CRM.Letstalk.Core.Services
+﻿namespace CRM.BotService.Core.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Criteria;
+    using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Models.Letstalk;
+    using CRM.BotService.Core.Models.Letstalk.Results;
+    using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Enumerables;
     using CRM.Core.Services;
-    using CRM.Letstalk.Core.Criteria;
-    using CRM.Letstalk.Core.Models;
-    using CRM.Letstalk.Core.Models.Letstalk;
-    using CRM.Letstalk.Core.Models.Letstalk.Results;
-    using CRM.Letstalk.Core.Services.Interfaces;
     using CRM.Models.BotServices;
     using Newtonsoft.Json;
 

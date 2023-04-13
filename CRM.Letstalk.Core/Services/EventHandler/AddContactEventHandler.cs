@@ -1,12 +1,12 @@
-﻿namespace CRM.Letstalk.Core.Services.EventHandler
+﻿namespace CRM.BotService.Core.Services.EventHandler
 {
     using System;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Constants;
+    using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Services.Interfaces;
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Services.Interfaces;
-    using CRM.Letstalk.Core.Constants;
-    using CRM.Letstalk.Core.Models;
-    using CRM.Letstalk.Core.Services.Interfaces;
 
     public class AddContactEventHandler : IEventHandler
     {

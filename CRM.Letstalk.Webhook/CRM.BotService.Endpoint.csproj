@@ -53,6 +53,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\CRM.Letstalk.Client\CRM.Letstalk.Client.csproj" />
-        <ProjectReference Include="..\CRM.Letstalk.Core\CRM.Letstalk.Core.csproj" />
+        <ProjectReference Include="..\CRM.Letstalk.Core\CRM.BotService.Core.csproj" />
     </ItemGroup>
 </Project>

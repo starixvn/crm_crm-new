@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Core.Services
+﻿namespace CRM.BotService.Core.Services
 {
     using System;
     using System.Collections.Generic;
@@ -8,13 +8,13 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Constants;
+    using CRM.BotService.Core.Extensions.Letstalk;
+    using CRM.BotService.Core.Models.Letstalk;
+    using CRM.BotService.Core.Models.Letstalk.BotConfig;
+    using CRM.BotService.Core.Models.Letstalk.Results;
+    using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Enumerables;
-    using CRM.Letstalk.Core.Constants;
-    using CRM.Letstalk.Core.Extensions.Letstalk;
-    using CRM.Letstalk.Core.Models.Letstalk;
-    using CRM.Letstalk.Core.Models.Letstalk.BotConfig;
-    using CRM.Letstalk.Core.Models.Letstalk.Results;
-    using CRM.Letstalk.Core.Services.Interfaces;
     using Fanex.Caching;
     using Newtonsoft.Json;
 

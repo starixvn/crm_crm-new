@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Core.Models
+﻿namespace CRM.BotService.Core.Models
 {
     public class HttpClientSetting
     {

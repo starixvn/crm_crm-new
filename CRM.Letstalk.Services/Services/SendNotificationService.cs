@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using CRM.BotService.Services.Telegram.Services.Interfaces;
     using CRM.Core.Enumerables;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Services;
@@ -23,20 +22,17 @@
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
         private readonly Func<int, ILetstalkService> letstalkService;
-        private readonly ITelegramClientService telegramClientService;
         private readonly int ItemEachBatch;
         private const int DefaultItemEachBatch = 10;
 
         public SendNotificationService(IBaseService baseService,
             ICRMLogService logService,
             IConfiguration configuration,
-            Func<int, ILetstalkService> letstalkService,
-            ITelegramClientService telegramClientService)
+            Func<int, ILetstalkService> letstalkService)
         {
             this.baseService = baseService;
             this.logService = logService;
             this.letstalkService = letstalkService;
-            this.telegramClientService = telegramClientService;
             ItemEachBatch = configuration.GetValue<int?>("SendNotificationItemEachBatch") ?? DefaultItemEachBatch;
         }
 
@@ -170,8 +166,7 @@
             };
             try
             {
-                 await SendToPersonalLetstalk();
-                
+                await SendToPersonalLetstalk();
             }
             catch (Exception exception)
             {
@@ -184,7 +179,6 @@
 
             return sendResult;
         }
-
 
         private async Task SendToPersonal(NotificationMessage notification, SendNotificationResult sendResult)
         {
@@ -204,7 +198,7 @@
 
         public async Task SendToPersonalLetstalk()
         {
-            var result  = await telegramClientService.PushPersonalByTelegramAsync(6296493916, -923698329, "test send noti");
+            //var result = await telegramClientService.PushPersonalByTelegramAsync(6296493916, -923698329, "test send noti");
         }
 
         private async Task HandleSendPersonalResponse(NotificationMessage notification, PushMessageResult result, SendNotificationResult sendResult)

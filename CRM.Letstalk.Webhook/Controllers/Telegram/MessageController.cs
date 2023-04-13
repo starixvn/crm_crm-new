@@ -1,19 +1,16 @@
-﻿namespace CRM.Letstalk.Webhook.Controllers.Telegram
+﻿namespace CRM.BotService.Endpoint.Controllers.Telegram
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Services;
-    using CRM.Letstalk.Core.Constants;
-    using CRM.Letstalk.Core.Models;
-    using CRM.Letstalk.Core.Services.Interfaces;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Options;
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MessageController : Controller
@@ -36,7 +33,6 @@
             var errorMessage = string.Empty;
             try
             {
-                
                 _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
                 _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
                 await botService.SendTextMessageAsync(botId, chatId, conversationInfo.Message);
@@ -92,7 +88,7 @@
             logService.LogInformation(logMessage.ToString());
 
             var result = new SendMessageResult();
-            
+
             try
             {
                 _ = long.TryParse(conversationInfo.BotConversationId, out long botId);

@@ -1,10 +1,10 @@
-﻿namespace CRM.Letstalk.Webhook.Controllers
+﻿namespace CRM.BotService.Endpoint.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Services;
-    using CRM.Letstalk.Core.Services.Interfaces;
     using CRM.Models.BotServices;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;

@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CRM.BotService.Services\CRM.BotService.Services.csproj" />
     <ProjectReference Include="..\CRM.Core\CRM.Core.csproj" />
     <ProjectReference Include="..\CRM.Letstalk.Client\CRM.Letstalk.Client.csproj" />
   </ItemGroup>

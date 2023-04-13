@@ -1,13 +1,13 @@
-﻿namespace CRM.Letstalk.Core.Services.EventHandler
+﻿namespace CRM.BotService.Core.Services.EventHandler
 
 {
     using System;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Services.Interfaces;
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Models;
     using CRM.Letstalk.Client.Services.Interfaces;
-    using CRM.Letstalk.Core.Models;
-    using CRM.Letstalk.Core.Services.Interfaces;
     using Newtonsoft.Json;
 
     public class ReceiveMessageEventHandler : IEventHandler

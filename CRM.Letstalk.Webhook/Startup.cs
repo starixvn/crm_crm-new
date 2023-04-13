@@ -1,13 +1,13 @@
-﻿namespace CRM.Letstalk.Webhook
+﻿namespace CRM.BotService.Endpoint
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using CRM.BotService.Core.Extensions;
+    using CRM.BotService.Core.Models;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
-    using CRM.Letstalk.Core.Extensions;
-    using CRM.Letstalk.Core.Models;
     using Fanex.Data;
     using Fanex.Data.SqlServer;
     using Fanex.Logging;
@@ -65,24 +65,6 @@
                 .UseConfig(new LoggingConfiguration())
                 .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
-            var telegramAppSettingsSection = Configuration.GetSection("TelegramAppSettings");
-            services.Configure<TelegramAppSettings>(telegramAppSettingsSection);
-
-            var telegramAppSettings = telegramAppSettingsSection.Get<TelegramAppSettings>();
-            var key = Encoding.ASCII.GetBytes(telegramAppSettings.Secret);
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
             ConfigRedisCache(services, redisConfig);

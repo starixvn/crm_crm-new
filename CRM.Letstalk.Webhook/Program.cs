@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Webhook
+﻿namespace CRM.BotService.Endpoint
 {
     using System;
     using Microsoft.AspNetCore;

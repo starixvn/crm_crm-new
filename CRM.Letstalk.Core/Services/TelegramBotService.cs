@@ -1,23 +1,23 @@
-﻿namespace CRM.Letstalk.Core.Services
+﻿namespace CRM.BotService.Core.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net.Http.Headers;
     using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Net.Http.Json;
     using System.Threading.Tasks;
-    using CRM.Letstalk.Core.Models;
-    using CRM.Letstalk.Core.Services.Interfaces;
-    using Fanex.Logging.Extensions.Database;
+    using CRM.BotService.Core.Constants;
+    using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Services.Interfaces;
+    using CRM.Core.Services;
     using Fanex.Logging.Extensions;
+    using Fanex.Logging.Extensions.Database;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
-    using Telegram.Bot.Types.Enums;
-    using Telegram.Bot.Types;
     using Telegram.Bot;
-    using CRM.Letstalk.Core.Constants;
-    using System.Net.Http.Json;
-    using CRM.Core.Services;
+    using Telegram.Bot.Types;
+    using Telegram.Bot.Types.Enums;
 
     public class TelegramBotService : ITelegramBotService
     {

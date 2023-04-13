@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CRM.Letstalk.Webhook\CRM.Letstalk.Webhook.csproj" />
+    <ProjectReference Include="..\..\CRM.Letstalk.Webhook\CRM.BotService.Endpoint.csproj" />
   </ItemGroup>
 
 </Project>
