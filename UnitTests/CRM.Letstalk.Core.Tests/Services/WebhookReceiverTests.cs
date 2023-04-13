@@ -1,16 +1,15 @@
-﻿namespace CRM.Letstalk.Core.Tests.Services
+﻿namespace CRM.BotService.Core.Tests.Services
 {
     using System;
     using System.Collections.Generic;
     using CRM.Core.Services;
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Services.Interfaces;
-    using CRM.Letstalk.Core.Services;
-    using CRM.Letstalk.Core.Services.Interfaces;
-    using Fanex.Logging;
+    using CRM.BotService.Core.Services.Interfaces;
     using Microsoft.AspNetCore.Http;
     using NSubstitute;
     using Xunit;
+    using CRM.BotService.Core.Services;
 
     public class WebhookReceiverTests
     {

@@ -3,13 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Services.Interfaces;
+    using CRM.BotService.Endpoint.Controllers;
     using CRM.Letstalk.Client.Models.Results;
     using CRM.Letstalk.Client.Services.Interfaces;
-    using CRM.Letstalk.Core.Models;
-    using CRM.Letstalk.Core.Services.Interfaces;
-    using CRM.Letstalk.Webhook.Controllers;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
     using NSubstitute;
     using Xunit;
 
@@ -32,7 +33,7 @@
                 new WebhookConfiguration {BotId = 2, IsAllowedGet = false, IsAllowedSet = false, WebhookBaseUrl = "test.com/"}
             };
 
-            controller = new LetstalkWebhookController(webhookReceiver, func, webhookConfigurations);
+            controller = new LetstalkWebhookController(webhookReceiver, func, (IOptions<List<WebhookConfiguration>>)webhookConfigurations);
         }
 
         [Fact]

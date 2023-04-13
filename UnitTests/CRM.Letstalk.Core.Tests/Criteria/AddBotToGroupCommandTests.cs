@@ -1,6 +1,6 @@
 ﻿namespace CRM.Letstalk.Core.Tests.Criteria
 {
-    using CRM.Letstalk.Core.Criteria;
+    using CRM.BotService.Core.Criteria;
     using Xunit;
 
     public class AddBotToGroupCommandTests

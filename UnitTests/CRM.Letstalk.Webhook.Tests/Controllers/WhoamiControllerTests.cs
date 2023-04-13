@@ -2,8 +2,8 @@
 {
     using System.Net;
     using AutoFixture;
+    using CRM.BotService.Endpoint.Controllers;
     using CRM.Core.Extensions;
-    using CRM.Letstalk.Webhook.Controllers;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Xunit;

@@ -2,14 +2,14 @@
 {
     using System;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Criteria;
+    using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Services.EventHandler;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Letstalk.Client.Configurations;
     using CRM.Letstalk.Client.Models.Results;
     using CRM.Letstalk.Client.Services.Interfaces;
-    using CRM.Letstalk.Core.Criteria;
-    using CRM.Letstalk.Core.Models;
-    using CRM.Letstalk.Core.Services.EventHandler;
     using NSubstitute;
     using Xunit;
 
