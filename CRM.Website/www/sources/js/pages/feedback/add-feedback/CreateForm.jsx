@@ -25,7 +25,7 @@ import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
 import WithNavigation from '@jsroot/components/WithNavigation';
 
-class CreateForm extends Component {
+export class CreateForm extends Component {
     constructor(props) {
         super(props);
         this.formik = React.createRef();

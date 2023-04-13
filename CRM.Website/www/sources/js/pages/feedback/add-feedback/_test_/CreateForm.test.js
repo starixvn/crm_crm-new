@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateForm from '../CreateForm';
+import { CreateForm } from '../CreateForm';
 import { Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
@@ -11,6 +11,7 @@ import AutoComplete from '@jsroot/components/AutoComplete';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import WithNavigation from '@jsroot/components/WithNavigation';
 import { shallow } from 'enzyme';
 
 describe('CreateForm', () => {
@@ -51,7 +52,9 @@ describe('CreateForm', () => {
             //Arrange
             const event = { key: 's', ctrlKey: true, preventDefault: jest.fn() };
             document.removeEventListener = jest.fn();
+
             const createForm = shallow(<CreateForm  {...props} />).instance();
+
             createForm.formik = {
                 isSubmitting: false,
                 submitForm: jest.fn()

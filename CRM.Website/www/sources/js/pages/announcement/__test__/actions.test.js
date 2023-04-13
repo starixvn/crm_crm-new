@@ -137,7 +137,7 @@ describe('actionCreators', () => {
             const actual = await store.dispatch(ActionCreators.getLanguages());
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('NotificationTemplate/GetLanguages');
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('Announcement/GetLanguages');
             expect(actual).toEqual(response.data);
         });
     });

@@ -1,5 +1,5 @@
 import React from 'react';
-import AppContainer from '../AppContainer';
+import { AppContainer } from '../AppContainer';
 import Site from '@jsroot/common/site';
 import LangHelper from '@jsroot/common/langHelper';
 import { shallow } from 'enzyme';
@@ -211,6 +211,9 @@ describe('AppContainer', () => {
             const props = {
                 onClose: jest.fn()
             };
+            const params = {
+                isOverwrite: false
+            }
             const response = {data: {isSuccessful: true}};
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
@@ -218,7 +221,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props}/>).instance();
             container.formik = { setSubmitting: jest.fn() };
             // Act
-            container.handleEditFeedback();
+            container.handleEditFeedback(params);
             await promise;
             jest.runAllTimers();
 
@@ -232,6 +235,9 @@ describe('AppContainer', () => {
             const props = {
                 onClose: jest.fn()
             };
+            const params = {
+                isOverwrite: true
+            }
             const response = {data: {isSuccessful: false}};
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
@@ -239,7 +245,7 @@ describe('AppContainer', () => {
             const container = shallow(<AppContainer {...props}/>).instance();
             container.formik = { setSubmitting: jest.fn() };
             // Act
-            container.handleEditFeedback();
+            container.handleEditFeedback(params);
             await promise;
 
             // Assert
@@ -539,6 +545,9 @@ describe('AppContainer', () => {
         it('should call exactly function', () => {
             // Arrange
             const container = shallow(<AppContainer />).instance();
+            container.formik = {
+                setSubmitting: jest.fn()
+            }
 
             // Act
             container.handleConfirmOverwriteCustomerInfo();

@@ -110,7 +110,7 @@ describe('DataGrid', () => {
                 const header = shallow(container.renderHeaderAnnouncement(false));
 
                 // Assert
-                expect(header.find(HeaderCell).length).toBe(8);
+                expect(header.find(HeaderCell).length).toBe(7);
             });
 
             it('should render expected header when isHost = true', () => {
@@ -121,7 +121,7 @@ describe('DataGrid', () => {
                 const header = shallow(container.renderHeaderAnnouncement(true));
 
                 // Assert
-                expect(header.find(HeaderCell).length).toBe(9);
+                expect(header.find(HeaderCell).length).toBe(8);
             });
         describe('renderBodyAnnouncement', () => {
             it('should render no data when gridData is empty', () => {

@@ -112,7 +112,8 @@ describe('Filter', () => {
             // Arrange
             const props = { 
                 ...initProps,
-                getActivityLog: jest.fn()
+                getActivityLog: jest.fn(),
+                gridParams: { pageSize: 100 }
              };
             const mockEvent = {
                 preventDefault: jest.fn()

@@ -110,7 +110,7 @@ describe('dataHandlerActions', () => {
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
         const promise = Promise.resolve(response);
-        DataService.postDataAsync = jest.fn(() => promise);
+        DataService.getDataAsync = jest.fn(() => promise);
         const store = mockStore({ });
         //Act
         const actual = await store.dispatch(actions.deleteConversationGroup(1));

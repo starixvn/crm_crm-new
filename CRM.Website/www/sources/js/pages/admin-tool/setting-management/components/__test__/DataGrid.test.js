@@ -54,7 +54,7 @@ describe('DataGrid', () => {
             const header = shallow(container.buildHeader(true));
 
             // Assert
-            expect(header.find(HeaderCell).length).toBe(5);
+            expect(header.find(HeaderCell).length).toBe(6);
         });
     });
 

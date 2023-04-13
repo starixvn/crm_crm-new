@@ -122,12 +122,14 @@ describe('InsertPersonalMappingPopup', () => {
             test.find(Form.Group).at(3).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith(event);
 
-            expect(popup.find(Form.Group).at(6).find(MultipleSelect).length).toBe(1);
+            test.find(Form.Group).at(6).find(MultipleSelect).at(0).simulate('change');
+            expect(popup.instance().handleGroupHeadlineChange).toHaveBeenCalled();
+            //expect(popup.find(Form.Group).at(6).find(MultipleSelect).length).toBe(1);
 
             test.find(Form.Group).at(7).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('languageId', 'value');
 
-            test.find(Form.Group).at(8).find(Form.Control).at(0).simulate('change', event);
+            test.find(Form.Group).at(9).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('remark', 'value');
         });
 

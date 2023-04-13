@@ -10,6 +10,8 @@ describe('CustomerInfo', () => {
         window.currentClientTime = '7/28/2021 2:26:28 PM';
         jest.useFakeTimers();
         LangHelper.getResource = jest.fn(key => key);
+        //JSON.parse = jest.fn();
+        // JSON.stringify = jest.fn()
     });
 
     afterAll(() => {
@@ -24,7 +26,8 @@ describe('CustomerInfo', () => {
             titles: [{id: 1, value: 'titles'}],
             licenseeTypes: [{id: 1, name: 'licenseeTypes'}],
             statuses: [{statusId: 1, name: 'statuses'}],
-            responses: [{id: 1, value: 'responses'}]
+            responses: [{id: 1, value: 'responses'}],
+            sites: [{}]
             },
         customerInfo:{},
         handleChange: jest.fn(),

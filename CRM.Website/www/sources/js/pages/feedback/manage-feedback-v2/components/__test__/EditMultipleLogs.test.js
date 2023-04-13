@@ -430,7 +430,7 @@ describe('EditMultipleLogs', () => {
     });
 
     describe('reviewMode', () => {
-        it('should return expected if do not have permission', () => {
+        it('should return expected if isReviewed false', () => {
             // Arrange
             const state = {
                 hasReviewFeedbackPermission: false
@@ -439,50 +439,42 @@ describe('EditMultipleLogs', () => {
             container.setState(state);
 
             // Act
-            const actual = container.reviewMode();
+            const actual = container.reviewMode(false,0);
 
             // Assert
             expect(actual).toEqual(2);
         });
 
-        it('should return expected if do have permission and  isReviewed is false', () => {
+        it('should return expected if isReviewed true and state equal', () => {
             // Arrange
             const state = {
-                hasReviewFeedbackPermission: true
-            };
-            const values = {
-                isCheck:{
-                    isReviewed: false
-                }
+                hasReviewFeedbackPermission: true,
+                communication: { review: 1 }
             };
             const container = shallow(<EditMultipleLogs />).instance();
             container.setState(state);
 
             // Act
-            const actual = container.reviewMode(values);
+            const actual = container.reviewMode(true, 1);
 
             // Assert
-            expect(actual).toEqual(2);
+            expect(actual).toEqual(0);
         });
 
-        it('should return expected if do have permission and  isReviewed is false and not equal review', () => {
+        it('should return expected if isReviewed true and state not equal', () => {
             // Arrange
             const state = {
-                hasReviewFeedbackPermission: true
-            };
-            const values = {
-                isReviewed: false,
-                review: ''
+                hasReviewFeedbackPermission: true,
+                communication: { review: 2 }
             };
             const container = shallow(<EditMultipleLogs />).instance();
             container.setState(state);
-            container.formikValues = jest.fn().mockReturnValue({review: 'test'});
 
             // Act
-            const actual = container.reviewMode(values);
+            const actual = container.reviewMode(true, 1);
 
             // Assert
-            expect(actual).toEqual(2);
+            expect(actual).toEqual(1);
         });
     });
 

@@ -71,7 +71,8 @@ describe('CustomerInfo', () => {
             titles: [{id: 1, value: 'titles'}],
             licenseeTypes: [{id: 1, name: 'licenseeTypes'}],
             statuses: [{statusId: 1, name: 'statuses'}],
-            responses: [{id: 1, value: 'responses'}]
+            responses: [{id: 1, value: 'responses'}],
+            sites: [{}]
         },
         handleChangeInput: jest.fn(),
         setFieldValue: jest.fn(),

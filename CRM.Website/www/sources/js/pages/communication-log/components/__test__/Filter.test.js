@@ -5,8 +5,19 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import { shallow } from 'enzyme';
 
 describe('Filter', () => {
-    beforeAll(() => {
+    beforeEach(() => {
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'btn-submit-communication');
+        document.body.appendChild(appContainer);
         window.currentClientTime = '24/9/2021 10:05:20 AM';
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        const appContainer = document.getElementById('btn-submit-communication');
+        if (appContainer) {
+            document.body.removeChild(appContainer);
+        }
     });
 
     const initProps = {
@@ -37,6 +48,45 @@ describe('Filter', () => {
             expect(props.getLogsByCustomerId).toHaveBeenCalled();
             expect(props.setGridParams).toHaveBeenCalled();
             expect(props.getStatusForFilter).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleKeyDownFunc', () => {
+        it('should call exactly func when type key is s', () => {
+            // Arrange
+            const event = {
+                ctrlKey: true,
+                key: 's',
+                preventDefault: jest.fn()
+            };
+
+            // Act
+            const container = shallow(<Filter {...initProps}/>);
+            container.instance().handleKeyDownFunc(event);
+
+            // Assert
+            expect(event.preventDefault).toHaveBeenCalled();
+        });
+
+        it('should call exactly func when type key is i', () => {
+            // Arrange
+            const event = {
+                ctrlKey: true,
+                key: 'i',
+                preventDefault: jest.fn()
+            };
+            const props = {
+                ...initProps,
+                setCreateCommunicationDialog: jest.fn()
+            }
+
+            // Act
+            const container = shallow(<Filter {...props}/>);
+            container.instance().handleKeyDownFunc(event);
+
+            // Assert
+            expect(event.preventDefault).toHaveBeenCalled();
+            expect(props.setCreateCommunicationDialog).toHaveBeenCalledWith({ show: true });
         });
     });
 

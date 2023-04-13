@@ -23,7 +23,7 @@ import { validateMainCategorySubCategory } from '../common.functions';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import WithNavigation from '@jsroot/components/WithNavigation';
 
-class AppContainer extends Component {
+export class AppContainer extends Component {
     static propTypes = {
         feedbackId: PropTypes.number.isRequired,
         onClose: PropTypes.func.isRequired

@@ -846,7 +846,7 @@ describe('CreateForm', () => {
             ...defaultProps,
             settings: {
                 ...defaultProps.settings,
-                extensionNA: {},
+                extensionNA: { id: 1 },
                 subCategories: []
             },
             verifyCustomerResults: [1],

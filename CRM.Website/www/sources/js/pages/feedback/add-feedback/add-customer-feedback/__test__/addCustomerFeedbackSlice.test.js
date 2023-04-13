@@ -4,7 +4,8 @@ import addCustomerFeedback, {
     setCustomerDetail,
     setFeedbackSubjectTemplates,
     setAddFeedback,
-    setConfirmCreateGuestDialog
+    setConfirmCreateGuestDialog,
+    resetState
 } from '../addCustomerFeedbackSlice';
 
 describe('addCustomerFeedback reducer', () => {
@@ -150,6 +151,21 @@ describe('addCustomerFeedback reducer', () => {
                 id: 1, 
                 custName : 'test'
             }
+        });
+    });
+
+    it('should handle resetState', () => {
+        expect(
+            addCustomerFeedback({}, {
+                type: resetState.type
+            })
+        ).toEqual({
+            settings: null,
+            balanceUpday: null,
+            customerDetail: null,
+            addFeedbackResult: null,
+            feedbackSubjectTemplates: [],
+            confirmCreateGuestDialog: { show: false }
         });
     });
 });

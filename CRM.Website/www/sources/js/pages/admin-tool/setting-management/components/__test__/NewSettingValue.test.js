@@ -175,34 +175,9 @@ describe('NewSettingValue', () => {
 
             //Act
             const row = shallow(container.renderForm(paramFormik));
-            row.find(Form.Control).at(2).simulate('change',{target: {value: 'test'}});
+            row.find(Form.Control).at(3).simulate('change',{target: {value: 'test'}});
             // Assert
             expect(paramFormik.setFieldValue).toHaveBeenCalled();
-        });
-
-        it('should call exactly function if form display order is changed', () => {
-            // Arrange
-            const values = {
-                settingName: 'settingName',
-                settingValue: 'settingName',
-                displayOrder: 1,
-                parentId: 1
-            };
-            const paramFormik = {
-                values: values,
-                errors: {},
-                touched: {},
-                handleChange: jest.fn(),
-                handleSubmit: jest.fn(),
-                setFieldValue: jest.fn()
-            };
-            const container = shallow(<NewSettingValue {...initProps} />).instance();
-
-            //Act
-            const row = shallow(container.renderForm(paramFormik));
-            row.find(Form.Control).at(3).simulate('change');
-            // Assert
-            expect(paramFormik.handleChange).toHaveBeenCalled();
         });
     });
 

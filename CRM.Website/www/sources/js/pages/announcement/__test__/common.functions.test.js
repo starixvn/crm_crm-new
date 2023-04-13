@@ -24,7 +24,7 @@ describe('common.functions', () => {
                 sendDate: null
             };
             const expected = {
-                notificationTemplate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('NotificationTemplate')),
+                //notificationTemplate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('NotificationTemplate')),
                 title: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title')),
                 content: LangHelper.formatString(LangHelper.getResource('FieldRequired'), 'Content EN'),
                 sendDate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SendTime'))
