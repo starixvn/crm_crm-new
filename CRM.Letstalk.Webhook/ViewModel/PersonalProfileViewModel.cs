@@ -1,0 +1,8 @@
+﻿namespace CRM.Letstalk.Webhook.ViewModel
+{
+    public class PersonalProfileViewModel
+    {
+        public int BotId { get; set; }
+        public string LetstalkId { get; set; }
+    }
+}

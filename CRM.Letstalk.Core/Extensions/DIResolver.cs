@@ -3,15 +3,18 @@
     using System;
     using System.Collections.Generic;
     using System.Configuration;
-    using CRM.Letstalk.Client.Configurations;
-    using CRM.Letstalk.Client.Extensions;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
     using CRM.Letstalk.Client.Services;
     using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Letstalk.Core.Constants;
     using CRM.Letstalk.Core.Models;
+    using CRM.Letstalk.Core.Models.Letstalk.BotConfig;
     using CRM.Letstalk.Core.Services;
     using CRM.Letstalk.Core.Services.EventHandler;
     using CRM.Letstalk.Core.Services.Interfaces;
+    using Fanex.Caching;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -59,10 +62,40 @@
         public static void ResolveLetstalkServices(this IServiceCollection services, IConfiguration configuration)
         {
             var botConfigSections = configuration.GetSection("LetstalkBotConfigurations");
-            services.Configure<List<BotConfig>>(options => botConfigSections.Bind(options));
-            var botConfigs = botConfigSections.Get<List<BotConfig>>();
+            services.Configure<List<LetstalkBotConfig>>(options => botConfigSections.Bind(options));
+            var botConfigs = botConfigSections.Get<List<LetstalkBotConfig>>();
             services.AddSingleton(botConfigs);
-            services.RegisterLetstalkBotService(configuration, botConfigs);
+
+            RegisterBotLetstalkService(services, configuration, botConfigs);
+        }
+
+        private static void RegisterBotLetstalkService(IServiceCollection services, IConfiguration configuration, List<LetstalkBotConfig> botConfigs)
+        {
+            var isUseProxy = bool.Parse(configuration.GetSection("HttpClientSetting:IsUseProxy").Value);
+            var proxyAddress = configuration.GetSection("HttpClientSetting:ProxyAddress").Value;
+            var bypassOnLocal = bool.Parse(configuration.GetSection("HttpClientSetting:BypassOnLocal").Value);
+
+            services.AddHttpClient(NamedHttpClients.ProxiedClient).ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+            {
+                UseProxy = isUseProxy,
+                Proxy = new WebProxy(proxyAddress, bypassOnLocal)
+            });
+
+            services.AddSingleton<ICacheService, CacheService>();
+            services.AddSingleton<Func<int, ILetstalkClientService>>(serviceProvider => botId =>
+            {
+                var botConfig = botConfigs.FirstOrDefault(config => config.BotAccountId == botId);
+
+                if (botConfig == null)
+                {
+                    throw new ArgumentNullException($"The bot ID: {botId} does not existed in config file");
+                }
+
+                return new LetstalkClientService(
+                    serviceProvider.GetRequiredService<IHttpClientFactory>(),
+                    serviceProvider.GetRequiredService<ICacheService>(),
+                    botConfig);
+            });
         }
 
         private static void RegisterTelegramBots(IServiceCollection services, IConfiguration configuration)
@@ -72,7 +105,6 @@
             services.Configure<List<TelegramBotConfigurations>>(options => configuration.GetSection("TelegramBotConfigurations").Bind(options));
 
             services.AddTransient<ITelegramBotService, TelegramBotService>();
-
         }
     }
 }

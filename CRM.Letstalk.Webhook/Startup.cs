@@ -83,16 +83,37 @@
                     ValidateAudience = false
                 };
             });
-
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
             ConfigRedisCache(services, redisConfig);
+
+            var appSettingsSection = Configuration.GetSection("WebSettings");
+            services.Configure<WebSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<WebSettings>();
+
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             services.AddControllers().AddNewtonsoftJson();
             services.ResolveCoreDI();
             services.ResolveLetstalkServices(Configuration);
             services.ResolveWebhookServices(Configuration);
 
+            var webSettingsSection = Configuration.GetSection("WebSettings");
+            var botConfigs = webSettingsSection.Get<WebSettings>();
+            services.AddSingleton(botConfigs);
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -112,7 +133,6 @@
             app.UseRouting();
             app.UseAuthorization();
             app.UseAuthentication();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

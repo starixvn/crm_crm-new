@@ -10,6 +10,8 @@
     <ItemGroup>
         <None Remove="App_Data\SpNames.AWS.xml" />
         <None Remove="App_Data\SpNames.xml" />
+        <None Remove="Controllers\LetstalkController.cs~RF3c08a7.TMP" />
+        <None Remove="Controllers\LetstalkController.cs~RF4cd0fa.TMP" />
         <None Remove="logs\log.txt" />
     </ItemGroup>
 
@@ -40,7 +42,7 @@
 
     <ItemGroup>
         <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.2" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.10" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
         <PackageReference Include="SonarAnalyzer.CSharp" Version="8.40.0.48530">

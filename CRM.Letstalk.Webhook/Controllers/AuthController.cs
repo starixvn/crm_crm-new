@@ -1,67 +1,51 @@
-﻿
-namespace CRM.Letstalk.Webhook.Controllers
+﻿namespace CRM.Letstalk.Webhook.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
+    using System;
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
     using System.Text;
-    using System;
+    using CRM.Letstalk.Core.Models;
+    using CRM.Letstalk.Webhook.ViewModel;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.IdentityModel.Tokens;
-    using CRM.Letstalk.Core.Models;
-    using Microsoft.Extensions.Options;
 
     public class AuthController : Controller
     {
-        private readonly TelegramAppSettings telegramAppSettings;
-        private readonly string invalidUsernameOrPasswordText = "Username or password is incorrect";
+        private readonly WebSettings webSettings;
 
-        public AuthController(IOptions<TelegramAppSettings> telegramAppSettings)
+        public AuthController(WebSettings webSettings)
         {
-            this.telegramAppSettings = telegramAppSettings.Value;
+            this.webSettings = webSettings;
         }
 
         [AllowAnonymous]
-        [HttpGet]
+        [HttpPost]
         [Route("api/authenticate")]
-        public ObjectResult Authenticate(string username, string password)
+        public IActionResult Authenticate([FromBody] AuthViewModel auth)
         {
-            if (IsValidCredential(username, password))
+            if (IsValidCredential(auth))
             {
-                var jwtToken = GenerateAccessToken(username);
-                return Ok(jwtToken);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(webSettings.Secret);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(),
+                    Expires = DateTime.UtcNow.AddDays(webSettings.ExpirationByDay),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var sercurityToken = tokenHandler.CreateToken(tokenDescriptor);
+                string token = tokenHandler.WriteToken(sercurityToken);
+
+                return Ok(new { AccessToken = token });
             }
             else
             {
-                return BadRequest(invalidUsernameOrPasswordText);
+                return Unauthorized();
             }
         }
 
-        private JwtToken GenerateAccessToken(string username)
-        {
-            var jwtToken = new JwtToken();
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(telegramAppSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] {
-                    new Claim(ClaimTypes.Name, username)
-                    }),
-                Expires = DateTime.UtcNow.AddMinutes(20),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            jwtToken.Token = tokenHandler.WriteToken(token);
-            jwtToken.ValidFrom = token.ValidFrom;
-            jwtToken.ValidTo = token.ValidTo;
-
-            return jwtToken;
-        }
-
-        private bool IsValidCredential(string username, string password)
-        {
-            return username.Equals(telegramAppSettings.AppCredentialId, StringComparison.InvariantCultureIgnoreCase)
-                && password.Equals(telegramAppSettings.AppCredentialPassword, StringComparison.InvariantCultureIgnoreCase);
-        }
+        private bool IsValidCredential(AuthViewModel auth)
+        => auth.AppId.Equals(webSettings.AppId) && Convert.ToBase64String(Encoding.UTF8.GetBytes(webSettings.AppToken)).Equals(auth.Token);
     }
 }

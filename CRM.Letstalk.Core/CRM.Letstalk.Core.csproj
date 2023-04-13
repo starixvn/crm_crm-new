@@ -18,5 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\CRM.Core\CRM.Core.csproj" />
     <ProjectReference Include="..\CRM.Letstalk.Client\CRM.Letstalk.Client.csproj" />
+    <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
   </ItemGroup>
 </Project>
