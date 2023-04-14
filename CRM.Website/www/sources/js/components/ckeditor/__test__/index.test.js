@@ -143,7 +143,7 @@ describe('CkEditor', () => {
                 toolbar: 'insert'
             }));
 
-            expect(CKEDITORMock.addCss).toHaveBeenCalledWith('body {margin: 2 !important;}');
+            expect(CKEDITORMock.addCss).toHaveBeenCalledWith('body {margin: 2px !important;}');
         });
 
         it('should insert the expected HTML when the insertEditBlock command is executed', () => {

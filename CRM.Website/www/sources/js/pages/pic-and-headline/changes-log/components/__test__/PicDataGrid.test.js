@@ -31,7 +31,7 @@ describe('PicDataGrid', () => {
                         name: 'Albania' 
                     },
                     directAccounts: [],
-                    headlines: [],
+                    headlines: [{ id: 1, name: 'test' }],
                     isActive: false,
                     languages: [{id: 12001,name: 'Mandarin'}],
                     name: 'PIC_ruby',
@@ -52,26 +52,28 @@ describe('PicDataGrid', () => {
                     },
                     conversationGroup: {name: ''},
                     directAccounts: [],
-                    headlines: [],
+                    headlines: [{ id: 1, name: 'test' }],
                     isActive: false,
                     languages: [{id: 12001,name: 'Mandarin'}],
                     name: 'PIC_ruby',
                     picTypes: [{id: 51000, name: 'Headline PIC'}],
                     remark: 't',
-                    role: {id: 48000, name: 'PIC'}
+                    role: {id: 48000, name: 'PIC'},
+                    recipients: [{ id: 1, name: 'test' }]
                 },
                 oldLogInfo:{
                     communicationTools: [],
                     country: null,
                     conversationGroup: {name: ''},
-                    directAccounts: [],
-                    headlines: [],
+                    directAccounts: [{ id: 1, name: 'test' }],
+                    headlines: [{ id: 1, name: 'test' }],
                     isActive: false,
-                    languages: [],
+                    languages: [{ id: 1, name: 'test' }],
                     name: null,
                     picTypes: [],
                     remark: null,
-                    role: null
+                    role: null,
+                    recipients: [{ id: 1, name: 'test' }]
                 },
                 oldPicInfo:{
                     communicationTools: [],
@@ -86,7 +88,9 @@ describe('PicDataGrid', () => {
                     role: null
                 },
                 pic: 'PIC_ruby',
-                picTypeName: 'Headline PIC'
+                picTypeName: 'Headline PIC',
+                recipientType: [{ id: 1, name: 'test' }],
+                recipients: [{ id: 1, name: 'test' }]
             }]
         },
         setGridParamsPic: jest.fn(),

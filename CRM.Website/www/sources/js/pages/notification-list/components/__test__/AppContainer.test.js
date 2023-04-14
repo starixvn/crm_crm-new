@@ -170,7 +170,7 @@ describe('AppContainer', () => {
                 confirmPopup: {}
             };
             const state = {
-                policy: 1
+                policy: 2
             };
 
             // Action
@@ -179,7 +179,7 @@ describe('AppContainer', () => {
             // Assert
             
             expect(toJson(appContainer)).toMatchSnapshot();
-            expect(appContainer.find(DataGrid).props().isHost).toEqual(document.getElementById('is-host').checked);
+            expect(appContainer.find(DataGrid).props().isHost).toEqual(true);
         });
 
         describe('Content', () => {

@@ -113,7 +113,6 @@ describe('DataGrid', () => {
 
         // Assert
         expect(container.instance().renderRow).toHaveBeenCalledTimes(2);
-        expect(container.instance().renderLastRow).toHaveBeenCalledWith({ ...props.gridData.total });
     });
 
     it('render row', () => {

@@ -14,10 +14,14 @@ describe('Content', () => {
                 headlines: []
             }
         };
+        const data = {
+            dataSource: 'DBMSG.bodb_Message.dbo.Msg',
+            referenceIdList: 1
+        };
 
         // Action
         const content = shallow(<Content {...props} />).instance();
-        const result = content.getReferenceText({dataSource: 'MessageId', referenceId: '1'});
+        const result = content.getReferenceText(data);
 
         // Assert
         expect(result).toEqual('(MessageID: 1)');
@@ -30,13 +34,37 @@ describe('Content', () => {
                 headlines: []
             }
         };
+        const data = {
+            dataSource: 'DBCRM.bodb_CRM.dbo.crmAnnouncement',
+            referenceIdList: 1
+        };
 
         // Action
         const content = shallow(<Content {...props} />).instance();
-        const result = content.getReferenceText({dataSource: 'AnnouncementId', referenceId: '1'});
+        const result = content.getReferenceText(data);
 
         // Assert
         expect(result).toEqual('(AnnId: 1)');
+    });
+
+    it('getReferenceText dataSource is LogID  return text correctly', () => {
+        // Arrange
+        const props = {
+            data: {
+                headlines: []
+            }
+        };
+        const data = {
+            dataSource: '',
+            referenceIdList: 1
+        };
+
+        // Action
+        const content = shallow(<Content {...props} />).instance();
+        const result = content.getReferenceText(data);
+
+        // Assert
+        expect(result).toEqual('(LogID: 1)');
     });
 
 
@@ -83,11 +111,12 @@ describe('Content', () => {
                 referenceId:'1',
                 notificationId: 1,
                 letstalkName: 'letstalkName',
-                content: 'content'
+                content: 'content',
+                referenceIdList: 1
             }
         };
 
-        const expectedTilte = `NotificationID: ${props.data.notificationId} (LogID: ${props.data.referenceId})`;
+        const expectedTitle = `<div class=\"modal-title\">NotificationID: 1 (LogID: 1)</div>`;
 
         // Action
         const content = shallow(<Content {...props} />);
@@ -101,7 +130,7 @@ describe('Content', () => {
         expect(content.find(Modal).props().dialogAs).toEqual(DraggableModalDialog);
         expect(content.find(Modal.Header).props().closeButton).toBeTrue;
         expect(content.find(Modal.Title).props().as).toBe('div');
-        expect(content.find(Modal.Title).html()).toContain(expectedTilte);
+        expect(content.find(Modal.Title).html()).toContain(expectedTitle);
         expect(content.find(Modal.Body).find('div').at(0).html()).toEqual(`<div>LetstalkName: letstalkName</div>`);
         expect(content.find(Modal.Body).find('div').at(1).html()).toEqual(`<div class="border p-2 mt-2 mb-3 notification-content">${props.data.content}</div>`);
         expect(content.find(Button).props().variant).toBe('primary');

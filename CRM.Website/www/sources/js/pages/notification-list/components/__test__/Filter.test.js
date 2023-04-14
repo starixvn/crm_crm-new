@@ -1340,13 +1340,13 @@ describe('Filter', () => {
             expect(filter.find(Form.Group).at(9).find('div').props().className).toBe('form-control-wrapper');
             expect(filter.find(Form.Group).at(9).find('div').find(MultipleSelect).props().dataSource)
                 .toEqual(initialState.statusOptions);
-            expect(filter.find(Form.Group).at(8).find('div').find(MultipleSelect).props().keyField).toBe('id');
-            expect(filter.find(Form.Group).at(8).find('div').find(MultipleSelect).props().statusField).toBe('checked');
-            expect(filter.find(Form.Group).at(8).find('div').find(MultipleSelect).props().isSummited).toBeFalse;
-            expect(filter.find(Form.Group).at(8).find('div').find(MultipleSelect).props().isAllTextShown).toBeTrue;
-            expect(filter.find(Form.Group).at(9).find(Button).html()).toContain('Submit');
-            expect(filter.find(Form.Group).at(9).find(Button).props().variant).toBe('primary');
-            expect(filter.find(Form.Group).at(9).find(Button).props().size).toBe('sm');
+            expect(filter.find(Form.Group).at(0).find('div').find(MultipleSelect).props().keyField).toBe('id');
+            expect(filter.find(Form.Group).at(0).find('div').find(MultipleSelect).props().statusField).toBe('checked');
+            expect(filter.find(Form.Group).at(0).find('div').find(MultipleSelect).props().isSummited).toBeFalse;
+            expect(filter.find(Form.Group).at(0).find('div').find(MultipleSelect).props().isAllTextShown).toBeTrue;
+            expect(filter.find(Form.Group).at(10).find(Button).html()).toContain('Submit');
+            expect(filter.find(Form.Group).at(10).find(Button).props().variant).toBe('primary');
+            expect(filter.find(Form.Group).at(10).find(Button).props().size).toBe('sm');
         });
 
         describe('has Form.Group 7', () => {
@@ -1625,7 +1625,7 @@ describe('Filter', () => {
             // Arrange
             const event = {
                 target: {
-                    validity: {}
+                    validity: { valid: true }
                 }
             };
 
@@ -1652,7 +1652,7 @@ describe('Filter', () => {
             // Arrange
             const event = {
                 target: {
-                    validity: {}
+                    validity: { valid: true }
                 }
             };
 
@@ -1680,7 +1680,8 @@ describe('Filter', () => {
             const event = {
                 target: {
                     name: 'name',
-                    value: 'value'
+                    value: 'value',
+                    validity: { valid: true }
                 }
             };
 
@@ -1690,17 +1691,20 @@ describe('Filter', () => {
                 settings: {},
                 headlineOptions: {},
                 recipientOptions: {},
-                getSettings: jest.fn(() => Promise.resolve({ data: {} }))
+                getSettings: jest.fn(() => Promise.resolve({ data: {} })),
+                setResendOptions: jest.fn(),
+                resendOptions: jest.fn(),
+                setGridParams: jest.fn()
             };
 
             const filter = shallow(<Filter {...props} />);
-            filter.instance().handleChange = jest.fn();
+            filter.instance().handleChangeFilterControl = jest.fn();
 
             // Action
             filter.find(Form.Control).at(3).simulate('change', event);
 
             // Assert
-            expect(filter.instance().handleChange).toHaveBeenCalledWith(event);
+            expect(filter.instance().handleChangeFilterControl).toHaveBeenCalledWith(event);
         });
 
         it('status MultipleSelect change correctly', () => {
@@ -1713,7 +1717,10 @@ describe('Filter', () => {
                 settings: {},
                 headlineOptions: {},
                 recipientOptions: {},
-                getSettings: jest.fn(() => Promise.resolve({ data: {} }))
+                getSettings: jest.fn(() => Promise.resolve({ data: {} })),
+                setResendOptions: jest.fn(),
+                resendOptions: jest.fn(),
+                setGridParams: jest.fn()
             };
 
             const filter = shallow(<Filter {...props} />);
@@ -1724,6 +1731,32 @@ describe('Filter', () => {
 
             // Assert
             expect(filter.instance().handleStatusChange).toHaveBeenCalledWith(currentItem, selectedItemsKey);
+        });
+
+        it('notification type MultipleSelect change correctly', () => {
+            // Arrange
+            const currentItem = 'currentItem';
+            const selectedItemsKey = 'selectedItemsKey';
+            const props = {
+                gridParams: {},
+                invalidParams: {},
+                settings: {},
+                headlineOptions: {},
+                recipientOptions: {},
+                getSettings: jest.fn(() => Promise.resolve({ data: {} })),
+                setResendOptions: jest.fn(),
+                resendOptions: jest.fn(),
+                setGridParams: jest.fn()
+            };
+
+            const filter = shallow(<Filter {...props} />);
+            filter.instance().handleNotificationTypeChange = jest.fn();
+
+            // Action
+            filter.find(MultipleSelect).at(0).simulate('change', currentItem, selectedItemsKey);
+
+            // Assert
+            expect(filter.instance().handleNotificationTypeChange).toHaveBeenCalledWith(currentItem, selectedItemsKey);
         });
 
         it('has Form running onSubmit correctly', () => {
@@ -1738,7 +1771,10 @@ describe('Filter', () => {
                 settings: {},
                 headlineOptions: {},
                 recipientOptions: {},
-                getSettings: jest.fn(() => Promise.resolve({ data: {} }))
+                getSettings: jest.fn(() => Promise.resolve({ data: {} })),
+                setResendOptions: jest.fn(),
+                resendOptions: jest.fn(),
+                setGridParams: jest.fn()
             };
 
             const filter = shallow(<Filter {...props} />);

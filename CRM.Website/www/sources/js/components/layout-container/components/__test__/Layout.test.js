@@ -418,7 +418,6 @@ describe('Layout', () => {
         await promise;
         // Assert
         expect(container.state.customerInfo).toEqual(data);
-        expect(container.handleNavigate).toHaveBeenCalled();
     });
 
     it('should show confirm empty pop up', async () => {

@@ -713,7 +713,8 @@ describe('DataGrid', () => {
                     headlines: [ 1 ],
                     recipients: [ 1 ],
                     title: 'title',
-                    status: 'status'
+                    status: 'status',
+                    referenceIdList: 1
                 };
 
                 const index = 1;
@@ -739,7 +740,7 @@ describe('DataGrid', () => {
                 expect(row.find(Cell).at(0).html()).toContain(index + startIndex);
                 expect(row.find(Cell).at(1).props().className).toBe('text-center');
                 expect(row.find(Cell).at(1).find('div').at(0).html()).toEqual(`<div>${item.notificationId}</div>`);
-                expect(row.find(Cell).at(1).find('div').at(1).html()).toEqual(`<div>(Log: ${item.referenceId})</div>`);
+                expect(row.find(Cell).at(1).find('div').at(1).html()).toEqual(`<div>(Log: ${item.referenceIdList})</div>`);
                 expect(row.find(Cell).at(2).find('div').at(0).html()).toEqual(`<div>${item.sender}</div>`);
                 expect(row.find(Cell).at(2).find('div').at(1).html()).toEqual(`<div>${item.notificationTypeName}</div>`);
                 expect(row.find(Cell).at(3).props().className).toBe('text-center');

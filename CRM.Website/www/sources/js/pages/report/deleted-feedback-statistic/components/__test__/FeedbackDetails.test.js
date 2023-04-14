@@ -128,7 +128,7 @@ describe('FeedbackDetails', () => {
             expect(container.state.extensionOptions).toEqual([{id: 0, value: 'N/A', checked: true}]);
             expect(container.state.communicationToolOptions).toEqual([{id: 0, name: 'N/A', checked: false}]);
             expect(container.state.productOptions).toEqual([{id: 0, value: 'N/A', checked: false}]);
-            expect(container.state.subProductOptions).toEqual([{id: 2, value: 'N/A', checked: false}]);
+            expect(container.state.subProductOptions).toEqual([{id: 2, value: 'N/A', checked: true}]);
             expect(container.state.subCategoryOptions).toEqual([{subCategoryId: 2, name: 'N/A', checked: true}]);
             expect(container.state.mainCategoryOptions).toEqual([{mainCategoryID: 0, name: 'N/A', checked: false}]);
             expect(container.state.betTypeOptions).toEqual([{id: 3, value: 'N/A', checked: true}]);

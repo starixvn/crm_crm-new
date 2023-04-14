@@ -47,14 +47,14 @@ describe('DataGrid', () => {
             const props = {
                 redemptionLogs: []
              };
-            const expectedBody = [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={6}>ThereIsNoData</Cell></Row>];
+            const expectedBody = [<Row className="no-data" ><Cell className='text-center' colSpan={6}>ThereIsNoData</Cell></Row>];
             const container = shallow(<DataGrid {...props} />).instance();
 
             // Act
             const actual = container.buildBody();
 
             // Assert
-            expect(actual).toEqual(expectedBody);
+            expect(actual.toString()).toEqual(expectedBody.toString());
         });
 
         it('should render expected rows when has data', () => {

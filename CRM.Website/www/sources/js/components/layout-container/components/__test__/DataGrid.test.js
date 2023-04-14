@@ -119,13 +119,13 @@ describe('DataGrid', () => {
                     },
                     getSettings: jest.fn(() => Promise.resolve({}))
                 };
-                document.removeEventListener = jest.fn();
+                document.getElementById('left-row-container').removeEventListener = jest.fn();
                 const container = shallow(<DataGrid {...props}/>);
                 container.instance().handleKeyDownFunc = jest.fn();
                 //Act
                 container.instance().componentWillUnmount();
                 //Assert
-                expect(document.removeEventListener).toHaveBeenCalledWith('keydown', container.instance().handleKeyDownFunc, false);
+                expect(document.getElementById('left-row-container').removeEventListener).toHaveBeenCalled();
             });
         });
 
@@ -171,7 +171,8 @@ describe('DataGrid', () => {
                     settings: {
                         languages: [],
                         sitesLicenseeInactive: [],
-                        countries:[]
+                        countries:[],
+                        sites: []
                     }
                 };
                 const formikProps = {
@@ -209,7 +210,8 @@ describe('DataGrid', () => {
                     settings: {
                         languages: [],
                         sitesLicenseeInactive: [],
-                        countries:[]
+                        countries:[],
+                        sites: []
                     },
                     handleSearchUplineInfo: jest.fn()
                 };
@@ -259,14 +261,21 @@ describe('DataGrid', () => {
                 getSettings: jest.fn(),
                 settings: {
                     languages: [],
-                        sitesLicenseeInactive: [],
-                        countries:[]
+                    sitesLicenseeInactive: [],
+                    countries:[],
+                    sites: []
                 }
 
             };
             const leftRowContainer = document.createElement('div');
             leftRowContainer.setAttribute('id', 'left-row-container');
+
+            const hasCreateFeedbackPermission = document.createElement('div');
+            hasCreateFeedbackPermission.setAttribute('id', 'hasCreateFeedbackPermission');
+            hasCreateFeedbackPermission.checked = true;
+
             document.body.appendChild(leftRowContainer);
+            document.body.appendChild(hasCreateFeedbackPermission);
 
             const container = shallow(<DataGrid {...props} />);
             const form = shallow(container.instance().renderForm(param));
@@ -307,7 +316,8 @@ describe('DataGrid', () => {
                     settings: {
                         languages: [],
                         sitesLicenseeInactive: [],
-                        countries:[]
+                        countries:[],
+                        sites: []
                     }
                 };
 

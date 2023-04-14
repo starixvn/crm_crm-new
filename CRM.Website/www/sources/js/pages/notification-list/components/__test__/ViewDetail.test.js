@@ -71,7 +71,7 @@ describe('ViewDetail', () => {
         expect(viewDetail.find(Modal.Header).props().closeButton).toBeTrue;
         expect(viewDetail.find(Modal.Title).props().as).toBe('div');
         expect(viewDetail.find(Modal.Body).find('div').at(0).html()).toEqual(`<div id="view-detail-modal-body">${`NotificationID: <b>${props.data.notificationId}`}</b></div>`);
-        expect(viewDetail.find(Modal.Body).find('div').at(1).html()).toEqual(`<div>${`NotificationTemplate: <b>${props.data.title}`}</b></div>`);
+        expect(viewDetail.find(Modal.Body).find('div').at(1).html()).toEqual(`<div>${`Title: <b>${props.data.title}`}</b></div>`);
         expect(viewDetail.find(Modal.Body).find('div').at(2).html()).toEqual(`<div>${`SentAt: <b>${props.data.sendDateString} ${props.data.sendTimeString}`}</b></div>`);
         expect(viewDetail.find(Modal.Body).find('div').at(3).html()).toEqual('<div class="error-occured-message error-resolved-row">ErrorOccuredWhileSendingTheNotificationToTheFollowingRecipient</div>');
         expect(viewDetail.find(Modal.Body).find('div').at(4).html()).toContain('Remark:');
