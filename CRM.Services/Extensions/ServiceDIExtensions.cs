@@ -1,20 +1,22 @@
-﻿using CRM.Repositories;
-using CRM.Services.ActionLog;
-using CRM.Services.Communication;
-using CRM.Services.Customer;
-using CRM.Services.Dashboard;
-using CRM.Services.Feedback;
-using CRM.Services.HeadlineNotification;
-using CRM.Services.InformHeadline;
-using CRM.Services.Interfaces;
-using CRM.Services.Redemption;
-using CRM.Services.Remark;
-using CRM.Services.Report;
-using CRM.Services.Report.CategoriesSummaryReport;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace CRM.Services.Extensions
+﻿namespace CRM.Services.Extensions
 {
+    using CRM.Repositories;
+    using CRM.Services.ActionLog;
+    using CRM.Services.BotServices;
+    using CRM.Services.BotServices.Interfaces;
+    using CRM.Services.Communication;
+    using CRM.Services.Customer;
+    using CRM.Services.Dashboard;
+    using CRM.Services.Feedback;
+    using CRM.Services.HeadlineNotification;
+    using CRM.Services.InformHeadline;
+    using CRM.Services.Interfaces;
+    using CRM.Services.Redemption;
+    using CRM.Services.Remark;
+    using CRM.Services.Report;
+    using CRM.Services.Report.CategoriesSummaryReport;
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class ServiceDIExtensions
     {
         public static void ResolveServiceDI(this IServiceCollection services)
@@ -51,6 +53,7 @@ namespace CRM.Services.Extensions
             services.AddScoped<IDynamicReportService, DynamicReportService>();
             services.AddScoped<ICustomerReportService, CustomerReportService>();
             services.AddScoped<IHomeService, HomeService>();
+            services.AddScoped<IChatBotService, ChatBotService>();
         }
     }
 }

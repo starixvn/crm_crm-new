@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class LetstalkVerification
+    public class LetstalkVerificationViewModel
     {
         public int BotId { get; set; }
 

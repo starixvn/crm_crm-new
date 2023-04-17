@@ -1,6 +1,7 @@
 ﻿namespace CRM.ViewModels.ChatTypeMapping
 {
     using System.Collections.Generic;
+    using CRM.Models.ChatTypeMapping;
 
     public class RecipientLetstalk
     {
@@ -8,6 +9,6 @@
 
         public string RecipientName { get; set; }
 
-        public List<LetstalkInGroup> Letstalks { get; set; }
+        public List<LetstalkAccountInGroup> Letstalks { get; set; }
     }
 }

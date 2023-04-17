@@ -8,8 +8,7 @@
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
-    using CRM.Letstalk.Client.Configurations;
-    using CRM.Letstalk.Client.Extensions;
+    using CRM.Models.BotServices;
     using CRM.Services.Extensions;
     using Fanex.Data;
     using Fanex.Data.SqlServer;
@@ -118,8 +117,9 @@
             });
 
             services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
-            var botConfigs = Configuration.GetSection("LetstalkBotConfigurations");
-            services.Configure<List<BotConfig>>(options => botConfigs.Bind(options));
+
+            var botConfigs = Configuration.GetSection("BotServiceSettings").Get<BotServiceSettings>();
+            services.AddSingleton(botConfigs);
 
             services.AddAntiforgery(options =>
             {
@@ -140,7 +140,6 @@
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
-            RegisterDI(services, botConfigs.Get<List<BotConfig>>());
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -148,6 +147,7 @@
             app.UseForwardedHeaders();
             if (env.IsDevelopment())
             {
+                app.UseForwardedHeaders();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -156,7 +156,6 @@
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             var compositeProvider = new CompositeFileProvider(
                 env.WebRootFileProvider,
@@ -169,7 +168,7 @@
             });
 
             app.UseRouting();
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod());
+            //app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod());
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseCookiePolicy();
@@ -189,7 +188,7 @@
             });
         }
 
-        private void RegisterDI(IServiceCollection services, List<BotConfig> botConfigs)
+        private void RegisterDI(IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -210,10 +209,8 @@
             services.AddSingleton<ISiteService, SiteService>();
 
             services.AddSingleton<ILogger, Logger>();
-            services.AddSingleton<List<BotConfig>>();
             services.ResolveCoreDI();
             services.ResolveServiceDI();
-            services.RegisterLetstalkBotService(Configuration, botConfigs);
         }
 
         private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)

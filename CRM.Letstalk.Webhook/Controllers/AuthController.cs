@@ -26,6 +26,7 @@
         {
             if (IsValidCredential(auth))
             {
+                var expiredAt = DateTime.UtcNow.AddDays(webSettings.ExpirationByDay);
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(webSettings.Secret);
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -34,13 +35,13 @@
                         new Claim(ClaimTypes.Name, auth.AppId)
                     }),
 
-                    Expires = DateTime.UtcNow.AddDays(webSettings.ExpirationByDay),
+                    Expires = expiredAt,
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var sercurityToken = tokenHandler.CreateToken(tokenDescriptor);
                 string token = tokenHandler.WriteToken(sercurityToken);
 
-                return Ok(new { AccessToken = token });
+                return Ok(new { AccessToken = token, ExpriedDate = expiredAt });
             }
             else
             {

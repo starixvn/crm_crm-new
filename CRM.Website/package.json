@@ -28,7 +28,7 @@
         "jest-sonar-reporter": "^2.0.0",
         "jquery": "^3.4.1",
         "mini-css-extract-plugin": "^0.4.1",
-        "node-sass": "^7.0.3",
+        "node-sass": "^4.13.0",
         "optimize-css-assets-webpack-plugin": "^5.0.3",
         "react-test-renderer": "^16.8.6",
         "redux-mock-store": "^1.5.4",
@@ -46,7 +46,6 @@
         "test": "jest --coverage --config ./jest.config.js",
         "test:watch": "npm test -- --watch",
         "jest-update-snapshot": "jest --updateSnapshot",
-        "test-coverage": "jest --ci -u --coverage",
         "lint": "eslint ./www/sources/js/",
         "lint-fix": "eslint --fix ./www/sources/js/"
     },

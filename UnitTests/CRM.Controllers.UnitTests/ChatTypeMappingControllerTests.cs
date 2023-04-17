@@ -253,7 +253,7 @@
         public async Task VerifyLetstalkInGroup_WhenNoBotId_ReturnNullJsonResult()
         {
             var controller = GetController();
-            var actual = await controller.VerifyLetstalkInGroup(new LetstalkVerification { BotId = 0 });
+            var actual = await controller.VerifyLetstalkInGroup(new LetstalkVerificationViewModel { BotId = 0 });
 
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Null(jsonResult.Value);
@@ -263,7 +263,7 @@
         public async Task VerifyLetstalkInGroup_WhenNoGroupId_ReturnNullJsonResult()
         {
             var controller = GetController();
-            var actual = await controller.VerifyLetstalkInGroup(new LetstalkVerification { BotId = 10, GroupConversationId = string.Empty });
+            var actual = await controller.VerifyLetstalkInGroup(new LetstalkVerificationViewModel { BotId = 10, GroupConversationId = string.Empty });
 
             var jsonResult = Assert.IsType<JsonResult>(actual);
             Assert.Null(jsonResult.Value);
@@ -277,7 +277,7 @@
             var roomData = fixture.Create<RoomData>();
             var roomList = fixture.Create<List<string>>();
 
-            LetstalkVerification inputData = new LetstalkVerification
+            LetstalkVerificationViewModel inputData = new LetstalkVerificationViewModel
             {
                 BotId = 100020,
                 GroupConversationId = roomList.FirstOrDefault(),

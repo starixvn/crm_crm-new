@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.BotService.Endpoint.ViewModel;
@@ -20,32 +21,41 @@
         }
 
         [HttpPost]
-        [Route("api/letstalk/get-letstalk-name")]
-        public async Task<IActionResult> CheckPersonalProfileAsync([FromBody] GetLetstalkDisplayNameViewModel profileInfo)
+        [Route("api/letstalk/get-user-profile")]
+        public async Task<IActionResult> CheckPersonalProfileAsync([FromBody] LetstalkBotConversationViewModel model)
         {
-            var profile = await letstalkClientService(profileInfo.BotId).GetProfileAsync(profileInfo.LetstalkId);
-            string displayName = profile is not null ? profile.DisplayName : string.Empty;
-            return Ok(displayName);
+            var profile = await letstalkClientService(model.BotId).GetProfileAsync(model.LetstalkId);
+            return Ok(profile);
         }
 
         [HttpPost]
         [Route("api/letstalk/verify-on-group")]
         public async Task<IActionResult> VerifyUserOnGroupAsync([FromBody] VerifyUserOnGroupViewModel model)
         {
-            var botFriends = await letstalkClientService(model.BotId).GetBotContactList();
-            var roomData = await letstalkClientService(model.BotId).GetChatRoomData(model.ConversationGroupId);
             var results = new List<object>();
-            foreach (var letstalkId in model.LetstalkIds)
+            var roomList = await letstalkClientService(model.BotId).GetChatRoomList();
+            bool isBotRemoved = !roomList.Any(room => room.Equals(model.ConversationGroupId, StringComparison.CurrentCultureIgnoreCase));
+            if (!isBotRemoved)
             {
-                results.Add(new
+                var botFriends = await letstalkClientService(model.BotId).GetBotContactList();
+                var roomData = await letstalkClientService(model.BotId).GetChatRoomData(model.ConversationGroupId);
+
+                foreach (var letstalkId in model.LetstalkIds)
                 {
-                    LetstalkId = letstalkId,
-                    IsGroupMember = roomData.Members.Contains(letstalkId),
-                    IsBotFriend = botFriends.Contains(letstalkId)
-                });
+                    results.Add(new
+                    {
+                        LetstalkId = letstalkId,
+                        IsGroupMember = roomData.Members.Contains(letstalkId),
+                        IsBotFriend = botFriends.Contains(letstalkId)
+                    });
+                }
             }
 
-            return Ok(results);
+            return Ok(new
+            {
+                IsBotRemoved = isBotRemoved,
+                Letstalks = results
+            });
         }
     }
 }

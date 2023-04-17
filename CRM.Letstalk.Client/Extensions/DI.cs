@@ -54,6 +54,11 @@
                 UseProxy = isUseProxy,
                 Proxy = new WebProxy(proxyAddress, bypassOnLocal)
             });
+
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) =>
+            {
+                return true;
+            };
         }
     }
 }

@@ -1,15 +1,17 @@
 ﻿namespace CRM.Models.ChatTypeMapping
 {
+    using System.Collections.Generic;
+
     public class LetsalkValidationModel
     {
-        public int BotId { get; set; }
+        public bool IsBotRemoved { get; set; }
+        public List<LetstalkAccountInGroup> Letstalks { get; set; }
+    }
 
+    public class LetstalkAccountInGroup
+    {
         public string LetstalkId { get; set; }
-
-        public bool IsFriendWithBot { get; set; }
-
-        public string DisplayName { get; set; }
-
-        public bool IsInvalid { get; set; }
+        public bool IsGroupMember { get; set; }
+        public bool IsBotFriend { get; set; }
     }
 }
