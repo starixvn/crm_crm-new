@@ -80,9 +80,6 @@ export class CreateCommunicationLog extends Component {
             this.handleSetInitContent(options);
             this.handleChangeVerifySection('subject', options.subject);
         }
-        this.handleSetInitContent(options);
-        const subject = options ? options.subject : '';
-        this.handleChangeVerifySection('subject', subject);
         await DataService.getDataAsync(urlAllSettings).then(response => {
             if (options) {
                 this.setState({
