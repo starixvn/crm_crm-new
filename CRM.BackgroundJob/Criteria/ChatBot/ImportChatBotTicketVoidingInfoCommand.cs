@@ -6,6 +6,7 @@
     {
         public string XmlData { get; set; }
         public string Environment { get; set; }
+        public int MAXVoidingHistoryCollectionId { get; set; }
         public int ErrCode { get; set; }
         public string ErrMsg { get; set; }
 

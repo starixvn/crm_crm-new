@@ -106,7 +106,7 @@
                 var commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(
                     messages,
                     ticketInfos.Item1,
-                    ticketInfos.Item2,
+                    ticketInfos.Item3,
                     Environment);
                 if (commandResultImportTicket.Item1.IsSuccessful)
                 {

@@ -26,17 +26,17 @@
 
         Task<IEnumerable<Message>> GetMessageInfoAsync(IEnumerable<VoidingMessage> voidingMessages);
 
-        Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>>> GetTicketVoidingInfoAsync(
+        Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int>> GetTicketVoidingInfoAsync(
             IEnumerable<ChatBotUserNameList> userNames,
             string environment,
             bool IncludeUUSCurrency
             );
 
         Task<ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>> ImportTicketVoidingAsync(
-            IEnumerable<Message> messages,
-            IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
-            IEnumerable<VoidingMessage> voidingMessages,
-            string Environment = Constants.DefaultEnvironment);
+           IEnumerable<Message> messages,
+           IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
+           int MAXVoidingHistoryCollectionId,
+           string Environment = Constants.DefaultEnvironment);
     }
 
     public class ChatBotTicketVoidingService : IChatBotTicketVoidingService
@@ -102,7 +102,7 @@
             return messages;
         }
 
-        public async Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>>> GetTicketVoidingInfoAsync(
+        public async Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int>> GetTicketVoidingInfoAsync(
             IEnumerable<ChatBotUserNameList> userNames,
             string environment,
             bool IncludeUUSCurrency
@@ -114,13 +114,14 @@
                 Environment = environment,
                 IncludeUUSCurrency = IncludeUUSCurrency
             };
-            return await baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, VoidingMessage>(criteria);
+            var data = await baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, VoidingMessage>(criteria);
+            return new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int> (data.Item1, data.Item2, criteria.MAXVoidingHistoryCollectionId);
         }
 
         public async Task<ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>> ImportTicketVoidingAsync(
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
-            IEnumerable<VoidingMessage> voidingMessages,
+            int MAXVoidingHistoryCollectionId,
             string Environment = Constants.DefaultEnvironment)
         {
             const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MessageId='{1}' UsernameList='{2}' CustId='{3}' " +
@@ -154,6 +155,7 @@
             var criteria = new ImportChatBotTicketVoidingInfoCommand
             {
                 XmlData = stringBuilder.ToString(),
+                MAXVoidingHistoryCollectionId = MAXVoidingHistoryCollectionId,
                 Environment = Environment,
             };
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
