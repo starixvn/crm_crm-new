@@ -31,7 +31,7 @@ describe('CreateCommunicationLog', () => {
     });
 
     const initData = {
-        feedback:{
+        feedback: {
             languageId: 0,
             licenseeType: 0,
             licenseeTypeId: 0,
@@ -44,72 +44,103 @@ describe('CreateCommunicationLog', () => {
             responseId: 1,
             siteId: 1,
             statusId: 1,
-            siteSetting: {name: 'test'},
+            siteSetting: { name: 'test' },
             roleId: 1,
-            settings:[{
-                    feedbackId: 239466,
-                    settingId: 1001,
-                    settingType: 'Communication',
-                    subSettingId: 0,
-                    subSettingIdLevel3: 0
-                },
-                {
-                    feedbackId: 239466,
-                    settingId: 2022,
-                    settingType: 'Station',
-                    subSettingId: 0,
-                    subSettingIdLevel3: 0
-                },
-                {
-                    feedbackId: 239466,
-                    settingId: 3020,
-                    settingType: 'Category',
-                    subSettingId: 4029,
-                    subSettingIdLevel3: 0
-                },
-                {
-                    feedbackId: 239466,
-                    settingId: 46000,
-                    settingType: 'Product',
-                    subSettingId: 8063,
-                    subSettingIdLevel3: 9144
-                }
+            settings: [{
+                feedbackId: 239466,
+                settingId: 1001,
+                settingType: 'Communication',
+                subSettingId: 0,
+                subSettingIdLevel3: 0
+            },
+            {
+                feedbackId: 239466,
+                settingId: 2022,
+                settingType: 'Station',
+                subSettingId: 0,
+                subSettingIdLevel3: 0
+            },
+            {
+                feedbackId: 239466,
+                settingId: 3020,
+                settingType: 'Category',
+                subSettingId: 4029,
+                subSettingIdLevel3: 0
+            },
+            {
+                feedbackId: 239466,
+                settingId: 46000,
+                settingType: 'Product',
+                subSettingId: 8063,
+                subSettingIdLevel3: 9144
+            }
             ]
         },
-        settings:{
-            bettypeNA: {id: 0, name: 'N/A'},
-            bettypes: [{id: 3, value: 'N/A', parentId: 2}],
+        settings: {
+            bettypeNA: { id: 0, name: 'N/A' },
+            bettypes: [{ id: 3, value: 'N/A', parentId: 2 }],
             communicationToolNA: 'null',
-            communicationTools:[{id: 0, name: 'N/A'}],
-            countries:[{id: 0, name: 'N/A'}],
-            extensionNA: {id: 0, value: 'N/A'},
-            extensions:[{id: 0, value: 'N/A'}],
-            languages: [{languageId: 0, name: 'N/A'},{languageId: 1, name: 'English'}],
-            licenseeTypes:[{id: 0, name: 'N/A'}],
-            mainCategories: [{mainCategoryID: 0, name: 'N/A'}],
-            productNA:{id: 0, value: 'N/A'},
-            products: [{id: 0, value: 'N/A'}],
-            responses: [{id: 0, value: 'N/A'}],
-            roles: [{id: 0, value: 'N/A'},{id: 0, value: 'N/A'},{id: 0, value: 'N/A'},{id: 0, value: 'N/A'},{id: 0, value: 'N/A'},{id: 0, value: 'N/A'}],
-            sites: [{id: 0, name: 'N/A', childSites:[{id: 1, value: 'child'}]}],
-            statuses: [{statusId: 0, name: 'N/A'}],
-            statusId: [{id: 0, name: 'N/A'}],
-            subCategories: [{subCategoryId: 2, mainCategoryID: 1, name: 'N/A'}],
-            subProductNA: {id: 0, value: 'N/A'},
-            subProducts: [{id: 2, value: 'N/A', parentId: 1}],
+            communicationTools: [{ id: 0, name: 'N/A' }],
+            countries: [{ id: 0, name: 'N/A' }],
+            extensionNA: { id: 0, value: 'N/A' },
+            extensions: [{ id: 0, value: 'N/A' }],
+            languages: [{ languageId: 0, name: 'N/A' }, { languageId: 1, name: 'English' }],
+            licenseeTypes: [{ id: 0, name: 'N/A' }],
+            mainCategories: [{ mainCategoryID: 0, name: 'N/A' }],
+            productNA: { id: 0, value: 'N/A' },
+            products: [{ id: 0, value: 'N/A' }],
+            responses: [{ id: 0, value: 'N/A' }],
+            roles: [{ id: 0, value: 'N/A' }, { id: 0, value: 'N/A' }, { id: 0, value: 'N/A' }, { id: 0, value: 'N/A' }, { id: 0, value: 'N/A' }, { id: 0, value: 'N/A' }],
+            sites: [{ id: 0, name: 'N/A', childSites: [{ id: 1, value: 'child' }] }],
+            statuses: [{ statusId: 0, name: 'N/A' }],
+            statusId: [{ id: 0, name: 'N/A' }],
+            subCategories: [{ subCategoryId: 2, mainCategoryID: 1, name: 'N/A' }],
+            subProductNA: { id: 0, value: 'N/A' },
+            subProducts: [{ id: 2, value: 'N/A', parentId: 1 }]
         },
         hasReviewFeedbackPermission: true
+    };
+
+    const options = {
+        autoGenerated: "Date Time & Tool: 20230414/06:44PM/Phone\nSystem ID: test, test",
+        betTypeIds: "9144",
+        betTypeOptions: [],
+        communicationToolIds: "1000",
+        communicationToolOptions: [{
+            id: 1000, name: 'Phone', checked: true
+        }],
+        countryId : 212,
+        extensionIds:"2022",
+        extensionOptions: [{id: 2032, value: '5921', checked: false}],
+        isReviewed: false,
+        languageId: 12008,
+        licenseeTypeId: 0,
+        mainCategoryIds:"3001",
+        mainCategoryOptions: [{mainCategoryID: 3000, name: 'General Network/Database Issues', checked: false}],
+        noInquiries:0, productIds:"46004",
+        productOptions: [
+            {id: 46000, value: 'Sportsbook', checked: false}
+        ],
+        relatedCustomers:{isSiteActive: true, isLicensee: true, custId: -5506, val: 'test'},
+        remark:"t", responseId:10002, review:null, reviewer:null, roleId:7004,
+        settings: [],
+        siteId : 6022 ,siteName : "222225" ,solution : "t" ,solveDate : "Jan 01, 0001 12:00 PM" ,statusId : 11002, subCategoryIds : "4005",
+        subCategoryOptions: [{subCategoryId: 4005, name: 'Suggestions', checked: true}],
+        subProductIds:"8063",
+        subProductOptions: [{id: 8001, value: 'Soccer', checked: false}]
     };
 
     describe('componentDidMount', () => {
         it('should calls exactly function when componentDidMount when no options', async () => {
             // Arrange
-            const response = { data: initData};
+            const response = { data: initData };
             const promise = Promise.resolve(response);
-            DataService.getDataAsync = jest.fn(() => promise); 
-
+            DataService.getDataAsync = jest.fn(() => promise);
+            const props = { options };
             // Act
-            const container = shallow(<CreateCommunicationLog/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            container.handleSetInitContent = jest.fn();
+            container.handleChangeVerifySection = jest.fn();
             await container.componentDidMount();
             await promise;
             jest.runAllTimers();
@@ -120,18 +151,20 @@ describe('CreateCommunicationLog', () => {
 
         it('should calls exactly function when componentDidMount when have options', async () => {
             // Arrange
-            const props = { options: {communicationToolOptions: [{ id: 1, name: 'test' }], communicationToolIds:['1']}};
-            const response = { data: initData};
+            const props = { options: { communicationToolOptions: [{ id: 1, name: 'test' }], communicationToolIds: ['1'] } };
+            const response = { data: initData };
             const promise = Promise.resolve(response);
-            DataService.getDataAsync = jest.fn(() => promise); 
+            DataService.getDataAsync = jest.fn(() => promise);
 
             // Act
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
+            container.handleSetInitContent = jest.fn();
+            container.handleChangeVerifySection = jest.fn();
             await container.componentDidMount();
             await promise;
             jest.runAllTimers();
 
-            expect(container.state.allSettings.communicationTools).toEqual([{id: 1, name: 'test'}]);
+            expect(container.state.allSettings.communicationTools).toEqual([{ id: 1, name: 'test' }]);
         });
     });
 
@@ -139,12 +172,13 @@ describe('CreateCommunicationLog', () => {
         it('should return exactly when init formik data', () => {
             // Arrange
             const props = {
-                customerInfo:{
+                customerInfo: {
                     roleId: 1
-            }};
+                }
+            };
             // Act
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
-            container.setState({allSettings: initData.settings});
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
+            container.setState({ allSettings: initData.settings });
             const actual = container.initFormikData();
 
             //Arrange
@@ -188,7 +222,7 @@ describe('CreateCommunicationLog', () => {
             };
             // Act
             container.onChangeEndTime(endTime);
-            
+
             jest.runAllTimers();
 
             // Assert
@@ -209,9 +243,9 @@ describe('CreateCommunicationLog', () => {
             };
             const expected = `Date Time & Tool: 19700101/07:00AM/N/A \nSystem ID: sa`;
             // Act
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
-            container.formik = { values : { startTime: '2021-11-20T00:00' } };
-            container.generateTimeAndToolPrefix = jest.fn(() =>'Date Time & Tool: 20211120/12:00AM/email');
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
+            container.formik = { values: { startTime: '2021-11-20T00:00' } };
+            container.generateTimeAndToolPrefix = jest.fn(() => 'Date Time & Tool: 20211120/12:00AM/email');
             container.setState(state);
             container.matchTimeAndToolPrefix = jest.fn(() => 'Date Time & Tool: 20211120/12:00AM/email');
             container.updateTimeAndToolPrefix();
@@ -225,7 +259,7 @@ describe('CreateCommunicationLog', () => {
         const state = {
             allSettings: {
                 ...initData.settings,
-                communicationTools: [ 
+                communicationTools: [
                     { name: 'Tool 1' },
                     { name: 'Tool 2' },
                     { name: 'Tool 3' }
@@ -235,38 +269,38 @@ describe('CreateCommunicationLog', () => {
         const props = {
             customerInfo: { roleId: 1, licenseeType: 2 }
         };
-        const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+        const container = shallow(<CreateCommunicationLog {...props} />).instance();
         container.setState(state);
         it('returns empty string if autoGeneratedText is empty', () => {
-          const result = container.matchTimeAndToolPrefix('');
-          expect(result).toEqual('');
+            const result = container.matchTimeAndToolPrefix('');
+            expect(result).toEqual('');
         });
-      
+
         it('matches the correct communication tool prefix in the autoGeneratedText', () => {
-          const autoGeneratedText = 'Date Time & Tool: 20220922/12:00AM/Tool 2\n';
-          const result = container.matchTimeAndToolPrefix(autoGeneratedText, true);
-          expect(result).toEqual('Date Time & Tool: 20220922/12:00AM/Tool 2');
+            const autoGeneratedText = 'Date Time & Tool: 20220922/12:00AM/Tool 2\n';
+            const result = container.matchTimeAndToolPrefix(autoGeneratedText, true);
+            expect(result).toEqual('Date Time & Tool: 20220922/12:00AM/Tool 2');
         });
-      
+
         it('matches the correct communication tool prefix when isUseDefaultCommunicationTool is false', () => {
-          const autoGeneratedText = 'Date Time & Tool: 20220922/12:00AM/Tool 1\n';
-          const result = container.matchTimeAndToolPrefix(autoGeneratedText, false);
-          expect(result).toEqual('Date Time & Tool: 20220922/12:00AM/Tool 1');
+            const autoGeneratedText = 'Date Time & Tool: 20220922/12:00AM/Tool 1\n';
+            const result = container.matchTimeAndToolPrefix(autoGeneratedText, false);
+            expect(result).toEqual('Date Time & Tool: 20220922/12:00AM/Tool 1');
         });
-      
+
         it('matches the correct communication tool prefix when isUseDefaultCommunicationTool is false but no tool name is present', () => {
-          const autoGeneratedText = 'Date Time & Tool: 20220922/12:00AM/\n';
-          const result = container.matchTimeAndToolPrefix(autoGeneratedText, false);
-          expect(result).toEqual('Date Time & Tool: 20220922/12:00AM/');
+            const autoGeneratedText = 'Date Time & Tool: 20220922/12:00AM/\n';
+            const result = container.matchTimeAndToolPrefix(autoGeneratedText, false);
+            expect(result).toEqual('Date Time & Tool: 20220922/12:00AM/');
         });
-      
+
         it('returns empty string when no communication tool prefix is found and isUseDefaultCommunicationTool is false', () => {
-          const autoGeneratedText = 'Some text that does not match the pattern\n';
-          const result = container.matchTimeAndToolPrefix(autoGeneratedText, false);
-          expect(result).toEqual('');
+            const autoGeneratedText = 'Some text that does not match the pattern\n';
+            const result = container.matchTimeAndToolPrefix(autoGeneratedText, false);
+            expect(result).toEqual('');
         });
-      });
-      
+    });
+
 
     describe('handleKeyDownFunc', () => {
         it('should call exact function when press s', () => {
@@ -309,9 +343,10 @@ describe('CreateCommunicationLog', () => {
             }
         };
         const props = {
-            customerInfo:{
+            customerInfo: {
                 roleId: 1
-        }};
+            }
+        };
         it('should do as expected when select one communication tool', () => {
             // Arrange
             const currentItem = { id: 1, name: 'email', checked: true };
@@ -335,7 +370,7 @@ describe('CreateCommunicationLog', () => {
             const currentItem = null;
 
             // Act
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState(state);
             const setFieldValue = jest.fn();
             container.updateTimeAndToolPrefix = jest.fn();
@@ -353,7 +388,7 @@ describe('CreateCommunicationLog', () => {
             const currentItem = { id: 1, name: 'email', checked: false };
 
             // Act
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState(state);
             const setFieldValue = jest.fn();
             container.updateTimeAndToolPrefix = jest.fn();
@@ -371,7 +406,7 @@ describe('CreateCommunicationLog', () => {
             const currentItem = null;
 
             // Act
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState(state);
             container.setState({ latestCommunicationTool: 'email' });
             const setFieldValue = jest.fn();
@@ -432,7 +467,7 @@ describe('CreateCommunicationLog', () => {
 
         it('should calls setState and remove duplicate when click', async () => {
             const response = {
-                data: [{ id: 1, val: 'test' },{ id: 1, val: 'test' }]
+                data: [{ id: 1, val: 'test' }, { id: 1, val: 'test' }]
             };
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
@@ -478,7 +513,7 @@ describe('CreateCommunicationLog', () => {
 
             // Act
             const container = shallow(<CreateCommunicationLog />).instance();
-            container.formik = { values : { autoGenerated: 'test' } };
+            container.formik = { values: { autoGenerated: 'test' } };
             container.formik.setFieldValue = jest.fn();
             container.setState(state);
             container.deleteVerifyCreateCustomer('1');
@@ -525,7 +560,7 @@ describe('CreateCommunicationLog', () => {
             // Arrange
             const props = { isBaseInsert: false, customerInfo: { roleId: 0 } };
             const expected = { siteId: 0, siteName: 'N/A', languageId: 1, countryId: 0 };
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState({ allSettings: initData.settings });
 
             // Act
@@ -537,7 +572,7 @@ describe('CreateCommunicationLog', () => {
 
         it('should return exactly when have props isBaseInsert', () => {
             // Arrange
-            const props = { 
+            const props = {
                 isBaseInsert: true,
                 customerInfo: {
                     siteSetting: { id: 1, name: 'test' },
@@ -546,7 +581,7 @@ describe('CreateCommunicationLog', () => {
                 }
             };
             const expected = { siteId: 1, siteName: 'test', languageId: '1', countryId: 1 };
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState({ allSettings: initData.settings });
 
             // Act
@@ -560,8 +595,8 @@ describe('CreateCommunicationLog', () => {
     describe('handleSubmit', () => {
         it('should call exact function when submit', () => {
             // Arrange
-            const props ={
-                customerInfo:{
+            const props = {
+                customerInfo: {
                     roleId: 1
                 }
             };
@@ -575,11 +610,11 @@ describe('CreateCommunicationLog', () => {
                 subCategoryIds: '5,1',
                 productIds: '3,4'
             };
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState({ allSettings: initData.settings });
             container.recheckInactiveSiteAndConfirmCreate = jest.fn();
             // Act
-            container.handleSubmit(values, {setSubmitting});
+            container.handleSubmit(values, { setSubmitting });
 
             // Assert
             expect(setSubmitting).toHaveBeenCalledWith(true);
@@ -591,9 +626,9 @@ describe('CreateCommunicationLog', () => {
         it('should call exact function when value greater than 15 characters', () => {
             // Arrange
             const event = {
-                target: {value : 'testtttttttttttt'}
-            };    
-            const setFieldValue = jest.fn();       
+                target: { value: 'testtttttttttttt' }
+            };
+            const setFieldValue = jest.fn();
             const container = shallow(<CreateCommunicationLog />).instance();
             container.handleChangeVerifySection = jest.fn();
 
@@ -607,9 +642,9 @@ describe('CreateCommunicationLog', () => {
         it('should call exact function when value smaller than 15 characters', () => {
             // Arrange
             const event = {
-                target: {value : 'test'}
-            };    
-            const setFieldValue = jest.fn();       
+                target: { value: 'test' }
+            };
+            const setFieldValue = jest.fn();
             const container = shallow(<CreateCommunicationLog />).instance();
             container.handleChangeVerifySection = jest.fn();
 
@@ -648,13 +683,13 @@ describe('CreateCommunicationLog', () => {
             const promise = Promise.resolve(response);
             const state = {
                 createResult: [],
-                relatedCustomers: [{custId: 1,val: 'test1'}]
+                relatedCustomers: [{ custId: 1, val: 'test1' }]
             };
             const setSubmitting = jest.fn();
-            DataService.postDataAsync = jest.fn(() => promise); 
+            DataService.postDataAsync = jest.fn(() => promise);
             const container = shallow(<CreateCommunicationLog />).instance();
             container.setState(state);
-            const params = { name: 'test'};
+            const params = { name: 'test' };
             const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + 'test';
             // Act
             container.recheckInactiveSiteAndConfirmCreate('username', params, setSubmitting);
@@ -679,7 +714,7 @@ describe('CreateCommunicationLog', () => {
             const setSubmitting = jest.fn();
             DataService.postDataAsync = jest.fn(() => promise);
             const container = shallow(<CreateCommunicationLog />).instance();
-            const params = { name: 'test'};
+            const params = { name: 'test' };
             // Act
             container.recheckInactiveSiteAndConfirmCreate('username', params, setSubmitting);
             await promise;
@@ -694,11 +729,11 @@ describe('CreateCommunicationLog', () => {
         it('should do as expected if response errorCode !== 0', async () => {
             // Arrange
             const response = {
-                errorCode : '001', description: 'no information'
+                errorCode: '001', description: 'no information'
             };
             const state = {
                 countClickRefTicket: 0,
-                contents:{
+                contents: {
                     remark: ''
                 }
             };
@@ -721,13 +756,13 @@ describe('CreateCommunicationLog', () => {
         it('should do as expected if response errorCode === 0 and first request data and already has data', async () => {
             // Arrange
             const response = {
-                data:{
-                    errorCode : '0', description: 'test'
+                data: {
+                    errorCode: '0', description: 'test'
                 }
             };
             const state = {
                 countClickRefTicket: 0,
-                contents:{
+                contents: {
                     remark: '123'
                 }
             };
@@ -762,7 +797,7 @@ describe('CreateCommunicationLog', () => {
             expect(container.formik.setSubmitting).toHaveBeenCalledWith(false);
         });
     });
-    
+
 
     describe('handleCreateLog', () => {
         it('should setState when handle create log successful', async () => {
@@ -770,11 +805,11 @@ describe('CreateCommunicationLog', () => {
             const props = {
                 onClose: jest.fn()
             };
-            const response = {data: {isSuccessful: true}};
+            const response = { data: { isSuccessful: true } };
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
 
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.formik = { setSubmitting: jest.fn() };
             container.setState = jest.fn();
             // Act
@@ -792,7 +827,7 @@ describe('CreateCommunicationLog', () => {
             const props = {
                 onClose: jest.fn()
             };
-            const response = {data: {isSuccessful: false}};
+            const response = { data: { isSuccessful: false } };
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
 
@@ -816,13 +851,13 @@ describe('CreateCommunicationLog', () => {
             };
             const state = {
                 duplicateFeedbackId: 0,
-                confirmCreateDialog: { params: { customerId: 1, categories: 'test', startTime: '2021-11-20T00:00'}}
+                confirmCreateDialog: { params: { customerId: 1, categories: 'test', startTime: '2021-11-20T00:00' } }
             };
             const response = { data: 1 };
             const promise = Promise.resolve(response);
-            DataService.postDataAsync = jest.fn(() => promise); 
+            DataService.postDataAsync = jest.fn(() => promise);
 
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.handleCreateLog = jest.fn();
             container.setState(state);
 
@@ -833,7 +868,7 @@ describe('CreateCommunicationLog', () => {
             // Assert
             promise.then(() => {
                 expect(container.state.duplicateFeedbackId).toEqual(1);
-                expect(container.state.checkDuplicateDialog).toEqual({show: true});
+                expect(container.state.checkDuplicateDialog).toEqual({ show: true });
             })
         });
 
@@ -844,13 +879,13 @@ describe('CreateCommunicationLog', () => {
             };
             const state = {
                 duplicateFeedbackId: 1,
-                confirmCreateDialog: { params: { customerId: 1, categories: 'test', startTime: '2021-11-20T00:00'}}
+                confirmCreateDialog: { params: { customerId: 1, categories: 'test', startTime: '2021-11-20T00:00' } }
             };
             const response = { data: 0 };
             const promise = Promise.resolve(response);
-            DataService.postDataAsync = jest.fn(() => promise); 
+            DataService.postDataAsync = jest.fn(() => promise);
 
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.handleCreateLog = jest.fn();
             container.setState(state);
 
@@ -868,11 +903,11 @@ describe('CreateCommunicationLog', () => {
     describe('handleCloseCheckDuplicateDialog ', () => {
         it('should setState', async () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog/>).instance();
+            const container = shallow(<CreateCommunicationLog />).instance();
             container.formik = { setSubmitting: jest.fn() };
 
             // Act
-            container.handleCloseCheckDuplicateDialog ();
+            container.handleCloseCheckDuplicateDialog();
             // Assert
 
             expect(container.state.checkDuplicateDialog).toEqual({ show: false });
@@ -912,7 +947,7 @@ describe('CreateCommunicationLog', () => {
                 }
             };
 
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
 
             // Act
             container['formik'] = { values: values };
@@ -937,7 +972,7 @@ describe('CreateCommunicationLog', () => {
                 }
             };
 
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.initFormikData = jest.fn(() => initData.settings);
             // Act
             container['formik'] = { values: values };
@@ -964,7 +999,7 @@ describe('CreateCommunicationLog', () => {
                 }
             };
 
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.initFormikData = jest.fn(() => initData.feedback);
             // Act
             container.formik = { values: values };
@@ -989,7 +1024,7 @@ describe('CreateCommunicationLog', () => {
                 }
             };
 
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.formik = { values: values };
             // Act
             container.initFormikData = jest.fn(() => initData.settings);
@@ -1045,7 +1080,7 @@ describe('CreateCommunicationLog', () => {
             };
             DateTimeService.toShortDateTimeFormat = jest.fn(() => '12/24/2021 10:05:20 AM');
 
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
 
             // Act
             container['formik'] = { values: values };
@@ -1069,7 +1104,7 @@ describe('CreateCommunicationLog', () => {
             };
             DateTimeService.toShortDateTimeFormat = jest.fn(() => '12/24/2021 10:05:20 AM');
 
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
 
             // Act
             container['formik'] = { values: values };
@@ -1097,7 +1132,7 @@ describe('CreateCommunicationLog', () => {
                 }
             };
 
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState(state);
 
             // Act
@@ -1110,7 +1145,7 @@ describe('CreateCommunicationLog', () => {
         it('should return true when call function isOldEqualNewContent', () => {
             // Arrange
             const state = {
-                contents:{
+                contents: {
                     solution: 'test1',
                     remark: 'test3'
                 }
@@ -1122,7 +1157,7 @@ describe('CreateCommunicationLog', () => {
                 }
             };
 
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState(state);
 
             // Act
@@ -1133,7 +1168,7 @@ describe('CreateCommunicationLog', () => {
         });
     });
 
-    
+
     describe('onCloseCreatePopup', () => {
         it('should setState when call onCloseCreatePopup', () => {
             // Arrange
@@ -1184,12 +1219,12 @@ describe('CreateCommunicationLog', () => {
             expect(container.state().isShowCreatePopup).toBe(false);
         });
     });
-    
+
 
     describe('renderForm', () => {
         const props = {
             onClose: jest.fn(),
-            customerInfo:{
+            customerInfo: {
                 roleId: 1
             }
         };
@@ -1209,15 +1244,15 @@ describe('CreateCommunicationLog', () => {
                     isSuccessful: false,
                     message: 'unsuccessful'
                 },
-                allStatus: [{ statusId: 1, name: 'Closed'}],
+                allStatus: [{ statusId: 1, name: 'Closed' }],
                 allSettings: initData.settings
             };
-            
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState(state);
             // Act
             const renderEdit = shallow(container.renderForm(formikProps));
-    
+
             // Assert 
             expect(renderEdit.find(ResponseMessage).props().isSuccessful).toBe(false);
             expect(renderEdit.find(ResponseMessage).props().message).toEqual('unsuccessful');
@@ -1230,15 +1265,15 @@ describe('CreateCommunicationLog', () => {
                     isSuccessful: true,
                     message: 'InsertCommunicationLogSuccessfully'
                 },
-                allStatus: [{ statusId: 1, name: 'Closed'}],
+                allStatus: [{ statusId: 1, name: 'Closed' }],
                 allSettings: initData.settings
             };
-           
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState(state);
             // Act
             const renderEdit = shallow(container.renderForm(formikProps));
-    
+
             // Assert 
             expect(renderEdit.find(ResponseMessage).props().isSuccessful).toBe(true);
             expect(renderEdit.find(ResponseMessage).props().message).toEqual('InsertCommunicationLogSuccessfully');
@@ -1250,15 +1285,15 @@ describe('CreateCommunicationLog', () => {
                 createResult: {
                     isSuccessful: true
                 },
-                allStatus: [{ statusId: 1, name: 'Closed'}],
+                allStatus: [{ statusId: 1, name: 'Closed' }],
                 allSettings: initData.settings
             };
-           
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState(state);
             // Act
             const renderEdit = shallow(container.renderForm(formikProps));
-    
+
             // Assert 
             expect(renderEdit.find(ResponseMessage).props().isSuccessful).toBe(true);
             expect(renderEdit.find(ResponseMessage).props().message).toEqual('InsertCommunicationLogSuccessfully');
@@ -1284,10 +1319,10 @@ describe('CreateCommunicationLog', () => {
     describe('handleChangeMainCategory', () => {
         it('should do as expected when categoryIds has value', () => {
             // Arrange
-            const values = {subject: 'subject', subCategory: '1,2'};
+            const values = { subject: 'subject', subCategory: '1,2' };
             const setFieldValue = jest.fn();
-            shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
-            shareScripts.getSubCategories = jest.fn(()=> [1]);
+            shareScripts.getSubjectOnChangeCategories = jest.fn(() => 'tempSubject');
+            shareScripts.getSubCategories = jest.fn(() => [1]);
 
             // Act
             const container = shallow(<CreateCommunicationLog />).instance();
@@ -1301,10 +1336,10 @@ describe('CreateCommunicationLog', () => {
 
         it('should do as expected when categoryIds do not has any value', () => {
             // Arrange
-            const values = {subject: 'subject', subCategory: '1,2'};
+            const values = { subject: 'subject', subCategory: '1,2' };
             const setFieldValue = jest.fn();
-            shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
-            shareScripts.getSubCategories = jest.fn(()=> [1]);
+            shareScripts.getSubjectOnChangeCategories = jest.fn(() => 'tempSubject');
+            shareScripts.getSubCategories = jest.fn(() => [1]);
 
             // Act
             const container = shallow(<CreateCommunicationLog />).instance();
@@ -1320,14 +1355,14 @@ describe('CreateCommunicationLog', () => {
     describe('render', () => {
         const props = {
             onClose: jest.fn(),
-            customerInfo:{
+            customerInfo: {
                 roleId: 1
             }
         };
 
         it('modal onHide should call exact function', () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.onCloseCreatePopup = jest.fn();
             container.setState({
                 allSettings: initData.settings
@@ -1342,8 +1377,8 @@ describe('CreateCommunicationLog', () => {
 
         it('component map correct innerRef in formik', () => {
             // Arrange
-            const expected = {autoGenerated: 'Date Time & Tool: Invalid date/N/A'};
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+            const expected = { autoGenerated: 'Date Time & Tool: Invalid date/N/A' };
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState({
                 allSettings: initData.settings
             });
@@ -1362,8 +1397,8 @@ describe('CreateCommunicationLog', () => {
             const values = {
                 languageId: 0
             };
-           
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState({
                 allSettings: initData.settings
             });
@@ -1383,8 +1418,8 @@ describe('CreateCommunicationLog', () => {
             const state = {
                 confirmCreateDialog: { show: true }
             };
-           
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState({
                 allSettings: initData.settings
             });
@@ -1416,8 +1451,8 @@ describe('CreateCommunicationLog', () => {
             const state = {
                 checkDuplicateDialog: { show: true }
             };
-           
-            const container = shallow(<CreateCommunicationLog {...props}/>).instance();
+
+            const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.setState({
                 allSettings: initData.settings,
                 duplicateFeedbackId: 21357
@@ -1451,7 +1486,7 @@ describe('CreateCommunicationLog', () => {
             container.setState({
                 allSettings: initData.settings
             });
-            
+
             // Act
             container.setState({ isShowCreatePopup: true });
             const renderCreate = shallow(container.instance().render());

@@ -76,6 +76,10 @@ export class CreateCommunicationLog extends Component {
         const urlAllSettings = 'CommunicationLog/GetAllSettings';
         const urlBalanceUpday = 'Feedback/GetBalanceUpday';
         const options = this.props.options;
+        if (options) {
+            this.handleSetInitContent(options);
+            this.handleChangeVerifySection('subject', options.subject);
+        }
         this.handleSetInitContent(options);
         const subject = options ? options.subject : '';
         this.handleChangeVerifySection('subject', subject);
