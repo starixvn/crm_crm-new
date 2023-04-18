@@ -36,19 +36,21 @@ const getReportDetails = params => async dispatch => {
 };
 
 const exportExcel = params => async () => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('LogStatistics/ExportExcel');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
-    });
+    }).then(() => Site.unblockUI());
 };
 
 const exportExcelDetails = params => async () => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('LogStatistics/ExportExcelDetails');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
-    });
+    }).then(() => Site.unblockUI());
 };
 
 export const ActionCreators = {

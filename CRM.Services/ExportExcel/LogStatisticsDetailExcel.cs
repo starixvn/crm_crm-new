@@ -8,7 +8,6 @@
     using CRM.Models.Report.LogStatistics;
     using CRM.Models.Setting;
     using OfficeOpenXml;
-    using OfficeOpenXml.Style;
 
     public class LogStatisticsDetailExcel : ExcelBase
     {
@@ -22,7 +21,7 @@
         private readonly IEnumerable<Product> products;
         private readonly IEnumerable<Product> subProducts;
         private readonly IEnumerable<SettingRelation> extensions;
-           
+
         public LogStatisticsDetailExcel(
             string templatePath, StatisticsDetailReportByDateModel logStatisticsDetail,
             IEnumerable<Setting> mainCategories, IEnumerable<Setting> communicationTools,
@@ -58,25 +57,19 @@
             {
                 var data = childReport[index];
                 var rowIndex = RowStartBody + index;
-                RenderRowValue(worksheet, data, rowIndex);
+                RenderRowValue(templateWorksheet, worksheet, data, rowIndex);
             }
         }
 
         protected internal override void ProcessUI(ExcelWorksheet worksheet)
         {
-            SetStyle(worksheet);
             SetWidthColumn(worksheet);
-        }
-
-        protected internal virtual void SetStyle(ExcelWorksheet worksheet)
-        {
-            StyleDefault(worksheet);
-            worksheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
         }
 
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const int WidthSmall = 15;
+            const int WidthNormal = 20;
             const int WidthLarge = 35;
             const int WidthExtraLarge = 45;
             const int ColumnCustomer = 5;
@@ -85,28 +78,19 @@
             const int ColumnSubCategory = 15;
             const int ColumnComplaints = 16;
             const int ColumnSolution = 17;
-            const int ColumnExt = 8;
-            const int ColumnInquiries = 18;
+            const int ColumnCreatedTime = 23;
 
             worksheet.DefaultColWidth = WidthSmall;
-            worksheet.Cells.AutoFitColumns();
             worksheet.Column(ColumnCustomer).Width = WidthLarge;
             worksheet.Column(ColumnContactInfo).Width = WidthLarge;
             worksheet.Column(ColumnCategory).Width = WidthLarge;
             worksheet.Column(ColumnSubCategory).Width = WidthLarge;
             worksheet.Column(ColumnComplaints).Width = WidthExtraLarge;
             worksheet.Column(ColumnSolution).Width = WidthExtraLarge;
-            var logStatisticLength = logStatisticsDetail.ChildReports.ToList().Count;
-            if(logStatisticLength > 0)
-            {
-                var totalRows = RowStartBody + logStatisticLength - 1;
-                worksheet.Cells[RowStartBody, 1, totalRows, ColumnExt].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells[RowStartBody, ColumnInquiries, totalRows, TotalColumns].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                DrawBorderCell(worksheet.Cells[RowStartBody, 1, totalRows, TotalColumns]);
-            }
+            worksheet.Column(ColumnCreatedTime).Width = WidthNormal;
         }
 
-        protected internal virtual void RenderRowValue(ExcelWorksheet worksheet,
+        protected internal virtual void RenderRowValue(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet,
             StatisticsDetailbyDateModel data, int rowIndex
             )
         {
@@ -115,7 +99,9 @@
             var subCategoryValue = GetSubCategoryValue(data.CategoryID, data.SubCategoryID);
             var extensionValue = GetExtentionValue(data.StationID);
             var productValue = GetProductValue(products, data.ProductID);
-            var subproductValue = GetProductValue(subProducts ,data.SubProductID);
+            var subproductValue = GetProductValue(subProducts, data.SubProductID);
+            templateWorksheet.Cells[5, 1, 5, TotalColumns]
+               .Copy(worksheet.Cells[rowIndex, 1, rowIndex, TotalColumns]);
 
             var colIndex = 1;
             worksheet.Cells[rowIndex, colIndex++].Value = data.FeedbackDate.ToString("MMM dd, yyyy");
@@ -128,7 +114,7 @@
             worksheet.Cells[rowIndex, colIndex++].Value = extensionValue;
             worksheet.Cells[rowIndex, colIndex++].Value = data.Role;
             worksheet.Cells[rowIndex, colIndex++].Value = RemoveHtmlTags(data.Contact);
-            worksheet.Cells[rowIndex, colIndex++].Value = productValue == "N/A." ? "N/A" : productValue ;
+            worksheet.Cells[rowIndex, colIndex++].Value = productValue == "N/A." ? "N/A" : productValue;
             worksheet.Cells[rowIndex, colIndex++].Value = subproductValue == "N/A." ? "N/A" : subproductValue;
             worksheet.Cells[rowIndex, colIndex++].Value = data.CountryName;
             worksheet.Cells[rowIndex, colIndex++].Value = mainCategoryValue;
