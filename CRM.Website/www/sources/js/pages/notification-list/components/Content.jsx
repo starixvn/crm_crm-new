@@ -6,15 +6,16 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 export default class Content extends Component {
     getReferenceText = data =>{
         let reference = '';
+        const referenceIdList = data.referenceIdList ? data.referenceIdList.replaceAll(',', ', ') : '';
         switch(data.dataSource) {
             case 'DBMSG.bodb_Message.dbo.Msg':
-                reference = `(MessageID: ${data.referenceIdList})`;
+                reference = `(Msg: ${referenceIdList})`;
             break;
             case 'DBCRM.bodb_CRM.dbo.crmAnnouncement':
-                reference = `(AnnId: ${data.referenceIdList})`;
+                reference = `(Ann: ${referenceIdList})`;
             break;
             default:
-                reference = data.referenceIdList > 0 && `(LogID: ${data.referenceIdList})`;
+                reference = referenceIdList.length > 0 && `(Log: ${referenceIdList})`;
         }
 
         return reference;

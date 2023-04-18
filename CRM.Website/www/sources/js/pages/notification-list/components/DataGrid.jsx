@@ -177,15 +177,16 @@ export class DataGrid extends Component {
 
     getReferenceText = item =>{
         let reference = '';
+        const referenceIdList = item.referenceIdList ? item.referenceIdList.replaceAll(',', ', ') : '';
         switch(item.dataSource) {
             case 'DBMSG.bodb_Message.dbo.Msg':
-                reference = `(Msg: ${item.referenceIdList})`;
+                reference = `(Msg: ${referenceIdList})`;
             break;
             case 'DBCRM.bodb_CRM.dbo.crmAnnouncement':
-                reference = `(Ann: ${item.referenceIdList})`;
+                reference = `(Ann: ${referenceIdList})`;
             break;
             default:
-                reference = item.referenceIdList > 0 && `(Log: ${item.referenceIdList})`;
+                reference = referenceIdList.length > 0 && `(Log: ${referenceIdList})`;
         }
 
         return reference;
