@@ -39,11 +39,12 @@ const getGridData = params => async dispatch => {
 };
 
 const exportExcel = params => async dispatch => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('PicManagement/ExportExcel');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split("\"")[1];
         Site.downloadFile(response.data, fileName);
-    }).catch(Site.handleAxiosError);
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 const changeActiveStatus = params => async dispatch => {

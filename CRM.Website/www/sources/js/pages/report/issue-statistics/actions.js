@@ -26,11 +26,12 @@ const getGridData = params => async dispatch => {
 };
 
 const exportExcel = params => async () => {
+    Site.blockUI();
     const url = Site.resolveClientUrl('IssueStatistics/ExportExcel');
     await DataService.getFileAsync(url, params).then(response => {
         const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
         Site.downloadFile(response.data, fileName);
-    });
+    }).then(() => Site.unblockUI());
 };
 
 export const ActionCreators = {
