@@ -9,10 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="jose-jwt" Version="4.1.0" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.40.0.48530">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Telegram.Bot" Version="18.0.0" />
   </ItemGroup>
 

@@ -6,9 +6,11 @@
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class NotifyController : Controller
     {
         private readonly IPushMessageService pushMessageService;

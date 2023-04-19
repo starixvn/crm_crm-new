@@ -54,26 +54,19 @@
     <ItemGroup>
         <PackageReference Include="Fanex.Data" Version="4.2.2" />
         <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.2" />
-        <PackageReference Include="Fanex.NAP.Client.AspNetCore" Version="2.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.17" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.16" />
         <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
         <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.16" />
         <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
         <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.1.0-beta05" />
         <PackageReference Include="ONEbook.UM.Transport" Version="3.1.1" />
-        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.40.0.48530">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\CRM.Controllers\CRM.Controllers.csproj" />
