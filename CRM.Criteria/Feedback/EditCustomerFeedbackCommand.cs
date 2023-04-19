@@ -124,8 +124,6 @@
 
         public int CustId { get; set; }
 
-        public bool IsVIP { get; set; }
-
         public string IP { get; set; }
 
         public bool IsOverwrite { get; set; }
