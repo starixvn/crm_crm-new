@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using System.Web;
     using CRM.Models.Report.LogStatistics;
     using CRM.Models.Setting;
@@ -100,7 +101,7 @@
             var extensionValue = GetExtentionValue(data.StationID);
             var productValue = GetProductValue(products, data.ProductID);
             var subproductValue = GetProductValue(subProducts, data.SubProductID);
-            templateWorksheet.Cells[5, 1, 5, TotalColumns]
+            templateWorksheet.Cells[RowStartBody, 1, RowStartBody, TotalColumns]
                .Copy(worksheet.Cells[rowIndex, 1, rowIndex, TotalColumns]);
 
             var colIndex = 1;
@@ -131,34 +132,35 @@
 
         private string GetCommunicationValue(int id)
         {
-            var activeSetting = communicationTools.Where(x => x.Id == id && x.IsActive);
-            return activeSetting.Any() ? activeSetting.FirstOrDefault().Name : "N/A";
+            var activeSetting = communicationTools.FirstOrDefault(x => x.Id == id && x.IsActive);
+            return activeSetting?.Name ?? string.Empty;
         }
 
         private string GetExtentionValue(int id)
         {
-            var activeSetting = extensions.Where(x => x.Id == id && x.IsActive);
-            return activeSetting.Any() ? activeSetting.FirstOrDefault().Value : "N/A";
+            var activeSetting = extensions.FirstOrDefault(x => x.Id == id && x.IsActive);
+            return activeSetting?.Value ?? string.Empty;
         }
-
+        
         private string GetMainCategoryValue(int id)
         {
-            var activeSetting = mainCategories.Where(x => x.MainCategoryID == id && x.IsActive);
-            return activeSetting.Any() ? activeSetting.FirstOrDefault().Name : "N/A";
+            var activeSetting = mainCategories.FirstOrDefault(x => x.MainCategoryID == id && x.IsActive);
+            return activeSetting?.Name ?? string.Empty;
         }
 
         private string GetSubCategoryValue(int mainCategoryId, int subCategoryId)
         {
             var mainCategory = mainCategories.FirstOrDefault(c => c.MainCategoryID == mainCategoryId);
             var child = mainCategory?.ChildSettings.FirstOrDefault(c => c.SubCategoryId == subCategoryId);
-            return child == null ? string.Empty : child.Name;
+            return child?.Name ?? string.Empty;
         }
 
         private static string GetProductValue(IEnumerable<Product> settings, int id)
         {
-            var activeSetting = settings.Where(x => x.Id == id && x.IsActive);
-            return activeSetting.Any() ? activeSetting.FirstOrDefault().Value : "N/A";
+            var activeSetting = settings.FirstOrDefault(x => x.Id == id && x.IsActive);
+            return activeSetting?.Value ?? string.Empty;
         }
+
 
         private static string RemoveHtmlTags(string value)
         {
