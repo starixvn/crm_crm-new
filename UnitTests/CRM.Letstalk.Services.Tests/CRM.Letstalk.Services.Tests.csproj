@@ -25,8 +25,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\CRM.Letstalk.Services\CRM.Letstalk.Services.csproj" />
-  </ItemGroup>
-
 </Project>

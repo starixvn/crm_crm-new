@@ -28,7 +28,7 @@
         private readonly ICommonService commonService;
         private readonly IChatTypeMappingService chatTypeMappingService;
         private readonly IExportExcelService excelService;
-        private readonly IChatBotService chatBotService;
+        private readonly ILetstalkApiService letstalkClientService;
 
         public ChatTypeMappingController(
             INapSession napSession,
@@ -36,14 +36,14 @@
             ICommonService commonService,
             IChatTypeMappingService chatTypeMappingService,
             IExportExcelService excelService,
-            IChatBotService chatBotService)
+            ILetstalkApiService letstalkClientService)
         {
             this.napSession = napSession;
             this.settingService = settingService;
             this.commonService = commonService;
             this.chatTypeMappingService = chatTypeMappingService;
             this.excelService = excelService;
-            this.chatBotService = chatBotService;
+            this.letstalkClientService = letstalkClientService;
         }
 
         public async Task<IActionResult> GetSettings()
@@ -113,7 +113,7 @@
         public async Task<IActionResult> InsertPersonalMapping([FromBody] PersonalMappingViewModel data)
         {
             var result = new CommandResult();
-            var userProfile = await chatBotService.GetPersonalDisplayNameAsync(data.BotId, data.LetstalkId.Trim());
+            var userProfile = await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.LetstalkId.Trim());
 
             if (userProfile is not null && !string.IsNullOrWhiteSpace(userProfile.DisplayName))
             {
@@ -147,7 +147,7 @@
         public async Task<IActionResult> UpdatePersonalMapping([FromBody] PersonalMappingViewModel data)
         {
             var result = new CommandResult();
-            var userProfile = await chatBotService.GetPersonalDisplayNameAsync(data.BotId, data.LetstalkId.Trim());
+            var userProfile = await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.LetstalkId.Trim());
 
             if (userProfile is not null && !string.IsNullOrWhiteSpace(userProfile.DisplayName))
             {
@@ -237,7 +237,7 @@
         {
             if (data.BotId > 0 && !string.IsNullOrWhiteSpace(data.GroupConversationId))
             {
-                var verificationData = await chatBotService.VerifyLetstalkOnGroup(data.BotId, data.GroupConversationId, data.Recipients);
+                var verificationData = await letstalkClientService.VerifyLetstalkOnGroup(data.BotId, data.GroupConversationId, data.Recipients);
 
                 MappingResult(data.Recipients, verificationData.Letstalks);
 
@@ -265,7 +265,7 @@
 
         public async Task<string> GetLetstalkDisplayName(int botId, string letstalkId)
         {
-            var userProfile = await chatBotService.GetPersonalDisplayNameAsync(botId, letstalkId.Trim());
+            var userProfile = await letstalkClientService.GetPersonalDisplayNameAsync(botId, letstalkId.Trim());
             return userProfile is not null ? userProfile.DisplayName : string.Empty;
         }
 

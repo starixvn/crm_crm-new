@@ -8,7 +8,6 @@
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
-    using CRM.Models.BotServices;
     using CRM.Services.Extensions;
     using Fanex.Data;
     using Fanex.Data.SqlServer;
@@ -118,8 +117,7 @@
 
             services.Configure<AppSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
 
-            var botConfigs = Configuration.GetSection("BotServiceSettings").Get<BotServiceSettings>();
-            services.AddSingleton(botConfigs);
+            services.ResolveCoreConfiguration(Configuration);
 
             services.AddAntiforgery(options =>
             {

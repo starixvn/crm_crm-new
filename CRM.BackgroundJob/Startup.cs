@@ -4,14 +4,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Models.HealthCheck;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.Workers;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
-    using CRM.Letstalk.Services.Extentions;
-    using CRM.Letstalk.Services.Services;
-    using CRM.Letstalk.Services.Services.Interfaces;
     using Fanex.Caching;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Repositories;
@@ -84,14 +82,13 @@
 
             services.AddSingleton(Configuration);
             services.AddControllers();
+            services.ResolveCoreConfiguration(Configuration);
 
-            services.Configure<AppJobSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
-            services.Configure<List<JobSetting>>(Configuration.GetSection("JobSettings"));
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
             ConfigRedisCache(services, redisConfig);
             services.ResolveCoreDI();
-            services.ResolveLetstalkServiceDI(Configuration);
+            AddConfiguration(services, Configuration);
             AddDependencyInjection(services, Configuration);
             AddWorker(services);
         }
@@ -116,6 +113,15 @@
                     name: "default",
                     pattern: "{controller=Auth}/{action=Index}/{id?}");
             });
+        }
+
+        private void AddConfiguration(IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<AppJobSettings>(options => configuration.GetSection("AppSettings").Bind(options));
+            services.Configure<List<JobSetting>>(configuration.GetSection("JobSettings"));
+
+            var healthCheckSettings = configuration.GetSection("LetstalkHealthCheckSettings").Get<LetstalkHealthCheckSettings>();
+            services.AddSingleton(healthCheckSettings);
         }
 
         private static void AddDependencyInjection(IServiceCollection services, IConfiguration configuration)
@@ -148,7 +154,7 @@
             services.AddSingleton<IChatBotCWLService, ChatBotCWLService>();
             services.AddSingleton<IChatBotJobService, ChatBotJobService>();
             services.AddSingleton<ISendNotificationService, SendNotificationService>();
-            services.AddSingleton<IMonitorService, MonitorService>();
+            services.AddSingleton<IBotHealthCheckService, BotHealthCheckService>();
             services.AddSingleton<IFeedbackTransactionService, FeedbackTransactionService>();
             services.AddSingleton<ICommonFeedback, CommonFeedback>();
             services.AddSingleton<ITOControlFeedbackService, TOControlFeedbackService>();
@@ -184,7 +190,7 @@
             services.AddHostedService<AutoFbVoidingSettledTicketsWorker>();
             services.AddHostedService<AutoFbArchivingDAWoker>();
             services.AddHostedService<AutoChatbotArchivingDAWoker>();
-            services.AddHostedService<MonitorLetstalkWorker>();
+            services.AddHostedService<LetstalkHealthCheckWorker>();
         }
 
         private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)

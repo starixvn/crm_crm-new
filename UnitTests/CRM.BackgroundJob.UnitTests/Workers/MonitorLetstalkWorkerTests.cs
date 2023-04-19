@@ -31,7 +31,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             // Assert
             await monitorService.Received().MonitorLetstalkService();
         }
-        private MonitorLetstalkWorker GetService()
+        private LetstalkHealthCheckWorker GetService()
         {
             appSettings = new List<JobSetting>
             {

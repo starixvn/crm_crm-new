@@ -142,10 +142,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CRM.Letstalk.Services\CRM.Letstalk.Services.csproj" />
+      <None Include="appsettings.LOCAL_1.json" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="appsettings.LOCAL_1.json" />
+      <ProjectReference Include="..\CRM.Core\CRM.Core.csproj" />
     </ItemGroup>
 </Project>

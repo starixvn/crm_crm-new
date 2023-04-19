@@ -4,8 +4,8 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Extensions;
     using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Services;
     using CRM.Core.Services;
-    using CRM.Letstalk.Services.Services.Interfaces;
     using Fanex.CRM.BackgroundJob.Constants;
     using Microsoft.Extensions.Options;
     using ONEbook.UM.Services;
@@ -27,7 +27,7 @@
 
         public override async Task ExecuteJobAsync()
         {
-            await sendNotificationService.SendNotificationToLetstalk();
+            await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
         }
     }
 }

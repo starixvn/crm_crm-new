@@ -53,7 +53,7 @@
             services.AddScoped<IDynamicReportService, DynamicReportService>();
             services.AddScoped<ICustomerReportService, CustomerReportService>();
             services.AddScoped<IHomeService, HomeService>();
-            services.AddScoped<IChatBotService, ChatBotService>();
+            services.AddScoped<ILetstalkApiService, LetstalkApiService>();
         }
     }
 }

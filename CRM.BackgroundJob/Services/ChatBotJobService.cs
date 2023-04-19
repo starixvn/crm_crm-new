@@ -14,16 +14,20 @@
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Services;
-    using global::CRM.Letstalk.Services.Services.Interfaces;
     using Microsoft.Extensions.Configuration;
 
     public interface IChatBotJobService
     {
         Task PullMessageAndSendNotificationAsync();
+
         Task PullMessageCWLAndSendNotificationToHeadlineAsync();
+
         Task PullMessageCTOAndSendNotificationToHeadlineAsync();
+
         Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync();
+
         Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
+
         Task PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
     }
 
@@ -42,8 +46,8 @@
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
 
-
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public ChatBotJobService(
             ICRMLogService logService,
             ISystemSettingService systemSettingService,
@@ -74,7 +78,6 @@
         {
             try
             {
-                //await sendNotificationService.SendToPersonalLetstalk();
                 AbnormalBetSystemSetting setting = await systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Environment);
                 if (!setting.ServiceFlag)
                 {
@@ -112,7 +115,7 @@
                 if (commandResultImportTicket.Item1.IsSuccessful)
                 {
                     logService.LogInformation("Import ChatBot - AbnormalBets Successful!!!");
-                    await sendNotificationService.SendNotificationToLetstalk();
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
                 }
                 else
                 {
@@ -140,7 +143,7 @@
                 var result = await chatBotCWLService.ImportCWLLogInfoAsync(cwlInfors, Environment);
                 if (result.Item1.IsSuccessful)
                 {
-                    await sendNotificationService.SendNotificationToLetstalk();
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
                 }
                 else
                 {
@@ -169,7 +172,7 @@
                 var commandResult = await chatBotCTOService.ImportTOSMAInfoAsync(tOSMAInfors, Environment);
                 if (commandResult.Item1.IsSuccessful)
                 {
-                    await sendNotificationService.SendNotificationToLetstalk();
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
                 }
                 else
                 {
@@ -198,7 +201,7 @@
                 var commandResult = await chatBotProblemAccountService.ImportProblemsAccountInfoAsync(problemsAcountInfors, Environment);
                 if (commandResult.Item1.IsSuccessful)
                 {
-                    await sendNotificationService.SendNotificationToLetstalk();
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
                 }
                 else
                 {
@@ -251,7 +254,7 @@
 
                 if (commandResult.Item1.IsSuccessful)
                 {
-                    await sendNotificationService.SendNotificationToLetstalk();
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
                 }
                 else
                 {
@@ -279,7 +282,7 @@
                 var (commandResult, command) = await chatBotArchivingDAService.ImportArchivedAccountsAsync(archivingDAInfors, Environment);
                 if (commandResult.IsSuccessful)
                 {
-                    await sendNotificationService.SendNotificationToLetstalk();
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
                 }
                 else
                 {
