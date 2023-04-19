@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <None Remove="App_Data\SpNames.AWS.xml" />
+        <None Remove="App_Data\SpNames.LOCAL_1.xml" />
         <None Remove="App_Data\SpNames.xml" />
         <None Remove="Controllers\LetstalkController.cs~RF3c08a7.TMP" />
         <None Remove="Controllers\LetstalkController.cs~RF4cd0fa.TMP" />
@@ -17,6 +18,9 @@
 
     <ItemGroup>
         <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+        <Content Include="App_Data\SpNames.LOCAL_1.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="App_Data\SpNames.AWS.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

@@ -65,6 +65,7 @@
         <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
         <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.1.0-beta05" />
         <PackageReference Include="ONEbook.UM.Transport" Version="3.1.1" />
     </ItemGroup>
