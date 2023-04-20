@@ -95,7 +95,6 @@
 
         private async Task<IEnumerable<NotificationMessage>> GetNotificationToSend()
         {
-            //var notifications = FakeNotfications();
             var notifications = await baseService.GetDataAsync<NotificationMessage>(new GetNotificationToSendCriteria());
             if (notifications.Any())
             {
@@ -124,6 +123,7 @@
                     {
                         NotificationId = notification.NotificationId,
                         ConversationGroupId = notification.ConversationGroupId,
+                        SentDate = DateTime.UtcNow,
                         Status = SendNotificationStatus.Error,
                         ErrMsg = SendNotificationErrorMessage.BotRemovedMsg
                     };
@@ -144,7 +144,7 @@
             await baseService.ExecuteNonQueryAsync(command);
         }
 
-        private IEnumerable<NotificationMessageUpdateResult> GetUpdateResultModel(IEnumerable<SendResult> sendResults)
+        private static IEnumerable<NotificationMessageUpdateResult> GetUpdateResultModel(IEnumerable<SendResult> sendResults)
         {
             var updateResults = new List<NotificationMessageUpdateResult>();
             foreach (var result in sendResults)
@@ -153,6 +153,7 @@
                 {
                     NotificationId = result.NotificationId,
                     ConversationGroupId = result.ConversationGroupId,
+                    SentDate = result.SentTime,
                     Status = GetUpdateStatus(result),
                     ErrMsg = result.ErrorMessage
                 };
@@ -177,40 +178,6 @@
                 return SendNotificationStatus.Retrying;
             }
             return SendNotificationStatus.Error;
-        }
-
-        private IEnumerable<NotificationMessage> FakeNotfications()
-        {
-            var list = new List<NotificationMessage>
-            {
-                new NotificationMessage
-                {
-                    NotificationId  = 1,
-                    BotId = 100020,
-                    ChatTypeId = 2,
-                    ConversationId = "t381023",
-                    Content = "This is text"
-                },
-                new NotificationMessage
-                {
-                    NotificationId = 2,
-                    BotId = 100020,
-                    ChatTypeId = 1,
-                    ConversationId = "m4D5zCUv4_mLmdiPZM5qzWwFCaskz1nDVLHSYbGKjps2Uq9D_W_iobD8tWyNJh24",
-                    Content = "Oliver testing"
-                },
-                new NotificationMessage
-                {
-                    AnnouncementId = 62567,
-                    NotificationId = 3,
-                    BotId = 100020,
-                    ChatTypeId = 1,
-                    ConversationId = "m4D5zCUv4_mLmdiPZM5qzWwFCaskz1nDVLHSYbGKjps2Uq9D_W_iobD8tWyNJh24",
-                    Content = "Oliver testing",
-                    FileName = "images.jpg,istockphoto-1322277517-612x612.jpg,tree-736885_   _480.jpg"
-                },
-            };
-            return list;
         }
 
         private static class SendNotificationStatus

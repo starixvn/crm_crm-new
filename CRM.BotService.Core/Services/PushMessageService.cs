@@ -46,10 +46,18 @@
                 result.IsIgnoreRetry = true;
                 return result;
             }
-
-            if (notification.Channel.Equals(BotChannel.Letstalk))
+            try
             {
-                await SendLetstalkAsync(notification, result);
+                if (notification.Channel.Equals(BotChannel.Letstalk))
+                {
+                    await SendLetstalkAsync(notification, result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorCode = 1;
+                result.SentTime = DateTime.UtcNow;
+                result.ErrorMessage = ex.Message;
             }
 
             return result;
