@@ -4,7 +4,6 @@
 
     public class WriteLogMessageCommand : NonQueryCommand
     {
-        public string Channel { get; set; }
         public int NotificationId { get; set; }
         public int BotId { get; set; }
         public string ConversationId { get; set; }

@@ -54,9 +54,30 @@
             var batches = DivideBatchToSend(notifications);
             foreach (var batch in batches)
             {
-                var result = await chatbotService.SendMultipleMessageAsync(batch);
-
-                await UpdateRecipientStatus(result);
+                var results = new List<NotificationMessageUpdateResult>();
+                try
+                {
+                    var sendResults = await chatbotService.SendMultipleMessageAsync(batch);
+                    results = GetUpdateResultModel(sendResults).ToList();
+                }
+                catch (Exception ex)
+                {
+                    foreach (var noti in batch)
+                    {
+                        results.Add(new NotificationMessageUpdateResult
+                        {
+                            NotificationId = noti.NotificationId,
+                            ConversationGroupId = noti.ConversationGroupId,
+                            Status = SendNotificationStatus.Retrying,
+                            ErrMsg = SendNotificationErrorMessage.BotServiceErrorMsg
+                        });
+                    }
+                    await logService.ErrorAsync(ex);
+                }
+                finally
+                {
+                    await UpdateRecipientStatus(results);
+                }
             }
         }
 
@@ -96,13 +117,15 @@
         {
             if (notifications.Any())
             {
-                var results = new List<SendResult>();
+                var results = new List<NotificationMessageUpdateResult>();
                 foreach (var notification in notifications)
                 {
-                    var result = new SendResult
+                    var result = new NotificationMessageUpdateResult
                     {
                         NotificationId = notification.NotificationId,
-                        ConversationId = notification.ConversationId,
+                        ConversationGroupId = notification.ConversationGroupId,
+                        Status = SendNotificationStatus.Error,
+                        ErrMsg = SendNotificationErrorMessage.BotRemovedMsg
                     };
                     results.Add(result);
                 }
@@ -111,14 +134,49 @@
             }
         }
 
-        private async Task UpdateRecipientStatus(IEnumerable<SendResult> sentResults)
+        private async Task UpdateRecipientStatus(IEnumerable<NotificationMessageUpdateResult> results)
         {
             var command = new UpdateNotificationStatusCommand
             {
-                XmlData = sentResults.ToXML("root").ToString()
+                XmlData = results.ToXML("root").ToString()
             };
 
             await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        private IEnumerable<NotificationMessageUpdateResult> GetUpdateResultModel(IEnumerable<SendResult> sendResults)
+        {
+            var updateResults = new List<NotificationMessageUpdateResult>();
+            foreach (var result in sendResults)
+            {
+                var updateModel = new NotificationMessageUpdateResult
+                {
+                    NotificationId = result.NotificationId,
+                    ConversationGroupId = result.ConversationGroupId,
+                    Status = GetUpdateStatus(result),
+                    ErrMsg = result.ErrorMessage
+                };
+                updateResults.Add(updateModel);
+            }
+
+            return updateResults;
+        }
+
+        private static string GetUpdateStatus(SendResult result)
+        {
+            if (result.IsBlockedBot)
+            {
+                return SendNotificationStatus.BotBlocked;
+            }
+            if (result.IsSuccessful && !result.IsBlockedBot)
+            {
+                return SendNotificationStatus.Sent;
+            }
+            if (!result.IsSuccessful && !result.IsIgnoreRetry)
+            {
+                return SendNotificationStatus.Retrying;
+            }
+            return SendNotificationStatus.Error;
         }
 
         private IEnumerable<NotificationMessage> FakeNotfications()
@@ -153,6 +211,20 @@
                 },
             };
             return list;
+        }
+
+        private static class SendNotificationStatus
+        {
+            internal const string BotBlocked = "BotBlocked";
+            internal const string Sent = "Sent";
+            internal const string Retrying = "Retrying";
+            internal const string Error = "Error";
+        }
+
+        private static class SendNotificationErrorMessage
+        {
+            public const string BotServiceErrorMsg = "Error occured on Chatbot service";
+            public const string BotRemovedMsg = "Chatbot has been removed from the group";
         }
     }
 }
