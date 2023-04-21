@@ -7,7 +7,6 @@
     using CRM.BotService.Core.Services.Interfaces;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Options;
 
     public class TelegramBotController : Controller
     {
@@ -15,10 +14,10 @@
         private readonly ITelegramBotService telegramBotService;
 
         public TelegramBotController(
-            IOptions<List<TelegramBotConfigurations>> botConfigurations,
+            List<TelegramBotConfigurations> botConfigurations,
             ITelegramBotService telegramBotService)
         {
-            this.botConfigurations = botConfigurations.Value;
+            this.botConfigurations = botConfigurations;
             this.telegramBotService = telegramBotService;
         }
 

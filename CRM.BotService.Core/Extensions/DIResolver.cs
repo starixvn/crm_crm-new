@@ -19,38 +19,7 @@
     {
         public static void ResolveWebhookServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IWebhookReceiver, WebhookReceiver>();
-
-            services.AddTransient<JoinGroupEventHandler>();
-            services.AddTransient<KickOutBotEventHandler>();
-            services.AddTransient<ChangeGroupNameEventHandler>();
-            services.AddTransient<AddContactEventHandler>();
-            services.AddTransient<ReceiveMessageEventHandler>();
-            services.AddTransient<Func<string, IEventHandler>>(serviceProvider => key =>
-            {
-                switch (key)
-                {
-                    case EventType.JoinGroup:
-                        return serviceProvider.GetRequiredService<JoinGroupEventHandler>();
-
-                    case EventType.KickOutGroup:
-                        return serviceProvider.GetRequiredService<KickOutBotEventHandler>();
-
-                    case EventType.ChangeGroupName:
-                        return serviceProvider.GetRequiredService<ChangeGroupNameEventHandler>();
-
-                    case EventType.Message:
-                        return serviceProvider.GetRequiredService<ReceiveMessageEventHandler>();
-
-                    case EventType.DeleteContact:
-                    case EventType.AddContact:
-                        return serviceProvider.GetRequiredService<AddContactEventHandler>();
-
-                    default:
-                        throw new KeyNotFoundException($"The event type {key} have not implements!");
-                }
-            });
-
+            services.AddScoped<ILetstalkEventHandler, LetstalkEventHandler>();
             RegisterTelegramBots(services, configuration);
         }
 
@@ -68,14 +37,13 @@
 
         private static void RegisterBotLetstalkService(IServiceCollection services, IConfiguration configuration, List<LetstalkBotConfig> botConfigs)
         {
-            var isUseProxy = bool.Parse(configuration.GetSection("HttpClientSetting:IsUseProxy").Value);
-            var proxyAddress = configuration.GetSection("HttpClientSetting:ProxyAddress").Value;
-            var bypassOnLocal = bool.Parse(configuration.GetSection("HttpClientSetting:BypassOnLocal").Value);
+            var httpClientSettings = configuration.GetSection("HttpClientSetting").Get<HttpClientSetting>();
+            services.AddSingleton(httpClientSettings);
 
             services.AddHttpClient(NamedHttpClients.ProxiedClient).ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
             {
-                UseProxy = isUseProxy,
-                Proxy = new WebProxy(proxyAddress, bypassOnLocal)
+                UseProxy = httpClientSettings.IsUseProxy,
+                Proxy = new WebProxy(httpClientSettings.ProxyAddress, httpClientSettings.BypassOnLocal)
             });
 
             services.AddSingleton<ICacheService, CacheService>();
@@ -97,8 +65,11 @@
 
         private static void RegisterTelegramBots(IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<List<WebhookConfiguration>>(options => configuration.GetSection("WebhookConfigurations").Bind(options));
-            services.Configure<List<TelegramBotConfigurations>>(options => configuration.GetSection("TelegramBotConfigurations").Bind(options));
+            var telegramWebhook = configuration.GetSection("WebhookConfigurations").Get<List<WebhookConfiguration>>();
+            services.AddSingleton(telegramWebhook);
+
+            var telegramBots = configuration.GetSection("TelegramBotConfigurations").Get<List<TelegramBotConfigurations>>();
+            services.AddSingleton(telegramBots);
 
             services.AddTransient<ITelegramBotService, TelegramBotService>();
         }

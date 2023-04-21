@@ -5,22 +5,23 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Services.EventHandler;
     using CRM.BotService.Core.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
 
     public class LetstalkWebhookController : ControllerBase
     {
-        private readonly IWebhookReceiver webhookReceiver;
+        private readonly ILetstalkEventHandler eventHandler;
         private readonly Func<int, ILetstalkClientService> letstalkService;
         private readonly List<WebhookConfiguration> webhookConfigurations;
 
-        public LetstalkWebhookController(IWebhookReceiver webhookReceiver,
+        public LetstalkWebhookController(ILetstalkEventHandler eventHandler,
             Func<int, ILetstalkClientService> letstalkService,
             IOptions<List<WebhookConfiguration>> webhookConfigurations
             )
         {
-            this.webhookReceiver = webhookReceiver;
+            this.eventHandler = eventHandler;
             this.letstalkService = letstalkService;
             this.webhookConfigurations = webhookConfigurations.Value;
         }
@@ -28,7 +29,7 @@
         [Route("api/webhook/{id}")]
         public async Task WebhookReceiver(int id)
         {
-            await webhookReceiver.ReceiveAsync(Request, id);
+            await eventHandler.ReceiveAsync(Request, id);
         }
 
         [Route("api/setwebhook/{id}")]

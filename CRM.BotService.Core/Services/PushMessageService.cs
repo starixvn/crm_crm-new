@@ -52,6 +52,10 @@
                 {
                     await SendLetstalkAsync(notification, result);
                 }
+                if (notification.Channel.Equals(BotChannel.Telegram))
+                {
+                    await SendTelegramAsync(notification, result);
+                }
             }
             catch (Exception ex)
             {
@@ -192,6 +196,15 @@
         }
 
         #endregion Send message by Letstalk
+
+        #region Send message by Telegram
+
+        private async Task SendTelegramAsync(NotificationMessage notification, SendResult result)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion Send message by Telegram
 
         public bool IsActiveChannel(BotChannel channel)
             => channels.Any(c => c.Name == channel && c.IsActive);

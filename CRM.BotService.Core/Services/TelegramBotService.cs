@@ -11,7 +11,6 @@
     using CRM.Core.Services;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
-    using Microsoft.Extensions.Options;
     using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
@@ -24,24 +23,14 @@
 
         public TelegramBotService(
             IHttpClientFactory httpClientFactory,
-            IOptions<HttpClientSetting> proxySettings,
-            IOptions<List<TelegramBotConfigurations>> botConfigurations,
+            List<TelegramBotConfigurations> botConfigurations,
             ICRMLogService logService)
         {
-            this.botConfigurations = botConfigurations.Value;
+            this.botConfigurations = botConfigurations;
             this.logService = logService;
+            httpClient = httpClientFactory.CreateClient(NamedHttpClients.ProxiedClient);
 
-            if (proxySettings.Value.IsUseProxy)
-            {
-                httpClient = httpClientFactory.CreateClient(NamedHttpClients.ProxiedClient);
-                httpClient.Timeout = TimeSpan.FromSeconds(proxySettings.Value.TimeOut);
-            }
-            else
-            {
-                httpClient = httpClientFactory.CreateClient();
-            }
-
-            foreach (var bot in botConfigurations.Value)
+            foreach (var bot in botConfigurations)
             {
                 bot.BotClient = new TelegramBotClient(bot.Token, httpClient);
             }
