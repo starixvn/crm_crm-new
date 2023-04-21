@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.SendNotification;
+    using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models.BotServices;
@@ -186,12 +187,6 @@
             internal const string Sent = "Sent";
             internal const string Retrying = "Retrying";
             internal const string Error = "Error";
-        }
-
-        private static class SendNotificationErrorMessage
-        {
-            public const string BotServiceErrorMsg = "Error occured on Chatbot service";
-            public const string BotRemovedMsg = "Chatbot has been removed from the group";
         }
     }
 }

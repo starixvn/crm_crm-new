@@ -8,6 +8,7 @@
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Models.Letstalk;
     using CRM.BotService.Core.Services.Interfaces;
+    using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
@@ -61,7 +62,9 @@
             {
                 result.ErrorCode = 1;
                 result.SentTime = DateTime.UtcNow;
-                result.ErrorMessage = ex.Message;
+                result.ErrorMessage = SendNotificationErrorMessage.BotServiceErrorMsg;
+                await WriteLogMessage(notification, isSuccess: false, isBotBlocked: false, errMsg: ex.Message);
+                await logService.ErrorAsync(ex);
             }
 
             return result;
@@ -71,23 +74,13 @@
 
         private async Task SendLetstalkAsync(NotificationMessage notification, SendResult result)
         {
-            try
+            if (notification.ChatType == ChatType.Personal)
             {
-                if (notification.ChatType == ChatType.Personal)
-                {
-                    await SendToPersonal(notification, result);
-                }
-                else
-                {
-                    await SendToGroup(notification, result);
-                }
+                await SendToPersonal(notification, result);
             }
-            catch (Exception exception)
+            else
             {
-                result.SentTime = DateTime.UtcNow;
-                result.ErrorCode = 1;
-                result.ErrorMessage = exception.Message;
-                await WriteLogMessage(notification, isSuccess: false, isBotBlocked: false, errMsg: exception.Message);
+                await SendToGroup(notification, result);
             }
         }
 
@@ -109,7 +102,7 @@
             result.SentTime = DateTime.UtcNow;
             result.ErrorCode = sendResult.IsSuccess && !sendResult.BlockList.Any() ? 0 : 1;
             result.IsBlockedBot = sendResult.BlockList.Count > 0;
-            result.ErrorMessage = sendResult.Message;
+            result.ErrorMessage = !sendResult.IsSuccess ? SendNotificationErrorMessage.LetstalkIdInvalid : string.Empty;
             await WriteLogMessage(notification, sendResult.IsSuccess, sendResult.BlockList.Any(), sendResult.Message);
         }
 
@@ -152,7 +145,7 @@
 
             result.SentTime = DateTime.UtcNow;
             result.ErrorCode = sendResult.IsSuccess ? 0 : 1;
-            result.ErrorMessage = sendResult.Message;
+            result.ErrorMessage = SendNotificationErrorMessage.BotServiceErrorMsg;
 
             await WriteLogMessage(notification, sendResult.IsSuccess, isBotBlocked: false, sendResult.Message);
         }
