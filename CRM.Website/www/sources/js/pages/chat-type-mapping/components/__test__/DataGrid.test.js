@@ -7,7 +7,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import { Table, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 import Site from '@jsroot/common/site';
-import { contentPopup } from '../../../notification-list/reducers/dataHandlerReducer';
 import { toast } from 'react-toastify';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -353,22 +352,20 @@ describe('DataGrid', () => {
             expect(props.setUpateActivePopup).toHaveBeenCalledWith(expectedParams);
         });
 
-        it('should call toast.error with correct message if update status failed', () => {
+        it('should call toast.error with correct message if update status failed', async () => {
             const contextProps = {
                 ...props, ...{ updateActiveStatusResult: { isSuccessful: false, message: 'error' } }
             };
-
             toast.error = jest.fn();
             const dataGrid = shallow(<DataGrid {...contextProps} />);
             dataGrid.instance().onCloseConfirmPopupChangeActiveStaus = jest.fn();
             dataGrid.instance().updateActiveStatus();
-            promise.then(() => {
-                expect(dataGrid.instance().onCloseConfirmPopupChangeActiveStaus).toHaveBeenCalled();
-                expect(toast.error).toHaveBeenCalledWith('error');
-            });
+            await promise;
+            expect(dataGrid.instance().onCloseConfirmPopupChangeActiveStaus).toHaveBeenCalled();
+            expect(toast.error).toHaveBeenCalledWith('error');
         });
 
-        it('should call toast.success with correct message if update status success', () => {
+        it('should call toast.success with correct message if update status success', async () => {
             const contextProps = {
                 ...props, ...{ updateActiveStatusResult: { isSuccessful: true } }
             };
@@ -377,10 +374,9 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...contextProps} />);
             dataGrid.instance().onCloseConfirmPopupChangeActiveStaus = jest.fn();
             dataGrid.instance().updateActiveStatus();
-            promise.then(() => {
-                expect(props.getGridData).toHaveBeenCalled();
-                expect(toast.true).toHaveBeenCalledWith('UpdateChatTypeMappingSuccessfully');
-            });
+            await promise;
+            expect(props.getGridData).toHaveBeenCalled();
+            expect(toast.success).toHaveBeenCalledWith('UpdateChatTypeMappingSuccessfully');
         });
 
         it('onCloseConfirmPopupChangeActiveStaus should call correct props with expected params', () => {
