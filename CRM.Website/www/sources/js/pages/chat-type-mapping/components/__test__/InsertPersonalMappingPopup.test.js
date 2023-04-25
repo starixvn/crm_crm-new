@@ -58,9 +58,7 @@ describe('InsertPersonalMappingPopup', () => {
         Site.unblockUI = jest.fn();
         Site.resolveClientUrl = jest.fn((url) => url);
         Site.handleAxiosError = jest.fn();
-        jest
-        .spyOn(DataService, 'getDataAsync')
-        .mockImplementation(() => Promise.resolve({data: {}}));
+        DataService.getDataAsync = jest.fn(() => Promise.resolve({data: {}}));
     });
 
     afterEach(() => {
