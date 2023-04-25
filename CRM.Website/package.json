@@ -43,10 +43,10 @@
     "scripts": {
         "build-dev": "node node_modules/webpack/bin/webpack.js --config www/webpackconfig/build/webpack.dev.conf.js",
         "build-pro": "node node_modules/webpack/bin/webpack.js --config www/webpackconfig/build/webpack.pro.conf.js",
-        "test": "jest --coverage --config ./jest.config.js /InsertPersonalMappingPopup.test",
+        "test": "jest --coverage --config",
         "test:watch": "npm test -- --watch",
         "jest-update-snapshot": "jest --updateSnapshot",
-        "test-coverage": "jest --ci -u --coverage /InsertPersonalMappingPopup.test",
+        "test-coverage": "jest --ci -u --coverage",
         "lint": "eslint ./www/sources/js/",
         "lint-fix": "eslint --fix ./www/sources/js/"
     },
