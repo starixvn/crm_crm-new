@@ -4,10 +4,11 @@ import { shallow, mount } from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import { Form, Modal, Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
-import SelectWithSearch from 'react-select';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import Site from '@jsroot/common/site';
 import toJson from 'enzyme-to-json';
+import DataService from '@jsroot/common/dataService';
 
 describe('InsertPersonalMappingPopup', () => {
     LangHelper.getResource = jest.fn(value => value);
@@ -53,6 +54,13 @@ describe('InsertPersonalMappingPopup', () => {
         const appContainer = document.createElement('div');
         appContainer.setAttribute('id', 'right-row-container');
         document.body.appendChild(appContainer);
+        Site.blockUI = jest.fn();
+        Site.unblockUI = jest.fn();
+        Site.resolveClientUrl = jest.fn((url) => url);
+        Site.handleAxiosError = jest.fn();
+        jest
+        .spyOn(DataService, 'getDataAsync')
+        .mockImplementation(() => Promise.resolve({data: {}}));
     });
 
     afterEach(() => {
@@ -60,6 +68,7 @@ describe('InsertPersonalMappingPopup', () => {
         if (appContainer) {
             document.body.removeChild(appContainer);
         }
+        jest.clearAllMocks();
     });
 
     describe('handle change function tests', () => {
