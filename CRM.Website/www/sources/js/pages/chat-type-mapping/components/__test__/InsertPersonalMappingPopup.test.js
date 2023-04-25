@@ -10,6 +10,8 @@ import Site from '@jsroot/common/site';
 import toJson from 'enzyme-to-json';
 import DataService from '@jsroot/common/dataService';
 
+jest.mock('@jsroot/common/site');
+jest.mock('@jsroot/common/dataService');
 describe('InsertPersonalMappingPopup', () => {
     LangHelper.getResource = jest.fn(value => value);
 
