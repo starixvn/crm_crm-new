@@ -66,8 +66,8 @@ export class Filter extends Component {
                 statusOptions,
                 filter: {
                     ...prevState.filter,
-                    notificationTypes: notificationTypeIds.toString(),
-                    statuses: this.props.settings.statuses.toString()
+                    notificationTypes: notificationTypeIds?.toString(),
+                    statuses: this.props.settings.statuses?.toString()
                 }
             }), ()=>{
                 if(this.props.announcementId){
