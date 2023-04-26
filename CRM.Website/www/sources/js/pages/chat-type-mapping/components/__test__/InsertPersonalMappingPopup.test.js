@@ -10,18 +10,14 @@ import Site from '@jsroot/common/site';
 import toJson from 'enzyme-to-json';
 import DataService from '@jsroot/common/dataService';
 
-
 beforeEach(() => {
     const appContainer = document.createElement('div');
     appContainer.setAttribute('id', 'right-row-container');
     document.body.appendChild(appContainer);
-    jest.mock('@jsroot/common/site');
-    jest.mock('@jsroot/common/dataService');
     Site.blockUI = jest.fn();
     Site.unblockUI = jest.fn();
     Site.resolveClientUrl = jest.fn((url) => url);
     Site.handleAxiosError = jest.fn();
-    DataService.getDataAsync = jest.fn(() => Promise.resolve({data: {}}));
 });
 
 afterEach(() => {
@@ -72,6 +68,30 @@ describe('InsertPersonalMappingPopup', () => {
         });
     });
 
+    describe('componentDidMount', () => {
+        it('should calls setState', async () => {
+             // Arrange
+            const props = {
+                settings: {
+                    bots: [{ id: 1, name: 'Bot1' }],
+                    recipientTypes: [],
+                    languages: []
+                }};
+            const promise = Promise.resolve({data: []});
+            DataService.getDataAsync = jest.fn(() => promise);
+            const state = {form:{}};
+            // Act
+            const popup = shallow(<InsertPersonalMappingPopup {...props} />).instance();
+            popup.setState(state);
+            await popup.componentDidMount();
+            await promise;
+
+            //Arrange
+            expect(Site.resolveClientUrl).toHaveBeenCalledWith('ChatTypeMapping/GetIgnoreNotificationType');
+            expect(popup.state.ignoreNotificationTypes).toEqual([]);
+        });
+    }); 
+
     describe('handle change function tests', () => {
         const props = {
             settings: {
@@ -96,7 +116,7 @@ describe('InsertPersonalMappingPopup', () => {
             // Arrange
             const value = 'value';
 
-            const popup = shallow(<InsertPersonalMappingPopup {...props} />);
+            const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
 
             // Action
             popup.instance().handleChange('chatType', value);
@@ -114,7 +134,7 @@ describe('InsertPersonalMappingPopup', () => {
 
             const initProps = { ...props, getLetstalkDisplayName: jest.fn(() => promise) };
 
-            const popup = mount(<InsertPersonalMappingPopup {...initProps} />);
+            const popup = mount(<InsertPersonalMappingPopup {...initProps} />, { disableLifecycleMethods: true });
             popup.instance().handleBotChange = jest.fn();
             popup.instance().handleGroupHeadlineChange = jest.fn();
             popup.instance().handleRecipientTypeChange = jest.fn();
@@ -148,7 +168,7 @@ describe('InsertPersonalMappingPopup', () => {
                 dirtyFormConfirmation: { isShow: true },
                 ignoreNotificationTypes: ['test']
             };
-            const popup = shallow(<InsertPersonalMappingPopup {...props} />);
+            const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
             popup.instance().setState(state);
 
             expect(popup.find(ConfirmPopup).length).toBe(1);
@@ -176,7 +196,7 @@ describe('InsertPersonalMappingPopup', () => {
             closeInsertPersonalMappingPopup: jest.fn(),
             getGridData: jest.fn()
         };
-        const popup = shallow(<InsertPersonalMappingPopup {...props} />);
+        const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
 
         it('handleBotChange with call correct props with correct params',async () => {
             jest.useFakeTimers();
