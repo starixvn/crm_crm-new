@@ -73,8 +73,8 @@ export class EditCommunicationLog extends Component {
 
     async componentDidMount() {
         Site.blockUI();
-        const urlLogByFeedbackId = `CommunicationLog/GetLogByFeedbackId`;
-        const urlStatusForEdit = 'CommunicationLog/GetAllStatus?isEdit=true';
+        const urlLogByFeedbackId = Site.resolveClientUrl('CommunicationLog/GetLogByFeedbackId');
+        const urlStatusForEdit = Site.resolveClientUrl('CommunicationLog/GetAllStatus?isEdit=true');
 
         await DataService.getDataAsync(`${urlLogByFeedbackId}/${this.props.feedbackId}`).then(response => {
             if(!response || !response.data){
@@ -190,7 +190,7 @@ export class EditCommunicationLog extends Component {
             }
         });
         const communicationJoins = logSettings.communicationToolIds.join(',');
-        const isExistCommunication = this.state.logFeedback?.settings?.communicationTools.filter(x => communicationJoins.includes(x.id.toString())).length > 0;
+        const isExistCommunication = this.state.logFeedback?.settings?.communicationTools?.filter(x => communicationJoins.includes(x.id.toString())).length > 0;
         this.handleChangeVerifySection('subject', log.subject);
         this.handleChangeVerifySection('noInquiries', log.noInquiries > 0 ? log.noInquiries : '');
         return {

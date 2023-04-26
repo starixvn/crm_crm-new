@@ -134,7 +134,7 @@ describe('CreateCommunicationLog', () => {
     describe('componentDidMount', () => {
         it('should calls exactly function when componentDidMount when no options', async () => {
             // Arrange
-            const response = { data: initData };
+            const response = { data: {} };
             const promise = Promise.resolve(response);
             DataService.getDataAsync = jest.fn(() => promise);
             // Act
@@ -145,13 +145,13 @@ describe('CreateCommunicationLog', () => {
             await promise;
             jest.runAllTimers();
 
-            expect(container.state.allSettings.settings.communicationTools).toEqual([{ id: 0, name: 'N/A' }]);
+            expect(container.state.allSettings).toEqual({});
             expect(container.state.balanceUpday).toEqual(null);
         });
 
         it('should calls exactly function when componentDidMount when have options', async () => {
             // Arrange
-            const props = { options: { communicationToolOptions: [{ id: 1, name: 'test' }], communicationToolIds: ['1'] } };
+            const props = { options: options };
             const response = { data: initData };
             const promise = Promise.resolve(response);
             DataService.getDataAsync = jest.fn(() => promise);
@@ -164,7 +164,7 @@ describe('CreateCommunicationLog', () => {
             await promise;
             jest.runAllTimers();
 
-            expect(container.state.allSettings.communicationTools).toEqual([{ id: 1, name: 'test' }]);
+            expect(container.state.allSettings.communicationTools).toEqual([{ id: 1000, name: 'Phone', checked: true }]);
         });
     });
 
@@ -172,8 +172,10 @@ describe('CreateCommunicationLog', () => {
         it('should return exactly when init formik data', () => {
             // Arrange
             const props = {
+                options: options,
                 customerInfo: {
-                    roleId: 1
+                    roleId: 1,
+                    licenseeType: 1
                 }
             };
             // Act
@@ -182,14 +184,21 @@ describe('CreateCommunicationLog', () => {
             const actual = container.initFormikData();
 
             //Arrange
-            expect(actual.countryId).toBe(0);
+            expect(actual.countryId).toBe(212);
         });
     });
 
     describe('onChangeStartTime', () => {
         it('should not update endTime when startTime is before endTime', () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: {
+                    roleId: 1,
+                    licenseeType: 1
+                }
+            };
+            const container = shallow(<CreateCommunicationLog {...props}/>, { disableLifecycleMethods: true }).instance();
             const startTime = '2021-12-20T00:00:00-06:00';
             container.formik = {
                 setFieldValue: jest.fn(),
@@ -212,7 +221,14 @@ describe('CreateCommunicationLog', () => {
     describe('onChangeEndTime', () => {
         it('should not update startTime when startTime is before endTime', () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: {
+                    roleId: 1,
+                    licenseeType: 1
+                }
+            };
+            const container = shallow(<CreateCommunicationLog {...props}/>, { disableLifecycleMethods: true }).instance();
             const endTime = '2021-12-20T00:00:00-07:00';
             container.formik = {
                 setFieldValue: jest.fn(),
@@ -239,6 +255,7 @@ describe('CreateCommunicationLog', () => {
                 allSettings: initData.settings
             };
             const props = {
+                options: options,
                 customerInfo: { roleId: 1, licenseeType: 2 }
             };
             const expected = `Date Time & Tool: 19700101/07:00AM/N/A \nSystem ID: sa`;
@@ -260,13 +277,14 @@ describe('CreateCommunicationLog', () => {
             allSettings: {
                 ...initData.settings,
                 communicationTools: [
-                    { name: 'Tool 1' },
-                    { name: 'Tool 2' },
-                    { name: 'Tool 3' }
+                    { name: 'Tool 1', id: 1 },
+                    { name: 'Tool 2', id: 2},
+                    { name: 'Tool 3', id: 3 }
                 ]
             }
         };
         const props = {
+            options: options,
             customerInfo: { roleId: 1, licenseeType: 2 }
         };
         const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
@@ -307,7 +325,11 @@ describe('CreateCommunicationLog', () => {
             //Arrange
             const event = { key: 's', ctrlKey: true, preventDefault: jest.fn() };
             document.removeEventListener = jest.fn();
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.formik = {
                 values: {},
                 submitForm: jest.fn()
@@ -324,7 +346,11 @@ describe('CreateCommunicationLog', () => {
             //Arrange
             const event = { key: 'e', ctrlKey: true, preventDefault: jest.fn() };
             document.removeEventListener = jest.fn();
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.handleVerifyCreateRelatedCustomer = jest.fn();
             container.handleSubmit = jest.fn();
             //Act
@@ -352,6 +378,10 @@ describe('CreateCommunicationLog', () => {
             const currentItem = { id: 1, name: 'email', checked: true };
 
             // Act
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             const setFieldValue = jest.fn();
@@ -370,6 +400,10 @@ describe('CreateCommunicationLog', () => {
             const currentItem = null;
 
             // Act
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             const setFieldValue = jest.fn();
@@ -388,6 +422,10 @@ describe('CreateCommunicationLog', () => {
             const currentItem = { id: 1, name: 'email', checked: false };
 
             // Act
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             const setFieldValue = jest.fn();
@@ -406,6 +444,10 @@ describe('CreateCommunicationLog', () => {
             const currentItem = null;
 
             // Act
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.setState({ latestCommunicationTool: 'email' });
@@ -424,7 +466,11 @@ describe('CreateCommunicationLog', () => {
     describe('setStateSubProduct', () => {
         it('should setState subProduct', () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             // Act
             container.setStateSubProduct(2021);
 
@@ -436,7 +482,11 @@ describe('CreateCommunicationLog', () => {
     describe('setStateBetType', () => {
         it('should setState betType', () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             // Act
             container.setStateBetType(2021);
 
@@ -453,7 +503,11 @@ describe('CreateCommunicationLog', () => {
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
             const customerNameInput = 'testing';
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.isValidCustomer = jest.fn(() => true);
             // Act
             container.handleVerifyCreateRelatedCustomer(customerNameInput);
@@ -472,7 +526,11 @@ describe('CreateCommunicationLog', () => {
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
             const customerNameInput = 'testing';
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.isValidCustomer = jest.fn(() => true);
             // Act
             container.handleVerifyCreateRelatedCustomer(customerNameInput);
@@ -492,7 +550,11 @@ describe('CreateCommunicationLog', () => {
             DataService.postDataAsync = jest.fn(() => promise);
             const customerNameInput = 'testing1234567891234657891234567891234657981324657981324654978654651613121111322';
             toast.error = jest.fn();
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.isValidCustomer = jest.fn(() => false);
             // Act
             container.handleVerifyCreateRelatedCustomer(customerNameInput);
@@ -512,7 +574,11 @@ describe('CreateCommunicationLog', () => {
             };
 
             // Act
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.formik = { values: { autoGenerated: 'test' } };
             container.formik.setFieldValue = jest.fn();
             container.setState(state);
@@ -526,7 +592,11 @@ describe('CreateCommunicationLog', () => {
     describe('handleCollapseExpand', () => {
         it('should update state correct', () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.handleCollapseExpand('autoGenerated');
@@ -540,7 +610,11 @@ describe('CreateCommunicationLog', () => {
         });
         it('should not update state correct', () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.handleCollapseExpand();
@@ -558,7 +632,7 @@ describe('CreateCommunicationLog', () => {
     describe('getBaseInsert', () => {
         it('should return exactly when have not props isBaseInsert', () => {
             // Arrange
-            const props = { isBaseInsert: false, customerInfo: { roleId: 0 } };
+            const props = { options: options, isBaseInsert: false, customerInfo: { roleId: 0 } };
             const expected = { siteId: 0, siteName: 'N/A', languageId: 1, countryId: 0 };
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState({ allSettings: initData.settings });
@@ -573,6 +647,7 @@ describe('CreateCommunicationLog', () => {
         it('should return exactly when have props isBaseInsert', () => {
             // Arrange
             const props = {
+                options: options,
                 isBaseInsert: true,
                 customerInfo: {
                     siteSetting: { id: 1, name: 'test' },
@@ -596,6 +671,7 @@ describe('CreateCommunicationLog', () => {
         it('should call exact function when submit', () => {
             // Arrange
             const props = {
+                options: options,
                 customerInfo: {
                     roleId: 1
                 }
@@ -629,7 +705,11 @@ describe('CreateCommunicationLog', () => {
                 target: { value: 'testtttttttttttt' }
             };
             const setFieldValue = jest.fn();
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.handleChangeVerifySection = jest.fn();
 
             // Act
@@ -645,7 +725,11 @@ describe('CreateCommunicationLog', () => {
                 target: { value: 'test' }
             };
             const setFieldValue = jest.fn();
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.handleChangeVerifySection = jest.fn();
 
             // Act
@@ -660,7 +744,11 @@ describe('CreateCommunicationLog', () => {
         it('should do as expected if copy string', () => {
             // Arrange
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('event') }, preventDefault: jest.fn() };
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.onPasteRefTicketHandler(event);
@@ -687,10 +775,13 @@ describe('CreateCommunicationLog', () => {
             };
             const setSubmitting = jest.fn();
             DataService.postDataAsync = jest.fn(() => promise);
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             const params = { name: 'test' };
-            const message = LangHelper.getResource('ErrorMessageInactiveSiteRelate') + 'test';
             // Act
             container.recheckInactiveSiteAndConfirmCreate('username', params, setSubmitting);
             await promise;
@@ -713,7 +804,11 @@ describe('CreateCommunicationLog', () => {
             const promise = Promise.resolve(response);
             const setSubmitting = jest.fn();
             DataService.postDataAsync = jest.fn(() => promise);
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             const params = { name: 'test' };
             // Act
             container.recheckInactiveSiteAndConfirmCreate('username', params, setSubmitting);
@@ -741,7 +836,11 @@ describe('CreateCommunicationLog', () => {
 
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleChangeVerifySection = jest.fn();
             // Act
@@ -770,7 +869,11 @@ describe('CreateCommunicationLog', () => {
             DataService.postDataAsync = jest.fn(() => promise);
             const ticketRefInput = '123';
 
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleChangeVerifySection = jest.fn();
             // Act
@@ -787,7 +890,11 @@ describe('CreateCommunicationLog', () => {
     describe('handleCloseConfirmCreateDialog', () => {
         it('should setState when close confirm create dialog', () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.formik = { setSubmitting: jest.fn() };
             // Act
             container.handleCloseConfirmCreateDialog();
@@ -803,7 +910,9 @@ describe('CreateCommunicationLog', () => {
         it('should setState when handle create log successful', async () => {
             // Arrange
             const props = {
-                onClose: jest.fn()
+                onClose: jest.fn(),
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
             const response = { data: { isSuccessful: true } };
             const promise = Promise.resolve(response);
@@ -825,13 +934,15 @@ describe('CreateCommunicationLog', () => {
         it('should setState when handle create log unsuccessful', async () => {
             // Arrange
             const props = {
-                onClose: jest.fn()
+                onClose: jest.fn(),
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
             const response = { data: { isSuccessful: false } };
             const promise = Promise.resolve(response);
             DataService.postDataAsync = jest.fn(() => promise);
 
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const container = shallow(<CreateCommunicationLog {...props}/>, { disableLifecycleMethods: true }).instance();
             container.formik = { setSubmitting: jest.fn() };
             // Act
             container.handleCreateLog();
@@ -847,7 +958,9 @@ describe('CreateCommunicationLog', () => {
         it('should call handle create log', async () => {
             // Arrange
             const props = {
-                onClose: jest.fn()
+                onClose: jest.fn(),
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
             const state = {
                 duplicateFeedbackId: 0,
@@ -875,7 +988,9 @@ describe('CreateCommunicationLog', () => {
         it('should setState when handle check duplicate', async () => {
             // Arrange
             const props = {
-                onClose: jest.fn()
+                onClose: jest.fn(),
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
             const state = {
                 duplicateFeedbackId: 1,
@@ -903,7 +1018,11 @@ describe('CreateCommunicationLog', () => {
     describe('handleCloseCheckDuplicateDialog ', () => {
         it('should setState', async () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props}/>, { disableLifecycleMethods: true }).instance();
             container.formik = { setSubmitting: jest.fn() };
 
             // Act
@@ -919,7 +1038,11 @@ describe('CreateCommunicationLog', () => {
     describe('handleCloseCheckDuplicateDialog', () => {
         it('should setState when close check duplicate dialog', () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props}/>, { disableLifecycleMethods: true }).instance();
             container.formik = { setSubmitting: jest.fn() };
             // Act
             container.handleCloseConfirmCreateDialog();
@@ -940,14 +1063,11 @@ describe('CreateCommunicationLog', () => {
                 siteId: 0
             };
             const props = {
-                options: {
-                    responseId: 0,
-                    statusId: 0,
-                    siteId: 0
-                }
-            };
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
 
-            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
+            };
+            const container = shallow(<CreateCommunicationLog {...props}/>, { disableLifecycleMethods: true }).instance();
 
             // Act
             container['formik'] = { values: values };
@@ -965,11 +1085,8 @@ describe('CreateCommunicationLog', () => {
                 siteId: 1
             };
             const props = {
-                options: {
-                    responseId: 0,
-                    statusId: 0,
-                    siteId: 0
-                }
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
 
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
@@ -992,11 +1109,8 @@ describe('CreateCommunicationLog', () => {
                 licenseeTypeId: 0
             };
             const props = {
-                options: {
-                    languageId: 0,
-                    countryId: 0,
-                    licenseeTypeId: 0
-                }
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
 
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
@@ -1017,11 +1131,8 @@ describe('CreateCommunicationLog', () => {
                 licenseeTypeId: 1
             };
             const props = {
-                options: {
-                    languageId: 0,
-                    countryId: 0,
-                    licenseeTypeId: 0
-                }
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
 
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
@@ -1038,7 +1149,11 @@ describe('CreateCommunicationLog', () => {
     describe('isOldEqualNewId', () => {
         it('should return true call isOldEqualNewId', () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true });
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props}/>, { disableLifecycleMethods: true });
 
             // Act
             container.instance().isOldEqualNewIdV1 = jest.fn(() => true);
@@ -1052,7 +1167,11 @@ describe('CreateCommunicationLog', () => {
 
         it('should return false call isOldEqualNewId', () => {
             // Arrange
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true });
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+            const container = shallow(<CreateCommunicationLog {...props}/>, { disableLifecycleMethods: true });
 
             // Act
             container.instance().isOldEqualNewIdV1 = jest.fn(() => false);
@@ -1074,14 +1193,12 @@ describe('CreateCommunicationLog', () => {
                 endTime: 'Fri Dec 24 2021 10:06:20 GMT+0700 (Indochina Time)'
             };
             const props = {
-                options: {
-                    subject: 'test'
-                }
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
             DateTimeService.toShortDateTimeFormat = jest.fn(() => '12/24/2021 10:05:20 AM');
 
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
-
             // Act
             container['formik'] = { values: values };
             const actual = container.isOldEqualNewValue();
@@ -1100,7 +1217,8 @@ describe('CreateCommunicationLog', () => {
             const props = {
                 options: {
                     subject: 'test'
-                }
+                },
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
             DateTimeService.toShortDateTimeFormat = jest.fn(() => '12/24/2021 10:05:20 AM');
 
@@ -1126,10 +1244,8 @@ describe('CreateCommunicationLog', () => {
             };
 
             const props = {
-                options: {
-                    solution: 'test',
-                    remark: 'test'
-                }
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
 
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
@@ -1151,10 +1267,8 @@ describe('CreateCommunicationLog', () => {
                 }
             };
             const props = {
-                options: {
-                    solution: 'test',
-                    remark: 'test'
-                }
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
 
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
@@ -1173,7 +1287,12 @@ describe('CreateCommunicationLog', () => {
         it('should setState when call onCloseCreatePopup', () => {
             // Arrange
 
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true });
+            const props = {
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true });
 
             // Act
             container.instance().isOldEqualNewId = jest.fn(() => true);
@@ -1189,17 +1308,19 @@ describe('CreateCommunicationLog', () => {
         it('should call props function when call onCloseCreatePopup', () => {
             // Arrange
             const props = {
-                onClose: jest.fn()
+                onClose: jest.fn(),
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
             };
 
-            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true });
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
 
             // Act
-            container.instance().isOldEqualNewId = jest.fn(() => false);
-            container.instance().isOldEqualNewContent = jest.fn(() => false);
-            container.instance().isOldEqualNewValue = jest.fn(() => false);
+            container.isOldEqualNewId = jest.fn(() => false);
+            container.isOldEqualNewContent = jest.fn(() => false);
+            container.isOldEqualNewValue = jest.fn(() => false);
 
-            container.instance().onCloseCreatePopup();
+            container.onCloseCreatePopup();
 
             // Assert
             expect(props.onClose).toHaveBeenCalledWith(false);
@@ -1209,8 +1330,13 @@ describe('CreateCommunicationLog', () => {
     describe('closeCreateConfirm', () => {
         it('should setState exactly when call closeCreateConfirm', () => {
             // Arrange
+            const props = {
+                onClose: jest.fn(),
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
 
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true });
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true });
 
             // Act
             container.instance().closeCreateConfirm();
@@ -1249,6 +1375,7 @@ describe('CreateCommunicationLog', () => {
             };
 
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
+
             container.setState(state);
             // Act
             const renderEdit = shallow(container.renderForm(formikProps));
@@ -1270,6 +1397,7 @@ describe('CreateCommunicationLog', () => {
             };
 
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
+
             container.setState(state);
             // Act
             const renderEdit = shallow(container.renderForm(formikProps));
@@ -1290,6 +1418,7 @@ describe('CreateCommunicationLog', () => {
             };
 
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
+
             container.setState(state);
             // Act
             const renderEdit = shallow(container.renderForm(formikProps));
@@ -1305,7 +1434,14 @@ describe('CreateCommunicationLog', () => {
             // Arrange
             const customerNameInput = 'sa';
             const event = { clipboardData: { getData: jest.fn(() => 'test1, test2') } };
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                onClose: jest.fn(),
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
+
             container.handleChangeVerifySection = jest.fn();
             // Act
             container.handlePasteCustomer(event, customerNameInput);
@@ -1325,7 +1461,14 @@ describe('CreateCommunicationLog', () => {
             shareScripts.getSubCategories = jest.fn(() => [1]);
 
             // Act
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                onClose: jest.fn(),
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
+
             container.handleChangeVerifySection = jest.fn();
             container.handleChangeMainCategory(setFieldValue, '1,2', 'currentItem', initData.settings);
 
@@ -1342,7 +1485,14 @@ describe('CreateCommunicationLog', () => {
             shareScripts.getSubCategories = jest.fn(() => [1]);
 
             // Act
-            const container = shallow(<CreateCommunicationLog />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                onClose: jest.fn(),
+                options: options,
+                customerInfo: { roleId: 1, licenseeType: 2 }
+            };
+
+            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
+
             container.handleChangeVerifySection = jest.fn();
             container.handleChangeMainCategory(setFieldValue, undefined, 'currentItem', initData.settings);
 
@@ -1355,14 +1505,14 @@ describe('CreateCommunicationLog', () => {
     describe('render', () => {
         const props = {
             onClose: jest.fn(),
-            customerInfo: {
-                roleId: 1
-            }
+            options: options,
+            customerInfo: { roleId: 1, licenseeType: 2 }
         };
 
         it('modal onHide should call exact function', () => {
             // Arrange
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
+
             container.onCloseCreatePopup = jest.fn();
             container.setState({
                 allSettings: initData.settings
@@ -1379,6 +1529,7 @@ describe('CreateCommunicationLog', () => {
             // Arrange
             const expected = { autoGenerated: 'Date Time & Tool: Invalid date/N/A' };
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
+
             container.setState({
                 allSettings: initData.settings
             });

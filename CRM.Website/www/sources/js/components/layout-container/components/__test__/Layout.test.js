@@ -94,6 +94,7 @@ describe('Layout', () => {
             const container = shallow(<Layout />).instance();
             container.getSetting = jest.fn();
             container.initDataMenu = jest.fn();
+            container.handleCheckNewVersion = jest.fn();
             //Act
             container.componentDidMount();
             await promise;
