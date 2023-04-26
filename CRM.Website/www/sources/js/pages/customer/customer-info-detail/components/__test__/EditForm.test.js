@@ -20,28 +20,21 @@ describe('EditForm', () => {
             licenseeTypes: [{ id: 1, name: 'Betting'}],
             sites: [{ id: 1, name: '22225'}]
         },
-        customerInfo: { firstName: 'test', siteSetting: { id: 1, name: '22223'}, titleId: 2 }
-    };
+        customerInfo: { firstName: 'test', siteSetting: { id: 1, name: '22223'}, titleId: 2 },
+        getAllSettings: jest.fn(),
+        getCustomerById: jest.fn(),
+        id: 1754
+};
 
     describe('componentDidMount', () => {
         it('should call functions api', async () => {
             // Arrange
-            const props = {
-                ...initProps,
-                getAllSettings: jest.fn(),
-                getCustomerById: jest.fn(),
-                id: 1754,
-                customerInfo: {
-                    siteSetting: { name: 'test123' }
-                }
-            };
-
             //Act
-            const container = shallow(<EditForm {...props} />);
+            shallow(<EditForm {...initProps} />);
 
             // Assert
-            expect(await props.getAllSettings).toHaveBeenCalled();
-            expect(await props.getCustomerById).toHaveBeenCalledWith({ customerId: 1754 });
+            expect(await initProps.getAllSettings).toHaveBeenCalled();
+            expect(await initProps.getCustomerById).toHaveBeenCalledWith({ customerId: 1754 });
         });
     });
 
