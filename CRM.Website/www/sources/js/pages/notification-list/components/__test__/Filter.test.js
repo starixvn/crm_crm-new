@@ -13,7 +13,21 @@ import { toast } from 'react-toastify';
 import toJson from 'enzyme-to-json';
 
 describe('Filter', () => {
-    LangHelper.getResource = jest.fn(value => value);
+    beforeAll(() => {
+        LangHelper.getResource = jest.fn(value => value);
+        const btnId = document.createElement('div');
+        btnId.setAttribute('id', 'btn-submit-notification');
+        document.body.appendChild(btnId);
+    });
+    
+    afterAll(() => {
+        const btnId = document.getElementById('btn-submit-notification');
+        if (btnId) {
+            document.body.removeChild(btn-submit-notification);
+        }
+        jest.clearAllMocks();
+    });
+
 
     describe('component with redux', () => {
         // Arrange
