@@ -58,8 +58,9 @@ export class InsertPersonalMappingPopup extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('ChatTypeMapping/GetIgnoreNotificationType');
         await DataService.getDataAsync(url).then(response => {
-            this.setState({ignoreNotificationTypes: response.data});
-        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+            console.log('test');
+            //this.setState({ignoreNotificationTypes: response.data});
+        }).then(() => Site.unblockUI());
     }
 
     handleChange = (fieldName, fieldValue) => {

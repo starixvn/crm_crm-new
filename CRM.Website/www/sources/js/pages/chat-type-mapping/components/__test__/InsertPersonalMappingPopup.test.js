@@ -10,8 +10,28 @@ import Site from '@jsroot/common/site';
 import toJson from 'enzyme-to-json';
 import DataService from '@jsroot/common/dataService';
 
-jest.mock('@jsroot/common/site');
-jest.mock('@jsroot/common/dataService');
+
+beforeEach(() => {
+    const appContainer = document.createElement('div');
+    appContainer.setAttribute('id', 'right-row-container');
+    document.body.appendChild(appContainer);
+    jest.mock('@jsroot/common/site');
+    jest.mock('@jsroot/common/dataService');
+    Site.blockUI = jest.fn();
+    Site.unblockUI = jest.fn();
+    Site.resolveClientUrl = jest.fn((url) => url);
+    Site.handleAxiosError = jest.fn();
+    DataService.getDataAsync = jest.fn(() => Promise.resolve({data: {}}));
+});
+
+afterEach(() => {
+    const appContainer = document.getElementById('right-row-container');
+    if (appContainer) {
+        document.body.removeChild(appContainer);
+    }
+    jest.clearAllMocks();
+});
+
 describe('InsertPersonalMappingPopup', () => {
     LangHelper.getResource = jest.fn(value => value);
 
@@ -50,25 +70,6 @@ describe('InsertPersonalMappingPopup', () => {
             expect(wrapper.props().children.props.insertPersonalMappingResult).toEqual(initialState.insertPersonalMappingResult);
             expect(wrapper.props().children.props.letstalkName).toEqual(initialState.letstalkName);
         });
-    });
-
-    beforeEach(() => {
-        const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'right-row-container');
-        document.body.appendChild(appContainer);
-        Site.blockUI = jest.fn();
-        Site.unblockUI = jest.fn();
-        Site.resolveClientUrl = jest.fn((url) => url);
-        Site.handleAxiosError = jest.fn();
-        DataService.getDataAsync = jest.fn(() => Promise.resolve({data: {}}));
-    });
-
-    afterEach(() => {
-        const appContainer = document.getElementById('right-row-container');
-        if (appContainer) {
-            document.body.removeChild(appContainer);
-        }
-        jest.clearAllMocks();
     });
 
     describe('handle change function tests', () => {
