@@ -157,7 +157,10 @@ describe('Filter', () => {
         const props = {
             gridParams: {},
             invalidParams: {},
-            settings: {},
+            settings: {
+                notificationTypes: [],
+                statuses: []
+            },
             headlineOptions: {},
             recipientOptions: {},
             getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -179,7 +182,10 @@ describe('Filter', () => {
         const props = {
             gridParams: {},
             invalidParams: {},
-            settings: {},
+            settings: {
+                notificationTypes: [],
+                statuses: []
+            },
             headlineOptions: {},
             recipientOptions: {},
             setGridParams: jest.fn(),
@@ -207,7 +213,10 @@ describe('Filter', () => {
         const props = {
             gridParams: {},
             invalidParams: {},
-            settings: {},
+            settings: {
+                notificationTypes: [],
+                statuses: []
+            },
             headlineOptions: {},
             recipientOptions: {},
             getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -232,7 +241,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -267,7 +279,10 @@ describe('Filter', () => {
                 const props = {
                     gridParams: {},
                     invalidParams: {},
-                    settings: {},
+                    settings: {
+                        notificationTypes: [],
+                        statuses: []
+                    },
                     headlineOptions: {},
                     recipientOptions: {},
                     getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -301,7 +316,10 @@ describe('Filter', () => {
                 const props = {
                     gridParams: {},
                     invalidParams: {},
-                    settings: {},
+                    settings: {
+                        notificationTypes: [],
+                        statuses: []
+                    },
                     headlineOptions: {},
                     recipientOptions: {},
                     getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -335,7 +353,10 @@ describe('Filter', () => {
                 const props = {
                     gridParams: {},
                     invalidParams: {},
-                    settings: {},
+                    settings: {
+                        notificationTypes: [],
+                        statuses: []
+                    },
                     headlineOptions: {},
                     recipientOptions: {},
                     getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -372,7 +393,10 @@ describe('Filter', () => {
                 const props = {
                     gridParams: {},
                     invalidParams: {},
-                    settings: {},
+                    settings: {
+                        notificationTypes: [],
+                        statuses: []
+                    },
                     headlineOptions: {},
                     recipientOptions: {},
                     getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -406,7 +430,10 @@ describe('Filter', () => {
                 const props = {
                     gridParams: {},
                     invalidParams: {},
-                    settings: {},
+                    settings: {
+                        notificationTypes: [],
+                        statuses: []
+                    },
                     headlineOptions: {},
                     recipientOptions: {},
                     getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -440,7 +467,10 @@ describe('Filter', () => {
                 const props = {
                     gridParams: {},
                     invalidParams: {},
-                    settings: {},
+                    settings: {
+                        notificationTypes: [],
+                        statuses: []
+                    },
                     headlineOptions: {},
                     recipientOptions: {},
                     getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -469,7 +499,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -499,7 +532,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -523,7 +559,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -552,7 +591,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -576,7 +618,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -602,7 +647,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -636,7 +684,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -666,7 +717,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -695,7 +749,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -746,7 +803,10 @@ describe('Filter', () => {
                     pageSize: 100
                 },
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -803,7 +863,10 @@ describe('Filter', () => {
                     pageSize: 100
                 },
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -841,6 +904,10 @@ describe('Filter', () => {
         const props = {
             resendOptions: {},
             invalidParams: {},
+            settings: {
+                notificationTypes: [],
+                statuses: []
+            },
             getSettings: jest.fn(() => Promise.resolve({})),
             setResendOptions: jest.fn()
         };
@@ -871,7 +938,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 autoRefresh: {
@@ -912,7 +982,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -940,7 +1013,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -970,7 +1046,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -994,7 +1073,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({}))
@@ -1022,7 +1104,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({})),
@@ -1052,7 +1137,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({})),
@@ -1082,7 +1170,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({}))
@@ -1111,7 +1202,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({}))
@@ -1138,7 +1232,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} })),
@@ -1161,7 +1258,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} })),
@@ -1188,7 +1288,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} })),
@@ -1211,7 +1314,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} })),
@@ -1235,7 +1341,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1358,7 +1467,10 @@ describe('Filter', () => {
                         invalidParams: {
                             isInvalidNotificationIdLower: false
                         },
-                        settings: {},
+                        settings: {
+                            notificationTypes: [],
+                            statuses: []
+                        },
                         headlineOptions: {},
                         recipientOptions: {},
                         getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1379,7 +1491,10 @@ describe('Filter', () => {
                         invalidParams: {
                             isInvalidNotificationIdLower: true
                         },
-                        settings: {},
+                        settings: {
+                            notificationTypes: [],
+                            statuses: []
+                        },
                         headlineOptions: {},
                         recipientOptions: {},
                         getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1402,7 +1517,10 @@ describe('Filter', () => {
                         invalidParams: {
                             isInvalidNotificationIdUpper: false
                         },
-                        settings: {},
+                        settings: {
+                            notificationTypes: [],
+                            statuses: []
+                        },
                         headlineOptions: {},
                         recipientOptions: {},
                         getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1423,7 +1541,10 @@ describe('Filter', () => {
                         invalidParams: {
                             isInvalidNotificationIdUpper: true
                         },
-                        settings: {},
+                        settings: {
+                            notificationTypes: [],
+                            statuses: []
+                        },
                         headlineOptions: {},
                         recipientOptions: {},
                         getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1446,7 +1567,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1468,7 +1592,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1490,7 +1617,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1512,7 +1642,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1534,7 +1667,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1556,7 +1692,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1578,7 +1717,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1605,7 +1747,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1632,7 +1777,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
@@ -1688,7 +1836,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} })),
@@ -1714,7 +1865,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} })),
@@ -1740,7 +1894,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} })),
@@ -1768,7 +1925,10 @@ describe('Filter', () => {
             const props = {
                 gridParams: {},
                 invalidParams: {},
-                settings: {},
+                settings: {
+                    notificationTypes: [],
+                    statuses: []
+                },
                 headlineOptions: {},
                 recipientOptions: {},
                 getSettings: jest.fn(() => Promise.resolve({ data: {} })),
