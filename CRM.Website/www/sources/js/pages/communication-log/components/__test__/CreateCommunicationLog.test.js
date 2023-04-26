@@ -141,12 +141,13 @@ describe('CreateCommunicationLog', () => {
             const container = shallow(<CreateCommunicationLog />).instance();
             container.handleSetInitContent = jest.fn();
             container.handleChangeVerifySection = jest.fn();
+            container.initFormikData = jest.fn();
             await container.componentDidMount();
             await promise;
             jest.runAllTimers();
 
             expect(container.state.allSettings).toEqual({});
-            expect(container.state.balanceUpday).toEqual(null);
+            expect(container.state.balanceUpday).toEqual({});
         });
 
         it('should calls exactly function when componentDidMount when have options', async () => {
@@ -160,6 +161,7 @@ describe('CreateCommunicationLog', () => {
             const container = shallow(<CreateCommunicationLog {...props} />).instance();
             container.handleSetInitContent = jest.fn();
             container.handleChangeVerifySection = jest.fn();
+            container.initFormikData = jest.fn();
             await container.componentDidMount();
             await promise;
             jest.runAllTimers();

@@ -76,7 +76,8 @@ describe('Layout', () => {
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
 
-        commonFunc.CheckForIndexHTMLChange = jest.fn();
+        const promise = Promise.resolve({});
+        commonFunc.CheckForIndexHTMLChange = jest.fn(() => promise);
     });
 
     afterAll(() => {
