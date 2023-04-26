@@ -4,6 +4,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import {Layout} from '../Layout';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
+import * as commonFunc from '../../common.functions';
 
 describe('Layout', () => {
     beforeAll(() => {
@@ -71,9 +72,11 @@ describe('Layout', () => {
         appContainer.checked = true;
         const appContainer1 = document.createElement('div');
         appContainer1.setAttribute('id', 'hasReadFeedbackPermission');
-        appContainer1.checked = true;
+        appContainer1.checked = false;
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
+
+        commonFunc.CheckForIndexHTMLChange = jest.fn();
     });
 
     afterAll(() => {
