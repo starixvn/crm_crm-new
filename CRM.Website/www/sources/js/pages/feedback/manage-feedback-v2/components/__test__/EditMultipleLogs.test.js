@@ -136,7 +136,7 @@ describe('EditMultipleLogs', () => {
     describe('getCommunicationSettings', () => {
         it('should return expect data', async () => {
              // Arrange
-             const container = shallow(<EditMultipleLogs />).instance();
+             const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
              const expected = {
                 extensionIds: [2022],
                 communicationToolIds: [1001],
@@ -168,7 +168,7 @@ describe('EditMultipleLogs', () => {
             };
             const values = {subject: 'subject', subCategory: '1,2'};
             const setFieldValue = jest.fn();
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
             shareScripts.getSubCategories = jest.fn(()=> [1]);
@@ -191,7 +191,7 @@ describe('EditMultipleLogs', () => {
             };
             const setFieldValue = jest.fn();
             const values = {subject: 'subject', subCategory: '1,2'};
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             shareScripts.getSubjectOnChangeCategories = jest.fn(()=> 'tempSubject');
 
@@ -213,7 +213,7 @@ describe('EditMultipleLogs', () => {
                 }
             };
             const setFieldValue = jest.fn();
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs /> , { disableLifecycleMethods: true }).instance();
             container.setState(state);
             shareScripts.getSubProducts = jest.fn(()=> [1]);
 
@@ -233,7 +233,7 @@ describe('EditMultipleLogs', () => {
                 }
             };
             const setFieldValue = jest.fn();
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             shareScripts.getSubProducts = jest.fn(()=> [1]);
 
@@ -259,7 +259,7 @@ describe('EditMultipleLogs', () => {
                 }
             };
             const setFieldValue = jest.fn();
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             shareScripts.getBetTypes = jest.fn(()=> [1]);
 
@@ -279,7 +279,7 @@ describe('EditMultipleLogs', () => {
                 }
             };
             const setFieldValue = jest.fn();
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             shareScripts.getBetTypes = jest.fn(()=> [1]);
 
@@ -301,7 +301,7 @@ describe('EditMultipleLogs', () => {
             const url = 'Common/GetFeedbackSubjectTemplate';
             Site.resolveClientUrl = jest.fn(url => url);
             DataService.getDataAsync = jest.fn(() => promise);
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.onGetFeedbackSubjectTemplates(searchText);
@@ -322,7 +322,7 @@ describe('EditMultipleLogs', () => {
             const url = 'Common/GetFeedbackSubjectTemplate';
             Site.resolveClientUrl = jest.fn(url => url);
             DataService.getDataAsync = jest.fn(() => promise);
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.onGetFeedbackSubjectTemplates(searchText);
@@ -342,7 +342,7 @@ describe('EditMultipleLogs', () => {
                 target: {checked: true}
             };
              
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.setState = jest.fn();
             // Act
             container.handleCheckAll(event);
@@ -355,7 +355,7 @@ describe('EditMultipleLogs', () => {
     describe('getExtensionParams', () => {
         it('should return expected data when selected has data', () => {
             // Arrange
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
 
             // Act
             const actual = container.getExtensionParams('1,2');
@@ -366,7 +366,7 @@ describe('EditMultipleLogs', () => {
 
         it('should return expected data when selected no data', () => {
             // Arrange
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
 
             // Act
             const actual = container.getExtensionParams('', {id:1});
@@ -416,7 +416,7 @@ describe('EditMultipleLogs', () => {
                 feedbackArr: [1,2],
                 settings: initData.settings
             };
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.getExtensionParams = jest.fn(() => 'test');
             container.confirmEditMultipleLogs = jest.fn();
@@ -435,7 +435,7 @@ describe('EditMultipleLogs', () => {
             const state = {
                 hasReviewFeedbackPermission: false
             };
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
 
             // Act
@@ -451,7 +451,7 @@ describe('EditMultipleLogs', () => {
                 hasReviewFeedbackPermission: true,
                 communication: { review: 1 }
             };
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
 
             // Act
@@ -467,7 +467,7 @@ describe('EditMultipleLogs', () => {
                 hasReviewFeedbackPermission: true,
                 communication: { review: 2 }
             };
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
 
             // Act
@@ -481,7 +481,7 @@ describe('EditMultipleLogs', () => {
     describe('confirmEditMultipleLogs', () => {
         it('should call setState', () => {
             // Arrange
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.confirmEditMultipleLogs('1,2');
@@ -494,7 +494,7 @@ describe('EditMultipleLogs', () => {
     describe('handleCloseConfirmEditMultipleLogsDialog', () => {
         it('should call setState and setSubmitting', () => {
             // Arrange
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.formik = { setSubmitting: jest.fn() };
 
             // Act
@@ -516,7 +516,7 @@ describe('EditMultipleLogs', () => {
             const promise = Promise.resolve(response);
             Site.resolveClientUrl = jest.fn(url => url);
             DataService.postDataAsync = jest.fn(() => promise);
-            const container = shallow(<EditMultipleLogs {...props}/>).instance();
+            const container = shallow(<EditMultipleLogs {...props}/>, { disableLifecycleMethods: true }).instance();
             
             // Act
             container.handleEditMultipleLogs();
@@ -535,7 +535,7 @@ describe('EditMultipleLogs', () => {
             const state = {
                 confirmEditMultipleLogsDialog: { show: false, params:'test'}
             };
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleEditMultipleLogs = jest.fn();
             // Act
@@ -555,7 +555,7 @@ describe('EditMultipleLogs', () => {
             const promise = Promise.resolve(response);
             Site.resolveClientUrl = jest.fn(url => url);
             DataService.postDataAsync = jest.fn(() => promise);
-            const container = shallow(<EditMultipleLogs {...props}/>).instance();
+            const container = shallow(<EditMultipleLogs {...props}/>, { disableLifecycleMethods: true }).instance();
             container.formik = { setSubmitting: jest.fn() };
             
             // Act
@@ -572,7 +572,7 @@ describe('EditMultipleLogs', () => {
         describe('renderAutoGenerated ', () => {
             it('handleChange should call exact function', () => {
                 // Arrange
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 const event = { 
                     target: {checked: true}
                 }; 
@@ -612,7 +612,7 @@ describe('EditMultipleLogs', () => {
                 const setFieldValue = jest.fn();
                 const touched = {};
                 const errors = {};
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
                 // Act
                 const renderEdit = shallow(container.renderDescription(values, touched, errors, setFieldValue));
@@ -644,7 +644,7 @@ describe('EditMultipleLogs', () => {
                     description: 'description'
                 };
     
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
                 // Act
                 const renderEdit = shallow(container.renderDescription(values, touched, errors, setFieldValue));
@@ -669,7 +669,7 @@ describe('EditMultipleLogs', () => {
                 const setFieldValue = jest.fn();
                 const touched = {};
                 const errors = {};
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
                 container.handleChangeCheckbox = jest.fn();
                 // Act
@@ -694,7 +694,7 @@ describe('EditMultipleLogs', () => {
                 const setFieldValue = jest.fn();
                 const touched = {};
                 const errors = {};
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
                 // Act
                 const renderEdit = shallow(container.renderSolution(values, touched, errors, setFieldValue));
@@ -726,7 +726,7 @@ describe('EditMultipleLogs', () => {
                     solution: 'solution'
                 };
     
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
                 // Act
                 const renderEdit = shallow(container.renderSolution(values, touched, errors, setFieldValue));
@@ -752,7 +752,7 @@ describe('EditMultipleLogs', () => {
                 const setFieldValue = jest.fn();
                 const touched = {};
                 const errors = {};
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
                 container.handleChangeCheckbox = jest.fn();
                 // Act
@@ -775,7 +775,7 @@ describe('EditMultipleLogs', () => {
                 const setFieldValue = jest.fn();
                 const touched = {};
                 const errors = {};
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
                 // Act
                 const renderEdit = shallow(container.renderReview(values, touched, errors, setFieldValue));
@@ -803,7 +803,7 @@ describe('EditMultipleLogs', () => {
                     review: 'review'
                 };
     
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
                 // Act
                 const renderEdit = shallow(container.renderReview(values, touched, errors, setFieldValue));
@@ -866,7 +866,7 @@ describe('EditMultipleLogs', () => {
             it('should handle onChange mainCategory call exact function', () => {
                 // Arrange
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.onChangeMainCategory = jest.fn();
                 container.setState(state);
 
@@ -881,7 +881,7 @@ describe('EditMultipleLogs', () => {
             it('should handle onChange checkbox mainCategory call exact function', () => {
                 // Arrange
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.onChangeMainCategory = jest.fn();
                 container.setState(state);
                 container.handleChangeCheckboxByName = jest.fn();
@@ -897,8 +897,8 @@ describe('EditMultipleLogs', () => {
                 // Arrange
                 const {values, touched, errors, setFieldValue, handleChange} = params;
                 values.errors = {mainCategoryIds: 'mainCategoryIds'};
-                values.touched = {mainCategoryIds: 'mainCategoryIds'}
-                const container = shallow(<EditMultipleLogs />).instance();
+                values.touched = {mainCategoryIds: 'mainCategoryIds'};
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
 
                 // Act
@@ -911,7 +911,7 @@ describe('EditMultipleLogs', () => {
             it('should handle onChange subCategory call exact function', () => {
                 // Arrange
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
 
                 // Act
@@ -926,8 +926,8 @@ describe('EditMultipleLogs', () => {
                 // Arrange
                 const {values, touched, errors, setFieldValue, handleChange} = params;
                 values.errors = {subCategoryIds: 'subCategoryIds'};
-                values.touched = {subCategoryIds: 'subCategoryIds'}
-                const container = shallow(<EditMultipleLogs />).instance();
+                values.touched = {subCategoryIds: 'subCategoryIds'};
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
 
                 // Act
@@ -940,7 +940,7 @@ describe('EditMultipleLogs', () => {
             it('should handle onChange product call exact function', () => {
                 // Arrange
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
                 container.onChangeProduct = jest.fn();
 
@@ -954,7 +954,7 @@ describe('EditMultipleLogs', () => {
 
             it('should handle onChange checkbox product call exact function', () => {
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.onChangeMainCategory = jest.fn();
                 container.setState(state);
 
@@ -969,7 +969,7 @@ describe('EditMultipleLogs', () => {
             it('should handle onChange subProduct call exact function', () => {
                 // Arrange
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
                 container.onChangeSubProduct = jest.fn();
 
@@ -978,12 +978,12 @@ describe('EditMultipleLogs', () => {
                 renderEdit.find(MultipleSelect).at(3).simulate('change', 'currentItem', 'selectedItemsKey');
                
                 // Assert
-                expect(container.onChangeSubProduct ).toHaveBeenCalled();
+                expect(container.onChangeSubProduct).toHaveBeenCalled();
             });
 
             it('should handle onChange checkbox subProduct call exact function', () => {
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.onChangeMainCategory = jest.fn();
                 container.setState(state);
 
@@ -997,7 +997,7 @@ describe('EditMultipleLogs', () => {
 
             it('should handle onChange checkbox status call exact function', () => {
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.onChangeMainCategory = jest.fn();
                 container.setState(state);
 
@@ -1012,7 +1012,7 @@ describe('EditMultipleLogs', () => {
             it('should handle onChange betType call exact function', () => {
                 // Arrange
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
 
                 // Act
@@ -1025,7 +1025,7 @@ describe('EditMultipleLogs', () => {
 
             it('should handle onChange checkbox betType call exact function', () => {
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
 
                 // Act
@@ -1038,7 +1038,7 @@ describe('EditMultipleLogs', () => {
 
             it('should handle onChange checkbox role call exact function', () => {
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
 
                 // Act
@@ -1052,7 +1052,7 @@ describe('EditMultipleLogs', () => {
             it('should handle onChange site call exact function', () => {
                 // Arrange
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
 
                 // Act
@@ -1065,7 +1065,7 @@ describe('EditMultipleLogs', () => {
 
             it('should handle onChange checkbox site call exact function', () => {
                 const {values, touched, errors, setFieldValue, handleChange} = params;
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
 
                 // Act
@@ -1102,7 +1102,7 @@ describe('EditMultipleLogs', () => {
             it('should handle onChange country call exact function', () => {
                 // Arrange
                 
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
 
                 // Act
@@ -1115,7 +1115,7 @@ describe('EditMultipleLogs', () => {
     
             it('should handle onChange checkbox country call exact function', () => {
                 // Arrange
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.handleChangeCheckbox = jest.fn();
                 container.setState(state);
 
@@ -1130,7 +1130,7 @@ describe('EditMultipleLogs', () => {
             it('should handle onChange licensee call exact function', () => {
                 // Arrange
                 
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
 
                 // Act
@@ -1143,7 +1143,7 @@ describe('EditMultipleLogs', () => {
     
             it('should handle onChange licensee country call exact function', () => {
                 // Arrange
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.handleChangeCheckbox = jest.fn();
                 container.setState(state);
 
@@ -1159,7 +1159,7 @@ describe('EditMultipleLogs', () => {
         describe('isDisabledField', () => {
             it('should return expected data', () => {
                 // Arrange
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
 
                 // Act
                 var actual = container.isDisabledField(true);
@@ -1199,7 +1199,7 @@ describe('EditMultipleLogs', () => {
             };
 
             const {errors, values, handleChange, touched, setFieldValue} = params;
-            const container = shallow(<EditMultipleLogs />).instance();
+            const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
             container.formik = {
                 setFieldValue: jest.fn()
             };
@@ -1432,7 +1432,7 @@ describe('EditMultipleLogs', () => {
                     handleSubmit: jest.fn(),
                     setFieldValue: jest.fn()
                 };
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.renderMultipleLogs = jest.fn(() => 'div');
                 container.setState(state);
                 // Act
@@ -1461,7 +1461,7 @@ describe('EditMultipleLogs', () => {
                     setFieldValue: jest.fn()
                 };
                
-                const container = shallow(<EditMultipleLogs/>).instance();
+                const container = shallow(<EditMultipleLogs/>, { disableLifecycleMethods: true }).instance();
                 container.renderMultipleLogs = jest.fn(() => 'div');
                 container.setState(state);
                 // Act
@@ -1489,7 +1489,7 @@ describe('EditMultipleLogs', () => {
                     setFieldValue: jest.fn()
                 };
                
-                const container = shallow(<EditMultipleLogs/>).instance();
+                const container = shallow(<EditMultipleLogs/>, { disableLifecycleMethods: true }).instance();
                 container.renderMultipleLogs = jest.fn(() => 'div');
                 container.setState(state);
                 // Act
@@ -1520,7 +1520,7 @@ describe('EditMultipleLogs', () => {
                     onClose: jest.fn()
                 };
                
-                const container = shallow(<EditMultipleLogs {...props}/>).instance();
+                const container = shallow(<EditMultipleLogs {...props}/>, { disableLifecycleMethods: true }).instance();
                 container.renderMultipleLogs = jest.fn(() => 'div');
                 container.setState(state);
 
@@ -1544,7 +1544,7 @@ describe('EditMultipleLogs', () => {
                     onClose: jest.fn()
                 };
                
-                const container = shallow(<EditMultipleLogs {...props}/>).instance();
+                const container = shallow(<EditMultipleLogs {...props}/>, { disableLifecycleMethods: true }).instance();
                 container.setState(state);
 
                 // Act
@@ -1561,7 +1561,7 @@ describe('EditMultipleLogs', () => {
                     communication, settings
                 };
                
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.getValidateFormik = jest.fn();
                 container.setState(state);
 
@@ -1587,7 +1587,7 @@ describe('EditMultipleLogs', () => {
                     }
                 };
                
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 commonFunc.getValidateFormik = jest.fn(() => 'test');
                 container.setState(state);
 
@@ -1609,7 +1609,7 @@ describe('EditMultipleLogs', () => {
                     communication, settings, confirmEditMultipleLogsDialog: {show: true}
                 };
                
-                const container = shallow(<EditMultipleLogs />).instance();
+                const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true }).instance();
                 container.handleConfirmEditMultipleLogs = jest.fn();
                 container.handleCloseConfirmEditMultipleLogsDialog = jest.fn();
 
