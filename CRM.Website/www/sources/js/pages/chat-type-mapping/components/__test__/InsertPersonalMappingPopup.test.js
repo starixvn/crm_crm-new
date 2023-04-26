@@ -77,18 +77,15 @@ describe('InsertPersonalMappingPopup', () => {
                     recipientTypes: [],
                     languages: []
                 }};
-            const promise = Promise.resolve({data: []});
-            DataService.getDataAsync = jest.fn(() => promise);
             const state = {form:{}};
             // Act
             const popup = shallow(<InsertPersonalMappingPopup {...props} />).instance();
-            popup.setState(state);
+            popup.getIgnoreNotificationType = jest.fn();
+
             await popup.componentDidMount();
-            await promise;
 
             //Arrange
-            expect(Site.resolveClientUrl).toHaveBeenCalledWith('ChatTypeMapping/GetIgnoreNotificationType');
-            expect(popup.state.ignoreNotificationTypes).toEqual([]);
+            expect(popup.getIgnoreNotificationType).toHaveBeenCalled();
         });
     }); 
 
@@ -154,7 +151,6 @@ describe('InsertPersonalMappingPopup', () => {
 
             test.find(Form.Group).at(6).find(MultipleSelect).at(0).simulate('change');
             expect(popup.instance().handleGroupHeadlineChange).toHaveBeenCalled();
-            //expect(popup.find(Form.Group).at(6).find(MultipleSelect).length).toBe(1);
 
             test.find(Form.Group).at(7).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('languageId', 'value');

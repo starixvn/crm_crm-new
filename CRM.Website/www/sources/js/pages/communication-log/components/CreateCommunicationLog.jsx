@@ -73,8 +73,8 @@ export class CreateCommunicationLog extends Component {
 
     async componentDidMount() {
         Site.blockUI();
-        const urlAllSettings = 'CommunicationLog/GetAllSettings';
-        const urlBalanceUpday = 'Feedback/GetBalanceUpday';
+        const urlAllSettings = Site.resolveClientUrl('CommunicationLog/GetAllSettings');
+        const urlBalanceUpday = Site.resolveClientUrl('Feedback/GetBalanceUpday');
         const options = this.props.options;
         if (options) {
             this.handleSetInitContent(options);
