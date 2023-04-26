@@ -26,10 +26,8 @@ describe('EditForm', () => {
         id: 1754
     };
     const state = {
-        values: {
             languages: [1],
             titleId: 1
-        }
     };
 
     describe('componentDidMount', () => {
