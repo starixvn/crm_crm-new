@@ -187,7 +187,7 @@ export class EditForm extends Component {
             return {
                 languageId: item.languageId,
                 name: item.name,
-                checked: values.languages.includes(item.languageId)
+                checked: values.languages?.includes(item.languageId)
             };
         });
         const siteOptions = changeSiteSetting(this.props.allSettings.sites, 'childSites', 'childSites');
