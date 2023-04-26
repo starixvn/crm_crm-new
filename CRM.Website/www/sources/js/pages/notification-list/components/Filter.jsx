@@ -43,7 +43,7 @@ export class Filter extends Component {
         this.props.getSettings().then(() => {
             // notification type
             const notificationTypeIds = [];
-            const notificationTypeOptions = this.props.settings.notificationTypes.map(x => {
+            const notificationTypeOptions = this.props.settings.notificationTypes?.map(x => {
                 notificationTypeIds.push(x.notificationTypeId);
                 return {
                     id: x.notificationTypeId,
@@ -53,7 +53,7 @@ export class Filter extends Component {
             });
 
             // status
-            const statusOptions = this.props.settings.statuses.map(x => {
+            const statusOptions = this.props.settings.statuses?.map(x => {
                 return {
                     id: x,
                     name: LangHelper.getResource(x),
