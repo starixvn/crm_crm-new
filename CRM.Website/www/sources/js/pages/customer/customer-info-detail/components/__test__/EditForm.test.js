@@ -24,14 +24,20 @@ describe('EditForm', () => {
         getAllSettings: jest.fn(),
         getCustomerById: jest.fn(),
         id: 1754
-};
+    };
+    const state = {
+        values: {
+            languages: [1],
+            titleId: 1
+        }
+    };
 
     describe('componentDidMount', () => {
         it('should call functions api', async () => {
             // Arrange
             //Act
-            shallow(<EditForm {...initProps} />);
-
+            const container = shallow(<EditForm {...initProps} />);
+            container.instance().setState(state);
             // Assert
             expect(await initProps.getAllSettings).toHaveBeenCalled();
             expect(await initProps.getCustomerById).toHaveBeenCalledWith({ customerId: 1754 });
@@ -43,7 +49,7 @@ describe('EditForm', () => {
             // Arrange
             const props = {...initProps};
             const container = shallow(<EditForm {...props} />).instance();
-
+            container.setState(state);
             // Act
             container.handleCollapseExpand('personalInfo');
 
@@ -60,7 +66,7 @@ describe('EditForm', () => {
             // Arrange
             const props = {...initProps};
             const container = shallow(<EditForm {...props} />).instance();
-
+            container.setState(state);
             // Act
             container.handleCollapseExpand();
 
@@ -82,7 +88,7 @@ describe('EditForm', () => {
             const props = {...initProps};
             const mockEvent = { target: { value: 'test', name: 'firstName' } };
             const container = shallow(<EditForm {...props} />).instance();
-
+            container.setState(state);
             // Act
             container.handleChange(mockEvent);
 
@@ -98,7 +104,7 @@ describe('EditForm', () => {
             const mockEvent = { target: { type: 'checkbox', checked: true, name: 'isVip' } };
 
             const container = shallow(<EditForm {...props} />).instance();
-
+            container.setState(state);
             // Act
             container.handleChangeCheck(mockEvent);
 
@@ -112,7 +118,7 @@ describe('EditForm', () => {
             // Arrange
             const props = {...initProps};
             const container = shallow(<EditForm {...props} />).instance();
-
+            container.setState(state);
             // Act
             container.handleChangeValue('languages','1200');
 
@@ -132,7 +138,7 @@ describe('EditForm', () => {
             };
             const mockEvent = { preventDefault: jest.fn() };
             const container = shallow(<EditForm {...props} />).instance();
-
+            container.setState(state);
             // Act
             container.handleSubmit(mockEvent);
             await promise;
@@ -152,7 +158,7 @@ describe('EditForm', () => {
             };
             const mockEvent = { preventDefault: jest.fn() };
             const container = shallow(<EditForm {...props} />).instance();
-
+            container.setState(state);
             // Act
             container.handleSubmit(mockEvent);
             await promise;
@@ -167,9 +173,9 @@ describe('EditForm', () => {
         it('should render option correctly', () => {
             //Arrange
             const props = {...initProps};
-
             //Act
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             const option = container.renderOptions('test',1);
 
             //Assert
@@ -183,6 +189,7 @@ describe('EditForm', () => {
         it('onClick call exact function', () => {
             // Arrange
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleCollapseExpand = jest.fn();
             const formRender = shallow(container.renderPersonalInfo(container.state));
 
@@ -197,6 +204,7 @@ describe('EditForm', () => {
             // Arrange
             const value = 'value';
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleChangeValue = jest.fn();
             const formRender = shallow(container.renderPersonalInfo(container.state));
 
@@ -212,6 +220,7 @@ describe('EditForm', () => {
             const currentItem = 'currentItem';
             const selectedItemsKey = 'selectedItemsKey';
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleChangeValue = jest.fn();
             const formRender = shallow(container.renderPersonalInfo(container.state));
 
@@ -230,6 +239,7 @@ describe('EditForm', () => {
             }
             const mockEvent = { target: { type: 'checkbox', checked: true, name: 'isVip' } };
             const container = shallow(<EditForm {...propsData} />).instance();
+            container.setState(state);
             container.handleChangeCheck = jest.fn();
             const formRender = shallow(container.renderPersonalInfo(container.state));
 
@@ -244,6 +254,7 @@ describe('EditForm', () => {
         it('site SelectWithSearch change correctly', () => {
             // Arrange
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             const formRender = shallow(container.renderPersonalInfo(container.state));
            
             // Assert
@@ -253,6 +264,7 @@ describe('EditForm', () => {
         it('handleChange should call correctly', () => {
             // Arrange
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleChange = jest.fn();
             const formRender = shallow(container.renderPersonalInfo(container.state));
 
@@ -279,6 +291,7 @@ describe('EditForm', () => {
         it('onClick call exact function', () => {
             // Arrange
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleCollapseExpand = jest.fn();
             const formRender = shallow(container.renderHeadlineInfo(container.state, true));
 
@@ -293,6 +306,7 @@ describe('EditForm', () => {
             // Arrange
             const mockEvent = { target: { type: 'checkbox', checked: true, name: 'isVip' } };
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleChangeCheck = jest.fn();
             const formRender = shallow(container.renderHeadlineInfo(container.state, true));
 
@@ -307,6 +321,7 @@ describe('EditForm', () => {
         it('handleChange should call correctly', () => {
             // Arrange
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleChange = jest.fn();
             const formRender = shallow(container.renderHeadlineInfo(container.state, true));
 
@@ -325,6 +340,7 @@ describe('EditForm', () => {
         it('onClick call exact function', () => {
             // Arrange
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleCollapseExpand = jest.fn();
             const formRender = shallow(container.renderCommunicationInfo(container.state));
 
@@ -338,6 +354,7 @@ describe('EditForm', () => {
         it('handleChange should call correctly', () => {
             // Arrange
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleChange = jest.fn();
             const formRender = shallow(container.renderCommunicationInfo(container.state));
 
@@ -356,6 +373,7 @@ describe('EditForm', () => {
         it('onClick call exact function', () => {
             // Arrange
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleCollapseExpand = jest.fn();
             const formRender = shallow(container.renderHomeAddress(container.state));
 
@@ -369,6 +387,7 @@ describe('EditForm', () => {
         it('handleChange should call correctly', () => {
             // Arrange
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleChange = jest.fn();
             const formRender = shallow(container.renderHomeAddress(container.state));
 
@@ -387,6 +406,7 @@ describe('EditForm', () => {
         it('onClick call exact function', () => {
             // Arrange
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleCollapseExpand = jest.fn();
             const formRender = shallow(container.renderBankInfo(container.state));
 
@@ -400,6 +420,7 @@ describe('EditForm', () => {
         it('handleChange should call correctly', () => {
             // Arrange
             const container = shallow(<EditForm {...props} />).instance();
+            container.setState(state);
             container.handleChange = jest.fn();
             const formRender = shallow(container.renderBankInfo(container.state));
 
@@ -417,6 +438,7 @@ describe('EditForm', () => {
             //Act
             const props = {...initProps};
             const container = shallow(<EditForm {...props} />);
+            container.instance().setState(state);
 
             //Assert
             expect(toJson(container)).toMatchSnapshot();
@@ -429,7 +451,7 @@ describe('EditForm', () => {
                 customerInfo: null
             };
             const container = shallow(<EditForm {...props} />);
-
+            container.instance().setState(state);
             //Assert
             expect(container.find(Form).length).toBe(0);
             expect(container.type()).toEqual(null);
