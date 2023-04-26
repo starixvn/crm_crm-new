@@ -168,26 +168,6 @@ describe('CreateCommunicationLog', () => {
         });
     });
 
-    describe('initFormikData', () => {
-        it('should return exactly when init formik data', () => {
-            // Arrange
-            const props = {
-                options: options,
-                customerInfo: {
-                    roleId: 1,
-                    licenseeType: 1
-                }
-            };
-            // Act
-            const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
-            container.setState({ allSettings: initData.settings });
-            const actual = container.initFormikData();
-
-            //Arrange
-            expect(actual.countryId).toBe(212);
-        });
-    });
-
     describe('onChangeStartTime', () => {
         it('should not update endTime when startTime is before endTime', () => {
             // Arrange

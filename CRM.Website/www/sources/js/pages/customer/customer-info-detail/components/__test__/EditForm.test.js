@@ -5,6 +5,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import MultipleSelect from '../../../../../components/multiple-select/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import { EditForm } from '../EditForm';
+import * as commonFunc from '../../common.functions';
 import toJson from 'enzyme-to-json';
 
 describe('EditForm', () => {
@@ -33,6 +34,7 @@ describe('EditForm', () => {
     describe('componentDidMount', () => {
         it('should call functions api', async () => {
             // Arrange
+            commonFunc.ParamsCustomerInfo = jest.fn(() => {});
             //Act
             const container = shallow(<EditForm {...initProps} />);
             container.instance().setState(state);
@@ -46,7 +48,7 @@ describe('EditForm', () => {
         it('should update state correct', () => {
             // Arrange
             const props = {...initProps};
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
             container.handleCollapseExpand('personalInfo');
@@ -63,7 +65,7 @@ describe('EditForm', () => {
         it('should not update state correct', () => {
             // Arrange
             const props = {...initProps};
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
             container.handleCollapseExpand();
@@ -85,7 +87,7 @@ describe('EditForm', () => {
             // Arrange
             const props = {...initProps};
             const mockEvent = { target: { value: 'test', name: 'firstName' } };
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
             container.handleChange(mockEvent);
@@ -101,7 +103,7 @@ describe('EditForm', () => {
             const props = {...initProps};
             const mockEvent = { target: { type: 'checkbox', checked: true, name: 'isVip' } };
 
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
             container.handleChangeCheck(mockEvent);
@@ -115,7 +117,7 @@ describe('EditForm', () => {
         it('should call setState when change check', () => {
             // Arrange
             const props = {...initProps};
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
             container.handleChangeValue('languages','1200');
@@ -135,7 +137,7 @@ describe('EditForm', () => {
                 editCustomerInfoDetail: jest.fn(() => promise)
             };
             const mockEvent = { preventDefault: jest.fn() };
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
             container.handleSubmit(mockEvent);
@@ -155,7 +157,7 @@ describe('EditForm', () => {
                 editCustomerInfoDetail: jest.fn(() => promise)
             };
             const mockEvent = { preventDefault: jest.fn() };
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
             container.handleSubmit(mockEvent);
@@ -172,7 +174,7 @@ describe('EditForm', () => {
             //Arrange
             const props = {...initProps};
             //Act
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             const option = container.renderOptions('test',1);
 
@@ -186,7 +188,7 @@ describe('EditForm', () => {
 
         it('onClick call exact function', () => {
             // Arrange
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleCollapseExpand = jest.fn();
             const formRender = shallow(container.renderPersonalInfo(container.state));
@@ -201,7 +203,7 @@ describe('EditForm', () => {
         it('handleChange birthDay call exact function', () => {
             // Arrange
             const value = 'value';
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleChangeValue = jest.fn();
             const formRender = shallow(container.renderPersonalInfo(container.state));
@@ -217,7 +219,7 @@ describe('EditForm', () => {
             // Arrange
             const currentItem = 'currentItem';
             const selectedItemsKey = 'selectedItemsKey';
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleChangeValue = jest.fn();
             const formRender = shallow(container.renderPersonalInfo(container.state));
@@ -236,7 +238,7 @@ describe('EditForm', () => {
                 customerInfo: { firstName: 'test', isHeadline: false, isDirectAccount: true, siteSetting: { id: 1, name: '22223'}, titleId: 2 }
             }
             const mockEvent = { target: { type: 'checkbox', checked: true, name: 'isVip' } };
-            const container = shallow(<EditForm {...propsData} />).instance();
+            const container = shallow(<EditForm {...propsData} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleChangeCheck = jest.fn();
             const formRender = shallow(container.renderPersonalInfo(container.state));
@@ -251,7 +253,7 @@ describe('EditForm', () => {
 
         it('site SelectWithSearch change correctly', () => {
             // Arrange
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             const formRender = shallow(container.renderPersonalInfo(container.state));
            
@@ -261,7 +263,7 @@ describe('EditForm', () => {
 
         it('handleChange should call correctly', () => {
             // Arrange
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleChange = jest.fn();
             const formRender = shallow(container.renderPersonalInfo(container.state));
@@ -288,7 +290,7 @@ describe('EditForm', () => {
 
         it('onClick call exact function', () => {
             // Arrange
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleCollapseExpand = jest.fn();
             const formRender = shallow(container.renderHeadlineInfo(container.state, true));
@@ -303,7 +305,7 @@ describe('EditForm', () => {
         it('handleChange check box correctly', () => {
             // Arrange
             const mockEvent = { target: { type: 'checkbox', checked: true, name: 'isVip' } };
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleChangeCheck = jest.fn();
             const formRender = shallow(container.renderHeadlineInfo(container.state, true));
@@ -318,7 +320,7 @@ describe('EditForm', () => {
 
         it('handleChange should call correctly', () => {
             // Arrange
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleChange = jest.fn();
             const formRender = shallow(container.renderHeadlineInfo(container.state, true));
@@ -337,7 +339,7 @@ describe('EditForm', () => {
 
         it('onClick call exact function', () => {
             // Arrange
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleCollapseExpand = jest.fn();
             const formRender = shallow(container.renderCommunicationInfo(container.state));
@@ -370,7 +372,7 @@ describe('EditForm', () => {
 
         it('onClick call exact function', () => {
             // Arrange
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleCollapseExpand = jest.fn();
             const formRender = shallow(container.renderHomeAddress(container.state));
@@ -384,7 +386,7 @@ describe('EditForm', () => {
 
         it('handleChange should call correctly', () => {
             // Arrange
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleChange = jest.fn();
             const formRender = shallow(container.renderHomeAddress(container.state));
@@ -403,7 +405,7 @@ describe('EditForm', () => {
 
         it('onClick call exact function', () => {
             // Arrange
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleCollapseExpand = jest.fn();
             const formRender = shallow(container.renderBankInfo(container.state));
@@ -417,7 +419,7 @@ describe('EditForm', () => {
 
         it('handleChange should call correctly', () => {
             // Arrange
-            const container = shallow(<EditForm {...props} />).instance();
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             container.handleChange = jest.fn();
             const formRender = shallow(container.renderBankInfo(container.state));
@@ -435,7 +437,7 @@ describe('EditForm', () => {
         it('should render EditForm correctly', () => {
             //Act
             const props = {...initProps};
-            const container = shallow(<EditForm {...props} />);
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
 
             //Assert
@@ -448,7 +450,7 @@ describe('EditForm', () => {
                 allSettings: null,
                 customerInfo: null
             };
-            const container = shallow(<EditForm {...props} />);
+            const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             //Assert
             expect(container.find(Form).length).toBe(0);
