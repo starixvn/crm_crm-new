@@ -15,7 +15,8 @@ describe('CreateForm', () => {
             countries: [{ id: 1, name: 'eng' }],
             statuses: [{ statusId: 1 }],
             responses: [{ id: 1 }]
-        }
+        },
+        setConfirmCreateMultipleLogsDialog: jest.fn()
     };
 
     beforeAll(() => {
