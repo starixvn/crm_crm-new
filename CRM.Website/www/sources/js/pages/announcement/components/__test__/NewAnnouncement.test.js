@@ -48,7 +48,7 @@ describe('AppContainer', () => {
                     siteList: [{siteID: 23, site: "222223"}, {siteID: 16, site: "611111"}, {siteID: 20, site: "722222"}]
                 }
             };
-            const newAnnouncement = shallow(<NewAnnouncement  {...props}/>);
+            const newAnnouncement = shallow(<NewAnnouncement  {...props}/>, { disableLifecycleMethods: true });
             newAnnouncement.instance().setState = jest.fn();
             //Act
             newAnnouncement.instance().handleOptionSettings();
@@ -66,7 +66,7 @@ describe('AppContainer', () => {
         let fileNameRemove;
       
         beforeEach(() => {
-            newAnnouncement = shallow(<NewAnnouncement />);
+            newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true });
             uploadedFiles = [new File([''], 'file1.jpg', { type: 'image/jpeg' })];
             fileNameRemove = null;
         });
@@ -95,7 +95,7 @@ describe('AppContainer', () => {
                 preventDefault: jest.fn(),
                 target: {value: 'value'}
             };
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.formik = {
                 setFieldValue: jest.fn()
             };
@@ -122,7 +122,7 @@ describe('AppContainer', () => {
                 }
             };
             commonFunc.setValueContent = jest.fn();
-            const newAnnouncement = shallow(<NewAnnouncement {...props}/>).instance();
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
             newAnnouncement.formik = { setFieldValue: jest.fn() };
             newAnnouncement.handleGetParameters = jest.fn();
 
@@ -138,7 +138,7 @@ describe('AppContainer', () => {
     describe('handleGetParameters', () => {
         it('set exact params', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
 
             //Act
             newAnnouncement.handleGetParameters("{test param}");
@@ -151,7 +151,7 @@ describe('AppContainer', () => {
     describe('handleChangeTab', () => {
         it('call exact function', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.formik = {
                 values: { content: {EN: 'test'} },
                 setFieldValue: jest.fn()
@@ -173,7 +173,7 @@ describe('AppContainer', () => {
                 headlineGroups: []
             };
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('text') }, preventDefault: jest.fn() };
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.handleSetValueHeadline = jest.fn();
             newAnnouncement.setState(state);
             // Act
@@ -190,7 +190,7 @@ describe('AppContainer', () => {
             const state = {
                 headlineGroups: []
             };
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.headlineInputRef = {
                 current: {value: '1', focus: jest.fn()}
             };
@@ -210,7 +210,7 @@ describe('AppContainer', () => {
                 headlineGroups: []
             };
             const event = {target: {value: 'value,'}, preventDefault: jest.fn()};
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState(state);
             newAnnouncement.handleSetValueHeadline = jest.fn();
             // Act
@@ -228,7 +228,7 @@ describe('AppContainer', () => {
                 headlineGroups: []
             };
             const event = {target: {value: 'value'}, preventDefault: jest.fn()};
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState(state);
             newAnnouncement.handleSetValueHeadline = jest.fn();
             newAnnouncement.headlineInputRef = {
@@ -249,7 +249,7 @@ describe('AppContainer', () => {
                 headlineGroups: ['1', '2']
             };
             const event = {target: {value: 'value'}, stopPropagation: jest.fn()};
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState(state);
             // Act
             newAnnouncement.handleRemoveHeadline(event, '1');
@@ -261,7 +261,7 @@ describe('AppContainer', () => {
     describe('handleOptionChange', () => {
         it('should call setState', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState = jest.fn();
             // Act
             newAnnouncement.handleOptionChange('site', '1');
@@ -273,7 +273,7 @@ describe('AppContainer', () => {
     describe('handleDateChange', () => {
         it('should call exact function', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.formik = {setFieldValue: jest.fn()};
             // Act
             newAnnouncement.handleDateChange('value');
@@ -289,7 +289,7 @@ describe('AppContainer', () => {
             const param = 'old value';
             const removeSpaceParam = ['param2', 'param3'];
             const state = {tab: 'tab1'};
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.formik = {
                 setFieldValue: jest.fn(),
                 values: {
@@ -313,7 +313,7 @@ describe('AppContainer', () => {
     describe('renderMessage', () => {
         it('should return exact value when result is successfully', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             // Act
             const actual = newAnnouncement.renderMessage({isSuccessful: true, message: 'test1;test2'});
             // Assert
@@ -322,7 +322,7 @@ describe('AppContainer', () => {
 
         it('should return exact value when result is not successfully', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             // Act
             const actual = newAnnouncement.renderMessage({isSuccessful: false, message: 'test1;test2'});
             // Assert
@@ -335,7 +335,7 @@ describe('AppContainer', () => {
             // Arrange
             const setSubmitting = jest.fn();
             commonFunc.getParams = jest.fn(() => {});
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState = jest.fn();
             // Act
             newAnnouncement.handleSubmit({}, {setSubmitting});
@@ -358,7 +358,7 @@ describe('AppContainer', () => {
                     params: {}
                 }
             };
-            const newAnnouncement = shallow(<NewAnnouncement {...props} />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState(state);
             newAnnouncement.handleCloseConfirmInsertDialog = jest.fn();
             // Act
@@ -383,7 +383,7 @@ describe('AppContainer', () => {
                     params: {}
                 }
             };
-            const newAnnouncement = shallow(<NewAnnouncement {...props} />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState(state);
             newAnnouncement.formik = {
                 setSubmitting: jest.fn()
@@ -403,7 +403,7 @@ describe('AppContainer', () => {
     describe('handleCloseConfirmInsertDialog', () => {
         it('should call exact function', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.formik = {
                 setSubmitting: jest.fn()
             };
@@ -419,7 +419,7 @@ describe('AppContainer', () => {
         it('should return exact content when send type is Send At', () => {
             // Arrange
             DateTimeService.toLongDateTimeFormat = jest.fn(() => new Date('2023-01-01'));
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.formik = {
                 values:{
                     sendType: 'Send At',
@@ -435,7 +435,7 @@ describe('AppContainer', () => {
 
         it('should return exact content when send type is not Send At', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement />).instance();
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.formik = {
                 values:{
                     sendType: 'Send Immediately'
@@ -465,7 +465,7 @@ describe('AppContainer', () => {
                     siteList: [{siteID: 23, site: "222223"}, {siteID: 16, site: "611111"}, {siteID: 20, site: "722222"}]
                 }
             };
-            const newAnnouncement = shallow(<NewAnnouncement {...props}/>);
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true });
             newAnnouncement.instance().setState(state);
             newAnnouncement.instance().formik = {
                 values:{
@@ -499,7 +499,7 @@ describe('AppContainer', () => {
                     siteList: [{siteID: 23, site: "222223"}, {siteID: 16, site: "611111"}, {siteID: 20, site: "722222"}]
                 }
             };
-            const newAnnouncement = shallow(<NewAnnouncement {...props}/>);
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true });
             newAnnouncement.instance().setState(state);
             
             commonFunc.validateFormik = jest.fn(() => 'test');
@@ -545,7 +545,7 @@ describe('AppContainer', () => {
 
         it('should call exact function when change parameter ', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement {...props}/>).instance();
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
             newAnnouncement.handleChangeParameter = jest.fn();
             newAnnouncement.setState(state);
             // Act
@@ -557,7 +557,7 @@ describe('AppContainer', () => {
 
         it('should call exact function when onblur input', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement {...props}/>).instance();
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
             newAnnouncement.handleBlurInputHeadline = jest.fn();
             newAnnouncement.setState(state);
             // Act
@@ -569,7 +569,7 @@ describe('AppContainer', () => {
 
         it('should focus when click', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement {...props}/>).instance();
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
             newAnnouncement.headlineInputRef = {
                 current: {focus: jest.fn()}
             };
@@ -583,7 +583,7 @@ describe('AppContainer', () => {
 
         it('should call remove headline', () => {
             // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement {...props}/>).instance();
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
             newAnnouncement.handleRemoveHeadline = jest.fn();
             newAnnouncement.setState(state);
             // Act
