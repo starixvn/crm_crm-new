@@ -21,7 +21,10 @@ describe('ActionAnnouncement', () => {
     });
 
     const initProps = {
-        announcementTemplate: [{announcementId: 65014, notificationTemplateName: "Special Announcement s" }],
+        announcementTemplate: [{
+            announcementId: 65014, notificationTemplateName: "Special Announcement s" ,
+            siteNameList: '123', currencyIdList: '1,2', headlineNameList: '1,2'
+        }],
         actionAnnouncementPopup: {
             isEdit: true
         },
@@ -42,6 +45,7 @@ describe('ActionAnnouncement', () => {
                 notificationTemplateName: 'notificationTemplateName',
                 notificationTemplateId: 1,
                 siteNameList: [],
+                headlineNameList: '1,2',
                 sendDate: new Date(),
                 fileName: 'fileName'
             },
@@ -117,7 +121,7 @@ describe('ActionAnnouncement', () => {
             const actionAnnouncement = shallow(<ActionAnnouncement  {...props}/>).instance();
             actionAnnouncement.getLanguages = jest.fn();
             actionAnnouncement.getAnnounceDetail = jest.fn();
-            
+
             //Act
             await actionAnnouncement.componentDidMount();
             await promise;
@@ -132,7 +136,7 @@ describe('ActionAnnouncement', () => {
     describe('getAnnounceDetail', () => {
         it('should call exact function', async() => {
             // Arrange
-            const promise = Promise.resolve({data: {data: [{siteNameList: '123'}], contents: [{EN: 'test en'}]}});
+            const promise = Promise.resolve({data: {data: [{siteNameList: '123'}], headlineNameList: '1,2', contents: [{EN: 'test en'}]}});
             const props = {
                 actionAnnouncementPopup: {id: 1},
                 getAnnouncementById: jest.fn(() => promise)
