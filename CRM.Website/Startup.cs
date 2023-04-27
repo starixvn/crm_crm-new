@@ -165,12 +165,13 @@
                 RequestPath = "/www/dist"
             });
 
+            app.UseCookiePolicy();
+            app.UseSession();
             app.UseRouting();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod());
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCookiePolicy();
-            app.UseSession();
+
 
             NapClientManager
               .UseConfig(app.ApplicationServices.GetService<INapSettings>())

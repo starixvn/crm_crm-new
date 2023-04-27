@@ -17,13 +17,13 @@
     public class PushMessageService : IPushMessageService
     {
         private readonly Func<int, ILetstalkClientService> letstalkClientService;
-        private readonly Func<int, ITelegramBotService> telegramBotService;
+        private readonly Func<long, ITelegramBotService> telegramBotService;
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
         private readonly List<BotChannelInfo> channels;
 
         public PushMessageService(Func<int, ILetstalkClientService> letstalkClientService,
-            Func<int, ITelegramBotService> telegramBotService,
+            Func<long, ITelegramBotService> telegramBotService,
             IBaseService baseService,
             ICRMLogService logService,
             List<BotChannelInfo> channels)
@@ -111,7 +111,7 @@
 
         private async Task SendToPersonalByTelegram(NotificationMessage notification, SendResult result)
         {
-            var sendResult = await telegramBotService(notification.BotId).SendTextMessageAsync(notification);
+            var sendResult = await telegramBotService(6012438440).SendTextMessageAsync(notification);
         }
 
         private async Task SendImagesToPersonal(NotificationMessage notification)

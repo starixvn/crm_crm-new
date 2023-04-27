@@ -1,8 +1,9 @@
 ﻿namespace CRM.BotService.Core.Models
 {
     using System;
+    using CRM.BotService.Core.Models.Letstalk.Results;
 
-    public class SendMessageResult
+    public class SendMessageResult: BaseResult
     {
         public int NotificationId { get; set; }
 

@@ -82,7 +82,7 @@
             });
 
             services.AddSingleton<ICRMLogService, CRMLogService>();
-            services.AddSingleton<Func<int, ITelegramBotService>>(serviceProvider => botId =>
+            services.AddSingleton<Func<long, ITelegramBotService>>(serviceProvider => botId =>
             {
                 var botConfig = telegramBots.FirstOrDefault(config => config.BotId == botId);
 

@@ -66,7 +66,7 @@
             {
                 _ = long.TryParse(notificationMessage.BotId.ToString(), out long botId);
                 _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
-                await SendTextMessageAsync(botId, chatId, notificationMessage.Content);
+                await SendTextMessageAsync(6012438440, 1292164636, notificationMessage.Content);
             }
             catch (Exception exception)
             {
@@ -106,6 +106,12 @@
                 || exception.Message.Contains("chat not found", StringComparison.InvariantCultureIgnoreCase))
             {
                 result.ErrorMessage = ErrorMessageTelegram.GroupChatDeleted;
+                result.IsIgnoreRetry = true;
+            }
+
+            if(exception.Message.Contains("bot was blocked by the user", StringComparison.InvariantCultureIgnoreCase))
+            {
+                result.ErrorMessage = ErrorMessageTelegram.BlockBot;
                 result.IsIgnoreRetry = true;
             }
 

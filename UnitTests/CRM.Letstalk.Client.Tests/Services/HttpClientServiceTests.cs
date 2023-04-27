@@ -6,11 +6,6 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using AutoFixture;
-    using CRM.Letstalk.Client.Configurations;
-    using CRM.Letstalk.Client.Constants;
-    using CRM.Letstalk.Client.Models.Results;
-    using CRM.Letstalk.Client.Services;
-    using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Letstalk.Client.Tests.Helper;
     using Newtonsoft.Json;
     using NSubstitute;

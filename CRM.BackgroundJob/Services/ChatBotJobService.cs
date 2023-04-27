@@ -95,7 +95,7 @@
                     };
                     userNameList = await ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(criteria);
                 }
-                
+
                 var voidingHistoryCollectionIds = voidingInfo.Item1
                     .Select(voidingCollectionId => new ChatBotUserNameList
                     {
@@ -112,6 +112,7 @@
                     ticketInfos.Item1,
                     ticketInfos.Item3,
                     Environment);
+
                 if (commandResultImportTicket.Item1.IsSuccessful)
                 {
                     logService.LogInformation("Import ChatBot - AbnormalBets Successful!!!");
