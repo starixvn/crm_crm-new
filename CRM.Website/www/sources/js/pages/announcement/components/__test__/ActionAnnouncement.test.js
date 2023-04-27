@@ -109,14 +109,18 @@ describe('ActionAnnouncement', () => {
     describe('componentDidMount', () => {
         it('should call exact function', async() => {
             // Arrange
+            const promise = Promise.resolve([{settingValue: 'EN'}]);
             const props = {
+                getLanguages: jest.fn(() => promise),
                 getAnnouncementTemplate: jest.fn()
             };
             const actionAnnouncement = shallow(<ActionAnnouncement  {...props}/>).instance();
             actionAnnouncement.getLanguages = jest.fn();
             actionAnnouncement.getAnnounceDetail = jest.fn();
+            
             //Act
             await actionAnnouncement.componentDidMount();
+            await promise;
 
             // Assert
             expect(props.getAnnouncementTemplate).toHaveBeenCalled();
