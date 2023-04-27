@@ -98,7 +98,7 @@ export class ActionAnnouncement extends Component {
                     site: announcement.siteNameList ? announcement.siteNameList : siteNameListId,
                     currency: announcement.siteNameList ? announcement.currencyIdList : currencyIdListId
                 },
-                headlineGroups: announcement.siteNameList ? [] : announcement.headlineNameList.split(','),
+                headlineGroups: announcement.siteNameList ? [] : announcement.headlineNameList?.split(','),
                 uploadedFiles: !announcement.fileName ? [] : announcement.fileName.split(',')
             });
         });
