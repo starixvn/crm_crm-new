@@ -8,14 +8,21 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import CkEditor from '@jsroot/components/ckeditor/index';
 
 describe('EditMultipleReviewAndStatus', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.useFakeTimers();
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
         LangHelper.getResource = jest.fn(key => key);
+
+        const response = {
+            data: {feedbackId: 1, isReviewed: true}
+        };
+        const promise = Promise.resolve(response);
+        Site.resolveClientUrl = jest.fn(url => url);
+        DataService.getDataAsync = jest.fn(() => promise);
     });
 
-    afterAll(() => {
+    afterEach(() => {
         jest.clearAllMocks();
     });
 
@@ -149,8 +156,11 @@ describe('EditMultipleReviewAndStatus', () => {
             const prevState = {
                 isReviewed: false
             };
+            const props = {
+                feedbackIds: [1]
+            }
             
-            const container = shallow(<EditMultipleReviewAndStatus />).instance();
+            const container = shallow(<EditMultipleReviewAndStatus {...props}/>).instance();
             container.setState(prevState);
 
             // Act
@@ -170,8 +180,11 @@ describe('EditMultipleReviewAndStatus', () => {
             const expected = {
                 review: 'ReviewRequired'
             };
+            const props = {
+                feedbackIds: [1]
+            }
             
-            const container = shallow(<EditMultipleReviewAndStatus />).instance();
+            const container = shallow(<EditMultipleReviewAndStatus {...props}/>).instance();
             container.setState(state);
 
             // Act
@@ -188,8 +201,11 @@ describe('EditMultipleReviewAndStatus', () => {
             const state = {
                 logInfo: null
             };
+            const props = {
+                feedbackIds: [1]
+            }
             
-            const container = shallow(<EditMultipleReviewAndStatus />).instance();
+            const container = shallow(<EditMultipleReviewAndStatus {...props}/>).instance();
             container.setState(state);
 
             // Act
@@ -215,7 +231,8 @@ describe('EditMultipleReviewAndStatus', () => {
                 }
             };
             const props = {
-                statuses: [{statusId: 1, name: 'test'}]
+                statuses: [{statusId: 1, name: 'test'}],
+                feedbackIds: [1]
             };
             const formikProps = {
                 values: {},
@@ -249,7 +266,8 @@ describe('EditMultipleReviewAndStatus', () => {
                 }
             };
             const props = {
-                statuses: [{statusId: 1, name: 'test'}]
+                statuses: [{statusId: 1, name: 'test'}],
+                feedbackIds: [1]
             };
             const formikProps = {
                 values: {},
@@ -280,7 +298,8 @@ describe('EditMultipleReviewAndStatus', () => {
                 isReviewed: true
             };
             const props = {
-                statuses: [{statusId: 1, name: 'test'}]
+                statuses: [{statusId: 1, name: 'test'}],
+                feedbackIds: [1]
             };
             const formikProps = {
                 values: {},
