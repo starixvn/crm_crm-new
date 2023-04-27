@@ -8,6 +8,7 @@
     using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
+    using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
@@ -59,37 +60,37 @@
             return message;
         }
 
-        public async Task<SendMessageResult> SendTextMessageAsync(ConversationInfo conversationInfo)
+        public async Task<SendMessageResult> SendTextMessageAsync(NotificationMessage notificationMessage)
         {
             try
             {
-                _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
-                _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
-                await SendTextMessageAsync(botId, chatId, conversationInfo.Message);
+                _ = long.TryParse(notificationMessage.BotId.ToString(), out long botId);
+                _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
+                await SendTextMessageAsync(botId, chatId, notificationMessage.Content);
             }
             catch (Exception exception)
             {
-                await WriteLogAsync(conversationInfo, exception);
+                await WriteLogAsync(notificationMessage, exception);
 
                 var result = new SendMessageResult { ErrorCode = 1 };
 
-                return result.ErrorCode == 0 ? result : GetSendMessageResult(conversationInfo, exception);
+                return result.ErrorCode == 0 ? result : GetSendMessageResult(notificationMessage, exception);
             }
 
             return new SendMessageResult
             {
-                ConversationId = conversationInfo.ConversationId,
-                NotificationId = conversationInfo.NotificationId,
+                ConversationId = notificationMessage.ConversationId,
+                NotificationId = notificationMessage.NotificationId,
                 SentTime = DateTime.UtcNow
             };
         }
 
-        protected internal virtual SendMessageResult GetSendMessageResult(ConversationInfo conversationInfo, Exception exception)
+        protected internal virtual SendMessageResult GetSendMessageResult(NotificationMessage notificationMessage, Exception exception)
         {
             var result = new SendMessageResult
             {
-                ConversationId = conversationInfo.ConversationId,
-                NotificationId = conversationInfo.NotificationId,
+                ConversationId = notificationMessage.ConversationId,
+                NotificationId = notificationMessage.NotificationId,
                 ErrorCode = 1,
                 ErrorMessage = exception.Message,
                 SentTime = DateTime.UtcNow
@@ -111,14 +112,14 @@
             return result;
         }
 
-        protected internal virtual async Task WriteLogAsync(ConversationInfo conversationInfo, Exception exception)
+        protected internal virtual async Task WriteLogAsync(NotificationMessage notificationMessage, Exception exception)
         {
             var param = new Dictionary<string, object>
             {
-                { "notificationId", conversationInfo.NotificationId },
-                { "botId", conversationInfo.BotConversationId },
-                { "chatId", conversationInfo.ConversationId },
-                { "messageContent", conversationInfo.Message }
+                { "notificationId", notificationMessage.NotificationId },
+                { "botId", notificationMessage.BotId },
+                { "chatId", notificationMessage.ConversationId },
+                { "messageContent", notificationMessage.Content }
             };
             var logMessage = new LogMessage(exception.Message)
                 .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(exception))

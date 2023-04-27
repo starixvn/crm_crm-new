@@ -17,16 +17,19 @@
     public class PushMessageService : IPushMessageService
     {
         private readonly Func<int, ILetstalkClientService> letstalkClientService;
+        private readonly Func<int, ITelegramBotService> telegramBotService;
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
         private readonly List<BotChannelInfo> channels;
 
         public PushMessageService(Func<int, ILetstalkClientService> letstalkClientService,
+            Func<int, ITelegramBotService> telegramBotService,
             IBaseService baseService,
             ICRMLogService logService,
             List<BotChannelInfo> channels)
         {
             this.letstalkClientService = letstalkClientService;
+            this.telegramBotService = telegramBotService;
             this.baseService = baseService;
             this.logService = logService;
             this.channels = channels;
@@ -104,6 +107,11 @@
             result.IsBlockedBot = sendResult.BlockList.Count > 0;
             result.ErrorMessage = !sendResult.IsSuccess ? SendNotificationErrorMessage.LetstalkIdInvalid : string.Empty;
             await WriteLogMessage(notification, sendResult.IsSuccess, sendResult.BlockList.Any(), sendResult.Message);
+        }
+
+        private async Task SendToPersonalByTelegram(NotificationMessage notification, SendResult result)
+        {
+            var sendResult = await telegramBotService(notification.BotId).SendTextMessageAsync(notification);
         }
 
         private async Task SendImagesToPersonal(NotificationMessage notification)
@@ -194,7 +202,14 @@
 
         private async Task SendTelegramAsync(NotificationMessage notification, SendResult result)
         {
-            throw new NotImplementedException();
+            if (notification.ChatType == ChatType.Personal)
+            {
+                await SendToPersonalByTelegram(notification, result);
+            }
+            else
+            {
+                await SendToGroup(notification, result);
+            }
         }
 
         #endregion Send message by Telegram

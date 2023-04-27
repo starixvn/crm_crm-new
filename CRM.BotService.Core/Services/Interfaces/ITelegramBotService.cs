@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using CRM.BotService.Core.Models;
+    using CRM.Core.Models.BotServices;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
 
@@ -13,6 +14,6 @@
 
         Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html);
 
-        Task<SendMessageResult> SendTextMessageAsync(ConversationInfo conversationInfo);
+        Task<SendMessageResult> SendTextMessageAsync(NotificationMessage conversationInfo);
     }
 }

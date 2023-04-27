@@ -166,7 +166,7 @@
             });
 
             app.UseRouting();
-            //app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod());
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod());
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseCookiePolicy();

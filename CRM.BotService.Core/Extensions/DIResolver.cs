@@ -11,6 +11,7 @@
     using CRM.BotService.Core.Services;
     using CRM.BotService.Core.Services.EventHandler;
     using CRM.BotService.Core.Services.Interfaces;
+    using CRM.Core.Services;
     using Fanex.Caching;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,7 @@
         public static void ResolveWebhookServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<ILetstalkEventHandler, LetstalkEventHandler>();
-            RegisterTelegramBots(services, configuration);
+            RegisterBotTelegramService(services, configuration);
         }
 
         public static void ResolveLetstalkServices(this IServiceCollection services, IConfiguration configuration)
@@ -63,7 +64,7 @@
             });
         }
 
-        private static void RegisterTelegramBots(IServiceCollection services, IConfiguration configuration)
+        private static void RegisterBotTelegramService(IServiceCollection services, IConfiguration configuration)
         {
             var telegramWebhook = configuration.GetSection("WebhookConfigurations").Get<List<WebhookConfiguration>>();
             services.AddSingleton(telegramWebhook);
@@ -71,7 +72,30 @@
             var telegramBots = configuration.GetSection("TelegramBotConfigurations").Get<List<TelegramBotConfigurations>>();
             services.AddSingleton(telegramBots);
 
-            services.AddTransient<ITelegramBotService, TelegramBotService>();
+            var httpClientSettings = configuration.GetSection("HttpClientSetting").Get<HttpClientSetting>();
+            services.AddSingleton(httpClientSettings);
+
+            services.AddHttpClient(NamedHttpClients.ProxiedClient).ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+            {
+                UseProxy = httpClientSettings.IsUseProxy,
+                Proxy = new WebProxy(httpClientSettings.ProxyAddress, httpClientSettings.BypassOnLocal)
+            });
+
+            services.AddSingleton<ICRMLogService, CRMLogService>();
+            services.AddSingleton<Func<int, ITelegramBotService>>(serviceProvider => botId =>
+            {
+                var botConfig = telegramBots.FirstOrDefault(config => config.BotId == botId);
+
+                if (botConfig == null)
+                {
+                    throw new ArgumentNullException($"The bot ID: {botId} does not existed in config file");
+                }
+
+                return new TelegramBotService(
+                    serviceProvider.GetRequiredService<IHttpClientFactory>(),
+                    telegramBots,
+                    serviceProvider.GetRequiredService<ICRMLogService>());
+            });
         }
     }
 }
