@@ -24,6 +24,9 @@ describe('EditGroupMappingPopup', () => {
         languageId: 1,
         remark: '123'
     };
+    const initProps = {
+        updateGroupMappingData: { data: initData }
+    };
     LangHelper.getResource = jest.fn(value => value);
 
     describe('component with redux', () => {
@@ -42,11 +45,11 @@ describe('EditGroupMappingPopup', () => {
         const store = mockStore(initialState);
 
         // Action
-        const wrapper = shallow(<EditGroupMappingPopupWrapper store={store} />, { disableLifecycleMethods: true });
+        const wrapper = shallow(<EditGroupMappingPopupWrapper store={store} {...initProps} />, { disableLifecycleMethods: true });
 
         // Assert
         it('component renders correctly', () => {
-            const grid = shallow(<EditGroupMappingPopupWrapper store={store} />, { disableLifecycleMethods: true });
+            const grid = shallow(<EditGroupMappingPopupWrapper store={store} {...initProps} />, { disableLifecycleMethods: true });
             expect(toJson(grid)).toMatchSnapshot();
         });
 
@@ -100,7 +103,8 @@ describe('EditGroupMappingPopup', () => {
             verifyLetstalkInGroup: jest.fn(() => promise),
             getRecipientByRecipientType: jest.fn(() => promise),
             getGroupHeadlineByRecipient: jest.fn(),
-            getGridData: jest.fn()
+            getGridData: jest.fn(),
+            ...initProps
         };
 
         it('handleChange runs correctly', () => {
@@ -231,7 +235,8 @@ describe('EditGroupMappingPopup', () => {
             setGroupMappingResult: jest.fn(),
             updateGroupMapping: jest.fn(() => promise),
             closeUpdateGroupMappingPopup: jest.fn(),
-            getGridData: jest.fn()
+            getGridData: jest.fn(),
+            ...initProps
         };
         const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
 

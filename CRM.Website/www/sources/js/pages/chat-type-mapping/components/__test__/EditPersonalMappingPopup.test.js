@@ -30,6 +30,10 @@ describe('EditPersonalMappingPopup', () => {
         remark: '123'
     };
 
+    const initProps = {
+        updatePersonalMappingData: { data: initData }
+    };
+
     describe('component with redux', () => {
         // Arrange
         const mockStore = configureMockStore();
@@ -49,11 +53,11 @@ describe('EditPersonalMappingPopup', () => {
         const store = mockStore(initialState);
 
         // Action
-        const wrapper = shallow(<EditPersonalMappingPopupWrapper store={store} />, { disableLifecycleMethods: true });
+        const wrapper = shallow(<EditPersonalMappingPopupWrapper store={store} {...initProps} />, { disableLifecycleMethods: true });
 
         // Assert
         it('component renders correctly', () => {
-            const grid = shallow(<EditPersonalMappingPopupWrapper store={store} />, { disableLifecycleMethods: true });
+            const grid = shallow(<EditPersonalMappingPopupWrapper store={store} {...initProps} />, { disableLifecycleMethods: true });
             expect(toJson(grid)).toMatchSnapshot();
         });
 
@@ -85,7 +89,8 @@ describe('EditPersonalMappingPopup', () => {
             setUpdatePersonalMappingResult: jest.fn(),
             updatePersonalMapping: jest.fn(),
             closeUpdatePersonalMappingPopup: jest.fn(),
-            getGridData: jest.fn()
+            getGridData: jest.fn(),
+            ...initProps
         };
 
         it('handleChange runs correctly', () => {
@@ -203,7 +208,8 @@ describe('EditPersonalMappingPopup', () => {
             setUpdatePersonalMappingResult: jest.fn(),
             updatePersonalMapping: jest.fn(() => promise),
             closeUpdatePersonalMappingPopup: jest.fn(),
-            getGridData: jest.fn()
+            getGridData: jest.fn(),
+            ...initProps
         };
         const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
 

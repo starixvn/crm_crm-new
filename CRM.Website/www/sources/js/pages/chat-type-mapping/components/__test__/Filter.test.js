@@ -109,7 +109,7 @@ describe('Filter', () => {
 
         expect(props.getSettings).toHaveBeenCalled();
         promise.then(() => {
-            expect(filter.instance().state.settings).toEqual(settings);
+            expect(filter.instance().state.settings).toEqual(props.settings);
         });
     });
 
