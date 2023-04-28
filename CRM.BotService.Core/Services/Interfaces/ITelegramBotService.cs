@@ -8,7 +8,7 @@
 
     public interface ITelegramBotService
     {
-        Task SetWebhookAsync(string url);
+        Task SetWebhookAsync(TelegramBotConfigurations bot);
 
         Task<User> GetBotInfoAsync(long botId);
 

@@ -37,14 +37,11 @@
             }
         }
 
-        public async Task SetWebhookAsync(string url)
+        public async Task SetWebhookAsync(TelegramBotConfigurations bot)
         {
-            foreach (var bot in botConfigurations)
-            {
-                var webhook = $"{url}api/telegram/webhook/{bot.BotId}/update";
-                await bot.BotClient.DeleteWebhookAsync();
-                await bot.BotClient.SetWebhookAsync(webhook);
-            }
+            var webhook = $"{bot.Domain}api/telegram/webhook/{bot.BotId}/update";
+            await bot.BotClient.DeleteWebhookAsync();
+            await bot.BotClient.SetWebhookAsync(webhook);
         }
 
         public async Task<User> GetBotInfoAsync(long botId)
