@@ -49,11 +49,11 @@ describe('EditPersonalMappingPopup', () => {
         const store = mockStore(initialState);
 
         // Action
-        const wrapper = shallow(<EditPersonalMappingPopupWrapper store={store} />);
+        const wrapper = shallow(<EditPersonalMappingPopupWrapper store={store} />, { disableLifecycleMethods: true });
 
         // Assert
         it('component renders correctly', () => {
-            const grid = shallow(<EditPersonalMappingPopupWrapper store={store} />);
+            const grid = shallow(<EditPersonalMappingPopupWrapper store={store} />, { disableLifecycleMethods: true });
             expect(toJson(grid)).toMatchSnapshot();
         });
 
@@ -92,13 +92,50 @@ describe('EditPersonalMappingPopup', () => {
             // Arrange
             const value = 'value';
 
-            const popup = shallow(<EditPersonalMappingPopup {...props} />);
+            const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
 
             // Action
             popup.instance().handleChange('chatType', value);
 
             // Assert
             expect(popup.instance().state.form.chatType).toBe(value);
+        });
+
+        it('componentDidMount should call expected props and execute correctly', async () => {
+            const expected = {
+                bot: {
+                    id: initData.botId,
+                    name: initData.botName
+                },
+                name: initData.conversationGroupName,
+                conversationId: initData.conversationId,
+                isTest: false,
+                recipientName: undefined,
+                recipientTypeId: initData.recipients[0].recipientTypeId,
+                recipientIds: initData.recipients.map(r => r.recipientId).toString(),
+                groupHeadlines: initData.headlines.map(v => v.headlineId).toString(),
+                mappingStatus: {
+                    id: initData.mappingStatusId,
+                    name: initData.mappingStatus
+                },
+                languageId: initData.languageId,
+                remark: initData.remark
+            };
+            const state = {
+                form: {
+                    botId: '1',
+                    recipientType: 'a',
+                    recipient: '1',
+                    conversationId: '1',
+                    groupHeadlines: '1',
+                    languageId: '1'
+                }
+            };
+            const popup = shallow(<EditPersonalMappingPopup {...props} />);
+            popup.instance().setState(state);
+            popup.instance().getIgnoreNotificationType = jest.fn();
+            expect(props.getRecipientByRecipientType).toHaveBeenCalledWith(expected.recipientTypeId);
+            expect(props.getGroupHeadlineByRecipient).toHaveBeenCalled();
         });
 
         it('handle functions should call correct functions with correct params when event triggered', async () => {
@@ -110,7 +147,7 @@ describe('EditPersonalMappingPopup', () => {
 
             const initProps = { ...props, getLetstalkDisplayName: jest.fn(() => promise) };
 
-            const popup = shallow(<EditPersonalMappingPopup {...initProps} />);
+            const popup = shallow(<EditPersonalMappingPopup {...initProps} />, { disableLifecycleMethods: true });
             popup.instance().handleGroupHeadlineChange = jest.fn();
             popup.instance().handleRecipientTypeChange = jest.fn();
             popup.instance().handleRecipientChange = jest.fn();
@@ -139,7 +176,7 @@ describe('EditPersonalMappingPopup', () => {
                 isShowConfirmDirtyForm: true,
                 ignoreNotificationTypes: ['test']
             };
-            const popup = shallow(<EditPersonalMappingPopup {...props} />);
+            const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
             popup.instance().setState(state);
 
             expect(popup.find(ConfirmPopup).length).toBe(1);
@@ -168,7 +205,7 @@ describe('EditPersonalMappingPopup', () => {
             closeUpdatePersonalMappingPopup: jest.fn(),
             getGridData: jest.fn()
         };
-        const popup = shallow(<EditPersonalMappingPopup {...props} />);
+        const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
 
         it('handleGroupHeadlineChange with call correct props with correct params', () => {
             popup.instance().handleChange = jest.fn();
@@ -327,7 +364,7 @@ describe('EditPersonalMappingPopup', () => {
             jest.useFakeTimers();
             const newProps = { ...props };
             newProps.updatePersonalMappingResult = { isSuccessful: true };
-            const editPersonal = shallow(<EditPersonalMappingPopup {...newProps} />);
+            const editPersonal = shallow(<EditPersonalMappingPopup {...newProps} />, { disableLifecycleMethods: true });
             editPersonal.instance().isValidParams = jest.fn().mockReturnValue(true);
             editPersonal.instance().getParams = jest.fn().mockReturnValue('valueParams');
             editPersonal.instance().handleEditPersonalSubmitForm(event);
@@ -344,7 +381,7 @@ describe('EditPersonalMappingPopup', () => {
             jest.useFakeTimers();
             const newProps = { ...props };
             newProps.updatePersonalMappingResult = { isSuccessful: false };
-            const editPersonal = shallow(<EditPersonalMappingPopup {...newProps} />);
+            const editPersonal = shallow(<EditPersonalMappingPopup {...newProps} />, { disableLifecycleMethods: true });
             editPersonal.instance().isValidParams = jest.fn().mockReturnValue(true);
             editPersonal.instance().getParams = jest.fn().mockReturnValue('valueParams');
             editPersonal.instance().handleEditPersonalSubmitForm(event);

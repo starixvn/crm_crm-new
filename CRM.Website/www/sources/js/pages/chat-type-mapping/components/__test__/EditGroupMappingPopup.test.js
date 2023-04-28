@@ -42,11 +42,11 @@ describe('EditGroupMappingPopup', () => {
         const store = mockStore(initialState);
 
         // Action
-        const wrapper = shallow(<EditGroupMappingPopupWrapper store={store} />);
+        const wrapper = shallow(<EditGroupMappingPopupWrapper store={store} />, { disableLifecycleMethods: true });
 
         // Assert
         it('component renders correctly', () => {
-            const grid = shallow(<EditGroupMappingPopupWrapper store={store} />);
+            const grid = shallow(<EditGroupMappingPopupWrapper store={store} />, { disableLifecycleMethods: true });
             expect(toJson(grid)).toMatchSnapshot();
         });
 
@@ -106,7 +106,7 @@ describe('EditGroupMappingPopup', () => {
         it('handleChange runs correctly', () => {
             const value = 'value';
 
-            const popup = shallow(<EditGroupMappingPopup {...props} />);
+            const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
 
             popup.instance().handleChange('recipientIds', value);
 
@@ -133,9 +133,26 @@ describe('EditGroupMappingPopup', () => {
                 languageId: initData.languageId,
                 remark: initData.remark
             };
+            const state = {
+                form: {
+                    bot: { id: 1, name: 'bot' },
+                    name: 'a',
+                    conversationId: '1',
+                    recipientTypeId: '1',
+                    recipientIds: '2',
+                    mappingStatus: {
+                        id: 1,
+                        name: 'BotRemoved'
+                    },
+                    groupHeadlines: '3',
+                    languageId: '4',
+                    remark: ''
+                }
+            };
             const popup = shallow(<EditGroupMappingPopup {...props} />);
-
+            popup.instance().setState(state);
             popup.instance().verifyLetstalk = jest.fn();
+            popup.instance().getIgnoreNotificationType = jest.fn();
             expect(popup.instance().initUpdateGroupMappingState).toEqual(expected);
             expect(props.getRecipientByRecipientType).toHaveBeenCalledWith(expected.recipientTypeId);
             promise.then(() => {
@@ -149,7 +166,7 @@ describe('EditGroupMappingPopup', () => {
                 target: { value: 'value' },
                 preventDefault: jest.fn()
             };
-            const popup = shallow(<EditGroupMappingPopup {...props} />);
+            const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
             popup.instance().setState({ ignoreNotificationTypes: true });
             popup.instance().handleGroupHeadlineChange = jest.fn();
             popup.instance().handleRecipientTypeChange = jest.fn();
@@ -178,7 +195,7 @@ describe('EditGroupMappingPopup', () => {
                 isShowConfirmDirtyForm: true,
                 ignoreNotificationTypes: ['test']
             };
-            const popup = shallow(<EditGroupMappingPopup {...props} />);
+            const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
             popup.instance().setState(state);
 
             expect(popup.find(ConfirmPopup).length).toBe(1);
@@ -216,7 +233,7 @@ describe('EditGroupMappingPopup', () => {
             closeUpdateGroupMappingPopup: jest.fn(),
             getGridData: jest.fn()
         };
-        const popup = shallow(<EditGroupMappingPopup {...props} />);
+        const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
 
         it('handleGroupHeadlineChange with call correct props with correct params', () => {
             popup.instance().handleChange = jest.fn();
@@ -364,7 +381,7 @@ describe('EditGroupMappingPopup', () => {
             const event = { preventDefault: jest.fn() };
             props.updateGroupMappingResult = { isSuccessful: false };
             const state = { isSubmitting: false };
-            const edit = shallow(<EditGroupMappingPopup {...props} />);
+            const edit = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
             edit.instance().isValidParams = jest.fn().mockReturnValue(true);
             edit.instance().setState({ state });
             edit.instance().getParams = jest.fn().mockReturnValue('valueParams');

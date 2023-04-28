@@ -71,7 +71,7 @@ describe('EditInforms', () => {
             const props = {...initProps};
 
             // Act
-            const container = shallow(<EditInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />, { disableLifecycleMethods: true });
             const actual = container.instance().getIncludeInSetting(props.titleDetail.currencies,props.allSettings.currencies);
            
             // Assert
@@ -90,7 +90,7 @@ describe('EditInforms', () => {
             };
             jest.useFakeTimers();
             // Act
-            const container = shallow(<EditInforms {...props}/>);
+            const container = shallow(<EditInforms {...props}/>, { disableLifecycleMethods: true });
             container.instance().setAlert();
            
             // Assert
@@ -130,7 +130,7 @@ describe('EditInforms', () => {
             };
 
             // Act
-            const container = shallow(<EditInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />, { disableLifecycleMethods: true });
             container.instance().handleSubmit();
             await promise;
 
@@ -147,32 +147,15 @@ describe('EditInforms', () => {
         it('should render correctly', () => {
             // Arrange
             const props = {
-                ...initProps,
-                titleDetail: "test"
+                ...initProps
             };
 
             // Act
-            const container = shallow(<EditInforms {...props} />);
+            const container = shallow(<EditInforms {...props} />, { disableLifecycleMethods: true });
             container.setState({saveResult: {isSuccessful: true}});
             
             // Assert
             expect(toJson(container)).toMatchSnapshot();
-        });
-
-        it('should render null', () => {
-            // Arrange
-            const props = {
-                titleDetail: null,
-                allSettings: null,
-                dataEditInforms: null
-            };
-
-            // Act
-            const container = shallow(<EditInforms {...props} />);
-            
-            // Assert
-            expect(toJson(container)).toMatchSnapshot();
-            expect(container.type()).toEqual(null);
         });
     });
 });

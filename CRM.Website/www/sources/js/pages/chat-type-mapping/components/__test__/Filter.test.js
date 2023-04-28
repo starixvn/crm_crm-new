@@ -26,7 +26,7 @@ describe('Filter', () => {
         const store = mockStore(initialState);
 
         // Action
-        const wrapper = shallow(<FilterWrapper store={store} />);
+        const wrapper = shallow(<FilterWrapper store={store} />, { disableLifecycleMethods: true });
 
         // Assert
         it('component render correctly', () => {
@@ -79,7 +79,7 @@ describe('Filter', () => {
             }))
         };
 
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
         expect(filter.state()).toEqual(initialState);
     });
@@ -94,13 +94,14 @@ describe('Filter', () => {
         const props = {
             settings: {
                 chatTypes: [],
-                mappingStatuses: [],
+                mappingStatuses: [{ id: 1, checked: true }],
                 languages: [],
                 bots: []
             },
             insertPersonalMappingData: {},
             insertPersonalMappingResult: {},
-            getSettings: jest.fn(() => promise)
+            getSettings: jest.fn(() => promise),
+            setGridParams: jest.fn()
         };
 
         const filter = shallow(<Filter {...props} />);
@@ -127,7 +128,7 @@ describe('Filter', () => {
             getSettings: jest.fn(() => Promise.resolve({}))
         };
 
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
         // Action
         filter.instance().onChange('name', value);
@@ -177,7 +178,7 @@ describe('Filter', () => {
                 pageSize: props.gridParams.pageSize
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             const result = filter.instance().getParams();
@@ -205,7 +206,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => Promise.resolve({}))
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             const result = filter.instance().isValidParams();
@@ -231,7 +232,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => Promise.resolve({}))
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             const result = filter.instance().isValidParams();
@@ -254,7 +255,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => Promise.resolve({}))
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             toast.error = jest.fn();
             filter.instance().isValidParams = jest.fn().mockReturnValue(false);
             filter.instance().submitHandler = jest.fn();
@@ -285,7 +286,7 @@ describe('Filter', () => {
                 getGridData: jest.fn((params) => Promise.resolve([]))
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().isValidParams = jest.fn().mockReturnValue(true);
             filter.instance().getParams = jest.fn().mockReturnValue(params);
 
@@ -332,7 +333,7 @@ describe('Filter', () => {
                 getGridData: jest.fn((params) => Promise.resolve([]))
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
             filter.instance().onChange = jest.fn();
 
@@ -374,7 +375,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => Promise.resolve({}))
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             expect(filter.find(Form.Group).find(Button).length).toBe(1);
             expect(filter.find(Form.Group).find(Button).at(0).html()).not.toContain('InsertPersonalMappingBtn');
         });
@@ -389,7 +390,7 @@ describe('Filter', () => {
                 openInsertPersonalMappingPopup: jest.fn()
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             expect(filter.find(Form.Group).find(Button).length).toBe(2);
             expect(filter.find(Form.Group).find(Button).at(1).html()).toContain('InsertPersonalMappingBtn');
             filter.find(Button).at(1).simulate('click');
@@ -407,7 +408,7 @@ describe('Filter', () => {
             openInsertPersonalMappingPopup: jest.fn()
         };
 
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
         expect(filter.find(InsertPersonalMappingPopup).length).toBe(1);
     });
 });
