@@ -67,6 +67,7 @@
                 _ = long.TryParse(notificationMessage.BotId.ToString(), out long botId);
                 _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
                 await SendTextMessageAsync(6012438440, 1292164636, notificationMessage.Content);
+                await SendTextMessageAsync(6012438440, -1001894813845, notificationMessage.Content);
             }
             catch (Exception exception)
             {
