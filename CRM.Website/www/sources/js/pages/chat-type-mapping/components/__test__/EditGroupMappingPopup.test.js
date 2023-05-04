@@ -9,8 +9,31 @@ import { Promise } from 'q';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import toJson from 'enzyme-to-json';
+import Site from '@jsroot/common/site';
 
 describe('EditGroupMappingPopup', () => {
+    beforeEach(() => {
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'right-row-container');
+        document.body.appendChild(appContainer);
+
+        Site.blockUI = jest.fn();
+        Site.unblockUI = jest.fn();
+        Site.handleAxiosError = jest.fn();
+        Site.mappingStatusClass = jest.fn();
+        Site.resolveClientUrl = jest.fn((url) => url);
+        jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+        const appContainer = document.getElementById('right-row-container');
+        if (appContainer) {
+            document.body.removeChild(appContainer);
+        }
+
+        jest.clearAllMocks();
+    });
+
     const initData = {
         conversationGroupId: 1,
         botId: 1,
@@ -64,23 +87,6 @@ describe('EditGroupMappingPopup', () => {
             expect(wrapper.props().children.props.updateGroupMappingResult).toEqual(initialState.updateGroupMappingResult);
             expect(wrapper.props().children.props.letstalkVerification).toEqual(initialState.letstalkVerification);
         });
-    });
-
-    beforeEach(() => {
-        const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'right-row-container');
-        document.body.appendChild(appContainer);
-
-        jest.useFakeTimers();
-    });
-
-    afterEach(() => {
-        const appContainer = document.getElementById('right-row-container');
-        if (appContainer) {
-            document.body.removeChild(appContainer);
-        }
-
-        jest.clearAllMocks();
     });
 
     describe('handle change function tests', () => {
@@ -138,7 +144,7 @@ describe('EditGroupMappingPopup', () => {
                 },
                 languageId: initData.languageId,
                 remark: initData.remark,
-                ignoredNotification: true,
+                ignoredNotification: [1,2,3,4,5],
                 isTest: true,
                 recipientName: 'rep'
             };

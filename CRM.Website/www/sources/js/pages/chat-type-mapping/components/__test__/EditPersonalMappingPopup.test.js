@@ -8,12 +8,18 @@ import SelectWithSearch from 'react-select';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import toJson from 'enzyme-to-json';
+import Site from '@jsroot/common/site';
 
 describe('EditPersonalMappingPopup', () => {
-    beforeAll(() => {
+    beforeEach(() => {
+        Site.blockUI = jest.fn();
+        Site.unblockUI = jest.fn();
+        Site.handleAxiosError = jest.fn();
+        Site.mappingStatusClass = jest.fn();
+        Site.resolveClientUrl = jest.fn((url) => url);
         LangHelper.getResource = jest.fn((key) => key);
     });
-    afterAll(() => {
+    afterEach(() => {
         jest.clearAllMocks();
     });
 
