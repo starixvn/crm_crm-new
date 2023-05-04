@@ -91,7 +91,6 @@
 
             services.AddControllers().AddNewtonsoftJson();
             services.ResolveCoreDI();
-            services.ResolveLetstalkServices(Configuration);
             services.ResolveWebhookServices(Configuration);
         }
 

@@ -22,6 +22,7 @@
         {
             services.AddScoped<ILetstalkEventHandler, LetstalkEventHandler>();
             RegisterBotTelegramService(services, configuration);
+            ResolveLetstalkServices(services, configuration);
         }
 
         public static void ResolveLetstalkServices(this IServiceCollection services, IConfiguration configuration)

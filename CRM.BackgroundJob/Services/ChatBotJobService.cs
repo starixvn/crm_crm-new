@@ -116,7 +116,7 @@
                 if (commandResultImportTicket.Item1.IsSuccessful)
                 {
                     logService.LogInformation("Import ChatBot - AbnormalBets Successful!!!");
-                   await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
                 }
                 else
                 {
