@@ -10,6 +10,8 @@
     {
         Task SetWebhookAsync(TelegramBotConfigurations bot);
 
+        Task<WebhookInfo> GetWebhookInfoAsync(TelegramBotConfigurations bot);
+
         Task<User> GetBotInfoAsync(long botId);
 
         Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html);

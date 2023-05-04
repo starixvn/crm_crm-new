@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Security.Cryptography;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services;
@@ -43,6 +44,22 @@
 
             return Ok("Successfully!");
         }
+        [AllowAnonymous]
+        [Route("api/telegram/bot/getWebhookInfo")]
+        public async Task<IActionResult> GetWebhookInfo(long botId)
+        {
+            var bot = botConfigurations.FirstOrDefault(config => config.BotId == botId);
+            if (bot != null)
+            {
+                var webhookInfo = await telegramBotService(bot.BotId).GetWebhookInfoAsync(bot);
+                return Ok(webhookInfo);
+            }
+            else
+            {
+                return Content("bot does not exist.");
+            }
+        }
+        
 
         [AllowAnonymous]
         [Route("api/telegram/bot/getBotInfo")]

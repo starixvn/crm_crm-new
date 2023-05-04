@@ -50,6 +50,12 @@
             return await bot.BotClient.GetMeAsync();
         }
 
+        public async Task<WebhookInfo> GetWebhookInfoAsync(TelegramBotConfigurations bot)
+        {
+            return await bot.BotClient.GetWebhookInfoAsync();
+        }
+
+
         public async Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html)
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
@@ -61,9 +67,8 @@
         {
             try
             {
-                _ = long.TryParse(notificationMessage.BotId.ToString(), out long botId);
                 _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
-                await SendTextMessageAsync(botId, chatId, notificationMessage.Content);
+                await SendTextMessageAsync(notificationMessage.BotId, chatId, notificationMessage.Content);
             }
             catch (Exception exception)
             {

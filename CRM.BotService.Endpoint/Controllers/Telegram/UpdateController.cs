@@ -35,7 +35,6 @@
                 {
                     return Ok();
                 }
-
                 User bot = await telegramBotService(botId).GetBotInfoAsync(botId);
                 if (bot == null)
                 {
