@@ -23,7 +23,7 @@ describe('EditGroupMappingPopup', () => {
         mappingStatus: 'NotMapped',
         languageId: 1,
         remark: '123',
-        ignoredNotificationTypeList: true,
+        ignoredNotificationTypeList: [1,2,3,4,5],
         isTest: 1
     };
     const initProps = {

@@ -28,7 +28,10 @@ describe('NewRemark', () => {
         },
         validateResult: [{custId : 1, isCredit: false}],
         customerName: '',
-        onSuccess: jest.fn()
+        onSuccess: jest.fn(),
+        getRelatedPics: jest.fn(),
+        custId: 1,
+        isGuestSearch: true
     };
 
     describe('componentDidMount', () => {
@@ -68,7 +71,7 @@ describe('NewRemark', () => {
                 requestedBy: 'requestedBy'
             };
             // Act
-            const container = shallow(<NewRemark {...props} />);
+            const container = shallow(<NewRemark {...props} />, { disableLifecycleMethods: true });
             container.instance().handleSubmit(values, {setSubmitting});
             await promise;
             jest.runAllTimers();
@@ -96,7 +99,7 @@ describe('NewRemark', () => {
                 requestedBy: 'requestedBy'
             };
             // Act
-            const container = shallow(<NewRemark {...props} />);
+            const container = shallow(<NewRemark {...props} />, { disableLifecycleMethods: true });
             container.instance().handleSubmit(values, {setSubmitting});
             await promise;
             jest.runAllTimers();
@@ -116,7 +119,7 @@ describe('NewRemark', () => {
             };
             const props = {...initProps, validateUsername: jest.fn()};
             const setFieldValue = jest.fn();
-            const container = shallow(<NewRemark {...props} />).instance();
+            const container = shallow(<NewRemark {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
             container.handleValidateCustomer('test', false, setFieldValue);
@@ -130,7 +133,7 @@ describe('NewRemark', () => {
             const response = {data: {}};
             const promise = Promise.resolve(response);
             initProps.validateUsername = jest.fn(() => promise);
-            const container = shallow(<NewRemark {...initProps} />);
+            const container = shallow(<NewRemark {...initProps} />, { disableLifecycleMethods: true });
             container.instance()['formik'] = {
                 errors: {username: 'error'}
             };
@@ -162,7 +165,7 @@ describe('NewRemark', () => {
                 remarkContent: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkContent'))
             };
 
-            const container = shallow(<NewRemark {...initProps} />);
+            const container = shallow(<NewRemark {...initProps} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             // Act
             const actual = container.instance().validateFormik(values);
@@ -190,7 +193,7 @@ describe('NewRemark', () => {
 
             const props = {...initProps, validateResult: null, customerName: ''};
 
-            const container = shallow(<NewRemark {...props} />);
+            const container = shallow(<NewRemark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             // Act
             const actual = container.instance().validateFormik(values);
@@ -214,7 +217,7 @@ describe('NewRemark', () => {
             const state = {
                 isFirstLoad: false
             };
-            const container = shallow(<NewRemark {...initProps} />);
+            const container = shallow(<NewRemark {...initProps} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().isValidUsername = jest.fn();
 
@@ -239,7 +242,7 @@ describe('NewRemark', () => {
                 setFieldValue: jest.fn(),
                 validateForm:  jest.fn()
             };
-            const container = shallow(<NewRemark {...initProps} />);
+            const container = shallow(<NewRemark {...initProps} />, { disableLifecycleMethods: true });
             container.instance().handleValidateCustomer = jest.fn();
 
             // Act
@@ -258,7 +261,7 @@ describe('NewRemark', () => {
             // Arrange
             const expected = {};
             // Act
-            const container = shallow(<NewRemark {...initProps} />);
+            const container = shallow(<NewRemark {...initProps} />, { disableLifecycleMethods: true });
 
             // Assert
             container.find(Formik).props().innerRef(expected);
@@ -271,7 +274,7 @@ describe('NewRemark', () => {
                 ...initProps, gridParams : {...initProps.gridParams, username : 'test'}, validateResult: null
             };
             // Act
-            const container = shallow(<NewRemark {...props} />);
+            const container = shallow(<NewRemark {...props} />, { disableLifecycleMethods: true });
 
             // Assert
             expect(container).toEqual({});

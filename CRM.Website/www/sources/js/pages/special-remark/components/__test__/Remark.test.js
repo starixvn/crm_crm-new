@@ -63,7 +63,7 @@ describe('Remark', () => {
     describe('handleChange', () => {
         it('should call setState when handle change', async () => {
             // Act
-            const container = shallow(<Remark />).instance();
+            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
             container.handleChange('123',0,'specialRemarks',['test']);
             expect(container.state.specialRemarks).toEqual(['123']);
         });
@@ -72,7 +72,7 @@ describe('Remark', () => {
     describe('handleCollapseExpand', () => {
         it('should update state correct', () => {
             // Arrange
-            const container = shallow(<Remark />).instance();
+            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.handleCollapseExpand('specialRemark');
@@ -85,7 +85,7 @@ describe('Remark', () => {
         });
         it('should not update state correct', () => {
             // Arrange
-            const container = shallow(<Remark />).instance();
+            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.handleCollapseExpand();
@@ -108,7 +108,7 @@ describe('Remark', () => {
             };
 
             // Act
-            const container = shallow(<Remark />).instance();
+            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
             container.setState({ specialRemarks: state.specialRemarks, dataSpecialRemarks: state.dataSpecialRemarks });
             container.removeSpecialRemarkItem(1);
             expect(container.state.specialRemarks).toEqual(['test','test2']);
@@ -125,7 +125,7 @@ describe('Remark', () => {
             };
 
             // Act
-            const container = shallow(<Remark />).instance();
+            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
             container.setState({ normalRemarks: state.normalRemarks, dataNormalRemarks: state.dataNormalRemarks });
             container.removeNormalRemarkItem(1);
             expect(container.state.normalRemarks).toEqual(['testing','testing2']);
@@ -142,7 +142,7 @@ describe('Remark', () => {
             };
 
             // Act
-            const container = shallow(<Remark />).instance();
+            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
             container.setState({ specialRemarks: state.specialRemarks, dataSpecialRemarks: state.dataSpecialRemarks });
             container.addSpecialRemarkItem('123');
             expect(container.state.specialRemarks).toEqual(['test','test1','test2','123']);
@@ -158,7 +158,7 @@ describe('Remark', () => {
             };
 
             // Act
-            const container = shallow(<Remark />).instance();
+            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
             container.setState({ normalRemarks: state.normalRemarks, dataNormalRemarks: state.dataNormalRemarks });
             container.addNormalRemarkItem('123');
             expect(container.state.normalRemarks).toEqual(['testing','testing1','testing2','123']);
@@ -174,7 +174,7 @@ describe('Remark', () => {
                 editRemarks: jest.fn(() => promise),
                 getRemarks: jest.fn()
             };
-            const container = shallow(<Remark {...props} />).instance();
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.handleSubmit();
@@ -196,7 +196,7 @@ describe('Remark', () => {
                 gridData: { specialRemarks: ['test'], normalRemarks: ['testing'] },
                 editRemarks: jest.fn(() => promise)
             };
-            const container = shallow(<Remark {...props} />).instance();
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.handleSubmit();
@@ -219,7 +219,7 @@ describe('Remark', () => {
             const state = {
                 policy : 2
             };
-            const container = shallow(<Remark {...props}/>);
+            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
             container.instance().setState(state);
             // Assert
             expect(container).toEqual({});
@@ -233,7 +233,7 @@ describe('Remark', () => {
             const state = {
                 policy : 2
             };
-            const container = shallow(<Remark {...props}/>);
+            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
             container.instance().setState(state);
 
             //Assert
@@ -252,7 +252,7 @@ describe('Remark', () => {
                 },
                 policy : 2
             };
-            const container = shallow(<Remark {...props}/>);
+            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
             container.instance().setState(state);
     
             // Assert 
@@ -272,7 +272,7 @@ describe('Remark', () => {
                 },
                 policy : 2
             };        
-            const container = shallow(<Remark {...props}/>);
+            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
             container.setState(state);
 
             // Assert 
@@ -291,7 +291,7 @@ describe('Remark', () => {
                 },
                 policy : 2
             };  
-            const container = shallow(<Remark {...props}/>);
+            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
             container.setState(state);
 
     
@@ -308,7 +308,7 @@ describe('Remark', () => {
             const state = {
                 policy : 2
             };  
-            const container = shallow(<Remark {...props}/>);
+            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
             container.setState(state);
             container.instance().handleCollapseExpand = jest.fn();
 
@@ -327,7 +327,7 @@ describe('Remark', () => {
             const state = {
                 policy : 2
             };  
-            const container = shallow(<Remark {...props}/>);
+            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().handleCollapseExpand = jest.fn();
 
@@ -348,7 +348,7 @@ describe('Remark', () => {
                 normalRemarks: ['test'],
                 policy : 2
             };
-            const container = shallow(<Remark {...props}/>);
+            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().handleChange = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
@@ -370,7 +370,7 @@ describe('Remark', () => {
                 normalRemarks: ['test'],
                 policy : 2
             };
-            const container = shallow(<Remark {...props} />);
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().handleChange = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
@@ -392,7 +392,7 @@ describe('Remark', () => {
                 normalRemarks: ['test'],
                 policy : 2
             };
-            const container = shallow(<Remark {...props} />);
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().addSpecialRemarkItem = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
@@ -414,7 +414,7 @@ describe('Remark', () => {
                 normalRemarks: ['test'],
                 policy : 2
             };
-            const container = shallow(<Remark {...props} />);
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().removeSpecialRemarkItem = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
@@ -436,7 +436,7 @@ describe('Remark', () => {
                 normalRemarks: ['test'],
                 policy : 2
             };
-            const container = shallow(<Remark {...props} />);
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().addNormalRemarkItem = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
@@ -458,7 +458,7 @@ describe('Remark', () => {
                 normalRemarks: ['test','test1'],
                 policy : 2
             };
-            const container = shallow(<Remark {...props} />);
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().removeNormalRemarkItem = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
@@ -480,7 +480,7 @@ describe('Remark', () => {
                 normalRemarks: ['test','test1'],
                 policy : 2
             };
-            const container = shallow(<Remark {...props} />);
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().handleSubmit = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
