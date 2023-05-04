@@ -16,14 +16,14 @@
     public class MessageController : Controller
     {
         private readonly ICRMLogService logService;
-        private readonly ITelegramBotService botService;
+        private readonly Func<long, ITelegramBotService> telegramBotService;
 
         public MessageController(
             ICRMLogService logService,
-            ITelegramBotService botService)
+            Func<long, ITelegramBotService> telegramBotService)
         {
             this.logService = logService;
-            this.botService = botService;
+            this.telegramBotService = telegramBotService;
         }
 
         [HttpPost]
@@ -35,7 +35,7 @@
             {
                 _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
                 _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
-                await botService.SendTextMessageAsync(botId, chatId, conversationInfo.Message);
+                await telegramBotService(botId).SendTextMessageAsync(botId, chatId, conversationInfo.Message);
             }
             catch (Exception ex)
             {

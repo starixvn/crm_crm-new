@@ -5,7 +5,6 @@
     using System.Threading.Tasks;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Services;
-    using Fanex.Data.Repository;
     using global::Telegram.Bot.Types;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Mvc;
@@ -13,15 +12,15 @@
 
     public class UpdateController : Controller
     {
-        private readonly ITelegramBotService botService;
+        private readonly Func<long, ITelegramBotService> telegramBotService;
         private readonly ICRMLogService logService;
 
         public UpdateController(
             ICRMLogService logService,
-            ITelegramBotService botService)
+            Func<long, ITelegramBotService> telegramBotService)
         {
             this.logService = logService;
-            this.botService = botService;
+            this.telegramBotService = telegramBotService;
         }
 
         [HttpPost]
@@ -37,7 +36,7 @@
                     return Ok();
                 }
 
-                User bot = await botService.GetBotInfoAsync(botId);
+                User bot = await telegramBotService(botId).GetBotInfoAsync(botId);
                 if (bot == null)
                 {
                     await logService.ErrorMessageAsync($"Telegram Bot {botId} is invalid.");
@@ -77,7 +76,7 @@
                 if (command.Equals("/getgroupid", StringComparison.CurrentCultureIgnoreCase)
                     || command.Equals($"/getgroupid@{bot.Username}", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    await botService.SendTextMessageAsync(bot.Id, message.Chat.Id, message.Chat.Id.ToString());
+                    await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, message.Chat.Id.ToString());
                 }
             }
         }
