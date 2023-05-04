@@ -8,7 +8,6 @@
     using CRM.BotService.Core.Services.EventHandler;
     using CRM.BotService.Core.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Options;
 
     public class LetstalkWebhookController : ControllerBase
     {
@@ -18,12 +17,12 @@
 
         public LetstalkWebhookController(ILetstalkEventHandler eventHandler,
             Func<long, ILetstalkClientService> letstalkService,
-            IOptions<List<WebhookConfiguration>> webhookConfigurations
+            List<WebhookConfiguration> webhookConfigurations
             )
         {
             this.eventHandler = eventHandler;
             this.letstalkService = letstalkService;
-            this.webhookConfigurations = webhookConfigurations.Value;
+            this.webhookConfigurations = webhookConfigurations;
         }
 
         [Route("api/webhook/{id}")]
