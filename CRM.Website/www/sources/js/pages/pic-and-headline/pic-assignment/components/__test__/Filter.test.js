@@ -22,7 +22,7 @@ describe('Filter', () => {
         const store = mockStore(initialState);
 
         // Action
-        const wrapper = shallow(<FilterWrapper store={store} />);
+        const wrapper = shallow(<FilterWrapper store={store} />, { disableLifecycleMethods: true });
 
         // Assert
         it('component render correctly', () => {
@@ -51,7 +51,7 @@ describe('Filter', () => {
         };
 
         // Action
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
         // Assert
         expect(filter.instance().state).toEqual({
@@ -83,7 +83,9 @@ describe('Filter', () => {
             settings: {
                 siteList: [
                     {
-                        site: 'site'
+                        site: 'site',
+                        name: 'test',
+                        childSites: [{ site: 1 }]
                     }
                 ],
                 currencyList: [
@@ -180,7 +182,7 @@ describe('Filter', () => {
 
         const name = 'name';
         const value = 'value';
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
         filter.instance().setState(prevState);
 
         // Action
@@ -216,7 +218,7 @@ describe('Filter', () => {
             }
         };
 
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
         filter.instance().setState(prevState);
 
         // Action
@@ -253,7 +255,7 @@ describe('Filter', () => {
             }
         };
 
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
         filter.instance().setState(prevState);
 
         // Action
@@ -277,7 +279,7 @@ describe('Filter', () => {
         };
 
         const selectedItemsKey = {};
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
         filter.instance().handleFilterChange = jest.fn();
 
         // Action
@@ -297,7 +299,7 @@ describe('Filter', () => {
         };
 
         const selectedItemsKey = {};
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
         filter.instance().handleFilterChange = jest.fn();
 
         // Action
@@ -317,7 +319,7 @@ describe('Filter', () => {
         };
 
         const selectedItemsKey = {};
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
         filter.instance().handleFilterChange = jest.fn();
 
         // Action
@@ -337,7 +339,7 @@ describe('Filter', () => {
         };
 
         const selectedItemsKey = {};
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
         filter.instance().handleFilterChange = jest.fn();
 
         // Action
@@ -361,7 +363,7 @@ describe('Filter', () => {
             value: 'value'
         };
 
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
         // Action
         const result = filter.instance().renderHeadlineTypeOption(item);
@@ -383,7 +385,7 @@ describe('Filter', () => {
         };
 
         const state = {};
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
         filter.instance().setState(state);
 
         // Action
@@ -410,7 +412,7 @@ describe('Filter', () => {
             };
 
             const params = {};
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().getParams = jest.fn(() => params);
             filter.instance().state.filter.site = '1';
             filter.instance().state.filter.currency = '1';
@@ -436,7 +438,7 @@ describe('Filter', () => {
                 getGridData: jest.fn((params, callback) => callback())
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().state.filter.site = '';
             filter.instance().state.filter.currency = '1';
             filter.instance().state.filter.status = '1';
@@ -460,7 +462,7 @@ describe('Filter', () => {
                 getGridData: jest.fn((params, callback) => callback())
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().state.filter.site = '1';
             filter.instance().state.filter.currency = '';
             filter.instance().state.filter.status = '1';
@@ -484,7 +486,7 @@ describe('Filter', () => {
                 getGridData: jest.fn((params, callback) => callback())
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().state.filter.site = '1';
             filter.instance().state.filter.currency = '1';
             filter.instance().state.filter.status = '';
@@ -508,7 +510,7 @@ describe('Filter', () => {
                 getGridData: jest.fn((params, callback) => callback())
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().state.filter.site = '1';
             filter.instance().state.filter.currency = '1';
             filter.instance().state.filter.status = '1';
@@ -533,7 +535,7 @@ describe('Filter', () => {
             setAssignPicPopup: jest.fn()
         };
 
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
         // Action
         filter.instance().handleOpenAssignPicPopup();
@@ -567,7 +569,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const filter = shallow(<Filter {...props} />).instance();
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true }).instance();
 
             // Action
             filter.handleToggleFilter(true);
@@ -588,7 +590,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
             // Action
             const form = filter.find(Form);
@@ -606,7 +608,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
             // Action
             const row = filter.find(Form.Row).at(0);
@@ -628,7 +630,7 @@ describe('Filter', () => {
                 siteOptions: []
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             // Action
@@ -656,7 +658,7 @@ describe('Filter', () => {
 
             const currentItem = 'currentItem';
             const selectedItemsKey = 'selectedItemsKey';
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().handleSiteChange = jest.fn();
             const select = filter.find(Form.Group).at(0).find(MultipleSelect);
 
@@ -680,7 +682,7 @@ describe('Filter', () => {
                 currencyOptions: []
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             // Action
@@ -708,7 +710,7 @@ describe('Filter', () => {
 
             const currentItem = 'currentItem';
             const selectedItemsKey = 'selectedItemsKey';
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().handleCurrencyChange = jest.fn();
             const select = filter.find(Form.Group).at(1).find(MultipleSelect);
 
@@ -732,7 +734,7 @@ describe('Filter', () => {
                 currencyOptions: []
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             // Action
@@ -760,7 +762,7 @@ describe('Filter', () => {
 
             const currentItem = 'currentItem';
             const selectedItemsKey = 'selectedItemsKey';
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().handleStatusChange = jest.fn();
             const select = filter.find(Form.Group).at(2).find(MultipleSelect);
 
@@ -786,7 +788,7 @@ describe('Filter', () => {
                 }
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             // Action
@@ -817,7 +819,7 @@ describe('Filter', () => {
                 }
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             // Action
@@ -847,7 +849,7 @@ describe('Filter', () => {
                 }
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             // Action
@@ -877,7 +879,7 @@ describe('Filter', () => {
                 }
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             // Action
@@ -905,7 +907,7 @@ describe('Filter', () => {
                 positionOptions: []
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             // Action
@@ -933,7 +935,7 @@ describe('Filter', () => {
 
             const currentItem = 'currentItem';
             const selectedItemsKey = 'selectedItemsKey';
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().handlePositionChange = jest.fn();
             const select = filter.find(Form.Group).at(7).find(MultipleSelect);
 
@@ -961,7 +963,7 @@ describe('Filter', () => {
                 }
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             // Action
@@ -997,7 +999,7 @@ describe('Filter', () => {
                 isHost: true
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
             // Action
             const row = filter.find(Form.Row).at(3);
@@ -1022,7 +1024,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => promise)
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().handleToggleFilter = jest.fn();
             const button = filter.find('.filter-collapse').first().find('.fa').first();
 
