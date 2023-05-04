@@ -107,12 +107,11 @@
             }
 
             app.UseHttpsRedirection();
-            app.UseForwardedHeaders();
-            app.UseRouting();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseAuthorization();
+            app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

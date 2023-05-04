@@ -45,7 +45,7 @@
                 }
                 await UpdateEventByType(update.Message, bot);
 
-                return Ok();
+                return Ok("Successfull!");
             }
             catch (Exception ex)
             {
