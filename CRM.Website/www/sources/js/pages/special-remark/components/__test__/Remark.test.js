@@ -46,7 +46,10 @@ describe('Remark', () => {
     
     describe('componentWillUnmount', () => {
         const props = {
-            resetState: jest.fn()
+            resetState: jest.fn(),
+            gridData: { specialRemarks: ['test'], normalRemarks: ['testing'] },
+            getRemarks: jest.fn(),
+            id: 1754
         };
 
         it('should do reset store', () => {
