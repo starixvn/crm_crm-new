@@ -17,12 +17,14 @@ describe('EditGroupMappingPopup', () => {
         botName: 'Bot1',
         conversationGroupName: 'GroupName',
         conversationId: 'conversationId',
-        headlines: [{ id: 1, name: 'headline' }],
-        recipients: [{ id: 1, name: 'recipient', recipientTypeId: 1, letstalks: { letstalkId: 1 } }],
+        headlines: [{ id: 1, name: 'headline', headlineId: 2 }],
+        recipients: [{ id: 1, name: 'recipient', recipientTypeId: 1, recipientTypeName: 'rep', letstalks: { letstalkId: 1 } }],
         mappingStatusId: 1,
         mappingStatus: 'NotMapped',
         languageId: 1,
-        remark: '123'
+        remark: '123',
+        ignoredNotificationTypeList: true,
+        isTest: 1
     };
     const initProps = {
         updateGroupMappingData: { data: initData }
@@ -135,7 +137,10 @@ describe('EditGroupMappingPopup', () => {
                     name: initData.mappingStatus
                 },
                 languageId: initData.languageId,
-                remark: initData.remark
+                remark: initData.remark,
+                ignoredNotification: true,
+                isTest: true,
+                recipientName: 'rep'
             };
             const state = {
                 form: {

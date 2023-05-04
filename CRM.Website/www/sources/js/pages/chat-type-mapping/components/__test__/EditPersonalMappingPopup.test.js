@@ -19,15 +19,19 @@ describe('EditPersonalMappingPopup', () => {
 
     const initData = {
         conversationGroupId: 1,
+        conversationGroupName: 'GroupName',
+        conversationId: 'conversationId',
         botId: 1,
         name: 'Name',
         conversationId: 'aaa',
         recipientType: 1,
-        headlines: [{ id: 1, name: 'headline' }],
-        recipients: [{ id: 1, name: 'recipient' }],
+        headlines: [{ id: 1, name: 'headline', headlineId: 2 }],
+        recipients: [{ id: 1, name: 'recipient', recipientTypeId: 1, recipientTypeName: 'rep', letstalks: { letstalkId: 1 }, recipientId: 1, recipientName: 'rep' }],
         letstalkId: '12',
         languageId: 1,
-        remark: '123'
+        remark: '123',
+        ignoredNotificationTypeList: true,
+        isTest: 1
     };
 
     const initProps = {
