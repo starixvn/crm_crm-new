@@ -5,9 +5,11 @@
     using System.Threading.Tasks;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Services;
+    using Fanex.Data.Repository;
     using global::Telegram.Bot.Types;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
 
     public class UpdateController : Controller
     {
@@ -26,20 +28,29 @@
         [Route("api/telegram/webhook/{botId:long}/update")]
         public async Task<IActionResult> Post(long botId, [FromBody] Update update)
         {
-            if (update == null || update.Type != UpdateType.Message)
+            try
             {
+                var updateJson = JsonConvert.SerializeObject(update, Formatting.Indented);
+                logService.LogInformation(updateJson);
+                if (update == null || update.Type != UpdateType.Message)
+                {
+                    return Ok();
+                }
+
+                User bot = await botService.GetBotInfoAsync(botId);
+                if (bot == null)
+                {
+                    await logService.ErrorMessageAsync($"Telegram Bot {botId} is invalid.");
+                    return Ok($"Telegram Bot {botId} is invalid.");
+                }
+                await UpdateEventByType(update.Message, bot);
+
                 return Ok();
             }
-
-            User bot = await botService.GetBotInfoAsync(botId);
-            if (bot == null)
+            catch (Exception ex)
             {
-                await logService.ErrorMessageAsync($"Telegram Bot {botId} is invalid.");
-                return Ok($"Telegram Bot {botId} is invalid.");
+                return Ok(ex.Message);
             }
-            await UpdateEventByType(update.Message, bot);
-
-            return Ok();
         }
 
         protected internal virtual async Task UpdateEventByType(Message message, User bot)
