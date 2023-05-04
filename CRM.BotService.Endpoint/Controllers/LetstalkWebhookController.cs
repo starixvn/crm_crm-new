@@ -13,11 +13,11 @@
     public class LetstalkWebhookController : ControllerBase
     {
         private readonly ILetstalkEventHandler eventHandler;
-        private readonly Func<int, ILetstalkClientService> letstalkService;
+        private readonly Func<long, ILetstalkClientService> letstalkService;
         private readonly List<WebhookConfiguration> webhookConfigurations;
 
         public LetstalkWebhookController(ILetstalkEventHandler eventHandler,
-            Func<int, ILetstalkClientService> letstalkService,
+            Func<long, ILetstalkClientService> letstalkService,
             IOptions<List<WebhookConfiguration>> webhookConfigurations
             )
         {

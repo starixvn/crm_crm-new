@@ -87,7 +87,6 @@
         private async Task<bool> IsUM()
         {
             var maintanceTime = await maintenanceService.GetUnderMaintenanceTimeAsync();
-            logService.LogInformation($"IsUM: {maintanceTime.IsUnderMaintenanceTime}");
             return maintanceTime.IsUnderMaintenanceTime;
         }
     }

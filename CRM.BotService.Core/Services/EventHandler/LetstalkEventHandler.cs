@@ -27,14 +27,14 @@
     public class LetstalkEventHandler : ILetstalkEventHandler
     {
         private readonly IBaseService baseService;
-        private readonly Func<int, ILetstalkClientService> letstalkService;
+        private readonly Func<long, ILetstalkClientService> letstalkService;
         private readonly ICRMLogService logService;
         private readonly List<LetstalkBotConfig> botConfigs;
 
         public LetstalkEventHandler(
             IBaseService baseService,
             ICRMLogService logService,
-            Func<int, ILetstalkClientService> letstalkService,
+            Func<long, ILetstalkClientService> letstalkService,
             List<LetstalkBotConfig> botConfigs)
         {
             this.baseService = baseService;

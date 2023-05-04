@@ -63,16 +63,13 @@
             {
                 _ = long.TryParse(notificationMessage.BotId.ToString(), out long botId);
                 _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
-                await SendTextMessageAsync(6012438440, 1292164636, notificationMessage.Content);
-                await SendTextMessageAsync(6012438440, -1001894813845, notificationMessage.Content);
+                await SendTextMessageAsync(botId, chatId, notificationMessage.Content);
             }
             catch (Exception exception)
             {
                 await WriteLogAsync(notificationMessage, exception);
 
-                var result = new SendMessageResult { ErrorCode = 1 };
-
-                return result.ErrorCode == 0 ? result : GetSendMessageResult(notificationMessage, exception);
+                return GetSendMessageResult(notificationMessage, exception);
             }
 
             return new SendMessageResult

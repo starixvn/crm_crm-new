@@ -5,7 +5,7 @@
     public class WriteLogMessageCommand : NonQueryCommand
     {
         public int NotificationId { get; set; }
-        public int BotId { get; set; }
+        public long BotId { get; set; }
         public string ConversationId { get; set; }
         public string Content { get; set; }
         public bool IsBotBlocked { get; set; }

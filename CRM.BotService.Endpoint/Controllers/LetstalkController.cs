@@ -13,9 +13,9 @@
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class LetstalkController : Controller
     {
-        private readonly Func<int, ILetstalkClientService> letstalkClientService;
+        private readonly Func<long, ILetstalkClientService> letstalkClientService;
 
-        public LetstalkController(Func<int, ILetstalkClientService> letstalkClientService)
+        public LetstalkController(Func<long, ILetstalkClientService> letstalkClientService)
         {
             this.letstalkClientService = letstalkClientService;
         }

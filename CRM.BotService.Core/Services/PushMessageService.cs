@@ -12,17 +12,18 @@
     using CRM.Core.Enumerables;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
+    using Fanex.Logging.Extensions;
     using Newtonsoft.Json;
 
     public class PushMessageService : IPushMessageService
     {
-        private readonly Func<int, ILetstalkClientService> letstalkClientService;
+        private readonly Func<long, ILetstalkClientService> letstalkClientService;
         private readonly Func<long, ITelegramBotService> telegramBotService;
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
         private readonly List<BotChannelInfo> channels;
 
-        public PushMessageService(Func<int, ILetstalkClientService> letstalkClientService,
+        public PushMessageService(Func<long, ILetstalkClientService> letstalkClientService,
             Func<long, ITelegramBotService> telegramBotService,
             IBaseService baseService,
             ICRMLogService logService,
@@ -111,7 +112,24 @@
 
         private async Task SendToPersonalByTelegram(NotificationMessage notification, SendResult result)
         {
-            var sendResult = await telegramBotService(6012438440).SendTextMessageAsync(notification);
+            notification.BotId = 6012438440;
+            notification.ConversationId = "1292164636";
+            var sendResult = await telegramBotService(notification.BotId).SendTextMessageAsync(notification);
+            var logMesssage = new LogMessage("Send To Personal By Telegram Result: ")
+                       .AddMessage(JsonConvert.SerializeObject(sendResult, Formatting.Indented))
+                       .ToString();
+            logService.LogInformation(logMesssage);
+        }
+
+        private async Task SendToGroupByTelegram(NotificationMessage notification, SendResult result)
+        {
+            notification.BotId = 6012438440;
+            notification.ConversationId = "-1001894813845";
+            var sendResult = await telegramBotService(notification.BotId).SendTextMessageAsync(notification);
+            var logMesssage = new LogMessage("Send To Group By Telegram Result: ")
+                       .AddMessage(JsonConvert.SerializeObject(sendResult, Formatting.Indented))
+                       .ToString();
+            logService.LogInformation(logMesssage);
         }
 
         private async Task SendImagesToPersonal(NotificationMessage notification)
@@ -202,14 +220,16 @@
 
         private async Task SendTelegramAsync(NotificationMessage notification, SendResult result)
         {
-            if (notification.ChatType == ChatType.Personal)
-            {
-                await SendToPersonalByTelegram(notification, result);
-            }
-            else
-            {
-                await SendToGroup(notification, result);
-            }
+            //if (notification.ChatType == ChatType.Personal)
+            //{
+            //    await SendToPersonalByTelegram(notification, result);
+            //}
+            //else
+            //{
+            //    await SendToGroup(notification, result);
+            //}
+            await SendToPersonalByTelegram(notification, result);
+            await SendToGroupByTelegram(notification, result);
         }
 
         #endregion Send message by Telegram

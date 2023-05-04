@@ -6,6 +6,7 @@
     {
         public int AnnouncementId { get; set; }
         public int NotificationId { get; set; }
+        public long BotId { get; set; }
         public int ConversationGroupId { get; set; }
         public int ChatTypeId { get; set; }
         public string Content { get; set; }
