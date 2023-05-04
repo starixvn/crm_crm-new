@@ -27,11 +27,12 @@ describe('NewRemark', () => {
             userId: 62585686
         },
         validateResult: [{custId : 1, isCredit: false}],
-        customerName: '',
+        customerName: 'user',
         onSuccess: jest.fn(),
         getRelatedPics: jest.fn(),
         custId: 1,
-        isGuestSearch: true
+        isGuestSearch: true,
+        getRelatedPics: jest.fn()
     };
 
     describe('componentDidMount', () => {
@@ -122,7 +123,7 @@ describe('NewRemark', () => {
             const container = shallow(<NewRemark {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
-            container.handleValidateCustomer('test', false, setFieldValue);
+            container.handleValidateCustomer('test', false, setFieldValue, jest.fn());
             
             // Assert
             expect(props.validateUsername).not.toHaveBeenCalled();
@@ -139,10 +140,10 @@ describe('NewRemark', () => {
             };
             const setFieldValue = jest.fn();
             // Act
-            container.instance().handleValidateCustomer('test1', false, setFieldValue);
+            container.instance().handleValidateCustomer('test1', false, setFieldValue, jest.fn());
             jest.runAllTimers();
             // Assert
-            expect(container.instance().state.isValidCustomer).toEqual(false);
+            expect(container.instance().state.isValidCustomer).toEqual(true);
             expect(initProps.validateUsername).toHaveBeenCalledWith({username: 'test1', isGuest: false});
         });
     });
