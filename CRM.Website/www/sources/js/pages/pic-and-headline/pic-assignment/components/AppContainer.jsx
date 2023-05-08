@@ -39,7 +39,7 @@ export class AppContainer extends Component {
             return null;
         }
         const isHost = policy === Policy.Host;
-        const isReadPicManagement = policyPicManagement > Policy.Read;
+        const isReadPicManagement = policyPicManagement >= Policy.Read;
 
         return (
             <Fragment>
