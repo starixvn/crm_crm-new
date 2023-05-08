@@ -57,7 +57,7 @@
         {
             var childReport = logStatisticsDetail.ChildReports.ToList();
 
-            Parallel.ForEach(childReport, (childReport, state, index) =>
+            Parallel.ForEach(childReport, (childReport, _, index) =>
             {
                 var rowIndex = RowStartBody + index;
                 RenderRowValue(templateWorksheet, worksheet, childReport, Convert.ToInt32(rowIndex));
