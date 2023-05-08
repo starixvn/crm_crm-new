@@ -714,7 +714,7 @@ describe('DataGrid', () => {
                     recipients: [ 1 ],
                     title: 'title',
                     status: 'status',
-                    referenceIdList: 1
+                    referenceIdList: '1'
                 };
 
                 const index = 1;
