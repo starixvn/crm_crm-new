@@ -312,8 +312,8 @@
     </Function>
     <Function Name="SMAPersonalMessage">
         <Setting Key="Acc_CRM_PersonalMessageSel" SpName="Acc_CRM_PersonalMessageSel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PersonalMessageIns" SpName="Acc_CRM_PersonalMessageIns" DbName="DBMSG.bodb_Message.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PersonalMessageDel" SpName="Acc_CRM_PersonalMessageDel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PersonalMessageIns" SpName="Acc_CRM_PersonalMessageIns_xpre" DbName="DBMSG.bodb_Message.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PersonalMessageDel" SpName="Acc_CRM_PersonalMessageDel_xpre" DbName="DBMSG.bodb_Message.bodbAdminNet" />
         <Setting Key="Acc_CRM_PersonalMessageCheck" SpName="Acc_CRM_PersonalMessageCheck" DbName="DBCUST.CustDB.bodbAdminNet" />
     </Function>
     <Function Name="Announcement">
