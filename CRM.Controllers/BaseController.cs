@@ -1,6 +1,8 @@
 ﻿namespace CRM.Controllers
 {
+    using System.Linq;
     using CRM.Core.Filters;
+    using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
     using ONEbook.UM.AspNetCore.Filters;
 
@@ -8,6 +10,13 @@
     [CrmAuthorize]
     public class BaseController : Controller
     {
-        protected string ClientIP => HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        protected string ClientIP
+        {
+            get
+            {
+                string xForwarded = HttpContext.Request.Headers["x-forwarded-for"].ToString();
+                return !string.IsNullOrEmpty(xForwarded) ? xForwarded.Split(",", System.StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() : HttpContext.Connection.RemoteIpAddress.ToString();
+            }
+        }
     }
 }

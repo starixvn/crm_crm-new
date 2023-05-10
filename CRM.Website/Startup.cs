@@ -136,7 +136,6 @@
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.ForwardLimit = null;
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
