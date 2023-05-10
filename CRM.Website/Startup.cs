@@ -136,8 +136,9 @@
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
+                options.ForwardLimit = null;
                 options.ForwardedHeaders =
-                    ForwardedHeaders.XForwardedFor;
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
             RegisterDI(services, botConfigs.Get<List<BotConfig>>());
