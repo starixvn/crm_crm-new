@@ -43,6 +43,7 @@
     using ONEbook.UM.Services;
     using ONEbook.UM.Transport;
     using Sentry;
+    using Sentry.Protocol;
     using StackExchange.Redis;
 
     public class Startup
@@ -133,21 +134,27 @@
                 mvcOption => mvcOption.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
             ).AddNewtonsoftJson();
 
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
             RegisterDI(services, botConfigs.Get<List<BotConfig>>());
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
+
             if (env.IsDevelopment())
             {
+                app.UseForwardedHeaders();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseForwardedHeaders(new ForwardedHeadersOptions
-                {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-                });
+                app.UseForwardedHeaders();
                 app.UseMiddleware<ErrorHandler>();
                 app.UseHsts();
             }
