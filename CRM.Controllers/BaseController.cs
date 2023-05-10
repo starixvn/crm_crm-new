@@ -8,6 +8,6 @@
     [CrmAuthorize]
     public class BaseController : Controller
     {
-        protected string ClientIP => HttpContext.Connection.RemoteIpAddress.ToString();
+        protected string ClientIP => HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
     }
 }

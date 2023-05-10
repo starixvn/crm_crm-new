@@ -146,7 +146,7 @@
             {
                 app.UseForwardedHeaders(new ForwardedHeadersOptions
                 {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
                 });
                 app.UseMiddleware<ErrorHandler>();
                 app.UseHsts();
