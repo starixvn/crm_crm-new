@@ -55,6 +55,15 @@
             return Json(customerInfo);
         }
 
+
+        [HttpPost]
+        public async Task<JsonResult> UpdateCustomerSuggestion([FromBody] UpdateCustomerSuggestionCriteria criteria)
+        {
+            criteria.UserID = napSession.UserId;
+            var commandResult = await customerService.UpdateCustomerSuggestionAsync(criteria);
+            return Json(commandResult);
+        }
+
         public IActionResult GetCurrentCustomer()
         {
             return Json(sessionService.CurrentCustomer);

@@ -10,7 +10,7 @@
         {
             //Arrange
             var criteria = new UpdateCustomerInfoCommand();
-            var expected = "Acc_CRM_CustomerUpdUserSearch";
+            var expected = "Acc_CRM_CustomerUpdateBasicInfo";
 
             //Act
             var actual = criteria.GetSettingKey();

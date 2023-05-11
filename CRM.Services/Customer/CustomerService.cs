@@ -16,6 +16,8 @@
 
         Task<CommandResult> UpdateCustomerInfoAsync(UpdateCustomerInfoCommand command);
 
+        Task<CommandResult> UpdateCustomerSuggestionAsync(UpdateCustomerSuggestionCriteria criteria);
+
         Task<IEnumerable<string>> GetCustomerAutoSuggestionAsync(CustomerSuggestionCriteria criteria);
 
         Task<CustomerInfoDetails> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria);
@@ -95,6 +97,11 @@
         public async Task<CommandResult> UpdateCustomerInfoAsync(UpdateCustomerInfoCommand command)
         {
             return await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task<CommandResult> UpdateCustomerSuggestionAsync(UpdateCustomerSuggestionCriteria criteria)
+        {
+            return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
         public async Task<IEnumerable<string>> GetCustomerAutoSuggestionAsync(CustomerSuggestionCriteria criteria)

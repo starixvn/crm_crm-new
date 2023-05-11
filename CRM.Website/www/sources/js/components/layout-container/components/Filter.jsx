@@ -4,6 +4,7 @@ import { Button, Form, Col, Row } from 'react-bootstrap';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
 import { SubMainMenu, DetailMenu }from '@jsroot/common/constants';
 import { toast } from 'react-toastify';
 import BreadcrumbTime from './BreadcrumbTime';
@@ -74,6 +75,9 @@ export default class Filter extends Component {
             return;
         }
         this.props.getDataGrid().then(() =>{
+            const urlUpdateSuggestion = Site.resolveClientUrl('CustomerInfo/UpdateCustomerSuggestion');
+            const paramsUpdateSuggestion  = {CustID: this.props.customerInfo.custId, UserName: this.props.username};
+            DataService.postDataAsync(urlUpdateSuggestion, paramsUpdateSuggestion);
             this.props.handleNavigate('Dashboard');
         });
     };

@@ -73,7 +73,7 @@
 
         public string IP { get; set; }
 
-        public override string GetSettingKey() => "Acc_CRM_CustomerUpdUserSearch";
+        public override string GetSettingKey() => "Acc_CRM_CustomerUpdateBasicInfo";
 
         public override bool IsValid() => true;
     }

@@ -205,7 +205,7 @@
         <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="CustStatus" ObjectProperty="Status" />
         </Setting>
-        <Setting Key="Acc_CRM_CustomerUpdUserSearch" SpName="Acc_CRM_CustomerUpdateBasicInfo_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerUpdateBasicInfo" SpName="Acc_CRM_CustomerUpdateBasicInfo_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_RelatedCustomerVerify" SpName="Acc_CRM_RelatedCustomerVerify" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerSelUserSearch" SpName="Acc_CRM_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CheckDirectAccount" SpName="Acc_CRM_CheckDirectAccount" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
