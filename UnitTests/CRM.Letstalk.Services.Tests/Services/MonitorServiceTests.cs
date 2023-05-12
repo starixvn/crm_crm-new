@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using CRM.Letstalk.Client.Models;
     using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Letstalk.Services.Constants;
     using CRM.Letstalk.Services.Models;
@@ -40,7 +41,7 @@
             monitorSettings.Mode = MonitorMode.PushMessage;
             await monitorService.MonitorLetstalkService();
 
-            await letstalkService.Received().PushAsync(Arg.Any<string[]>(), Arg.Is(monitorSettings.Message));
+            await letstalkService.Received().PushPersonalAsync(Arg.Any<string[]>(), Arg.Any<OutgoingMessage>());
         }
     }
 }

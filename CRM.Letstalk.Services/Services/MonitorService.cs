@@ -2,6 +2,8 @@
 {
     using System;
     using System.Threading.Tasks;
+    using CRM.Letstalk.Client.Enum;
+    using CRM.Letstalk.Client.Models;
     using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Letstalk.Services.Constants;
     using CRM.Letstalk.Services.Models;
@@ -27,7 +29,7 @@
             else
             {
                 var listLetstalk = monitorSettings.LetstalkIds.Split(',');
-                await letstalkService(monitorSettings.BotId).PushAsync(listLetstalk, monitorSettings.Message);
+                await letstalkService(monitorSettings.BotId).PushPersonalAsync(listLetstalk, new OutgoingMessage { MessageType = MessageTypeNumber.Text, Text = monitorSettings.Message });
             }
         }
     }
