@@ -14,8 +14,8 @@ import UnderlineButton from '@jsroot/common/underlineButton';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        const currentClientTime = window.currentClientTime;
-        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
+        const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(currentClientTime));
         const currentDate = this.currentDate;
         const fromDate = new Date(currentDate);
         const previousWeek = fromDate.setDate(fromDate.getDate() - 7);

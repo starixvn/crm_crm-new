@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Form } from 'react-bootstrap';
-import { Filter } from '../Filter'
+import { Filter } from '../Filter';
 import DatePicker from '@jsroot/components/date-picker/index';
 
 describe('Filter', () => {

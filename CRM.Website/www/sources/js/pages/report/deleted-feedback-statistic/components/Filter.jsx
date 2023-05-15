@@ -12,8 +12,8 @@ import UnderlineButton from '@jsroot/common/underlineButton';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        const currentClientTime = window.currentClientTime;
-        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
+        const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(currentClientTime));
         const currentDate = this.currentDate;
         const firstDayLastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
         const firstDateFirstMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -32,8 +32,7 @@ export class Filter extends Component {
     }
 
     handleChangeFromDate = fromDate => {
-        const currentClientTime = window.currentClientTime;
-        const currentTime = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
+        const currentTime = this.currentDate;
         const maxDate = new Date(fromDate.getTime());
         maxDate.setMonth(fromDate.getMonth() + 12);
         maxDate.setDate(fromDate.getDate() - 1);

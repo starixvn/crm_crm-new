@@ -13,8 +13,8 @@ import UnderlineButton from '@jsroot/common/underlineButton';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        const currentClientTime = window.currentClientTime;
-        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(new Date(currentClientTime)));
+        const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+        this.currentDate = new Date(DateTimeService.toShortDateTimeFormat(currentClientTime));
         const firstDateFirstMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() , 1);
         const firstDateOfMonthFormat = new Date(DateTimeService.toShortDateTimeFormat(new Date(firstDateFirstMonth)));
         const firstMonthOfYear = new Date(DateTimeService.firstMonthOfYear(this.currentDate));

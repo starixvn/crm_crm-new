@@ -19,7 +19,7 @@ export class EditForm extends Component {
 
     constructor(props) {
         super(props);
-        const currentClientTime = window.currentClientTime;
+        const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
             collapse: {
                 personalInfo: false,
@@ -32,7 +32,7 @@ export class EditForm extends Component {
             titleId: 0,
             firstName: '',
             lastName: '',
-            maxDate: new Date(DateTimeService.toShortDateFormat(new Date(currentClientTime))),
+            maxDate: new Date(DateTimeService.toShortDateFormat(currentClientTime)),
             birthDay: '',
             passport: '',
             refCode2: '',
