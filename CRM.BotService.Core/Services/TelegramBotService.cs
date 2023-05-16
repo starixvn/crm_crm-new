@@ -10,6 +10,7 @@
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
+    using CRM.Models.NotificationList;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
     using Telegram.Bot;
@@ -69,6 +70,41 @@
             {
                 _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
                 await SendTextMessageAsync(notificationMessage.BotId, chatId, notificationMessage.Content);
+            }
+            catch (Exception exception)
+            {
+                await WriteLogAsync(notificationMessage, exception);
+
+                return GetSendMessageResult(notificationMessage, exception);
+            }
+
+            return new SendMessageResult
+            {
+                ConversationId = notificationMessage.ConversationId,
+                NotificationId = notificationMessage.NotificationId,
+                SentTime = DateTime.UtcNow
+            };
+        }
+
+        public async Task<Message> SendImageAsync(long botId, long chatId, string urlImage, ParseMode parseMode = ParseMode.Html)
+        {
+            TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
+            var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile(urlImage);
+            Message message = await bot.BotClient.SendPhotoAsync(
+                chatId: chatId,
+                photo: photo);
+            return message;
+        }
+
+        public async Task<SendMessageResult> SendImageAsync(NotificationMessage notificationMessage)
+        {
+            try
+            {
+                _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
+                foreach (var img in notificationMessage.Images)
+                {
+                    await SendImageAsync(notificationMessage.BotId, chatId, img);
+                }
             }
             catch (Exception exception)
             {

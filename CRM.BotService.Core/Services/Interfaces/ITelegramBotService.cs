@@ -17,5 +17,9 @@
         Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html);
 
         Task<SendMessageResult> SendTextMessageAsync(NotificationMessage notificationMessage);
+
+        Task<Message> SendImageAsync(long botId, long chatId, string urlImage, ParseMode parseMode = ParseMode.Html);
+
+        Task<SendMessageResult> SendImageAsync(NotificationMessage notificationMessage);
     }
 }

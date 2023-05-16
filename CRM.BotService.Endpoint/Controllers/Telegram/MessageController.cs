@@ -5,7 +5,9 @@
     using System.Threading.Tasks;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
+    using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
+    using CRM.Models.NotificationList;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +38,26 @@
                 _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
                 _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
                 await telegramBotService(botId).SendTextMessageAsync(botId, chatId, conversationInfo.Message);
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                await WriteLogAsync(ex);
+            }
+
+            return Ok(errorMessage);
+        }
+
+        [HttpPost]
+        [Route("api/telegram/sendImage")]
+        public async Task<ObjectResult> sendImage([FromBody] ConversationInfo conversationInfo)
+        {
+            var errorMessage = string.Empty;
+            try
+            {
+                _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
+                _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
+                var sendResult = await telegramBotService(botId).SendImageAsync(botId, chatId, conversationInfo.ImageUrl);
             }
             catch (Exception ex)
             {

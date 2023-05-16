@@ -115,6 +115,11 @@
             notification.BotId = 6012438440;
             notification.ConversationId = "1292164636";
             var sendResult = await telegramBotService(notification.BotId).SendTextMessageAsync(notification);
+
+            if (notification.Images is not null && notification.Images.Length > 0 && sendResult.IsSuccess)
+            {
+                await SendImagesToGroup(notification);
+            }
             var logMesssage = new LogMessage("Send To Personal By Telegram Result: ")
                        .AddMessage(JsonConvert.SerializeObject(sendResult, Formatting.Indented))
                        .ToString();
@@ -230,6 +235,7 @@
             //}
             await SendToPersonalByTelegram(notification, result);
             await SendToGroupByTelegram(notification, result);
+
         }
 
         #endregion Send message by Telegram

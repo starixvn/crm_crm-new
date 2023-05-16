@@ -15,6 +15,7 @@
         public string BotName { get; set; }
 
         public string Message { get; set; }
+        public string ImageUrl { get; set; }
 
         public bool IsDuplicated { get; set; }
     }
