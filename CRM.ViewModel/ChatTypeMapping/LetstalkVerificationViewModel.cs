@@ -1,5 +1,6 @@
 ﻿namespace CRM.ViewModels.ChatTypeMapping
 {
+    using System;
     using System.Collections.Generic;
 
     public class LetstalkVerificationViewModel

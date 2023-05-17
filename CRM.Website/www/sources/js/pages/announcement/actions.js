@@ -38,6 +38,11 @@ const createAnnouncement = data => async dispatch => {
     }).then(() => Site.unblockUI());
 };
 
+const scanAndSendNotification = () => async () => {
+    const url = Site.resolveClientUrl('Announcement/ScanAndSendNotification');
+    await DataService.getDataAsync(url);
+};
+
 const editAnnouncement = data => async dispatch => {
     const url = Site.resolveClientUrl('Announcement/Edit');
     await DataService.postDataAsync(url, data).then(response => {
@@ -77,6 +82,7 @@ export const ActionCreators = {
     getAnnouncementById,
     createAnnouncement,
     setCreateAnnouncement,
+    scanAndSendNotification,
     editAnnouncement,
     setEditAnnouncement,
     getAnnouncementTemplate,

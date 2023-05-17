@@ -407,15 +407,19 @@ export class ActionAnnouncement extends Component {
         this.setState({confirmActionDialog: { show: true, params}});
     };
 
-    handleConfirmActionDialog = () =>{
+    handleConfirmActionDialog = async () =>{
         this.handleCloseConfirmEditDialog();
         const formData = this.state.confirmActionDialog.params;
         const {createAnnouncement, editAnnouncement, actionAnnouncementPopup} = this.props;
         const {isEdit} = actionAnnouncementPopup;
         const actionFunc = isEdit ? editAnnouncement : createAnnouncement;
-        actionFunc(formData).then(() => {
+        await actionFunc(formData).then(() => {
             const resultAction = isEdit ? this.props.editAnnouncementResult : this.props.createAnnouncementResult; 
             if (resultAction.isSuccessful) {
+                const {sendType} = this.formik.values;
+                if(sendType !== 'Send At'){
+                    this.props.scanAndSendNotification();
+                }
                 setTimeout(() => {
                     this.props.onSuccess();
                 }, 3000);

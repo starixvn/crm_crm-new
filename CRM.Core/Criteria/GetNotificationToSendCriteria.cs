@@ -1,4 +1,4 @@
-﻿namespace CRM.BackgroundJob.Criteria.SendNotification
+﻿namespace CRM.Core.Criteria
 {
     using Fanex.Data.Repository;
 

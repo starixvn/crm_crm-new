@@ -9,6 +9,7 @@
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Announcement;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models;
@@ -28,19 +29,22 @@
         private readonly INapSession napSession;
         private readonly ISettingService settingService;
         private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly ISendNotificationService sendNotificationService;
         private readonly string pathImages = "www/dist/images/announcement";
 
         public AnnouncementController(
             IAnnouncementService announcementService,
             INapSession napSession,
             ISettingService settingService,
-            IWebHostEnvironment hostingEnvironment
+            IWebHostEnvironment hostingEnvironment,
+            ISendNotificationService sendNotificationService
             )
         {
             this.announcementService = announcementService;
             this.napSession = napSession;
             this.settingService = settingService;
             this.hostingEnvironment = hostingEnvironment;
+            this.sendNotificationService = sendNotificationService;
         }
 
         public async Task<IActionResult> GetAnnouncementTemplate()
@@ -102,10 +106,27 @@
                 }
                 if (command.CloneAnnouncementId > 0)
                 {
-                    CoppyOldFileToNewFile(command.FileString, command.CloneAnnouncementId, command.AnnouncementId);
+                    await CoppyOldFileToNewFileAsync(command.FileString, command.CloneAnnouncementId, command.AnnouncementId);
                 }
+
             }
             return Json(commandResult);
+           
+        }
+
+        [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Host)]
+        [HttpGet]
+        public async Task<IActionResult> ScanAndSendNotification()
+        {
+            try
+            {
+                await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
+                return Ok("Send Successful !!!");
+            }
+            catch (Exception err)
+            {
+                return Ok(err.Message);
+            }
         }
 
         [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Host)]
@@ -153,7 +174,7 @@
             return Json(commandResult);
         }
 
-        private void CoppyOldFileToNewFile(IList<string> files, int cloneAnnouncementId, int announcementId)
+        private async Task CoppyOldFileToNewFileAsync(IList<string> files, int cloneAnnouncementId, int announcementId)
         {
             foreach (var file in files)
             {
@@ -165,7 +186,7 @@
                 }
                 string targetFile = getPathFile(announcementId.ToString(), file);
                 var sourceStreamFile = Path.Combine(hostingEnvironment.ContentRootPath, pathImages, cloneAnnouncementId.ToString(), file);
-                System.IO.File.Copy(sourceStreamFile, targetFile);
+                await Task.Run(() => System.IO.File.Copy(sourceStreamFile, targetFile, true));
             }
         }
 

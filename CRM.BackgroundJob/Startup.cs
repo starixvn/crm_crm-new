@@ -153,7 +153,6 @@
             services.AddSingleton<IChatBotTicketVoidingService, ChatBotTicketVoidingService>();
             services.AddSingleton<IChatBotCWLService, ChatBotCWLService>();
             services.AddSingleton<IChatBotJobService, ChatBotJobService>();
-            services.AddSingleton<ISendNotificationService, SendNotificationService>();
             services.AddSingleton<IBotHealthCheckService, BotHealthCheckService>();
             services.AddSingleton<IFeedbackTransactionService, FeedbackTransactionService>();
             services.AddSingleton<ICommonFeedback, CommonFeedback>();

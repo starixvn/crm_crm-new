@@ -360,11 +360,15 @@ export class NewAnnouncement extends Component {
         this.setState({confirmInsertDialog: { show: true, params: param}});
     };
 
-    handleConfirmInsertDialog = () =>{
+    handleConfirmInsertDialog = async () =>{
         this.handleCloseConfirmInsertDialog();
         const formData = this.state.confirmInsertDialog.params;
-        this.props.createAnnouncement(formData).then(() => {
+        await this.props.createAnnouncement(formData).then(() => {
             if (this.props.createAnnouncementResult.isSuccessful) {
+                const {sendType} = this.formik.values;
+                if(sendType !== 'Send At'){
+                    this.props.scanAndSendNotification();
+                }
                 setTimeout(() => {
                     this.props.onSuccess();
                 }, 3000);

@@ -112,34 +112,42 @@
         [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Host)]
         public async Task<IActionResult> InsertPersonalMapping([FromBody] PersonalMappingViewModel data)
         {
-            var result = new CommandResult();
-            var userProfile = await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.LetstalkId.Trim());
-
-            if (userProfile is not null && !string.IsNullOrWhiteSpace(userProfile.DisplayName))
+            try
             {
-                var criteria = new InsertPersonalMappingCommand
+                var result = new CommandResult();
+                var userProfile = await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.LetstalkId.Trim());
+
+                if (userProfile is not null && !string.IsNullOrWhiteSpace(userProfile.DisplayName))
                 {
-                    BotId = data.BotId,
-                    ConversationGroupName = userProfile.DisplayName,
-                    ChatTypeId = (int)ChatType.Personal,
-                    RecipientTypeId = data.RecipientTypeId,
-                    HeadlineIds = data.GroupHeadlineIds,
-                    RecipientId = int.Parse(data.RecipientIds),
-                    LetstalkId = data.LetstalkId,
-                    LanguageId = data.LanguageId,
-                    Remark = data.Remark,
-                    UserId = napSession.UserId,
-                    IgnoredNotificationTypeList = data.IgnoredNotificationTypeList,
-                    IsTest = data.IsTest
-                };
-                result = await chatTypeMappingService.CreatePersonalMappingAsync(criteria);
-            }
-            else
-            {
-                result.Message = string.Format(ViewResources.LetstalkInvalidMessage, data.LetstalkId);
-            }
+                    var criteria = new InsertPersonalMappingCommand
+                    {
+                        BotId = data.BotId,
+                        ConversationGroupName = userProfile.DisplayName,
+                        ChatTypeId = (int)ChatType.Personal,
+                        RecipientTypeId = data.RecipientTypeId,
+                        HeadlineIds = data.GroupHeadlineIds,
+                        RecipientId = int.Parse(data.RecipientIds),
+                        LetstalkId = data.LetstalkId,
+                        LanguageId = data.LanguageId,
+                        Remark = data.Remark,
+                        UserId = napSession.UserId,
+                        IgnoredNotificationTypeList = data.IgnoredNotificationTypeList,
+                        IsTest = data.IsTest
+                    };
+                    result = await chatTypeMappingService.CreatePersonalMappingAsync(criteria);
+                }
+                else
+                {
+                    result.Message = string.Format(ViewResources.LetstalkInvalidMessage, data.LetstalkId);
+                }
 
-            return Json(result);
+                return Json(result);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
         }
 
         [HttpPost]

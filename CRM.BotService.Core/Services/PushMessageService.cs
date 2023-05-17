@@ -53,14 +53,17 @@
             }
             try
             {
-                if (notification.Channel.Equals(BotChannel.Letstalk))
-                {
-                    await SendLetstalkAsync(notification, result);
-                }
-                if (notification.Channel.Equals(BotChannel.Telegram))
-                {
-                    await SendTelegramAsync(notification, result);
-                }
+                //if (notification.Channel.Equals(BotChannel.Letstalk))
+                //{
+                //    await SendLetstalkAsync(notification, result);
+                //}
+                //if (notification.Channel.Equals(BotChannel.Telegram))
+                //{
+                //    await SendTelegramAsync(notification, result);
+                //}
+
+                await SendLetstalkAsync(notification, result);
+                await SendTelegramAsync(notification, result);
             }
             catch (Exception ex)
             {

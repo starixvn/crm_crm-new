@@ -1,15 +1,16 @@
-﻿namespace CRM.BackgroundJob.Services
+﻿
+
+namespace CRM.Core.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using CRM.BackgroundJob.Criteria.SendNotification;
     using CRM.Core.Constants;
+    using CRM.Core.Criteria;
     using CRM.Core.Enumerables;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models.BotServices;
-    using CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
 
     public interface ISendNotificationService

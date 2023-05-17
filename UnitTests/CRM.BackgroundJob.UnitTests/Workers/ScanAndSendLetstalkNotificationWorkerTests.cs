@@ -5,7 +5,6 @@
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Workers;
     using CRM.Core.Services;
-    using CRM.Letstalk.Services.Services.Interfaces;
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using ONEbook.UM.Services;
@@ -28,7 +27,7 @@
             await service.ExecuteJobAsync();
 
             // Assert
-            await sendNotificationService.Received().SendNotificationToLetstalk();
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
         }
 
         private ScanAndSendLetstalkNotificationWorker GetService()

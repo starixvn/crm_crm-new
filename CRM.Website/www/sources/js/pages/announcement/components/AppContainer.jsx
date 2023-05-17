@@ -39,9 +39,9 @@ export class AppContainer extends Component {
         this.props.setCreateAnnouncement(null);
     }
 
-    handleCreateSuccessAnnouncement = () =>{
+    handleCreateSuccessAnnouncement = async () =>{
         this.handleCloseNewAnnouncement();
-        this.props.getGridData(this.props.gridParams);
+        await this.props.getGridData(this.props.gridParams);
     }
 
     handleCloseActionAnnouncement = () => {
@@ -51,9 +51,9 @@ export class AppContainer extends Component {
         this.props.setCreateAnnouncement(null);
     }
 
-    handleActionSuccessAnnouncement = () =>{
+    handleActionSuccessAnnouncement = async () =>{
         this.handleCloseActionAnnouncement();
-        this.props.getGridData(this.props.gridParams);
+        await this.props.getGridData(this.props.gridParams);
     }
 
     handleCloseViewDetail = () => {

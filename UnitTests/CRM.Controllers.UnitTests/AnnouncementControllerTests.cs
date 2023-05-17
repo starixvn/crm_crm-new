@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using CRM.Controllers.HeadlineNotification;
 using CRM.Core.Models;
+using CRM.Core.Services;
 using CRM.Criteria.Announcement;
 using CRM.Criteria.PicAndHeadline;
 using CRM.Models;
@@ -28,6 +29,8 @@ namespace CRM.Controllers.UnitTests
         private INapSession napSession;
         private ISettingService settingService;
         private IWebHostEnvironment hostingEnvironment;
+        private ISendNotificationService sendNotificationService;
+
         private readonly Fixture fixture = new Fixture();
 
         [Fact]
@@ -200,12 +203,13 @@ namespace CRM.Controllers.UnitTests
             napSession = Substitute.For<INapSession>();
             settingService = Substitute.For<ISettingService>();
             hostingEnvironment = Substitute.For<IWebHostEnvironment>();
-
+            sendNotificationService = Substitute.For<ISendNotificationService>();
             return new AnnouncementController(
                 announcementService,
                 napSession,
                 settingService,
-                hostingEnvironment
+                hostingEnvironment,
+                sendNotificationService
             );
         }
 
