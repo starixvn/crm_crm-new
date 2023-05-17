@@ -1,6 +1,5 @@
 ﻿namespace CRM.Services.ExportExcel
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -56,51 +55,28 @@
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
             var childReport = logStatisticsDetail.ChildReports.ToList();
+            var childReportOjb = childReport.Select((data, index) => {
+                templateWorksheet.Cells[RowStartBody, 1, RowStartBody, TotalColumns]
+                   .Copy(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalColumns]);
 
-            Parallel.ForEach(childReport, (childReport, _, index) =>
-            {
-                var rowIndex = RowStartBody + index;
-                RenderRowValue(templateWorksheet, worksheet, childReport, Convert.ToInt32(rowIndex));
+                var communicationValue = GetCommunicationValue(data.CommunicationID);
+                var mainCategoryValue = GetMainCategoryValue(data.CategoryID);
+                var subCategoryValue = GetSubCategoryValue(data.CategoryID, data.SubCategoryID);
+                var extensionValue = GetExtentionValue(data.StationID);
+                var productValue = GetProductValue(products, data.ProductID);
+                var subproductValue = GetProductValue(subProducts, data.SubProductID);
+
+                return new object[] {
+                    data.FeedbackDate.ToString("MMM dd, yyyy"), data.StartTime, data.EndTime,
+                    data.DurationTime, data.UserName, communicationValue, extensionValue,
+                    data.Role, RemoveHtmlTags(data.Contact), productValue == "N/A." ? "N/A" : productValue,
+                    subproductValue == "N/A." ? "N/A" : subproductValue, data.CountryName,
+                    mainCategoryValue, subCategoryValue, RemoveHtmlTags(data.RemarkText),
+                    RemoveHtmlTags(data.Solution), data.NoInquiries, data.Status,
+                    data.Language, data.Response, data.CreatorName, data.CreateDate.ToString("MMMM dd, yyyy hh:mm:ss tt")
+                };
             });
-        }
-
-        protected internal virtual void RenderRowValue(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet,
-            StatisticsDetailbyDateModel data, int rowIndex
-            )
-        {
-            var communicationValue = GetCommunicationValue(data.CommunicationID);
-            var mainCategoryValue = GetMainCategoryValue(data.CategoryID);
-            var subCategoryValue = GetSubCategoryValue(data.CategoryID, data.SubCategoryID);
-            var extensionValue = GetExtentionValue(data.StationID);
-            var productValue = GetProductValue(products, data.ProductID);
-            var subproductValue = GetProductValue(subProducts, data.SubProductID);
-            templateWorksheet.Cells[RowStartBody, 1, RowStartBody, TotalColumns]
-               .Copy(worksheet.Cells[rowIndex, 1, rowIndex, TotalColumns]);
-
-            var colIndex = 1;
-            worksheet.Cells[rowIndex, colIndex++].Value = data.FeedbackDate.ToString("MMM dd, yyyy");
-            worksheet.Cells[rowIndex, colIndex++].Value = data.StartTime;
-            worksheet.Cells[rowIndex, colIndex++].Value = data.EndTime;
-            worksheet.Cells[rowIndex, colIndex++].Value = data.DurationTime;
-            worksheet.Cells[rowIndex, colIndex++].Value = data.UserName;
-            worksheet.Cells[rowIndex, colIndex++].Value = data.SiteName;
-            worksheet.Cells[rowIndex, colIndex++].Value = communicationValue;
-            worksheet.Cells[rowIndex, colIndex++].Value = extensionValue;
-            worksheet.Cells[rowIndex, colIndex++].Value = data.Role;
-            worksheet.Cells[rowIndex, colIndex++].Value = RemoveHtmlTags(data.Contact);
-            worksheet.Cells[rowIndex, colIndex++].Value = productValue == "N/A." ? "N/A" : productValue;
-            worksheet.Cells[rowIndex, colIndex++].Value = subproductValue == "N/A." ? "N/A" : subproductValue;
-            worksheet.Cells[rowIndex, colIndex++].Value = data.CountryName;
-            worksheet.Cells[rowIndex, colIndex++].Value = mainCategoryValue;
-            worksheet.Cells[rowIndex, colIndex++].Value = subCategoryValue;
-            worksheet.Cells[rowIndex, colIndex++].Value = RemoveHtmlTags(data.RemarkText);
-            worksheet.Cells[rowIndex, colIndex++].Value = RemoveHtmlTags(data.Solution);
-            worksheet.Cells[rowIndex, colIndex++].Value = data.NoInquiries;
-            worksheet.Cells[rowIndex, colIndex++].Value = data.Status;
-            worksheet.Cells[rowIndex, colIndex++].Value = data.Language;
-            worksheet.Cells[rowIndex, colIndex++].Value = data.Response;
-            worksheet.Cells[rowIndex, colIndex++].Value = data.CreatorName;
-            worksheet.Cells[rowIndex, colIndex].Value = data.CreateDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+            worksheet.Cells[RowStartBody, 1, RowStartBody, TotalColumns].LoadFromArrays(childReportOjb);
         }
 
         protected internal override void ProcessUI(ExcelWorksheet worksheet)
@@ -131,7 +107,7 @@
             worksheet.Column(ColumnSolution).Width = WidthExtraLarge;
             worksheet.Column(ColumnCreatedTime).Width = WidthNormal;
         }
-        
+
         private string GetCommunicationValue(int id)
         {
             var activeSetting = communicationTools.FirstOrDefault(x => x.Id == id && x.IsActive);
@@ -143,7 +119,7 @@
             var activeSetting = extensions.FirstOrDefault(x => x.Id == id && x.IsActive);
             return activeSetting?.Value ?? string.Empty;
         }
-        
+
         private string GetMainCategoryValue(int id)
         {
             var activeSetting = mainCategories.FirstOrDefault(x => x.MainCategoryID == id && x.IsActive);
