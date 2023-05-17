@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Functions>
     <Function Name="System Setting">
-        <Setting Key="Acc_CRM_SettingSel" SpName="Acc_CRM_SettingSel_UAT3" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingSel" SpName="Acc_CRM_SettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SettingRelationSel" SpName="Acc_CRM_SettingRelationSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Job Setting Management">
@@ -79,7 +79,7 @@
         </Setting>
         <Setting Key="Acc_CRM_ProvinceSel" SpName="Acc_CRM_ProvinceSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_LanguageList" SpName="Acc_CRM_LanguageList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SiteSel" SpName="Acc_CRM_SiteSel_UAT3" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_SiteSel" SpName="Acc_CRM_SiteSel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="SiteId" ObjectProperty="Id" Class="SiteInfo" />
             <Mapping DataField="SiteName" ObjectProperty="Name" Class="SiteInfo" />
         </Setting>
@@ -121,7 +121,7 @@
             <Mapping DataField="CurrencyID" ObjectProperty="Id" />
             <Mapping DataField="Currency" ObjectProperty="Name" />
         </Setting>
-        <Setting Key="Acc_CRM_Rpt_DeletedFeedbackStatistics" SpName="Acc_CRM_Rpt_DeletedFeedbackStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Rpt_DeletedFeedbackStatistics" SpName="Acc_CRM_Rpt_DeletedFeedbackStatistics_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_Crm_Rpt_DirectCustomerReport" SpName="Acc_Crm_Rpt_DirectCustomerReport" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsWagers" SpName="Acc_CRM_Rpt_FeedbackStatisticsWagers" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSummary" SpName="Acc_CRM_Rpt_FeedbackStatisticsSummary" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -134,7 +134,7 @@
             <Mapping DataField="MainCategory" ObjectProperty="SettingId" />
             <Mapping DataField="SubCategory" ObjectProperty="SubSettingId" />
         </Setting>
-        <Setting Key="Acc_CRM_Rpt_DynamicFeedback" SpName="Acc_CRM_Rpt_DynamicFeedback" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Rpt_DynamicFeedback" SpName="Acc_CRM_Rpt_DynamicFeedback_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_Crm_Rpt_RedemptionStatistics" SpName="Acc_Crm_Rpt_RedemptionStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_Crm_Rpt_RedemptionStatisticsDetail" SpName="Acc_Crm_Rpt_RedemptionStatisticsDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_Crm_Rpt_CustomerReport" SpName="Acc_Crm_Rpt_CustomerReport" DbName="DBCRM.bodb_CRM.bodbAdminNet">
@@ -158,7 +158,7 @@
         <Setting Key="Acc_CRM_PicManagementSel" SpName="Acc_CRM_PicManagementSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PICStatusUpd" SpName="Acc_CRM_PICStatusUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PICAssignmentValidation" SpName="Acc_CRM_PICAssignmentValidation" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_SiteSel_Credit" SpName="Acc_SiteSel_Credit_UAT3" DbName="DBEXT.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_SiteSel_Credit" SpName="Acc_SiteSel_Credit" DbName="DBEXT.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_PicSel" SpName="Acc_CRM_PicSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PICAssignmentSel" SpName="Acc_CRM_PICAssignmentSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PICAssignment" SpName="Acc_CRM_PICAssignment" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -192,7 +192,7 @@
         <Setting Key="Acc_CRM_GuestFeedbackIns" SpName="Acc_CRM_GuestFeedbackIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Funtcion name="Customer">
-        <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="Wire_BankName" ObjectProperty="BankName" />
             <Mapping DataField="Wire_SwiftCode" ObjectProperty="BankSwiftCode" />
             <Mapping DataField="Wire_AccountName" ObjectProperty="BankAccountName" />
@@ -202,13 +202,13 @@
             <Mapping DataField="danger2" ObjectProperty="ABTDangerLevel" />
             <Mapping DataField="danger3" ObjectProperty="OtherSportsDangerLevel" />
         </Setting>
-        <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="CustStatus" ObjectProperty="Status" />
         </Setting>
-        <Setting Key="Acc_CRM_CustomerUpdateBasicInfo" SpName="Acc_CRM_CustomerUpdateBasicInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_CustomerUpdUserSearch" SpName="Acc_CRM_CustomerUpdUserSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerUpdateBasicInfo" SpName="Acc_CRM_CustomerUpdateBasicInfo_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerUpdUserSearch" SpName="Acc_CRM_CustomerUpdUserSearch_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_RelatedCustomerVerify" SpName="Acc_CRM_RelatedCustomerVerify" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_CustomerSelUserSearch" SpName="Acc_CRM_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerSelUserSearch" SpName="Acc_CRM_CustomerSelUserSearch_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CheckDirectAccount" SpName="Acc_CRM_CheckDirectAccount" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerSel_New" SpName="Acc_CRM_CustomerSel_New" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="Wire_BankName" ObjectProperty="BankName" />
@@ -238,7 +238,7 @@
         <Setting Key="NAP_User_Search" SpName="NAP_User_Search" DbName="DBPOL.NAP_UserControl.bodbAdminNet" />
     </Funtcion>
     <Funtcion name="Communication">
-        <Setting Key="Acc_CRM_CommunicationLogList" SpName="Acc_CRM_CommunicationLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_CommunicationLogList" SpName="Acc_CRM_CommunicationLogList_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="HandleBy" ObjectProperty="Handler" />
             <Mapping DataField="ReviewBy" ObjectProperty="Reviewer" />
         </Setting>
@@ -303,8 +303,8 @@
     </Function>
     <Function Name="SettingManagement">
         <Setting Key="Acc_CRM_SettingDel" SpName="Acc_CRM_SettingDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SettingIns" SpName="Acc_CRM_SettingIns_UAT3" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SettingUpd" SpName="Acc_CRM_SettingUpd_UAT3" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingIns" SpName="Acc_CRM_SettingIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingUpd" SpName="Acc_CRM_SettingUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SourceSettingMappingUpd" SpName="Acc_CRM_SourceSettingMappingUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SourceLicenseeMappingSel" SpName="Acc_CRM_SourceLicenseeMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_LicenseeManagerSel" SpName="Acc_CRM_LicenseeManagerSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -313,8 +313,8 @@
     </Function>
     <Function Name="SMAPersonalMessage">
         <Setting Key="Acc_CRM_PersonalMessageSel" SpName="Acc_CRM_PersonalMessageSel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PersonalMessageIns" SpName="Acc_CRM_PersonalMessageIns_xpre" DbName="DBMSG.bodb_Message.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PersonalMessageDel" SpName="Acc_CRM_PersonalMessageDel_xpre" DbName="DBMSG.bodb_Message.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PersonalMessageIns" SpName="Acc_CRM_PersonalMessageIns" DbName="DBMSG.bodb_Message.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PersonalMessageDel" SpName="Acc_CRM_PersonalMessageDel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
         <Setting Key="Acc_CRM_PersonalMessageCheck" SpName="Acc_CRM_PersonalMessageCheck" DbName="DBCUST.CustDB.bodbAdminNet" />
     </Function>
     <Function Name="Announcement">
