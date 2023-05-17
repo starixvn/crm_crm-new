@@ -63,7 +63,7 @@
             }
 
             byte[] textBuffer = Encoding.UTF8.GetBytes(plaintext);
-            byte[] hashBuffer = new SHA256Managed().ComputeHash(textBuffer);
+            byte[] hashBuffer = SHA256.Create().ComputeHash(textBuffer);
             string hash = BitConverter.ToString(hashBuffer);
 
             return hash.Replace("-", string.Empty).ToLowerInvariant();

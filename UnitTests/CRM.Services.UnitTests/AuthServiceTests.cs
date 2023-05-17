@@ -125,7 +125,7 @@ namespace CRM.Services.UnitTests
         private string Hash(string plain)
         {
             byte[] textBuffer = Encoding.UTF8.GetBytes(plain);
-            byte[] hashBuffer = new SHA256Managed().ComputeHash(textBuffer);
+            byte[] hashBuffer = SHA256.Create().ComputeHash(textBuffer);
             string hash = BitConverter.ToString(hashBuffer);
 
             return hash.Replace("-", string.Empty).ToLowerInvariant();

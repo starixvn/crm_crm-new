@@ -9,14 +9,12 @@
     using CRM.Core.Models;
     using CRM.Criteria.ChatTypeMapping;
     using CRM.Criteria.Common;
-    using CRM.Letstalk.Client.Models;
-    using CRM.Letstalk.Client.Models.Results;
-    using CRM.Letstalk.Client.Services.Interfaces;
     using CRM.Models;
     using CRM.Models.ChatTypeMapping;
     using CRM.Models.Common;
     using CRM.Resources;
     using CRM.Services;
+    using CRM.Services.BotServices.Interfaces;
     using CRM.ViewModels.ChatTypeMapping;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
@@ -30,7 +28,7 @@
         private ISettingService settingService;
         private ICommonService commonService;
         private IChatTypeMappingService chatTypeMappingService;
-        private Func<int, ILetstalkService> letstalkService;
+        private ILetstalkApiService letstalkService;
         private IExportExcelService excelService;
 
         [Fact]
@@ -119,7 +117,6 @@
             var result = (CommandResult)jsonResult.Value;
             Assert.Equal(expected, result);
         }
-
 
         [Fact]
         public async Task InsertPersonalMapping_WhenInvalidLetstalkId_ReturnExpectedCommandResult()
@@ -383,7 +380,7 @@
             settingService = Substitute.For<ISettingService>();
             commonService = Substitute.For<ICommonService>();
             chatTypeMappingService = Substitute.For<IChatTypeMappingService>();
-            letstalkService = Substitute.For<Func<int, ILetstalkService>>();
+            letstalkService = Substitute.For<ILetstalkApiService>();
             excelService = Substitute.For<IExportExcelService>();
 
             return new ChatTypeMappingController(
@@ -391,8 +388,9 @@
                 settingService,
                 commonService,
                 chatTypeMappingService,
-                letstalkService,
-                excelService);
+                excelService,
+                letstalkService
+                );
         }
 
         #endregion helper

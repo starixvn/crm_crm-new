@@ -1,33 +1,32 @@
 ﻿namespace CRM.BackgroundJob.UnitTests.Services
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using AutoFixture;
-    using Microsoft.Extensions.Configuration;
+    using CRM.BackgroundJob.Criteria.ChatBot;
+    using CRM.BackgroundJob.Criteria.ChatBot_ArchivingDA;
+    using CRM.BackgroundJob.Criteria.ChatBot_CTO;
+    using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
+    using CRM.BackgroundJob.Criteria.ChatBotCWL;
+    using CRM.BackgroundJob.Criteria.ChatbotProblemAccount;
+    using CRM.BackgroundJob.Models.ChatBot;
+    using CRM.BackgroundJob.Models.ChatBotCTO;
     using CRM.BackgroundJob.Models.ChatBotCWL;
+    using CRM.BackgroundJob.Models.ChatBotProblemsAccount;
+    using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Models;
     using CRM.Core.Services;
-    using CRM.Letstalk.Services.Services.Interfaces;
     using Fanex.CRM.BackgroundJob.Constants;
+    using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
     using Fanex.CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Models.ChatBot;
     using Fanex.CRM.BackgroundJob.Services;
+    using Microsoft.Extensions.Configuration;
     using NSubstitute;
     using Xunit;
-    using CRM.BackgroundJob.Models.ChatBotCTO;
-    using CRM.BackgroundJob.Models.ChatBotProblemsAccount;
-    using System;
-    using CRM.BackgroundJob.Models.ChatBot;
-    using CRM.BackgroundJob.Models.ChatBotResulAmendment;
-    using System.Linq;
-    using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
-    using CRM.BackgroundJob.Criteria.ChatBot_CTO;
-    using CRM.BackgroundJob.Criteria.ChatBotCWL;
-    using CRM.BackgroundJob.Criteria.ChatbotProblemAccount;
-    using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
-    using CRM.BackgroundJob.Criteria.ChatBot;
-    using CRM.BackgroundJob.Criteria.ChatBot_ArchivingDA;
 
     public class ChatBotJobServiceTests
     {
@@ -58,7 +57,6 @@
             // Assert
             logService.Received().LogInformation("ChatBot - AbnormalBets Service is shutdown.");
         }
-
 
         [Fact]
         public async Task PullMessageAndSendNotificationAsync_ImportTicketVoidingAsync_ExpectedCallEditVoidingMessageAsync()
@@ -94,7 +92,7 @@
 
             // Assert
             logService.Received().LogInformation("Import ChatBot - AbnormalBets Successful!!!");
-            await sendNotificationService.Received().SendNotificationToLetstalk();
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
         }
 
         [Fact]
@@ -131,9 +129,8 @@
 
             // Assert
             logService.Received().LogInformation(Arg.Any<string>());
-            await sendNotificationService.Received().DidNotReceive().SendNotificationToLetstalk();
+            await sendNotificationService.Received().DidNotReceive().ScanAndSendMessageToBotEndpointAsync();
         }
-
 
         [Fact]
         public async Task PullMessageCTOAndSendNotificationToHeadlineAsync_ServiceIsShutdown_ExpectedWriteLog()
@@ -178,7 +175,7 @@
         }
 
         [Fact]
-        public async Task PullMessageCTOAndSendNotificationToHeadlineAsync_ImportCWLLogInfoAsyncsuccessful_ExpectedToCallSendNotificationToLetstalk()
+        public async Task PullMessageCTOAndSendNotificationToHeadlineAsync_ImportCWLLogInfoAsyncsuccessful_ExpectedToCallScanAndSendMessageToBotEndpointAsync()
         {
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
@@ -199,7 +196,7 @@
             await service.PullMessageCTOAndSendNotificationToHeadlineAsync();
 
             // Assert
-            await sendNotificationService.Received().SendNotificationToLetstalk();
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
         }
 
         [Fact]
@@ -240,7 +237,7 @@
         }
 
         [Fact]
-        public async Task PullMessageCWLAndSendNotificationToHeadlineAsync_ImportCWLLogInfoAsyncsuccessful_ExpectedToCallSendNotificationToLetstalk()
+        public async Task PullMessageCWLAndSendNotificationToHeadlineAsync_ImportCWLLogInfoAsyncsuccessful_ExpectedToCallScanAndSendMessageToBotEndpointAsync()
         {
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
@@ -257,9 +254,8 @@
             await service.PullMessageCWLAndSendNotificationToHeadlineAsync();
 
             // Assert
-            await sendNotificationService.Received().SendNotificationToLetstalk();
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
         }
-
 
         [Fact]
         public async Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync_ServiceIsShutdown_ExpectedWriteLog()
@@ -302,7 +298,7 @@
         }
 
         [Fact]
-        public async Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync_ImportProblemsAccountInfoAsyncSuccessful_ExpectedToCallSendNotificationToLetstalk()
+        public async Task PullMessageProblemsAccountAndSendNotificationToHeadlineAsync_ImportProblemsAccountInfoAsyncSuccessful_ExpectedToCallScanAndSendMessageToBotEndpointAsync()
         {
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true };
             var problemsAcountInfors = fixture.Create<IEnumerable<ChatBotProblemsAccountInfor>>();
@@ -321,7 +317,7 @@
             await service.PullMessageProblemsAccountAndSendNotificationToHeadlineAsync();
 
             // Assert
-            await sendNotificationService.Received().SendNotificationToLetstalk();
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
         }
 
         [Fact]
@@ -402,7 +398,7 @@
         }
 
         [Fact]
-        public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync_ImportChatBotAmendmentResultAsyncSuccessful_ExpectedToCallSendNotificationToLetstalk()
+        public async Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync_ImportChatBotAmendmentResultAsyncSuccessful_ExpectedToCallScanAndSendMessageToBotEndpointAsync()
         {
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true, BatchSizeGetMsg = 10 };
@@ -434,7 +430,7 @@
             await service.PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
 
             // Assert
-            await sendNotificationService.Received().SendNotificationToLetstalk();
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
         }
 
         [Fact]
@@ -453,7 +449,7 @@
         }
 
         [Fact]
-        public async Task PullMessagArchivingDAAndSendNotificationToHeadlineAsync_ImportArchivedAccountsAsyncSuccessful_ExpectedToCallSendNotificationToLetstalk()
+        public async Task PullMessagArchivingDAAndSendNotificationToHeadlineAsync_ImportArchivedAccountsAsyncSuccessful_ExpectedToCallScanAndSendMessageToBotEndpointAsync()
         {
             // Arrange
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true, LastLogId = 1, BatchSize = 3000 };
@@ -469,7 +465,7 @@
             await service.PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
 
             // Assert
-            await sendNotificationService.Received().SendNotificationToLetstalk();
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
         }
 
         [Fact]
@@ -492,7 +488,6 @@
             logService.Received(1).LogInformation(Arg.Any<string>());
             await logService.Received().ErrorAsync(valueTupe.Item1, valueTupe.Item2);
         }
-
 
         #region Helpers
 

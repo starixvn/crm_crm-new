@@ -1,4 +1,4 @@
-﻿namespace CRM.Letstalk.Core.Tests.Criteria
+﻿namespace CRM.BotService.Core.Tests.Criteria
 {
     using CRM.BotService.Core.Criteria;
     using Xunit;
