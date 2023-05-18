@@ -6,8 +6,14 @@
             display: none;
         }
 
-        .form-row .form-group .form-label{
-            width: 110px !important;
+        .filter-collapse {
+            .fa {
+                font-size: 10px;
+                width: 22px;
+                background-color: #464D5D;
+                color: white;
+                cursor: pointer;
+            }
         }
     }
     

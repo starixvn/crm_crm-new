@@ -1,1 +1,24 @@
 @import '~bootstrap-daterangepicker/daterangepicker';
+
+.date-range-picker{
+    position: relative;
+    width: 220px !important;
+
+    .disabled{
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    .form-date-range{
+        input{
+            width: 100% !important;
+            cursor: pointer;
+        }
+        
+        .date-range-picker-icon{
+            position: absolute;
+            top: 6px;
+            right: 10px;
+        }
+    }
+}

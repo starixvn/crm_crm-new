@@ -1,38 +1,56 @@
 import React from 'react';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
+import { Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import {RANGE_DATE_SETTING} from './constants';
+import DateTimeService from '@jsroot/common/dateTimeService';
 
 export default class DateRangePickerField extends React.Component {
     static propTypes = {
+        autoApply: PropTypes.bool,
         className: PropTypes.string,
-        isDisabledTime: PropTypes.bool,
-        isInvalid: PropTypes.bool
+        disabled: PropTypes.bool,
+        setEndDate: PropTypes.func,
+        setStartDate: PropTypes.func,
+        showDropdowns: PropTypes.bool,
+        singleDatePicker: PropTypes.bool
     };
 
     static defaultProps = {
+        autoApply: true,
         className: '',
         startDate: new Date(),
         endDate: new Date(),
-        isDisabledTime: false,
-        isInvalid: false
+        disabled: false,
+        showDropdowns: true,
+        singleDatePicker: false
+
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-        };
-        this.ref = React.createRef();
-    }
+    handleCallback = (start, end) => {
+        this.props.setStartDate(new Date(start));
+        this.props.setEndDate(new Date(end));
+    };
+    
     render() {
-        const { className, isInvalid, startDate, endDate, isDisabledTime, ...rest } = this.props;
+        const { className, disabled, maxDate, minDate, startDate, endDate, autoApply,
+            setStartDate, setEndDate, showDropdowns, singleDatePicker, ...rest } = this.props;
+        const label = DateTimeService.toShortDateFormat(startDate) + ' - ' + DateTimeService.toShortDateFormat(endDate);
         return (
             <div className='date-range-picker'>
                 <DateRangePicker
-                    initialSettings={{ startDate: startDate, endDate }}
+                    initialSettings={{
+                        ranges: RANGE_DATE_SETTING,
+                        startDate: startDate, endDate: endDate, singleDatePicker: singleDatePicker,
+                        minDate: minDate, maxDate: maxDate, showDropdowns: showDropdowns, autoApply: autoApply
+                    }}
+                    onCallback={this.handleCallback}
                     {...rest}
                 >
-                    <input type="text" className="form-control" />
+                    <div className={`form-date-range ${disabled ?'disabled': ''}`}>
+                        <Form.Control as='input' className="shadow-none" disabled={disabled} size="sm" value={label} />
+                        <i className='date-range-picker-icon fa fa-calendar' />
+                    </div>
                 </DateRangePicker>
             </div>
         );
