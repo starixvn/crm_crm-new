@@ -238,6 +238,15 @@ export class Filter extends Component {
         return (
             <Form className='form-filter' onSubmit={e => this.submitHandler(e)}>
                 <Form.Row bsPrefix='form-row'>
+                    <Form.Group >
+                        <Form.Label>{LangHelper.getResource('BotService')}</Form.Label>
+                        <Form.Control as="select" size="sm" className="shadow-none"  name='botService'
+                            value={this.state.filter.botService}
+                            onChange={e => this.handleChangeFilterControl(e)}
+                        >
+                            {botServices.map((item, key) => <option key={key} value={item}>{item}</option>)}
+                        </Form.Control>
+                    </Form.Group>
                     <Form.Group>
                         <Form.Label>{LangHelper.getResource('NotificationType')}</Form.Label>
                         <div className='form-control-wrapper'>
@@ -253,8 +262,8 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group style={{width: '330px'}}>
-                        <Form.Label>{LangHelper.getResource('Date')}</Form.Label>
+                    <Form.Group style={{width: '300px'}}>
+                        <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Date')}</Form.Label>
                         <DateRangePicker
                             disabled={this.isDisabledDateParam()}
                             setStartDate={this.handleSetStartDate}
@@ -292,15 +301,6 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group >
-                        <Form.Label>{LangHelper.getResource('BotService')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none"  name='botService'
-                            value={this.state.filter.botService}
-                            onChange={e => this.handleChangeFilterControl(e)}
-                        >
-                            {botServices.map((item, key) => <option key={key} value={item}>{item}</option>)}
-                        </Form.Control>
-                    </Form.Group>
                     {
                         !this.state.showFilter &&
                         <Form.Group>
@@ -335,22 +335,22 @@ export class Filter extends Component {
                                 />
                             </div>
                         </Form.Group>
-                        <Form.Group style={{width: '330px'}}>
-                            <Form.Control style={{width: '108px'}} as="select" size="sm" className="shadow-none"  name='referenceType'
+                        <Form.Group style={{width: '260px'}}>
+                            <Form.Control style={{width: '108px', margin: '0 0.5rem 0 0', padding: '0'}} as="select" size="sm" className="shadow-none"  name='referenceType'
                                 value={this.state.filter.referenceType}
                                 onChange={e => this.handleChangeFilterControl(e)}
                             >
                                 {referenceIds.map((item, key) => <option key={key} value={item}>{item}</option>)}
                             </Form.Control>
-                            <Form.Control style={{width: '219px'}} as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none' name='referenceId'
+                            <Form.Control style={{width: '152px'}} as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none' name='referenceId'
                                 value={this.state.filter.referenceId}
                                 onChange={e => this.handleChangeFilterControl(e)}
                                 onPaste={this.handlePasteAnnouncementId}
                             />
                         </Form.Group>
-                        <Form.Group>
-                            <Form.Label>{LangHelper.getResource('Content')}</Form.Label>
-                            <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
+                        <Form.Group style={{width: '300px'}}>
+                            <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Content')}</Form.Label>
+                            <Form.Control style={{width: '223px'}} as='input' type='text' size='sm' className='shadow-none' name='content'
                                 value={this.state.filter.content}
                                 autoComplete='off'
                                 onChange={e => this.handleChange(e)}
