@@ -30,7 +30,7 @@ export class Filter extends Component {
             currencyOptions: [],
             statusOptions: [],
             positionOptions: [],
-            showFilter: true
+            showFilter: false
         };
     }
 
@@ -181,112 +181,126 @@ export class Filter extends Component {
 
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
+                <Form.Row bsPrefix='form-row'>
+                    <Form.Group>
+                        <Form.Label>{LangHelper.getResource('Site')}</Form.Label>
+                        <div className='form-control-wrapper'>
+                            <MultipleSelect
+                                dataSource={this.state.siteOptions}
+                                keyField='id'
+                                valueField='name'
+                                statusField='checked'
+                                isSummited={false}
+                                isAllTextShown
+                                onChange={
+                                    (currentItem, selectedItemsKey) => this.handleSiteChange(currentItem, selectedItemsKey)
+                                }
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>{LangHelper.getResource('Currency')}</Form.Label>
+                        <div className='form-control-wrapper'>
+                            <MultipleSelect
+                                dataSource={this.state.currencyOptions}
+                                keyField='id'
+                                valueField='name'
+                                statusField='checked'
+                                isSummited={false}
+                                isAllTextShown
+                                onChange={
+                                    (currentItem, selectedItemsKey) => this.handleCurrencyChange(currentItem, selectedItemsKey)
+                                }
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>{LangHelper.getResource('Status')}</Form.Label>
+                        <div className='form-control-wrapper'>
+                            <MultipleSelect
+                                dataSource={this.state.statusOptions}
+                                keyField='id'
+                                valueField='name'
+                                statusField='checked'
+                                isSummited={false}
+                                isAllTextShown
+                                onChange={
+                                    (currentItem, selectedItemsKey) => this.handleStatusChange(currentItem, selectedItemsKey)
+                                }
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>{LangHelper.getResource('HeadlineType')}</Form.Label>
+                        <Form.Control as='select' size='sm' className='shadow-none'
+                            name='headlineType' value={this.state.filter.headlineType}
+                            onChange={this.handleChange}
+                        >
+                            <option value={2}>{LangHelper.getResource('All')}</option>
+                            {
+                                this.props.settings && this.props.settings.headlineTypeList &&
+                                this.props.settings.headlineTypeList.map(this.renderHeadlineTypeOption)
+                            }
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
+                        <Form.Control as='input' size='sm' className='shadow-none'
+                            name='groupHeadline' value={this.state.filter.groupHeadline}
+                            onChange={this.handleChange}
+                        />
+                    </Form.Group>
+                    {
+                        !this.state.showFilter &&
+                        <Form.Row>
+                            <div>
+                                <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
+                                    {LangHelper.getResource('Submit')}
+                                </Button>
+                                {
+                                    isHost &&
+                                    <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
+                                        {LangHelper.getResource('AssignPIC')}
+                                    </Button>
+                                }
+                            </div>
+                        </Form.Row>
+                    }
+                </Form.Row>
                 {
                     this.state.showFilter &&
-                    <Fragment>
-                        <Form.Row bsPrefix='form-row'>
-                            <Form.Group>
-                                <Form.Label>{LangHelper.getResource('Site')}</Form.Label>
-                                <div className='form-control-wrapper'>
-                                    <MultipleSelect
-                                        dataSource={this.state.siteOptions}
-                                        keyField='id'
-                                        valueField='name'
-                                        statusField='checked'
-                                        isSummited={false}
-                                        isAllTextShown
-                                        onChange={
-                                            (currentItem, selectedItemsKey) => this.handleSiteChange(currentItem, selectedItemsKey)
-                                        }
-                                    />
-                                </div>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>{LangHelper.getResource('Currency')}</Form.Label>
-                                <div className='form-control-wrapper'>
-                                    <MultipleSelect
-                                        dataSource={this.state.currencyOptions}
-                                        keyField='id'
-                                        valueField='name'
-                                        statusField='checked'
-                                        isSummited={false}
-                                        isAllTextShown
-                                        onChange={
-                                            (currentItem, selectedItemsKey) => this.handleCurrencyChange(currentItem, selectedItemsKey)
-                                        }
-                                    />
-                                </div>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>{LangHelper.getResource('Status')}</Form.Label>
-                                <div className='form-control-wrapper'>
-                                    <MultipleSelect
-                                        dataSource={this.state.statusOptions}
-                                        keyField='id'
-                                        valueField='name'
-                                        statusField='checked'
-                                        isSummited={false}
-                                        isAllTextShown
-                                        onChange={
-                                            (currentItem, selectedItemsKey) => this.handleStatusChange(currentItem, selectedItemsKey)
-                                        }
-                                    />
-                                </div>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>{LangHelper.getResource('HeadlineType')}</Form.Label>
-                                <Form.Control as='select' size='sm' className='shadow-none'
-                                    name='headlineType' value={this.state.filter.headlineType}
-                                    onChange={this.handleChange}
-                                >
-                                    <option value={2}>{LangHelper.getResource('All')}</option>
-                                    {
-                                        this.props.settings && this.props.settings.headlineTypeList &&
-                                        this.props.settings.headlineTypeList.map(this.renderHeadlineTypeOption)
+                    <Form.Row bsPrefix='form-row'>
+                        <Form.Group>
+                            <Form.Label>{LangHelper.getResource('PIC')}</Form.Label>
+                            <Form.Control as='input' size='sm' className='shadow-none'
+                                name='picName' value={this.state.filter.picName}
+                                onChange={this.handleChange}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>{LangHelper.getResource('DirectAccount')}</Form.Label>
+                            <Form.Control as='input' size='sm' className='shadow-none'
+                                name='directAccount' value={this.state.filter.directAccount}
+                                onChange={this.handleChange}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>{LangHelper.getResource('Position')}</Form.Label>
+                            <div className='form-control-wrapper'>
+                                <MultipleSelect
+                                    dataSource={this.state.positionOptions}
+                                    keyField='id'
+                                    valueField='name'
+                                    statusField='checked'
+                                    isSummited={false}
+                                    isAllTextShown
+                                    onChange={
+                                        (currentItem, selectedItemsKey) => this.handlePositionChange(currentItem, selectedItemsKey)
                                     }
-                                </Form.Control>
-                            </Form.Group>
-                        </Form.Row>
-                        <Form.Row bsPrefix='form-row'>
-                            <Form.Group>
-                                <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
-                                <Form.Control as='input' size='sm' className='shadow-none'
-                                    name='groupHeadline' value={this.state.filter.groupHeadline}
-                                    onChange={this.handleChange}
                                 />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>{LangHelper.getResource('PIC')}</Form.Label>
-                                <Form.Control as='input' size='sm' className='shadow-none'
-                                    name='picName' value={this.state.filter.picName}
-                                    onChange={this.handleChange}
-                                />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>{LangHelper.getResource('DirectAccount')}</Form.Label>
-                                <Form.Control as='input' size='sm' className='shadow-none'
-                                    name='directAccount' value={this.state.filter.directAccount}
-                                    onChange={this.handleChange}
-                                />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>{LangHelper.getResource('Position')}</Form.Label>
-                                <div className='form-control-wrapper'>
-                                    <MultipleSelect
-                                        dataSource={this.state.positionOptions}
-                                        keyField='id'
-                                        valueField='name'
-                                        statusField='checked'
-                                        isSummited={false}
-                                        isAllTextShown
-                                        onChange={
-                                            (currentItem, selectedItemsKey) => this.handlePositionChange(currentItem, selectedItemsKey)
-                                        }
-                                    />
-                                </div>
-                            </Form.Group>
-                        </Form.Row>
-                        <Form.Row>
+                            </div>
+                        </Form.Group>
+                        <Form.Group id='form-checkbox'>
                             <div className='filter-checkbox'>
                                 <input type='checkbox'
                                     className='shadow-none'
@@ -310,21 +324,24 @@ export class Filter extends Component {
                                 />
                                 <div className='filter-checkbox-text'>{LangHelper.getResource('ExcludeTestAccounts')}</div>
                             </div>
-                        </Form.Row>
-                        <Form.Row>
-                            <div className='button-row'>
-                                <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
-                                    {LangHelper.getResource('Submit')}
+                        </Form.Group>
+                    </Form.Row>
+                }
+                {
+                    this.state.showFilter &&
+                    <Form.Row>
+                        <div>
+                            <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
+                                {LangHelper.getResource('Submit')}
+                            </Button>
+                            {
+                                isHost &&
+                                <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
+                                    {LangHelper.getResource('AssignPIC')}
                                 </Button>
-                                {
-                                    isHost &&
-                                    <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
-                                        {LangHelper.getResource('AssignPIC')}
-                                    </Button>
-                                }
-                            </div>
-                        </Form.Row>
-                    </Fragment>
+                            }
+                        </div>
+                    </Form.Row>
                 }
                 <div className="filter-collapse text-center">
                     {

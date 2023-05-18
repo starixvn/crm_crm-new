@@ -6,6 +6,7 @@ import { ActionCreators } from '../actions/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
+import DateRangePicker from '@jsroot/components/date-range-picker/index';
 import { handleNewResendOptions } from '../functions';
 import Select from '@jsroot/components/CustomReactSelect';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
@@ -296,6 +297,9 @@ export class Filter extends Component {
                                 onChange={value => this.handleToDateChange(value)}
                             />
                         </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <DateRangePicker />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>

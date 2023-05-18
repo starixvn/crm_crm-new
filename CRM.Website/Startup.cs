@@ -138,6 +138,8 @@
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
+            RegisterDI(services);
+
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -165,13 +167,12 @@
                 RequestPath = "/www/dist"
             });
 
-            app.UseCookiePolicy();
-            app.UseSession();
             app.UseRouting();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod());
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseCookiePolicy();
+            app.UseSession();
 
             NapClientManager
               .UseConfig(app.ApplicationServices.GetService<INapSettings>())
