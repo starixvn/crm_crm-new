@@ -16,19 +16,16 @@ import UnderlineButton from '@jsroot/common/underlineButton';
 export class Filter extends Component {
     constructor(props) {
         super(props);
-        this.currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
-        const currentDate = new Date(DateTimeService.toShortDateTimeFormat(currentClientTime));
-        const firstDateCurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-
-        const toDate = currentDate;
-        this.maxFromDate = currentDate;
-        this.maxToDate = currentDate;
+        const currentClientTime = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
+        const firstDateCurrentMonth = new Date(currentClientTime.getFullYear(), currentClientTime.getMonth(), 1);
+        this.maxFromDate = currentClientTime;
+        this.maxToDate = currentClientTime;
         this.minToDate = firstDateCurrentMonth;
-        this.currentDate = currentDate;
+        this.currentDate = currentClientTime;
 
         this.state = {
             fromDate: firstDateCurrentMonth,
-            toDate: toDate,
+            toDate: currentClientTime,
             mainCategoryId: 0,
             subCategoryId: 0,
             reportType: 1,
