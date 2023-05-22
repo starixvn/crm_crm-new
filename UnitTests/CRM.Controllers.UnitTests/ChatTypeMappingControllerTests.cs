@@ -127,7 +127,7 @@
             var criteria = fixture.Create<InsertPersonalMappingCommand>();
             var controller = GetController();
             var invalidLetstalk = fixture.Create<string>();
-            letstalkClientService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(userProfile);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(userProfile);
             chatTypeMappingService.CreatePersonalMappingAsync(Arg.Do<InsertPersonalMappingCommand>(x => criteria = x)).Returns(commandResult);
             var actual = await controller.InsertPersonalMapping(new PersonalMappingViewModel { BotId = 100020, LetstalkId = invalidLetstalk, RecipientIds = "1" });
 
@@ -148,7 +148,7 @@
 
             var controller = GetController();
 
-            letstalkClientService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkResult);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkResult);
             chatTypeMappingService.CreatePersonalMappingAsync(Arg.Any<InsertPersonalMappingCommand>()).Returns(expected);
 
             var actual = await controller.InsertPersonalMapping(viewModal);
@@ -165,7 +165,7 @@
             var userProfile = new LetstalkContact { DisplayName = string.Empty };
             var controller = GetController();
             var invalidLetstalk = fixture.Create<string>();
-            letstalkClientService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(userProfile);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(userProfile);
 
             var actual = await controller.UpdatePersonalMapping(new PersonalMappingViewModel { BotId = 100020, LetstalkId = invalidLetstalk });
 
@@ -186,7 +186,7 @@
 
             var controller = GetController();
 
-            letstalkClientService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkResult);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkResult);
             chatTypeMappingService.EditChatTypeMappingAsync(Arg.Any<UpdateChatTypeMappingCommand>()).Returns(expected);
 
             var actual = await controller.UpdatePersonalMapping(viewModal);
@@ -300,7 +300,7 @@
             expected.FirstOrDefault().Letstalks[1].IsBotFriend = false;
             var controller = GetController();
 
-            letstalkClientService.VerifyLetstalkOnGroup(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<List<RecipientLetstalk>>()).Returns(letsalkValidationModel);
+            letstalkService.VerifyLetstalkOnGroup(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<List<RecipientLetstalk>>()).Returns(letsalkValidationModel);
 
             var actual = await controller.VerifyLetstalkInGroup(inputData);
 
@@ -314,7 +314,7 @@
         {
             var letstalkContact = new LetstalkContact { DisplayName = string.Empty };
             var controller = GetController();
-            letstalkClientService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkContact);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkContact);
             var actual = await controller.GetLetstalkDisplayName(1, "abc");
             Assert.Equal(string.Empty, actual);
         }
@@ -324,7 +324,7 @@
         {
             var letstalkContact = new LetstalkContact { DisplayName = "DisplayName" };
             var controller = GetController();
-            letstalkClientService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkContact);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkContact);
             var actual = await controller.GetLetstalkDisplayName(1, "abc");
             Assert.Equal("DisplayName", actual);
         }
