@@ -225,6 +225,18 @@ export class NewAnnouncement extends Component {
         }
     }
 
+    checkInvalidMaxLengthContent = content =>{
+        const contentByTab = content[this.state.tab];
+        const contentReplaceHtml = contentByTab.replace(/(<([^>]+)>)/gi, '');
+        const MAX_LENGTH_TELEGRAM = 4096;
+        let invalidContentMaxLength = false;
+        if(contentReplaceHtml.length > MAX_LENGTH_TELEGRAM){
+            invalidContentMaxLength = true;
+        }
+        const textInvalidContentMaxLength = `Max length ${contentReplaceHtml.length}/${MAX_LENGTH_TELEGRAM}`;
+        return {invalidContentMaxLength, textInvalidContentMaxLength};
+    }
+
     renderForm = ({
         values,
         errors,
@@ -239,6 +251,7 @@ export class NewAnnouncement extends Component {
             values, handleChange, errors, touched
         };
         const {parameters, isChangeTemplate} = this.state;
+        const {invalidContentMaxLength, textInvalidContentMaxLength} = this.checkInvalidMaxLengthContent(values.content);
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -281,7 +294,7 @@ export class NewAnnouncement extends Component {
                     </Form.Group>
                     {
                         <ContentTab
-                            isValidContent={touched.content && errors.content} content={values.content} setFieldValue={setFieldValue}
+                            isValidContent={(touched.content && errors.content) || invalidContentMaxLength} content={values.content} setFieldValue={setFieldValue}
                             languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab}
                         />
                     }
@@ -309,7 +322,10 @@ export class NewAnnouncement extends Component {
                             </div>
                         </Form.Group>
                     }
-                    <UploadFile setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}/>
+                    <UploadFile 
+                        setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
+                        invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength} 
+                    />
                     <Form.Group as={Row}>
                         <Form.Label column sm="2" md="2" htmlFor="groupHeadline">
                             {LangHelper.getResource('GroupHeadline')}
@@ -355,9 +371,14 @@ export class NewAnnouncement extends Component {
     };
 
     handleSubmit = (values, { setSubmitting }) => {
-        setSubmitting(true);
-        const param = getParams(values, this.state);
-        this.setState({confirmInsertDialog: { show: true, params: param}});
+        const {invalidContentMaxLength} = this.checkInvalidMaxLengthContent(values.content);
+        if(!invalidContentMaxLength){
+            setSubmitting(true);
+            const param = getParams(values, this.state);
+            this.setState({confirmInsertDialog: { show: true, params: param}});
+        }else{
+            setSubmitting(false);
+        }
     };
 
     handleConfirmInsertDialog = async () =>{

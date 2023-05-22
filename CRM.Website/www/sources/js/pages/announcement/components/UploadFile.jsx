@@ -90,7 +90,8 @@ export default class UploadFile extends PureComponent {
     }
 
     render() {
-        const { uploadedFiles } = this.props;
+        const { uploadedFiles, invalidContentMaxLength,  textInvalidContentMaxLength} = this.props;
+        
         return (
         <Fragment>
             <Form.Group as={Row} controlId="formFileMultiple">
@@ -111,6 +112,10 @@ export default class UploadFile extends PureComponent {
                             <span>, max size: </span>
                             <span className='text-color'>2560*2560</span>
                             <span>)</span>
+                            {
+                                invalidContentMaxLength &&
+                                <div span style={{float: 'right', color: 'red'}}>{textInvalidContentMaxLength}</div>
+                            }
                         </span>
                     </Col>
                 </Form.Group>
