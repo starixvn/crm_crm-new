@@ -128,12 +128,13 @@
 
         private static void ValidateMultiCastMessage(OutgoingMessage message)
         {
-            if (message.MessageType == NotificationMessageType.Text && string.IsNullOrWhiteSpace(message.Text))
+            if ((message.MessageType == NotificationMessageType.Html || message.MessageType == NotificationMessageType.Text)
+                && string.IsNullOrWhiteSpace(message.Text))
             {
                 throw new ArgumentNullException(message.Text);
             }
 
-            if ((message.MessageType == NotificationMessageType.Image && message.MessageType == NotificationMessageType.FullImage)
+            if ((message.MessageType == NotificationMessageType.Image || message.MessageType == NotificationMessageType.FullImage)
                 && string.IsNullOrWhiteSpace(message.ImageUrl))
             {
                 throw new ArgumentNullException(message.ImageUrl);

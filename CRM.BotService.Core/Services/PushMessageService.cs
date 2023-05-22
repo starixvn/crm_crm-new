@@ -16,6 +16,7 @@
     using Newtonsoft.Json;
 
     public class PushMessageService : IPushMessageService
+
     {
         private readonly Func<long, ILetstalkClientService> letstalkClientService;
         private readonly Func<long, ITelegramBotService> telegramBotService;
@@ -46,6 +47,7 @@
 
             if (!IsActiveChannel(notification.Channel))
             {
+                result.SentTime = DateTime.UtcNow;
                 result.ErrorCode = 1;
                 result.ErrorMessage = $"Channel {notification.Channel} is current inactivated";
                 result.IsIgnoreRetry = true;
@@ -63,7 +65,7 @@
                 //}
 
                 await SendLetstalkAsync(notification, result);
-                await SendTelegramAsync(notification, result);
+                //await SendTelegramAsync(notification, result);
             }
             catch (Exception ex)
             {
@@ -83,15 +85,15 @@
         {
             if (notification.ChatType == ChatType.Personal)
             {
-                await SendToPersonal(notification, result);
+                await SendLetstalkPersonal(notification, result);
             }
             else
             {
-                await SendToGroup(notification, result);
+                await SendLetstalkGroup(notification, result);
             }
         }
 
-        private async Task SendToPersonal(NotificationMessage notification, SendResult result)
+        private async Task SendLetstalkPersonal(NotificationMessage notification, SendResult result)
         {
             var outGoingMsg = new OutgoingMessage
             {
@@ -108,8 +110,8 @@
 
             result.SentTime = DateTime.UtcNow;
             result.ErrorCode = sendResult.IsSuccess && !sendResult.BlockList.Any() ? 0 : 1;
-            result.IsBlockedBot = sendResult.BlockList.Count > 0;
-            result.ErrorMessage = !sendResult.IsSuccess ? SendNotificationErrorMessage.LetstalkIdInvalid : string.Empty;
+            result.IsBlockedBot = sendResult.BlockList.Any(x => x.Equals(notification.ConversationId, StringComparison.CurrentCultureIgnoreCase));
+            result.ErrorMessage = !sendResult.IsSuccess && sendResult.FailList.Any(x => x.Equals(notification.ConversationId, StringComparison.CurrentCultureIgnoreCase)) ? SendNotificationErrorMessage.LetstalkIdInvalid : string.Empty;
             await WriteLogMessage(notification, sendResult.IsSuccess, sendResult.BlockList.Any(), sendResult.Message);
         }
 
@@ -162,11 +164,11 @@
             }
         }
 
-        private async Task SendToGroup(NotificationMessage notification, SendResult result)
+        private async Task SendLetstalkGroup(NotificationMessage notification, SendResult result)
         {
             var outGoingMsg = new OutgoingMessage
             {
-                MessageType = NotificationMessageType.Html,
+                MessageType = notification.MessageType,
                 Text = notification.Content
             };
 
@@ -179,7 +181,7 @@
 
             result.SentTime = DateTime.UtcNow;
             result.ErrorCode = sendResult.IsSuccess ? 0 : 1;
-            result.ErrorMessage = SendNotificationErrorMessage.BotServiceErrorMsg;
+            result.ErrorMessage = !sendResult.IsSuccess ? SendNotificationErrorMessage.BotServiceErrorMsg : string.Empty;
 
             await WriteLogMessage(notification, sendResult.IsSuccess, isBotBlocked: false, sendResult.Message);
         }
@@ -238,7 +240,6 @@
             //}
             await SendToPersonalByTelegram(notification, result);
             await SendToGroupByTelegram(notification, result);
-
         }
 
         #endregion Send message by Telegram

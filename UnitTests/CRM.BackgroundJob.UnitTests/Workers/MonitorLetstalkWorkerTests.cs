@@ -1,12 +1,11 @@
-﻿
-namespace CRM.BackgroundJob.UnitTests.Workers
+﻿namespace CRM.BackgroundJob.UnitTests.Workers
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.Workers;
     using CRM.Core.Services;
-    using CRM.Letstalk.Services.Services.Interfaces;
     using Microsoft.Extensions.Options;
     using NSubstitute;
     using ONEbook.UM.Services;
@@ -14,7 +13,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
 
     public class MonitorLetstalkWorkerTests
     {
-        private IMonitorService monitorService;
+        private IBotHealthCheckService monitorService;
         private IMaintenanceService maintenanceService;
         private ICRMLogService logService;
         private List<JobSetting> appSettings;
@@ -29,8 +28,9 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             await service.ExecuteJobAsync();
 
             // Assert
-            await monitorService.Received().MonitorLetstalkService();
+            await monitorService.Received().LetstalkBotMonitorAsync();
         }
+
         private LetstalkHealthCheckWorker GetService()
         {
             appSettings = new List<JobSetting>
@@ -45,11 +45,11 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             };
             var appJobSettings = Substitute.For<IOptions<List<JobSetting>>>();
             appJobSettings.Value.Returns(appSettings);
-            monitorService = Substitute.For<IMonitorService>();
+            monitorService = Substitute.For<IBotHealthCheckService>();
             maintenanceService = Substitute.For<IMaintenanceService>();
             logService = Substitute.For<ICRMLogService>();
 
-            return new MonitorLetstalkWorker(monitorService, maintenanceService, appJobSettings, logService);
+            return new LetstalkHealthCheckWorker(monitorService, maintenanceService, appJobSettings, logService);
         }
     }
 }

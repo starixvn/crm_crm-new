@@ -108,10 +108,8 @@
                 {
                     await CoppyOldFileToNewFileAsync(command.FileString, command.CloneAnnouncementId, command.AnnouncementId);
                 }
-
             }
             return Json(commandResult);
-           
         }
 
         [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Host)]
