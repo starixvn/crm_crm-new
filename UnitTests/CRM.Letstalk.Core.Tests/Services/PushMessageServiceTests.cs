@@ -39,7 +39,7 @@
             Assert.NotNull(actual);
             Assert.False(actual.IsSuccessful);
             Assert.Equal(1, actual.ErrorCode);
-            Assert.Equal("Channel Telegram is current inactivated", actual.ErrorMessage);
+            Assert.Equal("Channel Letstalk is current inactivated", actual.ErrorMessage);
             Assert.True(actual.IsIgnoreRetry);
         }
 
