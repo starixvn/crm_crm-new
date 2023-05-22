@@ -55,17 +55,14 @@
             }
             try
             {
-                //if (notification.Channel.Equals(BotChannel.Letstalk))
-                //{
-                //    await SendLetstalkAsync(notification, result);
-                //}
-                //if (notification.Channel.Equals(BotChannel.Telegram))
-                //{
-                //    await SendTelegramAsync(notification, result);
-                //}
-
-                await SendLetstalkAsync(notification, result);
-                //await SendTelegramAsync(notification, result);
+                if (notification.Channel.Equals(BotChannel.Letstalk))
+                {
+                    await SendLetstalkAsync(notification, result);
+                }
+                if (notification.Channel.Equals(BotChannel.Telegram))
+                {
+                    await SendTelegramAsync(notification, result);
+                }
             }
             catch (Exception ex)
             {
@@ -111,7 +108,10 @@
             result.SentTime = DateTime.UtcNow;
             result.ErrorCode = sendResult.IsSuccess && !sendResult.BlockList.Any() ? 0 : 1;
             result.IsBlockedBot = sendResult.BlockList.Any(x => x.Equals(notification.ConversationId, StringComparison.CurrentCultureIgnoreCase));
-            result.ErrorMessage = !sendResult.IsSuccess && sendResult.FailList.Any(x => x.Equals(notification.ConversationId, StringComparison.CurrentCultureIgnoreCase)) ? SendNotificationErrorMessage.LetstalkIdInvalid : string.Empty;
+            result.ErrorMessage = !sendResult.IsSuccess &&
+                sendResult.FailList.Any(x => x.Equals(notification.ConversationId, StringComparison.CurrentCultureIgnoreCase))
+                ? SendNotificationErrorMessage.LetstalkIdInvalid
+                : string.Empty;
             await WriteLogMessage(notification, sendResult.IsSuccess, sendResult.BlockList.Any(), sendResult.Message);
         }
 
@@ -230,16 +230,14 @@
 
         private async Task SendTelegramAsync(NotificationMessage notification, SendResult result)
         {
-            //if (notification.ChatType == ChatType.Personal)
-            //{
-            //    await SendToPersonalByTelegram(notification, result);
-            //}
-            //else
-            //{
-            //    await SendToGroup(notification, result);
-            //}
-            await SendToPersonalByTelegram(notification, result);
-            await SendToGroupByTelegram(notification, result);
+            if (notification.ChatType == ChatType.Personal)
+            {
+                await SendToPersonalByTelegram(notification, result);
+            }
+            else
+            {
+                await SendToGroupByTelegram(notification, result);
+            }
         }
 
         #endregion Send message by Telegram
