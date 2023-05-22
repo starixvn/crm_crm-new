@@ -58,6 +58,7 @@
         "axios": "^0.21.4",
         "bootstrap": "^4.5.0",
         "ckeditor4-react": "^2.1.1",
+        "daterangepicker": "^3.1.0",
         "font-awesome": "^4.7.0",
         "formik": "^2.1.5",
         "moment": "^2.19.3",
