@@ -4,12 +4,10 @@
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
     using System.Web;
     using CRM.Models.Report.LogStatistics;
     using CRM.Models.Setting;
     using OfficeOpenXml;
-    using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
     public class LogStatisticsDetailExcel : ExcelBase
     {
@@ -68,7 +66,7 @@
 
                 return new object[] {
                     data.FeedbackDate.ToString("MMM dd, yyyy"), data.StartTime, data.EndTime,
-                    data.DurationTime, data.UserName, communicationValue, extensionValue,
+                    data.DurationTime, data.UserName, data.SiteName, communicationValue, extensionValue,
                     data.Role, RemoveHtmlTags(data.Contact), productValue == "N/A." ? "N/A" : productValue,
                     subproductValue == "N/A." ? "N/A" : subproductValue, data.CountryName,
                     mainCategoryValue, subCategoryValue, RemoveHtmlTags(data.RemarkText),
