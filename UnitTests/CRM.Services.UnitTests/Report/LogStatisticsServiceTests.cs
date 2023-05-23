@@ -132,7 +132,7 @@
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientDate);
 
             // Act
-            var actual = await service.GetReportDetailsAsync(criteria, true);
+            var actual = await service.GetReportDetailsAsync(criteria);
 
             // Assert
             Assert.Equal(actual.Id, expected.Id);

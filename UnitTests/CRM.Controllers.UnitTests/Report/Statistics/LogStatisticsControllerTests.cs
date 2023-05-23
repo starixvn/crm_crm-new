@@ -108,7 +108,7 @@
             var extensions = new List<SettingRelation> { new SettingRelation { Id = 1, Value = "extension" } }; 
 
             var controller = GetController();
-            logStatisticsService.GetReportDetailsAsync(criteria, Arg.Any<bool>()).Returns(reportDetails);
+            logStatisticsService.GetReportDetailsAsync(criteria).Returns(reportDetails);
             settingService.GetProductAsync().Returns(products);
             settingService.GetSubProductAsync().Returns(subProducts);
             settingService.GetAllMainSubCategoriesAsync().Returns(mainCategories);
@@ -185,7 +185,7 @@
             var communicationTools = new List<Setting> { new Setting { Id = 1, Name = "communicationTool" } };
             var extensions = new List<SettingRelation> { new SettingRelation { Id = 1, Value = "extension" } };
 
-            logStatisticsService.GetReportDetailsAsync(criteria, false).Returns(logStatisticsDetail);
+            logStatisticsService.GetReportDetailsAsync(criteria).Returns(logStatisticsDetail);
             settingService.GetProductAsync().Returns(products);
             settingService.GetSubProductAsync().Returns(subProducts);
             settingService.GetAllMainSubCategoriesAsync().Returns(mainCategories);
