@@ -8,6 +8,8 @@
 
         public string DisplayName { get; set; }
 
+        public string UpdatedBy { get; set; }
+
         public override string GetSettingKey() => "Acc_CRM_ChatBot_ChangeGroupName_Upd";
 
         public override bool IsValid() => !string.IsNullOrWhiteSpace(ConversationId) &&

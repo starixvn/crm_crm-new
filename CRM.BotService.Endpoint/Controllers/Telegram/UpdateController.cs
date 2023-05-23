@@ -11,6 +11,7 @@
     using global::Telegram.Bot.Types;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.VisualBasic;
     using Newtonsoft.Json;
 
     public class UpdateController : Controller
@@ -47,40 +48,51 @@
                     await logService.ErrorMessageAsync($"Telegram Bot {botId} is invalid.");
                     return Ok($"Telegram Bot {botId} is invalid.");
                 }
-                Message message = update.Message;
-
-                switch (message.Type)
-                {
-                    case MessageType.Text:
-                        await HandleBotCommandAsync(bot, message);
-                        break;
-
-                    case MessageType.GroupCreated:
-                        await AddBotToGroupAsync(message, bot);
-                        break;
-
-                    case MessageType.ChatMembersAdded:
-                        User[] bots = message.NewChatMembers.Where(x => x.IsBot).ToArray();
-                        for (var i = 0; i < bots.Length; i++)
-                        {
-                            await AddBotToGroupAsync(message, bots[i]);
-                        }
-                        break;
-
-                    case MessageType.ChatMemberLeft:
-                        await RemoveBotToGroupAsync(message);
-                        break;
-
-                    default:
-                        // do nothing
-                        break;
-                }
+                await HandleEventUpdate(bot, update.Message);
 
                 return Ok();
             }
             catch (Exception ex)
             {
+                await logService.ErrorAsync(ex);
                 return Ok(ex.Message);
+            }
+        }
+
+        protected internal virtual async Task HandleEventUpdate(User bot, Message message)
+        {
+            switch (message.Type)
+            {
+                case MessageType.Text:
+                    await HandleBotCommandAsync(bot, message);
+                    break;
+
+                case MessageType.ChatTitleChanged:
+                    await EditChatTitledAsync(message);
+                    break;
+                case MessageType.GroupCreated:
+                    await AddBotToGroupAsync(message, bot);
+                    break;
+
+                case MessageType.ChatMembersAdded:
+                    User[] bots = message.NewChatMembers.Where(x => x.IsBot).ToArray();
+                    for (var i = 0; i < bots.Length; i++)
+                    {
+                        await AddBotToGroupAsync(message, bots[i]);
+                    }
+                    break;
+
+                case MessageType.ChatMemberLeft:
+                    await RemoveBotToGroupAsync(message);
+                    break;
+
+                case MessageType.MigratedToSupergroup:
+                    await MigratedToSupergroupAsync(message);
+                    break;
+
+                default:
+                    // do nothing
+                    break;
             }
         }
 
@@ -102,7 +114,18 @@
             }
         }
 
-        protected internal virtual async Task AddBotToGroupAsync(Message message, User bot)
+        protected internal virtual async Task<CommandResult> EditChatTitledAsync(Message message)
+        {
+            var command = new UpdateGroupNameCommand
+            {
+                ConversationId = message.Chat.Id.ToString(),
+                DisplayName = message.NewChatTitle,
+                UpdatedBy = message.From.Id.ToString()
+            };
+            return await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        protected internal virtual async Task<CommandResult> AddBotToGroupAsync(Message message, User bot)
         {
             var command = new AddBotToGroupCommand
             {
@@ -120,9 +143,10 @@
             {
                 await logService.ErrorAsync(new Exception(result.Message));
             }
+            return result;
         }
 
-        protected internal virtual async Task<CommandResult> RemoveBotToGroupAsync(Message message)
+        protected internal virtual async Task RemoveBotToGroupAsync(Message message)
         {
             if (message.LeftChatMember.IsBot)
             {
@@ -132,10 +156,28 @@
                     ConversationId = message.Chat.Id.ToString(),
                     UpdatedBy = message.From.Id.ToString()
                 };
-                return await baseService.ExecuteNonQueryAsync(command);
+                var result = await baseService.ExecuteNonQueryAsync(command);
+                if (!result.IsSuccessful)
+                {
+                    await logService.ErrorAsync(new Exception(result.Message));
+                }
             }
+        }
 
-            return new CommandResult { Code = 0, Message = string.Empty };
+        protected internal virtual async Task<CommandResult> MigratedToSupergroupAsync(Message message)
+        {
+            var command = new MigratedToSupergroupCommand
+            {
+                FromConversationId = message.Chat.Id.ToString(),
+                ToConversationId = message.MigrateToChatId.ToString(),
+                UpdatedBy = message.From.Id.ToString()
+            };
+            var result = await baseService.ExecuteNonQueryAsync(command);
+            if (!result.IsSuccessful)
+            {
+                await logService.ErrorAsync(new Exception(result.Message));
+            }
+            return result;
         }
 
         protected internal virtual async Task AddBotToPersonal(Message message, User bot)

@@ -3,15 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
-    using System.Security.Cryptography;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Models;
-    using CRM.BotService.Core.Services;
     using CRM.BotService.Core.Services.Interfaces;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Pipelines.Sockets.Unofficial;
 
     public class TelegramBotController : Controller
     {
