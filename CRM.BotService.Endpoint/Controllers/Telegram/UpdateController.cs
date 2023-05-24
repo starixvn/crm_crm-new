@@ -136,8 +136,6 @@
                 UpdatedBy = message.From.Id.ToString()
             };
             var result = await baseService.ExecuteNonQueryAsync(command);
-            string greeting = $"Hi, I am {bot.Username}, your ID: {message.Chat.Id}";
-            await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
             if (!result.IsSuccessful)
             {
                 await logService.ErrorAsync(new Exception(result.Message));
@@ -153,6 +151,7 @@
                 {
                     BotId = message.LeftChatMember.Id,
                     ConversationId = message.Chat.Id.ToString(),
+                    ChannelId = (byte)ConversationChannel.Telegram,
                     UpdatedBy = message.From.Id.ToString()
                 };
                 var result = await baseService.ExecuteNonQueryAsync(command);

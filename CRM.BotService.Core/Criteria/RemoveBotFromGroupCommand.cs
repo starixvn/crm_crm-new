@@ -7,6 +7,7 @@
         public long BotId { get; set; }
 
         public string ConversationId { get; set; }
+        public short ChannelId { get; set; }
         public string UpdatedBy { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_ChatBot_KickOutBotFromGroup_Del";

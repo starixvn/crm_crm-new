@@ -2,7 +2,7 @@
 {
     public enum ConversationChannel
     {
-        Skype = 1,
+        Letstalk = 1,
         Telegram
     }
 }

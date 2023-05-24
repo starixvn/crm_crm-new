@@ -5,9 +5,7 @@
     using System.Threading.Tasks;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
-    using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
-    using CRM.Models.NotificationList;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -57,7 +55,7 @@
             {
                 _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
                 _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
-                var sendResult = await telegramBotService(botId).SendImageAsync(botId, chatId, conversationInfo.ImageUrl);
+               await telegramBotService(botId).SendImageAsync(botId, chatId, conversationInfo.ImageUrl);
             }
             catch (Exception ex)
             {
@@ -68,7 +66,7 @@
             return Ok(errorMessage);
         }
 
-        protected internal virtual async Task WriteLogAsync(Exception exception, IDictionary<string, object> param = null)
+        private async Task WriteLogAsync(Exception exception, IDictionary<string, object> param = null)
         {
             var logMessage = new LogMessage(exception.Message)
                         .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(exception))

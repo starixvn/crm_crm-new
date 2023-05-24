@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Criteria;
+    using CRM.BotService.Core.Enum;
     using CRM.BotService.Core.Extensions;
     using CRM.BotService.Core.Extensions.Letstalk;
     using CRM.BotService.Core.Models;
@@ -140,6 +141,7 @@
             {
                 ConversationId = hookEvent.Source.GroupId,
                 BotId = botConfig.BotAccountId,
+                ChannelId = (byte)ConversationChannel.Letstalk
             };
 
             var result = await baseService.ExecuteNonQueryAsync(command);

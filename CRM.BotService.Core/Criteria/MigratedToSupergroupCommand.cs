@@ -10,7 +10,7 @@
 
         public string UpdatedBy { get; set; }
 
-        public override string GetSettingKey() => "NCB_Conversation_MigratedToSupergroup";
+        public override string GetSettingKey() => "Acc_CRM_ChatBot_MigratedToSupergroup";
 
         public override bool IsValid() => !string.IsNullOrWhiteSpace(FromConversationId)
             && !string.IsNullOrWhiteSpace(ToConversationId);
