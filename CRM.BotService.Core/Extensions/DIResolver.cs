@@ -30,8 +30,8 @@
             var botConfigs = configuration.GetSection("LetstalkBotConfigurations").Get<List<LetstalkBotConfig>>();
             services.AddSingleton(botConfigs);
 
-            var channels = configuration.GetSection("Channels").Get<List<BotChannelInfo>>();
-            services.AddSingleton(channels);
+            var botChannelInfo = configuration.GetSection("BotChannelInfo").Get<List<BotChannelInfo>>();
+            services.AddSingleton(botChannelInfo);
 
             services.AddSingleton<IPushMessageService, PushMessageService>();
             RegisterBotLetstalkService(services, configuration, botConfigs);

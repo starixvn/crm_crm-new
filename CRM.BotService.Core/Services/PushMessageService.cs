@@ -22,19 +22,19 @@
         private readonly Func<long, ITelegramBotService> telegramBotService;
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
-        private readonly List<BotChannelInfo> channels;
+        private readonly List<BotChannelInfo> botChannelInfos;
 
         public PushMessageService(Func<long, ILetstalkClientService> letstalkClientService,
             Func<long, ITelegramBotService> telegramBotService,
             IBaseService baseService,
             ICRMLogService logService,
-            List<BotChannelInfo> channels)
+            List<BotChannelInfo> botChannelInfos)
         {
             this.letstalkClientService = letstalkClientService;
             this.telegramBotService = telegramBotService;
             this.baseService = baseService;
             this.logService = logService;
-            this.channels = channels;
+            this.botChannelInfos = botChannelInfos;
         }
 
         public async Task<SendResult> PushAsync(NotificationMessage notification)
@@ -243,6 +243,6 @@
         #endregion Send message by Telegram
 
         public bool IsActiveChannel(BotChannel channel)
-            => channels.Any(c => c.Name == channel && c.IsActive);
+            => botChannelInfos.Any(c => c.Name == channel && c.IsActive);
     }
 }
