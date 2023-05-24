@@ -26,15 +26,17 @@ export class ViewDetail extends Component {
         });
 
     buildHeader = () =>
-        <HeaderRow>
-            <HeaderCell colWidth={0.2 * this.state.modalWidth}>{LangHelper.getResource('LetstalkName')}</HeaderCell>
+        (<HeaderRow>
+            <HeaderCell colWidth={0.2 * this.state.modalWidth}>{LangHelper.getResource('BotService')}</HeaderCell>
+            <HeaderCell colWidth={0.2 * this.state.modalWidth}>{LangHelper.getResource('DisplayName')}</HeaderCell>
             <HeaderCell colWidth={0.2 * this.state.modalWidth}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
             <HeaderCell colWidth={0.2 * this.state.modalWidth}>{LangHelper.getResource('Recipient')}</HeaderCell>
             <HeaderCell colWidth={0.4 * this.state.modalWidth}>{LangHelper.getResource('Reason')}</HeaderCell>
-        </HeaderRow>;
+        </HeaderRow>);
 
     buildBody = data =>
         [<Row key={data.notificationId}>
+            <Cell>{data.botService}</Cell>
             <Cell>{data.letstalkName}</Cell>
             <Cell>{functions.getHeadlines(data.headlines)}</Cell>
             <Cell>{functions.getRecipients(data.recipients)}</Cell>

@@ -14,7 +14,7 @@
         public string ConversationId { get; set; }
         public string FileName { get; set; }
         public bool IsOnlyRetryImage { get; set; }
-        public BotChannel Channel { get; set; } = BotChannel.Letstalk;
+        public BotChannel ChannelId { get; set; } = BotChannel.Letstalk;
 
         public ChatType ChatType
         {

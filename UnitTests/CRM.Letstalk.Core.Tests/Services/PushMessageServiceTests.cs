@@ -146,7 +146,7 @@
             NotificationId = 1,
             AnnouncementId = 1,
             BotId = 1,
-            Channel = BotChannel.Letstalk,
+            ChannelId = BotChannel.Letstalk,
             ChatTypeId = 2,
             Content = "Message Test",
             ConversationGroupId = 1,

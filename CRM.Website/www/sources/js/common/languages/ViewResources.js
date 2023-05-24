@@ -151,6 +151,7 @@
     DeletedBy: 'Deleted By',
     Day: 'Day',
     Detail: 'Detail',
+    DisplayName: 'Display Name',
     DateOfUpdateGM8: 'Date of Update (GMT+8)',
     DeletedFeedbackStatistic: 'Deleted Feedback Statistic',
     DirectCustomerReport: 'Direct Customer Report',

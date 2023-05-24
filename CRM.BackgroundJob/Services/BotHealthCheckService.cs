@@ -27,7 +27,7 @@
             var notificationMsg = new NotificationMessage
             {
                 BotId = healthCheckSettings.BotId,
-                Channel = BotChannel.Letstalk,
+                ChannelId = BotChannel.Letstalk,
                 ChatTypeId = (int)ChatType.Personal,
                 ConversationId = healthCheckSettings.LetstalkId,
                 Content = healthCheckSettings.Message

@@ -27,7 +27,7 @@ export class DataGrid extends Component {
     };
 
     buildNotificationListHeader = isHost =>
-        <HeaderRow>
+        (<HeaderRow>
             <HeaderCell colWidth={5}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
             <HeaderCell colWidth={15}>
                 <div>{LangHelper.getResource('NotificationID')}</div>
@@ -35,7 +35,8 @@ export class DataGrid extends Component {
             </HeaderCell>
             <HeaderCell colWidth={23}>{LangHelper.getResource('Sender')}/{LangHelper.getResource('NotificationType')}</HeaderCell>
             <HeaderCell colWidth={12}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
-            <HeaderCell colWidth={16}>{LangHelper.getResource('LetstalkName')}</HeaderCell>
+            <HeaderCell colWidth={12}>{LangHelper.getResource('BotService')}</HeaderCell>
+            <HeaderCell colWidth={16}>{LangHelper.getResource('DisplayName')}</HeaderCell>
             <HeaderCell colWidth={26}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
             <HeaderCell colWidth={19}>{LangHelper.getResource('Recipient')}</HeaderCell>
             <HeaderCell colWidth={20}>{LangHelper.getResource('Title')}/{LangHelper.getResource('Content')}</HeaderCell>
@@ -62,7 +63,7 @@ export class DataGrid extends Component {
                     }
                 </HeaderCell>
             }
-        </HeaderRow>;
+        </HeaderRow>);
 
     buildNotificationListBody = isHost => {
         const { pageIndex, pageSize } = this.props.gridParams;
@@ -118,7 +119,7 @@ export class DataGrid extends Component {
     };
 
     renderRow = (item, index, isHost) =>
-        <Row key={index} >
+        (<Row key={index} >
             <Cell className='text-center'>{index + this.startIndex}</Cell>
             {this.renderReferenceId(item)}
             <Cell>
@@ -129,6 +130,7 @@ export class DataGrid extends Component {
                 <div>{item.sendDateString}</div>
                 <div>{item.sendTimeString}</div>
             </Cell>
+            <Cell>{item.botService}</Cell>
             <Cell>{item.letstalkName}</Cell>
             <Cell className='text-center'>{functions.getHeadlines(item.headlines)}</Cell>
             <Cell>{functions.getRecipients(item.recipients)}</Cell>
@@ -163,7 +165,7 @@ export class DataGrid extends Component {
                         onChange={() => this.handleChangeResendCheckbox(index)} />}
                 </Cell>
             }
-        </Row>;
+        </Row>);
 
     renderReferenceId = item => {
         return  <Cell className='text-center'>

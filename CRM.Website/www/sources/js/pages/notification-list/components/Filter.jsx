@@ -12,6 +12,7 @@ import Select from '@jsroot/components/CustomReactSelect';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import Site from '@jsroot/common/site';
 import { toast } from 'react-toastify';
+import { BotServices }from '@jsroot/common/constants';
 
 export class Filter extends Component {
     constructor(props) {
@@ -31,12 +32,13 @@ export class Filter extends Component {
                 content: '',
                 referenceType: this.props.announcementId ? 'Ann ID' : 'Msg ID',
                 referenceId: this.props.announcementId || '',
-                botService: 'All'
+                botService: null
             },
             maxDate: now,
             notificationTypeOptions: [],
             statusOptions: [],
             showFilter: false
+            
         };
     }
 
@@ -143,8 +145,9 @@ export class Filter extends Component {
 
     getParams = () => {
         const {notificationTypes, fromDate, toDate, headline, recipient, statuses,
-            notificationIdLower, notificationIdUpper, content, referenceId }= this.state.filter;
+            notificationIdLower, notificationIdUpper, content, referenceId, referenceType, botService }= this.state.filter;
         return {
+            channelId: botService === '0' ? null : parseInt(botService, 10),
             notificationTypeIds: notificationTypes,
             fromDate: !referenceId ? DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)) : null,
             toDate: !referenceId ? DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)) : null,
@@ -154,7 +157,8 @@ export class Filter extends Component {
             notificationIdUpper: notificationIdUpper,
             content: content,
             status: statuses,
-            announcementId: parseInt(referenceId, 10),
+            announcementId: referenceType !== 'Ann ID' ? null : parseInt(referenceId, 10),
+            messageId: referenceType === 'Ann ID' ? null : parseInt(referenceId, 10),
             pageIndex: this.props.gridParams.pageIndex,
             pageSize: this.props.gridParams.pageSize
         };
@@ -234,17 +238,16 @@ export class Filter extends Component {
 
     render() {
         const referenceIds = ['Msg ID', 'Ann ID'];
-        const botServices = ['All','Letstalk','Telegram'];
         return (
             <Form className='form-filter' onSubmit={e => this.submitHandler(e)}>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group >
                         <Form.Label>{LangHelper.getResource('BotService')}</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none"  name='botService'
+                        <Form.Control as="select" size="sm" className="shadow-none" name='botService'
                             value={this.state.filter.botService}
                             onChange={e => this.handleChangeFilterControl(e)}
                         >
-                            {botServices.map((item, key) => <option key={key} value={item}>{item}</option>)}
+                            {BotServices.map((item, key) => <option key={key} value={item.id}>{item.name}</option>)}
                         </Form.Control>
                     </Form.Group>
                     <Form.Group>

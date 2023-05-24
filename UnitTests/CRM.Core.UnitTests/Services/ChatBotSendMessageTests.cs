@@ -122,17 +122,17 @@
             NotificationId = 1,
             ConversationGroupId = 1,
             BotId = 1,
-            Channel = BotChannel.Letstalk
+            ChannelId = BotChannel.Letstalk
         };
 
         private static IEnumerable<NotificationMessage> FakeListNotificationMessage()
         {
             return new List<NotificationMessage>
             {
-                new NotificationMessage {NotificationId = 1, ConversationGroupId = 1, BotId = 1, Channel = BotChannel.Letstalk},
-                new NotificationMessage {NotificationId = 2, ConversationGroupId = 2, BotId = 1, Channel = BotChannel.Letstalk},
-                new NotificationMessage {NotificationId = 3, ConversationGroupId = 3, BotId = 2, Channel = BotChannel.Telegram},
-                new NotificationMessage {NotificationId = 4, ConversationGroupId = 4, BotId = 2, Channel = BotChannel.Telegram}
+                new NotificationMessage {NotificationId = 1, ConversationGroupId = 1, BotId = 1, ChannelId = BotChannel.Letstalk},
+                new NotificationMessage {NotificationId = 2, ConversationGroupId = 2, BotId = 1, ChannelId = BotChannel.Letstalk},
+                new NotificationMessage {NotificationId = 3, ConversationGroupId = 3, BotId = 2, ChannelId = BotChannel.Telegram},
+                new NotificationMessage {NotificationId = 4, ConversationGroupId = 4, BotId = 2, ChannelId = BotChannel.Telegram}
             };
         }
 

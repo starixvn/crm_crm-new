@@ -68,7 +68,7 @@
         <Setting Key="Acc_CRM_Chatbot_ArchivedAccounts_Import" SpName="Acc_CRM_Chatbot_ArchivedAccounts_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Send Notification">
-        <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_Chatbot_SendNotification_Status_Upd" SpName="Acc_CRM_Chatbot_SendNotification_Status_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_NotificationMsgLog_Ins" SpName="Acc_CRM_ChatBot_NotificationMsgLog_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
     </Function>

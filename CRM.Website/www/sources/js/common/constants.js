@@ -187,3 +187,9 @@ export const Statuses = [
 ];
 
 export const IsRemoveDatagridRedemption = true;
+
+export const BotServices = [
+    { id: 0, name: 'All' },
+    { id: 1, name: 'Letstalk' },
+    { id: 2, name: 'Telegram' }
+];

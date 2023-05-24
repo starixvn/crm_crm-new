@@ -45,21 +45,21 @@
                 ConversationGroupId = notification.ConversationGroupId,
             };
 
-            if (!IsActiveChannel(notification.Channel))
+            if (!IsActiveChannel(notification.ChannelId))
             {
                 result.SentTime = DateTime.UtcNow;
                 result.ErrorCode = 1;
-                result.ErrorMessage = $"Channel {notification.Channel} is current inactivated";
+                result.ErrorMessage = $"Channel {notification.ChannelId} is current inactivated";
                 result.IsIgnoreRetry = true;
                 return result;
             }
             try
             {
-                if (notification.Channel.Equals(BotChannel.Letstalk))
+                if (notification.ChannelId.Equals(BotChannel.Letstalk))
                 {
                     await SendLetstalkAsync(notification, result);
                 }
-                if (notification.Channel.Equals(BotChannel.Telegram))
+                if (notification.ChannelId.Equals(BotChannel.Telegram))
                 {
                     await SendTelegramAsync(notification, result);
                 }
@@ -117,8 +117,6 @@
 
         private async Task SendToPersonalByTelegram(NotificationMessage notification, SendResult result)
         {
-            notification.BotId = 6012438440;
-            notification.ConversationId = "1292164636";
             var sendResult = await telegramBotService(notification.BotId).SendTextMessageAsync(notification);
 
             if (notification.Images is not null && notification.Images.Length > 0 && sendResult.IsSuccess)
@@ -133,8 +131,6 @@
 
         private async Task SendToGroupByTelegram(NotificationMessage notification, SendResult result)
         {
-            notification.BotId = 6012438440;
-            notification.ConversationId = "-1001894813845";
             var sendResult = await telegramBotService(notification.BotId).SendTextMessageAsync(notification);
             var logMesssage = new LogMessage("Send To Group By Telegram Result: ")
                        .AddMessage(JsonConvert.SerializeObject(sendResult, Formatting.Indented))

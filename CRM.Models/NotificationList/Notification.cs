@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using CRM.Core.Enumerables;
 
     public class Notification
     {
@@ -44,5 +45,8 @@
         public string LetstalkName { get; set; }
 
         public string RelatedNotificationIds { get; set; }
+        public short ChannelId { get; set; }
+
+        public string BotService => ChannelId == 1 ? "Letstalk" : "Telegram";
     }
 }
