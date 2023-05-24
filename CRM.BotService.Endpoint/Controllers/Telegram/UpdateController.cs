@@ -11,7 +11,6 @@
     using global::Telegram.Bot.Types;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.VisualBasic;
     using Newtonsoft.Json;
 
     public class UpdateController : Controller
@@ -138,7 +137,7 @@
             };
             var result = await baseService.ExecuteNonQueryAsync(command);
             string greeting = $"Hi, I am {bot.Username}, your ID: {message.Chat.Id}";
-            await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, message.Chat.Id.ToString());
+            await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
             if (!result.IsSuccessful)
             {
                 await logService.ErrorAsync(new Exception(result.Message));
@@ -182,18 +181,18 @@
 
         protected internal virtual async Task AddBotToPersonal(Message message, User bot)
         {
-            var command = new AddBotToGroupCommand
+            var command = new AddBotToPersonalCommand
             {
                 BotId = bot.Id,
                 BotName = bot.FirstName,
                 ConversationId = message.Chat.Id.ToString(),
-                GroupName = message.Chat.Title,
+                Username = message.Chat.Username,
                 ChannelId = (byte)ConversationChannel.Telegram,
                 UpdatedBy = message.Chat.Id.ToString()
             };
             var result = await baseService.ExecuteNonQueryAsync(command);
             string greeting = $"Hi, I am {bot.Username}, your ID: {message.Chat.Id}";
-            await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, message.Chat.Id.ToString());
+            await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
             if (!result.IsSuccessful)
             {
                 await logService.ErrorAsync(new Exception(result.Message));
