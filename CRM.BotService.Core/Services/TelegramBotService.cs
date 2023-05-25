@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO.Pipelines;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -55,7 +56,6 @@
             return await bot.BotClient.GetWebhookInfoAsync();
         }
 
-
         public async Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html)
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
@@ -63,29 +63,26 @@
             return message;
         }
 
-        public async Task<SendMessageResult> SendTextMessageAsync(NotificationMessage notificationMessage)
+        public async Task SendTextMessageAsync(NotificationMessage notificationMessage, SendResult sendResult)
         {
             try
             {
                 _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
-                await SendTextMessageAsync(notificationMessage.BotId, chatId, notificationMessage.Content);
+                var result = await SendTextMessageAsync(notificationMessage.BotId, chatId, notificationMessage.Content);
+                if(result is not null)
+                {
+                    sendResult.ErrorCode = 0;
+                }
             }
             catch (Exception exception)
             {
-                await WriteLogAsync(notificationMessage, exception);
+                WriteLogAsync(notificationMessage, exception);
 
-                return GetSendMessageResult(notificationMessage, exception);
+                GetSendMessageResult(notificationMessage, sendResult, exception);
             }
-
-            return new SendMessageResult
-            {
-                ConversationId = notificationMessage.ConversationId,
-                NotificationId = notificationMessage.NotificationId,
-                SentTime = DateTime.UtcNow
-            };
         }
 
-        public async Task<Message> SendImageAsync(long botId, long chatId, string urlImage, ParseMode parseMode = ParseMode.Html)
+        public async Task<Message> SendImageAsync(long botId, long chatId, string urlImage)
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
             var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile(urlImage);
@@ -95,10 +92,11 @@
             return message;
         }
 
-        public async Task<SendMessageResult> SendImageAsync(NotificationMessage notificationMessage)
+        public async Task SendImageAsync(NotificationMessage notificationMessage, SendResult sendResult)
         {
             try
             {
+                sendResult.ErrorCode = 0;
                 _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
                 foreach (var img in notificationMessage.Images)
                 {
@@ -107,60 +105,47 @@
             }
             catch (Exception exception)
             {
-                await WriteLogAsync(notificationMessage, exception);
-
-                return GetSendMessageResult(notificationMessage, exception);
+                WriteLogAsync(notificationMessage, exception);
+                GetSendMessageResult(notificationMessage, sendResult, exception);
             }
-
-            return new SendMessageResult
-            {
-                ConversationId = notificationMessage.ConversationId,
-                NotificationId = notificationMessage.NotificationId,
-                SentTime = DateTime.UtcNow
-            };
         }
 
-        protected internal virtual SendMessageResult GetSendMessageResult(NotificationMessage notificationMessage, Exception exception)
+        protected internal virtual void GetSendMessageResult(NotificationMessage notificationMessage, SendResult sendResult, Exception exception)
         {
-            var result = new SendMessageResult
-            {
-                ConversationId = notificationMessage.ConversationId,
-                NotificationId = notificationMessage.NotificationId,
-                ErrorCode = 1,
-                ErrorMessage = exception.Message,
-                SentTime = DateTime.UtcNow
-            };
+            sendResult.ErrorCode = 1;
+            sendResult.ErrorMessage = exception.Message;
+
             if (exception.Message.Contains("Message is too long", StringComparison.InvariantCultureIgnoreCase))
             {
-                result.ErrorMessage = ErrorMessageTelegram.MessageIsTooLong;
-                result.IsIgnoreRetry = true;
+                sendResult.ErrorMessage = ErrorMessageTelegram.MessageIsTooLong;
+                sendResult.IsIgnoreRetry = true;
             }
 
             if (exception.Message.Contains("bot was kicked from the supergroup chat", StringComparison.InvariantCultureIgnoreCase)
                 || exception.Message.Contains("bot was kicked from the group chat", StringComparison.InvariantCultureIgnoreCase)
                 || exception.Message.Contains("chat not found", StringComparison.InvariantCultureIgnoreCase))
             {
-                result.ErrorMessage = ErrorMessageTelegram.GroupChatDeleted;
-                result.IsIgnoreRetry = true;
+                sendResult.ErrorMessage = ErrorMessageTelegram.GroupChatDeleted;
+                sendResult.IsIgnoreRetry = true;
             }
 
             if(exception.Message.Contains("bot was blocked by the user", StringComparison.InvariantCultureIgnoreCase))
             {
-                result.ErrorMessage = ErrorMessageTelegram.BlockBot;
-                result.IsIgnoreRetry = true;
+                sendResult.ErrorMessage = ErrorMessageTelegram.BlockBot;
+                sendResult.IsIgnoreRetry = true;
+                sendResult.IsBlockedBot = true;
             }
-
-            return result;
         }
 
-        protected internal virtual async Task WriteLogAsync(NotificationMessage notificationMessage, Exception exception)
+        protected internal virtual void WriteLogAsync(NotificationMessage notificationMessage, Exception exception)
         {
             var param = new Dictionary<string, object>
             {
                 { "notificationId", notificationMessage.NotificationId },
                 { "botId", notificationMessage.BotId },
                 { "chatId", notificationMessage.ConversationId },
-                { "messageContent", notificationMessage.Content }
+                { "messageContent", notificationMessage.Content },
+                { "imageUrl", notificationMessage.Images }
             };
             var logMessage = new LogMessage(exception.Message)
                 .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(exception))
@@ -168,7 +153,7 @@
                 .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
                 .AddSection("Params", param);
 
-            await logService.ErrorMessageAsync(logMessage.ToString());
+            logService.LogInformation(logMessage.ToString());
         }
     }
 }

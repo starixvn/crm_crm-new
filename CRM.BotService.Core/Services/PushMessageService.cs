@@ -61,7 +61,7 @@
                 }
                 if (notification.ChannelId.Equals(BotChannel.Telegram))
                 {
-                    await SendTelegramAsync(notification, result);
+                    await SendTelegramAysnc(notification, result);
                 }
             }
             catch (Exception ex)
@@ -90,7 +90,7 @@
             }
         }
 
-        private async Task SendLetstalkPersonal(NotificationMessage notification, SendResult result)
+        protected internal virtual async Task SendLetstalkPersonal(NotificationMessage notification, SendResult result)
         {
             var outGoingMsg = new OutgoingMessage
             {
@@ -115,30 +115,7 @@
             await WriteLogMessage(notification, sendResult.IsSuccess, sendResult.BlockList.Any(), sendResult.Message);
         }
 
-        private async Task SendToPersonalByTelegram(NotificationMessage notification, SendResult result)
-        {
-            var sendResult = await telegramBotService(notification.BotId).SendTextMessageAsync(notification);
-
-            if (notification.Images is not null && notification.Images.Length > 0 && sendResult.IsSuccess)
-            {
-                await SendImagesToGroup(notification);
-            }
-            var logMesssage = new LogMessage("Send To Personal By Telegram Result: ")
-                       .AddMessage(JsonConvert.SerializeObject(sendResult, Formatting.Indented))
-                       .ToString();
-            logService.LogInformation(logMesssage);
-        }
-
-        private async Task SendToGroupByTelegram(NotificationMessage notification, SendResult result)
-        {
-            var sendResult = await telegramBotService(notification.BotId).SendTextMessageAsync(notification);
-            var logMesssage = new LogMessage("Send To Group By Telegram Result: ")
-                       .AddMessage(JsonConvert.SerializeObject(sendResult, Formatting.Indented))
-                       .ToString();
-            logService.LogInformation(logMesssage);
-        }
-
-        private async Task SendImagesToPersonal(NotificationMessage notification)
+        protected internal virtual async Task SendImagesToPersonal(NotificationMessage notification)
         {
             foreach (var img in notification.Images)
             {
@@ -160,7 +137,7 @@
             }
         }
 
-        private async Task SendLetstalkGroup(NotificationMessage notification, SendResult result)
+        protected internal virtual async Task SendLetstalkGroup(NotificationMessage notification, SendResult result)
         {
             var outGoingMsg = new OutgoingMessage
             {
@@ -182,7 +159,7 @@
             await WriteLogMessage(notification, sendResult.IsSuccess, isBotBlocked: false, sendResult.Message);
         }
 
-        private async Task SendImagesToGroup(NotificationMessage notification)
+        protected internal virtual async Task SendImagesToGroup(NotificationMessage notification)
         {
             foreach (var img in notification.Images)
             {
@@ -204,7 +181,28 @@
             }
         }
 
-        private async Task WriteLogMessage(NotificationMessage notification, bool isSuccess, bool isBotBlocked, string errMsg)
+        #endregion Send message by Letstalk
+
+        #region Send message by Telegram
+
+        protected internal virtual async Task SendTelegramAysnc(NotificationMessage notification, SendResult sendResult)
+        {
+            await telegramBotService(notification.BotId).SendTextMessageAsync(notification, sendResult);
+            if (notification.Images is not null && notification.Images.Length > 0 && sendResult.IsSuccessful)
+            {
+                await telegramBotService(notification.BotId).SendImageAsync(notification, sendResult);
+            }
+            sendResult.SentTime = DateTime.UtcNow;
+            var errMessage = sendResult.IsSuccessful ? string.Empty : sendResult.ErrorMessage;
+            await WriteLogMessage(notification, sendResult.IsSuccessful, sendResult.IsBlockedBot, errMessage);
+        }
+
+        #endregion Send message by Telegram
+
+        protected internal virtual bool IsActiveChannel(BotChannel channel)
+            => botChannelInfos.Any(c => c.Name == channel && c.IsActive);
+
+        protected internal virtual async Task WriteLogMessage(NotificationMessage notification, bool isSuccess, bool isBotBlocked, string errMsg)
         {
             var command = new WriteLogMessageCommand
             {
@@ -219,26 +217,5 @@
 
             await baseService.ExecuteNonQueryAsync(command);
         }
-
-        #endregion Send message by Letstalk
-
-        #region Send message by Telegram
-
-        private async Task SendTelegramAsync(NotificationMessage notification, SendResult result)
-        {
-            if (notification.ChatType == ChatType.Personal)
-            {
-                await SendToPersonalByTelegram(notification, result);
-            }
-            else
-            {
-                await SendToGroupByTelegram(notification, result);
-            }
-        }
-
-        #endregion Send message by Telegram
-
-        public bool IsActiveChannel(BotChannel channel)
-            => botChannelInfos.Any(c => c.Name == channel && c.IsActive);
     }
 }

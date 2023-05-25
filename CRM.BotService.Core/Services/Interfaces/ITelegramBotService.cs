@@ -16,10 +16,10 @@
 
         Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html);
 
-        Task<SendMessageResult> SendTextMessageAsync(NotificationMessage notificationMessage);
+        Task SendTextMessageAsync(NotificationMessage notificationMessage, SendResult sendResult);
 
-        Task<Message> SendImageAsync(long botId, long chatId, string urlImage, ParseMode parseMode = ParseMode.Html);
+        Task<Message> SendImageAsync(long botId, long chatId, string urlImage);
 
-        Task<SendMessageResult> SendImageAsync(NotificationMessage notificationMessage);
+        Task SendImageAsync(NotificationMessage notificationMessage, SendResult sendResult);
     }
 }

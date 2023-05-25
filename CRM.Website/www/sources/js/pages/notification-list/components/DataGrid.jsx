@@ -131,7 +131,7 @@ export class DataGrid extends Component {
                 <div>{item.sendTimeString}</div>
             </Cell>
             <Cell>{item.botService}</Cell>
-            <Cell>{item.letstalkName}</Cell>
+            <Cell>{item.displayName}</Cell>
             <Cell className='text-center'>{functions.getHeadlines(item.headlines)}</Cell>
             <Cell>{functions.getRecipients(item.recipients)}</Cell>
             <Cell className='link-click' onClick={() => this.openContentPopup(item)}>{item.title}</Cell>
@@ -168,13 +168,13 @@ export class DataGrid extends Component {
         </Row>);
 
     renderReferenceId = item => {
-        return  <Cell className='text-center'>
+        return  (<Cell className='text-center'>
                     <div>{item.notificationId}</div>
                     <div>{this.getReferenceText(item)}</div>
                     {
                         this.isDuplicated(item.status) && <div>{`(Related ID: ${item.relatedNotificationIds})`}</div>
                     }
-                </Cell>;
+                </Cell>);
     };
 
     getReferenceText = item =>{

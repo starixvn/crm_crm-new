@@ -42,7 +42,7 @@
 
         public string Reason { get; set; }
 
-        public string LetstalkName { get; set; }
+        public string DisplayName { get; set; }
 
         public string RelatedNotificationIds { get; set; }
         public short ChannelId { get; set; }
