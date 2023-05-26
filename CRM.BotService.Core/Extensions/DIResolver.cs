@@ -33,7 +33,6 @@
             var botChannelInfo = configuration.GetSection("BotChannelInfo").Get<List<BotChannelInfo>>();
             services.AddSingleton(botChannelInfo);
 
-            services.AddSingleton<IPushMessageService, PushMessageService>();
             RegisterBotLetstalkService(services, configuration, botConfigs);
         }
 
