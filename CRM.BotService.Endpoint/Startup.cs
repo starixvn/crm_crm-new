@@ -108,7 +108,6 @@
             services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ICRMLogService, CRMLogService>();
-            services.AddSingleton<IBotCommonService, BotCommonService>();
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

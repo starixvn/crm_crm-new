@@ -22,12 +22,12 @@
     {
         private readonly ICRMLogService logService;
         private readonly Func<long, ITelegramBotService> telegramBotService;
-        private readonly BotCommonService botCommonService;
+        private readonly IBotCommonService botCommonService;
 
         public MessageController(
             ICRMLogService logService,
             Func<long, ITelegramBotService> telegramBotService,
-            BotCommonService botCommonService)
+            IBotCommonService botCommonService)
         {
             this.logService = logService;
             this.telegramBotService = telegramBotService;
@@ -129,7 +129,7 @@
             {
                 result.ErrorCode = 1;
                 result.SentTime = DateTime.UtcNow;
-                result.ErrorMessage = SendNotificationErrorMessage.BotServiceErrorMsg;
+                result.ErrorMessage = SendNotificationErrorMessage.BotServiceTelegramErrorMsg;
                 var writeLogCommand = new WriteLogMessageCommand
                 {
                     BotId = notification.BotId,

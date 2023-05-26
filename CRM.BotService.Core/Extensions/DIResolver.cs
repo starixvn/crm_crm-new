@@ -21,6 +21,7 @@
         public static void ResolveWebhookServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<ILetstalkEventHandler, LetstalkEventHandler>();
+            services.AddSingleton<IBotCommonService, BotCommonService>();
             RegisterBotTelegramService(services, configuration);
             ResolveLetstalkServices(services, configuration);
         }
@@ -81,7 +82,6 @@
                 Proxy = new WebProxy(httpClientSettings.ProxyAddress, httpClientSettings.BypassOnLocal)
             });
 
-            services.AddSingleton<ICRMLogService, CRMLogService>();
             services.AddSingleton<Func<long, ITelegramBotService>>(serviceProvider => botId =>
             {
                 var botConfig = telegramBots.FirstOrDefault(config => config.BotId == botId);

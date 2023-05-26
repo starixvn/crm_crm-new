@@ -216,7 +216,7 @@
 
             result.SentTime = DateTime.UtcNow;
             result.ErrorCode = sendResult.IsSuccess ? 0 : 1;
-            result.ErrorMessage = !sendResult.IsSuccess ? SendNotificationErrorMessage.BotServiceErrorMsg : string.Empty;
+            result.ErrorMessage = !sendResult.IsSuccess ? SendNotificationErrorMessage.BotServiceLetstalkErrorMsg : string.Empty;
 
             var writeLogCommand = new WriteLogMessageCommand
             {

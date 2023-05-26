@@ -87,7 +87,7 @@
                             NotificationId = noti.NotificationId,
                             ConversationGroupId = noti.ConversationGroupId,
                             Status = SendNotificationStatus.Retrying,
-                            ErrMsg = SendNotificationErrorMessage.BotServiceErrorMsg
+                            ErrMsg = botChannel == BotChannel.Letstalk ? SendNotificationErrorMessage.BotServiceLetstalkErrorMsg : SendNotificationErrorMessage.BotServiceTelegramErrorMsg
                         });
                     }
                     await logService.ErrorAsync(ex);
