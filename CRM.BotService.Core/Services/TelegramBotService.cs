@@ -6,6 +6,7 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
+    using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Models.BotServices;
@@ -21,16 +22,18 @@
         private readonly HttpClient httpClient;
         private readonly IList<TelegramBotConfigurations> botConfigurations;
         private readonly ICRMLogService logService;
+        private readonly IBotCommonService botCommonService;
 
         public TelegramBotService(
             IHttpClientFactory httpClientFactory,
             List<TelegramBotConfigurations> botConfigurations,
-            ICRMLogService logService)
+            ICRMLogService logService,
+            IBotCommonService botCommonService)
         {
+            httpClient = httpClientFactory.CreateClient(NamedHttpClients.ProxiedClient);
             this.botConfigurations = botConfigurations;
             this.logService = logService;
-            httpClient = httpClientFactory.CreateClient(NamedHttpClients.ProxiedClient);
-
+            this.botCommonService = botCommonService;
             foreach (var bot in botConfigurations)
             {
                 bot.BotClient = new TelegramBotClient(bot.Token, httpClient);
@@ -39,6 +42,7 @@
 
         public async Task SetWebhookAsync(TelegramBotConfigurations bot)
         {
+            ValidateInputParam(nameof(bot.Domain), bot.Domain);
             var webhook = $"{bot.Domain}api/telegram/webhook/{bot.BotId}/update";
             await bot.BotClient.DeleteWebhookAsync();
             await bot.BotClient.SetWebhookAsync(webhook);
@@ -58,27 +62,9 @@
         public async Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html)
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
+            ValidateInputParam(nameof(messageContent), messageContent);
             var message = await bot.BotClient.SendTextMessageAsync(new ChatId(chatId), messageContent, parseMode);
             return message;
-        }
-
-        public async Task SendTextMessageAsync(NotificationMessage notificationMessage, SendResult sendResult)
-        {
-            try
-            {
-                _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
-                var result = await SendTextMessageAsync(notificationMessage.BotId, chatId, notificationMessage.Content);
-                if (result is not null)
-                {
-                    sendResult.ErrorCode = 0;
-                }
-            }
-            catch (Exception exception)
-            {
-                WriteLogAsync(notificationMessage, exception);
-
-                GetSendMessageResult(notificationMessage, sendResult, exception);
-            }
         }
 
         public async Task<Message> SendImageAsync(long botId, long chatId, string urlImage)
@@ -91,7 +77,37 @@
             return message;
         }
 
-        public async Task SendImageAsync(NotificationMessage notificationMessage, SendResult sendResult)
+        public async Task SendNotifyAysnc(NotificationMessage notificationMessage, SendResult sendResult)
+        {
+            await SendTextMessageAsync(notificationMessage, sendResult);
+            if (notificationMessage.Images is not null && notificationMessage.Images.Length > 0 && sendResult.IsSuccessful)
+            {
+                await SendImageAsync(notificationMessage, sendResult);
+            }
+            sendResult.SentTime = DateTime.UtcNow;
+            await WriteLogCommandAsync(notificationMessage, sendResult);
+        }
+
+        protected internal virtual async Task SendTextMessageAsync(NotificationMessage notificationMessage, SendResult sendResult)
+        {
+            try
+            {
+                _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
+                ValidateInputParam(nameof(notificationMessage.Content), notificationMessage.Content);
+                var result = await SendTextMessageAsync(notificationMessage.BotId, chatId, notificationMessage.Content);
+                if (result is not null)
+                {
+                    sendResult.ErrorCode = 0;
+                }
+            }
+            catch (Exception exception)
+            {
+                WriteLogInfor(notificationMessage, exception);
+                GetSendMessageResult(notificationMessage, sendResult, exception);
+            }
+        }
+
+        protected internal virtual async Task SendImageAsync(NotificationMessage notificationMessage, SendResult sendResult)
         {
             try
             {
@@ -100,13 +116,28 @@
                 foreach (var img in notificationMessage.Images)
                 {
                     await SendImageAsync(notificationMessage.BotId, chatId, img);
+                    await WriteLogCommandAsync(notificationMessage, sendResult, img);
                 }
             }
             catch (Exception exception)
             {
-                WriteLogAsync(notificationMessage, exception);
+                WriteLogInfor(notificationMessage, exception);
                 GetSendMessageResult(notificationMessage, sendResult, exception);
             }
+        }
+
+        protected internal virtual async Task WriteLogCommandAsync(NotificationMessage notificationMessage, SendResult sendResult, string image = "")
+        {
+            var writeLogCommand = new WriteLogMessageCommand
+            {
+                BotId = notificationMessage.BotId,
+                ConversationId = notificationMessage.ConversationId,
+                Content = string.IsNullOrEmpty(image) ? notificationMessage.Content : image,
+                IsSuccess = sendResult.IsSuccessful,
+                IsBotBlocked = sendResult.IsBlockedBot,
+                ErrMsg = sendResult.IsSuccessful ? string.Empty : sendResult.ErrorMessage
+            };
+            await botCommonService.WriteLogMessageAsyns(writeLogCommand);
         }
 
         protected internal virtual void GetSendMessageResult(NotificationMessage notificationMessage, SendResult sendResult, Exception exception)
@@ -136,15 +167,13 @@
             }
         }
 
-        protected internal virtual void WriteLogAsync(NotificationMessage notificationMessage, Exception exception)
+        protected internal virtual void WriteLogInfor(NotificationMessage notificationMessage, Exception exception)
         {
             var param = new Dictionary<string, object>
             {
                 { "notificationId", notificationMessage.NotificationId },
                 { "botId", notificationMessage.BotId },
-                { "chatId", notificationMessage.ConversationId },
-                { "messageContent", notificationMessage.Content },
-                { "imageUrl", notificationMessage.Images }
+                { "chatId", notificationMessage.ConversationId }
             };
             var logMessage = new LogMessage(exception.Message)
                 .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(exception))
@@ -153,6 +182,15 @@
                 .AddSection("Params", param);
 
             logService.LogInformation(logMessage.ToString());
+        }
+
+        private static void ValidateInputParam(string paramName, object paramValue)
+        {
+            if (paramValue == null
+                || (paramValue is string && string.IsNullOrWhiteSpace(paramValue as string)))
+            {
+                throw new ArgumentNullException(paramName);
+            }
         }
     }
 }

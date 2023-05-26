@@ -196,7 +196,7 @@
                     GetActualEndpoint($"bot/v2/chatroom?botId={botConfig.BotAccountId}"),
                     PlainTextContentType,
                     token: Base64ApiKeyEncoded()
-                    );
+            );
             if (result.IsSuccess)
             {
                 return result.Rooms;

@@ -9,12 +9,12 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    public class TelegramBotController : Controller
+    public class TelegramWebhookController : Controller
     {
         private readonly IEnumerable<TelegramBotConfigurations> botConfigurations;
         private readonly Func<long, ITelegramBotService> telegramBotService;
 
-        public TelegramBotController(
+        public TelegramWebhookController(
             List<TelegramBotConfigurations> botConfigurations,
             Func<long, ITelegramBotService> telegramBotService)
         {
@@ -28,7 +28,7 @@
         {
             try
             {
-                foreach(var bot in botConfigurations)
+                foreach (var bot in botConfigurations)
                 {
                     await telegramBotService(bot.BotId).SetWebhookAsync(bot);
                 }
@@ -40,6 +40,7 @@
 
             return Ok("Successfully!");
         }
+
         [AllowAnonymous]
         [Route("api/telegram/bot/getWebhookInfo")]
         public async Task<IActionResult> GetWebhookInfo(long botId)
@@ -55,7 +56,6 @@
                 return Content("bot does not exist.");
             }
         }
-        
 
         [AllowAnonymous]
         [Route("api/telegram/bot/getBotInfo")]
@@ -64,14 +64,14 @@
             try
             {
                 var bot = botConfigurations.FirstOrDefault(config => config.BotId == botId);
-                if(bot != null)
+                if (bot != null)
                 {
                     var user = await telegramBotService(bot.BotId).GetBotInfoAsync(bot.BotId);
                     return Ok(user);
                 }
                 else
                 {
-                   return Content("bot does not exist.");
+                    return Content("bot does not exist.");
                 }
             }
             catch (Exception ex)

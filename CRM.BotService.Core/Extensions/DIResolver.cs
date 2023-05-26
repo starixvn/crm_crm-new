@@ -52,7 +52,7 @@
             {
                 var botConfig = botConfigs.FirstOrDefault(config => config.BotAccountId == botId);
 
-                if (botConfig == null)
+                if (botConfig is null)
                 {
                     throw new ArgumentNullException($"The bot ID: {botId} does not existed in config file");
                 }
@@ -86,7 +86,7 @@
             {
                 var botConfig = telegramBots.FirstOrDefault(config => config.BotId == botId);
 
-                if (botConfig == null)
+                if (botConfig is null)
                 {
                     throw new ArgumentNullException($"The bot ID: {botId} does not existed in config file");
                 }
@@ -94,7 +94,8 @@
                 return new TelegramBotService(
                     serviceProvider.GetRequiredService<IHttpClientFactory>(),
                     telegramBots,
-                    serviceProvider.GetRequiredService<ICRMLogService>());
+                    serviceProvider.GetRequiredService<ICRMLogService>(),
+                    serviceProvider.GetRequiredService<IBotCommonService>());
             });
         }
     }

@@ -2,9 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Services;
     using CRM.BotService.Core.Services.Interfaces;
+    using CRM.Core.Constants;
+    using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
@@ -17,17 +22,20 @@
     {
         private readonly ICRMLogService logService;
         private readonly Func<long, ITelegramBotService> telegramBotService;
+        private readonly BotCommonService botCommonService;
 
         public MessageController(
             ICRMLogService logService,
-            Func<long, ITelegramBotService> telegramBotService)
+            Func<long, ITelegramBotService> telegramBotService,
+            BotCommonService botCommonService)
         {
             this.logService = logService;
             this.telegramBotService = telegramBotService;
+            this.botCommonService = botCommonService;
         }
 
         [HttpPost]
-        [Route("api/telegram/sendMessage")]
+        [Route("api/telegram/send-message")]
         public async Task<ObjectResult> SendMessage([FromBody] ConversationInfo conversationInfo)
         {
             var errorMessage = string.Empty;
@@ -47,7 +55,7 @@
         }
 
         [HttpPost]
-        [Route("api/telegram/sendImage")]
+        [Route("api/telegram/send-image")]
         public async Task<ObjectResult> sendImage([FromBody] ConversationInfo conversationInfo)
         {
             var errorMessage = string.Empty;
@@ -55,7 +63,7 @@
             {
                 _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
                 _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
-               await telegramBotService(botId).SendImageAsync(botId, chatId, conversationInfo.ImageUrl);
+                await telegramBotService(botId).SendImageAsync(botId, chatId, conversationInfo.ImageUrl);
             }
             catch (Exception ex)
             {
@@ -64,6 +72,78 @@
             }
 
             return Ok(errorMessage);
+        }
+
+        [HttpPost]
+        [Route("api/telegram/send-multiple")]
+        public async Task<IActionResult> SendMultipleMessage([FromBody] IEnumerable<NotificationMessage> notifications)
+        {
+            var tasks = new List<Task<SendResult>>();
+
+            if (notifications is not null && notifications.Any())
+            {
+                foreach (var notification in notifications)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () => SendTelegramService(notification)
+                    ));
+                }
+            }
+
+            var results = (await Task.WhenAll(tasks)).ToList();
+
+            return Ok(results);
+        }
+
+        [HttpPost]
+        [Route("api/telegram/send-single")]
+        public async Task<IActionResult> SendSingleMessage(NotificationMessage notification)
+        {
+            var result = await SendTelegramService(notification);
+            return Ok(result);
+        }
+
+        private async Task<SendResult> SendTelegramService(NotificationMessage notification)
+        {
+            var result = new SendResult
+            {
+                NotificationId = notification.NotificationId,
+                ConversationGroupId = notification.ConversationGroupId,
+            };
+
+            if (!botCommonService.IsActiveChannel(notification.ChannelId))
+            {
+                result.SentTime = DateTime.UtcNow;
+                result.ErrorCode = 1;
+                result.ErrorMessage = $"Channel {notification.ChannelId} is current inactivated";
+                result.IsIgnoreRetry = true;
+                return result;
+            }
+
+            try
+            {
+                await telegramBotService(notification.BotId).SendNotifyAysnc(notification, result);
+            }
+            catch (Exception ex)
+            {
+                result.ErrorCode = 1;
+                result.SentTime = DateTime.UtcNow;
+                result.ErrorMessage = SendNotificationErrorMessage.BotServiceErrorMsg;
+                var writeLogCommand = new WriteLogMessageCommand
+                {
+                    BotId = notification.BotId,
+                    ConversationId = notification.ConversationId,
+                    Content = notification.Content,
+                    IsSuccess = false,
+                    IsBotBlocked = false,
+                    ErrMsg = ex.Message
+                };
+                await botCommonService.WriteLogMessageAsyns(writeLogCommand);
+                await logService.ErrorAsync(ex);
+            }
+
+            return result;
         }
 
         private async Task WriteLogAsync(Exception exception, IDictionary<string, object> param = null)
