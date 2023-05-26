@@ -2,8 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO.Pipelines;
     using System.Linq;
+    using System.Security.Cryptography;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Models.Letstalk;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.BotService.Endpoint.ViewModel;
@@ -151,13 +154,16 @@
                 ? SendNotificationErrorMessage.LetstalkIdInvalid
                 : string.Empty;
 
-            await botCommonService.WriteLogMessageAsyns(notification.NotificationId,
-                notification.BotId,
-                notification.ConversationId,
-                notification.Content,
-                sendResult.IsSuccess,
-                sendResult.BlockList.Any(),
-                sendResult.Message);
+            var writeLogCommand = new WriteLogMessageCommand
+            {
+                BotId = notification.BotId,
+                ConversationId = notification.ConversationId,
+                Content = notification.Content,
+                IsSuccess = sendResult.IsSuccess,
+                IsBotBlocked = sendResult.BlockList.Any(),
+                ErrMsg = sendResult.Message
+            };
+            await botCommonService.WriteLogMessageAsyns(writeLogCommand);
         }
 
         private async Task SendImagesToPersonal(NotificationMessage notification)
@@ -171,14 +177,17 @@
                 };
 
                 var result = await letstalkClientService(notification.BotId).PushPersonalAsync(notification.ConversationId, outgoingMsg);
+                var writeLogCommand = new WriteLogMessageCommand
+                {
+                    BotId = notification.BotId,
+                    ConversationId = notification.ConversationId,
+                    Content = img,
+                    IsSuccess = result.IsSuccess,
+                    IsBotBlocked = result.BlockList.Any(),
+                    ErrMsg = result.Message
+                };
 
-                await botCommonService.WriteLogMessageAsyns(notification.NotificationId,
-                notification.BotId,
-                notification.ConversationId,
-                img,
-                result.IsSuccess,
-                result.BlockList.Any(),
-                result.Message);
+                await botCommonService.WriteLogMessageAsyns(writeLogCommand);
             }
         }
 
@@ -201,13 +210,16 @@
             result.ErrorCode = sendResult.IsSuccess ? 0 : 1;
             result.ErrorMessage = !sendResult.IsSuccess ? SendNotificationErrorMessage.BotServiceErrorMsg : string.Empty;
 
-            await botCommonService.WriteLogMessageAsyns(notification.NotificationId,
-                notification.BotId,
-                notification.ConversationId,
-                notification.Content,
-                sendResult.IsSuccess,
-                false,
-                sendResult.Message);
+            var writeLogCommand = new WriteLogMessageCommand
+            {
+                BotId = notification.BotId,
+                ConversationId = notification.ConversationId,
+                Content = notification.Content,
+                IsSuccess = sendResult.IsSuccess,
+                IsBotBlocked = sendResult.BlockList.Any(),
+                ErrMsg = sendResult.Message
+            };
+            await botCommonService.WriteLogMessageAsyns(writeLogCommand);
         }
 
         private async Task SendImagesToGroup(NotificationMessage notification)
@@ -222,13 +234,17 @@
 
                 var result = await letstalkClientService(notification.BotId).PushRoomAsync(notification.ConversationId, outgoingMsg);
 
-                await botCommonService.WriteLogMessageAsyns(notification.NotificationId,
-                notification.BotId,
-                notification.ConversationId,
-                img,
-                result.IsSuccess,
-                result.BlockList.Any(),
-                result.Message);
+                var writeLogCommand = new WriteLogMessageCommand
+                {
+                    BotId = notification.BotId,
+                    ConversationId = notification.ConversationId,
+                    Content = img,
+                    IsSuccess = result.IsSuccess,
+                    IsBotBlocked = result.BlockList.Any(),
+                    ErrMsg = result.Message
+                };
+
+                await botCommonService.WriteLogMessageAsyns(writeLogCommand);
             }
         }
     }

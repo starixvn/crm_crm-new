@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO.Pipelines;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -69,7 +68,7 @@
             {
                 _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
                 var result = await SendTextMessageAsync(notificationMessage.BotId, chatId, notificationMessage.Content);
-                if(result is not null)
+                if (result is not null)
                 {
                     sendResult.ErrorCode = 0;
                 }
@@ -129,7 +128,7 @@
                 sendResult.IsIgnoreRetry = true;
             }
 
-            if(exception.Message.Contains("bot was blocked by the user", StringComparison.InvariantCultureIgnoreCase))
+            if (exception.Message.Contains("bot was blocked by the user", StringComparison.InvariantCultureIgnoreCase))
             {
                 sendResult.ErrorMessage = ErrorMessageTelegram.BlockBot;
                 sendResult.IsIgnoreRetry = true;

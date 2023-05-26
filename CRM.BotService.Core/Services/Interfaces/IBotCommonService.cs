@@ -1,11 +1,13 @@
 ﻿namespace CRM.BotService.Core.Services.Interfaces
 {
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Criteria;
     using CRM.Core.Enumerables;
+    using CRM.Core.Models;
 
     public interface IBotCommonService
     {
-        Task WriteLogMessageAsyns(int notificationId, long botId, string conversationId, string content, bool isSuccess, bool isBotBlocked, string errMsg);
+        Task<CommandResult> WriteLogMessageAsyns(WriteLogMessageCommand command);
 
         bool IsActiveChannel(BotChannel channel);
     }
