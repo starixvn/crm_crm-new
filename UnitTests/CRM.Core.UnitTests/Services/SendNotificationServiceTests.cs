@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CRM.Core.Criteria;
+using CRM.Core.Enumerables;
 using CRM.Core.Models.BotServices;
 using CRM.Core.Services;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,6 @@ namespace CRM.Core.UnitTests.Services
 
         public SendNotificationServiceTests()
         {
-
             configuration = Substitute.For<IConfiguration>();
             baseService = Substitute.For<IBaseService>();
             logService = Substitute.For<ICRMLogService>();
@@ -37,7 +37,7 @@ namespace CRM.Core.UnitTests.Services
 
             await baseService.Received(1).GetDataAsync<NotificationMessage>(Arg.Any<GetNotificationToSendCriteria>());
             await logService.DidNotReceive().ErrorAsync(Arg.Any<Exception>());
-            await chatbotService.DidNotReceive().SendMultipleMessageAsync(Arg.Any<IEnumerable<NotificationMessage>>());
+            await chatbotService.DidNotReceive().SendMultipleMessageAsync(Arg.Any<BotChannel>(), Arg.Any<IEnumerable<NotificationMessage>>());
         }
 
         [Fact]
@@ -65,19 +65,20 @@ namespace CRM.Core.UnitTests.Services
             await service.ScanAndSendMessageToBotEndpointAsync();
 
             await baseService.Received(1).GetDataAsync<NotificationMessage>(Arg.Any<GetNotificationToSendCriteria>());
-            await chatbotService.Received().SendMultipleMessageAsync(Arg.Any<IEnumerable<NotificationMessage>>());
-            await baseService.Received(1).ExecuteNonQueryAsync(Arg.Any<UpdateNotificationStatusCommand>());
+            await chatbotService.Received(1).SendMultipleMessageAsync(Arg.Is(BotChannel.Letstalk), Arg.Any<IEnumerable<NotificationMessage>>());
+            await chatbotService.Received(1).SendMultipleMessageAsync(Arg.Is(BotChannel.Telegram), Arg.Any<IEnumerable<NotificationMessage>>());
+            await baseService.Received(2).ExecuteNonQueryAsync(Arg.Any<UpdateNotificationStatusCommand>());
         }
 
         private List<NotificationMessage> FakeNotiftcation()
         {
             return new List<NotificationMessage>
             {
-                new NotificationMessage {BotId = 100, ConversationGroupId = 1, NotificationId = 1, ChatTypeId = 1, ConversationId = "1"},
-                new NotificationMessage {BotId = 100, ConversationGroupId = 2, NotificationId = 2, ChatTypeId = 1, ConversationId = "2"},
-                new NotificationMessage {BotId = 100, ConversationGroupId = 3, NotificationId = 3, ChatTypeId = 2, ConversationId = "3"},
-                new NotificationMessage {BotId = 100, ConversationGroupId = 4, NotificationId = 4, ChatTypeId = 2, ConversationId = "4"},
-                new NotificationMessage {BotId = 100, ConversationGroupId = 5, NotificationId = 5, ChatTypeId = 2, ConversationId = "5"},
+                new NotificationMessage {BotId = 100, ConversationGroupId = 1, NotificationId = 1, ChatTypeId = 1, ConversationId = "1", ChannelId = BotChannel.Letstalk},
+                new NotificationMessage {BotId = 100, ConversationGroupId = 2, NotificationId = 2, ChatTypeId = 1, ConversationId = "2", ChannelId = BotChannel.Letstalk},
+                new NotificationMessage {BotId = 100, ConversationGroupId = 3, NotificationId = 3, ChatTypeId = 2, ConversationId = "3", ChannelId = BotChannel.Telegram},
+                new NotificationMessage {BotId = 100, ConversationGroupId = 4, NotificationId = 4, ChatTypeId = 2, ConversationId = "4", ChannelId = BotChannel.Telegram},
+                new NotificationMessage {BotId = 100, ConversationGroupId = 5, NotificationId = 5, ChatTypeId = 2, ConversationId = "5", ChannelId = BotChannel.Telegram},
             };
         }
     }

@@ -33,7 +33,7 @@
                 Content = healthCheckSettings.Message
             };
 
-            await chatBotSendMessageService.SendSingleMessageAsync(notificationMsg);
+            await chatBotSendMessageService.SendSingleMessageAsync(BotChannel.Letstalk, notificationMsg);
         }
     }
 }

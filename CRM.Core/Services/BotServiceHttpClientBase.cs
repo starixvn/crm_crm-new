@@ -13,10 +13,9 @@
 
     public class BotServiceHttpClientBase
     {
-        private readonly BotServiceSettings botSettings;
+        protected readonly BotServiceSettings botSettings;
         private readonly IHttpClientFactory httpClientFactory;
         private readonly ICacheService cacheService;
-        private const string AuthenticatePath = "api/authenticate";
         private const string JwtTokenCacheKey = "CRM_BotService_Authenticate_Token_Cache_Key";
 
         public BotServiceHttpClientBase(BotServiceSettings botSettings, IHttpClientFactory httpClientFactory, ICacheService cacheService)
@@ -51,7 +50,7 @@
                     Token = Convert.ToBase64String(Encoding.UTF8.GetBytes(botSettings.Token))
                 };
                 var httpClient = httpClientFactory.CreateClient();
-                using (var response = await httpClient.PostAsJsonAsync($"{botSettings.ServiceUrl}{AuthenticatePath}", authData))
+                using (var response = await httpClient.PostAsJsonAsync($"{botSettings.ServiceUrl}{botSettings.AuthenticatePath}", authData))
                 {
                     response.EnsureSuccessStatusCode();
                     var responseString = await response.Content.ReadAsStringAsync();

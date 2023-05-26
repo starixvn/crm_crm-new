@@ -1,6 +1,4 @@
-﻿
-
-namespace CRM.Core.Services
+﻿namespace CRM.Core.Services
 {
     using System;
     using System.Collections.Generic;
@@ -20,12 +18,13 @@ namespace CRM.Core.Services
 
     public class SendNotificationService : ISendNotificationService
     {
-        private readonly IBaseService baseService;
-        private readonly ICRMLogService logService;
-        private readonly IChatBotSendMessageService chatbotService;
         private readonly int ItemEachBatch;
         private const int DefaultItemEachBatch = 10;
         private readonly string BaseImageUrl;
+
+        private readonly IBaseService baseService;
+        private readonly ICRMLogService logService;
+        private readonly IChatBotSendMessageService chatbotService;
 
         public SendNotificationService(IBaseService baseService,
             ICRMLogService logService,
@@ -47,11 +46,28 @@ namespace CRM.Core.Services
             {
                 await UpdateBotRemovedStatus(notifications.Where(noti => noti.BotId == 0 && noti.ChatType == ChatType.Group));
 
-                await SendNotification(notifications.Where(noti => noti.BotId > 0));
+                await SendMessageToRecipients(notifications.Where(noti => noti.BotId > 0));
             }
         }
 
-        private async Task SendNotification(IEnumerable<NotificationMessage> notifications)
+        private async Task SendMessageToRecipients(IEnumerable<NotificationMessage> notifications)
+        {
+            await Task.WhenAll(
+                SendMessageByBotServiceAsync(BotChannel.Letstalk, notifications),
+                SendMessageByBotServiceAsync(BotChannel.Telegram, notifications)
+            );
+        }
+
+        private async Task SendMessageByBotServiceAsync(BotChannel botChannel, IEnumerable<NotificationMessage> notifications)
+        {
+            var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
+            if (filterNotifications.Any())
+            {
+                await SendNotification(botChannel, filterNotifications);
+            }
+        }
+
+        private async Task SendNotification(BotChannel botChannel, IEnumerable<NotificationMessage> notifications)
         {
             var batches = DivideBatchToSend(notifications);
             foreach (var batch in batches)
@@ -59,7 +75,7 @@ namespace CRM.Core.Services
                 var results = new List<NotificationMessageUpdateResult>();
                 try
                 {
-                    var sendResults = await chatbotService.SendMultipleMessageAsync(batch);
+                    var sendResults = await chatbotService.SendMultipleMessageAsync(botChannel, batch);
                     results = GetUpdateResultModel(sendResults).ToList();
                 }
                 catch (Exception ex)

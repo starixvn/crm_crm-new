@@ -5,10 +5,16 @@
     using System.Text;
     using CRM.BotService.Core.Extensions;
     using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Services;
+    using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
+    using CRM.Core.Repositories;
+    using CRM.Core.Services;
+    using Fanex.Caching;
     using Fanex.Data;
+    using Fanex.Data.Repository;
     using Fanex.Data.SqlServer;
     using Fanex.Logging;
     using Fanex.Logging.Extensions;
@@ -90,8 +96,20 @@
             });
 
             services.AddControllers().AddNewtonsoftJson();
-            services.ResolveCoreDI();
+            RegisterServices(services);
             services.ResolveWebhookServices(Configuration);
+        }
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            services.AddSingleton<IDynamicRepository, DynamicRepository>();
+            services.AddSingleton<IBaseRepository, BaseRepository>();
+            services.AddSingleton<IBaseService, BaseService>();
+            services.AddSingleton<ICacheService, CacheService>();
+            services.AddSingleton<ILogger, Logger>();
+            services.AddSingleton<ICRMLogService, CRMLogService>();
+            services.AddSingleton<IBotCommonService, BotCommonService>();
+            services.AddSingleton<IPushMessageService, PushMessageService>();
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

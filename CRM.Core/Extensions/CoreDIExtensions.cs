@@ -29,7 +29,6 @@
             services.AddSingleton<BotServiceHttpClientBase>();
             services.AddSingleton<ISendNotificationService, SendNotificationService>();
             services.AddSingleton<IChatBotSendMessageService, ChatBotSendMessageService>();
-            services.AddSingleton<IBaseService, BaseService>();
             services.AddHttpClient();
         }
     }

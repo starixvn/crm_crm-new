@@ -23,6 +23,17 @@
         private ICacheService cacheService;
 
         [Fact]
+        public async Task SendMultipleMessageAsync_WhenChangeConfig_ThrowsMissConfigException()
+        {
+            IEnumerable<NotificationMessage> param = FakeListNotificationMessage();
+            var service = GetService();
+            cacheService.GetAsync<string>(Arg.Any<string>()).ReturnsNull();
+            FakeHttpClientResponse();
+
+            await Assert.ThrowsAsync<ArgumentException>(() => service.SendMultipleMessageAsync((BotChannel)3, param));
+        }
+
+        [Fact]
         public async Task SendMultipleMessageAsync_WhenNoCache_CallHttpClient2Times_AndCallCacheServiceSetAsync()
         {
             IEnumerable<NotificationMessage> param = FakeListNotificationMessage();
@@ -30,7 +41,7 @@
             cacheService.GetAsync<string>(Arg.Any<string>()).ReturnsNull();
             FakeHttpClientResponse();
 
-            var actual = await service.SendMultipleMessageAsync(param);
+            var actual = await service.SendMultipleMessageAsync(BotChannel.Telegram, param);
 
             httpClientFactory.Received(2).CreateClient();
             await cacheService.Received(1).SetAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CacheItemOptions>());
@@ -46,7 +57,7 @@
             cacheService.GetAsync<string>(Arg.Any<string>()).Returns("token");
             FakeHttpClientResponse();
 
-            var actual = await service.SendMultipleMessageAsync(param);
+            var actual = await service.SendMultipleMessageAsync(BotChannel.Telegram, param);
 
             httpClientFactory.Received(1).CreateClient();
             await cacheService.DidNotReceive().SetAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CacheItemOptions>());
@@ -62,7 +73,7 @@
             cacheService.GetAsync<string>(Arg.Any<string>()).Returns("token");
             FakeHttpClientResponse(HttpStatusCode.Forbidden);
 
-            await Assert.ThrowsAsync<HttpRequestException>(() => service.SendMultipleMessageAsync(param));
+            await Assert.ThrowsAsync<HttpRequestException>(() => service.SendMultipleMessageAsync(BotChannel.Letstalk, param));
         }
 
         [Fact]
@@ -73,7 +84,7 @@
             cacheService.GetAsync<string>(Arg.Any<string>()).ReturnsNull();
             FakeHttpClientResponse();
 
-            var actual = await service.SendSingleMessageAsync(param);
+            var actual = await service.SendSingleMessageAsync(BotChannel.Letstalk, param);
 
             httpClientFactory.Received(2).CreateClient();
             await cacheService.Received(1).SetAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CacheItemOptions>());
@@ -93,7 +104,7 @@
             cacheService.GetAsync<string>(Arg.Any<string>()).Returns("token");
             FakeHttpClientResponse();
 
-            var actual = await service.SendSingleMessageAsync(param);
+            var actual = await service.SendSingleMessageAsync(param.ChannelId, param);
 
             httpClientFactory.Received(1).CreateClient();
             await cacheService.DidNotReceive().SetAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CacheItemOptions>());
@@ -114,10 +125,10 @@
             cacheService.GetAsync<string>(Arg.Any<string>()).Returns("token");
             FakeHttpClientResponse(HttpStatusCode.Forbidden);
 
-            await Assert.ThrowsAsync<HttpRequestException>(() => service.SendSingleMessageAsync(param));
+            await Assert.ThrowsAsync<HttpRequestException>(() => service.SendSingleMessageAsync(BotChannel.Letstalk, param));
         }
 
-        private static NotificationMessage FakeNotificationMessage() => new NotificationMessage
+        private static NotificationMessage FakeNotificationMessage() => new()
         {
             NotificationId = 1,
             ConversationGroupId = 1,
@@ -173,7 +184,13 @@
             {
                 ServiceUrl = "http://bot.com/",
                 AppId = "Id",
-                Token = "1234aa"
+                Token = "1234aa",
+                AuthenticatePath = "api/authenticate",
+                ApiConfigs = new List<ApiConfig>
+                {
+                    new ApiConfig {Channel = BotChannel.Letstalk, SendMultipleMessagePath = "api/multiple-notify", SendSingleMessagePath = "api/single-notify"},
+                    new ApiConfig {Channel = BotChannel.Telegram, SendMultipleMessagePath = "api/multiple-notify", SendSingleMessagePath = "api/single-notify"}
+                },
             };
             httpClientFactory = Substitute.For<IHttpClientFactory>();
             cacheService = Substitute.For<ICacheService>();
