@@ -2,9 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO.Pipelines;
     using System.Linq;
-    using System.Security.Cryptography;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Models.Letstalk;
@@ -119,13 +117,23 @@
                 return result;
             }
 
-            if (notification.ChatType == ChatType.Personal)
+            try
             {
-                await SendLetstalkPersonal(notification, result);
+                if (notification.ChatType == ChatType.Personal)
+                {
+                    await SendLetstalkPersonal(notification, result);
+                }
+                else
+                {
+                    await SendLetstalkGroup(notification, result);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                await SendLetstalkGroup(notification, result);
+                result.SentTime = DateTime.UtcNow;
+                result.ErrorCode = 1;
+                result.ErrorMessage = ex.Message;
+                await logService.ErrorAsync(ex);
             }
 
             return result;
