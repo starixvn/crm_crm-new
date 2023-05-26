@@ -115,7 +115,7 @@
             await letstalkService(botConfig.BotAccountId).PushRoomAsync(hookEvent.Source.GroupId, new OutgoingMessage
             {
                 Text = greeting,
-                MessageType = NotificationMessageType.Text
+                MessageType = NotificationMessageType.PlainText
             });
 
             if (!result.IsSuccessful)
@@ -186,7 +186,7 @@
                     new OutgoingMessage
                     {
                         Text = $"Hi, I am {botConfig.DisplayName}",
-                        MessageType = NotificationMessageType.Text
+                        MessageType = NotificationMessageType.PlainText
                     });
             }
         }
@@ -202,7 +202,7 @@
                 new OutgoingMessage
                 {
                     Text = string.Format("Hello, I am Bot. Your ID: {0}", hookEvent.Source.UserId),
-                    MessageType = NotificationMessageType.Text
+                    MessageType = NotificationMessageType.PlainText
                 }); ;
         }
 

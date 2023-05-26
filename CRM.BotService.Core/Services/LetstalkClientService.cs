@@ -128,7 +128,7 @@
 
         private static void ValidateMultiCastMessage(OutgoingMessage message)
         {
-            if ((message.MessageType == NotificationMessageType.Html || message.MessageType == NotificationMessageType.Text)
+            if ((message.MessageType == NotificationMessageType.Html || message.MessageType == NotificationMessageType.PlainText)
                 && string.IsNullOrWhiteSpace(message.Text))
             {
                 throw new ArgumentNullException(message.Text);

@@ -15,7 +15,7 @@
             {
                 switch (MessageType)
                 {
-                    case NotificationMessageType.Text:
+                    case NotificationMessageType.PlainText:
                         return MulticastType.Text;
 
                     case NotificationMessageType.Image:

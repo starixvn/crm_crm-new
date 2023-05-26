@@ -2,7 +2,7 @@
 {
     public enum NotificationMessageType
     {
-        Text = 0,
+        PlainText = 0,
         Html,
         Image,
         FullImage

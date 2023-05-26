@@ -118,7 +118,12 @@
             {
                 foreach (var item in notifications)
                 {
-                    if (item.AnnouncementId > 0 && !string.IsNullOrEmpty(item.FileName))
+                    if (item.AnnouncementId > 0)
+                    {
+                        item.MessageType = NotificationMessageType.Html;
+                    }
+
+                    if (!string.IsNullOrEmpty(item.FileName))
                     {
                         var images = item.FileName.Split(",");
                         item.Images = images.Select(

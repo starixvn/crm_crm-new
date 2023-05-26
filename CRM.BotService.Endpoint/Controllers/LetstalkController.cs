@@ -95,7 +95,7 @@
         }
 
         [HttpPost]
-        [Route("api/letstalk/send-multiple")]
+        [Route("api/letstalk/send-single")]
         public async Task<IActionResult> SendSingleMessage(NotificationMessage notification)
         {
             var result = await SendLetstalkService(notification);

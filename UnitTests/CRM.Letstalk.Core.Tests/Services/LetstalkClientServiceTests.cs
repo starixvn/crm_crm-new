@@ -185,7 +185,7 @@ public class LetstalkClientServiceTests
         var service = GetService();
         await Assert.ThrowsAsync<ArgumentNullException>(() => service.PushRoomAsync("accountId", new OutgoingMessage
         {
-            MessageType = NotificationMessageType.Text,
+            MessageType = NotificationMessageType.PlainText,
             Text = string.Empty
         }));
 
