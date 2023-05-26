@@ -24,6 +24,7 @@
       <Compile Remove="Services\CustomWebHostService.cs" />
     </ItemGroup>
     <ItemGroup>
+      <Content Remove="appsettings.LOCAL.json" />
       <Content Remove="appsettings.LOCAL_1.json" />
     </ItemGroup>
 
@@ -137,6 +138,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Include="appsettings.LOCAL.json" />
       <None Include="appsettings.LOCAL_1.json" />
     </ItemGroup>
 
