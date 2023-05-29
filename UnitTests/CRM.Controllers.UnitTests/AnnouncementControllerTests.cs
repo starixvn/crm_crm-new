@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 using Xunit;
 
 namespace CRM.Controllers.UnitTests
@@ -136,6 +137,19 @@ namespace CRM.Controllers.UnitTests
 
             // Assert
             Assert.Equal(commandResult, commandResultJson);
+        }
+
+        [Fact]
+        public async Task ScanAndSendNotification_ExpectWhenCalled_ExpectCallExactFunction()
+        {
+            // Arrange
+            var controller = GetController();
+
+            // Act
+            var result = await controller.ScanAndSendNotification();
+
+            // Assert
+            await sendNotificationService.Received(1).ScanAndSendMessageToBotEndpointAsync();
         }
 
         [Fact]
