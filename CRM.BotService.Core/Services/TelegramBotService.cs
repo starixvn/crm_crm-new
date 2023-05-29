@@ -78,6 +78,7 @@
 
         public async Task SendNotifyAysnc(NotificationMessage notificationMessage, SendResult sendResult)
         {
+            logService.LogInformation("Start SendNotifyAysnc: " + notificationMessage.ConversationId);
             await SendTextMessageAsync(notificationMessage, sendResult);
             if (notificationMessage.Images is not null && notificationMessage.Images.Length > 0 && sendResult.IsSuccessful)
             {
@@ -85,6 +86,7 @@
             }
             sendResult.SentTime = DateTime.UtcNow;
             await WriteLogCommandAsync(notificationMessage, sendResult);
+            logService.LogInformation("End SendNotifyAysnc: " + notificationMessage.ConversationId);
         }
 
         protected internal virtual async Task SendTextMessageAsync(NotificationMessage notificationMessage, SendResult sendResult)
@@ -110,6 +112,7 @@
         {
             try
             {
+                logService.LogInformation("Start SendImageAsync: " + notificationMessage.ConversationId);
                 sendResult.ErrorCode = 0;
                 _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
                 foreach (var img in notificationMessage.Images)
@@ -117,6 +120,7 @@
                     await SendImageAsync(notificationMessage.BotId, chatId, img);
                     await WriteLogCommandAsync(notificationMessage, sendResult, img);
                 }
+                logService.LogInformation("End SendImageAsync: " + notificationMessage.ConversationId);
             }
             catch (Exception exception)
             {

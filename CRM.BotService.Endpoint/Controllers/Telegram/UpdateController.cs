@@ -11,6 +11,7 @@
     using global::Telegram.Bot.Types;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.VisualBasic;
     using Newtonsoft.Json;
 
     public class UpdateController : Controller
@@ -36,19 +37,19 @@
             try
             {
                 var updateJson = JsonConvert.SerializeObject(update, Formatting.Indented);
-                logService.LogInformation(updateJson);
-                if (update == null || update.Type != UpdateType.Message)
+                logService.LogInformation("Update webhook telegram: " + updateJson);
+                if (update is null || update.Type != UpdateType.Message)
                 {
                     return Ok();
                 }
                 User bot = await telegramBotService(botId).GetBotInfoAsync(botId);
-                if (bot == null)
+                if (bot is null)
                 {
                     await logService.ErrorMessageAsync($"Telegram Bot {botId} is invalid.");
                     return Ok($"Telegram Bot {botId} is invalid.");
                 }
                 await HandleEventUpdate(bot, update.Message);
-
+                logService.LogInformation("End webhook telegram!!!");
                 return Ok();
             }
             catch (Exception ex)
@@ -69,6 +70,7 @@
                 case MessageType.ChatTitleChanged:
                     await EditChatTitledAsync(message);
                     break;
+
                 case MessageType.GroupCreated:
                     await AddBotToGroupAsync(message, bot);
                     break;
@@ -101,7 +103,7 @@
                 .Select(entity => message.Text.Substring(entity.Offset, entity.Length)).ToList();
             foreach (var command in commands)
             {
-                if(command.Equals("/start", StringComparison.CurrentCultureIgnoreCase) && message.Chat.Type == ChatType.Private)
+                if (command.Equals("/start", StringComparison.CurrentCultureIgnoreCase) && message.Chat.Type == ChatType.Private)
                 {
                     await AddBotToPersonal(message, bot);
                 }
@@ -121,7 +123,15 @@
                 DisplayName = message.NewChatTitle,
                 UpdatedBy = message.From.Id.ToString()
             };
-            return await baseService.ExecuteNonQueryAsync(command);
+            var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);
+            logService.LogInformation("start EditChatTitledAsync: " + commandSerialize);
+            var result = await baseService.ExecuteNonQueryAsync(command);
+            if (!result.IsSuccessful)
+            {
+                await logService.ErrorAsync(new Exception(result.Message));
+            }
+            logService.LogInformation("end EditChatTitledAsync!!!");
+            return result;
         }
 
         protected internal virtual async Task<CommandResult> AddBotToGroupAsync(Message message, User bot)
@@ -135,11 +145,15 @@
                 ChannelId = (byte)ConversationChannel.Telegram,
                 UpdatedBy = message.From.Id.ToString()
             };
+            var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);
+            logService.LogInformation("start AddBotToGroupAsync: " + commandSerialize);
+
             var result = await baseService.ExecuteNonQueryAsync(command);
             if (!result.IsSuccessful)
             {
                 await logService.ErrorAsync(new Exception(result.Message));
             }
+            logService.LogInformation("end AddBotToGroupAsync!!!");
             return result;
         }
 
@@ -154,11 +168,14 @@
                     ChannelId = (byte)ConversationChannel.Telegram,
                     UpdatedBy = message.From.Id.ToString()
                 };
+                var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);
+                logService.LogInformation("start RemoveBotToGroupAsync: " + commandSerialize);
                 var result = await baseService.ExecuteNonQueryAsync(command);
                 if (!result.IsSuccessful)
                 {
                     await logService.ErrorAsync(new Exception(result.Message));
                 }
+                logService.LogInformation("end RemoveBotToGroupAsync!!!");
             }
         }
 
@@ -170,11 +187,14 @@
                 ToConversationId = message.MigrateToChatId.ToString(),
                 UpdatedBy = message.From.Id.ToString()
             };
+            var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);
+            logService.LogInformation("start MigratedToSupergroupAsync: " + commandSerialize);
             var result = await baseService.ExecuteNonQueryAsync(command);
             if (!result.IsSuccessful)
             {
                 await logService.ErrorAsync(new Exception(result.Message));
             }
+            logService.LogInformation("end MigratedToSupergroupAsync!!!");
             return result;
         }
 
@@ -189,6 +209,9 @@
                 ChannelId = (byte)ConversationChannel.Telegram,
                 UpdatedBy = message.Chat.Id.ToString()
             };
+            var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);
+            logService.LogInformation("start AddBotToPersonal: " + commandSerialize);
+
             var result = await baseService.ExecuteNonQueryAsync(command);
             string greeting = $"Hi, I am {bot.Username}, your ID: {message.Chat.Id}";
             await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
@@ -196,6 +219,7 @@
             {
                 await logService.ErrorAsync(new Exception(result.Message));
             }
+            logService.LogInformation("end AddBotToPersonal!!!");
         }
     }
 }

@@ -6,16 +6,17 @@
     using System.Threading.Tasks;
     using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Models;
-    using CRM.BotService.Core.Services;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Constants;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
+    using CRM.Models.NotificationList;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MessageController : Controller
@@ -43,7 +44,9 @@
             {
                 _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
                 _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
+                logService.LogInformation(string.Format("Start SendMessage: botId: {0} chatId: {1}.", botId, chatId));
                 await telegramBotService(botId).SendTextMessageAsync(botId, chatId, conversationInfo.Message);
+                logService.LogInformation("End SendMessage!!!");
             }
             catch (Exception ex)
             {
@@ -56,14 +59,16 @@
 
         [HttpPost]
         [Route("api/telegram/send-image")]
-        public async Task<ObjectResult> sendImage([FromBody] ConversationInfo conversationInfo)
+        public async Task<ObjectResult> SendImage([FromBody] ConversationInfo conversationInfo)
         {
             var errorMessage = string.Empty;
             try
             {
                 _ = long.TryParse(conversationInfo.BotConversationId, out long botId);
                 _ = long.TryParse(conversationInfo.ConversationId, out long chatId);
+                logService.LogInformation(string.Format("Start SendImage: botId: {0} chatId: {1} imageUrl: {2}.", botId, chatId, conversationInfo.ImageUrl));
                 await telegramBotService(botId).SendImageAsync(botId, chatId, conversationInfo.ImageUrl);
+                logService.LogInformation("End SendImage!!!");
             }
             catch (Exception ex)
             {
@@ -78,8 +83,8 @@
         [Route("api/telegram/send-multiple")]
         public async Task<IActionResult> SendMultipleMessage([FromBody] IEnumerable<NotificationMessage> notifications)
         {
+            logService.LogInformation("Start SendMultipleMessage: " + JsonConvert.SerializeObject(notifications, Formatting.Indented));
             var tasks = new List<Task<SendResult>>();
-
             if (notifications is not null && notifications.Any())
             {
                 foreach (var notification in notifications)
@@ -92,7 +97,7 @@
             }
 
             var results = (await Task.WhenAll(tasks)).ToList();
-
+            logService.LogInformation("End Start SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
             return Ok(results);
         }
 
@@ -106,6 +111,7 @@
 
         private async Task<SendResult> SendTelegramService(NotificationMessage notification)
         {
+            logService.LogInformation("Start SendTelegramService!!!");
             var result = new SendResult
             {
                 NotificationId = notification.NotificationId,
@@ -118,12 +124,15 @@
                 result.ErrorCode = 1;
                 result.ErrorMessage = $"Channel {notification.ChannelId} is current inactivated";
                 result.IsIgnoreRetry = true;
+                logService.LogInformation(result.ErrorMessage);
                 return result;
             }
 
             try
             {
+                logService.LogInformation(string.Format("Start SendNotifyAysnc: botId: {0} chatId: {1}.", notification.BotId, notification.ConversationId));
                 await telegramBotService(notification.BotId).SendNotifyAysnc(notification, result);
+                logService.LogInformation("end SendNotifyAysnc!!!");
             }
             catch (Exception ex)
             {
