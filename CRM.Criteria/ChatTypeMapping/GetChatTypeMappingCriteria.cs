@@ -12,7 +12,10 @@
 
         public string RecipientName { get; set; }
 
-        public string LetstalkId { get; set; }
+        public int? ChannelId { get; set; }
+
+        public string LetstalkIdOrUsername { get; set; }
+
 
         public int? LanguageId { get; set; }
 

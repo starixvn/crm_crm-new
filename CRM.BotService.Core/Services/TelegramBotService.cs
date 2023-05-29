@@ -195,5 +195,13 @@
                 throw new ArgumentNullException(paramName);
             }
         }
+
+        public async Task<Chat> GetChatAsync(long botId, long chatId)
+        {
+            TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
+            var chat = await bot.BotClient.GetChatAsync(new ChatId(chatId));
+            return chat;
+        }
+
     }
 }

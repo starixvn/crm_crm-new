@@ -4,15 +4,22 @@
     {
         public int ConversationGroupId { get; set; }
 
-        public int BotId { get; set; }
+        public long BotId { get; set; }
 
         public string Name { get; set; }
+
+        public string Username { get; set; }
 
         public int RecipientTypeId { get; set; }
 
         public string GroupHeadlineIds { get; set; }
 
         public string LetstalkId { get; set; }
+
+        public int ChannelId { get; set; }
+
+        public string ConversationId { get; set; }
+
 
         public string RecipientIds { get; set; }
 

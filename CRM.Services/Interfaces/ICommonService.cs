@@ -9,11 +9,13 @@
 
     public interface ICommonService
     {
-        Task<IEnumerable<BaseModel>> GetConversationBotAsync();
+        Task<IEnumerable<BaseBotModel>> GetConversationBotAsync();
 
-        Task<IEnumerable<RecipientModel>> GetRecipientAsync(GetRecipientsCriteria criteria);
+        Task<(IEnumerable<RecipientModel>, IEnumerable<BotInfo>)> GetRecipientAsync(GetRecipientsCriteria criteria);
 
         Task<IEnumerable<BaseModel>> GetRecipientTypeAsync();
+
+        Task<IEnumerable<BaseModel>> GetBotServicesAsync();
 
         Task<IEnumerable<BaseModel>> GetSystemAsync();
 

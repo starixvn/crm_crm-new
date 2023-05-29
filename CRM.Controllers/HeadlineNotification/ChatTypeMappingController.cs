@@ -29,6 +29,7 @@
         private readonly IChatTypeMappingService chatTypeMappingService;
         private readonly IExportExcelService excelService;
         private readonly ILetstalkApiService letstalkClientService;
+        private readonly ITelegramApiService telegramClientService;
 
         public ChatTypeMappingController(
             INapSession napSession,
@@ -36,7 +37,8 @@
             ICommonService commonService,
             IChatTypeMappingService chatTypeMappingService,
             IExportExcelService excelService,
-            ILetstalkApiService letstalkClientService)
+            ILetstalkApiService letstalkClientService,
+            ITelegramApiService telegramClientService)
         {
             this.napSession = napSession;
             this.settingService = settingService;
@@ -44,6 +46,7 @@
             this.chatTypeMappingService = chatTypeMappingService;
             this.excelService = excelService;
             this.letstalkClientService = letstalkClientService;
+            this.telegramClientService = telegramClientService;
         }
 
         public async Task<IActionResult> GetSettings()
@@ -51,8 +54,9 @@
             var bots = commonService.GetConversationBotAsync();
             var languages = settingService.GetSettingAsync(SettingName.NotificationTemplateLanguage, true);
             var recipientTypes = commonService.GetRecipientTypeAsync();
+            var botServices = commonService.GetBotServicesAsync();
 
-            await Task.WhenAll(bots, languages, recipientTypes);
+            await Task.WhenAll(bots, languages, recipientTypes, botServices);
 
             var result = new
             {
@@ -61,6 +65,7 @@
                 Languages = (await languages).Select(l => new BaseModel { Id = l.SettingId, Name = l.SettingValue }),
                 Bots = await bots,
                 RecipientTypes = await recipientTypes,
+                BotServices = await botServices
             };
             return Json(result);
         }
@@ -74,7 +79,8 @@
                 ConversationGroupName = filter.Name,
                 Headline = filter.GroupHeadline,
                 RecipientName = filter.RecipientIds,
-                LetstalkId = filter.LetstalkId,
+                ChannelId = filter.ChannelId,
+                LetstalkIdOrUsername = filter.LetstalkIdOrUsername,
                 LanguageId = filter.LanguageId,
                 IsActive = filter.IsActive,
                 BotId = filter.BotId,
@@ -113,7 +119,9 @@
         public async Task<IActionResult> InsertPersonalMapping([FromBody] PersonalMappingViewModel data)
         {
             var result = new CommandResult();
-            var userProfile = await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.LetstalkId.Trim());
+            var userProfile = data.ChannelId == BotServiceTypeConstants.Letstalk ?
+                await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.ConversationId.Trim()) :
+                await telegramClientService.GetPersonalDisplayNameAsync(data.BotId, long.Parse(data.ConversationId));
 
             if (userProfile is not null && !string.IsNullOrWhiteSpace(userProfile.DisplayName))
             {
@@ -125,7 +133,9 @@
                     RecipientTypeId = data.RecipientTypeId,
                     HeadlineIds = data.GroupHeadlineIds,
                     RecipientId = int.Parse(data.RecipientIds),
-                    LetstalkId = data.LetstalkId,
+                    ChannelId = data.ChannelId,
+                    Username = data.Username,
+                    ConversationId = data.ConversationId,
                     LanguageId = data.LanguageId,
                     Remark = data.Remark,
                     UserId = napSession.UserId,
@@ -136,7 +146,7 @@
             }
             else
             {
-                result.Message = string.Format(ViewResources.LetstalkInvalidMessage, data.LetstalkId);
+                result.Message = string.Format(ViewResources.LetstalkInvalidMessage, data.ConversationId);
             }
 
             return Json(result);
@@ -147,7 +157,7 @@
         public async Task<IActionResult> UpdatePersonalMapping([FromBody] PersonalMappingViewModel data)
         {
             var result = new CommandResult();
-            var userProfile = await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.LetstalkId.Trim());
+            var userProfile = await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.ConversationId.Trim());
 
             if (userProfile is not null && !string.IsNullOrWhiteSpace(userProfile.DisplayName))
             {
@@ -159,7 +169,7 @@
                     RecipientTypeId = data.RecipientTypeId,
                     HeadlineIds = data.GroupHeadlineIds,
                     RecipientIds = data.RecipientIds,
-                    LetstalkId = data.LetstalkId,
+                    ConversationId = data.ConversationId,
                     LanguageId = data.LanguageId,
                     Remark = data.Remark,
                     UserId = napSession.UserId,
@@ -170,7 +180,7 @@
             }
             else
             {
-                result.Message = string.Format(ViewResources.LetstalkInvalidMessage, data.LetstalkId);
+                result.Message = string.Format(ViewResources.LetstalkInvalidMessage, data.ConversationId);
             }
 
             return Json(result);
@@ -178,9 +188,16 @@
 
         public async Task<IActionResult> GetRecipientByType(int recipientTypeId)
         {
-            var recipients = await commonService.GetRecipientAsync(new GetRecipientsCriteria { RecipientType = recipientTypeId });
-            return Json(recipients);
+            var (recipients, botInfo) = await commonService.GetRecipientAsync(new GetRecipientsCriteria { RecipientType = recipientTypeId });
+            return Json(new { data = recipients, botInfo });
         }
+
+        public async Task<string> GetTelegramDisplayName(long botId, long chatId)
+        {
+            var userProfile = await telegramClientService.GetPersonalDisplayNameAsync(botId, chatId);
+            return userProfile is not null ? userProfile.DisplayName : string.Empty;
+        }
+
 
         public async Task<IActionResult> GetGroupHeadlineByRecipient(string recipientIds)
         {
@@ -205,7 +222,7 @@
                 RecipientTypeId = data.RecipientTypeId,
                 HeadlineIds = data.GroupHeadlineIds,
                 RecipientIds = data.RecipientIds,
-                LetstalkId = data.LetstalkId,
+                ConversationId = data.ConversationId,
                 LanguageId = data.LanguageId,
                 Remark = data.Remark,
                 UserId = napSession.UserId,
@@ -279,7 +296,8 @@
                 ConversationGroupName = filter.Name,
                 Headline = filter.GroupHeadline,
                 RecipientName = filter.RecipientIds,
-                LetstalkId = filter.LetstalkId,
+                ChannelId = filter.ChannelId,
+                LetstalkIdOrUsername = filter.LetstalkIdOrUsername,
                 LanguageId = filter.LanguageId,
                 IsActive = filter.IsActive,
                 BotId = filter.BotId,

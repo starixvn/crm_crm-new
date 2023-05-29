@@ -4,6 +4,8 @@
 
     public class GetConversationBotsCriteria : CriteriaBase
     {
+        public int? ChannelId { get; set; }
+
         public override string GetSettingKey() => "Acc_CRM_ChatBot_Bot_Sel";
 
         public override bool IsValid() => true;

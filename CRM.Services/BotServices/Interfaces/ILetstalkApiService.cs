@@ -7,7 +7,7 @@
 
     public interface ILetstalkApiService
     {
-        Task<LetstalkContact> GetPersonalDisplayNameAsync(int botId, string letstalkId);
+        Task<LetstalkTelegramContact> GetPersonalDisplayNameAsync(long botId, string letstalkId);
 
         Task<LetsalkValidationModel> VerifyLetstalkOnGroup(int botId, string conversationGroupId, List<RecipientLetstalk> letstalkRecipients);
     }

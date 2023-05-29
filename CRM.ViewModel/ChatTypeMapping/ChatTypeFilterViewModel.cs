@@ -12,7 +12,10 @@
 
         public string RecipientIds { get; set; }
 
-        public string LetstalkId { get; set; }
+        public int? ChannelId { get; set; }
+
+        public string LetstalkIdOrUsername { get; set; }
+
 
         public string MappingStatuses { get; set; }
 

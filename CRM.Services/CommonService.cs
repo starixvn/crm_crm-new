@@ -26,20 +26,26 @@
             this.appSettings = appSettings.Value;
         }
 
-        public async Task<IEnumerable<BaseModel>> GetConversationBotAsync()
+        public async Task<IEnumerable<BaseBotModel>> GetConversationBotAsync()
         {
             var criteria = new GetConversationBotsCriteria();
-            return await baseService.GetDataAsync<BaseModel>(criteria);
+            return await baseService.GetDataAsync<BaseBotModel>(criteria);
         }
 
-        public async Task<IEnumerable<RecipientModel>> GetRecipientAsync(GetRecipientsCriteria criteria)
+        public async Task<(IEnumerable<RecipientModel>, IEnumerable<BotInfo>)> GetRecipientAsync(GetRecipientsCriteria criteria)
         {
-            return await baseService.GetDataAsync<RecipientModel>(criteria);
+            return await baseService.FetchMultipleAsync<RecipientModel, BotInfo>(criteria);
         }
 
         public async Task<IEnumerable<BaseModel>> GetRecipientTypeAsync()
         {
             var criteria = new GetRecipientTypesCriteria();
+            return await baseService.GetDataAsync<BaseModel>(criteria);
+        }
+
+        public async Task<IEnumerable<BaseModel>> GetBotServicesAsync()
+        {
+            var criteria = new GetBotServicesCriteria();
             return await baseService.GetDataAsync<BaseModel>(criteria);
         }
 

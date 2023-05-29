@@ -17,10 +17,10 @@
         {
         }
 
-        public async Task<LetstalkContact> GetPersonalDisplayNameAsync(int botId, string letstalkId)
+        public async Task<LetstalkTelegramContact> GetPersonalDisplayNameAsync(long botId, string letstalkId)
         {
             var data = new { BotId = botId, LetstalkId = letstalkId };
-            var results = await PostAsync<LetstalkContact>(ApiPath.GetLetstalkUserProfilePath, data);
+            var results = await PostAsync<LetstalkTelegramContact>(ApiPath.GetLetstalkUserProfilePath, data);
             return results;
         }
 

@@ -4,7 +4,7 @@
 
     public class InsertPersonalMappingCommand : BaseNonQueryCommand
     {
-        public int BotId { get; set; }
+        public long BotId { get; set; }
 
         public string ConversationGroupName { get; set; }
 
@@ -18,7 +18,12 @@
 
         public int RecipientId { get; set; }
 
-        public string LetstalkId { get; set; }
+        public int ChannelId { get; set; }
+
+        public string Username { get; set; }
+
+        public string ConversationId { get; set; }
+
 
         public string IgnoredNotificationTypeList { get; set; }
 
@@ -33,7 +38,7 @@
         public override string GetSettingKey() => "Acc_CRM_ChatBot_ChatTypeMapping_Ins";
 
         private bool IsValidStringProps() => !string.IsNullOrWhiteSpace(ConversationGroupName) &&
-            !string.IsNullOrWhiteSpace(LetstalkId);
+            !string.IsNullOrWhiteSpace(ConversationId);
 
         private bool isValidIntProps() => BotId > 0 &&
             ChatTypeId > 0 &&

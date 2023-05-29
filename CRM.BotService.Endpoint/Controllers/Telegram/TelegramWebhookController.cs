@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
+    using CRM.BotService.Endpoint.ViewModel;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -78,6 +79,15 @@
             {
                 return Ok(ex.Message);
             }
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("api/telegram/bot/get-user-profile")]
+        public async Task<IActionResult> CheckPersonalProfileAsync([FromBody] TelegramBotConversationViewModel model)
+        {
+            var profile = await telegramBotService(model.BotId).GetChatAsync(model.BotId, model.ChatId);
+            return Ok(profile);
         }
     }
 }
