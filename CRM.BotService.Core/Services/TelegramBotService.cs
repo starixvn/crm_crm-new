@@ -19,21 +19,20 @@
 
     public class TelegramBotService : ITelegramBotService
     {
-        private readonly HttpClient httpClient;
         private readonly IList<TelegramBotConfigurations> botConfigurations;
         private readonly ICRMLogService logService;
         private readonly IBotCommonService botCommonService;
 
         public TelegramBotService(
-            IHttpClientFactory httpClientFactory,
+            IHttpClientFactory clientFactory,
             List<TelegramBotConfigurations> botConfigurations,
             ICRMLogService logService,
             IBotCommonService botCommonService)
         {
-            httpClient = httpClientFactory.CreateClient(NamedHttpClients.ProxiedClient);
             this.botConfigurations = botConfigurations;
             this.logService = logService;
             this.botCommonService = botCommonService;
+            var httpClient = clientFactory.CreateClient(NamedHttpClients.ProxiedClient);
             foreach (var bot in botConfigurations)
             {
                 bot.BotClient = new TelegramBotClient(bot.Token, httpClient);

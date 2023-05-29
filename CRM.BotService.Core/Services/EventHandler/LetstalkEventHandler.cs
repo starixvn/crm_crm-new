@@ -203,7 +203,7 @@
                 {
                     Text = string.Format("Hello, I am Bot. Your ID: {0}", hookEvent.Source.UserId),
                     MessageType = NotificationMessageType.PlainText
-                }); ;
+                });
         }
 
         #endregion Receive message

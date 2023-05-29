@@ -83,7 +83,7 @@
                     tasks.Add(
                         Task.Run(
                             () => SendLetstalkService(notification)
-                            )); ;
+                            ));
                 }
             }
 

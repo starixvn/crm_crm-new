@@ -115,7 +115,7 @@
             });
         }
 
-        private void AddConfiguration(IServiceCollection services, IConfiguration configuration)
+        private static void AddConfiguration(IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AppJobSettings>(options => configuration.GetSection("AppSettings").Bind(options));
             services.Configure<List<JobSetting>>(configuration.GetSection("JobSettings"));
