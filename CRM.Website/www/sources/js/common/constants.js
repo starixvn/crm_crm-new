@@ -193,3 +193,8 @@ export const BotServices = [
     { id: 1, name: 'Letstalk' },
     { id: 2, name: 'Telegram' }
 ];
+
+export const BotServiceType = {
+    Letstalk: 1,
+    Telegram: 2
+};
