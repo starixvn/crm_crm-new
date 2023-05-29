@@ -49,6 +49,12 @@ export const letstalkName = createReducer({}, {
     }
 });
 
+export const telegramName = createReducer({}, {
+    [types.TELEGRAM_DISPLAY_NAME](state, action) {
+        return action.data;
+    }
+});
+
 const reducers = {
     insertPersonalMappingData,
     insertPersonalMappingResult,
@@ -57,7 +63,8 @@ const reducers = {
     updateGroupMappingData,
     updateGroupMappingResult,
     letstalkVerification,
-    letstalkName
+    letstalkName,
+    telegramName
 };
 
 export default reducers;

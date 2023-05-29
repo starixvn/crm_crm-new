@@ -94,6 +94,17 @@
     .form-control:not(:last-child){
         height: calc(1.5em + 0.5rem + 2px);
     }
+
+    .radioCheck {
+        display: flex;
+        align-items: center;
+    }
+
+    .badge-green {
+        color: #00B050;
+        font-weight: 300;
+        cursor: pointer;
+    }
     
     .react-select__control{
         height: 28px;

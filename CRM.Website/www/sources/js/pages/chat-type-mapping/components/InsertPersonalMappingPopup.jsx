@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
 import { Button, Col, Form, Modal, Row, Alert } from 'react-bootstrap';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
@@ -12,6 +14,7 @@ import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Loading from '@jsroot/components/Loading';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
+import { BotServiceType }from '@jsroot/common/constants';
 const AccountingPIC = 'Accounting PIC';
 
 export class InsertPersonalMappingPopup extends Component {
@@ -20,7 +23,7 @@ export class InsertPersonalMappingPopup extends Component {
 
         this.state = {
             form: {
-                botId: this.props.settings.bots ? this.props.settings.bots[0].id : '',
+                botId: this.props.settings.bots ? this.getBotNameByBotService(1)[0].id : '',
                 displayName: '',
                 recipientType: '',
                 recipientName: '',
@@ -30,11 +33,16 @@ export class InsertPersonalMappingPopup extends Component {
                 languageId: '',
                 remark: '',
                 ignoredNotification: '',
-                isTest: false
+                isTest: false,
+                isTelegram: false,
+                botServiceId: this.props.settings.botServices ? this.props.settings.botServices[0].id : '',
+                chatId: '',
+                username: ''
             },
             groupHeadlineDefault: [{ id: '', name: LangHelper.getResource('AllGroupHeadlineAndNotAssignedGroup'), checked: true }],
             isSubmitting: false,
             letstalkIds: '',
+            usernames: [],
             validate: {
                 isShow: false,
                 errMsgs: []
@@ -54,6 +62,11 @@ export class InsertPersonalMappingPopup extends Component {
         await this.getIgnoreNotificationType();
     }
 
+    getBotNameByBotService = botServiceId => {
+        const bots = this.props.settings.bots;
+        return bots.filter(item => item.channelId === botServiceId);
+    };
+
     getIgnoreNotificationType = async () =>{
         Site.blockUI();
         const url = Site.resolveClientUrl('ChatTypeMapping/GetIgnoreNotificationType');
@@ -68,13 +81,26 @@ export class InsertPersonalMappingPopup extends Component {
         }));
     };
 
+    handleBotServiceChange = value => {
+        this.handleChange('botServiceId', parseInt(value));
+        this.handleChange('displayName', '');
+    };
+
     handleBotChange = value => {
         this.setState({ isLoading: true });
-        this.handleChange('botId', value);
-        this.props.getLetstalkDisplayName(value, this.state.form.letstalkId).then(() => {
-            this.handleChange('displayName', this.props.letstalkName);
-            this.setState({ isLoading: false });
-        });
+        this.handleChange('botId', parseFloat(value));
+
+        if (this.state.form.botServiceId === BotServiceType.Letstalk) {
+            this.props.getLetstalkDisplayName(value, this.state.form.letstalkId).then(() => {
+                this.handleChange('displayName', this.props.letstalkName);
+                this.setState({ isLoading: false });
+            });
+        } else {
+            this.props.getTelegramDisplayName(value, parseFloat(this.state.form.chatId)).then(() => {
+                this.handleChange('displayName', this.props.telegramName);
+                this.setState({ isLoading: false });
+            });
+        }
     };
 
     handleGroupHeadlineChange = (currentItem, selectedItemsKey) => {
@@ -92,9 +118,11 @@ export class InsertPersonalMappingPopup extends Component {
         this.handleChange('recipientName', label);
         this.props.getRecipientByRecipientType(e.target.value);
         this.handleChange('letstalkId', '');
+        this.handleChange('chatId', '');
         this.handleChange('displayName', '');
         this.setState({
-            letstalkIds: ''
+            letstalkIds: '',
+            usernames: []
         });
         this.handleChange('recipient', '');
         if (label !== AccountingPIC) {
@@ -105,9 +133,11 @@ export class InsertPersonalMappingPopup extends Component {
     handleRecipientChange = option => {
         this.handleChange('recipient', option || '');
         this.handleChange('letstalkId', '');
+        this.handleChange('chatId', '');
         this.handleChange('displayName', '');
         this.setState({
-            letstalkIds: option ? option.letstalkIds : ''
+            letstalkIds: option ? option.letstalkIds : '',
+            usernames: this.getUsernames(option)
         });
         const optionValue = option ? option.value : '';
         this.props.getGroupHeadlineByRecipient(optionValue);
@@ -120,6 +150,28 @@ export class InsertPersonalMappingPopup extends Component {
             this.handleChange('displayName', this.props.letstalkName);
             this.setState({ isLoading: false });
         });
+    };
+
+    handleChangeUsername = value => {
+        this.handleChange('username', value);
+
+        const botInfo = this.props.recipients.botInfo;
+        const botByUsername = botInfo.find(item => item.username === value);
+        const chatId = botByUsername ? botByUsername.chatId : '';
+        this.handleChange('chatId', chatId);
+
+        this.setState({ isLoading: true });
+        this.props.getTelegramDisplayName(this.state.form.botId, parseFloat(chatId)).then(() => {
+            this.handleChange('displayName', this.props.telegramName);
+            this.setState({ isLoading: false });
+        });
+    };
+
+    getUsernames = option => {
+        if (option) {
+            return option.usernames ? option.usernames.split(',').map(item => item.trim()) : [];
+        }
+        return [];
     };
 
     renderOptions = (item, key) => {
@@ -172,7 +224,7 @@ export class InsertPersonalMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('RecipientRequired'));
         }
 
-        if (!data.letstalkId) {
+        if (!data.letstalkId && data.botServiceId === BotServiceType.Letstalk) {
             isValid = false;
             errMsg.push(LangHelper.getResource('LetstalkIdRequired'));
         }
@@ -187,6 +239,11 @@ export class InsertPersonalMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('LanguageRequired'));
         }
 
+        if (!data.displayName && data.botServiceId === BotServiceType.Telegram) {
+            isValid = false;
+            errMsg.push(`The username ${data.username} hasn't added the bot.`)
+        }
+
         this.setState({
             isSubmitting: isValid,
             validate: {
@@ -199,16 +256,23 @@ export class InsertPersonalMappingPopup extends Component {
 
     getParams = () => {
         const isTest =  this.state.form.isTest  ? 1 : 0;
+        const {
+            botId, botServiceId, recipientType, letstalkId, groupHeadlines, chatId,
+            recipient, languageId, remark, ignoredNotification, recipientName, username
+        } = this.state.form;
+
         return {
-            botId: this.state.form.botId,
-            recipientTypeId: this.state.form.recipientType,
-            letstalkId: this.state.form.letstalkId,
-            groupHeadlineIds: this.state.form.groupHeadlines,
-            recipientIds: this.state.form.recipient.value,
-            languageId: this.state.form.languageId,
-            remark: this.state.form.remark,
-            ignoredNotificationTypeList: this.state.form.ignoredNotification,
-            isTest: this.state.form.recipientName !== AccountingPIC ? null : isTest
+            botId: botId,
+            channelId: botServiceId,
+            recipientTypeId: recipientType,
+            conversationId: botServiceId === BotServiceType.Letstalk ? letstalkId : chatId,
+            username: botServiceId === BotServiceType.Letstalk ? '' : username,
+            groupHeadlineIds: groupHeadlines,
+            recipientIds: recipient.value,
+            languageId: languageId,
+            remark: remark,
+            ignoredNotificationTypeList: ignoredNotification,
+            isTest: recipientName !== AccountingPIC ? null : isTest
         };
     };
 
@@ -252,13 +316,17 @@ export class InsertPersonalMappingPopup extends Component {
     };
 
     renderForm = () => {
-        const recipientOptions = this.props.recipients.map(item => {
+        const recipientOptions = this.props.recipients.data && this.props.recipients.data.map(item => {
             return {
                 value: item.id, label: item.name,
-                letstalkIds: item.letstalkIds
+                letstalkIds: item.letstalkIds,
+                usernames: item.usernames
             };
         });
         const groupHeadlinesOption = this.state.form.recipientName === AccountingPIC ? this.state.groupHeadlineDefault : this.props.groupHeadline;
+        const { botServiceId } = this.state.form;
+        const { usernames } = this.state;
+        const botOptions = this.getBotNameByBotService(botServiceId);
 
         return (
             <Form onSubmit={this.handleSubmit}>
@@ -281,6 +349,21 @@ export class InsertPersonalMappingPopup extends Component {
                     }
                     <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2" className="required">
+                            {LangHelper.getResource('BotService')}
+                        </Form.Label>
+                        <Col sm="9" md="10">
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                name='botService'
+                                onChange={e => this.handleBotServiceChange(e.target.value)}
+                                value={botServiceId}
+                            >
+                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                {this.props.settings.botServices.map(this.renderOptions)}
+                            </Form.Control>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('BotName')}
                         </Form.Label>
                         <Col sm="9" md="10">
@@ -290,13 +373,13 @@ export class InsertPersonalMappingPopup extends Component {
                                 value={this.state.form.botId}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {this.props.settings.bots.map(this.renderOptions)}
+                                {botOptions.map(this.renderOptions)}
                             </Form.Control>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('LetstalkName')}
+                            {LangHelper.getResource('DisplayName')}
                         </Form.Label>
                         <Form.Label column sm="9" md="10">
                             {
@@ -348,16 +431,54 @@ export class InsertPersonalMappingPopup extends Component {
                             />
                         </Col>
                     </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('LetstalkID')}
-                        </Form.Label>
-                        <Col sm="9" md="10" >
-                            {
-                                this.renderLetstalkIds(this.selectedLetstalkIds)
-                            }
-                        </Col>
-                    </Form.Group>
+                    {
+                        botServiceId === BotServiceType.Telegram && (
+                            <>
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="3" md="2" className="required">
+                                        {LangHelper.getResource('Username')}
+                                    </Form.Label>
+                                    {
+                                        usernames.length > 0 &&
+                                        usernames.map((value, key) => (
+                                            <Col key={key + value} sm="auto" md="auto" className="radioCheck">
+                                                <Form.Check
+                                                    inline label={value}
+                                                    name='usernameId'
+                                                    type="radio"
+                                                    id={key + value}
+                                                    value={value}
+                                                    onChange={event => this.handleChangeUsername(event.target.value)}
+                                                />
+                                            </Col>
+                                        ))
+                                    }
+                                </Form.Group>
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="3" md="2">
+                                        {LangHelper.getResource('ChatID')}
+                                    </Form.Label>
+                                    <Form.Label column sm="9" md="10">
+                                        {LangHelper.getResource(this.state.form.chatId)}
+                                    </Form.Label>
+                                </Form.Group>
+                            </>
+                        )
+                    }
+                    {
+                        botServiceId === BotServiceType.Letstalk && (
+                            <Form.Group as={Row}>
+                                <Form.Label column sm="3" md="2" className="required">
+                                    {LangHelper.getResource('LetstalkID')}
+                                </Form.Label>
+                                <Col sm="9" md="10">
+                                    {
+                                        this.renderLetstalkIds(this.selectedLetstalkIds)
+                                    }
+                                </Col>
+                            </Form.Group>
+                        )
+                    }
                     <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}
@@ -486,14 +607,15 @@ export class InsertPersonalMappingPopup extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings, recipients, groupHeadline, gridParams, insertPersonalMappingResult, letstalkName } = state;
+    const { settings, recipients, groupHeadline, gridParams, insertPersonalMappingResult, letstalkName, telegramName } = state;
     return {
         settings,
         recipients,
         groupHeadline,
         gridParams,
         insertPersonalMappingResult,
-        letstalkName
+        letstalkName,
+        telegramName
     };
 };
 

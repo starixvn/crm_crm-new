@@ -61,11 +61,11 @@ export class EditPersonalMappingPopup extends Component {
             const recipientId = prevState.form.recipient.value;
             const headlineIds = prevState.form.groupHeadlines.split(',');
             let letstalkIds = '';
-            if (nextProps.recipients.length > 0) {
-                const selectRecipient = nextProps.recipients.filter(r => r.id === recipientId);
+            if (nextProps.recipients.data.length > 0) {
+                const selectRecipient = nextProps.recipients.data.filter(r => r.id === recipientId);
                 letstalkIds = selectRecipient.length > 0 ? selectRecipient[0].letstalkIds : '';
             }
-            const recipientOptions = nextProps.recipients.map(item => {
+            const recipientOptions = nextProps.recipients.data.map(item => {
                 return {
                     value: item.id, label: item.name,
                     letstalkIds: item.letstalkIds

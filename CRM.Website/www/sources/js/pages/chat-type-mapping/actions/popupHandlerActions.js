@@ -159,6 +159,24 @@ export const getLetstalkDisplayName = (botId, letstalkId) => async dispatch => {
     }
 };
 
+const setTelegramDisplayName = name => {
+    return {
+        type: types.TELEGRAM_DISPLAY_NAME,
+        data: name
+    };
+};
+export const getTelegramDisplayName = (botId, chatId) => async dispatch => {
+    if (botId && chatId) {
+        const url = Site.resolveClientUrl('ChatTypeMapping/GetTelegramDisplayName');
+        const params = { botId: botId, chatId: chatId };
+        await DataService.getDataAsync(url, params).then(response => {
+            dispatch(setTelegramDisplayName(response.data));
+        }).catch(Site.handleAxiosError);
+    } else {
+        dispatch(setTelegramDisplayName(''));
+    }
+};
+
 const actions = {
     openInsertPersonalMappingPopup,
     closeInsertPersonalMappingPopup,
@@ -173,7 +191,8 @@ const actions = {
     updateGroupMapping,
     setGroupMappingResult,
     verifyLetstalkInGroup,
-    getLetstalkDisplayName
+    getLetstalkDisplayName,
+    getTelegramDisplayName
 };
 
 export default actions;

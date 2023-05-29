@@ -21,6 +21,7 @@ export class Filter extends Component {
                 letstalkID: '',
                 mappingStatuses: '',
                 languageId: '',
+                botServiceId: '',
                 botId: '',
                 active: ''
             },
@@ -28,6 +29,7 @@ export class Filter extends Component {
                 chatTypes: [],
                 mappingStatuses: [],
                 languages: [],
+                botServices: [],
                 bots: []
             }
         };
@@ -46,6 +48,7 @@ export class Filter extends Component {
                 chatTypes: this.props.settings.chatTypes,
                 mappingStatuses: mappingStatuses,
                 languages: this.props.settings.languages,
+                botServices: this.props.settings.botServices,
                 bots: this.props.settings.bots
             };
 
@@ -62,11 +65,23 @@ export class Filter extends Component {
         }));
     };
 
+    getBotOptions = () => {
+        const { botServiceId } = this.state.filter;
+        const { bots } = this.state.settings;
+
+        if (botServiceId) {
+            const botOptions = bots.filter(item => item.channelId === this.state.filter.botServiceId);
+            return botOptions;
+        }
+        return bots;
+    };
+
     getParams = () => {
         const pageSize = this.props.gridParams.pageSize;
         return {
             chatType: this.state.filter.chatType,
             botId: this.state.filter.botId,
+            channelId: this.state.filter.botServiceId,
             name: this.state.filter.name,
             groupHeadline: this.state.filter.groupHeadline,
             recipientIds: this.state.filter.recipient,
@@ -95,6 +110,7 @@ export class Filter extends Component {
     renderOptions = (item, key) => <option key={key} value={item.id}>{item.name}</option>;
 
     render() {
+        const botOptions = this.getBotOptions();
         return (
             <Fragment>
                 <Form className='form-filter' onSubmit={this.submitHandler}>
@@ -174,13 +190,23 @@ export class Filter extends Component {
                             </Form.Control>
                         </Form.Group>
                         <Form.Group>
+                            <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('BotService')}</Form.Label>
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                value={this.state.filter.botServiceId}
+                                onChange={e => this.onChange(parseInt(e.target.value))}
+                            >
+                                <option value="">{LangHelper.getResource('All')}</option>
+                                {this.state.settings.botServices.map(this.renderOptions)}
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group>
                             <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('BotName')}</Form.Label>
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 value={this.state.filter.botId}
                                 onChange={e => this.onChange('botId', e.target.value)}
                             >
-                                <option value="">{LangHelper.getResource('All')}</option>
-                                {this.state.settings.bots.map(this.renderOptions)}
+                                { this.state.filter.botServiceId.length === 0 && <option value="">{LangHelper.getResource('All')}</option> }
+                                {botOptions.map(this.renderOptions)}
                             </Form.Control>
                         </Form.Group>
                         <Form.Group>

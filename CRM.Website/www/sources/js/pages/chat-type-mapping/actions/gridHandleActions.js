@@ -62,6 +62,7 @@ export const openPersonalMappingPopup = item => {
 			},
 			botName: item.groupID,
 			letstalkName: item.letstalkName,
+			telegramName: item.telegramName,
 			letstalkId: {
 				value: item.letstalkId,
 				isValid: item.letstalkId !== ''
