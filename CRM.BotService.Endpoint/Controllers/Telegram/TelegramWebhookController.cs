@@ -11,7 +11,7 @@
 
     public class TelegramWebhookController : Controller
     {
-        private readonly IEnumerable<TelegramBotConfigurations> botConfigurations;
+        private readonly List<TelegramBotConfigurations> botConfigurations;
         private readonly Func<long, ITelegramBotService> telegramBotService;
 
         public TelegramWebhookController(
@@ -46,14 +46,14 @@
         public async Task<IActionResult> GetWebhookInfo(long botId)
         {
             var bot = botConfigurations.FirstOrDefault(config => config.BotId == botId);
-            if (bot != null)
+            if (bot is not null)
             {
                 var webhookInfo = await telegramBotService(bot.BotId).GetWebhookInfoAsync(bot);
                 return Ok(webhookInfo);
             }
             else
             {
-                return Content("bot does not exist.");
+                return Ok("bot does not exist.");
             }
         }
 
@@ -64,14 +64,14 @@
             try
             {
                 var bot = botConfigurations.FirstOrDefault(config => config.BotId == botId);
-                if (bot != null)
+                if (bot is not null)
                 {
                     var user = await telegramBotService(bot.BotId).GetBotInfoAsync(bot.BotId);
                     return Ok(user);
                 }
                 else
                 {
-                    return Content("bot does not exist.");
+                    return Ok("bot does not exist.");
                 }
             }
             catch (Exception ex)
