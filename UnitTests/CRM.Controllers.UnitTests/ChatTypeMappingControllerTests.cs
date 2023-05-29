@@ -29,13 +29,14 @@
         private ICommonService commonService;
         private IChatTypeMappingService chatTypeMappingService;
         private ILetstalkApiService letstalkService;
+        private ITelegramApiService telegramService;
         private IExportExcelService excelService;
 
         [Fact]
         public async Task GetSettings_WhenCalled_ReturnExpectedJsonResult()
         {
             var fixture = new Fixture();
-            var bots = fixture.Create<IEnumerable<BaseModel>>();
+            var bots = fixture.Create<IEnumerable<BaseBotModel>>();
             var langs = new List<Models.Setting.Setting>();
             var recipientTypes = fixture.Create<IEnumerable<BaseModel>>();
             var chatTypes = fixture.Create<IEnumerable<BaseModel>>();
@@ -123,13 +124,13 @@
         {
             var fixture = new Fixture();
             var commandResult = fixture.Create<CommandResult>();
-            var userProfile = fixture.Create<LetstalkContact>();
+            var userProfile = fixture.Create<LetstalkTelegramContact>();
             var criteria = fixture.Create<InsertPersonalMappingCommand>();
             var controller = GetController();
             var invalidLetstalk = fixture.Create<string>();
             letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(userProfile);
             chatTypeMappingService.CreatePersonalMappingAsync(Arg.Do<InsertPersonalMappingCommand>(x => criteria = x)).Returns(commandResult);
-            var actual = await controller.InsertPersonalMapping(new PersonalMappingViewModel { BotId = 100020, LetstalkId = invalidLetstalk, RecipientIds = "1" });
+            var actual = await controller.InsertPersonalMapping(new PersonalMappingViewModel { BotId = 100020, ConversationId = invalidLetstalk, RecipientIds = "1" });
 
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var commandResultJson = (CommandResult)jsonResult.Value;
@@ -142,7 +143,7 @@
         {
             var fixture = new Fixture();
             var expected = fixture.Create<CommandResult>();
-            var letstalkResult = fixture.Create<LetstalkContact>();
+            var letstalkResult = fixture.Create<LetstalkTelegramContact>();
             var viewModal = fixture.Create<PersonalMappingViewModel>();
             viewModal.RecipientIds = "1";
 
@@ -162,12 +163,12 @@
         public async Task UpdatePersonalMapping_WhenInvalidLetstalkId_ReturnExpectedCommandResult()
         {
             var fixture = new Fixture();
-            var userProfile = new LetstalkContact { DisplayName = string.Empty };
+            var userProfile = new LetstalkTelegramContact { DisplayName = string.Empty };
             var controller = GetController();
             var invalidLetstalk = fixture.Create<string>();
             letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(userProfile);
 
-            var actual = await controller.UpdatePersonalMapping(new PersonalMappingViewModel { BotId = 100020, LetstalkId = invalidLetstalk });
+            var actual = await controller.UpdatePersonalMapping(new PersonalMappingViewModel { BotId = 100020, ConversationId = invalidLetstalk });
 
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var commandResult = (CommandResult)jsonResult.Value;
@@ -180,7 +181,7 @@
         {
             var fixture = new Fixture();
             var expected = fixture.Create<CommandResult>();
-            var letstalkResult = fixture.Create<LetstalkContact>();
+            var letstalkResult = fixture.Create<LetstalkTelegramContact>();
             var viewModal = fixture.Create<PersonalMappingViewModel>();
             viewModal.RecipientIds = "1";
 
@@ -201,7 +202,7 @@
         {
             var fixture = new Fixture();
 
-            var expected = fixture.Create<IEnumerable<RecipientModel>>();
+            var expected = fixture.Create<(IEnumerable<RecipientModel>, IEnumerable<BotInfo>)>();
 
             var controller = GetController();
             commonService.GetRecipientAsync(Arg.Any<GetRecipientsCriteria>()).Returns(expected);
@@ -210,7 +211,7 @@
 
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var result = (IEnumerable<RecipientModel>)jsonResult.Value;
-            Assert.Equal(expected, result);
+            Assert.Equal(expected.Item1, result);
         }
 
         [Fact]
@@ -312,7 +313,7 @@
         [Fact]
         public async Task GetLetstalkDisplayName_WhenInvalidLetstalkId_ReturnEmptyString()
         {
-            var letstalkContact = new LetstalkContact { DisplayName = string.Empty };
+            var letstalkContact = new LetstalkTelegramContact { DisplayName = string.Empty };
             var controller = GetController();
             letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkContact);
             var actual = await controller.GetLetstalkDisplayName(1, "abc");
@@ -322,7 +323,7 @@
         [Fact]
         public async Task GetLetstalkDisplayName_WhenValidLetstalkId_ReturnExpectedName()
         {
-            var letstalkContact = new LetstalkContact { DisplayName = "DisplayName" };
+            var letstalkContact = new LetstalkTelegramContact { DisplayName = "DisplayName" };
             var controller = GetController();
             letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkContact);
             var actual = await controller.GetLetstalkDisplayName(1, "abc");
@@ -375,6 +376,7 @@
             commonService = Substitute.For<ICommonService>();
             chatTypeMappingService = Substitute.For<IChatTypeMappingService>();
             letstalkService = Substitute.For<ILetstalkApiService>();
+            telegramService = Substitute.For<ITelegramApiService>();
             excelService = Substitute.For<IExportExcelService>();
             return new ChatTypeMappingController(
                 napSession,
@@ -382,7 +384,8 @@
                 commonService,
                 chatTypeMappingService,
                 excelService,
-                letstalkService
+                letstalkService,
+                telegramService
                 );
         }
 

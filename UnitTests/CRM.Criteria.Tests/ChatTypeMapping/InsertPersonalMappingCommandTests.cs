@@ -24,7 +24,7 @@
         [InlineData(0, 1, 0, 0, "1", "", "", 0, 0)]
         [InlineData(0, 1, 2, 3, "1", "", "", 4, 5)]
         public void IsValid_ParamsAreInvalid_ReturnFalse(int botId, int chatTypeId, int recipientTypeId, int recipientId,
-            string conversationName, string headlineIds, string letstalkId, int langId, int userId)
+            string conversationName, string headlineIds, string conversationId, int langId, int userId)
         {
             // Arrange
             var criteria = new InsertPersonalMappingCommand
@@ -35,7 +35,7 @@
                 RecipientTypeId = recipientTypeId,
                 HeadlineIds = headlineIds,
                 RecipientId = recipientId,
-                LetstalkId = letstalkId,
+                ConversationId = conversationId,
                 LanguageId = langId,
                 UserId = userId
             };
@@ -58,7 +58,7 @@
                 RecipientTypeId = 1,
                 HeadlineIds = "abcx",
                 RecipientId = 1,
-                LetstalkId = "ABC",
+                ConversationId = "ABC",
                 LanguageId = 2,
                 UserId = 10
             };
