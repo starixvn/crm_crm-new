@@ -23,6 +23,7 @@ export class Filter extends Component {
                 mappingStatuses: '',
                 botServiceId: '',
                 botIds: '',
+                holdBotIds: '',
                 active: ''
             },
             settings: {
@@ -77,8 +78,9 @@ export class Filter extends Component {
                     ...prevState.filter,
                     ...{
                         mappingStatuses: selectedMappingStatuses.toString(),
-                        botIds: selectedBotIds.toString()
-                    }
+                        botIds: selectedBotIds.toString(),
+                        holdBotIds: selectedBotIds.toString()
+                    },
                 },
                 settings: settings
             }), () => this.props.setGridParams(this.getParams()));
@@ -93,27 +95,29 @@ export class Filter extends Component {
 
     handleChangeBotService = value => {
         this.setState(prevState => ({
-            filter: {...prevState.filter, botServiceId: value}
+            filter: {...prevState.filter, botServiceId: value, botIds: this.getBotIds(value)},
+            settings: {...prevState.settings, bots: this.getBotOptions(value)}
         }));
-        if (value) {
-            this.setState(prevState =>({
-                filter: {...prevState.filter, botIds: this.getBotIds(value)},
-                settings: {...prevState.settings, bots: this.getBotOptions(value)}
-            }));
-        }
     };
 
     getBotIds = value => {
+        const { holdBotIds } = this.state.filter;
         const { holdBots } = this.state.settings;
-        const botIds = [];
-        const botOptions = holdBots.filter(item => item.id === parseInt(value));
-        botOptions[0].subItem.forEach(item => { botIds.push(item.key) });
-        return botIds.toString();
+        if (value) {
+            const botIds = [];
+            const botOptions = holdBots.filter(item => item.id === parseInt(value));
+            botOptions[0].subItem.forEach(item => { botIds.push(item.key) });
+            return botIds.toString();
+        }
+        return holdBotIds;
     };
 
     getBotOptions = value => {
         const { holdBots } = this.state.settings;
-        return holdBots.filter(item => item.id === parseInt(value));
+        if (value) {
+            return holdBots.filter(item => item.id === parseInt(value));
+        }
+        return holdBots
     };
 
     handleToggleFilter = value => {
