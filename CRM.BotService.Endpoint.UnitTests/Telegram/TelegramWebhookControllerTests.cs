@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using CRM.BotService.Core.Models;
 using CRM.BotService.Core.Services.Interfaces;
 using CRM.BotService.Endpoint.Controllers.Telegram;
 using CRM.Core.Services;
-using Fanex.Data;
-using Fanex.NAP.Client.AspNetCore.Session;
-using Fanex.NAP.Client.Helpers.Web;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting.Internal;
 using NSubstitute;
 using Telegram.Bot.Types;
 using Xunit;
@@ -25,6 +18,7 @@ namespace CRM.BotService.Endpoint.UnitTests.Telegram
     {
         private List<TelegramBotConfigurations> botConfigurations;
         private Func<long, ITelegramBotService> telegramBotService;
+        private ICRMLogService logService;
         private readonly Fixture fixture = new Fixture();
 
         [Fact]
@@ -149,9 +143,11 @@ namespace CRM.BotService.Endpoint.UnitTests.Telegram
             var botConfig = Substitute.For<List<TelegramBotConfigurations>>();
             botConfig.AddRange(botConfigurations);
             telegramBotService = Substitute.For<Func<long, ITelegramBotService>>();
+            logService = Substitute.For<ICRMLogService>();
             return new TelegramWebhookController(
                 botConfig,
-                telegramBotService
+                telegramBotService,
+                logService
             );
         }
 

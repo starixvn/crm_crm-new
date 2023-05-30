@@ -119,11 +119,12 @@
         {
             try
             {
-                logService.LogInformation("Start SendImageAsync: " + notificationMessage.ConversationId);
                 sendResult.ErrorCode = 0;
                 _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
                 foreach (var img in notificationMessage.Images)
                 {
+                    logService.LogInformation("Start SendImageAsync: " + notificationMessage.ConversationId + img);
+
                     await SendImageAsync(notificationMessage.BotId, chatId, img);
                     await WriteLogCommandAsync(notificationMessage, sendResult, img);
                 }

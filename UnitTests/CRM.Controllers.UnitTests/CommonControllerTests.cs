@@ -64,14 +64,14 @@
             // Arrange
             var controller = GetController();
             var criteria = fixture.Create<GetRecipientsCriteria>();
-            var expected = fixture.Create<IEnumerable<RecipientModel>>();
+            var expected = fixture.Create<(IEnumerable<RecipientModel>, IEnumerable<BotInfo>)>();
             commonService.GetRecipientAsync(criteria).Returns(expected);
 
             // Action
             var result = await controller.GetRecipients(criteria) as JsonResult;
 
             // Assert
-            Assert.Equal(expected, (IEnumerable<RecipientModel>)result.Value);
+            Assert.Equal(expected, result.Value);
         }
 
         [Fact]

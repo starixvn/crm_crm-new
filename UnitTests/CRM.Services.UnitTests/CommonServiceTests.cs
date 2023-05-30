@@ -34,8 +34,8 @@
         {
             // Arrange
             var service = GetService();
-            var expected = fixture.Create<IEnumerable<BaseModel>>();
-            baseService.GetDataAsync<BaseModel>(Arg.Any<GetConversationBotsCriteria>()).Returns(expected);
+            var expected = fixture.Create<IEnumerable<BaseBotModel>>();
+            baseService.GetDataAsync<BaseBotModel>(Arg.Any<GetConversationBotsCriteria>()).Returns(expected);
 
             // Action
             var result = await service.GetConversationBotAsync();
@@ -50,8 +50,8 @@
             // Arrange
             var service = GetService();
             var criteria = fixture.Create<GetRecipientsCriteria>();
-            var expected = fixture.Create<IEnumerable<RecipientModel>>();
-            baseService.GetDataAsync<RecipientModel>(criteria).Returns(expected);
+            var expected = fixture.Create<(IEnumerable<RecipientModel>, IEnumerable<BotInfo>)>();
+            baseService.FetchMultipleAsync<RecipientModel, BotInfo>(criteria).Returns(expected);
 
             // Action
             var result = await service.GetRecipientAsync(criteria);

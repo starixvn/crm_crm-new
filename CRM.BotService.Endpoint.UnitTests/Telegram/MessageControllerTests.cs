@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using CRM.BotService.Core.Models;
+using CRM.BotService.Core.Services;
 using CRM.BotService.Core.Services.Interfaces;
 using CRM.BotService.Endpoint.Controllers.Telegram;
 using CRM.Core.Models.BotServices;
@@ -95,6 +96,31 @@ namespace CRM.BotService.Endpoint.UnitTests.Telegram
         }
 
         [Fact]
+        public async Task SendMultipleMessage_WhenCalled_ExpectReturnResult()
+        {
+            // Arrange
+            var notifications = fixture.Build<NotificationMessage>().CreateMany(1);
+            var controller = GetController();
+            var notification = notifications.First();
+            botCommonService.IsActiveChannel(notification.ChannelId).Returns(true);
+            var expected = new SendResult
+            {
+                NotificationId = notification.NotificationId,
+                ConversationGroupId = notification.ConversationGroupId,
+            };
+
+            // Act
+            var actual = await controller.SendMultipleMessage(notifications);
+            var okObjectResult = actual as OkObjectResult;
+            var actualResult = okObjectResult.Value as IEnumerable<SendResult>;
+            var result = actualResult.First();
+            // Assert
+            logService.Received(5).LogInformation(Arg.Any<string>());
+            Assert.Equal(result.NotificationId, expected.NotificationId);
+            Assert.Equal(result.ConversationGroupId, expected.ConversationGroupId);
+        }
+
+        [Fact]
         public async Task SendMultipleMessage_WhenCalledInactiveChannel_ExpectCallExactFunction()
         {
             // Arrange
@@ -123,16 +149,25 @@ namespace CRM.BotService.Endpoint.UnitTests.Telegram
         }
 
         [Fact]
-        public async Task SendMultipleMessage_WhenCalled_ExpectCallExactFunctionWithTimes()
+        public async Task SendSingleMessage_WhenCalled_ExpectReturnResult()
         {
             // Arrange
-            var notifications = fixture.Build<NotificationMessage>().CreateMany(1);
+            var notification = fixture.Create<NotificationMessage>();
             var controller = GetController();
-            // Act
-            await controller.SendMultipleMessage(notifications);
+            botCommonService.IsActiveChannel(notification.ChannelId).Returns(true);
+            var expected = new SendResult
+            {
+                NotificationId = notification.NotificationId,
+                ConversationGroupId = notification.ConversationGroupId,
+            };
 
+            // Act
+            var actual = await controller.SendSingleMessage(notification);
+            var okObjectResult = actual as OkObjectResult;
+            var actualResult = okObjectResult.Value as SendResult;
             // Assert
-            logService.Received(4).LogInformation(Arg.Any<string>());
+            Assert.Equal(actualResult.NotificationId, expected.NotificationId);
+            Assert.Equal(actualResult.ConversationGroupId, expected.ConversationGroupId);
         }
 
         #region helper
