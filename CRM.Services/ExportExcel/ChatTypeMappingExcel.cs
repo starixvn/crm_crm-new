@@ -72,6 +72,7 @@
                 StyleMergeCell(worksheet, rowIndex, colIndexMerge++, rowMerge);
                 StyleMergeCell(worksheet, rowIndex, colIndexMerge++, rowMerge);
                 StyleMergeCell(worksheet, rowIndex, colIndexMerge++, rowMerge);
+                StyleMergeCell(worksheet, rowIndex, colIndexMerge++, rowMerge);
                 StyleMergeCell(worksheet, rowIndex, colIndexMerge, rowMerge);
 
                 StyleMergeCell(worksheet, rowIndex, colIndexMergeAfterHeadline++, rowMerge);
@@ -84,13 +85,13 @@
             worksheet.Cells[rowIndex, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
             worksheet.Cells[rowIndex, colIndex++].Value = rowNum;
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatType;
+            worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChannelName;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.BotName;
+            worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatType;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.DisplayName;
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.Recipients.Any() ? chatType.Recipients.FirstOrDefault().RecipientTypeName : "";
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.Headlines.Any() ? string.Join(", ", chatType.Headlines.Select(x => x.HeadlineName)) : "";
             colIndex++;
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatTypeId == mappingGroup ? "" : chatType.ConversationId;
+            worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatTypeId == mappingGroup ? "" : chatType.LetstalkID_Username;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.Language;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatTypeId == mappingGroup ? chatType.MappingStatus : "";
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.IsActive ? ViewResources.Yes : ViewResources.No;
