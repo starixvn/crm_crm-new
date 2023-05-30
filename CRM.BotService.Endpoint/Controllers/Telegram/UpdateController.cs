@@ -35,8 +35,8 @@
         {
             try
             {
-                var updateJson = JsonConvert.SerializeObject(update, Formatting.Indented);
-                logService.LogInformation("Update webhook telegram: " + updateJson);
+                logService.LogInformation(string.Format("Update webhook telegram: Type: {0}, ChatId: {1} ", update?.Type, update?.Message?.Chat?.Id));
+
                 if (update is null || update.Type != UpdateType.Message)
                 {
                     return Ok();

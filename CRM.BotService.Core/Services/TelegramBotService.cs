@@ -96,7 +96,7 @@
             return chat;
         }
 
-        protected internal virtual async Task SendTextMessageAsync(NotificationMessage notificationMessage, SendResult sendResult)
+        public async Task SendTextMessageAsync(NotificationMessage notificationMessage, SendResult sendResult)
         {
             try
             {
@@ -115,7 +115,7 @@
             }
         }
 
-        protected internal virtual async Task SendImageAsync(NotificationMessage notificationMessage, SendResult sendResult)
+        public async Task SendImageAsync(NotificationMessage notificationMessage, SendResult sendResult)
         {
             try
             {
@@ -137,7 +137,7 @@
             }
         }
 
-        protected internal virtual async Task WriteLogCommandAsync(NotificationMessage notificationMessage, SendResult sendResult, string image = "")
+        public async Task WriteLogCommandAsync(NotificationMessage notificationMessage, SendResult sendResult, string image = "")
         {
             var writeLogCommand = new WriteLogMessageCommand
             {
@@ -151,7 +151,7 @@
             await botCommonService.WriteLogMessageAsyns(writeLogCommand);
         }
 
-        protected internal virtual void GetSendMessageResult(NotificationMessage notificationMessage, SendResult sendResult, Exception exception)
+        public void GetSendMessageResult(NotificationMessage notificationMessage, SendResult sendResult, Exception exception)
         {
             sendResult.ErrorCode = 1;
             sendResult.ErrorMessage = exception.Message;
@@ -178,7 +178,7 @@
             }
         }
 
-        protected internal virtual void WriteLogInfor(NotificationMessage notificationMessage, Exception exception)
+        public void WriteLogInfor(NotificationMessage notificationMessage, Exception exception)
         {
             var param = new Dictionary<string, object>
             {
