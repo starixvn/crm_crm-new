@@ -10,7 +10,6 @@
     using CRM.Core.Constants;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
-    using CRM.Models.NotificationList;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
