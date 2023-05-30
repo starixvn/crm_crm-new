@@ -130,6 +130,17 @@
             }
             catch (Exception ex)
             {
+                var writeLogCommand = new WriteLogMessageCommand
+                {
+                    BotId = notification.BotId,
+                    ConversationId = notification.ConversationId,
+                    Content = notification.Content,
+                    IsSuccess = false,
+                    IsBotBlocked = false,
+                    ErrMsg = ex.Message
+                };
+                await botCommonService.WriteLogMessageAsyns(writeLogCommand);
+
                 result.SentTime = DateTime.UtcNow;
                 result.ErrorCode = 1;
                 result.ErrorMessage = ex.Message;
