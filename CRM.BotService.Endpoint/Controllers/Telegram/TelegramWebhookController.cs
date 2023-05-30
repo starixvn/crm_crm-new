@@ -7,6 +7,7 @@
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.BotService.Endpoint.ViewModel;
+    using CRM.Core.Services;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -14,13 +15,16 @@
     {
         private readonly List<TelegramBotConfigurations> botConfigurations;
         private readonly Func<long, ITelegramBotService> telegramBotService;
+        private readonly ICRMLogService logService;
 
         public TelegramWebhookController(
             List<TelegramBotConfigurations> botConfigurations,
-            Func<long, ITelegramBotService> telegramBotService)
+            Func<long, ITelegramBotService> telegramBotService,
+            ICRMLogService logService)
         {
             this.botConfigurations = botConfigurations;
             this.telegramBotService = telegramBotService;
+            this.logService = logService;
         }
 
         [AllowAnonymous]
@@ -86,8 +90,16 @@
         [Route("api/telegram/bot/get-user-profile")]
         public async Task<IActionResult> CheckPersonalProfileAsync([FromBody] TelegramBotConversationViewModel model)
         {
-            var profile = await telegramBotService(model.BotId).GetChatAsync(model.BotId, model.ChatId);
-            return Ok(profile);
+            try
+            {
+                var profile = await telegramBotService(model.BotId).GetChatAsync(model.BotId, model.ChatId);
+                return Ok(profile);
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+                return Ok();
+            }
         }
     }
 }

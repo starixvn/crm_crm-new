@@ -89,6 +89,13 @@
             logService.LogInformation("End SendNotifyAysnc: " + notificationMessage.ConversationId);
         }
 
+        public async Task<Chat> GetChatAsync(long botId, long chatId)
+        {
+            TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
+            var chat = await bot.BotClient.GetChatAsync(new ChatId(chatId));
+            return chat;
+        }
+
         protected internal virtual async Task SendTextMessageAsync(NotificationMessage notificationMessage, SendResult sendResult)
         {
             try
@@ -195,13 +202,5 @@
                 throw new ArgumentNullException(paramName);
             }
         }
-
-        public async Task<Chat> GetChatAsync(long botId, long chatId)
-        {
-            TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
-            var chat = await bot.BotClient.GetChatAsync(new ChatId(chatId));
-            return chat;
-        }
-
     }
 }
