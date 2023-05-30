@@ -11,7 +11,6 @@
     using global::Telegram.Bot.Types;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.VisualBasic;
     using Newtonsoft.Json;
 
     public class UpdateController : Controller
