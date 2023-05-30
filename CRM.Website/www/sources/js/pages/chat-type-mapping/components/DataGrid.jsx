@@ -141,13 +141,14 @@ export class DataGrid extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('ChatType')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('BotService')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('BotName')}</HeaderCell>
-                <HeaderCell colWidth={25}>{LangHelper.getResource('LetstalkName')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('ChatType')}</HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('DisplayName')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('RecipientType')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Recipient')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('LetstalkID')}</HeaderCell>
+                <HeaderCell colWidth={25}>{LangHelper.getResource('LetstalkIDUsername')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Language')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('MappingStatus')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Active')}</HeaderCell>
@@ -172,7 +173,7 @@ export class DataGrid extends Component {
 
     renderIsActiveCol = (isHost, item) => {
         if (isHost) {
-            const isPersonalCheckDisabled = item.chatTypeId === ChatTypeMapping.Personal && (item.conversationId === '' || !item.recipients.length || !item.headlines.length);
+            const isPersonalCheckDisabled = item.chatTypeId === ChatTypeMapping.Personal && (item.letstalkID_Username === '' || !item.recipients.length || !item.headlines.length);
             const isGroupCheckDisabled = item.chatTypeId === ChatTypeMapping.Group && item.mappingStatusId === MappingStatus.NotMapped;
             const isDisabled = isGroupCheckDisabled || isPersonalCheckDisabled;
 
@@ -207,16 +208,16 @@ export class DataGrid extends Component {
         );
     };
 
-
     renderRow = (item, index, isHost) => {
         const isBotRemovedStatus = (item.chatTypeId === ChatTypeMapping.Group) && (item.mappingStatusId === MappingStatus.BotRemoved);
         return (
             <Row key={index}>
                 <Cell className='text-center'>{index + this.startIndex}</Cell>
-                <Cell>{item.chatType}</Cell>
+                <Cell>{item.channelName}</Cell>
                 <Cell>{item.botName}</Cell>
+                <Cell>{item.chatType}</Cell>
                 <Cell>
-                    {item.conversationGroupName}
+                    {item.displayName}
                 </Cell>
                 <Cell >{item.recipients.length > 0 ? item.recipients[0].recipientTypeName : ''}</Cell>
                 <Cell >{item.headlines.length > 0 ? item.headlines.map(h => h.headlineName).join(', ') : ''}</Cell>
@@ -229,8 +230,8 @@ export class DataGrid extends Component {
                 <Cell className={item.chatTypeId === ChatTypeMapping.Personal ? '' : 'text-center'}>
                     {
                         item.chatTypeId === ChatTypeMapping.Personal ?
-                            item.conversationId :
-                            <span className="icon-copy fa fa-copy" onClick={() => this.copyGroupIdToClipboard(item.conversationId)} title={item.conversationId} />
+                            item.letstalkID_Username :
+                            <span className="icon-copy fa fa-copy" onClick={() => this.copyGroupIdToClipboard(item.letstalkID_Username)} title={item.letstalkID_Username} />
                     }
                 </Cell>
                 <Cell >{item.language}</Cell>

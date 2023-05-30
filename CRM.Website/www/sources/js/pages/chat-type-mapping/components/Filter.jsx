@@ -141,7 +141,6 @@ export class Filter extends Component {
     isValidParams = () => this.state.filter.mappingStatuses !== '';
 
     submitHandler = e => {
-        const params = this.getParams();
         e.preventDefault();
         if (this.isValidParams()) {
             const params = this.getParams();

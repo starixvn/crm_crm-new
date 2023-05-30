@@ -28,7 +28,9 @@ namespace CRM.Models.ChatTypeMapping
 
         public string ConversationId { get; set; }
 
-        public string ConversationGroupName { get; set; }
+        public string LetstalkID_Username { get; set; }
+
+        public string DisplayName { get; set; }
 
         public int MappingStatusId { get; set; }
 

@@ -86,7 +86,7 @@
             worksheet.Cells[rowIndex, colIndex++].Value = rowNum;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatType;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.BotName;
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.ConversationGroupName;
+            worksheet.Cells[rowIndex, colIndex++].Value = chatType.DisplayName;
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.Recipients.Any() ? chatType.Recipients.FirstOrDefault().RecipientTypeName : "";
             worksheet.Cells[rowIndex, colIndex++].Value = chatType.Headlines.Any() ? string.Join(", ", chatType.Headlines.Select(x => x.HeadlineName)) : "";
             colIndex++;

@@ -92,7 +92,7 @@
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, rowNum);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.BotName);
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ConversationGroupName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.DisplayName);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Recipients.Any() ? chatTypeMapping.Recipients.FirstOrDefault().RecipientTypeName : "");
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Headlines.Any() ? string.Join(", ", chatTypeMapping.Headlines.Select(x => x.HeadlineName)) : "");
             colIndex++;
@@ -126,7 +126,7 @@
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, rowNum);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.BotName);
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ConversationGroupName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.DisplayName);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Recipients.Any() ? chatTypeMapping.Recipients.FirstOrDefault().RecipientTypeName : "");
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Headlines.Any() ? string.Join(", ", chatTypeMapping.Headlines.Select(x => x.HeadlineName)) : "");
             colIndex++;
@@ -162,7 +162,7 @@
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, rowNum);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.BotName);
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ConversationGroupName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.DisplayName);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Recipients.Any() ? chatTypeMapping.Recipients.FirstOrDefault().RecipientTypeName : "");
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Headlines.Any() ? string.Join(", ", chatTypeMapping.Headlines.Select(x => x.HeadlineName)) : "");
             colIndex++;
@@ -285,7 +285,7 @@
                     BotName= "OW_Local",
                     ChatTypeId= 2,
                     ConversationGroupId= 1,
-                    ConversationGroupName= "jennyphan",
+                    DisplayName= "jennyphan",
                     ConversationId= "id1",
                     MappingStatusId = 1,
                     IsActive = true,
@@ -327,7 +327,7 @@
                     BotName= "OW_Local",
                     ChatTypeId= 2,
                     ConversationGroupId= 1,
-                    ConversationGroupName= "jennyphan",
+                    DisplayName= "jennyphan",
                     ConversationId= "id1",
                     MappingStatusId = 1,
                     IsActive = true,
