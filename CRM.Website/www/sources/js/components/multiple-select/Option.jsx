@@ -89,7 +89,7 @@ export default class Option extends Component {
             this.state.isExpandedSubItem && <div className='sub-select'>
                 {
                     subItemList.map((item, key) => (
-                        <>
+                        <React.Fragment key={key}>
                             <div key={key} className='sub-select-item'>
                                 <input
                                     id={item.key}
@@ -114,7 +114,7 @@ export default class Option extends Component {
                                     </div>
                                 ))
                             }
-                        </>
+                        </React.Fragment>
                     ))
                 }
             </div>

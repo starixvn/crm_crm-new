@@ -16,9 +16,13 @@ namespace CRM.Models.ChatTypeMapping
             }
         }
 
-        public int BotId { get; set; }
+        public long BotId { get; set; }
 
         public string BotName { get; set; }
+
+        public int ChannelId { get; set; }
+
+        public string ChannelName { get; set; }
 
         public int ConversationGroupId { get; set; }
 

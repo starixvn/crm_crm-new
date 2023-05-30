@@ -2,7 +2,7 @@
 {
     public class ChatTypeFilterViewModel
     {
-        public int? BotId { get; set; }
+        public string BotIds { get; set; }
 
         public int? ChatType { get; set; }
 

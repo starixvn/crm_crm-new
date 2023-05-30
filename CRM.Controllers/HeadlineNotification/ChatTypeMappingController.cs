@@ -81,9 +81,8 @@
                 RecipientName = filter.RecipientIds,
                 ChannelId = filter.ChannelId,
                 LetstalkIdOrUsername = filter.LetstalkIdOrUsername,
-                LanguageId = filter.LanguageId,
                 IsActive = filter.IsActive,
-                BotId = filter.BotId,
+                BotIds = filter.BotIds,
                 MappingStatus = filter.MappingStatuses,
                 PageIndex = filter.PageIndex,
                 PageSize = filter.PageSize
@@ -298,9 +297,8 @@
                 RecipientName = filter.RecipientIds,
                 ChannelId = filter.ChannelId,
                 LetstalkIdOrUsername = filter.LetstalkIdOrUsername,
-                LanguageId = filter.LanguageId,
                 IsActive = filter.IsActive,
-                BotId = filter.BotId,
+                BotIds = filter.BotIds,
                 MappingStatus = filter.MappingStatuses,
                 PageIndex = 0,
                 PageSize = 0

@@ -7,6 +7,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '../../../components/multiple-select/index';
 import InsertPersonalMappingPopup from './InsertPersonalMappingPopup';
 import { toast } from 'react-toastify';
+import { BotServiceType }from '@jsroot/common/constants';
 
 export class Filter extends Component {
     constructor(props) {
@@ -18,11 +19,10 @@ export class Filter extends Component {
                 name: '',
                 groupHeadline: '',
                 recipient: '',
-                letstalkID: '',
+                LetstalkIdOrUsername: '',
                 mappingStatuses: '',
-                languageId: '',
                 botServiceId: '',
-                botId: '',
+                botIds: '',
                 active: ''
             },
             settings: {
@@ -30,8 +30,10 @@ export class Filter extends Component {
                 mappingStatuses: [],
                 languages: [],
                 botServices: [],
-                bots: []
-            }
+                bots: [],
+                holdBots: []
+            },
+            showFilter: false
         };
     }
 
@@ -44,16 +46,40 @@ export class Filter extends Component {
                 selectedMappingStatuses.push(v['id']);
             });
 
+            const selectedBotIds = [];
+            const bots = this.props.settings.bots;
+            const botOptions = this.props.settings.botServices.map(item => {
+                return {
+                    id: item.id,
+                    name: item.name,
+                    checked: true,
+                    subItem: bots.reduce((accumulator, currentValue) => {
+                        if (currentValue.channelId === item.id) {
+                            selectedBotIds.push(currentValue.id);
+                            accumulator.push({ key: currentValue.id, value: currentValue.name, checked: true });
+                        }
+                        return accumulator;
+                    }, [])
+                }
+            });
+
             const settings = {
                 chatTypes: this.props.settings.chatTypes,
                 mappingStatuses: mappingStatuses,
                 languages: this.props.settings.languages,
                 botServices: this.props.settings.botServices,
-                bots: this.props.settings.bots
+                bots: botOptions,
+                holdBots: botOptions
             };
 
             this.setState(prevState => ({
-                filter: { ...prevState.filter, ...{ mappingStatuses: selectedMappingStatuses.toString() } },
+                filter: {
+                    ...prevState.filter,
+                    ...{
+                        mappingStatuses: selectedMappingStatuses.toString(),
+                        botIds: selectedBotIds.toString()
+                    }
+                },
                 settings: settings
             }), () => this.props.setGridParams(this.getParams()));
         });
@@ -65,29 +91,47 @@ export class Filter extends Component {
         }));
     };
 
-    getBotOptions = () => {
-        const { botServiceId } = this.state.filter;
-        const { bots } = this.state.settings;
-
-        if (botServiceId) {
-            const botOptions = bots.filter(item => item.channelId === this.state.filter.botServiceId);
-            return botOptions;
+    handleChangeBotService = value => {
+        this.setState(prevState => ({
+            filter: {...prevState.filter, botServiceId: value}
+        }));
+        if (value) {
+            this.setState(prevState =>({
+                filter: {...prevState.filter, botIds: this.getBotIds(value)},
+                settings: {...prevState.settings, bots: this.getBotOptions(value)}
+            }));
         }
-        return bots;
+    };
+
+    getBotIds = value => {
+        const { holdBots } = this.state.settings;
+        const botIds = [];
+        const botOptions = holdBots.filter(item => item.id === parseInt(value));
+        botOptions[0].subItem.forEach(item => { botIds.push(item.key) });
+        return botIds.toString();
+    };
+
+    getBotOptions = value => {
+        const { holdBots } = this.state.settings;
+        return holdBots.filter(item => item.id === parseInt(value));
+    };
+
+    handleToggleFilter = value => {
+        this.setState({ showFilter: value });
+        window.dispatchEvent(new Event('resize'));
     };
 
     getParams = () => {
         const pageSize = this.props.gridParams.pageSize;
         return {
             chatType: this.state.filter.chatType,
-            botId: this.state.filter.botId,
+            botIds: this.state.filter.botIds,
             channelId: this.state.filter.botServiceId,
             name: this.state.filter.name,
             groupHeadline: this.state.filter.groupHeadline,
             recipientIds: this.state.filter.recipient,
-            letstalkId: this.state.filter.letstalkID,
+            LetstalkIdOrUsername: this.state.filter.LetstalkIdOrUsername,
             mappingStatuses: this.state.filter.mappingStatuses,
-            languageId: this.state.filter.languageId,
             isActive: this.state.filter.active,
             pageIndex: 1,
             pageSize: !pageSize ? 100 : pageSize
@@ -97,6 +141,7 @@ export class Filter extends Component {
     isValidParams = () => this.state.filter.mappingStatuses !== '';
 
     submitHandler = e => {
+        const params = this.getParams();
         e.preventDefault();
         if (this.isValidParams()) {
             const params = this.getParams();
@@ -110,11 +155,20 @@ export class Filter extends Component {
     renderOptions = (item, key) => <option key={key} value={item.id}>{item.name}</option>;
 
     render() {
-        const botOptions = this.getBotOptions();
         return (
             <Fragment>
                 <Form className='form-filter' onSubmit={this.submitHandler}>
                     <Form.Row className='form-row'>
+                        <Form.Group>
+                            <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('BotService')}</Form.Label>
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                value={this.state.filter.botServiceId}
+                                onChange={e => this.handleChangeBotService(e.target.value)}
+                            >
+                                <option value="">{LangHelper.getResource('All')}</option>
+                                {this.state.settings.botServices.map(this.renderOptions)}
+                            </Form.Control>
+                        </Form.Group>
                         <Form.Group>
                             <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('ChatType')}</Form.Label>
                             <Form.Control as="select" size="sm" className="shadow-none"
@@ -126,10 +180,17 @@ export class Filter extends Component {
                             </Form.Control>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label className="col-auto col-form-label">{LangHelper.getResource('LetstalkName')}</Form.Label>
+                            <Form.Label className="col-auto col-form-label">{LangHelper.getResource('DisplayName')}</Form.Label>
                             <Form.Control type="text" size="sm" className="shadow-none"
                                 value={this.state.filter.name}
                                 onChange={e => this.onChange('name', e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group className="large-form">
+                            <Form.Label className="col-auto col-form-label large-label">{LangHelper.getResource('LetstalkIDUsername')}</Form.Label>
+                            <Form.Control type="text" size="sm" className="shadow-none"
+                                value={this.state.filter.LetstalkIdOrUsername}
+                                onChange={e => this.onChange('LetstalkIdOrUsername', e.target.value)}
                             />
                         </Form.Group>
                         <Form.Group>
@@ -139,92 +200,105 @@ export class Filter extends Component {
                                 onChange={e => this.onChange('groupHeadline', e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group>
-                            <Form.Label className="col-auto col-form-label">{LangHelper.getResource('Recipient')}</Form.Label>
-                            <Form.Control type="text" size="sm" className="shadow-none"
-                                value={this.state.filter.recipient}
-                                onChange={e => this.onChange('recipient', e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label className="col-auto col-form-label">{LangHelper.getResource('LetstalkID')}</Form.Label>
-                            <Form.Control type="text" size="sm" className="shadow-none"
-                                value={this.state.filter.letstalkID}
-                                onChange={e => this.onChange('letstalkID', e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('MappingStatus')}</Form.Label>
-                            <div className='form-control-wrapper'>
-                                <MultipleSelect
-                                    initialValue={this.state.filter.mappingStatuses}
-                                    dataSource={this.state.settings.mappingStatuses}
-                                    keyField='id'
-                                    valueField='name'
-                                    statusField='checked'
-                                    isSummited={false}
-                                    isAllTextShown
-                                    onChange={(currentItem, selectedItem) => this.onChange('mappingStatuses', selectedItem)}
-                                />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('Language')}</Form.Label>
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                value={this.state.filter.languageId}
-                                onChange={e => this.onChange('languageId', e.target.value)}
-                            >
-                                <option value="">{LangHelper.getResource('All')}</option>
-                                {this.state.settings.languages.map(this.renderOptions)}
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('Active')}</Form.Label>
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                value={this.state.filter.active}
-                                onChange={e => this.onChange('active', e.target.value)}
-                            >
-                                <option value="">{LangHelper.getResource('All')}</option>
-                                <option value="true">{LangHelper.getResource('Yes')}</option>
-                                <option value="false">{LangHelper.getResource('No')}</option>
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('BotService')}</Form.Label>
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                value={this.state.filter.botServiceId}
-                                onChange={e => this.onChange(parseInt(e.target.value))}
-                            >
-                                <option value="">{LangHelper.getResource('All')}</option>
-                                {this.state.settings.botServices.map(this.renderOptions)}
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('BotName')}</Form.Label>
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                value={this.state.filter.botId}
-                                onChange={e => this.onChange('botId', e.target.value)}
-                            >
-                                { this.state.filter.botServiceId.length === 0 && <option value="">{LangHelper.getResource('All')}</option> }
-                                {botOptions.map(this.renderOptions)}
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group>
-                            <div className='col-auto pd-0'>
-                                <Button className='mr-2' variant='primary' size='sm' type='submit'>
-                                    {LangHelper.getResource('Submit')}
-                                </Button>
-                            </div>
-                            {
-                                this.props.isHost &&
-                                <div className='col-auto'>
-                                    <Button className='mr-2' variant='primary' size='sm' type='button' onClick={this.props.openInsertPersonalMappingPopup}>
-                                        {LangHelper.getResource('InsertPersonalMappingBtn')}
-                                    </Button>
-                                </div>
-                            }
-                        </Form.Group>
+                        {
+                            !this.state.showFilter &&
+                            (
+                                <Form.Group>
+                                    <div className='col-auto pd-0'>
+                                        <Button className='mr-2' variant='primary' size='sm' type='submit'>
+                                            {LangHelper.getResource('Submit')}
+                                        </Button>
+                                    </div>
+                                    {
+                                        this.props.isHost &&
+                                        <div className='col-auto'>
+                                            <Button className='mr-2' variant='primary' size='sm' type='button' onClick={this.props.openInsertPersonalMappingPopup}>
+                                                {LangHelper.getResource('InsertPersonal')}
+                                            </Button>
+                                        </div>
+                                    }
+                                </Form.Group>
+                            )
+                        }
+                        {
+                            this.state.showFilter &&
+                            (
+                                <Form.Row>
+                                    <Form.Group>
+                                        <Form.Label className="col-auto col-form-label">{LangHelper.getResource('Recipient')}</Form.Label>
+                                        <Form.Control type="text" size="sm" className="shadow-none"
+                                            value={this.state.filter.recipient}
+                                            onChange={e => this.onChange('recipient', e.target.value)}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('BotName')}</Form.Label>
+                                        <div className='form-control-wrapper'>
+                                            <MultipleSelect
+                                                //initialValue={this.state.filter.botIds}
+                                                dataSource={this.state.settings.bots}
+                                                maxDisplayItemCount={1}
+                                                keyField='id'
+                                                valueField='name'
+                                                statusField='checked'
+                                                isSummited={false}
+                                                isAllTextShown
+                                                onChange={(currentItem, selectedItem) => this.onChange('botIds', selectedItem)}
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('MappingStatus')}</Form.Label>
+                                        <div className='form-control-wrapper'>
+                                            <MultipleSelect
+                                                initialValue={this.state.filter.mappingStatuses}
+                                                dataSource={this.state.settings.mappingStatuses}
+                                                keyField='id'
+                                                valueField='name'
+                                                statusField='checked'
+                                                isSummited={false}
+                                                isAllTextShown
+                                                onChange={(currentItem, selectedItem) => this.onChange('mappingStatuses', selectedItem)}
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                    <Form.Group className="large-form">
+                                        <Form.Label className='col-auto col-form-label large-label'>{LangHelper.getResource('Active')}</Form.Label>
+                                        <Form.Control as="select" size="sm" className="shadow-none"
+                                            value={this.state.filter.active}
+                                            onChange={e => this.onChange('active', e.target.value)}
+                                        >
+                                            <option value="">{LangHelper.getResource('All')}</option>
+                                            <option value="true">{LangHelper.getResource('Yes')}</option>
+                                            <option value="false">{LangHelper.getResource('No')}</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <div className='col-auto pd-0'>
+                                            <Button className='mr-2' variant='primary' size='sm' type='submit'>
+                                                {LangHelper.getResource('Submit')}
+                                            </Button>
+                                        </div>
+                                        {
+                                            this.props.isHost &&
+                                            <div className='col-auto'>
+                                                <Button className='mr-2' variant='primary' size='sm' type='button' onClick={this.props.openInsertPersonalMappingPopup}>
+                                                    {LangHelper.getResource('InsertPersonal')}
+                                                </Button>
+                                            </div>
+                                        }
+                                    </Form.Group>
+                                </Form.Row>
+                            )
+                        }
                     </Form.Row>
+                    <div className="filter-collapse text-center">
+                        {
+                            this.state.showFilter
+                                ? <span className="fa fa-caret-up fa-sm" onClick={() => this.handleToggleFilter(false)} />
+                                : <span className="fa fa-caret-down fa-sm" onClick={() => this.handleToggleFilter(true)} />
+                        }
+                    </div>
                 </Form>
                 {
                     this.props.insertPersonalMappingData.isShow &&

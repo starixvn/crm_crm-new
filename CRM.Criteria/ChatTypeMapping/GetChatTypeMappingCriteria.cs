@@ -16,12 +16,9 @@
 
         public string LetstalkIdOrUsername { get; set; }
 
-
-        public int? LanguageId { get; set; }
-
         public bool? IsActive { get; set; }
 
-        public int? BotId { get; set; }
+        public string BotIds { get; set; }
 
         public string MappingStatus { get; set; }
 

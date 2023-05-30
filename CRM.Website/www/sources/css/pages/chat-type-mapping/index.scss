@@ -88,6 +88,26 @@
     .hidden-isTest{
         visibility:hidden;
     }
+
+    .form-filter {
+        .filter-collapse {
+            .fa {
+                font-size: 10px;
+                width: 22px;
+                background-color: #464D5D;
+                color: white;
+                cursor: pointer;
+            }
+        }
+
+        .large-form {
+            width: 300px !important;
+
+            .large-label {
+                width: 140px;
+            }
+        }
+    }
 }
 
 .chat-type-mapping-modal{
