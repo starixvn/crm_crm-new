@@ -98,16 +98,19 @@
 
         protected internal virtual async Task HandleBotCommandAsync(User bot, Message message)
         {
-            var commands = message.Entities.Where(entity => entity.Type == MessageEntityType.BotCommand)
+            var commands = message.Entities?.Where(entity => entity.Type == MessageEntityType.BotCommand)
                 .Select(entity => message.Text.Substring(entity.Offset, entity.Length)).ToList();
+
             foreach (var command in commands)
             {
-                if (command.Equals("/start", StringComparison.CurrentCultureIgnoreCase) && message.Chat.Type == ChatType.Private)
+                var isStartCommand = command.Equals("/start", StringComparison.CurrentCultureIgnoreCase);
+                var isGetGroupIdCommand = command.Equals("/getgroupid", StringComparison.CurrentCultureIgnoreCase)
+                    || command.Equals($"/getgroupid@{bot.Username}", StringComparison.CurrentCultureIgnoreCase);
+                if (isStartCommand && message.Chat.Type == ChatType.Private)
                 {
                     await AddBotToPersonal(message, bot);
                 }
-                if (command.Equals("/getgroupid", StringComparison.CurrentCultureIgnoreCase)
-                    || command.Equals($"/getgroupid@{bot.Username}", StringComparison.CurrentCultureIgnoreCase))
+                if (isGetGroupIdCommand)
                 {
                     await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, message.Chat.Id.ToString());
                 }
