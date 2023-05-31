@@ -100,7 +100,10 @@
         {
             var commands = message.Entities?.Where(entity => entity.Type == MessageEntityType.BotCommand)
                 .Select(entity => message.Text.Substring(entity.Offset, entity.Length)).ToList();
-
+            if (commands is null)
+            {
+                return;
+            }
             foreach (var command in commands)
             {
                 var isStartCommand = command.Equals("/start", StringComparison.CurrentCultureIgnoreCase);

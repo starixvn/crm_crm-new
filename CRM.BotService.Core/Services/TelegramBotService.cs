@@ -153,6 +153,11 @@
 
         public void GetSendMessageResult(SendResult sendResult, Exception exception)
         {
+            HandleExptionTelegramMessage(sendResult, exception);
+        }
+
+        private static void HandleExptionTelegramMessage(SendResult sendResult, Exception exception)
+        {
             sendResult.ErrorCode = 1;
             sendResult.ErrorMessage = exception.Message;
 

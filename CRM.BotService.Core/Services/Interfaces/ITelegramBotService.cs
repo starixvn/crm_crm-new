@@ -1,5 +1,6 @@
 ﻿namespace CRM.BotService.Core.Services.Interfaces
 {
+    using System;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Models;
     using CRM.Core.Models.BotServices;

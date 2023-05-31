@@ -17,6 +17,7 @@
     using CRM.Core.Models.BotServices;
     using CRM.BotService.Core.Criteria;
     using System;
+    using CRM.BotService.Core.Tests.Helpers;
 
     public class TelegramBotServiceTests
     {
