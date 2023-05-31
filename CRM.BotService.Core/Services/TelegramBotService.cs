@@ -93,7 +93,7 @@
             catch (Exception exception)
             {
                 WriteLogInfor(notificationMessage, exception);
-                GetSendMessageResult(sendResult, exception);
+                HandleExptionTelegramMessage(sendResult, exception);
             }
         }
 
@@ -123,7 +123,7 @@
             catch (Exception exception)
             {
                 WriteLogInfor(notificationMessage, exception);
-                GetSendMessageResult(sendResult, exception);
+                HandleExptionTelegramMessage(sendResult, exception);
             }
         }
 
@@ -149,11 +149,6 @@
                 ErrMsg = sendResult.IsSuccessful ? string.Empty : sendResult.ErrorMessage
             };
             await botCommonService.WriteLogMessageAsyns(writeLogCommand);
-        }
-
-        public void GetSendMessageResult(SendResult sendResult, Exception exception)
-        {
-            HandleExptionTelegramMessage(sendResult, exception);
         }
 
         private static void HandleExptionTelegramMessage(SendResult sendResult, Exception exception)

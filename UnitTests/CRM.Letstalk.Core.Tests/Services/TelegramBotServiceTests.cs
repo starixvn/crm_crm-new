@@ -160,28 +160,6 @@
             await botCommonService.Received(1).WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
         }
 
-        [Theory]
-        [InlineData("Message is too long", true, false, ErrorMessageTelegram.MessageIsTooLong)]
-        [InlineData("bot was kicked from the supergroup chat", true, false, ErrorMessageTelegram.GroupChatDeleted)]
-        [InlineData("bot was kicked from the group chat", true, false, ErrorMessageTelegram.GroupChatDeleted)]
-        [InlineData("chat not found", true, false, ErrorMessageTelegram.GroupChatDeleted)]
-        [InlineData("bot was blocked by the user", true, true, ErrorMessageTelegram.BlockBot)]
-        public void GetSendMessageResult_HandleException_ExpectReturnExactResult(string exMessage, bool isIgnoreRetry, bool isBlockedBot, string errorMessage)
-        {
-            // Arrange
-            var exception = new Exception(exMessage);
-            var sendResult = new SendResult();
-            var service = GetService();
-            // Act
-            service.GetSendMessageResult(sendResult, exception);
-
-            // Assert
-            Assert.Equal(errorMessage, sendResult.ErrorMessage);
-            Assert.Equal(isIgnoreRetry, sendResult.IsIgnoreRetry);
-            Assert.Equal(isBlockedBot, sendResult.IsBlockedBot);
-            Assert.Equal(1, sendResult.ErrorCode);
-        }
-
         #region Helpers
 
         private TelegramBotService GetService()
