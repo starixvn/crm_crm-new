@@ -58,22 +58,11 @@
             return await bot.BotClient.GetWebhookInfoAsync();
         }
 
-        public async Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html)
+        public async Task<Chat> GetChatAsync(long botId, long chatId)
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
-            ValidateInputParam(nameof(messageContent), messageContent);
-            var message = await bot.BotClient.SendTextMessageAsync(new ChatId(chatId), messageContent, parseMode);
-            return message;
-        }
-
-        public async Task<Message> SendImageAsync(long botId, long chatId, string urlImage)
-        {
-            TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
-            var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile(urlImage);
-            Message message = await bot.BotClient.SendPhotoAsync(
-                chatId: chatId,
-                photo: photo);
-            return message;
+            var chat = await bot.BotClient.GetChatAsync(new ChatId(chatId));
+            return chat;
         }
 
         public async Task SendNotifyAysnc(NotificationMessage notificationMessage, SendResult sendResult)
@@ -87,13 +76,6 @@
             sendResult.SentTime = DateTime.UtcNow;
             await WriteLogCommandAsync(notificationMessage, sendResult);
             logService.LogInformation("End SendNotifyAysnc: " + notificationMessage.ConversationId);
-        }
-
-        public async Task<Chat> GetChatAsync(long botId, long chatId)
-        {
-            TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
-            var chat = await bot.BotClient.GetChatAsync(new ChatId(chatId));
-            return chat;
         }
 
         public async Task SendTextMessageAsync(NotificationMessage notificationMessage, SendResult sendResult)
@@ -111,8 +93,16 @@
             catch (Exception exception)
             {
                 WriteLogInfor(notificationMessage, exception);
-                GetSendMessageResult(notificationMessage, sendResult, exception);
+                GetSendMessageResult(sendResult, exception);
             }
+        }
+
+        public async Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html)
+        {
+            TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
+            ValidateInputParam(nameof(messageContent), messageContent);
+            var message = await bot.BotClient.SendTextMessageAsync(new ChatId(chatId), messageContent, parseMode);
+            return message;
         }
 
         public async Task SendImageAsync(NotificationMessage notificationMessage, SendResult sendResult)
@@ -133,8 +123,18 @@
             catch (Exception exception)
             {
                 WriteLogInfor(notificationMessage, exception);
-                GetSendMessageResult(notificationMessage, sendResult, exception);
+                GetSendMessageResult(sendResult, exception);
             }
+        }
+
+        public async Task<Message> SendImageAsync(long botId, long chatId, string urlImage)
+        {
+            TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
+            var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile(urlImage);
+            Message message = await bot.BotClient.SendPhotoAsync(
+                chatId: chatId,
+                photo: photo);
+            return message;
         }
 
         public async Task WriteLogCommandAsync(NotificationMessage notificationMessage, SendResult sendResult, string image = "")
@@ -151,7 +151,7 @@
             await botCommonService.WriteLogMessageAsyns(writeLogCommand);
         }
 
-        public void GetSendMessageResult(NotificationMessage notificationMessage, SendResult sendResult, Exception exception)
+        public void GetSendMessageResult(SendResult sendResult, Exception exception)
         {
             sendResult.ErrorCode = 1;
             sendResult.ErrorMessage = exception.Message;

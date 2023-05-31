@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using AutoFixture;
-using CRM.BotService.Core.Models;
-using CRM.BotService.Core.Services;
-using CRM.BotService.Core.Services.Interfaces;
-using CRM.BotService.Endpoint.Controllers.Telegram;
-using CRM.Core.Models.BotServices;
-using CRM.Core.Services;
-using CRM.Models.NotificationList;
-using Fanex.Logging;
-using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
-using Telegram.Bot.Types;
-using Xunit;
-
-namespace CRM.BotService.Endpoint.UnitTests.Telegram
+﻿namespace CRM.BotService.Endpoint.UnitTests.Telegram
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using AutoFixture;
+    using CRM.BotService.Core.Models;
+    using CRM.BotService.Core.Services.Interfaces;
+    using CRM.BotService.Endpoint.Controllers.Telegram;
+    using CRM.Core.Models.BotServices;
+    using CRM.Core.Services;
+    using Microsoft.AspNetCore.Mvc;
+    using NSubstitute;
+    using Xunit;
+
     public class MessageControllerTests
     {
         private ICRMLogService logService;

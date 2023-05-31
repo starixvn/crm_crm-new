@@ -108,7 +108,7 @@
                     || command.Equals($"/getgroupid@{bot.Username}", StringComparison.CurrentCultureIgnoreCase);
                 if (isStartCommand && message.Chat.Type == ChatType.Private)
                 {
-                    await AddBotToPersonal(message, bot);
+                    await AddBotToPersonalAsync(message, bot);
                 }
                 if (isGetGroupIdCommand)
                 {
@@ -200,7 +200,7 @@
             return result;
         }
 
-        protected internal virtual async Task AddBotToPersonal(Message message, User bot)
+        protected internal virtual async Task AddBotToPersonalAsync(Message message, User bot)
         {
             var command = new AddBotToPersonalCommand
             {

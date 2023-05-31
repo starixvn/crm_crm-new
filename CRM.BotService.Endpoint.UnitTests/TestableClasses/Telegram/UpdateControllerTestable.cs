@@ -42,6 +42,11 @@
             await base.RemoveBotToGroupAsync(message);
         }
 
+        public async Task Public_AddBotToPersonalAsync(Message message, User bot)
+        {
+            await base.AddBotToPersonalAsync(message, bot);
+        }
+
         public async Task<CommandResult> Public_MigratedToSupergroupAsync(Message message)
         {
             return await base.MigratedToSupergroupAsync(message);
