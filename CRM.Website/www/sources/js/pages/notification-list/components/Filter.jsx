@@ -149,8 +149,8 @@ export class Filter extends Component {
         return {
             channelId: botService === '0' ? null : parseInt(botService, 10),
             notificationTypeIds: notificationTypes,
-            fromDate: !referenceId ? DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)) : null,
-            toDate: !referenceId ? DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)) : null,
+            fromDate: referenceId.length > 0 ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
+            toDate: referenceId.length > 0 ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
             headline: headline ? headline.value : '',
             recipientName: recipient ? recipient.value : '',
             notificationIdLower: notificationIdLower,
@@ -187,7 +187,7 @@ export class Filter extends Component {
     };
 
     isDisabledDateParam = () =>
-        this.state.filter.notificationIdLower !== '' || this.state.filter.notificationIdUpper !== '' || this.state.filter.referenceId.length > 0;
+        this.state.filter.notificationIdLower !== '' || this.state.filter.notificationIdUpper !== '' || this.state.filter.referenceId?.length > 0;
 
     isValidateParams = params => {
         if (params.notificationTypeIds === '') {

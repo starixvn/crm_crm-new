@@ -126,6 +126,7 @@
             {
                 ConversationId = message.Chat.Id.ToString(),
                 DisplayName = message.NewChatTitle,
+                ChannelId = (byte)ConversationChannel.Telegram,
                 UpdatedBy = message.From.Id.ToString()
             };
             var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);

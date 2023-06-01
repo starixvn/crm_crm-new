@@ -19,7 +19,7 @@ export const setGridData = data => {
 
 export const getGridData = (params, callback) => async dispatch => {
     Site.blockUI();
-    if (params.messageId !== '' || params.notificationIdLower !== '') {
+    if (params.notificationIdLower !== '') {
         params.fromDate = null;
         params.toDate = null;
     }
