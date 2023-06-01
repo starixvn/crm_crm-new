@@ -120,10 +120,19 @@
         align-items: center;
     }
 
-    .badge-green {
-        color: #00B050;
-        font-weight: 300;
-        cursor: pointer;
+    .listUserCheck {
+        display: flex;
+        align-items: center;
+
+        .userCheck {
+            padding-right: 10px;
+        }
+
+        .badge-green {
+            color: #00B050;
+            font-weight: 300;
+            cursor: pointer;
+        }
     }
     
     .react-select__control{

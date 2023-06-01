@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
 import { Button, Col, Form, Modal, Row, Alert } from 'react-bootstrap';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';

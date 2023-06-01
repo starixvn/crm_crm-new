@@ -15,7 +15,7 @@ const store = Store.createStore(reducer, {
     updatePersonalMappingResult: null,
     updateGroupMappingData: { isShow: false, data: null },
     updateGroupMappingResult: null,
-    recipients: [],
+    recipients: {},
     groupHeadline: [],
     letstalkVerification: { isBotRemoved: false, recipients: [] }
 });

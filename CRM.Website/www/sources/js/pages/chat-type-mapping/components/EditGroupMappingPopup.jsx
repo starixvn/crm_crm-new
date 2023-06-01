@@ -62,10 +62,13 @@ export class EditGroupMappingPopup extends Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.updateGroupMappingData.data !== null) {
             const selectedRecipientIds = prevState.form.recipientIds.split(',');
-            const recipientOptions = nextProps.recipients.data;
-            nextProps.recipients.data.map(item => {
-                item['checked'] = selectedRecipientIds.some(v => parseInt(v, 10) === item.id);
-            });
+            let recipientOptions = [];
+            if (nextProps.recipients.data) {
+                recipientOptions = nextProps.recipients.data;
+                nextProps.recipients.data.map(item => {
+                    item['checked'] = selectedRecipientIds.some(v => parseInt(v, 10) === item.id);
+                });
+            }
 
             const headlineIds = prevState.form.groupHeadlines.split(',');
             const headlineOptions = nextProps.groupHeadline;

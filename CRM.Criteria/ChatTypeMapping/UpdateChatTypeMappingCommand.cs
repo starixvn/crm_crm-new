@@ -10,6 +10,8 @@
 
         public string ConversationGroupName { get; set; }
 
+        public string Username { get; set; }
+
         public int RecipientTypeId { get; set; }
 
         public byte? IsTest { get; set; }

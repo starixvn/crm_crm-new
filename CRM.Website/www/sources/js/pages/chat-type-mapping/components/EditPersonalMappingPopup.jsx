@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
 import { Button, Col, Form, Modal, Row, Alert } from 'react-bootstrap';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import MultipleSelect from '../../../components/multiple-select/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
@@ -12,6 +14,7 @@ import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Loading from '@jsroot/components/Loading';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
+import { BotServiceType }from '@jsroot/common/constants';
 const AccountingPIC = 'Accounting PIC';
 
 export class EditPersonalMappingPopup extends Component {
@@ -21,8 +24,9 @@ export class EditPersonalMappingPopup extends Component {
         this.state = {
             form: {
                 botId: this.props.updatePersonalMappingData.data.botId,
-                name: this.props.updatePersonalMappingData.data.conversationGroupName,
-                conversationId: this.props.updatePersonalMappingData.data.conversationId,
+                botServiceId: this.props.updatePersonalMappingData.data.channelId,
+                displayName: this.props.updatePersonalMappingData.data.displayName,
+                letstalkID_Username: this.props.updatePersonalMappingData.data.letstalkID_Username.trim(),
                 recipientType: this.props.updatePersonalMappingData.data.recipients.length > 0 ? this.props.updatePersonalMappingData.data.recipients[0].recipientTypeId : '',
                 recipientName: this.props.updatePersonalMappingData.data.recipients.length > 0 ? this.props.updatePersonalMappingData.data.recipients[0].recipientTypeName : '',
                 groupHeadlines: this.props.updatePersonalMappingData.data.headlines.map(v => v.headlineId).toString(),
@@ -30,7 +34,7 @@ export class EditPersonalMappingPopup extends Component {
                     value: this.props.updatePersonalMappingData.data.recipients.length > 0 ? this.props.updatePersonalMappingData.data.recipients[0].recipientId : '',
                     label: this.props.updatePersonalMappingData.data.recipients.length > 0 ? this.props.updatePersonalMappingData.data.recipients[0].recipientName : ''
                 },
-                letstalkId: this.props.updatePersonalMappingData.data.conversationId,
+                chatId: this.props.updatePersonalMappingData.data.conversationId,
                 languageId: this.props.updatePersonalMappingData.data.languageId,
                 remark: this.props.updatePersonalMappingData.data.remark,
                 ignoredNotification: this.props.updatePersonalMappingData.data.ignoredNotificationTypeList,
@@ -40,6 +44,7 @@ export class EditPersonalMappingPopup extends Component {
             isSubmitting: false,
             settings: {
                 letstalkIds: '',
+                usernames: '',
                 recipientOptions: [],
                 headlineOptions: []
             },
@@ -61,16 +66,22 @@ export class EditPersonalMappingPopup extends Component {
             const recipientId = prevState.form.recipient.value;
             const headlineIds = prevState.form.groupHeadlines.split(',');
             let letstalkIds = '';
-            if (nextProps.recipients.data.length > 0) {
+            let usernames = '';
+            let recipientOptions = [];
+            if (nextProps.recipients.data && nextProps.recipients.data.length > 0) {
                 const selectRecipient = nextProps.recipients.data.filter(r => r.id === recipientId);
                 letstalkIds = selectRecipient.length > 0 ? selectRecipient[0].letstalkIds : '';
+                usernames = selectRecipient.length > 0 ? selectRecipient[0].usernames : '';
+
+                recipientOptions = nextProps.recipients.data.map(item => {
+                    return {
+                        value: item.id, label: item.name,
+                        letstalkIds: item.letstalkIds,
+                        usernames: item.usernames
+                    };
+                });
             }
-            const recipientOptions = nextProps.recipients.data.map(item => {
-                return {
-                    value: item.id, label: item.name,
-                    letstalkIds: item.letstalkIds
-                };
-            });
+
             const headlineOptions = nextProps.groupHeadline;
             headlineOptions.map(headline => {
                 const checkedId = headlineIds.some(v => parseInt(v, 10) === headline.id);
@@ -79,6 +90,7 @@ export class EditPersonalMappingPopup extends Component {
             const state = {
                 settings: {
                     letstalkIds: letstalkIds,
+                    usernames: usernames,
                     recipientOptions: recipientOptions,
                     headlineOptions: headlineOptions
                 }
@@ -131,6 +143,23 @@ export class EditPersonalMappingPopup extends Component {
         this.handleChange('ignoredNotification', selectedItemsKey);
     };
 
+    handleBotChange = value => {
+        this.setState({ isLoading: true });
+        this.handleChange('botId', parseFloat(value));
+
+        if (this.state.form.botServiceId === BotServiceType.Letstalk) {
+            this.props.getLetstalkDisplayName(value, this.state.form.letstalkID_Username).then(() => {
+                this.handleChange('displayName', this.props.letstalkName);
+                this.setState({ isLoading: false });
+            });
+        } else {
+            this.props.getTelegramDisplayName(value, parseFloat(this.state.form.chatId)).then(() => {
+                this.handleChange('displayName', this.props.telegramName);
+                this.setState({ isLoading: false });
+            });
+        }
+    };
+
     handleRecipientTypeChange = e => {
         const index = e.nativeEvent.target.selectedIndex;
         const label = e.nativeEvent.target[index].text;
@@ -138,8 +167,9 @@ export class EditPersonalMappingPopup extends Component {
         this.handleChange('recipientName', label);
         this.handleChange('recipient', { value: '' });
         this.handleChange('groupHeadlines', '');
-        this.handleChange('conversationId', '');
-        this.handleChange('name', '');
+        this.handleChange('letstalkID_Username', '');
+        this.handleChange('displayName', '');
+        this.handleChange('chatId', '');
         this.props.getRecipientByRecipientType(e.target.value);
         if (label !== AccountingPIC) {
             this.handleChange('isTest', false);
@@ -149,11 +179,13 @@ export class EditPersonalMappingPopup extends Component {
     handleRecipientChange = option => {
         this.handleChange('recipient', option || '');
         this.handleChange('groupHeadlines', '');
-        this.handleChange('conversationId', '');
-        this.handleChange('name', '');
+        this.handleChange('letstalkID_Username', '');
+        this.handleChange('displayName', '');
+        this.handleChange('chatId', '');
         this.setState({
             settings: {
-                letstalkIds: option ? option.letstalkIds : []
+                letstalkIds: option ? option.letstalkIds : [],
+                usernames: option.usernames ? option.usernames.split(',').map(item => item.trim()) : []
             }
         });
         const optionValue = option ? option.value : '';
@@ -162,9 +194,9 @@ export class EditPersonalMappingPopup extends Component {
 
     handleLetstalkIdSelect = e => {
         this.setState({ isLoading: true });
-        this.handleChange('conversationId', e.target.value);
+        this.handleChange('letstalkID_Username', e.target.value);
         this.props.getLetstalkDisplayName(this.state.form.botId, e.target.value).then(() => {
-            this.handleChange('name', this.props.letstalkName);
+            this.handleChange('displayName', this.props.letstalkName);
             this.setState({ isLoading: false });
         });
     };
@@ -184,15 +216,77 @@ export class EditPersonalMappingPopup extends Component {
             result = letstalkList.map((letstalkId, key) => {
                 return (
                     <Form.Check key={key} inline label={letstalkId}
-                        name='conversationId' type="radio" id={`letstalkId-${key}`}
+                        name='letstalkID_Username' type="radio" id={`letstalkId-${key}`}
                         value={letstalkId}
                         onChange={this.handleLetstalkIdSelect}
-                        checked={this.state.form.conversationId === letstalkId}
+                        checked={this.state.form.letstalkID_Username === letstalkId}
                     />
                 );
             });
         }
         return result;
+    };
+
+    renderUsernameRadioButton = () => {
+        let result = null;
+        if (this.state.settings.usernames) {
+            const usernames = this.state.settings.usernames.split(',');
+
+            result = usernames.map((value, key) => {
+                const username = value.trim();
+                return (
+                    <div className="userCheck" key={key}>
+                        <Form.Check key={key} inline label={username}
+                            name='username'
+                            type="radio"
+                            id={`chatId-${key}`}
+                            value={username}
+                            onChange={event => this.handleChangeUsername(event.target.value)}
+                            checked={this.state.form.letstalkID_Username === username}
+                        />
+                        {
+                            this.isShowGreenCheck(username) && (
+                                <OverlayTrigger
+                                    key={key + username}
+                                    placement="auto"
+                                    overlay={
+                                        <Tooltip>
+                                            <span>This username has added the bot</span>
+                                        </Tooltip>
+                                    }
+                                >
+                                    <span className="fa fa-check badge-green" />
+                                </OverlayTrigger>
+                            )
+                        }
+                    </div>
+                );
+            });
+        }
+        return result;
+    };
+
+    handleChangeUsername = value => {
+        this.handleChange('letstalkID_Username', value);
+
+        const botInfo = this.props.recipients.botInfo;
+        const botByUsername = botInfo.find(item => item.username === value);
+        const chatId = botByUsername ? botByUsername.chatId : '';
+        this.handleChange('chatId', chatId);
+
+        this.setState({ isLoading: true });
+        this.props.getTelegramDisplayName(this.state.form.botId, parseFloat(chatId)).then(() => {
+            this.handleChange('displayName', this.props.telegramName);
+            this.setState({ isLoading: false });
+        });
+    };
+
+    isShowGreenCheck = value => {
+        const { displayName, letstalkID_Username } = this.state.form;
+        if (displayName && displayName.length > 0 && value === letstalkID_Username) {
+            return true;
+        }
+        return false;
     };
 
     isValidParams = () => {
@@ -215,7 +309,7 @@ export class EditPersonalMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('RecipientRequired'));
         }
 
-        if (!validateData.conversationId) {
+        if (!validateData.letstalkID_Username) {
             isValid = false;
             errMsg.push(LangHelper.getResource('LetstalkIdRequired'));
         }
@@ -228,6 +322,11 @@ export class EditPersonalMappingPopup extends Component {
         if (!validateData.languageId) {
             isValid = false;
             errMsg.push(LangHelper.getResource('LanguageRequired'));
+        }
+
+        if (!validateData.displayName && validateData.botServiceId === BotServiceType.Telegram) {
+            isValid = false;
+            errMsg.push(`The username ${validateData.letstalkID_Username} hasn't added the bot.`)
         }
 
         this.setState({
@@ -259,17 +358,23 @@ export class EditPersonalMappingPopup extends Component {
 
     getParams = () => {
         const isTest = this.state.form.isTest ? 1 : 0;
+        const {
+            botId, recipientType, letstalkID_Username, recipientName,
+            groupHeadlines, recipient, languageId, remark,
+            ignoredNotification, chatId, botServiceId
+        } = this.state.form;
         return {
             conversationGroupId: this.conversationGroupId,
-            botId: this.state.form.botId,
-            recipientTypeId: this.state.form.recipientType,
-            letstalkId: this.state.form.conversationId,
-            groupHeadlineIds: this.state.form.recipientName === AccountingPIC ? '' : this.state.form.groupHeadlines,
-            recipientIds: this.state.form.recipient.value,
-            languageId: this.state.form.languageId,
-            remark: this.state.form.remark,
-            ignoredNotificationTypeList: this.state.form.ignoredNotification,
-            isTest: this.state.form.recipientName !== AccountingPIC ? null : isTest
+            botId: botId,
+            username: botServiceId === BotServiceType.Letstalk ? '' : letstalkID_Username,
+            recipientTypeId: recipientType,
+            conversationId: botServiceId === BotServiceType.Letstalk ? letstalkID_Username : chatId,
+            groupHeadlineIds: recipientName === AccountingPIC ? '' : groupHeadlines,
+            recipientIds: recipient.value,
+            languageId: languageId,
+            remark: remark,
+            ignoredNotificationTypeList: ignoredNotification,
+            isTest: recipientName !== AccountingPIC ? null : isTest
         };
     };
 
@@ -294,7 +399,9 @@ export class EditPersonalMappingPopup extends Component {
     };
 
     renderForm = () => {
+        const { botServiceId } = this.state.form;
         const groupHeadlinesOption = this.state.form.recipientName === AccountingPIC ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
+        const botOptions = this.props.settings.bots.filter(item => item.channelId === botServiceId);
 
         return (
             <Form onSubmit={this.handleEditPersonalSubmitForm}>
@@ -317,22 +424,30 @@ export class EditPersonalMappingPopup extends Component {
                     }
                     <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2" className="required">
+                            {LangHelper.getResource('BotService')}
+                        </Form.Label>
+                        <Form.Label sm="9" md="10" column>
+                            {this.props.updatePersonalMappingData.data.channelName}
+                        </Form.Label>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('BotName')}
                         </Form.Label>
                         <Col sm="9" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name='botId'
-                                onChange={e => this.handleChange('botId', e.target.value)}
+                                onChange={e => this.handleBotChange(e.target.value)}
                                 value={this.state.form.botId}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {this.props.settings.bots.map(this.renderEditPersonalSelectOptions)}
+                                {botOptions.map(this.renderEditPersonalSelectOptions)}
                             </Form.Control>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('LetstalkName')}
+                            {LangHelper.getResource('DisplayName')}
                         </Form.Label>
                         <Form.Label column sm="9" md="10">
                             {
@@ -341,7 +456,7 @@ export class EditPersonalMappingPopup extends Component {
                             }
                             {
                                 !this.state.isLoading &&
-                                this.state.form.name
+                                this.state.form.displayName
                             }
                         </Form.Label>
                     </Form.Group>
@@ -384,16 +499,42 @@ export class EditPersonalMappingPopup extends Component {
                             />
                         </Col>
                     </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('LetstalkID')}
-                        </Form.Label>
-                        <Col sm="9" md="10" >
-                            {
-                                this.renderLetstalkIdsRadioButton(this.selectedLetstalkIds)
-                            }
-                        </Col>
-                    </Form.Group>
+                    {
+                        botServiceId === BotServiceType.Telegram && (
+                            <>
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="3" md="2" className="required">
+                                        {LangHelper.getResource('Username')}
+                                    </Form.Label>
+                                        <Col sm="9" md="10" className="listUserCheck">
+                                            { this.renderUsernameRadioButton() }
+                                        </Col>
+                                </Form.Group>
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="3" md="2">
+                                        {LangHelper.getResource('ChatID')}
+                                    </Form.Label>
+                                    <Form.Label column sm="9" md="10">
+                                        {LangHelper.getResource(this.state.form.chatId)}
+                                    </Form.Label>
+                                </Form.Group>
+                            </>
+                        )
+                    }
+                    {
+                        botServiceId === BotServiceType.Letstalk && (
+                            <Form.Group as={Row}>
+                                <Form.Label column sm="3" md="2" className="required">
+                                    {LangHelper.getResource('LetstalkID')}
+                                </Form.Label>
+                                <Col sm="9" md="10" >
+                                    {
+                                        this.renderLetstalkIdsRadioButton(this.selectedLetstalkIds)
+                                    }
+                                </Col>
+                            </Form.Group>
+                        )
+                    }
                     <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}
@@ -489,6 +630,7 @@ export class EditPersonalMappingPopup extends Component {
         if(!ignoreNotificationTypes){
             return null;
         }
+
         return (
             <Fragment>
                 <Modal show className="chat-type-mapping-modal edit-personal-mapping" dialogAs={DraggableModalDialog}
@@ -523,13 +665,14 @@ export class EditPersonalMappingPopup extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings, recipients, groupHeadline, gridParams, updatePersonalMappingData, updatePersonalMappingResult, letstalkName } = state;
+    const { settings, recipients, groupHeadline, gridParams, updatePersonalMappingData, updatePersonalMappingResult, letstalkName, telegramName } = state;
     return {
         settings,
         recipients,
         groupHeadline,
         gridParams,
         letstalkName,
+        telegramName,
         updatePersonalMappingData,
         updatePersonalMappingResult
     };

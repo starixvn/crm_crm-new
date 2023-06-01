@@ -156,7 +156,9 @@
         public async Task<IActionResult> UpdatePersonalMapping([FromBody] PersonalMappingViewModel data)
         {
             var result = new CommandResult();
-            var userProfile = await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.ConversationId.Trim());
+            var userProfile = data.ChannelId == BotServiceTypeConstants.Letstalk ?
+                await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.ConversationId.Trim()) :
+                await telegramClientService.GetPersonalDisplayNameAsync(data.BotId, long.Parse(data.ConversationId));
 
             if (userProfile is not null && !string.IsNullOrWhiteSpace(userProfile.DisplayName))
             {
@@ -168,6 +170,7 @@
                     RecipientTypeId = data.RecipientTypeId,
                     HeadlineIds = data.GroupHeadlineIds,
                     RecipientIds = data.RecipientIds,
+                    Username = data.Username,
                     ConversationId = data.ConversationId,
                     LanguageId = data.LanguageId,
                     Remark = data.Remark,
