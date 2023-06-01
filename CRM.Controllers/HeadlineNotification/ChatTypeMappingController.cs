@@ -200,7 +200,6 @@
             return userProfile is not null ? userProfile.DisplayName : string.Empty;
         }
 
-
         public async Task<IActionResult> GetGroupHeadlineByRecipient(string recipientIds)
         {
             var headlines = await chatTypeMappingService.GetHeadlineByRecipientAsync(recipientIds);

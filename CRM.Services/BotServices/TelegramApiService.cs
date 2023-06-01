@@ -19,7 +19,10 @@
         {
             var data = new { BotId = botId, ChatId = chatId };
             var results = await PostAsync<LetstalkTelegramContact>(ApiPath.GetTelegramUserProfilePath, data);
-            results.DisplayName = results.FirstName + " " + results.LastName;
+            if (results is not null)
+            {
+                results.DisplayName = results.FirstName + " " + results.LastName;
+            }
             return results;
         }
 
