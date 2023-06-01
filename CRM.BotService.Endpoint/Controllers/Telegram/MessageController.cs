@@ -216,6 +216,7 @@
         {
             return exception.Message.Contains("bot was kicked from the supergroup chat", StringComparison.InvariantCultureIgnoreCase)
                || exception.Message.Contains("bot was kicked from the group chat", StringComparison.InvariantCultureIgnoreCase)
+               || exception.Message.Contains("chat not found", StringComparison.InvariantCultureIgnoreCase)
                 ? Ok(new
                 {
                     IsBotRemoved = true,
