@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions/index';
 import { Button, Col, Form, Modal, Row, Alert } from 'react-bootstrap';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
@@ -313,6 +315,14 @@ export class InsertPersonalMappingPopup extends Component {
         });
     };
 
+    isShowGreenCheck = value => {
+        const { displayName, username } = this.state.form;
+        if (displayName && displayName.length > 0 && value === username) {
+            return true;
+        }
+        return false;
+    };
+
     renderForm = () => {
         const recipientOptions = this.props.recipients.data && this.props.recipients.data.map(item => {
             return {
@@ -448,6 +458,21 @@ export class InsertPersonalMappingPopup extends Component {
                                                     value={value}
                                                     onChange={event => this.handleChangeUsername(event.target.value)}
                                                 />
+                                                {
+                                                    this.isShowGreenCheck(value) && (
+                                                        <OverlayTrigger
+                                                            key={key + value}
+                                                            placement="auto"
+                                                            overlay={
+                                                                <Tooltip>
+                                                                    <span>This username has added the bot</span>
+                                                                </Tooltip>
+                                                            }
+                                                        >
+                                                            <span className="fa fa-check badge-green" />
+                                                        </OverlayTrigger>
+                                                    )
+                                                }
                                             </Col>
                                         ))
                                     }

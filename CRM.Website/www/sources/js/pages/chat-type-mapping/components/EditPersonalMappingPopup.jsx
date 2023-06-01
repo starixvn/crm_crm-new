@@ -147,14 +147,14 @@ export class EditPersonalMappingPopup extends Component {
         this.setState({ isLoading: true });
         this.handleChange('botId', parseFloat(value));
 
-        if (this.state.form.botServiceId === BotServiceType.Letstalk) {
-            this.props.getLetstalkDisplayName(value, this.state.form.letstalkID_Username).then(() => {
-                this.handleChange('displayName', this.props.letstalkName);
+        if (this.state.form.botServiceId === BotServiceType.Telegram) {
+            this.props.getTelegramDisplayName(value, parseFloat(this.state.form.chatId)).then(() => {
+                this.handleChange('displayName', this.props.telegramName);
                 this.setState({ isLoading: false });
             });
         } else {
-            this.props.getTelegramDisplayName(value, parseFloat(this.state.form.chatId)).then(() => {
-                this.handleChange('displayName', this.props.telegramName);
+            this.props.getLetstalkDisplayName(value, this.state.form.letstalkID_Username).then(() => {
+                this.handleChange('displayName', this.props.letstalkName);
                 this.setState({ isLoading: false });
             });
         }
@@ -235,7 +235,7 @@ export class EditPersonalMappingPopup extends Component {
             result = usernames.map((value, key) => {
                 const username = value.trim();
                 return (
-                    <div className="userCheck" key={key}>
+                    <Col key={key} sm="auto" md="auto" className="radioCheck">
                         <Form.Check key={key} inline label={username}
                             name='username'
                             type="radio"
@@ -259,7 +259,7 @@ export class EditPersonalMappingPopup extends Component {
                                 </OverlayTrigger>
                             )
                         }
-                    </div>
+                    </Col>
                 );
             });
         }
@@ -506,9 +506,9 @@ export class EditPersonalMappingPopup extends Component {
                                     <Form.Label column sm="3" md="2" className="required">
                                         {LangHelper.getResource('Username')}
                                     </Form.Label>
-                                        <Col sm="9" md="10" className="listUserCheck">
-                                            { this.renderUsernameRadioButton() }
-                                        </Col>
+                                    {
+                                        this.renderUsernameRadioButton()
+                                    }
                                 </Form.Group>
                                 <Form.Group as={Row}>
                                     <Form.Label column sm="3" md="2">
