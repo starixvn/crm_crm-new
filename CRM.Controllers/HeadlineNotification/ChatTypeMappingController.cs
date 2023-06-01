@@ -200,6 +200,12 @@
             return userProfile is not null ? userProfile.DisplayName : string.Empty;
         }
 
+        public async Task<string> GetGroupTelegramDisplayName(long botId, long chatId)
+        {
+            var userProfile = await telegramClientService.GetGroupDisplayNameAsync(botId, chatId);
+            return userProfile is not null ? userProfile.DisplayGroupName : string.Empty;
+        }
+
         public async Task<IActionResult> GetGroupHeadlineByRecipient(string recipientIds)
         {
             var headlines = await chatTypeMappingService.GetHeadlineByRecipientAsync(recipientIds);
@@ -219,7 +225,7 @@
             {
                 ConversationGroupId = data.ConversationGroupId,
                 BotId = data.BotId,
-                ConversationGroupName = data.Name,
+                ConversationGroupName = data.DisplayName,
                 RecipientTypeId = data.RecipientTypeId,
                 HeadlineIds = data.GroupHeadlineIds,
                 RecipientIds = data.RecipientIds,

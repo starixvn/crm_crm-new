@@ -87,7 +87,7 @@
 
         [AllowAnonymous]
         [HttpPost]
-        [Route("api/telegram/bot/get-user-profile")]
+        [Route("api/telegram/bot/get-profile")]
         public async Task<IActionResult> CheckPersonalProfileAsync([FromBody] TelegramBotConversationViewModel model)
         {
             try

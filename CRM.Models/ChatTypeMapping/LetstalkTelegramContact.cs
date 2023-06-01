@@ -13,5 +13,8 @@
         [JsonProperty(PropertyName = "last_name")]
         public string LastName { get; set; }
 
+        [JsonProperty(PropertyName = "title")]
+        public string DisplayGroupName { get; set; }
+
     }
 }

@@ -11,6 +11,7 @@ import Site from '@jsroot/common/site';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Loading from '@jsroot/components/Loading';
 import DataService from '@jsroot/common/dataService';
+import { BotServiceType }from '@jsroot/common/constants';
 const AccountingPIC = 'Accounting PIC';
 
 export class EditGroupMappingPopup extends Component {
@@ -23,7 +24,8 @@ export class EditGroupMappingPopup extends Component {
                     id: this.props.updateGroupMappingData.data.botId,
                     name: this.props.updateGroupMappingData.data.botName
                 },
-                name: this.props.updateGroupMappingData.data.conversationGroupName,
+                botServiceId: this.props.updateGroupMappingData.data.channelId,
+                displayName: this.props.updateGroupMappingData.data.displayName,
                 conversationId: this.props.updateGroupMappingData.data.conversationId,
                 recipientTypeId: this.props.updateGroupMappingData.data.recipients.length > 0 ? this.props.updateGroupMappingData.data.recipients[0].recipientTypeId : '',
                 recipientIds: this.props.updateGroupMappingData.data.recipients.map(r => r.recipientId).toString(),
@@ -52,7 +54,8 @@ export class EditGroupMappingPopup extends Component {
             isShowConfirmDirtyForm: false,
             isBotRemoved: false,
             isLoading: false,
-            ignoreNotificationTypes: null
+            ignoreNotificationTypes: null,
+            telegramVerification: []
         };
 
         this.conversationGroupId = this.props.updateGroupMappingData.data.conversationGroupId;
@@ -99,12 +102,24 @@ export class EditGroupMappingPopup extends Component {
         if (recipientTypeId) {
             this.props.getRecipientByRecipientType(recipientTypeId).then(() => {
                 this.props.getGroupHeadlineByRecipient(selectedRecipientIds);
-                this.verifyLetstalk(selectedRecipientIds.split(','));
+                this.state.form.botServiceId === BotServiceType.Letstalk && this.verifyLetstalk(selectedRecipientIds.split(','));
+                this.state.form.botServiceId === BotServiceType.Telegram && this.verifyTelegram(selectedRecipientIds.split(','));
             });
         }
 
+        this.state.form.botServiceId === BotServiceType.Telegram && await this.getGroupTelegramDisplayName();
         await this.getIgnoreNotificationType();
     }
+
+    getGroupTelegramDisplayName = async() => {
+        const botId = this.props.updateGroupMappingData.data.botId;
+        const chatId = this.props.updateGroupMappingData.data.conversationId;
+        Site.blockUI();
+        const url = Site.resolveClientUrl('ChatTypeMapping/GetGroupTelegramDisplayName');
+        await DataService.getDataAsync(url, { botId: parseFloat(botId), chatId: parseFloat(chatId) }).then(response => {
+            this.handleChange('displayName', response.data);
+        }).then(() => Site.unblockUI());
+    };
 
     getIgnoreNotificationType = async () =>{
         Site.blockUI();
@@ -136,7 +151,8 @@ export class EditGroupMappingPopup extends Component {
         this.handleChange('recipientIds', '');
         this.handleChange('groupHeadlines', '');
         this.props.getGroupHeadlineByRecipient('');
-        this.verifyLetstalk([]);
+        this.state.form.botServiceId === BotServiceType.Letstalk && this.verifyLetstalk([]);
+        this.state.form.botServiceId === BotServiceType.Telegram && this.verifyTelegram([]);
         this.props.getRecipientByRecipientType(e.target.value);
         if (label !== AccountingPIC) {
             this.handleChange('isTest', false);
@@ -146,7 +162,8 @@ export class EditGroupMappingPopup extends Component {
     handleRecipientChange = (currentItem, selectedItemsKey) => {
         this.handleChange('recipientIds', selectedItemsKey);
         this.handleChange('groupHeadlines', '');
-        this.verifyLetstalk(selectedItemsKey.split(','));
+        this.state.form.botServiceId === BotServiceType.Letstalk && this.verifyLetstalk(selectedItemsKey.split(','));
+        this.state.form.botServiceId === BotServiceType.Telegram && this.verifyTelegram(selectedItemsKey.split(','));
         this.props.getGroupHeadlineByRecipient(selectedItemsKey);
     };
 
@@ -157,6 +174,7 @@ export class EditGroupMappingPopup extends Component {
     verifyLetstalk = recipientIds => {
         this.setState({ isLoading: true });
         const selectedOptions = this.state.settings.recipientOptions.filter(r => recipientIds.some(id => parseInt(id, 10) === r.id));
+
         const params = {
             botId: this.state.form.bot.id,
             groupConversationId: this.state.form.conversationId,
@@ -176,6 +194,40 @@ export class EditGroupMappingPopup extends Component {
         this.props.verifyLetstalkInGroup(params).then(() => {
             this.setState({ isLoading: false });
         });
+    };
+
+    verifyTelegram = recipientIds => {
+        const selectedOptions = this.state.settings.recipientOptions.filter(r => recipientIds.some(id => parseInt(id, 10) === r.id));
+        const telegramVerification = selectedOptions.map((item, key) => {
+            return {
+                usernames:item.usernames.trim().split(','),
+                recipientId: item.id,
+                recipientName: item.name
+            }
+        });
+        this.setState({
+            telegramVerification: telegramVerification
+        });
+    }
+
+    renderTelegramVerification = (item, key) => {
+        return (
+            <div className='letstalk-group-mapping' key={key}>
+                <div className='recipient-name common-letstalk-display' title={item.recipientName}>{item.recipientName}</div>
+                <div className='letstalk-wrapper'>
+                    {
+                        item.usernames.length > 0 &&
+                        item.usernames.map((element, index) => {
+                            return (
+                                <div key={index} className='letstalk-name common-letstalk-display' title={element}>
+                                    {element}
+                                </div>
+                            );
+                        })
+                    }
+                </div>
+            </div>
+        );
     };
 
     handleGroupHeadlineChange = (currentItem, selectedItemsKey) => {
@@ -241,6 +293,11 @@ export class EditGroupMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('TheBotRemoved'));
         }
 
+        if (!data.displayName && data.botServiceId === BotServiceType.Telegram) {
+            isValid = false;
+            errMsg.push(`The bot ${data.bot.name} hasn't added in the group.`)
+        }
+
         this.setState({
             isSubmitting: isValid,
             validate: {
@@ -273,9 +330,9 @@ export class EditGroupMappingPopup extends Component {
         return {
             conversationGroupId: this.conversationGroupId,
             botId: this.state.form.bot.id,
-            name: this.state.form.name,
+            displayName: this.state.form.displayName,
             recipientTypeId: this.state.form.recipientTypeId,
-            letstalkId: this.state.form.conversationId,
+            conversationId: this.state.form.conversationId,
             groupHeadlineIds: this.state.form.recipientName === AccountingPIC ? '' : this.state.form.groupHeadlines,
             recipientIds: this.state.form.recipientIds,
             languageId: this.state.form.languageId,
@@ -306,6 +363,7 @@ export class EditGroupMappingPopup extends Component {
 
     renderForm = isHiddenIsTest => {
         const groupHeadlinesOption = this.state.form.recipientName === AccountingPIC ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
+        const { botServiceId } = this.state.form;
         return (
             <Form onSubmit={this.handleSubmitForm}>
                 <Modal.Body>
@@ -326,6 +384,14 @@ export class EditGroupMappingPopup extends Component {
                         />
                     }
                     <Form.Group as={Row}>
+                        <Form.Label column sm="3" md="2" className="required">
+                            {LangHelper.getResource('BotService')}
+                        </Form.Label>
+                        <Form.Label sm="9" md="10" column>
+                            {this.props.updateGroupMappingData.data.channelName}
+                        </Form.Label>
+                    </Form.Group>
+                    <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2">
                             {LangHelper.getResource('BotName')}
                         </Form.Label>
@@ -335,10 +401,10 @@ export class EditGroupMappingPopup extends Component {
                     </Form.Group>
                     <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('LetstalkName')}
+                            {LangHelper.getResource('DisplayName')}
                         </Form.Label>
                         <Form.Label column sm="9" md="10">
-                            {this.state.form.name}
+                            {this.state.form.displayName}
                         </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row}>
@@ -385,7 +451,7 @@ export class EditGroupMappingPopup extends Component {
                     </Form.Group>
                     <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('LetstalkID')}
+                            {LangHelper.getResource('Username')}
                         </Form.Label>
                         <Col sm="9" md="10" className="mrg-top-3">
                             {
@@ -393,11 +459,30 @@ export class EditGroupMappingPopup extends Component {
                                 <Loading />
                             }
                             {
-                                this.props.letstalkVerification.recipients.length > 0 && !this.state.isLoading &&
-                                this.props.letstalkVerification.recipients.map(this.renderLetstalkIdVerification)
+                                botServiceId === BotServiceType.Letstalk ? (
+                                    this.props.letstalkVerification.recipients.length > 0 && !this.state.isLoading &&
+                                    this.props.letstalkVerification.recipients.map(this.renderLetstalkIdVerification)
+                                ) :
+                                (
+                                    this.state.telegramVerification.length > 0 && !this.state.isLoading &&
+                                    this.state.telegramVerification.map(this.renderTelegramVerification)
+                                )
                             }
                         </Col>
                     </Form.Group>
+                    {
+                        botServiceId === BotServiceType.Telegram &&
+                        (
+                            <Form.Group as={Row}>
+                                <Form.Label column sm="3" md="2">
+                                    {LangHelper.getResource('ChatID')}
+                                </Form.Label>
+                                <Form.Label column sm="9" md="10">
+                                    {LangHelper.getResource(this.state.form.conversationId)}
+                                </Form.Label>
+                            </Form.Group>
+                        )
+                    }
                     <Form.Group as={Row}>
                         <Form.Label column sm="3" md="2" className="required">
                             {LangHelper.getResource('GroupHeadline')}

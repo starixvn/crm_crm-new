@@ -6,5 +6,7 @@
     public interface ITelegramApiService
     {
         Task<LetstalkTelegramContact> GetPersonalDisplayNameAsync(long botId, long chatId);
+
+        Task<LetstalkTelegramContact> GetGroupDisplayNameAsync(long botId, long chatId);
     }
 }

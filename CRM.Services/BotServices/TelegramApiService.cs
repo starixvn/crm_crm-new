@@ -26,9 +26,17 @@
             return results;
         }
 
+        public async Task<LetstalkTelegramContact> GetGroupDisplayNameAsync(long botId, long chatId)
+        {
+            var data = new { BotId = botId, ChatId = chatId };
+            var results = await PostAsync<LetstalkTelegramContact>(ApiPath.GetTelegramUserProfilePath, data);
+            return results;
+        }
+        
+
         private static class ApiPath
         {
-            internal const string GetTelegramUserProfilePath = "api/telegram/bot/get-user-profile";
+            internal const string GetTelegramUserProfilePath = "api/telegram/bot/get-profile";
         }
     }
 }

@@ -366,7 +366,7 @@ export class EditPersonalMappingPopup extends Component {
         return {
             conversationGroupId: this.conversationGroupId,
             botId: botId,
-            username: botServiceId === BotServiceType.Letstalk ? '' : letstalkID_Username,
+            username: botServiceId === BotServiceType.Letstalk ? null : letstalkID_Username,
             recipientTypeId: recipientType,
             conversationId: botServiceId === BotServiceType.Letstalk ? letstalkID_Username : chatId,
             groupHeadlineIds: recipientName === AccountingPIC ? '' : groupHeadlines,
