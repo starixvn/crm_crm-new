@@ -5,7 +5,9 @@
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
     using CRM.Models.ChatTypeMapping;
+    using CRM.Models.PicAndHeadline;
     using CRM.Services.BotServices.Interfaces;
+    using CRM.ViewModels.ChatTypeMapping;
     using Fanex.Caching;
 
     public class TelegramApiService : BotServiceHttpClientBase, ITelegramApiService
@@ -26,17 +28,22 @@
             return results;
         }
 
-        public async Task<LetstalkTelegramContact> GetGroupDisplayNameAsync(long botId, long chatId)
+        public async Task<TelegramValidationModel> VerifyTelegramInGroup(TelegramVerificationViewModel model)
         {
-            var data = new { BotId = botId, ChatId = chatId };
-            var results = await PostAsync<LetstalkTelegramContact>(ApiPath.GetTelegramUserProfilePath, data);
+            var inputParams = new
+            {
+                BotId = model.BotId,
+                ConversationGroupId = model.GroupConversationId,
+                BotAccountIds = model.ChatIdMembers
+            };
+            var results = await PostAsync<TelegramValidationModel>(ApiPath.GetTelegramVerifyGroupPath, inputParams);
             return results;
         }
-        
 
         private static class ApiPath
         {
             internal const string GetTelegramUserProfilePath = "api/telegram/bot/get-profile";
+            internal const string GetTelegramVerifyGroupPath = "api/telegram/bot/verify-on-group";
         }
     }
 }

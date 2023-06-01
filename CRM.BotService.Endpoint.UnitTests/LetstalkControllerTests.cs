@@ -75,7 +75,7 @@
             {
                 BotId = 1,
                 ConversationGroupId = "group1",
-                LetstalkIds = new List<string> { "member1", "member2", "member3" }
+                BotAccountIds = new List<string> { "member1", "member2", "member3" }
             };
             var expected = new
             {

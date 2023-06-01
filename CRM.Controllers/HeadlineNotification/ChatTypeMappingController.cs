@@ -257,6 +257,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Host)]
         public async Task<IActionResult> VerifyLetstalkInGroup([FromBody] LetstalkVerificationViewModel data)
         {
             if (data.BotId > 0 && !string.IsNullOrWhiteSpace(data.GroupConversationId))
@@ -266,6 +267,20 @@
                 MappingResult(data.Recipients, verificationData.Letstalks);
 
                 return Json(new { isBotRemoved = verificationData.IsBotRemoved, recipients = data.Recipients });
+            }
+
+            return Json(null);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Host)]
+        public async Task<IActionResult> VerifyTelegramInGroup([FromBody] TelegramVerificationViewModel model)
+        {
+            if (model.BotId > 0 && !string.IsNullOrWhiteSpace(model.GroupConversationId))
+            {
+                var verificationData = await telegramClientService.VerifyTelegramInGroup(model);
+
+                return Json(verificationData is null ? null : new { isBotRemoved = verificationData.IsBotRemoved, recipients = verificationData.Telegrams });
             }
 
             return Json(null);

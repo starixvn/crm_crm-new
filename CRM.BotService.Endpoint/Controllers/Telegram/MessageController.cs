@@ -7,13 +7,16 @@
     using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
+    using CRM.BotService.Endpoint.ViewModel;
     using CRM.Core.Constants;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
+    using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
 
@@ -152,6 +155,73 @@
             }
 
             return result;
+        }
+
+        [HttpPost]
+        [Route("api/telegram/bot/get-user-profile")]
+        public async Task<IActionResult> CheckPersonalProfileAsync([FromBody] TelegramBotConversationViewModel model)
+        {
+            try
+            {
+                var profile = await telegramBotService(model.BotId).GetChatAsync(model.BotId, model.ChatId);
+                return Ok(profile);
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+                return Ok();
+            }
+        }
+
+        [HttpPost]
+        [Route("api/telegram/bot/verify-on-group")]
+        public async Task<IActionResult> VerifyUserOnGroupAsync([FromBody] VerifyUserOnGroupViewModel model)
+        {
+            try
+            {
+                var results = new List<object>();
+                _ = long.TryParse(model.ConversationGroupId, out long chatGroupId);
+
+                var chatGroup = await telegramBotService(model.BotId).GetChatAsync(model.BotId, chatGroupId);
+                var isBotRemoved = chatGroup is null;
+
+                if (!isBotRemoved && model.BotAccountIds is not null && model.BotAccountIds.Any())
+                {
+                    foreach (var botAccountId in model.BotAccountIds)
+                    {
+                        _ = long.TryParse(botAccountId, out long chatMemberId);
+
+                        var chatMember = await telegramBotService(model.BotId).GetChatMemberAsync(model.BotId, chatGroupId, chatMemberId);
+                        results.Add(new
+                        {
+                            ChatId = botAccountId,
+                            IsGroupMember = chatMember is not null && chatMember.Status != ChatMemberStatus.Left && chatMember.Status != ChatMemberStatus.Kicked,
+                        });
+                    }
+                }
+
+                return Ok(new
+                {
+                    IsBotRemoved = isBotRemoved,
+                    Telegrams = results
+                });
+            }
+            catch (Exception exception)
+            {
+                return handleExceptionVerifyGroup(exception);
+            }
+        }
+
+        private IActionResult handleExceptionVerifyGroup(Exception exception)
+        {
+            return exception.Message.Contains("bot was kicked from the supergroup chat", StringComparison.InvariantCultureIgnoreCase)
+               || exception.Message.Contains("bot was kicked from the group chat", StringComparison.InvariantCultureIgnoreCase)
+                ? Ok(new
+                {
+                    IsBotRemoved = true,
+                    Telegrams = new List<object>()
+                })
+                : (IActionResult)Ok(null);
         }
 
         private async Task WriteLogAsync(Exception exception, IDictionary<string, object> param = null)

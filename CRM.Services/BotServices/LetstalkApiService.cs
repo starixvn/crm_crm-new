@@ -31,7 +31,7 @@
             {
                 BotId = botId,
                 ConversationGroupId = conversationGroupId,
-                LetstalkIds = letstalkIds
+                BotAccountIds = letstalkIds
             };
 
             var results = await PostAsync<LetsalkValidationModel>(ApiPath.VerifyUserOnGroupPath, inputParams);

@@ -84,22 +84,5 @@
                 return Ok(ex.Message);
             }
         }
-
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("api/telegram/bot/get-profile")]
-        public async Task<IActionResult> CheckPersonalProfileAsync([FromBody] TelegramBotConversationViewModel model)
-        {
-            try
-            {
-                var profile = await telegramBotService(model.BotId).GetChatAsync(model.BotId, model.ChatId);
-                return Ok(profile);
-            }
-            catch (Exception ex)
-            {
-                await logService.ErrorAsync(ex);
-                return Ok();
-            }
-        }
     }
 }

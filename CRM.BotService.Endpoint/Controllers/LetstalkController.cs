@@ -52,7 +52,7 @@
                 var botFriends = await letstalkClientService(model.BotId).GetBotContactList();
                 var roomData = await letstalkClientService(model.BotId).GetChatRoomData(model.ConversationGroupId);
 
-                foreach (var letstalkId in model.LetstalkIds)
+                foreach (var letstalkId in model.BotAccountIds)
                 {
                     results.Add(new
                     {

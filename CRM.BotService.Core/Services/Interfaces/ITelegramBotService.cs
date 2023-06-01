@@ -15,6 +15,8 @@
 
         Task<User> GetBotInfoAsync(long botId);
 
+        Task<ChatMember> GetChatMemberAsync(long botId, long chatGroupId, long chatMemberId);
+
         Task<Chat> GetChatAsync(long botId, long chatId);
 
         Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html);
