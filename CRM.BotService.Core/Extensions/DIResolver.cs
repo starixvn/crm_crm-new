@@ -55,7 +55,7 @@
 
                 if (botConfig is null)
                 {
-                    throw new ArgumentNullException($"The bot ID: {botId} does not existed in config file");
+                    throw new ArgumentNullException($"The letstalk bot ID: {botId} does not existed in config file");
                 }
 
                 return new LetstalkClientService(
@@ -88,7 +88,7 @@
 
                 if (botConfig is null)
                 {
-                    throw new ArgumentNullException($"The bot ID: {botId} does not existed in config file");
+                    throw new ArgumentNullException($"The telegram bot ID: {botId} does not existed in config file");
                 }
 
                 return new TelegramBotService(
