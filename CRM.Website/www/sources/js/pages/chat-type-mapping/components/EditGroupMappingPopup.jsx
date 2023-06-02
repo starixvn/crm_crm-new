@@ -385,6 +385,7 @@ export class EditGroupMappingPopup extends Component {
         return {
             conversationGroupId: this.conversationGroupId,
             botId: this.state.form.bot.id,
+            channelId: this.state.form.botServiceId,
             displayName: this.state.form.displayName,
             recipientTypeId: this.state.form.recipientTypeId,
             conversationId: this.state.form.conversationId,
