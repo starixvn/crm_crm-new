@@ -388,7 +388,7 @@ export class NewAnnouncement extends Component {
             if (this.props.createAnnouncementResult.isSuccessful) {
                 const {sendType} = this.formik.values;
                 if(sendType !== 'Send At'){
-                    this.props.scanAndSendNotification();
+                    this.props.sendMessageAnnouncementToBotEndpoint();
                 }
                 setTimeout(() => {
                     this.props.onSuccess();

@@ -114,7 +114,7 @@
 
         [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Host)]
         [HttpGet]
-        public async Task<IActionResult> ScanAndSendNotification()
+        public async Task<IActionResult> SendMessageAnnouncementToBotEndpoint()
         {
             try
             {
