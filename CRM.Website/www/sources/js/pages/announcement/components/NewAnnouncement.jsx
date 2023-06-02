@@ -14,7 +14,7 @@ import Option from './Option';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import {
-    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams
+    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, checkInvalidMaxLengthContent
 } from '../common.functions';
 
 export class NewAnnouncement extends Component {
@@ -225,18 +225,6 @@ export class NewAnnouncement extends Component {
         }
     }
 
-    checkInvalidMaxLengthContent = content =>{
-        const contentByTab = content[this.state.tab];
-        const contentReplaceHtml = contentByTab.replace(/(<([^>]+)>)/gi, '');
-        const MAX_LENGTH_TELEGRAM = 4096;
-        let invalidContentMaxLength = false;
-        if(contentReplaceHtml.length > MAX_LENGTH_TELEGRAM){
-            invalidContentMaxLength = true;
-        }
-        const textInvalidContentMaxLength = `Max length ${contentReplaceHtml.length}/${MAX_LENGTH_TELEGRAM}`;
-        return {invalidContentMaxLength, textInvalidContentMaxLength};
-    }
-
     renderForm = ({
         values,
         errors,
@@ -251,7 +239,8 @@ export class NewAnnouncement extends Component {
             values, handleChange, errors, touched
         };
         const {parameters, isChangeTemplate} = this.state;
-        const {invalidContentMaxLength, textInvalidContentMaxLength} = this.checkInvalidMaxLengthContent(values.content);
+        const {invalidContentMaxLength, textInvalidContentMaxLength} = checkInvalidMaxLengthContent(values.content, this.state.tab);
+        const isInvalidContent = this.handleCheckValidAllContent(values.content);
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -324,7 +313,7 @@ export class NewAnnouncement extends Component {
                     }
                     <UploadFile 
                         setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
-                        invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength} 
+                        invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
                     />
                     <Form.Group as={Row}>
                         <Form.Label column sm="2" md="2" htmlFor="groupHeadline">
@@ -363,7 +352,7 @@ export class NewAnnouncement extends Component {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>{LangHelper.getResource('Save')}</Button>
+                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting || isInvalidContent}>{LangHelper.getResource('Save')}</Button>
                     <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
                 </Modal.Footer>
             </Form>
@@ -371,14 +360,22 @@ export class NewAnnouncement extends Component {
     };
 
     handleSubmit = (values, { setSubmitting }) => {
-        const {invalidContentMaxLength} = this.checkInvalidMaxLengthContent(values.content);
-        if(!invalidContentMaxLength){
+        const isInvalid = this.handleCheckValidAllContent(values.content);
+        if(!isInvalid){
             setSubmitting(true);
             const param = getParams(values, this.state);
             this.setState({confirmInsertDialog: { show: true, params: param}});
-        }else{
-            setSubmitting(false);
         }
+    };
+
+    handleCheckValidAllContent = content =>{
+        for (const property in content) {
+            const {invalidContentMaxLength} = checkInvalidMaxLengthContent(content, property);
+            if(invalidContentMaxLength){
+                return true; 
+            }
+        }
+        return false;
     };
 
     handleConfirmInsertDialog = async () =>{

@@ -14,7 +14,7 @@ import ContentTab from './ContentTab';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import {
-    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams
+    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, checkInvalidMaxLengthContent
 } from '../common.functions';
 import Site from '@jsroot/common/site';
 
@@ -274,7 +274,9 @@ export class ActionAnnouncement extends Component {
         const propsOption = {
             values, handleChange, errors, touched
         };
-        const {parameters, isChangeTemplate, uploadedFiles} = this.state;
+        const {parameters, isChangeTemplate, uploadedFiles, tab} = this.state;
+        const {invalidContentMaxLength, textInvalidContentMaxLength} = checkInvalidMaxLengthContent(values.content, tab);
+        const isInvalidContent = this.handleCheckValidAllContent(values.content);
         const {actionAnnouncementPopup, editAnnouncementResult, createAnnouncementResult} = this.props;
         const result = actionAnnouncementPopup.isEdit ? editAnnouncementResult : createAnnouncementResult; 
         const message = this.props.actionAnnouncementPopup.isEdit ? 
@@ -324,7 +326,7 @@ export class ActionAnnouncement extends Component {
                     </Form.Group>
                     {
                         <ContentTab
-                            isValidContent={touched.content && errors.content} content={values.content} setFieldValue={setFieldValue}
+                            isValidContent={(touched.content && errors.content) || invalidContentMaxLength} content={values.content} setFieldValue={setFieldValue}
                             languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab} 
                         />
                     }
@@ -354,6 +356,7 @@ export class ActionAnnouncement extends Component {
                     }
                     <UploadFile id={actionAnnouncementPopup.announcementId}
                         setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
+                        invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
                     />
                     <Form.Group as={Row}>
                         <Form.Label column sm="2" md="2" htmlFor="groupHeadline">
@@ -392,7 +395,7 @@ export class ActionAnnouncement extends Component {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>{LangHelper.getResource('Save')}</Button>
+                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting || isInvalidContent}>{LangHelper.getResource('Save')}</Button>
                     <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
                 </Modal.Footer>
             </Form>
@@ -400,11 +403,24 @@ export class ActionAnnouncement extends Component {
     };
 
     handleSubmit = (values, { setSubmitting }) => {
-        setSubmitting(true);
-        const params = getParams(values, this.state);
-        const {announcementId, isEdit} = this.props.actionAnnouncementPopup;
-        params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
-        this.setState({confirmActionDialog: { show: true, params}});
+        const isInvalid = this.handleCheckValidAllContent(values.content);
+        if(!isInvalid){
+            setSubmitting(true);
+            const params = getParams(values, this.state);
+            const {announcementId, isEdit} = this.props.actionAnnouncementPopup;
+            params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
+            this.setState({confirmActionDialog: { show: true, params}});
+        }
+    };
+
+    handleCheckValidAllContent = content =>{
+        for (const property in content) {
+            const {invalidContentMaxLength} = checkInvalidMaxLengthContent(content, property);
+            if(invalidContentMaxLength){
+                return true; 
+            }
+        }
+        return false;
     };
 
     handleConfirmActionDialog = async () =>{

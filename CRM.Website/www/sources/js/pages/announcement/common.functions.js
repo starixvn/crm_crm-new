@@ -120,6 +120,19 @@ export const mapLabelLanguage = languages =>{
     });
 };
 
+export const checkInvalidMaxLengthContent = (content, tab) =>{
+    const tabRemoveSpace = tab.replace(/[^A-Z0-9]/ig, '');
+    const contentByTab = content[tabRemoveSpace];
+    const contentReplaceHtml = contentByTab?.replace(/(<([^>]+)>)/gi, '');
+    const MAX_LENGTH_TELEGRAM = 4096;
+    let invalidContentMaxLength = false;
+    if(contentReplaceHtml?.length > MAX_LENGTH_TELEGRAM){
+        invalidContentMaxLength = true;
+    }
+    const textInvalidContentMaxLength = `Max length ${contentReplaceHtml?.length}/${MAX_LENGTH_TELEGRAM}`;
+    return {invalidContentMaxLength, textInvalidContentMaxLength};
+};
+
 function validFileSize(file){
     const convertSize = Math.round(file.size / 1024).toFixed(2);
     const maximumSize10MB = 10000;
