@@ -55,7 +55,7 @@ export class EditGroupMappingPopup extends Component {
             isBotRemoved: false,
             isLoading: false,
             ignoreNotificationTypes: null,
-            telegramVerification: []
+            telegramVerifies: []
         };
 
         this.conversationGroupId = this.props.updateGroupMappingData.data.conversationGroupId;
@@ -84,7 +84,7 @@ export class EditGroupMappingPopup extends Component {
                     recipientOptions: recipientOptions,
                     headlineOptions: headlineOptions
                 },
-                isBotRemoved: nextProps.letstalkVerification.isBotRemoved
+                isBotRemoved: nextProps.letstalkVerification.isBotRemoved || nextProps.telegramVerification.isBotRemoved
             };
 
             return state;
@@ -197,18 +197,39 @@ export class EditGroupMappingPopup extends Component {
     };
 
     verifyTelegram = recipientIds => {
+        this.setState({ isLoading: true });
         const selectedOptions = this.state.settings.recipientOptions.filter(r => recipientIds.some(id => parseInt(id, 10) === r.id));
-        const telegramVerification = selectedOptions.map((item, key) => {
+        const botInfos = this.props.recipients.botInfo;
+
+        const chatIds = [];
+        const telegramVerifies = selectedOptions.map(item => {
+            const usernames = item.usernames ? item.usernames.split(',') : [];
+            if (usernames.length > 0) {
+                usernames.map(data => {
+                    const botInfo = botInfos.find(element => element.username === data.trim());
+                    botInfo && chatIds.push(botInfo.chatId);
+                })
+            }
             return {
-                usernames: item.usernames ? item.usernames.trim().split(',') : [],
-                recipientId: item.id,
-                recipientName: item.name
+                ...item,
+                recipientName: item.name,
+                usernames: usernames
             }
         });
+
+        const params = {
+            botId: this.state.form.bot.id,
+            groupConversationId: this.state.form.conversationId,
+            chatIdMembers: chatIds
+        };
+
         this.setState({
-            telegramVerification: telegramVerification
+            telegramVerifies: telegramVerifies
         });
-    }
+        this.props.verifyTelegramInGroup(params).then(() => {
+            this.setState({ isLoading: false });
+        });
+    };
 
     renderTelegramVerification = (item, key) => {
         return (
@@ -242,18 +263,52 @@ export class EditGroupMappingPopup extends Component {
         );
     };
 
-    renderLetstalkIdVerification = (item, key) => {
+    isCheckRender = (item, botTypeId, listUser) => {
+        const { botServiceId } = this.state.form;
+        if (botServiceId === botTypeId && item[`${listUser}`].length > 0) {
+            return true;
+        }
+        return false;
+    };
+
+    isCheckGroupMemberTelegram = (username) => {
+        let isChecked = false;
+        const { telegramVerification } = this.props;
+        const botInfos = this.props.recipients.botInfo;
+        const botInfo = botInfos.find(element => element.username === username);
+
+        const chatId = botInfo ? botInfo.chatId : '';
+        telegramVerification && telegramVerification.recipients.map(item => {
+            if (item.chatId === chatId) {
+                isChecked = item.isGroupMember
+            }
+        })
+        return isChecked;
+    };
+
+    renderLetstalkIdTelegramVerification = (item, key) => {
         return (
             <div className='letstalk-group-mapping' key={key}>
                 <div className='recipient-name common-letstalk-display' title={item.recipientName}>{item.recipientName}</div>
                 <div className='letstalk-wrapper'>
                     {
-                        item.letstalks.length > 0 &&
+                        this.isCheckRender(item, BotServiceType.Letstalk, 'letstalks') &&
                         item.letstalks.map((v, k) => {
                             return (
                                 <div key={k} className='letstalk-name common-letstalk-display' title={v.letstalkId}>
                                     {v.letstalkId}
                                     <span className={v.isGroupMember ? 'fa fa-check icon' : ''} />
+                                </div>
+                            );
+                        })
+                    }
+                    {
+                        this.isCheckRender(item, BotServiceType.Telegram, 'usernames') &&
+                        item.usernames.map((v, k) => {
+                            return (
+                                <div key={k} className='letstalk-name common-letstalk-display' title={v}>
+                                    {v}
+                                    <span className={this.isCheckGroupMemberTelegram(v) ? 'fa fa-check icon' : ''} />
                                 </div>
                             );
                         })
@@ -461,11 +516,11 @@ export class EditGroupMappingPopup extends Component {
                             {
                                 botServiceId === BotServiceType.Letstalk ? (
                                     this.props.letstalkVerification.recipients.length > 0 && !this.state.isLoading &&
-                                    this.props.letstalkVerification.recipients.map(this.renderLetstalkIdVerification)
+                                    this.props.letstalkVerification.recipients.map(this.renderLetstalkIdTelegramVerification)
                                 ) :
                                 (
-                                    this.state.telegramVerification.length > 0 && !this.state.isLoading &&
-                                    this.state.telegramVerification.map(this.renderTelegramVerification)
+                                    this.state.telegramVerifies.length > 0 && !this.state.isLoading &&
+                                    this.state.telegramVerifies.map(this.renderLetstalkIdTelegramVerification)
                                 )
                             }
                         </Col>
@@ -617,7 +672,7 @@ export class EditGroupMappingPopup extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings, recipients, gridParams, groupHeadline, updateGroupMappingData, updateGroupMappingResult, letstalkVerification } = state;
+    const { settings, recipients, gridParams, groupHeadline, updateGroupMappingData, updateGroupMappingResult, letstalkVerification, telegramVerification } = state;
     return {
         settings,
         recipients,
@@ -625,7 +680,8 @@ const mapStateToProps = state => {
         gridParams,
         updateGroupMappingData,
         updateGroupMappingResult,
-        letstalkVerification
+        letstalkVerification,
+        telegramVerification
     };
 };
 

@@ -43,6 +43,12 @@ export const letstalkVerification = createReducer({}, {
     }
 });
 
+export const telegramVerification = createReducer({}, {
+    [types.GROUP_MAPPING_TELEGRAM_VERIFICATION_DATA](state, action) {
+        return action.data;
+    }
+});
+
 export const letstalkName = createReducer({}, {
     [types.LETSTALK_DISPLAY_NAME](state, action) {
         return action.data;
@@ -63,6 +69,7 @@ const reducers = {
     updateGroupMappingData,
     updateGroupMappingResult,
     letstalkVerification,
+    telegramVerification,
     letstalkName,
     telegramName
 };

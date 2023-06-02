@@ -100,6 +100,13 @@ const setLetstalkVerifationData = data => {
     };
 };
 
+const setTelegramVerifationData = data => {
+    return {
+        type: types.GROUP_MAPPING_TELEGRAM_VERIFICATION_DATA,
+        data: data !== null ? data : { isBotRemoved: false, recipients: [] }
+    };
+};
+
 export const setGroupMappingResult = data => {
     return {
         type: types.GROUP_MAPPING_UPDATE_RESULT,
@@ -118,6 +125,7 @@ export const closeUpdateGroupMappingPopup = () => {
         dispatch(setUpdateGroupMappingData(false, null));
         dispatch(setGroupMappingResult(null));
         dispatch(setLetstalkVerifationData({ isBotRemoved: false, recipients: [] }));
+        dispatch(setTelegramVerifationData({ isBotRemoved: false, recipients: [] }));
         dispatch(setRecipientData([]));
         dispatch(setGroupHeadlineData([]));
     };
@@ -131,6 +139,17 @@ export const verifyLetstalkInGroup = params => async dispatch => {
         }).catch(Site.handleAxiosError);
     } else {
         dispatch(setLetstalkVerifationData({ isBotRemoved: false, recipients: [] }));
+    }
+};
+
+export const verifyTelegramInGroup = params => async dispatch => {
+    if (params.botId > 0 && params.groupConversationId !== '' && params.chatIdMembers.length > 0) {
+        const url = Site.resolveClientUrl('ChatTypeMapping/VerifyTelegramInGroup');
+        await DataService.postDataAsync(url, params).then(response => {
+            dispatch(setTelegramVerifationData(response.data));
+        }).catch(Site.handleAxiosError);
+    } else {
+        dispatch(setTelegramVerifationData({ isBotRemoved: false, recipients: [] }));
     }
 };
 
@@ -191,6 +210,7 @@ const actions = {
     updateGroupMapping,
     setGroupMappingResult,
     verifyLetstalkInGroup,
+    verifyTelegramInGroup,
     getLetstalkDisplayName,
     getTelegramDisplayName
 };

@@ -203,7 +203,11 @@
         public async Task<string> GetGroupTelegramDisplayName(long botId, long chatId)
         {
             var userProfile = await telegramClientService.GetGroupDisplayNameAsync(botId, chatId);
-            return userProfile is not null ? userProfile.DisplayGroupName : string.Empty;
+            if (userProfile is not null && userProfile.Permissions.CanSendMessages == true)
+            {
+                return userProfile.DisplayGroupName;
+            }
+            return string.Empty;
         }
 
         public async Task<IActionResult> GetGroupHeadlineByRecipient(string recipientIds)

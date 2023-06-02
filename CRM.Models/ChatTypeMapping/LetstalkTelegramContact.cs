@@ -1,6 +1,7 @@
 ﻿namespace CRM.Models.ChatTypeMapping
 {
     using Newtonsoft.Json;
+    using Telegram.Bot.Types;
 
     public class LetstalkTelegramContact
     {
@@ -15,6 +16,8 @@
 
         [JsonProperty(PropertyName = "title")]
         public string DisplayGroupName { get; set; }
+
+        public ChatPermissions Permissions { get; set; }
 
     }
 }

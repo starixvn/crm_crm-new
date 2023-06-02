@@ -17,7 +17,8 @@ const store = Store.createStore(reducer, {
     updateGroupMappingResult: null,
     recipients: {},
     groupHeadline: [],
-    letstalkVerification: { isBotRemoved: false, recipients: [] }
+    letstalkVerification: { isBotRemoved: false, recipients: [] },
+    telegramVerification: { isBotRemoved: false, recipients: [] },
 });
 
 export default class index extends Component {
