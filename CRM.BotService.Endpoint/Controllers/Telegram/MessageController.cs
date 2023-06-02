@@ -208,6 +208,7 @@
             }
             catch (Exception exception)
             {
+                await logService.ErrorAsync(exception);
                 return handleExceptionVerifyGroup(exception);
             }
         }

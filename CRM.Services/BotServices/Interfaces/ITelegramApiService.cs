@@ -8,6 +8,8 @@
     {
         Task<LetstalkTelegramContact> GetPersonalDisplayNameAsync(long botId, long chatId);
 
+        Task<LetstalkTelegramContact> GetGroupDisplayNameAsync(long botId, long chatId);
+
         Task<TelegramValidationModel> VerifyTelegramInGroup(TelegramVerificationViewModel model);
     }
 }

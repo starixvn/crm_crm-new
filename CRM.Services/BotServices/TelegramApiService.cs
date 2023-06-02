@@ -28,6 +28,13 @@
             return results;
         }
 
+        public async Task<LetstalkTelegramContact> GetGroupDisplayNameAsync(long botId, long chatId)
+        {
+            var data = new { BotId = botId, ChatId = chatId };
+            var results = await PostAsync<LetstalkTelegramContact>(ApiPath.GetTelegramUserProfilePath, data);
+            return results;
+        }
+
         public async Task<TelegramValidationModel> VerifyTelegramInGroup(TelegramVerificationViewModel model)
         {
             var inputParams = new
