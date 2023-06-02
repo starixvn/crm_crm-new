@@ -49,7 +49,7 @@
 
         private static class ApiPath
         {
-            internal const string GetTelegramUserProfilePath = "api/telegram/bot/get-profile";
+            internal const string GetTelegramUserProfilePath = "api/telegram/bot/get-user-profile";
             internal const string GetTelegramVerifyGroupPath = "api/telegram/bot/verify-on-group";
         }
     }

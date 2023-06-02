@@ -200,7 +200,7 @@ export class EditGroupMappingPopup extends Component {
         const selectedOptions = this.state.settings.recipientOptions.filter(r => recipientIds.some(id => parseInt(id, 10) === r.id));
         const telegramVerification = selectedOptions.map((item, key) => {
             return {
-                usernames:item.usernames.trim().split(','),
+                usernames: item.usernames ? item.usernames.trim().split(',') : [],
                 recipientId: item.id,
                 recipientName: item.name
             }
