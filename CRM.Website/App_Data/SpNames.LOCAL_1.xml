@@ -60,7 +60,7 @@
         <Setting Key="Acc_CRM_ChatBot_ChatTypeMappingStatus_Upd" SpName="Acc_CRM_ChatBot_ChatTypeMappingStatus_Upd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_ChatTypeMappingRemark_Upd" SpName="Acc_CRM_ChatBot_ChatTypeMappingRemark_Upd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_IgnoredNotificationType_Sel" SpName="Acc_CRM_ChatBot_IgnoredNotificationType_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_ChatBot_ConversationGroup_Del" SpName="Acc_CRM_ChatBot_ConversationGroup_Del" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_ChatBot_ConversationGroup_Del" SpName="Acc_CRM_ChatBot_ConversationGroup_Del_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_Channel_Sel" SpName="Acc_CRM_ChatBot_Channel_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="ChannelId" ObjectProperty="Id" />
             <Mapping DataField="ChannelName" ObjectProperty="Name" />
