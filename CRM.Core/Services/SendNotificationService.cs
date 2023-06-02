@@ -14,6 +14,8 @@
     public interface ISendNotificationService
     {
         Task ScanAndSendMessageToBotEndpointAsync();
+
+        Task SendMessageAnnouncementToBotEndpointAsync();
     }
 
     public class SendNotificationService : ISendNotificationService
