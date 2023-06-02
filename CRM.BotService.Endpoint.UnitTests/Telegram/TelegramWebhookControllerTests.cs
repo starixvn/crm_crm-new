@@ -6,7 +6,6 @@ using AutoFixture;
 using CRM.BotService.Core.Models;
 using CRM.BotService.Core.Services.Interfaces;
 using CRM.BotService.Endpoint.Controllers.Telegram;
-using CRM.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Telegram.Bot.Types;
@@ -18,7 +17,6 @@ namespace CRM.BotService.Endpoint.UnitTests.Telegram
     {
         private List<TelegramBotConfigurations> botConfigurations;
         private Func<long, ITelegramBotService> telegramBotService;
-        private ICRMLogService logService;
         private readonly Fixture fixture = new Fixture();
 
         [Fact]
@@ -81,7 +79,7 @@ namespace CRM.BotService.Endpoint.UnitTests.Telegram
         }
 
         [Fact]
-        public async Task GetBotInfo_WhenCalled_ExpectReturnExactBotInfor()
+        public async Task HealthCheck_WhenCalled_ExpectReturnBotStatus()
         {
             // Arrange
             var controller = GetController();
@@ -89,37 +87,23 @@ namespace CRM.BotService.Endpoint.UnitTests.Telegram
             var expectedUser = fixture.Create<User>();
             telegramBotService(6012438440).GetBotInfoAsync(6012438440).Returns(expectedUser);
             // Act
-            var actual = await controller.GetBotInfo(6012438440);
+            var actual = await controller.HealthCheck();
             var okObjectResult = actual as OkObjectResult;
-            var actualResult = okObjectResult.Value as User;
+            var actualResult = okObjectResult.Value as string;
             // Assert
-            Assert.Equal(expectedUser, actualResult);
+            Assert.Equal("bots are healthy!!!", actualResult);
             await telegramBotService(bot.BotId).Received(1).GetBotInfoAsync(6012438440);
         }
 
         [Fact]
-        public async Task GetBotInfo_WhenDoNotFindBot_ExpectReturnErrorMessage()
-        {
-            // Arrange
-            var controller = GetController();
-            var bot = botConfigurations.First();
-            // Act
-            var actual = await controller.GetBotInfo(1);
-            var okObjectResult = actual as OkObjectResult;
-            var actualResult = okObjectResult.Value as string;
-            // Assert
-            Assert.Equal("bot does not exist.", actualResult);
-        }
-
-        [Fact]
-        public async Task GetBotInfo_WhenHasError_ExpectReturnErrorMessage()
+        public async Task HealthCheck_WhenHasError_ExpectReturnErrorMessage()
         {
             // Arrange
             var controller = GetController();
             var bot = botConfigurations.First();
             telegramBotService(bot.BotId).Returns(x => { throw new Exception("get bot info fail"); });
             // Act
-            var actual = await controller.GetBotInfo(6012438440);
+            var actual = await controller.HealthCheck();
             var okObjectResult = actual as OkObjectResult;
             var actualResult = okObjectResult.Value as string;
             // Assert
@@ -143,11 +127,9 @@ namespace CRM.BotService.Endpoint.UnitTests.Telegram
             var botConfig = Substitute.For<List<TelegramBotConfigurations>>();
             botConfig.AddRange(botConfigurations);
             telegramBotService = Substitute.For<Func<long, ITelegramBotService>>();
-            logService = Substitute.For<ICRMLogService>();
             return new TelegramWebhookController(
                 botConfig,
-                telegramBotService,
-                logService
+                telegramBotService
             );
         }
 

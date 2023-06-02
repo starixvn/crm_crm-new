@@ -15,16 +15,13 @@
     {
         private readonly List<TelegramBotConfigurations> botConfigurations;
         private readonly Func<long, ITelegramBotService> telegramBotService;
-        private readonly ICRMLogService logService;
 
         public TelegramWebhookController(
             List<TelegramBotConfigurations> botConfigurations,
-            Func<long, ITelegramBotService> telegramBotService,
-            ICRMLogService logService)
+            Func<long, ITelegramBotService> telegramBotService)
         {
             this.botConfigurations = botConfigurations;
             this.telegramBotService = telegramBotService;
-            this.logService = logService;
         }
 
         [AllowAnonymous]
@@ -63,21 +60,20 @@
         }
 
         [AllowAnonymous]
-        [Route("api/telegram/bot/getBotInfo")]
-        public async Task<IActionResult> GetBotInfo(long botId)
+        [Route("api/telegram/bot/healthCheck")]
+        public async Task<IActionResult> HealthCheck()
         {
             try
             {
-                var bot = botConfigurations.FirstOrDefault(config => config.BotId == botId);
-                if (bot is not null)
+                foreach (var bot in botConfigurations)
                 {
                     var user = await telegramBotService(bot.BotId).GetBotInfoAsync(bot.BotId);
-                    return Ok(user);
+                    if (user is null)
+                    {
+                        return Ok($"bot {bot.BotId} does not exist.");
+                    }
                 }
-                else
-                {
-                    return Ok("bot does not exist.");
-                }
+                return Ok("bots are healthy!!!");
             }
             catch (Exception ex)
             {
