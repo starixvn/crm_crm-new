@@ -118,7 +118,7 @@
         {
             try
             {
-                await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
+                await sendNotificationService.SendMessageAnnouncementToBotEndpointAsync();
                 return Ok("Send Successful !!!");
             }
             catch (Exception err)

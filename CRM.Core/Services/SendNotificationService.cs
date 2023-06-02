@@ -50,6 +50,18 @@
             }
         }
 
+        public async Task SendMessageAnnouncementToBotEndpointAsync()
+        {
+            var notifications = await GetNotificationToSend();
+
+            if (notifications.Any())
+            {
+                await UpdateBotRemovedStatus(notifications.Where(noti => noti.BotId == 0 && noti.ChatType == ChatType.Group));
+
+                await SendMessageToRecipients(notifications.Where(noti => noti.BotId > 0 && noti.AnnouncementId > 0));
+            }
+        }
+
         private async Task SendMessageToRecipients(IEnumerable<NotificationMessage> notifications)
         {
             await Task.WhenAll(
