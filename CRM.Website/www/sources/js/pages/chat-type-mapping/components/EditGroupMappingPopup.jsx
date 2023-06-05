@@ -116,7 +116,7 @@ export class EditGroupMappingPopup extends Component {
         const chatId = this.props.updateGroupMappingData.data.conversationId;
         Site.blockUI();
         const url = Site.resolveClientUrl('ChatTypeMapping/GetGroupTelegramDisplayName');
-        await DataService.getDataAsync(url, { botId: parseFloat(botId), chatId: parseFloat(chatId) }).then(response => {
+        await DataService.getDataAsync(url, { botId, chatId }).then(response => {
             this.handleChange('displayName', response.data);
         }).then(() => Site.unblockUI());
     };

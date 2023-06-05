@@ -7,7 +7,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '../../../components/multiple-select/index';
 import InsertPersonalMappingPopup from './InsertPersonalMappingPopup';
 import { toast } from 'react-toastify';
-import { BotServiceType }from '@jsroot/common/constants';
 
 export class Filter extends Component {
     constructor(props) {
@@ -238,7 +237,7 @@ export class Filter extends Component {
                                         <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('BotName')}</Form.Label>
                                         <div className='form-control-wrapper'>
                                             <MultipleSelect
-                                                //initialValue={this.state.filter.botIds}
+                                                initialValue={this.state.filter.botIds}
                                                 dataSource={this.state.settings.bots}
                                                 maxDisplayItemCount={1}
                                                 keyField='id'

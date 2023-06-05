@@ -145,10 +145,10 @@ export class EditPersonalMappingPopup extends Component {
 
     handleBotChange = value => {
         this.setState({ isLoading: true });
-        this.handleChange('botId', parseFloat(value));
+        this.handleChange('botId', value);
 
         if (this.state.form.botServiceId === BotServiceType.Telegram) {
-            this.props.getTelegramDisplayName(value, parseFloat(this.state.form.chatId)).then(() => {
+            this.props.getTelegramDisplayName(value, this.state.form.chatId).then(() => {
                 this.handleChange('displayName', this.props.telegramName);
                 this.setState({ isLoading: false });
             });
@@ -275,7 +275,7 @@ export class EditPersonalMappingPopup extends Component {
         this.handleChange('chatId', chatId);
 
         this.setState({ isLoading: true });
-        this.props.getTelegramDisplayName(this.state.form.botId, parseFloat(chatId)).then(() => {
+        this.props.getTelegramDisplayName(this.state.form.botId, chatId).then(() => {
             this.handleChange('displayName', this.props.telegramName);
             this.setState({ isLoading: false });
         });

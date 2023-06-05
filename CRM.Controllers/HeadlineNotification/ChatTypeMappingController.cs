@@ -119,8 +119,8 @@
         {
             var result = new CommandResult();
             var userProfile = data.ChannelId == BotServiceTypeConstants.Letstalk ?
-                await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.ConversationId.Trim()) :
-                await telegramClientService.GetPersonalDisplayNameAsync(data.BotId, long.Parse(data.ConversationId));
+            await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.ConversationId.Trim()) :
+            await telegramClientService.GetPersonalDisplayNameAsync(data.BotId, long.Parse(data.ConversationId));
 
             if (userProfile is not null && !string.IsNullOrWhiteSpace(userProfile.DisplayName))
             {
@@ -157,8 +157,8 @@
         {
             var result = new CommandResult();
             var userProfile = data.ChannelId == BotServiceTypeConstants.Letstalk ?
-                await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.ConversationId.Trim()) :
-                await telegramClientService.GetPersonalDisplayNameAsync(data.BotId, long.Parse(data.ConversationId));
+            await letstalkClientService.GetPersonalDisplayNameAsync(data.BotId, data.ConversationId.Trim()) :
+            await telegramClientService.GetPersonalDisplayNameAsync(data.BotId, long.Parse(data.ConversationId));
 
             if (userProfile is not null && !string.IsNullOrWhiteSpace(userProfile.DisplayName))
             {
@@ -203,11 +203,7 @@
         public async Task<string> GetGroupTelegramDisplayName(long botId, long chatId)
         {
             var userProfile = await telegramClientService.GetGroupDisplayNameAsync(botId, chatId);
-            if (userProfile is not null && userProfile.Permissions.CanSendMessages == true)
-            {
-                return userProfile.DisplayGroupName;
-            }
-            return string.Empty;
+            return userProfile is not null ? userProfile.DisplayGroupName : string.Empty;
         }
 
         public async Task<IActionResult> GetGroupHeadlineByRecipient(string recipientIds)

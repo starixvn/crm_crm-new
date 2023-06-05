@@ -5,7 +5,6 @@
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
     using CRM.Models.ChatTypeMapping;
-    using CRM.Models.PicAndHeadline;
     using CRM.Services.BotServices.Interfaces;
     using CRM.ViewModels.ChatTypeMapping;
     using Fanex.Caching;
@@ -32,7 +31,11 @@
         {
             var data = new { BotId = botId, ChatId = chatId };
             var results = await PostAsync<LetstalkTelegramContact>(ApiPath.GetTelegramUserProfilePath, data);
-            return results;
+            if (results is not null && results.Permissions.CanSendMessages == true)
+            {
+                return results;
+            }
+            return null;
         }
 
         public async Task<TelegramValidationModel> VerifyTelegramInGroup(TelegramVerificationViewModel model)

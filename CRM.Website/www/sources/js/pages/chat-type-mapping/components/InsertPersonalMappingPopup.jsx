@@ -81,14 +81,15 @@ export class InsertPersonalMappingPopup extends Component {
         }));
     };
 
-    handleBotServiceChange = value => {
-        this.handleChange('botServiceId', parseInt(value));
+    handleBotServiceChange = botServiceId => {
+        this.handleChange('botServiceId', botServiceId);
         this.handleChange('displayName', '');
+        this.handleChange('botId', this.getBotNameByBotService(botServiceId)[0].id);
     };
 
     handleBotChange = value => {
         this.setState({ isLoading: true });
-        this.handleChange('botId', parseFloat(value));
+        this.handleChange('botId', value);
 
         if (this.state.form.botServiceId === BotServiceType.Letstalk) {
             this.props.getLetstalkDisplayName(value, this.state.form.letstalkId).then(() => {
@@ -96,7 +97,7 @@ export class InsertPersonalMappingPopup extends Component {
                 this.setState({ isLoading: false });
             });
         } else {
-            this.props.getTelegramDisplayName(value, parseFloat(this.state.form.chatId)).then(() => {
+            this.props.getTelegramDisplayName(value, this.state.form.chatId).then(() => {
                 this.handleChange('displayName', this.props.telegramName);
                 this.setState({ isLoading: false });
             });
@@ -161,7 +162,7 @@ export class InsertPersonalMappingPopup extends Component {
         this.handleChange('chatId', chatId);
 
         this.setState({ isLoading: true });
-        this.props.getTelegramDisplayName(this.state.form.botId, parseFloat(chatId)).then(() => {
+        this.props.getTelegramDisplayName(this.state.form.botId, chatId).then(() => {
             this.handleChange('displayName', this.props.telegramName);
             this.setState({ isLoading: false });
         });
@@ -362,7 +363,7 @@ export class InsertPersonalMappingPopup extends Component {
                         <Col sm="9" md="10">
                             <Form.Control as="select" size="sm" className="shadow-none"
                                 name='botService'
-                                onChange={e => this.handleBotServiceChange(e.target.value)}
+                                onChange={e => this.handleBotServiceChange(parseInt(e.target.value, 10))}
                                 value={botServiceId}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
