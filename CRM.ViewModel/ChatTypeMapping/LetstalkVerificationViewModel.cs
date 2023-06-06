@@ -5,7 +5,7 @@
 
     public class LetstalkVerificationViewModel
     {
-        public int BotId { get; set; }
+        public long BotId { get; set; }
 
         public string GroupConversationId { get; set; }
 

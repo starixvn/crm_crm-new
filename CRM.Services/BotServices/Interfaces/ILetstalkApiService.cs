@@ -9,6 +9,6 @@
     {
         Task<LetstalkTelegramContact> GetPersonalDisplayNameAsync(long botId, string letstalkId);
 
-        Task<LetsalkValidationModel> VerifyLetstalkOnGroup(int botId, string conversationGroupId, List<RecipientLetstalk> letstalkRecipients);
+        Task<LetsalkValidationModel> VerifyLetstalkOnGroup(long botId, string conversationGroupId, List<RecipientLetstalk> letstalkRecipients);
     }
 }

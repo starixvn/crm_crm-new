@@ -302,7 +302,7 @@
             }
         }
 
-        public async Task<string> GetLetstalkDisplayName(int botId, string letstalkId)
+        public async Task<string> GetLetstalkDisplayName(long botId, string letstalkId)
         {
             var userProfile = await letstalkClientService.GetPersonalDisplayNameAsync(botId, letstalkId.Trim());
             return userProfile is not null ? userProfile.DisplayName : string.Empty;

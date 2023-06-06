@@ -24,7 +24,7 @@
             return results;
         }
 
-        public async Task<LetsalkValidationModel> VerifyLetstalkOnGroup(int botId, string conversationGroupId, List<RecipientLetstalk> letstalkRecipients)
+        public async Task<LetsalkValidationModel> VerifyLetstalkOnGroup(long botId, string conversationGroupId, List<RecipientLetstalk> letstalkRecipients)
         {
             var letstalkIds = GetLetstalkIdList(letstalkRecipients);
             var inputParams = new
