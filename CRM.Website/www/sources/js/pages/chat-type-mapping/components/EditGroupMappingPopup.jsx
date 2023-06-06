@@ -231,26 +231,6 @@ export class EditGroupMappingPopup extends Component {
         });
     };
 
-    renderTelegramVerification = (item, key) => {
-        return (
-            <div className='letstalk-group-mapping' key={key}>
-                <div className='recipient-name common-letstalk-display' title={item.recipientName}>{item.recipientName}</div>
-                <div className='letstalk-wrapper'>
-                    {
-                        item.usernames.length > 0 &&
-                        item.usernames.map((element, index) => {
-                            return (
-                                <div key={index} className='letstalk-name common-letstalk-display' title={element}>
-                                    {element}
-                                </div>
-                            );
-                        })
-                    }
-                </div>
-            </div>
-        );
-    };
-
     handleGroupHeadlineChange = (currentItem, selectedItemsKey) => {
         this.handleChange('groupHeadlines', selectedItemsKey);
     };
@@ -271,14 +251,14 @@ export class EditGroupMappingPopup extends Component {
         return false;
     };
 
-    isCheckGroupMemberTelegram = (username) => {
+    isCheckGroupMemberTelegram = username => {
         let isChecked = false;
         const { telegramVerification } = this.props;
         const botInfos = this.props.recipients.botInfo;
-        const botInfo = botInfos.find(element => element.username === username);
+        const botInfo = botInfos.find(element => element.username === username.trim());
 
         const chatId = botInfo ? botInfo.chatId : '';
-        telegramVerification && telegramVerification.recipients.map(item => {
+        telegramVerification && telegramVerification.recipients.forEach(item => {
             if (item.chatId === chatId) {
                 isChecked = item.isGroupMember
             }
