@@ -8,6 +8,7 @@
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.BotService.Endpoint.Controllers.Telegram;
+    using CRM.BotService.Endpoint.ViewModel;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
     using Microsoft.AspNetCore.Mvc;
@@ -162,6 +163,39 @@
             // Assert
             Assert.Equal(actualResult.NotificationId, expected.NotificationId);
             Assert.Equal(actualResult.ConversationGroupId, expected.ConversationGroupId);
+        }
+
+        [Fact]
+        public async Task CheckPersonalProfileAsync_WhenCalled_ExpectCallExactFunction()
+        {
+            // Arrange
+            var telegramBot = fixture.Create<TelegramBotConversationViewModel>();
+            telegramBot.ChatId = 1;
+            telegramBot.BotId = 1;
+            var controller = GetController();
+            // Act
+            await controller.CheckPersonalProfileAsync(telegramBot);
+
+            // Assert
+            await telegramBotService(telegramBot.BotId).Received(1).GetChatAsync(telegramBot.BotId, telegramBot.ChatId);
+        }
+
+        [Fact]
+        public async Task CheckPersonalProfileAsync_WhenHasError_ExpectWriteLogError()
+        {
+            // Arrange
+            var telegramBot = fixture.Create<TelegramBotConversationViewModel>();
+            telegramBot.ChatId = 1;
+            telegramBot.BotId = 1;
+            var controller = GetController();
+            telegramBotService(telegramBot.BotId)
+                .When(x => x.GetChatAsync(telegramBot.BotId, telegramBot.ChatId))
+                .Do(x => { throw new Exception("get chat failed"); });
+            // Act
+            await controller.CheckPersonalProfileAsync(telegramBot);
+
+            // Assert
+            await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
         }
 
         #region helper

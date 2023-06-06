@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Channels;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Core.Constants;
@@ -39,6 +40,7 @@
             var bots = fixture.Create<IEnumerable<BaseBotModel>>();
             var langs = new List<Models.Setting.Setting>();
             var recipientTypes = fixture.Create<IEnumerable<BaseModel>>();
+            var botServices = fixture.Create<IEnumerable<BaseModel>>();
             var chatTypes = fixture.Create<IEnumerable<BaseModel>>();
             var mappingStatues = fixture.Create<IEnumerable<BaseModel>>();
             var languages = langs.Select(l => new BaseModel { Id = l.SettingId, Name = l.SettingValue });
@@ -50,6 +52,7 @@
                 Languages = languages,
                 Bots = bots,
                 RecipientTypes = recipientTypes,
+                BotServices = botServices
             };
 
             // Arrange
@@ -59,6 +62,7 @@
             commonService.GetRecipientTypeAsync().Returns(recipientTypes);
             commonService.GetChatTypes().Returns(chatTypes);
             commonService.GetMappingStatus().Returns(mappingStatues);
+            commonService.GetBotServicesAsync().Returns(botServices);
 
             // Act
             var actual = await controller.GetSettings();
@@ -124,13 +128,15 @@
         {
             var fixture = new Fixture();
             var commandResult = fixture.Create<CommandResult>();
-            var userProfile = fixture.Create<LetstalkTelegramContact>();
+            var letstalkProfile = fixture.Create<LetstalkTelegramContact>();
+            var telegramProfile = fixture.Create<LetstalkTelegramContact>();
             var criteria = fixture.Create<InsertPersonalMappingCommand>();
             var controller = GetController();
             var invalidLetstalk = fixture.Create<string>();
-            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(userProfile);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<string>()).Returns(letstalkProfile);
+            telegramService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<long>()).Returns(telegramProfile);
             chatTypeMappingService.CreatePersonalMappingAsync(Arg.Do<InsertPersonalMappingCommand>(x => criteria = x)).Returns(commandResult);
-            var actual = await controller.InsertPersonalMapping(new PersonalMappingViewModel { BotId = 100020, ConversationId = invalidLetstalk, RecipientIds = "1" });
+            var actual = await controller.InsertPersonalMapping(new PersonalMappingViewModel { BotId = 100020, ConversationId = invalidLetstalk, RecipientIds = "1", ChannelId = 1 });
 
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var commandResultJson = (CommandResult)jsonResult.Value;
@@ -146,10 +152,11 @@
             var letstalkResult = fixture.Create<LetstalkTelegramContact>();
             var viewModal = fixture.Create<PersonalMappingViewModel>();
             viewModal.RecipientIds = "1";
+            viewModal.ChannelId = 1;
 
             var controller = GetController();
 
-            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkResult);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<string>()).Returns(letstalkResult);
             chatTypeMappingService.CreatePersonalMappingAsync(Arg.Any<InsertPersonalMappingCommand>()).Returns(expected);
 
             var actual = await controller.InsertPersonalMapping(viewModal);
@@ -166,9 +173,9 @@
             var userProfile = new LetstalkTelegramContact { DisplayName = string.Empty };
             var controller = GetController();
             var invalidLetstalk = fixture.Create<string>();
-            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(userProfile);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<string>()).Returns(userProfile);
 
-            var actual = await controller.UpdatePersonalMapping(new PersonalMappingViewModel { BotId = 100020, ConversationId = invalidLetstalk });
+            var actual = await controller.UpdatePersonalMapping(new PersonalMappingViewModel { BotId = 100020, ConversationId = invalidLetstalk, ChannelId = 1 });
 
             var jsonResult = Assert.IsType<JsonResult>(actual);
             var commandResult = (CommandResult)jsonResult.Value;
@@ -184,10 +191,11 @@
             var letstalkResult = fixture.Create<LetstalkTelegramContact>();
             var viewModal = fixture.Create<PersonalMappingViewModel>();
             viewModal.RecipientIds = "1";
+            viewModal.ChannelId = 1;
 
             var controller = GetController();
 
-            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkResult);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<string>()).Returns(letstalkResult);
             chatTypeMappingService.EditChatTypeMappingAsync(Arg.Any<UpdateChatTypeMappingCommand>()).Returns(expected);
 
             var actual = await controller.UpdatePersonalMapping(viewModal);
@@ -210,7 +218,7 @@
             var actual = await controller.GetRecipientByType(1);
 
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            var result = (IEnumerable<RecipientModel>)jsonResult.Value;
+            var result = jsonResult.Value.GetType().GetProperty("data").GetValue(jsonResult.Value);
             Assert.Equal(expected.Item1, result);
         }
 
@@ -301,7 +309,7 @@
             expected.FirstOrDefault().Letstalks[1].IsBotFriend = false;
             var controller = GetController();
 
-            letstalkService.VerifyLetstalkOnGroup(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<List<RecipientLetstalk>>()).Returns(letsalkValidationModel);
+            letstalkService.VerifyLetstalkOnGroup(Arg.Any<long>(), Arg.Any<string>(), Arg.Any<List<RecipientLetstalk>>()).Returns(letsalkValidationModel);
 
             var actual = await controller.VerifyLetstalkInGroup(inputData);
 
@@ -315,7 +323,7 @@
         {
             var letstalkContact = new LetstalkTelegramContact { DisplayName = string.Empty };
             var controller = GetController();
-            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkContact);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<string>()).Returns(letstalkContact);
             var actual = await controller.GetLetstalkDisplayName(1, "abc");
             Assert.Equal(string.Empty, actual);
         }
@@ -325,8 +333,28 @@
         {
             var letstalkContact = new LetstalkTelegramContact { DisplayName = "DisplayName" };
             var controller = GetController();
-            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(letstalkContact);
+            letstalkService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<string>()).Returns(letstalkContact);
             var actual = await controller.GetLetstalkDisplayName(1, "abc");
+            Assert.Equal("DisplayName", actual);
+        }
+
+        [Fact]
+        public async Task GetTelegramDisplayName_WhenInvalidLetstalkId_ReturnEmptyString()
+        {
+            var telegramContact = new LetstalkTelegramContact { DisplayName = string.Empty };
+            var controller = GetController();
+            telegramService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<long>()).Returns(telegramContact);
+            var actual = await controller.GetTelegramDisplayName(1, 1);
+            Assert.Equal(string.Empty, actual);
+        }
+
+        [Fact]
+        public async Task GetTelegramDisplayName_WhenValidLetstalkId_ReturnExpectedName()
+        {
+            var telegramContact = new LetstalkTelegramContact { DisplayName = "DisplayName" };
+            var controller = GetController();
+            telegramService.GetPersonalDisplayNameAsync(Arg.Any<long>(), Arg.Any<long>()).Returns(telegramContact);
+            var actual = await controller.GetTelegramDisplayName(1, 1);
             Assert.Equal("DisplayName", actual);
         }
 

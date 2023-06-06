@@ -88,15 +88,15 @@
             service.Public_RenderRow(chatTypeMapping, rowNum, worksheet);
 
             // Assert
-            service.Received(11).Protected("StyleMergeCell", worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
+            service.Received(12).Protected("StyleMergeCell", worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, rowNum);
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChannelName);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.BotName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.DisplayName);
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Recipients.Any() ? chatTypeMapping.Recipients.FirstOrDefault().RecipientTypeName : "");
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Headlines.Any() ? string.Join(", ", chatTypeMapping.Headlines.Select(x => x.HeadlineName)) : "");
             colIndex++;
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? "" : chatTypeMapping.ConversationId);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? "" : chatTypeMapping.LetstalkID_Username);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Language);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? chatTypeMapping.MappingStatus : "");
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.IsActive ? ViewResources.Yes : ViewResources.No);
@@ -124,13 +124,13 @@
             // Assert
             service.DidNotReceive().Protected("StyleMergeCell", worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, rowNum);
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChannelName);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.BotName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.DisplayName);
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Recipients.Any() ? chatTypeMapping.Recipients.FirstOrDefault().RecipientTypeName : "");
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Headlines.Any() ? string.Join(", ", chatTypeMapping.Headlines.Select(x => x.HeadlineName)) : "");
             colIndex++;
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? "" : chatTypeMapping.ConversationId);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? "" : chatTypeMapping.LetstalkID_Username);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Language);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? chatTypeMapping.MappingStatus : "");
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.IsActive ? ViewResources.Yes : ViewResources.No);
@@ -160,13 +160,13 @@
             // Assert
             service.DidNotReceive().Protected("StyleMergeCell", worksheet, Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>());
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, rowNum);
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChannelName);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.BotName);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatType);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.DisplayName);
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Recipients.Any() ? chatTypeMapping.Recipients.FirstOrDefault().RecipientTypeName : "");
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Headlines.Any() ? string.Join(", ", chatTypeMapping.Headlines.Select(x => x.HeadlineName)) : "");
             colIndex++;
-            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? "" : chatTypeMapping.ConversationId);
+            Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? "" : chatTypeMapping.LetstalkID_Username);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.Language);
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.ChatTypeId == mappingGroup ? chatTypeMapping.MappingStatus : "");
             Assert.Equal(worksheet.Cells[rowIndex, colIndex++].Value, chatTypeMapping.IsActive ? ViewResources.Yes : ViewResources.No);

@@ -140,16 +140,16 @@ namespace CRM.Controllers.UnitTests
         }
 
         [Fact]
-        public async Task ScanAndSendNotification_ExpectWhenCalled_ExpectCallExactFunction()
+        public async Task SendMessageAnnouncementToBotEndpoint_ExpectWhenCalled_ExpectCallExactFunction()
         {
             // Arrange
             var controller = GetController();
 
             // Act
-            var result = await controller.ScanAndSendNotification();
+            var result = await controller.SendMessageAnnouncementToBotEndpoint();
 
             // Assert
-            await sendNotificationService.Received(1).ScanAndSendMessageToBotEndpointAsync();
+            await sendNotificationService.Received(1).SendMessageAnnouncementToBotEndpointAsync();
         }
 
         [Fact]
