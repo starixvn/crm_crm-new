@@ -12,6 +12,8 @@
         public int BotId { get; set; }
         public string ConversationId { get; set; }
         public string FileName { get; set; }
+        public string Description { get; set; }
+        public bool IsOnlyRetryImages { get; set; }
 
         public ChatType ChatType
         {
