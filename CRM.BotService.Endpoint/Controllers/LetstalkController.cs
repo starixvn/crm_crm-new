@@ -15,6 +15,7 @@
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class LetstalkController : Controller
@@ -144,6 +145,7 @@
                 result.SentTime = DateTime.UtcNow;
                 result.ErrorCode = 1;
                 result.ErrorMessage = ex.Message;
+                await logService.ErrorMessageAsync(JsonConvert.SerializeObject(notification));
                 await logService.ErrorAsync(ex);
             }
 
