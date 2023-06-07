@@ -19,7 +19,7 @@ export class PicFilter extends Component {
         this.minToDate = fromDate;
         this.state = {
             picName: '',
-            letstalkName: '',
+            displayName: '',
             editBy: '',
             fromDate: fromDate,
             toDate: currentDate
@@ -56,7 +56,7 @@ export class PicFilter extends Component {
         const params = {
             picName: picName !== '' ? picName : null,
             editBy: editBy !== '' ? editBy : null,
-            letstalkName: letstalkName !== '' ? letstalkName : null,
+            displayName: displayName !== '' ? displayName : null,
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
             pageIndex: 1,
@@ -68,7 +68,7 @@ export class PicFilter extends Component {
     };
 
     render() {
-        const { picName, letstalkName, fromDate, toDate, editBy } = this.state;
+        const { picName, displayName, fromDate, toDate, editBy } = this.state;
 
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit} action="javascript:void(0)">
@@ -83,10 +83,10 @@ export class PicFilter extends Component {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label className="col-auto col-form-label">{LangHelper.getResource('LetstalkName')}</Form.Label>
+                        <Form.Label className="col-auto col-form-label">{LangHelper.getResource('DisplayName')}</Form.Label>
                         <Form.Control type="text" size="sm" className="shadow-none"
-                            name="letstalkName" id="letstalkName"
-                            value={letstalkName}
+                            name="displayName" id="displayName"
+                            value={displayName}
                             onChange={this.handleChange}
                             autoComplete="on"
                         />
