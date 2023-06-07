@@ -95,7 +95,7 @@
 
         [HttpPost]
         [Route("api/letstalk/send-single")]
-        public async Task<IActionResult> SendSingleMessage(NotificationMessage notification)
+        public async Task<IActionResult> SendSingleMessage([FromBody] NotificationMessage notification)
         {
             var result = await SendLetstalkService(notification);
             return Ok(result);
