@@ -67,9 +67,16 @@
 
         public async Task<ChatMember> GetChatMemberAsync(long botId, long chatGroupId, long chatMemberId)
         {
-            TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
-            var chatMember = await bot.BotClient.GetChatMemberAsync(new ChatId(chatGroupId), chatMemberId);
-            return chatMember;
+            try
+            {
+                TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
+                var chatMember = await bot.BotClient.GetChatMemberAsync(new ChatId(chatGroupId), chatMemberId);
+                return chatMember;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public async Task SendNotifyAysnc(NotificationMessage notificationMessage, SendResult sendResult)
