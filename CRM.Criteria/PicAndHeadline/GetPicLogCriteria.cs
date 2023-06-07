@@ -14,7 +14,7 @@
 
         public string EditBy { get; set; }
 
-        public string LetstalkName { get; set; }
+        public string DisplayName { get; set; }
 
         [SpParam(Ignored = true)]
         public int PageIndex { get; set; }
