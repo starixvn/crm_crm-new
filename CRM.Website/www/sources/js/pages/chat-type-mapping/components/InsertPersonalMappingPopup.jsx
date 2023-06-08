@@ -136,6 +136,7 @@ export class InsertPersonalMappingPopup extends Component {
         this.handleChange('letstalkId', '');
         this.handleChange('chatId', '');
         this.handleChange('displayName', '');
+        this.handleChange('username', '');
         this.setState({
             letstalkIds: option ? option.letstalkIds : '',
             usernames: this.getUsernames(option)
