@@ -13,7 +13,7 @@ namespace CRM.Models.PicAndHeadline
         [XmlElement(ElementName = "ConversationGroup")]
         public ConversationGroup ConversationGroup { get; set; }
         [XmlElement("Bot")]
-        public BaseModel Bot { get; set; }
+        public BaseBotModel Bot { get; set; }
         [XmlElement("Recipient")]
         public List<BaseModel> Recipients { get; set; }
         [XmlElement("ChatType")]
