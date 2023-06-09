@@ -51,7 +51,8 @@ export class EditInforms extends Component {
         this.state = {
             saveResult: null,
             includeCurrencies: null,
-            includeSites: null
+            includeSites: null,
+            gridParams: null
         };
         this.saveEdit = React.createRef();
     }
@@ -70,7 +71,8 @@ export class EditInforms extends Component {
         };
         this.setState({
             includeCurrencies: includeCurrencies,
-            includeSites: includeSites
+            includeSites: includeSites,
+            gridParams: params
         });
         this.props.setFilterData({...this.props.filterData, values: {...params, title: titleDetail.title, changeFilter: false}});
         await this.props.getEditInforms(params);
@@ -90,10 +92,12 @@ export class EditInforms extends Component {
         this.setState({
             saveResult: this.props.resultEditInforms
         });
+        this.props.getEditInforms(this.state.gridParams);
         setTimeout(() => {
             this.setState({
                 saveResult: null
             });
+            this.props.setEditedInforms([]);
         }, 3000);
     };
 
@@ -113,13 +117,14 @@ export class EditInforms extends Component {
 
     render() {
         const { titleDetail, allSettings, dataEditInforms, exportEditInforms, permissions } = this.props;
-        if (!titleDetail || !allSettings || !dataEditInforms) {
+        const {includeCurrencies, includeSites} = this.state;
+        if (!titleDetail || !allSettings || !dataEditInforms || !includeCurrencies || !includeSites) {
             return null;
         }
         const isHostPermission = permissions.searchPolicy === Policy.Host;
 
         return (
-            <Modal show className="modal-edit edit-feedback-modal-dialog" dialogAs={DraggableModalDialog}
+            <Modal show className="modal-edit edit-inform-modal-dialog" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="xl"
                 onHide={this.props.onClose}
             >
@@ -138,8 +143,8 @@ export class EditInforms extends Component {
                     <FilterEditInforms
                         ref={this.saveEdit}
                         detail={titleDetail}
-                        includeCurrencies={this.state.includeCurrencies}
-                        includeSites={this.state.includeSites}
+                        includeCurrencies={includeCurrencies}
+                        includeSites={includeSites}
                         informData={dataEditInforms}
                         exportExcel={exportEditInforms}
                         isNewInform={false}

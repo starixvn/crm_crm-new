@@ -26,7 +26,8 @@ export class EditContactInforms extends Component {
         this.state = {
             saveResult: null,
             selectedStatuses: '',
-            contactInformSettings: null
+            contactInformSettings: null,
+            gridParams: null
         };
     }
 
@@ -40,7 +41,7 @@ export class EditContactInforms extends Component {
                     item.settingId
                 ).join();
                 const params = { titleId: this.props.titleId, username: '', statusId: selectedStatuses };
-                this.setState({ selectedStatuses: selectedStatuses, contactInformSettings: response.data });
+                this.setState({ selectedStatuses: selectedStatuses, contactInformSettings: response.data, gridParams: params });
                 this.props.getContactInforms(params);
             }
         });
@@ -50,10 +51,10 @@ export class EditContactInforms extends Component {
         this.setState({
             saveResult: this.props.resultEditContactInforms
         });
+        this.props.getContactInforms(this.state.gridParams);
         setTimeout(() => {
-            this.setState({
-                saveResult: null
-            });
+            this.setState({ saveResult: null });
+            this.props.setEditedInforms([]);
         }, 3000);
     };
 
@@ -70,7 +71,6 @@ export class EditContactInforms extends Component {
     renderForm = () => {
         const { contactInforms } = this.props;
         const { selectedStatuses, contactInformSettings } = this.state;
-
         return(
             <Modal.Body>
                 {
@@ -88,7 +88,6 @@ export class EditContactInforms extends Component {
                         />
                     )
                 }
-
                 <DataGridEdit
                     status={this.props.status}
                     informData={contactInforms}

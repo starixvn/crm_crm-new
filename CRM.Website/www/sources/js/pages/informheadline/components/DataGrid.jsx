@@ -61,13 +61,19 @@ export class DataGrid extends Component {
     };
 
     handleCloseCase = titleId => {
-        this.props.editInformStatus({titleId, statusType: true});
-        this.props.getInforms();
+        this.props.editInformStatus({titleId, statusType: true}).then(response =>{
+            if(response && response.data.isSuccessful) {
+                this.props.getInforms();
+            }
+        });
     };
 
     handleOpenCase = titleId => {
-        this.props.editInformStatus({titleId, statusType: false});
-        this.props.getInforms();
+        this.props.editInformStatus({titleId, statusType: false}).then(response =>{
+            if(response && response.data.isSuccessful) {
+                this.props.getInforms();
+            }
+        });
     };
 
     handleOption = (titleId, status) => {

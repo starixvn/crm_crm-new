@@ -91,6 +91,12 @@
 .edit-inform-modal-dialog, .new-inform-modal-dialog{
     .modal-dialog{
         max-width: 1200px;
+
+        .modal-content{
+            .icon-copy{
+                cursor: pointer;
+            }
+        }
     }
 }
 
@@ -121,4 +127,9 @@
 .modal-remove .modal-content {
     width: 600px;
     margin: auto;
+}
+
+#tooltip-copy-selected [class$="inner"] {
+    min-width: 250px;
+    text-align: left;
 }

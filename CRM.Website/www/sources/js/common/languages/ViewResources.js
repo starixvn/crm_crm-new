@@ -118,6 +118,7 @@
     CancelAnnouncementSuccessfully: 'Cancel announcement successfully!',
     CloneAnnouncement: 'Clone Announcement',
     CloneAnnouncementSuccessfully: 'Clone announcement successfully!',
+    CopySelectedValueToAllAccounts: 'Copy the selected value to all accounts',
     Danger: 'Danger',
     DangerOriginal: 'Original',
     DangerNonLive: 'None-Live',

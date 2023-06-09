@@ -7,7 +7,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 import AutoRefresh from './AutoRefresh';
-import DateTimeService from '@jsroot/common/dateTimeService';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import Site from '@jsroot/common/site';
 

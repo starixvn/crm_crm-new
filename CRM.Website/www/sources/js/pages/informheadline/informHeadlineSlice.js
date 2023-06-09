@@ -50,7 +50,7 @@ const informHeadlineSlice = createSlice({
             state.allSettings = action.payload;
         },
         setEditInforms: (state, action) => {
-            state.dataEditInforms = action.payload
+            state.dataEditInforms = action.payload;
         },
         setEditInformDialog: (state, action) => {
             state.editInformDialog = action.payload;
@@ -80,7 +80,7 @@ const informHeadlineSlice = createSlice({
             state.gridParamRemovedLogDetails = action.payload;
         },
         setNewInforms: (state, action) => {
-            state.newInforms = action.payload
+            state.newInforms = action.payload;
         },
         setNewInformDialog: (state, action) => {
             state.newInformDialog = action.payload;

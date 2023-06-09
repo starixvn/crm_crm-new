@@ -2,20 +2,19 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Form } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
+import { OverlayTrigger, Tooltip, Form } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
 
 export class DataGridEdit extends PureComponent {
-
     buildHeader = () => {
         return(
             <HeaderRow>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('UpdatedTime')}</HeaderCell>
-                <HeaderCell colWidth={60}>{LangHelper.getResource('Remark')}</HeaderCell>
+                <HeaderCell colWidth={55}>{LangHelper.getResource('Remark')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Handler')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Extension')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('ProductStatus')}</HeaderCell>
@@ -27,7 +26,11 @@ export class DataGridEdit extends PureComponent {
         const { informSettings, informData, gridParams, editedInforms } = this.props;
         const { pageIndex, pageSize } = gridParams;
         const skip = pageSize * (pageIndex - 1);
-        const result = informData && informData.map(element => editedInforms.find(item => item.headlineId === element.headlineId) || element);
+        const result = informData && informData.map(element => {
+            const edited = editedInforms.find(item => item.headlineId === element.headlineId);
+            const editedUpdateTime = !edited ? element : {...edited, clientUpdatedTime: element.clientUpdatedTime};
+            return editedUpdateTime;
+        });
         const data = result.slice(skip, pageSize * pageIndex);
 
         const productStatuses = [...informSettings.productStatuses];
@@ -51,17 +54,29 @@ export class DataGridEdit extends PureComponent {
             <Row key={index} className={item.groupId > 0 ? 'free-grid-headline' : 'free-grid-direct'}>
                 <Cell>{item.username}</Cell>
                 <Cell className='text-center'>
-                    <Form.Control as="select" size="sm" className="shadow-none"
-                        name="informHeadlineStatusId"
-                        defaultValue={item.informHeadlineStatusId}
-                        key={item.informHeadlineStatusId}
-                        disabled={isClosed || !this.props.permissions.hasHostPermission}
-                        onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
-                    >
+                    <div className='d-flex' style={{width: index === 0 ? '100%' : '123px'}}>
+                        <Form.Control as="select" size="sm" className="shadow-none"
+                            name="informHeadlineStatusId"
+                            defaultValue={item.informHeadlineStatusId}
+                            key={item.informHeadlineStatusId}
+                            disabled={isClosed || !this.props.permissions.hasHostPermission}
+                            onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
+                        >
+                            {
+                                informSettings.statuses.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
+                            }
+                        </Form.Control>
                         {
-                            informSettings.statuses.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
+                            index === 0 &&
+                            <OverlayTrigger placement="bottom-start" overlay={
+                                <Tooltip id="tooltip-copy-selected">
+                                    {LangHelper.getResource('CopySelectedValueToAllAccounts')}
+                                </Tooltip>}
+                            >
+                                <span className="icon-copy fa fa-copy pt-2 pl-2" onClick={() => this.handleCopySelectedAccounts('informHeadlineStatusId', item.informHeadlineStatusId)}/>
+                            </OverlayTrigger>
                         }
-                    </Form.Control>
+                    </div>
                 </Cell>
                 <Cell>{item.clientUpdatedTime}</Cell>
                 <Cell className='text-center'>
@@ -77,35 +92,68 @@ export class DataGridEdit extends PureComponent {
                 <Cell>{item.handler}</Cell>
 
                 <Cell className='text-center'>
-                    <Form.Control as="select" size="sm" className="shadow-none"
-                        name="extension"
-                        defaultValue={item.extension}
-                        key={item.extension}
-                        disabled={isClosed || !this.props.permissions.hasHostPermission}
-                        onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
-                    >
+                    <div className='d-flex' style={{width: index === 0 ? '100%' : '85px'}}>
+                        <Form.Control as="select" size="sm" className="shadow-none"
+                            name="extension"
+                            defaultValue={item.extension}
+                            key={item.extension}
+                            disabled={isClosed || !this.props.permissions.hasHostPermission}
+                            onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
+                        >
+                            {
+                                informSettings.stations.map((value, key) => this.renderOptions(value.name, value.stationId, key))
+                            }
+                        </Form.Control>
                         {
-                            informSettings.stations.map((value, key) => this.renderOptions(value.name, value.stationId, key))
+                            index === 0 &&
+                            <OverlayTrigger placement="auto" overlay={
+                                <Tooltip id="tooltip-copy-selected">
+                                    {LangHelper.getResource('CopySelectedValueToAllAccounts')}
+                                </Tooltip>}
+                            >
+                                <span className="icon-copy fa fa-copy pt-2 pl-2" onClick={() => this.handleCopySelectedAccounts('extension', item.extension)}/>
+                            </OverlayTrigger>
                         }
-                    </Form.Control>
+                    </div>
                 </Cell>
-
                 <Cell className='text-center'>
-                    <Form.Control as="select" size="sm" className="shadow-none"
-                        name="productStatus"
-                        disabled={isClosed || !this.props.permissions.hasHostPermission}
-                        defaultValue={item.productStatus}
-                        key={item.productStatus}
-                        onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
-                    >
+                    <div className='d-flex' style={{width: index === 0 ? '100%' : '85px'}}>
+                        <Form.Control as="select" size="sm" className="shadow-none"
+                            name="productStatus"
+                            disabled={isClosed || !this.props.permissions.hasHostPermission}
+                            defaultValue={item.productStatus}
+                            key={item.productStatus}
+                            onChange={event => this.handleChangeDataGrid(event,item.headlineId)}
+                        >
+                            {
+                                productStatuses.map((value, key) => this.renderOptions(value.name, value.statusId, key))
+                            }
+                        </Form.Control>
                         {
-                            productStatuses.map((value, key) => this.renderOptions(value.name, value.statusId, key))
+                            index === 0 &&
+                            <OverlayTrigger placement="auto" overlay={
+                                <Tooltip id="tooltip-copy-selected">
+                                    {LangHelper.getResource('CopySelectedValueToAllAccounts')}
+                                </Tooltip>}
+                            >
+                                <span className="icon-copy fa fa-copy pt-2 pl-2" onClick={() => this.handleCopySelectedAccounts('productStatus', item.productStatus)}/>
+                            </OverlayTrigger>
                         }
-                    </Form.Control>
+                    </div>
                 </Cell>
             </Row>
         );
     };
+
+    handleCopySelectedAccounts = (name, value) =>{
+        const { informData, editedInforms } = this.props;
+        const result = informData && informData.map(element => editedInforms.find(item => item.headlineId === element.headlineId) || element);
+        const changeObjectData = result.map(item => {
+            return {...item, [name]: value};
+        });
+        this.props.setEditedInforms(changeObjectData);
+        this.props.setEditInforms(changeObjectData);
+    }
 
     handleChangeDataGrid = (event, headlineId) => {
         const name = event.target.name;

@@ -14,7 +14,8 @@ export class NewInforms extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            saveResult: null
+            saveResult: null,
+            
         };
         this.saveNew = React.createRef();
     }
@@ -77,7 +78,7 @@ export class NewInforms extends Component {
                         detail=''
                         informData={newInforms}
                         exportExcel={exportNewInforms}
-                        isNewInform={true}
+                        isNewInform
                     />
 
                     {
@@ -104,8 +105,8 @@ export class NewInforms extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, newInforms, editedInforms, filterData, resultInsertInforms } = state;
-    return { allSettings, newInforms, editedInforms, filterData, resultInsertInforms };
+    const { allSettings, newInforms, gridParams, editedInforms, filterData, resultInsertInforms } = state;
+    return { allSettings, newInforms, gridParams, editedInforms, filterData, resultInsertInforms };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewInforms);

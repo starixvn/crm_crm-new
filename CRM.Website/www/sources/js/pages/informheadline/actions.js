@@ -154,9 +154,8 @@ const insertInforms = params => async dispatch => {
 };
 
 const editInformStatus = params => async () => {
-    Site.blockUI();
     const url = Site.resolveClientUrl('InformHeadline/EditInformStatus');
-    await DataService.postDataAsync(url, params).then(() => Site.unblockUI());
+    return await DataService.postDataAsync(url, params);
 };
 
 const exportNewInforms = params => async () => {
