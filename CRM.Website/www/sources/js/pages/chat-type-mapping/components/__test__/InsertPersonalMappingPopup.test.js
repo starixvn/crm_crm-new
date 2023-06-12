@@ -405,6 +405,89 @@ describe('InsertPersonalMappingPopup', () => {
         });
     });
 
+    describe('getUsernames', () => {
+        it('should return exactly when has param', () => {
+            // Arrange
+            const props = {
+                settings: {
+                    bots: [{ channelId: 1, id: 1}],
+                    botServices: [{ id: 1, name: 'telegram' }]
+                }
+            };
+            const option = { usernames: 'test' };
+            // Act
+            const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            const actual = popup.getUsernames(option);
+
+            // Assert
+            expect(actual).toEqual(['test']);
+        });
+
+        it('should return exactly when has not param', () => {
+            // Arrange
+            const props = {
+                settings: {
+                    bots: [{ channelId: 1, id: 1}],
+                    botServices: [{ id: 1, name: 'telegram' }]
+                }
+            };
+            const option = { usernames: null };
+            // Act
+            const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            const actual = popup.getUsernames(option);
+
+            // Assert
+            expect(actual).toEqual([]);
+        });
+    });
+
+    describe('handleChangeUsername', () => {
+        it('should return exactly', () => {
+            // Arrange
+            const promise = Promise.resolve([]);
+            const props = {
+                settings: {
+                    bots: [{ id: 1, name: 'Bot1', channelId: 1 }],
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    recipientTypes: [],
+                    languages: []
+                },
+                telegramName: 'test',
+                letstalkName: 'test',
+                getTelegramDisplayName: jest.fn(() => promise),
+                recipients: {
+                    data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }],
+                    botInfo: [{ username: 'test', chatId: '123' }]
+                },
+                groupHeadline: [{ id: 1 }],
+                recipient: { value: 'test' }
+            };
+            const state = {
+                form: {
+                    botId: 1,
+                    botServiceId: 2,
+                    chatId: 1,
+                    recipient: { value: 'test' },
+                    groupHeadlines: '1,2,3'
+                },
+                settings: {
+                    usernames: '1,2,3'
+                }
+            };
+
+            // Act
+            const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
+            popup.instance().setState(state);
+            popup.instance().handleChange = jest.fn();
+            popup.instance().handleChangeUsername('test');
+
+            // Assert
+            expect(popup.instance().handleChange).toHaveBeenCalledWith('username', 'test');
+            expect(popup.instance().handleChange).toHaveBeenCalledWith('chatId', '123');
+            expect(props.getTelegramDisplayName).toHaveBeenCalled();
+        });
+    });
+
     describe('functions test', () => {
         const promise = Promise.resolve([]);
         const props = {
