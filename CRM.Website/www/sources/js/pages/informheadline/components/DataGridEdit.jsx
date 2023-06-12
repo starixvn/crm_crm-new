@@ -12,12 +12,12 @@ export class DataGridEdit extends PureComponent {
         return(
             <HeaderRow>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('DirectAccount')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('Status')}</HeaderCell>
+                <HeaderCell colWidth={22}>{LangHelper.getResource('Status')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('UpdatedTime')}</HeaderCell>
                 <HeaderCell colWidth={55}>{LangHelper.getResource('Remark')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Handler')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Extension')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('ProductStatus')}</HeaderCell>
+                <HeaderCell colWidth={17}>{LangHelper.getResource('Extension')}</HeaderCell>
+                <HeaderCell colWidth={17}>{LangHelper.getResource('ProductStatus')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -68,12 +68,12 @@ export class DataGridEdit extends PureComponent {
                         </Form.Control>
                         {
                             index === 0 &&
-                            <OverlayTrigger placement="bottom-start" overlay={
+                            <OverlayTrigger placement="bottom-start" delay={{show: 100}} overlay={
                                 <Tooltip id="tooltip-copy-selected">
                                     {LangHelper.getResource('CopySelectedValueToAllAccounts')}
                                 </Tooltip>}
                             >
-                                <span className="icon-copy fa fa-copy pt-2 pl-2" onClick={() => this.handleCopySelectedAccounts('informHeadlineStatusId', item.informHeadlineStatusId)}/>
+                                <span className="icon-copy fa fa-copy pt-2 pl-3" onClick={() => this.handleCopySelectedAccounts('informHeadlineStatusId', item.informHeadlineStatusId)}/>
                             </OverlayTrigger>
                         }
                     </div>
@@ -106,12 +106,12 @@ export class DataGridEdit extends PureComponent {
                         </Form.Control>
                         {
                             index === 0 &&
-                            <OverlayTrigger placement="auto" overlay={
+                            <OverlayTrigger placement="bottom-end" delay={{show: 100}} overlay={
                                 <Tooltip id="tooltip-copy-selected">
                                     {LangHelper.getResource('CopySelectedValueToAllAccounts')}
                                 </Tooltip>}
                             >
-                                <span className="icon-copy fa fa-copy pt-2 pl-2" onClick={() => this.handleCopySelectedAccounts('extension', item.extension)}/>
+                                <span className="icon-copy fa fa-copy pt-2 pl-3" onClick={() => this.handleCopySelectedAccounts('extension', item.extension)}/>
                             </OverlayTrigger>
                         }
                     </div>
@@ -131,12 +131,12 @@ export class DataGridEdit extends PureComponent {
                         </Form.Control>
                         {
                             index === 0 &&
-                            <OverlayTrigger placement="auto" overlay={
+                            <OverlayTrigger placement="bottom-end" delay={{show: 100}} overlay={
                                 <Tooltip id="tooltip-copy-selected">
                                     {LangHelper.getResource('CopySelectedValueToAllAccounts')}
                                 </Tooltip>}
                             >
-                                <span className="icon-copy fa fa-copy pt-2 pl-2" onClick={() => this.handleCopySelectedAccounts('productStatus', item.productStatus)}/>
+                                <span className="icon-copy fa fa-copy pt-2 pl-3" onClick={() => this.handleCopySelectedAccounts('productStatus', item.productStatus)}/>
                             </OverlayTrigger>
                         }
                     </div>
