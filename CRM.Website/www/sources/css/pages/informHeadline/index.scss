@@ -53,15 +53,6 @@
         }
     }
     
-    .number-remove{
-        cursor: pointer;
-        color: #0255a5;
-    }
-    
-    .number-remove:hover{
-        color: #ffb400;
-    }
-    
     a.dropdown-item {
         line-height: 1.8;
         border-bottom: 1px solid #e5e5e5;
@@ -132,4 +123,13 @@
 #tooltip-copy-selected [class$="inner"] {
     min-width: 250px;
     text-align: left;
+}
+
+.number-remove{
+    cursor: pointer;
+    color: #0255a5;
+}
+
+.number-remove:hover{
+    color: #ffb400;
 }
