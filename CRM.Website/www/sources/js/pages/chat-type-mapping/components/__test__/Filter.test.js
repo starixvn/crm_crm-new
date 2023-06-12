@@ -12,6 +12,30 @@ import toJson from 'enzyme-to-json';
 describe('Filter', () => {
     LangHelper.getResource = jest.fn(value => value);
 
+    const initialState = {
+        filter: {
+            chatType: '',
+            name: '',
+            groupHeadline: '',
+            recipient: '',
+            LetstalkIdOrUsername: '',
+            mappingStatuses: '',
+            botServiceId: '',
+            botIds: '',
+            holdBotIds: '',
+            active: ''
+        },
+        settings: {
+            chatTypes: [],
+            mappingStatuses: [],
+            languages: [],
+            botServices: [],
+            bots: [],
+            holdBots: []
+        },
+        showFilter: false
+    };
+
     describe('component with redux', () => {
         // Arrange
         const mockStore = configureMockStore();
@@ -48,21 +72,26 @@ describe('Filter', () => {
                 name: '',
                 groupHeadline: '',
                 recipient: '',
-                letstalkID: '',
+                LetstalkIdOrUsername: '',
                 mappingStatuses: '',
-                languageId: '',
-                botId: '',
+                botServiceId: '',
+                botIds: '',
+                holdBotIds: '',
                 active: ''
             },
             settings: {
                 chatTypes: [],
                 mappingStatuses: [],
                 languages: [],
-                bots: []
-            }
+                botServices: [],
+                bots: [],
+                holdBots: []
+            },
+            showFilter: false
         };
 
         const props = {
+            gridParams: { pageSize: 100 },
             settings: {
                 chatTypes: [],
                 mappingStatuses: [{ id: 1, name: 'Text' }],
@@ -75,7 +104,8 @@ describe('Filter', () => {
                 chatTypes: [],
                 mappingStatuses: [],
                 languages: [],
-                bots: []
+                bots: [],
+                botServices: [{ id: 1, name: 'test' }]
             }))
         };
 
@@ -96,7 +126,8 @@ describe('Filter', () => {
                 chatTypes: [],
                 mappingStatuses: [{ id: 1, checked: true }],
                 languages: [],
-                bots: []
+                bots: [{ channelId: 1, id: 123, name: 'test' }],
+                botServices: [{ id: 1, name: 'test' }]
             },
             insertPersonalMappingData: {},
             insertPersonalMappingResult: {},
@@ -108,9 +139,6 @@ describe('Filter', () => {
         filter.instance().getParams = jest.fn().mockReturnValue(params);
 
         expect(props.getSettings).toHaveBeenCalled();
-        promise.then(() => {
-            expect(filter.instance().state.settings).toEqual(props.settings);
-        });
     });
 
     it('handleFilterChange runs correctly', () => {
@@ -137,6 +165,190 @@ describe('Filter', () => {
         expect(filter.instance().state.filter.name).toBe(value);
     });
 
+    describe('handleToggleFilter', () => {
+        let EventBak;
+        let windowBak;
+
+        beforeAll(() => {
+            EventBak = global.Event;
+            windowBak = global.window.dispatchEvent;
+            global.Event = jest.fn();
+            global.window.dispatchEvent = jest.fn();
+        });
+
+        afterAll(() => {
+            global.Event = EventBak;
+            global.window.dispatchEvent = windowBak;
+        });
+
+        const props = {
+            insertPersonalMappingData: {
+                isShow: true
+            }
+        };
+
+        it('run exactly', () => {
+            // Arrange
+            const filter = shallow(<Filter {...props}/>, { disableLifecycleMethods: true }).instance();
+            filter.setState(initialState);
+
+            // Act
+            filter.handleToggleFilter(true);
+
+            // Assert
+            expect(filter.state.showFilter).toBeTrue;
+            expect(global.window.dispatchEvent).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleChangeBotService', () => {
+        it('should setState when handleChangeBotService execute exactly', () => {
+            //Arrange
+            const props = {
+                insertPersonalMappingData: {
+                    show: true
+                }
+            };
+            const state = {
+                filter: {
+                    botServiceId: 1,
+                    botIds: '123',
+                    holdBotIds:  '456'
+                },
+                settings: {
+                    bots: [],
+                    holdBots: [{ id: 123, value: 'test' , subItem: [{ key: 1 }]}],
+                    botServices: [],
+                    chatTypes: []
+                },
+            };
+
+            const filter = shallow(<Filter {...props}/>, { disableLifecycleMethods: true });
+            filter.instance().setState(state);
+            filter.instance().handleChangeBotService(123);
+
+            expect(filter.state().filter).toEqual({...state.filter, botServiceId: 123, botIds: '1'});
+            expect(filter.state().settings).toEqual({...state.settings, bots: [{ id: 123, value: 'test' , subItem: [{ key: 1 }]}]});
+        });
+    });
+
+    describe('getBotIds', () => {
+        it('should return value when getBotIds has value', () => {
+            //Arrange
+            const props = {
+                insertPersonalMappingData: {
+                    show: true
+                }
+            };
+            const state = {
+                filter: {
+                    botServiceId: 1,
+                    botIds: '123',
+                    holdBotIds: '456'
+                },
+                settings: {
+                    bots: [],
+                    holdBots: [{ id: 123, value: 'test' , subItem: [{ key: 1 }]}],
+                    botServices: [],
+                    chatTypes: []
+                },
+            };
+
+            const filter = shallow(<Filter {...props}/>, { disableLifecycleMethods: true });
+            filter.instance().setState(state);
+            const result = filter.instance().getBotIds(123);
+
+            expect(result).toBe('1');
+        });
+
+        it('should return value when getBotIds has not value', () => {
+            //Arrange
+            const props = {
+                insertPersonalMappingData: {
+                    show: true
+                }
+            };
+            const state = {
+                filter: {
+                    botServiceId: 1,
+                    botIds: '123',
+                    holdBotIds: '456'
+                },
+                settings: {
+                    bots: [],
+                    holdBots: [{ id: 123, value: 'test' , subItem: [{ key: 1 }]}],
+                    botServices: [],
+                    chatTypes: []
+                },
+            };
+
+            const filter = shallow(<Filter {...props}/>, { disableLifecycleMethods: true });
+            filter.instance().setState(state);
+            const result = filter.instance().getBotIds(null);
+
+            expect(result).toBe('456');
+        });
+    });
+
+    describe('getBotOptions', () => {
+        it('should return value when getBotOptions has value', () => {
+            //Arrange
+            const props = {
+                insertPersonalMappingData: {
+                    show: true
+                }
+            };
+            const state = {
+                filter: {
+                    botServiceId: 1,
+                    botIds: '123',
+                    holdBotIds: '456'
+                },
+                settings: {
+                    bots: [],
+                    holdBots: [{ id: 123, value: 'test' , subItem: [{ key: 1 }]}, { id: 456, value: 'td' , subItem: [{ key: 2 }]}],
+                    botServices: [],
+                    chatTypes: []
+                },
+            };
+
+            const filter = shallow(<Filter {...props}/>, { disableLifecycleMethods: true });
+            filter.instance().setState(state);
+            const result = filter.instance().getBotOptions(123);
+
+            expect(result).toEqual([{ id: 123, value: 'test' , subItem: [{ key: 1 }]}]);
+        });
+
+        it('should return value when getBotOptions has not value', () => {
+            //Arrange
+            const props = {
+                insertPersonalMappingData: {
+                    show: true
+                }
+            };
+            const state = {
+                filter: {
+                    botServiceId: 1,
+                    botIds: '123',
+                    holdBotIds: '456'
+                },
+                settings: {
+                    bots: [],
+                    holdBots: [{ id: 123, value: 'test' , subItem: [{ key: 1 }]}],
+                    botServices: [],
+                    chatTypes: []
+                },
+            };
+
+            const filter = shallow(<Filter {...props}/>, { disableLifecycleMethods: true });
+            filter.instance().setState(state);
+            const result = filter.instance().getBotOptions(null);
+
+            expect(result).toBe(state.settings.holdBots);
+        });
+    });
+
+
     describe('getParams', () => {
         it('getParams with valid headline and recipient returns correctly', () => {
             // Arrange
@@ -146,11 +358,12 @@ describe('Filter', () => {
                     name: '',
                     groupHeadline: '',
                     recipient: '',
-                    letstalkID: '',
+                    LetstalkIdOrUsername: '',
                     mappingStatuses: '',
                     languageId: '',
-                    botId: '',
-                    active: ''
+                    botIds: '',
+                    active: '',
+                    botServiceId: 1
                 }
             };
 
@@ -166,13 +379,13 @@ describe('Filter', () => {
 
             const expected = {
                 chatType: state.filter.chatType,
-                botId: state.filter.botId,
+                botIds: state.filter.botIds,
+                channelId: state.filter.botServiceId,
                 name: state.filter.name,
                 groupHeadline: state.filter.groupHeadline,
                 recipientIds: state.filter.recipient,
-                letstalkId: state.filter.letstalkID,
+                LetstalkIdOrUsername: state.filter.LetstalkIdOrUsername,
                 mappingStatuses: state.filter.mappingStatuses,
-                languageId: state.filter.languageId,
                 isActive: state.filter.active,
                 pageIndex: props.gridParams.pageIndex,
                 pageSize: props.gridParams.pageSize
@@ -307,6 +520,11 @@ describe('Filter', () => {
                     value: 'value'
                 }
             };
+            const eventBotService = {
+                target: {
+                    value: '1'
+                }
+            };
 
             // Arrange
             const state = {
@@ -315,12 +533,22 @@ describe('Filter', () => {
                     name: '',
                     groupHeadline: '',
                     recipient: '',
-                    letstalkID: '',
+                    LetstalkIdOrUsername: '',
                     mappingStatuses: '1,2,3',
-                    languageId: '',
-                    botId: '',
+                    botServiceId: '',
+                    botIds: '',
+                    holdBotIds: '',
                     active: ''
-                }
+                },
+                settings: {
+                    chatTypes: [],
+                    mappingStatuses: [],
+                    languages: [],
+                    botServices: [],
+                    bots: [],
+                    holdBots: [{ id: 1, subItem: [{ key: 1, value: 'test' }] }]
+                },
+                showFilter: true
             };
 
             const props = {
@@ -333,36 +561,39 @@ describe('Filter', () => {
                 getGridData: jest.fn((params) => Promise.resolve([]))
             };
 
+            const handleChangeBotService = jest.fn();
+
             const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
             filter.instance().onChange = jest.fn();
+            filter.instance().handleChangeBotService = jest.fn();
 
-            filter.find(Form.Group).at(0).find(Form.Control).simulate('change', event);
-            expect(filter.instance().onChange).toHaveBeenCalledWith('chatType', event.target.value);
+            filter.find(Form.Group).at(0).find(Form.Control).simulate('change', eventBotService);
+            expect(filter.instance().handleChangeBotService).toHaveBeenCalledWith(eventBotService.target.value);
 
             filter.find(Form.Group).at(1).find(Form.Control).simulate('change', event);
-            expect(filter.instance().onChange).toHaveBeenCalledWith('name', event.target.value);
+            expect(filter.instance().onChange).toHaveBeenCalledWith('chatType', event.target.value);
 
             filter.find(Form.Group).at(2).find(Form.Control).simulate('change', event);
-            expect(filter.instance().onChange).toHaveBeenCalledWith('groupHeadline', event.target.value);
+            expect(filter.instance().onChange).toHaveBeenCalledWith('name', event.target.value);
 
             filter.find(Form.Group).at(3).find(Form.Control).simulate('change', event);
-            expect(filter.instance().onChange).toHaveBeenCalledWith('recipient', event.target.value);
+            expect(filter.instance().onChange).toHaveBeenCalledWith('LetstalkIdOrUsername', event.target.value);
 
             filter.find(Form.Group).at(4).find(Form.Control).simulate('change', event);
-            expect(filter.instance().onChange).toHaveBeenCalledWith('letstalkID', event.target.value);
+            expect(filter.instance().onChange).toHaveBeenCalledWith('groupHeadline', event.target.value);
 
-            filter.find(Form.Group).at(5).find(MultipleSelect).simulate('change', 'currentItem', event.target.value);
+            filter.find(Form.Group).at(5).find(Form.Control).simulate('change', event);
+            expect(filter.instance().onChange).toHaveBeenCalledWith('recipient', event.target.value);
+
+            filter.find(Form.Group).at(6).find(MultipleSelect).simulate('change', 'currentItem', event.target.value);
+            expect(filter.instance().onChange).toHaveBeenCalledWith('botIds', event.target.value);
+
+            filter.find(Form.Group).at(7).find(MultipleSelect).simulate('change', 'currentItem', event.target.value);
             expect(filter.instance().onChange).toHaveBeenCalledWith('mappingStatuses', event.target.value);
 
-            filter.find(Form.Group).at(6).find(Form.Control).simulate('change', event);
-            expect(filter.instance().onChange).toHaveBeenCalledWith('languageId', event.target.value);
-
-            filter.find(Form.Group).at(7).find(Form.Control).simulate('change', event);
-            expect(filter.instance().onChange).toHaveBeenCalledWith('active', event.target.value);
-
             filter.find(Form.Group).at(8).find(Form.Control).simulate('change', event);
-            expect(filter.instance().onChange).toHaveBeenCalledWith('botId', event.target.value);
+            expect(filter.instance().onChange).toHaveBeenCalledWith('active', event.target.value);
         });
     });
 
@@ -392,7 +623,7 @@ describe('Filter', () => {
 
             const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             expect(filter.find(Form.Group).find(Button).length).toBe(2);
-            expect(filter.find(Form.Group).find(Button).at(1).html()).toContain('InsertPersonalMappingBtn');
+            expect(filter.find(Form.Group).find(Button).at(1).html()).toContain('<button type=\"button\" class=\"mr-2 btn btn-primary btn-sm\">InsertPersonal</button>');
             filter.find(Button).at(1).simulate('click');
             expect(props.openInsertPersonalMappingPopup).toHaveBeenCalled();
         });

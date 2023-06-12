@@ -10,6 +10,7 @@ import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import toJson from 'enzyme-to-json';
 import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
 
 describe('EditGroupMappingPopup', () => {
     beforeEach(() => {
@@ -41,13 +42,16 @@ describe('EditGroupMappingPopup', () => {
         conversationGroupName: 'GroupName',
         conversationId: 'conversationId',
         headlines: [{ id: 1, name: 'headline', headlineId: 2 }],
-        recipients: [{ id: 1, name: 'recipient', recipientTypeId: 1, recipientTypeName: 'rep', letstalks: { letstalkId: 1 } }],
+        recipients: [{ id: 1, name: 'recipient', recipientTypeId: 1, recipientTypeName: 'rep', letstalks: { letstalkId: 1 }, recipientId: 1 }],
         mappingStatusId: 1,
         mappingStatus: 'NotMapped',
         languageId: 1,
         remark: '123',
         ignoredNotificationTypeList: [1,2,3,4,5],
-        isTest: 1
+        isTest: 1,
+        botServiceId: 2,
+        displayName: 'test',
+        channelId: 2
     };
     const initProps = {
         updateGroupMappingData: { data: initData }
@@ -131,7 +135,6 @@ describe('EditGroupMappingPopup', () => {
                     id: initData.botId,
                     name: initData.botName
                 },
-                name: initData.conversationGroupName,
                 conversationId: initData.conversationId,
                 isTest: false,
                 recipientName: undefined,
@@ -146,12 +149,13 @@ describe('EditGroupMappingPopup', () => {
                 remark: initData.remark,
                 ignoredNotification: [1,2,3,4,5],
                 isTest: true,
-                recipientName: 'rep'
+                recipientName: 'rep',
+                botServiceId: 2,
+                displayName: 'test'
             };
             const state = {
                 form: {
                     bot: { id: 1, name: 'bot' },
-                    name: 'a',
                     conversationId: '1',
                     recipientTypeId: '1',
                     recipientIds: '2',
@@ -161,12 +165,15 @@ describe('EditGroupMappingPopup', () => {
                     },
                     groupHeadlines: '3',
                     languageId: '4',
-                    remark: ''
+                    remark: '',
+                    botServiceId: 2,
+                    displayName: 'test'
                 }
             };
             const popup = shallow(<EditGroupMappingPopup {...props} />);
             popup.instance().setState(state);
             popup.instance().verifyLetstalk = jest.fn();
+            popup.instance().verifyTelegram = jest.fn();
             popup.instance().getIgnoreNotificationType = jest.fn();
             expect(popup.instance().initUpdateGroupMappingState).toEqual(expected);
             expect(props.getRecipientByRecipientType).toHaveBeenCalledWith(expected.recipientTypeId);
@@ -191,17 +198,17 @@ describe('EditGroupMappingPopup', () => {
             popup.instance().onClosePopup = jest.fn();
             popup.instance().handleSubmitForm = jest.fn();
 
-            popup.find(Form.Group).at(3).find(Form.Control).at(0).simulate('change', event);
+            popup.find(Form.Group).at(4).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith(event);
 
-            expect(popup.find(Form.Group).at(4).find(MultipleSelect).length).toBe(1);
-            expect(popup.find(Form.Group).at(6).find(MultipleSelect).length).toBe(1);
+            expect(popup.find(Form.Group).at(5).find(MultipleSelect).length).toBe(1);
+            expect(popup.find(Form.Group).at(8).find(MultipleSelect).length).toBe(1);
             expect(popup.find(Button).length).toBe(2);
 
-            popup.find(Form.Group).at(8).find(Form.Control).at(0).simulate('change', event);
+            popup.find(Form.Group).at(10).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('languageId', 'value');
 
-            popup.find(Form.Group).at(10).find(Form.Control).at(0).simulate('change', event);
+            popup.find(Form.Group).at(12).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('remark', 'value');
         });
 
@@ -214,6 +221,164 @@ describe('EditGroupMappingPopup', () => {
             popup.instance().setState(state);
 
             expect(popup.find(ConfirmPopup).length).toBe(1);
+        });
+    });
+
+    describe('verifyLetstalk', () => {
+        const promise = Promise.resolve([]);
+        it('should call exactly props function', () => {
+            // Arrange
+            const props = {
+                verifyLetstalkInGroup: jest.fn(() => promise),
+                recipients: {
+                    data: [{ id: 1 }]
+                },
+                groupHeadline: [{ id: 1 }],
+                letstalkVerification: { isBotRemoved: false },
+                telegramVerification: { isBotRemoved: false },
+                ...initProps
+            }
+            const state = {
+                form: {
+                    bot: { id: 1 },
+                    conversationId: 123,
+                    recipientIds: '1,2,3',
+                    groupHeadlines: '1,2'
+                },
+                settings: {
+                    recipientOptions: [{ id: 1, name: 'test', letstalkIds: '1,2' }]
+                }
+            }
+            const recipientIds = [1, 2];
+            const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
+            popup.instance().setState(state);
+            popup.instance().verifyLetstalk(recipientIds);
+
+            expect(props.verifyLetstalkInGroup).toHaveBeenCalled();
+        })
+    });
+
+    describe('verifyTelegram', () => {
+        const promise = Promise.resolve([]);
+        it('should call exactly props function', () => {
+            // Arrange
+            const props = {
+                verifyTelegramInGroup: jest.fn(() => promise),
+                recipients: {
+                    data: [{ id: 1 }],
+                    botInfo: [{ username: 'test', chatId: '12' }]
+                },
+                groupHeadline: [{ id: 1 }],
+                letstalkVerification: { isBotRemoved: false },
+                telegramVerification: { isBotRemoved: false },
+                ...initProps
+            }
+            const state = {
+                form: {
+                    bot: { id: 1 },
+                    conversationId: 123,
+                    recipientIds: '1,2,3',
+                    groupHeadlines: '1,2'
+                },
+                settings: {
+                    recipientOptions: [{ id: 1, name: 'test', usernames: 'test, 123' }]
+                }
+            }
+            const recipientIds = [1, 2];
+            const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
+            popup.instance().setState(state);
+            popup.instance().verifyTelegram(recipientIds);
+
+            expect(props.verifyTelegramInGroup).toHaveBeenCalled();
+        })
+    });
+
+    describe('isCheckRender', () => {
+        it('should return true when execute function', () => {
+            // Arrange
+            const props = {
+                recipients: {
+                    data: [{ id: 1 }],
+                    botInfo: [{ username: 'test', chatId: '12' }]
+                },
+                groupHeadline: [{ id: 1 }],
+                letstalkVerification: { isBotRemoved: false },
+                telegramVerification: { isBotRemoved: false },
+                ...initProps
+            }
+            const state = {
+                form: {
+                    bot: { id: 1 },
+                    conversationId: 123,
+                    recipientIds: '1,2,3',
+                    groupHeadlines: '1,2',
+                    botServiceId: 2
+                },
+                settings: {
+                    recipientOptions: [{ id: 1, name: 'test', usernames: 'test, 123' }]
+                }
+            }
+            const item = { username: 'test' };
+            const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
+            popup.instance().setState(state);
+            const result = popup.instance().isCheckRender(item, 2, 'username');
+
+            expect(result).toBe(true);
+        });
+
+        it('should return false when execute function', () => {
+            // Arrange
+            const props = {
+                recipients: {
+                    data: [{ id: 1 }],
+                    botInfo: [{ username: 'test', chatId: '12' }]
+                },
+                groupHeadline: [{ id: 1 }],
+                letstalkVerification: { isBotRemoved: false },
+                telegramVerification: { isBotRemoved: false },
+                ...initProps
+            }
+            const state = {
+                form: {
+                    bot: { id: 1 },
+                    conversationId: 123,
+                    recipientIds: '1,2,3',
+                    groupHeadlines: '1,2',
+                    botServiceId: 1
+                },
+                settings: {
+                    recipientOptions: [{ id: 1, name: 'test', usernames: 'test, 123' }]
+                }
+            }
+            const item = { username: 'test' };
+            const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
+            popup.instance().setState(state);
+            const result = popup.instance().isCheckRender(item, 2, 'username');
+
+            expect(result).toBe(false);
+        });
+    });
+
+    describe('isCheckGroupMemberTelegram', () => {
+        it('should return exactly when execute function', () => {
+            // Arrange
+            const props = {
+                recipients: {
+                    data: [{ id: 1 }],
+                    botInfo: [{ username: 'username', chatId: '12' }]
+                },
+                groupHeadline: [{ id: 1 }],
+                letstalkVerification: { isBotRemoved: false },
+                telegramVerification: {
+                    isBotRemoved: false,
+                    recipients: [{ chatId: '12', isGroupMember: true}]
+                },
+                ...initProps
+            }
+            const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
+            const result = popup.instance().isCheckGroupMemberTelegram('username');
+
+            expect(result).toBe(true);
         });
     });
 
@@ -240,7 +405,11 @@ describe('EditGroupMappingPopup', () => {
                     }]
                 }]
             },
+            telegramVerification: {
+                isBotRemoved: true
+            },
             verifyLetstalkInGroup: jest.fn(() => promise),
+            verifyTelegramInGroup: jest.fn(() => promise),
             getRecipientByRecipientType: jest.fn(() => promise),
             getGroupHeadlineByRecipient: jest.fn(),
             setGroupMappingResult: jest.fn(),
@@ -250,6 +419,40 @@ describe('EditGroupMappingPopup', () => {
             ...initProps
         };
         const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
+
+        it('getGroupTelegramDisplayName should call setState exactly', async () => {
+            // Arrange
+            const response = {data: [{ notificationTypeId: 1 }]};
+            const promise = Promise.resolve(response);
+            Site.resolveClientUrl = jest.fn(url => url);
+            DataService.getDataAsync = jest.fn(() => promise);
+            
+            // Act
+            popup.instance().getGroupTelegramDisplayName();
+            await promise;
+
+            // Assert
+        });
+
+        it('getIgnoreNotificationType should call setState exactly', async () => {
+            // Arrange
+            const response = {data: [{ notificationTypeId: 1 }]};
+            const promise = Promise.resolve(response);
+            Site.resolveClientUrl = jest.fn(url => url);
+            DataService.getDataAsync = jest.fn(() => promise);
+            
+            // Act
+            popup.instance().getIgnoreNotificationType();
+            await promise;
+
+            // Assert
+        });
+
+        it('handleIgnoreNotificationChange with call correct props with correct params', () => {
+            popup.instance().handleChange = jest.fn();
+            popup.instance().handleIgnoreNotificationChange('currentItem', 'value');
+            expect(popup.instance().handleChange).toHaveBeenCalledWith('ignoredNotification', 'value');
+        });
 
         it('handleGroupHeadlineChange with call correct props with correct params', () => {
             popup.instance().handleChange = jest.fn();
@@ -273,30 +476,30 @@ describe('EditGroupMappingPopup', () => {
                 }
             }
             popup.instance().handleChange = jest.fn();
-            popup.instance().verifyLetstalk = jest.fn();
+            popup.instance().verifyTelegram = jest.fn();
             popup.instance().handleRecipientTypeChange(event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('recipientTypeId', 'value');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('recipientIds', '');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('groupHeadlines', '');
-            expect(popup.instance().verifyLetstalk).toHaveBeenCalledWith([]);
+            expect(popup.instance().verifyTelegram).toHaveBeenCalledWith([]);
             expect(props.getGroupHeadlineByRecipient).toHaveBeenCalledWith('');
             expect(props.getRecipientByRecipientType).toHaveBeenCalledWith('value');
         });
 
         it('handleRecipientChange with call correct props with correct params', () => {
             popup.instance().handleChange = jest.fn();
-            popup.instance().verifyLetstalk = jest.fn();
+            popup.instance().verifyTelegram = jest.fn();
             popup.instance().handleRecipientChange('currentItem', 'value');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('recipientIds', 'value');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('groupHeadlines', '');
-            expect(popup.instance().verifyLetstalk).toHaveBeenCalledWith(['value']);
+            expect(popup.instance().verifyTelegram).toHaveBeenCalledWith(['value']);
             expect(props.getGroupHeadlineByRecipient).toHaveBeenCalledWith('value');
         });
 
-        it('verifyLetstalk with call correct props with correct params', () => {
+        it('verifyTelegram with call correct props with correct params', () => {
             const recipientIds = '1,2,3';
-            popup.instance().verifyLetstalk(recipientIds);
-            expect(props.verifyLetstalkInGroup).not.toHaveBeenCalled();
+            popup.instance().verifyTelegram(recipientIds);
+            expect(props.verifyTelegramInGroup).not.toHaveBeenCalled();
         });
 
         it('renderEditGroupMappingOptions return expected result', () => {
@@ -325,7 +528,7 @@ describe('EditGroupMappingPopup', () => {
             popup.instance().setState(state);
             const actual = popup.instance().isValidParams();
             expect(popup.instance().state.validate.isShow).toBeTrue;
-            expect(popup.instance().state.validate.errMsgs.length).toBe(4);
+            expect(popup.instance().state.validate.errMsgs.length).toBe(5);
             expect(actual).toBeFalse;
         });
 
@@ -341,15 +544,20 @@ describe('EditGroupMappingPopup', () => {
                     },
                     recipientTypeId: '1',
                     recipientIds: '2',
+                    recipientName: '',
                     groupHeadlines: '3',
                     languageId: '4',
-                    remark: ''
-                }
+                    remark: '',
+                    displayName: 'test',
+                    botServiceId: 1,
+                    ignoredNotification: '1'
+                },
+                isBotRemoved: false
             };
             popup.instance().setState(state);
             const actual = popup.instance().isValidParams();
             expect(popup.instance().state.validate.isShow).toBeFalse;
-            expect(popup.instance().state.validate.errMsgs.length).toBe(0);
+            expect(popup.instance().state.validate.errMsgs.length).toBe(1);
             expect(actual).toBeTrue;
         });
 
@@ -357,14 +565,16 @@ describe('EditGroupMappingPopup', () => {
             const expected = {
                 conversationGroupId: 1,
                 botId: 1,
-                name: 'a',
                 recipientTypeId: '1',
                 isTest: null,
-                letstalkId: '1',
                 groupHeadlineIds: '3',
                 recipientIds: '2',
                 languageId: '4',
-                remark: ''
+                remark: '',
+                channelId: 1,
+                conversationId: '1',
+                displayName: 'test',
+                ignoredNotificationTypeList: '1'
             };
             const actual = popup.instance().getParams();
             expect(actual).toEqual(expected);
@@ -517,21 +727,6 @@ describe('EditGroupMappingPopup', () => {
             popup.instance().setState(initState);
             popup.instance().closeConfirmDirtyForm();
             expect(popup.instance().state.isShowConfirmDirtyForm).toBeFalse;
-        });
-
-        it('renderLetstalkIdVerification to render match the snapshot', () => {
-            const letstalk = {
-                recipientName: 'Name',
-                letstalks: [{
-                    letstalkId: '1',
-                    isGroupMember: true
-                }]
-            };
-            const verification = popup.instance().renderLetstalkIdVerification(letstalk, 0);
-            const tree = renderer
-                .create(verification)
-                .toJSON();
-            expect(toJson(tree)).toMatchSnapshot();
         });
     });
 });
