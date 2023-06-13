@@ -1,12 +1,12 @@
 @import '../../../abstracts/variables';
 
 .deleted-feedback{
-    max-width: 1200px;
-    min-width: 1142px;
+    .form-filter{
+        max-width: 1200px;
+    }
     
     .table-title, .page-container, .table-container{
-        min-width: 1142px !important;
-        max-width: 1340px !important;
+        max-width: 1200px !important;
     }
 
     .header-content .table > thead > tr > th {
@@ -47,7 +47,6 @@
     
         .filter-colDate{
             padding-left: 0;
-            padding-right: 74px;
         }
     
         .filter-toDate{
