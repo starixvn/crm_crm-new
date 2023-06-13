@@ -209,7 +209,7 @@ export class Filter extends Component {
                         {
                             !this.state.showFilter &&
                             (
-                                <Form.Group>
+                                <Fragment>
                                     <div className='col-auto pd-0'>
                                         <Button className='mr-2' variant='primary' size='sm' type='submit'>
                                             {LangHelper.getResource('Submit')}
@@ -223,7 +223,7 @@ export class Filter extends Component {
                                             </Button>
                                         </div>
                                     }
-                                </Form.Group>
+                                </Fragment>
                             )
                         }
                         {
@@ -279,7 +279,7 @@ export class Filter extends Component {
                                             <option value="false">{LangHelper.getResource('No')}</option>
                                         </Form.Control>
                                     </Form.Group>
-                                    <Form.Group>
+                                    <Fragment>
                                         <div className='col-auto pd-0'>
                                             <Button className='mr-2' variant='primary' size='sm' type='submit'>
                                                 {LangHelper.getResource('Submit')}
@@ -293,7 +293,7 @@ export class Filter extends Component {
                                                 </Button>
                                             </div>
                                         }
-                                    </Form.Group>
+                                    </Fragment>
                                 </Form.Row>
                             )
                         }

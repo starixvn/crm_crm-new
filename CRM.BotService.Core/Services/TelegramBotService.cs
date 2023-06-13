@@ -155,6 +155,7 @@
         {
             var writeLogCommand = new WriteLogMessageCommand
             {
+                NotificationId = notificationMessage.NotificationId,
                 BotId = notificationMessage.BotId,
                 ConversationId = notificationMessage.ConversationId,
                 Content = string.IsNullOrEmpty(image) ? notificationMessage.Content : image,

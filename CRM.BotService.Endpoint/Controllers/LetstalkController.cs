@@ -133,6 +133,7 @@
             {
                 var writeLogCommand = new WriteLogMessageCommand
                 {
+                    NotificationId = notification.NotificationId,
                     BotId = notification.BotId,
                     ConversationId = notification.ConversationId,
                     Content = notification.Content,
@@ -177,6 +178,7 @@
 
             var writeLogCommand = new WriteLogMessageCommand
             {
+                NotificationId = notification.NotificationId,
                 BotId = notification.BotId,
                 ConversationId = notification.ConversationId,
                 Content = notification.Content,
@@ -200,6 +202,7 @@
                 var result = await letstalkClientService(notification.BotId).PushPersonalAsync(notification.ConversationId, outgoingMsg);
                 var writeLogCommand = new WriteLogMessageCommand
                 {
+                    NotificationId = notification.NotificationId,
                     BotId = notification.BotId,
                     ConversationId = notification.ConversationId,
                     Content = img,
@@ -233,6 +236,7 @@
 
             var writeLogCommand = new WriteLogMessageCommand
             {
+                NotificationId = notification.NotificationId,
                 BotId = notification.BotId,
                 ConversationId = notification.ConversationId,
                 Content = notification.Content,
@@ -257,6 +261,7 @@
 
                 var writeLogCommand = new WriteLogMessageCommand
                 {
+                    NotificationId = notification.NotificationId,
                     BotId = notification.BotId,
                     ConversationId = notification.ConversationId,
                     Content = img,
