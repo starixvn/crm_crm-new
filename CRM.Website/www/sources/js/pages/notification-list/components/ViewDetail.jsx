@@ -37,7 +37,7 @@ export class ViewDetail extends Component {
     buildBody = data =>
         [<Row key={data.notificationId}>
             <Cell>{data.botService}</Cell>
-            <Cell>{data.letstalkName}</Cell>
+            <Cell>{data.displayName}</Cell>
             <Cell>{functions.getHeadlines(data.headlines)}</Cell>
             <Cell>{functions.getRecipients(data.recipients)}</Cell>
             <Cell className='error-color'>{data.reason}</Cell>

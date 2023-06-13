@@ -153,11 +153,9 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group className="submit">
-                        <Button variant="primary" size="sm" onClick={this.handleSubmit}>
-                            <UnderlineButton.submitButton />
-                        </Button>
-                    </Form.Group>
+                    <Button variant="primary" size="sm" onClick={this.handleSubmit}>
+                        <UnderlineButton.submitButton />
+                    </Button>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group className='width-90'>

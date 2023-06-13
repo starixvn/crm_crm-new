@@ -1,14 +1,16 @@
 @import '../../../abstracts/variables';
 
 .dynamic {
+    min-width: 1142px !important;
+
     .table-title,
     .page-container,
     .table-container {
+        min-width: 1142px !important;
         max-width: 1200px !important;
     }
 
     .form-filter {
-        max-width: 1200px !important;
         .react-datepicker-wrapper-container .react-datepicker-wrapper .react-datepicker__input-container input.form-control {
             height: 100%;
             width: 153.5px;
@@ -115,6 +117,18 @@
 
         &:hover {
             color: $draft-color  !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 1560px) {
+    .dynamic{
+        .group-tool {
+            width: 282px !important;
+    
+            .col-label-tool {
+                width: 117px !important;
+            }
         }
     }
 }
