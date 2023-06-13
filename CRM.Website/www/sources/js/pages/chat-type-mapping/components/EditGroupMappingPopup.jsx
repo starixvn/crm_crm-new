@@ -111,6 +111,14 @@ export class EditGroupMappingPopup extends Component {
         await this.getIgnoreNotificationType();
     }
 
+    getRecipientTypes = botServiceId => {
+        if (botServiceId === BotServiceType.Letstalk) {
+            return this.props.settings.recipientTypes;
+        } else {
+            return this.props.settings.recipientTypes.filter(item => item.name === 'PIC of headline');
+        }
+    };
+
     getGroupTelegramDisplayName = async() => {
         const botId = this.props.updateGroupMappingData.data.botId;
         const chatId = this.props.updateGroupMappingData.data.conversationId;
@@ -400,6 +408,8 @@ export class EditGroupMappingPopup extends Component {
     renderForm = isHiddenIsTest => {
         const groupHeadlinesOption = this.state.form.recipientName === AccountingPIC ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
         const { botServiceId } = this.state.form;
+        const recipientTypes = this.getRecipientTypes(botServiceId);
+
         return (
             <Form onSubmit={this.handleSubmitForm}>
                 <Modal.Body>
@@ -462,7 +472,7 @@ export class EditGroupMappingPopup extends Component {
                                 onChange={e => this.handleRecipientTypeChange(e)}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {this.props.settings.recipientTypes.map(this.renderEditGroupMappingOptions)}
+                                {recipientTypes.map(this.renderEditGroupMappingOptions)}
                             </Form.Control>
                         </Col>
                     </Form.Group>

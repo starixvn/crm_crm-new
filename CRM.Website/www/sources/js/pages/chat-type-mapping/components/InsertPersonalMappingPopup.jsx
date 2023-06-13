@@ -23,7 +23,7 @@ export class InsertPersonalMappingPopup extends Component {
 
         this.state = {
             form: {
-                botId: this.props.settings.bots ? this.props.settings.bots[0].id : '',
+                botId: '',
                 displayName: '',
                 recipientType: '',
                 recipientName: '',
@@ -35,7 +35,7 @@ export class InsertPersonalMappingPopup extends Component {
                 ignoredNotification: '',
                 isTest: false,
                 isTelegram: false,
-                botServiceId: this.props.settings.botServices ? this.props.settings.botServices[0].id : '',
+                botServiceId: '',
                 chatId: '',
                 username: ''
             },
@@ -51,7 +51,8 @@ export class InsertPersonalMappingPopup extends Component {
             dirtyFormConfirmation: {
                 isShow: false
             },
-            ignoreNotificationTypes: null
+            ignoreNotificationTypes: null,
+            recipientTypes: []
         };
 
         this.initState = null;
@@ -59,6 +60,14 @@ export class InsertPersonalMappingPopup extends Component {
 
     async componentDidMount() {
         this.initState = Object.assign({}, this.state.form);
+        this.setState({
+            recipientTypes: this.props.settings.recipientTypes,
+            form: {
+                ...this.state.form,
+                botId: this.props.settings.bots ? this.getBotNameByBotService(this.props.settings.botServices[0].id)[0].id : '',
+                botServiceId: this.props.settings.botServices ? this.props.settings.botServices[0].id : ''
+            }
+        });
         await this.getIgnoreNotificationType();
     }
 
@@ -73,7 +82,7 @@ export class InsertPersonalMappingPopup extends Component {
         await DataService.getDataAsync(url).then(response => {
             this.setState({ignoreNotificationTypes: response.data});
         }).then(() => Site.unblockUI());
-    }
+    };
 
     handleChange = (fieldName, fieldValue) => {
         this.setState(prevState => ({
@@ -85,6 +94,16 @@ export class InsertPersonalMappingPopup extends Component {
         this.handleChange('botServiceId', botServiceId);
         this.handleChange('displayName', '');
         this.handleChange('botId', this.getBotNameByBotService(botServiceId)[0].id);
+
+        if (botServiceId === BotServiceType.Telegram) {
+            this.setState({
+                recipientTypes: this.props.settings.recipientTypes.filter(item => item.name === 'PIC of headline')
+            });
+        } else {
+            this.setState({
+                recipientTypes: this.props.settings.recipientTypes
+            });
+        }
     };
 
     handleBotChange = value => {
@@ -421,7 +440,7 @@ export class InsertPersonalMappingPopup extends Component {
                                 value={this.state.form.recipientType}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {this.props.settings.recipientTypes.map(this.renderOptions)}
+                                {this.state.recipientTypes.map(this.renderOptions)}
                             </Form.Control>
                         </Col>
                     </Form.Group>

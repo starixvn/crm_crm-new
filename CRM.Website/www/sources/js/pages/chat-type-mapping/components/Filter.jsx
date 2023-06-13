@@ -126,16 +126,20 @@ export class Filter extends Component {
 
     getParams = () => {
         const pageSize = this.props.gridParams.pageSize;
+        const {
+            chatType, botIds, botServiceId, name, groupHeadline,
+            recipient, LetstalkIdOrUsername, mappingStatuses, active
+        } = this.state.filter;
         return {
-            chatType: this.state.filter.chatType,
-            botIds: this.state.filter.botIds,
-            channelId: this.state.filter.botServiceId,
-            name: this.state.filter.name,
-            groupHeadline: this.state.filter.groupHeadline,
-            recipientIds: this.state.filter.recipient,
-            LetstalkIdOrUsername: this.state.filter.LetstalkIdOrUsername,
-            mappingStatuses: this.state.filter.mappingStatuses,
-            isActive: this.state.filter.active,
+            chatType: chatType,
+            botIds: botServiceId ? botIds : '',
+            channelId: botServiceId,
+            name,
+            groupHeadline,
+            recipientIds: recipient,
+            LetstalkIdOrUsername,
+            mappingStatuses,
+            isActive: active,
             pageIndex: 1,
             pageSize: !pageSize ? 100 : pageSize
         };

@@ -112,6 +112,14 @@ export class EditPersonalMappingPopup extends Component {
         await this.getIgnoreNotificationType();
     }
 
+    getRecipientTypes = botServiceId => {
+        if (botServiceId === BotServiceType.Telegram) {
+            return this.props.settings.recipientTypes.filter(item => item.name === 'PIC of headline');
+        } else {
+            return this.props.settings.recipientTypes;
+        }
+    };
+
     getIgnoreNotificationType = async () =>{
         Site.blockUI();
         const url = Site.resolveClientUrl('ChatTypeMapping/GetIgnoreNotificationType');
@@ -403,6 +411,7 @@ export class EditPersonalMappingPopup extends Component {
         const { botServiceId } = this.state.form;
         const groupHeadlinesOption = this.state.form.recipientName === AccountingPIC ? this.state.groupHeadlineDefault : this.state.settings.headlineOptions;
         const botOptions = this.props.settings.bots.filter(item => item.channelId === botServiceId);
+        const recipientTypes = this.getRecipientTypes(botServiceId);
 
         return (
             <Form onSubmit={this.handleEditPersonalSubmitForm}>
@@ -480,7 +489,7 @@ export class EditPersonalMappingPopup extends Component {
                                 value={this.state.form.recipientType}
                             >
                                 <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {this.props.settings.recipientTypes.map(this.renderEditPersonalSelectOptions)}
+                                {recipientTypes.map(this.renderEditPersonalSelectOptions)}
                             </Form.Control>
                         </Col>
                     </Form.Group>
