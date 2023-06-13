@@ -35,7 +35,7 @@ export default class Content extends Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div>{`${LangHelper.getResource('LetstalkName')}: ${data.letstalkName}`}</div>
+                    <div>{`${LangHelper.getResource('DisplayName')}: ${data.displayName}`}</div>
                     <div className={`border p-2 mt-2 mb-3 ${data.dataSource === 'DBCRM.bodb_CRM.dbo.crmAnnouncement' ? 'ann-content' : 'notification-content'}`} dangerouslySetInnerHTML={{ __html: data.content }} />
                 </Modal.Body>
                 <Modal.Footer>

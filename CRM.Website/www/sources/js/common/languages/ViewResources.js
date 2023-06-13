@@ -45,7 +45,6 @@
     Birthday: 'Birthday',
     BetType: 'Bet Type',
     BackToRemarksList: 'Back To Remarks List',
-    BotService: 'Bot Service',
     Category: 'Category',
     CategoryRequired: 'Category is required!',
     ChangePICState: 'Change PIC State',
