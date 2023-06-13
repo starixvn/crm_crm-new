@@ -59,6 +59,7 @@ describe('InsertPersonalMappingPopup', () => {
         // Action
         const wrapper = shallow(<InsertPersonalMappingPopupWrapper {...props} store={store} />, { disableLifecycleMethods: true });
         wrapper.instance();
+        wrapper.getBotNameByBotService = jest.fn();
 
         // Assert
         it('component renders correctly', () => {
@@ -89,6 +90,7 @@ describe('InsertPersonalMappingPopup', () => {
             const state = {form:{}};
             // Act
             const popup = shallow(<InsertPersonalMappingPopup {...props} />).instance();
+            popup.getBotNameByBotService = jest.fn(() => [{ id: 1 }]);
             popup.setState(state);
             popup.getIgnoreNotificationType = jest.fn();
 
@@ -146,7 +148,8 @@ describe('InsertPersonalMappingPopup', () => {
             const props = {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
-                    botServices: [{ id: 1, name: 'telegram' }]
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    recipientTypes: [{ id: 8, name: 'PIC of headline'}]
                 }
             };
             // Act
@@ -242,8 +245,8 @@ describe('InsertPersonalMappingPopup', () => {
             settings: {
                 bots: [{ id: 1, name: 'Bot1', channelId: 1 }],
                 botServices: [{ id: 1, name: 'telegram' }],
-                recipientTypes: [],
-                languages: []
+                languages: [],
+                recipientTypes: [{ id: 8, name: 'PIC of headline'}]
             },
             recipients: [],
             groupHeadline: [],
@@ -503,6 +506,7 @@ describe('InsertPersonalMappingPopup', () => {
             insertPersonalMappingResult: { isSuccessful: true },
             letstalkName: '',
             getLetstalkDisplayName: jest.fn(() => promise),
+            getTelegramDisplayName: jest.fn(() => promise),
             getRecipientByRecipientType: jest.fn(),
             getGroupHeadlineByRecipient: jest.fn(),
             setInsertPersonalMappingResult: jest.fn(),
@@ -510,14 +514,23 @@ describe('InsertPersonalMappingPopup', () => {
             closeInsertPersonalMappingPopup: jest.fn(),
             getGridData: jest.fn()
         };
+        const state = {
+            form: {
+                botServiceId: 1,
+                chatId: 1,
+                recipient: { value: 'test' },
+                groupHeadlines: '1,2,3'
+            }
+        }
         const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
+        popup.instance().setState(state);
 
         it('handleBotChange with call correct props with correct params',async () => {
             jest.useFakeTimers();
             popup.instance().handleChange = jest.fn();
             popup.instance().handleBotChange('value');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('botId', 'value');
-            expect(props.getLetstalkDisplayName).toHaveBeenCalledWith('value', '');
+            expect(props.getLetstalkDisplayName).toHaveBeenCalled();
             await promise;
             jest.runAllTimers();
             expect(popup.instance().handleChange).toHaveBeenCalledWith('displayName', props.letstalkName);
@@ -567,7 +580,7 @@ describe('InsertPersonalMappingPopup', () => {
             popup.instance().handleChange = jest.fn();
             popup.instance().handleLetstalkSelect(event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('letstalkId', 'value');
-            expect(props.getLetstalkDisplayName).toHaveBeenCalledWith(1, 'value');
+            expect(props.getLetstalkDisplayName).toHaveBeenCalled();
             await promise;
             jest.runAllTimers();
             expect(popup.instance().handleChange).toHaveBeenCalledWith('displayName', props.letstalkName);

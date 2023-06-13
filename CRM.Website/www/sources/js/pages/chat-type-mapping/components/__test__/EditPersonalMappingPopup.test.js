@@ -147,8 +147,13 @@ describe('EditPersonalMappingPopup', () => {
                     recipient: '1',
                     conversationId: '1',
                     groupHeadlines: '1',
-                    languageId: '1'
-                }
+                    languageId: '1',
+                    groupHeadlineDefault: [{subData: null, id: 10695, name: '038arm'}],
+                    groupHeadline: [{subData: null, id: 10695, name: '038arm'}],
+                    recipient: { value: 'test' },
+                    groupHeadlines: '1,2,3'
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             const popup = shallow(<EditPersonalMappingPopup {...props} />);
             popup.instance().setState(state);
@@ -166,13 +171,19 @@ describe('EditPersonalMappingPopup', () => {
             const state = {
                 form: {
                     botId: '1',
-                    botServiceId: 1
-                }
+                    botServiceId: 1,
+                    groupHeadlineDefault: [{subData: null, id: 10695, name: '038arm'}],
+                    groupHeadline: [{subData: null, id: 10695, name: '038arm'}],
+                    recipient: { value: 'test' },
+                    groupHeadlines: '1,2,3'
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
 
             const initProps = { ...props, getLetstalkDisplayName: jest.fn(() => promise) };
 
             const popup = shallow(<EditPersonalMappingPopup {...initProps} />, { disableLifecycleMethods: true });
+            popup.instance().setState(state);
             popup.instance().handleGroupHeadlineChange = jest.fn();
             popup.instance().handleRecipientTypeChange = jest.fn();
             popup.instance().handleRecipientChange = jest.fn();
@@ -186,17 +197,25 @@ describe('EditPersonalMappingPopup', () => {
             test.find(Form.Group).at(4).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith(event);
 
-            test.find(Form.Group).at(7).find(Form.Control).at(0).simulate('change', event);
+            test.find(Form.Group).at(8).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('languageId', 'value');
 
-            test.find(Form.Group).at(9).find(Form.Control).at(0).simulate('change', event);
+            test.find(Form.Group).at(10).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('remark', 'value');
         });
 
         it('render correct', () => {
             const state = {
                 isShowConfirmDirtyForm: true,
-                ignoreNotificationTypes: ['test']
+                form: {
+                    botId: '1',
+                    botServiceId: 1,
+                    groupHeadlineDefault: [{subData: null, id: 10695, name: '038arm'}],
+                    groupHeadline: [{subData: null, id: 10695, name: '038arm'}],
+                    recipient: { value: 'test' },
+                    groupHeadlines: '1,2,3'
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
             popup.instance().setState(state);
@@ -353,6 +372,56 @@ describe('EditPersonalMappingPopup', () => {
             expect(popup.instance().handleChange).toHaveBeenCalledWith('letstalkID_Username', 'test');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('chatId', '123');
             expect(props.getTelegramDisplayName).toHaveBeenCalled();
+        });
+    });
+
+    describe('getRecipientTypes', () => {
+        it('should return exactly when is telegram', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                recipients: {
+                    data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }],
+                    botInfo: [{ username: 'test', chatId: '123' }]
+                },
+                groupHeadline: [{ id: 1 }],
+                recipient: { value: 'test' },
+                settings: {
+                    bots: [{ channelId: 1, id: 1}],
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    recipientTypes: [{ id: 8, name: 'PIC of headline' }, { id: 9, name: 'Account of headline' }]
+                }
+            };
+            // Act
+            const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            const actual = popup.getRecipientTypes(2);
+
+            // Assert
+            expect(actual).toEqual([{ id: 8, name: 'PIC of headline' }]);
+        });
+
+        it('should return exactly when is letstalk', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                recipients: {
+                    data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }],
+                    botInfo: [{ username: 'test', chatId: '123' }]
+                },
+                groupHeadline: [{ id: 1 }],
+                recipient: { value: 'test' },
+                settings: {
+                    bots: [{ channelId: 1, id: 1}],
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    recipientTypes: [{ id: 8, name: 'PIC of headline' }, { id: 9, name: 'Account of headline' }]
+                }
+            };
+            // Act
+            const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            const actual = popup.getRecipientTypes(1);
+
+            // Assert
+            expect(actual).toEqual(props.settings.recipientTypes);
         });
     });
 

@@ -188,8 +188,28 @@ describe('EditGroupMappingPopup', () => {
                 target: { value: 'value' },
                 preventDefault: jest.fn()
             };
+            const state = {
+                form: {
+                    botId: 1,
+                    botServiceId: 2,
+                    chatId: 1,
+                    groupHeadlineDefault: [{subData: null, id: 10695, name: '038arm'}],
+                    groupHeadline: [{subData: null, id: 10695, name: '038arm'}],
+                    recipient: { value: 'test' },
+                    groupHeadlines: '1,2,3',
+                    recipientIds: '1,2,3',
+                    bot: {
+                        id: 1, name: 'test'
+                    },
+                    mappingStatus: { id: 1 }
+                },
+                settings: {
+                    recipientOptions: [{subData: null, id: 10695, name: '038arm'}]
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
+            }
             const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
-            popup.instance().setState({ ignoreNotificationTypes: true });
+            popup.instance().setState(state);
             popup.instance().handleGroupHeadlineChange = jest.fn();
             popup.instance().handleRecipientTypeChange = jest.fn();
             popup.instance().handleRecipientChange = jest.fn();
@@ -215,7 +235,24 @@ describe('EditGroupMappingPopup', () => {
         it('render correct', () => {
             const state = {
                 isShowConfirmDirtyForm: true,
-                ignoreNotificationTypes: ['test']
+                form: {
+                    botId: 1,
+                    botServiceId: 2,
+                    chatId: 1,
+                    groupHeadlineDefault: [{subData: null, id: 10695, name: '038arm'}],
+                    groupHeadline: [{subData: null, id: 10695, name: '038arm'}],
+                    recipient: { value: 'test' },
+                    groupHeadlines: '1,2,3',       
+                    recipientIds: '1,2,3',
+                    bot: {
+                        id: 1, name: 'test'
+                    },
+                    settings: {
+                        recipientOptions: [{subData: null, id: 10695, name: '038arm'}]
+                    },
+                    mappingStatus: { id: 1 }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true });
             popup.instance().setState(state);
@@ -291,6 +328,60 @@ describe('EditGroupMappingPopup', () => {
 
             expect(props.verifyTelegramInGroup).toHaveBeenCalled();
         })
+    });
+
+    describe('getRecipientTypes', () => {
+        it('should return exactly when is telegram', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                recipients: {
+                    data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }],
+                    botInfo: [{ username: 'test', chatId: '123' }]
+                },
+                letstalkVerification: { isBotRemoved: false },
+                telegramVerification: { isBotRemoved: false },
+                groupHeadline: [{ id: 1 }],
+                recipient: { value: 'test' },
+                settings: {
+                    bots: [{ channelId: 1, id: 1}],
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    recipientTypes: [{ id: 8, name: 'PIC of headline' }, { id: 9, name: 'Account of headline' }]
+                }
+            };
+            // Act
+            const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            const actual = popup.getRecipientTypes(2);
+
+            // Assert
+            expect(actual).toEqual([{ id: 8, name: 'PIC of headline' }]);
+        });
+
+        it('should return exactly when is letstalk', () => {
+            // Arrange
+            const props = {
+                ...initProps,
+                recipients: {
+                    data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }],
+                    botInfo: [{ username: 'test', chatId: '123' }]
+                },
+                letstalkVerification: { isBotRemoved: false },
+                telegramVerification: { isBotRemoved: false },
+                groupHeadline: [{ id: 1 }],
+                recipient: { value: 'test' },
+                settings: {
+                    bots: [{ channelId: 1, id: 1}],
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    recipientTypes: [{ id: 8, name: 'PIC of headline' }, { id: 9, name: 'Account of headline' }]
+                }
+            };
+            // Act
+            const popup = shallow(<EditGroupMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            const actual = popup.getRecipientTypes(1);
+
+            // Assert
+            expect(actual).toEqual(props.settings.recipientTypes);
+        });
     });
 
     describe('isCheckRender', () => {
