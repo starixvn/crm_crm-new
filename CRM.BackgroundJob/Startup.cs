@@ -74,8 +74,6 @@
                .UseDefaultDbSettingProvider("~/App_Data/SpNames.xml")
                .Run();
 
-           
-
             RefDataTypeContainer
             .ConnectTo(new Uri(Configuration.GetSection("RemotingRefService:Fanex.RemotingRef.Service.Url").Value))
             .FromApplication("CRM.BackgroundJob");
@@ -108,7 +106,6 @@
             {
                 app.UseHsts();
             }
-
 
             app.UseMiddleware<ErrorHandler>();
             app.UseStaticFiles();
@@ -165,6 +162,7 @@
             services.AddSingleton<IVoidingSettledTicketsFeedbackService, VoidingSettledTicketsFeedbackService>();
             services.AddSingleton<IVoidingSettledTicketsService, VoidingSettledTicketsService>();
             services.AddSingleton<IArchivingDAService, ArchivingDAService>();
+            services.AddSingleton<ISendAnnouncementService, SendAnnouncementService>();
         }
 
         private static void AddWorker(IServiceCollection services)
@@ -181,6 +179,7 @@
             services.AddHostedService<AutoChatbotProblemAccountWorker>();
             services.AddHostedService<AutoChatbotResultAmendmentWoker>();
             services.AddHostedService<ScanAndSendLetstalkNotificationWorker>();
+            services.AddHostedService<ScanAndSendAnnouncementWorker>();
             services.AddHostedService<SynchronizeNewLicenseeWorker>();
             services.AddHostedService<AutoFbVoidingSettledTicketsWorker>();
             services.AddHostedService<AutoFbArchivingDAWoker>();

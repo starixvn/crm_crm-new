@@ -16,29 +16,24 @@
     using CRM.Letstalk.Services.Models.SendNotification;
     using CRM.Letstalk.Services.Services.Interfaces;
     using Microsoft.Extensions.Configuration;
-    using Newtonsoft.Json;
 
     public class SendNotificationService : ISendNotificationService
     {
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
-        private readonly Func<int, ILetstalkService> letstalkService;
+        private readonly Func<long, ILetstalkService> letstalkService;
         private readonly int ItemEachBatch;
         private const int DefaultItemEachBatch = 10;
-        private readonly string BaseImageUrl;
-
-        private readonly string formatImageUrl = "{0}{1}/{2}";
 
         public SendNotificationService(IBaseService baseService,
             ICRMLogService logService,
             IConfiguration configuration,
-            Func<int, ILetstalkService> letstalkService)
+            Func<long, ILetstalkService> letstalkService)
         {
             this.baseService = baseService;
             this.logService = logService;
             this.letstalkService = letstalkService;
             ItemEachBatch = configuration.GetValue<int?>("SendNotificationItemEachBatch") ?? DefaultItemEachBatch;
-            BaseImageUrl = configuration.GetValue<string>("BaseImageUrl");
         }
 
         public async Task SendNotificationToLetstalk()
@@ -135,37 +130,13 @@
 
             var outGoingMsg = new OutgoingMessage
             {
-                MessageType = notification.AnnouncementId > 0 ? MessageTypeNumber.Html : MessageTypeNumber.Text,
+                MessageType = MessageTypeNumber.Text,
                 Text = notification.Content
             };
 
             result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
-            if (!string.IsNullOrEmpty(notification.FileName) && notification.AnnouncementId > 0)
-            {
-                await SendImagesToPersonal(notification);
-            }
-
             await HandleSendPersonalResponse(notification, result, sendResult);
-        }
-
-        private async Task SendImagesToPersonal(NotificationMessage notification)
-        {
-            var images = notification.FileName.Split(",");
-            logService.LogInformation("============== Personal ===========");
-            logService.LogInformation($"AnnouncementID: {notification.AnnouncementId} - ConversationID: {notification.ConversationId}");
-            foreach (var img in images)
-            {
-                var outgoingMsg = new OutgoingMessage
-                {
-                    MessageType = MessageTypeNumber.Image,
-                    ImageUrl = string.Format(formatImageUrl, BaseImageUrl, notification.AnnouncementId, img)
-                };
-                logService.LogInformation(string.Format(formatImageUrl, BaseImageUrl, notification.AnnouncementId, img));
-
-                var result = await letstalkService(notification.BotId).PushPersonalAsync(new List<string> { notification.ConversationId }, outgoingMsg);
-                logService.LogInformation(JsonConvert.SerializeObject(result));
-            }
         }
 
         private async Task HandleSendPersonalResponse(NotificationMessage notification, PushMessageResult result, SendNotificationResult sendResult)
@@ -202,39 +173,15 @@
             var result = new PushMessageResult();
             var outGoingMsg = new OutgoingMessage
             {
-                MessageType = notification.AnnouncementId > 0 ? MessageTypeNumber.Html : MessageTypeNumber.Text,
+                MessageType = MessageTypeNumber.Text,
                 Text = notification.Content
             };
 
             result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outGoingMsg);
 
-            if (!string.IsNullOrEmpty(notification.FileName) && notification.AnnouncementId > 0)
-            {
-                await SendImagesToGroup(notification);
-            }
-
             sendResult.Status = result.IsSuccess ? SendNotificationStatus.Sent : SendNotificationStatus.Retrying;
             sendResult.ErrMsg = result.IsSuccess ? string.Empty : SendNotificationErrMsg.BotServiceErrorMsg;
             await WriteLogMessage(notification, result, sendResult.Status);
-        }
-
-        private async Task SendImagesToGroup(NotificationMessage notification)
-        {
-            var images = notification.FileName.Split(",");
-            logService.LogInformation("============== Chat room ===========");
-            logService.LogInformation($"AnnouncementID: {notification.AnnouncementId} - ConversationID: {notification.ConversationId}");
-            foreach (var img in images)
-            {
-                var outgoingMsg = new OutgoingMessage
-                {
-                    MessageType = MessageTypeNumber.Image,
-                    ImageUrl = string.Format(formatImageUrl, BaseImageUrl, notification.AnnouncementId, img)
-                };
-                logService.LogInformation(string.Format(formatImageUrl, BaseImageUrl, notification.AnnouncementId, img));
-
-                var result = await letstalkService(notification.BotId).PushMultiRoomAsync(new List<string> { notification.ConversationId }, outgoingMsg);
-                logService.LogInformation(JsonConvert.SerializeObject(result));
-            }
         }
 
         private async Task UpdateRecipientStatus(IEnumerable<SendNotificationResult> sentResults)

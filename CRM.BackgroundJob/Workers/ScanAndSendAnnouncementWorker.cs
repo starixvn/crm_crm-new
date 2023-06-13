@@ -10,11 +10,11 @@
     using Microsoft.Extensions.Options;
     using ONEbook.UM.Services;
 
-    public class SendAnnouncementWorker : BaseWorker
+    public class ScanAndSendAnnouncementWorker : BaseWorker
     {
         private readonly ISendAnnouncementService sendService;
 
-        public SendAnnouncementWorker(
+        public ScanAndSendAnnouncementWorker(
             ISendAnnouncementService sendService,
             IMaintenanceService maintenanceService,
             IOptions<List<JobSetting>> jobSettings,
@@ -22,7 +22,7 @@
                 : base(maintenanceService, logService)
         {
             this.sendService = sendService;
-            jobSetting = JobHelper.GetJobConfig(jobSettings.Value, JobName.ScanAndSendLetstalkNotification);
+            jobSetting = JobHelper.GetJobConfig(jobSettings.Value, JobName.ScanAndSendAnnouncement);
         }
 
         public override async Task ExecuteJobAsync()

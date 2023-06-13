@@ -1,5 +1,4 @@
-﻿
-namespace Fanex.CRM.BackgroundJob
+﻿namespace Fanex.CRM.BackgroundJob
 {
     using System;
     using global::CRM.BackgroundJob;
@@ -7,8 +6,6 @@ namespace Fanex.CRM.BackgroundJob
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Logging;
-    using NLog;
     using NLog.Web;
 
     public static class Program
@@ -29,9 +26,7 @@ namespace Fanex.CRM.BackgroundJob
             {
                 NLog.LogManager.Shutdown();
             }
-
         }
-
 
         private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)

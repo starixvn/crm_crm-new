@@ -24,7 +24,7 @@
             services.AddSingleton<HttpClientService>();
             services.AddSingleton<LetstalkService>();
             services.AddSingleton<ICacheService, CacheService>();
-            services.AddSingleton<Func<int, ILetstalkService>>(serviceProvider => botId =>
+            services.AddSingleton<Func<long, ILetstalkService>>(serviceProvider => botId =>
             {
                 var botConfig = botConfigs.FirstOrDefault(config => config.BotAccountId == botId);
 

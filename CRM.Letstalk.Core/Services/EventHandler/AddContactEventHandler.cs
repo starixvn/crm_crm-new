@@ -10,10 +10,10 @@
 
     public class AddContactEventHandler : IEventHandler
     {
-        private readonly Func<int, ILetstalkService> letstalkService;
+        private readonly Func<long, ILetstalkService> letstalkService;
         private const string greeting = "Hello, I am {0}!";
 
-        public AddContactEventHandler(Func<int, ILetstalkService> letstalkService)
+        public AddContactEventHandler(Func<long, ILetstalkService> letstalkService)
         {
             this.letstalkService = letstalkService;
         }

@@ -12,9 +12,9 @@
     public class MonitorService : IMonitorService
     {
         private readonly MonitorSettings monitorSettings;
-        private readonly Func<int, ILetstalkService> letstalkService;
+        private readonly Func<long, ILetstalkService> letstalkService;
 
-        public MonitorService(MonitorSettings monitorSettings, Func<int, ILetstalkService> letstalkService)
+        public MonitorService(MonitorSettings monitorSettings, Func<long, ILetstalkService> letstalkService)
         {
             this.monitorSettings = monitorSettings;
             this.letstalkService = letstalkService;
