@@ -97,7 +97,7 @@ body {
     padding: 0;
     width: 100%;
     position: absolute;
-    min-width: 1485px;
+    min-width: 1299px;
     left: 0;
     right: 0;
     top: 0;
@@ -119,12 +119,12 @@ body {
         z-index: 999;
 
         .header{
-            min-width: 1485px;
+            min-width: 1299px;
         }
     }
     
     .row-content{
-        min-width: 1485px;
+        min-width: 1299px;
     }
 
     .search-breadbrumb{
@@ -436,4 +436,9 @@ body {
 td a{
     color: #147ccc !important;
     cursor: pointer ;
+}
+@media only screen and (max-width: 1352px) {
+    .header .right-header ul > li{
+        padding: 12px 8px !important;
+    }
 }

@@ -131,7 +131,7 @@ export const getHeadlineOptions = searchText => async dispatch => {
 
     const url = Site.resolveClientUrl('Common/GetHeadlines');
     await DataService.postDataAsync(url, params).then(response => {
-        const options = response.data.item1.map(item => {
+        const options = response.data.map(item => {
             return { value: item.name, label: item.name };
         });
 
@@ -147,7 +147,7 @@ export const getRecipientOptions = searchText => async dispatch => {
 
     const url = Site.resolveClientUrl('Common/GetRecipients');
     await DataService.postDataAsync(url, params).then(response => {
-        const options = response.data.map(item => {
+        const options = response.data.item1.map(item => {
             return { value: item.name, label: item.name };
         });
 

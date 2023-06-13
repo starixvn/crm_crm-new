@@ -1,4 +1,24 @@
 ﻿.chat-type-mapping{
+    .form-filter {
+        .filter-collapse {
+            .fa {
+                font-size: 10px;
+                width: 22px;
+                background-color: #464D5D;
+                color: white;
+                cursor: pointer;
+            }
+        }
+        
+        .large-form {
+            width: 300px !important;
+
+            .large-label {
+                width: 140px;
+            }
+        }
+    }
+
     .checkbox-cell-style {
         width: 13px;
         height: 13px;
@@ -87,26 +107,6 @@
     
     .hidden-isTest{
         visibility:hidden;
-    }
-
-    .form-filter {
-        .filter-collapse {
-            .fa {
-                font-size: 10px;
-                width: 22px;
-                background-color: #464D5D;
-                color: white;
-                cursor: pointer;
-            }
-        }
-
-        .large-form {
-            width: 300px !important;
-
-            .large-label {
-                width: 140px;
-            }
-        }
     }
 }
 

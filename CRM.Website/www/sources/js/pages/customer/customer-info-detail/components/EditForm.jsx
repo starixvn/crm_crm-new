@@ -314,7 +314,7 @@ export class EditForm extends Component {
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" className="shadow-none" value={values.refCode1}
                                             name="refCode1" id="refCode1" autoComplete="off" onChange={this.handleChange}
-                                        ></Form.Control>
+                                        />
                                     </Col>
                                 </Form.Group>
                             </Col>
@@ -525,7 +525,7 @@ export class EditForm extends Component {
                                     <div className="phone">
                                         <Form.Control type="text" size="sm" className="shadow-none" value={values.faxNumber}
                                             name="faxNumber" id="faxNumber" autoComplete="off" onChange={this.handleChange}
-                                        ></Form.Control>
+                                        />
                                     </div>
                                 </div>
                             </Col>

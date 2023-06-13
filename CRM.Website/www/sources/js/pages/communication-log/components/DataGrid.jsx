@@ -11,7 +11,6 @@ import { handleSort } from '@jsroot/common/shareScripts';
 import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class DataGrid extends Component {
-
     constructor(props) {
         super(props);
         this.sortDesc = true;
@@ -171,7 +170,7 @@ export class DataGrid extends Component {
                     <span>{LangHelper.getResource('CustomerCommunicationLogs')}</span>
                 </div>
                 <Table
-                    width={1400}
+                    width={1300}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}

@@ -115,22 +115,22 @@ export class PicDataGrid extends Component {
     getDetailChatTypeMappingInsert = item =>{
         const newLog = item.newLogInfo;
         const botNameValue = this.getStringObject(newLog.bot);
-        const letstalkNameValue = this.getStringValue(newLog.conversationGroup.name);
+        const displayNameValue = this.getStringValue(newLog.conversationGroup.name);
         const chatTypeValue = this.getStringObject(newLog.chatType);
         const recipientTypeValue = this.getStringObject(newLog.recipientType);
         const recipientValue = this.getStringJoinArray(newLog.recipients);
-        const letstalkIDValue = this.getStringValue(newLog.conversationGroup.letstalkID);
+        const chatBotIdValue = newLog.conversationGroup.letstalkID?.length > 0 ? newLog.conversationGroup.letstalkID : newLog.conversationGroup.chatID;
         const groupHeadlineValue = this.getStringJoinArray(newLog.headlines);
         const languageValue = this.getStringJoinArray(newLog.languages);
         const remarkValue = this.getStringValue(newLog.conversationGroup.remark);
         const activeValue = this.convertBoolToDecision(newLog.conversationGroup.active);
 
         const botName = LangHelper.getResource('BotName');
-        const letstalkName = LangHelper.getResource('LetstalkName');
+        const displayName = LangHelper.getResource('DisplayName');
         const chatTypeName = LangHelper.getResource('ChatType');
         const recipientTypeName = LangHelper.getResource('RecipientType');
         const recipientName = LangHelper.getResource('Recipient');
-        const letstalkID = LangHelper.getResource('LetstalkID');
+        const letstalkIDUsername = LangHelper.getResource('LetstalkIDUsername');
         const groupHeadline = LangHelper.getResource('GroupHeadline');
         const languageName = LangHelper.getResource('Language');
         const remarkName = LangHelper.getResource('Remark');
@@ -138,9 +138,9 @@ export class PicDataGrid extends Component {
 
         return (
             <div className='pic-container'>
-                {this.renderHtmlDetail(botName, botNameValue, letstalkName, letstalkNameValue)}
+                {this.renderHtmlDetail(botName, botNameValue, displayName, displayNameValue)}
                 {this.renderHtmlDetail(chatTypeName, chatTypeValue, recipientTypeName, recipientTypeValue)}
-                {this.renderHtmlDetail(recipientName, recipientValue, letstalkID, letstalkIDValue)}
+                {this.renderHtmlDetail(recipientName, recipientValue, letstalkIDUsername, chatBotIdValue)}
                 {this.renderHtmlDetail(groupHeadline, groupHeadlineValue, languageName, languageValue)}
                 {this.renderHtmlDetail(remarkName, remarkValue, activeNameName, activeValue)}
             </div>
@@ -207,18 +207,20 @@ export class PicDataGrid extends Component {
 
     getDetailChatTypeMappingUpdate = item =>{
         const {newLogInfo, oldLogInfo} = item;
-        const newLetstalkName = this.getStringValue(newLogInfo.conversationGroup.name);
-        const oldLetstalkName = this.getStringValue(oldLogInfo.conversationGroup.name);
-        const LetstalkNameValue = this.changeValueToHtmlString(oldLetstalkName, newLetstalkName);
+        const newDisplayName = this.getStringValue(newLogInfo.conversationGroup.name);
+        const oldDisplayName = this.getStringValue(oldLogInfo.conversationGroup.name);
+        const DisplayNameValue = this.changeValueToHtmlString(oldDisplayName, newDisplayName);
         const newRecipientType = this.getStringObject(newLogInfo.recipientType);
         const oldRecipientType = this.getStringObject(oldLogInfo.recipientType);
         const recipientTypeValue = this.changeValueToHtmlString(oldRecipientType, newRecipientType);
         const newRecipient = this.getStringJoinArray(newLogInfo.recipients);
         const oldRecipient = this.getStringJoinArray(oldLogInfo.recipients);
         const recipientValue = this.changeValueToHtmlString(oldRecipient, newRecipient);
-        const newLetstalkID = this.getStringValue(newLogInfo.conversationGroup.letstalkID);
-        const oldLetstalkID = this.getStringValue(oldLogInfo.conversationGroup.letstalkID);
-        const letstalkIDValue = this.changeValueToHtmlString(oldLetstalkID, newLetstalkID);
+        const botServiceNewId = newLogInfo.conversationGroup.letstalkID?.length > 0 ? newLogInfo.conversationGroup.letstalkID : newLogInfo.conversationGroup.chatID;
+        const botServiceOldId = oldLogInfo.conversationGroup.letstalkID?.length > 0 ? oldLogInfo.conversationGroup.letstalkID : oldLogInfo.conversationGroup.chatID;
+        const newBotService = this.getStringValue(botServiceNewId);
+        const oldBotService = this.getStringValue(botServiceOldId);
+        const botServiceValue = this.changeValueToHtmlString(oldBotService, newBotService);
         const newBotName = this.getStringObject(newLogInfo.bot);
         const oldBotName = this.getStringObject(oldLogInfo.bot);
         const botNameValue = this.changeValueToHtmlString(oldBotName, newBotName);
@@ -236,8 +238,8 @@ export class PicDataGrid extends Component {
                 {
                     this.renderHtmlDetail(
                         LangHelper.getResource('BotName'), botNameValue,
-                        LangHelper.getResource('LetstalkName'), LetstalkNameValue,
-                        oldBotName !== newBotName, oldLetstalkName !== newLetstalkName
+                        LangHelper.getResource('DisplayName'), DisplayNameValue,
+                        oldBotName !== newBotName, oldDisplayName !== newDisplayName
                     )
                 }
                 {
@@ -257,8 +259,8 @@ export class PicDataGrid extends Component {
                 {
                     this.renderHtmlDetail(
                         LangHelper.getResource('Remark'), remarkValue,
-                        LangHelper.getResource('LetstalkID'), letstalkIDValue,
-                        oldRemark !== newRemark, oldLetstalkID !== newLetstalkID
+                        LangHelper.getResource('LetstalkIDUsername'), botServiceValue,
+                        oldRemark !== newRemark, newBotService !== oldBotService
                     )
                 }
             </div>
@@ -301,8 +303,8 @@ export class PicDataGrid extends Component {
     };
 
     getDetailChaTypeMappingAction = (item, isUpdateStatus) =>{
-        const letstalkName = LangHelper.getResource('LetstalkName');
-        const letstalkNameValue = this.getStringObject(item.newLogInfo.conversationGroup);
+        const displayName = LangHelper.getResource('DisplayName');
+        const displayNameValue = this.getStringObject(item.newLogInfo.conversationGroup);
         const name = isUpdateStatus ?  LangHelper.getResource('Active') :  LangHelper.getResource('Deleted');
         const changedValue = this.changeValueToHtmlString(
                 this.convertBoolToDecision(isUpdateStatus ? item.oldLogInfo.conversationGroup?.active : item.oldLogInfo.conversationGroup?.deleted),
@@ -311,14 +313,14 @@ export class PicDataGrid extends Component {
         
         return (
             <div className='pic-container'>
-                { this.renderHtmlDetail(letstalkName, letstalkNameValue, name, changedValue) }
+                { this.renderHtmlDetail(displayName, displayNameValue, name, changedValue) }
             </div>
         );
     };
 
     getDetailChaTypeMappingRemark = item =>{
-        const letstalkName = LangHelper.getResource('LetstalkName');
-        const letstalkNameValue = this.getStringObject(item.newLogInfo.conversationGroup);
+        const displayName = LangHelper.getResource('DisplayName');
+        const displayNameValue = this.getStringObject(item.newLogInfo.conversationGroup);
         const remarkName = LangHelper.getResource('Remark');
         const changedValueRemark = this.changeValueToHtmlString(
                 item.oldLogInfo.conversationGroup?.remark,
@@ -327,7 +329,7 @@ export class PicDataGrid extends Component {
         
         return (
             <div className='pic-container'>
-                { this.renderHtmlDetail(letstalkName, letstalkNameValue, remarkName, changedValueRemark) }
+                { this.renderHtmlDetail(displayName, displayNameValue, remarkName, changedValueRemark) }
             </div>
         );
     };

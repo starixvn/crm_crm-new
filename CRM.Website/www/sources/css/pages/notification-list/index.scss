@@ -6,6 +6,13 @@
             display: none;
         }
 
+        .form-row-filter{
+            .form-group{
+                margin-bottom: 5px;
+                width: 250px;
+            }
+        }
+        
         .filter-collapse {
             .fa {
                 font-size: 10px;
@@ -204,3 +211,11 @@
 .view-detail-remark:focus {
     outline: none;
 }
+
+// @media only screen and (max-width: 1463px) {
+//     .notification-list{
+//         .form-filter .form-group{
+//             margin-bottom: 1rem !important;
+//         }
+//     }
+// }

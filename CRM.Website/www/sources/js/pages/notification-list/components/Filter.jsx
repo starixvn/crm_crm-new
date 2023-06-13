@@ -149,8 +149,8 @@ export class Filter extends Component {
         return {
             channelId: botService === '0' ? null : parseInt(botService, 10),
             notificationTypeIds: notificationTypes,
-            fromDate: referenceId.length > 0 ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
-            toDate: referenceId.length > 0 ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
+            fromDate: referenceId.toString().length > 0 ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
+            toDate: referenceId.toString().length > 0 ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
             headline: headline ? headline.value : '',
             recipientName: recipient ? recipient.value : '',
             notificationIdLower: notificationIdLower,
@@ -240,7 +240,7 @@ export class Filter extends Component {
         const referenceIds = ['Msg ID', 'Ann ID'];
         return (
             <Form className='form-filter' onSubmit={e => this.submitHandler(e)}>
-                <Form.Row bsPrefix='form-row'>
+                <Form.Row bsPrefix='form-row' className={this.state.showFilter ? '' : 'form-row-filter'}>
                     <Form.Group >
                         <Form.Label>{LangHelper.getResource('BotService')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none" name='botService'
@@ -306,11 +306,9 @@ export class Filter extends Component {
                     </Form.Group>
                     {
                         !this.state.showFilter &&
-                        <Form.Group>
-                            <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
-                                {LangHelper.getResource('Submit')}
-                            </Button>
-                        </Form.Group>
+                        <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
+                            {LangHelper.getResource('Submit')}
+                        </Button>
                     }
                 </Form.Row>
                 {
@@ -375,11 +373,9 @@ export class Filter extends Component {
                         </Form.Group>
                         {
                             this.state.showFilter &&
-                            <Form.Group>
-                                <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
-                                    {LangHelper.getResource('Submit')}
-                                </Button>
-                            </Form.Group>
+                            <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
+                                {LangHelper.getResource('Submit')}
+                            </Button>
                         }
                     </Form.Row>
                 }
