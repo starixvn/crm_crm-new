@@ -42,7 +42,7 @@ describe('InsertPersonalMappingPopup', () => {
                 languages: []
             },
             recipients: [],
-            groupHeadline: [],
+            groupHeadline: [{subData: null, id: 10695, name: '038arm'}],
             gridParams: {},
             insertPersonalMappingResult: {},
             letstalkName: ''
@@ -52,6 +52,9 @@ describe('InsertPersonalMappingPopup', () => {
                 bots: [{ channelId: 1, id: 1}],
                 botServices: [{ id: 1, name: 'telegram' }],
                 recipientTypes: [{ id: 8, name: 'PIC of headline'}],
+            },
+            recipients: {
+                data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
             }
         };
 
@@ -87,7 +90,12 @@ describe('InsertPersonalMappingPopup', () => {
                     botServices: [{ id: 1, name: 'telegram' }],
                     recipientTypes: [{ id: 8, name: 'PIC of headline'}],
                     languages: []
-                }};
+                },
+                recipients: {
+                    data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
+                },
+                groupHeadline: [{subData: null, id: 10695, name: '038arm'}]
+            };
             const state = {
                 form: {
                     botServiceId: 2,
@@ -114,11 +122,25 @@ describe('InsertPersonalMappingPopup', () => {
             const props = {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
-                    botServices: [{ id: 1, name: 'telegram' }]
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    recipientTypes: [{ id: 8, name: 'PIC of headline'}]
+                },
+                recipients: {
+                    data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
+                },
+                groupHeadline: [{subData: null, id: 10695, name: '038arm'}]
+            };
+            const state = {
+                form: {
+                    botServiceId: 2,
+                    chatId: 1,
+                    recipient: { value: 'test' },
+                    groupHeadlines: '1,2,3'
                 }
             };
             // Act
             const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            popup.setState(state);
             const actual = popup.getBotNameByBotService(1);
 
             // Assert
@@ -133,6 +155,18 @@ describe('InsertPersonalMappingPopup', () => {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
                     botServices: [{ id: 1, name: 'telegram' }]
+                },
+                recipients: {
+                    data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
+                },
+                groupHeadline: [{subData: null, id: 10695, name: '038arm'}]
+            };
+            const state = {
+                form: {
+                    botServiceId: 2,
+                    chatId: 1,
+                    recipient: { value: 'test' },
+                    groupHeadlines: '1,2,3'
                 }
             };
             const response = {data: [{ notificationTypeId: 1 }]};
@@ -142,6 +176,7 @@ describe('InsertPersonalMappingPopup', () => {
             
             // Act
             const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
+            popup.instance().setState(state);
             popup.instance().getIgnoreNotificationType();
             await promise;
 
@@ -157,10 +192,23 @@ describe('InsertPersonalMappingPopup', () => {
                     bots: [{ channelId: 1, id: 1}],
                     botServices: [{ id: 1, name: 'telegram' }],
                     recipientTypes: [{ id: 8, name: 'PIC of headline'}]
+                },
+                recipients: {
+                    data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
+                },
+                groupHeadline: [{subData: null, id: 10695, name: '038arm'}]
+            };
+            const state = {
+                form: {
+                    botServiceId: 2,
+                    chatId: 1,
+                    recipient: { value: 'test' },
+                    groupHeadlines: '1,2,3'
                 }
             };
             // Act
             const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            popup.setState(state);
             popup.getBotNameByBotService = jest.fn(() => [{ id: 1}]);
             popup.handleChange = jest.fn();
             popup.handleBotServiceChange(1);
@@ -255,8 +303,10 @@ describe('InsertPersonalMappingPopup', () => {
                 languages: [],
                 recipientTypes: [{ id: 8, name: 'PIC of headline'}]
             },
-            recipients: [],
-            groupHeadline: [],
+            recipients: {
+                data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
+            },
+            groupHeadline: [{subData: null, id: 10695, name: '038arm'}],
             gridParams: {},
             insertPersonalMappingResult: { isSuccessful: true },
             letstalkName: '',
@@ -418,7 +468,8 @@ describe('InsertPersonalMappingPopup', () => {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
                     botServices: [{ id: 1, name: 'telegram' }]
-                }
+                },
+                groupHeadline: [{subData: null, id: 10695, name: '038arm'}]
             };
             const option = { usernames: 'test' };
             // Act
@@ -435,7 +486,8 @@ describe('InsertPersonalMappingPopup', () => {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
                     botServices: [{ id: 1, name: 'telegram' }]
-                }
+                },
+                groupHeadline: [{subData: null, id: 10695, name: '038arm'}]
             };
             const option = { usernames: null };
             // Act
@@ -503,8 +555,10 @@ describe('InsertPersonalMappingPopup', () => {
                 recipientTypes: [],
                 languages: []
             },
-            recipients: [],
-            groupHeadline: [],
+            recipients: {
+                data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
+            },
+            groupHeadline: [{subData: null, id: 10695, name: '038arm'}],
             gridParams: {},
             insertPersonalMappingResult: { isSuccessful: true },
             letstalkName: '',

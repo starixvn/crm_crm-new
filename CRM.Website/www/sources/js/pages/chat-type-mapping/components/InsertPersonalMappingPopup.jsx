@@ -64,8 +64,8 @@ export class InsertPersonalMappingPopup extends Component {
             recipientTypes: this.props.settings.recipientTypes,
             form: {
                 ...this.state.form,
-                botId: this.props.settings.bots ? this.getBotNameByBotService(this.props.settings.botServices[0].id)[0].id : '',
-                botServiceId: this.props.settings.botServices ? this.props.settings.botServices[0].id : ''
+                botId: this.props.settings.bots ? this.getBotNameByBotService(this.props.settings?.botServices[0].id)[0].id : '',
+                botServiceId: this.props.settings.botServices ? this.props.settings?.botServices[0].id : ''
             }
         });
         await this.getIgnoreNotificationType();
