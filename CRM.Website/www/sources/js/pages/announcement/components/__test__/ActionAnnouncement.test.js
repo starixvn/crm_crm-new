@@ -24,7 +24,7 @@ describe('ActionAnnouncement', () => {
     const initProps = {
         announcementTemplate: [{
             announcementId: 65014, notificationTemplateName: "Special Announcement s" ,
-            siteNameList: '123', currencyIdList: '1,2', headlineNameList: '1,2'
+            siteNameList: '123', currencyIdList: '1,2', headlineNameList: '1,2', sendImmediately: true
         }],
         actionAnnouncementPopup: {
             isEdit: true
