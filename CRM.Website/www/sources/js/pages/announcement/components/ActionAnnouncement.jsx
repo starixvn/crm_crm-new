@@ -514,14 +514,14 @@ export class ActionAnnouncement extends Component {
                         title={LangHelper.getResource('ConfirmEditAnnouncement')}
                         contents={this.renderContentConfirm()}
                         buttons={[
-                            <Button variant="primary" size="sm" onClick={this.handleConfirmActionDialog}>
+                            <Button variant="primary" size="sm" onClick={() => this.handleConfirmActionDialog()}>
                                 {LangHelper.getResource('Yes')}
                             </Button>,
-                            <Button variant="primary" size="sm" onClick={this.handleCloseConfirmEditDialog}>
+                            <Button variant="primary" size="sm" onClick={() => this.handleCloseConfirmEditDialog()}>
                                 {LangHelper.getResource('No')}
                             </Button>
                         ]}
-                        onClose={this.handleCloseConfirmEditDialog}
+                        onClose={() => this.handleCloseConfirmEditDialog()}
                     />
                 }
             </div>
