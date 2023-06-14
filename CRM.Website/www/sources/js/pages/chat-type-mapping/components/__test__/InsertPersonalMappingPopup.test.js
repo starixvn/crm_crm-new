@@ -50,7 +50,8 @@ describe('InsertPersonalMappingPopup', () => {
         const props = {
             settings: {
                 bots: [{ channelId: 1, id: 1}],
-                botServices: [{ id: 1, name: 'telegram' }]
+                botServices: [{ id: 1, name: 'telegram' }],
+                recipientTypes: [{ id: 8, name: 'PIC of headline'}],
             }
         };
 
@@ -82,12 +83,19 @@ describe('InsertPersonalMappingPopup', () => {
              // Arrange
             const props = {
                 settings: {
-                    bots: [{ id: 1, name: 'Bot1', channelId: 1 }],
+                    bots: [{ channelId: 1, id: 1}],
                     botServices: [{ id: 1, name: 'telegram' }],
-                    recipientTypes: [],
+                    recipientTypes: [{ id: 8, name: 'PIC of headline'}],
                     languages: []
                 }};
-            const state = {form:{}};
+            const state = {
+                form: {
+                    botServiceId: 2,
+                    chatId: 1,
+                    recipient: { value: 'test' },
+                    groupHeadlines: '1,2,3'
+                }
+            };
             // Act
             const popup = shallow(<InsertPersonalMappingPopup {...props} />).instance();
             popup.getBotNameByBotService = jest.fn(() => [{ id: 1 }]);
