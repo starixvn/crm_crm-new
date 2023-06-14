@@ -2,25 +2,29 @@
 
 .notification-list{
     .form-filter {
+        position: relative;
         .react-select__indicators {
             display: none;
         }
 
         .form-row-filter{
             .form-group{
-                margin-bottom: 5px;
-                width: 250px;
+                width: 245px;
             }
         }
         
-        .filter-collapse {
-            .fa {
-                font-size: 10px;
-                width: 22px;
-                background-color: #464D5D;
-                color: white;
-                cursor: pointer;
-            }
+        .fa-caret-up, .fa-caret-down {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            text-align:center;
+            font-size: 10px;
+            width: 22px;
+            background-color: #464D5D;
+            color: white;
+            cursor: pointer;
         }
     }
     
@@ -212,10 +216,14 @@
     outline: none;
 }
 
-// @media only screen and (max-width: 1463px) {
-//     .notification-list{
-//         .form-filter .form-group{
-//             margin-bottom: 1rem !important;
-//         }
-//     }
-// }
+@media only screen and (max-width: 1634px) {
+    .notification-list{
+        .form-filter .form-group{
+            width: 270px !important;
+
+            .referenceId{
+                width: 162px !important;
+            }
+        }
+    }
+}

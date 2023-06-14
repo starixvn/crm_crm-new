@@ -1,5 +1,22 @@
 @import '../../../abstracts/variables';
 .pic-assignment{
+    .form-filter{
+        position: relative;
+
+        .fa-caret-up, .fa-caret-down {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            text-align:center;
+            font-size: 10px;
+            width: 22px;
+            background-color: #464D5D;
+            color: white;
+            cursor: pointer;
+        }
+    }
     $suspended-color: #f8ded7;
     $closed-color: #f8ded7;
     $disabled-color: #a0a97a;
@@ -77,15 +94,6 @@
 
     .table td {
         word-break: break-word;
-    }
-    .filter-collapse {
-        .fa {
-            font-size: 10px;
-            width: 22px;
-            background-color: #464D5D;
-            color: white;
-            cursor: pointer;
-        }
     }
 
     .header-pic-max-width {

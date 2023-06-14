@@ -252,19 +252,17 @@ export class Filter extends Component {
                     </Form.Group>
                     {
                         !this.state.showFilter &&
-                        <Form.Row>
-                            <div>
-                                <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
-                                    {LangHelper.getResource('Submit')}
+                        <Form.Group>
+                            <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
+                                {LangHelper.getResource('Submit')}
+                            </Button>
+                            {
+                                isHost &&
+                                <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
+                                    {LangHelper.getResource('AssignPIC')}
                                 </Button>
-                                {
-                                    isHost &&
-                                    <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
-                                        {LangHelper.getResource('AssignPIC')}
-                                    </Button>
-                                }
-                            </div>
-                        </Form.Row>
+                            }
+                        </Form.Group>
                     }
                 </Form.Row>
                 {
@@ -329,27 +327,23 @@ export class Filter extends Component {
                 }
                 {
                     this.state.showFilter &&
-                    <Form.Row>
-                        <div>
-                            <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
-                                {LangHelper.getResource('Submit')}
+                    <Form.Group>
+                        <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
+                            {LangHelper.getResource('Submit')}
+                        </Button>
+                        {
+                            isHost &&
+                            <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
+                                {LangHelper.getResource('AssignPIC')}
                             </Button>
-                            {
-                                isHost &&
-                                <Button className='mr-2' variant='primary' size='sm' onClick={this.handleOpenAssignPicPopup}>
-                                    {LangHelper.getResource('AssignPIC')}
-                                </Button>
-                            }
-                        </div>
-                    </Form.Row>
+                        }
+                    </Form.Group>
                 }
-                <div className="filter-collapse text-center">
-                    {
-                        this.state.showFilter
-                            ? <span className="fa fa-caret-up fa-sm" onClick={() => this.handleToggleFilter(false)} />
-                            : <span className="fa fa-caret-down fa-sm" onClick={() => this.handleToggleFilter(true)} />
-                    }
-                </div>
+                {
+                    this.state.showFilter
+                        ? <span className="fa fa-caret-up fa-sm" onClick={() => this.handleToggleFilter(false)} />
+                        : <span className="fa fa-caret-down fa-sm" onClick={() => this.handleToggleFilter(true)} />
+                }
             </Form>
         );
     }
