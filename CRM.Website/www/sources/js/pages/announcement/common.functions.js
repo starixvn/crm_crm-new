@@ -121,6 +121,9 @@ export const mapLabelLanguage = languages =>{
 };
 
 export const checkInvalidMaxLengthContent = (content, tab) =>{
+    if(!content || !tab){
+        return {invalidContentMaxLength: false};
+    }
     const tabRemoveSpace = tab.replace(/[^A-Z0-9]/ig, '');
     const contentByTab = content[tabRemoveSpace];
     const contentReplaceHtml = contentByTab?.replace(/(<([^>]+)>)/gi, '');
