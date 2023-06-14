@@ -209,7 +209,7 @@ export class Filter extends Component {
                         {
                             !this.state.showFilter &&
                             (
-                                <Fragment>
+                                <Form.Group>
                                     <div className='col-auto pd-0'>
                                         <Button className='mr-2' variant='primary' size='sm' type='submit'>
                                             {LangHelper.getResource('Submit')}
@@ -223,7 +223,7 @@ export class Filter extends Component {
                                             </Button>
                                         </div>
                                     }
-                                </Fragment>
+                                </Form.Group>
                             )
                         }
                         {
@@ -279,7 +279,7 @@ export class Filter extends Component {
                                             <option value="false">{LangHelper.getResource('No')}</option>
                                         </Form.Control>
                                     </Form.Group>
-                                    <Fragment>
+                                    <Form.Group>
                                         <div className='col-auto pd-0'>
                                             <Button className='mr-2' variant='primary' size='sm' type='submit'>
                                                 {LangHelper.getResource('Submit')}
@@ -293,18 +293,16 @@ export class Filter extends Component {
                                                 </Button>
                                             </div>
                                         }
-                                    </Fragment>
+                                    </Form.Group>
                                 </Form.Row>
                             )
                         }
                     </Form.Row>
-                    <div className="filter-collapse text-center">
-                        {
-                            this.state.showFilter
-                                ? <span className="fa fa-caret-up fa-sm" onClick={() => this.handleToggleFilter(false)} />
-                                : <span className="fa fa-caret-down fa-sm" onClick={() => this.handleToggleFilter(true)} />
-                        }
-                    </div>
+                    {
+                        this.state.showFilter
+                            ? <span className="fa fa-caret-up fa-sm" onClick={() => this.handleToggleFilter(false)} />
+                            : <span className="fa fa-caret-down fa-sm" onClick={() => this.handleToggleFilter(true)} />
+                    }
                 </Form>
                 {
                     this.props.insertPersonalMappingData.isShow &&
