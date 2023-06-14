@@ -98,7 +98,6 @@ describe('InsertPersonalMappingPopup', () => {
             };
             // Act
             const popup = shallow(<InsertPersonalMappingPopup {...props} />).instance();
-            popup.getBotNameByBotService = jest.fn(() => [{ id: 1 }]);
             popup.setState(state);
             popup.getIgnoreNotificationType = jest.fn();
 
@@ -360,10 +359,6 @@ describe('InsertPersonalMappingPopup', () => {
         });
 
         it('handle functions should call correct functions with correct letstalk params when event triggered', async () => {
-            const event = {
-                target: { value: 'value', checked: true },
-                preventDefault: jest.fn()
-            };
             const promise = Promise.resolve([]);
             const state = {
                 form: {
