@@ -15,6 +15,7 @@ describe('ActionAnnouncement', () => {
         Site.unblockUI = jest.fn();
         Site.handleAxiosError = jest.fn();
         LangHelper.getResource = jest.fn((key) => key);
+        commonFunc.checkInvalidMaxLengthContent = jest.fn().mockReturnValue({invalidContentMaxLength: false, textInvalidContentMaxLength: ''});
     });
     afterAll(() => {
         jest.clearAllMocks();
