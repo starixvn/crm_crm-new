@@ -50,11 +50,12 @@ export class DataGridEdit extends PureComponent {
 
     renderRow = (item, index, productStatuses, informSettings) => {
         const isClosed = this.props.status === 'Closed' ? true : false;
+        const isDisplayCopy = index === 0 && !isClosed;
         return (
             <Row key={index} className={item.groupId > 0 ? 'free-grid-headline' : 'free-grid-direct'}>
                 <Cell>{item.username}</Cell>
                 <Cell className='text-center'>
-                    <div className='d-flex' style={{width: index === 0 ? '100%' : '123px'}}>
+                    <div className='d-flex' style={{width: isDisplayCopy ? '100%' : '123px'}}>
                         <Form.Control as="select" size="sm" className="shadow-none"
                             name="informHeadlineStatusId"
                             defaultValue={item.informHeadlineStatusId}
@@ -67,7 +68,7 @@ export class DataGridEdit extends PureComponent {
                             }
                         </Form.Control>
                         {
-                            index === 0 &&
+                            isDisplayCopy &&
                             <OverlayTrigger placement="bottom-start" delay={{show: 100}} overlay={
                                 <Tooltip id="tooltip-copy-selected">
                                     {LangHelper.getResource('CopySelectedValueToAllAccounts')}
@@ -92,7 +93,7 @@ export class DataGridEdit extends PureComponent {
                 <Cell>{item.handler}</Cell>
 
                 <Cell className='text-center'>
-                    <div className='d-flex' style={{width: index === 0 ? '100%' : '85px'}}>
+                    <div className='d-flex' style={{width: isDisplayCopy ? '100%' : '85px'}}>
                         <Form.Control as="select" size="sm" className="shadow-none"
                             name="extension"
                             defaultValue={item.extension}
@@ -105,7 +106,7 @@ export class DataGridEdit extends PureComponent {
                             }
                         </Form.Control>
                         {
-                            index === 0 &&
+                            isDisplayCopy &&
                             <OverlayTrigger placement="bottom-end" delay={{show: 100}} overlay={
                                 <Tooltip id="tooltip-copy-selected">
                                     {LangHelper.getResource('CopySelectedValueToAllAccounts')}
@@ -117,7 +118,7 @@ export class DataGridEdit extends PureComponent {
                     </div>
                 </Cell>
                 <Cell className='text-center'>
-                    <div className='d-flex' style={{width: index === 0 ? '100%' : '85px'}}>
+                    <div className='d-flex' style={{width: isDisplayCopy ? '100%' : '85px'}}>
                         <Form.Control as="select" size="sm" className="shadow-none"
                             name="productStatus"
                             disabled={isClosed || !this.props.permissions.hasHostPermission}
@@ -130,7 +131,7 @@ export class DataGridEdit extends PureComponent {
                             }
                         </Form.Control>
                         {
-                            index === 0 &&
+                            isDisplayCopy &&
                             <OverlayTrigger placement="bottom-end" delay={{show: 100}} overlay={
                                 <Tooltip id="tooltip-copy-selected">
                                     {LangHelper.getResource('CopySelectedValueToAllAccounts')}
