@@ -359,6 +359,10 @@ describe('AppContainer', () => {
                 }
             };
             const newAnnouncement = shallow(<NewAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.formik = {
+                setSubmitting: jest.fn(),
+                values:{sendType: 'Send At'}
+            };
             newAnnouncement.setState(state);
             newAnnouncement.handleCloseConfirmInsertDialog = jest.fn();
             // Act
@@ -386,7 +390,8 @@ describe('AppContainer', () => {
             const newAnnouncement = shallow(<NewAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState(state);
             newAnnouncement.formik = {
-                setSubmitting: jest.fn()
+                setSubmitting: jest.fn(),
+                values:{sendType: 'Send At'}
             };
             newAnnouncement.handleCloseConfirmInsertDialog = jest.fn();
             // Act

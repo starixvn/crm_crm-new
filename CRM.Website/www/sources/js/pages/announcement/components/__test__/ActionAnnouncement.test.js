@@ -33,7 +33,8 @@ describe('ActionAnnouncement', () => {
             currencyList: [{id: 11, name: "ABC"}, {id: 18, name: "ADA1"}, {id: 9, name: "AUD"}, {id: 97, name: "BDT"}],
             headlineTypeList: [{id: 0, name: "Normal"}, {id: 1, name: "VIP"}],
             siteList: [{siteID: 23, site: "222223"}, {siteID: 16, site: "611111"}, {siteID: 20, site: "722222"}]
-        }
+        },
+        sendMessageAnnouncementToBotEndpoint: jest.fn()
     };
 
     describe('Render', () => {
@@ -501,7 +502,8 @@ describe('ActionAnnouncement', () => {
             const newAnnouncement = shallow(<ActionAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState(state);
             newAnnouncement.formik = {
-                setSubmitting: jest.fn()
+                setSubmitting: jest.fn(),
+                values:{sendType: 'Send At'}
             };
 
             // Act
@@ -529,7 +531,8 @@ describe('ActionAnnouncement', () => {
             const newAnnouncement = shallow(<ActionAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState(state);
             newAnnouncement.formik = {
-                setSubmitting: jest.fn()
+                setSubmitting: jest.fn(),
+                values:{sendType: 'Send At'}
             };
             // Act
             newAnnouncement.handleConfirmActionDialog();
