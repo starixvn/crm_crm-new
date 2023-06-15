@@ -29,6 +29,7 @@ export class NewInforms extends Component {
                 saveResult: null
             });
             this.props.setNewInformDialog({show: false});
+            this.props.setEditedInforms([]);
             this.props.getInforms();
         }, 3000);
     };
