@@ -17,7 +17,7 @@ WORKDIR "/src/CRM.Letstalk.Webhook"
 
 RUN dotnet publish -r linux-x64 --self-contained false -o /app
 
-FROM hub.nexdev.net/base/dotnet/core/aspnet:6.0-final AS base
+FROM hub.nexdev.net/base/dotnet/core/aspnet:6.0-alpine AS base
 
 WORKDIR /app
 

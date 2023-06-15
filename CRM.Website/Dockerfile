@@ -22,7 +22,7 @@ WORKDIR "/src/CRM.Website"
 
 RUN dotnet publish -r linux-x64 --self-contained false -o /app
 
-FROM hub.nexdev.net/nexus/crm_aspnet6 AS base
+FROM hub.nexdev.net/nexus/aspnet:6.0-alpine-nap-crm AS base
 
 WORKDIR /app
 
