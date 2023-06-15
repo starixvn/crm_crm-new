@@ -123,7 +123,8 @@ describe('InsertPersonalMappingPopup', () => {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
                     botServices: [{ id: 1, name: 'telegram' }],
-                    recipientTypes: [{ id: 8, name: 'PIC of headline'}]
+                    recipientTypes: [{ id: 8, name: 'PIC of headline'}],
+                    languages: []
                 },
                 recipients: {
                     data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
@@ -154,7 +155,8 @@ describe('InsertPersonalMappingPopup', () => {
             const props = {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
-                    botServices: [{ id: 1, name: 'telegram' }]
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    languages: []
                 },
                 recipients: {
                     data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
@@ -191,7 +193,8 @@ describe('InsertPersonalMappingPopup', () => {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
                     botServices: [{ id: 1, name: 'telegram' }],
-                    recipientTypes: [{ id: 8, name: 'PIC of headline'}]
+                    recipientTypes: [{ id: 8, name: 'PIC of headline'}],
+                    languages: []
                 },
                 recipients: {
                     data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
@@ -234,7 +237,8 @@ describe('InsertPersonalMappingPopup', () => {
                 recipient: { value: 'test' },
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
-                    botServices: [{ id: 1, name: 'telegram' }]
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    languages: []
                 }
             }
             const state = {
@@ -271,7 +275,8 @@ describe('InsertPersonalMappingPopup', () => {
                 recipient: { value: 'test' },
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
-                    botServices: [{ id: 1, name: 'telegram' }]
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    languages: []
                 }
             }
             const state = {
@@ -467,7 +472,8 @@ describe('InsertPersonalMappingPopup', () => {
             const props = {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
-                    botServices: [{ id: 1, name: 'telegram' }]
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    languages: []
                 },
                 groupHeadline: [{subData: null, id: 10695, name: '038arm'}]
             };
@@ -485,7 +491,8 @@ describe('InsertPersonalMappingPopup', () => {
             const props = {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
-                    botServices: [{ id: 1, name: 'telegram' }]
+                    botServices: [{ id: 1, name: 'telegram' }],
+                    languages: []
                 },
                 groupHeadline: [{subData: null, id: 10695, name: '038arm'}]
             };
