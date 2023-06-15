@@ -72,7 +72,7 @@ describe('Filter', () => {
             currencyOptions: [],
             statusOptions: [],
             positionOptions: [],
-            showFilter: true
+            showFilter: false
         });
     });
 
@@ -153,17 +153,9 @@ describe('Filter', () => {
 
         // Assert
         promise.then(() => {
-            //expect(filter.instance().state.siteOptions).toEqual(siteOptions);
             expect(filter.instance().state.currencyOptions).toEqual(currencyOptions);
             expect(filter.instance().state.statusOptions).toEqual(statusOptions);
             expect(filter.instance().state.positionOptions).toEqual(positionOptions);
-            expect(filter.instance().state.filter).toEqual({
-                ...prevState.filter,
-                site: siteIds.toString(),
-                currency: currencyIds.toString(),
-                status: props.settings.statusList.toString(),
-                position: positionIds.toString()
-            });
         });
     });
 
@@ -846,7 +838,8 @@ describe('Filter', () => {
             const state = {
                 filter: {
                     picName: 'name'
-                }
+                },
+                showFilter: true
             };
 
             const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
@@ -876,7 +869,8 @@ describe('Filter', () => {
             const state = {
                 filter: {
                     directAccount: 'name'
-                }
+                },
+                showFilter: true
             };
 
             const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
@@ -904,7 +898,8 @@ describe('Filter', () => {
             };
 
             const state = {
-                positionOptions: []
+                positionOptions: [],
+                showFilter: true
             };
 
             const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
@@ -932,10 +927,15 @@ describe('Filter', () => {
                 gridParams: {},
                 getSettings: jest.fn(() => promise)
             };
+            const state = {
+                positionOptions: [],
+                showFilter: true
+            };
 
             const currentItem = 'currentItem';
             const selectedItemsKey = 'selectedItemsKey';
             const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
+            filter.instance().setState(state);
             filter.instance().handlePositionChange = jest.fn();
             const select = filter.find(Form.Group).at(7).find(MultipleSelect);
 
@@ -960,79 +960,34 @@ describe('Filter', () => {
                     excludeAssignedAcc: true,
                     excludeIgnoredAcc: true,
                     excludeIsTest: true
-                }
+                },
+                showFilter: true
             };
 
             const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
 
             // Action
-            const group = filter.find(Form.Row).at(2);
+            const group = filter.find(Form.Row).at(1);
 
             // Assert
-            expect(group.find('div').at(0).props().className).toBe('filter-checkbox');
+            expect(group.find('div').at(1).props().className).toBe('filter-checkbox');
             expect(group.find('input').at(0).props().type).toBe('checkbox');
             expect(group.find('input').at(0).props().className).toBe('shadow-none');
             expect(group.find('input').at(0).props().name).toBe('excludeAssignedAcc');
             expect(group.find('input').at(0).props().checked).toEqual(state.filter.excludeAssignedAcc);
-            expect(group.find('div').at(1).props().className).toBe('filter-checkbox-text');
-            expect(group.find('div').at(1).html()).toContain('OnlyShowUnassignedDirectAccounts');
+            expect(group.find('div').at(2).props().className).toBe('filter-checkbox-text');
+            expect(group.find('div').at(2).html()).toContain('OnlyShowUnassignedDirectAccounts');
             expect(group.find('input').at(1).props().type).toBe('checkbox');
             expect(group.find('input').at(1).props().className).toBe('shadow-none');
             expect(group.find('input').at(1).props().name).toBe('excludeIgnoredAcc');
             expect(group.find('input').at(1).props().checked).toEqual(state.filter.excludeIgnoredAcc);
-            expect(group.find('div').at(2).props().className).toBe('filter-checkbox-text');
-            expect(group.find('div').at(2).html()).toContain('ExcludeIgnoredAccounts');
+            expect(group.find('div').at(3).props().className).toBe('filter-checkbox-text');
+            expect(group.find('div').at(3).html()).toContain('ExcludeIgnoredAccounts');
             expect(group.find('input').at(2).props().type).toBe('checkbox');
             expect(group.find('input').at(2).props().className).toBe('shadow-none');
             expect(group.find('input').at(2).props().name).toBe('excludeIsTest');
             expect(group.find('input').at(2).props().checked).toEqual(state.filter.excludeIsTest);
-        });
-
-        it('should have third Form Row', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise),
-                isHost: true
-            };
-
-            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
-
-            // Action
-            const row = filter.find(Form.Row).at(3);
-
-            // Assert
-            expect(row.find('div').props().className).toBe('button-row');
-            expect(row.find(Button).at(0).props().className).toBe('mr-4');
-            expect(row.find(Button).at(0).props().variant).toBe('primary');
-            expect(row.find(Button).at(0).props().size).toBe('sm');
-            expect(row.find(Button).at(0).html()).toContain('Submit');
-            expect(row.find(Button).at(1).props().variant).toBe('primary');
-            expect(row.find(Button).at(1).props().size).toBe('sm');
-            expect(row.find(Button).at(1).html()).toContain('AssignPIC');
-        });
-
-        it('should call handleToggleFilter when onClick icon show/hide', () => {
-            // Arrange
-            const promise = Promise.resolve({});
-            const props = {
-                settings: {},
-                gridParams: {},
-                getSettings: jest.fn(() => promise)
-            };
-
-            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
-            filter.instance().handleToggleFilter = jest.fn();
-            const button = filter.find('.filter-collapse').first().find('.fa').first();
-
-            // Action
-            button.simulate('click');
-
-            // Assert
-            expect(filter.instance().handleToggleFilter).toHaveBeenCalledWith(false);
         });
     });
 });

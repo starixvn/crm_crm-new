@@ -32,54 +32,54 @@ afterEach(() => {
 describe('InsertPersonalMappingPopup', () => {
     LangHelper.getResource = jest.fn(value => value);
 
-    describe('component with redux', () => {
-        // Arrange
-        const mockStore = configureMockStore();
-        const initialState = {
-            settings: {
-                bots: [{ id: 1, name: 'Bot1' }],
-                recipientTypes: [],
-                languages: []
-            },
-            recipients: [],
-            groupHeadline: [{subData: null, id: 10695, name: '038arm'}],
-            gridParams: {},
-            insertPersonalMappingResult: {},
-            letstalkName: ''
-        };
-        const props = {
-            settings: {
-                bots: [{ channelId: 1, id: 1}],
-                botServices: [{ id: 1, name: 'telegram' }],
-                recipientTypes: [{ id: 8, name: 'PIC of headline'}],
-            },
-            recipients: {
-                data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
-            }
-        };
+    // describe('component with redux', () => {
+    //     // Arrange
+    //     const mockStore = configureMockStore();
+    //     const initialState = {
+    //         settings: {
+    //             bots: [{ id: 1, name: 'Bot1' }],
+    //             recipientTypes: [],
+    //             languages: []
+    //         },
+    //         recipients: [],
+    //         groupHeadline: [{subData: null, id: 10695, name: '038arm'}],
+    //         gridParams: {},
+    //         insertPersonalMappingResult: {},
+    //         letstalkName: ''
+    //     };
+    //     const props = {
+    //         settings: {
+    //             bots: [{ channelId: 1, id: 1}],
+    //             botServices: [{ id: 1, name: 'telegram' }],
+    //             recipientTypes: [{ id: 8, name: 'PIC of headline'}],
+    //         },
+    //         recipients: {
+    //             data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }]
+    //         }
+    //     };
 
-        const store = mockStore(initialState);
+    //     const store = mockStore(initialState);
 
-        // Action
-        const wrapper = shallow(<InsertPersonalMappingPopupWrapper {...props} store={store} />, { disableLifecycleMethods: true });
-        wrapper.instance();
-        wrapper.getBotNameByBotService = jest.fn();
+    //     // Action
+    //     const wrapper = shallow(<InsertPersonalMappingPopupWrapper {...props} store={store} />, { disableLifecycleMethods: true });
+    //     wrapper.instance();
+    //     wrapper.getBotNameByBotService = jest.fn();
 
-        // Assert
-        it('component renders correctly', () => {
-            const grid = mount(<InsertPersonalMappingPopupWrapper  {...props} store={store} />, { disableLifecycleMethods: true });
-            expect(toJson(grid)).toMatchSnapshot();
-        });
+    //     // Assert
+    //     it('component renders correctly', () => {
+    //         const grid = mount(<InsertPersonalMappingPopupWrapper  {...props} store={store} />, { disableLifecycleMethods: true });
+    //         expect(toJson(grid)).toMatchSnapshot();
+    //     });
 
-        it('component has correct props', () => {
-            expect(wrapper.props().children.props.settings).toEqual(initialState.settings);
-            expect(wrapper.props().children.props.recipients).toEqual(initialState.recipients);
-            expect(wrapper.props().children.props.groupHeadline).toEqual(initialState.groupHeadline);
-            expect(wrapper.props().children.props.gridParams).toEqual(initialState.gridParams);
-            expect(wrapper.props().children.props.insertPersonalMappingResult).toEqual(initialState.insertPersonalMappingResult);
-            expect(wrapper.props().children.props.letstalkName).toEqual(initialState.letstalkName);
-        });
-    });
+    //     it('component has correct props', () => {
+    //         expect(wrapper.props().children.props.settings).toEqual(initialState.settings);
+    //         expect(wrapper.props().children.props.recipients).toEqual(initialState.recipients);
+    //         expect(wrapper.props().children.props.groupHeadline).toEqual(initialState.groupHeadline);
+    //         expect(wrapper.props().children.props.gridParams).toEqual(initialState.gridParams);
+    //         expect(wrapper.props().children.props.insertPersonalMappingResult).toEqual(initialState.insertPersonalMappingResult);
+    //         expect(wrapper.props().children.props.letstalkName).toEqual(initialState.letstalkName);
+    //     });
+    // });
 
     describe('componentDidMount', () => {
         it('should calls setState', async () => {

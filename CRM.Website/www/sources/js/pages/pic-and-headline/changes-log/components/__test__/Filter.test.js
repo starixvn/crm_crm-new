@@ -19,7 +19,7 @@ describe('Filter', () => {
     });
 
     const response = {
-        data: [{id: 1, name: '1'}]
+        data: [{id: 1, name: '1', actionTypeID: 1, actionTypeName: 'test'}]
     };
     const promise = Promise.resolve(response);
 
@@ -74,7 +74,7 @@ describe('Filter', () => {
                 }
             };
             //Act
-            const container = shallow(<Filter {...props}/>);
+            const container = shallow(<Filter {...props}/>, { disableLifecycleMethods: true });
             container.instance().handleChange(event);
 
             // Assert
@@ -85,7 +85,7 @@ describe('Filter', () => {
     describe('handleActionTypes ', () => {
         it('should call setState exactly when handle fetch has done', () => {
             // Arrange
-            const container = shallow(<Filter {...props}/>);
+            const container = shallow(<Filter {...props}/>, { disableLifecycleMethods: true });
             const param = [{actionTypeID: 1, actionTypeName: 'test'}];
             const expected = [{
                 id: 1, name: 'test', checked:true
@@ -105,7 +105,7 @@ describe('Filter', () => {
             // Arrange
 
             // Act
-            const container = shallow(<Filter {...props}/>);
+            const container = shallow(<Filter {...props}/>, { disableLifecycleMethods: true });
             container.instance().handleChangeToDate('Sep 01, 2021');
            
             // Assert
@@ -118,7 +118,7 @@ describe('Filter', () => {
             const fromDate = new Date('2/5/2021 5:20:25 PM');
 
             DateTimeService.toShortDateTimeFormat = jest.fn(() => '4/8/2021 10:05:20 AM');
-            const container = shallow(<Filter {...props}/>);
+            const container = shallow(<Filter {...props}/>, { disableLifecycleMethods: true });
 
             // Act
             container.instance().handleChangeFromDate(fromDate);
@@ -153,7 +153,7 @@ describe('Filter', () => {
             };
 
             // Act
-            const container = shallow(<Filter {...props}/>);
+            const container = shallow(<Filter {...props}/>, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().handleSubmit();
 
@@ -166,7 +166,7 @@ describe('Filter', () => {
     describe('render', () => {
         it('change from date call exact function', () => {
             // Arrange
-            const container = shallow(<Filter {...props} />);
+            const container = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             container.instance().handleChangeFromDate = jest.fn();
             
             // Action
@@ -178,7 +178,7 @@ describe('Filter', () => {
 
         it('change to date call exact function', () => {
             // Arrange
-            const container = shallow(<Filter {...props} />);
+            const container = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             container.instance().handleChangeToDate = jest.fn();
             
             // Action
@@ -190,7 +190,7 @@ describe('Filter', () => {
 
         it('actionType change call exact function', () => {
             // Arrange
-            const container = shallow(<Filter {...props} />);
+            const container = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             container.instance().handleChangeToDate = jest.fn();
             
             // Action
