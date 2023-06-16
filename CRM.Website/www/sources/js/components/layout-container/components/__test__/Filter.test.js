@@ -73,7 +73,10 @@ describe('filter', () => {
         handleCloseEmptyConfirm: jest.fn(),
         handleNavigate: jest.fn(),
         getDataGrid: jest.fn(() => promise),
-        isCreditSite: true
+        isCreditSite: true,
+        customerInfo: {
+            custId: 1
+        }
     };
 
     describe('methods', () => {
