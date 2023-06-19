@@ -317,22 +317,8 @@
                     await logService.ErrorAsync(ex);
                 }
 
-                pushResult.FailList = RandomFailedList(conversationIds);
-
                 UpdateSendImageResultStatus(pushResult, sendResult, img);
             }
-        }
-
-        private static List<string> RandomFailedList(List<string> conversationIds)
-        {
-            var result = new List<string>();
-            var random = new Random();
-            var randomIndex = random.Next(0, conversationIds.Count);
-            for (int i = 0; i < randomIndex; i++)
-            {
-                result.Add(conversationIds[i]);
-            }
-            return result;
         }
 
         private static void HandlleBlockList(List<string> blockList, List<SendAnnouncementResult> sendResult)
@@ -426,7 +412,6 @@
                     pushResult.FailList = conversationIds;
                     await WriteLogMessage(announcementId, botId, imgUrl, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
                 }
-                pushResult.FailList = RandomFailedList(conversationIds);
                 UpdateSendImageResultStatus(pushResult, sendResult, img);
             }
         }
