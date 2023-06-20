@@ -1,5 +1,4 @@
-﻿
-namespace CRM.BackgroundJob.UnitTests.Workers
+﻿namespace CRM.BackgroundJob.UnitTests.Workers
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -31,6 +30,7 @@ namespace CRM.BackgroundJob.UnitTests.Workers
             // Assert
             await sendNotificationService.Received().SendNotificationToLetstalk();
         }
+
         private ScanAndSendLetstalkNotificationWorker GetService()
         {
             appSettings = new List<JobSetting>

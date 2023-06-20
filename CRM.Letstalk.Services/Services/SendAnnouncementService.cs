@@ -22,7 +22,7 @@
     {
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
-        private readonly Func<long, ILetstalkService> letstalkService;
+        private readonly Func<int, ILetstalkService> letstalkService;
         private readonly string BaseImageUrl;
         private const string formatImageUrl = "{0}{1}/{2}";
         private const byte MaxReceiversOnOneBatch = 10;
@@ -30,7 +30,7 @@
         public SendAnnouncementService(IBaseService baseService,
             ICRMLogService logService,
             IConfiguration configuration,
-            Func<long, ILetstalkService> letstalkService)
+            Func<int, ILetstalkService> letstalkService)
         {
             this.baseService = baseService;
             this.logService = logService;
@@ -293,7 +293,7 @@
             return sendResult;
         }
 
-        private async Task SendImageMultiplePersonalAsync(int announcementId, List<string> conversationIds, long botId, List<string> images, List<SendAnnouncementResult> sendResult)
+        private async Task SendImageMultiplePersonalAsync(int announcementId, List<string> conversationIds, int botId, List<string> images, List<SendAnnouncementResult> sendResult)
         {
             var pushResult = new PushMessageResult();
             foreach (var img in images)
@@ -390,7 +390,7 @@
             }
         }
 
-        private async Task SendImageToMultipleGroupAsync(int announcementId, List<string> conversationIds, long botId, List<string> images, List<SendAnnouncementResult> sendResult)
+        private async Task SendImageToMultipleGroupAsync(int announcementId, List<string> conversationIds, int botId, List<string> images, List<SendAnnouncementResult> sendResult)
         {
             var pushResult = new PushMessageResult();
             foreach (var img in images)

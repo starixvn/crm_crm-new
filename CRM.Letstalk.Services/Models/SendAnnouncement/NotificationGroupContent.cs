@@ -6,7 +6,7 @@
     public class NotificationGroupContent
     {
         public int AnnouncementId { get; set; }
-        public long BotId { get; set; }
+        public int BotId { get; set; }
         public ChatType ChatType { get; set; }
         public string Content { get; set; }
         public bool IsOnlyRetryImages { get; set; }

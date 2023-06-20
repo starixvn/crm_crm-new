@@ -21,14 +21,14 @@
     {
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
-        private readonly Func<long, ILetstalkService> letstalkService;
+        private readonly Func<int, ILetstalkService> letstalkService;
         private readonly int ItemEachBatch;
         private const int DefaultItemEachBatch = 10;
 
         public SendNotificationService(IBaseService baseService,
             ICRMLogService logService,
             IConfiguration configuration,
-            Func<long, ILetstalkService> letstalkService)
+            Func<int, ILetstalkService> letstalkService)
         {
             this.baseService = baseService;
             this.logService = logService;
