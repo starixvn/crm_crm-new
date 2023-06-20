@@ -373,7 +373,7 @@
             }
 
             var successList = sendResult.Where(i => i.IsSuccessful).Select(x => x.ConversationId).ToList();
-            if (notification.Attachments is not null && notification.Attachments.Any())
+            if (successList.Any() && notification.Attachments is not null && notification.Attachments.Any())
             {
                 await SendImageToMultipleGroupAsync(notification.AnnouncementId, successList, notification.BotId, notification.Attachments, sendResult);
             }
