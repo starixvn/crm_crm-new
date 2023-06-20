@@ -151,18 +151,13 @@
             if (notifications.Any())
             {
                 List<NotificationGroupContent> groupedContentNotifications = GroupNotificationByContentAndChatType(notifications);
-                //var tasks = new List<Task<List<SendAnnouncementResult>>>();
                 var sendResults = new List<SendAnnouncementResult>();
                 foreach (var notification in groupedContentNotifications)
                 {
                     var result = await SendToLetstalkAsync(notification);
                     sendResults.AddRange(result);
-                    //tasks.Add(Task.Run(() => SendToLetstalkAsync(notification)));
                 }
 
-                //var sendReults = (await Task.WhenAll(tasks)).ToList();
-
-                //List<SendAnnouncementResult> mergedResults = MergedResultList(sendReults);
                 List<SendAnnouncementUpdateStatus> updatedResult = MappingSendResultToUpdateStatus(sendResults, notifications);
 
                 await UpdateRecipientStatus(updatedResult);
@@ -223,17 +218,9 @@
 
         private async Task<List<SendAnnouncementResult>> SendToLetstalkAsync(NotificationGroupContent notification)
         {
-            List<SendAnnouncementResult> sendResult;
-
-            if (notification.ChatType == ChatType.Personal)
-            {
-                sendResult = await SendMessageToMultiplePersonalAsync(notification);
-            }
-            else
-            {
-                sendResult = await SendMessageToMulipleGroupAsync(notification);
-            }
-
+            List<SendAnnouncementResult> sendResult = notification.ChatType == ChatType.Personal
+                ? await SendMessageToMultiplePersonalAsync(notification)
+                : await SendMessageToMulipleGroupAsync(notification);
             return sendResult;
         }
 
@@ -259,7 +246,8 @@
                     MessageType = MessageTypeNumber.Html,
                     Text = notification.Content
                 });
-                await WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content, string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
+                await WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                    string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
 
                 if (pushResults.IsSuccess)
                 {
@@ -298,7 +286,7 @@
             var pushResult = new PushMessageResult();
             foreach (var img in images)
             {
-                string imgUrl = GenerateImgUrl(announcementId, img);
+                string imgUrl = GenerateImgLink(announcementId, img);
                 try
                 {
                     pushResult = await letstalkService(botId).PushPersonalAsync(conversationIds, new OutgoingMessage
@@ -353,7 +341,8 @@
                     MessageType = MessageTypeNumber.Html,
                     Text = notification.Content
                 });
-                await WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content, string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
+                await WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                    string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
                 if (pushResults.IsSuccess)
                 {
                     if (pushResults.FailList is not null && pushResults.FailList.Count > 0)
@@ -395,7 +384,7 @@
             var pushResult = new PushMessageResult();
             foreach (var img in images)
             {
-                string imgUrl = GenerateImgUrl(announcementId, img);
+                string imgUrl = GenerateImgLink(announcementId, img);
                 try
                 {
                     pushResult = await letstalkService(botId).PushMultiRoomAsync(conversationIds, new OutgoingMessage
@@ -420,7 +409,7 @@
 
         #region Common Functions
 
-        private string GenerateImgUrl(int announcementId, string img) => string.Format(formatImageUrl, BaseImageUrl, announcementId, img);
+        private string GenerateImgLink(int announcementId, string img) => string.Format(formatImageUrl, BaseImageUrl, announcementId, img);
 
         private static void UpdateSendImageResultStatus(PushMessageResult pushResult, List<SendAnnouncementResult> sendResult, string image)
         {
