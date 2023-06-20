@@ -6,6 +6,7 @@ import DataGrid from './DataGrid';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import WithNavigation from '../../WithNavigation';
+import ResponsiveComponent from './ResponsiveComponent';
 import {CheckForIndexHTMLChange} from '../common.functions';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import { Button } from 'react-bootstrap';
@@ -325,11 +326,13 @@ export class Layout extends Component {
                 {
                     !showEmptyCustomerInfoPopup &&
                     <div className='row-content'>
-                        {
-                            isShowingLeftPanel && customerInfo !== null ?
-                            this.renderLeftRightContent(customerInfo) :
-                            this.renderFullWidthContent()
-                        }
+                        <ResponsiveComponent isShowingLeftPanel={isShowingLeftPanel}>
+                            {
+                                isShowingLeftPanel && customerInfo !== null ?
+                                this.renderLeftRightContent(customerInfo) :
+                                this.renderFullWidthContent()
+                            }
+                        </ResponsiveComponent>
                     </div>
                 }
                 {
