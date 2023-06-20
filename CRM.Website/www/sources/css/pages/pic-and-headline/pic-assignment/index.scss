@@ -119,6 +119,22 @@
     }
 }
 
+@mixin form-checkbox-margin($value) {
+    .pic-assignment .form-filter{
+        #form-checkbox{
+            margin-right: $value;
+        }
+    }
+}
+
+@mixin form-group-width($value) {
+    .pic-assignment .form-filter{
+        .form-group{
+            width: $value;
+        }
+    }
+}
+
 .large-desktops {
     &> .show-left-panel{
         .pic-assignment .form-filter{
@@ -139,19 +155,19 @@
         }
     }
 
-    .pic-assignment .form-filter{
-        #form-checkbox{
-            margin-right: 49px;
-        }
-    }
+    @include form-checkbox-margin(49px);
 }
 
 .medium-desktops{
-    .pic-assignment .form-filter{
-        .form-group{
-            width: 250px;
-        }
+    &> .show-left-panel{
+        @include form-group-width(250px);
     }
+
+    &> :not(.show-left-panel){
+        @include form-checkbox-margin(-10px);
+    }
+
+    @include form-group-width(230px);
 }
 
 .medium-desktops, .small-desktops{
@@ -170,20 +186,16 @@
 }
 
 .small-desktops > .show-left-panel{
-    .form-group{
-        width: 270px;
-    }
+    @include form-group-width(270px);
 
-    #form-checkbox{
-        margin-right: 50px;
-    }
+    @include form-checkbox-margin(50px);
 }
 
 @media only screen and (max-width: 1762px) {
     .medium-desktops{
         &> .show-left-panel{
             .pic-assignment .show-filter .form-row-status{
-                margin-right: 300px;;
+                margin-right: 350px;;
             }
         }
     }
