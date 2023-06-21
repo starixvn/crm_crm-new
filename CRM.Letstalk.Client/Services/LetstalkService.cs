@@ -21,6 +21,7 @@
         private readonly IHttpClientService httpClientService;
         private readonly ICryptographyService cryptographyService;
         private readonly ICacheService cacheService;
+        private static readonly Random random = new();
 
         private readonly JsonSerializerSettings DefaultJsonSerializeSetting = new()
         {
@@ -157,17 +158,23 @@
             ValidateInputParam(nameof(message), message);
             ValidateMultiCastMessage(message);
 
+            var (sendList, failedList) = GenerateRandomSendListAndFailedList(roomTokenList);
+
             var token = await GetSignAccessTokenAsync();
             var result = await httpClientService.ExecutePostAsync<PushMessageResult>(
                 $"bot/v3/message/multi-chatroom",
                 new Dictionary<string, object>
                 {
                     { "msg", message },
-                    { "receivers", roomTokenList }
+                    { "receivers", botConfig.IsTest ? sendList : roomTokenList }
                 },
                 token,
                 encodeData: false);
 
+            if (botConfig.IsTest)
+            {
+                result.FailList = failedList;
+            }
             return result;
         }
 
@@ -312,19 +319,38 @@
             ValidateInputParam(nameof(message), message);
             ValidateMultiCastMessage(message);
 
+            var (sendList, failedList) = GenerateRandomSendListAndFailedList(accountIds);
+
             var token = await GetSignAccessTokenAsync();
             var result = await httpClientService.ExecutePostAsync<PushMessageResult>(
                 $"bot/v3/message/multicast",
                 new Dictionary<string, object>
                 {
                     { "msg", message },
-                    { "receivers", accountIds.ToArray() },
+                    { "receivers", botConfig.IsTest ? sendList.ToArray() : accountIds.ToArray() },
                     { "forcePush", isForcePush ? 1 : 0 }
                 },
                 token,
                 encodeData: false);
 
+            if (botConfig.IsTest)
+            {
+                result.FailList = failedList;
+            }
             return result;
+        }
+
+        private static (List<string>, List<string>) GenerateRandomSendListAndFailedList(IEnumerable<string> accountIds)
+        {
+            var failedList = new List<string>();
+            var listAccounts = accountIds.ToList();
+            var randomIndex = random.Next(0, accountIds.Count());
+            for (int i = 0; i < randomIndex; i++)
+            {
+                failedList.Add(listAccounts[i]);
+            }
+            var sendList = accountIds.Where(i => !failedList.Contains(i)).ToList();
+            return (sendList, failedList);
         }
     }
 }
