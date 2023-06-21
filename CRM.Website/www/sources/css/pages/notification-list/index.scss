@@ -1,4 +1,5 @@
 ﻿@import '../../abstracts/variables';
+@import './responsive';
 
 .notification-list{
     .form-filter {
@@ -214,56 +215,5 @@
 
 .view-detail-remark:focus {
     outline: none;
-}
-
-@mixin form-group-width($value) {
-    .form-group{
-        width: $value !important;
-    }
-}
-
-.medium-desktops, .large-desktops{
-    &> .show-left-panel{
-        .notification-list{
-            @include form-group-width(255px);
-        }
-    }
-}
-
-.medium-desktops{
-    &> :not(.show-left-panel){
-        .notification-list{
-           &> :not(.show-filter){
-                @include form-group-width(260px);
-           }
-
-           &> .show-filter{
-            @include form-group-width(230px);
-            .form-row > .form-group:nth-child(3){
-                width: 260px !important;
-            }
-            }
-        }
-    }
-}
-
-.small-desktops{
-    &> .show-left-panel{
-        .notification-list{
-            .show-filter{
-                @include form-group-width(275px);
-
-                .form-row > .form-group:nth-child(2){
-                    select{
-                        width: 100px !important;
-                    }
-
-                    input[name="referenceId"]{
-                        width: 168px !important;
-                    }
-                }
-            }
-        }
-    }
 }
 

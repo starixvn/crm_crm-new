@@ -163,7 +163,7 @@ export class Filter extends Component {
     render() {
         return (
             <Fragment>
-                <Form className='form-filter' onSubmit={this.submitHandler}>
+                <Form className={`form-filter ${this.state.showFilter ? 'show-filter' : ''}`} onSubmit={this.submitHandler}>
                     <Form.Row className='form-row'>
                         <Form.Group>
                             <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('BotService')}</Form.Label>
@@ -300,8 +300,8 @@ export class Filter extends Component {
                     </Form.Row>
                     {
                         this.state.showFilter
-                            ? <span className="fa fa-caret-up fa-sm" onClick={() => this.handleToggleFilter(false)} />
-                            : <span className="fa fa-caret-down fa-sm" onClick={() => this.handleToggleFilter(true)} />
+                            ? <span className="fa fa-caret-up fa-sm toggle-icon" onClick={() => this.handleToggleFilter(false)} />
+                            : <span className="fa fa-caret-down fa-sm toggle-icon" onClick={() => this.handleToggleFilter(true)} />
                     }
                 </Form>
                 {

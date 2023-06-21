@@ -1,0 +1,98 @@
+@mixin form-group-width($value) {
+    .form-group{
+        width: $value !important;
+    }
+}
+
+.extra-large-desktops{
+    &> :not(.show-left-panel){
+        .chat-type-mapping{
+            &> :not(.show-filter){
+                @include form-group-width(240px);
+
+                .large-form {
+                    width: 280px !important;
+                }
+            }
+        }
+    }
+}
+
+.large-desktops{
+    &> :not(.show-left-panel){
+        .chat-type-mapping{
+            .show-filter{
+                @include form-group-width(255px);
+            }
+
+            &> :not(.show-filter){
+                @include form-group-width(209px);
+
+                .large-form {
+                    width: 250px !important;
+                }
+            }
+        }
+    }
+
+    &> .show-left-panel{
+        .chat-type-mapping{
+            &> :not(.show-filter){
+                @include form-group-width(208px);
+
+                .large-form { width: 260px !important; }
+            }
+
+            &> .show-filter{
+                @include form-group-width(240px);
+                .large-form { width: 270px !important; }
+            }
+        }
+    }
+}
+
+.medium-desktops{
+    &> :not(.show-left-panel){
+        .chat-type-mapping{
+            .show-filter{
+                @include form-group-width(225px);
+
+                .large-form{
+                    width: 240px !important;
+                }
+            }
+        }
+    }
+
+    &> .show-left-panel{
+        .chat-type-mapping{
+            &> .show-filter{
+                @include form-group-width(202px);
+                .large-form { width: 250px !important; }
+            }
+        }
+    }
+}
+
+.small-desktops{
+    &> .show-left-panel{
+        .chat-type-mapping{
+            &> :not(.show-filter){
+                @include form-group-width(210px);
+
+                .large-form {
+                    width: 255px !important;
+                }
+            }
+
+            &> .show-filter{
+                @include form-group-width(215px);
+                .large-form { width: 250px !important; }
+
+                .form-group {
+                    margin-bottom: 7px !important;
+                }
+            }
+        }
+    }
+}

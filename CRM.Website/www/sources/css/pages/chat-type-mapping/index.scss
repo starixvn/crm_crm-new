@@ -1,8 +1,10 @@
-﻿.chat-type-mapping{
+﻿@import './responsive';
+
+.chat-type-mapping{
     .form-filter {
         position: relative;
 
-        .fa-caret-up, .fa-caret-down {
+        .toggle-icon {
             position: absolute;
             top: 100%;
             left: 50%;
@@ -180,18 +182,6 @@
         .icon {
             color: #05b15b;
             padding-left: 10px;
-        }
-    }
-}
-
-@media only screen and (max-width: 1527px) {
-    .chat-type-mapping .form-filter{
-        .form-group {
-            width: 300px;
-        }
-
-        .large-label{
-            width: 100px !important;
         }
     }
 }
