@@ -179,7 +179,7 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
 
-                    <Form.Group>
+                    <Form.Group style={{width: '150px'}}>
                         <Button className="mr-4" variant="primary" size="sm"
                             onClick={this.submitHandler}
                         >

@@ -101,6 +101,21 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
+                    <Form.Group>
+                        <Form.Label  htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
+                        <div className='form-control-wrapper'>
+                            <MultipleSelect
+                                dataSource={Statuses}
+                                keyField='id'
+                                valueField='name'
+                                maxDisplayItemCount={2}
+                                isAllTextShown
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    this.handleChangeStatus(currentItem, selectedItemsKey);
+                                }}
+                            />
+                        </div>
+                    </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group>
@@ -131,23 +146,6 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group>
-                        <Form.Label  htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
-                        <div className='form-control-wrapper'>
-                            <MultipleSelect
-                                dataSource={Statuses}
-                                keyField='id'
-                                valueField='name'
-                                maxDisplayItemCount={2}
-                                isAllTextShown
-                                onChange={(currentItem, selectedItemsKey) => {
-                                    this.handleChangeStatus(currentItem, selectedItemsKey);
-                                }}
-                            />
-                        </div>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
                     <Form.Group>
                         <Button variant="primary" type="submit" size="sm" className='mr-3' onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
