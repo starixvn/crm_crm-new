@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Enum;
     using CRM.BotService.Core.Services.Interfaces;
@@ -206,25 +207,36 @@
 
         protected internal virtual async Task AddBotToPersonalAsync(Message message, User bot)
         {
-            var command = new AddBotToPersonalCommand
+            logService.LogInformation("start AddBotToPersonal!!!");
+            if (string.IsNullOrEmpty(message.Chat?.Username))
             {
-                BotId = bot.Id,
-                BotName = bot.FirstName,
-                ConversationId = message.Chat.Id.ToString(),
-                Username = message.Chat.Username,
-                ChannelId = (byte)ConversationChannel.Telegram,
-                UpdatedBy = message.Chat.Id.ToString()
-            };
-            var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);
-            logService.LogInformation("start AddBotToPersonal: " + commandSerialize);
-
-            var result = await baseService.ExecuteNonQueryAsync(command);
-            string greeting = $"Hi, I am {bot.Username}, your ID: {message.Chat.Id}";
-            await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
-            if (!result.IsSuccessful)
-            {
-                await logService.ErrorAsync(new Exception(result.Message));
+                logService.LogInformation("empty username !!!");
+                string errorMessageNotify = string.Format(CommandMessageTelegram.BotAddDoNotHaveUserName, bot.Username);
+                await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, errorMessageNotify);
             }
+            else
+            {
+                var command = new AddBotToPersonalCommand
+                {
+                    BotId = bot.Id,
+                    BotName = bot.FirstName,
+                    ConversationId = message.Chat.Id.ToString(),
+                    Username = message.Chat.Username,
+                    ChannelId = (byte)ConversationChannel.Telegram,
+                    UpdatedBy = message.Chat.Id.ToString()
+                };
+                var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);
+                logService.LogInformation("start AddBotToPersonal: " + commandSerialize);
+
+                var result = await baseService.ExecuteNonQueryAsync(command);
+                string greeting = string.Format(CommandMessageTelegram.Wellcome, bot.Username, message.Chat.Id);
+                await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
+                if (!result.IsSuccessful)
+                {
+                    await logService.ErrorAsync(new Exception(result.Message));
+                }
+            }
+
             logService.LogInformation("end AddBotToPersonal!!!");
         }
     }

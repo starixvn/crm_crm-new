@@ -1,0 +1,11 @@
+﻿namespace CRM.BotService.Core.Constants
+{
+    public static class CommandMessageTelegram
+    {
+        public const string Wellcome = "Welcome to <b>{0}</b> service. You have successfully added the bot, and your ChatID is {1}." +
+            " You are almost done with the setup. Please contact Customer Support Department for support. Thank you!";
+
+        public const string BotAddDoNotHaveUserName = "Thank you for choosing <b>{0}</b> service. To receive our notifications, please create a username for your account" +
+            @"and then send the <b>"" / start""</b> command via the chat box. If you need any assistance, please contact Customer Service Department. Thank you!";
+    }
+}
