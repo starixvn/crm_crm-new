@@ -239,7 +239,7 @@ export class Filter extends Component {
     render() {
         const referenceIds = ['Msg ID', 'Ann ID'];
         return (
-            <Form className='form-filter' onSubmit={e => this.submitHandler(e)}>
+            <Form className={`form-filter ${this.state.showFilter ? 'show-filter' : ''}`} onSubmit={e => this.submitHandler(e)}>
                 <Form.Row bsPrefix='form-row' className={this.state.showFilter ? '' : 'form-row-filter'}>
                     <Form.Group >
                         <Form.Label>{LangHelper.getResource('BotService')}</Form.Label>

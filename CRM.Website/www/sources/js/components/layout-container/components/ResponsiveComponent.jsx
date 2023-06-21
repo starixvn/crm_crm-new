@@ -32,10 +32,10 @@ const ResponsiveComponent = (props) => {
       case windowWidth >= 1680:
         className = "extra-large-desktops";
         break;
-      case windowWidth >= 1441 && windowWidth < 1680:
+      case windowWidth >= 1440 && windowWidth < 1680:
         className = "large-desktops";
         break;
-      case windowWidth >= 1201 && windowWidth < 1440:
+      case windowWidth >= 1200 && windowWidth < 1440:
         className = "medium-desktops";
         break;
       case windowWidth >= 992 && windowWidth < 1200:
