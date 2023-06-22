@@ -7,9 +7,16 @@
     
     .form-filter {
         min-width: 960px;
-        
-        .react-datepicker__input-container input{
-            width: 100% !important;
+
+        .form-group-date{
+            width: 243px;
+            .react-datepicker-wrapper-container{
+                width: 137px;
+
+                input{
+                    width: 100% !important;
+                }
+            }
         }
     
         .react-datepicker-popper{
@@ -130,6 +137,16 @@
             border: 1px solid #ced4da;
             width: 537px;
             padding: 10px;
+        }
+    }
+}
+
+.small-desktops .show-left-panel{
+    .new-remark{
+        .form-row:not(:last-child){
+            .form-group:nth-child(1){
+                width: 365px !important;
+            }
         }
     }
 }

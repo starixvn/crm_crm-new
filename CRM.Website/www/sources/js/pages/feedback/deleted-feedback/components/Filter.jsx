@@ -138,7 +138,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Col>
-                    <Col sm="2" md="2" className="filter-col">
+                    <Col sm="1" md="1" className="filter-col">
                         <Form.Control as="select" size="sm" className="shadow-none"
                             name="isGuest"
                             onChange={this.handleChange}
@@ -187,7 +187,7 @@ export class Filter extends Component {
                     <Form.Label className="filter-title col-form-label">
                         {LangHelper.getResource('MainCategory')}
                     </Form.Label>
-                    <Col sm="4" md="4" className="filter-col">
+                    <Col sm="3" md="3" className="filter-col">
                         <Form.Control as="select" size="sm" className="shadow-none"
                             name="mainCategoryId"
                             onChange={this.handleChange}
@@ -202,7 +202,7 @@ export class Filter extends Component {
                     <Form.Label className="filter-title col-form-label">
                         {LangHelper.getResource('SubCategory')}
                     </Form.Label>
-                    <Col sm="4" md="4" className="filter-col">
+                    <Col sm="3" md="3" className="filter-col">
                         <Form.Control as="select" size="sm" className="shadow-none"
                             name="subCategoryId"
                             onChange={this.handleChange}

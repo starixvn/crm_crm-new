@@ -205,7 +205,7 @@ export class Filter extends Component {
             <Form className='form-filter' onSubmit={this.handleSubmit}>
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group style={{width: 850}}>
+                    <Form.Group style={{width: 500}}>
                         <Form.Label htmlFor="remarkContent">
                             {LangHelper.getResource('RemarkContent')}
                         </Form.Label>
@@ -216,7 +216,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group style={{width: 400}}>
+                    <Form.Group style={{width: '373px'}}>
                         <Form.Label htmlFor="action">{LangHelper.getResource('RemarkTitle')}</Form.Label>
                         <div className='form-control-wrapper' >
                             <MultipleSelect
@@ -234,7 +234,7 @@ export class Filter extends Component {
                     </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group style={{width: 700}}>
+                    <Form.Group style={{width: 500}}>
                         <Form.Label htmlFor="userName">
                             {LangHelper.getResource('Username')}
                         </Form.Label>
@@ -265,7 +265,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group style={{width: 200}} controlId="formBasicCheckboxHeadline">
+                    <Form.Group style={{width: 175}} controlId="formBasicCheckboxHeadline">
                         <Form.Check type="checkbox" label={LangHelper.getResource('ShowHeadlineRemarks')}
                             id='isShowHeadline' name='isShowHeadline'
                             checked={isShowHeadline}
@@ -274,7 +274,7 @@ export class Filter extends Component {
                     </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
-                <Form.Group >
+                <Form.Group className="form-group-date">
                         <Form.Label htmlFor="fromDate">
                             {LangHelper.getResource('FromDate')}
                         </Form.Label>
@@ -287,45 +287,41 @@ export class Filter extends Component {
                                 }
                             />
                         </div>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>
-                            {LangHelper.getResource('ToDate')}
-                        </Form.Label>
-                        <div className='react-datepicker-wrapper-container'>
-                            <DatePicker
-                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
-                                minDate={new Date(this.minToDate)} useShortMonthInDropdown
-                                selected={toDate}
-                                maxDate={new Date(this.maxToDate)}
-                                onChange={value => this.handleChangeToDate(value)}
-                            />
-                        </div>
-                    </Form.Group>
-                    <Form.Group style={{width: 260}}>
-                        <Form.Control as="select" size="sm"
-                            name="dateTypeSelect" id="dateTypeSelect"
-                            value={dateTypeSelect}
-                            onChange={this.handleChangeDateType}
-                        >
-                            {
-                                DateTypeOption.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
-                            }
-                        </Form.Control>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
-                    <Form.Group>
-                        <Button variant="primary" size="sm" className='mr-4' onClick={this.handleSubmit}>
-                            <UnderlineButton.searchButton />
+                </Form.Group>
+                <Form.Group className="form-group-date">
+                    <Form.Label>
+                        {LangHelper.getResource('ToDate')}
+                    </Form.Label>
+                    <div className='react-datepicker-wrapper-container'>
+                        <DatePicker
+                            peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                            minDate={new Date(this.minToDate)} useShortMonthInDropdown
+                            selected={toDate}
+                            maxDate={new Date(this.maxToDate)}
+                            onChange={value => this.handleChangeToDate(value)}
+                        />
+                    </div>
+                </Form.Group>
+                <Form.Control style={{width: '150px'}} as="select" size="sm"
+                    name="dateTypeSelect" id="dateTypeSelect"
+                    value={dateTypeSelect}
+                    onChange={this.handleChangeDateType}
+                >
+                    {
+                        DateTypeOption.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
+                    }
+                </Form.Control>
+                <Form.Group style={{width: '155px'}}>
+                    <Button variant="primary" size="sm" className='ml-4 mr-4' onClick={this.handleSubmit}>
+                        <UnderlineButton.searchButton />
+                    </Button>
+                    {
+                        isHost &&
+                        <Button variant="primary" size="sm" onClick={this.handleOpenAdd}>
+                            <UnderlineButton.insertButton />
                         </Button>
-                        {
-                            isHost &&
-                            <Button variant="primary" size="sm" onClick={this.handleOpenAdd}>
-                                <UnderlineButton.insertButton />
-                            </Button>
-                        }
-                    </Form.Group>
+                    }
+                </Form.Group>
                 </Form.Row>
             </Form>
         );

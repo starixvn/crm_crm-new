@@ -38,7 +38,7 @@ const ResponsiveComponent = (props) => {
       case windowWidth >= 1200 && windowWidth < 1440:
         className = "medium-desktops";
         break;
-      case windowWidth >= 992 && windowWidth < 1200:
+      default:
         className = "small-desktops";
         break;
     }
