@@ -3,62 +3,55 @@
 @import '../../../abstracts/variables';
 
 .manage-feedback{
+    max-width: 1340px;
     .form-filter {
-        min-width: 1142px;    
-    
         .form-row {
             .sm-width{
-                width: 290px !important;
+                width: 260px !important;
+            }
+
+            .lg-width{
+                width: 260px !important;
+                .form-label{
+                    width: 145px !important;
+                }
             }
     
             .subCategory-width{
-                width: 593px !important;
-    
-                Label{
-                    margin-right: 9px !important;
-                }
+                width: 533px !important;
             }
     
             .label-status{
                 width: 50px !important;
             }
+
+            &>.form-group:nth-child(2){
+                margin-left: 20px;
+            }
     
             .form-group {
-                width: 440px;
-    
-                .form-label {
-                    width: 115px;
-                }
-    
-                .react-datepicker-wrapper-container{
-                    input{
-                        width: 170px;
-                    }
-                }
-    
+                width: 360px;
                 .username-width{
-                    width: 211px;
-                    margin-right: 10px;
-                    margin-left: -4px;
+                    width: 148px;
                 }
     
                 .response-width{
                     width: 100px;
+                    margin-left: 5px;
                 }
     
-                .select-options{
-                    width: 170px;
+                .select-options, .react-datepicker-wrapper-container input{
+                    width: 130px;
                 }
                 .select-options-sm{
-                    width: 133px;
+                    width: 95px;
+                }
+
+                #responseId{
+                    width: 150px;
                 }
             }
         }
-    }
-    
-    .table-title, .page-container, .table-container{
-        min-width: 1142px !important;
-        max-width: 1340px !important;
     }
 
     .header-content .table > thead > tr > th {
@@ -281,6 +274,16 @@
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+.small-desktops .show-left-panel{
+    .manage-feedback, .form-filter{
+        .form-row:last-child {
+            .lg-width{
+                width: 207px !important;
             }
         }
     }

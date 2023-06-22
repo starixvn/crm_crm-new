@@ -144,17 +144,13 @@ export class Filter extends Component {
                     </Form.Group>
                     <Form.Group className='form-group-actionType'>
                         <Form.Label>{LangHelper.getResource('ActionType')}</Form.Label>
-                        <div className="ml-3">
-                            <MultipleSelect
-                                dataSource={actionTypeOptions} hasSearchBox
-                                keyField='id' valueField='name' isAllTextShown
-                                statusField='checked'
-                                onChange={(currentItem, selectedItemsKey) => this.setState({actionTypeIds: selectedItemsKey})}
-                            />
-                        </div>
+                        <MultipleSelect
+                            dataSource={actionTypeOptions} hasSearchBox
+                            keyField='id' valueField='name' isAllTextShown
+                            statusField='checked'
+                            onChange={(currentItem, selectedItemsKey) => this.setState({actionTypeIds: selectedItemsKey})}
+                        />
                     </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="editBy">{LangHelper.getResource('EditBy')}</Form.Label>
                         <Form.Control type="text" size="sm"
@@ -164,7 +160,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group className="submit">
+                    <Form.Group style={{width: '70px'}} className="submit">
                         <Button variant="primary" size="sm" onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>

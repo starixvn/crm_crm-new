@@ -168,7 +168,7 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group className='sm-width'>
+                    <Form.Group className='lg-width'>
                         <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
@@ -219,11 +219,10 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group className='sm-width'>
+                    <Form.Group className='lg-width'>
                         <Form.Label htmlFor="responseId">{LangHelper.getResource('CustomerResponse')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="responseId" id="responseId"
-                            className='select-options'
                             value={responseId}
                             onChange={this.handleChange}
                         >
@@ -294,7 +293,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group className='sm-width'>
+                    <Form.Group className='lg-width'>
                         <Form.Label htmlFor="reviewer">{LangHelper.getResource('Reviewer')}</Form.Label>
                         <Form.Control type="text" size="sm" value={reviewer}
                             name="reviewer" autoComplete="on"
@@ -302,11 +301,11 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <div>
+                    <Form.Group style={{width: '65px'}}>
                         <Button id='btn-submit-manage-fb' variant="primary" size="sm" type="submit" onClick={this.handleSubmit}>
                             <UnderlineButton.submitButton />
                         </Button>
-                    </div>
+                    </Form.Group>
                 </Form.Row>
             </Form>
         );

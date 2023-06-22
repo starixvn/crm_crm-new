@@ -124,9 +124,11 @@ export class PicFilter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit}>
-                        {LangHelper.getResource('Submit')}
-                    </Button>
+                    <Form.Group style={{width: '70px'}}>
+                        <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit}>
+                            {LangHelper.getResource('Submit')}
+                        </Button>
+                    </Form.Group>
                 </Form.Row>
             </Form>
         );

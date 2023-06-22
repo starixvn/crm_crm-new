@@ -10,6 +10,16 @@
             @include form-group-width(255px);
         }
     }
+
+    &> :not(.show-left-panel){
+        .notification-list{
+            @include form-group-width(240px);
+
+            .form-group:nth-child(3){
+                width: 250px !important;
+            }
+        }
+    }
 }
 
 .medium-desktops{
@@ -33,15 +43,31 @@
     &> .show-left-panel{
         .notification-list{
             .show-filter{
-                @include form-group-width(275px);
+                @include form-group-width(255px);
 
-                .form-row > .form-group:nth-child(2){
-                    select{
-                        width: 100px !important;
-                    }
+                .form-row:nth-child(2){
+                    &> .form-group{
+                        &:nth-child(2){
+                            select{
+                                width: 100px !important;
+                            }
+        
+                            input[name="referenceId"]{
+                                width: 149px !important;
+                            }
+                        }
 
-                    input[name="referenceId"]{
-                        width: 168px !important;
+                        &:nth-child(4){
+                            width: 170px !important;
+
+                            .form-label{
+                                width: 50px;
+                            }
+
+                            .form-control-wrapper{
+                                width: calc(100% - 0.5rem - 50px);
+                            }
+                        }
                     }
                 }
             }

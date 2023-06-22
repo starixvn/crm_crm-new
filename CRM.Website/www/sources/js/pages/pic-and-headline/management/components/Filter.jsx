@@ -132,7 +132,7 @@ export class Filter extends PureComponent {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group style={{width: '130px'}}>
                         <Button variant="primary" size="sm" className="mr-4" onClick={this.submitHandler} type="submit">
                             {LangHelper.getResource('Submit')}
                         </Button>

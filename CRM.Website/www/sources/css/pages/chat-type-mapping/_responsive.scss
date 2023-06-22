@@ -1,6 +1,6 @@
 @mixin form-group-width($value) {
     .form-group{
-        width: $value !important;
+        width: $value;
     }
 }
 
@@ -22,7 +22,7 @@
     &> :not(.show-left-panel){
         .chat-type-mapping{
             .show-filter{
-                @include form-group-width(255px);
+                @include form-group-width(230px);
             }
 
             &> :not(.show-filter){
@@ -87,10 +87,30 @@
 
             &> .show-filter{
                 @include form-group-width(215px);
-                .large-form { width: 250px !important; }
+                .form-row{
+                    &:nth-child(1){
+                        .large-form{
+                            width: 250px !important;
+                        }
+                    }
+
+                    &:nth-child(2){
+                        .large-form{
+                            width: 160px !important;
+
+                            .form-label{
+                                width: 60px;
+                            }
+
+                            .form-control{
+                                width: calc(100% - 0.5rem - 60px) !important;
+                            }
+                        }
+                    }
+                }
 
                 .form-group {
-                    margin-bottom: 7px !important;
+                    margin-bottom: 10px !important;
                 }
             }
         }
