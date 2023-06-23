@@ -67,7 +67,7 @@
     &> .show-left-panel{
         .chat-type-mapping{
             &> .show-filter{
-                @include form-group-width(202px);
+                @include form-group-width(207px);
                 .large-form { width: 250px !important; }
             }
         }
