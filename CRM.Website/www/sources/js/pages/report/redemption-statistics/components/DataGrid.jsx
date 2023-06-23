@@ -133,7 +133,7 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    width={600}
+                    width={900}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}

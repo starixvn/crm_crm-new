@@ -2,7 +2,7 @@
     .form-filter {
         .form-row {
             .form-group {
-                width: 350px;
+                width: 320px;
             }
             .communication-setting {
                 width: 80px !important; 
@@ -18,6 +18,18 @@
         .sub-category-left
         {
             margin-left: 3rem !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 1370px) {
+    .communication-setting{
+        .form-filter {
+            .form-row {
+                .form-group {
+                    width: 305px;
+                }
+            }
         }
     }
 }

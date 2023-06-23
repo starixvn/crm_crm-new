@@ -117,8 +117,6 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                </Form.Row>
-                <Form.Row bsPrefix='form-row'>
                     <Form.Group>
                         <Form.Label htmlFor="deletedBy">{LangHelper.getResource('DeletedBy')}</Form.Label>
                         <Form.Control type="text" size="sm"
@@ -128,7 +126,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group style={{width: '60px'}}>
                         <Button variant="primary" id='btn-submit-deleted-report' size="sm" type="submit" onClick={this.handleSubmit}>
                             <UnderlineButton.submitButton />
                         </Button>

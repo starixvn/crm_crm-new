@@ -236,13 +236,11 @@ export class Filter extends Component {
                         </Form.Row>
                     </Fragment>
                 }
-                <div className='text-center filter-collapse'>
-                    {
-                        showFilter
-                            ? <span className='fa-sm fa fa-caret-up' onClick={() => this.handleToggleFilter(false)} />
-                            : <span className='fa-sm fa fa-caret-down' onClick={() => this.handleToggleFilter(true)} />
-                    }
-                </div>
+                {
+                    showFilter
+                        ? <span className='fa-sm fa fa-caret-up toggle-icon' onClick={() => this.handleToggleFilter(false)} />
+                        : <span className='fa-sm fa fa-caret-down toggle-icon' onClick={() => this.handleToggleFilter(true)} />
+                }
             </Form>
         );
     }

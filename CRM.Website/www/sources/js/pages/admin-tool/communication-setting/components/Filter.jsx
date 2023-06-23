@@ -224,7 +224,7 @@ export class Filter extends Component {
                     </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group controlId="formBasicCheckbox">
+                    <Form.Group controlId="formBasicCheckbox" style={{width: '360px'}}>
                         <Form.Check className="mr-5" type="checkbox" label={LangHelper.getResource('DisableCatSubCatfilters')}
                             checked={this.state.filter.isDisableCategorySubCategory}
                             onChange={this.isDisableCatelogy}

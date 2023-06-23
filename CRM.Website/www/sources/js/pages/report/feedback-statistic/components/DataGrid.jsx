@@ -269,7 +269,7 @@ export class DataGrid extends Component {
 
         const defaultWidth = 380;
         const totalWidth = defaultWidth + gridData.usernames.length * 120;
-        const width = this.getWidth(totalWidth);
+        const width = this.getWidth(totalWidth) + 20;
 
         return (
             <div style={{maxWidth:width}}>

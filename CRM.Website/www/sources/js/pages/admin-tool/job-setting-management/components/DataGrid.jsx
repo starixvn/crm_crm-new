@@ -160,7 +160,7 @@ export class DataGrid extends Component {
                     <span>{LangHelper.getResource('JobSettingManagement')}</span>
                 </div>
                 <Table
-                    width={900}
+                    width={1000}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}

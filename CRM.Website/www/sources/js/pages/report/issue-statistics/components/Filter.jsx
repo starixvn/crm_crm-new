@@ -296,8 +296,8 @@ export class Filter extends Component {
                 <div className="filter-collapse text-center">
                     {
                         showFilter
-                            ? <span className="fa fa-caret-up fa-sm" onClick={() => this.handleToggleFilter(false)} />
-                            : <span className="fa fa-caret-down fa-sm" onClick={() => this.handleToggleFilter(true)} />
+                            ? <span className="fa fa-caret-up fa-sm toggle-icon" onClick={() => this.handleToggleFilter(false)} />
+                            : <span className="fa fa-caret-down fa-sm toggle-icon" onClick={() => this.handleToggleFilter(true)} />
                     }
                 </div>
             </Form>

@@ -1,4 +1,5 @@
 @import '../../../abstracts/variables';
+@import './responsive';
 
 .dynamic {
     .form-filter,
@@ -199,37 +200,6 @@
 
             .recharts-legend-wrapper{
                 overflow: auto;
-            }
-        }
-    }
-}
-
-.small-desktops{
-    &> .show-left-panel{
-        .dynamic{
-            .form-row{
-                .form-group {
-                    width: 250px;
-    
-                    label{
-                        width: 100px;
-                    }
-                    
-                    .react-datepicker__input-container input{
-                        width: 100% !important;
-                    }
-
-                    &:nth-child(4){
-                        width: 150px !important;
-                        label{
-                            width: 50px !important;
-                        }
-            
-                        .form-control, .form-control-wrapper {
-                            width: calc(100% - 0.5rem - 50px) !important;
-                        }
-                    }
-                }
             }
         }
     }

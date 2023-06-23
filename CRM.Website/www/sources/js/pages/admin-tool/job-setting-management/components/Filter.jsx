@@ -64,7 +64,7 @@ export class Filter extends Component {
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group style={{width: 306}}>
+                    <Form.Group style={{width: '280px'}}>
                         <Form.Label className="col-auto col-form-label">{LangHelper.getResource('ServiceName')}</Form.Label>
                         <Form.Control as="select" size="sm"
                             name="serviceName" id="serviceName"
@@ -76,9 +76,9 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group style={{width: 200}}>
-                        <Form.Label className="col-auto col-form-label" style={{width: 50}}>{LangHelper.getResource('Envr')}</Form.Label>
-                        <Form.Control as="select" size="sm" style={{width: 130}}
+                    <Form.Group>
+                        <Form.Label className="col-auto col-form-label">{LangHelper.getResource('Envr')}</Form.Label>
+                        <Form.Control as="select" size="sm"
                             name="envr" id="envr"
                             value={envr}
                             onChange={this.handleChangeEnvr}
@@ -88,9 +88,9 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group style={{width: '280px'}}>
                         <Form.Label className="col-auto col-form-label">{LangHelper.getResource('SettingName')}</Form.Label>
-                        <Form.Control as="select" size="sm" style={{width: 280}}
+                        <Form.Control as="select" size="sm"
                             name="settingName" id="settingName"
                             value={settingName}
                             onChange={this.handleChange}
@@ -100,7 +100,7 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group style={{width: '75px'}}>
                         <Button variant="primary" size="sm" className='ml-3' onClick={this.handleSubmit}>
                             {LangHelper.getResource('Search')}
                         </Button>
