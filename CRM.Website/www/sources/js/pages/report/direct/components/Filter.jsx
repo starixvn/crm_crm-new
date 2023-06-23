@@ -14,7 +14,6 @@ export class Filter extends Component {
             headline: null,
             username: null,
             excludeIgnoredAcc: true,
-            showFilter: true
         };
     }
 
@@ -38,18 +37,10 @@ export class Filter extends Component {
         }
     }
 
-    handleToggleFilter = value => {
-        this.setState({ showFilter: value });
-        window.dispatchEvent(new Event('resize'));
-    };
-
     render() {
-        const { showFilter } = this.state;
-
         return (
             <Form className="form-filter">
                 {
-                    showFilter &&
                     <Fragment>
                         <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                         <Form.Row bsPrefix='form-row'>
@@ -60,7 +51,9 @@ export class Filter extends Component {
                                     autoComplete="off"
                                     onChange={evt => this.setState({ headline: evt.target.value })}
                                 />
-                                <Form.Check id="checkIgnoredAccountInput" className="mr-5" type="checkbox"
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Check id="checkIgnoredAccountInput" className="mr-2" type="checkbox"
                                     checked={this.state.excludeIgnoredAcc}
                                     onChange={evt => this.setState({ excludeIgnoredAcc: evt.target.checked })}
                                 />
@@ -68,8 +61,6 @@ export class Filter extends Component {
                                     {LangHelper.getResource('ExcludeIgnoredAccounts')}
                                 </Form.Label>
                             </Form.Group>
-                        </Form.Row>
-                        <Form.Row bsPrefix='form-row'>
                             <Form.Group>
                                 <Form.Label htmlFor="userNameInput">{LangHelper.getResource('Username')}</Form.Label>
                                 <Form.Control type="text" size="sm" className="shadow-none"
@@ -77,20 +68,13 @@ export class Filter extends Component {
                                     autoComplete="off"
                                     onChange={evt => this.setState({ username: evt.target.value })}
                                 />
-                                <Button className="mr-4 btn-submit" variant="primary" size="sm" onClick={this.submitHandler}>
+                                <Button className="ml-3 btn-submit" variant="primary" size="sm" onClick={this.submitHandler}>
                                     <UnderlineButton.submitButton />
                                 </Button>
                             </Form.Group>
                         </Form.Row>
                     </Fragment>
                 }
-                <div className='text-center filter-collapse'>
-                    {
-                        showFilter
-                            ? <span className='fa-sm fa fa-caret-up ' onClick={() => this.handleToggleFilter(false)} />
-                            : <span className='fa-sm fa fa-caret-down ' onClick={() => this.handleToggleFilter(true)} />
-                    }
-                </div>
             </Form>
         );
     }

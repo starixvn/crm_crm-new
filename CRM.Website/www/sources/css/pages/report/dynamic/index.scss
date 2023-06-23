@@ -1,17 +1,17 @@
 @import '../../../abstracts/variables';
 
 .dynamic {
-    min-width: 1142px !important;
+    position: relative;
 
+    .form-filter,
     .table-title,
     .page-container,
     .table-container {
-        min-width: 1142px !important;
         max-width: 1200px !important;
     }
 
     .form-filter {
-        .react-datepicker-wrapper-container .react-datepicker-wrapper .react-datepicker__input-container input.form-control {
+        .react-datepicker-wrapper-container .react-datepicker-wrapper input.form-control {
             height: 100%;
             width: 153.5px;
         }
@@ -35,17 +35,18 @@
             }
         }
 
-        .toggle-filter {
-            width: 100%;
-            text-align: center;
+        .toggle-icon{
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
 
-            .icon {
-                font-size: 11px;
-                width: 25px;
-                background-color: #464D5D;
-                color: white;
-                cursor: pointer;
-            }
+            text-align:center;
+            font-size: 10px;
+            width: 22px;
+            background-color: #464D5D;
+            color: white;
+            cursor: pointer;
         }
 
         .form-group-subject{
@@ -121,17 +122,6 @@
     }
 }
 
-@media only screen and (max-width: 1560px) {
-    .dynamic{
-        .group-tool {
-            width: 282px !important;
-    
-            .col-label-tool {
-                width: 117px !important;
-            }
-        }
-    }
-}
 
 .feedback-detail-deleted {
     .modal-dialog {

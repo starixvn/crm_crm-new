@@ -1,7 +1,7 @@
 @import '../../abstracts/variables';
 
 .communication-log{
-    max-width: 1400px;
+    max-width: 1300px;
     .table-container table tr{
         cursor: pointer;
         &:hover td{
@@ -26,7 +26,7 @@
     }
     
     .form-group-button {
-        width: 100px;
+        width: 65px;
         display: flex;
         align-items: center;
         margin-right: 1rem;

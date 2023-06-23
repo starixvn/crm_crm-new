@@ -132,7 +132,7 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className="form-group-status">
                         <Form.Label className='col-auto col-form-label'>{LangHelper.getResource('Status')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none" name="statusId"
                             onChange={this.handleChange}

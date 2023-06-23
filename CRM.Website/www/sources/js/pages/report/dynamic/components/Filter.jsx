@@ -587,7 +587,7 @@ export class Filter extends Component {
                 }
 
                 <div className="toggle-filter">
-                    <span className={`${showFilter ? 'fa fa-caret-up' : 'fa fa-caret-down'} icon`} onClick={this.handleToggleFilter} />
+                    <span className={`${showFilter ? 'fa fa-caret-up' : 'fa fa-caret-down'} icon toggle-icon`} onClick={this.handleToggleFilter} />
                 </div>
             </Form>
         );

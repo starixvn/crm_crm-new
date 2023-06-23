@@ -302,7 +302,7 @@ export class Filter extends Component {
                         />
                     </div>
                 </Form.Group>
-                <Form.Control style={{width: '150px'}} as="select" size="sm"
+                <Form.Control style={{width: '161px'}} as="select" size="sm"
                     name="dateTypeSelect" id="dateTypeSelect"
                     value={dateTypeSelect}
                     onChange={this.handleChangeDateType}

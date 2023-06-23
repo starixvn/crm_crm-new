@@ -1,43 +1,24 @@
 .direct{
     .form-filter {
-        min-width: 700px;
-    
-        .form-row {
-            .form-group {
-                width: 700px;
-    
-                .form-label {
-                    width: 300px;
-                }
-    
-                .form-control-sm {
-                    width: 500px;
-                    margin-right: 20px;
-                }
-    
-                .checkIgnoredAccount-setting {
-                    margin-right: 86px;
-                    margin-left: -34px;
-                }
-    
-                .form-check-label {
-                    width: 200px;
-                }
-    
-                .btn-submit {
-                    width: 100px;
-                    margin-right: 196px !important;
-                }
+        .form-group:nth-child(1){
+            width: 300px;
+            .form-label {
+                width: 170px;
             }
         }
-    
-        .filter-collapse {
-            .fa {
-                font-size: 11px;
-                width: 25px;
-                background-color: #464D5D;
-                color: white;
-                cursor: pointer;
+
+        .form-group:nth-child(2){
+            width: 200px;
+            .form-label {
+                width: 170px;
+            }
+        }
+
+        .form-group:nth-child(3){
+            width: 280px;
+
+            .btn-submit{
+                width: 75px;
             }
         }
     }
