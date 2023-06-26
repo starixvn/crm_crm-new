@@ -147,7 +147,8 @@ export default class CkEditor extends PureComponent {
                         basicEntities: false,
                         language: 'en',
                         disableNativeSpellChecker: false,
-                        enterMode: 2
+                        enterMode: 2,
+                        disallowedContent: 'br'
                     }}
                     style={{body: 'margin: 0'}}
                     onBeforeLoad={this.onBeforeLoad}

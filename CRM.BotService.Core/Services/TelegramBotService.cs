@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Criteria;
@@ -114,8 +115,11 @@
         public async Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html)
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
+            var regex = new Regex(@"(<br />|<br/>|</ br>|</br>|<br>)");
+            var messageContentReplace = regex.Replace(messageContent, Environment.NewLine);
+
             ValidateInputParam(nameof(messageContent), messageContent);
-            var message = await bot.BotClient.SendTextMessageAsync(new ChatId(chatId), messageContent, parseMode);
+            var message = await bot.BotClient.SendTextMessageAsync(new ChatId(chatId), messageContentReplace, parseMode);
             return message;
         }
 
