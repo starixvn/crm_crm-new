@@ -30,7 +30,7 @@ export class Layout extends Component {
             showEmptyCustomerInfoPopup: false,
             customerSuggestions: [],
             editCustomerInfoPopup: { show: false},
-            isShowingLeftPanel : true,
+            isShowingLeftPanel : false,
             isShowNewVersion: false
         };
     }

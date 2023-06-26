@@ -127,140 +127,134 @@ export class Filter extends Component {
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter" action="javascript:void(0)">
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
-                <Form.Group as={Row}>
-                    <Form.Label className="filter-title col-form-label">
-                        {LangHelper.getResource('Username')}
-                    </Form.Label>
-                    <Col sm="2" md="2" className="filter-col">
-                        <Form.Control type="text" size="sm" className="shadow-none"
-                            autoComplete="on"
-                            name="username"
-                            onChange={this.handleChange}
-                        />
-                    </Col>
-                    <Col sm="1" md="1" className="filter-col">
-                        <Form.Control as="select" size="sm" className="shadow-none"
-                            name="isGuest"
-                            onChange={this.handleChange}
-                        >
-                            {
-                                customerTypes.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
-                            }
-                        </Form.Control>
-                    </Col>
-
-                    <Form.Label className="filter-title col-form-label">
-                        {LangHelper.getResource('FromDate')}
-                    </Form.Label>
-                    <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper filter-colDate">
-                        <DatePicker
-                            dropdownMode="select"
-                            showMonthDropdown
-                            showYearDropdown
-                            useShortMonthInDropdown
-                            selected={this.state.fromDate}
-                            dateFormat="MMM dd, yyyy"
-                            maxDate={new Date(this.maxFromDate)}
-                            onChange={value => this.handleChangeFromDate(value)}
-                        />
-                    </Col>
-
-                    <Form.Label className="filter-toDate col-form-label">
-                        {LangHelper.getResource('ToDate')}
-                    </Form.Label>
-                    <Col sm="2" md="2" className="react-datepicker-wrapper-container form-control-wrapper filter-colDate">
-                        <DatePicker
-                            selected={this.state.toDate}
-                            dateFormat="MMM dd, yyyy"
-                            minDate={new Date(this.minToDate)}
-                            maxDate={new Date(this.maxToDate)}
-                            showMonthDropdown
-                            dropdownMode="select"
-                            useShortMonthInDropdown
-                            showYearDropdown
-                            onChange={value => this.handleChangeToDate(value)}
-                        />
-                    </Col>
-                </Form.Group>
-
-                <Form.Group as={Row}>
-                    <Form.Label className="filter-title col-form-label">
-                        {LangHelper.getResource('MainCategory')}
-                    </Form.Label>
-                    <Col sm="3" md="3" className="filter-col">
-                        <Form.Control as="select" size="sm" className="shadow-none"
-                            name="mainCategoryId"
-                            onChange={this.handleChange}
-                        >
-                            <option value="0">All</option>
-                            {
-                                data.mainCategories.map((value, key) => this.renderOptions(value.name, value.mainCategoryID, key))
-                            }
-                        </Form.Control>
-                    </Col>
-
-                    <Form.Label className="filter-title col-form-label">
-                        {LangHelper.getResource('SubCategory')}
-                    </Form.Label>
-                    <Col sm="3" md="3" className="filter-col">
-                        <Form.Control as="select" size="sm" className="shadow-none"
-                            name="subCategoryId"
-                            onChange={this.handleChange}
-                        >
-                            {
-                                subCategories.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
-                            }
-                        </Form.Control>
-                    </Col>
-                </Form.Group>
-
-                <Form.Group as={Row}>
-                    <Form.Label className="filter-title col-form-label">
-                        {LangHelper.getResource('Communication')}
-                    </Form.Label>
-                    <Col sm="1" md="1" className="filter-coll-all">
-                        <Form.Control as="select" size="sm" className="shadow-none"
-                            name="communicationId"
-                            onChange={this.handleChange}
-                        >
-                            {
-                                data.communications.map((value, key) => this.renderOptions(value.name, value.id, key))
-                            }
-                        </Form.Control>
-                    </Col>
-
-                    <Form.Label className="filter-customer-response col-form-label">
-                        {LangHelper.getResource('CustomerResponse')}
-                    </Form.Label>
-                    <Col sm="2" md="2" className="filter-res">
-                        <Form.Control as="select" size="sm" className="shadow-none"
-                            name="responseId"
-                            onChange={this.handleChange}
-                        >
-                            {
-                                data.customerResponses.map((value, key) => this.renderOptions(value.value, value.id, key))
-                            }
-                        </Form.Control>
-                    </Col>
-
-                    <Form.Label className="filter-title col-form-label">
-                        {LangHelper.getResource('Is Reviewed')}
-                    </Form.Label>
-                    <Col sm="2" md="2" className="filter-col">
-                        <Form.Control as="select" size="sm" className="shadow-none dropdown-Reviewed"
-                            name="isReviewed"
-                            onChange={this.handleChange}
-                        >
-                            {
-                                reviews.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
-                            }
-                        </Form.Control>
-                    </Col>
-
-                    <Col sm="2" md="2" className="filter-col">
-                        <button type="submit" id='btn-submit-deleted-fb' className="btn btn-primary btn-sm"><UnderlineButton.submitButton /></button>
-                    </Col>
-                </Form.Group>
+                    <Form.Row bsPrefix='form-row'>
+                        <Form.Group>
+                            <Form.Label className="col-form-label-username">
+                                {LangHelper.getResource('Username')}
+                            </Form.Label>
+                            <Form.Control type="text" size="sm" className="shadow-none"
+                                autoComplete="on"
+                                name="username"
+                                onChange={this.handleChange}
+                            />
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                name="isGuest"
+                                onChange={this.handleChange}
+                            >
+                                {
+                                    customerTypes.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>
+                                {LangHelper.getResource('FromDate')}
+                            </Form.Label>
+                            <div className="react-datepicker-wrapper-container">
+                                <DatePicker
+                                    dropdownMode="select"
+                                    showMonthDropdown
+                                    showYearDropdown
+                                    useShortMonthInDropdown
+                                    selected={this.state.fromDate}
+                                    dateFormat="MMM dd, yyyy"
+                                    maxDate={new Date(this.maxFromDate)}
+                                    onChange={value => this.handleChangeFromDate(value)}
+                                />
+                            </div>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>
+                                {LangHelper.getResource('ToDate')}
+                            </Form.Label>
+                            <div className="react-datepicker-wrapper-container">
+                                <DatePicker
+                                    selected={this.state.toDate}
+                                    dateFormat="MMM dd, yyyy"
+                                    minDate={new Date(this.minToDate)}
+                                    maxDate={new Date(this.maxToDate)}
+                                    showMonthDropdown
+                                    dropdownMode="select"
+                                    useShortMonthInDropdown
+                                    showYearDropdown
+                                    onChange={value => this.handleChangeToDate(value)}
+                                />
+                            </div>
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row bsPrefix='form-row'>
+                        <Form.Group>
+                            <Form.Label>
+                                {LangHelper.getResource('MainCategory')}
+                            </Form.Label>
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                name="mainCategoryId"
+                                onChange={this.handleChange}
+                            >
+                                <option value="0">All</option>
+                                {
+                                    data.mainCategories.map((value, key) => this.renderOptions(value.name, value.mainCategoryID, key))
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group style={{width: '350px'}}>
+                            <Form.Label style={{width: '94px'}}>
+                            {LangHelper.getResource('SubCategory')}
+                            </Form.Label>
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                name="subCategoryId"
+                                onChange={this.handleChange}
+                            >
+                                {
+                                    subCategories.map((value, key) => this.renderOptions(value.name, value.subCategoryId, key))
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row bsPrefix='form-row'>
+                        <Form.Group style={{width: '220px'}}>
+                            <Form.Label>
+                                {LangHelper.getResource('Communication')}
+                            </Form.Label>
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                name="communicationId"
+                                onChange={this.handleChange}
+                            >
+                                {
+                                    data.communications.map((value, key) => this.renderOptions(value.name, value.id, key))
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group style={{width: '261px'}}>
+                            <Form.Label style={{width: '130px'}}>
+                                {LangHelper.getResource('CustomerResponse')}
+                             </Form.Label>
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                name="responseId"
+                                onChange={this.handleChange}
+                            >
+                                {
+                                    data.customerResponses.map((value, key) => this.renderOptions(value.value, value.id, key))
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group style={{width: '200px'}}>
+                            <Form.Label>
+                                {LangHelper.getResource('Is Reviewed')}
+                            </Form.Label>
+                            <Form.Control as="select" size="sm" className="shadow-none dropdown-Reviewed"
+                                name="isReviewed"
+                                onChange={this.handleChange}
+                            >
+                                {
+                                    reviews.map((value, key) => this.renderOptions(value.settingValue, value.settingId, key))
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group style={{width: '80px'}}>
+                                <button type="submit" id='btn-submit-deleted-fb' className="btn btn-primary btn-sm"><UnderlineButton.submitButton /></button>
+                        </Form.Group >
+                    </Form.Row>
             </Form>
         );
     };

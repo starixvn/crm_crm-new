@@ -494,7 +494,7 @@
             var commandResult = new CommandResult();
             var message = new Message
             {
-                Chat = new Chat { Id = 1 },
+                Chat = new Chat { Id = 1, Username="test" },
                 From = new User { Id = 1 },
             };
             var bot = fixture.Create<User>();

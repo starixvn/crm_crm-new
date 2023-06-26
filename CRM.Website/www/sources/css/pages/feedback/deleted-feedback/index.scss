@@ -30,29 +30,30 @@
     }
     
     .form-filter {
-        .filter-title{
-            width: 9%;
-        }
+        
         .dropdown-Reviewed{
             margin-left: 5px;
         }
-        .row{
-            margin-left: 0;
-            margin-right: 0;
+        .react-datepicker__input-container input {
+            width: 100% !important;
         }
-        
-        .filter-col{
-            padding-left: 0;
+
+        .form-group{
+            &:nth-child(1){
+                width: 350px;
+                .col-form-label-username{
+                    width: 172px;
+                }
+                input{
+                    margin-right: 5px;
+                }
+
+                select[name="isGuest"]{
+                    width: 100px;
+                }
+            }
         }
-    
-        .filter-colDate{
-            padding-left: 0;
-        }
-    
-        .filter-toDate{
-            width: 5%;
-        }
-    
+
         .filter-customer-response {
             margin-right: 10px;
             margin-left: 20px;

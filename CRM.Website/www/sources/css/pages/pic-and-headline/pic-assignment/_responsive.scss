@@ -14,11 +14,17 @@
     }
 }
 
+.extra-large-desktops > .show-left-panel .show-filter{
+    .form-group{
+        width: 240px !important;
+    }
+}
+
 .large-desktops {
     &> .show-left-panel{
         .pic-assignment .form-filter{
             .form-group{
-                width: 225px;
+                width: 200px;
                 .form-label{
                     width: 90px;
                 }
@@ -58,6 +64,10 @@
                 }
             }
         }
+
+        .show-filter .form-row-status{
+            margin-right: 0 !important;
+        }
         #form-checkbox{
             margin-right: 9px;
         }
@@ -67,14 +77,4 @@
 .small-desktops > .show-left-panel{
     @include form-group-width(270px);
     @include form-checkbox-margin(50px);
-}
-
-@media only screen and (max-width: 1762px) {
-    .medium-desktops{
-        &> .show-left-panel{
-            .pic-assignment .show-filter .form-row-status{
-                margin-right: 350px;;
-            }
-        }
-    }
 }

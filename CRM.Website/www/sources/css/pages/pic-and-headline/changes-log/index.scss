@@ -1,4 +1,23 @@
 .change-logs{
+    .form-filter {
+        max-width: 1500px !important;
+
+        .form-label{
+            width: 100px !important;
+        }
+        .react-datepicker-wrapper-container, .form-control{
+            width: calc(100% - 0.5rem - 100px) !important;
+        }
+
+        .react-datepicker__input-container input {
+            width: 100% !important;
+        }
+    
+        .multiple-select-container, .form-control {
+            width: calc(100% - 0.5rem - 100px) !important;
+        }
+    }
+
     .nav-tabs{
         a{
             border-radius: 0;
@@ -21,25 +40,6 @@
                 background-color:#2d5ab9 !important;
                 color:#fff !important;
             }
-        }
-    }
-
-    .form-filter {
-        max-width: 1500px !important;
-        .react-datepicker__input-container input{
-            width: 100% !important;
-        }
-
-        .form-group{
-            width: 240px;
-
-            .form-label{
-                width: 80px;
-            }
-        }
-    
-        .multiple-select-container {
-            width: calc(100% - 0.5rem - 80px);
         }
     }
 
@@ -128,4 +128,3 @@
         }
     }
 }
-
