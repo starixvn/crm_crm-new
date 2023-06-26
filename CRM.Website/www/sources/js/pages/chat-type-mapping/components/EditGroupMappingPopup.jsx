@@ -429,188 +429,208 @@ export class EditGroupMappingPopup extends Component {
                             message={this.props.updateGroupMappingResult.message || LangHelper.getResource('UpdateGroupMappingSuccess')}
                         />
                     }
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('BotService')}
-                        </Form.Label>
-                        <Form.Label sm="9" md="10" column>
-                            {this.props.updateGroupMappingData.data.channelName}
-                        </Form.Label>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('BotName')}
-                        </Form.Label>
-                        <Form.Label column sm="9" md="10">
-                            {this.state.form.bot.name}
-                        </Form.Label>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('DisplayName')}
-                        </Form.Label>
-                        <Form.Label column sm="9" md="10">
-                            {this.state.form.displayName}
-                        </Form.Label>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column md="2" sm="3">
-                            {LangHelper.getResource('ChatType')}
-                        </Form.Label>
-                        <Form.Label column md="10" sm="9">
-                            {LangHelper.getResource('Group')}
-                        </Form.Label>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" className="required" md="2">
-                            {LangHelper.getResource('RecipientType')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="recipientTypeId"
-                                value={this.state.form.recipientTypeId}
-                                onChange={e => this.handleRecipientTypeChange(e)}
-                            >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {recipientTypes.map(this.renderEditGroupMappingOptions)}
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('Recipient')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <MultipleSelect
-                                width={'100%'}
-                                name="headlineIds"
-                                dataSource={this.state.settings.recipientOptions}
-                                keyField='id'
-                                valueField='name'
-                                statusField='checked'
-                                isSummited={false}
-                                onChange={this.handleRecipientChange}
-                                hasSearchBox
 
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('Username')}
-                        </Form.Label>
-                        <Col sm="9" md="10" className="mrg-top-3">
-                            {
-                                this.state.isLoading &&
-                                <Loading />
-                            }
-                            {
-                                botServiceId === BotServiceType.Letstalk ? (
-                                    this.props.letstalkVerification.recipients.length > 0 && !this.state.isLoading &&
-                                    this.props.letstalkVerification.recipients.map(this.renderLetstalkIdTelegramVerification)
-                                ) :
-                                (
-                                    this.state.telegramVerifies.length > 0 && !this.state.isLoading &&
-                                    this.state.telegramVerifies.map(this.renderLetstalkIdTelegramVerification)
-                                )
-                            }
-                        </Col>
-                    </Form.Group>
-                    {
-                        botServiceId === BotServiceType.Telegram &&
-                        (
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="3" md="2">
-                                    {LangHelper.getResource('ChatID')}
-                                </Form.Label>
-                                <Form.Label column sm="9" md="10">
-                                    {LangHelper.getResource(this.state.form.conversationId)}
-                                </Form.Label>
-                            </Form.Group>
-                        )
-                    }
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('GroupHeadline')}
-                        </Form.Label>
-                        <Col sm="9" md="10" className={`${this.state.form.recipientName === AccountingPIC ? 'disabled-select' : ''}`}>
-                            <MultipleSelect
-                                valueField='name'
-                                statusField='checked'
-                                isSummited={false}
-                                onChange={this.handleGroupHeadlineChange}
-                                hasSearchBox
-                                width={'100%'}
-                                name="headlineIds"
-                                dataSource={groupHeadlinesOption}
-                                keyField='id'
-                                isDisable={this.state.form.recipientName === AccountingPIC}
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('MappingStatus')}
-                        </Form.Label>
-                        <Form.Label column sm="9" md="10" className={Site.mappingStatusClass(this.state.form.mappingStatus.id)}>
-                            {this.state.form.mappingStatus.name}
-                        </Form.Label>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('Language')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="languageId"
-                                value={this.state.form.languageId}
-                                onChange={e => this.handleChange('languageId', e.target.value)}
-                            >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {this.props.settings.languages.map(this.renderEditGroupMappingOptions)}
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('IgnoredNotificationType')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <MultipleSelect
-                                width={'100%'}
-                                name="ignoredNotification"
-                                dataSource={this.state.ignoreNotificationTypes}
-                                keyField='notificationTypeId'
-                                valueField='notificationTypeName'
-                                onChange={this.handleIgnoreNotificationChange}
-                                hasSearchBox
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" htmlFor="groupEditRemark" >
-                            {LangHelper.getResource('Remark')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <Form.Control as="textarea" className="shadow-none" size="sm"
-                                name="remark"
-                                rows={5}
-                                value={this.state.form.remark}
-                                onChange={e => this.handleChange('remark', e.target.value)}
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column md="2" sm="3" />
-                        <Col sm="9" md="10" name="checkbox-isTest">
-                            <Form.Group controlId="isTest-edit-group" className={isHiddenIsTest}>
-                                <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
-                                    onChange={event => this.handleChange('isTest', event.target.checked)}
-                                    checked={this.state.form.isTest}
+                    <Form.Row className='form-row border-container'>
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4" className="required">
+                                {LangHelper.getResource('BotService')}
+                            </Form.Label>
+                            <Form.Label sm="9" md="8" column>
+                                {this.props.updateGroupMappingData.data.channelName}
+                            </Form.Label>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4">
+                                {LangHelper.getResource('BotName')}
+                            </Form.Label>
+                            <Form.Label column sm="9" md="8">
+                                {this.state.form.bot.name}
+                            </Form.Label>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column md="4" sm="3">
+                                {LangHelper.getResource('ChatType')}
+                            </Form.Label>
+                            <Form.Label column md="8" sm="9">
+                                {LangHelper.getResource('Group')}
+                            </Form.Label>
+                        </Form.Group>
+                    </Form.Row>
+
+                    <Form.Row className='form-row border-container'>
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" className="required" md="4">
+                                {LangHelper.getResource('RecipientType')}
+                            </Form.Label>
+                            <Col sm="9" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="recipientTypeId"
+                                    value={this.state.form.recipientTypeId}
+                                    onChange={e => this.handleRecipientTypeChange(e)}
+                                >
+                                    <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                    {recipientTypes.map(this.renderEditGroupMappingOptions)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4" className="required">
+                                {LangHelper.getResource('Recipient')}
+                            </Form.Label>
+                            <Col sm="9" md="8">
+                                <MultipleSelect
+                                    width={'100%'}
+                                    name="headlineIds"
+                                    dataSource={this.state.settings.recipientOptions}
+                                    keyField='id'
+                                    valueField='name'
+                                    statusField='checked'
+                                    isSummited={false}
+                                    onChange={this.handleRecipientChange}
+                                    hasSearchBox
+
                                 />
-                            </Form.Group>
-                        </Col>
-                    </Form.Group>
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-12">
+                            <Form.Label column sm="3" md="2">
+                                {LangHelper.getResource('Username')}
+                            </Form.Label>
+                            <Col sm="9" md="10" className="mrg-top-3">
+                                {
+                                    this.state.isLoading &&
+                                    <Loading />
+                                }
+                                {
+                                    botServiceId === BotServiceType.Letstalk ? (
+                                        this.props.letstalkVerification.recipients.length > 0 && !this.state.isLoading &&
+                                        this.props.letstalkVerification.recipients.map(this.renderLetstalkIdTelegramVerification)
+                                    ) :
+                                    (
+                                        this.state.telegramVerifies.length > 0 && !this.state.isLoading &&
+                                        this.state.telegramVerifies.map(this.renderLetstalkIdTelegramVerification)
+                                    )
+                                }
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4">
+                                {LangHelper.getResource('DisplayName')}
+                            </Form.Label>
+                            <Form.Label column sm="9" md="8">
+                                {this.state.form.displayName}
+                            </Form.Label>
+                        </Form.Group>
+
+                        {
+                            botServiceId === BotServiceType.Telegram &&
+                            (
+                                <Form.Group as={Row} className="col-md-6">
+                                    <Form.Label column sm="3" md="4">
+                                        {LangHelper.getResource('ChatID')}
+                                    </Form.Label>
+                                    <Form.Label column sm="9" md="8">
+                                        {LangHelper.getResource(this.state.form.conversationId)}
+                                    </Form.Label>
+                                </Form.Group>
+                            )
+                        }
+                    </Form.Row>
+
+                    <Form.Row className='form-row border-container'>
+                        <Form.Group as={Row} className="col-md-12">
+                            <Form.Label column sm="3" md="2">
+                                {LangHelper.getResource('MappingStatus')}
+                            </Form.Label>
+                            <Form.Label column sm="9" md="10" className={Site.mappingStatusClass(this.state.form.mappingStatus.id)}>
+                                {this.state.form.mappingStatus.name}
+                            </Form.Label>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4" className="required">
+                                {LangHelper.getResource('GroupHeadline')}
+                            </Form.Label>
+                            <Col sm="9" md="8" className={`${this.state.form.recipientName === AccountingPIC ? 'disabled-select' : ''}`}>
+                                <MultipleSelect
+                                    valueField='name'
+                                    statusField='checked'
+                                    isSummited={false}
+                                    onChange={this.handleGroupHeadlineChange}
+                                    hasSearchBox
+                                    width={'100%'}
+                                    name="headlineIds"
+                                    dataSource={groupHeadlinesOption}
+                                    keyField='id'
+                                    isDisable={this.state.form.recipientName === AccountingPIC}
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4" className="required">
+                                {LangHelper.getResource('Language')}
+                            </Form.Label>
+                            <Col sm="9" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="languageId"
+                                    value={this.state.form.languageId}
+                                    onChange={e => this.handleChange('languageId', e.target.value)}
+                                >
+                                    <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                    {this.props.settings.languages.map(this.renderEditGroupMappingOptions)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-12">
+                            <Form.Label column sm="3" md="2">
+                                {LangHelper.getResource('IgnoredNotificationType')}
+                            </Form.Label>
+                            <Col sm="9" md="10" className="fitInput">
+                                <MultipleSelect
+                                    width={'100%'}
+                                    name="ignoredNotification"
+                                    dataSource={this.state.ignoreNotificationTypes}
+                                    keyField='notificationTypeId'
+                                    valueField='notificationTypeName'
+                                    onChange={this.handleIgnoreNotificationChange}
+                                    hasSearchBox
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-12">
+                            <Form.Label column sm="3" md="2" htmlFor="groupEditRemark" >
+                                {LangHelper.getResource('Remark')}
+                            </Form.Label>
+                            <Col sm="9" md="10" className="fitInput">
+                                <Form.Control as="textarea" className="shadow-none" size="sm"
+                                    name="remark"
+                                    rows={5}
+                                    value={this.state.form.remark}
+                                    onChange={e => this.handleChange('remark', e.target.value)}
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-12">
+                            <Form.Label column md="2" sm="3" />
+                            <Col sm="9" md="10" name="checkbox-isTest">
+                                <Form.Group controlId="isTest-edit-group" className={isHiddenIsTest}>
+                                    <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
+                                        onChange={event => this.handleChange('isTest', event.target.checked)}
+                                        checked={this.state.form.isTest}
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Form.Group>
+                    </Form.Row>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button type="submit" variant="primary" size="sm" disabled={this.state.isSubmitting && this.state.isBotRemoved} id="edit-group-mapping-submit">

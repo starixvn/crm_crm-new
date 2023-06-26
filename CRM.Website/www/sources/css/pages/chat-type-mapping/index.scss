@@ -184,4 +184,18 @@
             padding-left: 10px;
         }
     }
+
+    .border-container {
+        border: 1px solid #b7b7b7;
+        padding-top: 10px;
+        margin-bottom: 10px;
+
+        @media (min-width: 768px) {
+            .fitInput {
+                .multiple-select-container, textarea  {
+                    width: 95%;
+                }
+            }
+        }
+    }
 }

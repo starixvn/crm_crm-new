@@ -376,228 +376,247 @@ export class InsertPersonalMappingPopup extends Component {
                             message={this.props.insertPersonalMappingResult.message || LangHelper.getResource('InsertPersonalMappingSuccessfully')}
                         />
                     }
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('BotService')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name='botService'
-                                onChange={e => this.handleBotServiceChange(parseInt(e.target.value, 10))}
-                                value={botServiceId}
-                            >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {this.props.settings.botServices.map(this.renderOptions)}
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('BotName')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name='botId'
-                                onChange={e => this.handleBotChange(e.target.value)}
-                                value={this.state.form.botId}
-                            >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {botOptions.map(this.renderOptions)}
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('DisplayName')}
-                        </Form.Label>
-                        <Form.Label column sm="9" md="10">
-                            {
-                                this.state.isLoading &&
-                                <Loading />
-                            }
-                            {
-                                !this.state.isLoading &&
-                                this.state.form.displayName
-                            }
-                        </Form.Label>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('ChatType')}
-                        </Form.Label>
-                        <Form.Label column sm="9" md="10">
-                            {LangHelper.getResource('Personal')}
-                        </Form.Label>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('RecipientType')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="recipientTypeId"
-                                onChange={e => this.handleRecipientTypeChange(e)}
-                                value={this.state.form.recipientType}
-                            >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {this.state.recipientTypes.map(this.renderOptions)}
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('Recipient')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <CustomReactSelect
-                                className='basic-single'
-                                isSearchable
-                                isClearable
-                                name='recipient'
-                                onChange={this.handleRecipientChange}
-                                options={recipientOptions}
-                                value={this.state.form.recipient}
-                            />
-                        </Col>
-                    </Form.Group>
-                    {
-                        botServiceId === BotServiceType.Telegram && (
-                            <>
-                                <Form.Group as={Row}>
+                    <Form.Row className='form-row border-container'>
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4" className="required">
+                                {LangHelper.getResource('BotService')}
+                            </Form.Label>
+                            <Col sm="9" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name='botService'
+                                    onChange={e => this.handleBotServiceChange(parseInt(e.target.value, 10))}
+                                    value={botServiceId}
+                                >
+                                    <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                    {this.props.settings.botServices.map(this.renderOptions)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4" className="required">
+                                {LangHelper.getResource('BotName')}
+                            </Form.Label>
+                            <Col sm="9" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name='botId'
+                                    onChange={e => this.handleBotChange(e.target.value)}
+                                    value={this.state.form.botId}
+                                >
+                                    <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                    {botOptions.map(this.renderOptions)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4">
+                                {LangHelper.getResource('ChatType')}
+                            </Form.Label>
+                            <Form.Label column sm="9" md="8">
+                                {LangHelper.getResource('Personal')}
+                            </Form.Label>
+                        </Form.Group>
+                    </Form.Row>
+
+                    <Form.Row className='form-row border-container'>
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4" className="required">
+                                {LangHelper.getResource('RecipientType')}
+                            </Form.Label>
+                            <Col sm="9" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="recipientTypeId"
+                                    onChange={e => this.handleRecipientTypeChange(e)}
+                                    value={this.state.form.recipientType}
+                                >
+                                    <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                    {this.state.recipientTypes.map(this.renderOptions)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4" className="required">
+                                {LangHelper.getResource('Recipient')}
+                            </Form.Label>
+                            <Col sm="9" md="8">
+                                <CustomReactSelect
+                                    className='basic-single'
+                                    isSearchable
+                                    isClearable
+                                    name='recipient'
+                                    onChange={this.handleRecipientChange}
+                                    options={recipientOptions}
+                                    value={this.state.form.recipient}
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        {
+                            botServiceId === BotServiceType.Telegram && (
+                                <>
+                                    <Form.Group as={Row} className="col-md-12">
+                                        <Form.Label column sm="3" md="2" className="required">
+                                            {LangHelper.getResource('Username')}
+                                        </Form.Label>
+                                        {
+                                            usernames.length > 0 &&
+                                            usernames.map((value, key) => (
+                                                <Col key={key + value} sm="auto" md="auto" className="radioCheck">
+                                                    <Form.Check
+                                                        inline label={value}
+                                                        name='usernameId'
+                                                        type="radio"
+                                                        id={key + value}
+                                                        value={value}
+                                                        onChange={event => this.handleChangeUsername(event.target.value)}
+                                                    />
+                                                    {
+                                                        this.isShowGreenCheck(value) && (
+                                                            <OverlayTrigger
+                                                                key={key + value}
+                                                                placement="auto"
+                                                                overlay={
+                                                                    <Tooltip>
+                                                                        <span>This username has added the bot</span>
+                                                                    </Tooltip>
+                                                                }
+                                                            >
+                                                                <span className="fa fa-check badge-green" />
+                                                            </OverlayTrigger>
+                                                        )
+                                                    }
+                                                </Col>
+                                            ))
+                                        }
+                                    </Form.Group>
+                                </>
+                            )
+                        }
+                        {
+                            botServiceId === BotServiceType.Letstalk && (
+                                <Form.Group as={Row} className="col-md-12">
                                     <Form.Label column sm="3" md="2" className="required">
-                                        {LangHelper.getResource('Username')}
+                                        {LangHelper.getResource('LetstalkID')}
                                     </Form.Label>
-                                    {
-                                        usernames.length > 0 &&
-                                        usernames.map((value, key) => (
-                                            <Col key={key + value} sm="auto" md="auto" className="radioCheck">
-                                                <Form.Check
-                                                    inline label={value}
-                                                    name='usernameId'
-                                                    type="radio"
-                                                    id={key + value}
-                                                    value={value}
-                                                    onChange={event => this.handleChangeUsername(event.target.value)}
-                                                />
-                                                {
-                                                    this.isShowGreenCheck(value) && (
-                                                        <OverlayTrigger
-                                                            key={key + value}
-                                                            placement="auto"
-                                                            overlay={
-                                                                <Tooltip>
-                                                                    <span>This username has added the bot</span>
-                                                                </Tooltip>
-                                                            }
-                                                        >
-                                                            <span className="fa fa-check badge-green" />
-                                                        </OverlayTrigger>
-                                                    )
-                                                }
-                                            </Col>
-                                        ))
-                                    }
+                                    <Col sm="9" md="auto">
+                                        {
+                                            this.renderLetstalkIds(this.selectedLetstalkIds)
+                                        }
+                                    </Col>
                                 </Form.Group>
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="3" md="2">
+                            )
+                        }
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4">
+                                {LangHelper.getResource('DisplayName')}
+                            </Form.Label>
+                            <Form.Label column sm="9" md="8">
+                                {
+                                    this.state.isLoading &&
+                                    <Loading />
+                                }
+                                {
+                                    !this.state.isLoading &&
+                                    this.state.form.displayName
+                                }
+                            </Form.Label>
+                        </Form.Group>
+                        {
+                            botServiceId === BotServiceType.Telegram && (
+                                <Form.Group as={Row} className="col-md-6">
+                                    <Form.Label column sm="3" md="4">
                                         {LangHelper.getResource('ChatID')}
                                     </Form.Label>
-                                    <Form.Label column sm="9" md="10">
+                                    <Form.Label column sm="9" md="8">
                                         {LangHelper.getResource(this.state.form.chatId)}
                                     </Form.Label>
                                 </Form.Group>
-                            </>
-                        )
-                    }
-                    {
-                        botServiceId === BotServiceType.Letstalk && (
-                            <Form.Group as={Row}>
-                                <Form.Label column sm="3" md="2" className="required">
-                                    {LangHelper.getResource('LetstalkID')}
-                                </Form.Label>
-                                <Col sm="9" md="10">
-                                    {
-                                        this.renderLetstalkIds(this.selectedLetstalkIds)
-                                    }
-                                </Col>
-                            </Form.Group>
-                        )
-                    }
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('GroupHeadline')}
-                        </Form.Label>
-                        <Col sm="9" md="10" className={`${this.state.form.recipientName === AccountingPIC ? 'disabled-select' : ''}`}>
-                            <MultipleSelect
-                                width={'100%'}
-                                name="headlineIds"
-                                dataSource={groupHeadlinesOption}
-                                keyField='id'
-                                valueField='name'
-                                statusField='checked'
-                                isSummited={false}
-                                onChange={this.handleGroupHeadlineChange}
-                                hasSearchBox
-                                isDisable={this.state.form.recipientName === AccountingPIC}
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" className="required">
-                            {LangHelper.getResource('Language')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="languageId"
-                                onChange={e => this.handleChange('languageId', e.target.value)}
-                                value={this.state.form.languageId}
-                            >
-                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {this.props.settings.languages.map(this.renderOptions)}
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2">
-                            {LangHelper.getResource('IgnoredNotificationType')}
-                        </Form.Label>
-                        <Col sm="9" md="10">
-                            <MultipleSelect
-                                width={'100%'}
-                                name="ignoredNotification"
-                                dataSource={this.state.ignoreNotificationTypes}
-                                keyField='notificationTypeId'
-                                valueField='notificationTypeName'
-                                onChange={this.handleIgnoreNotificationChange}
-                                hasSearchBox
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" >
-                            {LangHelper.getResource('Remark')}
-                        </Form.Label>
-                        <Col sm="9" md="10" name="insert-personal">
-                            <Form.Control as="textarea" size="sm" className="shadow-none"
-                                rows={5}
-                                name="remark"
-                                onChange={e => this.handleChange('remark', e.target.value)}
-                                value={this.state.form.remark}
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="3" md="2" />
-                        <Col sm="9" md="10" name="checkbox-isTest">
-                            <Form.Group controlId="isTest-insert" className={this.state.form.recipientName !== AccountingPIC ? 'hidden-isTest' : ''}>
-                                <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
-                                    checked={this.state.form.isTest}
-                                    onChange={event => this.handleChange('isTest', event.target.checked)}
-                                />
-                            </Form.Group>
-                        </Col>
-                    </Form.Group>
+                            )
+                        }
+                    </Form.Row>
 
+                    <Form.Row className='form-row border-container'>
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4" className="required">
+                                {LangHelper.getResource('GroupHeadline')}
+                            </Form.Label>
+                            <Col sm="9" md="8" className={`${this.state.form.recipientName === AccountingPIC ? 'disabled-select' : ''}`}>
+                                <MultipleSelect
+                                    width={'100%'}
+                                    name="headlineIds"
+                                    dataSource={groupHeadlinesOption}
+                                    keyField='id'
+                                    valueField='name'
+                                    statusField='checked'
+                                    isSummited={false}
+                                    onChange={this.handleGroupHeadlineChange}
+                                    hasSearchBox
+                                    isDisable={this.state.form.recipientName === AccountingPIC}
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-6">
+                            <Form.Label column sm="3" md="4" className="required">
+                                {LangHelper.getResource('Language')}
+                            </Form.Label>
+                            <Col sm="9" md="8">
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="languageId"
+                                    onChange={e => this.handleChange('languageId', e.target.value)}
+                                    value={this.state.form.languageId}
+                                >
+                                    <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                    {this.props.settings.languages.map(this.renderOptions)}
+                                </Form.Control>
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-12">
+                            <Form.Label column sm="3" md="2">
+                                {LangHelper.getResource('IgnoredNotificationType')}
+                            </Form.Label>
+                            <Col sm="9" md="10" className="fitInput">
+                                <MultipleSelect
+                                    width={'100%'}
+                                    name="ignoredNotification"
+                                    dataSource={this.state.ignoreNotificationTypes}
+                                    keyField='notificationTypeId'
+                                    valueField='notificationTypeName'
+                                    onChange={this.handleIgnoreNotificationChange}
+                                    hasSearchBox
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-12">
+                            <Form.Label column sm="3" md="2" >
+                                {LangHelper.getResource('Remark')}
+                            </Form.Label>
+                            <Col sm="9" md="10" name="insert-personal" className="fitInput">
+                                <Form.Control as="textarea" size="sm" className="shadow-none"
+                                    rows={5}
+                                    name="remark"
+                                    onChange={e => this.handleChange('remark', e.target.value)}
+                                    value={this.state.form.remark}
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} className="col-md-12">
+                            <Form.Label column sm="3" md="2" />
+                            <Col sm="9" md="10" name="checkbox-isTest">
+                                <Form.Group controlId="isTest-insert" className={this.state.form.recipientName !== AccountingPIC ? 'hidden-isTest' : ''}>
+                                    <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
+                                        checked={this.state.form.isTest}
+                                        onChange={event => this.handleChange('isTest', event.target.checked)}
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Form.Group>
+                    </Form.Row>
                 </Modal.Body>
 
                 <Modal.Footer>
