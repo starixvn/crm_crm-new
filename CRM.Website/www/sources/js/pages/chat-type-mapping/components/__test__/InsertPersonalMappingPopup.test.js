@@ -388,13 +388,13 @@ describe('InsertPersonalMappingPopup', () => {
             test.find(Form.Group).at(1).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleBotChange).toHaveBeenCalledWith('value');
 
-            test.find(Form.Group).at(4).find(Form.Control).at(0).simulate('change', event);
+            test.find(Form.Group).at(3).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith(event);
 
-            test.find(Form.Group).at(5).find(CustomReactSelect).at(0).simulate('change');
+            test.find(Form.Group).at(4).find(CustomReactSelect).at(0).simulate('change');
             expect(popup.instance().handleRecipientChange).toHaveBeenCalled();
 
-            test.find(Form.Group).at(6).find(Form.Check).at(0).simulate('change', event);
+            test.find(Form.Group).at(5).find(Form.Check).at(0).simulate('change', event);
             expect(popup.instance().handleChangeUsername).toHaveBeenCalledWith('value');
 
             test.find(Form.Group).at(8).find(MultipleSelect).at(0).simulate('change');
@@ -408,9 +408,6 @@ describe('InsertPersonalMappingPopup', () => {
 
             test.find(Form.Group).at(11).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('remark', 'value');
-
-            test.find(Form.Group).at(12).find(Form.Check).at(0).simulate('change', event);
-            expect(popup.instance().handleChange).toHaveBeenCalledWith('isTest', true);
         });
 
         it('handle functions should call correct functions with correct letstalk params when event triggered', async () => {
@@ -444,7 +441,7 @@ describe('InsertPersonalMappingPopup', () => {
 
             const test = shallow(popup.instance().renderForm());
 
-            test.find(Form.Group).at(6).find(Form.Check).at(0).simulate('change');
+            test.find(Form.Group).at(5).find(Form.Check).at(0).simulate('change');
             expect(popup.instance().handleLetstalkSelect).toHaveBeenCalledWith();
         });
 

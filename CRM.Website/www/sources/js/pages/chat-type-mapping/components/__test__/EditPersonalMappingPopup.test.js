@@ -194,7 +194,7 @@ describe('EditPersonalMappingPopup', () => {
 
             const test = shallow(popup.instance().renderForm());
 
-            test.find(Form.Group).at(4).find(Form.Control).at(0).simulate('change', event);
+            test.find(Form.Group).at(3).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith(event);
 
             test.find(Form.Group).at(8).find(Form.Control).at(0).simulate('change', event);

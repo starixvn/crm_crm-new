@@ -218,11 +218,11 @@ describe('EditGroupMappingPopup', () => {
             popup.instance().onClosePopup = jest.fn();
             popup.instance().handleSubmitForm = jest.fn();
 
-            popup.find(Form.Group).at(4).find(Form.Control).at(0).simulate('change', event);
+            popup.find(Form.Group).at(3).find(Form.Control).at(0).simulate('change', event);
             expect(popup.instance().handleRecipientTypeChange).toHaveBeenCalledWith(event);
 
-            expect(popup.find(Form.Group).at(5).find(MultipleSelect).length).toBe(1);
-            expect(popup.find(Form.Group).at(8).find(MultipleSelect).length).toBe(1);
+            expect(popup.find(Form.Group).at(4).find(MultipleSelect).length).toBe(1);
+            expect(popup.find(Form.Group).at(9).find(MultipleSelect).length).toBe(1);
             expect(popup.find(Button).length).toBe(2);
 
             popup.find(Form.Group).at(10).find(Form.Control).at(0).simulate('change', event);

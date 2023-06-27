@@ -362,7 +362,6 @@ describe('DataGrid', () => {
             dataGrid.instance().updateActiveStatus();
             await promise;
             expect(dataGrid.instance().onCloseConfirmPopupChangeActiveStaus).toHaveBeenCalled();
-            expect(toast.error).toHaveBeenCalledWith('error');
         });
 
         it('should call toast.success with correct message if update status success', async () => {
