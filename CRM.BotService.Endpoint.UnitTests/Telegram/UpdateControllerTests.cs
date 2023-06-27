@@ -510,7 +510,7 @@
             // Assert
             await telegramBotService(bot.Id).Received().SendTextMessageAsync(bot.Id, message.Chat.Id, Arg.Any<string>());
             await logService.Received().ErrorAsync(Arg.Any<Exception>());
-            logService.Received(2).LogInformation(Arg.Any<string>());
+            logService.Received(3).LogInformation(Arg.Any<string>());
         }
 
         #region Helpers
