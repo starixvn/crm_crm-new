@@ -21,6 +21,10 @@
         .chat-type-mapping{
             &> .show-filter{
                 @include form-group-width(230px);
+
+                .form-group{
+                    margin-bottom: 8px;
+                }
             }
         }
     }
@@ -54,7 +58,9 @@
             &> .show-filter{
                 @include form-group-width(225px);
                 .large-form { width: 270px; }
-
+                .form-group{
+                    margin-bottom: 8px;
+                }
                 .form-row:nth-child(2) .form-group:nth-child(4){
                     width: 150px !important;
 
@@ -78,7 +84,7 @@
 
                 .large-form{
                     width: 240px !important;
-                }
+                }       
             }
         }
     }
@@ -89,7 +95,13 @@
                 @include form-group-width(207px);
                 .large-form { width: 250px !important; }
                 .form-group {
-                    margin-bottom: 7px;
+                    margin-bottom: 8px;
+                }
+
+                .form-group:nth-child(3){
+                    .form-label{
+                        width: 95px !important;
+                    }
                 }
             }
 
@@ -103,7 +115,7 @@
                     width: 260px;
 
                     .form-label{
-                        width: 100px;
+                        width: 100px !important;
                     }
                 }
             }
@@ -130,7 +142,9 @@
                             width: 250px !important;
                         }
                     }
-
+                    .form-group{
+                        margin-bottom: 8px;
+                    }
                     &:nth-child(2){
                         .large-form{
                             width: 160px !important;

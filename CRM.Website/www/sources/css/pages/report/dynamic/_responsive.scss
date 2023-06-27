@@ -1,80 +1,117 @@
-@media only screen and (max-width: 1360px) {
-    .small-desktops{
-        &> .show-left-panel{
-            .dynamic{
-                .form-row{
-                    .form-group {
-                        width: 230px;
-        
-                        label{
-                            width: 100px;
-                        }
-                        
-                        .react-datepicker__input-container input{
-                            width: 100% !important;
-                        }
-    
-                        &:nth-child(4){
-                            width: 200px !important;
-                            label{
-                                width: 84px !important;
-                            }
-                
-                            .form-control, .form-control-wrapper {
-                                width: calc(100% - 0.5rem - 84px);
-                            }
-                        }
-    
-                        .selectwithsearchtree{
-                            min-width: 100px;
-    
-                            input{
-                                width: 100% !important;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media only screen and (max-width: 1543px) {
-    .small-desktops{
-        &> .show-left-panel{
-            .dynamic{
-                
+.medium-desktops{
+    &> .show-left-panel{
+        .dynamic{
+            .form-row{
                 .form-group {
-                    width: 235px;
-                }
-
-                label{
-                    width: 100px !important;
-                }
-                
-                .react-datepicker__input-container input{
-                    width: 100% !important;
-                }
-                
-                &:nth-child(4){
-                    width: 237px !important;
+                    width: 230px;
+    
                     label{
-                        width: 100px !important;
+                        width: 100px;
                     }
-        
-                    .form-control, .form-control-wrapper {
-                        width: calc(100% - 0.5rem - 100px);
-                    }
-                }
-
-                .selectwithsearchtree{
-                    min-width: 125px;
-
-                    input{
+                    
+                    .react-datepicker__input-container input{
                         width: 100% !important;
                     }
+
+                    &:nth-child(4){
+                        width: 200px !important;
+                        label{
+                            width: 84px !important;
+                        }
+            
+                        .form-control, .form-control-wrapper {
+                            width: calc(100% - 0.5rem - 84px);
+                        }
+                    }
+
+                    .selectwithsearchtree{
+                        min-width: 100px;
+
+                        input{
+                            width: 100% !important;
+                        }
+                    }
                 }
             }
         }
     }
 }
+
+.large-desktops{
+    &> .show-left-panel{
+        .dynamic{
+            .form-row{
+                .form-group {
+                    width: 240px;
+    
+                    label{
+                        width: 100px;
+                    }
+                    
+                    .react-datepicker__input-container input{
+                        width: 100% !important;
+                    }
+
+                    &:nth-child(4){
+                        width: 260px !important;
+                        label{
+                            width: 125px !important;
+                        }
+            
+                        .form-control, .form-control-wrapper {
+                            width: calc(100% - 0.5rem - 125px);
+                        }
+                    }
+
+                    .selectwithsearchtree{
+                        min-width: 100px;
+
+                        input{
+                            width: 100% !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// @media only screen and (max-width: 1543px) {
+//     .small-desktops{
+//         &> .show-left-panel{
+//             .dynamic{
+                
+//                 .form-group {
+//                     width: 235px;
+//                 }
+
+//                 label{
+//                     width: 100px !important;
+//                 }
+                
+//                 .react-datepicker__input-container input{
+//                     width: 100% !important;
+//                 }
+                
+//                 &:nth-child(4){
+//                     width: 237px !important;
+//                     label{
+//                         width: 100px !important;
+//                     }
+        
+//                     .form-control, .form-control-wrapper {
+//                         width: calc(100% - 0.5rem - 100px);
+//                     }
+//                 }
+
+//                 .selectwithsearchtree{
+//                     min-width: 125px;
+
+//                     input{
+//                         width: 100% !important;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }

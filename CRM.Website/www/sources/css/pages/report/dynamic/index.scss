@@ -11,6 +11,10 @@
 
     .form-filter {
         position: relative;
+
+        .form-group{
+            margin-bottom: 8px;
+        }
         
         .react-datepicker-wrapper-container .react-datepicker-wrapper input.form-control {
             height: 100%;

@@ -345,7 +345,7 @@ export class Filter extends Component {
                             >
                                 {referenceIds.map((item, key) => <option key={key} value={item}>{item}</option>)}
                             </Form.Control>
-                            <Form.Control style={{width: '152px'}} as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none referenceId' name='referenceId'
+                            <Form.Control style={{width: '148px'}} as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none referenceId' name='referenceId'
                                 value={this.state.filter.referenceId}
                                 onChange={e => this.handleChangeFilterControl(e)}
                                 onPaste={this.handlePasteAnnouncementId}
@@ -375,7 +375,7 @@ export class Filter extends Component {
                         </Form.Group>
                         {
                             this.state.showFilter &&
-                            <div style={{width: '70px', marginBottom: '1rem'}}>
+                            <div style={{width: '70px'}}>
                                 <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
                                     {LangHelper.getResource('Submit')}
                                 </Button>
