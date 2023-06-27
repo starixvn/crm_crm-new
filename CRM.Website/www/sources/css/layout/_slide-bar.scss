@@ -13,6 +13,7 @@
     width: 100%;
 }
 
+
 #left-container {
     .buttonSearch:hover, span:hover {
         background-color: transparent;
@@ -37,11 +38,11 @@
     }
 }
 
+
 .item {
     margin: 0;
     padding: 4px 6px;
     background-color: #e8e8e8;
-    border-top: 1px solid white;
     border-bottom: 1px solid #c3c3c3;
 }
 
@@ -57,35 +58,37 @@
         cursor: pointer;
     }
 
-    .item.current {
-        background-color: #c0cbe1;
-    }
-
-    .item .status {
-        font-style: italic;
-    }
-
-    .no-border-bg {
-        background: none;
-        border: none;
-        padding: 0 6px;
-        margin-top: 2px;
-
-        label {
-            padding-left: 0.25rem;
+    .item {
+        &.current {
+            background-color: #c0cbe1;
+            margin-bottom: 5px;
         }
-    }
 
-    .item.title {
-        background: linear-gradient(#e7e7e7,#e2e2e2);
-        ;
-        color: #2f70b4;
-        border-top: 1px solid #e1e1e1;
-        border-bottom: 1px solid #e1e1e1;
-        margin-top: 0;
-        padding: 3px 6px 8px;
-        font-size: 13px;
-        height: 28px;
+        &.status {
+            font-style: italic;
+        }
+
+        &.no-border-bg {
+            background: none;
+            border: none;
+            padding: 0 6px;
+            margin-top: 2px;
+
+            label {
+                padding-left: 0.25rem;
+            }
+        }
+
+        &.title {
+            background: linear-gradient(#e7e7e7,#e2e2e2);
+            color: #2f70b4;
+            border-top: 1px solid #e1e1e1;
+            border-bottom: 1px solid #e1e1e1;
+            margin-bottom: 8px;
+            padding: 3px 6px 8px;
+            font-size: 13px;
+            height: 28px;
+        }
     }
 
     .text-right {
@@ -94,65 +97,6 @@
 
     .tex-left {
         text-align: left;
-    }
-
-    .lv0 {
-        background-color: #fff;
-        padding: 2px 4px;
-    }
-
-    .lv1 {
-        background-color: #ffc0cb;
-        padding: 2px 4px;
-    }
-
-    .lv2 {
-        background-color: #ffff00;
-        padding: 2px 4px;
-    }
-
-    .lv3 {
-        background-color: #ffa500;
-        padding: 2px 4px;
-    }
-
-    .lv4 {
-        background-color: #008000;
-        padding: 2px 4px;
-        color: #fff;
-    }
-
-    .lv5 {
-        background-color: #ff0000;
-        padding: 2px 4px;
-    }
-
-    .lv6 {
-        background-color: #800080;
-        padding: 2px 4px;
-        color: #fff;
-    }
-
-    .lv7 {
-        background-color: #a52a2a;
-        padding: 2px 4px;
-        color: #fff;
-    }
-
-    .lv8 {
-        background-color: #808080;
-        padding: 2px 4px;
-        color: #fff;
-    }
-
-    .lv9 {
-        background-color: #00ff00;
-        padding: 2px 4px;
-    }
-
-    .lv10 {
-        background-color: #00ffff;
-        padding: 2px 4px;
     }
 
     .mrb0 {
@@ -194,6 +138,11 @@
         cursor: pointer;
     }
 
+    input, select {
+        font-size: 13px;
+        padding: 0 5px !important;
+    }
+
     .list-menu {
         padding-left: 6px;
 
@@ -212,5 +161,10 @@
                 color: #0255a5;
             }
         }
+    }
+
+    .btn-primary {
+        margin-bottom: 12px;
+        outline : none;
     }
 }
