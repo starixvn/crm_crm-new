@@ -3,8 +3,6 @@
     min-width: 150px;
 
     .toolbar {
-        margin-left: 15px;
-        line-height: 20px;
         margin-top: 5px;
 
         .input-group {
@@ -83,16 +81,16 @@
             max-height: 350px;
             min-height: 50px;
             overflow-y: auto;
-            padding-bottom: 30px;
-
+            overflow-x: hidden;
+            padding-bottom: 5px 0 20px 0;
             ul {
-                padding-left: 5px;
+                padding-left: 10px;
             }
 
             li {
                 list-style-type: none;
                 margin: 0;
-                padding: 10px 5px 0 5px;
+                padding: 5px 0 0 0;
                 position: relative;
                 line-height: 9pt;
 
@@ -142,7 +140,7 @@
 
     .list-unstyled {
         list-style: none;
-        padding-left: 30px !important;
+        padding-left: 20px !important;
 
         a.list-child {
             width: 100%;
@@ -159,7 +157,7 @@
         li.list-parent:hover {
             a.list-child {
                 background-color: #007bff;
-    
+
                 span {
                     color: #f8f9fa !important;
                 }

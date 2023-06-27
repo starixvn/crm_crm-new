@@ -72,10 +72,10 @@
             background: none;
             border: none;
             padding: 0 6px;
-            margin-top: 2px;
+            margin: 5px 0;
 
             label {
-                padding-left: 0.25rem;
+                padding: 0 0 0 0.25rem;
             }
         }
 
@@ -163,8 +163,7 @@
         }
     }
 
-    .btn-primary {
-        margin-bottom: 12px;
-        outline : none;
+    .hightlight-title{
+        margin-top : 8px;
     }
 }

@@ -91,7 +91,7 @@ export default class DataGrid extends PureComponent {
                     {
                         values.uplineInfo.map((value, index) => {
                             return (
-                                <Row className="item" key={index}>
+                                <Row className="item align-items-end" key={index}>
                                     <Col md="3" className="text-left pl-1">
                                         {value.roleName}
                                     </Col>
@@ -110,7 +110,7 @@ export default class DataGrid extends PureComponent {
                         })
                     }
                 </Form.Group>
-                <Form.Group className="row item current">
+                <Form.Group className="row item current align-items-end">
                     <Col md="3" className="text-left pl-1">
                         {values.roleName}
                     </Col>
@@ -121,7 +121,7 @@ export default class DataGrid extends PureComponent {
                         {values.status}
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('Site')}
                     </Form.Label>
@@ -139,14 +139,14 @@ export default class DataGrid extends PureComponent {
                 </Form.Group>
                 {
                     isShowInactiveMsg &&
-                    <Form.Group className="row item no-border-bg inactive-site">
+                    <Form.Group className="row item no-border-bg inactive-site align-items-end">
                         <Form.Label column md="3" />
                         <Col md="9">
                             {LangHelper.getResource('CannotCreateInactiveSite')}
                         </Col>
                     </Form.Group>
                 }
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('Country')}
                     </Form.Label>
@@ -162,7 +162,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('FirstName')}
                     </Form.Label>
@@ -172,7 +172,7 @@ export default class DataGrid extends PureComponent {
                         />
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="lastName" >
                         {LangHelper.getResource('LastName')}
                     </Form.Label>
@@ -182,7 +182,7 @@ export default class DataGrid extends PureComponent {
                         />
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="nickname" >
                         {LangHelper.getResource('Nickname')}
                     </Form.Label>
@@ -192,7 +192,7 @@ export default class DataGrid extends PureComponent {
                         </Form.Label>
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('Language')}
                     </Form.Label>
@@ -213,7 +213,7 @@ export default class DataGrid extends PureComponent {
                 </Form.Group>
                 {
                     values.isGroupHeadLine &&
-                    <Form.Group className="row item no-border-bg">
+                    <Form.Group className="row item no-border-bg align-items-end">
                         <Form.Label column md="3" />
                         <Col md="9" className="form-control-wrapper">
                             <Form.Check className="checked-headline" type="checkbox"  name="isGroupHeadLine"
@@ -235,9 +235,9 @@ export default class DataGrid extends PureComponent {
     renderCommunicationTool = (values, handleChange, isSubmitting) => {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
-            <div>
+            <div className="hightlight-title">
                 <Row className="item title text-left">{LangHelper.getResource('CommunicationTool')}</Row>
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="phoneCountryCode" >
                         {LangHelper.getResource('Phone1')}
                     </Form.Label>
@@ -254,7 +254,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="phoneCountryCode" >
                         {LangHelper.getResource('Phone2')}
                     </Form.Label>
@@ -271,7 +271,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="phoneCountryCode" >
                         {LangHelper.getResource('Phone3')}
                     </Form.Label>
@@ -288,7 +288,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="mobile" >
                         {LangHelper.getResource('Mobile')}
                     </Form.Label>
@@ -305,7 +305,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="email">
                         {LangHelper.getResource('Email')}
                     </Form.Label>
@@ -316,7 +316,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="msn" >
                         {LangHelper.getResource('Telegram')}
                     </Form.Label>
@@ -327,7 +327,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="skype" >
                         {LangHelper.getResource('Skype')}
                     </Form.Label>
@@ -338,7 +338,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('PIC1')}
                     </Form.Label>
@@ -352,7 +352,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('PIC2')}
                     </Form.Label>
@@ -366,7 +366,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('PIC3')}
                     </Form.Label>
@@ -380,7 +380,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('PIC4')}
                     </Form.Label>
@@ -393,7 +393,7 @@ export default class DataGrid extends PureComponent {
                         />
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item no-border-bg">
+                <Form.Group className="row item no-border-bg align-items-end">
                     <Col md="3" />
                     <Col md="9">
                         {
@@ -411,7 +411,7 @@ export default class DataGrid extends PureComponent {
     renderDetail = isShowInactiveMsg =>{
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
-            <div>
+            <div className="hightlight-title">
                 <Row className="item title text-left btn-detail"
                     onClick={() => this.setState(prevState =>({isShowDetail: !prevState.isShowDetail}))}
                 >
