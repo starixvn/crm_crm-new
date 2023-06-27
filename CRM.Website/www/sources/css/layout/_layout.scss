@@ -1,0 +1,151 @@
+.row-search {
+    min-width: 1299px;
+    display: flex;
+    height: 35px;
+
+    #left-container {
+        background-color: #464d5d;
+        margin: 0;
+        padding: 0;
+        height: 35px;
+        width: 22%;
+
+        .autocomplete-container {
+            input {
+                background: none;
+                border: none;
+                color: #FFF;
+                height: 35px;
+                line-height: 25px;
+                padding: 5px 0 5px 35px;
+                width: 100%;
+                position: relative;
+                text-align: left;
+                text-decoration: none;
+                font-size: 11px;
+
+                &:focus {
+                    background-color: transparent;
+                    color: white;
+                }
+            }
+        }
+
+        .checked-guest {
+            background-color: #464d5d;
+            color: #ebebeb;
+            padding-left:0;
+            display : flex;
+            align-items : center;
+            justify-content : center;
+            .form-check-input {
+                margin-top: 0;
+                position : unset;
+                margin-right : 5px;
+            }
+
+            label {
+                line-height: 1;
+            }
+        }
+
+
+        .btn-search {
+            background: url('../../css/images/icon-search.png') 0 0 no-repeat;
+            cursor: pointer;
+            height: 16px;
+            vertical-align: middle;
+            width: 16px;
+            border: none;
+            position: absolute;
+            left: 25px;
+            top: 10px;
+        }
+    }
+
+    .right-container {
+        width: 78%;
+        display: flex;
+        align-items: center;
+        border-left: 1px solid #252525;
+        justify-content: space-between;
+        background-color: #464d5d;
+        border-radius: 0;
+        height: 35px;
+        color: white;
+
+        #divSubMenu {
+            .breadcrumbsMenu {
+                margin: 0 20px 0;
+
+                .icon-home {
+                    cursor: pointer;
+                }
+
+                li {
+                    padding: 2px 23px 2px 11px;
+                    float: left;
+                }
+            }
+
+            .sub-menu li {
+                &:first-child {
+                    padding: 1px 23px 2px 11px;
+                    float: left;
+                    background: url('../../css/images/br-arrow-ico.png') right 8px no-repeat;
+                }
+
+                &:not(:last-child) {
+                    background: url('../../css/images/br-arrow-ico.png') right 8px no-repeat;
+                }
+
+                &:last-child {
+                    background: none;
+                    color: #aaa9a9;
+                }
+            }
+
+            .sub-main-menu {
+                li {
+                    cursor: pointer;
+                    padding: 7px 10px 8px;
+
+                    a {
+                        color: white;
+                        outline: none;
+                        text-decoration: none;
+                    }
+                }
+
+                .active {
+                    background-color: #f1f1f1;
+
+                    a {
+                        color: #0054a6;
+                    }
+                }
+            }
+
+            .list-inline {
+                padding-left: 0;
+                list-style: none;
+            }
+        }
+
+        .timezone {
+            padding-left: 20px;
+            padding-right: 10px;
+            color: #bbbbbb;
+        }
+    }
+
+    .breadcrumb {
+        background-color: #464d5d;
+        border-radius: 0;
+        height: 35px;
+        color: white;
+        width: 78%;
+        border-left: 1px solid #252525;
+    }
+}
+

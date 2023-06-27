@@ -254,7 +254,7 @@ export default class Filter extends Component {
         return (
             <div className='row-search'>
                 <Form id="left-container" onSubmit={this.handleSubmit}>
-                    <Form.Group as={Row}>
+                    <Form.Group as={Row} className="align-items-center">
                         <Col sm="9" md="9"  className="text-search">
                             <AutoComplete
                                 value={username}
