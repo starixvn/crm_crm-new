@@ -604,18 +604,21 @@ export class InsertPersonalMappingPopup extends Component {
                                 />
                             </Col>
                         </Form.Group>
-
-                        <Form.Group as={Row} className="col-md-12">
-                            <Form.Label column sm="3" md="2" />
-                            <Col sm="9" md="10" name="checkbox-isTest">
-                                <Form.Group controlId="isTest-insert" className={this.state.form.recipientName !== AccountingPIC ? 'hidden-isTest' : ''}>
-                                    <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
-                                        checked={this.state.form.isTest}
-                                        onChange={event => this.handleChange('isTest', event.target.checked)}
-                                    />
+                        {
+                            botServiceId === BotServiceType.Letstalk && (
+                                <Form.Group as={Row} className="col-md-12">
+                                    <Form.Label column sm="3" md="2" />
+                                    <Col sm="9" md="10" name="checkbox-isTest">
+                                        <Form.Group controlId="isTest-insert" className={this.state.form.recipientName !== AccountingPIC ? 'hidden-isTest' : ''}>
+                                            <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
+                                                checked={this.state.form.isTest}
+                                                onChange={event => this.handleChange('isTest', event.target.checked)}
+                                            />
+                                        </Form.Group>
+                                    </Col>
                                 </Form.Group>
-                            </Col>
-                        </Form.Group>
+                            )
+                        }
                     </Form.Row>
                 </Modal.Body>
 

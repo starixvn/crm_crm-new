@@ -145,7 +145,6 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={20}>{LangHelper.getResource('BotName')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('ChatType')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('DisplayName')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('RecipientType')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Recipient')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('LetstalkIDUsername')}</HeaderCell>
@@ -219,7 +218,6 @@ export class DataGrid extends Component {
                 <Cell>
                     {item.displayName}
                 </Cell>
-                <Cell >{item.recipients.length > 0 ? item.recipients[0].recipientTypeName : ''}</Cell>
                 <Cell >{item.headlines.length > 0 ? item.headlines.map(h => h.headlineName).join(', ') : ''}</Cell>
                 <Cell className='recipient-merge-cell'>
                     {

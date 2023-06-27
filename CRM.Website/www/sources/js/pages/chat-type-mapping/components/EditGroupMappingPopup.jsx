@@ -618,18 +618,21 @@ export class EditGroupMappingPopup extends Component {
                                 />
                             </Col>
                         </Form.Group>
-
-                        <Form.Group as={Row} className="col-md-12">
-                            <Form.Label column md="2" sm="3" />
-                            <Col sm="9" md="10" name="checkbox-isTest">
-                                <Form.Group controlId="isTest-edit-group" className={isHiddenIsTest}>
-                                    <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
-                                        onChange={event => this.handleChange('isTest', event.target.checked)}
-                                        checked={this.state.form.isTest}
-                                    />
+                        {
+                            botServiceId === BotServiceType.Letstalk && (
+                                <Form.Group as={Row} className="col-md-12">
+                                    <Form.Label column md="2" sm="3" />
+                                    <Col sm="9" md="10" name="checkbox-isTest">
+                                        <Form.Group controlId="isTest-edit-group" className={isHiddenIsTest}>
+                                            <Form.Check type="checkbox" label={LangHelper.getResource('IsTest')}
+                                                onChange={event => this.handleChange('isTest', event.target.checked)}
+                                                checked={this.state.form.isTest}
+                                            />
+                                        </Form.Group>
+                                    </Col>
                                 </Form.Group>
-                            </Col>
-                        </Form.Group>
+                            )
+                        }
                     </Form.Row>
                 </Modal.Body>
                 <Modal.Footer>
