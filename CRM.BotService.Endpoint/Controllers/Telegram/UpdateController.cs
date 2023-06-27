@@ -188,10 +188,11 @@
 
         protected internal virtual async Task<CommandResult> MigratedToSupergroupAsync(Message message)
         {
-            var command = new MigratedToSupergroupCommand
+            var command = new UpdateConversationIdCommand
             {
-                FromConversationId = message.Chat.Id.ToString(),
-                ToConversationId = message.MigrateToChatId.ToString(),
+                OldConversationId = message.Chat.Id.ToString(),
+                NewConversationId = message.MigrateToChatId.ToString(),
+                ChannelId = (byte)ConversationChannel.Telegram,
                 UpdatedBy = message.From.Id.ToString()
             };
             var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);

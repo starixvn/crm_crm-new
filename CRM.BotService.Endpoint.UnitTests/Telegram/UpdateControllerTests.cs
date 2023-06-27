@@ -450,9 +450,9 @@
                 From = new User { Id = 1 },
                 MigrateToChatId = 2
             };
-            var command = new MigratedToSupergroupCommand();
+            var command = new UpdateConversationIdCommand();
             var controller = GetController();
-            baseService.ExecuteNonQueryAsync(Arg.Do<MigratedToSupergroupCommand>(x => command = x)).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateConversationIdCommand>(x => command = x)).Returns(commandResult);
 
             // Act
             var actual = await controller.Public_MigratedToSupergroupAsync(message);
@@ -460,8 +460,8 @@
             // Assert
             Assert.Equal(commandResult, actual);
 
-            Assert.Equal(message.Chat.Id.ToString(), command.FromConversationId);
-            Assert.Equal(message.MigrateToChatId.ToString(), command.ToConversationId);
+            Assert.Equal(message.Chat.Id.ToString(), command.OldConversationId);
+            Assert.Equal(message.MigrateToChatId.ToString(), command.NewConversationId);
             Assert.Equal(message.From.Id.ToString(), command.UpdatedBy);
         }
 
@@ -476,9 +476,9 @@
                 From = new User { Id = 1 },
                 MigrateToChatId = 2
             };
-            var command = new MigratedToSupergroupCommand();
+            var command = new UpdateConversationIdCommand();
             var controller = GetController();
-            baseService.ExecuteNonQueryAsync(Arg.Do<MigratedToSupergroupCommand>(x => command = x)).Returns(commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Do<UpdateConversationIdCommand>(x => command = x)).Returns(commandResult);
 
             // Act
             var actual = await controller.Public_MigratedToSupergroupAsync(message);
