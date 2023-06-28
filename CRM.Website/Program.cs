@@ -29,10 +29,15 @@
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+            if(isDevelopment){
+                return WebHost.CreateDefaultBuilder(args)
+                    .UseNLog()
+                    .UseStartup<Startup>();  
+            }
 
             return WebHost.CreateDefaultBuilder(args)
                     .UseNLog()
-                    .UseUrls(isDevelopment ? "http://localhost:5000" : $"http://*:5000")
+                    .UseUrls($"http://*:5000")
                     .UseStartup<Startup>();  
         }
     }
