@@ -205,7 +205,7 @@ export class Filter extends Component {
             <Form className='form-filter' onSubmit={this.handleSubmit}>
                 <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group style={{width: 500}}>
+                    <Form.Group style={{width: 498}}>
                         <Form.Label htmlFor="remarkContent">
                             {LangHelper.getResource('RemarkContent')}
                         </Form.Label>
@@ -234,7 +234,7 @@ export class Filter extends Component {
                     </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group style={{width: 500}}>
+                    <Form.Group style={{width: 498}}>
                         <Form.Label htmlFor="userName">
                             {LangHelper.getResource('Username')}
                         </Form.Label>
@@ -312,7 +312,7 @@ export class Filter extends Component {
                     }
                 </Form.Control>
                 <Form.Group style={{width: '155px'}}>
-                    <Button variant="primary" size="sm" className='ml-4 mr-4' onClick={this.handleSubmit}>
+                    <Button variant="primary" size="sm" className='btn-submit' style={{marginLeft: '20px', marginRight: '15px'}} onClick={this.handleSubmit}>
                         <UnderlineButton.searchButton />
                     </Button>
                     {

@@ -9,7 +9,7 @@
         min-width: 960px;
 
         .form-group-date{
-            width: 243px;
+            width: 242px;
             .react-datepicker-wrapper-container{
                 width: 137px;
 
@@ -146,6 +146,22 @@
         .form-row:not(:last-child){
             .form-group:nth-child(1){
                 width: 367px !important;
+            }
+        }
+    }
+}
+
+.medium-desktops, .large-desktops{
+    .show-left-panel {
+        .new-remark .form-filter{
+            .form-row:not(:last-child){
+                .form-group:nth-child(1){
+                    width: 362px !important;
+                }
+            }
+
+            .btn-submit{
+                margin-left: 15px !important;
             }
         }
     }

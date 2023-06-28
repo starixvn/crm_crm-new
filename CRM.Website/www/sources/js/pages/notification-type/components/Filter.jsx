@@ -139,7 +139,7 @@ export class Filter extends Component {
                             onChange={this.handleNotificationTypeChange}
                         />
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group >
                         <Form.Label>{LangHelper.getResource('RecipientType')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <MultipleSelect
