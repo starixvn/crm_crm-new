@@ -51,7 +51,10 @@
 
 .left-form-customer {
     background-color: rgb(241,241,241);
-
+    min-width: 286px;
+    position: fixed;
+    width: 22%;
+    left: 0;
     .upline-username {
         color: #2f70b4;
         cursor: pointer;
