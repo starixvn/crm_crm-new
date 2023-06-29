@@ -14,20 +14,20 @@ export class DataGridRedemption extends Component {
             tableWidth : null
         };
     }
-    resizeWindow () {
+    resizeWindow = () => {
         this.setState({
-            tableWidth : document.querySelector(".block-table")?.clientWidth
-        })
-        window.addEventListener('resize' , () => {
-            this.setState({
-                tableWidth : document.querySelector(".block-table")?.clientWidth
-            })
+            tableWidth : document.querySelector(".table-custom")?.clientWidth
         })
     }
-
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.resizeWindow);
+    }
     componentDidMount() {
         this.props.getRedemptionLogs({ customerId: this.props.id });
-        this.resizeWindow();
+        this.setState({
+            tableWidth : document.querySelector(".table-custom")?.clientWidth
+        })
+        window.addEventListener('resize' , this.resizeWindow)
     }
 
     componentDidUpdate(prevProps) {

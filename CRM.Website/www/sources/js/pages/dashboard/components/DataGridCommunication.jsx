@@ -17,23 +17,21 @@ export class DataGridCommunication extends Component {
             tableWidth : null
         };
     }
-
-    resizeWindow () {
+    resizeWindow = () => {
         this.setState({
             tableWidth : document.querySelector(".block-table")?.clientWidth
         })
-        window.addEventListener('resize' , () => {
-            this.setState({
-                tableWidth : document.querySelector(".block-table")?.clientWidth
-            })
-        });
-        
+    }
+    componentDidMount() {
+        this.setState({
+            tableWidth : document.querySelector(".block-table")?.clientWidth
+        })
+        this.props.getCommunicationLogs({ customerId: this.props.id });
+        window.addEventListener('resize' , this.resizeWindow);
     }
 
-
-    componentDidMount() {
-        this.props.getCommunicationLogs({ customerId: this.props.id });
-        this.resizeWindow();
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.resizeWindow);
     }
 
     componentDidUpdate(prevProps) {

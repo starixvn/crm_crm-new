@@ -14,32 +14,29 @@ import WithNavigation from '@jsroot/components/WithNavigation';
 
 
 export class LastFiveRemarkDataGrid extends Component {
-
-    
     constructor(props) {
         super(props);
         this.state = {
             tableWidth : null
         };
     }
-
-    
-    
-    resizeWindow () {
+    resizeWindow = () => {
         this.setState({
             tableWidth : document.querySelector(".table-custom")?.clientWidth
         })
-        window.addEventListener('resize' , () => {
-            this.setState({
-                tableWidth : document.querySelector(".table-custom")?.clientWidth
-            })
-        })
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.resizeWindow);
     }
 
     componentDidMount() {
         const param = {custId: this.props.custId};
         this.props.getLastFiveRemark(param);
-        this.resizeWindow();
+        this.setState({
+            tableWidth : document.querySelector(".table-custom")?.clientWidth
+        })
+        window.addEventListener('resize' , this.resizeWindow)
     }
 
     componentDidUpdate(prevProps) {
