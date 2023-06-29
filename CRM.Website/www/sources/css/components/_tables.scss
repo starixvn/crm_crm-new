@@ -3,10 +3,43 @@
 .table-title {
     border: 1px solid $border-table-grey;
     border-bottom-width: 0;
-    padding: 4px 5px;
+    padding: 5px 10px;
     background-color: $bg-table-title-grey;
     font-weight: bold;
     color: $blue-button;
+    u{
+        text-decoration: none;
+        cursor: pointer;
+    }
+}
+.block-table{
+    margin-bottom: 15px;
+    &:last-child{
+        margin-bottom: 0;
+    }
+    .header-content{
+        padding-right: 0;
+        border-bottom: 1px solid #b7b7b7;
+        background: #c0cbe2;
+        thead{
+            tr{
+                th{
+                    &:last-child{
+                        border-right: 1px solid #c0cbe2;
+                    }
+                }
+            }
+        }
+    }
+    .table{
+        tbody{
+            tr{
+                td{
+                    border-top: none;
+                }
+            }
+        }
+    }
 }
 
 .pointer-event-none {

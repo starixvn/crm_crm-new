@@ -66,3 +66,16 @@
     -o-transition: -o-transform $transition;
     transition: transform $transition;
 }
+
+@mixin grid ($column , $gap){
+    display: grid;
+    grid-template-columns: $column;
+    grid-gap: $gap;
+}
+
+@mixin grid-auto ($rows, $column, $columnfr, $gap){
+    display: grid;
+    grid-template-rows: $rows;
+    grid-template-columns: repeat($column,$columnfr);
+    grid-gap: $gap;
+}

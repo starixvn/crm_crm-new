@@ -67,7 +67,7 @@
         width: 78%;
         display: flex;
         align-items: center;
-        border-left: 1px solid #252525;
+        border-left: 1px solid #676767;
         justify-content: space-between;
         background-color: #464d5d;
         border-radius: 0;
@@ -147,5 +147,9 @@
         width: 78%;
         border-left: 1px solid #252525;
     }
+}
+
+.grid-two-column{
+    @include grid( 75% auto , 15px )
 }
 

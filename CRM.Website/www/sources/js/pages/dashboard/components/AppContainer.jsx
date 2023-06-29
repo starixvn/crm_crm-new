@@ -90,22 +90,22 @@ export class AppContainer extends Component {
             createCommunicationDialog, editCustomerVerifyDialog, currentCustomer
         } = this.props;
         return (
-            <div>
-                <div className="d-flex justify-content-between">
+            <>
+                <div className="block-table grid-two-column">
                     {
                         !currentCustomer.isCreditSite ?
-                        <div className="dataGrid-remark"><DataGridRemark id={custId} /></div> :
-                        <div className="dataGrid-remark"><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} /></div>
+                        <div className="table-custom dataGrid-remark"><DataGridRemark id={custId} /></div> :
+                        <div className="table-custom dataGrid-remark"><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} /></div>
                     }
                     <div className="information"><CustomerInfoVerify id={custId}/></div>
                 </div>
                 {
-                    !IsRemoveDatagridRedemption && 
+                    // !IsRemoveDatagridRedemption && 
                     <DataGridRedemption id={custId} />
                 }
                 <DataGridCommunication id={custId} isHost={hasCreateFeedbackPermission}/>
                 {
-                    editRedemptionDialog.show &&
+                    // editRedemptionDialog.show &&
                     <EditRedemptionLog logId={editRedemptionDialog.redemptionId}
                         onClose={this.handleCloseEditRedemptionDialog}
                     />
@@ -138,7 +138,7 @@ export class AppContainer extends Component {
                         onClose={this.handleCloseEditCustomerVerify}
                     />
                 }
-            </div>
+            </>
         );
     }
 }

@@ -3,11 +3,10 @@
 $paddingRightContainer: 17px;
 
 .table-container {
-    overflow-x: auto;
+    overflow-x: hidden;
 
     .body-content {
-        overflow-y: auto;
-        overflow-x: auto;
+        overflow: auto;
     }
 }
 

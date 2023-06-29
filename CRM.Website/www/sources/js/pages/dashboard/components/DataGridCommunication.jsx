@@ -10,8 +10,30 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 
 export class DataGridCommunication extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            tableWidth : null
+        };
+    }
+
+    resizeWindow () {
+        this.setState({
+            tableWidth : document.querySelector(".block-table").clientWidth
+        })
+        window.addEventListener('resize' , () => {
+            this.setState({
+                tableWidth : document.querySelector(".block-table").clientWidth
+            })
+        });
+        
+    }
+
+
     componentDidMount() {
         this.props.getCommunicationLogs({ customerId: this.props.id });
+        this.resizeWindow();
     }
 
     componentDidUpdate(prevProps) {
@@ -269,19 +291,22 @@ export class DataGridCommunication extends Component {
         }
 
         return (
-            <div className='communication-log-grid'>
-                <div className='d-flex table-title align-items-center justify-content-between mt-3'>
-                    <span>{LangHelper.getResource('LastTenCommunicationLog')}</span>
+            <div className="block-table">
+                 <div className='communication-log-grid'>
+                    <div className='d-flex table-title align-items-center justify-content-between'>
+                        <span>{LangHelper.getResource('LastTenCommunicationLog')}</span>
+                    </div>
+                    <Table
+                        width={this.state.tableWidth}
+                        autoWidth={false}
+                        header={this.buildHeader()}
+                        body={this.buildBody()}
+                        containerPadding={0}
+                        adjustedHeight={10}
+                    />
                 </div>
-                <Table
-                    width={1200}
-                    autoWidth={false}
-                    header={this.buildHeader()}
-                    body={this.buildBody()}
-                    containerPadding={0}
-                    adjustedHeight={10}
-                />
             </div>
+           
         );
     }
 }

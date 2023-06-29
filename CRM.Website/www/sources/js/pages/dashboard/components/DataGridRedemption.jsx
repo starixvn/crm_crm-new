@@ -7,8 +7,27 @@ import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 
 export class DataGridRedemption extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            tableWidth : null
+        };
+    }
+    resizeWindow () {
+        this.setState({
+            tableWidth : document.querySelector(".block-table").clientWidth
+        })
+        window.addEventListener('resize' , () => {
+            this.setState({
+                tableWidth : document.querySelector(".block-table").clientWidth
+            })
+        })
+    }
+
     componentDidMount() {
         this.props.getRedemptionLogs({ customerId: this.props.id });
+        this.resizeWindow();
     }
 
     componentDidUpdate(prevProps) {
@@ -76,19 +95,21 @@ export class DataGridRedemption extends Component {
         }
 
         return (
-            <div className='redemption-grid'>
-                <div className='table-title d-flex align-items-center justify-content-between'>
-                    <span>{LangHelper.getResource('LastFiveRedemptionLog')}</span>
-                </div>
+            <div className="block-table">
+                <div className='table-custom redemption-grid'>
+                    <div className='table-title d-flex align-items-center justify-content-between'>
+                        <span>{LangHelper.getResource('LastFiveRedemptionLog')}</span>
+                    </div>
 
-                <Table
-                    width={980}
-                    autoWidth={false}
-                    containerPadding={0}
-                    adjustedHeight={10}
-                    header={this.buildHeader()}
-                    body={this.buildBody()}
-                />
+                    <Table
+                        width={this.state.tableWidth}
+                        autoWidth={false}
+                        containerPadding={0}
+                        adjustedHeight={10}
+                        header={this.buildHeader()}
+                        body={this.buildBody()}
+                    />
+                </div>
             </div>
         );
     }

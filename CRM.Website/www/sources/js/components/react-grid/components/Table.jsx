@@ -309,7 +309,7 @@ class Table extends Component {
         return (
             isFixColumn ?
                 this.renderFixColumn({ ...fixProps }) :
-                <div>
+                <>
                     <div className='table-container' style={{ maxWidth }}>
                         <Header {...headerSectionProps}>
                             {rowLayout}
@@ -334,7 +334,7 @@ class Table extends Component {
                         isPaging && pageOption &&
                         <Pager pageOption={pageOption} onPaging={onPaging} {...sectionProps} bodyWrapper={this.bodyWrapper}/>
                     }
-                </div>
+                </>
         );
     }
 }

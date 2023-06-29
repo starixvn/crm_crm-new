@@ -10,14 +10,36 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import WithNavigation from '@jsroot/components/WithNavigation';
 
+
+
+
 export class LastFiveRemarkDataGrid extends Component {
+
+    
     constructor(props) {
         super(props);
+        this.state = {
+            tableWidth : null
+        };
+    }
+
+    
+    
+    resizeWindow () {
+        this.setState({
+            tableWidth : document.querySelector(".table-custom")?.clientWidth
+        })
+        window.addEventListener('resize' , () => {
+            this.setState({
+                tableWidth : document.querySelector(".table-custom").clientWidth
+            })
+        })
     }
 
     componentDidMount() {
         const param = {custId: this.props.custId};
         this.props.getLastFiveRemark(param);
+        this.resizeWindow();
     }
 
     componentDidUpdate(prevProps) {
@@ -78,6 +100,7 @@ export class LastFiveRemarkDataGrid extends Component {
                 {state: this.props.currentCustomer}
         );
     };
+    
 
     render() {
         const {lastFiveRemarks} = this.props;
@@ -91,7 +114,7 @@ export class LastFiveRemarkDataGrid extends Component {
                     <u onClick={this.handleViewNewRemark}>{LangHelper.getResource('ViewAllRemarks')}</u>
                 </div>
                 <Table
-                    width={980}
+                    width={this.state.tableWidth}
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     autoWidth={false}
