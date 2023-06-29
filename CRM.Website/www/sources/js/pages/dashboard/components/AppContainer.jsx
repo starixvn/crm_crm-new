@@ -100,12 +100,12 @@ export class AppContainer extends Component {
                     <div className="information"><CustomerInfoVerify id={custId}/></div>
                 </div>
                 {
-                    // !IsRemoveDatagridRedemption && 
+                    !IsRemoveDatagridRedemption && 
                     <DataGridRedemption id={custId} />
                 }
                 <DataGridCommunication id={custId} isHost={hasCreateFeedbackPermission}/>
                 {
-                    // editRedemptionDialog.show &&
+                    editRedemptionDialog.show &&
                     <EditRedemptionLog logId={editRedemptionDialog.redemptionId}
                         onClose={this.handleCloseEditRedemptionDialog}
                     />

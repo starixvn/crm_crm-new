@@ -31,7 +31,7 @@ export class LastFiveRemarkDataGrid extends Component {
         })
         window.addEventListener('resize' , () => {
             this.setState({
-                tableWidth : document.querySelector(".table-custom").clientWidth
+                tableWidth : document.querySelector(".table-custom")?.clientWidth
             })
         })
     }

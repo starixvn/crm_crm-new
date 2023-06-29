@@ -16,11 +16,11 @@ export class DataGridRedemption extends Component {
     }
     resizeWindow () {
         this.setState({
-            tableWidth : document.querySelector(".block-table").clientWidth
+            tableWidth : document.querySelector(".block-table")?.clientWidth
         })
         window.addEventListener('resize' , () => {
             this.setState({
-                tableWidth : document.querySelector(".block-table").clientWidth
+                tableWidth : document.querySelector(".block-table")?.clientWidth
             })
         })
     }

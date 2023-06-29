@@ -1,5 +1,9 @@
 ﻿.slide-bar {
     width: 22%;
+    position: fixed;
+    height: 100%;
+    z-index: 99999999;
+    background-color: rgb(241, 241, 241);
 }
 .left-row-empty {
     width: 0;
