@@ -440,7 +440,7 @@ export class EditGroupMappingPopup extends Component {
                             </Form.Label>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="col-md-6">
+                        <Form.Group as={Row} className="col-md-6 col-right">
                             <Form.Label column sm="3" md="4">
                                 {LangHelper.getResource('BotName')}
                             </Form.Label>
@@ -476,7 +476,7 @@ export class EditGroupMappingPopup extends Component {
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="col-md-6">
+                        <Form.Group as={Row} className="col-md-6 col-right">
                             <Form.Label column sm="3" md="4" className="required">
                                 {LangHelper.getResource('Recipient')}
                             </Form.Label>
@@ -530,7 +530,7 @@ export class EditGroupMappingPopup extends Component {
                         {
                             botServiceId === BotServiceType.Telegram &&
                             (
-                                <Form.Group as={Row} className="col-md-6">
+                                <Form.Group as={Row} className="col-md-6 col-right">
                                     <Form.Label column sm="3" md="4">
                                         {LangHelper.getResource('ChatID')}
                                     </Form.Label>
@@ -572,7 +572,7 @@ export class EditGroupMappingPopup extends Component {
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="col-md-6">
+                        <Form.Group as={Row} className="col-md-6 col-right">
                             <Form.Label column sm="3" md="4" className="required">
                                 {LangHelper.getResource('Language')}
                             </Form.Label>

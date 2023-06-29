@@ -126,6 +126,10 @@
     .radioCheck {
         display: flex;
         align-items: center;
+
+        input, label {
+            cursor: pointer;
+        }
     }
 
     .badge-green {
@@ -193,8 +197,18 @@
         @media (min-width: 768px) {
             .fitInput {
                 .multiple-select-container, textarea  {
-                    width: 95%;
+                    width: 96%;
                 }
+            }
+        }
+    }
+
+    @media (min-width: 768px) {
+        .col-right {
+            margin-left: 20px;
+    
+            label {
+                max-width: 26%;
             }
         }
     }

@@ -52,7 +52,8 @@ export class InsertPersonalMappingPopup extends Component {
                 isShow: false
             },
             ignoreNotificationTypes: null,
-            recipientTypes: []
+            recipientTypes: [],
+            chatIdOptions: []
         };
 
         this.initState = null;
@@ -94,6 +95,7 @@ export class InsertPersonalMappingPopup extends Component {
         this.handleChange('botServiceId', botServiceId);
         this.handleChange('displayName', '');
         this.handleChange('botId', this.getBotNameByBotService(botServiceId)[0].id);
+        this.setState({ chatIdOptions: [] });
 
         if (botServiceId === BotServiceType.Telegram) {
             this.setState({
@@ -142,7 +144,8 @@ export class InsertPersonalMappingPopup extends Component {
         this.handleChange('displayName', '');
         this.setState({
             letstalkIds: '',
-            usernames: []
+            usernames: [],
+            chatIdOptions: []
         });
         this.handleChange('recipient', '');
         if (label !== AccountingPIC) {
@@ -158,7 +161,8 @@ export class InsertPersonalMappingPopup extends Component {
         this.handleChange('username', '');
         this.setState({
             letstalkIds: option ? option.letstalkIds : '',
-            usernames: this.getUsernames(option)
+            usernames: this.getUsernames(option),
+            chatIdOptions: []
         });
         const optionValue = option ? option.value : '';
         this.props.getGroupHeadlineByRecipient(optionValue);
@@ -177,12 +181,22 @@ export class InsertPersonalMappingPopup extends Component {
         this.handleChange('username', value);
 
         const botInfo = this.props.recipients.botInfo;
-        const botByUsername = botInfo.find(item => item.username === value);
-        const chatId = botByUsername ? botByUsername.chatId : '';
+        const botByUsername = botInfo.filter(item => item.username === value);
+        const chatId = botByUsername.length > 0 ? botByUsername[0].chatId : '';
+        const chatIdOptions = botByUsername.map(item => item.chatId);
         this.handleChange('chatId', chatId);
+        this.setState({ chatIdOptions: [...new Set(chatIdOptions)], isLoading: true });
 
-        this.setState({ isLoading: true });
         this.props.getTelegramDisplayName(this.state.form.botId, chatId).then(() => {
+            this.handleChange('displayName', this.props.telegramName);
+            this.setState({ isLoading: false });
+        });
+    };
+
+    handleChangeChatId = value => {
+        this.handleChange('chatId', value);
+        this.setState({ isLoading: true });
+        this.props.getTelegramDisplayName(this.state.form.botId, value).then(() => {
             this.handleChange('displayName', this.props.telegramName);
             this.setState({ isLoading: false });
         });
@@ -354,7 +368,7 @@ export class InsertPersonalMappingPopup extends Component {
         });
         const groupHeadlinesOption = this.state.form.recipientName === AccountingPIC ? this.state.groupHeadlineDefault : this.props.groupHeadline;
         const { botServiceId } = this.state.form;
-        const { usernames } = this.state;
+        const { usernames, chatIdOptions } = this.state;
         const botOptions = this.getBotNameByBotService(botServiceId);
 
         return (
@@ -393,7 +407,7 @@ export class InsertPersonalMappingPopup extends Component {
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="col-md-6">
+                        <Form.Group as={Row} className="col-md-6 col-right">
                             <Form.Label column sm="3" md="4" className="required">
                                 {LangHelper.getResource('BotName')}
                             </Form.Label>
@@ -436,7 +450,7 @@ export class InsertPersonalMappingPopup extends Component {
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="col-md-6">
+                        <Form.Group as={Row} className="col-md-6 col-right">
                             <Form.Label column sm="3" md="4" className="required">
                                 {LangHelper.getResource('Recipient')}
                             </Form.Label>
@@ -512,7 +526,7 @@ export class InsertPersonalMappingPopup extends Component {
                             <Form.Label column sm="3" md="4">
                                 {LangHelper.getResource('DisplayName')}
                             </Form.Label>
-                            <Form.Label column sm="9" md="8">
+                            <Form.Label column sm="auto" md="auto">
                                 {
                                     this.state.isLoading &&
                                     <Loading />
@@ -525,13 +539,26 @@ export class InsertPersonalMappingPopup extends Component {
                         </Form.Group>
                         {
                             botServiceId === BotServiceType.Telegram && (
-                                <Form.Group as={Row} className="col-md-6">
+                                <Form.Group as={Row} className="col-md-6 col-right">
                                     <Form.Label column sm="3" md="4">
                                         {LangHelper.getResource('ChatID')}
                                     </Form.Label>
-                                    <Form.Label column sm="9" md="8">
-                                        {LangHelper.getResource(this.state.form.chatId)}
-                                    </Form.Label>
+                                    {
+                                        chatIdOptions.length > 0 &&
+                                        chatIdOptions.map((value, key) => (
+                                            <Col key={value + key} sm="auto" md="auto" className="radioCheck">
+                                                <Form.Check
+                                                    inline label={value}
+                                                    name='chatId'
+                                                    type="radio"
+                                                    id={value + key}
+                                                    value={value}
+                                                    defaultChecked={key === 0}
+                                                    onChange={event => this.handleChangeChatId(event.target.value)}
+                                                />
+                                            </Col>
+                                        ))
+                                    }
                                 </Form.Group>
                             )
                         }
@@ -558,7 +585,7 @@ export class InsertPersonalMappingPopup extends Component {
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} className="col-md-6">
+                        <Form.Group as={Row} className="col-md-6 col-right">
                             <Form.Label column sm="3" md="4" className="required">
                                 {LangHelper.getResource('Language')}
                             </Form.Label>

@@ -130,9 +130,11 @@ export class Filter extends Component {
             chatType, botIds, botServiceId, name, groupHeadline,
             recipient, LetstalkIdOrUsername, mappingStatuses, active
         } = this.state.filter;
+        const { holdBotIds } = this.state.filter;
+
         return {
             chatType: chatType,
-            botIds: botServiceId ? botIds : '',
+            botIds: (botServiceId === '' && botIds === holdBotIds) ? '' : botIds,
             channelId: botServiceId,
             name,
             groupHeadline,
