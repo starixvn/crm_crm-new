@@ -4,8 +4,9 @@
 .react-datepicker {
     font-family: $font-family;
     border-radius: unset;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    //box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     font-size: 1rem;
+    z-index: 99 !important;
 
     .btn-now, .btn-close {
         width: auto;
@@ -107,6 +108,14 @@
     outline: none;
 }
 
+.react-datepicker__day--in-range{
+    background-color: rgba(33, 107, 165, 0.5) !important;
+}
+
+.react-datepicker__day--range-start, .react-datepicker__day--range-end{
+    background-color: #216ba5 !important;
+}
+
 .react-datepicker__time-list::-webkit-scrollbar {
     width: 8px;
 }
@@ -148,11 +157,19 @@
     }
 
     &.react-datepicker__navigation--previous {
-        left: 22px;
+        left: 19px;
 
         &:before {
             transform: rotate(180deg);
         }
+    }
+
+    .react-datepicker__navigation-icon--previous {
+        left: 22px;
+    }
+
+    .react-datepicker__navigation-icon--next{
+        left: 10px;
     }
 }
 
@@ -202,4 +219,69 @@
 
 .react-datepicker-popper{
     z-index: 9999 !important;
+}
+
+.range-date-picker{
+    .react-datepicker {
+        position: relative;
+        left: 136px;
+
+        .form-range-date{
+            position: absolute;
+            left: -136px;
+            width: 135px;
+            height: 100.5%;
+            margin-top: -1px;
+            border: 1px solid #aeaeae;
+            border-right: 0;
+            background: white;
+            padding-top: 12px;
+    
+            .item-range-date{
+                color: #333;
+                padding: 5px 0 5px 10px;
+                cursor: pointer;
+    
+                &:hover{
+                    background-color: #216ba5;
+                }
+            }
+        }
+
+        .display-selected{
+            position: absolute;
+            top: 267px;
+            width: 413px;
+            left: -136px;
+            border: 1px solid #aeaeae;
+            border-top: 0;
+            padding: 8px;
+            background: white;
+
+            .date-range-selected{
+                min-width: 210px;
+                background: #e8f4fd;
+                color: #0b599c;
+                border-radius: 5px;
+                padding: 2px 4px;
+                line-height: 22px;
+                font-weight: bold;
+                margin-left: 5px;
+                margin-right: 60px;         
+            }
+
+            #btn-apply{
+                background-color: #216ba5 !important;
+            }
+        }
+
+        .react-datepicker__children-container{
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    
+        .react-datepicker__triangle{
+            left: -214px !important;
+        }
+    }
 }

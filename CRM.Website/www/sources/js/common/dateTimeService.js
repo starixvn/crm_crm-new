@@ -1,6 +1,7 @@
 import moment from 'moment';
 
 const ShortDateFormat = 'MMM DD, YYYY';
+const ShortDateFormatDash = 'MM/DD/YYYY';
 const ShortDateTimeFormat = 'MMM DD, YYYY hh:mm A';
 const LongDateTimeFormat = 'MMM DD, YYYY hh:mm:ss A';
 const LongDateTime24HourFormat = 'YYYY-MM-DD HH:mm:ss';
@@ -67,6 +68,10 @@ export default class DateTimeService {
 
     static toShortDateFormat(date) {
         return moment(date).format(ShortDateFormat);
+    }
+
+    static toShortDateFormatDash(date) {
+        return moment(date).format(ShortDateFormatDash);
     }
 
     static toShortDateTimeFormat(date) {

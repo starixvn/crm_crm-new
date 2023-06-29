@@ -35,6 +35,8 @@ export class Filter extends Component {
                 botService: null
             },
             maxDate: now,
+            //minToDate: now,
+            //maxToDate: now,
             notificationTypeOptions: [],
             statusOptions: [],
             showFilter: false
@@ -104,6 +106,28 @@ export class Filter extends Component {
 
     handleSetStartDate = value => this.handleFilterChange('fromDate', value);
     handleSetEndDate = value => this.handleFilterChange('toDate', value);
+    handleFromDateChange = value => {
+        // let maxToDate = new Date(value);
+        // maxToDate.setMonth(maxToDate.getMonth() + 1);
+        this.handleFilterChange('fromDate', value);
+        this.handleFilterChangeProps('fromDate', DateTimeService.startOfDay(value));
+        // if (maxToDate - this.state.maxDate > 0) {
+        //     maxToDate = this.state.maxDate;
+        // }
+
+        // this.setState({ maxToDate });
+    };
+
+    handleToDateChange = value => {
+        this.handleFilterChange('toDate', value);
+        this.handleFilterChangeProps('toDate', DateTimeService.startOfDay(value));
+    };
+
+    handleDateChange = (dates) => {
+        const [start, end] = dates;
+        this.handleFromDateChange(start);
+        this.handleToDateChange(end);
+      };
    
     handleHeadlineChange = value => {
         this.handleFilterChange('headline', value);
@@ -265,8 +289,27 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group style={{width: '300px'}}>
+                    <Form.Group style={{width: '315px'}}>
                         <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Date')}</Form.Label>
+                        <div className='react-datepicker-wrapper-container form-control-wrapper'>
+                            <DatePicker disabled={this.isDisabledDateParam()}
+                                dropdownMode="select"
+                                showMonthDropdown
+                                showYearDropdown
+                                useShortMonthInDropdown
+                                selected={this.state.filter.fromDate}
+                                onChangeDate={dates => this.handleDateChange(dates)}
+                                startDate={this.state.filter.fromDate}
+                                endDate={this.state.filter.toDate}
+                                maxDate={this.state.maxDate}
+                                maxDateRange={31}
+                                selectsRange
+                                isRangeDate
+                            />
+                        </div>
+                        
+                    </Form.Group>
+                    {/* <Form.Group>
                         <DateRangePicker
                             disabled={this.isDisabledDateParam()}
                             setStartDate={this.handleSetStartDate}
@@ -275,7 +318,8 @@ export class Filter extends Component {
                             endDate={this.state.filter.toDate}
                             maxDate={this.state.maxDate}
                         />
-                    </Form.Group>
+                    </Form.Group> */}
+                    
                     <Form.Group>
                         <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
                         <div className='form-control-wrapper'>
