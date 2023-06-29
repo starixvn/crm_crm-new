@@ -151,7 +151,9 @@ describe('EditPersonalMappingPopup', () => {
                     groupHeadlineDefault: [{subData: null, id: 10695, name: '038arm'}],
                     groupHeadline: [{subData: null, id: 10695, name: '038arm'}],
                     recipient: { value: 'test' },
-                    groupHeadlines: '1,2,3'
+                    groupHeadlines: '1,2,3',
+                    botServiceId: 1,
+                    letstalkID_Username: 'test'
                 },
                 ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
@@ -331,6 +333,45 @@ describe('EditPersonalMappingPopup', () => {
 
             // Assert
             expect(result).toBe(null);
+        });
+    });
+
+    describe('getChatIdOption', () => {
+        it('should return exactly', () => {
+            // Arrange
+            const promise = Promise.resolve([]);
+            const props = {
+                ...initProps,
+                telegramName: 'test',
+                letstalkName: 'test',
+                getTelegramDisplayName: jest.fn(() => promise),
+                recipients: {
+                    data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }],
+                    botInfo: [{ username: 'test', chatId: '123' }]
+                },
+                groupHeadline: [{ id: 1 }],
+                recipient: { value: 'test' }
+            };
+            const state = {
+                form: {
+                    botServiceId: 2,
+                    chatId: 1,
+                    recipient: { value: 'test' },
+                    groupHeadlines: '1,2,3'
+                },
+                settings: {
+                    usernames: '1,2,3'
+                }
+            };
+
+            // Act
+            const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
+            popup.instance().setState(state);
+            const actual = popup.instance().getChatIdOption('test');
+
+            // Assert
+            expect(actual.chatId).toBe('123');
+            expect(actual.chatIdOptions).toEqual(['123']);
         });
     });
 
