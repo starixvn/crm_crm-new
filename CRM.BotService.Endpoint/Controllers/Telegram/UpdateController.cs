@@ -1,11 +1,16 @@
-﻿namespace CRM.BotService.Endpoint.Controllers.Telegram
+﻿using System.Diagnostics;
+using System.IO.Compression;
+namespace CRM.BotService.Endpoint.Controllers.Telegram
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Cryptography;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Enum;
+    using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -19,15 +24,18 @@
         private readonly Func<long, ITelegramBotService> telegramBotService;
         private readonly ICRMLogService logService;
         private readonly IBaseService baseService;
+        private readonly List<TelegramBotConfigurations> botConfigurations;
 
         public UpdateController(
             ICRMLogService logService,
             Func<long, ITelegramBotService> telegramBotService,
-            IBaseService baseService)
+            IBaseService baseService,
+            List<TelegramBotConfigurations> botConfigurations)
         {
             this.logService = logService;
             this.telegramBotService = telegramBotService;
             this.baseService = baseService;
+            this.botConfigurations = botConfigurations;
         }
 
         [HttpPost]
@@ -143,25 +151,32 @@
 
         protected internal virtual async Task<CommandResult> AddBotToGroupAsync(Message message, User bot)
         {
-            var command = new AddBotToGroupCommand
-            {
-                BotId = bot.Id,
-                BotName = bot.FirstName,
-                ConversationId = message.Chat.Id.ToString(),
-                GroupName = message.Chat.Title,
-                ChannelId = (byte)ConversationChannel.Telegram,
-                UpdatedBy = message.From.Id.ToString()
-            };
-            var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);
-            logService.LogInformation("start AddBotToGroupAsync: " + commandSerialize);
+            var isExistBot = botConfigurations.Any(x => x.BotId == bot.Id);
+            if(isExistBot){
+                var command = new AddBotToGroupCommand
+                {
+                    BotId = bot.Id,
+                    BotName = bot.FirstName,
+                    ConversationId = message.Chat.Id.ToString(),
+                    GroupName = message.Chat.Title,
+                    ChannelId = (byte)ConversationChannel.Telegram,
+                    UpdatedBy = message.From.Id.ToString()
+                };
+                var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);
+                logService.LogInformation("start AddBotToGroupAsync: " + commandSerialize);
 
-            var result = await baseService.ExecuteNonQueryAsync(command);
-            if (!result.IsSuccessful)
-            {
-                await logService.ErrorAsync(new Exception(result.Message));
+                var result = await baseService.ExecuteNonQueryAsync(command);
+                if (!result.IsSuccessful)
+                {
+                    await logService.ErrorAsync(new Exception(result.Message));
+                }
+                logService.LogInformation("end AddBotToGroupAsync!!!");
+                return result;
+            }else{
+                 logService.LogInformation(string.Format("bot: {0} is not exist", bot.Id));
+                return new CommandResult();
             }
-            logService.LogInformation("end AddBotToGroupAsync!!!");
-            return result;
+            
         }
 
         protected internal virtual async Task RemoveBotToGroupAsync(Message message)

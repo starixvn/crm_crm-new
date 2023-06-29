@@ -1,7 +1,9 @@
 ﻿namespace CRM.BotService.Endpoint.UnitTests.TestableClasses.Telegram
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.BotService.Endpoint.Controllers.Telegram;
     using CRM.Core.Models;
@@ -13,7 +15,8 @@
         public UpdateControllerTestable(
             ICRMLogService logService,
             Func<long, ITelegramBotService> telegramBotService,
-            IBaseService baseService) : base(logService, telegramBotService, baseService)
+            IBaseService baseService,
+            List<TelegramBotConfigurations> botConfigurations) : base(logService, telegramBotService, baseService, botConfigurations)
         {
         }
 

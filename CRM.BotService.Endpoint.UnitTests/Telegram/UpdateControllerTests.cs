@@ -1,9 +1,11 @@
 ﻿namespace CRM.BotService.Endpoint.UnitTests.Telegram
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BotService.Core.Criteria;
+    using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.BotService.Endpoint.UnitTests.TestableClasses.Telegram;
     using CRM.Core.Models;
@@ -19,6 +21,7 @@
         private Func<long, ITelegramBotService> telegramBotService;
         private ICRMLogService logService;
         private IBaseService baseService;
+        private List<TelegramBotConfigurations> botConfigurations;
         private IFixture fixture = new Fixture();
 
         [Fact]
@@ -133,7 +136,6 @@
         public async Task Post_GroupCreated_CallCorrectlyMethod()
         {
             // Arrange
-            var bot = fixture.Create<User>();
             var update = new Update
             {
                 Message = new Message
@@ -141,6 +143,8 @@
                     GroupChatCreated = true
                 }
             };
+            fixture.Customize<User>(x => x.With(b => b.Id, 6012438440));
+            var bot = fixture.Create<User>();
             var controller = GetController();
             telegramBotService(1).GetBotInfoAsync(1).Returns(bot);
             controller.Protected("AddBotToGroupAsync", update.Message, bot).Returns(Task.FromResult(new CommandResult()));
@@ -330,6 +334,7 @@
                 Chat = new Chat { Id = 1, Title = "chat title" },
                 From = new User { Id = 1 }
             };
+            fixture.Customize<User>(x => x.With(b => b.Id, 6012438440));
             var bot = fixture.Create<User>();
             var command = new AddBotToGroupCommand();
             var controller = GetController();
@@ -356,9 +361,10 @@
             var commandResult = new CommandResult();
             var message = new Message
             {
-                Chat = new Chat { Id = 1, Title = "chat title" },
+                Chat = new Chat { Id = 6012438440, Title = "chat title" },
                 From = new User { Id = 1 }
             };
+            fixture.Customize<User>(x => x.With(b => b.Id, 6012438440));
             var bot = fixture.Create<User>();
             var command = new AddBotToGroupCommand();
             var controller = GetController();
@@ -520,7 +526,20 @@
             logService = Substitute.For<ICRMLogService>();
             baseService = Substitute.For<IBaseService>();
             telegramBotService = Substitute.For<Func<long, ITelegramBotService>>();
-            return Substitute.ForPartsOf<UpdateControllerTestable>(logService, telegramBotService, baseService);
+            botConfigurations = new List<TelegramBotConfigurations>()
+            {
+                new TelegramBotConfigurations
+                {
+                    BotId = 6012438440,
+                    Token = "Token",
+                    Domain="Domain"
+                }
+            };
+
+            var botConfig = Substitute.For<List<TelegramBotConfigurations>>();
+            botConfig.AddRange(botConfigurations);
+
+            return Substitute.ForPartsOf<UpdateControllerTestable>(logService, telegramBotService, baseService, botConfigurations);
         }
 
         #endregion Helpers
