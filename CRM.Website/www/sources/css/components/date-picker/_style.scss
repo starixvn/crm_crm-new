@@ -4,9 +4,9 @@
 .react-datepicker {
     font-family: $font-family;
     border-radius: unset;
-    //box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
     font-size: 1rem;
     z-index: 99 !important;
+    border: 1px solid #ddd;
 
     .btn-now, .btn-close {
         width: auto;
@@ -48,7 +48,6 @@
 .react-datepicker__time-container {
     margin: 0 4px;
 }
-
 
 .react-datepicker__header {
     padding-top: 16px !important;
@@ -104,7 +103,7 @@
 .react-datepicker__month-text--in-range,
 .react-datepicker__day:hover,
 .react-datepicker__month-text:hover {
-    border-radius: 50%;
+    border-radius: 8%;
     outline: none;
 }
 
@@ -114,6 +113,7 @@
 
 .react-datepicker__day--range-start, .react-datepicker__day--range-end{
     background-color: #216ba5 !important;
+    color: #fff;
 }
 
 .react-datepicker__time-list::-webkit-scrollbar {
@@ -201,6 +201,7 @@
 
             input.form-control {
                 height: 100%;
+                font-size: 1rem !important;
 
                 &:disabled {
                     background-color: $bg-table-title-grey;
@@ -218,7 +219,8 @@
 
 
 .react-datepicker-popper{
-    z-index: 9999 !important;
+    z-index: 999 !important;
+    padding-top: 7px !important;
 }
 
 .range-date-picker{
@@ -232,7 +234,7 @@
             width: 135px;
             height: 100.5%;
             margin-top: -1px;
-            border: 1px solid #aeaeae;
+            border: 1px solid #ddd;
             border-right: 0;
             background: white;
             padding-top: 12px;
@@ -244,6 +246,7 @@
     
                 &:hover{
                     background-color: #216ba5;
+                    color: #fff;
                 }
             }
         }
@@ -253,7 +256,7 @@
             top: 267px;
             width: 413px;
             left: -136px;
-            border: 1px solid #aeaeae;
+            border: 1px solid #ddd;
             border-top: 0;
             padding: 8px;
             background: white;

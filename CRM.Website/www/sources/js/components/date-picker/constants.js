@@ -1,7 +1,7 @@
 import moment from 'moment';
 export const RANGE_DATE_OPTION = [
     {
-        label: 'ToDay',
+        label: 'To Day',
         fromDate: moment().toDate(),
         toDate: moment().toDate()
     },

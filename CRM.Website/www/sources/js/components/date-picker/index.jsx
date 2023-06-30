@@ -23,7 +23,7 @@ export default class DatePickerField extends React.Component {
             selected: this.props.selected,
             startDate: Date.now(),
             endDate: Date.now(),
-            shouldCloseOnSelect: false,
+            isErrorMaxDate: false,
             calendarHeight: 0
         };
         this.ref = React.createRef();
@@ -31,7 +31,7 @@ export default class DatePickerField extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.selected !== this.props.selected) {
-            this.setState({ selected: this.props.selected });
+            this.setState({ selected: this.props.selected, startDate: this.props.startDate, endDate: this.props.endDate});
         }
     }
 
@@ -54,27 +54,35 @@ export default class DatePickerField extends React.Component {
     onChange = dates =>{
         const maxDateRange = this.props.maxDateRange;
         const [start, end] = dates;
-        const diffDate = DateTimeService.toDiffDays(end, start);
-        this.props.onChangeDate(dates);
+        const diffDate = DateTimeService.toDiffDays(end, start) + 1;
+        this.setState({startDate: start, endDate: end});
         if(maxDateRange > 0 && diffDate >= maxDateRange){
             toast.error("error max date");
+            this.setState({isErrorMaxDate: true});
             this.ref.current.setOpen(true);
         }else{
             this.props.onChangeDate(dates);
-            this.setState({startDate: start, endDate: end});
+            this.setState({isErrorMaxDate: false});
         }
+    }
 
-        // if(start && end){
-        //     this.ref.current.setOpen(false);
-        // }
+    handleApply = () =>{
+        this.ref.current.setOpen(false);
+    }
+
+    onClickOutside = () =>{
+        if(this.state.isErrorMaxDate){
+            this.ref.current.setOpen(true);
+        }
     }
 
     render() {
-        const { className, selected, isInvalid, isDisabledTime, isRangeDate, ...rest } = this.props;
+        const { className, selected, isInvalid, isDisabledTime, isRangeDate,maxDateRange, ...rest } = this.props;
         const { startDate, endDate   } = this.state;
         const dateTimeNow = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         const diffDate = DateTimeService.toDiffDays(endDate, startDate) + 1;
         const diffDateText = !diffDate ? null : `(${diffDate} days)`;
+        const isDisableApply = !startDate || !endDate || diffDate >= maxDateRange;
         return (
             <div className={isRangeDate ? 'range-date-picker' : ''}>
                 
@@ -85,7 +93,8 @@ export default class DatePickerField extends React.Component {
                     customInput={<CustomInput isInvalid={isInvalid} />}
                     selected={this.state.selected}
                     onChange= {this.onChange}
-                    shouldCloseOnSelect={this.state.shouldCloseOnSelect}
+                    shouldCloseOnSelect={isRangeDate ? false : true}
+                    onClickOutside={this.onClickOutside}
                     customTimeInput={
                         <CustomTimeInput 
                             date={this.state.selected} 
@@ -112,7 +121,7 @@ export default class DatePickerField extends React.Component {
                                 <div className='date-range-selected'>
                                     {DateTimeService.toShortDateFormatDash(startDate)} - {!endDate ? '...' : DateTimeService.toShortDateFormatDash(endDate)} {diffDateText}
                                 </div>
-                                <Button variant='primary' id='btn-apply' size='sm' type='submit' disabled={!startDate || !endDate}>Apply</Button>
+                                <Button variant='primary' id='btn-apply' onClick={this.handleApply} size='sm' type='submit' disabled={isDisableApply}>Apply</Button>
                             </div>
                         </Fragment>
                         
