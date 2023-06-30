@@ -441,7 +441,7 @@ export class EditGroupMappingPopup extends Component {
                         </Form.Group>
 
                         <Form.Group as={Row} className="col-md-6 col-right">
-                            <Form.Label column sm="3" md="4">
+                            <Form.Label column sm="3" md="4" className="pr-2">
                                 {LangHelper.getResource('BotName')}
                             </Form.Label>
                             <Form.Label column sm="9" md="8">
@@ -553,7 +553,7 @@ export class EditGroupMappingPopup extends Component {
                         </Form.Group>
 
                         <Form.Group as={Row} className="col-md-6">
-                            <Form.Label column sm="3" md="4" className="required">
+                            <Form.Label column sm="3" md="4" className="required pr-2">
                                 {LangHelper.getResource('GroupHeadline')}
                             </Form.Label>
                             <Col sm="9" md="8" className={`${this.state.form.recipientName === AccountingPIC ? 'disabled-select' : ''}`}>

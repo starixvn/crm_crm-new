@@ -197,7 +197,7 @@
         @media (min-width: 768px) {
             .fitInput {
                 .multiple-select-container, textarea  {
-                    width: 96%;
+                    width: calc(100% - 22.5px);
                 }
             }
         }

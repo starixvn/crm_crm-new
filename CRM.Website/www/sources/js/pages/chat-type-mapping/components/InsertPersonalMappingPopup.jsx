@@ -408,7 +408,7 @@ export class InsertPersonalMappingPopup extends Component {
                         </Form.Group>
 
                         <Form.Group as={Row} className="col-md-6 col-right">
-                            <Form.Label column sm="3" md="4" className="required">
+                            <Form.Label column sm="3" md="4" className="required pr-2">
                                 {LangHelper.getResource('BotName')}
                             </Form.Label>
                             <Col sm="9" md="8">
@@ -514,7 +514,7 @@ export class InsertPersonalMappingPopup extends Component {
                                     <Form.Label column sm="3" md="2" className="required">
                                         {LangHelper.getResource('LetstalkID')}
                                     </Form.Label>
-                                    <Col sm="9" md="auto">
+                                    <Col sm="9" md="auto" className="radioCheck">
                                         {
                                             this.renderLetstalkIds(this.selectedLetstalkIds)
                                         }
@@ -566,7 +566,7 @@ export class InsertPersonalMappingPopup extends Component {
 
                     <Form.Row className='form-row border-container'>
                         <Form.Group as={Row} className="col-md-6">
-                            <Form.Label column sm="3" md="4" className="required">
+                            <Form.Label column sm="3" md="4" className="required pr-2">
                                 {LangHelper.getResource('GroupHeadline')}
                             </Form.Label>
                             <Col sm="9" md="8" className={`${this.state.form.recipientName === AccountingPIC ? 'disabled-select' : ''}`}>
