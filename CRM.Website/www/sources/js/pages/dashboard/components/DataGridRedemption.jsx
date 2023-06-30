@@ -10,24 +10,9 @@ export class DataGridRedemption extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            tableWidth : null
-        };
-    }
-    resizeWindow = () => {
-        this.setState({
-            tableWidth : document.querySelector(".table-custom")?.clientWidth
-        })
-    }
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.resizeWindow);
     }
     componentDidMount() {
         this.props.getRedemptionLogs({ customerId: this.props.id });
-        this.setState({
-            tableWidth : document.querySelector(".table-custom")?.clientWidth
-        })
-        window.addEventListener('resize' , this.resizeWindow)
     }
 
     componentDidUpdate(prevProps) {
@@ -102,8 +87,8 @@ export class DataGridRedemption extends Component {
                     </div>
 
                     <Table
-                        width={this.state.tableWidth}
-                        autoWidth={false}
+                        width={1200}
+                        autoWidth={true}
                         containerPadding={0}
                         adjustedHeight={10}
                         header={this.buildHeader()}

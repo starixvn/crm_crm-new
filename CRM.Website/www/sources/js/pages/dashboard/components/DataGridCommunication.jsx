@@ -13,27 +13,10 @@ export class DataGridCommunication extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            tableWidth : null
-        };
-    }
-    resizeWindow = () => {
-        this.setState({
-            tableWidth : document.querySelector(".block-table")?.clientWidth
-        })
     }
     componentDidMount() {
-        this.setState({
-            tableWidth : document.querySelector(".block-table")?.clientWidth
-        })
         this.props.getCommunicationLogs({ customerId: this.props.id });
-        window.addEventListener('resize' , this.resizeWindow);
     }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.resizeWindow);
-    }
-
     componentDidUpdate(prevProps) {
         if ( this.props.id !== prevProps.id ) {
             this.props.getCommunicationLogs({ customerId: this.props.id });
@@ -295,8 +278,8 @@ export class DataGridCommunication extends Component {
                         <span>{LangHelper.getResource('LastTenCommunicationLog')}</span>
                     </div>
                     <Table
-                        width={this.state.tableWidth}
-                        autoWidth={false}
+                        width={1200}
+                        autoWidth={true}
                         header={this.buildHeader()}
                         body={this.buildBody()}
                         containerPadding={0}
