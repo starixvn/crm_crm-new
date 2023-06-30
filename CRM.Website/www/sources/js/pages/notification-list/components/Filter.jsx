@@ -289,7 +289,7 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group style={{width: '315px'}}>
+                    <Form.Group style={{width: '280px'}}>
                         <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Date')}</Form.Label>
                         <div className='react-datepicker-wrapper-container form-control-wrapper'>
                             <DatePicker disabled={this.isDisabledDateParam()}
@@ -309,17 +309,6 @@ export class Filter extends Component {
                         </div>
                         
                     </Form.Group>
-                    {/* <Form.Group>
-                        <DateRangePicker
-                            disabled={this.isDisabledDateParam()}
-                            setStartDate={this.handleSetStartDate}
-                            setEndDate={this.handleSetEndDate}
-                            startDate={this.state.filter.fromDate}
-                            endDate={this.state.filter.toDate}
-                            maxDate={this.state.maxDate}
-                        />
-                    </Form.Group> */}
-                    
                     <Form.Group>
                         <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
                         <div className='form-control-wrapper'>
@@ -383,21 +372,21 @@ export class Filter extends Component {
                             </div>
                         </Form.Group>
                         <Form.Group style={{width: '260px'}}>
-                            <Form.Control style={{width: '108px', margin: '0 0.5rem 0 0', padding: '0'}} as="select" size="sm" className="shadow-none"  name='referenceType'
+                            <Form.Control style={{width: '100px', margin: '0 0.5rem 0 0', padding: '0'}} as="select" size="sm" className="shadow-none"  name='referenceType'
                                 value={this.state.filter.referenceType}
                                 onChange={e => this.handleChangeFilterControl(e)}
                             >
                                 {referenceIds.map((item, key) => <option key={key} value={item}>{item}</option>)}
                             </Form.Control>
-                            <Form.Control style={{width: '148px'}} as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none referenceId' name='referenceId'
+                            <Form.Control style={{width: '152px'}} as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none referenceId' name='referenceId'
                                 value={this.state.filter.referenceId}
                                 onChange={e => this.handleChangeFilterControl(e)}
                                 onPaste={this.handlePasteAnnouncementId}
                             />
                         </Form.Group>
-                        <Form.Group style={{width: '300px'}}>
+                        <Form.Group style={{width: '280px'}}>
                             <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Content')}</Form.Label>
-                            <Form.Control style={{width: '223px'}} as='input' type='text' size='sm' className='shadow-none' name='content'
+                            <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
                                 value={this.state.filter.content}
                                 autoComplete='off'
                                 onChange={e => this.handleChange(e)}
@@ -429,8 +418,8 @@ export class Filter extends Component {
                 }
                 {
                     this.state.showFilter
-                        ? <span className="fa fa-caret-up fa-sm" onClick={() => this.handleToggleFilter(false)} />
-                        : <span className="fa fa-caret-down fa-sm" onClick={() => this.handleToggleFilter(true)} />
+                        ? <span className="fa fa-caret-up icon-toggle fa-sm" onClick={() => this.handleToggleFilter(false)} />
+                        : <span className="fa fa-caret-down icon-toggle fa-sm" onClick={() => this.handleToggleFilter(true)} />
                 }
             </Form>
         );

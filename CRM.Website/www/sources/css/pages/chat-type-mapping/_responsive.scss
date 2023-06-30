@@ -23,7 +23,7 @@
                 @include form-group-width(230px);
 
                 .form-group{
-                    margin-bottom: 8px;
+                    margin-bottom: 10px;
                 }
             }
         }
@@ -59,7 +59,7 @@
                 @include form-group-width(225px);
                 .large-form { width: 270px; }
                 .form-group{
-                    margin-bottom: 8px;
+                    margin-bottom: 10px;
                 }
                 .form-row:nth-child(2) .form-group:nth-child(4){
                     width: 150px !important;
@@ -143,7 +143,7 @@
                         }
                     }
                     .form-group{
-                        margin-bottom: 8px;
+                        margin-bottom: 10px;
                     }
                     &:nth-child(2){
                         .large-form{

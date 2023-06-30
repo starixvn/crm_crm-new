@@ -5,6 +5,10 @@
         .form-label{
             width: 100px !important;
         }
+
+        .form-group {
+            width: 250px;
+        }
         .react-datepicker-wrapper-container, .form-control{
             width: calc(100% - 0.5rem - 100px) !important;
         }

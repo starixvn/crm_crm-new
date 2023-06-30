@@ -273,7 +273,7 @@ export class Layout extends Component {
                     />
                 }
                 </div>
-                <div id='right-row-container' tabIndex="2" style={{ width: customerInfo !== null ? '78%' : '100%' }} className="main-content">
+                <div id='right-row-container' tabIndex="2" style={{width: customerInfo !== null ? '78%' : '100%'}} className='main-content'>
                     <div id='child-app-container'>
                         {this.props.children}
                     </div>
@@ -284,14 +284,14 @@ export class Layout extends Component {
 
     renderFullWidthContent = () =>{
         return (
-            <> 
-                <div id='left-row-container' style={{ width: 0 }} tabIndex="1" className="slide-bar" />
-                <div id='right-row-container' style={{ width: '100%' }} tabIndex="2" className="main-content">
+            <div>
+                <div id='left-row-container' style={{width:0}} tabIndex="1"/>
+                <div id='right-row-container' style={{width:'100%'}} tabIndex="2" className='main-content'>
                     <div id='child-app-container'>
                     {this.props.children}
                     </div>
                 </div>
-            </>
+            </div>
         );
     };
 

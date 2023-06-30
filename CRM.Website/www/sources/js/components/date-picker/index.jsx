@@ -31,7 +31,10 @@ export default class DatePickerField extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.selected !== this.props.selected) {
-            this.setState({ selected: this.props.selected, startDate: this.props.startDate, endDate: this.props.endDate});
+            this.setState({ selected: this.props.selected});
+            if(this.props.isRangeDate){
+                this.setState({ startDate: this.props.startDate, endDate: this.props.endDate});
+            }
         }
     }
 
@@ -57,7 +60,7 @@ export default class DatePickerField extends React.Component {
         const diffDate = DateTimeService.toDiffDays(end, start) + 1;
         this.setState({startDate: start, endDate: end});
         if(maxDateRange > 0 && diffDate >= maxDateRange){
-            toast.error("error max date");
+            toast.error(LangHelper.formatString(LangHelper.getResource('InvalidRangeDate'), maxDateRange));
             this.setState({isErrorMaxDate: true});
             this.ref.current.setOpen(true);
         }else{

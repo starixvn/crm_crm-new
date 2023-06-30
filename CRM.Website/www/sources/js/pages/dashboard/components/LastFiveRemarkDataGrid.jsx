@@ -10,9 +10,6 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import WithNavigation from '@jsroot/components/WithNavigation';
 
-
-
-
 export class LastFiveRemarkDataGrid extends Component {
     constructor(props) {
         super(props);

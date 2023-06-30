@@ -288,6 +288,7 @@
     InsertAnnouncementSuccessfully: 'Insert Announcement Successfully!',
     ImageSizeError: '{0}: The image is greater than limit.',
     ImageFileTypeError: '{0} : invalid image extension. Please choose an Png/ Jpeg image.',
+    InvalidRangeDate : 'The date range exceeds the maximum of {0} days, please review the your date range',
     SettingExistedAlready: 'Setting existed already',
     UpdateSettingSuccess: 'Update Setting successfully!',
     KeepAssign: 'Keep Assign',

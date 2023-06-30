@@ -10,7 +10,7 @@
             @include form-group-width(230px);
 
             .form-group:nth-child(3){
-                width: 250px !important;
+                width: 260px !important;
             }
 
             .form-group:nth-child(4){
@@ -23,7 +23,7 @@
 .medium-desktops{
     &> .show-left-panel{
         .notification-list{
-            @include form-group-width(255px);
+            @include form-group-width(260px);
         }
     }
     &> :not(.show-left-panel){

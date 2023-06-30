@@ -18,6 +18,10 @@
     &:disabled, &[readonly] {
         cursor: not-allowed;
     }
+
+    &-sm{
+        font-size: 1rem !important;
+    }
 }
 
 textarea.form-control{
