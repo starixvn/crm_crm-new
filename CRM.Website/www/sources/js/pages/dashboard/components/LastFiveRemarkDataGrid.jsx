@@ -15,30 +15,29 @@ export class LastFiveRemarkDataGrid extends Component {
         super(props);
         this.state = {
             tableWidth : null
-        };
-    }
-    resizeWindow = () => {
-        this.setState({
-            tableWidth : document.querySelector(".table-custom")?.clientWidth
-        })
+        }
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.resizeWindow);
+    resizeTable = () => {
+        this.setState({
+            tableWidth : document.querySelector(".dataGrid-remark")?.clientWidth
+        })
     }
 
     componentDidMount() {
         const param = {custId: this.props.custId};
         this.props.getLastFiveRemark(param);
-        this.setState({
-            tableWidth : document.querySelector(".table-custom")?.clientWidth
-        })
-        window.addEventListener('resize' , this.resizeWindow)
+        window.addEventListener('resize' , this.resizeTable)
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps , prevState) {
         if ( this.props.custId !== prevProps.custId ) {
             this.props.getLastFiveRemark({ custId: this.props.custId });
+        }
+        if(prevState.tableWidth === null) {
+            this.setState({
+                tableWidth : document.querySelector('.dataGrid-remark')?.clientWidth
+            })
         }
     }
 

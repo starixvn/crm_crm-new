@@ -1,5 +1,10 @@
 @import '../../abstracts/variables';
 .dashboard{
+    .block-table{
+        .table-container{
+            overflow-x: hidden;
+        }
+    }
     .alert-boxer{
         width: 800px;
         background: #fff;

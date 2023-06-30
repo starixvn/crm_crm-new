@@ -452,11 +452,11 @@ export class CreateForm extends Component {
             <div className={`panel-group ${BorderStyle.bottom}`}>
                 {
                     customerDetail === null ?
-                        <Form.Group as={Row} className={`title ${borderStyle}`}
+                        <Form.Group as={Row} className={`title align-items-center ${borderStyle}`}
                             aria-controls="collapse-expand-identity"
                             aria-expanded={isCollapse}
                         >
-                            <Form.Label column sm="2" md="2" className='required'
+                            <Form.Label column sm="1" md="2" className='required'
                                 onClick={() => this.handleCollapseExpend('isShowCustomerDetailOption')}
                             >
                                 {LangHelper.getResource('IdentityInformation')}
@@ -529,11 +529,13 @@ export class CreateForm extends Component {
                         {this.renderVerifyCustomer(values, handleChange, setFieldValue)}
                         <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomerVerify} />
                         {this.renderRefTicket(values, setFieldValue)}
-                        <Form.Group as={Row} className="pt-1 pb-2">
-                            <Form.Label className="required col-subject-width form-label col-form-label">
-                                {LangHelper.getResource('Subject')}
-                            </Form.Label>
-                            <Col className="subject-auto-complete-container">
+                        <Form.Group as={Row} className="pt-1 pb-2 mt-1">
+                            <Col sm="3" md="2">
+                                <Form.Label className="required col-subject-width form-label col-form-label">
+                                    {LangHelper.getResource('Subject')}
+                                </Form.Label>
+                            </Col>
+                            <Col sm="9" md="10" className="subject-auto-complete-container">
                                 <AutoComplete
                                     options={this.props.feedbackSubjectTemplates} displayField="subject" value={values.subject}
                                     onChange={value => setFieldValue('subject', value.subject || value)} isInvalid={touched.subject && errors.subject}
@@ -566,24 +568,20 @@ export class CreateForm extends Component {
     renderVerifyCustomer = (values, handleChange, setFieldValue) => {
         return (
             <Form.Group as={Row} className="pt-1 pb-2">
-                <Col sm="2" md="2">
+                <Col sm="3" md="2">
+                    <OverlayTrigger placement="bottom-start" overlay={
+                        <Tooltip id={'add-feedback-tooltip-customers'}>
+                            {LangHelper.getResource('MultipleCustomersTooltip')}
+                        </Tooltip>}
+                    >
+                        <span className="fa fa-question-circle-o" />
+                    </OverlayTrigger>
                     <Form.Check type="checkbox" id="check-box-verify" label={LangHelper.getResource('IsRelatedToCustomer')}
                         htmlFor="check-box-verify" checked={this.state.collapse.isVerifyCustomer}
                         onChange={() => this.handleCollapseExpend('isVerifyCustomer')}
                     />
                 </Col>
-                <Col sm="1" md="1">
-                    <Form.Label>
-                        <OverlayTrigger placement="bottom-start" overlay={
-                            <Tooltip id={'add-feedback-tooltip-customers'}>
-                                {LangHelper.getResource('MultipleCustomersTooltip')}
-                            </Tooltip>}
-                        >
-                            <span className="fa fa-question-circle-o" />
-                        </OverlayTrigger>
-                    </Form.Label>
-                </Col>
-                <Col sm="9" md="9">
+                <Col sm="9" md="10">
                     <Row>
                         <Col sm="10" md="10">
                             <Form.Control type="text" size="sm" value={values.customerNameInput} disabled={!this.state.collapse.isVerifyCustomer}
@@ -606,21 +604,19 @@ export class CreateForm extends Component {
     renderRefTicket = (values, setFieldValue) => {
         return (
             <Form.Group as={Row}>
-                <Col sm="4" md="4">
-                    <Form.Group as={Row}>
-                        <Form.Label column md="3" sm="3" htmlFor="ticketRefNo">{LangHelper.getResource('TicketRefNo')}</Form.Label>
-                        <Col sm="1" md="1">
-                            <Form.Label>
-                                <OverlayTrigger placement="auto" overlay={
-                                    <Tooltip id='add-feedback-tooltip-ref-ticket'>
-                                        {LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}
-                                    </Tooltip>}
-                                >
-                                    <span className="fa fa-question-circle-o" />
-                                </OverlayTrigger>
-                            </Form.Label>
-                        </Col>
-                        <Col sm="8" md="8" className="ref-ticket-input">
+                <Col sm="3" md="2">
+                    <Form.Label htmlFor="ticketRefNo">{LangHelper.getResource('TicketRefNo')}</Form.Label>
+                    <OverlayTrigger placement="auto" overlay={
+                        <Tooltip id='add-feedback-tooltip-ref-ticket'>
+                            {LangHelper.getResource('TooltipRefTicket') + this.props.balanceUpday}
+                        </Tooltip>}
+                    >
+                        <span className="fa fa-question-circle-o" />
+                    </OverlayTrigger>
+                </Col>
+                <Col sm="9" md="10">
+                    <Row>
+                        <Col sm="10" md="10">
                             <Form.Control type="number" size="sm"
                                 value={values.ticketRefInput}
                                 onKeyDown={event => this.validateRefInput(event)}
@@ -629,16 +625,12 @@ export class CreateForm extends Component {
                                 onChange={e => this.handleChangeRefTicket(e, setFieldValue)}
                             />
                         </Col>
-                    </Form.Group>
-                </Col>
-                <Col sm="4" md="4">
-                    <Form.Group as={Row}>
-                        <Col>
+                        <Col sm="2" md="2">
                             <Button disabled={values.ticketRefInput === ''} onClick={() => this.handleClickFillEvent(values.ticketRefInput, setFieldValue)}>
                                 {LangHelper.getResource('FillEventDetails')}
                             </Button>
                         </Col>
-                    </Form.Group>
+                    </Row>
                 </Col>
             </Form.Group>
         );

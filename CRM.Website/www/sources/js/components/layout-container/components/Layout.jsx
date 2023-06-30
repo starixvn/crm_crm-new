@@ -284,7 +284,7 @@ export class Layout extends Component {
 
     renderFullWidthContent = () =>{
         return (
-            <div>
+            <div> 
                 <div id='left-row-container' style={{width:0}} tabIndex="1"/>
                 <div id='right-row-container' style={{width:'100%'}} tabIndex="2" className='main-content'>
                     <div id='child-app-container'>

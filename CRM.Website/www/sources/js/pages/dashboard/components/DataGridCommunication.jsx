@@ -13,13 +13,21 @@ export class DataGridCommunication extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            tableWidth : null
+        }
     }
     componentDidMount() {
         this.props.getCommunicationLogs({ customerId: this.props.id });
     }
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         if ( this.props.id !== prevProps.id ) {
             this.props.getCommunicationLogs({ customerId: this.props.id });
+        }
+        if(prevState.tableWidth === null) {
+            this.setState({
+                tableWidth : document.querySelector('.communication-log-grid')?.clientWidth
+            })
         }
     }
 
@@ -278,7 +286,7 @@ export class DataGridCommunication extends Component {
                         <span>{LangHelper.getResource('LastTenCommunicationLog')}</span>
                     </div>
                     <Table
-                        width={1200}
+                        width={this.state.tableWidth}
                         autoWidth={true}
                         header={this.buildHeader()}
                         body={this.buildBody()}

@@ -1,5 +1,4 @@
 ﻿@import '../abstracts/variables';
-
 .table-title {
     border: 1px solid $border-table-grey;
     border-bottom-width: 0;
@@ -13,6 +12,9 @@
     }
 }
 .block-table{
+    .body-content {
+        overflow-x: auto;
+    }
     margin-bottom: 15px;
     &:last-child{
         margin-bottom: 0;
