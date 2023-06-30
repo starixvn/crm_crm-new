@@ -53,7 +53,7 @@ export class DataGrid extends Component {
                 {
                     isHost &&
                     <Cell className='text-center'>
-                        <input type="checkbox" checked={item.isActive} disabled={!this.props.isHost}
+                        <input type="checkbox" checked={item.isActive} disabled={!this.props.isHost || item.settingValue.toLowerCase() === 'telegram' || item.settingValue.toLowerCase() === 'letstalk'}
                             onChange={() => this.handleEditStatus(item.settingId, item.settingValue, !item.isActive)}
                         />
                     </Cell>
@@ -75,6 +75,7 @@ export class DataGrid extends Component {
     };
 
     handleEditStatus = (settingId, settingValue, isActive)=>{
+        console.log(settingValue);
         this.props.setEditStatusPopup({show: true, settingId, settingValue, isActive});
     };
 
@@ -103,13 +104,13 @@ export class DataGrid extends Component {
 
         return (
             <Fragment>
-                <div className='justify-content-between align-items-center table-title d-flex' style={{width: this.IsShowSourceMapping() ? 1000 : 700}}>
+                <div className='justify-content-between align-items-center table-title d-flex' style={{width: 1000}}>
                     <span>{`${LangHelper.getResource('SettingManagementTitle')} ${gridParams.settingName}`}</span>
                 </div>
                 <Table
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
-                    width={this.IsShowSourceMapping() ? 1000 : 700}
+                    width={1000}
                     autoWidth={false}
                     onSort={this.onSort}
                     containerPadding={0}
