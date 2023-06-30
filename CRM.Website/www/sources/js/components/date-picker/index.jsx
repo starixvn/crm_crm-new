@@ -71,7 +71,7 @@ export default class DatePickerField extends React.Component {
     }
 
     onClickOutside = () =>{
-        if(this.state.isErrorMaxDate){
+        if(this.state.isErrorMaxDate || !this.state.startDate || !this.state.endDate){
             this.ref.current.setOpen(true);
         }
     }

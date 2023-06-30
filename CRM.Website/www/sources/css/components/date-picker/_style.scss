@@ -53,6 +53,10 @@
     padding-top: 16px !important;
     background: #fff;
     border-bottom: none;
+
+    .react-datepicker__month-dropdown-container--select{
+        margin: 0 10px !important;
+    }
 }
 
 .react-datepicker__current-month,
@@ -86,8 +90,8 @@
 
 .react-datepicker__day-name, .react-datepicker__day,
 .react-datepicker__time-name {
-    width: 2.5rem;
-    line-height: 2.5rem;
+    width: 2.2rem;
+    line-height: 2.1rem;
 }
 
 .react-datepicker__day-name {
@@ -177,7 +181,6 @@
     left: 6px;
 }
 
-// icon calendar
 .position-relative {
     position: relative;
 }
@@ -226,22 +229,22 @@
 .range-date-picker{
     .react-datepicker {
         position: relative;
-        left: 136px;
+        left: 118px;
 
         .form-range-date{
             position: absolute;
-            left: -136px;
-            width: 135px;
-            height: 100.5%;
+            left: -119px;
+            width: 118px;
+            height: 100.7%;
             margin-top: -1px;
             border: 1px solid #ddd;
             border-right: 0;
             background: white;
-            padding-top: 12px;
+            padding-top: 13px;
     
             .item-range-date{
                 color: #333;
-                padding: 5px 0 5px 10px;
+                padding: 7px 0 7px 10px;
                 cursor: pointer;
     
                 &:hover{
@@ -252,14 +255,13 @@
         }
 
         .display-selected{
-            position: absolute;
-            top: 267px;
-            width: 413px;
-            left: -136px;
+            position: relative;
+            width: 369px;
+            left: -119px;
             border: 1px solid #ddd;
-            border-top: 0;
             padding: 8px;
             background: white;
+            border-bottom: 0;
 
             .date-range-selected{
                 min-width: 210px;
@@ -270,7 +272,7 @@
                 line-height: 22px;
                 font-weight: bold;
                 margin-left: 5px;
-                margin-right: 60px;         
+                margin-right: 32px;      
             }
 
             #btn-apply{
@@ -284,7 +286,7 @@
         }
     
         .react-datepicker__triangle{
-            left: -214px !important;
+            left: -200px !important;
         }
     }
 }
