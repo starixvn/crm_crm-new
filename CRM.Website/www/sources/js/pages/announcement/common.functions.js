@@ -31,7 +31,7 @@ export const validateFormik = (values, files, invalidWidthHeight) => {
         errors.sendType = LangHelper.getResource('SendDateSmallerThanNow');
     }
 
-    const invalidFileType = files.filter(x => !validFileType(x));
+    const invalidFileType = files.filter(x => !validFileType(x) || !validFileExtension(x));
     if(invalidFileType.length > 0){
         const nameFileError = invalidFileType.map(x => x.name).join(', ');
         errors.imageFileType = LangHelper.formatString(LangHelper.getResource('ImageFileTypeError'), nameFileError);
@@ -129,11 +129,17 @@ function validFileSize(file){
     return true;
 }
 
-function validFileType(file){
+function validFileType(file) {
     const fileTypes = [
         'image/jpeg',
         'image/pjpeg',
         'image/png'
     ];
     return fileTypes.includes(file.type);
+}
+
+function validFileExtension(file) {
+    const validFileFormat = ["jpeg", "pjpeg", "jpg", "png"];
+    let extension = file.name.split('.').pop();
+    return validFileFormat.includes(extension);
 }
