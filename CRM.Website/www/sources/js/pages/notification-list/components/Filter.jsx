@@ -35,8 +35,6 @@ export class Filter extends Component {
                 botService: null
             },
             maxDate: now,
-            //minToDate: now,
-            //maxToDate: now,
             notificationTypeOptions: [],
             statusOptions: [],
             showFilter: false
@@ -107,15 +105,8 @@ export class Filter extends Component {
     handleSetStartDate = value => this.handleFilterChange('fromDate', value);
     handleSetEndDate = value => this.handleFilterChange('toDate', value);
     handleFromDateChange = value => {
-        // let maxToDate = new Date(value);
-        // maxToDate.setMonth(maxToDate.getMonth() + 1);
         this.handleFilterChange('fromDate', value);
         this.handleFilterChangeProps('fromDate', DateTimeService.startOfDay(value));
-        // if (maxToDate - this.state.maxDate > 0) {
-        //     maxToDate = this.state.maxDate;
-        // }
-
-        // this.setState({ maxToDate });
     };
 
     handleToDateChange = value => {
