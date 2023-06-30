@@ -241,6 +241,12 @@ export class Filter extends Component {
             return false;
         }
 
+        if(!this.state.filter.fromDate || !this.state.filter.toDate){
+            toast.error("Invalid range date");
+            return false;
+        }
+
+
         return true;
     };
 
