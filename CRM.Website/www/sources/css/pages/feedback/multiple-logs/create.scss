@@ -1,10 +1,27 @@
 ﻿@import '../../../abstracts/variables';
 
 .multiple-logs{
+    .custom-form-group{
+        display: flex;
+        align-items: center;
+        .custom-label{
+            flex: 1 0 140px;
+        }
+        .custom-input{
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+        }
+        .multiple-select-container {
+            width: 100%;
+        }
+    }
+
+
     .fa-exclamation-circle {
         font-size: 16px;
     }
-    
     .panel-group {
         border: 1px solid #b1b1b1;
     

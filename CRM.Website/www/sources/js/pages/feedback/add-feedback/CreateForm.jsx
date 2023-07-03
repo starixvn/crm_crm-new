@@ -568,7 +568,7 @@ export class CreateForm extends Component {
     renderVerifyCustomer = (values, handleChange, setFieldValue) => {
         return (
             <Form.Group as={Row} className="pt-1 pb-2">
-                <Col sm="3" md="2">
+                <Col sm="2" md="2">
                     <OverlayTrigger placement="bottom-start" overlay={
                         <Tooltip id={'add-feedback-tooltip-customers'}>
                             {LangHelper.getResource('MultipleCustomersTooltip')}
@@ -581,7 +581,7 @@ export class CreateForm extends Component {
                         onChange={() => this.handleCollapseExpend('isVerifyCustomer')}
                     />
                 </Col>
-                <Col sm="9" md="10">
+                <Col sm="10" md="10">
                     <Row>
                         <Col sm="10" md="10">
                             <Form.Control type="text" size="sm" value={values.customerNameInput} disabled={!this.state.collapse.isVerifyCustomer}
@@ -589,10 +589,10 @@ export class CreateForm extends Component {
                                 onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)} />
                         </Col>
                         <Col sm="2" md="2">
-                            <Button name="isVerifiedCustomers" id="isVerifiedCustomers" type="submit" variant="primary"
+                            <Button name="isVerifiedCustomers" id="isVerifiedCustomers" className="w-100" type="submit" variant="primary"
                                 disabled={!this.state.collapse.isVerifyCustomer}
                                 size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}>
-                                <UnderlineButton.verifyButton />
+                                <UnderlineButton.verifyButton/>
                             </Button>
                         </Col>
                     </Row>
@@ -626,7 +626,7 @@ export class CreateForm extends Component {
                             />
                         </Col>
                         <Col sm="2" md="2">
-                            <Button disabled={values.ticketRefInput === ''} onClick={() => this.handleClickFillEvent(values.ticketRefInput, setFieldValue)}>
+                            <Button disabled={values.ticketRefInput === ''} className="w-100" onClick={() => this.handleClickFillEvent(values.ticketRefInput, setFieldValue)}>
                                 {LangHelper.getResource('FillEventDetails')}
                             </Button>
                         </Col>
