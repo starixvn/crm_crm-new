@@ -839,15 +839,14 @@ export class CreateForm extends Component {
                 </Col>
                 <Col sm="4" md="4">
                     <Form.Group className="pt-2 custom-form-group">
-                        <Form.Label className="custom-label">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
+                        <Form.Label className="custom-label">{LangHelper.getResource('Site')}</Form.Label>
                         <Form.Group className="custom-input">
-                            <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries" id="noOfInquiries"
-                                min={1} max={3200} value={values.noOfInquiries}
-                                onInput={validateNoOfInquiry} onChange={handleChange}
-                            />
+                            <Form.Control as="select" size="sm" disabled className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
+                            </Form.Control>
                         </Form.Group>
                     </Form.Group>
                 </Col>
+                
                 <Col sm="4" md="4">
                     <Form.Group className="pt-2 custom-form-group">
                         <Form.Label className="custom-label">{LangHelper.getResource('Role')}</Form.Label>
@@ -860,10 +859,12 @@ export class CreateForm extends Component {
                 </Col>
                 <Col sm="4" md="4">
                     <Form.Group className="pt-2 custom-form-group">
-                        <Form.Label className="custom-label">{LangHelper.getResource('Site')}</Form.Label>
+                        <Form.Label className="custom-label">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
                         <Form.Group className="custom-input">
-                            <Form.Control as="select" size="sm" disabled className="shadow-none"><option value="">{LangHelper.getResource('NotApply')}</option>
-                            </Form.Control>
+                            <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries" id="noOfInquiries"
+                                min={1} max={3200} value={values.noOfInquiries}
+                                onInput={validateNoOfInquiry} onChange={handleChange}
+                            />
                         </Form.Group>
                     </Form.Group>
                 </Col>
