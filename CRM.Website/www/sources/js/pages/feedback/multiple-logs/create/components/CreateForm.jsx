@@ -489,9 +489,9 @@ export class CreateForm extends Component {
         setFieldValue,
         isSubmitting
     }) => {
-        const { createMultipleLogsResult } = this.state;
+        const { createMultipleLogsResult , subCategoryOptions } = this.state;
         const { settings, verifyCustomerResults } = this.props;
-        const { extensions, countries } = settings;
+        const { communicationTools , extensions , mainCategories } = settings;
 
         return (
             <Form noValidate onSubmit={handleSubmit}>
@@ -559,6 +559,23 @@ export class CreateForm extends Component {
                             </Col>
                             <Col sm="4" md="4">
                                 <Form.Group className="pt-2 custom-form-group">
+                                    <Form.Label className="custom-label">{LangHelper.getResource('EndTime')}</Form.Label>
+                                    <Form.Group className="custom-input">
+                                        <div className="react-datepicker-wrapper-container form-control-wrapper w-100">
+                                            <DatePicker
+                                                selected={values.endTime}
+                                                timeInputLabel="Time:"
+                                                useShortMonthInDropdown
+                                                dateFormat="MMM dd, yyyy hh:mm aa"
+                                                showTimeInput peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                                                onChange={value => this.handleChangeEndTime(value)}
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                </Form.Group>
+                            </Col>
+                            <Col sm="4" md="4">
+                                <Form.Group className="pt-2 custom-form-group">
                                     <Form.Label className="custom-label">Ext</Form.Label>
                                     <Form.Group className="custom-input">
                                         <div className="w-100">
@@ -576,58 +593,80 @@ export class CreateForm extends Component {
                                     </Form.Group>
                                 </Form.Group>
                             </Col>
-
+                            
                             <Col sm="4" md="4">
                                 <Form.Group className="pt-2 custom-form-group">
-                                    <Form.Label className="custom-label">{LangHelper.getResource('Country')}</Form.Label>
+                                    <Form.Label className={values.isUseDefaultCommunicationTool ? 'custom-label' : 'custom-label required'}>
+                                        {LangHelper.getResource('CommunicationTool')}
+                                    </Form.Label>
                                     <Form.Group className="custom-input">
-                                        <Form.Control as="select" size="sm" className="shadow-none w-100" id="countryId" name="countryId"
-                                            value={values.countryId} onChange={handleChange}
-                                            disabled={values.isUseDefaultCountry}
-                                        >
-                                            <option value="" hidden disabled />
-                                            {
-                                                countries.map(item =>
-                                                    <option key={item.id} value={item.id}>
-                                                        {item.name}
-                                                    </option>
-                                                )
-                                            }
-                                        </Form.Control>
+                                        <MultipleSelect
+                                            isInvalid={touched.communicationToolIds && errors.communicationToolIds}
+                                            dataSource={communicationTools}
+                                            keyField='id' valueField='name'
+                                            hasAllOption={communicationTools.length > 0}
+                                            isAllTextShown={communicationTools.length > 0}
+                                            hasSearchBox isDisable={values.isUseDefaultCommunicationTool} isNAOption
+                                            onChange={(currentItem, selectedItemsKey) => {
+                                                this.handleChangeCommunicationTool(setFieldValue, currentItem, selectedItemsKey);
+                                            }}
+                                            className="w-100"
+                                        />
                                         <OverlayTrigger
                                             placement="left-start"
-                                            overlay={<Tooltip>{LangHelper.getResource('ApplyDefaultCountry')}</Tooltip>}
+                                            overlay={<Tooltip>{LangHelper.getResource('ApplyDefaultCommunicationTool')}</Tooltip>}
                                         >
-                                            <Form.Check type="checkbox" checked={values.isUseDefaultCountry}
-                                                onChange={event => setFieldValue('isUseDefaultCountry', event.target.checked)}
+                                            <Form.Check type="checkbox" checked={values.isUseDefaultCommunicationTool}
+                                                onChange={this.handleChangeCheckboxDefaultCommunicationTool}
                                             />
                                         </OverlayTrigger>
                                     </Form.Group>
                                 </Form.Group>
                             </Col>
+
                             <Col sm="4" md="4">
                                 <Form.Group className="pt-2 custom-form-group">
-                                    <Form.Label className="custom-label">{LangHelper.getResource('EndTime')}</Form.Label>
+                                    <Form.Label className="custom-label required">{LangHelper.getResource('Category')}</Form.Label>
                                     <Form.Group className="custom-input">
-                                        <div className="react-datepicker-wrapper-container form-control-wrapper w-100">
-                                            <DatePicker
-                                                selected={values.endTime}
-                                                timeInputLabel="Time:"
-                                                useShortMonthInDropdown
-                                                dateFormat="MMM dd, yyyy hh:mm aa"
-                                                showTimeInput peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
-                                                onChange={value => this.handleChangeEndTime(value)}
-                                            />
-                                        </div>
+                                        <MultipleSelect
+                                            isInvalid={touched.mainCategoryIds && errors.mainCategoryIds}
+                                            dataSource={mainCategories}
+                                            keyField='mainCategoryID' valueField='name'
+                                            hasAllOption={mainCategories.length > 0}
+                                            isAllTextShown={mainCategories.length > 0}
+                                            hasSearchBox isNAOption
+                                            maxDisplayItemCount={1}
+                                            onChange={(currentItem, selectedItemsKey) => {
+                                                this.handleChangeMainCategory(setFieldValue, selectedItemsKey, values.subCategoryIds, values.subject);
+                                            }}
+                                        />
                                     </Form.Group>
                                 </Form.Group>
                             </Col>
-                            {this.renderCommunicationToolSection(values, touched, errors, setFieldValue, handleChange)}
+                            <Col sm="4" md="4">
+                                <Form.Group className="pt-2 custom-form-group">
+                                    <Form.Label className="custom-label required">{LangHelper.getResource('SubCategory')}</Form.Label>
+                                    <Form.Group className="custom-input">
+                                    <MultipleSelect
+                                        isInvalid={touched.subCategoryIds && errors.subCategoryIds}
+                                        dataSource={subCategoryOptions}
+                                        keyField='subCategoryId' valueField='name'
+                                        hasAllOption={subCategoryOptions.length > 0}
+                                        isAllTextShown={subCategoryOptions.length > 0}
+                                        hasSearchBox isNAOption
+                                        maxDisplayItemCount={1}
+                                        onChange={(currentItem, selectedItemsKey) => {
+                                            setFieldValue('subCategoryIds', selectedItemsKey);
+                                        }}
+                                    />
+                                    </Form.Group>
+                                </Form.Group>
+                            </Col>
                             {this.renderProductSection(values, touched, errors, setFieldValue, handleChange)}
+                            {this.renderOtherSection(values, touched, errors, setFieldValue, handleChange)}
                         </Form.Group>
                     </div>
                 </div>
-
                 {this.renderCollapseSection(values, touched, errors, setFieldValue, handleChange)}
                 <Form.Group as={Row} className="mt-3">
                     <Col>
@@ -640,114 +679,10 @@ export class CreateForm extends Component {
         );
     };
 
-    renderCommunicationToolSection = (values, touched, errors, setFieldValue, handleChange) => {
-        const { subCategoryOptions } = this.state;
-        const { settings } = this.props;
-        const { communicationTools, languages, mainCategories } = settings;
-        return (
-            <>
-                <Col sm="4" md="4">
-                    <Form.Group className="pt-2 custom-form-group">
-                        <Form.Label className={values.isUseDefaultCommunicationTool ? 'custom-label' : 'custom-label required'}>
-                            {LangHelper.getResource('CommunicationTool')}
-                        </Form.Label>
-                        <Form.Group className="custom-input">
-                            <MultipleSelect
-                                isInvalid={touched.communicationToolIds && errors.communicationToolIds}
-                                dataSource={communicationTools}
-                                keyField='id' valueField='name'
-                                hasAllOption={communicationTools.length > 0}
-                                isAllTextShown={communicationTools.length > 0}
-                                hasSearchBox isDisable={values.isUseDefaultCommunicationTool} isNAOption
-                                onChange={(currentItem, selectedItemsKey) => {
-                                    this.handleChangeCommunicationTool(setFieldValue, currentItem, selectedItemsKey);
-                                }}
-                                className="w-100"
-                            />
-                            <OverlayTrigger
-                                placement="left-start"
-                                overlay={<Tooltip>{LangHelper.getResource('ApplyDefaultCommunicationTool')}</Tooltip>}
-                            >
-                                <Form.Check type="checkbox" checked={values.isUseDefaultCommunicationTool}
-                                    onChange={this.handleChangeCheckboxDefaultCommunicationTool}
-                                />
-                            </OverlayTrigger>
-                        </Form.Group>
-                    </Form.Group>
-                </Col>
-                <Col sm="4" md="4">
-                    <Form.Group className="pt-2 custom-form-group">
-                        <Form.Label className={values.isUseDefaultLanguage ? 'custom-label' : 'custom-label required'}>{LangHelper.getResource('Language')}</Form.Label>
-                        <Form.Group className="custom-input">
-                            <Form.Control as="select" size="sm" className="shadow-none" name="languageId" id="languageId"
-                                disabled={values.isUseDefaultLanguage} value={values.languageId} onChange={handleChange}
-                            >
-                                <option value="" hidden disabled />
-                                {
-                                    languages.map(item =>
-                                        <option key={item.languageId} value={item.languageId}>
-                                            {item.name}
-                                        </option>
-                                    )
-                                }
-                            </Form.Control>
-                            <OverlayTrigger
-                                placement="left-start"
-                                overlay={<Tooltip>{LangHelper.getResource('ApplyDefaultLanguage')}</Tooltip>}
-                            >
-                                <Form.Check type="checkbox" checked={values.isUseDefaultLanguage}
-                                    onChange={event => setFieldValue('isUseDefaultLanguage', event.target.checked)}
-                                />
-                            </OverlayTrigger>
-                        </Form.Group>
-                    </Form.Group>
-                </Col>
-                <Col sm="4" md="4">
-                    <Form.Group className="pt-2 custom-form-group">
-                        <Form.Label className="custom-label required">{LangHelper.getResource('Category')}</Form.Label>
-                        <Form.Group className="custom-input">
-                            <MultipleSelect
-                                isInvalid={touched.mainCategoryIds && errors.mainCategoryIds}
-                                dataSource={mainCategories}
-                                keyField='mainCategoryID' valueField='name'
-                                hasAllOption={mainCategories.length > 0}
-                                isAllTextShown={mainCategories.length > 0}
-                                hasSearchBox isNAOption
-                                maxDisplayItemCount={1}
-                                onChange={(currentItem, selectedItemsKey) => {
-                                    this.handleChangeMainCategory(setFieldValue, selectedItemsKey, values.subCategoryIds, values.subject);
-                                }}
-                            />
-                        </Form.Group>
-                    </Form.Group>
-                </Col>
-                <Col sm="4" md="4">
-                    <Form.Group className="pt-2 custom-form-group">
-                        <Form.Label className="custom-label required">{LangHelper.getResource('SubCategory')}</Form.Label>
-                        <Form.Group className="custom-input">
-                        <MultipleSelect
-                            isInvalid={touched.subCategoryIds && errors.subCategoryIds}
-                            dataSource={subCategoryOptions}
-                            keyField='subCategoryId' valueField='name'
-                            hasAllOption={subCategoryOptions.length > 0}
-                            isAllTextShown={subCategoryOptions.length > 0}
-                            hasSearchBox isNAOption
-                            maxDisplayItemCount={1}
-                            onChange={(currentItem, selectedItemsKey) => {
-                                setFieldValue('subCategoryIds', selectedItemsKey);
-                            }}
-                        />
-                        </Form.Group>
-                    </Form.Group>
-                </Col>
-            </>
-        );
-    };
-
     renderProductSection = (values, touched, errors, setFieldValue, handleChange) => {
         const { subProductOptions, betTypeOptions } = this.state;
-        const { settings, feedbackSubjectTemplates } = this.props;
-        const { products, statuses, responses } = settings;
+        const { settings } = this.props;
+        const { products , statuses } = settings;
         return (
             <>
                 <Col sm="4" md="4">
@@ -788,6 +723,24 @@ export class CreateForm extends Component {
                 </Col>
                 <Col sm="4" md="4">
                     <Form.Group className="pt-2 custom-form-group">
+                        <Form.Label className="custom-label">{LangHelper.getResource('BetType')}</Form.Label>
+                        <Form.Group className="custom-input">
+                            <MultipleSelect
+                                dataSource={betTypeOptions}
+                                keyField='id' valueField='value'
+                                hasAllOption={betTypeOptions.length > 0}
+                                isAllTextShown={betTypeOptions.length > 0}
+                                hasSearchBox isNAOption
+                                maxDisplayItemCount={1}
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    setFieldValue('betTypeIds', selectedItemsKey);
+                                }}
+                            />
+                        </Form.Group>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group className="pt-2 custom-form-group">
                         <Form.Label className="custom-label">{LangHelper.getResource('Status')}</Form.Label>
                         <Form.Group className="custom-input">
                             <Form.Control as="select" size="sm" className="shadow-none" name="statusId" id="statusId" onChange={handleChange}>
@@ -803,20 +756,94 @@ export class CreateForm extends Component {
                         </Form.Group>
                     </Form.Group>
                 </Col>
+            </>
+        );
+    };
+
+    renderOtherSection = (values, touched, errors, setFieldValue, handleChange) => {
+        const { settings, feedbackSubjectTemplates } = this.props;
+        const { responses , languages , countries } = settings;
+        return (
+            <>
                 <Col sm="4" md="4">
                     <Form.Group className="pt-2 custom-form-group">
-                        <Form.Label className="custom-label">{LangHelper.getResource('BetType')}</Form.Label>
+                        <Form.Label className={values.isUseDefaultLanguage ? 'custom-label' : 'custom-label required'}>{LangHelper.getResource('Language')}</Form.Label>
                         <Form.Group className="custom-input">
-                            <MultipleSelect
-                                dataSource={betTypeOptions}
-                                keyField='id' valueField='value'
-                                hasAllOption={betTypeOptions.length > 0}
-                                isAllTextShown={betTypeOptions.length > 0}
-                                hasSearchBox isNAOption
-                                maxDisplayItemCount={1}
-                                onChange={(currentItem, selectedItemsKey) => {
-                                    setFieldValue('betTypeIds', selectedItemsKey);
-                                }}
+                            <Form.Control as="select" size="sm" className="shadow-none" name="languageId" id="languageId"
+                                disabled={values.isUseDefaultLanguage} value={values.languageId} onChange={handleChange}
+                            >
+                                <option value="" hidden disabled />
+                                {
+                                    languages.map(item =>
+                                        <option key={item.languageId} value={item.languageId}>
+                                            {item.name}
+                                        </option>
+                                    )
+                                }
+                            </Form.Control>
+                            <OverlayTrigger
+                                placement="left-start"
+                                overlay={<Tooltip>{LangHelper.getResource('ApplyDefaultLanguage')}</Tooltip>}
+                            >
+                                <Form.Check type="checkbox" checked={values.isUseDefaultLanguage}
+                                    onChange={event => setFieldValue('isUseDefaultLanguage', event.target.checked)}
+                                />
+                            </OverlayTrigger>
+                        </Form.Group>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group className="pt-2 custom-form-group">
+                        <Form.Label className="custom-label">{LangHelper.getResource('Response')}</Form.Label>
+                        <Form.Group className="custom-input">
+                            <Form.Control as="select" size="sm" className="shadow-none" name="responseId" id="responseId" onChange={handleChange}>
+                                <option value={values.responseId} hidden disabled />
+                                {
+                                    responses.map(item =>
+                                        <option key={item.id} value={item.id}>
+                                            {item.value}
+                                        </option>
+                                    )
+                                }
+                            </Form.Control>
+                        </Form.Group>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group className="pt-2 custom-form-group">
+                        <Form.Label className="custom-label">{LangHelper.getResource('Country')}</Form.Label>
+                        <Form.Group className="custom-input">
+                            <Form.Control as="select" size="sm" className="shadow-none w-100" id="countryId" name="countryId"
+                                value={values.countryId} onChange={handleChange}
+                                disabled={values.isUseDefaultCountry}
+                            >
+                                <option value="" hidden disabled />
+                                {
+                                    countries.map(item =>
+                                        <option key={item.id} value={item.id}>
+                                            {item.name}
+                                        </option>
+                                    )
+                                }
+                            </Form.Control>
+                            <OverlayTrigger
+                                placement="left-start"
+                                overlay={<Tooltip>{LangHelper.getResource('ApplyDefaultCountry')}</Tooltip>}
+                            >
+                                <Form.Check type="checkbox" checked={values.isUseDefaultCountry}
+                                    onChange={event => setFieldValue('isUseDefaultCountry', event.target.checked)}
+                                />
+                            </OverlayTrigger>
+                        </Form.Group>
+                    </Form.Group>
+                </Col>
+                <Col sm="4" md="4">
+                    <Form.Group className="pt-2 custom-form-group">
+                        <Form.Label className="custom-label">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
+                        <Form.Group className="custom-input">
+                            <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries" id="noOfInquiries"
+                                min={1} max={3200} value={values.noOfInquiries}
+                                onInput={validateNoOfInquiry} onChange={handleChange}
                             />
                         </Form.Group>
                     </Form.Group>
@@ -840,23 +867,7 @@ export class CreateForm extends Component {
                         </Form.Group>
                     </Form.Group>
                 </Col>
-                <Col sm="4" md="4">
-                    <Form.Group className="pt-2 custom-form-group">
-                        <Form.Label className="custom-label">{LangHelper.getResource('Response')}</Form.Label>
-                        <Form.Group className="custom-input">
-                            <Form.Control as="select" size="sm" className="shadow-none" name="responseId" id="responseId" onChange={handleChange}>
-                                <option value={values.responseId} hidden disabled />
-                                {
-                                    responses.map(item =>
-                                        <option key={item.id} value={item.id}>
-                                            {item.value}
-                                        </option>
-                                    )
-                                }
-                            </Form.Control>
-                        </Form.Group>
-                    </Form.Group>
-                </Col>
+                
                 <Col sm="4" md="4">
                     <Form.Group className="pt-2 custom-form-group">
                         <Form.Label className="custom-label">{LangHelper.getResource('LicenseeType')}</Form.Label>
@@ -866,18 +877,7 @@ export class CreateForm extends Component {
                         </Form.Group>
                     </Form.Group>
                 </Col>
-                <Col sm="4" md="4">
-                    <Form.Group className="pt-2 custom-form-group">
-                        <Form.Label className="custom-label">{LangHelper.getResource('NoOfInquiries')}</Form.Label>
-                        <Form.Group className="custom-input">
-                            <Form.Control type="number" size="sm" className="shadow-none" name="noOfInquiries" id="noOfInquiries"
-                                min={1} max={3200} value={values.noOfInquiries}
-                                onInput={validateNoOfInquiry} onChange={handleChange}
-                            />
-                        </Form.Group>
-                    </Form.Group>
-                </Col>
-                <Col sm="4" md="4">
+                <Col sm="12" md="12">
                     <Form.Group className="pt-2 custom-form-group">
                         <Form.Label className="custom-label">{LangHelper.getResource('Subject')}</Form.Label>
                         <Form.Group className="custom-input">
