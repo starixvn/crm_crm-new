@@ -583,12 +583,12 @@ export class CreateForm extends Component {
                 </Col>
                 <Col sm="10" md="10">
                     <Row>
-                        <Col sm="10" md="10">
+                        <Col sm="9" md="9">
                             <Form.Control type="text" size="sm" value={values.customerNameInput} disabled={!this.state.collapse.isVerifyCustomer}
                                 name="customerNameInput" className="shadow-none" autoComplete="off" onChange={handleChange}
                                 onPaste={event => this.onPasteCustomerHandler(event, values.customerNameInput, setFieldValue)} />
                         </Col>
-                        <Col sm="2" md="2">
+                        <Col sm="1" md="1">
                             <Button name="isVerifiedCustomers" id="isVerifiedCustomers" className="w-100" type="submit" variant="primary"
                                 disabled={!this.state.collapse.isVerifyCustomer}
                                 size="sm" onClick={event => this.handleVerify(event, setFieldValue, values.customerNameInput)}>
@@ -616,7 +616,7 @@ export class CreateForm extends Component {
                 </Col>
                 <Col sm="9" md="10">
                     <Row>
-                        <Col sm="10" md="10">
+                        <Col sm="5" md="5">
                             <Form.Control type="number" size="sm"
                                 value={values.ticketRefInput}
                                 onKeyDown={event => this.validateRefInput(event)}
@@ -625,11 +625,11 @@ export class CreateForm extends Component {
                                 onChange={e => this.handleChangeRefTicket(e, setFieldValue)}
                             />
                         </Col>
-                        <Col sm="2" md="2">
+                        <div>
                             <Button disabled={values.ticketRefInput === ''} className="w-100" onClick={() => this.handleClickFillEvent(values.ticketRefInput, setFieldValue)}>
                                 {LangHelper.getResource('FillEventDetails')}
                             </Button>
-                        </Col>
+                        </div>
                     </Row>
                 </Col>
             </Form.Group>
