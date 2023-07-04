@@ -124,12 +124,18 @@ export default class CkEditor extends PureComponent {
         CKEDITOR.addCss('body {margin: 2px !important;}');
     };
 
+    removeToolbarForChatBot = isRemoveToolbarForChatbot =>{
+        const toolbar = isRemoveToolbarForChatbot ? TOOLBAR.filter(x => x.name !=='document' && x.name !== 'links' && x.name !== 'paragraph' && x.name !== 'justify') : TOOLBAR;
+        const removePluginForChatBot = ', image2, editblock, format';
+        const removePlugins = isRemoveToolbarForChatbot ? REMOVE_PLUGINS.concat(removePluginForChatBot) : REMOVE_PLUGINS;
+        return {toolbar, removePlugins}
+    }
+
 
     render() {
         const { className, isInvalid, isRemoveToolbarForChatbot , ...rest } = this.props;
-        const toolbar = isRemoveToolbarForChatbot ? TOOLBAR.filter(x => x.name !=='document' && x.name !== 'links') : TOOLBAR;
-        const removePluginForChatBot = ', image2, editblock, format';
-        const removePlugins = isRemoveToolbarForChatbot ? REMOVE_PLUGINS.concat(removePluginForChatBot) : REMOVE_PLUGINS;
+        const {toolbar, removePlugins} = this.removeToolbarForChatBot(isRemoveToolbarForChatbot);
+
         return (
             <div ref={this.editorRef} className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
                 <CKEditor

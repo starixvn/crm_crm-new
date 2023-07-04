@@ -225,9 +225,9 @@
         private string RemoveUnsupportedTags(string content)
         {
             string[] allowedTagsHtml = { "b", "i", "u", "s", "a", "tg-emoji", "code", "pre", "br" };
-            string formattedMessage = Regex.Replace(content, "<(?!/?(" + string.Join("|", allowedTagsHtml) + ")(>|\\s.*?>)).*?>", "");
-            var regex = new Regex(@"(<br />|<br/>|</ br>|</br>|<br>)");
-            var messageContentReplace = regex.Replace(formattedMessage, Environment.NewLine);
+            var regex = new Regex(@"(<br />|<br/>|</ br>|</br>|<br>|<hr />)");
+            var replaceNewLine = regex.Replace(content, Environment.NewLine);
+            string messageContentReplace = Regex.Replace(replaceNewLine, "<(?!/?(" + string.Join("|", allowedTagsHtml) + ")(>|\\s.*?>)).*?>", "");
             return messageContentReplace;
         }
     }
