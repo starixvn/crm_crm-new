@@ -96,7 +96,7 @@ export class PicFilter extends Component {
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
                                 selected={fromDate}
-                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" useShortMonthInDropdown
                                 maxDate={new Date(this.maxFromDate)}
                                 minDate={new Date('1/1/2011')}
                                 onChange={value => this.handleChangeFromDate(value)}
@@ -107,7 +107,7 @@ export class PicFilter extends Component {
                         <Form.Label>{LangHelper.getResource('ToDate')}</Form.Label>
                         <div className='react-datepicker-wrapper-container'>
                             <DatePicker
-                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select"
+                                peekNextMonth showMonthDropdown showYearDropdown dropdownMode="select" useShortMonthInDropdown
                                 maxDate={new Date(this.maxToDate)}
                                 minDate={new Date(this.minToDate)}
                                 selected={toDate}

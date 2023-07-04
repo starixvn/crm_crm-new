@@ -206,18 +206,19 @@ export class PicDataGrid extends Component {
     };
 
     getDetailChatTypeMappingUpdate = item =>{
-        const {newLogInfo, oldLogInfo} = item;
+        try{
+            const {newLogInfo, oldLogInfo} = item;
         const newDisplayName = this.getStringValue(newLogInfo.conversationGroup?.name);
         const oldDisplayName = this.getStringValue(oldLogInfo.conversationGroup?.name);
-        const DisplayNameValue = this.changeValueToHtmlString(oldDisplayName, newDisplayName);
+        const displayNameValue = this.changeValueToHtmlString(oldDisplayName, newDisplayName);
         const newRecipientType = this.getStringObject(newLogInfo.recipientType);
         const oldRecipientType = this.getStringObject(oldLogInfo.recipientType);
         const recipientTypeValue = this.changeValueToHtmlString(oldRecipientType, newRecipientType);
         const newRecipient = this.getStringJoinArray(newLogInfo.recipients);
         const oldRecipient = this.getStringJoinArray(oldLogInfo.recipients);
         const recipientValue = this.changeValueToHtmlString(oldRecipient, newRecipient);
-        const botServiceNewId = newLogInfo.conversationGroup.letstalkID?.length > 0 ? newLogInfo.conversationGroup.letstalkID : newLogInfo.conversationGroup.username;
-        const botServiceOldId = oldLogInfo.conversationGroup.letstalkID?.length > 0 ? oldLogInfo.conversationGroup.letstalkID : oldLogInfo.conversationGroup.username;
+        const botServiceNewId = newLogInfo.conversationGroup?.letstalkID ? newLogInfo.conversationGroup.letstalkID : newLogInfo.conversationGroup?.username;
+        const botServiceOldId = oldLogInfo.conversationGroup?.letstalkID ? oldLogInfo.conversationGroup.letstalkID : oldLogInfo.conversationGroup?.username;
         const newBotService = this.getStringValue(botServiceNewId);
         const oldBotService = this.getStringValue(botServiceOldId);
         const botServiceValue = this.changeValueToHtmlString(oldBotService, newBotService);
@@ -230,15 +231,15 @@ export class PicDataGrid extends Component {
         const newLanguage = this.getStringJoinArray(newLogInfo.languages);
         const oldLanguage = this.getStringJoinArray(oldLogInfo.languages);
         const languageValue = this.changeValueToHtmlString(oldLanguage, newLanguage);
-        const oldRemark = this.getStringValue(oldLogInfo.conversationGroup.remark);
-        const newRemark = this.getStringValue(newLogInfo.conversationGroup.remark);
+        const oldRemark = this.getStringValue(oldLogInfo.conversationGroup?.remark);
+        const newRemark = this.getStringValue(newLogInfo.conversationGroup?.remark);
         const remarkValue = this.changeValueToHtmlString(oldRemark, newRemark);
         return (
             <div className='pic-container'>
                 {
                     this.renderHtmlDetail(
                         LangHelper.getResource('BotName'), botNameValue,
-                        LangHelper.getResource('DisplayName'), DisplayNameValue,
+                        LangHelper.getResource('DisplayName'), displayNameValue,
                         oldBotName !== newBotName, oldDisplayName !== newDisplayName
                     )
                 }
@@ -265,6 +266,9 @@ export class PicDataGrid extends Component {
                 }
             </div>
         );
+        }catch(err){
+            console.log(item);
+        }
     };
 
     getDetailValueUpdatePicStatus = item =>{
