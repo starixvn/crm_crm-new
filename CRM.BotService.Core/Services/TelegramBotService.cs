@@ -225,7 +225,7 @@
         private string RemoveUnsupportedTags(string content)
         {
             string[] allowedTagsHtml = { "b", "i", "u", "s", "a", "tg-emoji", "code", "pre", "br" };
-            var regex = new Regex(@"(<br />|<br/>|</ br>|</br>|<br>|<hr />)");
+            var regex = new Regex(@"(<br />|<hr />)");
             var replaceNewLine = regex.Replace(content, Environment.NewLine);
             string messageContentReplace = Regex.Replace(replaceNewLine, "<(?!/?(" + string.Join("|", allowedTagsHtml) + ")(>|\\s.*?>)).*?>", "");
             return messageContentReplace;
