@@ -115,10 +115,9 @@
         public async Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html)
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
-            var regex = new Regex(@"(<br />|<br/>|</ br>|</br>|<br>)");
-            var messageContentReplace = regex.Replace(messageContent, Environment.NewLine);
+            var messageContentReplace = RemoveUnsupportedTags(messageContent);
 
-            ValidateInputParam(nameof(messageContent), messageContent);
+            ValidateInputParam(nameof(messageContent), messageContentReplace);
             var message = await bot.BotClient.SendTextMessageAsync(new ChatId(chatId), messageContentReplace, parseMode);
             return message;
         }
@@ -221,6 +220,15 @@
             {
                 throw new ArgumentNullException(paramName);
             }
+        }
+
+        private string RemoveUnsupportedTags(string content)
+        {
+            string[] allowedTagsHtml = { "b", "i", "u", "s", "a", "tg-emoji", "code", "pre", "br" };
+            string formattedMessage = Regex.Replace(content, "<(?!/?(" + string.Join("|", allowedTagsHtml) + ")(>|\\s.*?>)).*?>", "");
+            var regex = new Regex(@"(<br />|<br/>|</ br>|</br>|<br>)");
+            var messageContentReplace = regex.Replace(formattedMessage, Environment.NewLine);
+            return messageContentReplace;
         }
     }
 }

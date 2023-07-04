@@ -119,7 +119,7 @@ export class PicDataGrid extends Component {
         const chatTypeValue = this.getStringObject(newLog.chatType);
         const recipientTypeValue = this.getStringObject(newLog.recipientType);
         const recipientValue = this.getStringJoinArray(newLog.recipients);
-        const chatBotIdValue = newLog.conversationGroup.letstalkID?.length > 0 ? newLog.conversationGroup.letstalkID : newLog.conversationGroup.chatID;
+        const chatBotIdValue = newLog.conversationGroup.letstalkID?.length > 0 ? newLog.conversationGroup.letstalkID : newLog.conversationGroup.username;
         const groupHeadlineValue = this.getStringJoinArray(newLog.headlines);
         const languageValue = this.getStringJoinArray(newLog.languages);
         const remarkValue = this.getStringValue(newLog.conversationGroup.remark);
@@ -207,8 +207,8 @@ export class PicDataGrid extends Component {
 
     getDetailChatTypeMappingUpdate = item =>{
         const {newLogInfo, oldLogInfo} = item;
-        const newDisplayName = this.getStringValue(newLogInfo.conversationGroup.name);
-        const oldDisplayName = this.getStringValue(oldLogInfo.conversationGroup.name);
+        const newDisplayName = this.getStringValue(newLogInfo.conversationGroup?.name);
+        const oldDisplayName = this.getStringValue(oldLogInfo.conversationGroup?.name);
         const DisplayNameValue = this.changeValueToHtmlString(oldDisplayName, newDisplayName);
         const newRecipientType = this.getStringObject(newLogInfo.recipientType);
         const oldRecipientType = this.getStringObject(oldLogInfo.recipientType);
@@ -216,8 +216,8 @@ export class PicDataGrid extends Component {
         const newRecipient = this.getStringJoinArray(newLogInfo.recipients);
         const oldRecipient = this.getStringJoinArray(oldLogInfo.recipients);
         const recipientValue = this.changeValueToHtmlString(oldRecipient, newRecipient);
-        const botServiceNewId = newLogInfo.conversationGroup.letstalkID?.length > 0 ? newLogInfo.conversationGroup.letstalkID : newLogInfo.conversationGroup.chatID;
-        const botServiceOldId = oldLogInfo.conversationGroup.letstalkID?.length > 0 ? oldLogInfo.conversationGroup.letstalkID : oldLogInfo.conversationGroup.chatID;
+        const botServiceNewId = newLogInfo.conversationGroup.letstalkID?.length > 0 ? newLogInfo.conversationGroup.letstalkID : newLogInfo.conversationGroup.username;
+        const botServiceOldId = oldLogInfo.conversationGroup.letstalkID?.length > 0 ? oldLogInfo.conversationGroup.letstalkID : oldLogInfo.conversationGroup.username;
         const newBotService = this.getStringValue(botServiceNewId);
         const oldBotService = this.getStringValue(botServiceOldId);
         const botServiceValue = this.changeValueToHtmlString(oldBotService, newBotService);
