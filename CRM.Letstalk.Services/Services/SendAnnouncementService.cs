@@ -513,7 +513,8 @@
         {
             var command = new WriteLogMessageCommand
             {
-                NotificationId = notificationId,
+                ReferenceId = notificationId,
+                DataSource = "DBCRM.bodb_CRM.dbo.crmAnnouncement",
                 BotId = botId,
                 Content = content,
                 ConversationId = conversationIds,

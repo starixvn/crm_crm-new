@@ -214,7 +214,8 @@
             var errMsg = "Message= " + result.Message + "; " + "Status= " + status;
             var command = new WriteLogMessageCommand
             {
-                NotificationId = notification.NotificationId,
+                ReferenceId = notification.NotificationId,
+                DataSource = "DBCRM.bodb_CRM.dbo.crmNotification",
                 BotId = notification.BotId,
                 Content = notification.Content,
                 ConversationId = notification.ConversationId,
