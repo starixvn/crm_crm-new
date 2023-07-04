@@ -30,6 +30,10 @@ export class LastFiveRemarkDataGrid extends Component {
         window.addEventListener('resize' , this.resizeTable)
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.resizeTable);
+    }
+
     componentDidUpdate(prevProps , prevState) {
         if ( this.props.custId !== prevProps.custId ) {
             this.props.getLastFiveRemark({ custId: this.props.custId });

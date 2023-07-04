@@ -662,8 +662,8 @@ export class CreateForm extends Component {
                                     </Form.Group>
                                 </Form.Group>
                             </Col>
+                            {this.renderCommunicationToolSection(values, touched, errors, setFieldValue, handleChange)}
                             {this.renderProductSection(values, touched, errors, setFieldValue, handleChange)}
-                            {this.renderOtherSection(values, touched, errors, setFieldValue, handleChange)}
                         </Form.Group>
                     </div>
                 </div>
@@ -679,7 +679,7 @@ export class CreateForm extends Component {
         );
     };
 
-    renderProductSection = (values, touched, errors, setFieldValue, handleChange) => {
+    renderCommunicationToolSection = (values, touched, errors, setFieldValue, handleChange) => {
         const { subProductOptions, betTypeOptions } = this.state;
         const { settings } = this.props;
         const { products , statuses } = settings;
@@ -760,7 +760,7 @@ export class CreateForm extends Component {
         );
     };
 
-    renderOtherSection = (values, touched, errors, setFieldValue, handleChange) => {
+    renderProductSection = (values, touched, errors, setFieldValue, handleChange) => {
         const { settings, feedbackSubjectTemplates } = this.props;
         const { responses , languages , countries } = settings;
         return (

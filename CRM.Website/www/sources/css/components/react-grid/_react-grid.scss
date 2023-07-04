@@ -11,9 +11,37 @@ $paddingRightContainer: 17px;
 
     .fix-table{
         overflow: auto;
-        border-top: 1px solid rgb(183, 183, 183);
-        border-bottom: 1px solid rgb(183, 183, 183);
-
+        border: 1px solid rgb(183, 183, 183);
+        border-top: none;
+        border-right: none;
+        table{
+            border-collapse: separate;
+            border-spacing: 0;
+            thead{
+                tr{
+                    th{
+                        border-top: 1px solid #b7b7b7;
+                        &.sticky-header {
+                            border-bottom: none !important;
+                        }
+                        &:last-child{
+                            border-right: none;
+                        }
+                    }
+                }
+            }
+            tbody{
+                tr{
+                    td{
+                        border-bottom: none !important;
+                        border-left: none;
+                        &:last-child{
+                            border-right: none;
+                        }
+                    }
+                }
+            }
+        }
         .header-content, .body-content, .footer-content{
             border-top: 0;
             border-bottom: 0;
