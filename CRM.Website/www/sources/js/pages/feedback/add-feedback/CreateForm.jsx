@@ -527,7 +527,7 @@ export class CreateForm extends Component {
                             productHandleChange={this.productHandleChange} subProductHandleChange={this.subProductHandleChange}
                         />
                         {this.renderVerifyCustomer(values, handleChange, setFieldValue)}
-                        <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomerVerify} />
+                        <VerifyCustomer listOfCustomers={this.state.listOfCustomer} onClick={this.deleteCustomerVerify} isBigColumnSize/>
                         {this.renderRefTicket(values, setFieldValue)}
                         <Form.Group as={Row} className="pt-1 pb-2 mt-1">
                             <Col sm="3" md="2">

@@ -5,7 +5,7 @@ import { shallow } from 'enzyme'
 describe('render', () => {
     const props = {
         listOfCustomers:[{isSiteActive :false, isLicensee: true, custId: 1, val: 'test'}, {isSiteActive :true, isLicensee: true, custId: 0, val: 'test'}],
-        isCommunicationLog: true,
+        isBigColumnSize: true,
         onClick: jest.fn()
     }
     it('has correct snapshots ', () => {
@@ -44,38 +44,38 @@ describe('render', () => {
 })
 
 describe('sizeColumn', () => {
-    it('isCommunicationLog is true ', () => {
+    it('isBigColumnSize is true ', () => {
         const props = {
-            isCommunicationLog: true
+            isBigColumnSize: true
         }
         // Action
         const container = shallow(<VerifyCustomer {...props} />);
-        const size = container.instance().sizeColumn(props.isCommunicationLog,null);
+        const size = container.instance().sizeColumn(props.isBigColumnSize,null);
 
         // Assert
         expect(size).toEqual(10);
     });
     
-    it('isCommunicationLog is false and isSmallWidth true', () => {
+    it('isBigColumnSize is false and isSmallWidth true', () => {
         const props = {
-            isCommunicationLog: false,
+            isBigColumnSize: false,
             isSmallWidth: true
         }
         // Action
         const container = shallow(<VerifyCustomer {...props} />);
-        const size = container.instance().sizeColumn(props.isCommunicationLog, props.isSmallWidth);
+        const size = container.instance().sizeColumn(props.isBigColumnSize, props.isSmallWidth);
         // Assert
         expect(size).toEqual(7);
     });
 
-    it('isCommunicationLog is false and isSmallWidth false', () => {
+    it('isBigColumnSize is false and isSmallWidth false', () => {
         const props = {
-            isCommunicationLog: false,
+            isBigColumnSize: false,
             isSmallWidth: false
         }
         // Action
         const container = shallow(<VerifyCustomer {...props} />);
-        const size = container.instance().sizeColumn(props.isCommunicationLog, props.isSmallWidth);
+        const size = container.instance().sizeColumn(props.isBigColumnSize, props.isSmallWidth);
         // Assert
         expect(size).toEqual(9);
     });

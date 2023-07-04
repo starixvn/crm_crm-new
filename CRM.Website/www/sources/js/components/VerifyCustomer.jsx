@@ -18,18 +18,18 @@ export default class VerifyCustomer extends PureComponent {
         return className;
     };
 
-    sizeColumn = (isCommunicationLog, isSmallWidth) =>{
-        if(isCommunicationLog){
+    sizeColumn = (isBigColumnSize, isSmallWidth) =>{
+        if(isBigColumnSize){
             return 10;
         }
         return isSmallWidth ? 7 : 9;
     };
 
     render() {
-        const { listOfCustomers, isCommunicationLog, isSmallWidth} = this.props;
-        const labelSize = isCommunicationLog ? 2 : 3;
-        const columnSize = isCommunicationLog ? 10 : 9;
-        const size = this.sizeColumn(isCommunicationLog, isSmallWidth);
+        const { listOfCustomers, isBigColumnSize, isSmallWidth} = this.props;
+        const labelSize = isBigColumnSize ? 2 : 3;
+        const columnSize = isBigColumnSize ? 10 : 9;
+        const size = this.sizeColumn(isBigColumnSize, isSmallWidth);
         return listOfCustomers && listOfCustomers.length > 0 ?
             <Fragment>
                 <Form.Group as={Row} className="pt-2 pb-2">
