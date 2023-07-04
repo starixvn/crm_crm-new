@@ -209,7 +209,7 @@
 
                 .form-group {
                     margin-bottom: 4px;
-
+                    align-items: center;
                     .col-form-label {
                         padding-right: 0;
                     }
@@ -217,6 +217,9 @@
                     .fa-question-circle-o {
                         color: #0789d1;
                         margin-left: 10px;
+                    }
+                    .form-label{
+                        margin-bottom: 0;
                     }
                 }
 
@@ -251,9 +254,7 @@
                     }
 
                     .select-all-field {
-                        padding-left: 70px;
-                        margin-top: 20px;
-                        margin-bottom: 4px;
+                        margin-left: -18px;
                     }                    
 
                     .react-datepicker-wrapper-container {

@@ -11,10 +11,12 @@
         cursor: pointer;
     }
 }
-.block-table{
+.table-container{
     .body-content {
         overflow-x: auto;
     }
+}
+.block-table{
     margin-bottom: 15px;
     &:last-child{
         margin-bottom: 0;
