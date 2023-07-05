@@ -346,7 +346,7 @@
             // Assert
             Assert.Equal(commandResult, actual);
             Assert.Equal(bot.Id, command.BotId);
-            Assert.Equal(bot.FirstName, command.BotName);
+            Assert.Equal(bot.Username, command.BotName);
             Assert.Equal(message.Chat.Id.ToString(), command.ConversationId);
             Assert.Equal(message.Chat.Title, command.GroupName);
             Assert.Equal(2, command.ChannelId);

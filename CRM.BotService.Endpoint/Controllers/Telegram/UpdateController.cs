@@ -156,7 +156,7 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
                 var command = new AddBotToGroupCommand
                 {
                     BotId = bot.Id,
-                    BotName = bot.FirstName,
+                    BotName = bot.Username,
                     ConversationId = message.Chat.Id.ToString(),
                     GroupName = message.Chat.Title,
                     ChannelId = (byte)ConversationChannel.Telegram,
@@ -170,10 +170,12 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
                 {
                     await logService.ErrorAsync(new Exception(result.Message));
                 }
+                string greeting = string.Format(CommandMessageTelegram.AddBotToGroupGreetingMessage, bot.Username, bot.Id);
+                await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
                 logService.LogInformation("end AddBotToGroupAsync!!!");
                 return result;
             }else{
-                 logService.LogInformation(string.Format("bot: {0} is not exist", bot.Id));
+                logService.LogInformation(string.Format("bot: {0} is not exist", bot.Id));
                 return new CommandResult();
             }
             
