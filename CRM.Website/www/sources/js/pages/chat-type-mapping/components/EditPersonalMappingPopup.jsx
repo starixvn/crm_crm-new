@@ -335,7 +335,7 @@ export class EditPersonalMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('RecipientRequired'));
         }
 
-        if (!validateData.letstalkID_Username) {
+        if (!validateData.letstalkID_Username && validateData.botServiceId === BotServiceType.Letstalk) {
             isValid = false;
             errMsg.push(LangHelper.getResource('LetstalkIdRequired'));
         }
@@ -350,9 +350,15 @@ export class EditPersonalMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('LanguageRequired'));
         }
 
-        if (!validateData.displayName && validateData.botServiceId === BotServiceType.Telegram) {
-            isValid = false;
-            errMsg.push(`The username ${validateData.letstalkID_Username} hasn't added the bot.`)
+        if (validateData.botServiceId === BotServiceType.Telegram) {
+            if (!validateData.letstalkID_Username) {
+                isValid = false;
+                errMsg.push('Username is mandatory!');
+            }
+            if (!validateData.displayName && validateData.letstalkID_Username) {
+                isValid = false;
+                errMsg.push(`The username ${validateData.letstalkID_Username} hasn't added the bot.`)
+            }
         }
 
         this.setState({

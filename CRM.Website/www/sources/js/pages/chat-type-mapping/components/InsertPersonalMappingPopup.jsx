@@ -274,9 +274,15 @@ export class InsertPersonalMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('LanguageRequired'));
         }
 
-        if (!data.displayName && data.botServiceId === BotServiceType.Telegram) {
-            isValid = false;
-            errMsg.push(`The username ${data.username} hasn't added the bot.`)
+        if (data.botServiceId === BotServiceType.Telegram) {
+            if (!data.username) {
+                isValid = false;
+                errMsg.push('Username is mandatory!');
+            }
+            if (!data.displayName && data.username) {
+                isValid = false;
+                errMsg.push(`The username ${data.username} hasn't added the bot.`)
+            }
         }
 
         this.setState({

@@ -336,11 +336,6 @@ export class EditGroupMappingPopup extends Component {
             errMsg.push(LangHelper.getResource('TheBotRemoved'));
         }
 
-        if (!data.displayName && data.botServiceId === BotServiceType.Telegram) {
-            isValid = false;
-            errMsg.push(`The bot ${data.bot.name} hasn't added in the group.`)
-        }
-
         this.setState({
             isSubmitting: isValid,
             validate: {
