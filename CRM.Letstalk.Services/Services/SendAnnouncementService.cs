@@ -174,7 +174,7 @@
             return results;
         }
 
-        private List<SendAnnouncementUpdateStatus> MappingSendResultToUpdateStatus(List<SendAnnouncementResult> mergedResults, IEnumerable<AnnouncementNotification> notifications)
+        private static List<SendAnnouncementUpdateStatus> MappingSendResultToUpdateStatus(List<SendAnnouncementResult> mergedResults, IEnumerable<AnnouncementNotification> notifications)
         {
             var results = new List<SendAnnouncementUpdateStatus>();
             foreach (var notification in notifications)
@@ -263,12 +263,12 @@
                 }
                 else
                 {
-                    SetFailedResultWithErrMsg(sendResult, pushResults.Message);
+                    SetFailedResultWithErrMsg(sendResult);
                 }
             }
             catch (Exception exception)
             {
-                SetFailedResultWithErrMsg(sendResult, exception.Message);
+                SetFailedResultWithErrMsg(sendResult);
                 await logService.ErrorAsync(exception);
             }
 
@@ -352,12 +352,12 @@
                 }
                 else
                 {
-                    SetFailedResultWithErrMsg(sendResult, pushResults.Message);
+                    SetFailedResultWithErrMsg(sendResult);
                 }
             }
             catch (Exception exception)
             {
-                SetFailedResultWithErrMsg(sendResult, exception.Message);
+                SetFailedResultWithErrMsg(sendResult);
                 await logService.ErrorAsync(exception);
             }
 
@@ -370,12 +370,12 @@
             return sendResult;
         }
 
-        private static void SetFailedResultWithErrMsg(List<SendAnnouncementResult> results, string errMsg)
+        private static void SetFailedResultWithErrMsg(List<SendAnnouncementResult> results)
         {
             foreach (var item in results)
             {
                 item.IsSuccessful = false;
-                item.ErrMsg = errMsg;
+                item.ErrMsg = SendNotificationErrMsg.BotServiceErrorMsg;
             }
         }
 
@@ -433,6 +433,8 @@
         {
             result.IsSuccessful = false;
             result.IsOnlyRetryImage = true;
+            result.ErrMsg = SendNotificationErrMsg.BotServiceErrorMsg;
+
             result.ErrImages.Add(failedImage);
         }
 

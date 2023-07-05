@@ -159,7 +159,7 @@
             ValidateMultiCastMessage(message);
 
             var (sendList, failedList) = GenerateRandomSendListAndFailedList(roomTokenList);
-            bool isTest = botConfig.IsTest && message.MessageType == MessageTypeNumber.Image;
+            bool isTest = botConfig.IsTest;
 
             var token = await GetSignAccessTokenAsync();
             var result = await httpClientService.ExecutePostAsync<PushMessageResult>(
@@ -321,7 +321,7 @@
             ValidateMultiCastMessage(message);
 
             var (sendList, failedList) = GenerateRandomSendListAndFailedList(accountIds);
-            bool isTest = botConfig.IsTest && message.MessageType == MessageTypeNumber.Image;
+            bool isTest = botConfig.IsTest;
             var token = await GetSignAccessTokenAsync();
             var result = await httpClientService.ExecutePostAsync<PushMessageResult>(
                 $"bot/v3/message/multicast",
