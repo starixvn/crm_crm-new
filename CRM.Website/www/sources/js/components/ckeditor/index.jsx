@@ -153,7 +153,15 @@ export default class CkEditor extends PureComponent {
                         basicEntities: false,
                         language: 'en',
                         disableNativeSpellChecker: false,
-                        enterMode: 2
+                        enterMode: 2,
+                        coreStyles_bold: {
+                            element: 'b',
+                            overrides: 'strong'
+                        },
+                        coreStyles_italic: {
+                            element: 'i',
+                            overrides: 'em'
+                        }
                     }}
                     style={{body: 'margin: 0'}}
                     onBeforeLoad={this.onBeforeLoad}
