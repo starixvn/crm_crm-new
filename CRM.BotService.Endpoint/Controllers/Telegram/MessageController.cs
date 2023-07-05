@@ -133,7 +133,7 @@
             try
             {
                 logService.LogInformation(string.Format("Start SendNotifyAysnc: botId: {0} chatId: {1}.", notification.BotId, notification.ConversationId));
-                await telegramBotService(notification.BotId).SendNotifyAysnc(notification, result);
+                await telegramBotService(notification.BotId).SendNotifyAsync(notification, result);
                 logService.LogInformation("end SendNotifyAysnc!!!");
             }
             catch (Exception ex)

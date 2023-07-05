@@ -80,9 +80,9 @@
             }
         }
 
-        public async Task SendNotifyAysnc(NotificationMessage notificationMessage, SendResult sendResult)
+        public async Task SendNotifyAsync(NotificationMessage notificationMessage, SendResult sendResult)
         {
-            logService.LogInformation("Start SendNotifyAysnc: " + notificationMessage.ConversationId);
+            logService.LogInformation("Start SendNotifyAsync: " + notificationMessage.ConversationId);
             await SendTextMessageAsync(notificationMessage, sendResult);
             if (notificationMessage.Images is not null && notificationMessage.Images.Length > 0 && sendResult.IsSuccessful)
             {
@@ -90,7 +90,7 @@
             }
             sendResult.SentTime = DateTime.UtcNow;
             await WriteLogCommandAsync(notificationMessage, sendResult);
-            logService.LogInformation("End SendNotifyAysnc: " + notificationMessage.ConversationId);
+            logService.LogInformation("End SendNotifyAsync: " + notificationMessage.ConversationId);
         }
 
         public async Task SendTextMessageAsync(NotificationMessage notificationMessage, SendResult sendResult)
@@ -108,7 +108,7 @@
             catch (Exception exception)
             {
                 WriteLogInfor(notificationMessage, exception);
-                HandleExptionTelegramMessage(sendResult, exception);
+                HandleExceptionTelegramMessage(sendResult, exception);
             }
         }
 
@@ -140,7 +140,7 @@
             catch (Exception exception)
             {
                 WriteLogInfor(notificationMessage, exception);
-                HandleExptionTelegramMessage(sendResult, exception);
+                HandleExceptionTelegramMessage(sendResult, exception);
             }
         }
 
@@ -169,7 +169,7 @@
             await botCommonService.WriteLogMessageAsyns(writeLogCommand);
         }
 
-        private static void HandleExptionTelegramMessage(SendResult sendResult, Exception exception)
+        private static void HandleExceptionTelegramMessage(SendResult sendResult, Exception exception)
         {
             sendResult.ErrorCode = 1;
             sendResult.ErrorMessage = exception.Message;

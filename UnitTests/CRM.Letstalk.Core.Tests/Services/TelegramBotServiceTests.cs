@@ -74,7 +74,7 @@
             };
             var service = GetService();
             // Act
-            await service.SendNotifyAysnc(notificationMessage, result);
+            await service.SendNotifyAsync(notificationMessage, result);
 
             // Assert
             logService.Received(4).LogInformation(Arg.Any<string>());
@@ -95,7 +95,7 @@
             };
             var service = GetService();
             // Act
-            await service.SendNotifyAysnc(notificationMessage, result);
+            await service.SendNotifyAsync(notificationMessage, result);
 
             // Assert
             logService.Received(3).LogInformation(Arg.Any<string>());
