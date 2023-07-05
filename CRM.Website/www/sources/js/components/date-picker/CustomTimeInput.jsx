@@ -69,7 +69,7 @@ function CustomTimeInput({ date, dateTimeNow, isDisabledTime, onChange }) {
       <Form.Control
           as="select"
           size="sm"
-          className="shadow-none mr-4"
+          className="shadow-none mr-2"
           name="minute"
           id="minute"
           value={currentMinute}

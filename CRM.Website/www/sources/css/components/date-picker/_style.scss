@@ -8,12 +8,17 @@
     z-index: 99 !important;
     border: 1px solid #ddd;
 
+    .btn-now{
+        margin-left: 9px !important;
+    }
+
     .btn-now, .btn-close {
         width: auto;
         color: #466ab6;
-        line-height: 2.5rem;
+        line-height: 2rem;
         padding: 4px;
-        margin: 16px;
+        margin: 6px;
+
         display: inline-block;
 
         &:hover{
@@ -27,7 +32,9 @@
     }
 
     .react-datepicker__input-time-container {
-        margin: 10px 0 0px 20px !important;
+        padding-left: 20px;
+        margin: 0;
+
         .react-datepicker-time__input-container {
             .react-datepicker-time__input input {
                 width: 95px;

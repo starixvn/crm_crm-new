@@ -131,7 +131,7 @@ export default class DatePickerField extends React.Component {
                     }
                     {
                         this.props.showTimeInput &&
-                        <div>
+                        <div style={{width: '243px'}}>
                             <div className="btn-now" type='button' onClick={this.handleTimeNow}>{LangHelper.getResource('Now')}</div>
                             <div className="btn-close" type='button' onClick={() => this.handleClickDone()}>{LangHelper.getResource('Done')}</div>
                         </div>
