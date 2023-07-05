@@ -159,6 +159,7 @@
             ValidateMultiCastMessage(message);
 
             var (sendList, failedList) = GenerateRandomSendListAndFailedList(roomTokenList);
+            bool isTest = botConfig.IsTest && message.MessageType == MessageTypeNumber.Image;
 
             var token = await GetSignAccessTokenAsync();
             var result = await httpClientService.ExecutePostAsync<PushMessageResult>(
@@ -166,12 +167,12 @@
                 new Dictionary<string, object>
                 {
                     { "msg", message },
-                    { "receivers", botConfig.IsTest ? sendList : roomTokenList }
+                    { "receivers", isTest ? sendList : roomTokenList }
                 },
                 token,
                 encodeData: false);
 
-            if (botConfig.IsTest)
+            if (isTest)
             {
                 result.FailList = failedList;
             }
@@ -320,20 +321,20 @@
             ValidateMultiCastMessage(message);
 
             var (sendList, failedList) = GenerateRandomSendListAndFailedList(accountIds);
-
+            bool isTest = botConfig.IsTest && message.MessageType == MessageTypeNumber.Image;
             var token = await GetSignAccessTokenAsync();
             var result = await httpClientService.ExecutePostAsync<PushMessageResult>(
                 $"bot/v3/message/multicast",
                 new Dictionary<string, object>
                 {
                     { "msg", message },
-                    { "receivers", botConfig.IsTest ? sendList.ToArray() : accountIds.ToArray() },
+                    { "receivers", isTest ? sendList.ToArray() : accountIds.ToArray() },
                     { "forcePush", isForcePush ? 1 : 0 }
                 },
                 token,
                 encodeData: false);
 
-            if (botConfig.IsTest)
+            if (isTest)
             {
                 result.FailList = failedList;
             }
@@ -344,7 +345,8 @@
         {
             var failedList = new List<string>();
             var listAccounts = accountIds.ToList();
-            var randomIndex = random.Next(0, accountIds.Count());
+
+            var randomIndex = random.Next(1, accountIds.Count());
             for (int i = 0; i < randomIndex; i++)
             {
                 failedList.Add(listAccounts[i]);
