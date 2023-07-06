@@ -12,6 +12,5 @@
         public int ChatKeyVersion { get; set; }
         public int BusinessAccountType { get; set; }
         public int EncryptionMode { get; set; }
-        public bool IsTest { get; set; }
     }
 }
