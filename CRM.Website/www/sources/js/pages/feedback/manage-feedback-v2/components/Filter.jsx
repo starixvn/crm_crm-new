@@ -77,6 +77,7 @@ export class Filter extends Component {
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
     handleSubmit = e => {
+        e.preventDefault();
         const { mainCategoryId, runningNumber, fromDate, toDate, username, handler, subCategoryId, communicationId,
             reviewer, statusId, responseId, isReviewed, isGuest } = this.state;
         const params = {

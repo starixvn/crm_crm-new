@@ -82,7 +82,8 @@ export class Filter extends Component {
         });
     };
 
-    handleSubmit = () => {
+    handleSubmit = e => {
+        e.preventDefault();
         const { headlineDA, fromDate, toDate, editBy, actionTypeIds } = this.state;
         if(actionTypeIds === ''){
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('ActionType')));

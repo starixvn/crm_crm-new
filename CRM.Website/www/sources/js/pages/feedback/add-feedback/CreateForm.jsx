@@ -789,11 +789,19 @@ export class CreateForm extends Component {
                         return;
                     }
                     if(this.props.addFeedbackResult.isSuccessful){
+                        const data = response.data;
+                        const currentCustomer = {
+                            custId: data.custId,
+                            isGuest: data.isGuest,
+                            username: data.username,
+                            isCreditSite: data.isCreditSite
+                        };
+                        const state = this.props.currentCustomer || currentCustomer;
                         setTimeout(() => {
-                            if(params.IsOverWrite){
-                                window.localStorage.setItem('updateLeftPanel', params.CustId);
+                            if((this.props.currentCustomer && params.IsOverWrite) || !this.props.currentCustomer){
+                                window.localStorage.setItem('updateLeftPanel', data.custId);
                             }
-                            this.props.navigate(Site.resolveClientUrl('Dashboard'), {state: this.props.currentCustomer});
+                            this.props.navigate(Site.resolveClientUrl('Dashboard'), {state: state});
                         }, 3000);
                     }
                 }).catch(Site.handleAxiosError);

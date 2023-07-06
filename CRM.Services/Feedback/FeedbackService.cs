@@ -108,7 +108,7 @@
                 feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
                 feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
                 feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
-
+                feedback.RelatedCustomer = string.Join(", ", feedback.RelatedCustomer.Split(", ").OrderBy(x => x));
                 feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
             }
 
@@ -165,7 +165,7 @@
                 feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
                 feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
                 feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
-
+                feedback.RelatedCustomer = string.Join(", ", feedback.RelatedCustomer.Split(", ").OrderBy(x => x));
                 feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
             }
 
@@ -197,6 +197,7 @@
                 feedback.Status = statusHash.ContainsKey(feedback.StatusId) ? statusHash[feedback.StatusId] : string.Empty;
                 feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
                 feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
+                feedback.RelatedCustomer = string.Join(", ", feedback.RelatedCustomer.Split(", ").OrderBy(x => x));
             }
 
             return feedbackStatistic;
@@ -214,6 +215,7 @@
                 feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
                 feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
                 feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
+                feedback.RelatedCustomer = string.Join(", ", feedback.RelatedCustomer.Split(",").OrderBy(x => x));
             }
             return feedbacks;
         }
@@ -234,7 +236,7 @@
                 communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
                 communicationLog.ResolutionDate = commonService.ConvertToClientDateTime(communicationLog.ResolutionDate);
                 communicationLog.SolveDate = commonService.ConvertToClientDateTime(communicationLog.SolveDate);
-                communicationLog.RelatedCustomers = relatedCustomers;
+                communicationLog.RelatedCustomers = relatedCustomers.OrderBy(x => x.Username);
                 communicationLog.Settings = settingItems.ToList();
             }
 

@@ -51,6 +51,7 @@ export class PicFilter extends Component {
     };
 
     handleSubmit = (e) => {
+        e.preventDefault();
         const { picName, letstalkName, fromDate, toDate, editBy } = this.state;
         const params = {
             picName: picName !== '' ? picName : null,

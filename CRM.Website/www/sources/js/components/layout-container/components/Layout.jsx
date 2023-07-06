@@ -53,9 +53,9 @@ export class Layout extends Component {
         setTimeout(this.handleCheckNewVersion, 60000);
     }
 
-    async componentDidUpdate() {
-        const updateLeftPanelCustId = window.localStorage.getItem('updateLeftPanel');
-        if(updateLeftPanelCustId !== null && parseInt(updateLeftPanelCustId, 10) === this.state.customerInfo?.custId){
+    async componentDidUpdate(_,prevState) {
+        const updateLeftPanel = window.localStorage.getItem('updateLeftPanel');
+        if(updateLeftPanel !== null){
             await this.getCurrentCustomer();
             window.localStorage.removeItem('updateLeftPanel');
         }
