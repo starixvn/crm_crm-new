@@ -2,6 +2,19 @@
     .fix-table-container {
         .fix-table{
             border-left: 1px solid #b7b7b7;
+            table {
+                thead{
+                    tr{
+                        &:last-child{
+                            th{
+                                &:last-child{
+                                    border-right: 1px solid #b7b7b7;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         .header-content, .body-content, .footer-content {
             border: none;
