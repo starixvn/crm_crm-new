@@ -107,7 +107,8 @@
                 GroupName = displayName,
                 ConversationId = hookEvent.Source.GroupId,
                 BotId = botConfig.BotAccountId,
-                BotName = botConfig.DisplayName
+                BotName = botConfig.DisplayName,
+                ChannelId = (byte)ConversationChannel.Letstalk
             };
 
             var result = await baseService.ExecuteNonQueryAsync(command);
