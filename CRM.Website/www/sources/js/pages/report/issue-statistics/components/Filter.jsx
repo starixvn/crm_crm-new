@@ -34,8 +34,7 @@ export class Filter extends Component {
             fromMonthDate: firstMonthOfYear,
             toMonthDate: this.currentDate,
             mainCategoryId: -1,
-            subCategoryId: -1,
-            showFilter: true
+            subCategoryId: -1
         };
     }
 
@@ -161,13 +160,8 @@ export class Filter extends Component {
 
     getSubCategoryOptions = (mainCategories, mainCategoryId) => mainCategories.filter(item => item.mainCategoryID === parseInt(mainCategoryId, 10));
 
-    handleToggleFilter = value => {
-        this.setState({ showFilter: value });
-        window.dispatchEvent(new Event('resize'));
-    };
-
     render() {
-        const { mainCategoryId, subCategoryId, fromDate, toDate, groupBy, fromMonthDate, toMonthDate, showFilter } = this.state;
+        const { mainCategoryId, subCategoryId, fromDate, toDate, groupBy, fromMonthDate, toMonthDate } = this.state;
         const {mainCategories, subCategories } = this.props.settings;
         const mainCategoryOptions = this.getMainCategoryOptions(mainCategories, subCategories);
         const subCategoryOptions = this.getSubCategoryOptions(mainCategoryOptions, mainCategoryId);
@@ -178,7 +172,6 @@ export class Filter extends Component {
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
                 {
-                    showFilter &&
                     <Fragment>
                         <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
                         <Form.Row bsPrefix='form-row'>
@@ -293,13 +286,6 @@ export class Filter extends Component {
                         </Form.Row>
                     </Fragment>
                 }
-                <div className="filter-collapse text-center">
-                    {
-                        showFilter
-                            ? <span className="fa fa-caret-up fa-sm toggle-icon" onClick={() => this.handleToggleFilter(false)} />
-                            : <span className="fa fa-caret-down fa-sm toggle-icon" onClick={() => this.handleToggleFilter(true)} />
-                    }
-                </div>
             </Form>
         );
     }

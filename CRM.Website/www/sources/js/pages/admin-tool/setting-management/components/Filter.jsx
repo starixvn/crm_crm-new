@@ -65,29 +65,27 @@ export class Filter extends Component {
                             }
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group style={{width: 700}}>
-                        <Button variant="primary" size="sm" className='mr-3' onClick={this.handleSubmit}>
-                            <UnderlineButton.searchButton />
+                    <Button variant="primary" size="sm" className='mr-3' onClick={this.handleSubmit}>
+                        <UnderlineButton.searchButton />
+                    </Button>
+                    {
+                        this.props.isHost &&
+                        <Button variant="primary" size="sm" className='mr-3' onClick={() => this.handleInsertNewSetting('')}>
+                            {LangHelper.getResource('InsertNewSetting')}
                         </Button>
-                        {
-                            this.props.isHost &&
-                            <Button variant="primary" size="sm" className='mr-3' onClick={() => this.handleInsertNewSetting('')}>
-                                {LangHelper.getResource('InsertNewSetting')}
-                            </Button>
-                        }
-                        {
-                            this.props.isHost &&
-                            <Button variant="primary" className='mr-3' onClick={() =>  this.handleInsertNewSetting(this.props.gridParams.settingName)}>
-                                {LangHelper.getResource('InsertSettingValue') + settingName}
-                            </Button>
-                        }
-                        {
-                            (this.props.isRead || this.props.isHost) &&
-                            <Button variant="primary" onClick={this.handleLicenseeMapping}>
-                                {LangHelper.getResource('LicenseeMapping')}
-                            </Button>
-                        }
-                    </Form.Group>
+                    }
+                    {
+                        this.props.isHost &&
+                        <Button variant="primary" className='mr-3' onClick={() =>  this.handleInsertNewSetting(this.props.gridParams.settingName)}>
+                            {LangHelper.getResource('InsertSettingValue') + settingName}
+                        </Button>
+                    }
+                    {
+                        (this.props.isRead || this.props.isHost) &&
+                        <Button variant="primary" onClick={this.handleLicenseeMapping}>
+                            {LangHelper.getResource('LicenseeMapping')}
+                        </Button>
+                    }
                 </Form.Row>
             </Form>
         );

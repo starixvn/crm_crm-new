@@ -280,12 +280,17 @@
     }
 }
 
-.small-desktops .show-left-panel{
+.medium-desktops .show-left-panel{
     .manage-feedback, .form-filter{
+        .form-group{
+            margin-bottom: 9px !important;
+        }
         .form-row:last-child {
             .lg-width{
-                width: 200px !important;
+                width: 195px !important;
             }
         }
     }
 }
+
+

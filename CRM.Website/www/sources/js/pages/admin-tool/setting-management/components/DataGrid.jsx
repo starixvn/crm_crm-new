@@ -110,7 +110,7 @@ export class DataGrid extends Component {
                 <Table
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
-                    width={1000}
+                    width={950}
                     autoWidth={false}
                     onSort={this.onSort}
                     containerPadding={0}

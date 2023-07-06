@@ -3,20 +3,6 @@
         position: relative;
         min-width: 890px;
         
-        .toggle-icon {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-
-            text-align:center;
-            font-size: 10px;
-            width: 22px;
-            background-color: #464D5D;
-            color: white;
-            cursor: pointer;
-        }
-    
         .react-datepicker-popper{
             z-index: 9999 !important;
         }
@@ -33,11 +19,7 @@
         }
     
         .form-group-date-picker{
-            width: 230px !important;
-        }
-    
-        .month-datepicker .react-datepicker-wrapper{
-            width: 134px !important;
+            width: 250.5px !important;
         }
         
         .month-datepicker{
