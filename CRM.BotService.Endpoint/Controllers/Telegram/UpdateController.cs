@@ -171,6 +171,7 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
                     await logService.ErrorAsync(new Exception(result.Message));
                 }
                 string greeting = string.Format(CommandMessageTelegram.AddBotToGroupGreetingMessage, bot.Username, message.Chat.Id);
+                logService.LogInformation("greeting: " + greeting);
                 await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
                 logService.LogInformation("end AddBotToGroupAsync!!!");
                 return result;
