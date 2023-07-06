@@ -346,7 +346,7 @@
             var failedList = new List<string>();
             var listAccounts = accountIds.ToList();
 
-            var randomIndex = random.Next(1, accountIds.Count());
+            var randomIndex = random.Next(0, accountIds.Count());
             for (int i = 0; i < randomIndex; i++)
             {
                 failedList.Add(listAccounts[i]);
