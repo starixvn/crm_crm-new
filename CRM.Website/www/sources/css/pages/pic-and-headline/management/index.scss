@@ -46,6 +46,17 @@
             }
         }
     }
+    .form-filter{
+        .form-label{
+            width: auto !important;
+            &.fixed-width{
+                width: 150px !important;
+            }
+        }
+        .form-control,.role-width{
+            width: 100% !important;
+        }
+    }
 }
 
 .pic-management-modal{

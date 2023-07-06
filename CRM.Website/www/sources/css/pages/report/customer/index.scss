@@ -32,6 +32,12 @@
             color: white;
             cursor: pointer;
         }
+        .w-auto{
+            width: auto !important;
+            .label-exclude{
+                @extend .w-auto
+            }
+        }
     }
     
     .fix-table-container {

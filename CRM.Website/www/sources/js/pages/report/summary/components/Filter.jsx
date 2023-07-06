@@ -66,7 +66,7 @@ export class Filter extends Component {
                 <Form.Row bsPrefix="form-row">
                     <Form.Group>
                         <Form.Label htmlFor="year">Year</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none form-control-year"
+                        <Form.Control as="select" size="sm" className="shadow-none form-control-year w-100"
                             id="year" value={this.state.year} onChange={evt => this.setState({year: evt.target.value})}
                         >
                             {
@@ -77,7 +77,7 @@ export class Filter extends Component {
 
                     <Form.Group>
                         <Form.Label className='label-width' htmlFor="site">Site</Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none "
+                        <Form.Control as="select" size="sm" className="shadow-none w-100"
                             id="year" onChange={evt => this.setState({siteType: evt.target.value})}
                         >
                             {
@@ -90,7 +90,7 @@ export class Filter extends Component {
 
                     <Form.Group className='form-width'>
                         <Form.Label htmlFor="categoryId">{LangHelper.getResource('Category')}</Form.Label>
-                        <div className='form-control-wrapper'>
+                        <div className='form-control-wrapper w-100'>
                             <MultipleSelect
                                 valueField='name'
                                 dataSource={categoryOptions}

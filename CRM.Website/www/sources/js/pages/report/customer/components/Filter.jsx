@@ -250,7 +250,7 @@ export class Filter extends Component {
                         </Form.Row>
 
                         <Form.Row className='form-row'>
-                            <Form.Group>
+                            <Form.Group className="w-auto">
                                 <Form.Check type="checkbox" className="check-exclude"
                                     checked={excludeIgnoredAccounts}
                                     onChange={this.handleCheckExclude}

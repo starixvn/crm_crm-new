@@ -108,7 +108,7 @@ export class Filter extends PureComponent {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label htmlFor="GroupHeadline">{LangHelper.getResource('GroupHeadline')}</Form.Label>
+                        <Form.Label htmlFor="GroupHeadline" className="fixed-width">{LangHelper.getResource('GroupHeadline')}</Form.Label>
                         <Form.Control type="text" size="sm" className="shadow-none"
                             id="GroupHeadline" autoComplete="off"
                             value={filter.headlineName}
