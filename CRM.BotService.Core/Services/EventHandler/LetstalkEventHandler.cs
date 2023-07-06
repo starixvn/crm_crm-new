@@ -108,7 +108,8 @@
                 ConversationId = hookEvent.Source.GroupId,
                 BotId = botConfig.BotAccountId,
                 BotName = botConfig.DisplayName,
-                ChannelId = (byte)ConversationChannel.Letstalk
+                ChannelId = (byte)ConversationChannel.Letstalk,
+                UpdatedBy = string.Empty
             };
 
             var result = await baseService.ExecuteNonQueryAsync(command);
@@ -142,7 +143,8 @@
             {
                 ConversationId = hookEvent.Source.GroupId,
                 BotId = botConfig.BotAccountId,
-                ChannelId = (byte)ConversationChannel.Letstalk
+                ChannelId = (byte)ConversationChannel.Letstalk,
+                UpdatedBy = string.Empty
             };
 
             var result = await baseService.ExecuteNonQueryAsync(command);
@@ -164,7 +166,8 @@
             var command = new UpdateGroupNameCommand
             {
                 ConversationId = hookEvent.Source.GroupId,
-                DisplayName = roomData.Title
+                DisplayName = roomData.Title,
+                UpdatedBy = string.Empty
             };
 
             var result = await baseService.ExecuteNonQueryAsync(command);

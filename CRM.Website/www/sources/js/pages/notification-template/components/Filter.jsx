@@ -58,7 +58,7 @@ export class Filter extends Component {
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit}>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group style={{width: '350px'}}>
+                    <Form.Group style={{width: '400px'}}>
                         <Form.Label htmlFor="filterNotificationTypeId">{LangHelper.getResource('NotificationType')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none" id="filterNotificationTypeId"
                             value={this.state.notificationTypeId}
