@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Threading.Channels;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Criteria;
@@ -167,7 +168,8 @@
             {
                 ConversationId = hookEvent.Source.GroupId,
                 DisplayName = roomData.Title,
-                UpdatedBy = string.Empty
+                UpdatedBy = string.Empty,
+                ChannelId = (byte)ConversationChannel.Letstalk
             };
 
             var result = await baseService.ExecuteNonQueryAsync(command);
