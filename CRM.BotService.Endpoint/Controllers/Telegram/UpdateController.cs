@@ -50,7 +50,7 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
         {
             try
             {
-                logService.LogInformation(JsonConvert.SerializeObject(update, Formatting.Indented));
+                logService.LogInformation(string.Format("Update webhook telegram: Type: {0}, ChatId: {1} ", update?.Type, update?.Message?.Chat?.Id));
 
                 if (update is null || update.Type != UpdateType.Message)
                 {

@@ -10,6 +10,7 @@
     using CRM.BotService.Endpoint.UnitTests.TestableClasses.Telegram;
     using CRM.Core.Models;
     using CRM.Core.Services;
+    using Fanex.Caching;
     using global::Telegram.Bot.Types;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@
         private ICRMLogService logService;
         private IBaseService baseService;
         private List<TelegramBotConfigurations> botConfigurations;
+        private ICacheService cacheService;
         private IFixture fixture = new Fixture();
 
         [Fact]
@@ -202,9 +204,10 @@
                     LeftChatMember = new User { Username = "bot" }
                 }
             };
+
             var controller = GetController();
             telegramBotService(1).GetBotInfoAsync(1).Returns(bot);
-            controller.Protected("RemoveBotToGroupAsync", update.Message).Returns(Task.FromResult(new CommandResult()));
+            controller.Protected("RemoveBotToGroupAsync", update.Message, bot).Returns(Task.FromResult(new CommandResult()));
 
             // Act
             var result = await controller.Post(1, update);
@@ -213,7 +216,7 @@
             var okResult = Assert.IsType<OkResult>(result);
             Assert.Equal(200, okResult.StatusCode);
 
-            controller.Received().Protected("RemoveBotToGroupAsync", update.Message);
+            controller.Received().Protected("RemoveBotToGroupAsync", update.Message, bot);
         }
 
         [Fact]
@@ -384,14 +387,16 @@
             // Arrange
             var message = new Message
             {
-                Chat = new Chat { Id = 1 },
+                Chat = new Chat { Id = 6012438440 },
                 LeftChatMember = new User { Id = 2 },
                 From = new User { Id = 1 }
             };
+            fixture.Customize<User>(x => x.With(b => b.Id, 6012438440));
+            var bot = fixture.Create<User>();
             var controller = GetController();
 
             // Act
-            await controller.Public_RemoveBotToGroupAsync(message);
+            await controller.Public_RemoveBotToGroupAsync(message, bot);
 
             // Assert
 
@@ -405,16 +410,18 @@
             var commandResult = fixture.Create<CommandResult>();
             var message = new Message
             {
-                Chat = new Chat { Id = 1 },
+                Chat = new Chat { Id = 6012438440 },
                 LeftChatMember = new User { Id = 2, IsBot = true },
                 From = new User { Id = 1 }
             };
+            fixture.Customize<User>(x => x.With(b => b.Id, 6012438440));
+            var bot = fixture.Create<User>();
             var command = new RemoveBotFromGroupCommand();
             var controller = GetController();
             baseService.ExecuteNonQueryAsync(Arg.Do<RemoveBotFromGroupCommand>(x => command = x)).Returns(commandResult);
 
             // Act
-            await controller.Public_RemoveBotToGroupAsync(message);
+            await controller.Public_RemoveBotToGroupAsync(message, bot);
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
@@ -434,12 +441,14 @@
                 LeftChatMember = new User { Id = 2, IsBot = true },
                 From = new User { Id = 1 }
             };
+            fixture.Customize<User>(x => x.With(b => b.Id, 6012438440));
+            var bot = fixture.Create<User>();
             var command = new RemoveBotFromGroupCommand();
             var controller = GetController();
             baseService.ExecuteNonQueryAsync(Arg.Do<RemoveBotFromGroupCommand>(x => command = x)).Returns(commandResult);
 
             // Act
-            await controller.Public_RemoveBotToGroupAsync(message);
+            await controller.Public_RemoveBotToGroupAsync(message, bot);
 
             // Assert
             await logService.Received().ErrorAsync(Arg.Any<Exception>());
@@ -535,11 +544,12 @@
                     Domain="Domain"
                 }
             };
+            cacheService = Substitute.For<ICacheService>();
 
             var botConfig = Substitute.For<List<TelegramBotConfigurations>>();
             botConfig.AddRange(botConfigurations);
 
-            return Substitute.ForPartsOf<UpdateControllerTestable>(logService, telegramBotService, baseService, botConfigurations);
+            return Substitute.ForPartsOf<UpdateControllerTestable>(logService, telegramBotService, baseService, botConfigurations, cacheService);
         }
 
         #endregion Helpers

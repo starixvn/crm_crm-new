@@ -8,6 +8,7 @@
     using CRM.BotService.Endpoint.Controllers.Telegram;
     using CRM.Core.Models;
     using CRM.Core.Services;
+    using Fanex.Caching;
     using global::Telegram.Bot.Types;
 
     public class UpdateControllerTestable : UpdateController
@@ -16,7 +17,8 @@
             ICRMLogService logService,
             Func<long, ITelegramBotService> telegramBotService,
             IBaseService baseService,
-            List<TelegramBotConfigurations> botConfigurations) : base(logService, telegramBotService, baseService, botConfigurations)
+            List<TelegramBotConfigurations> botConfigurations,
+            ICacheService cacheService) : base(logService, telegramBotService, baseService, botConfigurations, cacheService)
         {
         }
 
@@ -40,9 +42,9 @@
             return await base.AddBotToGroupAsync(message, bot);
         }
 
-        public async Task Public_RemoveBotToGroupAsync(Message message)
+        public async Task Public_RemoveBotToGroupAsync(Message message, User bot)
         {
-            await base.RemoveBotToGroupAsync(message);
+            await base.RemoveBotToGroupAsync(message, bot);
         }
 
         public async Task Public_AddBotToPersonalAsync(Message message, User bot)
