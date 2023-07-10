@@ -44,7 +44,7 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
         {
             try
             {
-                logService.LogInformation(string.Format("Update webhook telegram: Type: {0}, ChatId: {1} ", update?.Type, update?.Message?.Chat?.Id));
+                logService.LogInformation(JsonConvert.SerializeObject(update, Formatting.Indented));
 
                 if (update is null || update.Type != UpdateType.Message)
                 {
@@ -92,7 +92,7 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
                     break;
 
                 case MessageType.ChatMemberLeft:
-                    await RemoveBotToGroupAsync(message);
+                    await RemoveBotToGroupAsync(message, bot);
                     break;
 
                 case MessageType.MigratedToSupergroup:
@@ -151,7 +151,7 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
 
         protected internal virtual async Task<CommandResult> AddBotToGroupAsync(Message message, User bot)
         {
-            var isExistBot = botConfigurations.Any(x => x.BotId == bot.Id);
+            var isExistBot = checkExistBot(bot.Id);
             if(isExistBot){
                 var command = new AddBotToGroupCommand
                 {
@@ -182,9 +182,10 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
             
         }
 
-        protected internal virtual async Task RemoveBotToGroupAsync(Message message)
+        protected internal virtual async Task RemoveBotToGroupAsync(Message message, User bot)
         {
-            if (message.LeftChatMember.IsBot)
+            var isExistBot = checkExistBot(bot.Id);
+            if (isExistBot && message.LeftChatMember.IsBot)
             {
                 var command = new RemoveBotFromGroupCommand
                 {
@@ -258,5 +259,7 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
 
             logService.LogInformation("end AddBotToPersonal!!!");
         }
+
+        private bool checkExistBot(long botId) => botConfigurations.Any(x => x.BotId == botId);
     }
 }
