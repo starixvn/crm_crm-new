@@ -14,6 +14,7 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Models;
     using CRM.Core.Services;
+    using Fanex.Caching;
     using global::Telegram.Bot.Types;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Mvc;
@@ -25,17 +26,22 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
         private readonly ICRMLogService logService;
         private readonly IBaseService baseService;
         private readonly List<TelegramBotConfigurations> botConfigurations;
+        private readonly ICacheService cacheService;
+
+        private const string CurrentGreetingKey = "CurrentGreetingKey";
 
         public UpdateController(
             ICRMLogService logService,
             Func<long, ITelegramBotService> telegramBotService,
             IBaseService baseService,
-            List<TelegramBotConfigurations> botConfigurations)
+            List<TelegramBotConfigurations> botConfigurations,
+            ICacheService cacheService)
         {
             this.logService = logService;
             this.telegramBotService = telegramBotService;
             this.baseService = baseService;
             this.botConfigurations = botConfigurations;
+            this.cacheService = cacheService;
         }
 
         [HttpPost]
@@ -151,37 +157,72 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
 
         protected internal virtual async Task<CommandResult> AddBotToGroupAsync(Message message, User bot)
         {
-            logService.LogInformation("before add bot to group: " + bot.Username);
             var isExistBot = checkExistBot(bot.Id);
-            if(isExistBot){
-                var command = new AddBotToGroupCommand
-                {
-                    BotId = bot.Id,
-                    BotName = bot.Username,
-                    ConversationId = message.Chat.Id.ToString(),
-                    GroupName = message.Chat.Title,
-                    ChannelId = (byte)ConversationChannel.Telegram,
-                    UpdatedBy = message.From.Id.ToString()
-                };
-                var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);
-                logService.LogInformation("start AddBotToGroupAsync: " + commandSerialize);
 
-                var result = await baseService.ExecuteNonQueryAsync(command);
-                if (!result.IsSuccessful)
-                {
-                    await logService.ErrorAsync(new Exception(result.Message));
-                }
-                string greeting = string.Format(CommandMessageTelegram.AddBotToGroupGreetingMessage, bot.Username, message.Chat.Id);
-                logService.LogInformation("greeting: " + greeting);
-                await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
-                logService.LogInformation("end AddBotToGroupAsync!!!");
-                logService.LogInformation("end add bot to group: " + bot.Username);
-                return result;
-            }else{
-                logService.LogInformation(string.Format("bot: {0} is not exist", bot.Id));
+            if (!isExistBot)
+            {
+                logService.LogInformation($"bot: {bot.Id} does not exist");
                 return new CommandResult();
             }
+
+            var result = await CreateAddBotToGroupCommand(message, bot);
+
+            if (result.IsSuccessful)
+            {
+                await HandleGreeting(message, bot);
+            }
+            else
+            {
+                await logService.ErrorAsync(new Exception(result.Message));
+            }
+
+            logService.LogInformation("end AddBotToGroupAsync!!!");
+            return result;
         }
+
+        private async Task<CommandResult>  CreateAddBotToGroupCommand(Message message, User bot)
+        {
+            var command = new AddBotToGroupCommand
+            {
+                BotId = bot.Id,
+                BotName = bot.Username,
+                ConversationId = message.Chat.Id.ToString(),
+                GroupName = message.Chat.Title,
+                ChannelId = (byte)ConversationChannel.Telegram,
+                UpdatedBy = message.From.Id.ToString()
+            };
+            var commandSerialize = JsonConvert.SerializeObject(command, Formatting.Indented);
+            logService.LogInformation("start AddBotToGroupAsync: " + commandSerialize);
+
+            var result = await baseService.ExecuteNonQueryAsync(command);
+            return result;
+        }
+
+        private async Task HandleGreeting(Message message, User bot)
+        {
+            var greetingSession = await cacheService.GetAsync<CurrentBotGreeting>(CurrentGreetingKey);
+            string greeting = string.Format(CommandMessageTelegram.AddBotToGroupGreetingMessage, bot.Username, message.Chat.Id);
+            var newGreeting = new CurrentBotGreeting
+            {
+                BotId = bot.Id,
+                Message = greeting
+            };
+            if (greetingSession is not null)
+            {
+                var isDuplicateGreeting = greetingSession.BotId == bot.Id && greetingSession.Message == greeting;
+
+                if (!isDuplicateGreeting)
+                {
+                    await cacheService.SetAsync<CurrentBotGreeting>("CurrentGreetingKey", newGreeting);
+                    await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
+                }
+            }else
+            {
+                await cacheService.SetAsync<CurrentBotGreeting>("CurrentGreetingKey", newGreeting);
+                await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
+            }
+        }
+
 
         protected internal virtual async Task RemoveBotToGroupAsync(Message message, User bot)
         {
