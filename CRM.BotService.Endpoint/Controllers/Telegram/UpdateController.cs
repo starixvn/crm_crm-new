@@ -151,6 +151,7 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
 
         protected internal virtual async Task<CommandResult> AddBotToGroupAsync(Message message, User bot)
         {
+            logService.LogInformation("before add bot to group: " + bot.Username);
             var isExistBot = checkExistBot(bot.Id);
             if(isExistBot){
                 var command = new AddBotToGroupCommand
@@ -174,12 +175,12 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
                 logService.LogInformation("greeting: " + greeting);
                 await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
                 logService.LogInformation("end AddBotToGroupAsync!!!");
+                logService.LogInformation("end add bot to group: " + bot.Username);
                 return result;
             }else{
                 logService.LogInformation(string.Format("bot: {0} is not exist", bot.Id));
                 return new CommandResult();
             }
-            
         }
 
         protected internal virtual async Task RemoveBotToGroupAsync(Message message, User bot)
