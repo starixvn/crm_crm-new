@@ -147,16 +147,33 @@ export class Filter extends Component {
         };
     };
 
-    isValidParams = () => this.state.filter.mappingStatuses !== '';
+    isValidParams = () => {
+        const errMsg = [];
+        let isValid = true;
+        const { filter } = this.state;
+
+        if (!filter.mappingStatuses) {
+            isValid = false;
+            errMsg.push(LangHelper.getResource('PleaseChooseMappingStatus'));
+        }
+        if (!filter.botIds) {
+            isValid = false;
+            errMsg.push(LangHelper.getResource('PleaseChooseBotName'));
+        }
+
+        return { isValid, errMsg };
+    }
 
     submitHandler = e => {
         e.preventDefault();
-        if (this.isValidParams()) {
+        if (this.isValidParams().isValid) {
             const params = this.getParams();
             this.props.setGridParams(params);
             this.props.getGridData(params);
         } else {
-            toast.error(LangHelper.getResource('PleaseChooseMappingStatus'));
+            this.isValidParams().errMsg.forEach(item => {
+                toast.error(item);
+            });
         }
     };
 

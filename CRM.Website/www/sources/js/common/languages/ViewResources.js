@@ -386,6 +386,7 @@
     PICRequired: 'PIC is required!',
     Planned: 'Planned',
     PleaseChoose: 'Please Choose',
+    PleaseChooseBotName: 'Please Choose Bot Name',
     PleaseChooseCurrency: 'Please choose Currency',
     PleaseChooseMappingStatus: 'Please Choose Mapping Status',
     PleaseChoosePosition: 'Please choose Position',
