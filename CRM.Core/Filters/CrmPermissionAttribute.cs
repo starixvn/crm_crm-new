@@ -2,10 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using CRM.Core.Services;
-    using CRM.Resources;
     using Fanex.Logging;
-    using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Extensions;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Configuration;
@@ -62,7 +59,6 @@
                     {
                         context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
                     }
-
                     else
                     {
                         context.Result = new RedirectToActionResult("405", "error", null);
