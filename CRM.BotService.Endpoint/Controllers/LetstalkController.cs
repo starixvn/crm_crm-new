@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Models.Letstalk;
     using CRM.BotService.Core.Services.Interfaces;
@@ -11,6 +12,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Models.BotServices;
+    using CRM.Core.Models.BotServices.Announcement;
     using CRM.Core.Services;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -21,16 +23,19 @@
     public class LetstalkController : Controller
     {
         private readonly Func<long, ILetstalkClientService> letstalkClientService;
+        private readonly ILetstalkSendMultipleReceiverService letstalkSendMultipleReceiverService;
         private readonly IBotCommonService botCommonService;
         private readonly ICRMLogService logService;
 
         public LetstalkController(Func<long, ILetstalkClientService> letstalkClientService,
             IBotCommonService botCommonService,
-            ICRMLogService logService)
+            ICRMLogService logService,
+            ILetstalkSendMultipleReceiverService letstalkSendMultipleReceiverService)
         {
             this.letstalkClientService = letstalkClientService;
             this.logService = logService;
             this.botCommonService = botCommonService;
+            this.letstalkSendMultipleReceiverService = letstalkSendMultipleReceiverService;
         }
 
         [HttpPost]
@@ -72,8 +77,8 @@
         }
 
         [HttpPost]
-        [Route("api/letstalk/send-multiple")]
-        public async Task<IActionResult> SendMultipleMessage([FromBody] IEnumerable<NotificationMessage> notifications)
+        [Route("api/letstalk/send-plaintext-multiple")]
+        public async Task<IActionResult> SendPlainTextMultipleMessage([FromBody] IEnumerable<NotificationMessage> notifications)
         {
             var tasks = new List<Task<SendResult>>();
 
@@ -94,7 +99,25 @@
         }
 
         [HttpPost]
-        [Route("api/letstalk/send-single")]
+        [Route("api/letstalk/send-multiple-announcement")]
+        public async Task<IActionResult> SendMultipleFormattedTextAndImagesAsync([FromBody] IEnumerable<AnnouncementNotification> notifications)
+        {
+            var results = await letstalkSendMultipleReceiverService.SendFornattedTextAndImagesAsync(notifications);
+
+            return Ok(results);
+        }
+
+        [HttpPost]
+        [Route("api/letstalk/send-image-only")]
+        public async Task<IActionResult> SendOnlyImagesAync([FromBody] IEnumerable<AnnouncementNotification> notifications)
+        {
+            var results = await letstalkSendMultipleReceiverService.SendImageAsync(notifications);
+
+            return Ok(results);
+        }
+
+        [HttpPost]
+        [Route("api/letstalk/send-plaintext-single")]
         public async Task<IActionResult> SendSingleMessage([FromBody] NotificationMessage notification)
         {
             var result = await SendLetstalkService(notification);
@@ -133,7 +156,7 @@
             {
                 var writeLogCommand = new WriteLogMessageCommand
                 {
-                    NotificationId = notification.NotificationId,
+                    ReferenceId = notification.NotificationId,
                     BotId = notification.BotId,
                     ConversationId = notification.ConversationId,
                     Content = notification.Content,
@@ -157,16 +180,11 @@
         {
             var outGoingMsg = new OutgoingMessage
             {
-                MessageType = notification.MessageType,
+                MessageType = NotificationMessageType.PlainText,
                 Text = notification.Content
             };
 
             var sendResult = await letstalkClientService(notification.BotId).PushPersonalAsync(notification.ConversationId, outGoingMsg);
-
-            if (notification.Images is not null && notification.Images.Length > 0 && sendResult.IsSuccess)
-            {
-                await SendImagesToPersonal(notification);
-            }
 
             result.SentTime = DateTime.UtcNow;
             result.ErrorCode = sendResult.IsSuccess && !sendResult.BlockList.Any() ? 0 : 1;
@@ -178,7 +196,8 @@
 
             var writeLogCommand = new WriteLogMessageCommand
             {
-                NotificationId = notification.NotificationId,
+                ReferenceId = notification.NotificationId,
+                DataSource = LogDataSource.Notification,
                 BotId = notification.BotId,
                 ConversationId = notification.ConversationId,
                 Content = notification.Content,
@@ -187,56 +206,25 @@
                 ErrMsg = sendResult.Message
             };
             await botCommonService.WriteLogMessageAsyns(writeLogCommand);
-        }
-
-        private async Task SendImagesToPersonal(NotificationMessage notification)
-        {
-            foreach (var img in notification.Images)
-            {
-                var outgoingMsg = new OutgoingMessage
-                {
-                    MessageType = NotificationMessageType.Image,
-                    ImageUrl = img
-                };
-
-                var result = await letstalkClientService(notification.BotId).PushPersonalAsync(notification.ConversationId, outgoingMsg);
-                var writeLogCommand = new WriteLogMessageCommand
-                {
-                    NotificationId = notification.NotificationId,
-                    BotId = notification.BotId,
-                    ConversationId = notification.ConversationId,
-                    Content = img,
-                    IsSuccess = result.IsSuccess,
-                    IsBotBlocked = result.BlockList.Any(),
-                    ErrMsg = result.Message
-                };
-
-                await botCommonService.WriteLogMessageAsyns(writeLogCommand);
-            }
         }
 
         private async Task SendLetstalkGroup(NotificationMessage notification, SendResult result)
         {
             var outGoingMsg = new OutgoingMessage
             {
-                MessageType = notification.MessageType,
+                MessageType = NotificationMessageType.PlainText,
                 Text = notification.Content
             };
 
             var sendResult = await letstalkClientService(notification.BotId).PushRoomAsync(notification.ConversationId, outGoingMsg);
 
-            if (notification.Images is not null && notification.Images.Length > 0 && sendResult.IsSuccess)
-            {
-                await SendImagesToGroup(notification);
-            }
-
             result.SentTime = DateTime.UtcNow;
             result.ErrorCode = sendResult.IsSuccess ? 0 : 1;
-            result.ErrorMessage = !sendResult.IsSuccess ? SendNotificationErrorMessage.BotServiceLetstalkErrorMsg : string.Empty;
+            result.ErrorMessage = !sendResult.IsSuccess ? string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Letstalk.ToString().ToLowerInvariant()) : string.Empty;
 
             var writeLogCommand = new WriteLogMessageCommand
             {
-                NotificationId = notification.NotificationId,
+                ReferenceId = notification.NotificationId,
                 BotId = notification.BotId,
                 ConversationId = notification.ConversationId,
                 Content = notification.Content,
@@ -245,33 +233,6 @@
                 ErrMsg = sendResult.Message
             };
             await botCommonService.WriteLogMessageAsyns(writeLogCommand);
-        }
-
-        private async Task SendImagesToGroup(NotificationMessage notification)
-        {
-            foreach (var img in notification.Images)
-            {
-                var outgoingMsg = new OutgoingMessage
-                {
-                    MessageType = NotificationMessageType.Image,
-                    ImageUrl = img
-                };
-
-                var result = await letstalkClientService(notification.BotId).PushRoomAsync(notification.ConversationId, outgoingMsg);
-
-                var writeLogCommand = new WriteLogMessageCommand
-                {
-                    NotificationId = notification.NotificationId,
-                    BotId = notification.BotId,
-                    ConversationId = notification.ConversationId,
-                    Content = img,
-                    IsSuccess = result.IsSuccess,
-                    IsBotBlocked = result.BlockList.Any(),
-                    ErrMsg = result.Message
-                };
-
-                await botCommonService.WriteLogMessageAsyns(writeLogCommand);
-            }
         }
     }
 }

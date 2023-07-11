@@ -14,15 +14,12 @@
     public interface ISendNotificationService
     {
         Task ScanAndSendMessageToBotEndpointAsync();
-
-        Task SendMessageAnnouncementToBotEndpointAsync();
     }
 
     public class SendNotificationService : ISendNotificationService
     {
         private readonly int ItemEachBatch;
         private const int DefaultItemEachBatch = 10;
-        private readonly string BaseImageUrl;
 
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
@@ -37,7 +34,6 @@
             this.logService = logService;
             this.chatbotService = chatbotService;
             ItemEachBatch = configuration.GetValue<int?>("SendNotificationItemEachBatch") ?? DefaultItemEachBatch;
-            BaseImageUrl = configuration.GetValue<string>("BaseImageUrl");
         }
 
         public async Task ScanAndSendMessageToBotEndpointAsync()
@@ -49,18 +45,6 @@
                 await UpdateBotRemovedStatus(notifications.Where(noti => noti.BotId == 0 && noti.ChatType == ChatType.Group));
 
                 await SendMessageToRecipients(notifications.Where(noti => noti.BotId > 0));
-            }
-        }
-
-        public async Task SendMessageAnnouncementToBotEndpointAsync()
-        {
-            var notifications = await GetNotificationToSend();
-
-            if (notifications.Any())
-            {
-                await UpdateBotRemovedStatus(notifications.Where(noti => noti.BotId == 0 && noti.ChatType == ChatType.Group));
-
-                await SendMessageToRecipients(notifications.Where(noti => noti.BotId > 0 && noti.AnnouncementId > 0));
             }
         }
 
@@ -89,7 +73,7 @@
                 var results = new List<NotificationMessageUpdateResult>();
                 try
                 {
-                    var sendResults = await chatbotService.SendMultipleMessageAsync(botChannel, batch);
+                    var sendResults = await chatbotService.SendMultiplePlaintextMessageAsync(botChannel, batch);
                     results = GetUpdateResultModel(sendResults).ToList();
                 }
                 catch (Exception ex)
@@ -100,8 +84,8 @@
                         {
                             NotificationId = noti.NotificationId,
                             ConversationGroupId = noti.ConversationGroupId,
-                            Status = SendNotificationStatus.Retrying,
-                            ErrMsg = botChannel == BotChannel.Letstalk ? SendNotificationErrorMessage.BotServiceLetstalkErrorMsg : SendNotificationErrorMessage.BotServiceTelegramErrorMsg
+                            Status = SendNotificationStatuses.Retrying,
+                            ErrMsg = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, botChannel.ToString().ToLowerInvariant())
                         });
                     }
                     await logService.ErrorAsync(ex);
@@ -128,24 +112,7 @@
         private async Task<IEnumerable<NotificationMessage>> GetNotificationToSend()
         {
             var notifications = await baseService.GetDataAsync<NotificationMessage>(new GetNotificationToSendCriteria());
-            if (notifications.Any())
-            {
-                foreach (var item in notifications)
-                {
-                    if (item.AnnouncementId > 0)
-                    {
-                        item.MessageType = NotificationMessageType.Html;
-                    }
 
-                    if (!string.IsNullOrEmpty(item.FileName))
-                    {
-                        var images = item.FileName.Split(",");
-                        item.Images = images.Select(
-                            img => string.Format("{0}{1}/{2}", BaseImageUrl, item.AnnouncementId, img)
-                            ).ToArray();
-                    }
-                }
-            }
             return notifications;
         }
 
@@ -161,7 +128,7 @@
                         NotificationId = notification.NotificationId,
                         ConversationGroupId = notification.ConversationGroupId,
                         SentDate = DateTime.UtcNow,
-                        Status = SendNotificationStatus.Error,
+                        Status = SendNotificationStatuses.Error,
                         ErrMsg = SendNotificationErrorMessage.BotRemovedMsg
                     };
                     results.Add(result);
@@ -204,25 +171,17 @@
         {
             if (result.IsBlockedBot)
             {
-                return SendNotificationStatus.BotBlocked;
+                return SendNotificationStatuses.BotBlocked;
             }
             if (result.IsSuccessful && !result.IsBlockedBot)
             {
-                return SendNotificationStatus.Sent;
+                return SendNotificationStatuses.Sent;
             }
             if (!result.IsSuccessful && !result.IsIgnoreRetry)
             {
-                return SendNotificationStatus.Retrying;
+                return SendNotificationStatuses.Retrying;
             }
-            return SendNotificationStatus.Error;
-        }
-
-        private static class SendNotificationStatus
-        {
-            internal const string BotBlocked = "BotBlocked";
-            internal const string Sent = "Sent";
-            internal const string Retrying = "Retrying";
-            internal const string Error = "Error";
+            return SendNotificationStatuses.Error;
         }
     }
 }

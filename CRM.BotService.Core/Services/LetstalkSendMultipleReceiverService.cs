@@ -1,0 +1,467 @@
+﻿namespace CRM.BotService.Core.Services
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using CRM.BotService.Core.Criteria;
+    using CRM.BotService.Core.Models.Letstalk;
+    using CRM.BotService.Core.Models.Letstalk.Results;
+    using CRM.BotService.Core.Services.Interfaces;
+    using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
+    using CRM.Core.Models.BotServices.Announcement;
+    using CRM.Core.Services;
+    using Newtonsoft.Json;
+
+    public class LetstalkSendMultipleReceiverService : ILetstalkSendMultipleReceiverService
+    {
+        private readonly ICRMLogService logService;
+        private readonly IBotCommonService botCommonService;
+        private readonly Func<long, ILetstalkClientService> letstalkService;
+        private static readonly string LetstalkBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Letstalk.ToString().ToLowerInvariant());
+
+        private const byte MaxReceiversOnOneBatch = 10;
+
+        public LetstalkSendMultipleReceiverService(IBotCommonService botCommonService,
+            ICRMLogService logService,
+            Func<long, ILetstalkClientService> letstalkService)
+        {
+            this.logService = logService;
+            this.letstalkService = letstalkService;
+            this.botCommonService = botCommonService;
+        }
+
+        public async Task<IEnumerable<AnnouncementNotificationUpdateResult>> SendFornattedTextAndImagesAsync(IEnumerable<AnnouncementNotification> notifications)
+        {
+            var results = new List<AnnouncementNotificationUpdateResult>();
+            if (notifications.Any())
+            {
+                List<NotificationGroupContent> groupedContentNotifications = GroupNotificationByContentAndChatType(notifications);
+                var sendResults = new List<SendNotificationResult>();
+                foreach (var notification in groupedContentNotifications)
+                {
+                    var result = await SendToLetstalkAsync(notification);
+                    sendResults.AddRange(result);
+                }
+
+                results = MappingSendResultToUpdateStatus(sendResults, notifications);
+            }
+            return results;
+        }
+
+        public async Task<IEnumerable<AnnouncementNotificationUpdateResult>> SendImageAsync(IEnumerable<AnnouncementNotification> notifications)
+        {
+            var updatedResult = new List<AnnouncementNotificationUpdateResult>();
+            if (notifications.Any())
+            {
+                var groupedNotifications = GroupResendErrorImages(notifications);
+                var tasks = new List<Task<List<SendNotificationResult>>>();
+                foreach (var notification in groupedNotifications)
+                {
+                    tasks.Add(Task.Run(() => ResendErrorImagesAsync(notification)));
+                }
+
+                var sendReults = (await Task.WhenAll(tasks)).ToList();
+
+                List<SendNotificationResult> mergedResults = MergedResultList(sendReults);
+                updatedResult = MappingSendResultToUpdateStatus(mergedResults, notifications);
+            }
+            return updatedResult;
+        }
+
+        private async Task<List<SendNotificationResult>> ResendErrorImagesAsync(NotificationGroupContent notification)
+        {
+            var sendResult = notification.ConversationIds.Select(conversationId =>
+            new SendNotificationResult
+            {
+                AnnouncementId = notification.AnnouncementId,
+                ConversationId = conversationId,
+                IsSuccessful = true,
+                ErrMsg = string.Empty
+            }).ToList();
+
+            if (notification.ChatType == ChatType.Personal)
+            {
+                await SendImageMultiplePersonalAsync(notification.AnnouncementId, notification.ConversationIds, notification.BotId, notification.Attachments, sendResult);
+            }
+            else
+            {
+                await SendImageToMultipleGroupAsync(notification.AnnouncementId, notification.ConversationIds, notification.BotId, notification.Attachments, sendResult);
+            }
+
+            return sendResult;
+        }
+
+        private static List<SendNotificationResult> MergedResultList(List<List<SendNotificationResult>> sendReults)
+        {
+            var results = new List<SendNotificationResult>();
+            foreach (var sendResult in sendReults)
+            {
+                results.AddRange(sendResult);
+            }
+            return results;
+        }
+
+        private static List<NotificationGroupContent> GroupResendErrorImages(IEnumerable<AnnouncementNotification> notifications)
+        {
+            var groupedNotification = notifications.GroupBy(i =>
+            new
+            {
+                i.AnnouncementId,
+                i.BotId,
+                i.ChatType,
+                i.ErrImages
+            }).Select(item =>
+            {
+                return new NotificationGroupContent
+                {
+                    AnnouncementId = item.Key.AnnouncementId,
+                    BotId = item.Key.BotId,
+                    ChatType = item.Key.ChatType,
+                    ConversationIds = item.Select(x => x.ConversationId).ToList(),
+                    Attachments = !string.IsNullOrWhiteSpace(item.Key.ErrImages) ? item.Key.ErrImages.Split(",").ToList() : new List<string>(),
+                };
+            });
+            var results = DividedBatchRecivers(groupedNotification);
+            return results;
+        }
+
+        private async Task<List<SendNotificationResult>> SendToLetstalkAsync(NotificationGroupContent notification)
+        {
+            List<SendNotificationResult> sendResult = notification.ChatType == ChatType.Personal
+                ? await SendMessageToMultiplePersonalAsync(notification)
+                : await SendMessageToMulipleGroupAsync(notification);
+            return sendResult;
+        }
+
+        private async Task<List<SendNotificationResult>> SendMessageToMultiplePersonalAsync(NotificationGroupContent notification)
+        {
+            var sendResult = notification.ConversationIds.Select(conversationId =>
+            new SendNotificationResult
+            {
+                AnnouncementId = notification.AnnouncementId,
+                ConversationId = conversationId,
+                IsSuccessful = true,
+                ErrMsg = string.Empty
+            }).ToList();
+            try
+            {
+                var pushResults = await letstalkService(notification.BotId).PushPersonalAsync(notification.ConversationIds,
+                new OutgoingMessage
+                {
+                    MessageType = NotificationMessageType.Html,
+                    Text = notification.Content
+                });
+                await WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                    string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
+
+                if (pushResults.IsSuccess)
+                {
+                    if (pushResults.FailList is not null && pushResults.FailList.Count > 0)
+                    {
+                        HandleFailedList(pushResults.FailList, sendResult);
+                    }
+
+                    if (pushResults.BlockList is not null && pushResults.BlockList.Count > 0)
+                    {
+                        HandlleBlockList(pushResults.BlockList, sendResult);
+                    }
+                }
+                else
+                {
+                    SetFailedResultWithErrMsg(sendResult);
+                }
+            }
+            catch (Exception exception)
+            {
+                SetFailedResultWithErrMsg(sendResult);
+                await logService.ErrorAsync(exception);
+            }
+
+            var successList = sendResult.Where(i => i.IsSuccessful).Select(x => x.ConversationId).ToList();
+            if (successList.Any() && notification.Attachments is not null && notification.Attachments.Any())
+            {
+                await SendImageMultiplePersonalAsync(notification.AnnouncementId, successList, notification.BotId, notification.Attachments, sendResult);
+            }
+
+            return sendResult;
+        }
+
+        private async Task SendImageMultiplePersonalAsync(int announcementId, List<string> conversationIds, long botId, List<string> images, List<SendNotificationResult> sendResult)
+        {
+            var pushResult = new PushMessageResult();
+            foreach (var img in images)
+            {
+                try
+                {
+                    pushResult = await letstalkService(botId).PushPersonalAsync(conversationIds, new OutgoingMessage
+                    {
+                        MessageType = NotificationMessageType.Image,
+                        ImageUrl = img
+                    });
+                    await WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
+                }
+                catch (Exception ex)
+                {
+                    pushResult.Status = 0;
+                    pushResult.Message = ex.Message;
+                    pushResult.FailList = conversationIds;
+                    await WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
+                    await logService.ErrorAsync(ex);
+                }
+
+                UpdateSendImageResultStatus(pushResult, sendResult, img);
+            }
+        }
+
+        private static void UpdateSendImageResultStatus(PushMessageResult pushResult, List<SendNotificationResult> sendResult, string image)
+        {
+            if (!pushResult.IsSuccess)
+            {
+                foreach (var result in sendResult)
+                {
+                    SetResultSendImage(result, image);
+                }
+            }
+            else
+            {
+                foreach (var result in sendResult.Where(result => pushResult.FailList.Any(i => i.Equals(result.ConversationId))))
+                {
+                    SetResultSendImage(result, image);
+                }
+            }
+        }
+
+        private static void SetResultSendImage(SendNotificationResult result, string failedImage)
+        {
+            result.IsSuccessful = false;
+            result.IsOnlyRetryImage = true;
+            result.ErrMsg = LetstalkBotServiceErrorMessage;
+            string imgNameOnly = failedImage.Split("/").LastOrDefault();
+            result.ErrImages.Add(imgNameOnly);
+        }
+
+        private static void HandleFailedList(List<string> failList, List<SendNotificationResult> sendResult)
+        {
+            foreach (var result in sendResult.Where(result => failList.Any(i => i.Equals(result.ConversationId))))
+            {
+                result.IsSuccessful = false;
+                result.ErrMsg = LetstalkBotServiceErrorMessage;
+            }
+        }
+
+        private static void HandlleBlockList(List<string> blockList, List<SendNotificationResult> sendResult)
+        {
+            foreach (var result in sendResult.Where(result => blockList.Any(i => i.Equals(result.ConversationId))))
+            {
+                result.IsSuccessful = false;
+                result.IsBotBlocked = true;
+            }
+        }
+
+        private static void SetFailedResultWithErrMsg(List<SendNotificationResult> results)
+        {
+            foreach (var item in results)
+            {
+                item.IsSuccessful = false;
+                item.ErrMsg = LetstalkBotServiceErrorMessage;
+            }
+        }
+
+        private static List<AnnouncementNotificationUpdateResult> MappingSendResultToUpdateStatus(List<SendNotificationResult> mergedResults, IEnumerable<AnnouncementNotification> notifications)
+        {
+            var results = new List<AnnouncementNotificationUpdateResult>();
+            foreach (var notification in notifications)
+            {
+                var matchedResult = mergedResults.FirstOrDefault(x => x.ConversationId.Equals(notification.ConversationId) && x.AnnouncementId == notification.AnnouncementId);
+                if (matchedResult is not null)
+                {
+                    var result = new AnnouncementNotificationUpdateResult
+                    {
+                        NotificationId = notification.NotificationId,
+                        ConversationGroupId = notification.ConversationGroupId,
+                        IsOnlyRetryImage = matchedResult.IsOnlyRetryImage,
+                        ErrImages = matchedResult.ErrImages is not null && matchedResult.ErrImages.Count > 0 ? string.Join(",", matchedResult.ErrImages) : string.Empty
+                    };
+                    MappingUpdateStatusErrorMessage(result, matchedResult);
+                    results.Add(result);
+                }
+            }
+            return results;
+        }
+
+        private static void MappingUpdateStatusErrorMessage(AnnouncementNotificationUpdateResult result, SendNotificationResult matchedResult)
+        {
+            if (matchedResult.IsSuccessful)
+            {
+                result.Status = SendNotificationStatuses.Sent;
+                result.ErrMsg = string.Empty;
+            }
+
+            if (!matchedResult.IsSuccessful && !matchedResult.IsBotBlocked)
+            {
+                result.Status = SendNotificationStatuses.Retrying;
+                result.ErrMsg = matchedResult.ErrMsg;
+            }
+            if (matchedResult.IsBotBlocked)
+            {
+                result.Status = SendNotificationStatuses.BotBlocked;
+                result.ErrMsg = string.Empty;
+            }
+        }
+
+        private static List<NotificationGroupContent> GroupNotificationByContentAndChatType(IEnumerable<AnnouncementNotification> notifications)
+        {
+            var groupedNotification = notifications.GroupBy(i =>
+            new
+            {
+                i.AnnouncementId,
+                i.Content,
+                i.BotId,
+                i.ChatType,
+            }).Select(item =>
+            {
+                return new NotificationGroupContent
+                {
+                    AnnouncementId = item.Key.AnnouncementId,
+                    BotId = item.Key.BotId,
+                    Content = item.Key.Content,
+                    ChatType = item.Key.ChatType,
+                    ConversationIds = item.Select(x => x.ConversationId).ToList(),
+                    Attachments = !string.IsNullOrWhiteSpace(item.FirstOrDefault().FileName) ? item.FirstOrDefault().FileName.Split(",").ToList() : new List<string>(),
+                };
+            });
+
+            var results = DividedBatchRecivers(groupedNotification);
+            return results;
+        }
+
+        private static List<NotificationGroupContent> DividedBatchRecivers(IEnumerable<NotificationGroupContent> notifications)
+        {
+            var listResults = new List<NotificationGroupContent>();
+            foreach (var item in notifications)
+            {
+                if (item.ConversationIds.Count <= MaxReceiversOnOneBatch)
+                {
+                    listResults.Add(item);
+                }
+                else
+                {
+                    var batches = DivideBatchConversationIds(item);
+                    listResults.AddRange(batches);
+                }
+            }
+            return listResults;
+        }
+
+        private static List<NotificationGroupContent> DivideBatchConversationIds(NotificationGroupContent item)
+        {
+            int totalItem = item.ConversationIds.Count;
+            var listResults = new List<NotificationGroupContent>();
+            int totalBatch = (int)Math.Ceiling((double)totalItem / MaxReceiversOnOneBatch);
+            for (int i = 0; i < totalBatch; i++)
+            {
+                listResults.Add(new NotificationGroupContent
+                {
+                    AnnouncementId = item.AnnouncementId,
+                    BotId = item.BotId,
+                    Content = item.Content,
+                    ChatType = item.ChatType,
+                    ConversationIds = item.ConversationIds.Skip(i * MaxReceiversOnOneBatch).Take(MaxReceiversOnOneBatch).ToList(),
+                    Attachments = item.Attachments
+                });
+            }
+            return listResults;
+        }
+
+        private async Task WriteLogMessage(int announcementId, long botId, string content, string conversationIds, bool isSuccess, string errMsg)
+        {
+            var command = new WriteLogMessageCommand
+            {
+                ReferenceId = announcementId,
+                DataSource = "DBCRM.bodb_CRM.dbo.crmAnnouncement",
+                BotId = botId,
+                Content = content,
+                ConversationId = conversationIds,
+                IsSuccess = isSuccess,
+                ErrMsg = errMsg,
+            };
+
+            await botCommonService.WriteLogMessageAsyns(command);
+        }
+
+        private async Task<List<SendNotificationResult>> SendMessageToMulipleGroupAsync(NotificationGroupContent notification)
+        {
+            var sendResult = notification.ConversationIds.Select(conversationId =>
+            new SendNotificationResult
+            {
+                AnnouncementId = notification.AnnouncementId,
+                ConversationId = conversationId,
+                IsSuccessful = true,
+                ErrMsg = string.Empty
+            }).ToList();
+
+            try
+            {
+                var pushResults = await letstalkService(notification.BotId).PushRoomAsync(notification.ConversationIds,
+                new OutgoingMessage
+                {
+                    MessageType = NotificationMessageType.Html,
+                    Text = notification.Content
+                });
+                await WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                    string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
+                if (pushResults.IsSuccess)
+                {
+                    if (pushResults.FailList is not null && pushResults.FailList.Count > 0)
+                    {
+                        HandleFailedList(pushResults.FailList, sendResult);
+                    }
+                }
+                else
+                {
+                    SetFailedResultWithErrMsg(sendResult);
+                }
+            }
+            catch (Exception exception)
+            {
+                SetFailedResultWithErrMsg(sendResult);
+                await logService.ErrorAsync(exception);
+            }
+
+            var successList = sendResult.Where(i => i.IsSuccessful).Select(x => x.ConversationId).ToList();
+            if (successList.Any() && notification.Attachments is not null && notification.Attachments.Any())
+            {
+                await SendImageToMultipleGroupAsync(notification.AnnouncementId, successList, notification.BotId, notification.Attachments, sendResult);
+            }
+
+            return sendResult;
+        }
+
+        private async Task SendImageToMultipleGroupAsync(int announcementId, List<string> conversationIds, long botId, List<string> images, List<SendNotificationResult> sendResult)
+        {
+            var pushResult = new PushMessageResult();
+            foreach (var img in images)
+            {
+                try
+                {
+                    pushResult = await letstalkService(botId).PushRoomAsync(conversationIds, new OutgoingMessage
+                    {
+                        MessageType = NotificationMessageType.Image,
+                        ImageUrl = img
+                    });
+                    await WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
+                }
+                catch (Exception ex)
+                {
+                    pushResult.Status = 0;
+                    pushResult.Message = ex.Message;
+                    pushResult.FailList = conversationIds;
+                    await WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
+                }
+                UpdateSendImageResultStatus(pushResult, sendResult, img);
+            }
+        }
+    }
+}

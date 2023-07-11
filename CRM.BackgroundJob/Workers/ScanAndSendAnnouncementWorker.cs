@@ -26,7 +26,7 @@
 
         public override async Task ExecuteJobAsync()
         {
-            await sendService.ScanSendAnđUpateAnnouncementNotification();
+            await sendService.ScanSendAndUpateAnnouncementNotification();
         }
     }
 }

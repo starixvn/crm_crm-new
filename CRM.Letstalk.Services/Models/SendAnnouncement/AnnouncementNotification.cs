@@ -4,7 +4,6 @@
 
     public class AnnouncementNotification
     {
-        public int AnnouncementId { get; set; }
         public int NotificationId { get; set; }
         public long BotId { get; set; }
         public int ConversationGroupId { get; set; }
@@ -12,7 +11,6 @@
         public string Content { get; set; }
         public int BotId { get; set; }
         public string ConversationId { get; set; }
-        public string FileName { get; set; }
         public bool IsOnlyRetryImage { get; set; }
         public BotChannel ChannelId { get; set; } = BotChannel.Letstalk;
 

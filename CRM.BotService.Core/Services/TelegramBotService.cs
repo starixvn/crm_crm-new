@@ -84,10 +84,10 @@
         {
             logService.LogInformation("Start SendNotifyAsync: " + notificationMessage.ConversationId);
             await SendTextMessageAsync(notificationMessage, sendResult);
-            if (notificationMessage.Images is not null && notificationMessage.Images.Length > 0 && sendResult.IsSuccessful)
-            {
-                await SendImageAsync(notificationMessage, sendResult);
-            }
+            //if (notificationMessage.Images is not null && notificationMessage.Images.Length > 0 && sendResult.IsSuccessful)
+            //{
+            //    await SendImageAsync(notificationMessage, sendResult);
+            //}
             sendResult.SentTime = DateTime.UtcNow;
             await WriteLogCommandAsync(notificationMessage, sendResult);
             logService.LogInformation("End SendNotifyAsync: " + notificationMessage.ConversationId);
@@ -128,13 +128,13 @@
             {
                 sendResult.ErrorCode = 0;
                 _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
-                foreach (var img in notificationMessage.Images)
-                {
-                    logService.LogInformation("Start SendImageAsync: " + notificationMessage.ConversationId + img);
+                //foreach (var img in notificationMessage.Images)
+                //{
+                //    logService.LogInformation("Start SendImageAsync: " + notificationMessage.ConversationId + img);
 
-                    await SendImageAsync(notificationMessage.BotId, chatId, img);
-                    await WriteLogCommandAsync(notificationMessage, sendResult, img);
-                }
+                //    await SendImageAsync(notificationMessage.BotId, chatId, img);
+                //    await WriteLogCommandAsync(notificationMessage, sendResult, img);
+                //}
                 logService.LogInformation("End SendImageAsync: " + notificationMessage.ConversationId);
             }
             catch (Exception exception)
@@ -158,7 +158,7 @@
         {
             var writeLogCommand = new WriteLogMessageCommand
             {
-                NotificationId = notificationMessage.NotificationId,
+                ReferenceId = notificationMessage.NotificationId,
                 BotId = notificationMessage.BotId,
                 ConversationId = notificationMessage.ConversationId,
                 Content = string.IsNullOrEmpty(image) ? notificationMessage.Content : image,
@@ -224,7 +224,7 @@
 
         private string RemoveUnsupportedTags(string content)
         {
-            string[] allowedTagsHtml = { "b", "strong", "i", "em", "ins", "u", "s","strike", "del", "a", "tg-emoji", "code", "pre", "br" };
+            string[] allowedTagsHtml = { "b", "strong", "i", "em", "ins", "u", "s", "strike", "del", "a", "tg-emoji", "code", "pre", "br" };
             var regex = new Regex(@"(<br />|<hr />)");
             var replaceNewLine = regex.Replace(content, Environment.NewLine);
             string messageContentReplace = Regex.Replace(replaceNewLine, "<(?!/?(" + string.Join("|", allowedTagsHtml) + ")(>|\\s.*?>)).*?>", "");

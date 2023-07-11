@@ -37,7 +37,7 @@ namespace CRM.Core.UnitTests.Services
 
             await baseService.Received(1).GetDataAsync<NotificationMessage>(Arg.Any<GetNotificationToSendCriteria>());
             await logService.DidNotReceive().ErrorAsync(Arg.Any<Exception>());
-            await chatbotService.DidNotReceive().SendMultipleMessageAsync(Arg.Any<BotChannel>(), Arg.Any<IEnumerable<NotificationMessage>>());
+            await chatbotService.DidNotReceive().SendMultiplePlaintextMessageAsync(Arg.Any<BotChannel>(), Arg.Any<IEnumerable<NotificationMessage>>());
         }
 
         [Fact]
@@ -65,8 +65,8 @@ namespace CRM.Core.UnitTests.Services
             await service.ScanAndSendMessageToBotEndpointAsync();
 
             await baseService.Received(1).GetDataAsync<NotificationMessage>(Arg.Any<GetNotificationToSendCriteria>());
-            await chatbotService.Received(1).SendMultipleMessageAsync(Arg.Is(BotChannel.Letstalk), Arg.Any<IEnumerable<NotificationMessage>>());
-            await chatbotService.Received(1).SendMultipleMessageAsync(Arg.Is(BotChannel.Telegram), Arg.Any<IEnumerable<NotificationMessage>>());
+            await chatbotService.Received(1).SendMultiplePlaintextMessageAsync(Arg.Is(BotChannel.Letstalk), Arg.Any<IEnumerable<NotificationMessage>>());
+            await chatbotService.Received(1).SendMultiplePlaintextMessageAsync(Arg.Is(BotChannel.Telegram), Arg.Any<IEnumerable<NotificationMessage>>());
             await baseService.Received(2).ExecuteNonQueryAsync(Arg.Any<UpdateNotificationStatusCommand>());
         }
 

@@ -108,6 +108,7 @@
             services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ICRMLogService, CRMLogService>();
+            services.AddSingleton<ILetstalkSendMultipleReceiverService, LetstalkSendMultipleReceiverService>();
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

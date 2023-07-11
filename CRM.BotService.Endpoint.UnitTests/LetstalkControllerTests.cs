@@ -100,7 +100,7 @@
         {
             var controller = GetController();
 
-            var action = await controller.SendMultipleMessage(new List<NotificationMessage>());
+            var action = await controller.SendPlainTextMultipleMessage(new List<NotificationMessage>());
 
             var actual = Assert.IsType<OkObjectResult>(action);
             var resultData = actual.Value as List<SendResult>;
@@ -116,7 +116,7 @@
             letstalkClientService(Arg.Any<long>()).PushRoomAsync(Arg.Any<string>(), Arg.Any<OutgoingMessage>()).Returns(new PushMessageResult { Status = 1 });
             botCommonService.IsActiveChannel(Arg.Any<BotChannel>()).Returns(true);
 
-            var action = await controller.SendMultipleMessage(input);
+            var action = await controller.SendPlainTextMultipleMessage(input);
 
             var actual = Assert.IsType<OkObjectResult>(action);
             Assert.Equal(200, actual.StatusCode);
@@ -136,7 +136,7 @@
             letstalkClientService(Arg.Any<long>()).PushRoomAsync(Arg.Any<string>(), Arg.Any<OutgoingMessage>()).Returns(new PushMessageResult { Status = 1 });
             botCommonService.IsActiveChannel(Arg.Any<BotChannel>()).Returns(true);
 
-            var action = await controller.SendMultipleMessage(input);
+            var action = await controller.SendPlainTextMultipleMessage(input);
 
             var actual = Assert.IsType<OkObjectResult>(action);
             Assert.Equal(200, actual.StatusCode);
@@ -159,7 +159,7 @@
 
             botCommonService.IsActiveChannel(Arg.Any<BotChannel>()).Returns(false);
 
-            var action = await controller.SendMultipleMessage(input);
+            var action = await controller.SendPlainTextMultipleMessage(input);
 
             var actual = Assert.IsType<OkObjectResult>(action);
             Assert.Equal(200, actual.StatusCode);

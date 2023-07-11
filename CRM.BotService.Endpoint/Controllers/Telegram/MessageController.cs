@@ -143,7 +143,7 @@
                 result.ErrorMessage = SendNotificationErrorMessage.BotServiceTelegramErrorMsg;
                 var writeLogCommand = new WriteLogMessageCommand
                 {
-                    NotificationId = notification.NotificationId,
+                    ReferenceId = notification.NotificationId,
                     BotId = notification.BotId,
                     ConversationId = notification.ConversationId,
                     Content = notification.Content,

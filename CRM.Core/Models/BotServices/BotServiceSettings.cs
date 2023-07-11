@@ -17,5 +17,7 @@
         public BotChannel Channel { get; set; }
         public string SendMultipleMessagePath { get; set; }
         public string SendSingleMessagePath { get; set; }
+        public string SendMultipleAnnouncementPath { get; set; }
+        public string SendOnlyImagesMultiplePath { get; set; }
     }
 }

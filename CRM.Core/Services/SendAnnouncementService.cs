@@ -1,17 +1,150 @@
 ﻿namespace CRM.Core.Services
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
+    using CRM.Core.Criteria.Announcement;
+    using CRM.Core.Enumerables;
+    using CRM.Core.Extensions.XML;
+    using CRM.Core.Models.BotServices.Announcement;
+    using Microsoft.Extensions.Configuration;
 
     public interface ISendAnnouncementService
     {
-        Task ScanSendAnđUpateAnnouncementNotification();
+        Task ScanSendAndUpateAnnouncementNotification();
     }
 
     public class SendAnnouncementService : ISendAnnouncementService
     {
-        public async Task ScanSendAnđUpateAnnouncementNotification()
+        private readonly IBaseService baseService;
+        private readonly ICRMLogService logService;
+        private readonly IChatBotSendMessageService chatBotSendMessageService;
+        private readonly string BaseImageUrl;
+        private const string formatImageUrl = "{0}{1}/{2}";
+
+        public SendAnnouncementService(IBaseService baseService,
+            ICRMLogService logService,
+            IConfiguration configuration,
+            IChatBotSendMessageService chatBotSendMessageService)
         {
-            throw new System.NotImplementedException();
+            this.baseService = baseService;
+            this.logService = logService;
+            BaseImageUrl = configuration.GetValue<string>("BaseImageUrl");
+            this.chatBotSendMessageService = chatBotSendMessageService;
+        }
+
+        public async Task ScanSendAndUpateAnnouncementNotification()
+        {
+            var notifications = await GetAnnouncementNotificationAsync();
+
+            if (notifications.Any())
+            {
+                await UpdateBotRemovedGroup(notifications.Where(n => n.ChatType == ChatType.Group && n.BotId <= 0));
+                await RetryImagesOnlyAsync(notifications.Where(n => n.BotId > 0 && n.IsOnlyRetryImage));
+                await SendAnnouncementAsync(notifications.Where(n => n.BotId > 0 && !n.IsOnlyRetryImage));
+            }
+        }
+
+        #region Send announcement
+
+        private async Task SendAnnouncementAsync(IEnumerable<AnnouncementNotification> notifications)
+        {
+            await Task.WhenAll(
+                SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications),
+                SendAnnouncementNotificationToBotServiceAsync(BotChannel.Telegram, notifications)
+            );
+        }
+
+        private async Task SendAnnouncementNotificationToBotServiceAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
+        {
+            var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
+            if (filterNotifications.Any())
+            {
+                var sentResults = await chatBotSendMessageService.SendMultipleFormattedMessageAndAttachmentAsync(botChannel, filterNotifications);
+                await UpdateRecipientStatus(sentResults);
+            }
+        }
+
+        #endregion Send announcement
+
+        #region Retry Images Only
+
+        private async Task RetryImagesOnlyAsync(IEnumerable<AnnouncementNotification> notifications)
+        {
+            await Task.WhenAll(
+                RetryImageByChannelAsync(BotChannel.Letstalk, notifications),
+                RetryImageByChannelAsync(BotChannel.Telegram, notifications)
+            );
+        }
+
+        private async Task RetryImageByChannelAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
+        {
+            var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
+            if (filterNotifications.Any())
+            {
+                var sentResults = await chatBotSendMessageService.SendImageOnlyAsync(botChannel, filterNotifications);
+                await UpdateRecipientStatus(sentResults);
+            }
+        }
+
+        #endregion Retry Images Only
+
+        #region Update Bot Removed Groups
+
+        private async Task UpdateBotRemovedGroup(IEnumerable<AnnouncementNotification> botRemovedNotifications)
+        {
+            if (botRemovedNotifications.Any())
+            {
+                var updateStatusResult = new List<AnnouncementNotificationUpdateResult>();
+                foreach (var item in botRemovedNotifications)
+                {
+                    updateStatusResult.Add(new AnnouncementNotificationUpdateResult
+                    {
+                        NotificationId = item.NotificationId,
+                        ConversationGroupId = item.ConversationGroupId,
+                        Status = "Error",
+                        ErrMsg = "Bot Removed"
+                    });
+                }
+                await UpdateRecipientStatus(updateStatusResult);
+            }
+        }
+
+        #endregion Update Bot Removed Groups
+
+        private async Task UpdateRecipientStatus(IEnumerable<AnnouncementNotificationUpdateResult> sentResults)
+        {
+            var command = new UpdateAnnouncementNotificationStatusCommand
+            {
+                XmlData = sentResults.ToXML("root").ToString()
+            };
+
+            await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        private async Task<IEnumerable<AnnouncementNotification>> GetAnnouncementNotificationAsync()
+        {
+            var notifications = await baseService.GetDataAsync<AnnouncementNotification>(new GetAnnouncementNotificationToSendCriteria());
+            foreach (var item in notifications)
+            {
+                if (!string.IsNullOrEmpty(item.FileName))
+                {
+                    var images = item.FileName.Split(",");
+                    item.Images = images.Select(
+                        img => string.Format(formatImageUrl, BaseImageUrl, item.AnnouncementId, img)
+                        ).ToArray();
+                }
+
+                if (!string.IsNullOrEmpty(item.ErrImages))
+                {
+                    var images = item.ErrImages.Split(",");
+                    item.RetryImages = images.Select(
+                        img => string.Format(formatImageUrl, BaseImageUrl, item.AnnouncementId, img)
+                        ).ToArray();
+                }
+            }
+
+            return notifications;
         }
     }
 }
