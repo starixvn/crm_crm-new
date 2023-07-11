@@ -470,7 +470,7 @@ describe('Filter', () => {
 
             const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             toast.error = jest.fn();
-            filter.instance().isValidParams = jest.fn().mockReturnValue(false);
+            filter.instance().isValidParams = jest.fn().mockReturnValue({ isValid: false, errMsg: ['false'] });
             filter.instance().submitHandler = jest.fn();
 
             filter.find(Form).simulate('submit', event);
@@ -500,7 +500,7 @@ describe('Filter', () => {
             };
 
             const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
-            filter.instance().isValidParams = jest.fn().mockReturnValue(true);
+            filter.instance().isValidParams = jest.fn().mockReturnValue({ isValid: true });
             filter.instance().getParams = jest.fn().mockReturnValue(params);
 
             // Action
