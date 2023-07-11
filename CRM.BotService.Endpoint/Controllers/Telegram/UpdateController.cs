@@ -200,25 +200,28 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
 
         private async Task HandleGreeting(Message message, User bot)
         {
-            var greetingSession = await cacheService.GetAsync<CurrentBotGreeting>(CurrentGreetingKey);
+            var greetingCache = await cacheService.GetAsync<List<CurrentBotGreeting>>(CurrentGreetingKey);
             string greeting = string.Format(CommandMessageTelegram.AddBotToGroupGreetingMessage, bot.Username, message.Chat.Id);
             var newGreeting = new CurrentBotGreeting
             {
                 BotId = bot.Id,
                 Message = greeting
             };
-            if (greetingSession is not null)
+            if (greetingCache is not null && greetingCache.Any())
             {
-                var isDuplicateGreeting = greetingSession.BotId == bot.Id && greetingSession.Message == greeting;
+                var isDuplicateGreeting = greetingCache.Any(x => x.BotId == bot.Id && x.Message == greeting);
 
                 if (!isDuplicateGreeting)
                 {
-                    await cacheService.SetAsync<CurrentBotGreeting>("CurrentGreetingKey", newGreeting);
+                    greetingCache.Add(newGreeting);
+                    await cacheService.SetAsync<List<CurrentBotGreeting>>(CurrentGreetingKey, greetingCache);
+
                     await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
                 }
             }else
             {
-                await cacheService.SetAsync<CurrentBotGreeting>("CurrentGreetingKey", newGreeting);
+                var newListGreeting = new List<CurrentBotGreeting> { newGreeting };
+                await cacheService.SetAsync<List<CurrentBotGreeting>>("CurrentGreetingKey", newListGreeting);
                 await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
             }
         }
@@ -242,6 +245,10 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
                 if (!result.IsSuccessful)
                 {
                     await logService.ErrorAsync(new Exception(result.Message));
+                }
+                else
+                {
+                    await cacheService.RemoveAsync(CurrentGreetingKey);
                 }
                 logService.LogInformation("end RemoveBotToGroupAsync!!!");
             }

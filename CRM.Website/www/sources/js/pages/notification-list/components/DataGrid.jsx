@@ -28,7 +28,7 @@ export class DataGrid extends Component {
 
     buildNotificationListHeader = isHost =>
         (<HeaderRow>
-            <HeaderCell colWidth={5}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
+            <HeaderCell colWidth={7}>{LangHelper.getResource('SymbolNo')}</HeaderCell>
             <HeaderCell colWidth={15}>
                 <div>{LangHelper.getResource('NotificationID')}</div>
                 <div>{LangHelper.getResource('ReferenceId')}</div>
