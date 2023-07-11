@@ -200,28 +200,23 @@ namespace CRM.BotService.Endpoint.Controllers.Telegram
 
         private async Task HandleGreeting(Message message, User bot)
         {
-            var greetingCache = await cacheService.GetAsync<List<CurrentBotGreeting>>(CurrentGreetingKey);
+            var greetingCache = await cacheService.GetAsync<List<string>>(CurrentGreetingKey);
             string greeting = string.Format(CommandMessageTelegram.AddBotToGroupGreetingMessage, bot.Username, message.Chat.Id);
-            var newGreeting = new CurrentBotGreeting
-            {
-                BotId = bot.Id,
-                Message = greeting
-            };
             if (greetingCache is not null && greetingCache.Any())
             {
-                var isDuplicateGreeting = greetingCache.Any(x => x.BotId == bot.Id && x.Message == greeting);
+                var isDuplicateGreeting = greetingCache.Any(x => x == greeting);
 
                 if (!isDuplicateGreeting)
                 {
-                    greetingCache.Add(newGreeting);
-                    await cacheService.SetAsync<List<CurrentBotGreeting>>(CurrentGreetingKey, greetingCache);
+                    greetingCache.Add(greeting);
+                    await cacheService.SetAsync<List<string>>(CurrentGreetingKey, greetingCache);
 
                     await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
                 }
             }else
             {
-                var newListGreeting = new List<CurrentBotGreeting> { newGreeting };
-                await cacheService.SetAsync<List<CurrentBotGreeting>>("CurrentGreetingKey", newListGreeting);
+                var newListGreeting = new List<string> { greeting };
+                await cacheService.SetAsync<List<string>>("CurrentGreetingKey", newListGreeting);
                 await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
             }
         }
