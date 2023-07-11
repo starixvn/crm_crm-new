@@ -29,7 +29,7 @@
         private readonly INapSession napSession;
         private readonly ISettingService settingService;
         private readonly IWebHostEnvironment hostingEnvironment;
-        private readonly ISendNotificationService sendNotificationService;
+        private readonly ISendAnnouncementService sendAnnouncementService;
         private readonly string pathImages = "www/dist/images/announcement";
 
         public AnnouncementController(
@@ -37,14 +37,14 @@
             INapSession napSession,
             ISettingService settingService,
             IWebHostEnvironment hostingEnvironment,
-            ISendNotificationService sendNotificationService
+            ISendAnnouncementService sendAnnouncementService
             )
         {
             this.announcementService = announcementService;
             this.napSession = napSession;
             this.settingService = settingService;
             this.hostingEnvironment = hostingEnvironment;
-            this.sendNotificationService = sendNotificationService;
+            this.sendAnnouncementService = sendAnnouncementService;
         }
 
         public async Task<IActionResult> GetAnnouncementTemplate()
@@ -118,7 +118,7 @@
         {
             try
             {
-                await sendNotificationService.SendMessageAnnouncementToBotEndpointAsync();
+                await sendAnnouncementService.ScanSendAndUpateAnnouncementNotification();
                 return Ok("Send Successful !!!");
             }
             catch (Exception err)
