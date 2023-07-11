@@ -61,7 +61,7 @@ export class RelatedCustomerGrid extends Component {
         let html = '';
         const totalItems = customer.relatedCustomers.length;
         if (totalItems > MaximumDisplayRelatedCustomer) {
-            html = <a href="#" onClick={() => this.handleOpenViewRelatedCustomerDialog(customer.relatedCustomers)}>
+            html = <a onClick={() => this.handleOpenViewRelatedCustomerDialog(customer.relatedCustomers)}>
                 {totalItems} customers
             </a>;
         } else {

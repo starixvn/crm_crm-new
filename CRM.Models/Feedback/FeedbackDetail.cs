@@ -40,7 +40,7 @@
 
         public string Subject { get; set; }
 
-        public string RelatedCustomer { get; set; }
+        public string RelatedCustomer { get; set; } = string.Empty;
 
         public bool IsChecked { get; set; }
 

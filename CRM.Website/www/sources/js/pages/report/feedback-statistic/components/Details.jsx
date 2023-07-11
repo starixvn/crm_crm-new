@@ -78,7 +78,7 @@ export class Details extends Component {
     renderRelatedCustomer = item => {
         if (item.length > MaximumDisplayRelatedCustomer) {
             return (
-                <a href="#" onClick={() => this.handleOpenViewRelatedCustomer(item.join(', '))}>
+                <a onClick={() => this.handleOpenViewRelatedCustomer(item.join(', '))}>
                     {item.length} customers
                 </a>
             );
