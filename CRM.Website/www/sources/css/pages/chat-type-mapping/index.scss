@@ -27,6 +27,10 @@
         }
     }
 
+    ::placeholder {
+        font-size: smaller !important;
+    }
+
     .checkbox-cell-style {
         width: 13px;
         height: 13px;
