@@ -245,7 +245,7 @@ export class Filter extends Component {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
-                        <Form.Control as='input' size='sm' className='shadow-none'
+                        <Form.Control as='input' size='sm' className='shadow-none' placeholder='Username of headline'
                             name='groupHeadline' value={this.state.filter.groupHeadline}
                             onChange={this.handleChange}
                         />
@@ -271,13 +271,13 @@ export class Filter extends Component {
                         <Form.Group>
                             <Form.Label>{LangHelper.getResource('PIC')}</Form.Label>
                             <Form.Control as='input' size='sm' className='shadow-none'
-                                name='picName' value={this.state.filter.picName}
+                                name='picName' value={this.state.filter.picName} placeholder='Name of PIC'
                                 onChange={this.handleChange}
                             />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>{LangHelper.getResource('DirectAccount')}</Form.Label>
-                            <Form.Control as='input' size='sm' className='shadow-none'
+                            <Form.Control as='input' size='sm' className='shadow-none' placeholder='Username of account'
                                 name='directAccount' value={this.state.filter.directAccount}
                                 onChange={this.handleChange}
                             />

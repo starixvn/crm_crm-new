@@ -18,6 +18,10 @@
             color: white;
             cursor: pointer;
         }
+
+        ::placeholder {
+            font-size: smaller !important;
+        }
     }
     $suspended-color: #f8ded7;
     $closed-color: #f8ded7;
