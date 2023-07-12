@@ -14,9 +14,9 @@
     {
         Task<IEnumerable<SendResult>> SendMultiplePlaintextMessageAsync(BotChannel botChannel, IEnumerable<NotificationMessage> notifications);
 
-        Task<IEnumerable<AnnouncementNotificationUpdateResult>> SendMultipleFormattedMessageAndAttachmentAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications);
+        Task<IEnumerable<SendNotificationResult>> SendMultipleFormattedMessageAndAttachmentAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications);
 
-        Task<IEnumerable<AnnouncementNotificationUpdateResult>> SendImageOnlyAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications);
+        Task<IEnumerable<SendNotificationResult>> SendImageOnlyAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications);
 
         Task<SendResult> SendSinglePlaintexMessageAsync(BotChannel botChannel, NotificationMessage notification);
     }
@@ -28,10 +28,10 @@
         {
         }
 
-        public async Task<IEnumerable<AnnouncementNotificationUpdateResult>> SendMultipleFormattedMessageAndAttachmentAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
+        public async Task<IEnumerable<SendNotificationResult>> SendMultipleFormattedMessageAndAttachmentAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
         {
             var apiConfig = GetApiConfig(botChannel);
-            var results = await PostAsync<IEnumerable<AnnouncementNotificationUpdateResult>>(apiConfig.SendMultipleAnnouncementPath, notifications);
+            var results = await PostAsync<IEnumerable<SendNotificationResult>>(apiConfig.SendMultipleAnnouncementPath, notifications);
             return results;
         }
 
@@ -42,10 +42,10 @@
             return results;
         }
 
-        public async Task<IEnumerable<AnnouncementNotificationUpdateResult>> SendImageOnlyAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
+        public async Task<IEnumerable<SendNotificationResult>> SendImageOnlyAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
         {
             var apiConfig = GetApiConfig(botChannel);
-            var results = await PostAsync<IEnumerable<AnnouncementNotificationUpdateResult>>(apiConfig.SendOnlyImagesMultiplePath, notifications);
+            var results = await PostAsync<IEnumerable<SendNotificationResult>>(apiConfig.SendOnlyImagesMultiplePath, notifications);
             return results;
         }
 

@@ -1,6 +1,5 @@
 ﻿namespace CRM.BotService.Core.Services.Interfaces
 {
-    using System;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Models;
     using CRM.Core.Models.BotServices;
@@ -22,5 +21,7 @@
         Task<Message> SendTextMessageAsync(long botId, long chatId, string messageContent, ParseMode parseMode = ParseMode.Html);
 
         Task SendNotifyAsync(NotificationMessage notificationMessage, SendResult sendResult);
+
+        Task<Message> SendImageAsync(long botId, long chatId, string urlImage);
     }
 }

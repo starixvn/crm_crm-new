@@ -102,6 +102,8 @@
         [Route("api/letstalk/send-multiple-announcement")]
         public async Task<IActionResult> SendMultipleFormattedTextAndImagesAsync([FromBody] IEnumerable<AnnouncementNotification> notifications)
         {
+            logService.LogInformation("==================Send Announcement Started=================");
+            logService.LogInformation(JsonConvert.SerializeObject(notifications));
             var results = await letstalkSendMultipleReceiverService.SendFornattedTextAndImagesAsync(notifications);
 
             return Ok(results);
@@ -111,6 +113,9 @@
         [Route("api/letstalk/send-image-only")]
         public async Task<IActionResult> SendOnlyImagesAync([FromBody] IEnumerable<AnnouncementNotification> notifications)
         {
+            logService.LogInformation("==================Resend images started=================");
+            logService.LogInformation(JsonConvert.SerializeObject(notifications));
+
             var results = await letstalkSendMultipleReceiverService.SendImageAsync(notifications);
 
             return Ok(results);

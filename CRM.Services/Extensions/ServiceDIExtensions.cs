@@ -57,6 +57,7 @@
             services.AddScoped<IHomeService, HomeService>();
             services.AddScoped<ILetstalkApiService, LetstalkApiService>();
             services.AddScoped<ITelegramApiService, TelegramApiService>();
+            services.AddScoped<ISendAnnouncementService, SendAnnouncementService>();
         }
     }
 }

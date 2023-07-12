@@ -32,27 +32,25 @@
             this.botCommonService = botCommonService;
         }
 
-        public async Task<IEnumerable<AnnouncementNotificationUpdateResult>> SendFornattedTextAndImagesAsync(IEnumerable<AnnouncementNotification> notifications)
+        public async Task<IEnumerable<SendNotificationResult>> SendFornattedTextAndImagesAsync(IEnumerable<AnnouncementNotification> notifications)
         {
-            var results = new List<AnnouncementNotificationUpdateResult>();
+            var sendResults = new List<SendNotificationResult>();
             if (notifications.Any())
             {
                 List<NotificationGroupContent> groupedContentNotifications = GroupNotificationByContentAndChatType(notifications);
-                var sendResults = new List<SendNotificationResult>();
                 foreach (var notification in groupedContentNotifications)
                 {
                     var result = await SendToLetstalkAsync(notification);
                     sendResults.AddRange(result);
                 }
-
-                results = MappingSendResultToUpdateStatus(sendResults, notifications);
             }
-            return results;
+            return sendResults;
         }
 
-        public async Task<IEnumerable<AnnouncementNotificationUpdateResult>> SendImageAsync(IEnumerable<AnnouncementNotification> notifications)
+        public async Task<IEnumerable<SendNotificationResult>> SendImageAsync(IEnumerable<AnnouncementNotification> notifications)
         {
-            var updatedResult = new List<AnnouncementNotificationUpdateResult>();
+            List<SendNotificationResult> results = new();
+
             if (notifications.Any())
             {
                 var groupedNotifications = GroupResendErrorImages(notifications);
@@ -64,10 +62,9 @@
 
                 var sendReults = (await Task.WhenAll(tasks)).ToList();
 
-                List<SendNotificationResult> mergedResults = MergedResultList(sendReults);
-                updatedResult = MappingSendResultToUpdateStatus(mergedResults, notifications);
+                results = MergedResultList(sendReults);
             }
-            return updatedResult;
+            return results;
         }
 
         private async Task<List<SendNotificationResult>> ResendErrorImagesAsync(NotificationGroupContent notification)
@@ -110,7 +107,7 @@
             {
                 i.AnnouncementId,
                 i.BotId,
-                i.ChatType,
+                i.ChatTypeId,
                 i.ErrImages
             }).Select(item =>
             {
@@ -269,48 +266,6 @@
             }
         }
 
-        private static List<AnnouncementNotificationUpdateResult> MappingSendResultToUpdateStatus(List<SendNotificationResult> mergedResults, IEnumerable<AnnouncementNotification> notifications)
-        {
-            var results = new List<AnnouncementNotificationUpdateResult>();
-            foreach (var notification in notifications)
-            {
-                var matchedResult = mergedResults.FirstOrDefault(x => x.ConversationId.Equals(notification.ConversationId) && x.AnnouncementId == notification.AnnouncementId);
-                if (matchedResult is not null)
-                {
-                    var result = new AnnouncementNotificationUpdateResult
-                    {
-                        NotificationId = notification.NotificationId,
-                        ConversationGroupId = notification.ConversationGroupId,
-                        IsOnlyRetryImage = matchedResult.IsOnlyRetryImage,
-                        ErrImages = matchedResult.ErrImages is not null && matchedResult.ErrImages.Count > 0 ? string.Join(",", matchedResult.ErrImages) : string.Empty
-                    };
-                    MappingUpdateStatusErrorMessage(result, matchedResult);
-                    results.Add(result);
-                }
-            }
-            return results;
-        }
-
-        private static void MappingUpdateStatusErrorMessage(AnnouncementNotificationUpdateResult result, SendNotificationResult matchedResult)
-        {
-            if (matchedResult.IsSuccessful)
-            {
-                result.Status = SendNotificationStatuses.Sent;
-                result.ErrMsg = string.Empty;
-            }
-
-            if (!matchedResult.IsSuccessful && !matchedResult.IsBotBlocked)
-            {
-                result.Status = SendNotificationStatuses.Retrying;
-                result.ErrMsg = matchedResult.ErrMsg;
-            }
-            if (matchedResult.IsBotBlocked)
-            {
-                result.Status = SendNotificationStatuses.BotBlocked;
-                result.ErrMsg = string.Empty;
-            }
-        }
-
         private static List<NotificationGroupContent> GroupNotificationByContentAndChatType(IEnumerable<AnnouncementNotification> notifications)
         {
             var groupedNotification = notifications.GroupBy(i =>
@@ -319,7 +274,7 @@
                 i.AnnouncementId,
                 i.Content,
                 i.BotId,
-                i.ChatType,
+                i.ChatTypeId,
             }).Select(item =>
             {
                 return new NotificationGroupContent
@@ -329,7 +284,7 @@
                     Content = item.Key.Content,
                     ChatType = item.Key.ChatType,
                     ConversationIds = item.Select(x => x.ConversationId).ToList(),
-                    Attachments = !string.IsNullOrWhiteSpace(item.FirstOrDefault().FileName) ? item.FirstOrDefault().FileName.Split(",").ToList() : new List<string>(),
+                    Attachments = !string.IsNullOrWhiteSpace(item.FirstOrDefault()?.FileName) ? item.FirstOrDefault()?.FileName.Split(",").ToList() : new List<string>(),
                 };
             });
 

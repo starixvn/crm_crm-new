@@ -6,8 +6,6 @@
     using System.Threading.Tasks;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
-    using CRM.BotService.Endpoint.ViewModel;
-    using CRM.Core.Services;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -65,12 +63,13 @@
         {
             try
             {
-                foreach (var bot in botConfigurations)
+                var botIds = botConfigurations.Select(x => x.BotId);
+                foreach (var botId in botIds)
                 {
-                    var user = await telegramBotService(bot.BotId).GetBotInfoAsync(bot.BotId);
+                    var user = await telegramBotService(botId).GetBotInfoAsync(botId);
                     if (user is null)
                     {
-                        return Ok($"bot {bot.BotId} does not exist.");
+                        return Ok($"bot {botId} does not exist.");
                     }
                 }
                 return Ok("bots are healthy!!!");

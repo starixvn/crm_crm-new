@@ -9,6 +9,7 @@
         public bool IsSuccessful { get; set; }
         public bool IsBotBlocked { get; set; }
         public bool IsOnlyRetryImage { get; set; }
+        public bool IgnoredRetry { get; set; }
         public List<string> ErrImages { get; set; } = new List<string>();
         public string ErrMsg { get; set; }
     }

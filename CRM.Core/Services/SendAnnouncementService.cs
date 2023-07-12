@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.Core.Constants;
     using CRM.Core.Criteria.Announcement;
     using CRM.Core.Enumerables;
     using CRM.Core.Extensions.XML;
@@ -29,8 +30,8 @@
         {
             this.baseService = baseService;
             this.logService = logService;
-            BaseImageUrl = configuration.GetValue<string>("BaseImageUrl");
             this.chatBotSendMessageService = chatBotSendMessageService;
+            BaseImageUrl = configuration.GetValue<string>("BaseImageUrl");
         }
 
         public async Task ScanSendAndUpateAnnouncementNotification()
@@ -39,7 +40,7 @@
 
             if (notifications.Any())
             {
-                await UpdateBotRemovedGroup(notifications.Where(n => n.ChatType == ChatType.Group && n.BotId <= 0));
+                await UpdateBotRemovedGroup(notifications.Where(n => n.ChatTypeId == ChatType.Group && n.BotId <= 0));
                 await RetryImagesOnlyAsync(notifications.Where(n => n.BotId > 0 && n.IsOnlyRetryImage));
                 await SendAnnouncementAsync(notifications.Where(n => n.BotId > 0 && !n.IsOnlyRetryImage));
             }
@@ -61,8 +62,31 @@
             if (filterNotifications.Any())
             {
                 var sentResults = await chatBotSendMessageService.SendMultipleFormattedMessageAndAttachmentAsync(botChannel, filterNotifications);
-                await UpdateRecipientStatus(sentResults);
+                var updatedResult = ConvertSendMessageResultToUpdateStatusResult(notifications, sentResults);
+                await UpdateRecipientStatus(updatedResult);
             }
+        }
+
+        private static IEnumerable<AnnouncementNotificationUpdateResult> ConvertSendMessageResultToUpdateStatusResult(IEnumerable<AnnouncementNotification> notifications, IEnumerable<SendNotificationResult> sendResults)
+        {
+            var results = new List<AnnouncementNotificationUpdateResult>();
+            foreach (var notification in notifications)
+            {
+                var matchedResult = sendResults.FirstOrDefault(x => x.ConversationId.Equals(notification.ConversationId) && x.AnnouncementId == notification.AnnouncementId);
+                if (matchedResult is not null)
+                {
+                    var result = new AnnouncementNotificationUpdateResult
+                    {
+                        NotificationId = notification.NotificationId,
+                        ConversationGroupId = notification.ConversationGroupId,
+                        IsOnlyRetryImage = matchedResult.IsOnlyRetryImage,
+                        ErrImages = matchedResult.ErrImages is not null && matchedResult.ErrImages.Count > 0 ? string.Join(",", matchedResult.ErrImages) : string.Empty
+                    };
+                    MappingUpdateStatusErrorMessage(result, matchedResult);
+                    results.Add(result);
+                }
+            }
+            return results;
         }
 
         #endregion Send announcement
@@ -83,7 +107,8 @@
             if (filterNotifications.Any())
             {
                 var sentResults = await chatBotSendMessageService.SendImageOnlyAsync(botChannel, filterNotifications);
-                await UpdateRecipientStatus(sentResults);
+                var updatedResults = ConvertSendMessageResultToUpdateStatusResult(notifications, sentResults);
+                await UpdateRecipientStatus(updatedResults);
             }
         }
 
@@ -145,6 +170,33 @@
             }
 
             return notifications;
+        }
+
+        private static void MappingUpdateStatusErrorMessage(AnnouncementNotificationUpdateResult result, SendNotificationResult matchedResult)
+        {
+            if (matchedResult.IsSuccessful)
+            {
+                result.Status = SendNotificationStatuses.Sent;
+                result.ErrMsg = string.Empty;
+            }
+
+            if (!matchedResult.IsSuccessful && !matchedResult.IsBotBlocked && !matchedResult.IgnoredRetry)
+            {
+                result.Status = SendNotificationStatuses.Retrying;
+                result.ErrMsg = matchedResult.ErrMsg;
+            }
+
+            if (!matchedResult.IsSuccessful && matchedResult.IgnoredRetry)
+            {
+                result.Status = SendNotificationStatuses.Error;
+                result.ErrMsg = matchedResult.ErrMsg;
+            }
+
+            if (matchedResult.IsBotBlocked)
+            {
+                result.Status = SendNotificationStatuses.BotBlocked;
+                result.ErrMsg = string.Empty;
+            }
         }
     }
 }

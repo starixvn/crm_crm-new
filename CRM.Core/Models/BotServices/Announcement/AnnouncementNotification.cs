@@ -8,7 +8,6 @@
         public int AnnouncementId { get; set; }
         public int NotificationId { get; set; }
         public int ConversationGroupId { get; set; }
-        public int ChatTypeId { get; set; }
         public string Content { get; set; }
         public long BotId { get; set; }
         public string ConversationId { get; set; }
@@ -17,13 +16,6 @@
         public bool IsOnlyRetryImage { get; set; }
         public string ErrImages { get; set; }
         public string[] RetryImages { get; set; }
-
-        public ChatType ChatType
-        {
-            get
-            {
-                return (ChatType)ChatTypeId;
-            }
-        }
+        public ChatType ChatTypeId { get; set; }
     }
 }

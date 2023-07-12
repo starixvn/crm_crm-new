@@ -49,19 +49,21 @@
                 {
                     CloseConnection(context);
                 }
-
-                int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
-                bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
-
-                if (policy < (int)Policy)
+                else
                 {
-                    if (isAjaxRequest)
+                    int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
+                    bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
+
+                    if (policy < (int)Policy)
                     {
-                        context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
-                    }
-                    else
-                    {
-                        context.Result = new RedirectToActionResult("405", "error", null);
+                        if (isAjaxRequest)
+                        {
+                            context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+                        }
+                        else
+                        {
+                            context.Result = new RedirectToActionResult("405", "error", null);
+                        }
                     }
                 }
             }

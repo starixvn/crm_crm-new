@@ -1,11 +1,12 @@
 ﻿namespace CRM.BotService.Core.Criteria
 {
+    using CRM.BotService.Core.Constants;
     using Fanex.Data.Repository;
 
     public class WriteLogMessageCommand : NonQueryCommand
     {
         public int ReferenceId { get; set; }
-        public string DataSource { get; set; }
+        public string DataSource { get; set; } = LogDataSource.Notification;
         public long BotId { get; set; }
         public string ConversationId { get; set; }
         public string Content { get; set; }

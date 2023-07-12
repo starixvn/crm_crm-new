@@ -3,17 +3,16 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Cryptography;
     using System.Threading.Tasks;
+    using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.BotService.Endpoint.ViewModel;
     using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Models.BotServices.Announcement;
     using CRM.Core.Services;
-    using CRM.Models.NotificationList;
-    using CRM.Models.PicAndHeadline;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -26,6 +25,7 @@
         private readonly ICRMLogService logService;
         private readonly Func<long, ITelegramBotService> telegramBotService;
         private readonly IBotCommonService botCommonService;
+        private static readonly string LetstalkBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
 
         public MessageController(
             ICRMLogService logService,
@@ -38,7 +38,7 @@
         }
 
         [HttpPost]
-        [Route("api/telegram/send-multiple")]
+        [Route("api/telegram/send-plaintext-multiple")]
         public async Task<IActionResult> SendMultipleMessage([FromBody] IEnumerable<NotificationMessage> notifications)
         {
             logService.LogInformation("Start SendMultipleMessage: " + JsonConvert.SerializeObject(notifications, Formatting.Indented));
@@ -60,18 +60,34 @@
         }
 
         [HttpPost]
-        [Route("api/letstalk/send-multiple-announcement")]
+        [Route("api/telegram/send-multiple-announcement")]
         public async Task<IActionResult> SendMultipleFormattedTextAndImagesAsync([FromBody] IEnumerable<AnnouncementNotification> notifications)
         {
             logService.LogInformation("Start SendMultipleFormattedTextAndImagesAsync: " + JsonConvert.SerializeObject(notifications, Formatting.Indented));
-            var tasks = new List<Task<SendResult>>();
+
+            if (botCommonService.IsActiveChannel(BotChannel.Telegram))
+            {
+                var inActivedBotChannelResults = notifications.Select(x => new SendNotificationResult
+                {
+                    AnnouncementId = x.AnnouncementId,
+                    ConversationId = x.ConversationId,
+                    IsSuccessful = false,
+                    IgnoredRetry = true,
+                    ErrMsg = $"Channel {x.ChannelId} is current inactivated"
+                });
+                logService.LogInformation($"{BotChannel.Telegram} current inactived");
+
+                return Ok(inActivedBotChannelResults);
+            }
+
+            var tasks = new List<Task<SendNotificationResult>>();
             if (notifications is not null && notifications.Any())
             {
                 foreach (var notification in notifications)
                 {
                     tasks.Add(
                         Task.Run(
-                            () => SendTextAndImageTelegramService(notification)
+                            () => SendFormattedTextAndImageTelegramService(notification)
                     ));
                 }
             }
@@ -82,7 +98,42 @@
         }
 
         [HttpPost]
-        [Route("api/telegram/send-single")]
+        [Route("api/telegram/send-image-only")]
+        public async Task<IActionResult> SendMultipleImagesOnlyAsync([FromBody] IEnumerable<AnnouncementNotification> notifications)
+        {
+            logService.LogInformation("Start SendMultipleFormattedTextAndImagesAsync: " + JsonConvert.SerializeObject(notifications, Formatting.Indented));
+            if (botCommonService.IsActiveChannel(BotChannel.Telegram))
+            {
+                var inActivedBotChannelResults = notifications.Select(x => new SendNotificationResult
+                {
+                    AnnouncementId = x.AnnouncementId,
+                    ConversationId = x.ConversationId,
+                    IsSuccessful = false,
+                    IgnoredRetry = true,
+                    ErrMsg = $"Channel {x.ChannelId} is current inactivated"
+                });
+                logService.LogInformation($"{BotChannel.Telegram} current inactived");
+                return Ok(inActivedBotChannelResults);
+            }
+            var tasks = new List<Task<SendNotificationResult>>();
+            if (notifications is not null && notifications.Any())
+            {
+                foreach (var notification in notifications)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () => SendImagesOnlyTelegramService(notification)
+                    ));
+                }
+            }
+
+            var results = (await Task.WhenAll(tasks)).ToList();
+            logService.LogInformation("End Start SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
+            return Ok(results);
+        }
+
+        [HttpPost]
+        [Route("api/telegram/send-plaintext-single")]
         public async Task<IActionResult> SendSingleMessage(NotificationMessage notification)
         {
             var result = await SendTelegramService(notification);
@@ -141,23 +192,115 @@
             catch (Exception exception)
             {
                 await logService.ErrorAsync(exception);
-                return handleExceptionVerifyGroup(exception);
+                return HandleExceptionVerifyGroup(exception);
             }
         }
 
-        private async Task<SendResult> SendTextAndImageTelegramService(AnnouncementNotification announcementNotification)
+        private async Task<SendNotificationResult> SendFormattedTextAndImageTelegramService(AnnouncementNotification announcementNotification)
         {
-            var notification = new NotificationMessage
+            var result = await SendFormattedTextAsync(announcementNotification);
+
+            if (result.IsSuccessful && announcementNotification.Images is not null && announcementNotification.Images.Length > 0)
             {
-                NotificationId = announcementNotification.NotificationId,
-                ConversationGroupId = announcementNotification.ConversationGroupId,
-                ChannelId = announcementNotification.ChannelId,
-                BotId = announcementNotification.BotId,
+                foreach (var image in announcementNotification.Images)
+                {
+                    await SendImageTelegramService(announcementNotification, image, result);
+                }
+            }
+            return result;
+        }
+
+        private async Task<SendNotificationResult> SendFormattedTextAsync(AnnouncementNotification announcementNotification)
+        {
+            var result = new SendNotificationResult
+            {
+                AnnouncementId = announcementNotification.NotificationId,
                 ConversationId = announcementNotification.ConversationId,
-                Content = announcementNotification.Content
             };
-            var sendTextResult = await SendTelegramService(notification);
-            return sendTextResult;
+
+            try
+            {
+                logService.LogInformation(string.Format("Start SendFormattedTextAsync: botId: {0} chatId: {1}.", announcementNotification.BotId, announcementNotification.ConversationId));
+                _ = long.TryParse(announcementNotification.ConversationId, out long chatId);
+
+                await telegramBotService(announcementNotification.BotId).SendTextMessageAsync(announcementNotification.BotId, chatId, announcementNotification.Content);
+                result.IsSuccessful = true;
+
+                logService.LogInformation("end SendFormattedTextAsync!!!");
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccessful = false;
+                result.ErrMsg = LetstalkBotServiceErrorMessage;
+                var writeLogCommand = new WriteLogMessageCommand
+                {
+                    ReferenceId = announcementNotification.NotificationId,
+                    DataSource = LogDataSource.Announcement,
+                    BotId = announcementNotification.BotId,
+                    ConversationId = announcementNotification.ConversationId,
+                    Content = announcementNotification.Content,
+                    IsSuccess = false,
+                    IsBotBlocked = false,
+                    ErrMsg = ex.Message
+                };
+                await botCommonService.WriteLogMessageAsyns(writeLogCommand);
+                await logService.ErrorAsync(ex);
+            }
+
+            return result;
+        }
+
+        private async Task<SendNotificationResult> SendImagesOnlyTelegramService(AnnouncementNotification announcementNotification)
+        {
+            var result = new SendNotificationResult
+            {
+                AnnouncementId = announcementNotification.AnnouncementId,
+                ConversationId = announcementNotification.ConversationId,
+            };
+
+            if (announcementNotification.RetryImages is not null && announcementNotification.RetryImages.Length > 0)
+            {
+                foreach (var image in announcementNotification.RetryImages)
+                {
+                    await SendImageTelegramService(announcementNotification, image, result);
+                }
+            }
+            return result;
+        }
+
+        private async Task SendImageTelegramService(AnnouncementNotification announcementNotification, string image, SendNotificationResult result)
+        {
+            logService.LogInformation("Start SendImageTelegramService!!!");
+
+            try
+            {
+                logService.LogInformation(string.Format("Start SendNotifyAysnc: botId: {0} chatId: {1}.", announcementNotification.BotId, announcementNotification.ConversationId));
+
+                _ = long.TryParse(announcementNotification.ConversationId, out long chatId);
+
+                await telegramBotService(announcementNotification.BotId).SendImageAsync(announcementNotification.BotId, chatId, image);
+                result.IsSuccessful = true;
+                logService.LogInformation("end SendNotifyAysnc!!!");
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccessful = false;
+                result.ErrMsg = LetstalkBotServiceErrorMessage;
+                result.IsOnlyRetryImage = true;
+                result.ErrImages.Add(image);
+                var writeLogCommand = new WriteLogMessageCommand
+                {
+                    ReferenceId = announcementNotification.AnnouncementId,
+                    DataSource = LogDataSource.Announcement,
+                    BotId = announcementNotification.BotId,
+                    ConversationId = announcementNotification.ConversationId,
+                    Content = image,
+                    IsSuccess = false,
+                    ErrMsg = ex.Message
+                };
+                await botCommonService.WriteLogMessageAsyns(writeLogCommand);
+                await logService.ErrorAsync(ex);
+            }
         }
 
         private async Task<SendResult> SendTelegramService(NotificationMessage notification)
@@ -190,7 +333,7 @@
             {
                 result.ErrorCode = 1;
                 result.SentTime = DateTime.UtcNow;
-                result.ErrorMessage = SendNotificationErrorMessage.BotServiceTelegramErrorMsg;
+                result.ErrorMessage = LetstalkBotServiceErrorMessage;
                 var writeLogCommand = new WriteLogMessageCommand
                 {
                     ReferenceId = notification.NotificationId,
@@ -208,12 +351,7 @@
             return result;
         }
 
-        //private async Task<SendResult> SendImageTelegramService(AnnouncementNotification announcementNotification)
-        //{
-
-        //}
-
-        private IActionResult handleExceptionVerifyGroup(Exception exception)
+        private IActionResult HandleExceptionVerifyGroup(Exception exception)
         {
             return exception.Message.Contains("bot was kicked from the supergroup chat", StringComparison.InvariantCultureIgnoreCase)
                || exception.Message.Contains("bot was kicked from the group chat", StringComparison.InvariantCultureIgnoreCase)

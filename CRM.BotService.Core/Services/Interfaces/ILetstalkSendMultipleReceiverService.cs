@@ -6,8 +6,8 @@
 
     public interface ILetstalkSendMultipleReceiverService
     {
-        Task<IEnumerable<AnnouncementNotificationUpdateResult>> SendFornattedTextAndImagesAsync(IEnumerable<AnnouncementNotification> notifications);
+        Task<IEnumerable<SendNotificationResult>> SendFornattedTextAndImagesAsync(IEnumerable<AnnouncementNotification> notifications);
 
-        Task<IEnumerable<AnnouncementNotificationUpdateResult>> SendImageAsync(IEnumerable<AnnouncementNotification> notifications);
+        Task<IEnumerable<SendNotificationResult>> SendImageAsync(IEnumerable<AnnouncementNotification> notifications);
     }
 }
