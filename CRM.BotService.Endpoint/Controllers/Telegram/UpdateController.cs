@@ -193,7 +193,7 @@
 
         protected internal virtual async Task RemoveBotToGroupAsync(Message message, User bot)
         {
-            var isExistBot = checkExistBot(bot.Id);
+            var isExistBot = checkExistBot(message.LeftChatMember.Id);
             if (isExistBot && message.LeftChatMember.IsBot)
             {
                 var command = new RemoveBotFromGroupCommand
