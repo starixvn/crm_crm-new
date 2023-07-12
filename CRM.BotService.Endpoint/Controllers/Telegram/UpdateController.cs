@@ -199,6 +199,8 @@
         {
             var greetingCache = await cacheService.GetAsync<List<CurrentBotGreeting>>(CurrentGreetingKey);
             string greeting = string.Format(CommandMessageTelegram.AddBotToGroupGreetingMessage, bot.Username, message.Chat.Id);
+            var greetingCacheSerialize = JsonConvert.SerializeObject(greetingCache, Formatting.Indented);
+            logService.LogInformation("greetingCacheSerialize: " + greetingCacheSerialize);
             var newGreeting = new CurrentBotGreeting
             {
                 ChatId = message.Chat.Id,
@@ -211,6 +213,8 @@
                 if (!isDuplicateGreeting)
                 {
                     greetingCache.Add(newGreeting);
+                    var cache = JsonConvert.SerializeObject(greetingCache, Formatting.Indented);
+                    logService.LogInformation("not duplicate: " + cache);
                     await cacheService.SetAsync<List<CurrentBotGreeting>>(CurrentGreetingKey, greetingCache);
 
                     await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
@@ -218,6 +222,7 @@
             }
             else
             {
+                logService.LogInformation("new greeting");
                 var newListGreeting = new List<CurrentBotGreeting> { newGreeting };
                 await cacheService.SetAsync<List<CurrentBotGreeting>>("CurrentGreetingKey", newListGreeting);
                 await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
