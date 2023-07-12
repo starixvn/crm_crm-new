@@ -129,10 +129,11 @@ export const checkInvalidMaxLengthContent = (content, tab) =>{
     const contentReplaceHtml = contentByTab?.replace(/(<([^>]+)>)/gi, '');
     const MAX_LENGTH_TELEGRAM = 4096;
     let invalidContentMaxLength = false;
-    if(contentReplaceHtml?.length > MAX_LENGTH_TELEGRAM){
+    console.log(contentReplaceHtml?.length);
+    if(contentReplaceHtml?.length + 1 > MAX_LENGTH_TELEGRAM){
         invalidContentMaxLength = true;
     }
-    const textInvalidContentMaxLength = `Max length ${contentReplaceHtml?.length}/${MAX_LENGTH_TELEGRAM}`;
+    const textInvalidContentMaxLength = `Max length ${contentReplaceHtml?.length + 1}/${MAX_LENGTH_TELEGRAM}`;
     return {invalidContentMaxLength, textInvalidContentMaxLength};
 };
 

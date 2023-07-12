@@ -1,5 +1,6 @@
 ﻿namespace CRM.Services.Extensions
 {
+    using CRM.Core.Services;
     using CRM.Repositories;
     using CRM.Services.ActionLog;
     using CRM.Services.BotServices;
@@ -32,6 +33,7 @@
             services.AddScoped<ICommonService, CommonService>();
             services.AddScoped<IChatTypeMappingService, ChatTypeMappingService>();
             services.AddScoped<IAnnouncementService, AnnouncementService>();
+            services.AddScoped<ISendAnnouncementService, SendAnnouncementService>();
             services.AddScoped<ICommunicationToolSettingService, CommunicationToolSettingService>();
             services.AddScoped<IPicAssignmentService, PicAssignmentService>();
             services.AddScoped<ISettlementReportService, SettlementReportService>();
