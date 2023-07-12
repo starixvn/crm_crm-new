@@ -84,10 +84,6 @@
         {
             logService.LogInformation("Start SendNotifyAsync: " + notificationMessage.ConversationId);
             await SendTextMessageAsync(notificationMessage, sendResult);
-            //if (notificationMessage.Images is not null && notificationMessage.Images.Length > 0 && sendResult.IsSuccessful)
-            //{
-            //    await SendImageAsync(notificationMessage, sendResult);
-            //}
             sendResult.SentTime = DateTime.UtcNow;
             await WriteLogCommandAsync(notificationMessage, sendResult);
             logService.LogInformation("End SendNotifyAsync: " + notificationMessage.ConversationId);
@@ -122,28 +118,6 @@
             return message;
         }
 
-        public async Task SendImageAsync(NotificationMessage notificationMessage, SendResult sendResult)
-        {
-            try
-            {
-                sendResult.ErrorCode = 0;
-                _ = long.TryParse(notificationMessage.ConversationId, out long chatId);
-                //foreach (var img in notificationMessage.Images)
-                //{
-                //    logService.LogInformation("Start SendImageAsync: " + notificationMessage.ConversationId + img);
-
-                //    await SendImageAsync(notificationMessage.BotId, chatId, img);
-                //    await WriteLogCommandAsync(notificationMessage, sendResult, img);
-                //}
-                logService.LogInformation("End SendImageAsync: " + notificationMessage.ConversationId);
-            }
-            catch (Exception exception)
-            {
-                WriteLogInfor(notificationMessage, exception);
-                HandleExceptionTelegramMessage(sendResult, exception);
-            }
-        }
-
         public async Task<Message> SendImageAsync(long botId, long chatId, string urlImage)
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
@@ -168,6 +142,7 @@
             };
             await botCommonService.WriteLogMessageAsyns(writeLogCommand);
         }
+
 
         private static void HandleExceptionTelegramMessage(SendResult sendResult, Exception exception)
         {

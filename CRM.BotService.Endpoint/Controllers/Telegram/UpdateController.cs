@@ -1,11 +1,8 @@
-﻿using System.Diagnostics;
-using System.IO.Compression;
-namespace CRM.BotService.Endpoint.Controllers.Telegram
+﻿namespace CRM.BotService.Endpoint.Controllers.Telegram
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Cryptography;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Criteria;
