@@ -24,6 +24,7 @@
         private Func<long, ILetstalkClientService> letstalkClientService;
         private IBotCommonService botCommonService;
         private ICRMLogService logService;
+        private ILetstalkSendMultipleReceiverService letstalkSendMultipleReceiverService;
 
         [Fact]
         public async Task CheckPersonalProfileAsync_WhenCalled_ReturnOkObjectResult()
@@ -212,7 +213,6 @@
                 ChannelId = BotChannel.Letstalk,
                 Content = "abc",
                 ConversationId = "abc",
-                Images = new string[] { "url1", "url2", "url3" }
             });
 
             var actual = Assert.IsType<OkObjectResult>(action);
@@ -240,7 +240,6 @@
                 ChannelId = BotChannel.Letstalk,
                 Content = "abc",
                 ConversationId = "abc",
-                Images = new string[] { "url1", "url2", "url3" }
             });
 
             var actual = Assert.IsType<OkObjectResult>(action);
@@ -269,7 +268,8 @@
             letstalkClientService = Substitute.For<Func<long, ILetstalkClientService>>();
             botCommonService = Substitute.For<IBotCommonService>();
             logService = Substitute.For<ICRMLogService>();
-            return new LetstalkController(letstalkClientService, botCommonService, logService);
+            letstalkSendMultipleReceiverService = Substitute.For<ILetstalkSendMultipleReceiverService>();
+            return new LetstalkController(letstalkClientService, botCommonService, logService, letstalkSendMultipleReceiverService);
         }
 
         #endregion Helper

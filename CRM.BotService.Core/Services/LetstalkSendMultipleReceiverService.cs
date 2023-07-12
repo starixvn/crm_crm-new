@@ -115,7 +115,7 @@
                 {
                     AnnouncementId = item.Key.AnnouncementId,
                     BotId = item.Key.BotId,
-                    ChatType = item.Key.ChatType,
+                    ChatType = item.Key.ChatTypeId,
                     ConversationIds = item.Select(x => x.ConversationId).ToList(),
                     Attachments = !string.IsNullOrWhiteSpace(item.Key.ErrImages) ? item.Key.ErrImages.Split(",").ToList() : new List<string>(),
                 };
@@ -282,7 +282,7 @@
                     AnnouncementId = item.Key.AnnouncementId,
                     BotId = item.Key.BotId,
                     Content = item.Key.Content,
-                    ChatType = item.Key.ChatType,
+                    ChatType = item.Key.ChatTypeId,
                     ConversationIds = item.Select(x => x.ConversationId).ToList(),
                     Attachments = !string.IsNullOrWhiteSpace(item.FirstOrDefault()?.FileName) ? item.FirstOrDefault()?.FileName.Split(",").ToList() : new List<string>(),
                 };
