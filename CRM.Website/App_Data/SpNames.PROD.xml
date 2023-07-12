@@ -61,6 +61,10 @@
         <Setting Key="Acc_CRM_ChatBot_ChatTypeMappingRemark_Upd" SpName="Acc_CRM_ChatBot_ChatTypeMappingRemark_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_IgnoredNotificationType_Sel" SpName="Acc_CRM_ChatBot_IgnoredNotificationType_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_ConversationGroup_Del" SpName="Acc_CRM_ChatBot_ConversationGroup_Del" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_ChatBot_Channel_Sel" SpName="Acc_CRM_ChatBot_Channel_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+            <Mapping DataField="ChannelId" ObjectProperty="Id" />
+            <Mapping DataField="ChannelName" ObjectProperty="Name" />
+        </Setting>
     </Function>
     <Function Name="Setting">
         <Setting Key="Acc_CRM_CommunicationToolList" SpName="Acc_CRM_CommunicationToolList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
@@ -122,9 +126,9 @@
             <Mapping DataField="Currency" ObjectProperty="Name" />
         </Setting>
         <Setting Key="Acc_CRM_Rpt_DeletedFeedbackStatistics" SpName="Acc_CRM_Rpt_DeletedFeedbackStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSummary" SpName="Acc_CRM_Rpt_FeedbackStatisticsSummary" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_Crm_Rpt_DirectCustomerReport" SpName="Acc_Crm_Rpt_DirectCustomerReport" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsWagers" SpName="Acc_CRM_Rpt_FeedbackStatisticsWagers" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSummary" SpName="Acc_CRM_Rpt_FeedbackStatisticsSummary" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_DailyStatistics" SpName="Acc_CRM_Rpt_DailyStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_DailyStatisticsDetail" SpName="Acc_CRM_Rpt_DailyStatisticsDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_LogActionSettingList" SpName="Acc_CRM_LogActionSettingList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -324,5 +328,13 @@
         <Setting Key="Acc_CRM_ChatBot_Announcement_Ins" SpName="Acc_CRM_ChatBot_Announcement_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_Announcement_Upd" SpName="Acc_CRM_ChatBot_Announcement_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_AnnouncementStatus_Upd" SpName="Acc_CRM_ChatBot_AnnouncementStatus_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+    </Function>
+    <Function Name="Send Notification">
+        <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_Chatbot_SendNotification_Status_Upd" SpName="Acc_CRM_Chatbot_SendNotification_Status_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+    </Function>
+    <Function Name="Send Announcement">
+        <Setting Key="Acc_CRM_Chatbot_Announcement_Notification_Sel" SpName="Acc_CRM_Chatbot_Announcement_Notification_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_ChatBot_Announcement_Notification_UpdStatus" SpName="Acc_CRM_ChatBot_Announcement_Notification_UpdStatus" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
     </Function>
 </Functions>
