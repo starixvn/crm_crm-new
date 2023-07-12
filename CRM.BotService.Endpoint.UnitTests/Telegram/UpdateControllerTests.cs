@@ -23,7 +23,6 @@
         private ICRMLogService logService;
         private IBaseService baseService;
         private List<TelegramBotConfigurations> botConfigurations;
-        private ICacheService cacheService;
         private IFixture fixture = new Fixture();
 
         [Fact]
@@ -544,12 +543,11 @@
                     Domain="Domain"
                 }
             };
-            cacheService = Substitute.For<ICacheService>();
 
             var botConfig = Substitute.For<List<TelegramBotConfigurations>>();
             botConfig.AddRange(botConfigurations);
 
-            return Substitute.ForPartsOf<UpdateControllerTestable>(logService, telegramBotService, baseService, botConfigurations, cacheService);
+            return Substitute.ForPartsOf<UpdateControllerTestable>(logService, telegramBotService, baseService, botConfigurations);
         }
 
         #endregion Helpers

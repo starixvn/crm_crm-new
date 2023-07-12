@@ -17,8 +17,7 @@
             ICRMLogService logService,
             Func<long, ITelegramBotService> telegramBotService,
             IBaseService baseService,
-            List<TelegramBotConfigurations> botConfigurations,
-            ICacheService cacheService) : base(logService, telegramBotService, baseService, botConfigurations, cacheService)
+            List<TelegramBotConfigurations> botConfigurations) : base(logService, telegramBotService, baseService, botConfigurations)
         {
         }
 

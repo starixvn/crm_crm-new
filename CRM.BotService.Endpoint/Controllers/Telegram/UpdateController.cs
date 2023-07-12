@@ -23,22 +23,17 @@
         private readonly ICRMLogService logService;
         private readonly IBaseService baseService;
         private readonly List<TelegramBotConfigurations> botConfigurations;
-        private readonly ICacheService cacheService;
-
-        private const string CurrentGreetingKey = "CurrentGreetingKey";
 
         public UpdateController(
             ICRMLogService logService,
             Func<long, ITelegramBotService> telegramBotService,
             IBaseService baseService,
-            List<TelegramBotConfigurations> botConfigurations,
-            ICacheService cacheService)
+            List<TelegramBotConfigurations> botConfigurations)
         {
             this.logService = logService;
             this.telegramBotService = telegramBotService;
             this.baseService = baseService;
             this.botConfigurations = botConfigurations;
-            this.cacheService = cacheService;
         }
 
         [HttpPost]
@@ -90,7 +85,7 @@
                     User[] bots = message.NewChatMembers.Where(x => x.IsBot).ToArray();
                     for (var i = 0; i < bots.Length; i++)
                     {
-                        await AddBotToGroupAsync(message, bots[i]);
+                        await AddBotToGroupAsync(message, bots[i], bot);
                     }
                     break;
 
@@ -152,21 +147,22 @@
             return result;
         }
 
-        protected internal virtual async Task<CommandResult> AddBotToGroupAsync(Message message, User bot)
+        protected internal virtual async Task<CommandResult> AddBotToGroupAsync(Message message, User newBotAdd, User bot = null)
         {
-            var isExistBot = checkExistBot(bot.Id);
+            var isExistBot = checkExistBot(newBotAdd.Id);
 
             if (!isExistBot)
             {
-                logService.LogInformation($"bot: {bot.Id} does not exist");
+                logService.LogInformation($"bot: {newBotAdd.Id} does not exist");
                 return new CommandResult();
             }
 
-            var result = await CreateAddBotToGroupCommand(message, bot);
+            var result = await CreateAddBotToGroupCommand(message, newBotAdd);
 
-            if (result.IsSuccessful)
+            if (result.IsSuccessful && (bot == null || bot.Id == newBotAdd.Id))
             {
-                await HandleGreeting(message, bot);
+                string greeting = string.Format(CommandMessageTelegram.AddBotToGroupGreetingMessage, newBotAdd.Username, message.Chat.Id);
+                await telegramBotService(newBotAdd.Id).SendTextMessageAsync(newBotAdd.Id, message.Chat.Id, greeting);
             }
             else
             {
@@ -195,41 +191,6 @@
             return result;
         }
 
-        private async Task HandleGreeting(Message message, User bot)
-        {
-            var greetingCache = await cacheService.GetAsync<List<CurrentBotGreeting>>(CurrentGreetingKey);
-            string greeting = string.Format(CommandMessageTelegram.AddBotToGroupGreetingMessage, bot.Username, message.Chat.Id);
-            var greetingCacheSerialize = JsonConvert.SerializeObject(greetingCache, Formatting.Indented);
-            logService.LogInformation("greetingCacheSerialize: " + greetingCacheSerialize);
-            var newGreeting = new CurrentBotGreeting
-            {
-                ChatId = message.Chat.Id,
-                Message = greeting
-            };
-            if (greetingCache is not null && greetingCache.Any())
-            {
-                var isDuplicateGreeting = greetingCache.Any(x => x.ChatId == message.Chat.Id && x.Message == greeting);
-
-                if (!isDuplicateGreeting)
-                {
-                    greetingCache.Add(newGreeting);
-                    var cache = JsonConvert.SerializeObject(greetingCache, Formatting.Indented);
-                    logService.LogInformation("not duplicate: " + cache);
-                    await cacheService.SetAsync<List<CurrentBotGreeting>>(CurrentGreetingKey, greetingCache);
-
-                    await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
-                }
-            }
-            else
-            {
-                logService.LogInformation("new greeting");
-                var newListGreeting = new List<CurrentBotGreeting> { newGreeting };
-                await cacheService.SetAsync<List<CurrentBotGreeting>>("CurrentGreetingKey", newListGreeting);
-                await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, greeting);
-            }
-        }
-
-
         protected internal virtual async Task RemoveBotToGroupAsync(Message message, User bot)
         {
             var isExistBot = checkExistBot(bot.Id);
@@ -248,10 +209,6 @@
                 if (!result.IsSuccessful)
                 {
                     await logService.ErrorAsync(new Exception(result.Message));
-                }
-                else
-                {
-                    await cacheService.RemoveAsync(CurrentGreetingKey);
                 }
                 logService.LogInformation("end RemoveBotToGroupAsync!!!");
             }
