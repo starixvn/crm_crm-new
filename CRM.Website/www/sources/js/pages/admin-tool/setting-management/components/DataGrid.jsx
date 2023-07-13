@@ -75,7 +75,6 @@ export class DataGrid extends Component {
     };
 
     handleEditStatus = (settingId, settingValue, isActive)=>{
-        console.log(settingValue);
         this.props.setEditStatusPopup({show: true, settingId, settingValue, isActive});
     };
 

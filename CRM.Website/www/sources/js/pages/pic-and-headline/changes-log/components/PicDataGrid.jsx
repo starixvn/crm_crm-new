@@ -206,8 +206,8 @@ export class PicDataGrid extends Component {
     };
 
     getDetailChatTypeMappingUpdate = item =>{
-        try{
-            const {newLogInfo, oldLogInfo} = item;
+
+        const {newLogInfo, oldLogInfo} = item;
         const newDisplayName = this.getStringValue(newLogInfo.conversationGroup?.name);
         const oldDisplayName = this.getStringValue(oldLogInfo.conversationGroup?.name);
         const displayNameValue = this.changeValueToHtmlString(oldDisplayName, newDisplayName);
@@ -266,9 +266,6 @@ export class PicDataGrid extends Component {
                 }
             </div>
         );
-        }catch(err){
-            console.log(item);
-        }
     };
 
     getDetailValueUpdatePicStatus = item =>{

@@ -71,7 +71,9 @@
             }
         }
 
-        private static IEnumerable<AnnouncementNotificationUpdateResult> ConvertSendMessageResultToUpdateStatusResult(IEnumerable<AnnouncementNotification> notifications, IEnumerable<SendNotificationResult> sendResults)
+        private static IEnumerable<AnnouncementNotificationUpdateResult> ConvertSendMessageResultToUpdateStatusResult(
+            IEnumerable<AnnouncementNotification> notifications, IEnumerable<SendNotificationResult> sendResults
+            )
         {
             var results = new List<AnnouncementNotificationUpdateResult>();
             foreach (var notification in notifications)
