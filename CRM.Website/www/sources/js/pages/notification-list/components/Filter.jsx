@@ -310,7 +310,7 @@ export class Filter extends Component {
                         <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <Select
-                                placeholder=' '
+                                placeholder='Username of headline'
                                 isClearable
                                 noOptionsMessage={() => 'No results found'}
                                 onChange={value => this.handleHeadlineChange(value)}
@@ -324,7 +324,7 @@ export class Filter extends Component {
                         <Form.Label>{LangHelper.getResource('Recipient')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <Select
-                                placeholder=' '
+                                placeholder='Name of PIC'
                                 isClearable
                                 noOptionsMessage={() => 'No results found'}
                                 onChange={value => this.handleRecipientChange(value)}
@@ -354,6 +354,7 @@ export class Filter extends Component {
                                         'invalid-input' : 'valid-input'} notification-id-input`}
                                     as='input' type='text' pattern='[0-9]*' size='sm'
                                     name='notificationIdLower'
+                                    placeholder='From'
                                     value={this.state.filter.notificationIdLower}
                                     onChange={e => this.handleChangeFilterControl(e)}
                                 />
@@ -363,6 +364,7 @@ export class Filter extends Component {
                                         'invalid-input' : 'valid-input'} notification-id-input`}
                                     as='input' type='text' pattern='[0-9]*' size='sm'
                                     name='notificationIdUpper'
+                                    placeholder='To'
                                     value={this.state.filter.notificationIdUpper}
                                     onChange={e => this.handleChangeFilterControl(e)}
                                 />
@@ -384,6 +386,7 @@ export class Filter extends Component {
                         <Form.Group style={{width: '280px'}}>
                             <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Content')}</Form.Label>
                             <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
+                                placeholder='Notification content'
                                 value={this.state.filter.content}
                                 autoComplete='off'
                                 onChange={e => this.handleChange(e)}

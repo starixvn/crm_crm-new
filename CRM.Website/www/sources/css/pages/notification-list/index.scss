@@ -14,6 +14,10 @@
             }
         }
 
+        ::placeholder, .react-select__placeholder {
+            font-size: smaller !important;
+        }
+
         .form-group{
             margin-bottom: 10px;
 
@@ -223,4 +227,3 @@
 .view-detail-remark:focus {
     outline: none;
 }
-
