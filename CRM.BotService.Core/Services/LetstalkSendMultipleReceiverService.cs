@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Models.Letstalk;
@@ -100,7 +101,7 @@
             return results;
         }
 
-        private static List<NotificationGroupContent> GroupResendErrorImages(IEnumerable<AnnouncementNotification> notifications)
+        private List<NotificationGroupContent> GroupResendErrorImages(IEnumerable<AnnouncementNotification> notifications)
         {
             var groupedNotification = notifications.GroupBy(i =>
             new
@@ -150,7 +151,7 @@
                     MessageType = NotificationMessageType.Html,
                     Text = notification.Content
                 });
-                await WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
                     string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
 
                 if (pushResults.IsSuccess)
@@ -197,14 +198,14 @@
                         MessageType = NotificationMessageType.Image,
                         ImageUrl = img
                     });
-                    await WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
+                    WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
                 }
                 catch (Exception ex)
                 {
                     pushResult.Status = 0;
                     pushResult.Message = ex.Message;
                     pushResult.FailList = conversationIds;
-                    await WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
+                    WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
                     await logService.ErrorAsync(ex);
                 }
 
@@ -265,8 +266,11 @@
             }
         }
 
-        private static List<NotificationGroupContent> GroupNotificationByContentAndChatType(IEnumerable<AnnouncementNotification> notifications)
+        private List<NotificationGroupContent> GroupNotificationByContentAndChatType(IEnumerable<AnnouncementNotification> notifications)
         {
+            logService.LogInformation("========== start group content===========");
+            logService.LogInformation(JsonConvert.SerializeObject(notifications));
+
             var groupedNotification = notifications.GroupBy(i =>
             new
             {
@@ -286,13 +290,16 @@
                     Attachments = item.FirstOrDefault()?.Images.ToList(),
                 };
             });
+            logService.LogInformation("========== end group content===========");
 
             var results = DividedBatchRecivers(groupedNotification);
             return results;
         }
 
-        private static List<NotificationGroupContent> DividedBatchRecivers(IEnumerable<NotificationGroupContent> notifications)
+        private List<NotificationGroupContent> DividedBatchRecivers(IEnumerable<NotificationGroupContent> notifications)
         {
+            logService.LogInformation("========== start divide batch group content===========");
+            logService.LogInformation(JsonConvert.SerializeObject(notifications));
             var listResults = new List<NotificationGroupContent>();
             foreach (var item in notifications)
             {
@@ -306,6 +313,8 @@
                     listResults.AddRange(batches);
                 }
             }
+            logService.LogInformation("========== end divide batch group content===========");
+
             return listResults;
         }
 
@@ -329,7 +338,7 @@
             return listResults;
         }
 
-        private async Task WriteLogMessage(int announcementId, long botId, string content, string conversationIds, bool isSuccess, string errMsg)
+        private void WriteLogMessage(int announcementId, long botId, string content, string conversationIds, bool isSuccess, string errMsg)
         {
             var command = new WriteLogMessageCommand
             {
@@ -341,8 +350,8 @@
                 IsSuccess = isSuccess,
                 ErrMsg = errMsg,
             };
-
-            await botCommonService.WriteLogMessageAsyns(command);
+            var thread = new Thread(async () => await botCommonService.WriteLogMessageAsyns(command));
+            thread.Start();
         }
 
         private async Task<List<SendNotificationResult>> SendMessageToMulipleGroupAsync(NotificationGroupContent notification)
@@ -364,7 +373,7 @@
                     MessageType = NotificationMessageType.Html,
                     Text = notification.Content
                 });
-                await WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
                     string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
                 if (pushResults.IsSuccess)
                 {
@@ -405,14 +414,14 @@
                         MessageType = NotificationMessageType.Image,
                         ImageUrl = img
                     });
-                    await WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
+                    WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
                 }
                 catch (Exception ex)
                 {
                     pushResult.Status = 0;
                     pushResult.Message = ex.Message;
                     pushResult.FailList = conversationIds;
-                    await WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
+                    WriteLogMessage(announcementId, botId, img, string.Join(",", conversationIds), pushResult.IsSuccess, JsonConvert.SerializeObject(pushResult));
                 }
                 UpdateSendImageResultStatus(pushResult, sendResult, img);
             }
