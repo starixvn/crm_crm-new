@@ -25,7 +25,7 @@
         private readonly ICRMLogService logService;
         private readonly Func<long, ITelegramBotService> telegramBotService;
         private readonly IBotCommonService botCommonService;
-        private static readonly string LetstalkBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
+        private static readonly string TelegramBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
 
         public MessageController(
             ICRMLogService logService,
@@ -336,7 +336,7 @@
             {
                 result.ErrorCode = 1;
                 result.SentTime = DateTime.UtcNow;
-                result.ErrorMessage = LetstalkBotServiceErrorMessage;
+                result.ErrorMessage = TelegramBotServiceErrorMessage;
                 var writeLogCommand = new WriteLogMessageCommand
                 {
                     ReferenceId = notification.NotificationId,
@@ -370,7 +370,7 @@
         private static void HandleExceptionTelegramMessage(SendNotificationResult sendResult, Exception exception)
         {
             sendResult.IsSuccessful = false;
-            sendResult.ErrMsg = LetstalkBotServiceErrorMessage;
+            sendResult.ErrMsg = TelegramBotServiceErrorMessage;
 
             if (exception.Message.Contains("Message is too long", StringComparison.InvariantCultureIgnoreCase))
             {

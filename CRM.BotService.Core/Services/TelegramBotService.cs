@@ -10,6 +10,8 @@
     using CRM.BotService.Core.Criteria;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
+    using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
     using CRM.Core.Models.BotServices;
     using CRM.Core.Models.BotServices.Announcement;
     using CRM.Core.Services;
@@ -24,6 +26,8 @@
         private readonly IList<TelegramBotConfigurations> botConfigurations;
         private readonly ICRMLogService logService;
         private readonly IBotCommonService botCommonService;
+
+        private static readonly string TelegramBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
 
         public TelegramBotService(
             IHttpClientFactory clientFactory,
@@ -147,7 +151,7 @@
         private static void HandleExceptionTelegramMessage(SendResult sendResult, Exception exception)
         {
             sendResult.ErrorCode = 1;
-            sendResult.ErrorMessage = LetstalkBotServiceErrorMessage;
+            sendResult.ErrorMessage = TelegramBotServiceErrorMessage;
 
             if (exception.Message.Contains("Message is too long", StringComparison.InvariantCultureIgnoreCase))
             {
