@@ -69,15 +69,14 @@
             {
                 Content = "Content",
                 ConversationId = "1234",
-                BotId = 12345678,
-                Images = new string[] { "imgUrl" }
+                BotId = 12345678
             };
             var service = GetService();
             // Act
             await service.SendNotifyAsync(notificationMessage, result);
 
             // Assert
-            logService.Received(4).LogInformation(Arg.Any<string>());
+            logService.Received(2).LogInformation(Arg.Any<string>());
             await botCommonService.Received().WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
             result.ErrorCode = 0;
         }
@@ -91,7 +90,6 @@
             {
                 ConversationId = "1234",
                 BotId = 12345678,
-                Images = new string[] { "imgUrl" }
             };
             var service = GetService();
             // Act
@@ -103,48 +101,6 @@
             result.ErrorCode = 1;
         }
 
-        [Fact]
-        public async Task SendImageAsync_WhenCalled_ShouldCallExactFunction()
-        {
-            // Arrange
-            var result = new SendResult();
-            var notificationMessage = new NotificationMessage
-            {
-                Content = "Content",
-                ConversationId = "1234",
-                BotId = 12345678,
-                Images = new string[] { "imgUrl" }
-            };
-            var service = GetService();
-            // Act
-            await service.SendImageAsync(notificationMessage, result);
-
-            // Assert
-            logService.Received(2).LogInformation(Arg.Any<string>());
-            await botCommonService.Received(1).WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
-            result.ErrorCode = 0;
-        }
-
-        [Fact]
-        public async Task SendImageAsync_NullObject_ShouldExpectedWriteLog()
-        {
-            // Arrange
-            var result = new SendResult();
-            var notificationMessage = new NotificationMessage
-            {
-                ConversationId = "1234",
-                BotId = 12345678,
-                Images = new string[] { "imgUrl" }
-            };
-            var service = GetService();
-            // Act
-            await service.SendImageAsync(notificationMessage, result);
-
-            // Assert
-            logService.Received(2).LogInformation(Arg.Any<string>());
-            await botCommonService.Received(1).WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
-            result.ErrorCode = 1;
-        }
 
         [Fact]
         public async Task WriteLogCommandAsync_WhenCalled_ShouldCallExactFunction()

@@ -148,7 +148,7 @@
             var bot = fixture.Create<User>();
             var controller = GetController();
             telegramBotService(1).GetBotInfoAsync(1).Returns(bot);
-            controller.Protected("AddBotToGroupAsync", update.Message, bot).Returns(Task.FromResult(new CommandResult()));
+            controller.Protected("AddBotToGroupAsync", update.Message, bot, Arg.Any<User>()).Returns(Task.FromResult(new CommandResult()));
 
             // Act
             var result = await controller.Post(1, update);
@@ -157,7 +157,7 @@
             var okResult = Assert.IsType<OkResult>(result);
             Assert.Equal(200, okResult.StatusCode);
 
-            controller.Received().Protected("AddBotToGroupAsync", update.Message, bot);
+            controller.Received().Protected("AddBotToGroupAsync", update.Message, bot, Arg.Any<User>());
         }
 
         [Fact]
@@ -179,7 +179,7 @@
             };
             var controller = GetController();
             telegramBotService(1).GetBotInfoAsync(1).Returns(bot);
-            controller.Protected("AddBotToGroupAsync", update.Message, Arg.Any<User>()).Returns(Task.FromResult(new CommandResult()));
+            controller.Protected("AddBotToGroupAsync", update.Message, Arg.Any<User>(), Arg.Any<User>()).Returns(Task.FromResult(new CommandResult()));
 
             // Act
             var result = await controller.Post(1, update);
@@ -188,7 +188,7 @@
             var okResult = Assert.IsType<OkResult>(result);
             Assert.Equal(200, okResult.StatusCode);
 
-            controller.Received(2).Protected("AddBotToGroupAsync", update.Message, Arg.Any<User>());
+            controller.Received(2).Protected("AddBotToGroupAsync", update.Message, Arg.Any<User>(), Arg.Any<User>());
         }
 
         [Fact]
@@ -410,7 +410,7 @@
             var message = new Message
             {
                 Chat = new Chat { Id = 6012438440 },
-                LeftChatMember = new User { Id = 2, IsBot = true },
+                LeftChatMember = new User { Id = 6012438440, IsBot = true },
                 From = new User { Id = 1 }
             };
             fixture.Customize<User>(x => x.With(b => b.Id, 6012438440));
@@ -436,8 +436,8 @@
             var commandResult = new CommandResult();
             var message = new Message
             {
-                Chat = new Chat { Id = 1 },
-                LeftChatMember = new User { Id = 2, IsBot = true },
+                Chat = new Chat { Id = 6012438440 },
+                LeftChatMember = new User { Id = 6012438440, IsBot = true },
                 From = new User { Id = 1 }
             };
             fixture.Customize<User>(x => x.With(b => b.Id, 6012438440));

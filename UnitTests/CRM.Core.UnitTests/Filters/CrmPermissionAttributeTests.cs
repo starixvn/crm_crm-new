@@ -49,8 +49,7 @@
 
             // Assert
             var redirectResult = Assert.IsAssignableFrom<RedirectToActionResult>(context.Result);
-            Assert.Equal("error", redirectResult.ControllerName);
-            Assert.Equal("405", redirectResult.ActionName);
+            Assert.Equal("Auth", redirectResult.ControllerName);
         }
 
         [Fact]

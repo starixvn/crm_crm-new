@@ -30,7 +30,7 @@ namespace CRM.Controllers.UnitTests
         private INapSession napSession;
         private ISettingService settingService;
         private IWebHostEnvironment hostingEnvironment;
-        private ISendNotificationService sendNotificationService;
+        private ISendAnnouncementService sendAnnouncementService;
 
         private readonly Fixture fixture = new Fixture();
 
@@ -149,7 +149,7 @@ namespace CRM.Controllers.UnitTests
             var result = await controller.SendMessageAnnouncementToBotEndpoint();
 
             // Assert
-            await sendNotificationService.Received(1).SendMessageAnnouncementToBotEndpointAsync();
+            await sendAnnouncementService.Received(1).ScanSendAndUpateAnnouncementNotification();
         }
 
         [Fact]
@@ -217,13 +217,13 @@ namespace CRM.Controllers.UnitTests
             napSession = Substitute.For<INapSession>();
             settingService = Substitute.For<ISettingService>();
             hostingEnvironment = Substitute.For<IWebHostEnvironment>();
-            sendNotificationService = Substitute.For<ISendNotificationService>();
+            sendAnnouncementService = Substitute.For<ISendAnnouncementService>();
             return new AnnouncementController(
                 announcementService,
                 napSession,
                 settingService,
                 hostingEnvironment,
-                sendNotificationService
+                sendAnnouncementService
             );
         }
 

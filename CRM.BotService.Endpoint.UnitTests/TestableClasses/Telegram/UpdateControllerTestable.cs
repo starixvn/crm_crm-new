@@ -36,9 +36,9 @@
             return await base.EditChatTitledAsync(message);
         }
 
-        public async Task<CommandResult> Public_AddBotToGroupAsync(Message message, User bot)
+        public async Task<CommandResult> Public_AddBotToGroupAsync(Message message, User newBotAdd, User bot = null)
         {
-            return await base.AddBotToGroupAsync(message, bot);
+            return await base.AddBotToGroupAsync(message, newBotAdd, bot);
         }
 
         public async Task Public_RemoveBotToGroupAsync(Message message, User bot)
