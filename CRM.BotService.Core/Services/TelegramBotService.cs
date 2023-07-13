@@ -11,6 +11,7 @@
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Models.BotServices;
+    using CRM.Core.Models.BotServices.Announcement;
     using CRM.Core.Services;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
@@ -143,11 +144,10 @@
             await botCommonService.WriteLogMessageAsyns(writeLogCommand);
         }
 
-
         private static void HandleExceptionTelegramMessage(SendResult sendResult, Exception exception)
         {
             sendResult.ErrorCode = 1;
-            sendResult.ErrorMessage = exception.Message;
+            sendResult.ErrorMessage = LetstalkBotServiceErrorMessage;
 
             if (exception.Message.Contains("Message is too long", StringComparison.InvariantCultureIgnoreCase))
             {

@@ -223,15 +223,16 @@
                 logService.LogInformation(string.Format("Start SendFormattedTextAsync: botId: {0} chatId: {1}.", announcementNotification.BotId, announcementNotification.ConversationId));
                 _ = long.TryParse(announcementNotification.ConversationId, out long chatId);
 
-                await telegramBotService(announcementNotification.BotId).SendTextMessageAsync(announcementNotification.BotId, chatId, announcementNotification.Content);
-                result.IsSuccessful = true;
-
+                var messageResult = await telegramBotService(announcementNotification.BotId).SendTextMessageAsync(announcementNotification.BotId, chatId, announcementNotification.Content);
+                if(messageResult is not null)
+                {
+                    result.IsSuccessful = true;
+                }
                 logService.LogInformation("end SendFormattedTextAsync!!!");
             }
             catch (Exception ex)
             {
-                result.IsSuccessful = false;
-                result.ErrMsg = LetstalkBotServiceErrorMessage;
+                HandleExceptionTelegramMessage(result, ex);
                 var writeLogCommand = new WriteLogMessageCommand
                 {
                     ReferenceId = announcementNotification.NotificationId,
@@ -278,14 +279,16 @@
 
                 _ = long.TryParse(announcementNotification.ConversationId, out long chatId);
 
-                await telegramBotService(announcementNotification.BotId).SendImageAsync(announcementNotification.BotId, chatId, image);
-                result.IsSuccessful = true;
+                var sendImageResult = await telegramBotService(announcementNotification.BotId).SendImageAsync(announcementNotification.BotId, chatId, image);
+                if(sendImageResult is not null)
+                {
+                    result.IsSuccessful = true;
+                }
                 logService.LogInformation("end SendNotifyAysnc!!!");
             }
             catch (Exception ex)
             {
-                result.IsSuccessful = false;
-                result.ErrMsg = LetstalkBotServiceErrorMessage;
+                HandleExceptionTelegramMessage(result, ex);
                 result.IsOnlyRetryImage = true;
                 result.ErrImages.Add(image);
                 var writeLogCommand = new WriteLogMessageCommand
@@ -362,6 +365,33 @@
                     Telegrams = new List<object>()
                 })
                 : (IActionResult)Ok(null);
+        }
+
+        private static void HandleExceptionTelegramMessage(SendNotificationResult sendResult, Exception exception)
+        {
+            sendResult.IsSuccessful = false;
+            sendResult.ErrMsg = LetstalkBotServiceErrorMessage;
+
+            if (exception.Message.Contains("Message is too long", StringComparison.InvariantCultureIgnoreCase))
+            {
+                sendResult.ErrMsg = ErrorMessageTelegram.MessageIsTooLong;
+                sendResult.IgnoredRetry = true;
+            }
+
+            if (exception.Message.Contains("bot was kicked from the supergroup chat", StringComparison.InvariantCultureIgnoreCase)
+                || exception.Message.Contains("bot was kicked from the group chat", StringComparison.InvariantCultureIgnoreCase)
+                || exception.Message.Contains("chat not found", StringComparison.InvariantCultureIgnoreCase))
+            {
+                sendResult.ErrMsg = ErrorMessageTelegram.GroupChatDeleted;
+                sendResult.IgnoredRetry = true;
+            }
+
+            if (exception.Message.Contains("bot was blocked by the user", StringComparison.InvariantCultureIgnoreCase))
+            {
+                sendResult.ErrMsg = ErrorMessageTelegram.BlockBot;
+                sendResult.IgnoredRetry = true;
+                sendResult.IsBotBlocked = true;
+            }
         }
     }
 }
