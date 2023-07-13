@@ -59,7 +59,7 @@ export default class DatePickerField extends React.Component {
         const [start, end] = dates;
         const diffDate = DateTimeService.toDiffDays(end, start) + 1;
         this.setState({startDate: start, endDate: end});
-        if(maxDateRange > 0 && diffDate >= maxDateRange){
+        if(maxDateRange > 0 && diffDate > maxDateRange){
             toast.error(LangHelper.formatString(LangHelper.getResource('InvalidRangeDate'), maxDateRange));
             this.setState({isErrorMaxDate: true});
             this.ref.current.setOpen(true);

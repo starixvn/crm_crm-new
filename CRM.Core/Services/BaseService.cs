@@ -11,6 +11,8 @@
     using Fanex.Data;
     using Fanex.Data.Repository;
     using Fanex.Data.SqlServer;
+    using Fanex.Logging.Extensions.Database;
+    using Fanex.Logging.Extensions;
     using Microsoft.AspNetCore.Http;
 
     public interface IBaseService
@@ -97,7 +99,13 @@
             catch (Exception ex)
             {
                 var taskEmpty = Enumerable.Empty<T>();
-                await logService.ErrorAsync(ex);
+                var errorMessage = new LogMessage(ex.Message)
+                       .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(ex))
+                       .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
+                       .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(ex))
+                       .AddMessage("Ipconfig: " + ipConfig)
+                       .ToString();
+                await logService.ErrorMessageAsync(errorMessage);
                 return taskEmpty;
             }
         }
