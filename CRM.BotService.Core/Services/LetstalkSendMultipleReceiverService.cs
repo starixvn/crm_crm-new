@@ -117,7 +117,7 @@
                     BotId = item.Key.BotId,
                     ChatType = item.Key.ChatTypeId,
                     ConversationIds = item.Select(x => x.ConversationId).ToList(),
-                    Attachments = !string.IsNullOrWhiteSpace(item.Key.ErrImages) ? item.Key.ErrImages.Split(",").ToList() : new List<string>(),
+                    Attachments = item.FirstOrDefault()?.RetryImages.ToList(),
                 };
             });
             var results = DividedBatchRecivers(groupedNotification);
@@ -283,7 +283,7 @@
                     Content = item.Key.Content,
                     ChatType = item.Key.ChatTypeId,
                     ConversationIds = item.Select(x => x.ConversationId).ToList(),
-                    Attachments = !string.IsNullOrWhiteSpace(item.FirstOrDefault()?.FileName) ? item.FirstOrDefault()?.FileName.Split(",").ToList() : new List<string>(),
+                    Attachments = item.FirstOrDefault()?.Images.ToList(),
                 };
             });
 
