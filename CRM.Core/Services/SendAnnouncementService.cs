@@ -178,7 +178,7 @@
                     var images = item.FileName.Split(",");
                     item.Images = images.Select(
                         img => string.Format(formatImageUrl, BaseImageUrl, item.AnnouncementId, img)
-                        ).ToArray();
+                        ).ToList();
                 }
 
                 if (!string.IsNullOrEmpty(item.ErrImages))
@@ -186,7 +186,7 @@
                     var images = item.ErrImages.Split(",");
                     item.RetryImages = images.Select(
                         img => string.Format(formatImageUrl, BaseImageUrl, item.AnnouncementId, img)
-                        ).ToArray();
+                        ).ToList();
                 }
             }
 
