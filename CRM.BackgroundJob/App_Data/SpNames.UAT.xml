@@ -72,6 +72,10 @@
         <Setting Key="Acc_CRM_Chatbot_SendNotification_Status_Upd" SpName="Acc_CRM_Chatbot_SendNotification_Status_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_NotificationMsgLog_Ins" SpName="Acc_CRM_ChatBot_NotificationMsgLog_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
     </Function>
+    <Function Name="Send Announcement">
+        <Setting Key="Acc_CRM_Chatbot_Announcement_Notification_Sel" SpName="Acc_CRM_Chatbot_Announcement_Notification_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_ChatBot_Announcement_Notification_UpdStatus" SpName="Acc_CRM_ChatBot_Announcement_Notification_UpdStatus" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+    </Function>
     <Function Name="WinLoss Limit">
         <Setting Key="Acc_CRM_CustWinLimitSel" SpName="Acc_CRM_CustWinLimitSel" DbName="DBCUST.CustDB.bodbAdminNet" />
         <Setting Key="Acc_CRM_WinLimit_AutoFeedbackInfoIns" SpName="Acc_CRM_WinLimit_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -98,7 +102,7 @@
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="SynchronizeNewLicenseeOIC">
-        <Setting Key="Acc_CRM_OICLicenseeIns" SpName="Acc_CRM_OICLicenseeIns_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_OICLicenseeIns" SpName="Acc_CRM_OICLicenseeIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_OICLicenseeSel" SpName="Acc_CRM_OICLicenseeSel" DbName="DBOIC.bodb_OIC.bodbAdminNet" />
     </Function>
     <Function Name="Voiding Settled Tickets">

@@ -105,7 +105,7 @@
         <Setting Key="Acc_CRM_SourceSettingMappingSel" SpName="Acc_CRM_SourceSettingMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_StationList" SpName="Acc_CRM_StationList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PicRoleSel" SpName="Acc_CRM_PicRoleSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SettingRelationUpd" SpName="Acc_CRM_SettingRelationUpd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingRelationUpd" SpName="Acc_CRM_SettingRelationUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Default Communication Setting">
         <Function Name="Default Communication Setting">
@@ -122,9 +122,9 @@
             <Mapping DataField="Currency" ObjectProperty="Name" />
         </Setting>
         <Setting Key="Acc_CRM_Rpt_DeletedFeedbackStatistics" SpName="Acc_CRM_Rpt_DeletedFeedbackStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSummary" SpName="Acc_CRM_Rpt_FeedbackStatisticsSummary" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_Crm_Rpt_DirectCustomerReport" SpName="Acc_Crm_Rpt_DirectCustomerReport" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsWagers" SpName="Acc_CRM_Rpt_FeedbackStatisticsWagers" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSummary" SpName="Acc_CRM_Rpt_FeedbackStatisticsSummary" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_DailyStatistics" SpName="Acc_CRM_Rpt_DailyStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_DailyStatisticsDetail" SpName="Acc_CRM_Rpt_DailyStatisticsDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_LogActionSettingList" SpName="Acc_CRM_LogActionSettingList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -303,7 +303,7 @@
     </Function>
     <Function Name="SettingManagement">
         <Setting Key="Acc_CRM_SettingDel" SpName="Acc_CRM_SettingDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SettingIns" SpName="Acc_CRM_SettingIns_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingIns" SpName="Acc_CRM_SettingIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SettingUpd" SpName="Acc_CRM_SettingUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SourceSettingMappingUpd" SpName="Acc_CRM_SourceSettingMappingUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SourceLicenseeMappingSel" SpName="Acc_CRM_SourceLicenseeMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
