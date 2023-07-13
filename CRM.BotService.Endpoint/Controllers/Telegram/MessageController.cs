@@ -248,7 +248,7 @@
         {
             var result = await SendFormattedTextAsync(announcementNotification);
 
-            if (result.IsSuccessful && announcementNotification.Images is not null && announcementNotification.Images.Length > 0)
+            if (result.IsSuccessful && announcementNotification.Images is not null && announcementNotification.Images.Count > 0)
             {
                 foreach (var image in announcementNotification.Images)
                 {
@@ -322,7 +322,7 @@
                 ConversationId = announcementNotification.ConversationId,
             };
 
-            if (announcementNotification.RetryImages is not null && announcementNotification.RetryImages.Length > 0)
+            if (announcementNotification.RetryImages is not null && announcementNotification.RetryImages.Count > 0)
             {
                 foreach (var image in announcementNotification.RetryImages)
                 {
