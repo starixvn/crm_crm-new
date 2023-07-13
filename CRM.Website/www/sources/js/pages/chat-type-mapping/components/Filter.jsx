@@ -207,7 +207,6 @@ export class Filter extends Component {
                         <Form.Group>
                             <Form.Label className="col-auto col-form-label">{LangHelper.getResource('DisplayName')}</Form.Label>
                             <Form.Control type="text" size="sm" className="shadow-none"
-                                placeholder='Personal of Group Name'
                                 value={this.state.filter.name}
                                 onChange={e => this.onChange('name', e.target.value)}
                             />
@@ -215,7 +214,6 @@ export class Filter extends Component {
                         <Form.Group className="large-form">
                             <Form.Label className="col-auto col-form-label large-label">{LangHelper.getResource('LetstalkIDUsername')}</Form.Label>
                             <Form.Control type="text" size="sm" className="shadow-none"
-                                placeholder='Letstalk ID or Telegram username'
                                 value={this.state.filter.LetstalkIdOrUsername}
                                 onChange={e => this.onChange('LetstalkIdOrUsername', e.target.value)}
                             />
@@ -223,7 +221,6 @@ export class Filter extends Component {
                         <Form.Group>
                             <Form.Label className="col-auto col-form-label">{LangHelper.getResource('GroupHeadline')}</Form.Label>
                             <Form.Control type="text" size="sm" className="shadow-none"
-                                placeholder='Username of headline'
                                 value={this.state.filter.groupHeadline}
                                 onChange={e => this.onChange('groupHeadline', e.target.value)}
                             />

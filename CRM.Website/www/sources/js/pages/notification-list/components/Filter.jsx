@@ -310,7 +310,6 @@ export class Filter extends Component {
                         <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <Select
-                                placeholder='Username of headline'
                                 isClearable
                                 noOptionsMessage={() => 'No results found'}
                                 onChange={value => this.handleHeadlineChange(value)}
@@ -324,7 +323,6 @@ export class Filter extends Component {
                         <Form.Label>{LangHelper.getResource('Recipient')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <Select
-                                placeholder='Name of PIC'
                                 isClearable
                                 noOptionsMessage={() => 'No results found'}
                                 onChange={value => this.handleRecipientChange(value)}
@@ -386,7 +384,6 @@ export class Filter extends Component {
                         <Form.Group style={{width: '280px'}}>
                             <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Content')}</Form.Label>
                             <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
-                                placeholder='Notification content'
                                 value={this.state.filter.content}
                                 autoComplete='off'
                                 onChange={e => this.handleChange(e)}
