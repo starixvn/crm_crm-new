@@ -9,6 +9,7 @@
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models.BotServices.Announcement;
     using Microsoft.Extensions.Configuration;
+    using Newtonsoft.Json;
 
     public interface ISendAnnouncementService
     {
@@ -50,10 +51,13 @@
 
         private async Task SendAnnouncementAsync(IEnumerable<AnnouncementNotification> notifications)
         {
+            logService.LogInformation("---------- Send notifications");
+            logService.LogInformation(JsonConvert.SerializeObject(notifications));
             await Task.WhenAll(
                 SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications),
                 SendAnnouncementNotificationToBotServiceAsync(BotChannel.Telegram, notifications)
             );
+            logService.LogInformation("---------- Send notifications");
         }
 
         private async Task SendAnnouncementNotificationToBotServiceAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
@@ -80,7 +84,7 @@
                         NotificationId = notification.NotificationId,
                         ConversationGroupId = notification.ConversationGroupId,
                         IsOnlyRetryImage = matchedResult.IsOnlyRetryImage,
-                        ErrImages = matchedResult.ErrImages is not null && matchedResult.ErrImages.Count > 0 ? string.Join(",", matchedResult.ErrImages) : string.Empty
+                        ErrImages = GetErrorImagesResult(matchedResult.ErrImages)
                     };
                     MappingUpdateStatusErrorMessage(result, matchedResult);
                     results.Add(result);
@@ -89,16 +93,31 @@
             return results;
         }
 
+        private static string GetErrorImagesResult(IList<string> errorImages)
+        {
+            string result = string.Empty;
+            if (errorImages is not null && errorImages.Count > 0)
+            {
+                var imgList = errorImages.Select(img => img.Split("/").LastOrDefault()).ToList();
+                result = string.Join(",", imgList);
+            }
+            return result;
+        }
+
         #endregion Send announcement
 
         #region Retry Images Only
 
         private async Task RetryImagesOnlyAsync(IEnumerable<AnnouncementNotification> notifications)
         {
+            logService.LogInformation("---------- Retry images only notifications");
+            logService.LogInformation(JsonConvert.SerializeObject(notifications));
+
             await Task.WhenAll(
                 RetryImageByChannelAsync(BotChannel.Letstalk, notifications),
                 RetryImageByChannelAsync(BotChannel.Telegram, notifications)
             );
+            logService.LogInformation("---------- Retry images only notifications");
         }
 
         private async Task RetryImageByChannelAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)

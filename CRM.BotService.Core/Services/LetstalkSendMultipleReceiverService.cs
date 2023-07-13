@@ -235,8 +235,7 @@
             result.IsSuccessful = false;
             result.IsOnlyRetryImage = true;
             result.ErrMsg = LetstalkBotServiceErrorMessage;
-            string imgNameOnly = failedImage.Split("/").LastOrDefault();
-            result.ErrImages.Add(imgNameOnly);
+            result.ErrImages.Add(failedImage);
         }
 
         private static void HandleFailedList(List<string> failList, List<SendNotificationResult> sendResult)

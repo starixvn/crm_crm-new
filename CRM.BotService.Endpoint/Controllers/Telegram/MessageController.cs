@@ -65,7 +65,7 @@
         {
             logService.LogInformation("Start SendMultipleFormattedTextAndImagesAsync: " + JsonConvert.SerializeObject(notifications, Formatting.Indented));
 
-            if (botCommonService.IsActiveChannel(BotChannel.Telegram))
+            if (!botCommonService.IsActiveChannel(BotChannel.Telegram))
             {
                 var inActivedBotChannelResults = notifications.Select(x => new SendNotificationResult
                 {
@@ -102,7 +102,7 @@
         public async Task<IActionResult> SendMultipleImagesOnlyAsync([FromBody] IEnumerable<AnnouncementNotification> notifications)
         {
             logService.LogInformation("Start SendMultipleFormattedTextAndImagesAsync: " + JsonConvert.SerializeObject(notifications, Formatting.Indented));
-            if (botCommonService.IsActiveChannel(BotChannel.Telegram))
+            if (!botCommonService.IsActiveChannel(BotChannel.Telegram))
             {
                 var inActivedBotChannelResults = notifications.Select(x => new SendNotificationResult
                 {
