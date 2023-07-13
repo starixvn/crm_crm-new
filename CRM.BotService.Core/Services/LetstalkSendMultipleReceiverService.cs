@@ -287,7 +287,7 @@
                     Content = item.Key.Content,
                     ChatType = item.Key.ChatTypeId,
                     ConversationIds = item.Select(x => x.ConversationId).ToList(),
-                    Attachments = item.FirstOrDefault()?.Images.ToList(),
+                    Attachments = item.FirstOrDefault()?.Images,
                 };
             });
             logService.LogInformation("========== end group content===========");
