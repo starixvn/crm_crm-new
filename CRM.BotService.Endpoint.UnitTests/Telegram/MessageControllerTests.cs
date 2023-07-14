@@ -2,15 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO.Pipelines;
     using System.Linq;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.BotService.Endpoint.Controllers.Telegram;
     using CRM.BotService.Endpoint.ViewModel;
+    using CRM.Core.Enumerables;
     using CRM.Core.Models.BotServices;
+    using CRM.Core.Models.BotServices.Announcement;
     using CRM.Core.Services;
+    using global::Telegram.Bot.Types;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -74,6 +79,249 @@
             Assert.Equal(result.ErrorMessage, expected.ErrorMessage);
             Assert.Equal(result.IsIgnoreRetry, expected.IsIgnoreRetry);
         }
+
+        [Fact]
+        public async Task SendMultipleFormattedTextAndImagesAsync_WhenCalledInactiveChannel_ExpectCallExactFunction()
+        {
+            // Arrange
+            var notifications = fixture.Build<AnnouncementNotification>().CreateMany(1);
+            var controller = GetController();
+            var expected = new SendNotificationResult
+            {
+                AnnouncementId = notifications.First().AnnouncementId,
+                ConversationId = notifications.First().ConversationId,
+                IsSuccessful = false,
+                ErrMsg = $"Channel {notifications.First().ChannelId} is current inactivated",
+                IgnoredRetry = true
+            };
+            // Act
+            var actual = await controller.SendMultipleFormattedTextAndImagesAsync(notifications);
+            var okObjectResult = actual as OkObjectResult;
+            var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
+            var result = actualResult.First();
+            // Assert
+            logService.Received(2).LogInformation(Arg.Any<string>());
+            Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
+            Assert.Equal(result.ConversationId, expected.ConversationId);
+            Assert.Equal(result.IsSuccessful, expected.IsSuccessful);
+            Assert.Equal(result.ErrMsg, expected.ErrMsg);
+            Assert.Equal(result.IgnoredRetry, expected.IgnoredRetry);
+        }
+
+        [Fact]
+        public async Task SendMultipleFormattedTextAndImagesAsync_ActiveChannelAndSendSuccesfull_ExpectWriteLogAndReturnExactResult()
+        {
+            // Arrange
+            var notifications = fixture.Build<AnnouncementNotification>().CreateMany(1);
+            var controller = GetController();
+            var expected = new SendNotificationResult
+            {
+                AnnouncementId = notifications.First().AnnouncementId,
+                ConversationId = notifications.First().ConversationId,
+                IsSuccessful = true
+            };
+            var message = new Message
+            {
+                Chat = new Chat { Id = 1, Title = "chat title" },
+                From = new User { Id = 1 }
+            };
+            botCommonService.IsActiveChannel(BotChannel.Telegram).Returns(true);
+            telegramBotService(Arg.Any<long>()).SendTextMessageAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>()).Returns(message);
+
+            // Act
+            var actual = await controller.SendMultipleFormattedTextAndImagesAsync(notifications);
+
+            var okObjectResult = actual as OkObjectResult;
+            var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
+            var result = actualResult.First();
+            // Assert
+            logService.Received(13).LogInformation(Arg.Any<string>());
+            Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
+            Assert.Equal(result.ConversationId, expected.ConversationId);
+            Assert.Equal(result.IsSuccessful, expected.IsSuccessful);
+        }
+
+        [Fact]
+        public async Task SendMultipleFormattedTextAndImagesAsync_ActiveChannelAndSendThrowException_ExpectWriteLogAndReturnExactResult()
+        {
+            // Arrange
+            var notifications = fixture.Build<AnnouncementNotification>().CreateMany(1);
+            var controller = GetController();
+            var expected = new SendNotificationResult
+            {
+                AnnouncementId = notifications.First().AnnouncementId,
+                ConversationId = notifications.First().ConversationId,
+                IsSuccessful = false,
+                ErrMsg = ErrorMessageTelegram.MessageIsTooLong,
+                IgnoredRetry = true
+            };
+            var message = new Message
+            {
+                Chat = new Chat { Id = 1, Title = "chat title" },
+                From = new User { Id = 1 }
+            };
+            botCommonService.IsActiveChannel(BotChannel.Telegram).Returns(true);
+            telegramBotService(Arg.Any<long>()).When(x => x.SendTextMessageAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>()))
+                .Do(x => { throw new Exception("Message is too long"); });
+
+            // Act
+            var actual = await controller.SendMultipleFormattedTextAndImagesAsync(notifications);
+
+            var okObjectResult = actual as OkObjectResult;
+            var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
+            var result = actualResult.First();
+            // Assert
+            logService.Received(4).LogInformation(Arg.Any<string>());
+            await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
+            Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
+            Assert.Equal(result.ConversationId, expected.ConversationId);
+            Assert.Equal(result.IsSuccessful, expected.IsSuccessful);
+            Assert.Equal(result.ErrMsg, expected.ErrMsg);
+            Assert.Equal(result.IgnoredRetry, expected.IgnoredRetry);
+        }
+
+        [Fact]
+        public async Task SendMultipleFormattedTextAndImagesAsync_SendTextSucessfullAndHaveImages_ExpectedSendImage()
+        {
+            // Arrange
+            var notifications = fixture.Build<AnnouncementNotification>().CreateMany(1);
+            notifications.First().Images = new List<string> { "test" };
+            var controller = GetController();
+            var expected = new SendNotificationResult
+            {
+                AnnouncementId = notifications.First().AnnouncementId,
+                ConversationId = notifications.First().ConversationId,
+                IsSuccessful = true
+            };
+            var message = new Message
+            {
+                Chat = new Chat { Id = 1, Title = "chat title" },
+                From = new User { Id = 1 }
+            };
+            botCommonService.IsActiveChannel(BotChannel.Telegram).Returns(true);
+            telegramBotService(Arg.Any<long>()).SendTextMessageAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>()).Returns(message);
+            telegramBotService(Arg.Any<long>()).SendImageAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>()).Returns(message);
+
+            // Act
+            var actual = await controller.SendMultipleFormattedTextAndImagesAsync(notifications);
+
+            var okObjectResult = actual as OkObjectResult;
+            var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
+            var result = actualResult.First();
+            // Assert
+            logService.Received(7).LogInformation(Arg.Any<string>());
+            Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
+            Assert.Equal(result.ConversationId, expected.ConversationId);
+            Assert.Equal(result.IsSuccessful, expected.IsSuccessful);
+        }
+
+        [Fact]
+        public async Task SendMultipleFormattedTextAndImagesAsync_SendTextSucessfullAndSendImageThrowException_ExpectedWriteLogAndReturnExactResult()
+        {
+            // Arrange
+            var notifications = fixture.Build<AnnouncementNotification>().CreateMany(1);
+            notifications.First().Images = new List<string> { "test" };
+            var controller = GetController();
+            var expected = new SendNotificationResult
+            {
+                AnnouncementId = notifications.First().AnnouncementId,
+                ConversationId = notifications.First().ConversationId,
+                IsSuccessful = false,
+                ErrMsg = ErrorMessageTelegram.BlockBot,
+                IgnoredRetry = true,
+                IsBotBlocked = true,
+                IsOnlyRetryImage = true,
+                ErrImages = new List<string> { "test" }
+            };
+            var message = new Message
+            {
+                Chat = new Chat { Id = 1, Title = "chat title" },
+                From = new User { Id = 1 }
+            };
+            botCommonService.IsActiveChannel(BotChannel.Telegram).Returns(true);
+            telegramBotService(Arg.Any<long>()).SendTextMessageAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>()).Returns(message);
+            telegramBotService(Arg.Any<long>()).When(x => x.SendImageAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>()))
+                .Do(x => { throw new Exception("bot was blocked by the user"); });
+
+            // Act
+            var actual = await controller.SendMultipleFormattedTextAndImagesAsync(notifications);
+
+            var okObjectResult = actual as OkObjectResult;
+            var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
+            var result = actualResult.First();
+            // Assert
+            logService.Received(7).LogInformation(Arg.Any<string>());
+            await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
+            Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
+            Assert.Equal(result.ConversationId, expected.ConversationId);
+            Assert.Equal(result.IsSuccessful, expected.IsSuccessful);
+            Assert.Equal(result.ErrMsg, expected.ErrMsg);
+            Assert.Equal(result.IsBotBlocked, expected.IsBotBlocked);
+            Assert.Equal(result.IsOnlyRetryImage, expected.IsOnlyRetryImage);
+            Assert.Equal(result.ErrImages, expected.ErrImages);
+        }
+
+        [Fact]
+        public async Task SendMultipleImagesOnlyAsync_WhenCalledInactiveChannel_ExpectCallExactFunction()
+        {
+            // Arrange
+            var notifications = fixture.Build<AnnouncementNotification>().CreateMany(1);
+            var controller = GetController();
+            var expected = new SendNotificationResult
+            {
+                AnnouncementId = notifications.First().AnnouncementId,
+                ConversationId = notifications.First().ConversationId,
+                IsSuccessful = false,
+                ErrMsg = $"Channel {notifications.First().ChannelId} is current inactivated",
+                IgnoredRetry = true
+            };
+            // Act
+            var actual = await controller.SendMultipleImagesOnlyAsync(notifications);
+            var okObjectResult = actual as OkObjectResult;
+            var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
+            var result = actualResult.First();
+            // Assert
+            logService.Received(2).LogInformation(Arg.Any<string>());
+            Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
+            Assert.Equal(result.ConversationId, expected.ConversationId);
+            Assert.Equal(result.IsSuccessful, expected.IsSuccessful);
+            Assert.Equal(result.ErrMsg, expected.ErrMsg);
+            Assert.Equal(result.IgnoredRetry, expected.IgnoredRetry);
+        }
+
+        [Fact]
+        public async Task SendMultipleImagesOnlyAsync_ActiveChannelAndSendSuccesfull_ExpectWriteLogAndReturnExactResult()
+        {
+            // Arrange
+            var notifications = fixture.Build<AnnouncementNotification>().CreateMany(1);
+            notifications.First().RetryImages = new List<string> { "test" };
+            var controller = GetController();
+            var expected = new SendNotificationResult
+            {
+                AnnouncementId = notifications.First().AnnouncementId,
+                ConversationId = notifications.First().ConversationId,
+                IsSuccessful = true
+            };
+            var message = new Message
+            {
+                From = new User { Id = 1 }
+            };
+            botCommonService.IsActiveChannel(BotChannel.Telegram).Returns(true);
+            telegramBotService(Arg.Any<long>()).SendImageAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>()).Returns(message);
+
+            // Act
+            var actual = await controller.SendMultipleImagesOnlyAsync(notifications);
+
+            var okObjectResult = actual as OkObjectResult;
+            var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
+            var result = actualResult.First();
+            // Assert
+            logService.Received(5).LogInformation(Arg.Any<string>());
+            Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
+            Assert.Equal(result.ConversationId, expected.ConversationId);
+            Assert.Equal(result.IsSuccessful, expected.IsSuccessful);
+        }
+
 
         [Fact]
         public async Task SendSingleMessage_WhenCalled_ExpectReturnResult()
