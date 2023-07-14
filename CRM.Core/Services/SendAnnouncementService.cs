@@ -149,7 +149,7 @@
                         NotificationId = item.NotificationId,
                         ConversationGroupId = item.ConversationGroupId,
                         Status = "Error",
-                        ErrMsg = "Bot Removed"
+                        ErrMsg = "Bot was blocked by the user."
                     });
                 }
                 await UpdateRecipientStatus(updateStatusResult);
