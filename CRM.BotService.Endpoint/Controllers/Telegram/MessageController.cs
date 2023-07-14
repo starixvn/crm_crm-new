@@ -263,7 +263,7 @@
             logService.LogInformation(string.Format("Start SendFormattedTextAsync: botId: {0} chatId: {1}.", announcementNotification.BotId, announcementNotification.ConversationId));
             var result = new SendNotificationResult
             {
-                AnnouncementId = announcementNotification.NotificationId,
+                AnnouncementId = announcementNotification.AnnouncementId,
                 ConversationId = announcementNotification.ConversationId,
             };
 
