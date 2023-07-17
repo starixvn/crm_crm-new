@@ -13,7 +13,6 @@
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Models.BotServices;
-    using CRM.Core.Models.BotServices.Announcement;
     using CRM.Core.Services;
     using Fanex.Logging.Extensions;
     using Fanex.Logging.Extensions.Database;
@@ -26,6 +25,7 @@
         private readonly IList<TelegramBotConfigurations> botConfigurations;
         private readonly ICRMLogService logService;
         private readonly IBotCommonService botCommonService;
+        private readonly Random _random = new Random();
 
         private static readonly string TelegramBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
 
@@ -125,8 +125,14 @@
 
         public async Task<Message> SendImageAsync(long botId, long chatId, string urlImage)
         {
+            var isTest = _random.Next(0, 1) == 1;
+
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
             var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile(urlImage);
+            if (isTest)
+            {
+                throw new InvalidOperationException("This is test send failed image");
+            }
             Message message = await bot.BotClient.SendPhotoAsync(
                 chatId: chatId,
                 photo: photo);
