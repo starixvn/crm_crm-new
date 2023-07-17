@@ -350,7 +350,7 @@
 
             var writeLogCommand = new WriteLogMessageCommand
             {
-                ReferenceId = announcementNotification.NotificationId,
+                ReferenceId = announcementNotification.AnnouncementId,
                 DataSource = LogDataSource.Announcement,
                 BotId = announcementNotification.BotId,
                 ConversationId = announcementNotification.ConversationId,

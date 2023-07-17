@@ -149,7 +149,7 @@
                         NotificationId = item.NotificationId,
                         ConversationGroupId = item.ConversationGroupId,
                         Status = "Error",
-                        ErrMsg = "Bot was blocked by the user."
+                        ErrMsg = "The Chatbot has been removed by users."
                     });
                 }
                 await UpdateRecipientStatus(updateStatusResult);
