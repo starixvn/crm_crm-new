@@ -67,13 +67,14 @@ export const getParams = (values, state) => {
         formData.append(typeof file === 'string' ? 'fileString' : 'formFile', file);
     });
 
+
     let index = 0;
     for (const [key, value] of Object.entries(content)) {
         if(value && value.length > 0){
             const languageId = state.languages.filter(x => x.mapLabel === key)[0].settingId;
             if(languageId){
                 formData.append(`contents[${index}][languageId]`, languageId);
-                formData.append(`contents[${index}][value]`, value);
+                formData.append(`contents[${index}][value]`, value.replace( /\n/g, ''));
                 index++;
             }
         }
@@ -129,10 +130,12 @@ export const checkInvalidMaxLengthContent = (content, tab) =>{
     const contentReplaceHtml = contentByTab?.replace(/(<([^>]+)>)/gi, '');
     const MAX_LENGTH_TELEGRAM = 4096;
     let invalidContentMaxLength = false;
-    if(contentReplaceHtml?.length + 1 > MAX_LENGTH_TELEGRAM){
+    console.log(contentReplaceHtml?.trim()?.length);
+    const contentLength = contentReplaceHtml?.trim()?.length;
+    if(contentLength > MAX_LENGTH_TELEGRAM){
         invalidContentMaxLength = true;
     }
-    const textInvalidContentMaxLength = `Max length ${contentReplaceHtml?.length + 1}/${MAX_LENGTH_TELEGRAM}`;
+    const textInvalidContentMaxLength = `Max length ${contentLength}/${MAX_LENGTH_TELEGRAM}`;
     return {invalidContentMaxLength, textInvalidContentMaxLength};
 };
 

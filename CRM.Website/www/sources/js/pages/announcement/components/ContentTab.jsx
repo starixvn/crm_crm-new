@@ -30,9 +30,8 @@ export default class ContentTab extends PureComponent {
                                     data={content[language.mapLabel]}
                                     username={window.currentUsername}
                                     onChange={value => {
-                                        const replaceValue = value.replace( /\n/g, '');
-                                        setFieldValue(`content.${[language.mapLabel]}`, replaceValue);
-                                        setFieldValue(`cloneContent.${[language.mapLabel]}`, replaceValue);
+                                        setFieldValue(`content.${[language.mapLabel]}`, value);
+                                        setFieldValue(`cloneContent.${[language.mapLabel]}`, value);
                                     }}
                                     isRemoveToolbarForChatbot
                                     readOnly={isReadOnly}
