@@ -45,7 +45,7 @@
            }
 
            &> .show-filter{
-            @include form-group-width(230px);
+            @include form-group-width(226px);
             .form-row > .form-group:nth-child(3){
                 width: 260px !important;
             }

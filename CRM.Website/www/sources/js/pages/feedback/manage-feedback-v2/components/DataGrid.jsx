@@ -37,8 +37,8 @@ export class DataGrid extends Component {
                         </div>
                     </HeaderCell>
                 }
-                <HeaderCell colWidth={10}>{LangHelper.getResource('Update')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('RunningNo')}</HeaderCell>
+                <HeaderCell colWidth={13}>{LangHelper.getResource('Update')}</HeaderCell>
+                <HeaderCell colWidth={17}>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 <HeaderCell colWidth={50}>{LangHelper.getResource('Feedback')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('Customer')}</HeaderCell>
                 <HeaderCell colWidth={50}>{LangHelper.getResource('Category')}</HeaderCell>
@@ -334,14 +334,14 @@ export class DataGrid extends Component {
             <Fragment>
                 {this.renderTableTitle(gridDataFeedbacks)}
                 <Table
-                    width={1350}
+                    width={1250}
                     autoWidth={false}
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
-                    containerPadding={10}
+                    containerPadding={0}
                     shouldResetScrollPosition={false}
                 />
             </Fragment>

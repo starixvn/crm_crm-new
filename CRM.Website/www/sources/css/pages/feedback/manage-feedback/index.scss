@@ -3,7 +3,11 @@
 @import '../../../abstracts/variables';
 
 .manage-feedback{
-    max-width: 1340px;
+    .form-filter, .table-title, .page-container{
+        max-width: 1250px !important;
+    }
+    
+
     .form-filter {
         .form-row {
             .sm-width{

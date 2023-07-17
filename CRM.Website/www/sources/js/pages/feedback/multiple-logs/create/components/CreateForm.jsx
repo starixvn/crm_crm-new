@@ -879,7 +879,7 @@ export class CreateForm extends Component {
                     </Form.Group>
                 </Col>
                 <Col sm="12" md="12">
-                    <Form.Group className="pt-2 custom-form-group">
+                    <Form.Group className="pt-2 pb-2 custom-form-group">
                         <Form.Label className="custom-label">{LangHelper.getResource('Subject')}</Form.Label>
                         <Form.Group className="custom-input">
                             <AutoComplete isInvalid={touched.subject && errors.subject}

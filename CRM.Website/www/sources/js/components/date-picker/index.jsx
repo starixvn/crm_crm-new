@@ -85,7 +85,7 @@ export default class DatePickerField extends React.Component {
         const dateTimeNow = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         const diffDate = DateTimeService.toDiffDays(endDate, startDate) + 1;
         const diffDateText = !diffDate ? null : `(${diffDate} days)`;
-        const isDisableApply = !startDate || !endDate || diffDate >= maxDateRange;
+        const isDisableApply = !startDate || !endDate || diffDate > maxDateRange;
         return (
             <div className={isRangeDate ? 'range-date-picker' : ''}>
                 

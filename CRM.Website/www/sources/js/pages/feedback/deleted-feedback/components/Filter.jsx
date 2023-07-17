@@ -146,7 +146,7 @@ export class Filter extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group style={{width: '218.5px'}}>
                             <Form.Label>
                                 {LangHelper.getResource('FromDate')}
                             </Form.Label>
@@ -163,7 +163,7 @@ export class Filter extends Component {
                                 />
                             </div>
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group style={{width: '218.5px'}}>
                             <Form.Label>
                                 {LangHelper.getResource('ToDate')}
                             </Form.Label>
@@ -197,8 +197,8 @@ export class Filter extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group style={{width: '350px'}}>
-                            <Form.Label style={{width: '94px'}}>
+                        <Form.Group style={{width: '450px'}}>
+                            <Form.Label>
                             {LangHelper.getResource('SubCategory')}
                             </Form.Label>
                             <Form.Control as="select" size="sm" className="shadow-none"
@@ -212,7 +212,7 @@ export class Filter extends Component {
                         </Form.Group>
                     </Form.Row>
                     <Form.Row bsPrefix='form-row'>
-                        <Form.Group style={{width: '220px'}}>
+                        <Form.Group style={{width: '200px'}}>
                             <Form.Label>
                                 {LangHelper.getResource('Communication')}
                             </Form.Label>
@@ -225,7 +225,7 @@ export class Filter extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group style={{width: '261px'}}>
+                        <Form.Group style={{width: '237px'}}>
                             <Form.Label style={{width: '130px'}}>
                                 {LangHelper.getResource('CustomerResponse')}
                              </Form.Label>
@@ -238,7 +238,7 @@ export class Filter extends Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group style={{width: '200px'}}>
+                        <Form.Group style={{width: '218.5px'}}>
                             <Form.Label>
                                 {LangHelper.getResource('Is Reviewed')}
                             </Form.Label>
