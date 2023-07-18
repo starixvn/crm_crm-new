@@ -377,7 +377,7 @@ export class Filter extends Component {
                             >
                                 {referenceIds.map((item, key) => <option key={key} value={item}>{item}</option>)}
                             </Form.Control>
-                            <Form.Control style={{width: '152px'}} as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none referenceId' name='referenceId'
+                            <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none referenceId' name='referenceId'
                                 value={this.state.filter.referenceId}
                                 onChange={e => this.handleChangeFilterControl(e)}
                                 onPaste={this.handlePasteAnnouncementId}
