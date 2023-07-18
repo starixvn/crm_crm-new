@@ -27,7 +27,6 @@
         private readonly LetstalkBotConfig botConfig;
         private readonly IHttpClientFactory clientFactory;
         private readonly ICacheService cacheService;
-        private static readonly Random _random = new Random();
 
         public LetstalkClientService(IHttpClientFactory clientFactory,
             ICacheService cacheService,
@@ -112,9 +111,6 @@
             ValidateInputParam(nameof(message), message);
             ValidateMultiCastMessage(message);
 
-            var (success, failed) = RandomResult(roomList);
-            bool isTest = message.MessageType == NotificationMessageType.Image;
-
             var token = await GetSignAccessTokenAsync();
             var result = await ExecutePostAsync<PushMessageResult>(
                 GetActualEndpoint($"bot/v3/message/multi-chatroom"),
@@ -123,14 +119,9 @@
                 new Dictionary<string, object>
                 {
                     { "msg", message },
-                    { "receivers", !isTest && success.Count > 0 ? roomList.ToArray() : success }
+                    { "receivers",  roomList.ToArray() }
                 }),
                 token);
-
-            if (isTest)
-            {
-                result.FailList = failed;
-            }
 
             return result;
         }
@@ -238,8 +229,6 @@
 
             var token = await GetSignAccessTokenAsync();
 
-            var (success, failed) = RandomResult(accountIds);
-            bool isTest = message.MessageType == NotificationMessageType.Image;
             var result = await ExecutePostAsync<PushMessageResult>(
                 GetActualEndpoint($"bot/v3/message/multicast"),
                 JsonContentType,
@@ -247,16 +236,11 @@
                 new Dictionary<string, object>
                 {
                     { "msg", message },
-                    { "receivers",!isTest && success.Count > 0 ? accountIds.ToArray() : success },
+                    { "receivers",accountIds.ToArray() },
                     { "forcePush", isForcePush ? 1 : 0 }
                 }),
                 token
                 );
-
-            if (isTest)
-            {
-                result.FailList = failed;
-            }
 
             return result;
         }
@@ -331,18 +315,5 @@
         }
 
         #endregion HttpClient
-
-        private (List<string>, List<string>) RandomResult(IEnumerable<string> conversationIds)
-        {
-            var shufferList = conversationIds.OrderBy(x => Guid.NewGuid()).ToList();
-            var failedList = new List<string>();
-            var randomIndex = _random.Next(0, shufferList.Count);
-            for (int i = 0; i < randomIndex; i++)
-            {
-                failedList.Add(shufferList[i]);
-            }
-            var sendList = shufferList.Where(i => !failedList.Contains(i)).ToList();
-            return (sendList, failedList);
-        }
     }
 }
