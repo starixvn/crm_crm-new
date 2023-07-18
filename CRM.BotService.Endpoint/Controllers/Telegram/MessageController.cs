@@ -306,7 +306,7 @@
                 if (messageResult is not null)
                 {
                     result.IsSuccessful = true;
-                    await WriteLogMessageAsync(announcementNotification, result);
+                    await WriteLogAnnouncementMessageAsync(announcementNotification, announcementNotification.Content, isBotBlocked: false, result.IsSuccessful, string.Empty);
                 }
             }
             catch (Exception ex)
@@ -333,7 +333,7 @@
                 if (sendImageResult is not null)
                 {
                     result.IsSuccessful = true;
-                    await WriteLogMessageAsync(announcementNotification, result);
+                    await WriteLogAnnouncementMessageAsync(announcementNotification, image, isBotBlocked: false, result.IsSuccessful, string.Empty);
                 }
             }
             catch (Exception ex)
@@ -391,22 +391,6 @@
                 IsSuccess = isSuccess,
                 IsBotBlocked = isBotBlocked,
                 ErrMsg = errMsg
-            };
-            await botCommonService.WriteLogMessageAsyns(writeLogCommand);
-        }
-
-        private async Task WriteLogMessageAsync(AnnouncementNotification announcementNotification, SendNotificationResult result, string image = "")
-        {
-            var writeLogCommand = new WriteLogMessageCommand
-            {
-                ReferenceId = announcementNotification.AnnouncementId,
-                DataSource = LogDataSource.Announcement,
-                BotId = announcementNotification.BotId,
-                ConversationId = announcementNotification.ConversationId,
-                Content = string.IsNullOrEmpty(image) ? announcementNotification.Content : image,
-                IsSuccess = result.IsSuccessful,
-                IsBotBlocked = result.IsBotBlocked,
-                ErrMsg = result.ErrMsg
             };
             await botCommonService.WriteLogMessageAsyns(writeLogCommand);
         }

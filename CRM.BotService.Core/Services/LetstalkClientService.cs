@@ -336,7 +336,7 @@
         {
             var shufferList = conversationIds.OrderBy(x => Guid.NewGuid()).ToList();
             var failedList = new List<string>();
-            var randomIndex = _random.Next(0, shufferList.Count());
+            var randomIndex = _random.Next(0, shufferList.Count);
             for (int i = 0; i < randomIndex; i++)
             {
                 failedList.Add(shufferList[i]);
