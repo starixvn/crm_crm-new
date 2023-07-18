@@ -86,30 +86,24 @@
                 return Ok(inActivedBotChannelResults);
             }
             var results = new List<SendNotificationResult>();
+            var batches = DividedBatchToSendAnnouncement(notifications);
 
-            foreach (var notification in notifications)
+            foreach (var batch in batches)
             {
-                var result = await SendFormattedTextAndImageTelegramService(notification);
-                results.Add(result);
+                var tasks = new List<Task<SendNotificationResult>>();
+                if (batch is not null && batch.Any())
+                {
+                    foreach (var notification in batch)
+                    {
+                        tasks.Add(
+                            Task.Run(
+                                () => SendFormattedTextAndImageTelegramService(notification)
+                        ));
+                    }
+                }
+                results.AddRange(await Task.WhenAll(tasks));
+                await Task.Delay(500);
             }
-            //var batches = DividedBatchToSendAnnouncement(notifications);
-
-            //foreach (var batch in batches)
-            //{
-            //    var tasks = new List<Task<SendNotificationResult>>();
-            //    if (batch is not null && batch.Any())
-            //    {
-            //        foreach (var notification in batch)
-            //        {
-            //            tasks.Add(
-            //                Task.Run(
-            //                    () => SendFormattedTextAndImageTelegramService(notification)
-            //            ));
-            //        }
-            //    }
-            //    results.AddRange(await Task.WhenAll(tasks));
-            //    await Task.Delay(500);
-            //}
 
             logService.LogInformation("End Start SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
             return Ok(results);
@@ -135,29 +129,24 @@
             }
 
             var results = new List<SendNotificationResult>();
-            foreach (var notification in notifications)
-            {
-                var result = await SendImagesOnlyTelegramService(notification);
-                results.Add(result);
-            }
-            //var batches = DividedBatchToSendAnnouncement(notifications);
+            var batches = DividedBatchToSendAnnouncement(notifications);
 
-            //foreach (var batch in batches)
-            //{
-            //    var tasks = new List<Task<SendNotificationResult>>();
-            //    if (batch is not null && batch.Any())
-            //    {
-            //        foreach (var notification in batch)
-            //        {
-            //            tasks.Add(
-            //                Task.Run(
-            //                    () => SendImagesOnlyTelegramService(notification)
-            //            ));
-            //        }
-            //    }
-            //    results.AddRange(await Task.WhenAll(tasks));
-            //    await Task.Delay(DelayEachBatchMilisecond);
-            //}
+            foreach (var batch in batches)
+            {
+                var tasks = new List<Task<SendNotificationResult>>();
+                if (batch is not null && batch.Any())
+                {
+                    foreach (var notification in batch)
+                    {
+                        tasks.Add(
+                            Task.Run(
+                                () => SendImagesOnlyTelegramService(notification)
+                        ));
+                    }
+                }
+                results.AddRange(await Task.WhenAll(tasks));
+                await Task.Delay(DelayEachBatchMilisecond);
+            }
 
             logService.LogInformation("End Start SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
             return Ok(results);
@@ -295,7 +284,6 @@
                 foreach (var image in announcementNotification.Images)
                 {
                     await SendImageTelegramService(announcementNotification, image, result);
-                    await Task.Delay(100);
                 }
             }
             return result;
