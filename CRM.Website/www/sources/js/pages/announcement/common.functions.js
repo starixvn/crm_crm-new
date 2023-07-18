@@ -130,7 +130,6 @@ export const checkInvalidMaxLengthContent = (content, tab) =>{
     const contentReplaceHtml = contentByTab?.replace(/(<([^>]+)>)/gi, '');
     const MAX_LENGTH_TELEGRAM = 4096;
     let invalidContentMaxLength = false;
-    console.log(contentReplaceHtml?.trim()?.length);
     const contentLength = contentReplaceHtml?.trim()?.length;
     if(contentLength > MAX_LENGTH_TELEGRAM){
         invalidContentMaxLength = true;
