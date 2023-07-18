@@ -17,6 +17,7 @@
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -26,15 +27,20 @@
         private readonly Func<long, ITelegramBotService> telegramBotService;
         private readonly IBotCommonService botCommonService;
         private static readonly string TelegramBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
+        private readonly int BatchSize;
+        private readonly int DelayEachBatchMilisecond;
 
         public MessageController(
             ICRMLogService logService,
             Func<long, ITelegramBotService> telegramBotService,
-            IBotCommonService botCommonService)
+            IBotCommonService botCommonService,
+            IConfiguration configuration)
         {
             this.logService = logService;
             this.telegramBotService = telegramBotService;
             this.botCommonService = botCommonService;
+            BatchSize = configuration.GetValue<int?>("TelegramBatchSize") ?? 10;
+            DelayEachBatchMilisecond = configuration.GetValue<int?>("TelegramDelayEachBatch") ?? 250;
         }
 
         [HttpPost]
@@ -79,20 +85,26 @@
 
                 return Ok(inActivedBotChannelResults);
             }
+            var results = new List<SendNotificationResult>();
+            var batches = DividedBatchToSendAnnouncement(notifications);
 
-            var tasks = new List<Task<SendNotificationResult>>();
-            if (notifications is not null && notifications.Any())
+            foreach (var batch in batches)
             {
-                foreach (var notification in notifications)
+                var tasks = new List<Task<SendNotificationResult>>();
+                if (batch is not null && batch.Any())
                 {
-                    tasks.Add(
-                        Task.Run(
-                            () => SendFormattedTextAndImageTelegramService(notification)
-                    ));
+                    foreach (var notification in batch)
+                    {
+                        tasks.Add(
+                            Task.Run(
+                                () => SendFormattedTextAndImageTelegramService(notification)
+                        ));
+                    }
                 }
+                results.AddRange(await Task.WhenAll(tasks));
+                await Task.Delay(500);
             }
 
-            var results = (await Task.WhenAll(tasks)).ToList();
             logService.LogInformation("End Start SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
             return Ok(results);
         }
@@ -115,19 +127,27 @@
                 logService.LogInformation($"{BotChannel.Telegram} current inactived");
                 return Ok(inActivedBotChannelResults);
             }
-            var tasks = new List<Task<SendNotificationResult>>();
-            if (notifications is not null && notifications.Any())
+
+            var results = new List<SendNotificationResult>();
+            var batches = DividedBatchToSendAnnouncement(notifications);
+
+            foreach (var batch in batches)
             {
-                foreach (var notification in notifications)
+                var tasks = new List<Task<SendNotificationResult>>();
+                if (batch is not null && batch.Any())
                 {
-                    tasks.Add(
-                        Task.Run(
-                            () => SendImagesOnlyTelegramService(notification)
-                    ));
+                    foreach (var notification in batch)
+                    {
+                        tasks.Add(
+                            Task.Run(
+                                () => SendImagesOnlyTelegramService(notification)
+                        ));
+                    }
                 }
+                results.AddRange(await Task.WhenAll(tasks));
+                await Task.Delay(DelayEachBatchMilisecond);
             }
 
-            var results = (await Task.WhenAll(tasks)).ToList();
             logService.LogInformation("End Start SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
             return Ok(results);
         }
@@ -194,6 +214,17 @@
                 await logService.ErrorAsync(exception);
                 return HandleExceptionVerifyGroup(exception);
             }
+        }
+
+        private IEnumerable<IEnumerable<AnnouncementNotification>> DividedBatchToSendAnnouncement(IEnumerable<AnnouncementNotification> notifications)
+        {
+            var batches = new List<List<AnnouncementNotification>>();
+            int totalBatch = (int)Math.Ceiling((double)notifications.Count() / BatchSize);
+            for (int i = 0; i < totalBatch; i++)
+            {
+                batches.Add(notifications.Skip(i * BatchSize).Take(BatchSize).ToList());
+            }
+            return batches;
         }
 
         private async Task<SendResult> SendTelegramService(NotificationMessage notification)
