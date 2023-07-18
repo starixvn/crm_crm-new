@@ -85,18 +85,15 @@
 
                 return Ok(inActivedBotChannelResults);
             }
-            var tasks = new List<Task<SendNotificationResult>>();
+            var results = new List<SendNotificationResult>();
             if (notifications is not null && notifications.Any())
             {
                 foreach (var notification in notifications)
                 {
-                    tasks.Add(
-                        Task.Run(
-                            () => SendFormattedTextAndImageTelegramService(notification)
-                    ));
+                    var result = await SendFormattedTextAndImageTelegramService(notification);
+                    results.Add(result);
                 }
             }
-            var results = (await Task.WhenAll(tasks)).ToList();
             logService.LogInformation("End Start SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
             return Ok(results);
         }
@@ -120,19 +117,15 @@
                 return Ok(inActivedBotChannelResults);
             }
 
-            var tasks = new List<Task<SendNotificationResult>>();
+            var results = new List<SendNotificationResult>();
             if (notifications is not null && notifications.Any())
             {
                 foreach (var notification in notifications)
                 {
-                    tasks.Add(
-                        Task.Run(
-                            () => SendImagesOnlyTelegramService(notification)
-                    ));
+                    var result = await SendImagesOnlyTelegramService(notification);
+                    results.Add(result);
                 }
             }
-
-            var results = (await Task.WhenAll(tasks)).ToList();
 
             logService.LogInformation("End Start SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
             return Ok(results);
