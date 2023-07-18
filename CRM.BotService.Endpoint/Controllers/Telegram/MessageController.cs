@@ -272,17 +272,18 @@
                 _ = long.TryParse(announcementNotification.ConversationId, out long chatId);
 
                 var messageResult = await telegramBotService(announcementNotification.BotId).SendTextMessageAsync(announcementNotification.BotId, chatId, announcementNotification.Content);
-                if(messageResult is not null)
+                if (messageResult is not null)
                 {
                     result.IsSuccessful = true;
+                    await WriteLogMessageAsync(announcementNotification, result);
                 }
             }
             catch (Exception ex)
             {
                 HandleExceptionTelegramMessage(result, ex);
+                await WriteLogAnnouncementMessageAsync(announcementNotification, announcementNotification.Content, result.IsBotBlocked, false, ex.Message);
                 await logService.ErrorAsync(ex);
             }
-            await WriteLogMessageAsync(announcementNotification, result);
             logService.LogInformation("end SendFormattedTextAsync!!!");
             return result;
         }
@@ -298,9 +299,10 @@
                 _ = long.TryParse(announcementNotification.ConversationId, out long chatId);
 
                 var sendImageResult = await telegramBotService(announcementNotification.BotId).SendImageAsync(announcementNotification.BotId, chatId, image);
-                if(sendImageResult is not null)
+                if (sendImageResult is not null)
                 {
                     result.IsSuccessful = true;
+                    await WriteLogMessageAsync(announcementNotification, result);
                 }
             }
             catch (Exception ex)
@@ -308,9 +310,10 @@
                 HandleExceptionTelegramMessage(result, ex);
                 result.IsOnlyRetryImage = true;
                 result.ErrImages.Add(image);
+                await WriteLogAnnouncementMessageAsync(announcementNotification, image, result.IsBotBlocked, false, ex.Message);
                 await logService.ErrorAsync(ex);
             }
-            await WriteLogMessageAsync(announcementNotification, result, image);
+
             logService.LogInformation("end SendNotifyAysnc!!!");
         }
 
@@ -345,9 +348,24 @@
                 : (IActionResult)Ok(null);
         }
 
+        private async Task WriteLogAnnouncementMessageAsync(AnnouncementNotification announcementNotification, string content, bool isBotBlocked, bool isSuccess, string errMsg)
+        {
+            var writeLogCommand = new WriteLogMessageCommand
+            {
+                ReferenceId = announcementNotification.AnnouncementId,
+                DataSource = LogDataSource.Announcement,
+                BotId = announcementNotification.BotId,
+                ConversationId = announcementNotification.ConversationId,
+                Content = content,
+                IsSuccess = isSuccess,
+                IsBotBlocked = isBotBlocked,
+                ErrMsg = errMsg
+            };
+            await botCommonService.WriteLogMessageAsyns(writeLogCommand);
+        }
+
         private async Task WriteLogMessageAsync(AnnouncementNotification announcementNotification, SendNotificationResult result, string image = "")
         {
-
             var writeLogCommand = new WriteLogMessageCommand
             {
                 ReferenceId = announcementNotification.AnnouncementId,
