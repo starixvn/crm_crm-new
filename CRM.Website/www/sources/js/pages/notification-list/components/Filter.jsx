@@ -133,6 +133,12 @@ export class Filter extends Component {
     handleStatusChange = (currentItem, selectedItemsKey) => {
         this.handleFilterChange('statuses', selectedItemsKey);
         this.handleFilterChangeProps('status', selectedItemsKey);
+        const statusOptions = this.state.statusOptions.map(status => {
+            return {
+                ...status, checked: selectedItemsKey.includes(status.id) ? true : false
+            }
+        });
+        this.setState({statusOptions});
     };
 
     handleChangeFilterControl = e => {
