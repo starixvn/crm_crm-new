@@ -67,9 +67,28 @@
             var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
             if (filterNotifications.Any())
             {
-                var sentResults = await chatBotSendMessageService.SendMultipleFormattedMessageAndAttachmentAsync(botChannel, filterNotifications);
-                var updatedResult = ConvertSendMessageResultToUpdateStatusResult(filterNotifications, sentResults);
-                await UpdateRecipientStatus(updatedResult);
+                try
+                {
+                    var sentResults = await chatBotSendMessageService.SendMultipleFormattedMessageAndAttachmentAsync(botChannel, filterNotifications);
+                    var updatedResult = ConvertSendMessageResultToUpdateStatusResult(filterNotifications, sentResults);
+                    if (!updatedResult.Any())
+                    {
+                        await logService.ErrorMessageAsync(JsonConvert.SerializeObject(sentResults));
+                    }
+                    await UpdateRecipientStatus(updatedResult);
+                }
+                catch (Exception ex)
+                {
+                    var results = filterNotifications.Select(x => new AnnouncementNotificationUpdateResult
+                    {
+                        NotificationId = x.NotificationId,
+                        ConversationGroupId = x.ConversationGroupId,
+                        Status = SendNotificationStatuses.Retrying,
+                        ErrMsg = SendNotificationErrorMessage.BotServiceErrorMsg,
+                    });
+                    await UpdateRecipientStatus(results);
+                    await logService.ErrorAsync(ex);
+                }
             }
         }
 
@@ -129,9 +148,30 @@
             var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
             if (filterNotifications.Any())
             {
-                var sentResults = await chatBotSendMessageService.SendImageOnlyAsync(botChannel, filterNotifications);
-                var updatedResults = ConvertSendMessageResultToUpdateStatusResult(notifications, sentResults);
-                await UpdateRecipientStatus(updatedResults);
+                try
+                {
+                    var sentResults = await chatBotSendMessageService.SendImageOnlyAsync(botChannel, filterNotifications);
+                    var updatedResults = ConvertSendMessageResultToUpdateStatusResult(notifications, sentResults);
+                    if (!updatedResults.Any())
+                    {
+                        await logService.ErrorMessageAsync(JsonConvert.SerializeObject(updatedResults));
+                    }
+                    await UpdateRecipientStatus(updatedResults);
+                }
+                catch (Exception ex)
+                {
+                    var results = filterNotifications.Select(x => new AnnouncementNotificationUpdateResult
+                    {
+                        NotificationId = x.NotificationId,
+                        ConversationGroupId = x.ConversationGroupId,
+                        Status = SendNotificationStatuses.Retrying,
+                        ErrMsg = SendNotificationErrorMessage.BotServiceErrorMsg,
+                        IsOnlyRetryImage = true,
+                        ErrImages = x.ErrImages
+                    });
+                    await UpdateRecipientStatus(results);
+                    await logService.ErrorAsync(ex);
+                }
             }
         }
 
