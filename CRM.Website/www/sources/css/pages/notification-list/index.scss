@@ -1,14 +1,6 @@
 ﻿@import '../../abstracts/variables';
 @import './responsive';
 
-.filter-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 17%) 63px;
-    gap: 15px;
-    align-items: flex-end;
-    margin-bottom: 10px;
-}
-
 .notification-list{
     .form-filter {
         position: relative;
@@ -26,11 +18,11 @@
             font-size: smaller !important;
         }
 
-        // .form-group{
-        //     .react-datepicker-wrapper-container , input[name="content"]{
-        //         width: calc(100% - 0.5rem - 50px) !important;
-        //     }
-        // }
+        .form-group{
+            .react-datepicker-wrapper-container , input[name="content"]{
+                width: calc(100% - 0.5rem - 50px) !important;
+            }
+        }
         
         .icon-toggle {
             position: absolute;
@@ -232,11 +224,4 @@
 
 .view-detail-remark:focus {
     outline: none;
-}
-
-.range-date-picker .react-datepicker .react-datepicker__triangle{
-    left: -90px !important;
-}
-.react-datepicker{
-    width: 269px
 }
