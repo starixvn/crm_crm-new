@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { ActionCreators } from '../actions/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
@@ -260,19 +260,20 @@ export class Filter extends Component {
     render() {
         const referenceIds = ['Msg ID', 'Ann ID'];
         return (
+
             <Form className={`form-filter ${this.state.showFilter ? 'show-filter' : ''}`} onSubmit={e => this.submitHandler(e)}>
-                <Form.Row bsPrefix='form-row' className={this.state.showFilter ? '' : 'form-row-filter'}>
-                    <Form.Group >
-                        <Form.Label>{LangHelper.getResource('BotService')}</Form.Label>
+                <div className="filter-grid">
+                    <div className="filter-grid-item">
+                        <Form.Label className="mb-0">{LangHelper.getResource('BotService')}</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none" name='botService'
                             value={this.state.filter.botService}
                             onChange={e => this.handleChangeFilterControl(e)}
                         >
                             {BotServices.map((item, key) => <option key={key} value={item.id}>{item.name}</option>)}
                         </Form.Control>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>{LangHelper.getResource('NotificationType')}</Form.Label>
+                    </div>
+                    <div className="filter-grid-item">
+                        <Form.Label className="mb-0">{LangHelper.getResource('NotificationType')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <MultipleSelect
                                 id='notification-type'
@@ -285,9 +286,9 @@ export class Filter extends Component {
                                 onChange={(currentItem, selectedItemsKey) => this.handleNotificationTypeChange(currentItem, selectedItemsKey)}
                             />
                         </div>
-                    </Form.Group>
-                    <Form.Group style={{width: '280px'}}>
-                        <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Date')}</Form.Label>
+                    </div>
+                    <div className="filter-grid-item">
+                        <Form.Label style={{width: '50px'}} className="mb-0">{LangHelper.getResource('Date')}</Form.Label>
                         <div className='react-datepicker-wrapper-container form-control-wrapper'>
                             <DatePicker disabled={this.isDisabledDateParam()}
                                 dropdownMode="select"
@@ -304,10 +305,9 @@ export class Filter extends Component {
                                 isRangeDate
                             />
                         </div>
-                        
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
+                    </div>
+                    <div className="filter-grid-item">
+                        <Form.Label className="mb-0">{LangHelper.getResource('GroupHeadline')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <Select
                                 placeholder=' '
@@ -319,9 +319,9 @@ export class Filter extends Component {
                                 value={this.state.filter.headline}
                             />
                         </div>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>{LangHelper.getResource('Recipient')}</Form.Label>
+                    </div>
+                    <div className="filter-grid-item">
+                        <Form.Label className="mb-0">{LangHelper.getResource('Recipient')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <Select
                                 placeholder=' '
@@ -333,21 +333,21 @@ export class Filter extends Component {
                                 value={this.state.filter.recipient}
                             />
                         </div>
-                    </Form.Group>
+                    </div>
                     {
                         !this.state.showFilter &&
-                        <div style={{width: '70px', marginBottom: '1rem'}}>
+                        <div className="filter-grid-item" style={{ width : "70px" }}>
                             <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
                                 {LangHelper.getResource('Submit')}
                             </Button>
                         </div>
                     }
-                </Form.Row>
+                </div>
                 {
                     this.state.showFilter &&
-                    <Form.Row>
-                        <Form.Group>
-                            <Form.Label>{LangHelper.getResource('NotificationID')}</Form.Label>
+                    <div className="filter-grid">
+                        <div className="filter-grid-item">
+                            <Form.Label className="mb-0">{LangHelper.getResource('NotificationID')}</Form.Label>
                             <div className='form-control-wrapper d-flex align-items-center notification-id-container'>
                                 <Form.Control
                                     className={`shadow-none ${this.props.invalidParams.isInvalidNotificationIdLower ?
@@ -369,8 +369,8 @@ export class Filter extends Component {
                                     onChange={e => this.handleChangeFilterControl(e)}
                                 />
                             </div>
-                        </Form.Group>
-                        <Form.Group style={{width: '260px'}}>
+                        </div>
+                        <div className="filter-grid-item d-flex">
                             <Form.Control style={{width: '100px', margin: '0 0.5rem 0 0', padding: '0'}} as="select" size="sm" className="shadow-none"  name='referenceType'
                                 value={this.state.filter.referenceType}
                                 onChange={e => this.handleChangeFilterControl(e)}
@@ -382,17 +382,17 @@ export class Filter extends Component {
                                 onChange={e => this.handleChangeFilterControl(e)}
                                 onPaste={this.handlePasteAnnouncementId}
                             />
-                        </Form.Group>
-                        <Form.Group style={{width: '280px'}}>
-                            <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Content')}</Form.Label>
+                        </div>
+                        <div className="filter-grid-item">
+                            <Form.Label style={{width: '50px'}} className="mb-0">{LangHelper.getResource('Content')}</Form.Label>
                             <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
                                 value={this.state.filter.content}
                                 autoComplete='off'
                                 onChange={e => this.handleChange(e)}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>{LangHelper.getResource('Status')}</Form.Label>
+                            />            
+                        </div>
+                        <div className="filter-grid-item">
+                            <Form.Label className="mb-0">{LangHelper.getResource('Status')}</Form.Label>
                             <div className='form-control-wrapper'>
                                 <MultipleSelect
                                     dataSource={this.state.statusOptions}
@@ -404,16 +404,16 @@ export class Filter extends Component {
                                     onChange={(currentItem, selectedItemsKey) => this.handleStatusChange(currentItem, selectedItemsKey)}
                                 />
                             </div>
-                        </Form.Group>
+                        </div>
                         {
-                            this.state.showFilter &&
-                            <div style={{width: '70px'}}>
+                        this.state.showFilter &&
+                            <div className="filter-grid-item">
                                 <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
                                     {LangHelper.getResource('Submit')}
                                 </Button>
                             </div>
                         }
-                    </Form.Row>
+                    </div>
                 }
                 {
                     this.state.showFilter
@@ -421,6 +421,178 @@ export class Filter extends Component {
                         : <span className="fa fa-caret-down icon-toggle fa-sm" onClick={() => this.handleToggleFilter(true)} />
                 }
             </Form>
+
+
+
+
+
+
+
+
+
+
+
+            // <Form className={`form-filter ${this.state.showFilter ? 'show-filter' : ''}`} onSubmit={e => this.submitHandler(e)}>
+            //     <Form.Row bsPrefix='form-row' className={this.state.showFilter ? '' : 'form-row-filter'}>
+            //         <Form.Group >
+            //             <Form.Label>{LangHelper.getResource('BotService')}</Form.Label>
+            //             <Form.Control as="select" size="sm" className="shadow-none" name='botService'
+            //                 value={this.state.filter.botService}
+            //                 onChange={e => this.handleChangeFilterControl(e)}
+            //             >
+            //                 {BotServices.map((item, key) => <option key={key} value={item.id}>{item.name}</option>)}
+            //             </Form.Control>
+            //         </Form.Group>
+            //         <Form.Group>
+            //             <Form.Label>{LangHelper.getResource('NotificationType')}</Form.Label>
+            //             <div className='form-control-wrapper'>
+            //                 <MultipleSelect
+            //                     id='notification-type'
+            //                     dataSource={this.state.notificationTypeOptions}
+            //                     keyField='id'
+            //                     valueField='name'
+            //                     statusField='checked'
+            //                     isSubmited={false}
+            //                     isAllTextShown
+            //                     onChange={(currentItem, selectedItemsKey) => this.handleNotificationTypeChange(currentItem, selectedItemsKey)}
+            //                 />
+            //             </div>
+            //         </Form.Group>
+            //         <Form.Group style={{width: '280px'}}>
+            //             <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Date')}</Form.Label>
+            //             <div className='react-datepicker-wrapper-container form-control-wrapper'>
+            //                 <DatePicker disabled={this.isDisabledDateParam()}
+            //                     dropdownMode="select"
+            //                     showMonthDropdown
+            //                     showYearDropdown
+            //                     useShortMonthInDropdown
+            //                     selected={this.state.filter.fromDate}
+            //                     onChangeDate={dates => this.handleDateChange(dates)}
+            //                     startDate={this.state.filter.fromDate}
+            //                     endDate={this.state.filter.toDate}
+            //                     maxDate={this.state.maxDate}
+            //                     maxDateRange={31}
+            //                     selectsRange
+            //                     isRangeDate
+            //                 />
+            //             </div>
+                        
+            //         </Form.Group>
+            //         <Form.Group>
+            //             <Form.Label>{LangHelper.getResource('GroupHeadline')}</Form.Label>
+            //             <div className='form-control-wrapper'>
+            //                 <Select
+            //                     placeholder=' '
+            //                     isClearable
+            //                     noOptionsMessage={() => 'No results found'}
+            //                     onChange={value => this.handleHeadlineChange(value)}
+            //                     options={this.props.headlineOptions}
+            //                     onInputChange={searchText => this.debounceHandleHeadlineInputChange(searchText)}
+            //                     value={this.state.filter.headline}
+            //                 />
+            //             </div>
+            //         </Form.Group>
+            //         <Form.Group>
+            //             <Form.Label>{LangHelper.getResource('Recipient')}</Form.Label>
+            //             <div className='form-control-wrapper'>
+            //                 <Select
+            //                     placeholder=' '
+            //                     isClearable
+            //                     noOptionsMessage={() => 'No results found'}
+            //                     onChange={value => this.handleRecipientChange(value)}
+            //                     options={this.props.recipientOptions}
+            //                     onInputChange={searchText => this.debounceHandleRecipientInputChange(searchText)}
+            //                     value={this.state.filter.recipient}
+            //                 />
+            //             </div>
+            //         </Form.Group>
+            //         {
+            //             !this.state.showFilter &&
+            //             <div style={{width: '70px', marginBottom: '1rem'}}>
+            //                 <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
+            //                     {LangHelper.getResource('Submit')}
+            //                 </Button>
+            //             </div>
+            //         }
+            //     </Form.Row>
+            //     {
+            //         this.state.showFilter &&
+            //         <Form.Row>
+            //             <Form.Group>
+            //                 <Form.Label>{LangHelper.getResource('NotificationID')}</Form.Label>
+            //                 <div className='form-control-wrapper d-flex align-items-center notification-id-container'>
+            //                     <Form.Control
+            //                         className={`shadow-none ${this.props.invalidParams.isInvalidNotificationIdLower ?
+            //                             'invalid-input' : 'valid-input'} notification-id-input`}
+            //                         as='input' type='text' pattern='[0-9]*' size='sm'
+            //                         name='notificationIdLower'
+            //                         placeholder='From'
+            //                         value={this.state.filter.notificationIdLower}
+            //                         onChange={e => this.handleChangeFilterControl(e)}
+            //                     />
+            //                     <div className='notification-concate text-center'>-</div>
+            //                     <Form.Control
+            //                         className={`shadow-none ${this.props.invalidParams.isInvalidNotificationIdUpper ?
+            //                             'invalid-input' : 'valid-input'} notification-id-input`}
+            //                         as='input' type='text' pattern='[0-9]*' size='sm'
+            //                         name='notificationIdUpper'
+            //                         placeholder='To'
+            //                         value={this.state.filter.notificationIdUpper}
+            //                         onChange={e => this.handleChangeFilterControl(e)}
+            //                     />
+            //                 </div>
+            //             </Form.Group>
+            //             <Form.Group style={{width: '260px'}}>
+            //                 <Form.Control style={{width: '100px', margin: '0 0.5rem 0 0', padding: '0'}} as="select" size="sm" className="shadow-none"  name='referenceType'
+            //                     value={this.state.filter.referenceType}
+            //                     onChange={e => this.handleChangeFilterControl(e)}
+            //                 >
+            //                     {referenceIds.map((item, key) => <option key={key} value={item}>{item}</option>)}
+            //                 </Form.Control>
+            //                 <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none referenceId' name='referenceId'
+            //                     value={this.state.filter.referenceId}
+            //                     onChange={e => this.handleChangeFilterControl(e)}
+            //                     onPaste={this.handlePasteAnnouncementId}
+            //                 />
+            //             </Form.Group>
+            //             <Form.Group style={{width: '280px'}}>
+            //                 <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Content')}</Form.Label>
+            //                 <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
+            //                     value={this.state.filter.content}
+            //                     autoComplete='off'
+            //                     onChange={e => this.handleChange(e)}
+            //                 />
+            //             </Form.Group>
+            //             <Form.Group>
+            //                 <Form.Label>{LangHelper.getResource('Status')}</Form.Label>
+            //                 <div className='form-control-wrapper'>
+            //                     <MultipleSelect
+            //                         dataSource={this.state.statusOptions}
+            //                         keyField='id'
+            //                         valueField='name'
+            //                         statusField='checked'
+            //                         isSubmited={false}
+            //                         isAllTextShown
+            //                         onChange={(currentItem, selectedItemsKey) => this.handleStatusChange(currentItem, selectedItemsKey)}
+            //                     />
+            //                 </div>
+            //             </Form.Group>
+            //             {
+            //                 this.state.showFilter &&
+            //                 <div style={{width: '70px'}}>
+            //                     <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
+            //                         {LangHelper.getResource('Submit')}
+            //                     </Button>
+            //                 </div>
+            //             }
+            //         </Form.Row>
+            //     }
+            //     {
+            //         this.state.showFilter
+            //             ? <span className="fa fa-caret-up icon-toggle fa-sm" onClick={() => this.handleToggleFilter(false)} />
+            //             : <span className="fa fa-caret-down icon-toggle fa-sm" onClick={() => this.handleToggleFilter(true)} />
+            //     }
+            // </Form>
         );
     }
 }
