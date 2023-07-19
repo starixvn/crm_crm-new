@@ -11,7 +11,6 @@
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Models;
     using CRM.Core.Services;
-    using Fanex.Caching;
     using global::Telegram.Bot.Types;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Mvc;
@@ -67,6 +66,7 @@
 
         protected internal virtual async Task HandleEventUpdate(User bot, Message message)
         {
+            await logService.ErrorMessageAsync(message.Chat.SlowModeDelay?.ToString());
             switch (message.Type)
             {
                 case MessageType.Text:
@@ -173,7 +173,7 @@
             return result;
         }
 
-        private async Task<CommandResult>  CreateAddBotToGroupCommand(Message message, User bot)
+        private async Task<CommandResult> CreateAddBotToGroupCommand(Message message, User bot)
         {
             var command = new AddBotToGroupCommand
             {
