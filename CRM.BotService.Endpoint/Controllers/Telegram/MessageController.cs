@@ -27,8 +27,6 @@
         private readonly Func<long, ITelegramBotService> telegramBotService;
         private readonly IBotCommonService botCommonService;
         private static readonly string TelegramBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
-        private readonly int BatchSize;
-        private readonly int DelayEachBatchMilisecond;
 
         public MessageController(
             ICRMLogService logService,
@@ -39,8 +37,6 @@
             this.logService = logService;
             this.telegramBotService = telegramBotService;
             this.botCommonService = botCommonService;
-            BatchSize = configuration.GetValue<int?>("TelegramBatchSize") ?? 10;
-            DelayEachBatchMilisecond = configuration.GetValue<int?>("TelegramDelayEachBatch") ?? 250;
         }
 
         [HttpPost]
@@ -61,7 +57,7 @@
             }
 
             var results = (await Task.WhenAll(tasks)).ToList();
-            logService.LogInformation("End Start SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
+            logService.LogInformation("End SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
             return Ok(results);
         }
 
@@ -85,16 +81,19 @@
 
                 return Ok(inActivedBotChannelResults);
             }
-            var results = new List<SendNotificationResult>();
+            var tasks = new List<Task<SendNotificationResult>>();
             if (notifications is not null && notifications.Any())
             {
                 foreach (var notification in notifications)
                 {
-                    var result = await SendFormattedTextAndImageTelegramService(notification);
-                    results.Add(result);
+                    tasks.Add(
+                        Task.Run(
+                            () => SendFormattedTextAndImageTelegramService(notification)
+                    ));
                 }
             }
-            logService.LogInformation("End Start SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
+            var results = (await Task.WhenAll(tasks)).ToList();
+            logService.LogInformation("End SendMultipleFormattedTextAndImagesAsync: " + JsonConvert.SerializeObject(results, Formatting.Indented));
             return Ok(results);
         }
 
@@ -102,7 +101,7 @@
         [Route("api/telegram/send-image-only")]
         public async Task<IActionResult> SendMultipleImagesOnlyAsync([FromBody] IEnumerable<AnnouncementNotification> notifications)
         {
-            logService.LogInformation("Start SendMultipleFormattedTextAndImagesAsync: " + JsonConvert.SerializeObject(notifications, Formatting.Indented));
+            logService.LogInformation("Start SendMultipleImagesOnlyAsync: " + JsonConvert.SerializeObject(notifications, Formatting.Indented));
             if (!botCommonService.IsActiveChannel(BotChannel.Telegram))
             {
                 var inActivedBotChannelResults = notifications.Select(x => new SendNotificationResult
@@ -117,17 +116,21 @@
                 return Ok(inActivedBotChannelResults);
             }
 
-            var results = new List<SendNotificationResult>();
+            var tasks = new List<Task<SendNotificationResult>>();
             if (notifications is not null && notifications.Any())
             {
                 foreach (var notification in notifications)
                 {
-                    var result = await SendImagesOnlyTelegramService(notification);
-                    results.Add(result);
+                    tasks.Add(
+                        Task.Run(
+                            () => SendImagesOnlyTelegramService(notification)
+                    ));
                 }
             }
 
-            logService.LogInformation("End Start SendMultipleMessage: " + JsonConvert.SerializeObject(results, Formatting.Indented));
+            var results = (await Task.WhenAll(tasks)).ToList();
+
+            logService.LogInformation("End SendMultipleImagesOnlyAsync: " + JsonConvert.SerializeObject(results, Formatting.Indented));
             return Ok(results);
         }
 
