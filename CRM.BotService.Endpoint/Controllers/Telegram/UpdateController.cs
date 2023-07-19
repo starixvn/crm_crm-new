@@ -66,7 +66,7 @@
 
         protected internal virtual async Task HandleEventUpdate(User bot, Message message)
         {
-            await logService.ErrorMessageAsync(message.Chat.SlowModeDelay?.ToString());
+            await logService.ErrorMessageAsync($"Event: {message.Type.ToString()}, ChatID: {message.Chat.Id}, Name: {message.Chat.Title}, Slow mode: {message.Chat.SlowModeDelay?.ToString()}s");
             switch (message.Type)
             {
                 case MessageType.Text:
