@@ -25,6 +25,7 @@
         private readonly IList<TelegramBotConfigurations> botConfigurations;
         private readonly ICRMLogService logService;
         private readonly IBotCommonService botCommonService;
+        private static Random random = new Random();
 
         private static readonly string TelegramBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
 
@@ -125,11 +126,19 @@
         public async Task<Message> SendImageAsync(long botId, long chatId, string urlImage)
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
-            var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile(urlImage);
+
+            var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile($"{urlImage}?{RandomString(4)}");
             Message message = await bot.BotClient.SendPhotoAsync(
                 chatId: chatId,
                 photo: photo);
             return message;
+        }
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         public async Task WriteLogCommandAsync(NotificationMessage notificationMessage, SendResult sendResult, string image = "")
