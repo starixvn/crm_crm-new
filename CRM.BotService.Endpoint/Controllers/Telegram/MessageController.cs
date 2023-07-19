@@ -17,7 +17,6 @@
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -31,8 +30,7 @@
         public MessageController(
             ICRMLogService logService,
             Func<long, ITelegramBotService> telegramBotService,
-            IBotCommonService botCommonService,
-            IConfiguration configuration)
+            IBotCommonService botCommonService)
         {
             this.logService = logService;
             this.telegramBotService = telegramBotService;
