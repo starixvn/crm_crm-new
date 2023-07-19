@@ -1,5 +1,6 @@
 ﻿namespace CRM.Core.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -23,6 +24,7 @@
         private readonly IChatBotSendMessageService chatBotSendMessageService;
         private readonly string BaseImageUrl;
         private const string formatImageUrl = "{0}{1}/{2}";
+        private const byte BatchSize = 10;
 
         public SendAnnouncementService(IBaseService baseService,
             ICRMLogService logService,
@@ -66,7 +68,7 @@
             if (filterNotifications.Any())
             {
                 var sentResults = await chatBotSendMessageService.SendMultipleFormattedMessageAndAttachmentAsync(botChannel, filterNotifications);
-                var updatedResult = ConvertSendMessageResultToUpdateStatusResult(notifications, sentResults);
+                var updatedResult = ConvertSendMessageResultToUpdateStatusResult(filterNotifications, sentResults);
                 await UpdateRecipientStatus(updatedResult);
             }
         }
@@ -218,6 +220,17 @@
                 result.Status = SendNotificationStatuses.BotBlocked;
                 result.ErrMsg = string.Empty;
             }
+        }
+
+        private IEnumerable<IEnumerable<AnnouncementNotification>> DividedBatchToSendAnnouncement(IEnumerable<AnnouncementNotification> notifications)
+        {
+            var batches = new List<List<AnnouncementNotification>>();
+            int totalBatch = (int)Math.Ceiling((double)notifications.Count() / BatchSize);
+            for (int i = 0; i < totalBatch; i++)
+            {
+                batches.Add(notifications.Skip(i * BatchSize).Take(BatchSize).ToList());
+            }
+            return batches;
         }
     }
 }
