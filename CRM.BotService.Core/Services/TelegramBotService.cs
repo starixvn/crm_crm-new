@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Text.RegularExpressions;
@@ -25,8 +26,7 @@
         private readonly IList<TelegramBotConfigurations> botConfigurations;
         private readonly ICRMLogService logService;
         private readonly IBotCommonService botCommonService;
-        private static Random random = new Random();
-
+        private readonly HttpClient httpClient;
         private static readonly string TelegramBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
 
         public TelegramBotService(
@@ -38,7 +38,7 @@
             this.botConfigurations = botConfigurations;
             this.logService = logService;
             this.botCommonService = botCommonService;
-            var httpClient = clientFactory.CreateClient(NamedHttpClients.ProxiedClient);
+            httpClient = clientFactory.CreateClient(NamedHttpClients.ProxiedClient);
             foreach (var bot in botConfigurations)
             {
                 bot.BotClient = new TelegramBotClient(bot.Token, httpClient);
@@ -127,18 +127,25 @@
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
 
-            var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile($"{urlImage}?random={RandomString(4)}");
+            var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile(urlImage);
             Message message = await bot.BotClient.SendPhotoAsync(
                 chatId: chatId,
                 photo: photo);
             return message;
         }
 
-        public static string RandomString(int length)
+        public async Task<Message> SendImageStreamAsync(long botId, long chatId, string urlImage)
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
+            TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
+            var imgBye = await httpClient.GetByteArrayAsync(urlImage);
+            using (var stream = new MemoryStream(imgBye))
+            {
+                var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream);
+                Message message = await bot.BotClient.SendPhotoAsync(
+                    chatId: chatId,
+                    photo: photo);
+                return message;
+            }
         }
 
         public async Task WriteLogCommandAsync(NotificationMessage notificationMessage, SendResult sendResult, string image = "")

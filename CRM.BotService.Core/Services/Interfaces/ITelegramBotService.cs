@@ -23,5 +23,7 @@
         Task SendNotifyAsync(NotificationMessage notificationMessage, SendResult sendResult);
 
         Task<Message> SendImageAsync(long botId, long chatId, string urlImage);
+
+        Task<Message> SendImageStreamAsync(long botId, long chatId, string urlImage);
     }
 }

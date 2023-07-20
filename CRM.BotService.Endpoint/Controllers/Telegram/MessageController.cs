@@ -298,7 +298,7 @@
 
                 _ = long.TryParse(announcementNotification.ConversationId, out long chatId);
 
-                var sendImageResult = await telegramBotService(announcementNotification.BotId).SendImageAsync(announcementNotification.BotId, chatId, image);
+                var sendImageResult = await telegramBotService(announcementNotification.BotId).SendImageStreamAsync(announcementNotification.BotId, chatId, image);
                 if (sendImageResult is not null)
                 {
                     result.IsSuccessful = true;
