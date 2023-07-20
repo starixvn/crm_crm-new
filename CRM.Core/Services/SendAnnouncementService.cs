@@ -70,6 +70,11 @@
                 try
                 {
                     var sentResults = await chatBotSendMessageService.SendMultipleFormattedMessageAndAttachmentAsync(botChannel, filterNotifications);
+                    logService.LogInformation(JsonConvert.SerializeObject(sentResults));
+                    if (botChannel == BotChannel.Letstalk)
+                    {
+                        await logService.ErrorMessageAsync(JsonConvert.SerializeObject(sentResults));
+                    }
                     var updatedResult = ConvertSendMessageResultToUpdateStatusResult(filterNotifications, sentResults);
                     if (!updatedResult.Any())
                     {

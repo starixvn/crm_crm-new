@@ -105,6 +105,7 @@
             logService.LogInformation("==================Send Announcement Started=================");
             logService.LogInformation(JsonConvert.SerializeObject(notifications));
             var results = await letstalkSendMultipleReceiverService.SendFornattedTextAndImagesAsync(notifications);
+            logService.LogInformation(JsonConvert.SerializeObject(results));
 
             return Ok(results);
         }
