@@ -181,7 +181,8 @@
                 sendResult.IsIgnoreRetry = true;
             }
 
-            if (exception.Message.Contains("chat not found", StringComparison.InvariantCultureIgnoreCase))
+            if (exception.Message.Contains("chat not found", StringComparison.InvariantCultureIgnoreCase)
+                || exception.Message.Contains("the group chat was deleted", StringComparison.InvariantCultureIgnoreCase))
             {
                 sendResult.ErrorMessage = ErrorMessageTelegram.GroupNotFound;
                 sendResult.IsIgnoreRetry = true;
