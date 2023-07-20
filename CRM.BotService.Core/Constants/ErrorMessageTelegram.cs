@@ -6,6 +6,7 @@
         public const string DisableChannelErrorMessage = "Chatbot service has been stopped due to turning off the configuration by admin.";
         public const string DuplicatedErrorMessage = "Error occurred due to duplicate content in a pre-defined period of time.";
         public const string GroupChatDeleted = "The Chatbot has been removed by users.";
+        public const string GroupNotFound = "The group has been deleted.";
         public const string BlockBot = "N/A";
     }
 }

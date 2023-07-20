@@ -66,6 +66,7 @@ export default class CkEditor extends PureComponent {
     onEditorChange = event => {
         if(this.editor.editor.focusManager.hasFocus){
             const data = event.editor.getData();
+            console.log(data);
             this.props.onChange(data);
         }
     };

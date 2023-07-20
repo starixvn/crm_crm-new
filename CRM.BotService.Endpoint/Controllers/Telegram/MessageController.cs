@@ -407,11 +407,18 @@
 
             if (exception.Message.Contains("bot was kicked from the supergroup chat", StringComparison.InvariantCultureIgnoreCase)
                 || exception.Message.Contains("bot was kicked from the group chat", StringComparison.InvariantCultureIgnoreCase)
-                || exception.Message.Contains("chat not found", StringComparison.InvariantCultureIgnoreCase))
+                )
             {
                 sendResult.ErrMsg = ErrorMessageTelegram.GroupChatDeleted;
                 sendResult.IgnoredRetry = true;
             }
+
+            if (exception.Message.Contains("chat not found", StringComparison.InvariantCultureIgnoreCase))
+            {
+                sendResult.ErrMsg = ErrorMessageTelegram.GroupNotFound;
+                sendResult.IgnoredRetry = true;
+            }
+
 
             if (exception.Message.Contains("bot was blocked by the user", StringComparison.InvariantCultureIgnoreCase))
             {

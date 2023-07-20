@@ -253,7 +253,6 @@ export class Filter extends Component {
                                 <Form.Group>
                                     <Form.Label className="col-auto col-form-label">{LangHelper.getResource('Recipient')}</Form.Label>
                                     <Form.Control type="text" size="sm" className="shadow-none"
-                                        placeholder='Name of PIC'
                                         value={this.state.filter.recipient}
                                         onChange={e => this.onChange('recipient', e.target.value)}
                                     />

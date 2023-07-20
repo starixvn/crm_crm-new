@@ -175,9 +175,15 @@
 
             if (exception.Message.Contains("bot was kicked from the supergroup chat", StringComparison.InvariantCultureIgnoreCase)
                 || exception.Message.Contains("bot was kicked from the group chat", StringComparison.InvariantCultureIgnoreCase)
-                || exception.Message.Contains("chat not found", StringComparison.InvariantCultureIgnoreCase))
+                )
             {
                 sendResult.ErrorMessage = ErrorMessageTelegram.GroupChatDeleted;
+                sendResult.IsIgnoreRetry = true;
+            }
+
+            if (exception.Message.Contains("chat not found", StringComparison.InvariantCultureIgnoreCase))
+            {
+                sendResult.ErrorMessage = ErrorMessageTelegram.GroupNotFound;
                 sendResult.IsIgnoreRetry = true;
             }
 
