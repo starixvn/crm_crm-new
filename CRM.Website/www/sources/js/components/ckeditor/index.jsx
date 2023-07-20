@@ -85,6 +85,14 @@ export default class CkEditor extends PureComponent {
     onLoaded = editor => {
         this.editor = editor;
         editor.editor.on('instanceReady', function(ev) {
+            this.dataProcessor.writer.lineBreakChars = '\n';
+            this.dataProcessor.writer.setRules( 'p', {
+                indent: true,
+                breakBeforeOpen: true,
+                breakAfterOpen: true,
+                breakBeforeClose: false,
+                breakAfterClose: true
+            } );
             Site.unblockUI();
         });
     }
@@ -122,6 +130,7 @@ export default class CkEditor extends PureComponent {
         });
 
         CKEDITOR.addCss('body {margin: 2px !important;}');
+        CKEDITOR.addCss('p {margin: 0 !important;}');
     };
 
     removeToolbarForChatBot = isRemoveToolbarForChatbot =>{
