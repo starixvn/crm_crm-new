@@ -24,7 +24,7 @@
         private readonly IChatBotSendMessageService chatBotSendMessageService;
         private readonly string BaseImageUrl;
         private const string formatImageUrl = "{0}{1}/{2}";
-        private const byte BatchSize = 10;
+        private static byte BatchSize = 10;
 
         public SendAnnouncementService(IBaseService baseService,
             ICRMLogService logService,
@@ -67,32 +67,32 @@
             var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
             if (filterNotifications.Any())
             {
-                try
+                var batches = DividedBatchToSendAnnouncement(filterNotifications);
+                foreach (var batch in batches)
                 {
-                    var sentResults = await chatBotSendMessageService.SendMultipleFormattedMessageAndAttachmentAsync(botChannel, filterNotifications);
-                    logService.LogInformation(JsonConvert.SerializeObject(sentResults));
-                    if (botChannel == BotChannel.Letstalk)
+                    try
                     {
-                        await logService.ErrorMessageAsync(JsonConvert.SerializeObject(sentResults));
+                        var sentResults = await chatBotSendMessageService.SendMultipleFormattedMessageAndAttachmentAsync(botChannel, batch);
+                        logService.LogInformation(JsonConvert.SerializeObject(sentResults));
+                        if (botChannel == BotChannel.Letstalk)
+                        {
+                            await logService.ErrorMessageAsync(JsonConvert.SerializeObject(sentResults));
+                        }
+                        var updatedResult = ConvertSendMessageResultToUpdateStatusResult(batch, sentResults);
+                        await UpdateRecipientStatus(updatedResult);
                     }
-                    var updatedResult = ConvertSendMessageResultToUpdateStatusResult(filterNotifications, sentResults);
-                    if (!updatedResult.Any())
+                    catch (Exception ex)
                     {
-                        await logService.ErrorMessageAsync(JsonConvert.SerializeObject(sentResults));
+                        var results = batch.Select(x => new AnnouncementNotificationUpdateResult
+                        {
+                            NotificationId = x.NotificationId,
+                            ConversationGroupId = x.ConversationGroupId,
+                            Status = SendNotificationStatuses.Retrying,
+                            ErrMsg = SendNotificationErrorMessage.BotServiceErrorMsg,
+                        });
+                        await UpdateRecipientStatus(results);
+                        await logService.ErrorAsync(ex);
                     }
-                    await UpdateRecipientStatus(updatedResult);
-                }
-                catch (Exception ex)
-                {
-                    var results = filterNotifications.Select(x => new AnnouncementNotificationUpdateResult
-                    {
-                        NotificationId = x.NotificationId,
-                        ConversationGroupId = x.ConversationGroupId,
-                        Status = SendNotificationStatuses.Retrying,
-                        ErrMsg = SendNotificationErrorMessage.BotServiceErrorMsg,
-                    });
-                    await UpdateRecipientStatus(results);
-                    await logService.ErrorAsync(ex);
                 }
             }
         }
@@ -267,7 +267,7 @@
             }
         }
 
-        private IEnumerable<IEnumerable<AnnouncementNotification>> DividedBatchToSendAnnouncement(IEnumerable<AnnouncementNotification> notifications)
+        private static IEnumerable<IEnumerable<AnnouncementNotification>> DividedBatchToSendAnnouncement(IEnumerable<AnnouncementNotification> notifications)
         {
             var batches = new List<List<AnnouncementNotification>>();
             int totalBatch = (int)Math.Ceiling((double)notifications.Count() / BatchSize);

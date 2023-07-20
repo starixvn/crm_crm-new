@@ -39,12 +39,21 @@
             if (notifications.Any())
             {
                 List<NotificationGroupContent> groupedContentNotifications = GroupNotificationByContentAndChatType(notifications);
+                List<Task<List<SendNotificationResult>>> tasks = new();
                 foreach (var notification in groupedContentNotifications)
                 {
-                    var result = await SendToLetstalkAsync(notification);
+                    tasks.Add(Task.Run(() => SendToLetstalkAsync(notification)));
+                    //var result = await SendToLetstalkAsync(notification);
+                }
+
+                List<List<SendNotificationResult>> paralellResult = (await Task.WhenAll(tasks)).ToList();
+
+                foreach (var result in paralellResult)
+                {
                     sendResults.AddRange(result);
                 }
             }
+
             return sendResults;
         }
 

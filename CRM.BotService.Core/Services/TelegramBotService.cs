@@ -127,7 +127,7 @@
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
 
-            var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile($"{urlImage}?{RandomString(4)}");
+            var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile($"{urlImage}?random={RandomString(4)}");
             Message message = await bot.BotClient.SendPhotoAsync(
                 chatId: chatId,
                 photo: photo);
