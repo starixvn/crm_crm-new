@@ -339,7 +339,10 @@
                 string url = string.IsNullOrWhiteSpace(BaseImageUrl) || string.IsNullOrWhiteSpace(BaseImageServiceNameUrl) ? imgUrl : imgUrl.Replace(BaseImageUrl, BaseImageServiceNameUrl);
                 await logService.InfoMessageAsync($"Get image: {url}");
                 imgByte = await telegramBotService(botId).ReadImageAsByteAsync(url);
-                await cacheService.SetAsync(imgUrl, imgByte);
+                await cacheService.SetAsync(imgUrl, imgByte, new CacheItemOptions
+                {
+                    RelativeExpiration = TimeSpan.FromMinutes(10),
+                });
             }
             return imgByte;
         }
