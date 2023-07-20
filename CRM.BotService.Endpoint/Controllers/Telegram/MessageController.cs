@@ -336,8 +336,10 @@
             byte[] imgByte = await cacheService.GetAsync<byte[]>(imgUrl);
             if (imgByte is null)
             {
-                await logService.InfoMessageAsync($"Get image: {imgUrl}");
-                imgByte = await telegramBotService(botId).ReadImageAsByteAsync(imgUrl);
+                string url = string.IsNullOrWhiteSpace(BaseImageUrl) || string.IsNullOrWhiteSpace(BaseImageServiceNameUrl) ? imgUrl : imgUrl.Replace(BaseImageUrl, BaseImageServiceNameUrl);
+                await logService.InfoMessageAsync($"Get image: {url}");
+
+                imgByte = await telegramBotService(botId).ReadImageAsByteAsync(url);
                 await cacheService.SetAsync(imgUrl, imgByte, new CacheItemOptions
                 {
                     RelativeExpiration = TimeSpan.FromMinutes(10),
@@ -417,7 +419,6 @@
                 sendResult.ErrMsg = ErrorMessageTelegram.GroupNotFound;
                 sendResult.IgnoredRetry = true;
             }
-
 
             if (exception.Message.Contains("bot was blocked by the user", StringComparison.InvariantCultureIgnoreCase))
             {
