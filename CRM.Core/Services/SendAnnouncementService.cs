@@ -24,7 +24,7 @@
         private readonly IChatBotSendMessageService chatBotSendMessageService;
         private readonly string BaseImageUrl;
         private const string formatImageUrl = "{0}{1}/{2}";
-        private static byte BatchSize = 10;
+        private static readonly byte BatchSize = 10;
 
         public SendAnnouncementService(IBaseService baseService,
             ICRMLogService logService,
@@ -54,7 +54,6 @@
         private async Task SendAnnouncementAsync(IEnumerable<AnnouncementNotification> notifications)
         {
             logService.LogInformation("---------- Send notifications");
-            logService.LogInformation(JsonConvert.SerializeObject(notifications));
             await Task.WhenAll(
                 SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications),
                 SendAnnouncementNotificationToBotServiceAsync(BotChannel.Telegram, notifications)
@@ -139,7 +138,6 @@
         private async Task RetryImagesOnlyAsync(IEnumerable<AnnouncementNotification> notifications)
         {
             logService.LogInformation("---------- Retry images only notifications");
-            logService.LogInformation(JsonConvert.SerializeObject(notifications));
 
             await Task.WhenAll(
                 RetryImageByChannelAsync(BotChannel.Letstalk, notifications),
@@ -153,29 +151,33 @@
             var filterNotifications = notifications.Where(x => x.ChannelId == botChannel).ToList();
             if (filterNotifications.Any())
             {
-                try
+                var batches = DividedBatchToSendAnnouncement(filterNotifications);
+                foreach (var batch in batches)
                 {
-                    var sentResults = await chatBotSendMessageService.SendImageOnlyAsync(botChannel, filterNotifications);
-                    var updatedResults = ConvertSendMessageResultToUpdateStatusResult(notifications, sentResults);
-                    if (!updatedResults.Any())
+                    try
                     {
-                        await logService.ErrorMessageAsync(JsonConvert.SerializeObject(updatedResults));
+                        var sentResults = await chatBotSendMessageService.SendImageOnlyAsync(botChannel, batch);
+                        var updatedResults = ConvertSendMessageResultToUpdateStatusResult(batch, sentResults);
+                        if (!updatedResults.Any())
+                        {
+                            await logService.ErrorMessageAsync(JsonConvert.SerializeObject(updatedResults));
+                        }
+                        await UpdateRecipientStatus(updatedResults);
                     }
-                    await UpdateRecipientStatus(updatedResults);
-                }
-                catch (Exception ex)
-                {
-                    var results = filterNotifications.Select(x => new AnnouncementNotificationUpdateResult
+                    catch (Exception ex)
                     {
-                        NotificationId = x.NotificationId,
-                        ConversationGroupId = x.ConversationGroupId,
-                        Status = SendNotificationStatuses.Retrying,
-                        ErrMsg = SendNotificationErrorMessage.BotServiceErrorMsg,
-                        IsOnlyRetryImage = true,
-                        ErrImages = x.ErrImages
-                    });
-                    await UpdateRecipientStatus(results);
-                    await logService.ErrorAsync(ex);
+                        var results = batch.Select(x => new AnnouncementNotificationUpdateResult
+                        {
+                            NotificationId = x.NotificationId,
+                            ConversationGroupId = x.ConversationGroupId,
+                            Status = SendNotificationStatuses.Retrying,
+                            ErrMsg = SendNotificationErrorMessage.BotServiceErrorMsg,
+                            IsOnlyRetryImage = true,
+                            ErrImages = x.ErrImages
+                        });
+                        await UpdateRecipientStatus(results);
+                        await logService.ErrorAsync(ex);
+                    }
                 }
             }
         }
