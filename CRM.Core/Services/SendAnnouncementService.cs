@@ -53,12 +53,10 @@
 
         private async Task SendAnnouncementAsync(IEnumerable<AnnouncementNotification> notifications)
         {
-            logService.LogInformation("---------- Send notifications");
             await Task.WhenAll(
                 SendAnnouncementNotificationToBotServiceAsync(BotChannel.Letstalk, notifications),
                 SendAnnouncementNotificationToBotServiceAsync(BotChannel.Telegram, notifications)
             );
-            logService.LogInformation("---------- Send notifications");
         }
 
         private async Task SendAnnouncementNotificationToBotServiceAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)
@@ -73,10 +71,6 @@
                     {
                         var sentResults = await chatBotSendMessageService.SendMultipleFormattedMessageAndAttachmentAsync(botChannel, batch);
                         logService.LogInformation(JsonConvert.SerializeObject(sentResults));
-                        if (botChannel == BotChannel.Letstalk)
-                        {
-                            await logService.ErrorMessageAsync(JsonConvert.SerializeObject(sentResults));
-                        }
                         var updatedResult = ConvertSendMessageResultToUpdateStatusResult(batch, sentResults);
                         await UpdateRecipientStatus(updatedResult);
                     }
@@ -137,13 +131,10 @@
 
         private async Task RetryImagesOnlyAsync(IEnumerable<AnnouncementNotification> notifications)
         {
-            logService.LogInformation("---------- Retry images only notifications");
-
             await Task.WhenAll(
                 RetryImageByChannelAsync(BotChannel.Letstalk, notifications),
                 RetryImageByChannelAsync(BotChannel.Telegram, notifications)
             );
-            logService.LogInformation("---------- Retry images only notifications");
         }
 
         private async Task RetryImageByChannelAsync(BotChannel botChannel, IEnumerable<AnnouncementNotification> notifications)

@@ -1,5 +1,6 @@
 ﻿namespace CRM.BotService.Core.Services.Interfaces
 {
+    using System.IO;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Models;
     using CRM.Core.Models.BotServices;
@@ -24,6 +25,8 @@
 
         Task<Message> SendImageAsync(long botId, long chatId, string urlImage);
 
-        Task<Message> SendImageStreamAsync(long botId, long chatId, string urlImage);
+        Task<Message> SendImageStreamAsync(long botId, long chatId, Stream stream);
+
+        Task<byte[]> ReadImageAsByteAsync(string imgUrl);
     }
 }

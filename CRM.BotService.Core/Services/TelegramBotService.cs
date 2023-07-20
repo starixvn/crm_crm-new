@@ -27,6 +27,7 @@
         private readonly ICRMLogService logService;
         private readonly IBotCommonService botCommonService;
         private readonly HttpClient httpClient;
+
         private static readonly string TelegramBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
 
         public TelegramBotService(
@@ -38,6 +39,7 @@
             this.botConfigurations = botConfigurations;
             this.logService = logService;
             this.botCommonService = botCommonService;
+
             httpClient = clientFactory.CreateClient(NamedHttpClients.ProxiedClient);
             foreach (var bot in botConfigurations)
             {
@@ -134,18 +136,15 @@
             return message;
         }
 
-        public async Task<Message> SendImageStreamAsync(long botId, long chatId, string urlImage)
+        public async Task<Message> SendImageStreamAsync(long botId, long chatId, Stream stream)
         {
             TelegramBotConfigurations bot = botConfigurations.First(x => x.BotId == botId);
-            var imgBye = await httpClient.GetByteArrayAsync(urlImage);
-            using (var stream = new MemoryStream(imgBye))
-            {
-                var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream);
-                Message message = await bot.BotClient.SendPhotoAsync(
-                    chatId: chatId,
-                    photo: photo);
-                return message;
-            }
+
+            var photo = new Telegram.Bot.Types.InputFiles.InputOnlineFile(stream);
+            Message message = await bot.BotClient.SendPhotoAsync(
+                chatId: chatId,
+                photo: photo);
+            return message;
         }
 
         public async Task WriteLogCommandAsync(NotificationMessage notificationMessage, SendResult sendResult, string image = "")
@@ -224,5 +223,8 @@
             string messageContentReplace = Regex.Replace(replaceNewLine, "<(?!/?(" + string.Join("|", allowedTagsHtml) + ")(>|\\s.*?>)).*?>", "");
             return messageContentReplace;
         }
+
+        public async Task<byte[]> ReadImageAsByteAsync(string imgUrl)
+        => await httpClient.GetByteArrayAsync(imgUrl);
     }
 }

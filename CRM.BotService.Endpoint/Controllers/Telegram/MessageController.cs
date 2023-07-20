@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
@@ -13,10 +14,12 @@
     using CRM.Core.Models.BotServices;
     using CRM.Core.Models.BotServices.Announcement;
     using CRM.Core.Services;
+    using Fanex.Caching;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -25,16 +28,24 @@
         private readonly ICRMLogService logService;
         private readonly Func<long, ITelegramBotService> telegramBotService;
         private readonly IBotCommonService botCommonService;
+        private readonly ICacheService cacheService;
+        private readonly string BaseImageUrl;
+        private readonly string BaseImageServiceNameUrl;
         private static readonly string TelegramBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
 
         public MessageController(
             ICRMLogService logService,
             Func<long, ITelegramBotService> telegramBotService,
-            IBotCommonService botCommonService)
+            IBotCommonService botCommonService,
+            IConfiguration configuration,
+            ICacheService cacheService)
         {
             this.logService = logService;
             this.telegramBotService = telegramBotService;
             this.botCommonService = botCommonService;
+            this.cacheService = cacheService;
+            BaseImageUrl = configuration.GetValue<string>("BaseImageUrl");
+            BaseImageServiceNameUrl = configuration.GetValue<string>("BaseImageServiceNameUrl");
         }
 
         [HttpPost]
@@ -297,12 +308,15 @@
                 logService.LogInformation(string.Format("Start SendNotifyAysnc: botId: {0} chatId: {1}.", announcementNotification.BotId, announcementNotification.ConversationId));
 
                 _ = long.TryParse(announcementNotification.ConversationId, out long chatId);
-
-                var sendImageResult = await telegramBotService(announcementNotification.BotId).SendImageStreamAsync(announcementNotification.BotId, chatId, image);
-                if (sendImageResult is not null)
+                var imgBye = await GetImageByteArrayAsync(announcementNotification.BotId, image);
+                using (var stream = new MemoryStream(imgBye))
                 {
-                    result.IsSuccessful = true;
-                    await WriteLogAnnouncementMessageAsync(announcementNotification, image, isBotBlocked: false, result.IsSuccessful, string.Empty);
+                    var sendImageResult = await telegramBotService(announcementNotification.BotId).SendImageStreamAsync(announcementNotification.BotId, chatId, stream);
+                    if (sendImageResult is not null)
+                    {
+                        result.IsSuccessful = true;
+                        await WriteLogAnnouncementMessageAsync(announcementNotification, image, isBotBlocked: false, result.IsSuccessful, string.Empty);
+                    }
                 }
             }
             catch (Exception ex)
@@ -315,6 +329,19 @@
             }
 
             logService.LogInformation("end SendNotifyAysnc!!!");
+        }
+
+        private async Task<byte[]> GetImageByteArrayAsync(long botId, string imgUrl)
+        {
+            byte[] imgByte = await cacheService.GetAsync<byte[]>(imgUrl);
+            if (imgByte is null)
+            {
+                string url = string.IsNullOrWhiteSpace(BaseImageUrl) || string.IsNullOrWhiteSpace(BaseImageServiceNameUrl) ? imgUrl : imgUrl.Replace(BaseImageUrl, BaseImageServiceNameUrl);
+                await logService.InfoMessageAsync($"Get image: {url}");
+                imgByte = await telegramBotService(botId).ReadImageAsByteAsync(url);
+                await cacheService.SetAsync(imgUrl, imgByte);
+            }
+            return imgByte;
         }
 
         private async Task<SendNotificationResult> SendImagesOnlyTelegramService(AnnouncementNotification announcementNotification)

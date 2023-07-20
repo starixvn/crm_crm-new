@@ -16,6 +16,8 @@
 
         Task ErrorMessageAsync(string error);
 
+        Task InfoMessageAsync(string info);
+
         Task ErrorAsync(CommandResult commandResult, ICriteria criteria);
 
         Task ErrorAsync(Exception exception, ICriteria criteria);
@@ -49,6 +51,11 @@
         public async Task ErrorMessageAsync(string error)
         {
             await logger.ErrorAsync(error);
+        }
+
+        public async Task InfoMessageAsync(string info)
+        {
+            await logger.InfoAsync(info);
         }
 
         public async Task ErrorAsync(CommandResult commandResult, ICriteria criteria)
