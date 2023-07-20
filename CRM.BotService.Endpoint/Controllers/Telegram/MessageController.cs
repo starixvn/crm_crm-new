@@ -336,9 +336,8 @@
             byte[] imgByte = await cacheService.GetAsync<byte[]>(imgUrl);
             if (imgByte is null)
             {
-                string url = string.IsNullOrWhiteSpace(BaseImageUrl) || string.IsNullOrWhiteSpace(BaseImageServiceNameUrl) ? imgUrl : imgUrl.Replace(BaseImageUrl, BaseImageServiceNameUrl);
-                await logService.InfoMessageAsync($"Get image: {url}");
-                imgByte = await telegramBotService(botId).ReadImageAsByteAsync(url);
+                await logService.InfoMessageAsync($"Get image: {imgUrl}");
+                imgByte = await telegramBotService(botId).ReadImageAsByteAsync(imgUrl);
                 await cacheService.SetAsync(imgUrl, imgByte, new CacheItemOptions
                 {
                     RelativeExpiration = TimeSpan.FromMinutes(10),
