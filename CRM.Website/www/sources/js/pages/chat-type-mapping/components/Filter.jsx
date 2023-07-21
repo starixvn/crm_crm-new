@@ -1,4 +1,4 @@
-﻿import React, { Component, Fragment } from 'react';
+﻿import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Form } from 'react-bootstrap';
@@ -8,7 +8,7 @@ import MultipleSelect from '../../../components/multiple-select/index';
 import InsertPersonalMappingPopup from './InsertPersonalMappingPopup';
 import { toast } from 'react-toastify';
 
-export class Filter extends Component {
+export class Filter extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -110,6 +110,33 @@ export class Filter extends Component {
         }
         return holdBotIds;
     };
+
+    handleChangeBotName = (currentItem, selectedItem) =>{
+        this.onChange('botIds', selectedItem);
+        const bots = this.state.settings.bots.map(bot => {
+            return {
+                ...bot, subItem: 
+                    bot.subItem.map(sub=>{
+                        return {
+                            ...sub, checked: selectedItem.includes(sub.key.toString()) ? true : false
+                        }
+                })
+            }
+        });
+        const settings = {...this.state.settings, bots: bots};
+        this.setState({settings});
+    }
+
+    handleChangeMappingStatus = (currentItem, selectedItem) =>{
+        this.onChange('mappingStatuses', selectedItem);
+        const mappingStatuses = this.state.settings.mappingStatuses.map(status => {
+            return {
+                ...status, checked: selectedItem.includes(status.id.toString()) ? true : false
+            }
+        });
+        const settings = {...this.state.settings, mappingStatuses};
+        this.setState({settings});
+    }
 
     getBotOptions = value => {
         const { holdBots } = this.state.settings;
@@ -269,7 +296,7 @@ export class Filter extends Component {
                                             statusField='checked'
                                             isSummited={false}
                                             isAllTextShown
-                                            onChange={(currentItem, selectedItem) => this.onChange('botIds', selectedItem)}
+                                            onChange={(currentItem, selectedItem) => this.handleChangeBotName(currentItem, selectedItem)}
                                         />
                                     </div>
                                 </Form.Group>
@@ -284,7 +311,7 @@ export class Filter extends Component {
                                             statusField='checked'
                                             isSummited={false}
                                             isAllTextShown
-                                            onChange={(currentItem, selectedItem) => this.onChange('mappingStatuses', selectedItem)}
+                                            onChange={(currentItem, selectedItem) => this.handleChangeMappingStatus(currentItem, selectedItem)}
                                         />
                                     </div>
                                 </Form.Group>

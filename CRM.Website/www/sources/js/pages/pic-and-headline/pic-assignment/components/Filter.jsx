@@ -133,7 +133,15 @@ export class Filter extends Component {
 
     handleStatusChange = (currentItem, selectedItemsKey) => this.handleFilterChange('status', selectedItemsKey);
 
-    handlePositionChange = (currentItem, selectedItemsKey) => this.handleFilterChange('position', selectedItemsKey);
+    handlePositionChange = (currentItem, selectedItemsKey) => {
+        this.handleFilterChange('position', selectedItemsKey);
+        const positionOptions = this.state.positionOptions.map(position =>{
+            return {
+                ...position, checked: selectedItemsKey.includes(position.id.toString()) ? true : false
+            }
+        });
+        this.setState({positionOptions});
+    }
 
     renderHeadlineTypeOption = item => <option key={item.id} value={item.id}>{item.name}</option>;
 
