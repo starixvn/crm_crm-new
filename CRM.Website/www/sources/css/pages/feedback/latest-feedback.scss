@@ -2,18 +2,7 @@
 @import '../../abstracts/variables';
 
 .latest-feedback {
-    max-width: 1200px;
-    .header-content{
-        border-left: none;
-    }
-    .body-content{
-        border-left: none;
-    }
-    .table-container {
-        border: 1px solid #b7b7b7;
-        border-top: none;
-        overflow-x: hidden;
-    }
+    max-width: 1250px;
     .link-click {
         cursor: pointer;
         color: $link-color !important;
