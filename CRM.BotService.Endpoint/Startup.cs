@@ -96,6 +96,7 @@
             });
 
             services.AddControllers().AddNewtonsoftJson();
+            services.AddHttpClient();
             RegisterServices(services);
             services.ResolveWebhookServices(Configuration);
         }

@@ -230,8 +230,5 @@
             string messageContentReplace = Regex.Replace(replaceNewLine, "<(?!/?(" + string.Join("|", allowedTagsHtml) + ")(>|\\s.*?>)).*?>", "");
             return messageContentReplace;
         }
-
-        public async Task<byte[]> ReadImageAsByteAsync(string imgUrl)
-        => await httpClient.GetByteArrayAsync(imgUrl);
     }
 }

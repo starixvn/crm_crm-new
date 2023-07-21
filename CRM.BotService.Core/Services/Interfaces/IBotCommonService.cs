@@ -10,5 +10,7 @@
         Task<CommandResult> WriteLogMessageAsyns(WriteLogMessageCommand command);
 
         bool IsActiveChannel(BotChannel channel);
+
+        Task<byte[]> ReadImageAsByteAsync(string imgUrl);
     }
 }

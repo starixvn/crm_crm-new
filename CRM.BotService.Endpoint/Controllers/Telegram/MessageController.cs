@@ -308,15 +308,13 @@
                 logService.LogInformation(string.Format("Start SendNotifyAysnc: botId: {0} chatId: {1}.", announcementNotification.BotId, announcementNotification.ConversationId));
 
                 _ = long.TryParse(announcementNotification.ConversationId, out long chatId);
-                var imgBye = await GetImageByteArrayAsync(announcementNotification.BotId, image);
-                using (var stream = new MemoryStream(imgBye))
+                var imgBye = await GetImageByteArrayAsync(image);
+                using var stream = new MemoryStream(imgBye);
+                var sendImageResult = await telegramBotService(announcementNotification.BotId).SendImageStreamAsync(announcementNotification.BotId, chatId, stream);
+                if (sendImageResult is not null)
                 {
-                    var sendImageResult = await telegramBotService(announcementNotification.BotId).SendImageStreamAsync(announcementNotification.BotId, chatId, stream);
-                    if (sendImageResult is not null)
-                    {
-                        result.IsSuccessful = true;
-                        await WriteLogAnnouncementMessageAsync(announcementNotification, image, isBotBlocked: false, result.IsSuccessful, string.Empty);
-                    }
+                    result.IsSuccessful = true;
+                    await WriteLogAnnouncementMessageAsync(announcementNotification, image, isBotBlocked: false, result.IsSuccessful, string.Empty);
                 }
             }
             catch (Exception ex)
@@ -331,15 +329,13 @@
             logService.LogInformation("end SendNotifyAysnc!!!");
         }
 
-        private async Task<byte[]> GetImageByteArrayAsync(long botId, string imgUrl)
+        private async Task<byte[]> GetImageByteArrayAsync(string imgUrl)
         {
             byte[] imgByte = await cacheService.GetAsync<byte[]>(imgUrl);
             if (imgByte is null)
             {
                 string url = string.IsNullOrWhiteSpace(BaseImageUrl) || string.IsNullOrWhiteSpace(BaseImageServiceNameUrl) ? imgUrl : imgUrl.Replace(BaseImageUrl, BaseImageServiceNameUrl);
-                await logService.InfoMessageAsync($"Get image: {url}");
-
-                imgByte = await telegramBotService(botId).ReadImageAsByteAsync(url);
+                imgByte = await botCommonService.ReadImageAsByteAsync(url);
                 await cacheService.SetAsync(imgUrl, imgByte, new CacheItemOptions
                 {
                     RelativeExpiration = TimeSpan.FromMinutes(10),

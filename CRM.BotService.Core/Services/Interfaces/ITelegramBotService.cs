@@ -26,7 +26,5 @@
         Task<Message> SendImageAsync(long botId, long chatId, string urlImage);
 
         Task<Message> SendImageStreamAsync(long botId, long chatId, Stream stream);
-
-        Task<byte[]> ReadImageAsByteAsync(string imgUrl);
     }
 }
