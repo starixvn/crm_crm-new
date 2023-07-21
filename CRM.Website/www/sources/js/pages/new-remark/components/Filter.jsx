@@ -234,7 +234,7 @@ export class Filter extends Component {
                     </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
-                    <Form.Group style={{width: 498}}>
+                    <Form.Group style={{width: 424}}>
                         <Form.Label htmlFor="userName">
                             {LangHelper.getResource('Username')}
                         </Form.Label>
