@@ -447,12 +447,12 @@ export class CreateForm extends Component {
         const { customerDetail } = this.props;
         const { isShowCustomerDetailOption } = this.state.collapse;
         const isCollapse = customerDetail === null ? !isShowCustomerDetailOption : isShowCustomerDetailOption;
-        const borderStyle = !isCollapse ? BorderStyle.bottom : '';
+        const borderStyle = isCollapse ? BorderStyle.bottom : '';
         return (
             <div className={`panel-group ${BorderStyle.bottom}`}>
                 {
                     customerDetail === null ?
-                        <Form.Group as={Row} className={`title align-items-center ${borderStyle}`}
+                        <Form.Group as={Row} className={`title align-items-center`}
                             aria-controls="collapse-expand-identity"
                             aria-expanded={isCollapse}
                         >
@@ -505,8 +505,8 @@ export class CreateForm extends Component {
         const isInValidDescription= touched.description && errors.description;
         return (
             <div>
-                <div className={`panel-group ${!collapse.isShowDetailsOption ? BorderStyle.bottom : ''}`}>
-                    <Form.Group as={Row} className={`title ${BorderStyle.bottom}`}
+                <div className={`panel-group ${BorderStyle.bottom}`}>
+                    <Form.Group as={Row} className={`title`}
                         onClick={() => this.handleCollapseExpend('isShowDetailsOption')}
                         aria-controls="collapse-expand-detail"
                         aria-expanded={!collapse.isShowDetailsOption}
