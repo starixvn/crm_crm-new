@@ -2,12 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO.Pipelines;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BotService.Core.Constants;
-    using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.BotService.Endpoint.Controllers.Telegram;
     using CRM.BotService.Endpoint.ViewModel;
@@ -15,8 +14,10 @@
     using CRM.Core.Models.BotServices;
     using CRM.Core.Models.BotServices.Announcement;
     using CRM.Core.Services;
+    using Fanex.Caching;
     using global::Telegram.Bot.Types;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
     using NSubstitute;
     using Xunit;
 
@@ -25,6 +26,8 @@
         private ICRMLogService logService;
         private Func<long, ITelegramBotService> telegramBotService;
         private IBotCommonService botCommonService;
+        private IConfiguration configuration;
+        private ICacheService cacheService;
         private readonly Fixture fixture = new Fixture();
 
         [Fact]
@@ -240,7 +243,7 @@
             };
             botCommonService.IsActiveChannel(BotChannel.Telegram).Returns(true);
             telegramBotService(Arg.Any<long>()).SendTextMessageAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>()).Returns(message);
-            telegramBotService(Arg.Any<long>()).When(x => x.SendImageAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>()))
+            telegramBotService(Arg.Any<long>()).When(x => x.SendImageStreamAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<Stream>()))
                 .Do(x => { throw new Exception("bot was blocked by the user"); });
 
             // Act
@@ -307,7 +310,7 @@
                 From = new User { Id = 1 }
             };
             botCommonService.IsActiveChannel(BotChannel.Telegram).Returns(true);
-            telegramBotService(Arg.Any<long>()).SendImageAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<string>()).Returns(message);
+            telegramBotService(Arg.Any<long>()).SendImageStreamAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<Stream>()).Returns(message);
 
             // Act
             var actual = await controller.SendMultipleImagesOnlyAsync(notifications);
@@ -321,7 +324,6 @@
             Assert.Equal(result.ConversationId, expected.ConversationId);
             Assert.Equal(result.IsSuccessful, expected.IsSuccessful);
         }
-
 
         [Fact]
         public async Task SendSingleMessage_WhenCalled_ExpectReturnResult()
@@ -385,10 +387,14 @@
             logService = Substitute.For<ICRMLogService>();
             telegramBotService = Substitute.For<Func<long, ITelegramBotService>>();
             botCommonService = Substitute.For<IBotCommonService>();
+            configuration = Substitute.For<IConfiguration>();
+            cacheService = Substitute.For<ICacheService>();
             return new MessageController(
                 logService,
                 telegramBotService,
-                botCommonService
+                botCommonService,
+                configuration,
+                cacheService
             );
         }
 
