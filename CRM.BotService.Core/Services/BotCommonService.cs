@@ -14,21 +14,24 @@
     public class BotCommonService : IBotCommonService
     {
         private readonly IBaseService baseService;
-        private readonly HttpClient httpClient;
+        private readonly IHttpClientFactory httpClientFactory;
         private readonly List<BotChannelInfo> botChannelInfos;
 
         public BotCommonService(IBaseService baseService, IHttpClientFactory httpClientFactory, List<BotChannelInfo> botChannelInfos)
         {
             this.baseService = baseService;
             this.botChannelInfos = botChannelInfos;
-            httpClient = httpClientFactory.CreateClient();
+            this.httpClientFactory = httpClientFactory;
         }
 
         public bool IsActiveChannel(BotChannel channel)
             => botChannelInfos is not null && botChannelInfos.Any(c => c.Name == channel && c.IsActive);
 
         public async Task<byte[]> ReadImageAsByteAsync(string imgUrl)
-        => await httpClient.GetByteArrayAsync(imgUrl);
+        {
+            var httpClient = httpClientFactory.CreateClient();
+            return await httpClient.GetByteArrayAsync(imgUrl);
+        }
 
         public async Task<CommandResult> WriteLogMessageAsyns(WriteLogMessageCommand command)
         {

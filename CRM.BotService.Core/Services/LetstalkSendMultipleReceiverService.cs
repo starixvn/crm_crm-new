@@ -43,7 +43,6 @@
                 foreach (var notification in groupedContentNotifications)
                 {
                     tasks.Add(Task.Run(() => SendToLetstalkAsync(notification)));
-                    //var result = await SendToLetstalkAsync(notification);
                 }
 
                 List<List<SendNotificationResult>> paralellResult = (await Task.WhenAll(tasks)).ToList();
