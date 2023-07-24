@@ -260,6 +260,7 @@ export class DataGrid extends Component {
                     header={this.buildNotificationListHeader(isHost)}
                     body={this.buildNotificationListBody(isHost)}
                     isPaging
+                    adjustedHeight={10}
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
                     shouldResetScrollPosition={this.props.resendOptions.shouldResetScrollPosition}

@@ -156,7 +156,6 @@ export class Filter extends PureComponent {
 
     handleToggleFilter = value => {
         this.setState({ showFilter: value });
-        window.dispatchEvent(new Event('resize'));
     };
 
     getParams = () => {

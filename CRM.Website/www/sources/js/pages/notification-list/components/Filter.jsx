@@ -161,7 +161,6 @@ export class Filter extends Component {
 
     handleToggleFilter = value => {
         this.setState({ showFilter: value });
-        window.dispatchEvent(new Event('resize'));
     };
 
     getParams = () => {

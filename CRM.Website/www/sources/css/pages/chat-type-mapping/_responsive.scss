@@ -16,11 +16,14 @@
             }
         }
     }
+}
 
-    &> .show-left-panel{
-        .chat-type-mapping{
-            &> .show-filter{
-                @include form-group-width(230px);
+@media only screen and (max-width: 1894px) and (min-width: 1677px){
+    .extra-large-desktops .show-left-panel{
+        .chat-type-mapping .show-filter{
+            @include form-group-width(230px);
+            .large-form {
+                width: 250px !important;
             }
         }
     }
@@ -52,17 +55,15 @@
             }
 
             &> .show-filter{
-                @include form-group-width(225px);
-                .large-form { width: 270px; }
-                .form-row:nth-child(2) .form-group:nth-child(4){
-                    width: 150px !important;
-
-                    .form-label{
-                        width: 50px;
-                    }
-                    .form-control{
-                        width: calc(100% - 0.5rem - 50px);
-                    }
+                @include form-group-width(300px);
+                .large-form{
+                    width: 300px !important;
+                }
+                .form-label{
+                    width: 126px;
+                }
+                .form-control {
+                    width: calc(100% - 0.5rem - 126px);
                 }
             }
         }
@@ -85,20 +86,18 @@
     &> .show-left-panel{
         .chat-type-mapping{
             &> .show-filter{
-                @include form-group-width(207px);
-                .large-form { width: 250px !important; }
+                @include form-group-width(270px);
+                .large-form { width: 270px !important; }
 
-                .form-group:nth-child(3){
-                    .form-label{
-                        width: 95px !important;
-                    }
+                .form-label{
+                    width: 126px !important;
                 }
             }
 
             &> :not(.show-filter){
                 @include form-group-width(300px);
                 .form-label{
-                    width: 140px;
+                    width: 126px;
                 }
 
                 .form-group:nth-child(3){
