@@ -248,7 +248,7 @@
                     IsBotBlocked = false,
                     ErrMsg = ex.Message
                 };
-                await botCommonService.WriteLogMessageAsyns(writeLogCommand);
+                await botCommonService.WriteLogMessageAsync(writeLogCommand);
                 await logService.ErrorAsync(ex);
             }
 
@@ -388,7 +388,7 @@
                 IsBotBlocked = isBotBlocked,
                 ErrMsg = errMsg
             };
-            await botCommonService.WriteLogMessageAsyns(writeLogCommand);
+            await botCommonService.WriteLogMessageAsync(writeLogCommand);
         }
 
         private static void HandleExceptionTelegramMessage(SendNotificationResult sendResult, Exception exception)

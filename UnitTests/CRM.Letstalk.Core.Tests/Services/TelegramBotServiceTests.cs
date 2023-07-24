@@ -77,7 +77,7 @@
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
-            await botCommonService.Received().WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
+            await botCommonService.Received().WriteLogMessageAsync(Arg.Any<WriteLogMessageCommand>());
             result.ErrorCode = 0;
         }
 
@@ -97,7 +97,7 @@
 
             // Assert
             logService.Received(3).LogInformation(Arg.Any<string>());
-            await botCommonService.Received(1).WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
+            await botCommonService.Received(1).WriteLogMessageAsync(Arg.Any<WriteLogMessageCommand>());
             result.ErrorCode = 1;
         }
 
@@ -113,7 +113,7 @@
             await service.WriteLogCommandAsync(notificationMessage, result);
 
             // Assert
-            await botCommonService.Received(1).WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
+            await botCommonService.Received(1).WriteLogMessageAsync(Arg.Any<WriteLogMessageCommand>());
         }
 
         #region Helpers

@@ -159,7 +159,7 @@
                 IsBotBlocked = sendResult.IsBlockedBot,
                 ErrMsg = sendResult.IsSuccessful ? string.Empty : sendResult.ErrorMessage
             };
-            await botCommonService.WriteLogMessageAsyns(writeLogCommand);
+            await botCommonService.WriteLogMessageAsync(writeLogCommand);
         }
 
         private static void HandleExceptionTelegramMessage(SendResult sendResult, Exception exception)

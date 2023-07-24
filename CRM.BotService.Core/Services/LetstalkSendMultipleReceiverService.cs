@@ -182,6 +182,8 @@
             catch (Exception exception)
             {
                 SetFailedResultWithErrMsg(sendResult);
+                WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                    string.Join(",", notification.ConversationIds), false, exception.Message);
                 await logService.ErrorAsync(exception);
             }
 
@@ -358,7 +360,7 @@
                 IsSuccess = isSuccess,
                 ErrMsg = errMsg,
             };
-            var thread = new Thread(async () => await botCommonService.WriteLogMessageAsyns(command));
+            var thread = new Thread(async () => await botCommonService.WriteLogMessageAsync(command));
             thread.Start();
         }
 
@@ -398,6 +400,8 @@
             catch (Exception exception)
             {
                 SetFailedResultWithErrMsg(sendResult);
+                WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                    string.Join(",", notification.ConversationIds), false, exception.Message);
                 await logService.ErrorAsync(exception);
             }
 

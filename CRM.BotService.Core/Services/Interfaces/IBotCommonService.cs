@@ -7,7 +7,7 @@
 
     public interface IBotCommonService
     {
-        Task<CommandResult> WriteLogMessageAsyns(WriteLogMessageCommand command);
+        Task<CommandResult> WriteLogMessageAsync(WriteLogMessageCommand command);
 
         bool IsActiveChannel(BotChannel channel);
 

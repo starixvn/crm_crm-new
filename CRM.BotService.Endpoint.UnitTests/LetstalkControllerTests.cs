@@ -125,7 +125,7 @@
             Assert.Equal(5, resultData.Count);
             await letstalkClientService(Arg.Any<long>()).Received(3).PushPersonalAsync(Arg.Any<string>(), Arg.Any<OutgoingMessage>());
             await letstalkClientService(Arg.Any<long>()).Received(2).PushRoomAsync(Arg.Any<string>(), Arg.Any<OutgoingMessage>());
-            await botCommonService.Received(5).WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
+            await botCommonService.Received(5).WriteLogMessageAsync(Arg.Any<WriteLogMessageCommand>());
         }
 
         [Fact]
@@ -148,7 +148,7 @@
             await letstalkClientService(Arg.Any<long>()).Received(3).PushPersonalAsync(Arg.Any<string>(), Arg.Any<OutgoingMessage>());
             await letstalkClientService(Arg.Any<long>()).Received(2).PushRoomAsync(Arg.Any<string>(), Arg.Any<OutgoingMessage>());
             await logService.Received(3).ErrorAsync(Arg.Any<Exception>());
-            await botCommonService.Received(5).WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
+            await botCommonService.Received(5).WriteLogMessageAsync(Arg.Any<WriteLogMessageCommand>());
             ;
         }
 
@@ -194,7 +194,7 @@
             var resultData = actual.Value as SendResult;
             Assert.True(resultData.IsSuccessful);
             Assert.False(resultData.IsBlockedBot);
-            await botCommonService.Received(1).WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
+            await botCommonService.Received(1).WriteLogMessageAsync(Arg.Any<WriteLogMessageCommand>());
         }
 
         [Fact]
@@ -221,7 +221,7 @@
             Assert.False(resultData.IsBlockedBot);
             await letstalkClientService(Arg.Any<long>()).Received(1).PushPersonalAsync(Arg.Any<string>(), Arg.Any<OutgoingMessage>());
             await letstalkClientService(Arg.Any<long>()).DidNotReceive().PushRoomAsync(Arg.Any<string>(), Arg.Any<OutgoingMessage>());
-            await botCommonService.Received(1).WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
+            await botCommonService.Received(1).WriteLogMessageAsync(Arg.Any<WriteLogMessageCommand>());
         }
 
         [Fact]
@@ -248,7 +248,7 @@
             Assert.False(resultData.IsBlockedBot);
             await letstalkClientService(Arg.Any<long>()).Received(1).PushRoomAsync(Arg.Any<string>(), Arg.Any<OutgoingMessage>());
             await letstalkClientService(Arg.Any<long>()).DidNotReceive().PushPersonalAsync(Arg.Any<string>(), Arg.Any<OutgoingMessage>());
-            await botCommonService.Received(1).WriteLogMessageAsyns(Arg.Any<WriteLogMessageCommand>());
+            await botCommonService.Received(1).WriteLogMessageAsync(Arg.Any<WriteLogMessageCommand>());
         }
 
         #region Helper

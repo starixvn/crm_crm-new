@@ -39,7 +39,7 @@
             var expected = new CommandResult { Code = 200, Message = "Error" };
             baseService.ExecuteNonQueryAsync(Arg.Any<WriteLogMessageCommand>()).Returns(expected);
 
-            var actual = await service.WriteLogMessageAsyns(new WriteLogMessageCommand());
+            var actual = await service.WriteLogMessageAsync(new WriteLogMessageCommand());
 
             Assert.False(actual.IsSuccessful);
             Assert.Equal(200, actual.Code);

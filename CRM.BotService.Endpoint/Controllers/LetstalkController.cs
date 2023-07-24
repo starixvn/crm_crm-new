@@ -170,7 +170,7 @@
                     IsBotBlocked = false,
                     ErrMsg = ex.Message
                 };
-                await botCommonService.WriteLogMessageAsyns(writeLogCommand);
+                await botCommonService.WriteLogMessageAsync(writeLogCommand);
 
                 result.SentTime = DateTime.UtcNow;
                 result.ErrorCode = 1;
@@ -211,7 +211,7 @@
                 IsBotBlocked = sendResult.BlockList.Any(),
                 ErrMsg = sendResult.Message
             };
-            await botCommonService.WriteLogMessageAsyns(writeLogCommand);
+            await botCommonService.WriteLogMessageAsync(writeLogCommand);
         }
 
         private async Task SendLetstalkGroup(NotificationMessage notification, SendResult result)
@@ -238,7 +238,7 @@
                 IsBotBlocked = sendResult.BlockList.Any(),
                 ErrMsg = sendResult.Message
             };
-            await botCommonService.WriteLogMessageAsyns(writeLogCommand);
+            await botCommonService.WriteLogMessageAsync(writeLogCommand);
         }
     }
 }

@@ -33,7 +33,7 @@
             return await httpClient.GetByteArrayAsync(imgUrl);
         }
 
-        public async Task<CommandResult> WriteLogMessageAsyns(WriteLogMessageCommand command)
+        public async Task<CommandResult> WriteLogMessageAsync(WriteLogMessageCommand command)
         {
             return await baseService.ExecuteNonQueryAsync(command);
         }
