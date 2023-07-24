@@ -10,24 +10,12 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 
 export class DataGridCommunication extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            tableWidth : null
-        }
-    }
     componentDidMount() {
         this.props.getCommunicationLogs({ customerId: this.props.id });
     }
     componentDidUpdate(prevProps, prevState) {
         if ( this.props.id !== prevProps.id ) {
             this.props.getCommunicationLogs({ customerId: this.props.id });
-        }
-        if(prevState.tableWidth === null) {
-            this.setState({
-                tableWidth : document.querySelector('.communication-log-grid')?.clientWidth
-            })
         }
     }
 
@@ -286,11 +274,11 @@ export class DataGridCommunication extends Component {
                         <span>{LangHelper.getResource('LastTenCommunicationLog')}</span>
                     </div>
                     <Table
-                        width={this.state.tableWidth}
-                        autoWidth={true}
+                        minWidth={960}
+                        maxWidth={document.getElementById('right-row-container').clientWidth}
+                        autoWidth
                         header={this.buildHeader()}
                         body={this.buildBody()}
-                        containerPadding={0}
                         adjustedHeight={10}
                     />
                 </div>
