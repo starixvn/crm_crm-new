@@ -345,6 +345,7 @@ export class Filter extends Component {
         this.setState(previousState => ({
             showFilter: !previousState.showFilter
         }));
+        window.dispatchEvent(new Event('resize'));
     };
 
     handleGetFeedbackSubjectTemplates = Site.debounce(searchText => {

@@ -265,7 +265,6 @@ export class DataGrid extends Component {
             TotalItem: dynamicReports.data.totalChildReports,
             PageList: MEDIUM_PAGING_SIZES
         };
-
         return (
             <div>
                 <div className="table-title d-flex justify-content-between align-items-center">
@@ -278,7 +277,7 @@ export class DataGrid extends Component {
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     containerPadding={0}
-                    adjustedHeight={10}
+                    adjustedHeight={30}
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
