@@ -18,6 +18,10 @@ export default class WithHotKey extends React.Component  {
             rightContainer.removeEventListener("keydown", this.props.handleKeyDownFunc, false);
             rightContainer.focus();
             rightContainer.addEventListener("keydown", this.props.handleKeyDownFunc, false);
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
     }
 

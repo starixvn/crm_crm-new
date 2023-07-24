@@ -54,11 +54,18 @@ export class Layout extends Component {
         setTimeout(this.handleCheckNewVersion, 60000);
     }
 
-    async componentDidUpdate(_,prevState) {
+    async componentDidUpdate(prevProps) {
         const updateLeftPanel = window.localStorage.getItem('updateLeftPanel');
         if(updateLeftPanel !== null){
             await this.getCurrentCustomer();
             window.localStorage.removeItem('updateLeftPanel');
+        }
+
+        if(prevProps.location.pathname !== this.props.location.pathname){
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
     }
 
