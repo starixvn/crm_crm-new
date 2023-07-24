@@ -114,9 +114,17 @@ export class Filter extends PureComponent {
     handleChangeBotName = (currentItem, selectedItem) =>{
         this.onChange('botIds', selectedItem);
         const bots = this.state.settings.bots.map(bot => {
+            let checkFlag = true;
+            bot.subItem.forEach(sub => {
+                if (!selectedItem.includes(sub.key.toString())) {
+                    checkFlag = false;
+                }
+            });
             return {
-                ...bot, subItem: 
-                    bot.subItem.map(sub=>{
+                ...bot,
+                checked: checkFlag,
+                subItem:
+                    bot.subItem.map(sub => {
                         return {
                             ...sub, checked: selectedItem.includes(sub.key.toString()) ? true : false
                         }
