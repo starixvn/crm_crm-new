@@ -24,7 +24,7 @@ export class DataGridRemark extends Component {
             return customerRemarks.map((item, index) => this.renderRow(item, index));
         }
         return [
-            <Row key={`body${1}`} className="no-data" >
+            <Row key='body-grid-remark' className="no-data" >
                 <Cell className='text-center' colSpan={1}>
                     {LangHelper.getResource('ThereIsNoData')}
                 </Cell>

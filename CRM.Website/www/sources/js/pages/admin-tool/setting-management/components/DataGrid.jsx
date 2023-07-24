@@ -33,6 +33,7 @@ export class DataGrid extends Component {
 
     renderRow = (item, index, isHost) => {
         const checkShowSourceMapping = this.IsShowSourceMapping();
+        const isDisableActive = item.isActive && (item.settingValue.toLowerCase() === 'telegram' || item.settingValue.toLowerCase() === 'letstalk');
         return (
             <Row key={`setting-management-${index}`}>
                 <Cell>{item.settingValue}</Cell>
@@ -53,7 +54,7 @@ export class DataGrid extends Component {
                 {
                     isHost &&
                     <Cell className='text-center'>
-                        <input type="checkbox" checked={item.isActive} disabled={!this.props.isHost || item.settingValue.toLowerCase() === 'telegram' || item.settingValue.toLowerCase() === 'letstalk'}
+                        <input type="checkbox" checked={item.isActive} disabled={!this.props.isHost || isDisableActive}
                             onChange={() => this.handleEditStatus(item.settingId, item.settingValue, !item.isActive)}
                         />
                     </Cell>

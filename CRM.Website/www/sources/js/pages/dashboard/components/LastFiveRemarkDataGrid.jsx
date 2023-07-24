@@ -11,37 +11,15 @@ import Site from '@jsroot/common/site';
 import WithNavigation from '@jsroot/components/WithNavigation';
 
 export class LastFiveRemarkDataGrid extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tableWidth : null
-        }
-    }
-
-    resizeTable = () => {
-        this.setState({
-            tableWidth : document.querySelector(".dataGrid-remark")?.clientWidth
-        })
-    }
-
     componentDidMount() {
         const param = {custId: this.props.custId};
         this.props.getLastFiveRemark(param);
-        window.addEventListener('resize' , this.resizeTable)
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.resizeTable);
-    }
 
     componentDidUpdate(prevProps , prevState) {
         if ( this.props.custId !== prevProps.custId ) {
             this.props.getLastFiveRemark({ custId: this.props.custId });
-        }
-        if(prevState.tableWidth === null) {
-            this.setState({
-                tableWidth : document.querySelector('.dataGrid-remark')?.clientWidth
-            })
         }
     }
 
@@ -104,18 +82,19 @@ export class LastFiveRemarkDataGrid extends Component {
         if(!lastFiveRemarks){
             return null;
         }
+        const rightRowContainerWidth = document.body.clientWidth - document.getElementById('left-row-container').clientWidth;
         return (
-            <div className="table-last-five-remarks">
+            <div className="table-last-five-remarks mb-5">
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     <span>{LangHelper.getResource('Last5Remarks')}</span>
                     <u onClick={this.handleViewNewRemark}>{LangHelper.getResource('ViewAllRemarks')}</u>
                 </div>
                 <Table
-                    width={this.state.tableWidth}
+                    minWidth={960}
+                    width={rightRowContainerWidth}
+                    autoWidth
                     header={this.buildHeader()}
                     body={this.buildBody()}
-                    autoWidth={false}
-                    containerPadding={0}
                     adjustedHeight={10}
                 />
             </div>

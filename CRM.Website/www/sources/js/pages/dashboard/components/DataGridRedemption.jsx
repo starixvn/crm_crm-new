@@ -80,21 +80,19 @@ export class DataGridRedemption extends Component {
         }
 
         return (
-            <div className="block-table">
-                <div className='table-custom redemption-grid'>
-                    <div className='table-title d-flex align-items-center justify-content-between'>
-                        <span>{LangHelper.getResource('LastFiveRedemptionLog')}</span>
-                    </div>
-
-                    <Table
-                        width={1200}
-                        autoWidth={true}
-                        containerPadding={0}
-                        adjustedHeight={10}
-                        header={this.buildHeader()}
-                        body={this.buildBody()}
-                    />
+            <div className='table-custom redemption-grid'>
+                <div className='table-title d-flex align-items-center justify-content-between'>
+                    <span>{LangHelper.getResource('LastFiveRedemptionLog')}</span>
                 </div>
+
+                <Table
+                    width={1200}
+                    autoWidth={true}
+                    containerPadding={0}
+                    adjustedHeight={10}
+                    header={this.buildHeader()}
+                    body={this.buildBody()}
+                />
             </div>
         );
     }

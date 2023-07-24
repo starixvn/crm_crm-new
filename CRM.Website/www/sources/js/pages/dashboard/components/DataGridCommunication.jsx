@@ -22,9 +22,9 @@ export class DataGridCommunication extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={18}>{LangHelper.getResource('RunningNo')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('RunningNo')}</HeaderCell>
                 <HeaderCell colWidth={12}>{LangHelper.getResource('Update')}</HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
+                <HeaderCell colWidth={23}>{LangHelper.getResource('FeedbackDate')}</HeaderCell>
                 <HeaderCell colWidth={50}>{LangHelper.getResource('MainCategoryAndSubCategory')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('Subject')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Status')}</HeaderCell>
@@ -266,24 +266,22 @@ export class DataGridCommunication extends Component {
         if (!communicationLogs) {
             return null;
         }
+        const rightRowContainerWidth = document.body.clientWidth - document.getElementById('left-row-container').clientWidth;
 
         return (
-            <div className="block-table">
-                 <div className='communication-log-grid'>
-                    <div className='d-flex table-title align-items-center justify-content-between'>
-                        <span>{LangHelper.getResource('LastTenCommunicationLog')}</span>
-                    </div>
-                    <Table
-                        minWidth={960}
-                        maxWidth={document.getElementById('right-row-container').clientWidth}
-                        autoWidth
-                        header={this.buildHeader()}
-                        body={this.buildBody()}
-                        adjustedHeight={10}
-                    />
-                </div>
+            <div className='communication-log-grid'>
+            <div className='d-flex table-title align-items-center justify-content-between'>
+                <span>{LangHelper.getResource('LastTenCommunicationLog')}</span>
             </div>
-           
+            <Table
+                minWidth={960}
+                width={rightRowContainerWidth}
+                autoWidth
+                header={this.buildHeader()}
+                body={this.buildBody()}
+                adjustedHeight={10}
+            />
+        </div>
         );
     }
 }

@@ -1,10 +1,5 @@
 @import '../../abstracts/variables';
 .dashboard{
-    .block-table{
-        .table-container{
-            overflow-x: hidden;
-        }
-    }
     .alert-boxer{
         width: 800px;
         background: #fff;
@@ -55,50 +50,6 @@
         /* Firefox */
         input[type=number] {
             -moz-appearance: textfield;
-        }
-    }
-
-    .table-last-five-remarks{
-        .table-container{
-            .body-content{
-                max-height: 180px !important;
-            }
-        }
-    }
-    .customer-verify {
-        padding: 7px;
-        height: 75%;
-        background-color: #ffffff;
-        border: solid 1px rgba(0,0,0,.2);
-        height: 100%;
-    
-        .info-text {
-            text-align: end;
-            padding: 5px 0px;
-        }
-        
-        .process {
-            position: relative;
-    
-            .percent-process {
-                position: absolute;
-                left: 45%;
-                top: 7%;
-            }
-        }
-    
-        .progress {
-            height: 22px;
-    
-            .progress-bar {
-                color: #333333;
-                font-size: 12px;
-                background-color: #78b5e4;
-            }
-        }
-    
-        button {
-            float: right;
         }
     }
 }
