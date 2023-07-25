@@ -151,12 +151,12 @@
     }
 }
 
-.medium-desktops, .large-desktops{
+.medium-desktops{
     .show-left-panel {
         .new-remark .form-filter{
             .form-row:not(:last-child){
                 .form-group:nth-child(1){
-                    width: 362px !important;
+                    width: 350px !important;
                 }
             }
 

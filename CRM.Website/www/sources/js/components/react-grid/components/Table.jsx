@@ -236,7 +236,7 @@ class Table extends Component {
     }
 
     renderFixColumn = fixProps => {
-        const { header, body, footer, sectionProps, headerSectionProps, maxWidth, rowLayout, isPaging, pageOption, onPaging } = fixProps;
+        const { header, body, footer, sectionProps, headerSectionProps, width, maxWidth, rowLayout, isPaging, pageOption, onPaging } = fixProps;
         let maxHeightContainer = 0;
         if (this.headerWrapper !== null) {
             maxHeightContainer = this.headerWrapper.offsetHeight + this.state.contentHeight;
@@ -245,7 +245,7 @@ class Table extends Component {
         const maxWidthCal = maxWidth + SCROLLBAR_WIDTH + 1;
         const footerSectionProps = { ...sectionProps, maxWidth: maxWidthCal };
         const fixHeaderSectionProps = { ...headerSectionProps, maxWidth: increaseMaxWidth };
-        const fixSectionProps = { ...sectionProps, maxWidth: increaseMaxWidth };
+        const fixSectionProps = { ...sectionProps, maxWidth: increaseMaxWidth, width };
         const { Header, Body, Footer } = this;
         return (
             <div className='fix-table-container' style={{ maxWidth: maxWidthCal }}>
@@ -306,9 +306,10 @@ class Table extends Component {
         const rowLayout = <RowLayout columnLayout={newColumnLayout} />;
         const fixProps = { header, body, footer, sectionProps, headerSectionProps, maxWidth, width, rowLayout, isPaging, pageOption, onPaging };
         const {Header, Body, Footer} = this;
+        const isScrollable = (width >  maxWidth) && !autoWidth;
 
         return (
-            isFixColumn ?
+            (isFixColumn || isScrollable) ?
                 this.renderFixColumn({ ...fixProps }) :
                 <>
                     <div className='table-container' style={{ maxWidth }}>

@@ -254,7 +254,7 @@ export class DataGridCommunication extends Component {
                 <Cell className='text-center'>
                     {
                         hasCreateFeedbackPermission &&
-                        <Button size="sm" onClick={() => this.handleShowCreateCommunication(item.feedbackId)}>Duplicate</Button>
+                        <Button style={{width: '70px'}} size="sm" onClick={() => this.handleShowCreateCommunication(item.feedbackId)}>Duplicate</Button>
                     }
                 </Cell>
             </Row>
@@ -275,10 +275,10 @@ export class DataGridCommunication extends Component {
             </div>
             <Table
                 minWidth={960}
-                width={rightRowContainerWidth}
+                width={document.getElementById('right-row-container').clientWidth}
                 autoWidth
                 header={this.buildHeader()}
-                body={this.buildBody()}
+                body={this.buildBody()} 
                 adjustedHeight={10}
             />
         </div>
