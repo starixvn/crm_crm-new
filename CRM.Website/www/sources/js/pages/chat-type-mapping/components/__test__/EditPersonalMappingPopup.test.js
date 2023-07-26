@@ -416,6 +416,39 @@ describe('EditPersonalMappingPopup', () => {
         });
     });
 
+    describe('isChatWithBot', () => {
+        // Arrange
+        const props = {
+            ...initProps,
+            telegramName: 'test',
+            letstalkName: 'test',
+            groupHeadline: [{ id: 1 }],
+            recipient: { value: 'test' },
+            recipients: {
+                data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }],
+                botInfo: [{ username: 'test', chatId: '123', botId: '12345' }]
+            },
+            groupHeadline: [{subData: null, id: 10695, name: '038arm'}]
+        };
+        it('should return true', () => {
+            // Act
+            const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            const actual = popup.isChatWithBot(12345, 123);
+
+            // Assert
+            expect(actual).toBe(true);
+        });
+
+        it('should return false', () => {
+            // Act
+            const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            const actual = popup.isChatWithBot(12345, 12345);
+
+            // Assert
+            expect(actual).toBe(false);
+        });
+    });
+
     describe('getRecipientTypes', () => {
         it('should return exactly when is telegram', () => {
             // Arrange
@@ -678,7 +711,7 @@ describe('EditPersonalMappingPopup', () => {
             popup.instance().setState(state);
             const actual = popup.instance().isValidParams();
             expect(popup.instance().state.validate.isShow).toBeTrue;
-            expect(popup.instance().state.validate.errMsgs.length).toBe(6);
+            expect(popup.instance().state.validate.errMsgs.length).toBe(5);
             expect(actual).toBeFalse;
         });
 

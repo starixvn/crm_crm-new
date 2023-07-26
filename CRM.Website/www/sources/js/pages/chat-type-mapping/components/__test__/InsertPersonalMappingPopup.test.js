@@ -503,6 +503,39 @@ describe('InsertPersonalMappingPopup', () => {
         });
     });
 
+    describe('isChatWithBot', () => {
+        // Arrange
+        const props = {
+            settings: {
+                bots: [{ channelId: 1, id: 1}],
+                botServices: [{ id: 1, name: 'telegram' }],
+                languages: []
+            },
+            recipients: {
+                data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }],
+                botInfo: [{ username: 'test', chatId: '123', botId: '12345' }]
+            },
+            groupHeadline: [{subData: null, id: 10695, name: '038arm'}]
+        };
+        it('should return true', () => {
+            // Act
+            const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            const actual = popup.isChatWithBot(12345, 123);
+
+            // Assert
+            expect(actual).toBe(true);
+        });
+
+        it('should return false', () => {
+            // Act
+            const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            const actual = popup.isChatWithBot(12345, 12345);
+
+            // Assert
+            expect(actual).toBe(false);
+        });
+    });
+
     describe('handleChangeUsername', () => {
         it('should return exactly', () => {
             // Arrange
