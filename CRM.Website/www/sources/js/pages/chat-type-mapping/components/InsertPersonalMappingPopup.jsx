@@ -118,10 +118,7 @@ export class InsertPersonalMappingPopup extends Component {
                 this.setState({ isLoading: false });
             });
         } else {
-            this.props.getTelegramDisplayName(value, this.state.form.chatId).then(() => {
-                this.handleChange('displayName', this.props.telegramName);
-                this.setState({ isLoading: false });
-            });
+            this.getTelegramDisplayName(value, this.state.form.chatId);
         }
     };
 
@@ -187,19 +184,13 @@ export class InsertPersonalMappingPopup extends Component {
         this.handleChange('chatId', chatId);
         this.setState({ chatIdOptions: [...new Set(chatIdOptions)], isLoading: true });
 
-        this.props.getTelegramDisplayName(this.state.form.botId, chatId).then(() => {
-            this.handleChange('displayName', this.props.telegramName);
-            this.setState({ isLoading: false });
-        });
+        this.getTelegramDisplayName(this.state.form.botId, chatId);
     };
 
     handleChangeChatId = value => {
         this.handleChange('chatId', value);
         this.setState({ isLoading: true });
-        this.props.getTelegramDisplayName(this.state.form.botId, value).then(() => {
-            this.handleChange('displayName', this.props.telegramName);
-            this.setState({ isLoading: false });
-        });
+        this.getTelegramDisplayName(this.state.form.botId, value);
     };
 
     getUsernames = option => {
@@ -207,6 +198,25 @@ export class InsertPersonalMappingPopup extends Component {
             return option.usernames ? option.usernames.split(',').map(item => item.trim()) : [];
         }
         return [];
+    };
+
+    isChatWithBot = (botId, chatId) => {
+        const { botInfo } = this.props.recipients;
+        if (botInfo && botInfo.find(item => item.botId.toString() === botId.toString() && item.chatId.toString() === chatId.toString())) {
+            return true;
+        }
+        return false;
+    };
+
+    getTelegramDisplayName = (botId, chatId) => {
+        this.props.getTelegramDisplayName(botId, chatId).then(() => {
+            if (this.isChatWithBot(botId, chatId)) {
+                this.handleChange('displayName', this.props.telegramName);
+            } else {
+                this.handleChange('displayName', '');
+            }
+            this.setState({ isLoading: false });
+        });
     };
 
     renderOptions = (item, key) => {
