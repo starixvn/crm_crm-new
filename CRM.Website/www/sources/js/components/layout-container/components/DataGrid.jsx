@@ -346,7 +346,7 @@ export default class DataGrid extends PureComponent {
                         <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
                             onChange={handleChange} name="pic1Name" value={values.pic1Name} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
                             onChange={handleChange} name="pic1" value={values.pic1} autoComplete="off"
                         />
                     </Col>
@@ -360,7 +360,7 @@ export default class DataGrid extends PureComponent {
                         <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
                             onChange={handleChange} name="pic2Name" value={values.pic2Name} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
                             onChange={handleChange} name="pic2" value={values.pic2} autoComplete="off"
                         />
                     </Col>
@@ -374,7 +374,7 @@ export default class DataGrid extends PureComponent {
                         <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
                             onChange={handleChange} name="pic3Name" value={values.pic3Name} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
                             onChange={handleChange} name="pic3" value={values.pic3} autoComplete="off"
                         />
                     </Col>
@@ -388,7 +388,7 @@ export default class DataGrid extends PureComponent {
                         <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
                             onChange={handleChange} name="pic4Name" value={values.pic4Name} autoComplete="off"
                         />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
+                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
                             onChange={handleChange} name="pic4" value={values.pic4} autoComplete="off"
                         />
                     </Col>

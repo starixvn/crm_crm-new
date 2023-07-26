@@ -188,6 +188,7 @@ export const Statuses = [
 
 export const IsRemoveDatagridRedemption = true;
 export const IsRemoveVerify = true;
+export const IsLastFiveRemarks = true;
 
 export const BotServices = [
     { id: 0, name: 'All' },

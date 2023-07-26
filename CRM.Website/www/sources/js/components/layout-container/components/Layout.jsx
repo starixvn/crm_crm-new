@@ -280,7 +280,7 @@ export class Layout extends Component {
                     />
                 }
                 </div>
-                <div id='right-row-container' tabIndex="2" style={{width: customerInfo !== null ? '78%' : '100%'}} className='main-content'>
+                <div id='right-row-container' tabIndex="2" style={{width: customerInfo !== null ? '83%' : '100%'}} className='main-content'>
                     <div id='child-app-container'>
                         {this.props.children}
                     </div>
