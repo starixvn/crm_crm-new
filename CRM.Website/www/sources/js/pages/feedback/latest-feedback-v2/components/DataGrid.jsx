@@ -252,7 +252,7 @@ export class DataGrid extends Component {
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     containerPadding={0}
-                    adjustedHeight={10}
+                    // adjustedHeight={10}
                 />
             </Fragment>
         );

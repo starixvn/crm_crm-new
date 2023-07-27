@@ -238,8 +238,8 @@ export class Filter extends Component {
                 }
                 {
                     showFilter
-                        ? <span className='fa-sm fa fa-caret-up toggle-icon' onClick={() => this.handleToggleFilter(false)} />
-                        : <span className='fa-sm fa fa-caret-down toggle-icon' onClick={() => this.handleToggleFilter(true)} />
+                        ? <span className='fa-sm fa fa-caret-up icon-toggle' onClick={() => this.handleToggleFilter(false)} />
+                        : <span className='fa-sm fa fa-caret-down icon-toggle' onClick={() => this.handleToggleFilter(true)} />
                 }
             </Form>
         );

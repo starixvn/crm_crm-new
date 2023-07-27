@@ -341,7 +341,7 @@ export class Filter extends Component {
                     </Form.Group>
                     {
                         !this.state.showFilter &&
-                        <div style={{width: '70px', marginBottom: '1rem'}}>
+                        <div className='btn-submit' style={{width: '70px', marginBottom: '1rem'}}>
                             <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
                                 {LangHelper.getResource('Submit')}
                             </Button>
@@ -412,7 +412,7 @@ export class Filter extends Component {
                         </Form.Group>
                         {
                             this.state.showFilter &&
-                            <div style={{width: '70px'}}>
+                            <div className='btn-submit' style={{width: '70px'}}>
                                 <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
                                     {LangHelper.getResource('Submit')}
                                 </Button>

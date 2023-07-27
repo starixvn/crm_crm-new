@@ -349,8 +349,8 @@ export class Filter extends PureComponent {
                     }
                     {
                         this.state.showFilter
-                            ? <span className="fa fa-caret-up fa-sm toggle-icon" onClick={() => this.handleToggleFilter(false)} />
-                            : <span className="fa fa-caret-down fa-sm toggle-icon" onClick={() => this.handleToggleFilter(true)} />
+                            ? <span className="fa fa-caret-up fa-sm icon-toggle" onClick={() => this.handleToggleFilter(false)} />
+                            : <span className="fa fa-caret-down fa-sm icon-toggle" onClick={() => this.handleToggleFilter(true)} />
                     }
                 </Form>
                 {
