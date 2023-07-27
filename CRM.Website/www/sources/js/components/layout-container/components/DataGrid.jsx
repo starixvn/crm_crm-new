@@ -10,8 +10,6 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import { toast } from 'react-toastify';
 import UnderlineButton from '@jsroot/common/underlineButton';
-import { Collapse } from 'react-bootstrap';
-
 export default class DataGrid extends PureComponent {
     static defaultProps = {
         customerInfo: null,
@@ -23,8 +21,7 @@ export default class DataGrid extends PureComponent {
         this.state = {
             languages: [],
             siteId: null,
-            isShowDetail: true,
-            collapseCommunication: true
+            isShowDetail: true
         };
     }
 
@@ -226,17 +223,6 @@ export default class DataGrid extends PureComponent {
                 {
                     this.renderCommunicationTool(values, handleChange, isSubmitting)
                 }
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Col md="3" />
-                    <Col md="9">
-                        {
-                            hasCreateFeedbackPermission &&
-                            <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
-                                <UnderlineButton.updateButton />
-                            </Button>
-                        }
-                    </Col>
-                </Form.Group>
                 {
                     this.renderDetail(isShowInactiveMsg)
                 }
@@ -247,10 +233,8 @@ export default class DataGrid extends PureComponent {
     renderCommunicationTool = (values, handleChange, isSubmitting) => {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
-                <div className="hightlight-title" onClick={() => this.setState(prevState => ({collapseCommunication: !prevState.collapseCommunication}))}>
+                <div className="hightlight-title">
                     <Row className="item title text-left">{LangHelper.getResource('CommunicationTool')}</Row>
-                    <Collapse in={!this.state.collapseCommunication}>
-                        <div>
                         <Form.Group className="row item no-border-bg align-items-end">
                             <Form.Label column md="3" htmlFor="phoneCountryCode" >
                                 {LangHelper.getResource('Phone1')}
@@ -407,9 +391,17 @@ export default class DataGrid extends PureComponent {
                                 />
                             </Col>
                         </Form.Group>
-                        </div>
-                    </Collapse>
-                    
+                        <Form.Group className="row item no-border-bg align-items-end">
+                            <Col md="3" />
+                            <Col md="9">
+                                {
+                                    hasCreateFeedbackPermission &&
+                                    <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
+                                        <UnderlineButton.updateButton />
+                                    </Button>
+                                }
+                            </Col>
+                        </Form.Group>
                 </div>
         );
     };
