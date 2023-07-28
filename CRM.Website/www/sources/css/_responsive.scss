@@ -54,6 +54,15 @@
             } 
         }
 
+        #left-container{
+            .autocomplete-container{
+                input{
+                    font-size: 9px !important;
+                    padding: 5px 0 5px 30px !important;
+                }
+            }
+        }
+
         .btn{
             font-size: 11px;
             padding: 0px 4px;
