@@ -161,6 +161,7 @@ export class Filter extends Component {
 
     handleToggleFilter = value => {
         this.setState({ showFilter: value });
+        window.dispatchEvent(new Event('resize'));
     };
 
     getParams = () => {
@@ -341,7 +342,7 @@ export class Filter extends Component {
                     </Form.Group>
                     {
                         !this.state.showFilter &&
-                        <div className='btn-submit' style={{width: '70px', marginBottom: '1rem'}}>
+                        <div className='btn-submit' style={{width: '70px', marginBottom: '0.7rem'}}>
                             <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
                                 {LangHelper.getResource('Submit')}
                             </Button>
