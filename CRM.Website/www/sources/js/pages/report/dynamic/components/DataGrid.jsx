@@ -277,7 +277,7 @@ export class DataGrid extends Component {
                     header={this.buildHeader()}
                     body={this.buildBody()}
                     containerPadding={0}
-                    adjustedHeight={30}
+                    adjustedHeight={10}
                     isPaging
                     pageOption={pagingOption}
                     onPaging={this.onPaging}
