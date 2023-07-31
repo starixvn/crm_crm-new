@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
-import { Button } from 'react-bootstrap';
 import EditForm from './EditForm';
 import { FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
-
     static propTypes = {
         getCustomerById: PropTypes.func
     };
@@ -30,30 +27,30 @@ export class AppContainer extends Component {
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
-            this.setState({customerInfoPolicy: response});
+            this.setState({ customerInfoPolicy: response });
         });
 
-        getPermission(FunctionKey.Updateheadlineinfo).then(response => {
-            this.setState({updateHeadlineInfoPolicy: response});
+        getPermission(FunctionKey.Updateheadlineinfo, true).then(response => {
+            this.setState({ updateHeadlineInfoPolicy: response });
         });
         document.title = LangHelper.getResource('CRMSystem');
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.resetState();
-     }
+    }
 
     render() {
-        const {customerInfoPolicy, updateHeadlineInfoPolicy} = this.state;
-        if(!customerInfoPolicy || !updateHeadlineInfoPolicy){
+        const { customerInfoPolicy, updateHeadlineInfoPolicy } = this.state;
+        if (!customerInfoPolicy) {
             return null;
         }
 
         return (
             <div>
-                <EditForm id={this.props.id} customerInfoPolicy={customerInfoPolicy} updateHeadlineInfoPolicy={updateHeadlineInfoPolicy}/>
+                <EditForm id={this.props.id} customerInfoPolicy={customerInfoPolicy} updateHeadlineInfoPolicy={updateHeadlineInfoPolicy} />
             </div>
         );
     }

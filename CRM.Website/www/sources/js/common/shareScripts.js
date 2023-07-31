@@ -4,16 +4,16 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import moment from 'moment';
 
-export const getPermission = async functionKey =>{
+export const getPermission = async (functionKey, isNoRedirectAccessDeniedPage) => {
     const url = Site.resolveClientUrl('Common/GetPermission');
-    return await DataService.postDataAsync(url, {functionKey : functionKey}).then(response =>{
-        if(!response){
+    return await DataService.postDataAsync(url, { functionKey: functionKey }).then(response => {
+        if (!response) {
             return;
         }
 
-        if(response.data === 0){
+        if (response.data === 0 && !isNoRedirectAccessDeniedPage) {
             window.location = Site.resolveClientUrl('error/AccessDenied');
-        }else{
+        } else {
             return response.data;
         }
     }).catch(Site.handleAxiosError);
@@ -133,9 +133,9 @@ const checkExistBetType = (subProductId, betTypeId, betTypes) => {
 
 export const getProductParams = (selectedProductIds, selectedSubProductIds, selectedBettypeIds, settings) => {
     let products = [];
-    const selectedProductIdsDistinct = selectedProductIds.filter((v,i,a)=> a.findIndex(t=> t === v) === i);
-    const selectedSubProductIdsDistinct = selectedSubProductIds.filter((v,i,a)=> a.findIndex(t=> t === v) === i);
-    const selectedBettypeIdsDistinct = selectedBettypeIds.filter((v,i,a)=> a.findIndex(t=> t === v) === i);
+    const selectedProductIdsDistinct = selectedProductIds.filter((v, i, a) => a.findIndex(t => t === v) === i);
+    const selectedSubProductIdsDistinct = selectedSubProductIds.filter((v, i, a) => a.findIndex(t => t === v) === i);
+    const selectedBettypeIdsDistinct = selectedBettypeIds.filter((v, i, a) => a.findIndex(t => t === v) === i);
 
     if (selectedProductIdsDistinct.length === 0) {
         products = [
@@ -227,7 +227,7 @@ function generateCustomerPrefix(hasRelated, relatedCustomers) {
 }
 
 export const getBackGroundColor = index => {
-    const backGroundColors= [
+    const backGroundColors = [
         '#3F5D7D', '#279B61', '#008AB8',
         '#993333', '#A3E496', '#95CAE4',
         '#CC3333', '#FFCC33', '#FFFF7A',
@@ -246,7 +246,7 @@ export const getBackGroundColor = index => {
     return backGroundColor;
 };
 
-function shadeColor(color, percent){
+function shadeColor(color, percent) {
     const colorHexValue = parseInt(color.slice(1), 16);
     const t = percent < 0 ? 0 : 255;
     const p = percent < 0 ? percent * -1 : percent;
@@ -260,8 +260,8 @@ function shadeColor(color, percent){
     };
 
     return '#' + (backGroundColor.Red +
-           backGroundColor.Green +
-           backGroundColor.Blue).toString(16).slice(1);
+        backGroundColor.Green +
+        backGroundColor.Blue).toString(16).slice(1);
 }
 
 const handleSortDateAsc = (sortBy, first, second) => new Date(first[`${sortBy}`]) > new Date(second[`${sortBy}`]) ? 1 : -1;
@@ -272,10 +272,9 @@ const handleSortStringAsc = (sortBy, first, second) => first[`${sortBy}`] > (sec
 
 const handleSortStringDesc = (sortBy, first, second) => first[`${sortBy}`] < (second[`${sortBy}`] || '') ? 1 : -1;
 
-
 export const handleSort = (cloneGridData, sortBy, sortOrder) => {
     let gridDataSortAsc = null;
-    if(!cloneGridData || cloneGridData.length === 0) {
+    if (!cloneGridData || cloneGridData.length === 0) {
         return cloneGridData;
     }
     const findSortType = cloneGridData[0][`${sortBy}`];
@@ -322,8 +321,7 @@ export const getSiteLabel = (sites, siteId) => {
         if (item.childSites && item.childSites.length > 0) {
             item.childSites.forEach(element => {
                 if (element.childSites && element.childSites.length > 0) {
-                    if (element.childSites.find(data => data.id === siteId))
-                    {
+                    if (element.childSites.find(data => data.id === siteId)) {
                         siteLabel = element.childSites.find(data => data.id === siteId).siteLabel;
                     }
                 }
