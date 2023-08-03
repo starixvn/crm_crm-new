@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Fanex.Data.Repository" Version="4.2.2" />
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.56.0.67649">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\CRM.Models\CRM.Models.csproj" />
+    </ItemGroup>
+</Project>
