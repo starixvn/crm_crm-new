@@ -15,6 +15,7 @@
     using CRM.Core.Models.BotServices.Announcement;
     using CRM.Core.Services;
     using Fanex.Caching;
+    using global::Telegram.Bot.Types;
     using global::Telegram.Bot.Types.Enums;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -308,10 +309,10 @@
                 logService.LogInformation(string.Format("Start SendNotifyAysnc: botId: {0} chatId: {1}.", announcementNotification.BotId, announcementNotification.ConversationId));
 
                 _ = long.TryParse(announcementNotification.ConversationId, out long chatId);
-                var imgBye = await GetImageByteArrayAsync(image);
-                using var stream = new MemoryStream(imgBye);
-                var sendImageResult = await telegramBotService(announcementNotification.BotId).SendImageStreamAsync(announcementNotification.BotId, chatId, stream);
-                if (sendImageResult is not null)
+
+                var message = await SendImageAsync(announcementNotification.BotId, chatId, image);
+
+                if (message is not null)
                 {
                     result.IsSuccessful = true;
                     await WriteLogAnnouncementMessageAsync(announcementNotification, image, isBotBlocked: false, result.IsSuccessful, string.Empty);
@@ -328,6 +329,31 @@
 
             logService.LogInformation("end SendNotifyAysnc!!!");
         }
+
+        private async Task<Message> SendImageAsync(long botId, long chatId, string image)
+        {
+            string fileId = await cacheService.GetAsync<string>(GetKeyCacheFileId(image, botId));
+            Message result;
+            if (string.IsNullOrWhiteSpace(fileId))
+            {
+                logService.LogInformation($"Send image from stream: BotId={botId}; ChatId={chatId}; Img={image}");
+                byte[] imgByte = await GetImageByteArrayAsync(image);
+                using MemoryStream stream = new(imgByte);
+                result = await telegramBotService(botId).SendImageStreamAsync(botId, chatId, stream);
+                await cacheService.SetAsync(GetKeyCacheFileId(image, botId), result.Photo.FirstOrDefault()?.FileId, new CacheItemOptions
+                {
+                    RelativeExpiration = TimeSpan.FromMinutes(60)
+                });
+            }
+            else
+            {
+                result = await telegramBotService(botId).SendImageAsync(botId, chatId, fileId);
+                logService.LogInformation($"Send image from fileId: BotId={botId}; ChatId={chatId}; FileId={fileId}");
+            }
+            return result;
+        }
+
+        private string GetKeyCacheFileId(string imageUrl, long botId) => $"{imageUrl}?botId={botId}";
 
         private async Task<byte[]> GetImageByteArrayAsync(string imgUrl)
         {

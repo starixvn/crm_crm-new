@@ -41,7 +41,6 @@
     using ONEbook.UM.Services;
     using ONEbook.UM.Transport;
     using Sentry;
-    using Sentry.Protocol;
     using StackExchange.Redis;
 
     public class Startup
@@ -139,7 +138,6 @@
             });
 
             RegisterDI(services);
-
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Threading;
     using CRM.BotService.Core.Extensions;
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services;
@@ -152,7 +153,7 @@
             };
             var redis = ConnectionMultiplexer.Connect(configRedix);
             services.AddDataProtection()
-                .PersistKeysToStackExchangeRedis(redis, redisConfig.Password)
+                .PersistKeysToStackExchangeRedis(redis, redisConfig.ApplicationName + ":DataProtection:Keys")
                 .SetApplicationName(redisConfig.ApplicationName + ":DataProtection:Keys");
         }
 
@@ -171,6 +172,10 @@
                 };
                 options.InstanceName = redisConfig.ApplicationName + ":Session:";
             });
+
+            const short WorkerThreads = 300;
+            const short CompletionPortThreads = 300;
+            _ = ThreadPool.SetMinThreads(WorkerThreads, CompletionPortThreads);
         }
     }
 }
