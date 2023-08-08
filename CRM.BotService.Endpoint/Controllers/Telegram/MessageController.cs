@@ -334,16 +334,19 @@
         {
             string fileId = await cacheService.GetAsync<string>(GetKeyCacheFileId(image, botId));
             Message result;
-            if (string.IsNullOrWhiteSpace(fileId))
+            if (string.IsNullOrEmpty(fileId))
             {
                 logService.LogInformation($"Send image from stream: BotId={botId}; ChatId={chatId}; Img={image}");
                 byte[] imgByte = await GetImageByteArrayAsync(image);
                 using MemoryStream stream = new(imgByte);
                 result = await telegramBotService(botId).SendImageStreamAsync(botId, chatId, stream);
-                await cacheService.SetAsync(GetKeyCacheFileId(image, botId), result.Photo.FirstOrDefault()?.FileId, new CacheItemOptions
+                if(result is not null)
                 {
-                    RelativeExpiration = TimeSpan.FromMinutes(60)
-                });
+                    await cacheService.SetAsync(GetKeyCacheFileId(image, botId), result.Photo.FirstOrDefault()?.FileId, new CacheItemOptions
+                    {
+                        RelativeExpiration = TimeSpan.FromMinutes(60)
+                    });
+                }
             }
             else
             {

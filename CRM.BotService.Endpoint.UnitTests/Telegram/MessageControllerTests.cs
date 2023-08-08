@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Security.Cryptography;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BotService.Core.Constants;
@@ -18,8 +19,10 @@
     using global::Telegram.Bot.Types;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
     using NSubstitute;
     using Xunit;
+    using static System.Net.WebRequestMethods;
 
     public class MessageControllerTests
     {
@@ -138,7 +141,7 @@
             var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
             var result = actualResult.First();
             // Assert
-            logService.Received(13).LogInformation(Arg.Any<string>());
+            logService.Received(16).LogInformation(Arg.Any<string>());
             Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
             Assert.Equal(result.ConversationId, expected.ConversationId);
             Assert.Equal(result.IsSuccessful, expected.IsSuccessful);
@@ -212,7 +215,7 @@
             var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
             var result = actualResult.First();
             // Assert
-            logService.Received(7).LogInformation(Arg.Any<string>());
+            logService.Received(8).LogInformation(Arg.Any<string>());
             Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
             Assert.Equal(result.ConversationId, expected.ConversationId);
             Assert.Equal(result.IsSuccessful, expected.IsSuccessful);
@@ -253,7 +256,7 @@
             var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
             var result = actualResult.First();
             // Assert
-            logService.Received(7).LogInformation(Arg.Any<string>());
+            logService.Received(8).LogInformation(Arg.Any<string>());
             await logService.Received(1).ErrorAsync(Arg.Any<Exception>());
             Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
             Assert.Equal(result.ConversationId, expected.ConversationId);
@@ -307,7 +310,15 @@
             };
             var message = new Message
             {
-                From = new User { Id = 1 }
+                From = new User { Id = 1 },
+                Photo =  new PhotoSize[]
+                {
+                    new PhotoSize
+                     {
+                         FileId = "FileId"
+                     }
+                
+                }
             };
             botCommonService.IsActiveChannel(BotChannel.Telegram).Returns(true);
             telegramBotService(Arg.Any<long>()).SendImageStreamAsync(Arg.Any<long>(), Arg.Any<long>(), Arg.Any<Stream>()).Returns(message);
@@ -319,7 +330,7 @@
             var actualResult = okObjectResult.Value as IEnumerable<SendNotificationResult>;
             var result = actualResult.First();
             // Assert
-            logService.Received(5).LogInformation(Arg.Any<string>());
+            logService.Received(6).LogInformation(Arg.Any<string>());
             Assert.Equal(result.AnnouncementId, expected.AnnouncementId);
             Assert.Equal(result.ConversationId, expected.ConversationId);
             Assert.Equal(result.IsSuccessful, expected.IsSuccessful);
