@@ -71,7 +71,7 @@
             var criteria = Substitute.For<ICriteria>();
             var feedbacks = new List<DeletedFeedbackStatistic>
             {
-                new DeletedFeedbackStatistic{ FeedbackId = 1 }
+                new DeletedFeedbackStatistic{ FeedbackId = 1, RelatedCustomer = "test" }
             };
             var settings = new List<FeedbackSettingRelation>
             {
