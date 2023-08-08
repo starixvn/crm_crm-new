@@ -493,7 +493,9 @@ export class EditGroupMappingPopup extends Component {
 
                         <Form.Group as={Row} className="col-md-12">
                             <Form.Label column sm="3" md="2">
-                                {LangHelper.getResource('Username')}
+                                {
+                                    botServiceId === BotServiceType.Letstalk ? LangHelper.getResource('LetstalkID') : LangHelper.getResource('Username')
+                                }
                             </Form.Label>
                             <Col sm="9" md="10" className="mrg-top-3">
                                 {
