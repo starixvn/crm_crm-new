@@ -88,7 +88,7 @@ export class Layout extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetSettings');
         await DataService.getDataAsync(url).then(response => {
-             this.setState({ settings: response.data});
+            this.setState({ settings: response.data});
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 

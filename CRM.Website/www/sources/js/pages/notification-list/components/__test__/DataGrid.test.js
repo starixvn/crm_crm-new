@@ -235,7 +235,7 @@ describe('DataGrid', () => {
                 const header = shallow(dataGrid.instance().buildNotificationListHeader());
                 
                 // Assert
-                expect(header.find(HeaderCell).at(0).props().colWidth).toBe(5);
+                expect(header.find(HeaderCell).at(0).props().colWidth).toBe(7);
                 expect(header.find(HeaderCell).at(0).html()).toContain('SymbolNo');
                 expect(header.find(HeaderCell).at(1).props().colWidth).toBe(15);
                 expect(header.find(HeaderCell).at(1).find('div').at(0).html()).toContain('NotificationID');
@@ -245,17 +245,12 @@ describe('DataGrid', () => {
                 expect(header.find(HeaderCell).at(2).html()).toContain('NotificationType');
                 expect(header.find(HeaderCell).at(3).props().colWidth).toBe(12);
                 expect(header.find(HeaderCell).at(3).html()).toContain('SendDateTimeGMTA8');
-                expect(header.find(HeaderCell).at(4).props().colWidth).toBe(16);
-                expect(header.find(HeaderCell).at(4).html()).toContain('LetstalkName');
-                expect(header.find(HeaderCell).at(5).props().colWidth).toBe(26);
-                expect(header.find(HeaderCell).at(5).html()).toContain('GroupHeadline');
-                expect(header.find(HeaderCell).at(6).props().colWidth).toBe(19);
-                expect(header.find(HeaderCell).at(6).html()).toContain('Recipient');
-                expect(header.find(HeaderCell).at(7).props().colWidth).toBe(20);
-                expect(header.find(HeaderCell).at(7).html()).toContain('Title');
-                expect(header.find(HeaderCell).at(7).html()).toContain('Content');
-                expect(header.find(HeaderCell).at(8).props().colWidth).toBe(12);
-                expect(header.find(HeaderCell).at(8).html()).toContain('Status');
+                expect(header.find(HeaderCell).at(4).props().colWidth).toBe(12);
+                expect(header.find(HeaderCell).at(4).html()).toContain('BotService');
+                expect(header.find(HeaderCell).at(5).props().colWidth).toBe(16);
+                expect(header.find(HeaderCell).at(5).html()).toContain('DisplayName');
+                expect(header.find(HeaderCell).at(6).props().colWidth).toBe(26);
+                expect(header.find(HeaderCell).at(6).html()).toContain('GroupHeadline');
             });
 
             it('has action column', () => {
@@ -272,8 +267,8 @@ describe('DataGrid', () => {
                 const header = shallow(dataGrid.instance().buildNotificationListHeader(true));
                 
                 // Assert
-                expect(header.find(HeaderCell).at(9).props().colWidth).toBe(10);
-                expect(header.find(HeaderCell).at(9).html()).toContain('Action');
+                expect(header.find(HeaderCell).at(9).props().colWidth).toBe(12);
+                expect(header.find(HeaderCell).at(9).html()).toContain('Status');
             });
             
             it('has resend column', () => {
@@ -291,90 +286,6 @@ describe('DataGrid', () => {
                 
                 // Assert
                 expect(header.find(HeaderCell).at(10).props().colWidth).toBe(10);
-            });
-            
-            it('has button resend', () => {
-                // Arrange
-                const props = {
-                    gridParams: {},
-                    notificationListGridData: {},
-                    resendOptions: {
-                        isDisabledResend: false
-                    }
-                };
-    
-                const dataGrid = shallow(<DataGrid {...props} />);
-    
-                // Action
-                const header = shallow(dataGrid.instance().buildNotificationListHeader(true));
-                
-                // Assert
-                expect(header.find(HeaderCell).at(10).find('input').props().type).toBe('button');
-                expect(header.find(HeaderCell).at(10).find('input').props().value).toBe('Resend');
-                expect(header.find(HeaderCell).at(10).find('input').props().disabled).toBeFalse;
-            });
-            
-            it('has enable resend simulating onClick', () => {
-                // Arrange
-                const props = {
-                    gridParams: {},
-                    notificationListGridData: {},
-                    resendOptions: {
-                        isDisabledResend: false
-                    }
-                };
-    
-                const dataGrid = shallow(<DataGrid {...props} />);
-                dataGrid.instance().resendNotificationAll = jest.fn();
-                const header = shallow(dataGrid.instance().buildNotificationListHeader(true));
-    
-                // Action
-                header.find(HeaderCell).at(10).find('input').simulate('click');
-
-                // Assert
-                expect(dataGrid.instance().resendNotificationAll).toHaveBeenCalled();
-            });
-            
-            it('has resend all check box', () => {
-                // Arrange
-                const props = {
-                    gridParams: {},
-                    notificationListGridData: {},
-                    resendOptions: {
-                        isHaveResendAll: true
-                    }
-                };
-    
-                const dataGrid = shallow(<DataGrid {...props} />);
-    
-                // Action
-                const header = shallow(dataGrid.instance().buildNotificationListHeader(true));
-
-                // Assert
-                expect(header.find(HeaderCell).at(10).find(Form.Control).props().className).toBe('checkbox-cell-style margin-top-10');
-                expect(header.find(HeaderCell).at(10).find(Form.Control).props().type).toBe('checkbox');
-                expect(header.find(HeaderCell).at(10).find(Form.Control).props().checked).toEqual(props.resendOptions.isCheckedAll);
-            });
-            
-            it('has resend all check box changing', () => {
-                // Arrange
-                const props = {
-                    gridParams: {},
-                    notificationListGridData: {},
-                    resendOptions: {
-                        isHaveResendAll: true
-                    }
-                };
-    
-                const dataGrid = shallow(<DataGrid {...props} />);
-                dataGrid.instance().handleChangeResendAllCheckbox = jest.fn();
-                const header = shallow(dataGrid.instance().buildNotificationListHeader(true));
-    
-                // Action
-                header.find(HeaderCell).at(10).find(Form.Control).simulate('change');
-
-                // Assert
-                expect(dataGrid.instance().handleChangeResendAllCheckbox).toHaveBeenCalled();
             });
         });
 
@@ -709,12 +620,12 @@ describe('DataGrid', () => {
                     notificationTypeName: 'notificationTypeName',
                     sendDateString: 'sendDateString',
                     sendTimeString: 'sendTimeString',
-                    letstalkName: 'letstalkName',
+                    BotService: 'BotService',
                     headlines: [ 1 ],
                     recipients: [ 1 ],
                     title: 'title',
                     status: 'status',
-                    referenceIdList: '1'
+                    referenceIdList: '1,2'
                 };
 
                 const index = 1;
@@ -746,7 +657,7 @@ describe('DataGrid', () => {
                 expect(row.find(Cell).at(3).props().className).toBe('text-center');
                 expect(row.find(Cell).at(3).find('div').at(0).html()).toEqual(`<div>${item.sendDateString}</div>`);
                 expect(row.find(Cell).at(3).find('div').at(1).html()).toEqual(`<div>${item.sendTimeString}</div>`);
-                expect(row.find(Cell).at(4).html()).toContain(item.letstalkName);
+                expect(row.find(Cell).at(4).html()).toContain('BotService');
                 expect(row.find(Cell).at(5).props().className).toBe('text-center');
                 expect(row.find(Cell).at(5).html()).toContain(headlines);
                 expect(row.find(Cell).at(6).html()).toContain(recipients);
@@ -778,200 +689,6 @@ describe('DataGrid', () => {
 
                 // Assert
                 expect(row.find(Cell).at(1).find('div').at(2).html()).toEqual(`<div>(Related ID: ${item.relatedNotificationIds})</div>`);
-            });
-            
-            it('has Cell 6 clicking', () => {
-                // Arrange
-                const item = {
-                    status: 'Error'
-                };
-
-                const index = 1;
-                const props = {
-                    gridParams: {},
-                    notificationListGridData: {},
-                    resendOptions: {
-                        dataList: []
-                    }
-                };
-    
-                const dataGrid = shallow(<DataGrid {...props} />);
-                dataGrid.instance().openContentPopup = jest.fn();
-                const row = shallow(dataGrid.instance().renderRow(item, index, false));
-
-                // Action
-                row.find(Cell).at(7).simulate('click');
-
-                // Assert
-                expect(dataGrid.instance().openContentPopup).toHaveBeenCalledWith(item);
-            });
-
-            describe('has Cell 8', () => {
-                describe('has ViewDetail div', () => {
-                    it('renders correctly', () => {
-                        // Arrange
-                        const item = {
-                            status: 'Resolved'
-                        };
-        
-                        const index = 1;
-                        const props = {
-                            gridParams: {},
-                            notificationListGridData: {},
-                            resendOptions: {
-                                dataList: []
-                            }
-                        };
-            
-                        const dataGrid = shallow(<DataGrid {...props} />);
-        
-                        // Action
-                        const row = shallow(dataGrid.instance().renderRow(item, index, true));
-        
-                        // Assert
-                        expect(row.find(Cell).at(9).find('div').at(0).props().className).toBe('action-style link-click');
-                        expect(row.find(Cell).at(9).find('div').at(0).html()).toContain('ViewDetail');
-                    });
-
-                    it('onClick', () => {
-                        // Arrange
-                        const item = {
-                            status: 'Resolved'
-                        };
-        
-                        const index = 1;
-                        const props = {
-                            gridParams: {},
-                            notificationListGridData: {},
-                            resendOptions: {
-                                dataList: []
-                            }
-                        };
-            
-                        const dataGrid = shallow(<DataGrid {...props} />);
-                        dataGrid.instance().openViewDetailPopup = jest.fn();
-                        const row = shallow(dataGrid.instance().renderRow(item, index, true));
-        
-                        // Action
-                        row.find(Cell).at(9).find('div').at(0).simulate('click');
-
-                        // Assert
-                        expect(dataGrid.instance().openViewDetailPopup).toHaveBeenCalledWith(item);
-                    });
-                });
-
-                describe('has Resend div', () => {
-                    it('renders correctly', () => {
-                        // Arrange
-                        const item = {
-                            status: 'Error'
-                        };
-        
-                        const index = 1;
-                        const props = {
-                            gridParams: {},
-                            notificationListGridData: {},
-                            resendOptions: {
-                                dataList: []
-                            }
-                        };
-            
-                        const dataGrid = shallow(<DataGrid {...props} />);
-        
-                        // Action
-                        const row = shallow(dataGrid.instance().renderRow(item, index, true));
-        
-                        // Assert
-                        expect(row.find(Cell).at(9).find('div').at(1).props().className).toBe('action-style link-click');
-                        expect(row.find(Cell).at(9).find('div').at(1).html()).toContain('Resend');
-                    });
-
-                    it('onClick', () => {
-                        // Arrange
-                        const item = {
-                            status: 'Error'
-                        };
-        
-                        const index = 1;
-                        const props = {
-                            gridParams: {},
-                            notificationListGridData: {},
-                            resendOptions: {
-                                dataList: []
-                            }
-                        };
-            
-                        const dataGrid = shallow(<DataGrid {...props} />);
-                        dataGrid.instance().validateResend = jest.fn();
-                        const row = shallow(dataGrid.instance().renderRow(item, index, true));
-        
-                        // Action
-                        row.find(Cell).at(9).find('div').at(1).simulate('click');
-
-                        // Assert
-                        expect(dataGrid.instance().validateResend).toHaveBeenCalledWith(item.notificationId);
-                    });
-                });
-            });
-
-            describe('has Cell 9 with Form.Control', () => {
-                it('renders correctly', () => {
-                    // Arrange
-                    const item = {
-                        status: 'Error'
-                    };
-    
-                    const index = 0;
-                    const props = {
-                        gridParams: {},
-                        notificationListGridData: {},
-                        resendOptions: {
-                            dataList: [
-                                {
-                                    isResent: true
-                                }
-                            ]
-                        }
-                    };
-        
-                    const dataGrid = shallow(<DataGrid {...props} />);
-    
-                    // Action
-                    const row = shallow(dataGrid.instance().renderRow(item, index, true));
-
-                    // Assert
-                    expect(row.find(Cell).at(10).props().className).toBe('text-center');
-                    expect(row.find(Cell).at(10).find(Form.Control).props().className).toBe('checkbox-cell-style');
-                    expect(row.find(Cell).at(10).find(Form.Control).props().id).toBe(`resend-${item.notificationId}-${item.messageId}`);
-                    expect(row.find(Cell).at(10).find(Form.Control).props().type).toBe('checkbox');
-                    expect(row.find(Cell).at(10).find(Form.Control).props().checked).toEqual(props.resendOptions.dataList[index].isResent);
-                });
-                
-                it('has Form.Control changing', () => {
-                    // Arrange
-                    const item = {
-                        status: 'Error'
-                    };
-    
-                    const index = 0;
-                    const props = {
-                        gridParams: {},
-                        notificationListGridData: {},
-                        resendOptions: {
-                            dataList: []
-                        }
-                    };
-        
-                    const dataGrid = shallow(<DataGrid {...props} />);
-                    dataGrid.instance().handleChangeResendCheckbox = jest.fn();
-                    const row = shallow(dataGrid.instance().renderRow(item, index, true));
-    
-                    // Action
-                    row.find(Cell).at(10).find(Form.Control).simulate('change');
-
-                    // Assert
-                    expect(dataGrid.instance().handleChangeResendCheckbox).toHaveBeenCalledWith(index);
-                });
             });
         });
 

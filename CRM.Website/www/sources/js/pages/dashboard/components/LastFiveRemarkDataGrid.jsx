@@ -82,7 +82,6 @@ export class LastFiveRemarkDataGrid extends Component {
         if(!lastFiveRemarks){
             return null;
         }
-        const rightRowContainerWidth = document.body.clientWidth - document.getElementById('left-row-container').clientWidth;
         return (
             <div className="table-last-five-remarks mb-5">
                 <div className='table-title d-flex justify-content-between align-items-center'>
@@ -91,7 +90,7 @@ export class LastFiveRemarkDataGrid extends Component {
                 </div>
                 <Table
                     minWidth={960}
-                    width={rightRowContainerWidth}
+                    width={document.getElementById('right-row-container').clientWidth}
                     autoWidth
                     header={this.buildHeader()}
                     body={this.buildBody()}

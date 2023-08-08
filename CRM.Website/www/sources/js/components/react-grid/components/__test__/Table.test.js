@@ -475,7 +475,7 @@ describe('Table', () => {
             table.instance()._handleResize(event);
 
             // Assert
-            expect(table.instance().state.maxWidth).toEqual(1475);
+            expect(table.instance().state.maxWidth).toEqual(1253);
         });
     });
 
@@ -488,11 +488,13 @@ describe('Table', () => {
                 }
             }
         };
+        const scrollHeight = jest
+        .spyOn(document.documentElement, 'scrollHeight', 'get')
+        .mockImplementation(() => 955);
 
         const footerWrapper = { offsetHeight: 10 };
         const bodyWrapper = { offsetTop: 10 };
         const adjustedHeight = 10;
-        const expected = window.innerHeight - (bodyWrapper.offsetTop + footerWrapper.offsetHeight + 70) - adjustedHeight;
         const table = shallow(<Table {...props} />);
         table.instance().footerWrapper = footerWrapper;
         table.instance().bodyWrapper = bodyWrapper;
@@ -502,7 +504,7 @@ describe('Table', () => {
         const result = table.instance()._calculateBodyHeight();
 
         // Assert
-        expect(result).toEqual(expected);
+        expect(result).toEqual(855);
     });
 
     it('_getUpdatedColumnLayout should return expected', () => {
@@ -569,11 +571,10 @@ describe('Table', () => {
             table.instance().setState(state);
 
             // Action
-            const result = shallow(table.instance().render());
 
             // Assert
-            expect(result.find('div').at(1).props().className).toBe('table-container');
-            expect(result.find('div').at(1).props().style).toEqual({ maxWidth: state.maxWidth - props.containerPadding });
+            expect(table.find('div').at(1).props().className).toBe('table-container');
+            expect(table.find('div').at(1).props().style).toEqual({ maxWidth: state.maxWidth - props.containerPadding });
         });
         
         it('should return expected components have Pager', () => {

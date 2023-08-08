@@ -148,7 +148,7 @@ describe('ViewDetail', () => {
                 headlines: [],
                 recipients: [],
                 reason: '',
-                letstalkName: 'letstalkName'
+                displayName: 'displayName'
             },
             viewDetail: {
                 result: {}
@@ -158,7 +158,7 @@ describe('ViewDetail', () => {
         const viewDetail = shallow(<ViewDetail {...props} />);
         const viewDetailInstance = viewDetail.instance();
         const expectedBody = [<Row key={props.data.notificationId}>
-            <Cell>{props.data.letstalkName}</Cell>
+            <Cell>{props.data.displayName}</Cell>
             <Cell>{getHeadlines(props.data.headlines)}</Cell>
             <Cell>{getRecipients(props.data.recipients)}</Cell>
             <Cell className='error-color'>{props.data.reason}</Cell>

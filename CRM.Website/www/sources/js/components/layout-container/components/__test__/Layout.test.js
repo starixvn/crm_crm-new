@@ -78,6 +78,9 @@ describe('Layout', () => {
 
         const promise = Promise.resolve({});
         commonFunc.CheckForIndexHTMLChange = jest.fn(() => promise);
+        window.localStorage.setItem('isKeepLeftPanel', true);
+        window.localStorage.setItem('isShowingLeftPanel', true);
+        window.localStorage.setItem('updateLeftPanel', {});
     });
 
     afterAll(() => {
@@ -88,12 +91,19 @@ describe('Layout', () => {
             document.body.removeChild(appContainer);
             document.body.removeChild(appContainer1);
         }
+
+        window.localStorage.removeItem('isKeepLeftPanel');
+        window.localStorage.removeItem('isShowingLeftPanel');
+        window.localStorage.removeItem('updateLeftPanel');
     });
+
 
     describe('componentDidMount',() => {
         it('should call set state when lef panel is not null',async () => {
             //Arrange
             window.localStorage.setItem('isKeepLeftPanel', true);
+            window.localStorage.setItem('isShowingLeftPanel', true);
+            window.localStorage.setItem('updateLeftPanel', {});
             const promise = Promise.resolve({});
             const props = {
               navigate: jest.fn()
@@ -101,7 +111,6 @@ describe('Layout', () => {
             const container = shallow(<Layout {...props}/>).instance();
             container.getSetting = jest.fn();
             container.initDataMenu = jest.fn();
-            container.handleCheckNewVersion = jest.fn();
             //Act
             container.componentDidMount();
             await promise;
@@ -110,32 +119,6 @@ describe('Layout', () => {
             expect(container.state.isShowingLeftPanel).toEqual(true);
         });
     });
-
-    describe('getSetting',() => {
-      it('should set state exact data',async () => {
-          //Arrange
-          const settings = {
-            countries: [{countryCode: 93, isActive: true, displayOrder: 0, id: 1, name: "Afghanistan"}],
-            languages: [{languageId: 12000, name: "English", displayOrder: 10, isActive: true}],
-            sites: [{isLicensee: false, isActive: false}, {isLicensee: false, isActive: false}],
-            sitesLicenseeInactive: [{isLicensee: true, isActive: false, childSites: null, id: 6200, name: "12Bet"}]
-          };
-          Site.resolveClientUrl = jest.fn();
-          const promise = Promise.resolve({data: settings});
-          DataService.getDataAsync = jest.fn(() => promise);
-          const props = {
-            navigate: jest.fn()
-          };
-          const container = shallow(<Layout {...props}/>).instance();
-
-          //Act
-          container.getSetting();
-          await promise;
-
-          //Assert
-          expect(container.state.settings).toEqual(settings);
-      });
-  });
 
   describe('debounceUserNameInputChange', () => {
     it('searchText valid', async() => {

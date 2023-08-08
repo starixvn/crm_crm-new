@@ -266,7 +266,6 @@ export class DataGridCommunication extends Component {
         if (!communicationLogs) {
             return null;
         }
-        const rightRowContainerWidth = document.body.clientWidth - document.getElementById('left-row-container').clientWidth;
 
         return (
             <div className='communication-log-grid'>

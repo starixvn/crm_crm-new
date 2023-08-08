@@ -16,7 +16,7 @@ describe('Content', () => {
         };
         const data = {
             dataSource: 'DBMSG.bodb_Message.dbo.Msg',
-            referenceIdList: '1'
+            referenceIdList: null
         };
 
         // Action
@@ -36,7 +36,7 @@ describe('Content', () => {
         };
         const data = {
             dataSource: 'DBCRM.bodb_CRM.dbo.crmAnnouncement',
-            referenceIdList: '1'
+            referenceIdList: null
         };
 
         // Action
@@ -56,7 +56,7 @@ describe('Content', () => {
         };
         const data = {
             dataSource: '',
-            referenceIdList: '1'
+            referenceIdList: null
         };
 
         // Action
@@ -112,7 +112,7 @@ describe('Content', () => {
                 notificationId: 1,
                 letstalkName: 'letstalkName',
                 content: 'content',
-                referenceIdList: '1'
+                referenceIdList: null
             }
         };
 

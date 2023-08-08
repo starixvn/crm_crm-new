@@ -3,7 +3,3 @@
 exports[`DataGrid methods renderForm should show response message 1`] = `ShallowWrapper {}`;
 
 exports[`DataGrid should render correctly 1`] = `ShallowWrapper {}`;
-
-exports[`DataGridCustomerInfo methods renderForm should show response message 1`] = `ShallowWrapper {}`;
-
-exports[`DataGridCustomerInfo should render correctly 1`] = `ShallowWrapper {}`;
