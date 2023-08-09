@@ -156,6 +156,8 @@ export class Filter extends PureComponent {
 
     handleToggleFilter = value => {
         this.setState({ showFilter: value });
+        this.props.setGridParams({...this.props.gridParams, showFilter: value});
+        window.dispatchEvent(new Event('resize'));
     };
 
     getParams = () => {
