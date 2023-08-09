@@ -148,7 +148,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={20}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Recipient')}</HeaderCell>
                 <HeaderCell colWidth={25}>{LangHelper.getResource('LetstalkIDUsername')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('Language')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('Language')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('MappingStatus')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('Active')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('Remark')}</HeaderCell>
