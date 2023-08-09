@@ -10,6 +10,7 @@
     using CRM.Models.Setting;
     using CRM.Resources;
     using OfficeOpenXml;
+    using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
     using OfficeOpenXml.Style;
 
     public class PicAssignmentExcel : ExcelBase
@@ -233,12 +234,12 @@
                         (key, g) => new GroupHeadlineOfPic
                         {
                             GroupHeadlineId = key,
-                            GroupHeadline = g.FirstOrDefault().HeadlineName,
-                            HeadlineType = g.FirstOrDefault().HeadlineType,
-                            DefaultPIC = g.FirstOrDefault().DefaultPicList,
+                            GroupHeadline = g.First().HeadlineName,
+                            HeadlineType = g.First().HeadlineType,
+                            DefaultPIC = g.First().DefaultPicList,
                             Pics = g.GroupBy(p => p.PicForMapping, (_, pic) => new PicOfDirectAccount
                             {
-                                Pic = pic.FirstOrDefault().PicList,
+                                Pic = pic.First().PicList,
                                 DirectAccounts = pic.Select(d => new DirectAccountInfo
                                 {
                                     DirectAccount = d.DirectAccount,
@@ -286,7 +287,7 @@
             StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + maxGroupHeadline - 1);
             worksheet.Cells[rowIndex, colIndex].Value = GetPicCell(assignment?.DefaultPIC);
 
-            foreach (var pic in assignment?.Pics)
+            foreach (var pic in assignment?.Pics ?? Enumerable.Empty<PicOfDirectAccount>())
             {
                 colIndex = colIndexMergePic;
                 var mergePic = pic.DirectAccounts;
@@ -360,7 +361,7 @@
             return splitPicModels.Count > 0 ? groupAssignmentCommunications.Where(x =>
                 splitPicModels.Any(y => y == x.PicId))
                 .ToList()
-            : null;
+            : new List<GroupAssignmentCommunication>();
         }
 
         protected internal virtual IEnumerable<GroupAssignmentCommunication> GetUniqueCommunicationTools(
@@ -383,7 +384,7 @@
             return uniquePicMapping.Any() ? groupAssignmentCommunications.Where(x =>
                 uniquePicMapping.Any(y => y == x.PicName))
                 .ToList()
-            : null;
+            : Enumerable.Empty<GroupAssignmentCommunication>();
         }
 
         protected internal override void ProcessUI(ExcelWorksheet worksheet)

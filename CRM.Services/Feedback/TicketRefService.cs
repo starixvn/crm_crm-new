@@ -44,7 +44,7 @@
         {
             var criteria = new BalanceUpDayCriteria();
             var balance = await baseService.GetDataAsync<BalanceUpday>(criteria);
-            return balance != null ? balance.FirstOrDefault().BalanceUpDay : new DateTime();
+            return balance.Any() ? balance.First().BalanceUpDay : new DateTime();
         }
     }
 }

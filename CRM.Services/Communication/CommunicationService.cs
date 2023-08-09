@@ -56,7 +56,7 @@
 
             if (communicationLogInfos.Any())
             {
-                communicationLog = communicationLogInfos.FirstOrDefault();
+                communicationLog = communicationLogInfos.First();
                 communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
                 communicationLog.ResolutionDate = commonService.ConvertToClientDateTime(communicationLog.ResolutionDate);
                 communicationLog.SolveDate = commonService.ConvertToClientDateTime(communicationLog.SolveDate);

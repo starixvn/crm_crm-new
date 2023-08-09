@@ -44,7 +44,7 @@
             var redemptionLog = await baseService.GetDataAsync<LogInfo>(criteria);
             if (redemptionLog.Any())
             {
-                redemptionLogInfo = redemptionLog.FirstOrDefault();
+                redemptionLogInfo = redemptionLog.First();
                 redemptionLogInfo.ClaimTime = commonService.ConvertToClientDateTime(redemptionLogInfo.ClaimTime);
             }
 

@@ -45,7 +45,7 @@
             CustomerInfoDetails customerInfo = null;
             if (customers.Any())
             {
-                customerInfo = customers.FirstOrDefault();
+                customerInfo = customers.First();
                 customerInfo.RoleName = RoleSettingService.GetRoleName(customerInfo.RoleId);
                 customerInfo.Languages = languageIds.ToList();
                 customerInfo.LanguageIds = string.Join(",", languageIds);
@@ -129,7 +129,7 @@
             CustomerInfoDetails customerInfo = null;
             if (customer.Any())
             {
-                customerInfo = customer.FirstOrDefault();
+                customerInfo = customer.First();
 
                 var site = await settingService.GetSiteByIdAsync(customerInfo.SiteId);
                 foreach (var item in languages)

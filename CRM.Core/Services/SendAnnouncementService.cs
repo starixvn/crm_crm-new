@@ -24,7 +24,7 @@
         private readonly IChatBotSendMessageService chatBotSendMessageService;
         private readonly string BaseImageUrl;
         private const string formatImageUrl = "{0}{1}/{2}";
-        private static readonly byte BatchSize = 10;
+        private const byte BatchSize = 10;
 
         public SendAnnouncementService(IBaseService baseService,
             ICRMLogService logService,
@@ -149,11 +149,7 @@
                     {
                         var sentResults = await chatBotSendMessageService.SendImageOnlyAsync(botChannel, batch);
                         var updatedResults = ConvertSendMessageResultToUpdateStatusResult(batch, sentResults);
-                        if (!updatedResults.Any())
-                        {
-                            await logService.ErrorMessageAsync(JsonConvert.SerializeObject(updatedResults));
-                        }
-                        await UpdateRecipientStatus(updatedResults);
+                        await HandleUpdateResultAnnouncement(updatedResults);
                     }
                     catch (Exception ex)
                     {
@@ -171,6 +167,15 @@
                     }
                 }
             }
+        }
+
+        private async Task HandleUpdateResultAnnouncement(IEnumerable<AnnouncementNotificationUpdateResult> updatedResults)
+        {
+            if (!updatedResults.Any())
+            {
+                await logService.ErrorMessageAsync(JsonConvert.SerializeObject(updatedResults));
+            }
+            await UpdateRecipientStatus(updatedResults);
         }
 
         #endregion Retry Images Only
