@@ -194,7 +194,7 @@ export default class DataGrid extends PureComponent {
                     <Form.Label column md="3" htmlFor="name" >
                         {LangHelper.getResource('Language')}
                     </Form.Label>
-                    <Col md="9" className="form-control-wrapper">
+                    <Col md="9" className="form-control-wrapper form-control-language">
                         <MultipleSelect
                             isInvalid={touched.languageId && errors.languageId}
                             dataSource={this.state.languages}

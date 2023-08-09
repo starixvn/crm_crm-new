@@ -48,6 +48,10 @@
                     flex: 0 0 73% !important;
                 }
 
+                .form-control-language{
+                    max-width: 73% !important;
+                }
+
                 .btn-sm{
                     margin-left: 4px;
                 }
@@ -115,6 +119,16 @@
                 .btn-submit{
                     margin-bottom: 0.4rem !important;
                 }
+            }
+        }
+
+        .checked-guest{
+            label{
+                padding:0 3px 0 0 !important;
+            }
+            
+            .form-check-input {
+                margin-right: 2px !important;
             }
         }
 
