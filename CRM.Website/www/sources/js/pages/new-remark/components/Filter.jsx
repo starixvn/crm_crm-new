@@ -216,7 +216,7 @@ export class Filter extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
-                    <Form.Group style={{width: '373px'}}>
+                    <Form.Group style={{width: '371px'}}>
                         <Form.Label htmlFor="action">{LangHelper.getResource('RemarkTitle')}</Form.Label>
                         <div className='form-control-wrapper' >
                             <MultipleSelect
