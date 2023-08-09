@@ -81,6 +81,10 @@
             }
         }
 
+        &.form-row-detail{
+            justify-content: space-between;
+        }
+
         &.title {
             background: linear-gradient(#e7e7e7,#e2e2e2);
             color: #2f70b4;
@@ -112,18 +116,18 @@
     .textbox.code-country {
         margin-right: 1%;
         padding: 0 2px;
-        width: 29%;
+        width: 19%;
     }
 
     .textbox.code-area {
         margin-right: 1%;
         padding: 0 1px;
-        width: 31%;
+        width: 20%;
     }
 
     .textbox.phone {
         padding: 0 1px;
-        width: 38%;
+        width: 59%;
     }
 
     .textbox.pic-name {
@@ -155,7 +159,7 @@
         li {
             text-align: left;
             line-height: 20px;
-            padding-right: 25px;
+            padding-right: 5px;
 
             a {
                 color: #0255a5;

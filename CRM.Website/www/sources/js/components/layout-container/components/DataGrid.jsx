@@ -417,7 +417,7 @@ export default class DataGrid extends PureComponent {
                 </Row>
                 {
                     this.state.isShowDetail &&
-                    <Form.Group className="row item no-border-bg">
+                    <Form.Group className="row item no-border-bg form-row-detail">
                         <ul className='list-unstyled list-menu pull-left'>
                             <li>
                                 <i className="fa fa-angle-right" aria-hidden="true" />
