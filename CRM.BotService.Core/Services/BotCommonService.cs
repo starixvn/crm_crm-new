@@ -1,5 +1,6 @@
 ﻿namespace CRM.BotService.Core.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
@@ -30,7 +31,7 @@
         public async Task<byte[]> ReadImageAsByteAsync(string imgUrl)
         {
             var httpClient = httpClientFactory.CreateClient();
-            return await httpClient.GetByteArrayAsync(imgUrl);
+            return await httpClient.GetByteArrayAsync(new Uri(imgUrl));
         }
 
         public async Task<CommandResult> WriteLogMessageAsync(WriteLogMessageCommand command)

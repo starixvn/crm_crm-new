@@ -356,7 +356,7 @@
             return result;
         }
 
-        private string GetKeyCacheFileId(string imageUrl, long botId) => $"{imageUrl}?botId={botId}";
+        private static string GetKeyCacheFileId(string imageUrl, long botId) => $"{imageUrl}?botId={botId}";
 
         private async Task<byte[]> GetImageByteArrayAsync(string imgUrl)
         {

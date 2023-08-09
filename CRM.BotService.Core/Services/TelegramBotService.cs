@@ -222,7 +222,7 @@
             }
         }
 
-        private string RemoveUnsupportedTags(string content)
+        private static string RemoveUnsupportedTags(string content)
         {
             string[] allowedTagsHtml = { "b", "strong", "i", "em", "ins", "u", "s", "strike", "del", "a", "tg-emoji", "code", "pre", "br" };
             var regex = new Regex(@"(<br />|<hr />)");

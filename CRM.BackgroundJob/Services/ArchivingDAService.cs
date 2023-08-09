@@ -68,7 +68,7 @@ namespace CRM.BackgroundJob.Services
                 else
                 {
                     var custInfor = await feedbackTransactionService.GetArchivingCustInfo();
-                    var archivedDate = custInfor.FirstOrDefault().ArchivedDate;
+                    var archivedDate = custInfor.First().ArchivedDate;
                     var custIdsJoin = string.Join(",", custInfor.Select(x => x.CustID));
                     await feedbackTransactionService.ArchivingImportDirectAccountAsync(custIdsJoin, archivedDate);
                     await commonFeedback.EditArchivingDAStatusSettingAsync(Constants.ServiceName_ArchivingDA, "1");

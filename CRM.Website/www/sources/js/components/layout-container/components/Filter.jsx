@@ -259,7 +259,7 @@ export default class Filter extends Component {
                             <AutoComplete
                                 value={username}
                                 options={customerSuggestions}
-                                placeholder='Username or Nickname'
+                                placeholder='Phone or Username or Nickname'
                                 onChange={value => handleChangeSuggestion(value)}
                                 onInputChange={searchText => debounceUserNameInputChange(searchText)}
                             />

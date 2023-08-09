@@ -113,7 +113,7 @@
 
             foreach (var feedbackInfo in groupFeedbackByMsgId)
             {
-                var feedbackInfoFirst = feedbackInfo.FirstOrDefault();
+                var feedbackInfoFirst = feedbackInfo.First();
                 var eventDetails = feedbackInfos.Item2.Where(x => x.LogVoidingID == feedbackInfoFirst.LogVoidingID);
                 var messages = await feedbackTransaction.GetMessageContentInfoAsync(feedbackInfoFirst.MessageId);
                 await CreateVoidingSettledTicketsAsync(feedbackInfoFirst, eventDetails, messages, settings, settingMappings, environment);

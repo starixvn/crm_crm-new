@@ -246,7 +246,7 @@
         protected internal virtual string GetCustomerXml(IEnumerable<ProblemsAccountAutoFeedbackInfor> problemsAccounts)
         {
             var stringBuilder = new StringBuilder();
-            stringBuilder.AppendFormat(DefaultValue.CustomerXml, problemsAccounts.FirstOrDefault().HeadlineID, problemsAccounts.FirstOrDefault().HeadlineName);
+            stringBuilder.AppendFormat(DefaultValue.CustomerXml, problemsAccounts.FirstOrDefault()?.HeadlineID, problemsAccounts.FirstOrDefault()?.HeadlineName);
             return stringBuilder.ToString();
         }
 
@@ -262,9 +262,9 @@
             var stringBuilder = new StringBuilder();
             var stringBuilderContent = new StringBuilder();
             const string templateContent = "- {0}/{1}: {2}.";
-            var languageContent = problemsAccounts.FirstOrDefault().IsVip ? Language.vi_VN : Language.zh_CN;
+            var languageContent = problemsAccounts.First().IsVip ? Language.vi_VN : Language.zh_CN;
             var template = commonFeedback.GetFeedbackTemplates<SolutionTemplate>(templateXml);
-            var templateYNSC = problemsAccounts.FirstOrDefault().IsVip ? template.SolutionENYN : template.SolutionENSC;
+            var templateYNSC = problemsAccounts.First().IsVip ? template.SolutionENYN : template.SolutionENSC;
             var groupCategoryProblemsAccount = problemsAccounts.GroupBy(x => x.CategoryID);
             foreach (var categoryProblemAccount in groupCategoryProblemsAccount)
             {
