@@ -26,7 +26,6 @@
         private readonly IList<TelegramBotConfigurations> botConfigurations;
         private readonly ICRMLogService logService;
         private readonly IBotCommonService botCommonService;
-        private readonly HttpClient httpClient;
 
         private static readonly string TelegramBotServiceErrorMessage = string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Telegram.ToString().ToLowerInvariant());
 
@@ -40,7 +39,7 @@
             this.logService = logService;
             this.botCommonService = botCommonService;
 
-            httpClient = clientFactory.CreateClient(NamedHttpClients.ProxiedClient);
+            var httpClient = clientFactory.CreateClient(NamedHttpClients.ProxiedClient);
             foreach (var bot in botConfigurations)
             {
                 bot.BotClient = new TelegramBotClient(bot.Token, httpClient);
