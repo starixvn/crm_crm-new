@@ -77,15 +77,11 @@
         }
 
         .multiple-select-container {
-            .multiple-select-label{
-                height: 19px !important;
-
-                .text-display {
-                    padding-left: 5px;
-                }
+            .text-display {
+                padding-left: 5px;
             }
         }
-        
+
         .selectwithsearchtree{
             .btn{
                 height: 21px !important;
@@ -146,7 +142,7 @@
         }
 
         .react-select__control{
-            height: 22px !important;
+            height: 24px !important;
         }
     }
 }
