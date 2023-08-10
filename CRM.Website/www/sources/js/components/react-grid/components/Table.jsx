@@ -190,7 +190,8 @@ class Table extends Component {
         const { maxWidth, shouldUseMaxWidth} = this.props;
         const showingLeftPanel = window.localStorage.getItem('isShowingLeftPanel');
         const rightRowContainer = document.getElementById('right-row-container').clientWidth;
-        if(showingLeftPanel !== null){
+        const modal = document.querySelector('.modal');
+        if(showingLeftPanel !== null && !modal){
             this.setState({ maxWidth:  shouldUseMaxWidth ? maxWidth : rightRowContainer});
             window.localStorage.removeItem('isShowingLeftPanel');
         }else{
@@ -205,7 +206,8 @@ class Table extends Component {
         const clientWidth = document.body.clientWidth;
         const calWidth =  clientWidth < MIN_WIDTH_CONTAINER ? MIN_WIDTH_CONTAINER : clientWidth;
         const isFullWidth = rightRowContainer === clientWidth;
-        if(isFullWidth){
+        const modal = document.querySelector('.modal');
+        if(isFullWidth || modal){
             maxWidthCal = shouldUseMaxWidth ? maxWidth : calWidth - this.diffWidth;
         }else{
             maxWidthCal = shouldUseMaxWidth ? maxWidth : rightRowContainer;
@@ -306,7 +308,8 @@ class Table extends Component {
         const rowLayout = <RowLayout columnLayout={newColumnLayout} />;
         const fixProps = { header, body, footer, sectionProps, headerSectionProps, maxWidth, width, rowLayout, isPaging, pageOption, onPaging };
         const {Header, Body, Footer} = this;
-        const isScrollable = (width >  maxWidth) && !autoWidth;
+        const modal = document.querySelector('.modal');
+        const isScrollable = (width >  maxWidth) && !autoWidth && !modal;
 
         return (
             (isFixColumn || isScrollable) ?
