@@ -21,7 +21,7 @@ export default class Content extends PureComponent {
                     </Form.Group>
                 </div>
                 <div className={`panel-group ${!collapse.description ? BorderStyle.bottom : ''}`}>
-                    <div className="title edit_block border-bottom-0" onClick={() => handleCollapseExpend('description')}
+                    <div className="title edit_block" onClick={() => handleCollapseExpend('description')}
                         aria-expanded={!collapse.description}
                         aria-controls="collapse-expand-remark"
                     >
