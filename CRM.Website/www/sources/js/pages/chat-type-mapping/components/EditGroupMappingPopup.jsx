@@ -436,7 +436,7 @@ export class EditGroupMappingPopup extends Component {
                         </Form.Group>
 
                         <Form.Group as={Row} className="col-md-6 col-right">
-                            <Form.Label column sm="3" md="4" className="pr-2">
+                            <Form.Label column sm="3" md="4" className="pr-2 label-width">
                                 {LangHelper.getResource('BotName')}
                             </Form.Label>
                             <Form.Label column sm="9" md="8">
@@ -472,7 +472,7 @@ export class EditGroupMappingPopup extends Component {
                         </Form.Group>
 
                         <Form.Group as={Row} className="col-md-6 col-right">
-                            <Form.Label column sm="3" md="4" className="required">
+                            <Form.Label column sm="3" md="4" className="required label-width">
                                 {LangHelper.getResource('Recipient')}
                             </Form.Label>
                             <Col sm="9" md="8">
@@ -528,7 +528,7 @@ export class EditGroupMappingPopup extends Component {
                             botServiceId === BotServiceType.Telegram &&
                             (
                                 <Form.Group as={Row} className="col-md-6 col-right">
-                                    <Form.Label column sm="3" md="4">
+                                    <Form.Label column sm="3" md="4" className="label-width">
                                         {LangHelper.getResource('ChatID')}
                                     </Form.Label>
                                     <Form.Label column sm="9" md="8">
@@ -570,7 +570,7 @@ export class EditGroupMappingPopup extends Component {
                         </Form.Group>
 
                         <Form.Group as={Row} className="col-md-6 col-right">
-                            <Form.Label column sm="3" md="4" className="required">
+                            <Form.Label column sm="3" md="4" className="required label-width">
                                 {LangHelper.getResource('Language')}
                             </Form.Label>
                             <Col sm="9" md="8">
