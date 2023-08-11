@@ -48,6 +48,7 @@ export class Filter extends PureComponent {
 
             const selectedBotIds = [];
             const bots = this.props.settings.bots;
+
             const botOptions = this.props.settings.botServices.map(item => {
                 return {
                     id: item.id,
@@ -112,21 +113,33 @@ export class Filter extends PureComponent {
     };
 
     handleChangeBotName = (currentItem, selectedItem) =>{
-        this.onChange('botIds', selectedItem);
+        let botIds = [];
+        const selectedList = selectedItem.split(',');
+        this.state.settings.botServices.forEach(item => {
+            botIds = selectedList.filter(element => element !== item.id?.toString());
+        });
+        this.onChange('botIds', botIds.join(','));
         const bots = this.state.settings.bots.map(bot => {
             let checkFlag = true;
-            bot.subItem.forEach(sub => {
-                if (!selectedItem.includes(sub.key.toString())) {
+
+            if (bot.subItem.length > 0) {
+                bot.subItem.forEach(sub => {
+                    if (!selectedList.includes(sub.key.toString())) {
+                        checkFlag = false;
+                    }
+                });
+            } else {
+                if (!selectedList.includes(bot.id.toString())) {
                     checkFlag = false;
                 }
-            });
+            }
             return {
                 ...bot,
                 checked: checkFlag,
                 subItem:
-                    bot.subItem.map(sub => {
+                    bot.subItem?.map(sub => {
                         return {
-                            ...sub, checked: selectedItem.includes(sub.key.toString()) ? true : false
+                            ...sub, checked: selectedList.includes(sub.key.toString()) ? true : false
                         }
                 })
             }
