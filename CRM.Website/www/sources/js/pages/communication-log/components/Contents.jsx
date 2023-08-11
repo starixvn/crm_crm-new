@@ -44,7 +44,7 @@ export default class Contents extends PureComponent {
                         </div>
                     </Collapse>
                 </div>
-                <div className="panel-group border-bottom-0">
+                <div className={`panel-group ${isEdit ? 'border-bottom-0' : ''}`} >
                     <Form.Group as={Row} className="panel-title"
                         aria-expanded={!collapse.solution}
                         aria-controls="collapse-expand-solution"

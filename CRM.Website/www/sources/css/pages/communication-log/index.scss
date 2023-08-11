@@ -62,7 +62,6 @@
                     padding: 0 15px;
                     color: #2f70b4;
                     background: linear-gradient(#e7e7e7, #e2e2e2);
-                    border-bottom: 1px solid #b1b1b1;
                     cursor: pointer;
 
                     .form-label {
@@ -72,6 +71,9 @@
 
                 .panel-content {
                     padding: 4px 9px;
+                    &:not(:first-child){
+                        border-top: 1px solid #b1b1b1;
+                    }
 
                     .fa-question-circle-o {
                         font-size: 14px;
