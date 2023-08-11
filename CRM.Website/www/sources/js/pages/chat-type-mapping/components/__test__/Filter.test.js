@@ -184,7 +184,8 @@ describe('Filter', () => {
         const props = {
             insertPersonalMappingData: {
                 isShow: true
-            }
+            },
+            setGridParams: jest.fn()
         };
 
         it('run exactly', () => {
@@ -561,12 +562,11 @@ describe('Filter', () => {
                 getGridData: jest.fn((params) => Promise.resolve([]))
             };
 
-            const handleChangeBotService = jest.fn();
-
             const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().setState(state);
             filter.instance().onChange = jest.fn();
             filter.instance().handleChangeBotService = jest.fn();
+            filter.instance().handleChangeBotName = jest.fn();
 
             filter.find(Form.Group).at(0).find(Form.Control).simulate('change', eventBotService);
             expect(filter.instance().handleChangeBotService).toHaveBeenCalledWith(eventBotService.target.value);
@@ -587,7 +587,7 @@ describe('Filter', () => {
             expect(filter.instance().onChange).toHaveBeenCalledWith('recipient', event.target.value);
 
             filter.find(Form.Group).at(6).find(MultipleSelect).simulate('change', 'currentItem', event.target.value);
-            expect(filter.instance().onChange).toHaveBeenCalledWith('botIds', event.target.value);
+            expect(filter.instance().handleChangeBotName).toHaveBeenCalledWith('currentItem', event.target.value);
 
             filter.find(Form.Group).at(7).find(MultipleSelect).simulate('change', 'currentItem', event.target.value);
             expect(filter.instance().onChange).toHaveBeenCalledWith('mappingStatuses', event.target.value);
