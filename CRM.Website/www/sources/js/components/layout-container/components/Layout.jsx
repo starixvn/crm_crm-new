@@ -31,7 +31,8 @@ export class Layout extends Component {
             customerSuggestions: [],
             editCustomerInfoPopup: { show: false},
             isShowingLeftPanel : false,
-            isShowNewVersion: false
+            isShowNewVersion: false,
+            maxHeightLeft: 0
         };
     }
 
@@ -52,6 +53,8 @@ export class Layout extends Component {
             storage.removeItem('isShowingLeftPanel');
         }
         setTimeout(this.handleCheckNewVersion, 60000);
+        this.getMaxClientHeightLeft();
+        window.addEventListener("resize", this.handleResize);
     }
 
     async componentDidUpdate(prevProps) {
@@ -68,6 +71,25 @@ export class Layout extends Component {
             });
         }
     }
+
+    componentWillUnmount(){
+        window.removeEventListener("resize", this.handleResize);
+    }
+
+    getMaxClientHeightLeft = () =>{
+        const headerHeight = document.getElementById('fix-header-menu')?.clientHeight;
+        const maxHeightLeft = document.getElementById('crm-container')?.offsetHeight - headerHeight;
+        this.setState({maxHeightLeft});
+    }
+
+    handleResize = () => {
+        const headerHeight = document.getElementById('fix-header-menu')?.clientHeight;
+        const leftContentHeight = document.getElementById('left-form-container')?.clientHeight;
+        const totalHeight = leftContentHeight + headerHeight;
+        const containerHeight = document.getElementById('crm-container').offsetHeight;
+        const actualMaxHeight = totalHeight > containerHeight ? containerHeight - headerHeight : containerHeight;
+        this.setState({maxHeightLeft: actualMaxHeight});
+      };
 
     handleCheckNewVersion = async () =>{
         await CheckForIndexHTMLChange(Site.resolveClientUrl('')).then(response => {
@@ -268,9 +290,10 @@ export class Layout extends Component {
 
     renderLeftRightContent = customerInfo =>{
         const {settings, gridParams} = this.state;
+
         return (
             <div className="d-flex">
-                <div id={customerInfo !== null ? 'left-row-container' : 'left-row-hidden'} tabIndex="1" className="slide-bar">
+                <div style={{maxHeight: `${this.state.maxHeightLeft}px`}} id={customerInfo !== null ? 'left-row-container' : 'left-row-hidden'} tabIndex="1" className="slide-bar">
                 {
                     customerInfo !== null && settings !== null &&
                     <DataGrid
