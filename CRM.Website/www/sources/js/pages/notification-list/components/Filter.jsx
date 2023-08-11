@@ -159,9 +159,12 @@ export class Filter extends Component {
         }
     };
 
-    handleToggleFilter = value => {
-        this.setState({ showFilter: value });
+    handleToggleFilter = isToggle => {
+        this.setState({ showFilter: isToggle });
         window.dispatchEvent(new Event('resize'));
+        if(isToggle){
+            document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+        }
     };
 
     getParams = () => {

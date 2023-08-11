@@ -318,7 +318,6 @@ export class DataGrid extends Component {
                     body={this.buildChatTypeMappingBody(isHost)}
                     maxWidth={document.getElementById('right-row-container').clientWidth}
                     autoWidth
-                    adjustedHeight={this.props.gridParams?.showFilter ? 20 : 0}
                     onPaging={this.onPaging}
                     shouldResetScrollPosition={false}
                     pageOption={pagingOptions}
