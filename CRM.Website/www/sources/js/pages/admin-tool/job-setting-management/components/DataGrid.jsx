@@ -166,7 +166,7 @@ export class DataGrid extends Component {
                     body={this.buildBody()}
                     isPaging={false}
                     containerPadding={0}
-                    adjustedHeight={10}
+                    adjustedHeight={-20}
                     shouldResetScrollPosition={false}
                 />
             </Fragment>

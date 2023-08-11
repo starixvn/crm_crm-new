@@ -57,7 +57,7 @@ export class Layout extends Component {
         window.addEventListener("resize", this.handleResize);
     }
 
-    async componentDidUpdate(prevProps) {
+    async componentDidUpdate(prevProps, prevState) {
         const updateLeftPanel = window.localStorage.getItem('updateLeftPanel');
         if(updateLeftPanel !== null){
             await this.getCurrentCustomer();
@@ -69,6 +69,10 @@ export class Layout extends Component {
                 top: 0,
                 behavior: 'smooth'
             });
+        }
+        const maxHeightLeft = this.getMaxHeightLeft();
+        if(maxHeightLeft !== prevState.maxHeightLeft){
+            this.setState({maxHeightLeft});
         }
     }
 
@@ -83,13 +87,18 @@ export class Layout extends Component {
     }
 
     handleResize = () => {
+        const maxHeightLeft = this.getMaxHeightLeft();
+        this.setState({maxHeightLeft});
+    };
+    
+    getMaxHeightLeft = () =>{
         const headerHeight = document.getElementById('fix-header-menu')?.clientHeight;
         const leftContentHeight = document.getElementById('left-form-container')?.clientHeight;
         const totalHeight = leftContentHeight + headerHeight;
         const containerHeight = document.getElementById('crm-container').offsetHeight;
         const actualMaxHeight = totalHeight > containerHeight ? containerHeight - headerHeight : containerHeight;
-        this.setState({maxHeightLeft: actualMaxHeight});
-      };
+        return actualMaxHeight;
+    }
 
     handleCheckNewVersion = async () =>{
         await CheckForIndexHTMLChange(Site.resolveClientUrl('')).then(response => {
