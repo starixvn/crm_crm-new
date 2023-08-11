@@ -22,12 +22,12 @@ export default class VerifyCustomer extends PureComponent {
         if(isBigColumnSize){
             return 10;
         }
-        return isSmallWidth ? 7 : 9;
+        return isSmallWidth ? 8 : 9;
     };
 
     render() {
         const { listOfCustomers, isBigColumnSize, isSmallWidth} = this.props;
-        const labelSize = isBigColumnSize ? 2 : 3;
+        const labelSize = 2;
         const columnSize = isBigColumnSize ? 10 : 9;
         const size = this.sizeColumn(isBigColumnSize, isSmallWidth);
         return listOfCustomers && listOfCustomers.length > 0 ?
