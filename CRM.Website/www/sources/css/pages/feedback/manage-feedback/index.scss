@@ -161,7 +161,6 @@
         .modal-content {
             .panel-group{
                 border: 1px solid #b1b1b1;
-                border-width: 1px 1px 0 1px;
 
                 .row {
                     margin: 0;
@@ -186,6 +185,10 @@
                 .title{
                     background: linear-gradient(rgb(231, 231, 231), rgb(226, 226, 226));
                     color: rgb(47, 112, 180)
+                }
+
+                .text-editor{
+                    padding: 4px 9px;
                 }
             }
 
