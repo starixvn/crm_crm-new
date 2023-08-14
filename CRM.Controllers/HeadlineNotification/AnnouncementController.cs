@@ -249,5 +249,14 @@
             }
             return fileFolder;
         }
+
+        [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Host)]
+        [HttpPost]
+        public async Task<IActionResult> ValidateAnnouncement([FromForm] ValidateAnnouncementCommand command)
+        {
+            var commandResult = await announcementService.ValidateAnnouncementAsync(command);
+
+            return Json(commandResult);
+        }
     }
 }

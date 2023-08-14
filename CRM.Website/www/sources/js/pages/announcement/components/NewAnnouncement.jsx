@@ -352,8 +352,9 @@ export class NewAnnouncement extends Component {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting || isInvalidContent}>{LangHelper.getResource('Save')}</Button>
                     <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
+                    <Button type="submit" variant="primary" size="md" onClick={this.props.onClose}>{LangHelper.getResource('Save as Draft')}</Button>
+                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting || isInvalidContent}>{LangHelper.getResource('Save')}</Button>
                 </Modal.Footer>
             </Form>
         );

@@ -33,6 +33,7 @@ namespace CRM.Criteria.Announcement
         public string FileName { get; set; }
         public DateTime? SendDate { get; set; }
         public bool SendImmediately { get; set; }
+        public string Status { get; set; }
         public string LoginIP { get; set; }
 
         public int AnnouncementId { get; set; }
