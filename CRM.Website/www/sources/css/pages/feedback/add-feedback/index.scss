@@ -17,6 +17,10 @@
     
         .form-group {
             margin-bottom: 0 !important;
+
+            .col-form-label{
+                padding-right: 0;
+            }
         }
     
         .title{
@@ -80,8 +84,7 @@
             }
         }
     }
-    
-    
+
     .fa-question-circle-o {
         font-size: 17px;
         color: #0789d1;
