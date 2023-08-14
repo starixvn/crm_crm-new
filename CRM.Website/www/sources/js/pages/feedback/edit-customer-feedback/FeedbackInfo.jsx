@@ -63,7 +63,7 @@ export default class FeedbackInfo extends PureComponent {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Col sm="3" md="3">
+                    <Col sm="2" md="2">
                         <Form.Group as={Row}>
                             <Col>
                                 <div className="d-flex">
@@ -86,7 +86,7 @@ export default class FeedbackInfo extends PureComponent {
                             </Col>
                         </Form.Group>
                     </Col>
-                    <Col sm="7" md="7">
+                    <Col sm="8" md="8">
                         <Form.Group as={Row}>
                             <Col>
                             <Form.Control type="text" size="sm" className="shadow-none" autoComplete="off"
@@ -119,14 +119,14 @@ export default class FeedbackInfo extends PureComponent {
                     </div>
                 }
                 <Form.Group as={Row}>
-                    <Col sm="3" md="3">
+                    <Col sm="2" md="2">
                         <Form.Group as={Row}>
                             <Form.Label column sm="4" md="4" htmlFor="subject" className="required">
                                 {LangHelper.getResource('Subject')}
                             </Form.Label>
                         </Form.Group>
                     </Col>
-                    <Col sm="9" md="9">
+                    <Col sm="8" md="8">
                         <Form.Group as={Row}>
                             <Col>
                                 <AutoComplete isInvalid={touched.subject && errors.subject}
