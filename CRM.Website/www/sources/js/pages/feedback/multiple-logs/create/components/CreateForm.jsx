@@ -503,7 +503,7 @@ export class CreateForm extends Component {
                         message={createMultipleLogsResult.message || LangHelper.getResource('CreateMultipleLogsSuccessfully')}
                     />
                 }
-                <div className="panel-group border-bottom-0">
+                <div className="panel-group border-bottom-0 border-top-0">
                     <div className="panel-content">
                         <Form.Group className="pt-2 custom-form-group">
                             <Form.Label htmlFor="customerNameInput" className="required custom-label">
@@ -593,7 +593,6 @@ export class CreateForm extends Component {
                                     </Form.Group>
                                 </Form.Group>
                             </Col>
-                            
                             <Col sm="4" md="4">
                                 <Form.Group className="pt-2 custom-form-group">
                                     <Form.Label className={values.isUseDefaultCommunicationTool ? 'custom-label' : 'custom-label required'}>
@@ -925,7 +924,7 @@ export class CreateForm extends Component {
                         </div>
                     </Collapse>
                 </div>
-                <div className={`panel-group ${collapse.solution ? 'border-bottom-0' : ''}`}>
+                <div className='panel-group'>
                     <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('solution')}
                         aria-controls="collapse-expand-solution"
                         aria-expanded={!collapse.solution}
