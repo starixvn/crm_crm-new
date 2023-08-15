@@ -94,13 +94,16 @@ export class InsertPersonalMappingPopup extends Component {
     handleBotServiceChange = botServiceId => {
         this.handleChange('botServiceId', botServiceId);
         this.handleChange('displayName', '');
-        this.handleChange('botId', this.getBotNameByBotService(botServiceId)[0].id);
+        this.handleChange('botId', this.getBotNameByBotService(botServiceId)[0]?.id);
         this.setState({ chatIdOptions: [] });
 
+        const recipientTypePic = this.props.settings.recipientTypes.filter(item => item.name === 'PIC of headline');
         if (botServiceId === BotServiceType.Telegram) {
             this.setState({
-                recipientTypes: this.props.settings.recipientTypes.filter(item => item.name === 'PIC of headline')
+                recipientTypes: recipientTypePic
             });
+            this.handleChange('recipient', '');
+            this.props.getRecipientByRecipientType(recipientTypePic[0]?.id);
         } else {
             this.setState({
                 recipientTypes: this.props.settings.recipientTypes
