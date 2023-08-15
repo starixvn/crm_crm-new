@@ -31,6 +31,7 @@ export class AppContainer extends Component {
 
     componentWillUnmount(){
         this.props.resetState();
+        document.getElementsByTagName('html')[0].style.overflow = null;
     }
 
     render() {

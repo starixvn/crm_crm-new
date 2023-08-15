@@ -91,27 +91,6 @@
             }
         }
 
-        .form-filter{
-            padding: 0.6rem 1rem 0 !important;
-            .form-group, .form-group-button{
-                margin-bottom: 0.6rem !important;
-            }
-        }
-
-        .new-remark{
-            .btn-sm{
-                margin-bottom: 5px;
-            }
-        }
-
-        .notification-list{
-            .form-filter {
-                .btn-submit{
-                    margin-bottom: 0.4rem !important;
-                }
-            }
-        }
-
         .checked-guest{
             label{
                 padding:0 3px 0 0 !important;
@@ -139,6 +118,38 @@
 
         .react-select__control{
             height: 24px !important;
+        }
+
+        .form-filter{
+            padding: 0.6rem 1rem 0 !important;
+            .form-group, .form-group-button{
+                margin-bottom: 0.6rem !important;
+            }
+        }
+
+        .new-remark{
+            #dateTypeSelect{
+                width: 150px !important;
+            }
+        }
+
+        .deleted-feedback .form-filter {
+            .form-group{
+                &:first-child{
+                    .col-form-label-username{
+                        width: 139px;
+                    }
+                }
+            }
+           
+        }
+
+        .notification-list{
+            .form-filter {
+                .btn-submit{
+                    margin-bottom: 0.4rem !important;
+                }
+            }
         }
     }
 }

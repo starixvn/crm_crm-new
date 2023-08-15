@@ -179,9 +179,12 @@ export class Filter extends Component {
 
     handleOpenAssignPicPopup = () => this.props.setAssignPicPopup({ show: true });
 
-    handleToggleFilter = value => {
-        this.setState({ showFilter: value });
+    handleToggleFilter = isToggle => {
+        this.setState({ showFilter: isToggle });
         window.dispatchEvent(new Event('resize'));
+        if(isToggle){
+            document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+        }
     };
 
     render() {

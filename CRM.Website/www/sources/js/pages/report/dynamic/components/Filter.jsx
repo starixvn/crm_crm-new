@@ -341,11 +341,14 @@ export class Filter extends Component {
         return subProductOptions;
     };
 
-    handleToggleFilter = () => {
-        this.setState(previousState => ({
-            showFilter: !previousState.showFilter
-        }));
+    handleToggleFilter = isToggle => {
+        this.setState({
+            showFilter: isToggle
+        });
         window.dispatchEvent(new Event('resize'));
+        if(isToggle){
+            document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+        }
     };
 
     handleGetFeedbackSubjectTemplates = Site.debounce(searchText => {
@@ -588,8 +591,8 @@ export class Filter extends Component {
                 }
                 {
                     this.state.showFilter
-                        ? <span className="fa fa-caret-up fa-sm icon-toggle" onClick={() => this.handleToggleFilter()} />
-                        : <span className="fa fa-caret-down fa-sm icon-toggle" onClick={() => this.handleToggleFilter()} />
+                        ? <span className="fa fa-caret-up fa-sm icon-toggle" onClick={() => this.handleToggleFilter(false)} />
+                        : <span className="fa fa-caret-down fa-sm icon-toggle" onClick={() => this.handleToggleFilter(true)} />
                 }
             </Form>
         );
