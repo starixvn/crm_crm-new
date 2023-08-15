@@ -26,6 +26,7 @@ export class AppContainer extends Component {
     componentWillUnmount(){
         this.props.setGridData(null);
         this.props.setSettings(null);
+        document.getElementsByTagName('html')[0].style.overflow = null;
     }
 
     render() {
