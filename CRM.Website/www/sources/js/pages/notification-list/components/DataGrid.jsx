@@ -34,8 +34,8 @@ export class DataGrid extends Component {
                 <div>{LangHelper.getResource('ReferenceId')}</div>
             </HeaderCell>
             <HeaderCell colWidth={23}>{LangHelper.getResource('Sender')}/{LangHelper.getResource('NotificationType')}</HeaderCell>
-            <HeaderCell colWidth={12}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
-            <HeaderCell colWidth={12}>{LangHelper.getResource('BotService')}</HeaderCell>
+            <HeaderCell colWidth={15}>{LangHelper.getResource('SendDateTimeGMTA8')}</HeaderCell>
+            <HeaderCell colWidth={11}>{LangHelper.getResource('BotService')}</HeaderCell>
             <HeaderCell colWidth={16}>{LangHelper.getResource('DisplayName')}</HeaderCell>
             <HeaderCell colWidth={26}>{LangHelper.getResource('GroupHeadline')}</HeaderCell>
             <HeaderCell colWidth={19}>{LangHelper.getResource('Recipient')}</HeaderCell>
