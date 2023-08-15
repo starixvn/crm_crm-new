@@ -1,103 +1,37 @@
-@mixin form-group-width($value) {
-    .form-group{
-        width: $value !important;
-    }
-}
+.medium-desktops {
+    &> :not(.show-left-panel) {
+        .notification-list {
+            .form-group {
+                width: 230px !important;
 
-.medium-desktops{
-    &> :not(.show-left-panel){
-        .notification-list{
-            @include form-group-width(240px);
+                &:nth-child(3) {
+                    width: 240px !important;
 
-            .form-group:nth-child(3){
-                width: 250px !important;
-            }
-
-            &> :not(.show-filter){
-                @include form-group-width(260px);
-           }
-
-           &> .show-filter{
-                @include form-group-width(226px);
-                .form-row > .form-group:nth-child(3){
-                    width: 260px !important;
-                }
-            }
-        }
-    }
-
-    &.show-left-panel{
-        .notification-list  .show-filter{
-            .form-row:nth-child(1) .form-group:nth-child(3){
-                margin-right: 110px !important;
-            }
-        }
-    }
-}
-
-.large-desktops {
-    .show-left-panel{
-        .notification-list  .show-filter{
-            .form-group:nth-child(3){
-                width: 245px !important;
-            }
-
-            .form-row:nth-child(1) .form-group:nth-child(3){
-                margin-right: 200px !important;
-            }
-
-            .form-row:nth-child(2){
-                .form-group:nth-child(4){
-                    width: 175px;
-
-                    label{
-                        width: 35px;
+                    .form-label {
+                        width: 45px !important;
                     }
 
-                    .form-control-wrapper{
-                        width: calc(100% - 0.5rem - 35px);
+                    .react-datepicker-wrapper-container,
+                    .messageId {
+                        width: calc(100% - 0.5rem - 45px) !important;
                     }
                 }
             }
         }
     }
-}
 
-.small-desktops{
-    &> .show-left-panel{
-        .notification-list{
-            .show-filter{
-                @include form-group-width(255px);
-
-                .form-row:nth-child(2){
-                    &> .form-group{
-                        &:nth-child(2){
-                            select{
-                                width: 100px !important;
-                            }
-        
-                            input[name="referenceId"]{
-                                width: 149px !important;
-                            }
+    &>.show-left-panel {
+        .notification-list {
+            .form-row {
+                .form-group {
+                    &:nth-child(2) {
+                        .form-label {
+                            width: 100px !important;
                         }
 
-                        &:nth-child(3){
-                            width: 155px !important;
-                            input{
-                                width: 101px !important;
-                            }
-                        }
-
-                        &:nth-child(4){
-                            width: 170px !important;
-
-                            .form-label{
-                                width: 50px;
-                            }
-
-                            .form-control-wrapper{
-                                width: calc(100% - 0.5rem - 50px);
-                            }
+                        .form-control-wrapper,
+                        .announcementId {
+                            width: calc(100% - 0.5rem - 100px) !important;
                         }
                     }
                 }
@@ -106,24 +40,23 @@
     }
 }
 
-@media only screen and (max-width: 1852px) and (min-width: 1682px){
+
+@media only screen and (max-width:1810px) and (min-width: 1500px){
     .show-left-panel{
         .notification-list{
             .show-filter{
-                .form-row:nth-child(1) .form-group:nth-child(3){
-                    margin-right: 300px !important;
-                }
+                .form-group {
+                    &:nth-child(3) {
+                        margin-right: 300px !important;
+                    }
 
-                .form-row:nth-child(2){
-                    .form-group:nth-child(4){
-                        width: 200px;
-    
-                        label{
-                            width: 50px;
+                    &:nth-child(5) {
+                        .form-label {
+                            width: 110px !important;
                         }
-    
+
                         .form-control-wrapper{
-                            width: calc(100% - 0.5rem - 50px);
+                            width: calc(100% - 0.5rem - 110px) !important;
                         }
                     }
                 }

@@ -6,7 +6,6 @@ import { ActionCreators } from '../actions/index';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
-import DateRangePicker from '@jsroot/components/date-range-picker/index';
 import { handleNewResendOptions } from '../functions';
 import Select from '@jsroot/components/CustomReactSelect';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
@@ -30,8 +29,8 @@ export class Filter extends Component {
                 notificationIdLower: '',
                 notificationIdUpper: '',
                 content: '',
-                referenceType: this.props.announcementId ? 'Ann ID' : 'Msg ID',
-                referenceId: this.props.announcementId || '',
+                announcementId: this.props.announcementId || null,
+                messageId: null,
                 botService: null
             },
             maxDate: now,
@@ -153,7 +152,7 @@ export class Filter extends Component {
         this.handleFilterChangeProps(e.target.name, e.target.value);
     };
 
-    handlePasteAnnouncementId = event =>{
+    handlePasteId = event =>{
         if (event.clipboardData.getData('Text').match(/[^\d]/)) {
             event.preventDefault();
         }
@@ -169,20 +168,20 @@ export class Filter extends Component {
 
     getParams = () => {
         const {notificationTypes, fromDate, toDate, headline, recipient, statuses,
-            notificationIdLower, notificationIdUpper, content, referenceId, referenceType, botService }= this.state.filter;
+            notificationIdLower, notificationIdUpper, content, announcementId, messageId, botService }= this.state.filter;
         return {
             channelId: botService === '0' ? null : parseInt(botService, 10),
             notificationTypeIds: notificationTypes,
-            fromDate: referenceId.toString().length > 0 ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
-            toDate: referenceId.toString().length > 0 ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
+            fromDate: (announcementId || messageId) ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
+            toDate: (announcementId || messageId) ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
             headline: headline ? headline.value : '',
             recipientName: recipient ? recipient.value : '',
             notificationIdLower: notificationIdLower,
             notificationIdUpper: notificationIdUpper,
             content: content,
             status: statuses,
-            announcementId: referenceType !== 'Ann ID' ? null : parseInt(referenceId, 10),
-            messageId: referenceType === 'Ann ID' ? null : parseInt(referenceId, 10),
+            announcementId: parseInt(announcementId, 10),
+            messageId: parseInt(messageId, 10),
             pageIndex: this.props.gridParams.pageIndex,
             pageSize: this.props.gridParams.pageSize
         };
@@ -211,7 +210,7 @@ export class Filter extends Component {
     };
 
     isDisabledDateParam = () =>
-        this.state.filter.notificationIdLower !== '' || this.state.filter.notificationIdUpper !== '' || this.state.filter.referenceId?.length > 0;
+        this.state.filter.notificationIdLower !== '' || this.state.filter.notificationIdUpper !== '' || this.state.filter.messageId|| this.state.filter.announcementId;
 
     isValidateParams = params => {
         if (params.notificationTypeIds === '') {
@@ -267,7 +266,6 @@ export class Filter extends Component {
     });
 
     render() {
-        const referenceIds = ['Msg ID', 'Ann ID'];
         return (
             <Form className={`form-filter ${this.state.showFilter ? 'show-filter' : ''}`} onSubmit={e => this.submitHandler(e)}>
                 <Form.Row bsPrefix='form-row' className={this.state.showFilter ? '' : 'form-row-filter'}>
@@ -295,8 +293,8 @@ export class Filter extends Component {
                             />
                         </div>
                     </Form.Group>
-                    <Form.Group style={{width: '280px'}}>
-                        <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Date')}</Form.Label>
+                    <Form.Group style={{width: '300px'}}>
+                        <Form.Label style={{width: '80px'}}>{LangHelper.getResource('Date')}</Form.Label>
                         <div className='react-datepicker-wrapper-container form-control-wrapper'>
                             <DatePicker disabled={this.isDisabledDateParam()}
                                 dropdownMode="select"
@@ -379,21 +377,24 @@ export class Filter extends Component {
                                 />
                             </div>
                         </Form.Group>
-                        <Form.Group style={{width: '260px'}}>
-                            <Form.Control style={{width: '100px', margin: '0 0.5rem 0 0', padding: '0'}} as="select" size="sm" className="shadow-none"  name='referenceType'
-                                value={this.state.filter.referenceType}
+                        <Form.Group>
+                            <Form.Label>{LangHelper.getResource('AnnouncementId')}</Form.Label>
+                            <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none announcementId' name='announcementId'
+                                value={this.state.filter.announcementId}
                                 onChange={e => this.handleChangeFilterControl(e)}
-                            >
-                                {referenceIds.map((item, key) => <option key={key} value={item}>{item}</option>)}
-                            </Form.Control>
-                            <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none referenceId' name='referenceId'
-                                value={this.state.filter.referenceId}
-                                onChange={e => this.handleChangeFilterControl(e)}
-                                onPaste={this.handlePasteAnnouncementId}
+                                onPaste={this.handlePasteId}
                             />
                         </Form.Group>
-                        <Form.Group style={{width: '280px'}}>
-                            <Form.Label style={{width: '50px'}}>{LangHelper.getResource('Content')}</Form.Label>
+                        <Form.Group style={{width: '300px'}}>
+                            <Form.Label style={{width: '80px'}}>{LangHelper.getResource('MessageID')}</Form.Label>
+                            <Form.Control as='input' type='text' pattern='[0-9]*' size='sm' className='shadow-none messageId' name='messageId'
+                                value={this.state.filter.messageId}
+                                onChange={e => this.handleChangeFilterControl(e)}
+                                onPaste={this.handlePasteId}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>{LangHelper.getResource('Content')}</Form.Label>
                             <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
                                 value={this.state.filter.content}
                                 autoComplete='off'
@@ -416,7 +417,7 @@ export class Filter extends Component {
                         </Form.Group>
                         {
                             this.state.showFilter &&
-                            <div className='btn-submit' style={{width: '70px'}}>
+                            <div className='btn-submit' style={{width: '70px', marginBottom: '0.7rem'}}>
                                 <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
                                     {LangHelper.getResource('Submit')}
                                 </Button>

@@ -197,6 +197,10 @@ class Table extends Component {
         }else{
             this._handleMaxWidthCal();
         }
+
+        if(document.body.clientWidth <= MIN_WIDTH_CONTAINER){
+            document.getElementsByTagName('html')[0].style.overflow = null;
+        }
     };
 
     _handleMaxWidthCal(){

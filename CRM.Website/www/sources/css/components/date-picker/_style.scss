@@ -214,7 +214,7 @@
                 font-size: 1rem !important;
 
                 &:disabled {
-                    background-color: $bg-table-title-grey;
+                    background-color: $bg-table-title-grey !important;
                     cursor: context-menu;
                 }
 

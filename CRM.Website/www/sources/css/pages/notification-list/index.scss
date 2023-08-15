@@ -14,13 +14,30 @@
             }
         }
 
+        .btn-submit{
+            display: flex;
+            align-items: center;
+        }
+
+        .form-row{
+            .form-group:nth-child(2){
+                .form-label{
+                    width: 110px;
+                }
+
+                .form-control-wrapper, .announcementId{
+                    width: calc(100% - 0.5rem - 110px) !important;
+                }
+            }
+        }
+
         ::placeholder, .react-select__placeholder {
             font-size: smaller !important;
         }
 
         .form-group{
-            .react-datepicker-wrapper-container , input[name="content"]{
-                width: calc(100% - 0.5rem - 50px) !important;
+            .react-datepicker-wrapper-container , .messageId{
+                width: calc(100% - 0.5rem - 80px) !important;
             }
         }
         
