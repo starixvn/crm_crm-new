@@ -112,7 +112,7 @@ export class EditPersonalMappingPopup extends Component {
         this.props.getGroupHeadlineByRecipient(selectedRecipientId);
         await this.getIgnoreNotificationType();
         if (this.state.form.botServiceId === BotServiceType.Telegram) {
-            const chatIdOptions = this.getChatIdOption(this.state.form.letstalkID_Username).chatIdOptions;
+            const chatIdOptions = await this.getChatIdOption(this.state.form.letstalkID_Username).chatIdOptions;
             this.setState({ chatIdOptions:  [...new Set(chatIdOptions)] });
         }
     }
@@ -291,13 +291,19 @@ export class EditPersonalMappingPopup extends Component {
 
     handleChangeUsername = value => {
         this.handleChange('letstalkID_Username', value);
-
-        const chatId = this.getChatIdOption(value).chatId;
         const chatIdOptions = this.getChatIdOption(value).chatIdOptions;
-        this.setState({ chatIdOptions: [...new Set(chatIdOptions)], isLoading: true });
-        this.handleChange('chatId', chatId);
+        const filterChatIdOption = [...new Set(chatIdOptions)];
 
-        this.getTelegramDisplayName(this.state.form.botId, chatId);
+        if (filterChatIdOption.length > 1) {
+            this.handleChange('chatId', '');
+            this.setState({ chatIdOptions: filterChatIdOption });
+            this.getTelegramDisplayName(this.state.form.botId, '');
+        } else {
+            const chatId = this.getChatIdOption(value).chatId;
+            this.handleChange('chatId', chatId);
+            this.setState({ chatIdOptions: filterChatIdOption, isLoading: true });
+            this.getTelegramDisplayName(this.state.form.botId, chatId);
+        }
     };
 
     handleChangeChatId = value => {
@@ -368,6 +374,11 @@ export class EditPersonalMappingPopup extends Component {
             if (!validateData.displayName && validateData.letstalkID_Username) {
                 isValid = false;
                 errMsg.push(`The username ${validateData.letstalkID_Username} hasn't added the bot.`)
+            }
+
+            if (!validateData.chatId) {
+                isValid = false;
+                errMsg.push(LangHelper.getResource('ChatIdRequired'));
             }
         }
 
