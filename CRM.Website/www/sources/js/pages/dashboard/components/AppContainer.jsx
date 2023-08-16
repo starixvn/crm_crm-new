@@ -14,7 +14,7 @@ import CustomerInfoVerify from './CustomerInfoVerify';
 import EditCustomerInfoVerify from './EditCustomerInfoVerify';
 import LastFiveRemarkDataGrid from './LastFiveRemarkDataGrid';
 import LangHelper from '@jsroot/common/langHelper';
-import {IsRemoveDatagridRedemption, IsRemoveVerify, IsLastFiveRemarks} from '@jsroot/common/constants';
+import {IsRemoveDatagridRedemption, IsRemoveVerify} from '@jsroot/common/constants';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -93,12 +93,10 @@ export class AppContainer extends Component {
             <>
                 <div>
                     {
-                        !IsLastFiveRemarks && (
-                            !currentCustomer.isCreditSite ?
-                                <div><DataGridRemark id={custId} /></div> :
-                                    <div><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} />
-                                </div>
-                            )
+                        !currentCustomer.isCreditSite ?
+                            <div><DataGridRemark id={custId} /></div> :
+                                <div><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} />
+                            </div>
                     }
                     {
                         !IsRemoveVerify &&
