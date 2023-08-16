@@ -48,6 +48,7 @@
     Category: 'Category',
     CategoryRequired: 'Category is required!',
     ChangePICState: 'Change PIC State',
+    ChatIdRequired: 'ChatId is required!',
     ChatType: 'Chat Type',
     ChatTypeMapping: 'Chat Type Mapping',
     ChatTypeRequired: 'Chat Type is required!',

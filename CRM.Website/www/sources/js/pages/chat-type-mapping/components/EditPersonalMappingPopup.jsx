@@ -282,7 +282,7 @@ export class EditPersonalMappingPopup extends Component {
 
     getChatIdOption = value => {
         const botInfo = this.props.recipients.botInfo;
-        const botByUsername = botInfo.length > 0 ? botInfo.filter(item => item.username === value) : [];
+        const botByUsername = botInfo?.length > 0 ? botInfo?.filter(item => item.username === value) : [];
         const chatId = botByUsername.length > 0 ? botByUsername[0].chatId : '';
         const chatIdOptions = botByUsername.map(item => item.chatId);
 

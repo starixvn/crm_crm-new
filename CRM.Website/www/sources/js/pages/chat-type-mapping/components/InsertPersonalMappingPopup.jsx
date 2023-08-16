@@ -100,7 +100,9 @@ export class InsertPersonalMappingPopup extends Component {
         const recipientTypePic = this.props.settings.recipientTypes.filter(item => item.name === 'PIC of headline');
         if (botServiceId === BotServiceType.Telegram) {
             this.setState({
-                recipientTypes: recipientTypePic
+                recipientTypes: recipientTypePic,
+                letstalkIds: '',
+                usernames: []
             });
             this.handleChange('recipient', '');
             this.props.getRecipientByRecipientType(recipientTypePic[0]?.id);
@@ -179,15 +181,21 @@ export class InsertPersonalMappingPopup extends Component {
 
     handleChangeUsername = value => {
         this.handleChange('username', value);
-
         const botInfo = this.props.recipients.botInfo;
         const botByUsername = botInfo.filter(item => item.username === value);
-        const chatId = botByUsername.length > 0 ? botByUsername[0].chatId : '';
         const chatIdOptions = botByUsername.map(item => item.chatId);
-        this.handleChange('chatId', chatId);
-        this.setState({ chatIdOptions: [...new Set(chatIdOptions)], isLoading: true });
+        const filterChatIdOption = [...new Set(chatIdOptions)];
 
-        this.getTelegramDisplayName(this.state.form.botId, chatId);
+        if (filterChatIdOption.length > 1) {
+            this.handleChange('chatId', '');
+            this.setState({ chatIdOptions: filterChatIdOption });
+            this.getTelegramDisplayName(this.state.form.botId, '');
+        } else {
+            const chatId = botByUsername.length > 0 ? botByUsername[0].chatId : '';
+            this.handleChange('chatId', chatId);
+            this.setState({ chatIdOptions: filterChatIdOption, isLoading: true });
+            this.getTelegramDisplayName(this.state.form.botId, chatId);
+        }
     };
 
     handleChangeChatId = value => {
@@ -295,6 +303,10 @@ export class InsertPersonalMappingPopup extends Component {
             if (!data.displayName && data.username) {
                 isValid = false;
                 errMsg.push(`The username ${data.username} hasn't added the bot.`)
+            }
+            if (!data.chatId) {
+                isValid = false;
+                errMsg.push(LangHelper.getResource('ChatIdRequired'));
             }
         }
 
@@ -572,7 +584,7 @@ export class InsertPersonalMappingPopup extends Component {
                                                     type="radio"
                                                     id={value + key}
                                                     value={value}
-                                                    defaultChecked={key === 0}
+                                                    defaultChecked={chatIdOptions.length === 1}
                                                     onChange={event => this.handleChangeChatId(event.target.value)}
                                                 />
                                             </Col>
