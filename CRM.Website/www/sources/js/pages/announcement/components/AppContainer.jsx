@@ -94,6 +94,10 @@ export class AppContainer extends Component {
         return (
             <Fragment>
                 <Filter isHost={isHost}/>
+                <NewAnnouncement_v2
+                    onClose={this.handleCloseNewAnnouncement}
+                    onSuccess={this.handleCreateSuccessAnnouncement}
+                />
                 {
                     newAnnouncementPopup.show &&
                     <NewAnnouncement
