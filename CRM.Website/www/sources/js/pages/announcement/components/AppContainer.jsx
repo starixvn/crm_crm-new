@@ -12,6 +12,7 @@ import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { toast } from 'react-toastify';
+import NewAnnouncement_v2 from './NewAnnouncement_v2';
 
 export class AppContainer extends Component {
     constructor(props) {

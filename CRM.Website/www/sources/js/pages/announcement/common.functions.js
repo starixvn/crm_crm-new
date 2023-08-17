@@ -90,7 +90,8 @@ export const getParams = (values, state) => {
         headlineType: headlineType,
         title: values.title,
         sendDate: isSendImmediately ? null : DateTimeService.toLongDateTimeFormat(sendDate),
-        sendImmediately: isSendImmediately
+        sendImmediately: isSendImmediately,
+        status: state.status
     };
     Object.keys(params).forEach(key => {
         formData.append(key, params[key]);

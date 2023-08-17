@@ -29,7 +29,8 @@ const initialState = {
         countDown: AUTO_REFRESH_TIMES[0],
         isSubmit: false
     },
-    isRefresh: true
+    isRefresh: true,
+    validateAnnouncementResult: null
 };
 const announcementSlice = createSlice({
     name: 'announcement',
@@ -71,6 +72,9 @@ const announcementSlice = createSlice({
         },
         setIsRefresh: (state, action) => {
             state.isRefresh = action.payload;
+        },
+        setValidateAnnouncement: (state, action) => {
+            state.validateAnnouncementResult = action.payload;
         }
     }
 });
@@ -93,7 +97,8 @@ export const {
     setContentPopup,
     setViewDetailPopup,
     setAutoRefresh,
-    setIsRefresh
+    setIsRefresh,
+    setValidateAnnouncement
 } = actions;
 
 export default reducer;

@@ -14,7 +14,8 @@ import {
     setContentPopup,
     setViewDetailPopup,
     setAutoRefresh,
-    setIsRefresh
+    setIsRefresh,
+    setValidateAnnouncement
 } from './announcementSlice';
 
 const getGridData = params => async dispatch => {
@@ -74,6 +75,14 @@ const cancelAnnouncementId = announcementId => async () => {
     return await DataService.getDataAsync(url).then(response => response.data);
 };
 
+const validateAnnouncement = data => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('Announcement/ValidateAnnouncement');
+    await DataService.postDataAsync(url, data).then(response => {
+        dispatch(setValidateAnnouncement(response.data));
+    }).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
     resetState,
     setGridParams,
@@ -97,5 +106,7 @@ export const ActionCreators = {
     setViewDetailPopup,
     setAutoRefresh,
     setIsRefresh,
-    cancelAnnouncementId
+    cancelAnnouncementId,
+    validateAnnouncement,
+    setValidateAnnouncement
 };

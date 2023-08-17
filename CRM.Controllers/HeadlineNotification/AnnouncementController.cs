@@ -254,8 +254,14 @@
         [HttpPost]
         public async Task<IActionResult> ValidateAnnouncement([FromForm] ValidateAnnouncementCommand command)
         {
-            var commandResult = await announcementService.ValidateAnnouncementAsync(command);
+            var fileName = getFileName(command.FormFile, command.FileString);
+            command.FileName = fileName;
+            var (announcements, commandResult) = await announcementService.ValidateAnnouncementAsync(command);
 
+            if (commandResult.IsSuccessful)
+            {
+                return Json(announcements);
+            }
             return Json(commandResult);
         }
     }

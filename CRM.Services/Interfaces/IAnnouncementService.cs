@@ -21,6 +21,6 @@ namespace CRM.Services.Interfaces
 
         Task<ValueTuple<IEnumerable<NotificationTemplate>, IEnumerable<ContentLanguage>>> GetAnnouncementTemplateAsync();
 
-        Task<CommandResult> ValidateAnnouncementAsync(ValidateAnnouncementCommand command);
+        Task<(IEnumerable<AnnouncementDetail>, CommandResult)> ValidateAnnouncementAsync(ValidateAnnouncementCommand command);
     }
 }

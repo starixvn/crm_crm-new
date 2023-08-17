@@ -183,11 +183,11 @@ export const Statuses = [
     {id: 'Planned', name: 'Planned', checked: true},
     {id: 'Cancelled', name: 'Cancelled', checked: true},
     {id: 'Completed', name: 'Completed', checked: true},
-    {id: 'In-Progress', name: 'In-Progress', checked: true}
+    {id: 'In-Progress', name: 'In-Progress', checked: true},
+    {id: 'Draft', name: 'Draft', checked: true}
 ];
 
-export const IsRemoveDatagridRedemption = true;
-export const IsRemoveVerify = true;
+export const IsRemoveDatagridRedemption = true;export const IsRemoveVerify = true;
 export const IsLastFiveRemarks = true;
 
 export const BotServices = [
