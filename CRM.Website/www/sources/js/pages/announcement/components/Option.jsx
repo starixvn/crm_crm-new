@@ -68,41 +68,41 @@ export default class Option extends PureComponent {
         const dateTimeNow =  new Date(DateTimeService.toClientDateTime(new Date()));
         const isSendAt = values.sendType === 'Send At';
         return(
-            <Form.Group as={Row}>
-                <Form.Label column sm="2" md="2"  className='required' >{LangHelper.getResource('SendTime')}</Form.Label>
-                    <Col sm="10" md="10">
-                        <div className='form-option-wrapper'>
-                            <Form.Control as='select' size='sm' className='form-control-wrapper'
-                                name="sendType" id="sendType"
-                                value={values.sendType}
-                                isInvalid={touched.sendType && errors.sendType}
-                                onChange={handleChange}
-                            >
-                                <option value=''>{LangHelper.getResource('PleaseSelect')}</option>
-                                {
-                                    sendOption.map((value, key) => <option key={key} value={value}>{value}</option>)
-                                }
-                            </Form.Control>
-                            <div className='react-datepicker-wrapper-container form-control-wrapper' style={{marginLeft: 15}}>
-                                <DatePicker
-                                    readOnly={!isSendAt}
-                                    dropdownMode="select"
-                                    showMonthDropdown
-                                    isInvalid={touched.sendDate && errors.sendDate}
-                                    showYearDropdown
-                                    timeInputLabel="Time:"
-                                    showTimeInput
-                                    useShortMonthInDropdown
-                                    minDate={dateTimeNow}
-                                    isDisabledTime
-                                    selected={isSendAt ? values.sendDate : null}
-                                    onChange={value => this.props.handleDateChange(value)}
-                                />
-                            </div>
-                            <Form.Label column sm="2" md="2">(GMT+8)</Form.Label>
+             <div className="group-item">
+                <div className="group-header">{LangHelper.getResource('SendTime')}</div>
+                <Form.Group as={Row}>
+                    <div className='form-option-wrapper'>
+                        <Form.Control as='select' size='sm' className='form-control-wrapper'
+                            name="sendType" id="sendType"
+                            value={values.sendType}
+                            isInvalid={touched.sendType && errors.sendType}
+                            onChange={handleChange}
+                        >
+                            <option value=''>{LangHelper.getResource('PleaseSelect')}</option>
+                            {
+                                sendOption.map((value, key) => <option key={key} value={value}>{value}</option>)
+                            }
+                        </Form.Control>
+                        <div className='react-datepicker-wrapper-container form-control-wrapper' style={{marginLeft: 15}}>
+                            <DatePicker
+                                readOnly={!isSendAt}
+                                dropdownMode="select"
+                                showMonthDropdown
+                                isInvalid={touched.sendDate && errors.sendDate}
+                                showYearDropdown
+                                timeInputLabel="Time:"
+                                showTimeInput
+                                useShortMonthInDropdown
+                                minDate={dateTimeNow}
+                                isDisabledTime
+                                selected={isSendAt ? values.sendDate : null}
+                                onChange={value => this.props.handleDateChange(value)}
+                            />
                         </div>
-                    </Col>
-            </Form.Group>       
+                        <Form.Label column sm="2" md="2">(GMT+8)</Form.Label>
+                    </div>
+                </Form.Group>
+            </div>
         );
     }
 
