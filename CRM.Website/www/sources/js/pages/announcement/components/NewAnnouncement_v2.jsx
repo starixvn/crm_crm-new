@@ -13,6 +13,7 @@ import ContentTab from './ContentTab';
 import Option from './Option';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
     validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams
 } from '../common.functions';
@@ -249,6 +250,11 @@ export class NewAnnouncement_v2 extends Component {
             values, handleChange, errors, touched
         };
         const { parameters, isChangeTemplate } = this.state;
+
+        const {headlineGroups, siteOptions, currencyOptions} = this.state;
+        const {handleOptionChange} = this.props;
+        const headlineTypeList = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
+
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <div className="add-announcement">
@@ -319,42 +325,96 @@ export class NewAnnouncement_v2 extends Component {
                                 </Form.Group>
                             }
                             <div className="group-upload-file">
-                            <UploadFile setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles} />
+                                <UploadFile setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles} />
                             </div>
                         </div>
                     </div>
                     <div className="group-item">
-                    <div class="group-header">{LangHelper.getResource('GroupHeadline')}</div>
-                        <Form.Group as={Row}>
-                            <Form.Label htmlFor="groupHeadline">
-                                {LangHelper.getResource('GroupHeadline')}
-                            </Form.Label>
-                            <div className="headline-group-form" onClick={() => this.headlineInputRef.current.focus()}>
-                                {
-                                    this.state.headlineGroups.map((headline, index) => (
-                                        <div key={index} className='headline-box'>
-                                            <span className='fa fa-times mr-2' onClick={event => this.handleRemoveHeadline(event, headline)} />
-                                            <span className='headline'>{headline}</span>
-                                        </div>
-                                    ))
-                                }
-                                <input className='text-input-headline' ref={this.headlineInputRef}
-                                    onChange={this.handleChangeInputHeadline}
-                                    onKeyDown={this.handleChangeInputHeadline}
-                                    onBlur={event => this.handleBlurInputHeadline(event)}
-                                    onPaste={this.handlePasteGroupHeadline}
-                                />
+                        <div className="group-header">{LangHelper.getResource('GroupHeadline')}</div>
+                        <div className="group-content">
+                            <div className="group-headline group-username">
+                                <input class="custom" type="radio" />
+                                <Form.Group as={Row}>
+                                    <Form.Label>
+                                        {LangHelper.getResource('Username')}
+                                    </Form.Label>
+                                    <div className="headline-group-form" onClick={() => this.headlineInputRef.current.focus()}>
+                                        {
+                                            this.state.headlineGroups.map((headline, index) => (
+                                                <div key={index} className='headline-box'>
+                                                    <span className='fa fa-times mr-2' onClick={event => this.handleRemoveHeadline(event, headline)} />
+                                                    <span className='headline'>{headline}</span>
+                                                </div>
+                                            ))
+                                        }
+                                        <input className='text-input-headline' ref={this.headlineInputRef}
+                                            onChange={this.handleChangeInputHeadline}
+                                            onKeyDown={this.handleChangeInputHeadline}
+                                            onBlur={event => this.handleBlurInputHeadline(event)}
+                                            onPaste={this.handlePasteGroupHeadline}
+                                        />
+                                    </div>
+                                </Form.Group>
+                                <Form.Label className="notice-line">
+                                    {LangHelper.getResource('GroupHeadlineEnterNotice')}
+                                </Form.Label>
                             </div>
-                        </Form.Group>
+                            <div className="group-headline">
+                                <input class="custom" type="radio" />
+                                <div className="group-select">
+                                    <Form.Group as={Row}>
+                                        <Form.Label >{LangHelper.getResource('Site')}</Form.Label>
+                                        <div className='form-control-wrapper'>
+                                            <MultipleSelect
+                                                isDisable={headlineGroups.length > 0}
+                                                dataSource={siteOptions}
+                                                keyField='id'
+                                                hasSearchBox
+                                                valueField='name'
+                                                statusField='checked'
+                                                isSummited={false}
+                                                isAllTextShown
+                                                isPlacementTop
+                                                onChange={
+                                                    (currentItem, selectedItemsKey) => handleOptionChange('site', selectedItemsKey)
+                                                }
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                    <Form.Group as={Row}>
+                                        <Form.Label>{LangHelper.getResource('Currency')}</Form.Label>
+                                        <div className='form-control-wrapper'>
+                                            <MultipleSelect
+                                                dataSource={currencyOptions}
+                                                isDisable={headlineGroups.length > 0}
+                                                keyField='id'
+                                                valueField='name'
+                                                hasSearchBox
+                                                statusField='checked'
+                                                isPlacementTop
+                                                isSummited={false}
+                                                isAllTextShown
+                                                onChange={
+                                                    (currentItem, selectedItemsKey) => handleOptionChange('currency', selectedItemsKey)
+                                                }
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                    <Form.Group as={Row}>
+                                        <Form.Label >{LangHelper.getResource('HeadlineType')}</Form.Label>
+                                        <Form.Control as='select' size='sm' className='form-control-wrapper'
+                                            name='headlineType' value={values.headlineType} disabled={headlineGroups.length > 0}
+                                            onChange={handleChange}
+                                        >
+                                            {
+                                                headlineTypeList.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
+                                            }
+                                        </Form.Control>
+                                    </Form.Group>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" />
-                        <Col sm="10" md="10">
-                            <Form.Label>
-                                {LangHelper.getResource('GroupHeadlineEnterNotice')}
-                            </Form.Label>
-                        </Col>
-                    </Form.Group>
                     <Option
                         {...propsOption} stateValue={this.state} settings={this.props.settings}
                         handleDateChange={this.handleDateChange} handleOptionChange={this.handleOptionChange}
