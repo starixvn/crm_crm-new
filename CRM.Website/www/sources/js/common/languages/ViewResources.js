@@ -322,7 +322,7 @@
     LastUpdateGM8: 'Last Update (GMT+8)',
     LicenseeManager: 'Licensee Manager',
     LoggedOn: 'Logged On',
-    Last5Remarks: 'Last Remark',
+    LastRemark: 'Last Remark',
     LatestFeedbackv2 : 'Latest Feedback v2',
     LatestFeedback: 'Latest Feedback',
     LogStatistics: 'Log Statistics',
