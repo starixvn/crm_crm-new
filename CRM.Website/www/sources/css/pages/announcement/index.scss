@@ -197,8 +197,6 @@
       .text-parameters {
         position: absolute;
         padding: 0px 18px;
-        position: absolute;
-        padding: 0px 18px;
         top: -10px;
         left: 50px;
         background-color: white;
@@ -390,6 +388,31 @@
         }
       }
 
+      .parameters {
+        margin-left: 15px;
+        border: 1px solid $border-input-color;
+        position: relative;
+  
+        .text-parameters {
+          position: absolute;
+          padding: 0px 18px;
+          top: -10px;
+          left: 50px;
+          background-color: white;
+        }
+        .box-param {
+          padding: 10px;
+  
+          .param {
+            width: 20%;
+          }
+          .form-input-param {
+            width: 80%;
+            height: calc(1.5em + 0.5rem + 2px) !important;
+          }
+        }
+      }
+
       .headline-group-form {
         overflow: auto;
         max-height: 150px;
@@ -505,9 +528,6 @@
               padding-left: 6px;
             }
           }
-        }
-
-        .list-file-image {
         }
       }
 
