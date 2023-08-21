@@ -16,6 +16,8 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
     validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams
 } from '../common.functions';
+import WithNavigation from '@jsroot/components/WithNavigation';
+import Site from '@jsroot/common/site';
 
 export class NewAnnouncement_v2 extends Component {
     constructor(props) {
@@ -36,7 +38,6 @@ export class NewAnnouncement_v2 extends Component {
             isChangeTemplate: false,
             parameters: null,
             invalidWidthHeight: [],
-            status: 'Planned',
             isHeadlineGroup: {
                 isUsername: true,
                 isSiteType: false
@@ -45,7 +46,6 @@ export class NewAnnouncement_v2 extends Component {
                 isSendNow: true,
                 isSendAt: false
             }
-
         };
     }
 
@@ -264,9 +264,9 @@ export class NewAnnouncement_v2 extends Component {
         const param = getParams(values, this.state);
         console.log('param', param);
         this.setState({confirmInsertDialog: { show: true, params: param}});
-        this.props.validateAnnouncement(param).then(() => {
-            console.log('this.props.validateAnnouncementResult', this.props.validateAnnouncementResult);
-        })
+        // this.props.validateAnnouncement(param).then(() => {
+        //     console.log('this.props.validateAnnouncementResult', this.props.validateAnnouncementResult);
+        // })
     };
 
     handleConfirmInsertDialog = () =>{
@@ -301,11 +301,20 @@ export class NewAnnouncement_v2 extends Component {
         );
     }
 
-    handleSaveDraft = (event) => {
+    handleSaveDraft = (event, values) => {
         event.preventDefault();
+        values.status = 'Draft';
         const param = getParams(values, this.state);
-        this.props.validateAnnouncement(param).then(() => {
-            console.log('this.props.validateAnnouncementResult', this.props.validateAnnouncementResult);
+
+        this.props.createAnnouncement(param).then(() => {
+            if (this.props.createAnnouncementResult.isSuccessful) {
+                setTimeout(() => {
+                    this.props.setCreateAnnouncement(null);
+                    this.props.navigate(Site.resolveClientUrl('Announcement'));
+                }, 3000);
+            } else {
+                this.formik.setSubmitting(false);
+            }
         });
     };
 
@@ -318,12 +327,8 @@ export class NewAnnouncement_v2 extends Component {
         handleSubmit,
         isSubmitting
     }) => {
-        console.log('errors', errors);
-        console.log('values', values);
-        console.log('headlineGroups', this.state.headlineGroups);
-        const { uploadedFiles, parameters, isChangeTemplate, headlineGroups, siteOptions, currencyOptions, isHeadlineGroup } = this.state;
+        const { uploadedFiles, parameters, isChangeTemplate, siteOptions, currencyOptions, isHeadlineGroup } = this.state;
         const propsOption = { values, handleChange, errors, touched, setFieldValue };
-        const {handleOptionChange} = this.props;
         const headlineTypeList = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
 
         return (
@@ -405,7 +410,7 @@ export class NewAnnouncement_v2 extends Component {
                         <div className="group-content">
                             <div className="group-headline group-username">
                                 <input
-                                    class="custom"
+                                    className="custom"
                                     type="radio"
                                     name="groupHeadline"
                                     id="groupHeadline"
@@ -441,7 +446,7 @@ export class NewAnnouncement_v2 extends Component {
                             </div>
                             <div className="group-headline">
                                 <input
-                                    class="custom"
+                                    className="custom"
                                     type="radio"
                                     name="groupHeadline"
                                     id="groupHeadline"
@@ -464,7 +469,7 @@ export class NewAnnouncement_v2 extends Component {
                                                 isAllTextShown
                                                 isPlacementTop
                                                 onChange={
-                                                    (currentItem, selectedItemsKey) => handleOptionChange('site', selectedItemsKey)
+                                                    (currentItem, selectedItemsKey) => this.handleOptionChange('site', selectedItemsKey)
                                                 }
                                             />
                                         </div>
@@ -483,7 +488,7 @@ export class NewAnnouncement_v2 extends Component {
                                                 isSummited={false}
                                                 isAllTextShown
                                                 onChange={
-                                                    (currentItem, selectedItemsKey) => handleOptionChange('currency', selectedItemsKey)
+                                                    (currentItem, selectedItemsKey) => this.handleOptionChange('currency', selectedItemsKey)
                                                 }
                                             />
                                         </div>
@@ -494,6 +499,7 @@ export class NewAnnouncement_v2 extends Component {
                                             name='headlineType' value={values.headlineType} disabled={!isHeadlineGroup.isSiteType}
                                             onChange={handleChange}
                                         >
+                                            <option value=''>{LangHelper.getResource('PleaseSelect')}</option>
                                             {
                                                 headlineTypeList.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
                                             }
@@ -505,11 +511,11 @@ export class NewAnnouncement_v2 extends Component {
                     </div>
                     <Option
                         {...propsOption} stateValue={this.state} settings={this.props.settings}
-                        handleDateChange={this.handleDateChange} handleOptionChange={this.handleOptionChange}
+                        handleDateChange={this.handleDateChange}
                     />
                     <div className="group-btn">
                         <Button className="btn-cancel" type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
-                        <Button className="btn-save" type="submit" variant="primary" size="md" onClick={this.handleSaveDraft}>{LangHelper.getResource('Save as Draft')}</Button>
+                        <Button className="btn-save" type="submit" variant="primary" size="md" onClick={event => this.handleSaveDraft(event, values)}>{LangHelper.getResource('Save as Draft')}</Button>
                         <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={this.isDisableSubmit(values, isSubmitting)}>{LangHelper.getResource('Push')}</Button>
                     </div>
                 </div>
@@ -545,7 +551,8 @@ export class NewAnnouncement_v2 extends Component {
                 ENSC: '',
                 TH: '',
                 YN: ''
-            }
+            },
+            status: 'Planned'
         };
 
         return (
@@ -587,4 +594,6 @@ const mapStateToProps = state => {
     return { announcementTemplate, createAnnouncementResult, settings, validateAnnouncementResult };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewAnnouncement_v2);
+const NewAnnouncement_v2Navigation = WithNavigation(NewAnnouncement_v2);
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewAnnouncement_v2Navigation);

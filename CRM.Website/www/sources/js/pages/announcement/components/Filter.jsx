@@ -9,6 +9,8 @@ import LangHelper from '@jsroot/common/langHelper';
 import {Statuses} from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { toast } from 'react-toastify';
+import WithNavigation from '@jsroot/components/WithNavigation';
+import Site from '@jsroot/common/site';
 
 export class Filter extends Component {
     constructor(props) {
@@ -68,7 +70,9 @@ export class Filter extends Component {
 
     handleOpenNewAnnouncement = () =>{
         this.props.setIsRefresh(false);
-        this.props.setOpenNewAnnouncementPopup({show: true});
+        //this.props.setOpenNewAnnouncementPopup({show: true});
+    
+        this.props.navigate(Site.resolveClientUrl('Announcement/NewAnnouncement'));
     };
 
     handlePasteAnnouncementId = event =>{
@@ -170,4 +174,6 @@ const mapStateToProps = state => {
     return { gridParams };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+const FilterNavigation = WithNavigation(Filter);
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterNavigation);
