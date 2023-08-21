@@ -603,5 +603,6 @@
     PleaseInputUseCommunicationType: 'Communication Type',
     PostCode: 'Post Code',
     Parameters: 'Parameters',
+    Push: 'Push',
     Yes: 'Yes'
 };
