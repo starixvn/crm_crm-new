@@ -389,10 +389,10 @@
       }
 
       .parameters {
-        margin-left: 15px;
         border: 1px solid $border-input-color;
+        border-radius: 3px;
         position: relative;
-  
+
         .text-parameters {
           position: absolute;
           padding: 0px 18px;
@@ -402,7 +402,7 @@
         }
         .box-param {
           padding: 10px;
-  
+
           .param {
             width: 20%;
           }
@@ -583,16 +583,29 @@
       }
 
       .radio-btn {
+        display: flex;
+        align-items: center;
         color: var(--text-black, #444);
         font-weight: 500;
+        margin-bottom: 12px;
 
         input.custom {
           margin-right: 8px;
+          margin-bottom: 0;
+        }
+
+        label {
+          margin-bottom: 0;
         }
       }
 
       .form-option-wrapper {
         display: flex;
+        align-items: center;
+
+        .radio-btn, label{
+          margin-bottom: 0;
+        }
 
         .form-control-wrapper {
           margin: 0 4px 0 13px !important;

@@ -73,11 +73,13 @@ export default class Option extends PureComponent {
                 <div className="group-header">{LangHelper.getResource('SendType')}</div>
                 <div className="group-content">
                     <div className="radio-btn" onChange={this.onChangeValue}>
-                        <input class="custom" type="radio"/>{LangHelper.getResource('SendNow')}
+                        <input class="custom" type="radio"/>
+                        <Form.Label for="yes">{LangHelper.getResource('SendNow')}</Form.Label>
                     </div>
                     <div className='form-option-wrapper'>
                         <div className="radio-btn" onChange={this.onChangeValue}>
-                            <input class="custom" type="radio"/>{LangHelper.getResource('SendAt')}
+                            <input class="custom" type="radio"/>
+                            <Form.Label for="yes">{LangHelper.getResource('SendAt')}</Form.Label>
                         </div>
                         <div className='react-datepicker-wrapper-container form-control-wrapper' style={{marginLeft: 15}}>
                             <DatePicker
@@ -165,11 +167,11 @@ export default class Option extends PureComponent {
         const {values, handleChange, errors, touched, setFieldValue} = this.props;
         return (
             <Fragment>
-                {
+                {/* {
                     this.renderOption(values, handleChange)
-                }
+                } */}
                 {
-                    this.renderSendTimeRadio(values, handleChange, errors, touched, setFieldValue)
+                    this.renderSendTime(values, handleChange, errors, touched, setFieldValue)
                 }
             </Fragment>
         );
