@@ -20,22 +20,24 @@
     }
 }
 
-.large-desktops {
+.large-desktops{
     &> .show-left-panel{
-        .pic-assignment .form-filter{
-            .form-group{
-                width: 200px;
-                .form-label{
-                    width: 90px;
+        .pic-assignment{
+            &>.show-filter{
+                .form-group{
+                    width: 315px;
+                    .form-label{
+                        width: 90px;
+                    }
+        
+                    .form-control-wrapper, .form-control{
+                        width: calc(100% - 0.5rem - 90px);
+                    }
                 }
-    
-                .form-control-wrapper, .form-control{
-                    width: calc(100% - 0.5rem - 90px);
-                }
-            }
 
-            #form-checkbox{
-                margin-right: 29px;
+                #form-checkbox{
+                    margin-right: 29px;
+                }
             }
         }
     }
@@ -45,7 +47,7 @@
 
 .medium-desktops{
     &> .show-left-panel{
-        @include form-group-width(250px);
+        @include form-group-width(270px);
     }
 
     &> :not(.show-left-panel){

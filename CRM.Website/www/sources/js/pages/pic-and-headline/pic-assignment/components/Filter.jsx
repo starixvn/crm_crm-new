@@ -263,7 +263,7 @@ export class Filter extends Component {
                     </Form.Group>
                     {
                         !this.state.showFilter &&
-                        <Form.Group style={{width: '171px'}}>
+                        <Form.Group style={{width: '189px'}}>
                             <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
                                 {LangHelper.getResource('Submit')}
                             </Button>
@@ -336,7 +336,7 @@ export class Filter extends Component {
                         </Form.Group>
                         {
                             this.state.showFilter &&
-                            <Form.Group style={{width: '171px'}}>
+                            <Form.Group style={{width: '189px'}}>
                                 <Button className='mr-4' variant='primary' size='sm' onClick={this.handleSubmit}>
                                     {LangHelper.getResource('Submit')}
                                 </Button>
