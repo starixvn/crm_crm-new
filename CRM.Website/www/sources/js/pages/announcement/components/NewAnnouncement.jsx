@@ -29,13 +29,23 @@ export class NewAnnouncement extends Component {
             siteOptions: [],
             currencyOptions: [],
             options: {
-                site: '1',
-                currency: '1'
+                site: '',
+                currency: ''
             },
             confirmInsertDialog: { show: false, params: null},
             isChangeTemplate: false,
             parameters: null,
-            invalidWidthHeight: []
+            invalidWidthHeight: [],
+
+            status: 'Planned',
+            isHeadlineGroup: {
+                isUsername: true,
+                isSiteType: false
+            },
+            isSendType: {
+                isSendNow: true,
+                isSendAt: false
+            }
         };
     }
 
@@ -57,7 +67,7 @@ export class NewAnnouncement extends Component {
                 return {
                     id: x.site,
                     name: x.site,
-                    checked: true
+                    checked: false
                 };
             });
 
@@ -67,7 +77,7 @@ export class NewAnnouncement extends Component {
                 return {
                     id: x.id,
                     name: x.name,
-                    checked: true
+                    checked: false
                 };
             });
 
@@ -76,8 +86,8 @@ export class NewAnnouncement extends Component {
                 currencyOptions,
                 options: {
                     ...prevState.options,
-                    site: siteIds.toString(),
-                    currency: currencyIds.toString()
+                    site: '',
+                    currency: ''
                 }
             }));
         });
@@ -225,6 +235,80 @@ export class NewAnnouncement extends Component {
         }
     }
 
+    isValidateContent = content => {
+        if (content.EN || content.ENSC || content.SC || content.TH || content.YN) {
+            return true;
+        }
+        return false;
+    };
+
+    isDisableSubmit = (values, isSubmitting) => {
+        const { isHeadlineGroup } = this.state;
+        if (!isSubmitting && values.title && this.isValidateContent(values.content) && values.sendType && (isHeadlineGroup.isUsername || isHeadlineGroup.isSiteType)){
+            return false;
+        }
+        return true;
+    };
+
+    handleCheckHeadline = (fieldTrue, fieldFalse) => {
+        this.setState({
+            isHeadlineGroup: {
+                [`${fieldTrue}`]: true,
+                [`${fieldFalse}`]: false
+            }
+        });
+    };
+
+    handleSubmit = (values, { setSubmitting }) => {
+        setSubmitting(true);
+        const param = getParams(values, this.state);
+        console.log('param', param);
+        this.setState({confirmInsertDialog: { show: true, params: param}});
+        this.props.validateAnnouncement(param).then(() => {
+            console.log('this.props.validateAnnouncementResult', this.props.validateAnnouncementResult);
+        })
+    };
+
+    handleConfirmInsertDialog = () =>{
+        this.handleCloseConfirmInsertDialog();
+        const formData = this.state.confirmInsertDialog.params;
+        console.log('formData', formData);
+
+        // this.props.createAnnouncement(formData).then(() => {
+        //     if (this.props.createAnnouncementResult.isSuccessful) {
+        //         setTimeout(() => {
+        //             this.props.onSuccess();
+        //         }, 3000);
+        //     } else {
+        //         this.formik.setSubmitting(false);
+        //     }
+        // });
+    }
+
+    handleCloseConfirmInsertDialog = () =>{
+        this.setState({confirmInsertDialog: { show: false, params: null }});
+        this.formik.setSubmitting(false);
+    }
+
+    renderContentConfirm = () =>{
+        const {sendType, sendDate} = this.formik.values;
+        const sendDateFormat = DateTimeService.toLongDateTimeFormat(sendDate);
+        const content = sendType === 'Send At' ? 
+                        LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), sendDateFormat) :
+                        LangHelper.getResource('ConfirmSendImmediately');
+        return(
+            <div>{content}</div>
+        );
+    }
+
+    handleSaveDraft = (event) => {
+        event.preventDefault();
+        const param = getParams(values, this.state);
+        this.props.validateAnnouncement(param).then(() => {
+            console.log('this.props.validateAnnouncementResult', this.props.validateAnnouncementResult);
+        });
+    };
+
     renderForm = ({
         values,
         errors,
@@ -236,7 +320,7 @@ export class NewAnnouncement extends Component {
     }) => {
         const {uploadedFiles} = this.state;
         const propsOption = {
-            values, handleChange, errors, touched
+            values, handleChange, errors, touched, setFieldValue
         };
         const {parameters, isChangeTemplate} = this.state;
         const {invalidContentMaxLength, textInvalidContentMaxLength} = checkInvalidMaxLengthContent(values.content, this.state.tab);
@@ -311,10 +395,21 @@ export class NewAnnouncement extends Component {
                             </div>
                         </Form.Group>
                     }
-                    <UploadFile 
+                     <UploadFile 
                         setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
                         invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
                     />
+
+                    <Form.Check
+                        inline label={''}
+                        name='groupHeadline'
+                        type="radio"
+                        id='groupHeadline'
+                        value={this.state.isHeadlineGroup.isUsername}
+                        checked={this.state.isHeadlineGroup.isUsername}
+                        onChange={() => this.handleCheckHeadline('isUsername', 'isSiteType')}
+                    />
+
                     <Form.Group as={Row}>
                         <Form.Label column sm="2" md="2" htmlFor="groupHeadline">
                             {LangHelper.getResource('GroupHeadline')}
@@ -330,6 +425,7 @@ export class NewAnnouncement extends Component {
                                     ))
                                 }
                                 <input className='text-input-headline' ref={this.headlineInputRef}
+                                    disabled={!this.state.isHeadlineGroup.isUsername}
                                     onChange={this.handleChangeInputHeadline}
                                     onKeyDown={this.handleChangeInputHeadline}
                                     onBlur={event => this.handleBlurInputHeadline(event)}
@@ -346,6 +442,17 @@ export class NewAnnouncement extends Component {
                             </Form.Label>
                         </Col>
                     </Form.Group>
+
+                    <Form.Check
+                        inline label={''}
+                        name='groupHeadline'
+                        type="radio"
+                        id='groupHeadline'
+                        value={this.state.isHeadlineGroup.isSiteType}
+                        checked={this.state.isHeadlineGroup.isSiteType}
+                        onChange={() => this.handleCheckHeadline('isSiteType', 'isUsername')}
+                    />
+
                     <Option 
                         {...propsOption} stateValue={this.state} settings={this.props.settings}
                         handleDateChange={this.handleDateChange} handleOptionChange={this.handleOptionChange}
@@ -353,22 +460,19 @@ export class NewAnnouncement extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
-                    <Button type="submit" variant="primary" size="md" onClick={this.props.onClose}>{LangHelper.getResource('Save as Draft')}</Button>
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting || isInvalidContent}>{LangHelper.getResource('Save')}</Button>
+                    <Button variant="primary" size="md" onClick={this.handleSaveDraft}>{LangHelper.getResource('Save as Draft')}</Button>
+                    <Button type="submit" variant="primary" size="sm" disabled={this.isDisableSubmit(values, isSubmitting)}>{LangHelper.getResource('Push')}</Button>
                 </Modal.Footer>
             </Form>
         );
     };
 
-    handleSubmit = (values, { setSubmitting }) => {
         const isInvalid = this.handleCheckValidAllContent(values.content);
         if(!isInvalid){
             setSubmitting(true);
             const param = getParams(values, this.state);
             this.setState({confirmInsertDialog: { show: true, params: param}});
         }
-    };
-
     handleCheckValidAllContent = content =>{
         for (const property in content) {
             const {invalidContentMaxLength} = checkInvalidMaxLengthContent(content, property);
@@ -380,40 +484,13 @@ export class NewAnnouncement extends Component {
     };
 
     handleConfirmInsertDialog = async () =>{
-        this.handleCloseConfirmInsertDialog();
-        const formData = this.state.confirmInsertDialog.params;
         await this.props.createAnnouncement(formData).then(() => {
-            if (this.props.createAnnouncementResult.isSuccessful) {
                 const {sendType} = this.formik.values;
                 if(sendType !== 'Send At'){
                     this.props.sendMessageAnnouncementToBotEndpoint();
                 }
-                setTimeout(() => {
-                    this.props.onSuccess();
-                }, 3000);
-            } else {
-                this.formik.setSubmitting(false);
-            }
-        });
-    }
-
-    handleCloseConfirmInsertDialog = () =>{
-        this.setState({confirmInsertDialog: { show: false, params: null }});
-        this.formik.setSubmitting(false);
-    }
-
-    renderContentConfirm = () =>{
-        const {sendType, sendDate} = this.formik.values;
-        const sendDateFormat = DateTimeService.toLongDateTimeFormat(sendDate);
-        const content = sendType === 'Send At' ? 
-                        LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), sendDateFormat) :
-                        LangHelper.getResource('ConfirmSendImmediately');
-        return(
-            <div>{content}</div>
-        );
-    }
-
     render() {
+        console.log('state', this.state.isHeadlineGroup);
         const {announcementTemplate, settings} = this.props;
         if(!this.state.languages || !announcementTemplate || !settings) {
             return null;
@@ -430,7 +507,7 @@ export class NewAnnouncement extends Component {
                 TH:'',
                 YN:''
             },
-            headlineType: '2',
+            headlineType: '',
             sendType: '',
             sendDate: new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))),
             imageFileType: '',
@@ -486,8 +563,8 @@ export class NewAnnouncement extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { announcementTemplate, createAnnouncementResult, settings } = state;
-    return { announcementTemplate, createAnnouncementResult, settings };
+    const { announcementTemplate, createAnnouncementResult, settings, validateAnnouncementResult } = state;
+    return { announcementTemplate, createAnnouncementResult, settings, validateAnnouncementResult };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewAnnouncement);

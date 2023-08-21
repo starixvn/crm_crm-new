@@ -14,6 +14,7 @@ const NotificationTemplateComponent = lazy(() => import(/* webpackChunkName: 'no
 const ChatTypeMappingComponent = lazy(() => import(/* webpackChunkName: 'chat-type-mapping' */ '@jsroot/pages/chat-type-mapping/index'));
 const NotificationTypeComponent = lazy(() => import(/* webpackChunkName: 'notification-type' */ '@jsroot/pages/notification-type/index'));
 const AnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announcement' */'@jsroot/pages/announcement/index'));
+const NewAnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announcement' */'@jsroot/pages/announcement/newAnnouncement'));
 const SMAPersonalMessage = lazy(() => import(/* webpackChunkName: 'sma-personal-message' */ '@jsroot/pages/add-sma-personal-message/index'));
 
 const ManagementComponent  = lazy(() => import(/* webpackChunkName: 'pic-and-headline-management' */ '@jsroot/pages/pic-and-headline/management/index'));
@@ -104,7 +105,8 @@ const MenuRouteArray = [
     { url: 'DynamicReport', component: DynamicReportComponent },
     { url: 'SettlementReport', component: SettlementReportComponent },
     { url: 'WagerReport', component: WagerReportComponent, nestedUrl: 'Index' },
-    { url: 'WagerReport', component: WagerReportComponent, nestedUrl: 'Index' }
+    { url: 'WagerReport', component: WagerReportComponent, nestedUrl: 'Index' },
+    { url: 'Announcement/NewAnnouncement', component: NewAnnouncementComponent },
 ];
 
 export default class Index extends PureComponent {
