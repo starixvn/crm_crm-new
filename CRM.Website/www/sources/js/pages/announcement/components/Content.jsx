@@ -121,7 +121,7 @@ export class Content extends Component {
                                     languages.map((language, key) =>
                                         (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
                                             <div
-                                                className='border p-2 mt-2 announcement-content'
+                                                className='announcement-content'
                                                 name={language.mapLabel}
                                                 dangerouslySetInnerHTML={{ __html: content[language.mapLabel] }}
                                             />
@@ -129,9 +129,9 @@ export class Content extends Component {
                                     )
                                 }
                             </Tabs>
-                        </div>    
+                        </div>
                     }
-                    <div className={fileNames.length > 0 ? 'content-border pb-2 mb-2' : ''}>
+                    <div className={fileNames.length > 0 ? 'content-border pb-2' : ''}>
                         {
                             fileNames.length > 0 && fileNames.map((image, key) =>(
                                 <div key={key} className='d-flex image-section'>
@@ -144,55 +144,58 @@ export class Content extends Component {
                         }
                     </div>
                     <div>
-                    {
-                        !announcement.siteNameList ?
-                            <>
-                                <div>
-                                    <span>{`${LangHelper.getResource('Site')}: N/A`}</span>
-                                </div>
-                                <div>
-                                    <span>{`${LangHelper.getResource('Currency')}: N/A`}</span>
-                                </div>
-                                <div>
-                                    <span>{`${LangHelper.getResource('HeadlineType')}: N/A`}</span>
-                                </div>
-                            </> :
-                            <>
-                                <div>
-                                    <span>{`${LangHelper.getResource('Site')}: `}</span>
-                                    <span style={styleBold}>{announcement.siteNameList ? announcement.siteNameList.replaceAll(',', ', ') : ''}</span>
-                                </div>
-                                <div>
-                                    <span>{`${LangHelper.getResource('Currency')}: `}</span>
-                                    <span style={styleBold}>{this.state.currencies}</span>
-                                </div>
-                                <div>
-                                    <span>{`${LangHelper.getResource('HeadlineType')}: `}</span>
-                                    <span style={styleBold}>{this.state.headlineType}</span>
-                                </div>
-                            </>
+                        {
+                            !announcement.siteNameList ?
+                                <>
+                                    <div className="group-list">
+                                        <div className="list-title">{LangHelper.getResource('Site')}</div>
+                                        <div className="list-info">{LangHelper.getResource('NotApply')}</div>
+                                    </div>
+                                    <div className="group-list">
+                                        <div className="list-title">{LangHelper.getResource('Currency')}</div>
+                                        <div className="list-info">{LangHelper.getResource('NotApply')}</div>
+                                    </div>
+                                    <div className="group-list">
+                                        <div className="list-title headline-type">
+                                            {LangHelper.getResource('HeadlineType')}:
+                                            <span>{LangHelper.getResource('NotApply')}</span>
+                                        </div>
+                                    </div>
+                                </> :
+                                <>
+                                    <div className="group-list">
+                                        <div className="list-title">{LangHelper.getResource('Site')}</div>
+                                        <div className="list-info">{announcement.siteNameList ? announcement.siteNameList.replaceAll(',', ', ') : ''}</div>
+                                    </div>
+                                    <div className="group-list">
+                                        <div className="list-title">{LangHelper.getResource('Currency')}</div>
+                                        <div className="list-info">{this.state.currencies}</div>
+                                    </div>
+                                    <div className="group-list">
+                                        <div className="list-title headline-type">
+                                            {LangHelper.getResource('HeadlineType')}:
+                                            <span>{this.state.headlineType}</span>
+                                        </div>
+                                    </div>
+                                </>
                         }
-                        <div>
-                            {
-                                announcement.headlineNameList && announcement.headlineNameList.length > 0 &&
-                                <>
-                                    <span>{`${LangHelper.getResource('AffectedGroupHeadline')}: `}</span>
-                                    <span style={styleBold}>{announcement.headlineNameList ? announcement.headlineNameList.replaceAll(',', ', ') : ''}</span>
-                                </>
-                            }
-                        </div>
-                        <div>
-                            {
-                                announcement.directAccounts && announcement.directAccounts.length > 0 &&
-                                <>
-                                    <span>{`${LangHelper.getResource('DirectAccount')}: `}</span>
-                                    <span style={styleBold}>{announcement.directAccounts ? announcement.directAccounts.replaceAll(',', ', ') : ''}</span>
-                                </>
-                            }
-                        </div>
-                        <div>
-                            <span>{`${LangHelper.getResource('SendDateTimeGMTA8')}: `}</span>
-                            <span style={styleBold}>{announcement.sendDateString} {announcement.sendTimeString}</span>
+                        {
+                            announcement.headlineNameList && announcement.headlineNameList.length > 0 &&
+                            <div className="group-list">
+                                <div className="list-title">{LangHelper.getResource('AffectedGroupHeadline')}</div>
+                                <div className="list-info">{announcement.headlineNameList ? announcement.headlineNameList.replaceAll(',', ', ') : ''}</div>
+                            </div>
+                        }
+                        {
+                            announcement.directAccounts && announcement.directAccounts.length > 0 &&
+                            <div className="group-list">
+                                <div className="list-title">{LangHelper.getResource('DirectAccount')}</div>
+                                <div className="list-info">{announcement.directAccounts ? announcement.directAccounts.replaceAll(',', ', ') : ''}</div>
+                            </div>
+                        }
+                        <div className="group-list">
+                            <div className="list-title">{LangHelper.getResource('SendDateTimeGMTA8')}</div>
+                            <div className="list-info">{announcement.sendDateString} {announcement.sendTimeString}</div>
                         </div>
                     </div>
                 </Modal.Body>
