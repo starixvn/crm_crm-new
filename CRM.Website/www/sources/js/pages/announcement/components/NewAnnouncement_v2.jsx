@@ -483,7 +483,7 @@ export class NewAnnouncement_v2 extends Component {
                                     id="groupHeadline"
                                     value={this.state.isHeadlineGroup.isSiteType}
                                     checked={this.state.isHeadlineGroup.isSiteType}
-                                    onChange={() => this.handleCheckHeadline('isSiteType', 'isUsername')}            
+                                    onChange={() => this.handleCheckHeadline('isSiteType', 'isUsername')}
                                 />
                                 <div className="group-select">
                                     <Form.Group as={Row}>
@@ -599,7 +599,7 @@ export class NewAnnouncement_v2 extends Component {
 
                 {
                     this.state.confirmInsertDialog.show &&
-                    <SweetModalDialog size="lg"
+                    <SweetModalDialog size="lg" className="announcement-content-modal"
                         title={LangHelper.getResource('ConfirmNewAnnouncement')}
                         contents={this.renderContentConfirm()}
                         buttons={[

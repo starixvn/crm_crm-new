@@ -293,110 +293,124 @@ export class ActionAnnouncement extends Component {
                             messages={this.renderMessage(result, message)}
                         />
                     }
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" htmlFor="notificationTemplateName">
-                            {LangHelper.getResource('NotificationTemplate')}
-                        </Form.Label>
-                        <Col sm="10" md="10">
-                            <Form.Control as="select" size="sm" className="shadow-none"
-                                name="notificationTemplateId" id="notificationTemplateId"
-                                value={values.notificationTemplateId}
-                                onChange={this.handleChangeNotificationTemplate}
-                                disabled={actionAnnouncementPopup.isEdit}
-                            >
-                                <option value="" hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>
-                                {notificationTemplates.map((value, key) => renderOption(key, value.notificationTemplateId, value.notificationTemplateName))}
-                            </Form.Control>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2"
-                            className="required" htmlFor="title"
-                        >
-                            {LangHelper.getResource('Title')}
-                        </Form.Label>
-                        <Col sm="10" md="10">
-                            <Form.Control type="text" size="sm" value={values.title}
-                                name="title" id="title"
-                                className="shadow-none" autoComplete="off"
-                                isInvalid={touched.title && errors.title}
-                                onChange={handleChange}
-                            />
-                        </Col>
-                    </Form.Group>
-                    {
-                        <ContentTab
-                            isValidContent={(touched.content && errors.content) || invalidContentMaxLength} content={values.content} setFieldValue={setFieldValue}
-                            languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab} 
-                        />
-                    }
-                    {
-                        !actionAnnouncementPopup.isEdit && isChangeTemplate && parameters &&
-                        <Form.Group as={Row} className='pt-2'>
-                            <Form.Label column sm="2" md="2" />
-                            <div className='parameters'>
-                                <div className='text-parameters'>Parameters</div>
-                                {
-                                    parameters.map((param,index) =>{
-                                        const removeSpaceParam = param.replace(/\s+/g, "");
-                                        return (
-                                            <div key={index} className='d-flex box-param'>
-                                                <div className='param pt-1'>{param}</div>
-                                                <Form.Control as="textarea"  value={values[removeSpaceParam] || ''}
-                                                    name={removeSpaceParam} id={removeSpaceParam}
-                                                    className="shadow-none form-input-param" autoComplete="off"
-                                                    onChange={event => this.handleChangeParameter(event, param, parameters)}
-                                                />
-                                            </div>
-                                        );
-                                    })
-                                }
+                    <div className="group-item">
+                        <div className="group-header">{LangHelper.getResource('Announcement')}</div>
+                        <div className="group-content">
+                            <div className="content-item item-announcement">
+                                <Form.Group as={Row}>
+                                    <Form.Label htmlFor="notificationTemplateName">
+                                        {LangHelper.getResource('Template')}
+                                    </Form.Label>
+                                    <Form.Control as="select" size="sm"  className="shadow-none"
+                                        name="notificationTemplateId" id="notificationTemplateId"
+                                        value={values.notificationTemplateId}
+                                        onChange={this.handleChangeNotificationTemplate}
+                                        disabled={actionAnnouncementPopup.isEdit}
+                                    >
+                                        <option value="" hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>
+                                        {notificationTemplates.map((value, key) => renderOption(key, value.notificationTemplateId, value.notificationTemplateName))}
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group as={Row}>
+                                    <Form.Label
+                                        className="required" htmlFor="title"
+                                    >
+                                        {LangHelper.getResource('Title')}
+                                    </Form.Label>
+                                    <Form.Control type="text" size="sm" value={values.title}
+                                        name="title" id="title"
+                                        className="shadow-none" autoComplete="off"
+                                        isInvalid={touched.title && errors.title}
+                                        onChange={handleChange}
+                                    />
+                                </Form.Group>
                             </div>
-                        </Form.Group>
-                    }
-                    <UploadFile id={actionAnnouncementPopup.announcementId}
-                        setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
+                            {
+                                <ContentTab
+                            isValidContent={(touched.content && errors.content) || invalidContentMaxLength} content={values.content} setFieldValue={setFieldValue}
+                                    languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab} 
+                                />
+                            }
+                            {
+                                !actionAnnouncementPopup.isEdit && isChangeTemplate && parameters &&
+                                <Form.Group as={Row}>
+                                    <Form.Label />
+                                    <div className='parameters'>
+                                        <div className='text-parameters'>Parameters</div>
+                                        {
+                                            parameters.map((param,index) =>{
+                                                const removeSpaceParam = param.replace(/\s+/g, "");
+                                                return (
+                                                    <div key={index} className='d-flex box-param'>
+                                                        <div className='param pt-1'>{param}</div>
+                                                        <Form.Control as="textarea"  value={values[removeSpaceParam] || ''}
+                                                            name={removeSpaceParam} id={removeSpaceParam}
+                                                            className="shadow-none form-input-param" autoComplete="off"
+                                                            onChange={event => this.handleChangeParameter(event, param, parameters)}
+                                                        />
+                                                    </div>
+                                                );
+                                            })
+                                        }
+                                    </div>
+                                </Form.Group>
+                            }
+                            <div className="group-upload-file">
+                                <UploadFile id={actionAnnouncementPopup.announcementId}
+                                    setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
                         invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
-                    />
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" htmlFor="groupHeadline">
-                            {LangHelper.getResource('GroupHeadline')}
-                        </Form.Label>
-                        <Col sm="10" md="10">
-                            <div className="headline-group-form" onClick={() => this.headlineInputRef.current.focus()}>
-                                {
-                                    this.state.headlineGroups.length > 0 && this.state.headlineGroups.map((headline,index) =>(
-                                        <div key={index} className='headline-box'>
-                                            <span className='fa fa-times mr-2' onClick={event => this.handleRemoveHeadline(event, headline)}/>
-                                            <span className='headline'>{headline}</span>
-                                        </div>
-                                    ))
-                                }
-                                <input className='text-input-headline' ref={this.headlineInputRef}
-                                    onChange={this.handleChangeInputHeadline}
-                                    onKeyDown={this.handleChangeInputHeadline}
-                                    onBlur={event => this.handleBlurInputHeadline(event)}
-                                    onPaste={this.handlePasteGroupHeadline}
                                 />
                             </div>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2" md="2" />
-                        <Col sm="10" md="10">
-                            <Form.Label>
-                                {LangHelper.getResource('GroupHeadlineEnterNotice')}
-                            </Form.Label>
-                        </Col>
-                    </Form.Group>
+                        </div>
+                    </div>
+                    <div className="group-item">
+                        <div className="group-header">{LangHelper.getResource('GroupHeadline')}</div>
+                        <div className="group-content">
+                            <div className="group-headline">
+                                <input
+                                    className="custom"
+                                    type="radio"
+                                    name="groupHeadline"
+                                    id="groupHeadline"
+                                    value
+                                    checked
+                                    onChange
+                                />
+                                <Form.Group as={Row}>
+                                    <Form.Label htmlFor="groupHeadline">
+                                        {LangHelper.getResource('GroupHeadline')}
+                                    </Form.Label>
+                                    <div className="headline-group-form" onClick={() => this.headlineInputRef.current.focus()}>
+                                        {
+                                            this.state.headlineGroups.length > 0 && this.state.headlineGroups.map((headline,index) =>(
+                                                <div key={index} className='headline-box'>
+                                                    <span className='fa fa-times mr-2' onClick={event => this.handleRemoveHeadline(event, headline)}/>
+                                                    <span className='headline'>{headline}</span>
+                                                </div>
+                                            ))
+                                        }
+                                        <input className='text-input-headline' ref={this.headlineInputRef}
+                                            onChange={this.handleChangeInputHeadline}
+                                            onKeyDown={this.handleChangeInputHeadline}
+                                            onBlur={event => this.handleBlurInputHeadline(event)}
+                                            onPaste={this.handlePasteGroupHeadline}
+                                        />
+                                    </div>
+                                </Form.Group>
+                                <Form.Label className="notice-line">
+                                    {LangHelper.getResource('GroupHeadlineEnterNotice')}
+                                </Form.Label>
+                            </div>
+                        </div>
+                    </div>
                     <Option 
                         {...propsOption} stateValue={this.state} settings={this.props.settings}
                         handleDateChange={this.handleDateChange} handleOptionChange={this.handleOptionChange}
                     />
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer className="group-btn">
                     <Button type="submit" variant="primary" size="sm" disabled={isSubmitting || isInvalidContent}>{LangHelper.getResource('Save')}</Button>
-                    <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
+                    <Button className="btn-cancel" type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
                 </Modal.Footer>
             </Form>
         );

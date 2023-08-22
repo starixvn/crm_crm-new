@@ -134,134 +134,10 @@
   }
 }
 
-.new-announcement-modal,
-.edit-announcement-modal {
-  .modal-dialog {
-    max-width: 1000px !important;
-  }
+.announcement-content-modal {
   .modal-content {
-    .form-group {
-      margin-bottom: 0 !important;
-    }
-
-    .list-file-image .icon-delete::before {
-      padding-left: 6px;
-    }
-
-    .list-file-image:last-child {
-      padding-bottom: 5px;
-    }
-
-    .multiple-select-options {
-      max-height: 160px;
-    }
-
-    @include tab-language;
-
-    .file-upload-label {
-      cursor: pointer;
-      border: 1px solid #6c757d;
-      border-radius: 4px;
-      padding: 3px 8px;
-      font-size: 13px;
-      margin-right: 5px;
-
-      &:hover {
-        background-color: #e7dfdf;
-      }
-      span {
-        color: black;
-      }
-
-      input[type="file"] {
-        position: absolute;
-        top: 0;
-        right: 639px;
-        left: 12px;
-        margin: 0;
-        opacity: 0;
-        filter: alpha(opacity=0);
-        font-size: 23px;
-        cursor: pointer;
-      }
-    }
-
-    .text-color {
-      color: rgb(33, 123, 199);
-    }
-
-    .parameters {
-      margin-left: 15px;
-      border: 1px solid $border-input-color;
-      width: 80.3%;
-      position: relative;
-
-      .text-parameters {
-        position: absolute;
-        padding: 0px 18px;
-        top: -10px;
-        left: 50px;
-        background-color: white;
-      }
-      .box-param {
-        padding: 10px;
-
-        .param {
-          width: 20%;
-        }
-        .form-input-param {
-          width: 80%;
-          height: calc(1.5em + 0.5rem + 2px) !important;
-        }
-      }
-    }
-
-    .headline-group-form {
-      overflow: auto;
-      max-height: 150px;
-      background-color: white;
-      min-height: 90px;
-      border: 1px solid #cccccc;
-      display: flex;
-      flex-wrap: wrap;
-
-      .headline-box {
-        height: 22px;
-        border: 1px solid #8e8e8e;
-        border-radius: 5px;
-        padding: 1px 4px;
-        margin: 2px;
-
-        .headline {
-          color: #06c;
-        }
-        .fa-times {
-          cursor: pointer;
-        }
-      }
-
-      .text-input-headline {
-        border: none !important;
-        outline: 0 !important;
-        padding-left: 2px;
-        height: 23px;
-      }
-    }
-
-    .form-option-wrapper {
-      display: flex;
-      flex-wrap: wrap;
-      .form-control-wrapper {
-        width: 178.5px !important;
-      }
-    }
-  }
-}
-
-.modal-dialog {
-  .modal-content {
-    border-radius: 3px;
     background: #fff;
+
     .modal-header {
       padding: 12px 16px !important;
     }
@@ -319,12 +195,15 @@
         background: #4e71bb;
         box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
         margin: 0;
+
+        &:last-child {
+          margin-left: 21px;
+        }
       }
 
       .btn-cancel {
         border: 1px solid #7c7c7c;
         background: #a6a6a6;
-        margin-left: 21px;
       }
     }
   }
@@ -386,6 +265,10 @@
 
 .add-announcement {
   max-width: 1000px;
+}
+
+.add-announcement,
+.edit-announcement-modal {
   line-height: normal;
 
   .group-item {
@@ -476,6 +359,7 @@
         .ckeditor-container {
           .cke_chrome {
             border-radius: 0px 3px 3px 3px;
+            border-color: #bbb;
           }
 
           .cke_top {
@@ -744,5 +628,18 @@
         box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
       }
     }
+  }
+
+  .modal-header {
+    padding: 12px 16px;
+  }
+
+  .modal-body {
+    padding: 16px 16px 0;
+  }
+
+  .modal-footer {
+    border: none;
+    padding: 12px 16px 16px;
   }
 }
