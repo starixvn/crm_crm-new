@@ -297,7 +297,7 @@ export class NewAnnouncement_v2 extends Component {
                         LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), sendDateFormat) :
                         LangHelper.getResource('ConfirmSendImmediately');
         return(
-            <div>
+            <>
                 <div className="line-content">{content}</div>
                 <div className="group-item">
                     <div className="group-header">{LangHelper.getResource('GroupHeadline')}</div>
@@ -328,7 +328,7 @@ export class NewAnnouncement_v2 extends Component {
                     <div className="group-header"> {LangHelper.getResource('SendingType')}</div>
                     <div className="group-content">Send at Aug 02, 2023 06:00 PM</div>
                 </div>
-            </div>
+            </>
         );
     }
 
