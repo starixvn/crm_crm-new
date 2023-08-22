@@ -297,7 +297,38 @@ export class NewAnnouncement_v2 extends Component {
                         LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), sendDateFormat) :
                         LangHelper.getResource('ConfirmSendImmediately');
         return(
-            <div>{content}</div>
+            <div>
+                <div className="line-content">{content}</div>
+                <div className="group-item">
+                    <div className="group-header">{LangHelper.getResource('GroupHeadline')}</div>
+                    <div className="group-content">
+                        <div className="group-list">
+                            <div className="list-title"> {LangHelper.getResource('Site')}</div>
+                            <div className="list-info">222223, 222225, 611111, 722222, 733333, 755555, 76666B, 7aa666, BEST-ODDS,
+                             IBCIndo, IMBC, INDO, JPNIBC, KORIBC, XYZBET, y789, y889, yOther, yUT</div>
+                        </div>
+                        <div className="group-list">
+                            <div className="list-title"> {LangHelper.getResource('Currency')}</div>
+                            <div className="list-info">$US, AED, AUD, BDT, CAN, CHF, COP, CY, CZK, CZK, DDD, DKK,
+                             DON, EURO, GBP, HK$, HKK, IDD, IDR, IN, IND, INH, INR1 KHR, MMK, NOK, PE, RM, RMB, RON, SEK, THB, US$, USD, USTM, UT, UUS, Won, Yen, YNG</div>
+                        </div>
+                        <div className="group-list">
+                            <div className="list-title headline-type"> {LangHelper.getResource('HeadlineType')}: 
+                                <span>ALL</span>
+                            </div>
+                        </div>
+                        <div className="group-list">
+                            <div className="list-title"> {LangHelper.getResource('Username')}</div>
+                            <div className="list-info">305RM, 92RM, 999SD, BA03RM, PHRM, WE339, CHTB, ymrm,
+                             1158RM, 659RMB, M12RM, MAMRM, M96RM, 305RM, 92RM, 999SD, BA03RM, PHRM, WE339, CHTB, ymrm, 1158RM, 659RMB, M12RM, MAMRM, M96RM,</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="group-item">
+                    <div className="group-header"> {LangHelper.getResource('SendingType')}</div>
+                    <div className="group-content">Send at Aug 02, 2023 06:00 PM</div>
+                </div>
+            </div>
         );
     }
 
@@ -573,10 +604,10 @@ export class NewAnnouncement_v2 extends Component {
                         contents={this.renderContentConfirm()}
                         buttons={[
                             <Button variant="primary" size="sm" onClick={this.handleConfirmInsertDialog}>
-                                {LangHelper.getResource('Yes')}
+                                {LangHelper.getResource('Push')}
                             </Button>,
-                            <Button variant="primary" size="sm" onClick={this.handleCloseConfirmInsertDialog}>
-                                {LangHelper.getResource('No')}
+                            <Button className="btn-cancel" onClick={this.handleCloseConfirmInsertDialog}>
+                                {LangHelper.getResource('Cancel')}
                             </Button>
                         ]}
                         onClose={this.handleCloseConfirmInsertDialog}

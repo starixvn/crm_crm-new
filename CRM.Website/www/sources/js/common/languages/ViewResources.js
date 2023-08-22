@@ -468,6 +468,7 @@
     SendAt: 'Sent at',
     Sender: 'Sender',
     Sending: 'Sending',
+    SendingType: 'Sending Type',
     Sent: 'Sent',
     SentAt: 'Sent At',
     SeparatedByComma: "Separated by ',' for multiple contact info",

@@ -258,7 +258,7 @@
   }
 }
 
-.announcement-content-modal {
+.modal-dialog {
   .modal-content {
     border-radius: 3px;
     background: #fff;
@@ -300,36 +300,6 @@
         }
       }
 
-      .group-list {
-        border-radius: 3px;
-        border: 1px solid #bbb;
-        background: #f5f5f5;
-
-        &:not(:last-child) {
-          margin-bottom: 12px;
-        }
-
-        .list-title {
-          background: #e7eaef;
-          padding: 7px 12px;
-          color: #333;
-          font-weight: 700;
-
-          span {
-            font-weight: 400;
-            padding-left: 4px;
-          }
-
-          &:not(.headline-type) {
-            border-bottom: 1px solid #bbb;
-          }
-        }
-
-        .list-info {
-          padding: 12px;
-        }
-      }
-
       @include tab-language;
       .nav-tabs {
         border: none;
@@ -349,8 +319,69 @@
         border: 1px solid #3c5b9b;
         background: #4e71bb;
         box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
+        margin: 0;
+      }
+
+      .btn-cancel {
+        border: 1px solid #7c7c7c;
+        background: #a6a6a6;
+        margin-left: 21px;
       }
     }
+  }
+
+  .group-list {
+    border-radius: 3px;
+    border: 1px solid #bbb;
+    background: #f5f5f5;
+
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
+
+    .list-title {
+      background: #e7eaef;
+      padding: 7px 12px;
+      color: #333;
+      font-weight: 700;
+
+      span {
+        font-weight: 400;
+        padding-left: 4px;
+      }
+
+      &:not(.headline-type) {
+        border-bottom: 1px solid #bbb;
+      }
+    }
+
+    .list-info {
+      padding: 12px;
+    }
+  }
+
+  .group-item {
+    border-radius: 3px;
+    border: 1px solid #bbb;
+
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
+
+    .group-header {
+      padding: 7px 12px;
+      background: #c0cbe2;
+      border-bottom: 1px solid #bbb;
+      font-weight: 700;
+    }
+
+    .group-content {
+      padding: 12px;
+    }
+  }
+
+  .line-content {
+    margin-bottom: 12px;
   }
 }
 
