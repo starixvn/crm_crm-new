@@ -34,7 +34,7 @@ export class NewAnnouncement_v2 extends Component {
                 site: '1',
                 currency: '1'
             },
-            confirmInsertDialog: { show: false, params: null },
+            confirmInsertDialog: { show: false, params: null, content: null },
             isChangeTemplate: false,
             parameters: null,
             invalidWidthHeight: [],
@@ -261,28 +261,33 @@ export class NewAnnouncement_v2 extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
+        values.status = 'Planned';
         const param = getParams(values, this.state);
-        console.log('param', param);
-        this.setState({confirmInsertDialog: { show: true, params: param}});
-        // this.props.validateAnnouncement(param).then(() => {
-        //     console.log('this.props.validateAnnouncementResult', this.props.validateAnnouncementResult);
-        // })
+
+        this.props.validateAnnouncement(param).then(() => {
+            const contentConfirm = this.props.validateAnnouncementResult;
+            if (!contentConfirm?.code && contentConfirm.length > 0) {
+                this.setState({confirmInsertDialog: { show: true, params: param, content: contentConfirm[0]}});
+            }
+            this.formik.setSubmitting(false);
+        });
     };
 
     handleConfirmInsertDialog = () =>{
         this.handleCloseConfirmInsertDialog();
         const formData = this.state.confirmInsertDialog.params;
-        console.log('formData', formData);
 
-        // this.props.createAnnouncement(formData).then(() => {
-        //     if (this.props.createAnnouncementResult.isSuccessful) {
-        //         setTimeout(() => {
-        //             this.props.onSuccess();
-        //         }, 3000);
-        //     } else {
-        //         this.formik.setSubmitting(false);
-        //     }
-        // });
+        this.props.createAnnouncement(formData).then(() => {
+            if (this.props.createAnnouncementResult.isSuccessful) {
+                setTimeout(() => {
+                    this.props.setIsRefresh(true);
+                    this.props.setCreateAnnouncement(null);
+                    this.props.navigate(Site.resolveClientUrl('Announcement'));
+                }, 3000);
+            } else {
+                this.formik.setSubmitting(false);
+            }
+        });
     }
 
     handleCloseConfirmInsertDialog = () =>{
@@ -290,8 +295,73 @@ export class NewAnnouncement_v2 extends Component {
         this.formik.setSubmitting(false);
     }
 
+    handleClose = () => {
+        this.props.setCreateAnnouncement(null);
+        this.props.navigate(Site.resolveClientUrl('Announcement'));
+    };
+
+    handleSaveDraft = (event, values) => {
+        event.preventDefault();
+        values.status = 'Draft';
+        const param = getParams(values, this.state);
+
+        this.props.createAnnouncement(param).then(() => {
+            if (this.props.createAnnouncementResult.isSuccessful) {
+                setTimeout(() => {
+                    this.props.setIsRefresh(true);
+                    this.props.setCreateAnnouncement(null);
+                    this.props.navigate(Site.resolveClientUrl('Announcement'));
+                }, 3000);
+            } else {
+                this.formik.setSubmitting(false);
+            }
+        });
+    };
+
+    renderContentType = contentConfirm => {
+        const currencies = [];
+        let headlineType = null;
+
+        const headlineTypes = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
+        headlineTypes.map(data => {
+            if(contentConfirm.headlineType === data.id){
+                headlineType = data.name;
+            }
+        });
+
+        this.props.settings.currencyList.map(data => {
+            if(contentConfirm.currencyList.split(',').includes(data.id.toString())){
+                currencies.push(data.name);
+            }
+        });
+        return { headlineType, currencies: currencies.join(', ') };
+    }
+
+    getSettingOption = async announcement =>{
+        await this.props.getSettings().then(() =>{
+            const currencies = [];
+            let headlineType = '';
+            this.props.settings.currencyList.map(x => {
+                if(announcement.currencyIdList.split(',').includes(x.id.toString())){
+                    currencies.push(x.name);
+                }
+            });
+
+            const headlineTypes = [...this.props.settings.headlineTypeList, {id: 2, name: 'All'}];
+
+            headlineTypes.map(x => {
+                if(announcement.headlineType === x.id){
+                    headlineType = x.name;
+                }
+            });
+
+            this.setState({currencies: currencies.join(', '), headlineType});
+        });
+    }
+
     renderContentConfirm = () =>{
         const {sendType, sendDate} = this.formik.values;
+        const contentConfirm = this.state.confirmInsertDialog.content;
         const sendDateFormat = DateTimeService.toLongDateTimeFormat(sendDate);
         const content = sendType === 'Send At' ? 
                         LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), sendDateFormat) :
@@ -302,52 +372,46 @@ export class NewAnnouncement_v2 extends Component {
                 <div className="group-item">
                     <div className="group-header">{LangHelper.getResource('GroupHeadline')}</div>
                     <div className="group-content">
-                        <div className="group-list">
-                            <div className="list-title"> {LangHelper.getResource('Site')}</div>
-                            <div className="list-info">222223, 222225, 611111, 722222, 733333, 755555, 76666B, 7aa666, BEST-ODDS,
-                             IBCIndo, IMBC, INDO, JPNIBC, KORIBC, XYZBET, y789, y889, yOther, yUT</div>
-                        </div>
-                        <div className="group-list">
-                            <div className="list-title"> {LangHelper.getResource('Currency')}</div>
-                            <div className="list-info">$US, AED, AUD, BDT, CAN, CHF, COP, CY, CZK, CZK, DDD, DKK,
-                             DON, EURO, GBP, HK$, HKK, IDD, IDR, IN, IND, INH, INR1 KHR, MMK, NOK, PE, RM, RMB, RON, SEK, THB, US$, USD, USTM, UT, UUS, Won, Yen, YNG</div>
-                        </div>
-                        <div className="group-list">
-                            <div className="list-title headline-type"> {LangHelper.getResource('HeadlineType')}: 
-                                <span>ALL</span>
-                            </div>
-                        </div>
+                        {
+                            contentConfirm.siteNameList &&
+                            (
+                                <>
+                                    <div className="group-list">
+                                        <div className="list-title"> {LangHelper.getResource('Site')}</div>
+                                        <div className="list-info">{contentConfirm.siteNameList.replaceAll(',', ', ')}</div>
+                                    </div>
+                                    <div className="group-list">
+                                        <div className="list-title"> {LangHelper.getResource('Currency')}</div>
+                                        <div className="list-info">{this.renderContentType(contentConfirm).currencies}</div>
+                                    </div>
+                                    <div className="group-list">
+                                        <div className="list-title headline-type"> {LangHelper.getResource('HeadlineType')}: 
+                                            <span>{this.renderContentType(contentConfirm).headlineType}</span>
+                                        </div>
+                                    </div>
+                                    {
+                                        contentConfirm.directAccounts && contentConfirm.directAccounts.length > 0 &&
+                                        <div className="group-list">
+                                            <div className="list-title">{LangHelper.getResource('DirectAccount')}</div>
+                                            <div className="list-info">{contentConfirm.directAccountList ? contentConfirm.directAccountList.replaceAll(',', ', ') : ''}</div>
+                                        </div>
+                                    }
+                                </>
+                            )
+                        }
                         <div className="group-list">
                             <div className="list-title"> {LangHelper.getResource('Username')}</div>
-                            <div className="list-info">305RM, 92RM, 999SD, BA03RM, PHRM, WE339, CHTB, ymrm,
-                             1158RM, 659RMB, M12RM, MAMRM, M96RM, 305RM, 92RM, 999SD, BA03RM, PHRM, WE339, CHTB, ymrm, 1158RM, 659RMB, M12RM, MAMRM, M96RM,</div>
+                            <div className="list-info">{contentConfirm.headlineNameList ? contentConfirm.headlineNameList.replaceAll(',', ', ') : ''}</div>
                         </div>
                     </div>
                 </div>
                 <div className="group-item">
                     <div className="group-header"> {LangHelper.getResource('SendingType')}</div>
-                    <div className="group-content">Send at Aug 02, 2023 06:00 PM</div>
+                    <div className="group-content">{contentConfirm.sendDateString} {contentConfirm.sendTimeString}</div>
                 </div>
             </>
         );
     }
-
-    handleSaveDraft = (event, values) => {
-        event.preventDefault();
-        values.status = 'Draft';
-        const param = getParams(values, this.state);
-
-        this.props.createAnnouncement(param).then(() => {
-            if (this.props.createAnnouncementResult.isSuccessful) {
-                setTimeout(() => {
-                    this.props.setCreateAnnouncement(null);
-                    this.props.navigate(Site.resolveClientUrl('Announcement'));
-                }, 3000);
-            } else {
-                this.formik.setSubmitting(false);
-            }
-        });
-    };
 
     renderForm = ({
         values,
@@ -366,6 +430,12 @@ export class NewAnnouncement_v2 extends Component {
             <Form noValidate onSubmit={handleSubmit}>
                 <div className="add-announcement">
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    {
+                        this.props.validateAnnouncementResult?.code &&
+                        <ResponseMessage isSuccessful={this.props.validateAnnouncementResult.isSuccessful}
+                            messages={this.renderMessage(this.props.validateAnnouncementResult)}
+                        />
+                    }
                     {
                         this.props.createAnnouncementResult &&
                         <ResponseMessage isSuccessful={this.props.createAnnouncementResult.isSuccessful}
@@ -545,7 +615,7 @@ export class NewAnnouncement_v2 extends Component {
                         handleDateChange={this.handleDateChange}
                     />
                     <div className="group-btn">
-                        <Button className="btn-cancel" type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
+                        <Button className="btn-cancel" type="submit" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>
                         <Button className="btn-save" type="submit" variant="primary" size="md" onClick={event => this.handleSaveDraft(event, values)}>{LangHelper.getResource('Save as Draft')}</Button>
                         <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={this.isDisableSubmit(values, isSubmitting)}>{LangHelper.getResource('Push')}</Button>
                     </div>

@@ -84,7 +84,7 @@ export const getParams = (values, state) => {
 
     const params = {
         notificationTemplateId: notificationTemplateId,
-        headlineNameList: state.headlineGroups.join(','),
+        headlineNameList: state.isHeadlineGroup.isUsername ? state.headlineGroups.join(',') : '',
         siteNameList: !state.options.site ? '' : state.options.site,
         currencyList: !state.options.currency ? '' : state.options.currency,
         headlineType: headlineType,

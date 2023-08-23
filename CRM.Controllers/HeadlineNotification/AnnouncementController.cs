@@ -30,6 +30,7 @@
         private readonly ISettingService settingService;
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly ISendAnnouncementService sendAnnouncementService;
+        private readonly ICommonService commonService;
         private readonly string pathImages = "www/dist/images/announcement";
 
         public AnnouncementController(
@@ -37,7 +38,8 @@
             INapSession napSession,
             ISettingService settingService,
             IWebHostEnvironment hostingEnvironment,
-            ISendAnnouncementService sendAnnouncementService
+            ISendAnnouncementService sendAnnouncementService,
+            ICommonService commonService
             )
         {
             this.announcementService = announcementService;
@@ -45,6 +47,7 @@
             this.settingService = settingService;
             this.hostingEnvironment = hostingEnvironment;
             this.sendAnnouncementService = sendAnnouncementService;
+            this.commonService = commonService;
         }
 
         public async Task<IActionResult> GetAnnouncementTemplate()
@@ -260,6 +263,13 @@
 
             if (commandResult.IsSuccessful)
             {
+                foreach (var announcement in announcements)
+                {
+                    var convertSendDateToClient = commonService.ConvertToClientDateTime(announcement.SendDate);
+                    announcement.SendDate = convertSendDateToClient;
+                    announcement.SendDateString = convertSendDateToClient.ToString("MMM dd, yyyy");
+                    announcement.SendTimeString = convertSendDateToClient.ToString("hh:mm:ss tt");
+                }
                 return Json(announcements);
             }
             return Json(commandResult);

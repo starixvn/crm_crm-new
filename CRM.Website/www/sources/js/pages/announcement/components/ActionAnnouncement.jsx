@@ -13,6 +13,7 @@ import Option from './Option';
 import ContentTab from './ContentTab';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
     validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, checkInvalidMaxLengthContent
 } from '../common.functions';
@@ -38,7 +39,15 @@ export class ActionAnnouncement extends Component {
             confirmActionDialog: { show: false, params: null},
             isChangeTemplate: false,
             parameters: null,
-            invalidWidthHeight: []
+            invalidWidthHeight: [],
+            isHeadlineGroup: {
+                isUsername: true,
+                isSiteType: false
+            },
+            isSendType: {
+                isSendNow: true,
+                isSendAt: false
+            }
         };
     }
 
@@ -274,7 +283,7 @@ export class ActionAnnouncement extends Component {
         const propsOption = {
             values, handleChange, errors, touched
         };
-        const {parameters, isChangeTemplate, uploadedFiles, tab} = this.state;
+        const {parameters, isChangeTemplate, uploadedFiles, siteOptions, currencyOptions} = this.state;
         const {invalidContentMaxLength, textInvalidContentMaxLength} = checkInvalidMaxLengthContent(values.content, tab);
         const isInvalidContent = this.handleCheckValidAllContent(values.content);
         const {actionAnnouncementPopup, editAnnouncementResult, createAnnouncementResult} = this.props;
@@ -283,6 +292,7 @@ export class ActionAnnouncement extends Component {
                         LangHelper.getResource('EditAnnouncementSuccessfully') :
                         LangHelper.getResource('CloneAnnouncementSuccessfully');
         const notificationTemplates = [{notificationTemplateId: 0, notificationTemplateName: LangHelper.getResource('PleaseSelect')}, ...this.props.announcementTemplate.notificationTemplates];
+        const headlineTypeList = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
@@ -366,7 +376,7 @@ export class ActionAnnouncement extends Component {
                     <div className="group-item">
                         <div className="group-header">{LangHelper.getResource('GroupHeadline')}</div>
                         <div className="group-content">
-                            <div className="group-headline">
+                            <div className="group-headline group-username">
                                 <input
                                     className="custom"
                                     type="radio"
@@ -400,6 +410,71 @@ export class ActionAnnouncement extends Component {
                                 <Form.Label className="notice-line">
                                     {LangHelper.getResource('GroupHeadlineEnterNotice')}
                                 </Form.Label>
+                            </div>
+
+                            <div className="group-headline">
+                                <input
+                                    className="custom"
+                                    type="radio"
+                                    name="groupHeadline"
+                                    id="groupHeadline"
+                                    //value={this.state.isHeadlineGroup.isSiteType}
+                                    //checked={this.state.isHeadlineGroup.isSiteType}
+                                    onChange={() => this.handleCheckHeadline('isSiteType', 'isUsername')}
+                                />
+                                <div className="group-select">
+                                    <Form.Group as={Row}>
+                                        <Form.Label >{LangHelper.getResource('Site')}</Form.Label>
+                                        <div className='form-control-wrapper'>
+                                            <MultipleSelect
+                                                //isDisable={!isHeadlineGroup.isSiteType}
+                                                dataSource={siteOptions}
+                                                keyField='id'
+                                                hasSearchBox
+                                                valueField='name'
+                                                statusField='checked'
+                                                isSummited={false}
+                                                isAllTextShown
+                                                isPlacementTop
+                                                onChange={
+                                                    (currentItem, selectedItemsKey) => this.handleOptionChange('site', selectedItemsKey)
+                                                }
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                    <Form.Group as={Row}>
+                                        <Form.Label>{LangHelper.getResource('Currency')}</Form.Label>
+                                        <div className='form-control-wrapper'>
+                                            <MultipleSelect
+                                                dataSource={currencyOptions}
+                                                //isDisable={!isHeadlineGroup.isSiteType}
+                                                keyField='id'
+                                                valueField='name'
+                                                hasSearchBox
+                                                statusField='checked'
+                                                isPlacementTop
+                                                isSummited={false}
+                                                isAllTextShown
+                                                onChange={
+                                                    (currentItem, selectedItemsKey) => this.handleOptionChange('currency', selectedItemsKey)
+                                                }
+                                            />
+                                        </div>
+                                    </Form.Group>
+                                    <Form.Group as={Row}>
+                                        <Form.Label >{LangHelper.getResource('HeadlineType')}</Form.Label>
+                                        <Form.Control as='select' size='sm' className='form-control-wrapper'
+                                            name='headlineType' value={values.headlineType}
+                                            //disabled={!isHeadlineGroup.isSiteType}
+                                            onChange={handleChange}
+                                        >
+                                            <option value=''>{LangHelper.getResource('PleaseSelect')}</option>
+                                            {
+                                                headlineTypeList.map((value, key) => <option key={key} value={value.id}>{value.name}</option>)
+                                            }
+                                        </Form.Control>
+                                    </Form.Group>
+                                </div>
                             </div>
                         </div>
                     </div>
