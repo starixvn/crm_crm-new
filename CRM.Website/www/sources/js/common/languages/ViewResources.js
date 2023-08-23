@@ -565,6 +565,7 @@
     UpdateLicenseeMappingSuccessful: 'Update successfully',
     Username: 'Username',
     UsernameInvalid: 'Username is invalid',
+    UsernameRequired: 'Username is required!',
     UpdatedBy: 'Updated By',
     UsernameIsChanged: 'Username is changed, please validate first before save',
     UsernameIsNotValid: 'Username is invalid',

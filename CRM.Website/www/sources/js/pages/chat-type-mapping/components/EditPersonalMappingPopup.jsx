@@ -369,7 +369,7 @@ export class EditPersonalMappingPopup extends Component {
         if (validateData.botServiceId === BotServiceType.Telegram) {
             if (!validateData.letstalkID_Username) {
                 isValid = false;
-                errMsg.push('Username is mandatory!');
+                errMsg.push(LangHelper.getResource('UsernameRequired'));
             }
             if (!validateData.displayName && validateData.letstalkID_Username) {
                 isValid = false;
