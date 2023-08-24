@@ -97,7 +97,7 @@
                     break;
 
                 default:
-                    // do nothing
+                    await HandleSendDefaultTextAsync(bot, message);
                     break;
             }
         }
@@ -108,6 +108,7 @@
                 .Select(entity => message.Text.Substring(entity.Offset, entity.Length)).ToList();
             if (commands is null)
             {
+                await HandleSendDefaultTextAsync(bot, message);
                 return;
             }
             foreach (var command in commands)
@@ -119,11 +120,21 @@
                 {
                     await AddBotToPersonalAsync(message, bot);
                 }
-                if (isGetGroupIdCommand)
+                else if (isGetGroupIdCommand)
                 {
                     await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, message.Chat.Id.ToString());
+                    
+                }
+                else
+                {
+                    await HandleSendDefaultTextAsync(bot, message);
                 }
             }
+        }
+
+        protected internal virtual async Task HandleSendDefaultTextAsync(User bot, Message message)
+        {
+            await telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, message.Chat.Id, CommandMessageTelegram.SendDefaultMessage);
         }
 
         protected internal virtual async Task<CommandResult> EditChatTitledAsync(Message message)
