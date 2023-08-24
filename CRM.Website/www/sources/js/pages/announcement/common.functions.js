@@ -80,7 +80,7 @@ export const getParams = (values, state) => {
         }
     }
 
-    const isSendImmediately = sendType !== 'Send At';
+    const isSendImmediately = sendType === 'Send immediately';
 
     const params = {
         notificationTemplateId: notificationTemplateId,
@@ -89,7 +89,7 @@ export const getParams = (values, state) => {
         currencyList: !state.options.currency ? '' : state.options.currency,
         headlineType: headlineType,
         title: values.title,
-        sendDate: isSendImmediately ? null : DateTimeService.toLongDateTimeFormat(sendDate),
+        sendDate: isSendImmediately ? null : (sendType === 'Send At' ? DateTimeService.toLongDateTimeFormat(sendDate) : null),
         sendImmediately: isSendImmediately,
         status: values.status
     };

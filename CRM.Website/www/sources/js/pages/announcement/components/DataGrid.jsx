@@ -104,6 +104,7 @@ export class DataGrid extends Component {
     }
 
     renderAction = item => {
+        console.log('item.status', item.status);
         switch (item.status) {
             case 'Planned':
                 return(
@@ -113,7 +114,7 @@ export class DataGrid extends Component {
                         </Tooltip>}
                     >
                         <Cell className="text-center">
-                            <span className='rounded-circle fa fa-ban icon-delete' onClick={() => this.handleCancel(item.announcementId)} />
+                            <span className='rounded-circle fa fa-ban icon-delete' onClick={() => this.handleCancel(item.announcementId, 'Planned')} />
                         </Cell>
                     </OverlayTrigger>
                 );
@@ -140,7 +141,26 @@ export class DataGrid extends Component {
                             <span className='rounded-circle fa fa-files-o icon-duplicate' onClick={() => this.handleDuplicate(item.announcementId)} />
                         </Cell>
                     </OverlayTrigger>
+                );     
+            case 'Draft':
+                return(
+                    <Cell className="text-center">
+                        <OverlayTrigger placement="bottom-start" overlay={
+                            <Tooltip id="tooltip-cancel-announcement">
+                                {LangHelper.getResource('CancelThisAnnouncement')}
+                            </Tooltip>}
+                        >
+                            <span className='rounded-circle fa fa-ban icon-delete' onClick={() => this.handleCancel(item.announcementId, 'Draft')} />
+                        </OverlayTrigger>
 
+                        <OverlayTrigger placement="bottom-start" overlay={
+                            <Tooltip id="tooltip-cancel-announcement">
+                                {LangHelper.getResource('EditThisAnnouncement')}
+                            </Tooltip>}
+                        >   
+                            <span className='rounded-circle fa fa-pencil icon-edit' onClick={() => this.handleEdit(item.announcementId)} />
+                        </OverlayTrigger>
+                    </Cell>
                 );
             default:
                 return <Cell />;
@@ -157,9 +177,9 @@ export class DataGrid extends Component {
         this.props.setOpenActionAnnouncementPopup({show: true, announcementId: announcementId, isEdit: false});
     }
 
-    handleCancel = announcementId => {
+    handleCancel = (announcementId, status) => {
         this.props.setIsRefresh(false);
-        this.props.setOpenCancelAnnouncementPopup({show: true, announcementId: announcementId});
+        this.props.setOpenCancelAnnouncementPopup({show: true, announcementId: announcementId, status: status});
     }
 
     render() {

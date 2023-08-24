@@ -34,6 +34,7 @@ namespace CRM.Criteria.Announcement
         public string HeadlineType { get; set; }
         public DateTime? SendDate { get; set; }
         public bool SendImmediately { get; set; }
+        public string Status { get; set; }
         public string LoginIP { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_ChatBot_Announcement_Upd";

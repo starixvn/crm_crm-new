@@ -12,7 +12,7 @@ namespace CRM.Models.Announcement
         public string SiteNameList { get; set; }
         public string CurrencyIdList { get; set; }
         public bool SendImmediately { get; set; }
-        public DateTime SendDate { get; set; }
+        public DateTime? SendDate { get; set; }
         public string SendDateString { get; set; }
         public string SendTimeString { get; set; }
         public string FileName { get; set; }

@@ -37,7 +37,7 @@
             IAnnouncementService announcementService,
             INapSession napSession,
             ISettingService settingService,
-            IWebHostEnvironment hostingEnvironment,
+            IWebHostEnvironment hostingEnvironment
             ISendAnnouncementService sendAnnouncementService,
             ICommonService commonService
             )
@@ -70,10 +70,9 @@
         public async Task<IActionResult> GetAnnouncement([FromBody] GetAnnouncementCriteria criteria)
         {
             var announcements = await announcementService.GetAnnouncementAsync(criteria);
-            var announcementsOrderBy = announcements.OrderByDescending(x => x.SendDate);
             return Json(new
             {
-                data = announcementsOrderBy,
+                data = announcements,
                 TotalItems = criteria.TotalRows
             });
         }
@@ -164,11 +163,12 @@
         }
 
         [CrmPermission(FunctionKey = FunctionKey.Announcement, Policy = Policy.Host)]
-        public async Task<IActionResult> Cancel(int id)
+        public async Task<IActionResult> Cancel(int id, string status)
         {
             var command = new CancelAnnouncementCommand
             {
                 AnnouncementId = id,
+                Status = status,
                 UserId = napSession.UserId
             };
             CommandResult commandResult = await announcementService.CancelAnnouncementAsync(command);
@@ -261,18 +261,7 @@
             command.FileName = fileName;
             var (announcements, commandResult) = await announcementService.ValidateAnnouncementAsync(command);
 
-            if (commandResult.IsSuccessful)
-            {
-                foreach (var announcement in announcements)
-                {
-                    var convertSendDateToClient = commonService.ConvertToClientDateTime(announcement.SendDate);
-                    announcement.SendDate = convertSendDateToClient;
-                    announcement.SendDateString = convertSendDateToClient.ToString("MMM dd, yyyy");
-                    announcement.SendTimeString = convertSendDateToClient.ToString("hh:mm:ss tt");
-                }
-                return Json(announcements);
-            }
-            return Json(commandResult);
+            return commandResult.IsSuccessful ? Json(announcements) : Json(commandResult);
         }
     }
 }

@@ -43,7 +43,7 @@ export class NewAnnouncement_v2 extends Component {
                 isSiteType: false
             },
             isSendType: {
-                isSendNow: true,
+                isSendNow: false,
                 isSendAt: false
             }
         };
@@ -61,9 +61,7 @@ export class NewAnnouncement_v2 extends Component {
 
     handleOptionSettings = async () => {
         await this.props.getSettings().then(() => {
-            const siteIds = [];
             const siteOptions = this.props.settings.siteList.map(x => {
-                siteIds.push(x.site);
                 return {
                     id: x.site,
                     name: x.site,
@@ -71,9 +69,7 @@ export class NewAnnouncement_v2 extends Component {
                 };
             });
 
-            const currencyIds = [];
             const currencyOptions = this.props.settings.currencyList.map(x => {
-                currencyIds.push(x.id);
                 return {
                     id: x.id,
                     name: x.name,
@@ -282,6 +278,7 @@ export class NewAnnouncement_v2 extends Component {
                 setTimeout(() => {
                     this.props.setIsRefresh(true);
                     this.props.setCreateAnnouncement(null);
+                    this.props.setValidateAnnouncement(null);
                     this.props.navigate(Site.resolveClientUrl('Announcement'));
                 }, 3000);
             } else {
@@ -357,7 +354,19 @@ export class NewAnnouncement_v2 extends Component {
 
             this.setState({currencies: currencies.join(', '), headlineType});
         });
-    }
+    };
+
+    handleChangeSendType = value => {
+        const isSendAt = value === 'Send At' ? true : false;
+        console.log('valueNew', value);
+        this.formik.setFieldValue('sendType', value);
+        this.setState({
+            isSendType: {
+                isSendNow: !isSendAt,
+                isSendAt: isSendAt
+            }
+        });
+    };
 
     renderContentConfirm = () =>{
         const {sendType, sendDate} = this.formik.values;
@@ -423,7 +432,7 @@ export class NewAnnouncement_v2 extends Component {
         isSubmitting
     }) => {
         const { uploadedFiles, parameters, isChangeTemplate, siteOptions, currencyOptions, isHeadlineGroup } = this.state;
-        const propsOption = { values, handleChange, errors, touched, setFieldValue };
+        const propsOption = { values, handleChange, errors, touched };
         const headlineTypeList = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
 
         return (
@@ -612,7 +621,7 @@ export class NewAnnouncement_v2 extends Component {
                     </div>
                     <Option
                         {...propsOption} stateValue={this.state} settings={this.props.settings}
-                        handleDateChange={this.handleDateChange}
+                        handleDateChange={this.handleDateChange} handleChange={this.handleChangeSendType}
                     />
                     <div className="group-btn">
                         <Button className="btn-cancel" type="submit" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>

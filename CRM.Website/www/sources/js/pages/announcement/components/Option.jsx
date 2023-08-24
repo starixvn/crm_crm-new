@@ -1,13 +1,14 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent, Fragment, Component } from 'react';
 import DatePicker from '@jsroot/components/date-picker/index';
 import { Form } from 'react-bootstrap';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 
 export default class Option extends PureComponent {
-    renderSendTime = (values, handleChange, errors, touched, setFieldValue) =>{
+    renderSendTime = (values, handleChange, errors, touched) =>{
         const dateTimeNow =  new Date(DateTimeService.toClientDateTime(new Date()));
         const isSendAt = values.sendType === 'Send At';
+console.log('values.sendDate', values.sendDate);
         return(
              <div className="group-item">
                 <div className="group-header">{LangHelper.getResource('SendType')}</div>
@@ -18,7 +19,8 @@ export default class Option extends PureComponent {
                             type="radio"
                             name="sendType"
                             id="sendType"
-                            onChange={event => setFieldValue('sendType', 'Send immediately')}
+                            checked={this.props.stateValue.isSendType.isSendNow}
+                            onChange={event => handleChange('Send immediately')}
                         />
                         <Form.Label for="yes">{LangHelper.getResource('SendNow')}</Form.Label>
                     </div>
@@ -29,7 +31,8 @@ export default class Option extends PureComponent {
                                 type="radio"
                                 name="sendType"
                                 id="sendType"
-                                onChange={event => setFieldValue('sendType', 'Send At')}
+                                checked={this.props.stateValue.isSendType.isSendAt}
+                                onChange={event => handleChange('Send At')}
                             />
                             <Form.Label for="yes">{LangHelper.getResource('SendAt')}</Form.Label>
                         </div>
@@ -57,11 +60,11 @@ export default class Option extends PureComponent {
     }
 
     render() {
-        const {values, handleChange, errors, touched, setFieldValue} = this.props;
+        const {values, handleChange, errors, touched} = this.props;
         return (
             <Fragment>
                 {
-                    this.renderSendTime(values, handleChange, errors, touched, setFieldValue)
+                    this.renderSendTime(values, handleChange, errors, touched)
                 }
             </Fragment>
         );

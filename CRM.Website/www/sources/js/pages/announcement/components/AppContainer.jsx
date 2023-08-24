@@ -67,8 +67,8 @@ export class AppContainer extends Component {
         this.props.setIsRefresh(true);
     };
 
-    handleCancel = async announcementId => {
-        await this.props.cancelAnnouncementId(announcementId).then(response => {
+    handleCancel = async (announcementId, status) => {
+        await this.props.cancelAnnouncementId(announcementId, status).then(response => {
             this.handleCloseCancelPopup();
             if(response.isSuccessful) {
                 toast.success(LangHelper.getResource('CancelAnnouncementSuccessfully'));
@@ -129,7 +129,7 @@ export class AppContainer extends Component {
                         content={
                             <div>Are you sure you want to cancel announcement ID: <strong>{cancelAnnouncementPopup.announcementId}</strong>?</div>
                         }
-                        onSubmit={() => this.handleCancel(cancelAnnouncementPopup.announcementId)}
+                        onSubmit={() => this.handleCancel(cancelAnnouncementPopup.announcementId, cancelAnnouncementPopup.status)}
                         onClose={this.handleCloseCancelPopup}
                     />
                 }

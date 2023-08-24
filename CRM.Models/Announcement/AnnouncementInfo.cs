@@ -8,7 +8,7 @@
         public int AnnouncementId { get; set; }
         public string NotificationTemplateName { get; set; }
         public int NotificationTemplateId { get; set; }
-        public DateTime SendDate { get; set; }
+        public DateTime? SendDate { get; set; }
         public string SendDateString { get; set; }
         public string SendTimeString { get; set; }
         public string CreatedDateString { get; set; }

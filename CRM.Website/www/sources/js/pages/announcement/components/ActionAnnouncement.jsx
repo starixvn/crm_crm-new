@@ -17,6 +17,7 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
     validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, checkInvalidMaxLengthContent
 } from '../common.functions';
+import WithNavigation from '@jsroot/components/WithNavigation';
 import Site from '@jsroot/common/site';
 
 export class ActionAnnouncement extends Component {
@@ -36,7 +37,7 @@ export class ActionAnnouncement extends Component {
                 currency: '1'
             },
             currencyOptions: [],
-            confirmActionDialog: { show: false, params: null},
+            confirmActionDialog: { show: false, params: null, content: null },
             isChangeTemplate: false,
             parameters: null,
             invalidWidthHeight: [],
@@ -45,7 +46,7 @@ export class ActionAnnouncement extends Component {
                 isSiteType: false
             },
             isSendType: {
-                isSendNow: true,
+                isSendNow: false,
                 isSendAt: false
             }
         };
@@ -87,7 +88,7 @@ export class ActionAnnouncement extends Component {
                 return {
                     id: x.site,
                     name: x.site,
-                    checked: announcement.siteNameList ? announcement.siteNameList?.includes(x.site) : true
+                    checked: announcement.siteNameList ? announcement.siteNameList?.includes(x.site) : false
                 };
             });
 
@@ -96,19 +97,28 @@ export class ActionAnnouncement extends Component {
                 return {
                     id: x.id,
                     name: x.name,
-                    checked: announcement.siteNameList ? announcement.currencyIdList?.split(',').includes(x.id.toString()) : true
+                    checked: announcement.siteNameList ? announcement.currencyIdList?.split(',').includes(x.id.toString()) : false
                 };
             });
+
             this.setState({
                 siteOptions,
                 currencyOptions,
                 options: {
                     ...this.state.options,
-                    site: announcement.siteNameList ? announcement.siteNameList : siteNameListId,
-                    currency: announcement.siteNameList ? announcement.currencyIdList : currencyIdListId
+                    site: announcement.siteNameList ? announcement.siteNameList : '',
+                    currency: announcement.siteNameList ? announcement.currencyIdList : ''
                 },
-                headlineGroups: announcement.siteNameList ? [] : announcement.headlineNameList?.split(','),
-                uploadedFiles: !announcement.fileName ? [] : announcement.fileName.split(',')
+                headlineGroups: announcement.siteNameList ? [] : (announcement.headlineNameList ? announcement.headlineNameList.split(',') : []),
+                uploadedFiles: !announcement.fileName ? [] : (announcement.fileName ? announcement.fileName.split(',') : []),
+                isHeadlineGroup: {
+                    isUsername: announcement.siteNameList ? false : true,
+                    isSiteType: announcement.siteNameList ? true : false
+                },
+                isSendType: {
+                    isSendNow: announcement.sendImmediately,
+                    isSendAt: !announcement.sendImmediately && announcement.sendDate
+                }
             });
         });
     }
@@ -214,6 +224,7 @@ export class ActionAnnouncement extends Component {
      }));
 
     handleDateChange = value =>{
+        console.log('valueDate', value);
         this.formik.setFieldValue('sendDate', value);
     }
 
@@ -271,6 +282,179 @@ export class ActionAnnouncement extends Component {
         setFieldValue(`content.${replaceTab}`, replaceContent);
     }
 
+    handleChangeSendType = value => {
+        const isSendAt = value === 'Send At' ? true : false;
+        console.log('value', value);
+        this.formik.setFieldValue('sendType', value);
+        this.setState({
+            isSendType: {
+                isSendNow: !isSendAt,
+                isSendAt: isSendAt
+            }
+        })
+    };
+
+    handleCheckHeadline = (fieldTrue, fieldFalse) => {
+        this.setState({
+            isHeadlineGroup: {
+                [`${fieldTrue}`]: true,
+                [`${fieldFalse}`]: false
+            }
+        });
+    };
+
+    isValidateContent = content => {
+        if (content.EN || content.ENSC || content.SC || content.TH || content.YN) {
+            return true;
+        }
+        return false;
+    };
+
+    isDisableSubmit = (values, isSubmitting) => {
+        const { isHeadlineGroup } = this.state;
+        if (!isSubmitting && values.title && this.isValidateContent(values.content) && values.sendType && (isHeadlineGroup.isUsername || isHeadlineGroup.isSiteType)){
+            return false;
+        }
+        return true;
+    };
+
+    handleSaveDraft = (event, values) => {
+        event.preventDefault();
+        values.status = 'Draft';
+        const params = getParams(values, this.state);
+        params.append('announcementId', this.props.actionAnnouncementPopup.announcementId);
+
+        this.props.editAnnouncement(params).then(() => {
+            if (this.props.createAnnouncementResult.isSuccessful) {
+                setTimeout(() => {
+                    this.props.setIsRefresh(true);
+                    this.props.setEditAnnouncement(null);
+                    this.props.navigate(Site.resolveClientUrl('Announcement'));
+                }, 3000);
+            } else {
+                this.formik.setSubmitting(false);
+            }
+        });
+    };
+
+    handleSubmit = (values, { setSubmitting }) => {
+        setSubmitting(true);
+        values.status = 'Planned';
+        const params = getParams(values, this.state);
+        const {announcementId, isEdit} = this.props.actionAnnouncementPopup;
+        params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
+
+        this.props.validateAnnouncement(params).then(() => {
+            const contentConfirm = this.props.validateAnnouncementResult;
+            console.log('contentConfirm', contentConfirm);
+            if (!contentConfirm?.code && contentConfirm.length > 0) {
+                this.setState({confirmActionDialog: { show: true, params: params, content: contentConfirm[0]}});
+            }
+            this.formik.setSubmitting(false);
+        });
+    };
+
+    handleConfirmActionDialog = () =>{
+        this.handleCloseConfirmEditDialog();
+        const formData = this.state.confirmActionDialog.params;
+        const {createAnnouncement, editAnnouncement, actionAnnouncementPopup} = this.props;
+        const {isEdit} = actionAnnouncementPopup;
+        const actionFunc = isEdit ? editAnnouncement : createAnnouncement;
+        actionFunc(formData).then(() => {
+            const resultAction = isEdit ? this.props.editAnnouncementResult : this.props.createAnnouncementResult; 
+            if (resultAction.isSuccessful) {
+                setTimeout(() => {
+                    this.props.setIsRefresh(true);
+                    this.props.setEditAnnouncement(null);
+                    this.props.setCreateAnnouncement(null);
+                    this.props.setValidateAnnouncement(null);
+                    this.props.navigate(Site.resolveClientUrl('Announcement'));
+                }, 3000);
+            } else {
+                this.formik.setSubmitting(false);
+            }
+        });
+    };
+
+    handleCloseConfirmEditDialog = () =>{
+        this.setState({confirmActionDialog: { show: false, params: null, content: null }});
+        this.formik.setSubmitting(false);
+    };
+
+    renderContentType = contentConfirm => {
+        const currencies = [];
+        let headlineType = null;
+
+        const headlineTypes = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
+        headlineTypes.map(data => {
+            if(contentConfirm.headlineType === data.id){
+                headlineType = data.name;
+            }
+        });
+
+        this.props.settings.currencyList.map(data => {
+            if(contentConfirm.currencyList.split(',').includes(data.id.toString())){
+                currencies.push(data.name);
+            }
+        });
+        return { headlineType, currencies: currencies.join(', ') };
+    }
+
+    renderContentConfirm = () =>{
+        const {sendType, sendDate} = this.formik.values;
+        const contentConfirm = this.state.confirmActionDialog.content;
+        const sendDateFormat = DateTimeService.toLongDateTimeFormat(sendDate);
+        const content = sendType === 'Send At' ? 
+                        LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), sendDateFormat) :
+                        LangHelper.getResource('ConfirmSendImmediately');
+        const sendDateType = sendType === 'Send At' ? `${contentConfirm.sendDateString + ' ' + contentConfirm.sendTimeString}` : 'Send Now';
+        return(
+            <>
+                <div className="line-content">{content}</div>
+                <div className="group-item">
+                    <div className="group-header">{LangHelper.getResource('GroupHeadline')}</div>
+                    <div className="group-content">
+                        {
+                            contentConfirm.siteNameList &&
+                            (
+                                <>
+                                    <div className="group-list">
+                                        <div className="list-title"> {LangHelper.getResource('Site')}</div>
+                                        <div className="list-info">{contentConfirm.siteNameList.replaceAll(',', ', ')}</div>
+                                    </div>
+                                    <div className="group-list">
+                                        <div className="list-title"> {LangHelper.getResource('Currency')}</div>
+                                        <div className="list-info">{this.renderContentType(contentConfirm).currencies}</div>
+                                    </div>
+                                    <div className="group-list">
+                                        <div className="list-title headline-type"> {LangHelper.getResource('HeadlineType')}: 
+                                            <span>{this.renderContentType(contentConfirm).headlineType}</span>
+                                        </div>
+                                    </div>
+                                    {
+                                        contentConfirm.directAccounts && contentConfirm.directAccounts.length > 0 &&
+                                        <div className="group-list">
+                                            <div className="list-title">{LangHelper.getResource('DirectAccount')}</div>
+                                            <div className="list-info">{contentConfirm.directAccountList ? contentConfirm.directAccountList.replaceAll(',', ', ') : ''}</div>
+                                        </div>
+                                    }
+                                </>
+                            )
+                        }
+                        <div className="group-list">
+                            <div className="list-title"> {LangHelper.getResource('Username')}</div>
+                            <div className="list-info">{contentConfirm.headlineNameList ? contentConfirm.headlineNameList.replaceAll(',', ', ') : ''}</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="group-item">
+                    <div className="group-header"> {LangHelper.getResource('SendingType')}</div>
+                    <div className="group-content">{sendDateType}</div>
+                </div>
+            </>
+        );
+    };
+
     renderForm = ({
         values,
         errors,
@@ -280,10 +464,8 @@ export class ActionAnnouncement extends Component {
         setFieldValue,
         isSubmitting
     }) => {
-        const propsOption = {
-            values, handleChange, errors, touched
-        };
-        const {parameters, isChangeTemplate, uploadedFiles, siteOptions, currencyOptions} = this.state;
+        const propsOption = { values, handleChange, errors, touched };
+        const {parameters, isChangeTemplate, uploadedFiles, siteOptions, currencyOptions, isHeadlineGroup} = this.state;
         const {invalidContentMaxLength, textInvalidContentMaxLength} = checkInvalidMaxLengthContent(values.content, tab);
         const isInvalidContent = this.handleCheckValidAllContent(values.content);
         const {actionAnnouncementPopup, editAnnouncementResult, createAnnouncementResult} = this.props;
@@ -297,6 +479,12 @@ export class ActionAnnouncement extends Component {
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    {
+                        this.props.validateAnnouncementResult?.code &&
+                        <ResponseMessage isSuccessful={this.props.validateAnnouncementResult.isSuccessful}
+                            messages={this.renderMessage(this.props.validateAnnouncementResult)}
+                        />
+                    }
                     {
                         result &&
                         <ResponseMessage isSuccessful={result.isSuccessful}
@@ -382,9 +570,9 @@ export class ActionAnnouncement extends Component {
                                     type="radio"
                                     name="groupHeadline"
                                     id="groupHeadline"
-                                    value
-                                    checked
-                                    onChange
+                                    value={this.state.isHeadlineGroup.isUsername}
+                                    checked={this.state.isHeadlineGroup.isUsername}
+                                    onChange={() => this.handleCheckHeadline('isUsername', 'isSiteType')}
                                 />
                                 <Form.Group as={Row}>
                                     <Form.Label htmlFor="groupHeadline">
@@ -400,6 +588,7 @@ export class ActionAnnouncement extends Component {
                                             ))
                                         }
                                         <input className='text-input-headline' ref={this.headlineInputRef}
+                                            disabled={!isHeadlineGroup.isUsername}
                                             onChange={this.handleChangeInputHeadline}
                                             onKeyDown={this.handleChangeInputHeadline}
                                             onBlur={event => this.handleBlurInputHeadline(event)}
@@ -418,8 +607,8 @@ export class ActionAnnouncement extends Component {
                                     type="radio"
                                     name="groupHeadline"
                                     id="groupHeadline"
-                                    //value={this.state.isHeadlineGroup.isSiteType}
-                                    //checked={this.state.isHeadlineGroup.isSiteType}
+                                    value={this.state.isHeadlineGroup.isSiteType}
+                                    checked={this.state.isHeadlineGroup.isSiteType}
                                     onChange={() => this.handleCheckHeadline('isSiteType', 'isUsername')}
                                 />
                                 <div className="group-select">
@@ -427,7 +616,7 @@ export class ActionAnnouncement extends Component {
                                         <Form.Label >{LangHelper.getResource('Site')}</Form.Label>
                                         <div className='form-control-wrapper'>
                                             <MultipleSelect
-                                                //isDisable={!isHeadlineGroup.isSiteType}
+                                                isDisable={!isHeadlineGroup.isSiteType}
                                                 dataSource={siteOptions}
                                                 keyField='id'
                                                 hasSearchBox
@@ -447,7 +636,7 @@ export class ActionAnnouncement extends Component {
                                         <div className='form-control-wrapper'>
                                             <MultipleSelect
                                                 dataSource={currencyOptions}
-                                                //isDisable={!isHeadlineGroup.isSiteType}
+                                                isDisable={!isHeadlineGroup.isSiteType}
                                                 keyField='id'
                                                 valueField='name'
                                                 hasSearchBox
@@ -465,7 +654,7 @@ export class ActionAnnouncement extends Component {
                                         <Form.Label >{LangHelper.getResource('HeadlineType')}</Form.Label>
                                         <Form.Control as='select' size='sm' className='form-control-wrapper'
                                             name='headlineType' value={values.headlineType}
-                                            //disabled={!isHeadlineGroup.isSiteType}
+                                            disabled={!isHeadlineGroup.isSiteType}
                                             onChange={handleChange}
                                         >
                                             <option value=''>{LangHelper.getResource('PleaseSelect')}</option>
@@ -478,14 +667,15 @@ export class ActionAnnouncement extends Component {
                             </div>
                         </div>
                     </div>
-                    <Option 
-                        {...propsOption} stateValue={this.state} settings={this.props.settings}
+                    <Option
+                        {...propsOption} stateValue={this.state} settings={this.props.settings} handleChange={this.handleChangeSendType}
                         handleDateChange={this.handleDateChange} handleOptionChange={this.handleOptionChange}
                     />
                 </Modal.Body>
                 <Modal.Footer className="group-btn">
-                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting || isInvalidContent}>{LangHelper.getResource('Save')}</Button>
-                    <Button className="btn-cancel" type="submit" variant="primary" size="sm" onClick={this.props.onClose}>{LangHelper.getResource('Cancel')}</Button>
+                        <Button className="btn-cancel" type="submit" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>
+                        <Button className="btn-save" type="submit" variant="primary" size="md" onClick={event => this.handleSaveDraft(event, values)}>{LangHelper.getResource('Save as Draft')}</Button>
+                        <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={this.isDisableSubmit(values, isSubmitting) || isInvalidContent}>{LangHelper.getResource('Push')}</Button>
                 </Modal.Footer>
             </Form>
         );
@@ -500,8 +690,6 @@ export class ActionAnnouncement extends Component {
             params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
             this.setState({confirmActionDialog: { show: true, params}});
         }
-    };
-
     handleCheckValidAllContent = content =>{
         for (const property in content) {
             const {invalidContentMaxLength} = checkInvalidMaxLengthContent(content, property);
@@ -513,43 +701,11 @@ export class ActionAnnouncement extends Component {
     };
 
     handleConfirmActionDialog = async () =>{
-        this.handleCloseConfirmEditDialog();
-        const formData = this.state.confirmActionDialog.params;
-        const {createAnnouncement, editAnnouncement, actionAnnouncementPopup} = this.props;
-        const {isEdit} = actionAnnouncementPopup;
-        const actionFunc = isEdit ? editAnnouncement : createAnnouncement;
         await actionFunc(formData).then(() => {
-            const resultAction = isEdit ? this.props.editAnnouncementResult : this.props.createAnnouncementResult; 
-            if (resultAction.isSuccessful) {
                 const {sendType} = this.formik.values;
                 if(sendType !== 'Send At'){
                     this.props.sendMessageAnnouncementToBotEndpoint();
                 }
-                setTimeout(() => {
-                    this.props.onSuccess();
-                }, 3000);
-            } else {
-                this.formik.setSubmitting(false);
-            }
-        });
-    }
-
-    handleCloseConfirmEditDialog = () =>{
-        this.setState({confirmActionDialog: { show: false, params: null }});
-        this.formik.setSubmitting(false);
-    }
-
-    renderContentConfirm = () =>{
-        const {sendType, sendDate} = this.formik.values;
-        const sendDateFormat = DateTimeService.toLongDateTimeFormat(sendDate);
-        const content = sendType === 'Send At' ? 
-                        LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), sendDateFormat) :
-                        LangHelper.getResource('ConfirmSendImmediately');
-        return(
-            <div>{content}</div>
-        );
-    }
-
     render() {
         const {settings, actionAnnouncementPopup, announcementTemplate} = this.props;
         const {data} = this.state; 
@@ -562,9 +718,9 @@ export class ActionAnnouncement extends Component {
             notificationTemplateId: data.notificationTemplateId,
             title: data.title,
             content: this.state.content,
-            headlineType: data.siteNameList ? data.headlineType : 2,
-            sendType: data.sendImmediately ? 'Send immediately' : 'Send At' ,
-            sendDate: new Date(data.sendDate),
+            headlineType: data.siteNameList ? data.headlineType : '',
+            sendType: data.sendImmediately ? 'Send immediately' : (data.sendDate ? 'Send At' : ''),
+            sendDate: data.sendDate ? new Date(data.sendDate) : new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))),
             imageFileType: '',
             imageFileSize: '',
             fileName: data.fileName,
@@ -575,7 +731,8 @@ export class ActionAnnouncement extends Component {
                 ENSC:'',
                 TH:'',
                 YN:''
-            }
+            },
+            status: 'Planned'
         };
         const excludeOldImage = this.state.uploadedFiles.filter(x => !initialValues.oldFileName.includes(x));
 
@@ -599,15 +756,15 @@ export class ActionAnnouncement extends Component {
                 </Modal>
                 {
                     this.state.confirmActionDialog.show &&
-                    <SweetModalDialog size="lg"
+                    <SweetModalDialog size="lg" className="announcement-content-modal"
                         title={LangHelper.getResource('ConfirmEditAnnouncement')}
                         contents={this.renderContentConfirm()}
                         buttons={[
                             <Button variant="primary" size="sm" onClick={() => this.handleConfirmActionDialog()}>
-                                {LangHelper.getResource('Yes')}
+                                {LangHelper.getResource('Push')}
                             </Button>,
-                            <Button variant="primary" size="sm" onClick={() => this.handleCloseConfirmEditDialog()}>
-                                {LangHelper.getResource('No')}
+                            <Button className="btn-cancel" onClick={this.handleCloseConfirmEditDialog}>
+                                {LangHelper.getResource('Cancel')}
                             </Button>
                         ]}
                         onClose={() => this.handleCloseConfirmEditDialog()}
@@ -621,8 +778,10 @@ export class ActionAnnouncement extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup, createAnnouncementResult } = state;
-    return { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup, createAnnouncementResult };
+    const { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup, createAnnouncementResult, validateAnnouncementResult } = state;
+    return { announcementTemplate, settings, editAnnouncementResult, actionAnnouncementPopup, createAnnouncementResult, validateAnnouncementResult };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActionAnnouncement);
+const ActionAnnouncementNavigation = WithNavigation(ActionAnnouncement);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActionAnnouncementNavigation);
