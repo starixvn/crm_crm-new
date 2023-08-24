@@ -106,7 +106,7 @@
         {
             var commands = message.Entities?.Where(entity => entity.Type == MessageEntityType.BotCommand)
                 .Select(entity => message.Text.Substring(entity.Offset, entity.Length)).ToList();
-            if (commands is null)
+            if (commands is null || commands.Count == 0)
             {
                 await HandleSendDefaultTextAsync(bot, message);
                 return;
