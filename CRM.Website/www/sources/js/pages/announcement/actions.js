@@ -70,8 +70,9 @@ const getSettings = () => async dispatch => {
     });
 };
 
-const cancelAnnouncementId = announcementId => async () => {
-    const url = Site.resolveClientUrl(`Announcement/Cancel/${announcementId}`);
+const cancelAnnouncementId = (announcementId, status) => async () => {
+    console.log('status', status);
+    const url = Site.resolveClientUrl(`Announcement/Cancel?id=${announcementId}&status=${status}`);
     return await DataService.getDataAsync(url).then(response => response.data);
 };
 
