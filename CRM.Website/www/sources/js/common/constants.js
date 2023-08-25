@@ -189,7 +189,7 @@ export const Statuses = [
 
 export const IsRemoveDatagridRedemption = true;export const IsRemoveVerify = true;
 export const IsLastFiveRemarks = true;
-
+export const RemovePageUrl = ['DirectCustomerReport', 'CustomerReport', 'WagerReport', 'RedemptionStatisticsReport'];
 export const BotServices = [
     { id: 0, name: 'All' },
     { id: 1, name: 'Letstalk' },

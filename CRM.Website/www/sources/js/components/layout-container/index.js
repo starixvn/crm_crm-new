@@ -6,6 +6,7 @@ import {
     Route
 } from "react-router-dom";
 import Site from '@jsroot/common/site';
+import { RemovePageUrl } from '@jsroot/common/constants';
 
 const DashboardComponent = lazy(() => import(/* webpackChunkName: 'dashboard' */ '@jsroot/pages/dashboard/index'));
 
@@ -107,7 +108,6 @@ const MenuRouteArray = [
     { url: 'DynamicReport', component: DynamicReportComponent },
     { url: 'SettlementReport', component: SettlementReportComponent },
     { url: 'WagerReport', component: WagerReportComponent, nestedUrl: 'Index' },
-    { url: 'WagerReport', component: WagerReportComponent, nestedUrl: 'Index' },
     { url: 'Announcement/NewAnnouncement', component: NewAnnouncementComponent },
     { url: 'Announcement/EditAnnouncement', component: EditAnnouncementComponent },
     { url: 'Announcement/CloneAnnouncement', component: EditAnnouncementComponent },
@@ -115,8 +115,9 @@ const MenuRouteArray = [
 
 export default class Index extends PureComponent {
     getRoutesBaseUrl = () => {
+        const menusActive = MenuRouteArray.filter(x => !RemovePageUrl.includes(x.url));
         return (
-            MenuRouteArray.map(menu =>{
+            menusActive.map(menu =>{
                 const nestedPath = menu.hasOwnProperty('nestedUrl') ? menu.nestedUrl : 'Index';
                 const id = `menu-${menu.url}`;
                 return(
