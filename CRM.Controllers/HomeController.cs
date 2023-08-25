@@ -1,10 +1,9 @@
 ﻿namespace CRM.Controllers
 {
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
+    using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
     using ONEbook.UM.AspNetCore.Filters;
     using static Fanex.NAP.Core.Business.Constant;
@@ -13,25 +12,19 @@
     [CrmAuthorize]
     public class HomeController : Controller
     {
-        private readonly IUserService userService;
-        private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
+        private readonly IPermissionService permissionService;
 
         public HomeController(
-            IUserService userService,
-            INapSession napSession,
-            INapSettings napSettings
+            IPermissionService permissionService
         )
         {
-            this.userService = userService;
-            this.napSession = napSession;
-            this.napSettings = napSettings;
+            this.permissionService = permissionService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var hasCreateFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
-            var hasReadFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Read);
+            var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
+            var hasReadFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedbackAndCustomerInfo);
             ViewBag.hasReadFeedbackPermission = hasReadFeedbackPermission;
             return View(hasCreateFeedbackPermission);
         }

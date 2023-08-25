@@ -1,34 +1,32 @@
-﻿namespace CRM.Controllers.UnitTests.Customer
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Threading.Tasks;
-    using AutoFixture;
-    using CRM.Core.Constants;
-    using CRM.Core.Models;
-    using CRM.Core.Services;
-    using CRM.Criteria.Customer;
-    using CRM.Models;
-    using CRM.Models.Customer;
-    using CRM.Models.Setting;
-    using CRM.Services;
-    using CRM.Services.Customer;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using NSubstitute;
-    using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using AutoFixture;
+using CRM.Core.Constants;
+using CRM.Core.Models;
+using CRM.Core.Services;
+using CRM.Criteria.Customer;
+using CRM.Models;
+using CRM.Models.Customer;
+using CRM.Models.Setting;
+using CRM.Services;
+using CRM.Services.Customer;
+using Fanex.NAP.Client.Helpers.Web;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using NSubstitute;
+using Xunit;
 
+namespace CRM.Controllers.UnitTests.Customer
+{
     public class CustomerInfoControllerTest : BaseController
     {
         private INapSession napSession;
         private ICustomerService customerService;
         private ISettingService settingService;
         private ISessionService sessionService;
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetCustomerInfo_WhenCalled_ReturnExpectedData()
@@ -130,7 +128,8 @@
             settingService = Substitute.For<ISettingService>();
             napSession = Substitute.For<INapSession>();
             sessionService = Substitute.For<ISessionService>();
-            var controller = new CustomerInfoController(napSession, customerService, settingService, sessionService);
+            permissionService = Substitute.For<IPermissionService>();
+            var controller = new CustomerInfoController(napSession, customerService, settingService, sessionService, permissionService);
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
                 Connection =

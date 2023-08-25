@@ -21,22 +21,27 @@
         private readonly ICustomerService customerService;
         private readonly ISettingService settingService;
         private readonly ISessionService sessionService;
+        private readonly IPermissionService permissionService;
 
 
         public CustomerInfoController(
             INapSession napSession,
             ICustomerService customerService,
             ISettingService settingService,
-            ISessionService sessionService)
+            ISessionService sessionService,
+            IPermissionService permissionService)
         {
             this.napSession = napSession;
             this.customerService = customerService;
             this.settingService = settingService;
             this.sessionService = sessionService;
+            this.permissionService = permissionService;
         }
 
         public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
         {
+            var sitePermission = await permissionService.GetSitePermissionAsync();
+            criteria.LicenseeType = sitePermission;
             CustomerInfoDetails customerInfo = await customerService.GetCustomerInfoAsync(criteria);
             if (customerInfo != null)
             {
