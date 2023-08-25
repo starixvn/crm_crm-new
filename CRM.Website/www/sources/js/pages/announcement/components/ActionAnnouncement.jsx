@@ -97,7 +97,7 @@ export class ActionAnnouncement extends Component {
                 return {
                     id: x.id,
                     name: x.name,
-                    checked: announcement.siteNameList ? announcement.currencyIdList?.split(',').includes(x.id.toString()) : false
+                    checked: announcement.currencyIdList ? announcement.currencyIdList?.split(',').includes(x.id.toString()) : false
                 };
             });
 
@@ -107,13 +107,13 @@ export class ActionAnnouncement extends Component {
                 options: {
                     ...this.state.options,
                     site: announcement.siteNameList ? announcement.siteNameList : '',
-                    currency: announcement.siteNameList ? announcement.currencyIdList : ''
+                    currency: announcement.currencyIdList ? announcement.currencyIdList : ''
                 },
                 headlineGroups: announcement.siteNameList ? [] : (announcement.headlineNameList ? announcement.headlineNameList.split(',') : []),
                 uploadedFiles: !announcement.fileName ? [] : (announcement.fileName ? announcement.fileName.split(',') : []),
                 isHeadlineGroup: {
-                    isUsername: announcement.siteNameList ? false : true,
-                    isSiteType: announcement.siteNameList ? true : false
+                    isUsername: this.checkShowHeadlineGroup(announcement) ? false : (announcement.headlineNameList ? true : false),
+                    isSiteType: this.checkShowHeadlineGroup(announcement) ? true : false
                 },
                 isSendType: {
                     isSendNow: announcement.sendImmediately,
@@ -122,6 +122,13 @@ export class ActionAnnouncement extends Component {
             });
         });
     }
+
+    checkShowHeadlineGroup = announcement => {
+        if (announcement.siteNameList || announcement.currencyIdList || typeof announcement.headlineType === 'number') {
+            return true;
+        }
+        return false;
+    };
 
     getLanguages = async () =>{
         await this.props.getLanguages().then(response => {
@@ -224,7 +231,6 @@ export class ActionAnnouncement extends Component {
      }));
 
     handleDateChange = value =>{
-        console.log('valueDate', value);
         this.formik.setFieldValue('sendDate', value);
     }
 
@@ -284,7 +290,6 @@ export class ActionAnnouncement extends Component {
 
     handleChangeSendType = value => {
         const isSendAt = value === 'Send At' ? true : false;
-        console.log('value', value);
         this.formik.setFieldValue('sendType', value);
         this.setState({
             isSendType: {
@@ -325,7 +330,7 @@ export class ActionAnnouncement extends Component {
         params.append('announcementId', this.props.actionAnnouncementPopup.announcementId);
 
         this.props.editAnnouncement(params).then(() => {
-            if (this.props.createAnnouncementResult.isSuccessful) {
+            if (this.props.editAnnouncementResult.isSuccessful) {
                 setTimeout(() => {
                     this.props.setIsRefresh(true);
                     this.props.setEditAnnouncement(null);
@@ -346,7 +351,6 @@ export class ActionAnnouncement extends Component {
 
         this.props.validateAnnouncement(params).then(() => {
             const contentConfirm = this.props.validateAnnouncementResult;
-            console.log('contentConfirm', contentConfirm);
             if (!contentConfirm?.code && contentConfirm.length > 0) {
                 this.setState({confirmActionDialog: { show: true, params: params, content: contentConfirm[0]}});
             }
@@ -407,7 +411,7 @@ export class ActionAnnouncement extends Component {
         const content = sendType === 'Send At' ? 
                         LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), sendDateFormat) :
                         LangHelper.getResource('ConfirmSendImmediately');
-        const sendDateType = sendType === 'Send At' ? `${contentConfirm.sendDateString + ' ' + contentConfirm.sendTimeString}` : 'Send Now';
+        const sendDateType = sendType === 'Send At' ? `${contentConfirm.sendDateString} ${contentConfirm.sendTimeString} (GMT+8)` : 'Send Now';
         return(
             <>
                 <div className="line-content">{content}</div>
@@ -718,7 +722,7 @@ export class ActionAnnouncement extends Component {
             notificationTemplateId: data.notificationTemplateId,
             title: data.title,
             content: this.state.content,
-            headlineType: data.siteNameList ? data.headlineType : '',
+            headlineType: data.headlineType,
             sendType: data.sendImmediately ? 'Send immediately' : (data.sendDate ? 'Send At' : ''),
             sendDate: data.sendDate ? new Date(data.sendDate) : new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))),
             imageFileType: '',

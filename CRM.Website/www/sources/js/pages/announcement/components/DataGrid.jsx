@@ -104,7 +104,6 @@ export class DataGrid extends Component {
     }
 
     renderAction = item => {
-        console.log('item.status', item.status);
         switch (item.status) {
             case 'Planned':
                 return(
@@ -114,7 +113,7 @@ export class DataGrid extends Component {
                         </Tooltip>}
                     >
                         <Cell className="text-center">
-                            <span className='rounded-circle fa fa-ban icon-delete' onClick={() => this.handleCancel(item.announcementId, 'Planned')} />
+                            <span className='rounded-circle fa fa-ban icon-delete' onClick={() => this.handleCancel(item.announcementId, 'Cancelled')} />
                         </Cell>
                     </OverlayTrigger>
                 );
@@ -150,14 +149,14 @@ export class DataGrid extends Component {
                                 {LangHelper.getResource('CancelThisAnnouncement')}
                             </Tooltip>}
                         >
-                            <span className='rounded-circle fa fa-ban icon-delete' onClick={() => this.handleCancel(item.announcementId, 'Draft')} />
+                            <span className='rounded-circle fa fa-ban icon-delete' onClick={() => this.handleCancel(item.announcementId, 'Cancelled')} />
                         </OverlayTrigger>
 
                         <OverlayTrigger placement="bottom-start" overlay={
                             <Tooltip id="tooltip-cancel-announcement">
                                 {LangHelper.getResource('EditThisAnnouncement')}
                             </Tooltip>}
-                        >   
+                        >
                             <span className='rounded-circle fa fa-pencil icon-edit' onClick={() => this.handleEdit(item.announcementId)} />
                         </OverlayTrigger>
                     </Cell>

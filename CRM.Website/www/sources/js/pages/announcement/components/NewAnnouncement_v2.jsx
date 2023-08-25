@@ -318,14 +318,12 @@ export class NewAnnouncement_v2 extends Component {
     renderContentType = contentConfirm => {
         const currencies = [];
         let headlineType = null;
-
         const headlineTypes = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
         headlineTypes.map(data => {
             if(contentConfirm.headlineType === data.id){
                 headlineType = data.name;
             }
         });
-
         this.props.settings.currencyList.map(data => {
             if(contentConfirm.currencyList.split(',').includes(data.id.toString())){
                 currencies.push(data.name);
@@ -345,7 +343,6 @@ export class NewAnnouncement_v2 extends Component {
             });
 
             const headlineTypes = [...this.props.settings.headlineTypeList, {id: 2, name: 'All'}];
-
             headlineTypes.map(x => {
                 if(announcement.headlineType === x.id){
                     headlineType = x.name;
@@ -358,7 +355,6 @@ export class NewAnnouncement_v2 extends Component {
 
     handleChangeSendType = value => {
         const isSendAt = value === 'Send At' ? true : false;
-        console.log('valueNew', value);
         this.formik.setFieldValue('sendType', value);
         this.setState({
             isSendType: {
@@ -375,6 +371,7 @@ export class NewAnnouncement_v2 extends Component {
         const content = sendType === 'Send At' ? 
                         LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), sendDateFormat) :
                         LangHelper.getResource('ConfirmSendImmediately');
+        const sendDateType = sendType === 'Send At' ? `${contentConfirm.sendDateString} ${contentConfirm.sendTimeString} (GMT+8)` : 'Send Now';
         return(
             <>
                 <div className="line-content">{content}</div>
@@ -416,7 +413,7 @@ export class NewAnnouncement_v2 extends Component {
                 </div>
                 <div className="group-item">
                     <div className="group-header"> {LangHelper.getResource('SendingType')}</div>
-                    <div className="group-content">{contentConfirm.sendDateString} {contentConfirm.sendTimeString}</div>
+                    <div className="group-content">{sendDateType}</div>
                 </div>
             </>
         );
@@ -516,7 +513,7 @@ export class NewAnnouncement_v2 extends Component {
                         </div>
                     </div>
                     <div className="group-item">
-                        <div className="group-header">{LangHelper.getResource('GroupHeadline')}</div>
+                        <div className="group-header required">{LangHelper.getResource('GroupHeadline')}</div>
                         <div className="group-content">
                             <div className="group-headline group-username">
                                 <input

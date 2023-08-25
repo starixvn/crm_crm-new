@@ -305,6 +305,12 @@
       border-bottom: 1px solid #bbb;
     }
 
+    .required::after {
+      content: "*";
+      color: #ff0101;
+      margin-left: 0.25rem;
+    }
+
     .group-content {
       padding: 12px;
 

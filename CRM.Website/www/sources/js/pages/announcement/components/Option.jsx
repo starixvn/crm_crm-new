@@ -8,10 +8,10 @@ export default class Option extends PureComponent {
     renderSendTime = (values, handleChange, errors, touched) =>{
         const dateTimeNow =  new Date(DateTimeService.toClientDateTime(new Date()));
         const isSendAt = values.sendType === 'Send At';
-console.log('values.sendDate', values.sendDate);
+
         return(
              <div className="group-item">
-                <div className="group-header">{LangHelper.getResource('SendType')}</div>
+                <div className="group-header required">{LangHelper.getResource('SendType')}</div>
                 <div className="group-content">
                     <div className="radio-btn" onChange={this.onChangeValue}>
                         <input

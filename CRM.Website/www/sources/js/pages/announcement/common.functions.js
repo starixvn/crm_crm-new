@@ -85,9 +85,9 @@ export const getParams = (values, state) => {
     const params = {
         notificationTemplateId: notificationTemplateId,
         headlineNameList: state.isHeadlineGroup.isUsername ? state.headlineGroups.join(',') : '',
-        siteNameList: !state.options.site ? '' : state.options.site,
-        currencyList: !state.options.currency ? '' : state.options.currency,
-        headlineType: headlineType,
+        siteNameList: (!state.options.site || !state.isHeadlineGroup.isSiteType) ? '' : state.options.site,
+        currencyList: (!state.options.currency || !state.isHeadlineGroup.isSiteType) ? '' : state.options.currency,
+        headlineType: state.isHeadlineGroup.isSiteType ? headlineType : '',
         title: values.title,
         sendDate: isSendImmediately ? null : (sendType === 'Send At' ? DateTimeService.toLongDateTimeFormat(sendDate) : null),
         sendImmediately: isSendImmediately,

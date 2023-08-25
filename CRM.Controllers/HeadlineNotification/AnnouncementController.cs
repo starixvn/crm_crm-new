@@ -9,7 +9,6 @@
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Models;
-    using CRM.Core.Services;
     using CRM.Criteria.Announcement;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models;
