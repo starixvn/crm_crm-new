@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Button, Col, Form, Modal, Row} from 'react-bootstrap';
 import { Formik } from 'formik';
-import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
@@ -59,7 +58,7 @@ export class ActionAnnouncement extends Component {
     }
 
     getAnnounceDetail = async () =>{
-        const {announcementId} = this.props.actionAnnouncementPopup;
+        const {announcementId} = this.props.actionParam;
         Site.blockUI();
         await this.props.getAnnouncementById(announcementId).then(response => {
             const {data, contents} = response.data;
@@ -327,13 +326,18 @@ export class ActionAnnouncement extends Component {
         event.preventDefault();
         values.status = 'Draft';
         const params = getParams(values, this.state);
-        params.append('announcementId', this.props.actionAnnouncementPopup.announcementId);
+        const {announcementId, isEdit} = this.props.actionParam;
+        params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
 
         this.props.editAnnouncement(params).then(() => {
+            if (!isEdit) {
+                this.props.setCreateAnnouncement(this.props.editAnnouncementResult);
+            }
             if (this.props.editAnnouncementResult.isSuccessful) {
                 setTimeout(() => {
                     this.props.setIsRefresh(true);
                     this.props.setEditAnnouncement(null);
+                    this.props.setCreateAnnouncement(null);
                     this.props.navigate(Site.resolveClientUrl('Announcement'));
                 }, 3000);
             } else {
@@ -346,7 +350,7 @@ export class ActionAnnouncement extends Component {
         setSubmitting(true);
         values.status = 'Planned';
         const params = getParams(values, this.state);
-        const {announcementId, isEdit} = this.props.actionAnnouncementPopup;
+        const {announcementId, isEdit} = this.props.actionParam;
         params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
 
         this.props.validateAnnouncement(params).then(() => {
@@ -361,8 +365,8 @@ export class ActionAnnouncement extends Component {
     handleConfirmActionDialog = () =>{
         this.handleCloseConfirmEditDialog();
         const formData = this.state.confirmActionDialog.params;
-        const {createAnnouncement, editAnnouncement, actionAnnouncementPopup} = this.props;
-        const {isEdit} = actionAnnouncementPopup;
+        const {createAnnouncement, editAnnouncement, actionParam} = this.props;
+        const {isEdit} = actionParam;
         const actionFunc = isEdit ? editAnnouncement : createAnnouncement;
         actionFunc(formData).then(() => {
             const resultAction = isEdit ? this.props.editAnnouncementResult : this.props.createAnnouncementResult; 
@@ -383,6 +387,12 @@ export class ActionAnnouncement extends Component {
     handleCloseConfirmEditDialog = () =>{
         this.setState({confirmActionDialog: { show: false, params: null, content: null }});
         this.formik.setSubmitting(false);
+    };
+
+    handleClose = () => {
+        this.props.setCreateAnnouncement(null);
+        this.props.setEditAnnouncement(null);
+        this.props.navigate(Site.resolveClientUrl('Announcement'));
     };
 
     renderContentType = contentConfirm => {
@@ -470,18 +480,13 @@ export class ActionAnnouncement extends Component {
     }) => {
         const propsOption = { values, handleChange, errors, touched };
         const {parameters, isChangeTemplate, uploadedFiles, siteOptions, currencyOptions, isHeadlineGroup} = this.state;
-        const {invalidContentMaxLength, textInvalidContentMaxLength} = checkInvalidMaxLengthContent(values.content, tab);
-        const isInvalidContent = this.handleCheckValidAllContent(values.content);
-        const {actionAnnouncementPopup, editAnnouncementResult, createAnnouncementResult} = this.props;
-        const result = actionAnnouncementPopup.isEdit ? editAnnouncementResult : createAnnouncementResult; 
-        const message = this.props.actionAnnouncementPopup.isEdit ? 
-                        LangHelper.getResource('EditAnnouncementSuccessfully') :
-                        LangHelper.getResource('CloneAnnouncementSuccessfully');
+        const {actionParam, editAnnouncementResult, createAnnouncementResult} = this.props;
+        const result = actionParam.isEdit ? editAnnouncementResult : createAnnouncementResult;
         const notificationTemplates = [{notificationTemplateId: 0, notificationTemplateName: LangHelper.getResource('PleaseSelect')}, ...this.props.announcementTemplate.notificationTemplates];
         const headlineTypeList = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
         return (
             <Form noValidate onSubmit={handleSubmit}>
-                <Modal.Body>
+                <div className="add-announcement">
                     <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.validateAnnouncementResult?.code &&
@@ -507,7 +512,7 @@ export class ActionAnnouncement extends Component {
                                         name="notificationTemplateId" id="notificationTemplateId"
                                         value={values.notificationTemplateId}
                                         onChange={this.handleChangeNotificationTemplate}
-                                        disabled={actionAnnouncementPopup.isEdit}
+                                        disabled={actionParam.isEdit}
                                     >
                                         <option value="" hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>
                                         {notificationTemplates.map((value, key) => renderOption(key, value.notificationTemplateId, value.notificationTemplateName))}
@@ -534,7 +539,7 @@ export class ActionAnnouncement extends Component {
                                 />
                             }
                             {
-                                !actionAnnouncementPopup.isEdit && isChangeTemplate && parameters &&
+                                !actionParam.isEdit && isChangeTemplate && parameters &&
                                 <Form.Group as={Row}>
                                     <Form.Label />
                                     <div className='parameters'>
@@ -558,7 +563,7 @@ export class ActionAnnouncement extends Component {
                                 </Form.Group>
                             }
                             <div className="group-upload-file">
-                                <UploadFile id={actionAnnouncementPopup.announcementId}
+                                <UploadFile id={actionParam.announcementId}
                                     setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
                         invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
                                 />
@@ -675,12 +680,12 @@ export class ActionAnnouncement extends Component {
                         {...propsOption} stateValue={this.state} settings={this.props.settings} handleChange={this.handleChangeSendType}
                         handleDateChange={this.handleDateChange} handleOptionChange={this.handleOptionChange}
                     />
-                </Modal.Body>
-                <Modal.Footer className="group-btn">
+                    <div className="group-btn">
                         <Button className="btn-cancel" type="submit" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>
                         <Button className="btn-save" type="submit" variant="primary" size="md" onClick={event => this.handleSaveDraft(event, values)}>{LangHelper.getResource('Save as Draft')}</Button>
                         <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={this.isDisableSubmit(values, isSubmitting) || isInvalidContent}>{LangHelper.getResource('Push')}</Button>
-                </Modal.Footer>
+                    </div>
+                </div>
             </Form>
         );
     };
@@ -711,18 +716,18 @@ export class ActionAnnouncement extends Component {
                     this.props.sendMessageAnnouncementToBotEndpoint();
                 }
     render() {
-        const {settings, actionAnnouncementPopup, announcementTemplate} = this.props;
+        const {settings, actionParam, announcementTemplate} = this.props;
         const {data} = this.state; 
         if(!data || !announcementTemplate || !this.state.languages || !settings || !this.state.content) {
             return null;
         }
-        const {isEdit} = actionAnnouncementPopup;
+        const {isEdit} = actionParam;
         const initialValues = {
             notificationTemplate: data.notificationTemplateName,
             notificationTemplateId: data.notificationTemplateId,
             title: data.title,
             content: this.state.content,
-            headlineType: data.headlineType,
+            headlineType: data.headlineType ? data.headlineType : '',
             sendType: data.sendImmediately ? 'Send immediately' : (data.sendDate ? 'Send At' : ''),
             sendDate: data.sendDate ? new Date(data.sendDate) : new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))),
             imageFileType: '',
@@ -742,22 +747,14 @@ export class ActionAnnouncement extends Component {
 
         return (
             <div>
-                <Modal show className="edit-announcement-modal" dialogAs={DraggableModalDialog}
-                    backdrop="static" keyboard={false} size="lg" centered
-                    onHide={this.props.onClose}
+                <Formik
+                    innerRef={p => (this.formik = p)}
+                    initialValues={initialValues}
+                    validate={values => validateFormik(values, excludeOldImage, this.state.invalidWidthHeight)}
+                    onSubmit={this.handleSubmit}
                 >
-                    <Modal.Header closeButton>
-                        <Modal.Title as="div">{isEdit ? LangHelper.getResource('EditAnnouncement') : LangHelper.getResource('CloneAnnouncement')}</Modal.Title>
-                    </Modal.Header>
-                    <Formik
-                        innerRef={p => (this.formik = p)}
-                        initialValues={initialValues}
-                        validate={values => validateFormik(values, excludeOldImage, this.state.invalidWidthHeight)}
-                        onSubmit={this.handleSubmit}
-                    >
-                        {this.renderForm}
-                    </Formik>
-                </Modal>
+                    {this.renderForm}
+                </Formik>
                 {
                     this.state.confirmActionDialog.show &&
                     <SweetModalDialog size="lg" className="announcement-content-modal"

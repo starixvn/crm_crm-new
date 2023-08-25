@@ -100,9 +100,20 @@ export default class Filter extends Component {
         const menus = this.handleConcatMenu(this.props.menus);
         const currentMenu = menus.filter(menu => this.getUrlPath(menu.url) === pathname.toLowerCase())[0];
         const isLefDetailMenu = DetailMenu.filter(x => this.getUrlPath(x.url).toLowerCase() === pathname.toLowerCase()).length > 0;
+        const pathAnnouncement = {
+            '/Announcement/NewAnnouncement': ['Headline Notification', 'Announcement', 'New Announcement'],
+            '/Announcement/EditAnnouncement': ['Headline Notification', 'Announcement', 'Edit Announcement'],
+            '/Announcement/CloneAnnouncement': ['Headline Notification', 'Announcement', 'Clone Announcement'],
+        };
+        const arrPathAnnouncement = Object.keys(pathAnnouncement);
+        const selectPathAnnouncement = arrPathAnnouncement.find(x => x === pathname);
+
         if(isLefDetailMenu){
             return this.renderDetailBreadcrumbsMenu(pathname);
-        }else{
+        } else if (selectPathAnnouncement){
+            const path = pathAnnouncement[selectPathAnnouncement];
+            return this.renderBreadcrumbsMenu(path, pathname);
+        } else{
             if(!currentMenu){
                 return this.renderBreadcrumbsMenu([], pathname);
             }else if(pathname === '/'){

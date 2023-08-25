@@ -22,7 +22,7 @@ export default class Option extends PureComponent {
                             checked={this.props.stateValue.isSendType.isSendNow}
                             onChange={event => handleChange('Send immediately')}
                         />
-                        <Form.Label for="yes">{LangHelper.getResource('SendNow')}</Form.Label>
+                        <Form.Label htmlFor="yes">{LangHelper.getResource('SendNow')}</Form.Label>
                     </div>
                     <div className='form-option-wrapper'>
                         <div className="radio-btn" onChange={this.onChangeValue}>
@@ -34,7 +34,7 @@ export default class Option extends PureComponent {
                                 checked={this.props.stateValue.isSendType.isSendAt}
                                 onChange={event => handleChange('Send At')}
                             />
-                            <Form.Label for="yes">{LangHelper.getResource('SendAt')}</Form.Label>
+                            <Form.Label htmlFor="yes">{LangHelper.getResource('SendAt')}</Form.Label>
                         </div>
                         <div className='react-datepicker-wrapper-container form-control-wrapper' style={{marginLeft: 15}}>
                             <DatePicker

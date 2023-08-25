@@ -15,6 +15,8 @@ const ChatTypeMappingComponent = lazy(() => import(/* webpackChunkName: 'chat-ty
 const NotificationTypeComponent = lazy(() => import(/* webpackChunkName: 'notification-type' */ '@jsroot/pages/notification-type/index'));
 const AnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announcement' */'@jsroot/pages/announcement/index'));
 const NewAnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announcement' */'@jsroot/pages/announcement/newAnnouncement'));
+const EditAnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announcement' */'@jsroot/pages/announcement/editAnnouncement'));
+const CloneAnnouncementComponent = lazy(() => import(/* webpackChunkName: 'announcement' */'@jsroot/pages/announcement/editAnnouncement'));
 const SMAPersonalMessage = lazy(() => import(/* webpackChunkName: 'sma-personal-message' */ '@jsroot/pages/add-sma-personal-message/index'));
 
 const ManagementComponent  = lazy(() => import(/* webpackChunkName: 'pic-and-headline-management' */ '@jsroot/pages/pic-and-headline/management/index'));
@@ -107,6 +109,8 @@ const MenuRouteArray = [
     { url: 'WagerReport', component: WagerReportComponent, nestedUrl: 'Index' },
     { url: 'WagerReport', component: WagerReportComponent, nestedUrl: 'Index' },
     { url: 'Announcement/NewAnnouncement', component: NewAnnouncementComponent },
+    { url: 'Announcement/EditAnnouncement', component: EditAnnouncementComponent },
+    { url: 'Announcement/CloneAnnouncement', component: EditAnnouncementComponent },
 ];
 
 export default class Index extends PureComponent {

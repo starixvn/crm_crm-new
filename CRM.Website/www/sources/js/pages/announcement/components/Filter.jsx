@@ -70,8 +70,6 @@ export class Filter extends Component {
 
     handleOpenNewAnnouncement = () =>{
         this.props.setIsRefresh(false);
-        //this.props.setOpenNewAnnouncementPopup({show: true});
-    
         this.props.navigate(Site.resolveClientUrl('Announcement/NewAnnouncement'));
     };
 
