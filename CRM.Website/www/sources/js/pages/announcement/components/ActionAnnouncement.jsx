@@ -2,7 +2,7 @@ import React, { Component, lazy, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button, Col, Form, Modal, Row} from 'react-bootstrap';
+import { Button, Form, Row} from 'react-bootstrap';
 import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
@@ -721,13 +721,12 @@ export class ActionAnnouncement extends Component {
         if(!data || !announcementTemplate || !this.state.languages || !settings || !this.state.content) {
             return null;
         }
-        const {isEdit} = actionParam;
         const initialValues = {
             notificationTemplate: data.notificationTemplateName,
             notificationTemplateId: data.notificationTemplateId,
             title: data.title,
             content: this.state.content,
-            headlineType: data.headlineType ? data.headlineType : '',
+            headlineType: (typeof data.headlineType === 'number') ? data.headlineType : '',
             sendType: data.sendImmediately ? 'Send immediately' : (data.sendDate ? 'Send At' : ''),
             sendDate: data.sendDate ? new Date(data.sendDate) : new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))),
             imageFileType: '',

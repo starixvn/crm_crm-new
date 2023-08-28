@@ -19,6 +19,7 @@ export default class Option extends PureComponent {
                             type="radio"
                             name="sendType"
                             id="sendType"
+                            value={this.props.stateValue.isSendType.isSendNow}
                             checked={this.props.stateValue.isSendType.isSendNow}
                             onChange={event => handleChange('Send immediately')}
                         />
@@ -31,6 +32,7 @@ export default class Option extends PureComponent {
                                 type="radio"
                                 name="sendType"
                                 id="sendType"
+                                value={this.props.stateValue.isSendType.isSendAt}
                                 checked={this.props.stateValue.isSendType.isSendAt}
                                 onChange={event => handleChange('Send At')}
                             />
