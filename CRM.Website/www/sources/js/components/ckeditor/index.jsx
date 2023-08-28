@@ -117,7 +117,10 @@ export default class CkEditor extends PureComponent {
                         entities: false,
                         basicEntities: false,
                         language: 'en',
-                        disableNativeSpellChecker:false,
+                        disableNativeSpellChecker: false,
+                        scayt_autoStartup: true,
+                        grayt_autoStartup: true,
+                        scayt_sLang: 'en_US',
                         enterMode: 2
                     }}
                     style={{body: 'margin: 0'}}
