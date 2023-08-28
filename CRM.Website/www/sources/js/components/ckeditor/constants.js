@@ -10,7 +10,7 @@
     { name: 'editblock', items: ['EditBlock'] }
 ];
 
-export const REMOVE_PLUGINS = 'magicline, elementspath, image, tabletools, liststyle, tableselection';
+export const REMOVE_PLUGINS = 'magicline, elementspath, image, contextmenu, tabletools, liststyle, tableselection';
 
 export const EXTRA_TOOLBAR = "justify, font, colorbutton, colordialog, image2, uploadimage, editblock, language";
 

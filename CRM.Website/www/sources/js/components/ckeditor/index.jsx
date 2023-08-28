@@ -21,16 +21,45 @@ export default class CkEditor extends PureComponent {
         isRemoveToolbarForChatbot: false
     };
 
+    constructor(props) {
+        super(props)
+        this.editorRef = React.createRef()
+    }
+
     componentDidMount(){
         const modal = document.getElementsByClassName("modal");
         if(modal && modal.length > 0 && modal[0].getAttribute('tabindex')){
             modal[0].removeAttribute('tabindex');
         }
+        document.addEventListener('click', this.handleClickOutside)
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.data !== this.props.data && (this.editor && !this.editor.editor.focusManager.hasFocus)) {
             this.editor.editor.setData(this.props.data);
+        }
+    }
+
+    componentWillUnmount(){
+        const data = this.editor?.editor?.getData();
+        this.handleDiffCheckData(data, this.props.data);
+        document.removeEventListener('click', this.handleClickOutside)
+    }
+
+    handleClickOutside = (event) => {
+        const { target } = event
+        const data = this.editor?.editor?.getData();
+        if (this.editorRef && !this.editorRef.current.contains(target)) {
+            this.handleDiffCheckData(data, this.props.data);
+        }
+    }
+
+    handleDiffCheckData = (editorData, propsData) => {
+        if(editorData && propsData){
+            const isDiffCheck = propsData.replace(/\s/g, '') !== editorData.replace(/\s/g, '');
+            if(isDiffCheck){
+                this.props.onChange(editorData);
+            }
         }
     }
 
@@ -102,7 +131,7 @@ export default class CkEditor extends PureComponent {
         const removePluginForChatBot = ', image2, editblock, format';
         const removePlugins = isRemoveToolbarForChatbot ? REMOVE_PLUGINS.concat(removePluginForChatBot) : REMOVE_PLUGINS;
         return (
-            <div className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
+            <div ref={this.editorRef} className={`ckeditor-container ${className} ${isInvalid ? 'is-invalid' : ''}`}>
                 <CKEditor
                     {...rest}
                     initData={this.props.data}
@@ -118,9 +147,6 @@ export default class CkEditor extends PureComponent {
                         basicEntities: false,
                         language: 'en',
                         disableNativeSpellChecker: false,
-                        scayt_autoStartup: true,
-                        grayt_autoStartup: true,
-                        scayt_sLang: 'en_US',
                         enterMode: 2
                     }}
                     style={{body: 'margin: 0'}}
