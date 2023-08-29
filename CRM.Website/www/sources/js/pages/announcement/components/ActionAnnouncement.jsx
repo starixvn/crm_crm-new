@@ -604,12 +604,11 @@ export class ActionAnnouncement extends Component {
                                             onPaste={this.handlePasteGroupHeadline}
                                         />
                                     </div>
+                                    <Form.Label className="notice-line">
+                                        {LangHelper.getResource('GroupHeadlineEnterNotice')}
+                                    </Form.Label>
                                 </Form.Group>
-                                <Form.Label className="notice-line">
-                                    {LangHelper.getResource('GroupHeadlineEnterNotice')}
-                                </Form.Label>
                             </div>
-
                             <div className="group-headline">
                                 <input
                                     className="custom"

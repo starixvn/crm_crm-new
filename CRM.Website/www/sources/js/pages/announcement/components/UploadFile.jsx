@@ -72,11 +72,13 @@ export default class UploadFile extends PureComponent {
                 {
                     (item.name || item) &&
                     <Col sm="10" md="10" className='list-file-image'>
-                        <span className='fa fa-file-image-o mr-2'/>
+                        <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-file-image.png')} />
                         <span className="mr-2 text-color" onClick={event => this.handlePreviewImage(event, item)}>
                             {item.name || item}
                         </span>
-                        <span className="rounded-circle fa fa-trash icon-delete" onClick={event => this.handleRemoveFile(event, (item.name || item))} />
+                        <span className="rounded-circle icon-delete" onClick={event => this.handleRemoveFile(event, (item.name || item))} >
+                            <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-delete.png')} />
+                        </span>
                     </Col>
                 }
           </Form.Group>
