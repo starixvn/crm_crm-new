@@ -14,7 +14,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
-    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, checkInvalidMaxLengthContent
+    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, validFileSize, validFileExtension
 } from '../common.functions';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import Site from '@jsroot/common/site';
@@ -47,6 +47,10 @@ export class ActionAnnouncement extends Component {
             isSendType: {
                 isSendNow: false,
                 isSendAt: false
+            },
+            errorDrafts: {
+                invalidFileTypeDraft: [],
+                invalidFileSizeDraft: []
             }
         };
     }
@@ -55,6 +59,7 @@ export class ActionAnnouncement extends Component {
         await this.getLanguages();
         await this.props.getAnnouncementTemplate();
         await this.getAnnounceDetail();
+        await this.changeStringToFile();
     }
 
     getAnnounceDetail = async () =>{
@@ -256,11 +261,69 @@ export class ActionAnnouncement extends Component {
             });
         }else{
             const invalidWidthHeight = this.state.invalidWidthHeight.filter(x => x !== fileNameRemove);
-            this.setState({invalidWidthHeight});
+            const invalidFileSizeDraft = this.state.errorDrafts.invalidFileSizeDraft.filter(x => x.name !== fileNameRemove);
+            const invalidFileTypeDraft = this.state.errorDrafts.invalidFileTypeDraft.filter(x => x.name !== fileNameRemove);
+            this.setState({
+                invalidWidthHeight,
+                errorDrafts: {
+                    invalidFileSizeDraft: invalidFileSizeDraft,
+                    invalidFileTypeDraft: invalidFileTypeDraft
+                }
+            });
         }
         
         this.setState({uploadedFiles});
     }
+
+    changeStringToFile = async () => {
+        const id = this.props.actionParam.announcementId;
+        const fileNames = this.state.data.fileName.split(',');
+        const maximumHeightWidth = 2560;
+        const urls = [];
+
+        if (fileNames.length > 0) {
+            fileNames.map(item => urls.push({
+                fileName: item,
+                url: Site.resolveClientUrl(`www/dist/images/announcement/${id}/${item}`)
+            }));
+    
+            urls.forEach(async (item) => {
+                const response = await fetch(item.url);
+                const data = await response.blob();
+                const file = new File([data], item.fileName);
+
+                const image = new Image();
+                image.src = item.url;
+                image.onload = () => {
+                    const {
+                        height,
+                        width
+                    } = image;
+
+                    if (height > maximumHeightWidth || width > maximumHeightWidth) {
+                        this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, item.fileName]});
+                    }
+                }
+
+                if (!validFileExtension(file)) {
+                    this.setState(prevState => ({
+                        errorDrafts: {
+                            ...prevState.errorDrafts,
+                            invalidFileTypeDraft: [...prevState.errorDrafts.invalidFileTypeDraft, file]
+                        }
+                    }));
+                }
+                if (!validFileSize(file)) {
+                    this.setState(prevState => ({
+                        errorDrafts: {
+                            ...prevState.errorDrafts,
+                            invalidFileSizeDraft: [...prevState.errorDrafts.invalidFileSizeDraft, file]
+                        }
+                    }));
+                }
+            });
+        }
+    };
 
     renderMessage = (result, message) =>{
         if(!result.isSuccessful){
@@ -484,6 +547,7 @@ export class ActionAnnouncement extends Component {
         const result = actionParam.isEdit ? editAnnouncementResult : createAnnouncementResult;
         const notificationTemplates = [{notificationTemplateId: 0, notificationTemplateName: LangHelper.getResource('PleaseSelect')}, ...this.props.announcementTemplate.notificationTemplates];
         const headlineTypeList = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
+
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <div className="add-announcement">
@@ -680,9 +744,9 @@ export class ActionAnnouncement extends Component {
                         handleDateChange={this.handleDateChange} handleOptionChange={this.handleOptionChange}
                     />
                     <div className="group-btn">
-                        <Button className="btn-cancel" type="submit" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>
-                        <Button className="btn-save" type="submit" variant="primary" size="md" onClick={event => this.handleSaveDraft(event, values)}>{LangHelper.getResource('Save as Draft')}</Button>
-                        <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={this.isDisableSubmit(values, isSubmitting) || isInvalidContent}>{LangHelper.getResource('Push')}</Button>
+                        <Button className="btn-cancel" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>
+                        <Button className="btn-save" variant="primary" size="md" onClick={event => this.handleSaveDraft(event, values)}>{LangHelper.getResource('Save as Draft')}</Button>
+                        <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={isSubmitting}>{LangHelper.getResource('Push')}</Button>
                     </div>
                 </div>
             </Form>
@@ -748,7 +812,7 @@ export class ActionAnnouncement extends Component {
                 <Formik
                     innerRef={p => (this.formik = p)}
                     initialValues={initialValues}
-                    validate={values => validateFormik(values, excludeOldImage, this.state.invalidWidthHeight)}
+                    validate={values => validateFormik(values, excludeOldImage, this.state.invalidWidthHeight, this.state.errorDrafts)}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}

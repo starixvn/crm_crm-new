@@ -2,7 +2,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import React from 'react';
 import DateTimeService from '@jsroot/common/dateTimeService';
 
-export const validateFormik = (values, files, invalidWidthHeight) => {
+export const validateFormik = (values, files, invalidWidthHeight, errorDrafts) => {
     const dateTimeNowClient= new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     let errors = {};
 
@@ -32,15 +32,19 @@ export const validateFormik = (values, files, invalidWidthHeight) => {
     }
 
     const invalidFileType = files.filter(x => !validFileType(x) || !validFileExtension(x));
-    if(invalidFileType.length > 0){
-        const nameFileError = invalidFileType.map(x => x.name).join(', ');
+    if(invalidFileType.length > 0 || errorDrafts?.invalidFileTypeDraft.length > 0){
+        errorDrafts?.invalidFileTypeDraft.map(item => invalidFileType.push(item));
+        const newInvalidFileType = [...new Set(invalidFileType)];
+        const nameFileError = newInvalidFileType.map(x => x.name).join(', ');
         errors.imageFileType = LangHelper.formatString(LangHelper.getResource('ImageFileTypeError'), nameFileError);
     }
 
     const invalidFileSize = files.filter(x => !validFileSize(x));
 
-    if(invalidFileSize.length > 0){
-        const nameFileError = invalidFileSize.map(x => x.name).join(', ');
+    if(invalidFileSize.length > 0 || errorDrafts?.invalidFileSizeDraft.length > 0){
+        errorDrafts?.invalidFileSizeDraft.map(item => invalidFileSize.push(item));
+        const newInvalidFileSize = [...new Set(invalidFileSize)];
+        const nameFileError = newInvalidFileSize.map(x => x.name).join(', ');
         errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), nameFileError);
     }
 
@@ -139,7 +143,7 @@ export const checkInvalidMaxLengthContent = (content, tab) =>{
     return {invalidContentMaxLength, textInvalidContentMaxLength};
 };
 
-function validFileSize(file){
+export function validFileSize(file){
     const convertSize = Math.round(file.size / 1024).toFixed(2);
     const maximumSize10MB = 10000;
     if(convertSize > maximumSize10MB){
@@ -148,7 +152,7 @@ function validFileSize(file){
     return true;
 }
 
-function validFileType(file) {
+export function validFileType(file) {
     const fileTypes = [
         'image/jpeg',
         'image/pjpeg',
@@ -157,7 +161,7 @@ function validFileType(file) {
     return fileTypes.includes(file.type);
 }
 
-function validFileExtension(file) {
+export function validFileExtension(file) {
     const validFileFormat = ["jpeg", "pjpeg", "jpg", "png"];
     let extension = file.name.split('.').pop();
     return validFileFormat.includes(extension);
