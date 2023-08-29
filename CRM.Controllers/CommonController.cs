@@ -15,31 +15,27 @@
         private readonly INotificationTypeService notificationTypeService;
         private readonly ICommonService commonService;
         private readonly IFeedbackSubjectService feedbackSubjectService;
-        private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
+        private readonly IPermissionService permissionService;
 
         public CommonController(
             INotificationTypeService notificationTypeService,
             ICommonService commonService,
             IFeedbackSubjectService feedbackSubjectService,
-            INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService
+            IPermissionService permissionService
             )
         {
             this.notificationTypeService = notificationTypeService;
             this.commonService = commonService;
             this.feedbackSubjectService = feedbackSubjectService;
-            this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
+            this.permissionService = permissionService;
+
+
         }
 
         [HttpPost]
         public async Task<IActionResult> GetPermission([FromBody] GetPermissionCriteria criteria)
         {
-            var permission = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, criteria.functionKey);
+            var permission = await permissionService.GetPolicyPermissionAsync(criteria.functionKey);
             return Json(permission);
         }
 

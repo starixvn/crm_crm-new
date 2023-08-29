@@ -23,7 +23,9 @@
         public const string DeleteFeedback = "DeleteFeedback";
         public const string ReviewFeedback = "ReviewFeedback";
         public const string CreateUpdateFeedbackAndCustomerInfo = "CreateUpdateFeedback_CustomerInfo";
-        public const string Updateheadlineinfo = "Updateheadlineinfo";
+        public const string Updateheadlineinfo = "HeadlineInfo";
+        public const string Credit = "Credit";
+        public const string Licensee = "Licensee";
 
         public const string InformHeadline = "InformHeadline";
         public const string InformHeadlineSearch = "InformHeadlineSearch";
@@ -43,7 +45,5 @@
         public const string SettingRelationManagement = "SettingRelationshipManagement";
         public const string SettingManagement = "SettingManagement";
         public const string JobSettingManagement = "JobSettingManagement";
-        public const string Credit = "Credit";
-        public const string Deposit = "Deposit";
     }
 }

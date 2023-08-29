@@ -14,7 +14,8 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
     public class CustomerInfoController : BaseController
     {
         private readonly INapSession napSession;

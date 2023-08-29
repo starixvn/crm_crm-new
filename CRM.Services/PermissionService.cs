@@ -13,8 +13,8 @@
     {
         Task<int> GetPolicyPermissionAsync(string functionKey);
         Task<bool> IsHavingPermissionByPolicyAsync(string functionKey, Policy policy = Policy.Read);
-        Task<bool> IsHavingPermissionAsync(string functionKey);
         Task<short> GetSitePermissionAsync();
+        Task<bool> IsHavingPermissionAsync(string functionKey);
     }
 
     public class PermissionService : IPermissionService
@@ -44,12 +44,6 @@
             return await userService.IsHavingPermissionAsync(napSession.UserId, napSettings.SiteId, functionKey, policy);
         }
 
-        public async Task<bool> IsHavingPermissionAsync(string functionKey)
-        {
-            int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, functionKey);
-            return policy > 0;
-        }
-
         public async Task<short> GetSitePermissionAsync()
         {
             var isHavingPermissionCredit = await IsHavingPermissionAsync(FunctionKey.Credit);
@@ -63,8 +57,14 @@
                 case (false, true):
                     return (int)SitePermission.Deposit;
                 default:
-                    return (short)SitePermission.Both;
+                    return (short)SitePermission.NA;
             }
+        }
+
+        public async Task<bool> IsHavingPermissionAsync(string functionKey)
+        {
+            int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, functionKey);
+            return policy > 0;
         }
     }
 }

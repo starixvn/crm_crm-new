@@ -2,7 +2,10 @@
 {
     using System;
     using System.Threading.Tasks;
+    using CRM.Core.Services;
+    using CRM.Resources;
     using Fanex.Logging;
+    using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Extensions;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Configuration;
@@ -12,8 +15,11 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
+    using static System.Collections.Specialized.BitVector32;
+    using System.Linq;
+    using System.Net;
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class CrmPermissionAttribute : Attribute, IAsyncAuthorizationFilter
     {
         private readonly IUserService userService;
@@ -49,10 +55,8 @@
                 {
                     CloseConnection(context);
                 }
-                else
-                {
-                    await HandleResponseFilter(context);
-                }
+
+                await CheckUserPermissionAsync(context);
             }
             catch (Exception exception)
             {
@@ -60,6 +64,36 @@
                        .AddSection("Exception Info Authorize", CommonInfoGetters.GetExceptionInfo(exception))
                        .ToString();
                 logger.Error(logMessage);
+            }
+        }
+
+        private async Task CheckUserPermissionAsync(AuthorizationFilterContext context)
+        {
+            var attributes = context.ActionDescriptor.FilterDescriptors.Where(x => x.Filter is CrmPermissionAttribute)
+                    .Select(x => x.Filter as CrmPermissionAttribute).ToList();
+            bool hasPermission = false;
+            int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
+
+            foreach (var attribute in attributes)
+            {
+                if (policy < (int)Policy)
+                {
+                    hasPermission = true;
+                }
+            }
+
+            if (!hasPermission)
+            {
+                bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
+                if (isAjaxRequest)
+                {
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+                }
+
+                else
+                {
+                    context.Result = new RedirectToActionResult("405", "error", null);
+                }
             }
         }
 
@@ -72,24 +106,6 @@
             else
             {
                 context.Result = new RedirectToActionResult("SignIn", "Auth", null);
-            }
-        }
-
-        private async Task HandleResponseFilter(AuthorizationFilterContext context)
-        {
-            int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
-            bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
-
-            if (policy < (int)Policy)
-            {
-                if (isAjaxRequest)
-                {
-                    context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
-                }
-                else
-                {
-                    context.Result = new RedirectToActionResult("405", "error", null);
-                }
             }
         }
 

@@ -2,7 +2,8 @@
 {
     public enum SitePermission
     {
-        Both = 0,
+        NA = -1,
+        Both,
         Credit,
         Deposit
     }
