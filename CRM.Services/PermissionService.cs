@@ -47,18 +47,14 @@
         public async Task<short> GetSitePermissionAsync()
         {
             var isHavingPermissionCredit = await IsHavingPermissionAsync(FunctionKey.Credit);
-            var isHavingPermissionDeposit = await IsHavingPermissionAsync(FunctionKey.Deposit);
-            switch ((isHavingPermissionCredit, isHavingPermissionDeposit))
+            var isHavingPermissionLicensee = await IsHavingPermissionAsync(FunctionKey.Licensee);
+            return (isHavingPermissionCredit, isHavingPermissionLicensee) switch
             {
-                case (true, true):
-                    return (short)SitePermission.Both;
-                case (true, false):
-                    return (short)SitePermission.Credit;
-                case (false, true):
-                    return (int)SitePermission.Deposit;
-                default:
-                    return (short)SitePermission.NA;
-            }
+                (true, true) => (short)SitePermission.Both,
+                (true, false) => (short)SitePermission.Credit,
+                (false, true) => (int)SitePermission.Deposit,
+                _ => (short)SitePermission.NA,
+            };
         }
 
         public async Task<bool> IsHavingPermissionAsync(string functionKey)

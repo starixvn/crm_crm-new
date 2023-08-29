@@ -28,11 +28,11 @@ export class AppContainer extends Component {
     }
 
     componentDidMount() {
-        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
+        getPermission(FunctionKey.CreateUpdateFeedback).then(response => {
             this.setState({ customerInfoPolicy: response });
         });
 
-        getPermission(FunctionKey.Updateheadlineinfo, true).then(response => {
+        getPermission(FunctionKey.UpdateHeadlineInfo, true).then(response => {
             this.setState({ updateHeadlineInfoPolicy: response });
         });
         document.title = LangHelper.getResource('CRMSystem');

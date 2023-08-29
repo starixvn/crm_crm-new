@@ -20,7 +20,7 @@
     using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
     public class AddCustomerFeedbackController : BaseController
     {
         private readonly INapSession napSession;
@@ -101,7 +101,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
         public async Task<IActionResult> Create([FromBody] AddCustomerFeedbackCommand command)
         {
             try
@@ -137,7 +137,7 @@
 
         private CommandResult CheckAddCustomerFeedbackPermission()
         {
-            var hasCreateFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host);
+            var hasCreateFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host);
             var commandResult = new CommandResult { Code = 0 };
             if (!hasCreateFeedbackPermission)
             {

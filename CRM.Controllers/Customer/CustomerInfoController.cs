@@ -14,8 +14,9 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
-    [CrmPermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
+    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
+    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
+    [CrmPermissionAttribute(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Read)]
     public class CustomerInfoController : BaseController
     {
         private readonly INapSession napSession;
@@ -89,7 +90,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
         public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
         {
             command.UserId = napSession.UserId;

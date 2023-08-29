@@ -22,7 +22,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Read)]
     public class MultipleLogsController : BaseController
     {
         private readonly INapSession napSession;
@@ -52,7 +52,7 @@
             this.commonService = commonService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateMultipleLogsCommand command)
         {
@@ -100,7 +100,7 @@
             return Json(result);
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
         [HttpPost]
         public async Task<ActionResult> EditMultipleLogStatuses([FromBody] EditMultipleLogStatusCommand command)
         {
@@ -119,7 +119,7 @@
         private CommandResult CheckEditMultipleLogPermission()
         {
             var commandResult = new CommandResult { Code = 0 };
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host)
                 || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host))
             {
                 commandResult = new CommandResult
@@ -129,7 +129,7 @@
                 };
             }
 
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host))
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host))
             {
                 commandResult = new CommandResult
                 {
@@ -162,7 +162,7 @@
             return Json(new { communicationLog, settings, hasReviewFeedbackPermission });
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
         [HttpPost]
         public async Task<ActionResult> EditMultipleLogs([FromBody] EditMultipleLogsCommand command)
         {

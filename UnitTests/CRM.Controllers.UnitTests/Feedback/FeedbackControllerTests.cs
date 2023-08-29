@@ -234,7 +234,7 @@
             // Arrange
             var command = fixture.Create<EditCustomerFeedbackCommand>();
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(false);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(false);
 
             // Act
             var result = await controller.EditCustomerFeedback(command);
@@ -252,7 +252,7 @@
             // Arrange
             var command = new EditCustomerFeedbackCommand { UpdateReviewedMode = 1 };
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(false);
 
             // Act
@@ -279,7 +279,7 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             feedbackService.EditCustomerFeedbackAsync(Arg.Do<EditCustomerFeedbackCommand>(x => command = x)).Returns(commandResult);
 
@@ -310,7 +310,7 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             feedbackService.EditCustomerFeedbackAsync(Arg.Do<EditCustomerFeedbackCommand>(x => command = x)).Returns(commandResult);
 

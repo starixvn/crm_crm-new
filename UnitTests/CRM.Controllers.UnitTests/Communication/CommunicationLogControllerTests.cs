@@ -98,7 +98,7 @@
             // Arrange
             var command = fixture.Create<EditCommunicationLogCommand>();
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(false);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(false);
 
             // Act
             var result = await controller.EditCommunicationLog(command);
@@ -116,7 +116,7 @@
             // Arrange
             var command = new EditCommunicationLogCommand { UpdateReviewedMode = 1 };
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(false);
 
             // Act
@@ -135,7 +135,7 @@
             // Arrange
             var command = new EditCommunicationLogCommand { IsDeletedFeedbackView = false, StatusId = 11004 };
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(false);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(false);
 
             // Act
             var result = await controller.EditCommunicationLog(command);
@@ -161,7 +161,7 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
 
@@ -192,7 +192,7 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
 

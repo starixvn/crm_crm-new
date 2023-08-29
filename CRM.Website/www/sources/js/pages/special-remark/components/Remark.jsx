@@ -33,7 +33,7 @@ export class Remark extends Component {
 
     async componentDidMount() {
         await this.props.getRemarks({customerId: this.props.id});
-        getPermission(FunctionKey.NotificationList).then(response => {
+        getPermission(FunctionKey.CreateUpdateFeedback).then(response => {
             this.setState({policy: response});
         });
         document.title = LangHelper.getResource('CRMSystem');

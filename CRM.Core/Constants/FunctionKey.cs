@@ -22,7 +22,7 @@
         public const string LatestFeedback = "LatestFeedback";
         public const string DeleteFeedback = "DeleteFeedback";
         public const string ReviewFeedback = "ReviewFeedback";
-        public const string CreateUpdateFeedbackAndCustomerInfo = "CreateUpdateFeedback_CustomerInfo";
+        public const string CreateUpdateFeedback = "Create_UpdateFeedback";
         public const string Updateheadlineinfo = "HeadlineInfo";
         public const string Credit = "Credit";
         public const string Licensee = "Licensee";

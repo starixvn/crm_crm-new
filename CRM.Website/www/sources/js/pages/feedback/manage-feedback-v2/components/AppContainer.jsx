@@ -35,7 +35,7 @@ export class AppContainer extends Component {
 
     componentDidMount() {
         this.props.getAllSettings();
-        getPermission(FunctionKey.CreateUpdateFeedbackAndCustomerInfo).then(response => {
+        getPermission(FunctionKey.CreateUpdateFeedback).then(response => {
             this.setState({policy: response});
         });
         document.title = LangHelper.getResource('ManageFeedback');

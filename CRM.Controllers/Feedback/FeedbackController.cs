@@ -55,7 +55,7 @@
             this.logService = logService;
         }
 
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
         public async Task<IActionResult> GetNoOfInquiryByFeedbackId(int id)
         {
             EditNoOfInquiry feedback = await feedbackService.GetNoOfInquiryByFeedbackIdAsync(id);
@@ -63,7 +63,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
         public async Task<IActionResult> EditNoOfInquiry([FromBody] EditNoOfInquiryCommand command)
         {
             command.UserId = napSession.UserId;
@@ -82,7 +82,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
         public async Task<IActionResult> EditCustomerFeedback([FromBody] EditCustomerFeedbackCommand command)
         {
             CommandResult commandResult = CheckEditCustomerFeedbackPermission(command);
@@ -138,7 +138,7 @@
         private CommandResult CheckEditCustomerFeedbackPermission(EditCustomerFeedbackCommand command)
         {
             var commandResult = new CommandResult { Code = 0 };
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host)
                 || (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host) &&
                     command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate))
             {
@@ -151,7 +151,7 @@
 
             var isChangedStatusFromDeleted = command.IsDeletedFeedbackView && command.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted;
             var isChangedStatusToDeleted = !command.IsDeletedFeedbackView && command.StatusId == (int)Core.Enumerables.FeedbackStatus.Deleted;
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host)
+            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host)
                 && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
             {
                 commandResult = new CommandResult

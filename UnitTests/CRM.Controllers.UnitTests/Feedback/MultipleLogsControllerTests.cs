@@ -232,7 +232,7 @@
             // Arrange
             var command = fixture.Create<EditMultipleLogStatusCommand>();
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(false);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(false);
 
             // Act
             var result = await controller.EditMultipleLogStatuses(command);
@@ -250,7 +250,7 @@
             // Arrange
             var command = new EditMultipleLogStatusCommand();
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(false);
 
             // Act
@@ -277,7 +277,7 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             baseService.ExecuteNonQueryAsync(Arg.Do<EditMultipleLogStatusCommand>(x => command = x)).Returns(commandResult);
 
@@ -308,7 +308,7 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             baseService.ExecuteNonQueryAsync(Arg.Do<EditMultipleLogStatusCommand>(x => command = x)).Returns(commandResult);
 
@@ -403,7 +403,7 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             baseService.ExecuteNonQueryAsync(Arg.Do<EditMultipleLogsCommand>(x => command = x)).Returns(commandResult);
 
@@ -434,7 +434,7 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedbackAndCustomerInfo, Policy.Host).Returns(true);
+            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             baseService.ExecuteNonQueryAsync(Arg.Do<EditMultipleLogsCommand>(x => command = x)).Returns(commandResult);
 
