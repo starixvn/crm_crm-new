@@ -20,20 +20,25 @@
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         private readonly IFeedbackService feedbackService;
+        private readonly IPermissionService permissionService;
 
         public LatestFeedbackController(
             IExportExcelService excelService,
             ISettingService settingService,
-            IFeedbackService feedbackService)
+            IFeedbackService feedbackService,
+            IPermissionService permissionService)
         {
             this.settingService = settingService;
             this.excelService = excelService;
             this.feedbackService = feedbackService;
+            this.permissionService = permissionService;
         }
 
         [HttpPost]
         public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackCriteria criteria)
         {
+            var sitePermission = await permissionService.GetSitePermissionAsync();
+            criteria.LicenseeType = sitePermission;
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
 
@@ -62,6 +67,8 @@
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] GetLatestFeedbackCriteria criteria)
         {
+            var sitePermission = await permissionService.GetSitePermissionAsync();
+            criteria.LicenseeType = sitePermission;
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);

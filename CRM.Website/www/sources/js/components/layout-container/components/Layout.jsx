@@ -32,7 +32,7 @@ export class Layout extends Component {
             editCustomerInfoPopup: { show: false},
             isShowingLeftPanel : false,
             isShowNewVersion: false,
-            maxHeightLeft: 0
+            showErrorConfirmPopup: false
         };
     }
 
@@ -193,6 +193,10 @@ export class Layout extends Component {
         this.setState({ showEmptyCustomerInfoPopup: false });
     };
 
+    handleCloseErrorPopup = () => {
+        this.setState({ showErrorConfirmPopup: false });
+    };
+
     handleChangeSuggestion = value => {
         this.setState({
             username: value
@@ -243,24 +247,30 @@ export class Layout extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
         await DataService.postDataAsync(url,params).then(response => {
-            this.setState({customerInfo: response.data});
-            if(response !== undefined && response.data !== null){
-                const siteCredits = this.state.settings.sitesByIsLicensee.filter(site =>site.name === 'Credit');
-                const isCreditSite = siteCredits.filter(x => x.childSites.some(y => response.data?.siteId === y.id)).length > 0;
-                this.setState({isCreditSite});
-                if(this.props.location.pathname === '/'){
-                    this.setState({isCreditSite}, () =>{
-                        this.handleNavigate('Dashboard');
-                    });
-                }
-            }else if (response.data === null && !this.state.isGuest) {
+            if(response.data.errCode > 0 && response.data.errMsg?.length > 0) {
                 this.setState({
-                    showEmptyConfirmPopup: true
+                    showErrorConfirmPopup: true
                 });
-            }else if(response.data === null) {
-                this.setState({
-                showEmptyCustomerInfoPopup: true
-            });
+            }else{
+                if(response !== undefined && response.data !== null){
+                    this.setState({customerInfo: response.data});
+                    const siteCredits = this.state.settings.sitesByIsLicensee.filter(site =>site.name === 'Credit');
+                    const isCreditSite = siteCredits.filter(x => x.childSites.some(y => response.data?.siteId === y.id)).length > 0;
+                    this.setState({isCreditSite});
+                    if(this.props.location.pathname === '/'){
+                        this.setState({isCreditSite}, () =>{
+                            this.handleNavigate('Dashboard');
+                        });
+                    }
+                }else if (response.data === null && !this.state.isGuest) {
+                    this.setState({
+                        showEmptyConfirmPopup: true
+                    });
+                }else if(response.data === null) {
+                    this.setState({
+                    showEmptyCustomerInfoPopup: true
+                });
+                }
             }
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
@@ -335,7 +345,7 @@ export class Layout extends Component {
     };
 
     render() {
-        const {customerInfo, isGuest, customerSuggestions, showEmptyConfirmPopup,
+        const {customerInfo, isGuest, customerSuggestions, showEmptyConfirmPopup, showErrorConfirmPopup,
             username, showEmptyCustomerInfoPopup, menus, isShowingLeftPanel } = this.state;
         if(menus.length <= 0){
             return null;
@@ -362,6 +372,21 @@ export class Layout extends Component {
                         />
                     }
                 </div>
+                {
+                    showErrorConfirmPopup &&
+                    <SweetModalDialog size="sm"
+                        title={LangHelper.getResource('SearchAccount')}
+                        contents={
+                            <div>{LangHelper.getResource('AuthorizedSearchAccount')}</div>
+                        }
+                        buttons={[
+                            <Button size="sm" variant="primary" onClick={this.handleCloseErrorPopup}>
+                                {LangHelper.getResource('OK')}
+                            </Button>,
+                        ]}
+                        onClose={this.handleCloseErrorPopup}
+                    />
+                }
                 {
                     !showEmptyCustomerInfoPopup &&
                     <div className='row-content'>

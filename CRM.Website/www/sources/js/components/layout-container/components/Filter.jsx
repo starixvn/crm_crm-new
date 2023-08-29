@@ -75,10 +75,12 @@ export default class Filter extends Component {
             return;
         }
         this.props.getDataGrid().then(() =>{
-            const urlUpdateSuggestion = Site.resolveClientUrl('CustomerInfo/UpdateCustomerSuggestion');
-            const paramsUpdateSuggestion  = {CustID: this.props.customerInfo.custId, UserName: this.props.username};
-            DataService.postDataAsync(urlUpdateSuggestion, paramsUpdateSuggestion);
-            this.props.handleNavigate('Dashboard');
+            if(this.props.customerInfo){
+                const urlUpdateSuggestion = Site.resolveClientUrl('CustomerInfo/UpdateCustomerSuggestion');
+                const paramsUpdateSuggestion  = {CustID: this.props.customerInfo.custId, UserName: this.props.username};
+                DataService.postDataAsync(urlUpdateSuggestion, paramsUpdateSuggestion);
+                this.props.handleNavigate('Dashboard');
+            }
         });
     };
 

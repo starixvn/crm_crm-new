@@ -52,7 +52,7 @@
             {
                 (true, true) => (short)SitePermission.Both,
                 (true, false) => (short)SitePermission.Credit,
-                (false, true) => (int)SitePermission.Deposit,
+                (false, true) => (int)SitePermission.Licensee,
                 _ => (short)SitePermission.NA,
             };
         }

@@ -69,10 +69,11 @@
             var attributes = context.ActionDescriptor.FilterDescriptors.Where(x => x.Filter is CrmMultiplePermissionAttribute)
                     .Select(x => x.Filter as CrmMultiplePermissionAttribute).ToList();
             bool hasPermission = false;
-            int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
 
             foreach (var attribute in attributes)
             {
+                int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, attribute.FunctionKey);
+
                 if (policy >= (int)Policy)
                 {
                     hasPermission = true;

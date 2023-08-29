@@ -20,16 +20,19 @@
         private readonly ISettingService settingService;
         private readonly IFeedbackService feedbackService;
         private readonly IExportExcelService exportExcelService;
+        private readonly IPermissionService permissionService;
 
         public ManageFeedbackController(
             ISettingService settingService,
             IFeedbackService feedbackService,
-            IExportExcelService exportExcelService
+            IExportExcelService exportExcelService,
+            IPermissionService permissionService
             )
         {
             this.settingService = settingService;
             this.feedbackService = feedbackService;
             this.exportExcelService = exportExcelService;
+            this.permissionService = permissionService;
         }
 
         public async Task<ActionResult> GetAllSettings()
@@ -55,6 +58,8 @@
         [HttpPost]
         public async Task<ActionResult> SearchManageFeedback([FromBody] ManageFeedbackCriteria criteria)
         {
+            var sitePermission = await permissionService.GetSitePermissionAsync();
+            criteria.LicenseeType = sitePermission;
             var feedbacksTask = feedbackService.GetManageFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);
@@ -69,6 +74,8 @@
         public async Task<IActionResult> ExportExcel([FromBody] ManageFeedbackCriteria criteria)
         {
             criteria.PageIndex = 0;
+            var sitePermission = await permissionService.GetSitePermissionAsync();
+            criteria.LicenseeType = sitePermission;
             var feedbacksTask = feedbackService.GetManageFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);

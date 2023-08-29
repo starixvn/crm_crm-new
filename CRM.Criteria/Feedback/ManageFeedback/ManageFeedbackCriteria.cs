@@ -2,6 +2,7 @@
 {
     using System;
     using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
     using Fanex.Data;
     using Fanex.Data.Repository;
 
@@ -41,6 +42,7 @@
         public int PageSize { get; set; }
 
         public int TotalRows { get; set; }
+        public short LicenseeType { get; set; } = (short)SitePermission.Both;
 
         public override bool IsValid() => true;
 

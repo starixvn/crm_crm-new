@@ -12,6 +12,7 @@
     using CRM.Services.Customer;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
+    using static System.Runtime.CompilerServices.RuntimeHelpers;
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
@@ -59,7 +60,13 @@
             {
                 sessionService.CurrentCustomer = null;
             }
-            return Json(customerInfo);
+            var isError = criteria.ErrCode > 0 && !string.IsNullOrEmpty(criteria.ErrMsg);
+            var errorJson = new {
+                criteria.ErrCode,
+                criteria.ErrMsg
+            };
+
+            return Json(isError ? errorJson : customerInfo);
         }
 
 

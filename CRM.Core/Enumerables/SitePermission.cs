@@ -5,6 +5,6 @@
         NA = -1,
         Both,
         Credit,
-        Deposit
+        Licensee
     }
 }
