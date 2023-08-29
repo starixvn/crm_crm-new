@@ -98,19 +98,24 @@ namespace CRM.Services.HeadlineNotification
         public async Task<(IEnumerable<AnnouncementDetail> , CommandResult)> ValidateAnnouncementAsync(ValidateAnnouncementCommand command)
         {
             command.SendDate = command.SendImmediately ? command.SendDate : commonService.ConvertToServerDateTime((DateTime)command.SendDate);
-            var announcements = await baseService.GetDataAsync<AnnouncementDetail>(command);
+            IEnumerable<AnnouncementDetail> announcements = new List<AnnouncementDetail>();
             var commandResult = await baseService.ExecuteNonQueryAsync(command);
 
-            if (commandResult.IsSuccessful && !command.SendImmediately)
+            if (commandResult.IsSuccessful)
             {
-                foreach (var announcement in announcements)
+                announcements = await baseService.GetDataAsync<AnnouncementDetail>(command);
+                if (command.SendDate != null)
                 {
-                    var convertSendDateToClient = commonService.ConvertToClientDateTime((DateTime)announcement.SendDate);
-                    announcement.SendDate = convertSendDateToClient;
-                    announcement.SendDateString = convertSendDateToClient.ToString("MMM dd, yyyy");
-                    announcement.SendTimeString = convertSendDateToClient.ToString("hh:mm:ss tt");
+                    foreach (var announcement in announcements)
+                    {
+                        var convertSendDateToClient = commonService.ConvertToClientDateTime((DateTime)announcement.SendDate);
+                        announcement.SendDate = convertSendDateToClient;
+                        announcement.SendDateString = convertSendDateToClient.ToString("MMM dd, yyyy");
+                        announcement.SendTimeString = convertSendDateToClient.ToString("hh:mm:ss tt");
+                    }
                 }
             }
+
             return (announcements, commandResult);
         }
     }

@@ -21,7 +21,7 @@ namespace CRM.Criteria.Announcement
         public IList<string> FileString { get; set; } = new List<string>();
         public string Title { get; set; }
         [SpParam(Ignored = true)]
-        public IList<Content> Contents { get; set; }
+        public IList<Content> Contents { get; set; } = new List<Content>();
 
         [SpParam(SqlParamName = "contents")]
         public string ContentXml => Contents.Any() ? Contents.ToXML("Contents").ToString() : string.Empty;
