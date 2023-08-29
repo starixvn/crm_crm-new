@@ -12,7 +12,7 @@ export default class Option extends PureComponent {
         return(
              <div className="group-item">
                 <div className="group-header required">{LangHelper.getResource('SendType')}</div>
-                <div className="group-content send-type">
+                <div className="group-content send-type ">
                     <div className="radio-btn send-now" onChange={this.onChangeValue}>
                         <input
                             className="custom"

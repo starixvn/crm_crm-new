@@ -488,24 +488,25 @@ export class NewAnnouncement extends Component {
                             {
                                 isChangeTemplate && parameters &&
                                 <Form.Group as={Row}>
-                                    <Form.Label />
-                                    <div className='parameters'>
-                                        <div className='text-parameters'>Parameters</div>
-                                        {
-                                            parameters.map((param, index) => {
-                                                const removeSpaceParam = param.replace(/\s+/g, "");
-                                                return (
-                                                    <div key={index} className='d-flex box-param'>
-                                                        <div className='param pt-1'>{param}</div>
-                                                        <Form.Control as="textarea" value={values[removeSpaceParam] || ''}
-                                                            name={removeSpaceParam} id={removeSpaceParam}
-                                                            className="shadow-none form-input-param" autoComplete="off"
-                                                            onChange={event => this.handleChangeParameter(event, param, parameters)}
-                                                        />
-                                                    </div>
-                                                );
-                                            })
-                                        }
+                                    <div className='group-list'>
+                                        <div className='list-title'>Parameters</div>
+                                        <div className="list-info">
+                                            {
+                                                parameters.map((param, index) => {
+                                                    const removeSpaceParam = param.replace(/\s+/g, "");
+                                                    return (
+                                                        <div key={index} className='d-flex box-param'>
+                                                            <div className='param pt-1'>{param}</div>
+                                                            <Form.Control as="textarea" value={values[removeSpaceParam] || ''}
+                                                                name={removeSpaceParam} id={removeSpaceParam}
+                                                                className="shadow-none form-input-param" autoComplete="off"
+                                                                onChange={event => this.handleChangeParameter(event, param, parameters)}
+                                                            />
+                                                        </div>
+                                                    );
+                                                })
+                                            }
+                                        </div>
                                     </div>
                                 </Form.Group>
                             }
@@ -517,7 +518,7 @@ export class NewAnnouncement extends Component {
                     <div className="group-item">
                         <div className="group-header required">{LangHelper.getResource('GroupHeadline')}</div>
                         <div className="group-content">
-                            <div className="group-headline group-username">
+                            <div className={"group-headline " + (this.state.isHeadlineGroup.isUsername ? 'send-type-active' : '')}>
                                 <input
                                     className="custom"
                                     type="radio"
@@ -553,7 +554,7 @@ export class NewAnnouncement extends Component {
                                     </Form.Label>
                                 </Form.Group>
                             </div>
-                            <div className="group-headline">
+                            <div className={"group-headline " + (this.state.isHeadlineGroup.isSiteType ? 'send-type-active' : '')}>
                                 <input
                                     className="custom"
                                     type="radio"

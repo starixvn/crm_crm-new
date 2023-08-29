@@ -573,7 +573,7 @@ export class ActionAnnouncement extends Component {
                     <div className="group-item">
                         <div className="group-header">{LangHelper.getResource('GroupHeadline')}</div>
                         <div className="group-content">
-                            <div className="group-headline group-username">
+                            <div className={"group-headline " + (this.state.isHeadlineGroup.isUsername ? 'send-type-active' : '')}>
                                 <input
                                     className="custom"
                                     type="radio"
@@ -609,7 +609,7 @@ export class ActionAnnouncement extends Component {
                                     </Form.Label>
                                 </Form.Group>
                             </div>
-                            <div className="group-headline">
+                            <div className={"group-headline " + (this.state.isHeadlineGroup.isSiteType ? 'send-type-active' : '')}>
                                 <input
                                     className="custom"
                                     type="radio"
