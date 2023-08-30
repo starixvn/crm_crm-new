@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers.UnitTests
 {
+    using System.Threading.Tasks;
     using CRM.Core.Models;
     using CRM.Services;
     using Fanex.NAP.Client.Configuration;
@@ -14,13 +15,13 @@
         private IPermissionService permissionService;
 
         [Fact]
-        public void Index_WhenCalled_ReturnExpectedViewResult()
+        public async Task Index_WhenCalled_ReturnExpectedViewResult()
         {
             // Arrange
             var controller = GetController();
 
             // Act
-            var actual = controller.Index();
+            var actual = await controller.Index();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(actual);

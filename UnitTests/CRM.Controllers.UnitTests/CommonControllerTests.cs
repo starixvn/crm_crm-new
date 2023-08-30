@@ -22,9 +22,7 @@
         private INotificationTypeService notificationTypeService;
         private ICommonService commonService;
         private IFeedbackSubjectService feedbackSubjectService;
-        private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
+        private IPermissionService permissionService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -98,10 +96,8 @@
             notificationTypeService = Substitute.For<INotificationTypeService>();
             commonService = Substitute.For<ICommonService>();
             feedbackSubjectService = Substitute.For<IFeedbackSubjectService>();
-            napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
-            return new CommonController(notificationTypeService, commonService, feedbackSubjectService, napSession, napSettings, userService);
+            permissionService = Substitute.For<IPermissionService>();
+            return new CommonController(notificationTypeService, commonService, feedbackSubjectService, permissionService);
         }
     }
 }

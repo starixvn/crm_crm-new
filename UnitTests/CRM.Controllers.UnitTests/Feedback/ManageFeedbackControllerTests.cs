@@ -23,6 +23,7 @@
         private ISettingService settingService;
         private IFeedbackService feedbackService;
         private IExportExcelService exportExcelService;
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetAllSettings_WhenCalled_ReturnAsExpectedResult()
@@ -127,7 +128,8 @@
             settingService = Substitute.For<ISettingService>();
             feedbackService = Substitute.For<IFeedbackService>();
             exportExcelService = Substitute.For<IExportExcelService>();
-            return new ManageFeedbackController(settingService, feedbackService, exportExcelService);
+            permissionService = Substitute.For<IPermissionService>();
+            return new ManageFeedbackController(settingService, feedbackService, exportExcelService, permissionService);
         }
     }
 }

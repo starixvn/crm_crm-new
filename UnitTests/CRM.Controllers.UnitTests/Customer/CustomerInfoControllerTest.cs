@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoFixture;
 using CRM.Core.Constants;
+using CRM.Core.Enumerables;
 using CRM.Core.Models;
 using CRM.Core.Services;
 using CRM.Criteria.Customer;
@@ -35,8 +36,13 @@ namespace CRM.Controllers.UnitTests.Customer
             var fixture = new Fixture();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var customer = fixture.Create<CustomerInfoDetails>();
-            var param = fixture.Create<GetCustomerInfoByUsernameCriteria>();
+            var param = new GetCustomerInfoByUsernameCriteria
+            {
+                Username = "test",
+                IsGuest = true
+            };
             var controller = GetController();
+            permissionService.GetSitePermissionAsync().Returns((short)SitePermission.Both);
             customerService.GetCustomerInfoAsync(param).Returns(customer);
 
             //Act

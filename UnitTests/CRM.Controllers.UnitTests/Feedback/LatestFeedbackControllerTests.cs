@@ -7,15 +7,12 @@
     using CRM.Core.Constants;
     using CRM.Criteria.Feedback;
     using CRM.Models.Feedback;
-    using CRM.Models.LatestFeedback;
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Feedback;
-    using Fanex.Data.Repository;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class LatestFeedbackControllerTests
     {
@@ -23,6 +20,7 @@
         private ISettingService settingService;
         private IExportExcelService excelService;
         private IFeedbackService feedbackService;
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetLatestFeedback_WhenCalled_ReturnAsExpectedResult()
@@ -80,7 +78,8 @@
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
             feedbackService = Substitute.For<IFeedbackService>();
-            return new LatestFeedbackController(excelService, settingService, feedbackService);
+            permissionService = Substitute.For<IPermissionService>();
+            return new LatestFeedbackController(excelService, settingService, feedbackService, permissionService);
         }
 
         #endregion Helpers

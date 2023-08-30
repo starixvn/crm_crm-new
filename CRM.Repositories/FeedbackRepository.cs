@@ -52,7 +52,7 @@
                     foreach (var feedback in feedbacks)
                     {
                         feedback.Settings = settings.Where(x => x.FeedbackId == feedback.FeedbackId).ToList();
-                        feedback.RelatedCustomer = string.Join(",", feedback.RelatedCustomer.Split(",").OrderBy(x => x));
+                        feedback.RelatedCustomer = string.IsNullOrEmpty(feedback.RelatedCustomer) ? "" : string.Join(",", feedback.RelatedCustomer.Split(",").OrderBy(x => x));
                     }
 
                     return feedbacks;
