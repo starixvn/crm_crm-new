@@ -14,7 +14,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
-    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, validFileSize, validFileExtension
+    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, validFileSize, validFileExtension, handleResetWhenBackPage
 } from '../common.functions';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import Site from '@jsroot/common/site';
@@ -60,6 +60,7 @@ export class ActionAnnouncement extends Component {
         await this.props.getAnnouncementTemplate();
         await this.getAnnounceDetail();
         await this.changeStringToFile();
+        handleResetWhenBackPage(this.props);
     }
 
     getAnnounceDetail = async () =>{
@@ -277,7 +278,7 @@ export class ActionAnnouncement extends Component {
 
     changeStringToFile = async () => {
         const id = this.props.actionParam.announcementId;
-        const fileNames = this.state.data.fileName.split(',');
+        const fileNames = this.state.data.fileName ? this.state.data.fileName.split(',') : [];
         const maximumHeightWidth = 2560;
         const urls = [];
 

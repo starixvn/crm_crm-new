@@ -14,7 +14,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
-    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, checkInvalidMaxLengthContent
+    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, handleResetWhenBackPage
 } from '../common.functions';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import Site from '@jsroot/common/site';
@@ -57,6 +57,7 @@ export class NewAnnouncement extends Component {
         });
         await this.props.getAnnouncementTemplate();
         await this.handleOptionSettings();
+        handleResetWhenBackPage(this.props);
     }
 
     handleOptionSettings = async () => {

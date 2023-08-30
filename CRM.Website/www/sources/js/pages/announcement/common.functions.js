@@ -166,3 +166,9 @@ export function validFileExtension(file) {
     let extension = file.name.split('.').pop();
     return validFileFormat.includes(extension);
 }
+
+export const handleResetWhenBackPage = (props) => {
+    props.setCreateAnnouncement(null);
+    props.setEditAnnouncement(null);
+    props.setValidateAnnouncement(null);
+};

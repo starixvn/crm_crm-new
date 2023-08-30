@@ -39,8 +39,10 @@ namespace CRM.Criteria.Announcement
 
         public override string GetSettingKey() => "Acc_CRM_ChatBot_Announcement_Upd";
 
-        public override bool IsValid() => IsValidParams() && !string.IsNullOrEmpty(Title) && Contents.Any();
+        public override bool IsValid() => IsValidParams() && IsValidEdit();
 
         public bool IsValidParams() => AnnouncementId > 0 && UserId > 0;
+
+        public bool IsValidEdit() => Status != "Draft" ? (!string.IsNullOrEmpty(Title) && Contents.Any()) : true;
     }
 }
