@@ -294,6 +294,7 @@ export class NewAnnouncement extends Component {
 
     handleClose = () => {
         this.props.setCreateAnnouncement(null);
+        this.props.setValidateAnnouncement(null);
         this.props.navigate(Site.resolveClientUrl('Announcement'));
     };
 
