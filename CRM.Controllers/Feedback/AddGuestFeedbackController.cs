@@ -57,9 +57,10 @@
             var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var statusesTask = settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var productsTask = settingService.GetProductAsync(SettingConstants.Active);
+            var sitesTask = settingService.GetAllSitesWithGroupAsync();
 
             await Task.WhenAll(languagesTask, countriesTask, extentionsTask, statusesTask, communicationToolsTask, responsesTask, titlesTask, licenseeTypesTask,
-                productsTask, subproductsTask, bettypesTask, mainCategorysTask, subCategorysTask);
+                productsTask, subproductsTask, bettypesTask, mainCategorysTask, subCategorysTask, sitesTask);
 
             var extentionNA = extentionsTask.Result.FirstOrDefault(s => s.Id == NAConstants.ExtentionNA);
             var productNA = productsTask.Result.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
@@ -77,6 +78,7 @@
                 Statuses = statusesTask.Result.Where(s => s.StatusId != (int)FeedbackStatus.Deleted),
                 Titles = titlesTask.Result,
                 LicenseeTypes = licenseeTypesTask.Result,
+                Sites = sitesTask.Result,
                 ProductNA = productNA,
                 SubProductNA = subproductNA,
                 BettypeNA = bettypeNA,

@@ -223,7 +223,7 @@ export const getParams = (values, customerDetail, settings, state) =>{
         Yahoo: customerInfo.letstalk,
         QQ: customerInfo.qq,
         BBM: customerInfo.zalo,
-        SiteId: customerDetail !== null ? parseInt(customerInfo.siteId, 10) : null,
+        SiteId: customerInfo.siteId !== null ? parseInt(customerInfo.siteId, 10) : null,
         LicenseeType: parseInt(customerInfo.licenseeType, 10),
         FeedbackDate: DateTimeService.toLongDateTimeFormat(values.feedbackDate),
         ResolutionDate: DateTimeService.toLongDateTimeFormat(values.resolutionTime),

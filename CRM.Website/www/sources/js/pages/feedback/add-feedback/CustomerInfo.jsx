@@ -443,6 +443,30 @@ export class CustomerInfo extends PureComponent{
                     }
                 </Form.Group>
                 {
+                    customerDetail === null &&
+                    <Form.Group as={Row}>
+                        <Col sm="8" md="8"/>
+                        <Col sm="4" md="4">
+                            <Form.Group as={Row}>
+                                <Form.Label column sm="4" md="4" htmlFor="site">
+                                    {LangHelper.getResource('Site')}
+                                </Form.Label>
+                                <Col sm="8" md="8">
+                                    <SelectWithSearch
+                                        className='basic-single'
+                                        options={siteOptions}
+                                        value={customerInfo.siteId}
+                                        name={customerInfo.siteName}
+                                        isSelectOption
+                                        isHideNA
+                                        OnChangeValue={item => handleChangeValueInfo('siteId', item.id)}
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Form.Group>
+                }
+                {
                     customerDetail !== null &&
                     <Form.Group as={Row}>
                         <Col sm="4" md="4">
