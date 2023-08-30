@@ -747,7 +747,7 @@ export class ActionAnnouncement extends Component {
                     <div className="group-btn">
                         <Button className="btn-cancel" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>
                         <Button className="btn-save" variant="primary" size="md" onClick={event => this.handleSaveDraft(event, values)}>{LangHelper.getResource('Save as Draft')}</Button>
-                        <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={isSubmitting}>{LangHelper.getResource('Push')}</Button>
+                        <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={this.isDisableSubmit(values, isSubmitting)}>{LangHelper.getResource('Push')}</Button>
                     </div>
                 </div>
             </Form>
