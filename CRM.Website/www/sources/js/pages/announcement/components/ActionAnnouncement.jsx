@@ -184,16 +184,18 @@ export class ActionAnnouncement extends Component {
     };
 
     handlePasteGroupHeadline = event=>{
-        const item = (event.clipboardData || window.clipboardData).getData('text')
+        if (this.state.isHeadlineGroup.isUsername) {
+            const item = (event.clipboardData || window.clipboardData).getData('text')
             .replace(/ /g, ',').replace(/\r\n/g, ',').replace(/\n/g, ',').replace(/\t/g, ',')
             .split(',').filter(item => item !== '');
 
-        const concatHeadline = [...this.state.headlineGroups, ...item];
-        setTimeout(() => {
-            this.setState({headlineGroups: concatHeadline});
-            this.headlineInputRef.current.focus();
-            this.headlineInputRef.current.value = '';
-        }, 100);
+            const concatHeadline = [...this.state.headlineGroups, ...item];
+            setTimeout(() => {
+                this.setState({headlineGroups: concatHeadline});
+                this.headlineInputRef.current.focus();
+                this.headlineInputRef.current.value = '';
+            }, 100);
+        }
     };
 
     handleSetValueHeadline = headlineGroups =>{

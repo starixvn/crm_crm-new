@@ -142,13 +142,15 @@ export class NewAnnouncement extends Component {
     };
 
     handlePasteGroupHeadline = event => {
-        const item = (event.clipboardData || window.clipboardData).getData('text')
+        if (this.state.isHeadlineGroup.isUsername) {
+            const item = (event.clipboardData || window.clipboardData).getData('text')
             .replace(/ /g, ',').replace(/\r\n/g, ',').replace(/\n/g, ',').replace(/\t/g, ',')
             .split(',').filter(item => item !== '');
-        const concatHeadline = [...this.state.headlineGroups, ...item];
-        setTimeout(() => {
-            this.handleSetValueHeadline(concatHeadline);
-        }, 100);
+            const concatHeadline = [...this.state.headlineGroups, ...item];
+            setTimeout(() => {
+                this.handleSetValueHeadline(concatHeadline);
+            }, 100);
+        }
     };
 
     handleSetValueHeadline = headlineGroups => {
