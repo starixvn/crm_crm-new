@@ -173,6 +173,10 @@
         &:before {
             transform: rotate(180deg);
         }
+
+        .react-datepicker__navigation-icon--previous {
+            right: -6px;
+        }
     }
 
     .react-datepicker__navigation-icon--previous {

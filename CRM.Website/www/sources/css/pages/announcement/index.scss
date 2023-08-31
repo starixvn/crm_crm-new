@@ -616,13 +616,13 @@
 
     .send-type {
       display: flex;
-      white-space: nowrap;
 
       .radio-btn {
         display: flex;
         align-items: center;
         color: var(--text-black, #444);
         font-weight: 500;
+        white-space: nowrap;
 
         &.send-now {
           margin-right: 24px;
