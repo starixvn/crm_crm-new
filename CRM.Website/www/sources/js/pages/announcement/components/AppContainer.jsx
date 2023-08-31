@@ -12,7 +12,6 @@ import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { toast } from 'react-toastify';
-import NewAnnouncement_v2 from './NewAnnouncement';
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -90,34 +89,16 @@ export class AppContainer extends Component {
         }
 
         const isHost = this.state.policy === Policy.Host;
-        const {newAnnouncementPopup, contentPopup, actionAnnouncementPopup, cancelAnnouncementPopup} = this.props;
+        const {contentPopup, cancelAnnouncementPopup} = this.props;
         return (
             <Fragment>
                 <Filter isHost={isHost}/>
-                {/* <NewAnnouncement_v2
-                    onClose={this.handleCloseNewAnnouncement}
-                    onSuccess={this.handleCreateSuccessAnnouncement}
-                /> */}
-                {
-                    newAnnouncementPopup.show &&
-                    <NewAnnouncement
-                        onClose={this.handleCloseNewAnnouncement}
-                        onSuccess={this.handleCreateSuccessAnnouncement}
-                    />
-                }
                 <DataGrid isHost={isHost}/>
                 {
                    contentPopup.show &&
                     <Content
                         id={contentPopup.announcementId}
                         onClose={this.handleCloseContent}
-                    />
-                }
-                {
-                    actionAnnouncementPopup.show &&
-                    <ActionAnnouncement
-                        onClose={this.handleCloseActionAnnouncement}
-                        onSuccess={this.handleActionSuccessAnnouncement}
                     />
                 }
                 {
@@ -142,16 +123,12 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        newAnnouncementPopup,
-        actionAnnouncementPopup,
         cancelAnnouncementPopup,
         contentPopup,
         gridParams
     } = state;
 
     return {
-        newAnnouncementPopup,
-        actionAnnouncementPopup,
         cancelAnnouncementPopup,
         contentPopup,
         gridParams

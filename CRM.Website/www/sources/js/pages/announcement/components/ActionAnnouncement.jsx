@@ -781,7 +781,7 @@ export class ActionAnnouncement extends Component {
             currency: data.currencyIdList ? data.currencyIdList : '',
             headlineType: (typeof data.headlineType === 'number') ? data.headlineType : '',
             sendType: data.sendImmediately ? 'Send immediately' : (data.sendDate ? 'Send At' : ''),
-            sendDate: data.sendImmediately ? null : new Date(data.sendDate),
+            sendDate: data.sendImmediately ? null : (data.sendDate ? new Date(data.sendDate) : null),
             imageFileType: '',
             imageFileSize: '',
             fileName: data.fileName,
