@@ -49,7 +49,6 @@ export default class Option extends PureComponent {
                                 showTimeInput
                                 useShortMonthInDropdown
                                 minDate={dateTimeNow}
-                                isDisabledTime
                                 selected={isSendAt ? values.sendDate : null}
                                 onChange={value => this.props.handleDateChange(value)}
                             />
