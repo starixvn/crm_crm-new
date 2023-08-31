@@ -114,6 +114,7 @@
     ContentLanguageError: "Brace(s) ('{' or '}') found in the field. All parameters must be replaced before being sent.",
     ConfirmSendImmediately: 'Do you want to send the notification to the selected recipient(s) immediately?',
     ConfirmSendAt: 'Do you want to send the notification to the selected recipient(s) at {0} ?',
+    ConfirmVerifySend: 'Please verify the information and confirm to send it.',
     ConfirmNewAnnouncement: 'Confirm Create New Announcement',
     ConfirmEditAnnouncement: 'Confirm Edit Announcement',
     ChatID: 'Chat ID',

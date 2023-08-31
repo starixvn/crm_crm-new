@@ -48,6 +48,13 @@ export class ActionAnnouncement extends Component {
             errorDrafts: {
                 invalidFileTypeDraft: [],
                 invalidFileSizeDraft: []
+            },
+            cloneContent:{
+                EN:'',
+                SC:'',
+                ENSC:'',
+                TH:'',
+                YN:''
             }
         };
     }
@@ -76,8 +83,14 @@ export class ActionAnnouncement extends Component {
         const contentObj = {};
         contents.length > 0 && contents.forEach(content =>{
             const replaceContent = content.languageCode.replace(/[^A-Z0-9]/ig, '');
-            contentObj[replaceContent] = content.content;
+            contentObj[replaceContent] = content.content ? content.content : '';
         });
+        const firstContent = Object.values(contentObj)[0];
+        if (this.props.actionParam.isEdit && firstContent) {
+            this.setState({isChangeTemplate: true});
+            this.handleGetParameters(firstContent);
+            this.setState({cloneContent: contentObj});
+        }
         this.setState({content: contentObj});
     };
 
@@ -361,23 +374,28 @@ export class ActionAnnouncement extends Component {
         });
     };
 
+    handleRedirectAnnouncement = () => {
+        this.props.setIsRefresh(true);
+        this.props.setEditAnnouncement(null);
+        this.props.setValidateAnnouncement(null);
+        this.props.setCreateAnnouncement(null);
+        this.props.navigate(Site.resolveClientUrl('Announcement'));
+    };
+
     handleSaveDraft = (event, values) => {
         event.preventDefault();
         values.status = 'Draft';
         const params = getParams(values, this.state);
         const {announcementId, isEdit} = this.props.actionParam;
-        params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
+        const {createAnnouncement, editAnnouncement} = this.props;
+        const actionFunc = isEdit ? editAnnouncement : createAnnouncement;
+        isEdit && params.append('announcementId', announcementId);
 
-        this.props.editAnnouncement(params).then(() => {
-            if (!isEdit) {
-                this.props.setCreateAnnouncement(this.props.editAnnouncementResult);
-            }
-            if (this.props.editAnnouncementResult.isSuccessful) {
+        actionFunc(params).then(() => {
+            const resultAction = isEdit ? this.props.editAnnouncementResult : this.props.createAnnouncementResult;
+            if (resultAction.isSuccessful) {
                 setTimeout(() => {
-                    this.props.setIsRefresh(true);
-                    this.props.setEditAnnouncement(null);
-                    this.props.setCreateAnnouncement(null);
-                    this.props.navigate(Site.resolveClientUrl('Announcement'));
+                    this.handleRedirectAnnouncement();
                 }, 3000);
             } else {
                 this.formik.setSubmitting(false);
@@ -411,11 +429,7 @@ export class ActionAnnouncement extends Component {
             const resultAction = isEdit ? this.props.editAnnouncementResult : this.props.createAnnouncementResult; 
             if (resultAction.isSuccessful) {
                 setTimeout(() => {
-                    this.props.setIsRefresh(true);
-                    this.props.setEditAnnouncement(null);
-                    this.props.setCreateAnnouncement(null);
-                    this.props.setValidateAnnouncement(null);
-                    this.props.navigate(Site.resolveClientUrl('Announcement'));
+                    this.handleRedirectAnnouncement();
                 }, 3000);
             } else {
                 this.formik.setSubmitting(false);
@@ -455,12 +469,9 @@ export class ActionAnnouncement extends Component {
     };
 
     renderContentConfirm = () =>{
-        const {sendType, sendDate} = this.formik.values;
+        const {sendType} = this.formik.values;
         const contentConfirm = this.state.confirmActionDialog.content;
-        const sendDateFormat = DateTimeService.toLongDateTimeFormat(sendDate);
-        const content = sendType === 'Send At' ? 
-                        LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), sendDateFormat) :
-                        LangHelper.getResource('ConfirmSendImmediately');
+        const content = LangHelper.getResource('ConfirmVerifySend');
         const sendDateType = sendType === 'Send At' ? `${contentConfirm.sendDateString} ${contentConfirm.sendTimeString} (GMT+8)` : 'Send Now';
         const usernames = getUsernames(contentConfirm.headlineNameList, contentConfirm.directAccountList);
         return(
@@ -574,26 +585,27 @@ export class ActionAnnouncement extends Component {
                                 />
                             }
                             {
-                                !actionParam.isEdit && isChangeTemplate && parameters &&
+                                isChangeTemplate && parameters &&
                                 <Form.Group as={Row}>
-                                    <Form.Label />
-                                    <div className='parameters'>
-                                        <div className='text-parameters'>Parameters</div>
-                                        {
-                                            parameters.map((param,index) =>{
-                                                const removeSpaceParam = param.replace(/\s+/g, "");
-                                                return (
-                                                    <div key={index} className='d-flex box-param'>
-                                                        <div className='param pt-1'>{param}</div>
-                                                        <Form.Control as="textarea"  value={values[removeSpaceParam] || ''}
-                                                            name={removeSpaceParam} id={removeSpaceParam}
-                                                            className="shadow-none form-input-param" autoComplete="off"
-                                                            onChange={event => this.handleChangeParameter(event, param, parameters)}
-                                                        />
-                                                    </div>
-                                                );
-                                            })
-                                        }
+                                    <div className='group-list'>
+                                        <div className='list-title'>Parameters</div>
+                                        <div className="list-info">
+                                            {
+                                                parameters.map((param,index) =>{
+                                                    const removeSpaceParam = param.replace(/\s+/g, "");
+                                                    return (
+                                                        <div key={index} className='d-flex box-param'>
+                                                            <div className='param pt-1'>{param}</div>
+                                                            <Form.Control as="textarea"  value={values[removeSpaceParam] || ''}
+                                                                name={removeSpaceParam} id={removeSpaceParam}
+                                                                className="shadow-none form-input-param" autoComplete="off"
+                                                                onChange={event => this.handleChangeParameter(event, param, parameters)}
+                                                            />
+                                                        </div>
+                                                    );
+                                                })
+                                            }
+                                        </div>
                                     </div>
                                 </Form.Group>
                             }
@@ -767,18 +779,12 @@ export class ActionAnnouncement extends Component {
             currency: data.currencyIdList ? data.currencyIdList : '',
             headlineType: (typeof data.headlineType === 'number') ? data.headlineType : '',
             sendType: data.sendImmediately ? 'Send immediately' : (data.sendDate ? 'Send At' : ''),
-            sendDate: data.sendDate ? new Date(data.sendDate) : new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date()))),
+            sendDate: data.sendImmediately ? null : new Date(data.sendDate),
             imageFileType: '',
             imageFileSize: '',
             fileName: data.fileName,
             oldFileName: data.fileName,
-            cloneContent:{
-                EN:'',
-                SC:'',
-                ENSC:'',
-                TH:'',
-                YN:''
-            },
+            cloneContent: this.state.cloneContent,
             status: 'Planned'
         };
         const excludeOldImage = this.state.uploadedFiles.filter(x => !initialValues.oldFileName.includes(x));
