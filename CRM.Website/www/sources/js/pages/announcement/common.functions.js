@@ -2,8 +2,9 @@ import LangHelper from '@jsroot/common/langHelper';
 import React from 'react';
 import DateTimeService from '@jsroot/common/dateTimeService';
 
-export const validateFormik = (values, files, invalidWidthHeight, errorDrafts) => {
+export const validateFormik = (values, files, state) => {
     const dateTimeNowClient= new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
+    const { invalidWidthHeight, errorDrafts, isHeadlineGroup } = state;
     let errors = {};
 
     if (!values.title) {
@@ -54,6 +55,18 @@ export const validateFormik = (values, files, invalidWidthHeight, errorDrafts) =
         errors.imageFileSize = LangHelper.formatString(LangHelper.getResource('ImageSizeError'), nameFileError);
     }
 
+    if (isHeadlineGroup.isSiteType) {
+        if (!values.site) {
+            errors.site = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site'));
+        }
+        if (!values.currency) {
+            errors.currency = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency'));
+        }
+        if (values.headlineType === '') {
+            errors.headlineType = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('HeadlineType'));
+        }
+    }
+
     return errors;
 };
 
@@ -89,8 +102,8 @@ export const getParams = (values, state) => {
     const params = {
         notificationTemplateId: notificationTemplateId,
         headlineNameList: state.isHeadlineGroup.isUsername ? state.headlineGroups.join(',') : '',
-        siteNameList: (!state.options.site || !state.isHeadlineGroup.isSiteType) ? '' : state.options.site,
-        currencyList: (!state.options.currency || !state.isHeadlineGroup.isSiteType) ? '' : state.options.currency,
+        siteNameList: (!values.site || !state.isHeadlineGroup.isSiteType) ? '' : values.site,
+        currencyList: (!values.currency || !state.isHeadlineGroup.isSiteType) ? '' : values.currency,
         headlineType: state.isHeadlineGroup.isSiteType ? headlineType : '',
         title: values.title,
         sendDate: isSendImmediately ? null : (sendType === 'Send At' ? DateTimeService.toLongDateTimeFormat(sendDate) : null),
@@ -171,4 +184,48 @@ export const handleResetWhenBackPage = (props) => {
     props.setCreateAnnouncement(null);
     props.setEditAnnouncement(null);
     props.setValidateAnnouncement(null);
+};
+
+const isValidateContent = content => {
+    return content.EN || content.ENSC || content.SC || content.TH || content.YN;
+};
+
+const isValidSiteCurrencyHeadline = values => {
+    const { site, currency, headlineType } = values;
+    return site && currency && headlineType !== '';
+};
+
+const isValidGroupHeadline = (values, state) => {
+    const { isHeadlineGroup, headlineGroups } = state;
+    if (isHeadlineGroup.isUsername && headlineGroups.length > 0) {
+        return true;
+    }
+    return isHeadlineGroup.isSiteType && isValidSiteCurrencyHeadline(values);
+};
+
+const isValidSendType = (values, state) => {
+    const { isSendNow, isSendAt } = state.isSendType;
+    return isSendNow || (isSendAt && values.sendDate);
+};
+
+const isValidHeadlineContent = (values, state) => {
+    return isValidateContent(values.content) && isValidGroupHeadline(values, state);
+};
+
+export const isDisableSubmit = (values, state, isSubmitting) => {
+    if (!isSubmitting && values.title && isValidSendType(values, state) && isValidHeadlineContent(values, state)){
+        return false;
+    }
+    return true;
+};
+
+export const getUsernames = (headlineNameList, directAccountList) => {
+    if (headlineNameList && directAccountList) {
+        return `${headlineNameList},${directAccountList}`;
+    } else if (directAccountList) {
+        return directAccountList;
+    } else if (headlineNameList) {
+        return headlineNameList;
+    }
+    return '';
 };
