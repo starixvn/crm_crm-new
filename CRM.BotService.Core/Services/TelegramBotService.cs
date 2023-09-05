@@ -62,6 +62,7 @@
 
         public async Task<WebhookInfo> GetWebhookInfoAsync(TelegramBotConfigurations bot)
         {
+            logService.LogInformation("Start GetWebhookInfoAsync: " + bot.BotId);
             return await bot.BotClient.GetWebhookInfoAsync();
         }
 
