@@ -110,19 +110,20 @@
         {
             // Arrange
             var bot = fixture.Create<User>();
-            MessageEntity[] messageEntities = new MessageEntity[] { new MessageEntity { Type = MessageEntityType.BotCommand, Offset = 0 } };
+            MessageEntity[] messageEntities = new MessageEntity[] { new MessageEntity { Type = MessageEntityType.BotCommand, Offset = 0, Length = 6 } };
             var update = new Update
             {
                 Message = new Message
                 {
                     Text = "/start",
-                    Entities = messageEntities
+                    Entities = messageEntities,
+                    Chat = new Chat { Type = ChatType.Private }
                 }
             };
+            var mockMessage = new Message();
             var controller = GetController();
             telegramBotService(1).GetBotInfoAsync(1).Returns(bot);
-            controller.Protected("HandleBotCommandAsync", bot, update.Message).Returns(Task.FromResult(new CommandResult()));
-
+            telegramBotService(bot.Id).SendTextMessageAsync(bot.Id, Arg.Any<long>(), Arg.Any<string>()).Returns(mockMessage);
             // Act
             var result = await controller.Post(1, update);
 
