@@ -2,10 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using CRM.Core.Services;
-    using CRM.Resources;
     using Fanex.Logging;
-    using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Extensions;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Configuration;
@@ -52,21 +49,9 @@
                 {
                     CloseConnection(context);
                 }
-
-                int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
-                bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
-
-                if (policy < (int)Policy)
+                else
                 {
-                    if (isAjaxRequest)
-                    {
-                        context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
-                    }
-
-                    else
-                    {
-                        context.Result = new RedirectToActionResult("405", "error", null);
-                    }
+                    await HandleResponseFilter(context);
                 }
             }
             catch (Exception exception)
@@ -87,6 +72,24 @@
             else
             {
                 context.Result = new RedirectToActionResult("SignIn", "Auth", null);
+            }
+        }
+
+        private async Task HandleResponseFilter(AuthorizationFilterContext context)
+        {
+            int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, FunctionKey);
+            bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
+
+            if (policy < (int)Policy)
+            {
+                if (isAjaxRequest)
+                {
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+                }
+                else
+                {
+                    context.Result = new RedirectToActionResult("405", "error", null);
+                }
             }
         }
 
