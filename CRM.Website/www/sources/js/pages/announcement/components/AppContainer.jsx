@@ -3,14 +3,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Filter from './Filter';
-import NewAnnouncement from './NewAnnouncement';
-import ActionAnnouncement from './ActionAnnouncement';
 import DataGrid from './DataGrid';
 import Content from './Content';
 import LangHelper from '@jsroot/common/langHelper';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import DateTimeService from '@jsroot/common/dateTimeService';
 import { toast } from 'react-toastify';
 
 export class AppContainer extends Component {
@@ -26,40 +25,30 @@ export class AppContainer extends Component {
             this.setState({policy: response});
         });
         document.title = LangHelper.getResource('Announcement');
+        if (this.props.isLoadGrid) {
+            if (this.props.filterParams) {
+                const filterParams = this.props.filterParams;
+                const params = {
+                    announcementId: filterParams.announcementId,
+                    fromDate: filterParams.announcementId ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(new Date(filterParams.fromDate))),
+                    toDate: filterParams.announcementId ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(new Date(filterParams.toDate))),
+                    title: filterParams.title,
+                    status: filterParams.status,
+                    pageIndex: filterParams.pageIndex,
+                    pageSize: filterParams.pageSize
+                }
+                this.props.getGridData(params);
+            } else {
+                this.props.getGridData(this.props.gridParams);
+            }
+            window.history.replaceState(null, '');
+        }
     }
 
     componentWillUnmount(){
         this.props.setGridData(null);
         this.props.resetState();
     }
-
-    handleCloseNewAnnouncement = () => {
-        this.props.setOpenNewAnnouncementPopup({ show: false });
-        this.props.setIsRefresh(true);
-        this.props.setCreateAnnouncement(null);
-    }
-
-    handleCreateSuccessAnnouncement = async () =>{
-        this.handleCloseNewAnnouncement();
-        await this.props.getGridData(this.props.gridParams);
-    }
-
-    handleCloseActionAnnouncement = () => {
-        this.props.setOpenActionAnnouncementPopup({ show: false });
-        this.props.setIsRefresh(true);
-        this.props.setEditAnnouncement(null);
-        this.props.setCreateAnnouncement(null);
-    }
-
-    handleActionSuccessAnnouncement = async () =>{
-        this.handleCloseActionAnnouncement();
-        await this.props.getGridData(this.props.gridParams);
-    }
-
-    handleCloseViewDetail = () => {
-        this.props.setViewDetailPopup({ show: false });
-        this.props.setIsRefresh(true);
-    };
 
     handleCloseContent = () => {
         this.props.setContentPopup({ show: false });
@@ -87,12 +76,12 @@ export class AppContainer extends Component {
         if(!this.state.policy){
             return null;
         }
-
         const isHost = this.state.policy === Policy.Host;
         const {contentPopup, cancelAnnouncementPopup} = this.props;
+
         return (
             <Fragment>
-                <Filter isHost={isHost}/>
+                <Filter isHost={isHost} isLoadGrid={this.props.isLoadGrid} filterParams={this.props.filterParams}/>
                 <DataGrid isHost={isHost}/>
                 {
                    contentPopup.show &&

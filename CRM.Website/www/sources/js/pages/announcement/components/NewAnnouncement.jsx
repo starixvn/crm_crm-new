@@ -10,7 +10,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import UploadFile from './UploadFile';
 import ContentTab from './ContentTab';
 import Option from './Option';
-import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
@@ -257,7 +256,7 @@ export class NewAnnouncement extends Component {
                     this.props.setIsRefresh(true);
                     this.props.setCreateAnnouncement(null);
                     this.props.setValidateAnnouncement(null);
-                    this.props.navigate(Site.resolveClientUrl('Announcement'));
+                    this.props.navigate(Site.resolveClientUrl('Announcement'), { state: this.getStateFilter() });
                 }, 3000);
             } else {
                 this.formik.setSubmitting(false);
@@ -270,10 +269,18 @@ export class NewAnnouncement extends Component {
         this.formik.setSubmitting(false);
     };
 
+    getStateFilter = () => {
+        const stateAnnouncement = {
+            isLoadGrid: true,
+            filterParams: this.props.filterParams
+        };
+        return stateAnnouncement;
+    };
+
     handleClose = () => {
         this.props.setCreateAnnouncement(null);
         this.props.setValidateAnnouncement(null);
-        this.props.navigate(Site.resolveClientUrl('Announcement'));
+        this.props.navigate(Site.resolveClientUrl('Announcement'), { state: this.getStateFilter() });
     };
 
     handleSaveDraft = (event, values) => {
@@ -286,7 +293,7 @@ export class NewAnnouncement extends Component {
                 setTimeout(() => {
                     this.props.setIsRefresh(true);
                     this.props.setCreateAnnouncement(null);
-                    this.props.navigate(Site.resolveClientUrl('Announcement'));
+                    this.props.navigate(Site.resolveClientUrl('Announcement'), { state: this.getStateFilter() });
                 }, 3000);
             } else {
                 this.formik.setSubmitting(false);

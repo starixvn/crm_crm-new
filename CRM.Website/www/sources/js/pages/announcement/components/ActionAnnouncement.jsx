@@ -376,12 +376,20 @@ export class ActionAnnouncement extends Component {
         });
     };
 
+    getStateDataGrid = () => {
+        const stateAnnouncement = {
+            isLoadGrid: true,
+            filterParams: this.props.actionParam?.redirectActionParams
+        };
+        return stateAnnouncement;
+    };
+
     handleRedirectAnnouncement = () => {
         this.props.setIsRefresh(true);
         this.props.setEditAnnouncement(null);
         this.props.setValidateAnnouncement(null);
         this.props.setCreateAnnouncement(null);
-        this.props.navigate(Site.resolveClientUrl('Announcement'));
+        this.props.navigate(Site.resolveClientUrl('Announcement'), { state: this.getStateDataGrid() });
     };
 
     handleSaveDraft = (event, values) => {
@@ -448,7 +456,7 @@ export class ActionAnnouncement extends Component {
         this.props.setCreateAnnouncement(null);
         this.props.setEditAnnouncement(null);
         this.props.setValidateAnnouncement(null);
-        this.props.navigate(Site.resolveClientUrl('Announcement'));
+        this.props.navigate(Site.resolveClientUrl('Announcement'), { state: this.getStateDataGrid() });
     };
 
     renderContentType = contentConfirm => {

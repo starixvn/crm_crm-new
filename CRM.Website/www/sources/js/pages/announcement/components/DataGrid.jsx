@@ -169,7 +169,8 @@ export class DataGrid extends Component {
     handleEdit = announcementId => {
         const actionParam = {
             announcementId: announcementId,
-            isEdit: true
+            isEdit: true,
+            redirectActionParams: this.props.redirectActionParams
         };
         this.props.navigate(Site.resolveClientUrl('Announcement/EditAnnouncement'), {state: actionParam});
     }
@@ -177,7 +178,8 @@ export class DataGrid extends Component {
     handleDuplicate = announcementId => {
         const actionParam = {
             announcementId: announcementId,
-            isEdit: false
+            isEdit: false,
+            redirectActionParams: this.props.redirectActionParams
         };
         this.props.navigate(Site.resolveClientUrl('Announcement/CloneAnnouncement'), {state: actionParam});
     }
@@ -231,13 +233,15 @@ const mapStateToProps = state => {
     const {
         gridParams,
         gridData,
-        isRefresh
+        isRefresh,
+        redirectActionParams
     } = state;
 
     return {
         gridParams,
         gridData,
-        isRefresh
+        isRefresh,
+        redirectActionParams
     };
 };
 

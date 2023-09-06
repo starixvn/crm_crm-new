@@ -15,7 +15,8 @@ import {
     setViewDetailPopup,
     setAutoRefresh,
     setIsRefresh,
-    setValidateAnnouncement
+    setValidateAnnouncement,
+    setRedirectActionParams
 } from './announcementSlice';
 
 const getGridData = params => async dispatch => {
@@ -108,5 +109,6 @@ export const ActionCreators = {
     setIsRefresh,
     cancelAnnouncementId,
     validateAnnouncement,
-    setValidateAnnouncement
+    setValidateAnnouncement,
+    setRedirectActionParams
 };

@@ -30,7 +30,8 @@ const initialState = {
         isSubmit: false
     },
     isRefresh: true,
-    validateAnnouncementResult: null
+    validateAnnouncementResult: null,
+    redirectActionParams: null
 };
 const announcementSlice = createSlice({
     name: 'announcement',
@@ -75,6 +76,9 @@ const announcementSlice = createSlice({
         },
         setValidateAnnouncement: (state, action) => {
             state.validateAnnouncementResult = action.payload;
+        },
+        setRedirectActionParams: (state, action) => {
+            state.redirectActionParams = action.payload;
         }
     }
 });
@@ -98,7 +102,8 @@ export const {
     setViewDetailPopup,
     setAutoRefresh,
     setIsRefresh,
-    setValidateAnnouncement
+    setValidateAnnouncement,
+    setRedirectActionParams
 } = actions;
 
 export default reducer;

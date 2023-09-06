@@ -23,27 +23,65 @@ export class Filter extends Component {
             fromDate: fromDate,
             toDate: this.currentDate,
             title: '',
-            status: Statuses.map(x=> x.name).join(',')
+            status: Statuses.map(x=> x.name).join(','),
+            statusOption: Statuses,
+            redirectNewParams: null
         };
     }
 
+    componentDidMount() {
+        if (this.props.isLoadGrid && this.props.filterParams) {
+            const filterParams = this.props.filterParams;
+            const statusList = filterParams.status.split(',');
+            const statusOption = Statuses.map(item => {
+                if (!statusList.includes(item.id)) {
+                    item.checked = false;
+                }
+                return item;
+            });
+            this.setState({
+                ...this.state,
+                announcementId: filterParams.announcementId,
+                fromDate: new Date(filterParams.fromDate),
+                toDate: new Date(filterParams.toDate),
+                title: filterParams.title,
+                status: filterParams.status,
+                statusOption: statusOption
+            });
+        }
+    };
+
+    getParams = () => {
+        const { announcementId, title, fromDate, toDate, status } = this.state;
+        const params = {
+            announcementId: announcementId,
+            fromDate: announcementId ? null : fromDate.toString(),
+            toDate: announcementId ? null : toDate.toString(),
+            title: title,
+            status: status,
+            pageIndex: 1,
+            pageSize: this.props.gridParams.pageSize
+        };
+        return params;
+    };
+
     handleChangeFromDate = fromDate => {
-        this.setState({ fromDate });
+        this.setState({ fromDate }, () => this.props.setRedirectActionParams(this.getParams()));
     };
 
     handleChangeToDate = toDate => {
-        this.setState({ toDate });
+        this.setState({ toDate }, () => this.props.setRedirectActionParams(this.getParams()));
     };
 
     handleChange = evt => {
         this.setState({
             ...this.state,
             [evt.target.name]: evt.target.value
-        });
+        }, () => this.props.setRedirectActionParams(this.getParams()));
     };
 
     handleChangeStatus = (currentItem, selectedItemsKey) =>{
-        this.setState({ status: selectedItemsKey });
+        this.setState({ status: selectedItemsKey }, () => this.props.setRedirectActionParams(this.getParams()));
     };
 
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
@@ -55,6 +93,7 @@ export class Filter extends Component {
             toast.error(LangHelper.getResource('FromDateMustSmallerThanToDate'));
             return;
         }
+
         const params = {
             announcementId: announcementId,
             fromDate: announcementId ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
@@ -64,13 +103,14 @@ export class Filter extends Component {
             pageIndex: 1,
             pageSize: this.props.gridParams.pageSize
         };
+
         this.props.setGridParams(params);
         this.props.getGridData(params);
     };
 
     handleOpenNewAnnouncement = () =>{
         this.props.setIsRefresh(false);
-        this.props.navigate(Site.resolveClientUrl('Announcement/NewAnnouncement'));
+        this.props.navigate(Site.resolveClientUrl('Announcement/NewAnnouncement'), { state: this.getParams() });
     };
 
     handlePasteAnnouncementId = event =>{
@@ -149,6 +189,7 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group>
+                                dataSource={this.state.statusOption}
                         <Button variant="primary" type="submit" size="sm" className='mr-3' onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>
