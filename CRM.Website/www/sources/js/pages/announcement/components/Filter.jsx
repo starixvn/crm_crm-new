@@ -104,6 +104,7 @@ export class Filter extends Component {
             pageSize: this.props.gridParams.pageSize
         };
 
+        this.props.setRedirectActionParams(this.getParams());
         this.props.setGridParams(params);
         this.props.getGridData(params);
     };
@@ -147,7 +148,7 @@ export class Filter extends Component {
                         <Form.Label  htmlFor="status">{LangHelper.getResource('Status')}</Form.Label>
                         <div className='form-control-wrapper'>
                             <MultipleSelect
-                                dataSource={Statuses}
+                                dataSource={this.state.statusOption}
                                 keyField='id'
                                 valueField='name'
                                 maxDisplayItemCount={2}
@@ -189,7 +190,6 @@ export class Filter extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group>
-                                dataSource={this.state.statusOption}
                         <Button variant="primary" type="submit" size="sm" className='mr-3' onClick={this.handleSubmit}>
                             {LangHelper.getResource('Submit')}
                         </Button>

@@ -14,7 +14,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
-    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams,
+    validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, checkInvalidMaxLengthContent,
     validFileSize, validFileExtension, handleResetWhenBackPage, isDisableSubmit, getUsernames
 } from '../common.functions';
 import WithNavigation from '@jsroot/components/WithNavigation';
@@ -414,30 +414,37 @@ export class ActionAnnouncement extends Component {
     };
 
     handleSubmit = (values, { setSubmitting }) => {
-        setSubmitting(true);
-        values.status = 'Planned';
-        const params = getParams(values, this.state);
-        const {announcementId, isEdit} = this.props.actionParam;
-        params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
-
-        this.props.validateAnnouncement(params).then(() => {
-            const contentConfirm = this.props.validateAnnouncementResult;
-            if (!contentConfirm?.code && contentConfirm.length > 0) {
-                this.setState({confirmActionDialog: { show: true, params: params, content: contentConfirm[0]}});
-            }
-            this.formik.setSubmitting(false);
-        });
+        const isInvalid = this.handleCheckValidAllContent(values.content);
+        if(!isInvalid) {
+            setSubmitting(true);
+            values.status = 'Planned';
+            const params = getParams(values, this.state);
+            const {announcementId, isEdit} = this.props.actionParam;
+            params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
+    
+            this.props.validateAnnouncement(params).then(() => {
+                const contentConfirm = this.props.validateAnnouncementResult;
+                if (!contentConfirm?.code && contentConfirm.length > 0) {
+                    this.setState({confirmActionDialog: { show: true, params: params, content: contentConfirm[0]}});
+                }
+                this.formik.setSubmitting(false);
+            });
+        }
     };
 
-    handleConfirmActionDialog = () =>{
+    handleConfirmActionDialog = async  () =>{
         this.handleCloseConfirmEditDialog();
         const formData = this.state.confirmActionDialog.params;
         const {createAnnouncement, editAnnouncement, actionParam} = this.props;
         const {isEdit} = actionParam;
         const actionFunc = isEdit ? editAnnouncement : createAnnouncement;
-        actionFunc(formData).then(() => {
+        await actionFunc(formData).then(() => {
             const resultAction = isEdit ? this.props.editAnnouncementResult : this.props.createAnnouncementResult; 
             if (resultAction.isSuccessful) {
+                const {sendType} = this.formik.values;
+                if(sendType !== 'Send At'){
+                    this.props.sendMessageAnnouncementToBotEndpoint();
+                }
                 setTimeout(() => {
                     this.handleRedirectAnnouncement();
                 }, 3000);
@@ -534,11 +541,16 @@ export class ActionAnnouncement extends Component {
         isSubmitting
     }) => {
         const propsOption = { values, handleChange, errors, touched };
-        const {parameters, isChangeTemplate, uploadedFiles, siteOptions, currencyOptions, isHeadlineGroup} = this.state;
+        const {parameters, isChangeTemplate, uploadedFiles, siteOptions, currencyOptions, isHeadlineGroup, tab} = this.state;
         const {actionParam, editAnnouncementResult, createAnnouncementResult} = this.props;
         const result = actionParam.isEdit ? editAnnouncementResult : createAnnouncementResult;
         const notificationTemplates = [{notificationTemplateId: 0, notificationTemplateName: LangHelper.getResource('PleaseSelect')}, ...this.props.announcementTemplate.notificationTemplates];
         const headlineTypeList = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
+        const {invalidContentMaxLength, textInvalidContentMaxLength} = checkInvalidMaxLengthContent(values.content, tab);
+        const isInvalidContent = this.handleCheckValidAllContent(values.content);
+        const message = this.props.actionParam.isEdit ?
+                        LangHelper.getResource('EditAnnouncementSuccessfully') :
+                        LangHelper.getResource('CloneAnnouncementSuccessfully');
 
         return (
             <Form noValidate onSubmit={handleSubmit}>
@@ -590,7 +602,7 @@ export class ActionAnnouncement extends Component {
                             </div>
                             {
                                 <ContentTab
-                            isValidContent={(touched.content && errors.content) || invalidContentMaxLength} content={values.content} setFieldValue={setFieldValue}
+                                    isValidContent={(touched.content && errors.content) || invalidContentMaxLength} content={values.content} setFieldValue={setFieldValue}
                                     languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab} 
                                 />
                             }
@@ -622,7 +634,7 @@ export class ActionAnnouncement extends Component {
                             <div className="group-upload-file">
                                 <UploadFile id={actionParam.announcementId}
                                     setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
-                        invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
+                                    invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
                                 />
                             </div>
                         </div>
@@ -742,22 +754,13 @@ export class ActionAnnouncement extends Component {
                     <div className="group-btn">
                         <Button className="btn-cancel" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>
                         <Button className="btn-save" variant="primary" size="md" onClick={event => this.handleSaveDraft(event, values)}>{LangHelper.getResource('Save as Draft')}</Button>
-                        <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={isDisableSubmit(values, this.state, isSubmitting)}>{LangHelper.getResource('Push')}</Button>
+                        <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={isDisableSubmit(values, this.state, isSubmitting) || isInvalidContent}>{LangHelper.getResource('Push')}</Button>
                     </div>
                 </div>
             </Form>
         );
     };
-
-    handleSubmit = (values, { setSubmitting }) => {
-        const isInvalid = this.handleCheckValidAllContent(values.content);
-        if(!isInvalid){
-            setSubmitting(true);
-            const params = getParams(values, this.state);
-            const {announcementId, isEdit} = this.props.actionAnnouncementPopup;
-            params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
-            this.setState({confirmActionDialog: { show: true, params}});
-        }
+ 
     handleCheckValidAllContent = content =>{
         for (const property in content) {
             const {invalidContentMaxLength} = checkInvalidMaxLengthContent(content, property);
@@ -768,12 +771,6 @@ export class ActionAnnouncement extends Component {
         return false;
     };
 
-    handleConfirmActionDialog = async () =>{
-        await actionFunc(formData).then(() => {
-                const {sendType} = this.formik.values;
-                if(sendType !== 'Send At'){
-                    this.props.sendMessageAnnouncementToBotEndpoint();
-                }
     render() {
         const {settings, announcementTemplate} = this.props;
         const {data} = this.state; 

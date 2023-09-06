@@ -14,7 +14,7 @@ import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
     validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams,
-    handleResetWhenBackPage, isDisableSubmit, getUsernames
+    handleResetWhenBackPage, isDisableSubmit, getUsernames, checkInvalidMaxLengthContent
 } from '../common.functions';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import Site from '@jsroot/common/site';
@@ -233,25 +233,32 @@ export class NewAnnouncement extends Component {
     };
 
     handleSubmit = (values, { setSubmitting }) => {
-        setSubmitting(true);
-        values.status = 'Planned';
-        const param = getParams(values, this.state);
-
-        this.props.validateAnnouncement(param).then(() => {
-            const contentConfirm = this.props.validateAnnouncementResult;
-            if (!contentConfirm?.code && contentConfirm.length > 0) {
-                this.setState({confirmInsertDialog: { show: true, params: param, content: contentConfirm[0]}});
-            }
-            this.formik.setSubmitting(false);
-        });
+        const isInvalid = this.handleCheckValidAllContent(values.content);
+        if(!isInvalid) {
+            setSubmitting(true);
+            values.status = 'Planned';
+            const param = getParams(values, this.state);
+    
+            this.props.validateAnnouncement(param).then(() => {
+                const contentConfirm = this.props.validateAnnouncementResult;
+                if (!contentConfirm?.code && contentConfirm.length > 0) {
+                    this.setState({confirmInsertDialog: { show: true, params: param, content: contentConfirm[0]}});
+                }
+                this.formik.setSubmitting(false);
+            });
+        }
     };
 
-    handleConfirmInsertDialog = () =>{
+    handleConfirmInsertDialog = async () =>{
         this.handleCloseConfirmInsertDialog();
         const formData = this.state.confirmInsertDialog.params;
 
-        this.props.createAnnouncement(formData).then(() => {
+        await this.props.createAnnouncement(formData).then(() => {
             if (this.props.createAnnouncementResult.isSuccessful) {
+                const {sendType} = this.formik.values;
+                if(sendType !== 'Send At'){
+                    this.props.sendMessageAnnouncementToBotEndpoint();
+                }
                 setTimeout(() => {
                     this.props.setIsRefresh(true);
                     this.props.setCreateAnnouncement(null);
@@ -408,7 +415,6 @@ export class NewAnnouncement extends Component {
         const { uploadedFiles, parameters, isChangeTemplate, siteOptions, currencyOptions, isHeadlineGroup } = this.state;
         const propsOption = { values, handleChange, errors, touched };
         const headlineTypeList = [{id: 2, name: 'All'}, ...this.props.settings.headlineTypeList];
-
         const {invalidContentMaxLength, textInvalidContentMaxLength} = checkInvalidMaxLengthContent(values.content, this.state.tab);
         const isInvalidContent = this.handleCheckValidAllContent(values.content);
         return (
@@ -458,7 +464,7 @@ export class NewAnnouncement extends Component {
                             </div>
                             {
                                 <ContentTab
-                                    isValidContent={touched.content && errors.content} content={values.content} setFieldValue={setFieldValue}
+                                    isValidContent={touched.content && errors.content || invalidContentMaxLength} content={values.content} setFieldValue={setFieldValue}
                                     languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab}
                                 />
                             }
@@ -488,7 +494,10 @@ export class NewAnnouncement extends Component {
                                 </Form.Group>
                             }
                             <div className="group-upload-file">
-                                <UploadFile setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles} />
+                                <UploadFile
+                                    setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
+                                    invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
+                                />
                             </div>
                         </div>
                     </div>
@@ -605,19 +614,13 @@ export class NewAnnouncement extends Component {
                     <div className="group-btn">
                         <Button className="btn-cancel" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>
                         <Button className="btn-save" variant="primary" size="md" onClick={event => this.handleSaveDraft(event, values)}>{LangHelper.getResource('Save as Draft')}</Button>
-                        <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={isDisableSubmit(values, this.state, isSubmitting)}>{LangHelper.getResource('Push')}</Button>
+                        <Button className="btn-send" type="submit" variant="primary" size="sm" disabled={isDisableSubmit(values, this.state, isSubmitting) || isInvalidContent}>{LangHelper.getResource('Push')}</Button>
                     </div>
                 </div>
             </Form>
         );
     };
 
-        const isInvalid = this.handleCheckValidAllContent(values.content);
-        if(!isInvalid){
-            setSubmitting(true);
-            const param = getParams(values, this.state);
-            this.setState({confirmInsertDialog: { show: true, params: param}});
-        }
     handleCheckValidAllContent = content =>{
         for (const property in content) {
             const {invalidContentMaxLength} = checkInvalidMaxLengthContent(content, property);
@@ -628,12 +631,6 @@ export class NewAnnouncement extends Component {
         return false;
     };
 
-    handleConfirmInsertDialog = async () =>{
-        await this.props.createAnnouncement(formData).then(() => {
-                const {sendType} = this.formik.values;
-                if(sendType !== 'Send At'){
-                    this.props.sendMessageAnnouncementToBotEndpoint();
-                }
     render() {
         const { announcementTemplate, settings } = this.props;
         if (!this.state.languages || !announcementTemplate || !settings) {

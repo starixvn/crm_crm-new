@@ -37,6 +37,7 @@ export class AppContainer extends Component {
                     pageIndex: filterParams.pageIndex,
                     pageSize: filterParams.pageSize
                 }
+                this.props.setGridParams(params);
                 this.props.getGridData(params);
             } else {
                 this.props.getGridData(this.props.gridParams);

@@ -9,6 +9,7 @@
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Announcement;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models;
@@ -29,16 +30,14 @@
         private readonly ISettingService settingService;
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly ISendAnnouncementService sendAnnouncementService;
-        private readonly ICommonService commonService;
         private readonly string pathImages = "www/dist/images/announcement";
 
         public AnnouncementController(
             IAnnouncementService announcementService,
             INapSession napSession,
             ISettingService settingService,
-            IWebHostEnvironment hostingEnvironment
-            ISendAnnouncementService sendAnnouncementService,
-            ICommonService commonService
+            IWebHostEnvironment hostingEnvironment,
+            ISendAnnouncementService sendAnnouncementService
             )
         {
             this.announcementService = announcementService;
@@ -46,7 +45,6 @@
             this.settingService = settingService;
             this.hostingEnvironment = hostingEnvironment;
             this.sendAnnouncementService = sendAnnouncementService;
-            this.commonService = commonService;
         }
 
         public async Task<IActionResult> GetAnnouncementTemplate()
