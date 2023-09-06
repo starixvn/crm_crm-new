@@ -27,24 +27,37 @@ export class AppContainer extends Component {
         document.title = LangHelper.getResource('Announcement');
         if (this.props.isLoadGrid) {
             if (this.props.filterParams) {
-                const filterParams = this.props.filterParams;
-                const params = {
-                    announcementId: filterParams.announcementId,
-                    fromDate: filterParams.announcementId ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(new Date(filterParams.fromDate))),
-                    toDate: filterParams.announcementId ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(new Date(filterParams.toDate))),
-                    title: filterParams.title,
-                    status: filterParams.status,
-                    pageIndex: filterParams.pageIndex,
-                    pageSize: filterParams.pageSize
-                }
-                this.props.setGridParams(params);
-                this.props.getGridData(params);
+                const filterParams = this.props.filterParams;               
+                this.props.setGridParams(this.getFilterParams(filterParams, false));
+                this.props.getGridData(this.getFilterParams(filterParams, false));
+                this.props.setRedirectActionParams(this.getFilterParams(filterParams, true));
             } else {
                 this.props.getGridData(this.props.gridParams);
             }
             window.history.replaceState(null, '');
         }
     }
+
+    getFilterParams = (filterParams, isAction) => {
+        const params = {
+            announcementId: filterParams.announcementId,
+            fromDate: filterParams.announcementId ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(new Date(filterParams.fromDate))),
+            toDate: filterParams.announcementId ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(new Date(filterParams.toDate))),
+            title: filterParams.title,
+            status: filterParams.status,
+            pageIndex: filterParams.pageIndex,
+            pageSize: filterParams.pageSize
+        }
+        if (!isAction) {
+            return params;
+        } else {
+            return {
+                ...params,
+                fromDate: filterParams.announcementId ? null : filterParams.fromDate,
+                toDate: filterParams.announcementId ? null : filterParams.toDate
+            }
+        }
+    };
 
     componentWillUnmount(){
         this.props.setGridData(null);
