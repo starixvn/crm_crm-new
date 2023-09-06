@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Models.MixParlay;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;

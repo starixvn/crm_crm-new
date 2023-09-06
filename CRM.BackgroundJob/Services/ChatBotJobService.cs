@@ -7,6 +7,7 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Criteria.ChatBot;
+    using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.ChatBot;
     using global::CRM.BackgroundJob.Models.ChatBotCTO;
     using global::CRM.BackgroundJob.Models.ChatBotCWL;

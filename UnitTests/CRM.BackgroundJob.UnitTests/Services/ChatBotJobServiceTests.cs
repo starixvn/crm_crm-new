@@ -11,6 +11,8 @@
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
     using CRM.BackgroundJob.Criteria.ChatBotCWL;
     using CRM.BackgroundJob.Criteria.ChatbotProblemAccount;
+    using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Models.ChatBot;
     using CRM.BackgroundJob.Models.ChatBotCTO;
     using CRM.BackgroundJob.Models.ChatBotCWL;

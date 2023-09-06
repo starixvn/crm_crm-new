@@ -1,4 +1,4 @@
-﻿namespace Fanex.CRM.BackgroundJob.Models
+﻿namespace CRM.BackgroundJob.Models.AbnormalBet
 {
     public class AutoFeedbackInfo
     {

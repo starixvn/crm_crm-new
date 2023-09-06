@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Models.LicenseeInfo;
     using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.BackgroundJob.Models.ResultAmendment;

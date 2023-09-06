@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using System.Web;
     using CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment;
+    using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;

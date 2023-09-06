@@ -4,6 +4,7 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.MixParlay;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Models;
@@ -99,14 +100,14 @@
             IEnumerable<int> messageIds = messagesImportCombineDistinct.Where(x => x.MessageId != 0).Select(y => y.MessageId).Distinct().ToList();
             IEnumerable<Message> messages = await messageService.GetMessageInfoAsync(messageIds);
 
-            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(
+            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, string> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(
                 messagesImportCombineDistinct, setting
             );
 
            var transactionTickets = Enumerable.Empty<TransactionInfo>();
-            if (ticketInfo.Item3.Any() && !string.IsNullOrEmpty(ticketInfo.Item3.FirstOrDefault()))
+            if (ticketInfo.Item3.Any() && !string.IsNullOrEmpty(ticketInfo.Item3))
             {
-                transactionTickets = await ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item3.FirstOrDefault());
+                transactionTickets = await ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item3);
             }
 
 
@@ -163,8 +164,8 @@
 
             foreach (MatchInfo matchInfo in newMatchInfos)
             {
-                IEnumerable<Message> getMessageContents = messages.Where(x => matchInfo.MessageId.Contains(x.MessageId.ToString()));
-                IEnumerable<Message> messageByHeadline = getMessageContents.Where(x => transactionByHeadline.Any(y => y.MessageId == x.MessageId)).DistinctBy(x => x.MessageId);
+                IEnumerable<Message> messageContents = messages.Where(x => matchInfo.MessageId.Contains(x.MessageId.ToString()));
+                IEnumerable<Message> messageByHeadline = messageContents.Where(x => transactionByHeadline.Any(y => y.MessageId == x.MessageId)).DistinctBy(x => x.MessageId);
                 IEnumerable<TransactionInfo> credits = newTransactionInfos.Where(x => x.VoidingHistoryCollectionId == matchInfo.VoidingHistoryCollectionId && !x.IsDeposit);
                 IEnumerable<TransactionInfo> deposits = newTransactionInfos.Where(x => x.VoidingHistoryCollectionId == matchInfo.VoidingHistoryCollectionId && x.IsDeposit);
 
@@ -183,7 +184,7 @@
                 {
                     GetLicenseeManager(deposits, siteSettingMappings);
 
-                    var messageByLicenseeManager = getMessageContents.Where(x=> deposits.Any(y => y.MessageId == x.MessageId));
+                    var messageByLicenseeManager = messageContents.Where(x=> deposits.Any(y => y.MessageId == x.MessageId));
                     await CreateFeedbackForDepositSiteAsync(
                         licenseeInfo,
                         messageByLicenseeManager,

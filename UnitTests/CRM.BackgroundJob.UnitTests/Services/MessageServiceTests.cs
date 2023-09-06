@@ -7,6 +7,7 @@
     using AutoFixture;
     using CRM.BackgroundJob.Criteria.AutoFeedback;
     using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
     using CRM.Core.Services;

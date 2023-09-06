@@ -12,6 +12,7 @@
     using global::CRM.BackgroundJob.Criteria.TurnoverControll;
     using global::CRM.BackgroundJob.Criteria.VoidingSettledTickets;
     using global::CRM.BackgroundJob.Criteria.WinLossLimit;
+    using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.ArchivingDA;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
     using global::CRM.BackgroundJob.Models.ResultAmendment;

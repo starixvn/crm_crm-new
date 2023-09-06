@@ -6,6 +6,7 @@
     using CRM.BackgroundJob.Criteria.ArchivingDA;
     using CRM.BackgroundJob.Criteria.TurnoverControll;
     using CRM.BackgroundJob.Criteria.WinLossLimit;
+    using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;

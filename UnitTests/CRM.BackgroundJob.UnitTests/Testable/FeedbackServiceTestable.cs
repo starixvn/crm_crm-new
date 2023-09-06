@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Services;
     using CRM.Core.Services;
     using Fanex.CRM.BackgroundJob.Criteria;

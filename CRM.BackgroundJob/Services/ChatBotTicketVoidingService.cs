@@ -15,6 +15,7 @@
     using System;
     using global::CRM.BackgroundJob.Models.ChatBot;
     using global::CRM.BackgroundJob.Criteria.ChatBot;
+    using global::CRM.BackgroundJob.Models;
 
     public interface IChatBotTicketVoidingService
     {

@@ -1,14 +1,14 @@
-﻿namespace Fanex.CRM.BackgroundJob.Models
+﻿namespace CRM.BackgroundJob.Models
 {
     using System;
-    using global::CRM.Core.Extensions.XML;
+    using CRM.Core.Extensions.XML;
 
     [Serializable]
     [XMLName("r")]
     public class VoidingMessage
     {
         [XMLName("VoidingHistoryCollectionId")]
-         public int VoidingHistoryCollectionId { get; set; }
+        public int VoidingHistoryCollectionId { get; set; }
         [XMLName("MessageId")]
         public int MessageId { get; set; }
         [XMLName("RequestId")]

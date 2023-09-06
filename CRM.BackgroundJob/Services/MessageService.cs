@@ -5,10 +5,12 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Criteria.AutoFeedback;
     using global::CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;

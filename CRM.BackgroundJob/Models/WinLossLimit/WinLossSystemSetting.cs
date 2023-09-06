@@ -1,7 +1,7 @@
 ﻿namespace CRM.BackgroundJob.Models.WinLossLimit
 {
     using System;
-    using Fanex.CRM.BackgroundJob.Models;
+    using CRM.BackgroundJob.Models.AbnormalBet;
 
     public class WinLossSystemSetting : AbnormalBetSystemSetting
     {

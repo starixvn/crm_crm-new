@@ -11,13 +11,14 @@
     using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Criteria.AutoFeedback;
     using global::CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
 
     public interface IFeedbackTicketVoidingService
     {
-        Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>> GetTicketVoidingInfoAsync(
+        Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, string>> GetTicketVoidingInfoAsync(
                 IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
                 AbnormalBetSystemSetting setting);
 
@@ -60,7 +61,7 @@
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
-        public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>> GetTicketVoidingInfoAsync(
+        public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, string>> GetTicketVoidingInfoAsync(
                IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
                AbnormalBetSystemSetting setting)
         {
@@ -99,7 +100,7 @@
                 logService.LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", collectionIds)));
             }
 
-            return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>(ticketInfo.Item1, ticketInfo.Item2, ticketInfo.Item3);
+            return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, string>(ticketInfo.Item1, ticketInfo.Item2, criteria.TranIDs);
         }
 
         public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> ImportTicketVoidingInfoAsync(

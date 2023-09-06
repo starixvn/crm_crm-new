@@ -8,6 +8,7 @@
     using System.Web;
     using AutoFixture;
     using CRM.BackgroundJob.Criteria.ChatBot;
+    using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.ChatBot;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;

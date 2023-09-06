@@ -1,6 +1,7 @@
 ﻿
 namespace CRM.BackgroundJob.UnitTests.Testable
 {
+    using CRM.BackgroundJob.Models.AbnormalBet;
     using CRM.BackgroundJob.Models.ProblemsAccount;
     using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.BackgroundJob.Services;

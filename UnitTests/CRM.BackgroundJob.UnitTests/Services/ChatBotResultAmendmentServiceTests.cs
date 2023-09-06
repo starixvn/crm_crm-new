@@ -16,6 +16,7 @@
     using NSubstitute;
     using Xunit;
     using CRM.Core.Extensions.XML;
+    using CRM.BackgroundJob.Models.AbnormalBet;
 
     public class ChatBotResultAmendmentServiceTests
     {

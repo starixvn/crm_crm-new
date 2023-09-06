@@ -1,21 +1,21 @@
-﻿namespace CRM.BackgroundJob.Models
+﻿namespace CRM.BackgroundJob.Models.AbnormalBet
 {
     using CRM.Core.Extensions.XML;
     using System;
 
     [Serializable]
     [XMLName("r")]
-    public class VoidingMessageUserName
+    public class VoidingHisMessage
     {
         [XMLName("VoidingHistoryCollectionId")]
         public int VoidingHistoryCollectionId { get; set; }
-        [XMLName("MessageId")]
+        [XMLName("MessageID")]
         public int MessageId { get; set; }
-        [XMLName("RequestId")]
+        [XMLName("RequestID")]
         public int RequestId { get; set; }
+        [XMLName("VoidingHistoryID")]
+        public int VoidingHistoryId { get; set; }
         [XMLName("UsernameList")]
         public string UsernameList { get; set; }
-        [XMLName("CustIdList")]
-        public string CustIdList { get; set; }
     }
 }
