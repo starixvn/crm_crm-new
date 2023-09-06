@@ -7,5 +7,6 @@
         public string Password { get; set; }
         public int DefaultDatabase { get; set; }
         public string ApplicationName { get; set; }
+        public int ConnectRetry { get; set; }
     }
 }

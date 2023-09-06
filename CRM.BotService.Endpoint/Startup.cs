@@ -149,7 +149,8 @@
                     { redisConfig.Server, redisConfig.Port }
                 },
                 Password = redisConfig.Password,
-                DefaultDatabase = redisConfig.DefaultDatabase
+                DefaultDatabase = redisConfig.DefaultDatabase,
+                ConnectRetry = redisConfig.ConnectRetry
             };
             var redis = ConnectionMultiplexer.Connect(configRedix);
             services.AddDataProtection()
