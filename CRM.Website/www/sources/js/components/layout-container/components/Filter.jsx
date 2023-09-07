@@ -177,49 +177,60 @@ export default class Filter extends Component {
 
     renderHomeSubMenu = pathname =>{
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
+        const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
         const {handleNavigate} = this.props;
+        const subMenusHtml = [
+            <li style={{display: hasReadFeedbackPermission || hasReadCustomerInfo ? '' : 'none' }}
+                id="li-main" key= "li-main" className={this.isCheckActive(pathname, 0)}>
+                <a onClick = {() => handleNavigate('Dashboard')}>
+                    <u>M</u>ain
+                </a>
+            </li>,
+            <li style={{display: hasReadCustomerInfo ? '' : 'none' }} 
+                id="li-detail" key= "li-detail" className={this.isCheckActive(pathname, 1)}>
+                <a onClick = {() => handleNavigate('Detail')}>
+                    <u>D</u>etail
+                </a>
+            </li>,
+            <li style={{display: hasReadFeedbackPermission ? '' : 'none' }}
+                id="li-communication-log" key= "li-communication-log" className={this.isCheckActive(pathname, 2)}>
+                <a onClick = {() => handleNavigate('Communication')}>
+                    Communication <u>L</u>og
+                </a>
+            </li>,
+            <li style={{display: hasReadCustomerInfo ? '' : 'none' }}
+                id="li-special-remark" key= "li-special-remark" className={this.isCheckActive(pathname, 3)}>
+                <a onClick = {() => handleNavigate('SpecialRemark')}>
+                    Special Remar<u>k</u>
+                </a>
+            </li>,
+            <li style={{display: this.props.isCreditSite && hasReadCustomerInfo ? '' : 'none' }} id="li-special-new-remark" 
+                key= "li-special-new-remark" className={this.isCheckActive(pathname, 4)}>
+                <a onClick = {() => handleNavigate('Remark')}>
+                    Rema<u>r</u>k
+                </a>
+            </li>,
+            <li style={{display: hasReadCustomerInfo ? '' : 'none' }}
+                id="li-redemption" key = "li-redemption" className={this.isCheckActive(pathname, 5)}>
+                <a onClick = {() => handleNavigate('Redemption')}>
+                    Redem<u>p</u>tion
+                </a>
+            </li>,
+            <li style={{display: hasReadCustomerInfo ? '' : 'none' }}
+                id="li-activity-log" key = "li-activity-log" className={this.isCheckActive(pathname, 6)}>
+                <a onClick = {() => handleNavigate('ActionLog')}>
+                    Ac<u>t</u>ivity Log
+                </a>
+            </li>
+        ];
+
         return (
-            hasReadFeedbackPermission ?
+            (hasReadFeedbackPermission || hasReadCustomerInfo) ?
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
-                 {this.renderIconHome()}
-                <li id="li-main" className={this.isCheckActive(pathname, 0)}>
-                    <a onClick = {() => handleNavigate('Dashboard')}>
-                        <u>M</u>ain
-                    </a>
-                </li>
-                <li id="li-detail" className={this.isCheckActive(pathname, 1)}>
-                    <a onClick = {() => handleNavigate('Detail')}>
-                        <u>D</u>etail
-                    </a>
-                </li>
-                <li id="li-communication-log" className={this.isCheckActive(pathname, 2)}>
-                    <a onClick = {() => handleNavigate('Communication')}>
-                        Communication <u>L</u>og
-                    </a>
-                </li>
-                    <li id="li-special-remark" className={this.isCheckActive(pathname, 3)}>
-                    <a onClick = {() => handleNavigate('SpecialRemark')}>
-                        Special Remar<u>k</u>
-                    </a>
-                </li>
+                {this.renderIconHome()}
                 {
-                    this.props.isCreditSite &&
-                    <li id="li-special-new-remark" className={this.isCheckActive(pathname, 4)}>
-                        <a onClick = {() => handleNavigate('Remark')}>
-                            Rema<u>r</u>k
-                        </a>
-                    </li>
+                    subMenusHtml.map(item => item)
                 }
-                <li id="li-redemption" className={this.isCheckActive(pathname, 5)}>
-                    <a onClick = {() => handleNavigate('Redemption')}>
-                        Redem<u>p</u>tion
-                    </a>
-                </li>
-                <li id="li-activity-log" className={this.isCheckActive(pathname, 6)}>
-                    <a onClick = {() => handleNavigate('ActionLog')}>
-                        Ac<u>t</u>ivity Log
-                    </a>
-                </li>
             </ul> :
             <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                  {this.renderIconHome()}

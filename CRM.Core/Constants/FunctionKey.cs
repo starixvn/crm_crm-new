@@ -26,6 +26,7 @@
         public const string Updateheadlineinfo = "HeadlineInfo";
         public const string Credit = "Credit";
         public const string Licensee = "Licensee";
+        public const string Remarks = "Remarks";
 
         public const string InformHeadline = "InformHeadline";
         public const string InformHeadlineSearch = "InformHeadlineSearch";

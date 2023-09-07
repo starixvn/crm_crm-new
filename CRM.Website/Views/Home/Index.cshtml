@@ -23,3 +23,5 @@
 <div id="app-container"></div>
 <input type="checkbox" hidden id="hasCreateFeedbackPermission" @(Model ? "checked" : string.Empty) />
 <input type="checkbox" hidden id="hasReadFeedbackPermission" @(ViewBag.hasReadFeedbackPermission ? "checked" : string.Empty) />
+<input type="checkbox" hidden id="hasReadCustomerInfo" @(ViewBag.hasReadCustomerInfo ? "checked" : string.Empty) />
+<input type="checkbox" hidden id="hasHostCustomerInfo" @(ViewBag.hasHostCustomerInfo ? "checked" : string.Empty) />

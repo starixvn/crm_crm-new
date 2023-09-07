@@ -17,7 +17,6 @@ export class Remark extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            policy: null,
             collapse: {
                 specialRemark: false,
                 normalRemark: false
@@ -33,9 +32,6 @@ export class Remark extends Component {
 
     async componentDidMount() {
         await this.props.getRemarks({customerId: this.props.id});
-        getPermission(FunctionKey.CreateUpdateFeedback).then(response => {
-            this.setState({policy: response});
-        });
         document.title = LangHelper.getResource('CRMSystem');
         const { gridData } = this.props;
         if(!gridData){
@@ -152,10 +148,10 @@ export class Remark extends Component {
         const { collapse, specialRemarks, dataSpecialRemarks, normalRemarks, dataNormalRemarks, editRemarkResult
         } = this.state;
 
-        if (this.props.gridData === null || !this.state.policy){
+        if (this.props.gridData === null){
             return null;
         }
-        const canEditRemark = this.state.policy === Policy.Host;
+        const canEditRemark = document.getElementById('hasHostCustomerInfo').checked;
         const isDirty = this.checkIsDirtyForm();
         return (
             <div>

@@ -75,7 +75,8 @@ export class AppContainer extends Component {
 
     render() {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
-
+        const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
+        const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         if(!this.props.custId){
             return(
                 <div className='alert-boxer'>
@@ -93,10 +94,12 @@ export class AppContainer extends Component {
             <>
                 <div>
                     {
+                        hasReadCustomerInfo ?
                         !currentCustomer.isCreditSite ?
                             <div><DataGridRemark id={custId} /></div> :
                                 <div><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} />
                             </div>
+                        : null
                     }
                     {
                         !IsRemoveVerify &&
@@ -107,7 +110,9 @@ export class AppContainer extends Component {
                     !IsRemoveDatagridRedemption && 
                     <DataGridRedemption id={custId} />
                 }
-                <DataGridCommunication id={custId} isHost={hasCreateFeedbackPermission}/>
+                {
+                    hasReadFeedbackPermission && <DataGridCommunication id={custId} isHost={hasCreateFeedbackPermission}/>
+                }
                 {
                     editRedemptionDialog.show &&
                     <EditRedemptionLog logId={editRedemptionDialog.redemptionId}

@@ -23,14 +23,21 @@
 
         public async Task<IActionResult> Index()
         {
-            var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
-
             var hasReadCreditPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit);
             var hasReadLicenseePermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee);
+
             var hasReadFeedbackInfoPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback);
+            var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
+
+            var hasHostCreditPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
+            var hasHostLicenseePermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
 
 
-            ViewBag.hasReadFeedbackPermission = hasReadFeedbackInfoPermission && (hasReadCreditPermission || hasReadLicenseePermission);
+            var hasReadCustomerInfo = hasReadCreditPermission || hasReadLicenseePermission;
+
+            ViewBag.hasReadFeedbackPermission = hasReadFeedbackInfoPermission && hasReadCustomerInfo;
+            ViewBag.hasReadCustomerInfo = hasReadCustomerInfo;
+            ViewBag.hasHostCustomerInfo = hasHostCreditPermission || hasHostLicenseePermission;
             return View(hasCreateFeedbackPermission);
         }
     }

@@ -9,7 +9,18 @@ import * as commonFunc from '../../common.functions';
 import toJson from 'enzyme-to-json';
 
 describe('EditForm', () => {
+    beforeAll(() => {
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'hasHostCustomerInfo');
+        appContainer.checked = true;
+        document.body.appendChild(appContainer);
+    });
+
     afterAll(() => {
+        const appContainer = document.getElementById('hasHostCustomerInfo');
+        if (appContainer) {
+            document.body.removeChild(appContainer);
+        }
         jest.clearAllMocks();
     });
 

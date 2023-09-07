@@ -87,6 +87,7 @@
                 if (isAjaxRequest)
                 {
                     context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+                    await context.HttpContext.Response.CompleteAsync();
                 }
 
                 else

@@ -7,16 +7,28 @@ import toJson from 'enzyme-to-json';
 describe('AppContainer', () => {
     beforeAll(() => {
         const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'hasCreateFeedbackPermission');
+        appContainer.setAttribute('id', 'hasReadFeedbackPermission');
         appContainer.checked = true;
+        const appContainer1 = document.createElement('div');
+        appContainer1.setAttribute('id', 'hasReadCustomerInfo');
+        appContainer1.checked = true;
+        const appContainer2 = document.createElement('div');
+        appContainer2.setAttribute('id', 'hasCreateFeedbackPermission');
+        appContainer2.checked = true;
         document.body.appendChild(appContainer);
+        document.body.appendChild(appContainer1);
+        document.body.appendChild(appContainer2);
     });
 
     afterAll(() => {
         jest.clearAllMocks();
-        const appContainer = document.getElementById('hasCreateFeedbackPermission');
-        if (appContainer) {
+        const appContainer = document.getElementById('hasReadFeedbackPermission');
+        const appContainer1 = document.getElementById('hasReadCustomerInfo');
+        const appContainer2 = document.getElementById('hasCreateFeedbackPermission');
+        if (appContainer || appContainer1 || appContainer2) {
             document.body.removeChild(appContainer);
+            document.body.removeChild(appContainer1);
+            document.body.removeChild(hasCreateFeedbackPermission);
         }
     });
 

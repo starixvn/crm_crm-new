@@ -948,10 +948,10 @@ export class EditForm extends Component {
     };
 
     render() {
-        const { allSettings, customerInfo, updateHeadlineInfoPolicy, customerInfoPolicy } = this.props;
+        const { allSettings, customerInfo, updateHeadlineInfoPolicy } = this.props;
+        const hasHostCustomerInfo = document.getElementById('hasHostCustomerInfo').checked;
         const values = this.state;
         const updatePolicy = updateHeadlineInfoPolicy;
-        const customerPolicy = customerInfoPolicy;
         const canEditHeadline = updatePolicy === Policy.Host;
         if (!allSettings || !customerInfo) {
             return null;
@@ -969,7 +969,7 @@ export class EditForm extends Component {
                 {this.renderHomeAddress(values)}
                 {this.renderBankInfo(values)}
                 {
-                    customerPolicy === Policy.Host &&
+                    hasHostCustomerInfo &&
                     (
                         <Button type="submit" variant="primary" size="sm" className="mt-3" disabled={this.state.isSubmitting}>
                             <UnderlineButton.saveButton />

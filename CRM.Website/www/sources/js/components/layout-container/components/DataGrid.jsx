@@ -408,6 +408,9 @@ export default class DataGrid extends PureComponent {
 
     renderDetail = isShowInactiveMsg =>{
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
+        const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
+        const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
+
         return (
             <div className="hightlight-title">
                 <Row className="item title text-left btn-detail"
@@ -419,10 +422,13 @@ export default class DataGrid extends PureComponent {
                     this.state.isShowDetail &&
                     <Form.Group className="row item no-border-bg form-row-detail">
                         <ul className='list-unstyled list-menu pull-left'>
-                            <li>
-                                <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a onClick = {() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
-                            </li>
+                            {
+                                hasReadCustomerInfo &&
+                                <li>
+                                    <i className="fa fa-angle-right" aria-hidden="true" />
+                                    <a onClick = {() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
+                                </li>
+                            }
                             {
                                 !isShowInactiveMsg && hasCreateFeedbackPermission &&
                                 <li>
@@ -431,16 +437,19 @@ export default class DataGrid extends PureComponent {
                                 </li>
                             }
                         </ul>
-                        <ul className='list-unstyled list-menu pull-left'>
-                            <li>
-                                <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a onClick = {() => this.props.handleNavigate('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
-                            </li>
-                            <li>
-                                <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a onClick = {() => this.props.handleNavigate('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
-                            </li>
-                        </ul>
+                        {
+                            hasReadFeedbackPermission &&
+                            <ul className='list-unstyled list-menu pull-left'>
+                                <li>
+                                    <i className="fa fa-angle-right" aria-hidden="true" />
+                                    <a onClick = {() => this.props.handleNavigate('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
+                                </li>
+                                <li>
+                                    <i className="fa fa-angle-right" aria-hidden="true" />
+                                    <a onClick = {() => this.props.handleNavigate('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
+                                </li>
+                            </ul>
+                        }
                     </Form.Group>
                 }
             </div>

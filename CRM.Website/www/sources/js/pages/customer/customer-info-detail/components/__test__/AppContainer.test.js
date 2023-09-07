@@ -3,10 +3,24 @@ import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
 import EditForm from '../EditForm';
 import toJson from 'enzyme-to-json';
-import * as shareScripts from '@jsroot/common/shareScripts';
 
 describe('AppContainer', () => {
+    beforeAll(() => {
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'hasReadCustomerInfo');
+        appContainer.checked = true;
+        const appContainer1 = document.getElementById('right-row-container');
+        document.body.appendChild(appContainer);
+        document.body.appendChild(appContainer1);
+    });
+
     afterAll(() => {
+        const appContainer = document.getElementById('hasReadCustomerInfo');
+        const appContainer1 = document.getElementById('right-row-container');
+        if (appContainer || appContainer1) {
+            document.body.removeChild(appContainer);
+            document.body.removeChild(appContainer1);
+        }
         jest.clearAllMocks();
     });
 

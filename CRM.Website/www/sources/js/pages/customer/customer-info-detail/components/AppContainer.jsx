@@ -22,16 +22,11 @@ export class AppContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            customerInfoPolicy: null,
             updateHeadlineInfoPolicy: null
         };
     }
 
     componentDidMount() {
-        getPermission(FunctionKey.CreateUpdateFeedback).then(response => {
-            this.setState({ customerInfoPolicy: response });
-        });
-
         getPermission(FunctionKey.UpdateHeadlineInfo, true).then(response => {
             this.setState({ updateHeadlineInfoPolicy: response });
         });
@@ -43,14 +38,15 @@ export class AppContainer extends Component {
     }
 
     render() {
-        const { customerInfoPolicy, updateHeadlineInfoPolicy } = this.state;
-        if (!customerInfoPolicy) {
+        const { updateHeadlineInfoPolicy } = this.state;
+        const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
+        if (!hasReadCustomerInfo) {
             return null;
         }
 
         return (
             <div>
-                <EditForm id={this.props.id} customerInfoPolicy={customerInfoPolicy} updateHeadlineInfoPolicy={updateHeadlineInfoPolicy} />
+                <EditForm id={this.props.id} updateHeadlineInfoPolicy={updateHeadlineInfoPolicy} />
             </div>
         );
     }

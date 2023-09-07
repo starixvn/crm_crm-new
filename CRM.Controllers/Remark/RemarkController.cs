@@ -13,7 +13,6 @@
 
     [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
     [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
-    [CrmPermissionAttribute(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Read)]
     public class RemarkController : BaseController
     {
         private readonly INapSession napSession;
@@ -36,7 +35,8 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
+        [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
         public async Task<IActionResult> EditRemarks([FromBody] EditRemarkCommand command)
         {
             command.UserId = napSession.UserId;

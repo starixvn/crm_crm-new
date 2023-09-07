@@ -71,7 +71,7 @@ describe('Layout', () => {
         appContainer.setAttribute('id', 'hasCreateFeedbackPermission');
         appContainer.checked = true;
         const appContainer1 = document.createElement('div');
-        appContainer1.setAttribute('id', 'hasReadFeedbackPermission');
+        appContainer1.setAttribute('id', 'hasReadCustomerInfo');
         appContainer1.checked = false;
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
@@ -86,7 +86,7 @@ describe('Layout', () => {
     afterAll(() => {
         jest.clearAllMocks();
         const appContainer = document.getElementById('hasCreateFeedbackPermission');
-        const appContainer1 = document.getElementById('hasReadFeedbackPermission');
+        const appContainer1 = document.getElementById('hasReadCustomerInfo');
         if (appContainer || appContainer1) {
             document.body.removeChild(appContainer);
             document.body.removeChild(appContainer1);

@@ -16,9 +16,6 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
-    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
-    [CrmPermissionAttribute(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Read)]
     public class NewRemarkController : BaseController
     {
         private readonly INapSession napSession;
@@ -98,6 +95,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.Remarks, Policy = Policy.Host)]
         public async Task<IActionResult> Create([FromBody] CreateNewReamarkCommand command)
         {
             command.CreatorID = napSession.UserId;
@@ -109,6 +107,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.Remarks, Policy = Policy.Host)]
         public async Task<IActionResult> Edit([FromBody] EditNewRemarkCommand command)
         {
             command.ModifierID = napSession.UserId;
@@ -130,6 +129,7 @@
         }
 
         [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.Remarks, Policy = Policy.Host)]
         public async Task<IActionResult> Delete([FromBody] DeleteNewRemarkCommand command)
         {
             command.UserID = napSession.UserId;

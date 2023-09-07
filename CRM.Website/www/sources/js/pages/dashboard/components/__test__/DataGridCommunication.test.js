@@ -8,18 +8,23 @@ import { DataGridCommunication } from '../DataGridCommunication';
 
 describe('DataGridCommunication', () => {
     beforeAll(() => {
-        window.createUpdateFeedbackPermission = 2;
         LangHelper.getResource = jest.fn(key => key);
         const appContainer = document.createElement('div');
         appContainer.setAttribute('id', 'hasCreateFeedbackPermission');
         appContainer.checked = true;
+        const appContainer1 = document.createElement('div');
+        appContainer1.setAttribute('id', 'right-row-container');
+        
         document.body.appendChild(appContainer);
+        document.body.appendChild(appContainer1);
     });
 
     afterAll(() => {
         const appContainer = document.getElementById('hasCreateFeedbackPermission');
-        if (appContainer) {
+        const appContainer1 = document.getElementById('right-row-container');
+        if (appContainer || appContainer1) {
             document.body.removeChild(appContainer);
+            document.body.removeChild(appContainer1);
         }
         jest.clearAllMocks();
     });

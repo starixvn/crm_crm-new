@@ -13,9 +13,16 @@ describe('Remark', () => {
         jest.useFakeTimers();
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'hasHostCustomerInfo');
+        appContainer.checked = true;
     });
 
     afterAll(() => {
+        const appContainer = document.getElementById('hasHostCustomerInfo');
+        if (appContainer || appContainer1) {
+            document.body.removeChild(appContainer);
+        }
         jest.clearAllMocks();
     });
 

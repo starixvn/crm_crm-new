@@ -9,15 +9,12 @@
     using CRM.Criteria.Redemption;
     using CRM.Services;
     using CRM.Services.Redemption;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
     [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
-    [CrmPermissionAttribute(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Read)]
     public class RedemptionController : BaseController
     {
         private readonly INapSession napSession;
@@ -63,7 +60,8 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
+        [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
         public async Task<IActionResult> EditRedemptionLog([FromBody] EditRedemptionLogCommand command)
         {
             command.UserId = napSession.UserId;
@@ -73,7 +71,8 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
+        [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
         public async Task<IActionResult> CreateRedemptionLog([FromBody] CreateRedemptionLogCommand command)
         {
             command.UserId = napSession.UserId;
