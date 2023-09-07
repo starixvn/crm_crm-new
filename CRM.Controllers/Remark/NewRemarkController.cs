@@ -16,6 +16,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
+    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Remarks, Policy = Policy.Read)]
     public class NewRemarkController : BaseController
     {
         private readonly INapSession napSession;

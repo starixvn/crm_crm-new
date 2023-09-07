@@ -95,10 +95,9 @@ export class AppContainer extends Component {
                 <div>
                     {
                         hasReadCustomerInfo ?
-                        !currentCustomer.isCreditSite ?
-                            <div><DataGridRemark id={custId} /></div> :
-                                <div><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} />
-                            </div>
+                            !currentCustomer.isCreditSite ?
+                                <div><DataGridRemark id={custId} /></div> :
+                                <div><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} /></div>
                         : null
                     }
                     {

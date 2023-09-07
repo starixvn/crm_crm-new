@@ -9,7 +9,8 @@ import NewRemark from './NewRemark';
 import EditRemark from './EditRemark';
 import History from './History';
 import LangHelper from '@jsroot/common/langHelper';
-
+import { getPermission } from '@jsroot/common/shareScripts';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
 export class AppContainer extends Component {
     static propTypes = {
         isHost: PropTypes.bool.isRequired,
@@ -25,8 +26,18 @@ export class AppContainer extends Component {
         showHistory: { show: false },
         customerName : ''
     };
+    constructor(props) {
+        super(props);
+        this.state = {
+            remarksPolicy: null
+        };
+    }
+
     componentDidMount(){
         this.props.getRemarkTitles();
+        getPermission(FunctionKey.Remarks, true).then(response => {
+            this.setState({ remarksPolicy: response });
+        });
         document.title = LangHelper.getResource('Remarks');
     }
 
@@ -56,11 +67,12 @@ export class AppContainer extends Component {
     };
     render() {
         const { remarkTitles, popupAdd, popupEdit, showHistory, customerName, custId, isGuestSearch} = this.props;
-        if(remarkTitles === null || !remarkTitles){
+        const {remarksPolicy}= this.state;
+        if(remarkTitles === null || !remarkTitles || !remarksPolicy){
             return null;
         }
-        const isHost = document.getElementById('hasCreateFeedbackPermission').checked;
-        const isRead = document.getElementById('hasReadFeedbackPermission').checked;
+        const isHost = remarksPolicy == Policy.Host;
+        const isRead = remarksPolicy == Policy.Read;
 
         return (
             <Fragment>
