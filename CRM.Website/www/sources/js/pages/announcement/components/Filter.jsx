@@ -33,7 +33,8 @@ export class Filter extends Component {
         if (this.props.isLoadGrid && this.props.filterParams) {
             const filterParams = this.props.filterParams;
             const statusList = filterParams.status.split(',');
-            const statusOption = Statuses.map(item => {
+            const cloneStatus = JSON.parse(JSON.stringify(Statuses));
+            const statusOption = cloneStatus.map(item => {
                 if (!statusList.includes(item.id)) {
                     item.checked = false;
                 }
