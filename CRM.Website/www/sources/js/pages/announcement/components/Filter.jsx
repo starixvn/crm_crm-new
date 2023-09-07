@@ -42,8 +42,8 @@ export class Filter extends Component {
             this.setState({
                 ...this.state,
                 announcementId: filterParams.announcementId,
-                fromDate: new Date(filterParams.fromDate),
-                toDate: new Date(filterParams.toDate),
+                fromDate: filterParams.fromDate ? new Date(filterParams.fromDate) : this.state.fromDate,
+                toDate: filterParams.toDate ? new Date(filterParams.toDate) : this.state.toDate,
                 title: filterParams.title,
                 status: filterParams.status,
                 statusOption: statusOption
@@ -55,8 +55,8 @@ export class Filter extends Component {
         const { announcementId, title, fromDate, toDate, status } = this.state;
         const params = {
             announcementId: announcementId,
-            fromDate: announcementId ? null : fromDate.toString(),
-            toDate: announcementId ? null : toDate.toString(),
+            fromDate: fromDate.toString(),
+            toDate: toDate.toString(),
             title: title,
             status: status,
             pageIndex: 1,
