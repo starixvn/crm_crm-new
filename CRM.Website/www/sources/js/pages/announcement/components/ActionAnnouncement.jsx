@@ -489,7 +489,7 @@ export class ActionAnnouncement extends Component {
         const {sendType} = this.formik.values;
         const contentConfirm = this.state.confirmActionDialog.content;
         const content = LangHelper.getResource('ConfirmVerifySend');
-        const sendDateType = sendType === 'Send At' ? `${contentConfirm.sendDateString} ${contentConfirm.sendTimeString} (GMT+8)` : 'Send Now';
+        const sendDateType = sendType === 'Send At' ? `Send At ${contentConfirm.sendDateString} ${contentConfirm.sendTimeString} (GMT+8)` : 'Send Now';
         const usernames = getUsernames(contentConfirm.headlineNameList, contentConfirm.directAccountList);
         return(
             <>
