@@ -8,10 +8,21 @@ import DataService from '@jsroot/common/dataService';
 import { SubMainMenu, DetailMenu }from '@jsroot/common/constants';
 import { toast } from 'react-toastify';
 import BreadcrumbTime from './BreadcrumbTime';
-
+import {Policy, FunctionKey} from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 export default class Filter extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            remarksPolicy: null
+        };
+    }
+
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyDownFunc, false);
+        getPermission(FunctionKey.Remarks, true).then(response => {
+            this.setState({remarksPolicy: response});
+        });
     }
 
     componentWillUnmount(){
@@ -178,6 +189,7 @@ export default class Filter extends Component {
     renderHomeSubMenu = pathname =>{
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
+        const isReadRemark = this.state.remarksPolicy >= Policy.Read;
         const {handleNavigate} = this.props;
         const subMenusHtml = [
             <li style={{display: hasReadFeedbackPermission || hasReadCustomerInfo ? '' : 'none' }}
@@ -204,7 +216,7 @@ export default class Filter extends Component {
                     Special Remar<u>k</u>
                 </a>
             </li>,
-            <li style={{display: this.props.isCreditSite && hasReadCustomerInfo ? '' : 'none' }} id="li-special-new-remark" 
+            <li style={{display: this.props.isCreditSite && isReadRemark ? '' : 'none' }} id="li-special-new-remark" 
                 key= "li-special-new-remark" className={this.isCheckActive(pathname, 4)}>
                 <a onClick = {() => handleNavigate('Remark')}>
                     Rema<u>r</u>k
