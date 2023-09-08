@@ -9,13 +9,12 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import WithNavigation from '@jsroot/components/WithNavigation';
-
 export class LastFiveRemarkDataGrid extends Component {
     componentDidMount() {
         const param = {custId: this.props.custId};
         this.props.getLastFiveRemark(param);
+        
     }
-
 
     componentDidUpdate(prevProps , prevState) {
         if ( this.props.custId !== prevProps.custId ) {

@@ -14,7 +14,8 @@ import CustomerInfoVerify from './CustomerInfoVerify';
 import EditCustomerInfoVerify from './EditCustomerInfoVerify';
 import LastFiveRemarkDataGrid from './LastFiveRemarkDataGrid';
 import LangHelper from '@jsroot/common/langHelper';
-import {IsRemoveDatagridRedemption, IsRemoveVerify} from '@jsroot/common/constants';
+import {IsRemoveDatagridRedemption, IsRemoveVerify, Policy, FunctionKey} from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -33,8 +34,18 @@ export class AppContainer extends Component {
         editCustomerVerifyDialog: { show: false }
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            remarksPolicy: null
+        };
+    }
+
     componentDidMount(){
         document.title = LangHelper.getResource('CRMSystem');
+        getPermission(FunctionKey.Remarks, true).then(response => {
+            this.setState({remarksPolicy: response});
+        });
     }
 
     componentWillUnmount(){
@@ -77,6 +88,8 @@ export class AppContainer extends Component {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
+        const isReadRemark = this.state.remarksPolicy >= Policy.Read;
+
         if(!this.props.custId){
             return(
                 <div className='alert-boxer'>
@@ -90,6 +103,7 @@ export class AppContainer extends Component {
             custId, editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
             createCommunicationDialog, editCustomerVerifyDialog, currentCustomer
         } = this.props;
+        
         return (
             <>
                 <div>
@@ -97,7 +111,7 @@ export class AppContainer extends Component {
                         hasReadCustomerInfo ?
                             !currentCustomer.isCreditSite ?
                                 <div><DataGridRemark id={custId} /></div> :
-                                <div><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} /></div>
+                                isReadRemark && <div><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} /></div>
                         : null
                     }
                     {
