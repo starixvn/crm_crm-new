@@ -36,7 +36,9 @@
 
         private const int abnormalAccount = 13;
         private const int mixParlay = 11;
+        private const int duplicate = 20;
         private const string templateXml = "MixParlayTemplate.xml";
+        private const string templateDuplicateXml = "FeedbackDuplicateTemplate.xml";
 
 #pragma warning disable S107 // Methods should not have too many parameters
 
@@ -100,14 +102,14 @@
             IEnumerable<int> messageIds = messagesImportCombineDistinct.Where(x => x.MessageId != 0).Select(y => y.MessageId).Distinct().ToList();
             IEnumerable<Message> messages = await messageService.GetMessageInfoAsync(messageIds);
 
-            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, string> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(
+            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<DuplicateTicketDetail>, string> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(
                 messagesImportCombineDistinct, setting
             );
 
            var transactionTickets = Enumerable.Empty<TransactionInfo>();
-            if (ticketInfo.Item3.Any() && !string.IsNullOrEmpty(ticketInfo.Item3))
+            if (!string.IsNullOrEmpty(ticketInfo.Item4))
             {
-                transactionTickets = await ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item3);
+                transactionTickets = await ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item4);
             }
 
 
@@ -132,7 +134,8 @@
                 transactionTicketsCombine,
                 messagesImportCombineDistinct,
                 isUAT,
-                setting
+                setting,
+                ticketInfo.Item3
             );
         }
 
@@ -142,7 +145,8 @@
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<VoidingMessageUserName> messagesImportCombineDistinct,
             bool isUAT,
-            AbnormalBetSystemSetting setting
+            AbnormalBetSystemSetting setting,
+            IEnumerable<DuplicateTicketDetail> duplicateTicketDetails
         )
         {
             var settingNames = new[] { SettingName.SubProduct, SettingName.Bettype };
@@ -191,7 +195,9 @@
                         matchInfo,
                         deposits,
                         settings,
-                        settingMappings);
+                        settingMappings,
+                        duplicateTicketDetails
+                        );
                 }
             }
             logService.LogInformation("Abnormal Bet - Update job and time");
@@ -361,7 +367,8 @@
             MatchInfo matchInfo,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<SettingItem> settings,
-            IEnumerable<SystemSettingMapping> settingMappings)
+            IEnumerable<SystemSettingMapping> settingMappings,
+            IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
         {
             logService.LogInformation("Abnormal Bet - Begin mapping setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
@@ -375,6 +382,8 @@
                 && x.SettingId == Constants.ExtentionNA);
             var category = GetCategorySubCategory(settings, matchInfo.IssueTypeId);
             var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
+            var templateDuplicate = commonFeedback.GetFeedbackTemplates<DuplicateTemplateFeedback>(templateDuplicateXml);
+            var isDuplicate = matchInfo.IssueTypeId == duplicate;
 
             var criteria = new CreateFeedbackCommand
             {
@@ -408,7 +417,9 @@
                 transactionInfos,
                 feedbackDate,
                 communicationTool.SettingValue,
-                criteria);
+                criteria,
+                isDuplicate,
+                duplicateTicketDetails);
         }
 
         protected internal virtual async Task CreateFeedbackForDepositByBatchAsync(
@@ -417,7 +428,9 @@
             IEnumerable<TransactionInfo> transactionInfos,
             DateTime feedbackDate,
             string communicationTool,
-            CreateFeedbackCommand criteria)
+            CreateFeedbackCommand criteria,
+            bool isDuplicate,
+            IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
         {
             var joinMessageString = string.Join(",", messages.Select(x => x.MessageId));
             IList<int> licenseeManagerIds = transactionInfos.Select(x => x.LicenseeManagerId).Distinct().ToList();
@@ -436,7 +449,7 @@
                 criteria.ListOrigCustIds = string.Join(",", custIds);
                 IEnumerable<int> requestIds = transactions.Select(x => x.RequestId).Distinct().ToList();
                 criteria.RequestIds = string.Join(",", requestIds);
-                criteria.Description = GetDescriptionForDepositeSite(joinMessageString, criteria.RequestIds);
+                criteria.Description = isDuplicate ? GetDescriptionDuplicateForDepositeSite(duplicateTicketDetails) : GetDescriptionForDepositeSite(joinMessageString, criteria.RequestIds);
                 try
                 {
                     logService.LogInformation(string.Format("Abnormal Bet - Begin create feedback for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}\n\rCustIds: {3}",
@@ -495,6 +508,14 @@
                     transaction.LicenseeManager = licenseeManager.LicenseeManager;
                 }
             }
+        }
+
+        protected internal virtual string GetDescriptionDuplicateForDepositeSite(IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
+        {
+            var templateDuplicate = commonFeedback.GetFeedbackTemplates<DuplicateTemplateFeedback>(templateDuplicateXml);
+            var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
+            stringBuilder.AppendFormat(templateDuplicate.Description);
+            return stringBuilder.ToString();
         }
 
         protected internal virtual SettingItem GetCommunicationTool(IEnumerable<SettingItem> settings)

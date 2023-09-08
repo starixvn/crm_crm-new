@@ -18,9 +18,9 @@
 
     public interface IFeedbackTicketVoidingService
     {
-        Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, string>> GetTicketVoidingInfoAsync(
-                IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
-                AbnormalBetSystemSetting setting);
+        Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<DuplicateTicketDetail>, string>> GetTicketVoidingInfoAsync(
+               IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
+               AbnormalBetSystemSetting setting);
 
         Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> ImportTicketVoidingInfoAsync(
             IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
@@ -61,7 +61,7 @@
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
-        public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, string>> GetTicketVoidingInfoAsync(
+        public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<DuplicateTicketDetail>, string>> GetTicketVoidingInfoAsync(
                IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
                AbnormalBetSystemSetting setting)
         {
@@ -88,7 +88,7 @@
                 ConfigPRO = setting.ConfigPRO,
                 Environment = Environment
             };
-            var ticketInfo = await baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, string>(criteria);
+            var ticketInfo = await baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, DuplicateTicketDetail>(criteria);
 
             var collectionId = ticketInfo.Item1.Where(x => 
                     !ticketInfo.Item2.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId))
@@ -100,7 +100,8 @@
                 logService.LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", collectionIds)));
             }
 
-            return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, string>(ticketInfo.Item1, ticketInfo.Item2, criteria.TranIDs);
+            return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>,
+                IEnumerable<DuplicateTicketDetail>, string>(ticketInfo.Item1, ticketInfo.Item2, ticketInfo.Item3, criteria.TranIDs);
         }
 
         public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> ImportTicketVoidingInfoAsync(

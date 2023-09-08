@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+    <Description>
+        Msg ID: {0}, Request No.: {1}{10}
+        Dear Valued Customer,{10}
+        Kindly to be informed duplicated tickets found for below event. Those affected tickets, we retained {2} ticket(s) as valid and had proceed to void the duplicate(s). Please refer to the below message:{11}
+        Message:{10}
+        {3}{10}
+        {4}{11}
+        Kindly refer to below on the affected members &amp; tickets.{11}
+        System ID: {5}{10}
+        Ref No: {6} [Remain]{10}
+        Ref No: {7}, {8}, {9},... [Voided] {10}
+        Sorry for the inconvenience caused and thank you for your kind attention!
+    </Description>
+</ROOT>
