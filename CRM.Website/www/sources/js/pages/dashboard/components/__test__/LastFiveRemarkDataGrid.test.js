@@ -6,11 +6,21 @@ import LangHelper from '@jsroot/common/langHelper';
 
 describe('LastFiveRemarkDataGrid', () => {
     beforeAll(() => {
+        const appContainer = document.createElement('div');
+        appContainer.setAttribute('id', 'right-row-container');
+        document.body.appendChild(appContainer);
+
         LangHelper.getResource = jest.fn(key => key);
     });
+    
     afterAll(() => {
+        const appContainer = document.getElementById('right-row-container');
+        if (appContainer) {
+            document.body.removeChild(appContainer);
+        }
         jest.clearAllMocks();
     });
+    
 
     const initProps = {
         lastFiveRemarks: [{remarkID: 1504, createdDate: "Apr 18, 2022 10:35:19 PM", lastUpdate: "Apr 18, 2022 11:23:30 PM", remark: 'test'}],
