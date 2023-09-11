@@ -16,6 +16,7 @@
     using CRM.Models.CommunicationLogs;
     using CRM.Services.HeadlineNotification;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
 
@@ -213,6 +214,66 @@
 
             //Assert
             Assert.Equal(tuple, actual);
+        }
+
+        [Fact]
+        public async Task ValidateAnnouncementAsync_WhenCalled_ReturnMessageFalse()
+        {
+            //Arrange
+            var service = GetService();
+
+            var date = fixture.Create<DateTime>();
+            var clientDate = fixture.Create<DateTime>();
+            commonService.ConvertToServerDateTime(Arg.Any<DateTime>()).Returns(clientDate);
+            var command = new ValidateAnnouncementCommand
+            {
+                SendDate = date,
+                SendImmediately = false,
+            };
+
+            var announcements = fixture.Create<IEnumerable<AnnouncementDetail>>();
+            var commandResult = fixture.Create<CommandResult>();
+
+            var tuple = (announcements, commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Do<ValidateAnnouncementCommand>(x => command = x)).Returns(commandResult);
+            baseService.GetDataAsync<AnnouncementDetail>(Arg.Do<ValidateAnnouncementCommand>(x => command = x)).Returns(announcements);
+
+            //Act
+            var actual = await service.ValidateAnnouncementAsync(command);
+
+            //Assert
+            Assert.Equal(tuple.commandResult, actual.Item2);
+        }
+
+        [Fact]
+        public async Task ValidateAnnouncementAsync_WhenCalled_ReturnExpectedTupe()
+        {
+            //Arrange
+            var service = GetService();
+
+            var date = fixture.Create<DateTime>();
+            var clientDate = fixture.Create<DateTime>();
+            commonService.ConvertToServerDateTime(Arg.Any<DateTime>()).Returns(clientDate);
+            var command = new ValidateAnnouncementCommand
+            {
+                SendDate = date,
+                SendImmediately = false,
+            };
+
+            var announcements = fixture.Create<IEnumerable<AnnouncementDetail>>();
+            var commandResult = fixture.Create<CommandResult>();
+            commandResult.Code = 0;
+
+            var tuple = (announcements, commandResult);
+            baseService.ExecuteNonQueryAsync(Arg.Do<ValidateAnnouncementCommand>(x => command = x)).Returns(commandResult);
+            baseService.GetDataAsync<AnnouncementDetail>(Arg.Do<ValidateAnnouncementCommand>(x => command = x)).Returns(announcements);
+
+            //Act
+            var actual = await service.ValidateAnnouncementAsync(command);
+
+            //Assert
+            Assert.Equal(tuple.announcements, actual.Item1);
+            Assert.Equal(tuple.commandResult, actual.Item2);
         }
 
         #region Helpers

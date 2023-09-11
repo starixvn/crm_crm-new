@@ -9,6 +9,7 @@ using CRM.Controllers.HeadlineNotification;
 using CRM.Core.Models;
 using CRM.Core.Services;
 using CRM.Criteria.Announcement;
+using CRM.Criteria.NotificationList;
 using CRM.Criteria.PicAndHeadline;
 using CRM.Models;
 using CRM.Models.Announcement;
@@ -69,7 +70,7 @@ namespace CRM.Controllers.UnitTests
             var totalItems = (int)result.Value.GetType().GetProperty("TotalItems").GetValue(result.Value);
 
             // Assert
-            Assert.Equal(announcements.OrderByDescending(x => x.SendDate), data);
+            Assert.Equal(announcements, data);
             Assert.Equal(criteria.TotalRows, totalItems);
             await announcementService.Received(1).GetAnnouncementAsync(criteria);
         }
@@ -207,6 +208,67 @@ namespace CRM.Controllers.UnitTests
             // Assert
             Assert.Equal(announcements, dataJson);
             Assert.Equal(contents, contentsJson);
+        }
+
+        [Fact]
+        public async Task ValidateAnnouncement_WhenCalled_ExpectReturnsCommand()
+        {
+            // Arrange
+            var controller = GetController();
+            var announcements = fixture.Create<IEnumerable<AnnouncementDetail>>();
+            byte[] fileBytes = new byte[128];
+            IFormFile file = new FormFile(
+                baseStream: new MemoryStream(fileBytes),
+                baseStreamOffset: 0,
+                length: fileBytes.Length,
+                name: "myFile",
+                fileName: "myFile.txt");
+            var command = new ValidateAnnouncementCommand
+            {
+                FormFile = new List<IFormFile> { file }
+            };
+            var commandResult = fixture.Create<CommandResult>();
+
+            var expectTupe = new ValueTuple<IEnumerable<AnnouncementDetail>, CommandResult>(announcements, commandResult);
+            announcementService.ValidateAnnouncementAsync(command).Returns(expectTupe);
+
+            // Act
+            var result = await controller.ValidateAnnouncement(command) as JsonResult;
+            var commandResultJson = result.Value as CommandResult;
+
+            // Assert
+            Assert.Equal(commandResult, commandResultJson);
+        }
+
+        [Fact]
+        public async Task ValidateAnnouncement_WhenCalled_ExpectReturnsJson()
+        {
+            // Arrange
+            var controller = GetController();
+            var announcements = fixture.Create<IEnumerable<AnnouncementDetail>>();
+            byte[] fileBytes = new byte[128];
+            IFormFile file = new FormFile(
+                baseStream: new MemoryStream(fileBytes),
+                baseStreamOffset: 0,
+                length: fileBytes.Length,
+                name: "myFile",
+                fileName: "myFile.txt");
+            var command = new ValidateAnnouncementCommand
+            {
+                FormFile = new List<IFormFile> { file }
+            };
+            var commandResult = fixture.Create<CommandResult>();
+            commandResult.Code = 0;
+
+            var expectTupe = new ValueTuple<IEnumerable<AnnouncementDetail>, CommandResult>(announcements, commandResult);
+            announcementService.ValidateAnnouncementAsync(command).Returns(expectTupe);
+
+            // Act
+            var result = await controller.ValidateAnnouncement(command) as JsonResult;
+            var announcementJson = result.Value as IEnumerable<AnnouncementDetail>;
+
+            // Assert
+            Assert.Equal(announcements, announcementJson);
         }
 
         #region helper
