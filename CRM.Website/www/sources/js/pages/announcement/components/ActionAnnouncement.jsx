@@ -399,7 +399,7 @@ export class ActionAnnouncement extends Component {
         const {announcementId, isEdit} = this.props.actionParam;
         const {createAnnouncement, editAnnouncement} = this.props;
         const actionFunc = isEdit ? editAnnouncement : createAnnouncement;
-        isEdit && params.append('announcementId', announcementId);
+        params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
 
         actionFunc(params).then(() => {
             const resultAction = isEdit ? this.props.editAnnouncementResult : this.props.createAnnouncementResult;
