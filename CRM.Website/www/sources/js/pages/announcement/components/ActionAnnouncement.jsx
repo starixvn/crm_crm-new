@@ -640,7 +640,7 @@ export class ActionAnnouncement extends Component {
                         </div>
                     </div>
                     <div className="group-item">
-                        <div className="group-header">{LangHelper.getResource('GroupHeadline')}</div>
+                        <div className="group-header required">{LangHelper.getResource('GroupHeadline')}</div>
                         <div className="group-content">
                             <div className={"group-headline " + (this.state.isHeadlineGroup.isUsername ? 'send-type-active' : '')}>
                                 <input
@@ -654,7 +654,7 @@ export class ActionAnnouncement extends Component {
                                 />
                                 <Form.Group as={Row}>
                                     <Form.Label htmlFor="groupHeadline">
-                                        {LangHelper.getResource('GroupHeadline')}
+                                        {LangHelper.getResource('Username')}
                                     </Form.Label>
                                     <div className="headline-group-form" onClick={() => this.headlineInputRef.current.focus()}>
                                         {
