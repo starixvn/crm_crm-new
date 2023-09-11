@@ -2,6 +2,7 @@
 {
     public class DuplicateTicketDetail
     {
+        public int VoidingHistoryCollectionId { get; set; }
         public int MessageId { get; set; }
         public int RequestID { get; set; }
         public string OrgTransIds { get; set; }

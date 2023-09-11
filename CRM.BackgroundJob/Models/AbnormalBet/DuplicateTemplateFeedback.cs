@@ -7,5 +7,6 @@ namespace CRM.BackgroundJob.Models.AbnormalBet
     public class DuplicateTemplateFeedback
     {
         public string Description { get; set; }
+        public string EffectMemberTicketDesc { get; set; }
     }
 }

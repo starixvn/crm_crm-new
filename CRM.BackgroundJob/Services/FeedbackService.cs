@@ -128,6 +128,9 @@
                 string.Join(",", ticketInfo.Item1.Select(x => x.VoidingHistoryCollectionId)))
             );
 
+            var ticketDuplicate = ticketInfo.Item1.Where(x => x.IssueTypeId == duplicate);
+            var ticketDuplicateDetail = ticketInfo.Item3.Where(x => ticketDuplicate.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId));
+
             await CreateFeedbackForCreditDepositSiteAsync(
                 messages,
                 matchInfos,
@@ -135,7 +138,7 @@
                 messagesImportCombineDistinct,
                 isUAT,
                 setting,
-                ticketInfo.Item3
+                ticketDuplicateDetail
             );
         }
 
@@ -383,7 +386,6 @@
             var category = GetCategorySubCategory(settings, matchInfo.IssueTypeId);
             var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
             var templateDuplicate = commonFeedback.GetFeedbackTemplates<DuplicateTemplateFeedback>(templateDuplicateXml);
-            var isDuplicate = matchInfo.IssueTypeId == duplicate;
 
             var criteria = new CreateFeedbackCommand
             {
@@ -403,7 +405,7 @@
                 RoleId = licenseeInfo.RoleId,
                 CountryId = licenseeInfo.CountryId,
                 Subject = "Special Notification",
-                Solution = GetSolution(messages.FirstOrDefault()),
+                Solution = duplicateTicketDetails.Any() ? "Sent done" : GetSolution(messages.FirstOrDefault()),
                 LicenseeType = licenseeInfo.LicenseeType,
                 TitleId = licenseeInfo.TitleId,
                 SiteId = licenseeInfo.SiteId,
@@ -412,24 +414,18 @@
             logService.LogInformation("Abnormal Bet - End mapping setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
 
             await CreateFeedbackForDepositByBatchAsync(
-                licenseeInfo,
                 messages,
                 transactionInfos,
-                feedbackDate,
                 communicationTool.SettingValue,
                 criteria,
-                isDuplicate,
                 duplicateTicketDetails);
         }
 
         protected internal virtual async Task CreateFeedbackForDepositByBatchAsync(
-            CustomerInfo licenseeInfo,
             IEnumerable<Message> messages,
             IEnumerable<TransactionInfo> transactionInfos,
-            DateTime feedbackDate,
             string communicationTool,
             CreateFeedbackCommand criteria,
-            bool isDuplicate,
             IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
         {
             var joinMessageString = string.Join(",", messages.Select(x => x.MessageId));
@@ -444,17 +440,19 @@
                 IList<int> custIds = transactions.Select(x => x.CustId).Distinct().ToList();
 
                 criteria.RelatedCustId = string.Join(", ", batch.Where(x => x != 0).Select(x => x));
-                criteria.AutoField = GetAutoField(feedbackDate, communicationTool, licenseeManagers);
+                criteria.AutoField = GetAutoField(DateTime.Now, communicationTool, licenseeManagers);
                 criteria.MessageId = joinMessageString;
                 criteria.ListOrigCustIds = string.Join(",", custIds);
                 IEnumerable<int> requestIds = transactions.Select(x => x.RequestId).Distinct().ToList();
                 criteria.RequestIds = string.Join(",", requestIds);
-                criteria.Description = isDuplicate ? GetDescriptionDuplicateForDepositeSite(duplicateTicketDetails) : GetDescriptionForDepositeSite(joinMessageString, criteria.RequestIds);
+                criteria.Description = duplicateTicketDetails.Any() ?
+                    GetDescriptionDuplicateForDepositeSite(duplicateTicketDetails, messages, joinMessageString, string.Join(",", requestIds)) :
+                    GetDescriptionForDepositeSite(joinMessageString, criteria.RequestIds);
                 try
                 {
                     logService.LogInformation(string.Format("Abnormal Bet - Begin create feedback for MessageId: {0}\n\rHeadlineId: {1}\n\rRelatedCustIds: {2}\n\rCustIds: {3}",
                             joinMessageString,
-                            licenseeInfo.CustId,
+                            criteria.CustId,
                             string.Join(",", batch),
                             string.Join(",", custIds)));
                     CommandResult commandResult = await baseService.ExecuteNonQueryAsync(criteria);
@@ -463,7 +461,7 @@
                         logService.LogInformation(string.Format("Abnormal Bet - {0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}\n\rCustIds: {4}",
                             "Create feedback successfully",
                             joinMessageString,
-                            licenseeInfo.CustId,
+                            criteria.CustId,
                             string.Join(",", batch),
                             string.Join(",", custIds)));
                     }
@@ -472,7 +470,7 @@
                         logService.LogInformation(string.Format("Abnormal Bet - {0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}\n\rCustIds: {4}",
                             commandResult.Message,
                             joinMessageString,
-                            licenseeInfo.CustId,
+                            criteria.CustId,
                             string.Join(",", batch),
                             string.Join(",", custIds)));
                         await ticketVoidingService.EditFeedbackInfoAsync(joinMessageString, requestIds, custIds, CreateFeedbackJobStatus.Fail, commandResult.Message);
@@ -484,7 +482,7 @@
                     logService.LogInformation(string.Format("{0}. MessageId: {1}\n\rHeadlineId: {2}\n\rRelatedCustIds: {3}\n\rCustIds: {4}",
                         ex.Message,
                         joinMessageString,
-                        licenseeInfo.CustId,
+                        criteria.CustId,
                         string.Join(",", batch),
                         string.Join(",", custIds)));
                     await ticketVoidingService.EditFeedbackInfoAsync(joinMessageString, requestIds, custIds, CreateFeedbackJobStatus.Fail, ex.Message);
@@ -510,11 +508,31 @@
             }
         }
 
-        protected internal virtual string GetDescriptionDuplicateForDepositeSite(IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
+        protected internal virtual string GetDescriptionDuplicateForDepositeSite(IEnumerable<DuplicateTicketDetail> duplicateTicketDetails,
+            IEnumerable<Message> messages, string messageIds, string requestIds)
         {
             var templateDuplicate = commonFeedback.GetFeedbackTemplates<DuplicateTemplateFeedback>(templateDuplicateXml);
             var stringBuilder = new StringBuilder(DefaultValue.autoGenerated);
-            stringBuilder.AppendFormat(templateDuplicate.Description);
+            var stringBuilderTicket = new StringBuilder();
+            var message = messages.First();
+            var noOfRefTickets = duplicateTicketDetails.Select(x => x.VoidedTransId).Distinct().ToList();
+            var duplicateGroupByUsernames = duplicateTicketDetails.GroupBy(x => x.Username);
+            foreach (var duplicateTicket in duplicateGroupByUsernames.ToList())
+            {
+                var duplicateGroupByTransId = duplicateTicket.GroupBy(x => x.OrgTransIds);
+                var duplicateGroupByTransIdList = duplicateGroupByTransId.ToList();
+
+                foreach (var ticket in duplicateGroupByTransIdList)
+                {
+                    var refNoVoided = string.Join(", ", ticket.Select(x => x.VoidedTransId));
+                    stringBuilderTicket.AppendFormat(templateDuplicate.EffectMemberTicketDesc, ticket.Key, refNoVoided, Constants.Break, Constants.LineBreak);
+                }
+
+                stringBuilder.AppendFormat(templateDuplicate.Description, messageIds, requestIds, noOfRefTickets.Count,
+                    message.Content_en, message.Content_cs, duplicateTicket.Key, 
+                    stringBuilderTicket.ToString(), Constants.Break, Constants.LineBreak);
+            }
+            
             return stringBuilder.ToString();
         }
 

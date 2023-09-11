@@ -26,7 +26,6 @@
         Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>>> FetchMultipleAsync<TFirst, TSecond>(ICriteria criteria);
 
         Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>> FetchMultipleAsync<TFirst, TSecond, TThird>(ICriteria criteria);
-        Task<(IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFourth>)> FetchMultipleAsync<TFirst, TSecond, TThird, TFourth>(ICriteria criteria)
 
         Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command);
     }

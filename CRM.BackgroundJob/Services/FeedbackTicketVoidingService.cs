@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Transactions;
     using System.Web;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
@@ -146,8 +147,9 @@
             CustomerInfo licenseeInfo)
         {
             const string XmlTemplate = "<r msgid='{0}' reqid='{1}' custid='{2}' hl='{3}' related='{4}' event='{5}' IssueTypeId='{6}' />";
+            const int duplicateType = 20;
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            var transactionInfosDistinct = transactionInfos.Select(x => new
+            var transactionInfosDistinct = (IEnumerable<TransactionInfo>)transactionInfos.Select(x => new
             {
                 x.CustId,
                 x.MessageId,
@@ -158,7 +160,7 @@
             }).Distinct();
             foreach (var transaction in transactionInfosDistinct)
             {
-                var matchInfo = matchInfos.FirstOrDefault(x => x.MessageId.Contains(transaction.MessageId.ToString()));
+                MatchInfo matchInfo = matchInfos.FirstOrDefault(x => x.MessageId.Contains(transaction.MessageId.ToString()));
                 var headlineId = 0;
                 var relatedCustId = 0;
 
@@ -175,14 +177,12 @@
                     relatedCustId = transaction.CustId;
                 }
 
-                stringBuilder.AppendFormat(XmlTemplate,
-                    transaction.MessageId,
-                    transaction.RequestId,
-                    transaction.CustId,
-                    headlineId,
-                    relatedCustId,
-                    string.Format("{0} -vs- {1}", HttpUtility.HtmlEncode(matchInfo?.HomeName), HttpUtility.HtmlEncode(matchInfo?.AwayName)),
-                    matchInfo?.IssueTypeId);
+                GetXmlTemplate(stringBuilder, XmlTemplate, transaction, matchInfo, headlineId, relatedCustId);
+
+                if(transaction.IsDeposit && matchInfo?.IssueTypeId == duplicateType)
+                {
+                    GetXmlTemplate(stringBuilder, XmlTemplate, transaction, matchInfo, headlineId, transaction.CustId);
+                }
             }
 
             stringBuilder.Append(Constants.EndRootTag);
@@ -224,6 +224,20 @@
                 TranIDs = checkTrans
             };
             return await baseService.GetDataFromSiteDbAsync<TransactionInfo>(criteria);
+        }
+
+        private StringBuilder GetXmlTemplate(StringBuilder stringBuilder, string xmlTemlate,
+           TransactionInfo transaction, MatchInfo matchInfo, int headlineId, int relatedCustId)
+        {
+            stringBuilder.AppendFormat(xmlTemlate,
+                    transaction.MessageId,
+                    transaction.RequestId,
+                    transaction.CustId,
+                    headlineId,
+                    relatedCustId,
+                    string.Format("{0} -vs- {1}", HttpUtility.HtmlEncode(matchInfo?.HomeName), HttpUtility.HtmlEncode(matchInfo?.AwayName)),
+                    matchInfo?.IssueTypeId);
+            return stringBuilder;
         }
     }
 }
