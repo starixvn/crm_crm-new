@@ -15,17 +15,109 @@ describe('AppContainer', () => {
         jest.clearAllMocks();
     });
 
+    const filterParams = {
+        announcementId: 1,
+        fromDate: '2023-01-01',
+        toDate: '2023-12-31',
+        title: 'test',
+        title: 'Sample Title',
+        status: 'Active',
+        pageIndex: 1,
+        pageSize: 10
+    };
+
     describe('componentDidMount', () => {
-        it('should call exact props get data', () => {
+        it('should call exact props get data when have filterParams', () => {
             // Arrange
+            const props = {
+                isLoadGrid: true,
+                filterParams: filterParams,
+                setGridParams: jest.fn(),
+                getGridData: jest.fn(),
+                setRedirectActionParams: jest.fn()
+            };
             const promise = Promise.resolve(2);
             shareScripts.getPermission = jest.fn(() => promise);
+            shareScripts.getFilterParams = jest.fn();
             //Act
-            shallow(<AppContainer />);
+            shallow(<AppContainer {...props}/>);
 
             // Assert
             expect(shareScripts.getPermission).toHaveBeenCalled();
+            expect(props.setGridParams).toHaveBeenCalled();
+            expect(props.getGridData).toHaveBeenCalled();
+            expect(props.setRedirectActionParams).toHaveBeenCalled();
             expect(document.title).toEqual(LangHelper.getResource('Announcement'));
+        });
+
+        
+        it('should call exact props get data when not have filterParams', () => {
+            // Arrange
+            const props = {
+                isLoadGrid: true,
+                filterParams: null,
+                gridParams: filterParams,
+                setGridParams: jest.fn(),
+                getGridData: jest.fn(),
+                setRedirectActionParams: jest.fn()
+            };
+            const promise = Promise.resolve(2);
+            shareScripts.getPermission = jest.fn(() => promise);
+            shareScripts.getFilterParams = jest.fn();
+            //Act
+            shallow(<AppContainer {...props}/>);
+
+            // Assert
+            expect(shareScripts.getPermission).toHaveBeenCalled();
+            expect(props.getGridData).toHaveBeenCalled();
+            expect(document.title).toEqual(LangHelper.getResource('Announcement'));
+        });
+    });
+
+    describe('getFilterParams', () => {
+        it('should return filter params when isAction is false', () => {
+            // Arrange
+            const isAction = false;
+        
+            const appContainer = shallow(<AppContainer />, { disableLifecycleMethods: true });
+        
+            // Act
+            const result = appContainer.instance().getFilterParams(filterParams, isAction);
+        
+            // Assert
+            expect(result).toEqual({
+                announcementId: 1,
+                fromDate: null,
+                toDate: null,
+                title: 'Sample Title',
+                status: 'Active',
+                pageIndex: 1,
+                pageSize: 10
+            });
+        });
+
+        it('should return filter params when isAction is true', () => {
+            const cloneFilterParams = {
+                ...filterParams,
+                announcementId: null
+            };
+            const isAction = true;
+        
+            const appContainer = shallow(<AppContainer />, { disableLifecycleMethods: true });
+        
+            // Call the getFilterParams function
+            const result = appContainer.instance().getFilterParams(cloneFilterParams, isAction);
+        
+            // Assert the result matches the expected output
+            expect(result).toEqual({
+                announcementId: null,
+                fromDate: '2023-01-01',
+                toDate: '2023-12-31',
+                title: 'Sample Title',
+                status: 'Active',
+                pageIndex: 1,
+                pageSize: 10,
+            });
         });
     });
 
@@ -37,108 +129,11 @@ describe('AppContainer', () => {
                 resetState: jest.fn()
             };
             //Act
-            const appContainer = shallow(<AppContainer {...props}/>).instance();
+            const appContainer = shallow(<AppContainer {...props}/>, { disableLifecycleMethods: true }).instance();
             appContainer.componentWillUnmount();
             // Assert
             expect(props.setGridData).toHaveBeenCalled();
             expect(props.resetState).toHaveBeenCalled();
-        });
-    });
-
-    describe('handleCloseNewAnnouncement', () => {
-        it('should call exact function', () => {
-            // Arrange
-            const props = {
-                setOpenNewAnnouncementPopup: jest.fn(),
-                setIsRefresh: jest.fn(),
-                setCreateAnnouncement: jest.fn()
-            };
-            const appContainer = shallow(<AppContainer {...props} />).instance();
-
-            //Act
-            appContainer.handleCloseNewAnnouncement();
-
-            // Assert
-            expect(props.setOpenNewAnnouncementPopup).toHaveBeenCalledWith({ show: false });
-            expect(props.setIsRefresh).toHaveBeenCalledWith(true);
-            expect(props.setCreateAnnouncement).toHaveBeenCalledWith(null);
-        });
-    });
-
-    describe('handleCreateSuccessAnnouncement', () => {
-        it('should call exact function', () => {
-            // Arrange
-            const props = {
-                setOpenNewAnnouncementPopup: jest.fn(),
-                getGridData: jest.fn(),
-                gridParams: {}
-            };
-            const appContainer = shallow(<AppContainer {...props} />).instance();
-            appContainer.handleCloseNewAnnouncement = jest.fn();
-            //Act
-            appContainer.handleCreateSuccessAnnouncement();
-
-            // Assert
-            expect(props.getGridData).toHaveBeenCalledWith({});
-            expect(appContainer.handleCloseNewAnnouncement).toHaveBeenCalled();
-        });
-    });
-
-    describe('handleCloseActionAnnouncement', () => {
-        it('should call exact function', () => {
-            // Arrange
-            const props = {
-                setOpenActionAnnouncementPopup: jest.fn(),
-                setIsRefresh: jest.fn(),
-                setEditAnnouncement: jest.fn(),
-                setCreateAnnouncement: jest.fn()
-            };
-            const appContainer = shallow(<AppContainer {...props} />).instance();
-
-            //Act
-            appContainer.handleCloseActionAnnouncement();
-
-            // Assert
-            expect(props.setOpenActionAnnouncementPopup).toHaveBeenCalledWith({ show: false });
-            expect(props.setIsRefresh).toHaveBeenCalledWith(true);
-            expect(props.setCreateAnnouncement).toHaveBeenCalledWith(null);
-            expect(props.setEditAnnouncement).toHaveBeenCalledWith(null);
-        });
-    });
-
-    describe('handleActionSuccessAnnouncement', () => {
-        it('should call exact function', () => {
-            // Arrange
-            const props = {
-                setOpenNewAnnouncementPopup: jest.fn(),
-                getGridData: jest.fn(),
-                gridParams: {}
-            };
-            const appContainer = shallow(<AppContainer {...props} />).instance();
-            appContainer.handleCloseActionAnnouncement = jest.fn();
-            //Act
-            appContainer.handleActionSuccessAnnouncement();
-
-            // Assert
-            expect(props.getGridData).toHaveBeenCalledWith({});
-            expect(appContainer.handleCloseActionAnnouncement).toHaveBeenCalled();
-        });
-    });
-
-    describe('handleCloseViewDetail', () => {
-        it('should call exact function', () => {
-            // Arrange
-            const props = {
-                setViewDetailPopup: jest.fn(),
-                setIsRefresh: jest.fn()
-            };
-            const appContainer = shallow(<AppContainer {...props} />).instance();
-            //Act
-            appContainer.handleCloseViewDetail();
-
-            // Assert
-            expect(props.setViewDetailPopup).toHaveBeenCalledWith({ show: false });
-            expect(props.setIsRefresh).toHaveBeenCalledWith(true);
         });
     });
 
@@ -149,7 +144,7 @@ describe('AppContainer', () => {
                 setContentPopup: jest.fn(),
                 setIsRefresh: jest.fn()
             };
-            const appContainer = shallow(<AppContainer {...props} />).instance();
+            const appContainer = shallow(<AppContainer {...props} />, { disableLifecycleMethods: true }).instance();
             //Act
             appContainer.handleCloseContent();
 
@@ -171,7 +166,7 @@ describe('AppContainer', () => {
                 gridParams: {}
             };
             toast.success = jest.fn();
-            const appContainer = shallow(<AppContainer {...props} />).instance();
+            const appContainer = shallow(<AppContainer {...props} />, { disableLifecycleMethods: true }).instance();
             appContainer.handleCloseCancelPopup = jest.fn();
             //Act
             await appContainer.handleCancel(1);
@@ -194,7 +189,7 @@ describe('AppContainer', () => {
                 gridParams: {}
             };
             toast.error = jest.fn();
-            const appContainer = shallow(<AppContainer {...props} />).instance();
+            const appContainer = shallow(<AppContainer {...props} />, { disableLifecycleMethods: true }).instance();
             appContainer.handleCloseCancelPopup = jest.fn();
             //Act
             await appContainer.handleCancel(1);
@@ -213,7 +208,7 @@ describe('AppContainer', () => {
                 setOpenCancelAnnouncementPopup: jest.fn(),
                 setIsRefresh: jest.fn()
             };
-            const appContainer = shallow(<AppContainer {...props} />).instance();
+            const appContainer = shallow(<AppContainer {...props} />, { disableLifecycleMethods: true }).instance();
             //Act
             appContainer.handleCloseCancelPopup();
 
@@ -237,7 +232,7 @@ describe('AppContainer', () => {
                 cancelAnnouncementPopup: {show: false}
             };
             // Act
-            const container = shallow(<AppContainer {...props} />);
+            const container = shallow(<AppContainer {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
 
             // Assert

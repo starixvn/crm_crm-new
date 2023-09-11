@@ -225,7 +225,14 @@ describe('DataGrid', () => {
                 // Arrange
                 const props = {
                     setIsRefresh: jest.fn(),
-                    setOpenActionAnnouncementPopup: jest.fn()
+                    setOpenActionAnnouncementPopup: jest.fn(),
+                    redirectActionParams: '',
+                    navigate: jest.fn()
+                };
+                const actionParam = {
+                    announcementId: 1,
+                    isEdit: true,
+                    redirectActionParams: ''
                 };
                 const container = shallow(<DataGrid {...props} />).instance();
     
@@ -233,8 +240,7 @@ describe('DataGrid', () => {
                 container.handleEdit(1);
     
                 // Assert
-                expect(props.setIsRefresh).toHaveBeenCalledWith(false);
-                expect(props.setOpenActionAnnouncementPopup).toHaveBeenCalledWith({show: true, announcementId: 1, isEdit: true});
+                expect(props.navigate).toHaveBeenCalledWith('/Announcement/EditAnnouncement', {state: actionParam});
             });
         });
 
@@ -243,7 +249,14 @@ describe('DataGrid', () => {
                 // Arrange
                 const props = {
                     setIsRefresh: jest.fn(),
-                    setOpenActionAnnouncementPopup: jest.fn()
+                    setOpenActionAnnouncementPopup: jest.fn(),
+                    redirectActionParams: '',
+                    navigate: jest.fn()
+                };
+                const actionParam = {
+                    announcementId: 1,
+                    isEdit: false,
+                    redirectActionParams: ''
                 };
                 const container = shallow(<DataGrid {...props} />).instance();
     
@@ -251,8 +264,7 @@ describe('DataGrid', () => {
                 container.handleDuplicate(1);
     
                 // Assert
-                expect(props.setIsRefresh).toHaveBeenCalledWith(false);
-                expect(props.setOpenActionAnnouncementPopup).toHaveBeenCalledWith({show: true, announcementId: 1, isEdit: false});
+                expect(props.navigate).toHaveBeenCalledWith('/Announcement/CloneAnnouncement', {state: actionParam});
             });
         });
 
@@ -299,7 +311,7 @@ describe('DataGrid', () => {
                 expect(container.handleEdit).toHaveBeenCalled();
             });
 
-            it('should call exact function when click button edit', () => {
+            it('should call exact function when click button clone', () => {
                 // Arrange
                 const item = {status : 'Completed'};
                 const container = shallow(<DataGrid />).instance();
@@ -309,6 +321,32 @@ describe('DataGrid', () => {
                 render.find('.icon-duplicate').simulate('click');
                 // Assert
                 expect(container.handleDuplicate).toHaveBeenCalled();
+            });
+
+            it('should call exact function when click button edit', () => {
+                // Arrange
+                const item = {status : 'Draft'};
+                const container = shallow(<DataGrid />).instance();
+                container.handleCancel = jest.fn();
+                container.handleEdit = jest.fn();
+                // Act
+                const render = shallow(container.renderAction(item));
+                render.find('.icon-delete').simulate('click');
+                // Assert
+                expect(container.handleCancel).toHaveBeenCalled();
+            });
+
+            it('should call exact function when click button edit', () => {
+                // Arrange
+                const item = {status : 'Draft'};
+                const container = shallow(<DataGrid />).instance();
+                container.handleCancel = jest.fn();
+                container.handleEdit = jest.fn();
+                // Act
+                const render = shallow(container.renderAction(item));
+                render.find('.icon-edit').simulate('click');
+                // Assert
+                expect(container.handleEdit).toHaveBeenCalled();
             });
         });
     });

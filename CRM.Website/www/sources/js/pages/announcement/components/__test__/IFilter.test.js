@@ -23,8 +23,11 @@ describe('Filter', () => {
         setIsRefresh: jest.fn(),
         getGridData: jest.fn(),
         setGridParams: jest.fn(),
-        setOpenNewAnnouncementPopup: jest.fn()
+        setOpenNewAnnouncementPopup: jest.fn(),
+        setRedirectActionParams: jest.fn(),
+        navigate: jest.fn()
     };
+
     describe('handleSubmit', () => {
         it('should call exactly function',() => {
             // Arrange
@@ -33,12 +36,14 @@ describe('Filter', () => {
             };
             //Act
             const container = shallow(<Filter {...initProps} />).instance();
+            container.getParams = jest.fn();
             container.handleSubmit(event);
 
             // Assert
             expect(event.preventDefault).toHaveBeenCalled();
             expect(initProps.setGridParams).toHaveBeenCalled();
             expect(initProps.getGridData).toHaveBeenCalled();
+            expect(initProps.setRedirectActionParams).toHaveBeenCalled();
         });
 
         it('should call exactly function when from date greater than to date',() => {
@@ -53,12 +58,12 @@ describe('Filter', () => {
             toast.error = jest.fn();
             //Act
             const container = shallow(<Filter {...initProps} />).instance();
+            container.getParams = jest.fn();
             container.setState(state);
             container.handleSubmit(event);
 
             // Assert
             expect(toast.error).toHaveBeenCalledWith(LangHelper.getResource('FromDateMustSmallerThanToDate'));
-            expect(initProps.getGridData).toHaveBeenCalled();
         });
     });
 
@@ -128,12 +133,13 @@ describe('Filter', () => {
         it('should call exact function',() => {
             // Arrange
             const container = shallow(<Filter {...initProps} />).instance();
+            container.getParams = jest.fn();
             //Act
             container.handleOpenNewAnnouncement();
 
             // Assert
             expect(initProps.setIsRefresh).toHaveBeenCalledWith(false);
-            expect(initProps.setOpenNewAnnouncementPopup).toHaveBeenCalledWith({show: true});
+            expect(initProps.navigate).toHaveBeenCalled();
         });
     });
 
