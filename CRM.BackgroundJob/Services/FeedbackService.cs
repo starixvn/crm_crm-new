@@ -69,77 +69,86 @@
                 DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
                 string JobStatusNameEnv, string Environment)
         {
-            logService.LogInformation("CreateFeedbackForVoidingAbnormalBetAsync start!!!");
-
-            await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AutoFB);
-            var MaxVoidingHistoryCollectionId = isUAT ? setting.MaxVoidingHistoryCollectionIdUAT : setting.MaxVoidingHistoryCollectionId;
-            var voidingMessages = await messageService.GetVoidingMessageAsync(MaxVoidingHistoryCollectionId);
-
-            var messageImportCheck = await messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2);
-            var voidingMessageUserName = Enumerable.Empty<VoidingMessageUserName>();
-            if (messageImportCheck.Any())
+            try
             {
-                voidingMessageUserName = await messageService.VoidingHisMessageUserNameList(messageImportCheck);
+                logService.LogInformation("CreateFeedbackForVoidingAbnormalBetAsync start!!!");
+
+                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Running, Constants.ServiceName_AutoFB);
+                var MaxVoidingHistoryCollectionId = isUAT ? setting.MaxVoidingHistoryCollectionIdUAT : setting.MaxVoidingHistoryCollectionId;
+                var voidingMessages = await messageService.GetVoidingMessageAsync(MaxVoidingHistoryCollectionId);
+
+                var messageImportCheck = await messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2);
+                var voidingMessageUserName = Enumerable.Empty<VoidingMessageUserName>();
+                if (messageImportCheck.Any())
+                {
+                    voidingMessageUserName = await messageService.VoidingHisMessageUserNameList(messageImportCheck);
+                }
+
+                var messagesImport = await messageService.ImportVoidingMessageAsync(voidingMessageUserName,
+                    voidingMessages.Item1,
+                    setting.BatchSize,
+                    Environment,
+                    LastRuntimeEnv);
+
+                logService.LogInformation("after ImportVoidingMessageAsync!!!");
+
+
+                IEnumerable<VoidingMessageUserName> failMessages = await messageService.GetFailMessageAsync();
+                var messagesImportCombineDistinct = messagesImport.Concat(failMessages).Distinct().ToList();
+                if (!messagesImportCombineDistinct.Any())
+                {
+                    logService.LogInformation("Abnormal Bet - import do not have any data");
+                    await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
+                    return;
+                }
+                IEnumerable<int> messageIds = messagesImportCombineDistinct.Where(x => x.MessageId != 0).Select(y => y.MessageId).Distinct().ToList();
+                IEnumerable<Message> messages = await messageService.GetMessageInfoAsync(messageIds);
+
+                ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<DuplicateTicketDetail>, string> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(
+                    messagesImportCombineDistinct, setting
+                );
+
+                var transactionTickets = Enumerable.Empty<TransactionInfo>();
+                if (!string.IsNullOrEmpty(ticketInfo.Item4))
+                {
+                    transactionTickets = await ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item4);
+                }
+
+
+                var transactionTicketsCombine = transactionTickets.Concat(ticketInfo.Item2);
+                IEnumerable<MatchInfo> matchInfos = ticketInfo.Item1.Where(x => transactionTicketsCombine.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId)).ToList();
+                IEnumerable<MatchInfo> matchInfosDuplicate = ticketInfo.Item1.Where(x => ticketInfo.Item3.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId)).ToList();
+                IEnumerable<MatchInfo> matchInfosCombine = matchInfos.Concat(matchInfosDuplicate);
+                if (!matchInfosCombine.Any())
+                {
+                    logService.LogInformation("Abnormal Bet - import do not have any ticket");
+                    await messageService.EditStatusVoidingMessageAsync(messagesImportCombineDistinct, Environment);
+                    await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
+                    return;
+                }
+
+                logService.LogInformation(string.Format("Abnormal Bet - Create feedback for voidingHistoryCollectionId: {0}",
+                    string.Join(",", ticketInfo.Item1.Select(x => x.VoidingHistoryCollectionId)))
+                );
+
+                var ticketDuplicate = ticketInfo.Item1.Where(x => x.IssueTypeId == duplicate);
+                var ticketDuplicateDetail = ticketInfo.Item3.Where(x => ticketDuplicate.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId));
+
+                await CreateFeedbackForCreditDepositSiteAsync(
+                    messages,
+                    matchInfosCombine,
+                    transactionTicketsCombine,
+                    messagesImportCombineDistinct,
+                    isUAT,
+                    setting,
+                    ticketDuplicateDetail
+                );
             }
-
-            var messagesImport = await messageService.ImportVoidingMessageAsync(voidingMessageUserName,
-                voidingMessages.Item1,
-                setting.BatchSize,
-                Environment,
-                LastRuntimeEnv);
-
-            logService.LogInformation("after ImportVoidingMessageAsync!!!");
-
-
-            IEnumerable<VoidingMessageUserName> failMessages = await messageService.GetFailMessageAsync();
-            var messagesImportCombineDistinct = messagesImport.Concat(failMessages).Distinct().ToList();
-            if (!messagesImportCombineDistinct.Any())
+            catch (Exception ex)
             {
-                logService.LogInformation("Abnormal Bet - import do not have any data");
-                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
-                return;
+
+                throw;
             }
-            IEnumerable<int> messageIds = messagesImportCombineDistinct.Where(x => x.MessageId != 0).Select(y => y.MessageId).Distinct().ToList();
-            IEnumerable<Message> messages = await messageService.GetMessageInfoAsync(messageIds);
-
-            ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<DuplicateTicketDetail>, string> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(
-                messagesImportCombineDistinct, setting
-            );
-
-           var transactionTickets = Enumerable.Empty<TransactionInfo>();
-            if (!string.IsNullOrEmpty(ticketInfo.Item4))
-            {
-                transactionTickets = await ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item4);
-            }
-
-
-            var transactionTicketsCombine = transactionTickets.Concat(ticketInfo.Item2);
-            IEnumerable<MatchInfo> matchInfos = ticketInfo.Item1.Where(x => transactionTicketsCombine.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId)).ToList();
-
-            if (!matchInfos.Any())
-            {
-                logService.LogInformation("Abnormal Bet - import do not have any ticket");
-                await messageService.EditStatusVoidingMessageAsync(messagesImportCombineDistinct, Environment);
-                await commonFeedback.EditSystemSettingAsyncByEnv(JobStatusNameEnv, LastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoFB);
-                return;
-            }
-
-            logService.LogInformation(string.Format("Abnormal Bet - Create feedback for voidingHistoryCollectionId: {0}",
-                string.Join(",", ticketInfo.Item1.Select(x => x.VoidingHistoryCollectionId)))
-            );
-
-            var ticketDuplicate = ticketInfo.Item1.Where(x => x.IssueTypeId == duplicate);
-            var ticketDuplicateDetail = ticketInfo.Item3.Where(x => ticketDuplicate.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId));
-
-            await CreateFeedbackForCreditDepositSiteAsync(
-                messages,
-                matchInfos,
-                transactionTicketsCombine,
-                messagesImportCombineDistinct,
-                isUAT,
-                setting,
-                ticketDuplicateDetail
-            );
         }
 
         protected internal virtual async Task CreateFeedbackForCreditDepositSiteAsync(

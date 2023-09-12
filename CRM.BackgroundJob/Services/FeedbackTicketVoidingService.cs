@@ -5,13 +5,11 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Transactions;
     using System.Web;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Criteria.AutoFeedback;
-    using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
@@ -149,7 +147,7 @@
             const string XmlTemplate = "<r msgid='{0}' reqid='{1}' custid='{2}' hl='{3}' related='{4}' event='{5}' IssueTypeId='{6}' />";
             const int duplicateType = 20;
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            var transactionInfosDistinct = (IEnumerable<TransactionInfo>)transactionInfos.Select(x => new
+            var transactionInfosDistinct = transactionInfos.Select(x => new
             {
                 x.CustId,
                 x.MessageId,
@@ -177,11 +175,17 @@
                     relatedCustId = transaction.CustId;
                 }
 
-                GetXmlTemplate(stringBuilder, XmlTemplate, transaction, matchInfo, headlineId, relatedCustId);
+                var transactionInfo = new TransactionInfo
+                {
+                    CustId = transaction.CustId,
+                    RequestId = transaction.CustId,
+                    MessageId = transaction.MessageId
+                };
+                GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId, relatedCustId);
 
                 if(transaction.IsDeposit && matchInfo?.IssueTypeId == duplicateType)
                 {
-                    GetXmlTemplate(stringBuilder, XmlTemplate, transaction, matchInfo, headlineId, transaction.CustId);
+                    GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId, transaction.CustId);
                 }
             }
 
