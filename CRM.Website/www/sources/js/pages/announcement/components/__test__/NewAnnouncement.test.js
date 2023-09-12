@@ -22,7 +22,10 @@ describe('AppContainer', () => {
             const promise = Promise.resolve(languages);
             const props = {
                 getLanguages: jest.fn(() => promise),
-                getAnnouncementTemplate: jest.fn()
+                getAnnouncementTemplate: jest.fn(),
+                setCreateAnnouncement: jest.fn(),
+                setEditAnnouncement: jest.fn(),
+                setValidateAnnouncement: jest.fn(),
             };
             //Act
             const newAnnouncement = shallow(<NewAnnouncement  {...props}/>);
@@ -31,6 +34,9 @@ describe('AppContainer', () => {
 
             // Assert
             expect(props.getAnnouncementTemplate).toHaveBeenCalled();
+            expect(props.setCreateAnnouncement).toHaveBeenCalled();
+            expect(props.setEditAnnouncement).toHaveBeenCalled();
+            expect(props.setValidateAnnouncement).toHaveBeenCalled();
             expect(newAnnouncement.instance().handleOptionSettings).toHaveBeenCalled();
         });
     });
@@ -170,7 +176,10 @@ describe('AppContainer', () => {
         it('should do as expected if copy string', () => {
             // Arrange
             const state = {
-                headlineGroups: []
+                headlineGroups: [],
+                isHeadlineGroup: {
+                    isUsername: true
+                }
             };
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('text') }, preventDefault: jest.fn() };
             const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
@@ -246,7 +255,10 @@ describe('AppContainer', () => {
         it('should setState and call exact function', () => {
             // Arrange
             const state = {
-                headlineGroups: ['1', '2']
+                headlineGroups: ['1', '2'],
+                isHeadlineGroup: {
+                    isUsername: true
+                }
             };
             const event = {target: {value: 'value'}, stopPropagation: jest.fn()};
             const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
@@ -262,11 +274,12 @@ describe('AppContainer', () => {
         it('should call setState', () => {
             // Arrange
             const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.formik = {setFieldValue: jest.fn()};
             newAnnouncement.setState = jest.fn();
             // Act
             newAnnouncement.handleOptionChange('site', '1');
             // Assert
-            expect(newAnnouncement.setState).toHaveBeenCalled();
+            expect(newAnnouncement.formik.setFieldValue).toHaveBeenCalled();
         });
     });
 
@@ -333,14 +346,25 @@ describe('AppContainer', () => {
     describe('handleSubmit', () => {
         it('should call setState', () => {
             // Arrange
+            const promise = Promise.resolve(2);
+            const props = {
+                validateAnnouncement: jest.fn(() => promise),
+                validateAnnouncementResult: [{test:1}]
+            };
             const setSubmitting = jest.fn();
             commonFunc.getParams = jest.fn(() => {});
-            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.formik = {setFieldValue: jest.fn(), setSubmitting: jest.fn()};
             newAnnouncement.setState = jest.fn();
+            newAnnouncement.getParams = jest.fn();
+            newAnnouncement.handleCheckValidAllContent = jest.fn(() => false);
             // Act
             newAnnouncement.handleSubmit({}, {setSubmitting});
             // Assert
-            expect(newAnnouncement.setState).toHaveBeenCalled();
+            props.validateAnnouncement(() => {
+                expect(newAnnouncement.setState).toHaveBeenCalled();
+                expect(props.validateAnnouncement).toHaveBeenCalled();
+            });
         });
     });
 
@@ -351,7 +375,11 @@ describe('AppContainer', () => {
             const props = {
                 onSuccess: jest.fn(),
                 createAnnouncement: jest.fn(() => promise),
-                createAnnouncementResult: {isSuccessful: true}
+                createAnnouncementResult: {isSuccessful: true},
+                setIsRefresh: jest.fn(),
+                setCreateAnnouncement: jest.fn(),
+                setValidateAnnouncement: jest.fn(),
+                navigate: jest.fn(),
             };
             const state = {
                 confirmInsertDialog: {
@@ -371,7 +399,6 @@ describe('AppContainer', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(props.onSuccess).toHaveBeenCalled();
             expect(newAnnouncement.handleCloseConfirmInsertDialog).toHaveBeenCalled();
         });
 

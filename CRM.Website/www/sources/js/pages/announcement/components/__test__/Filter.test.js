@@ -25,8 +25,90 @@ describe('Filter', () => {
         setGridParams: jest.fn(),
         setOpenNewAnnouncementPopup: jest.fn(),
         setRedirectActionParams: jest.fn(),
-        navigate: jest.fn()
+        navigate: jest.fn(),
+        setRedirectActionParams: jest.fn()
     };
+
+    describe('componentDidMount', () => {
+        it('should set state based on props when isLoadGrid and filterParams are true', () => {
+            // Arrange
+            const props = {
+                isLoadGrid: true,
+                filterParams: {
+                    announcementId: 123,
+                    fromDate: '2023-01-01',
+                    toDate: '2023-01-31',
+                    title: 'Test Title',
+                    status: '1,2,3',
+                },
+            };
+            //Act
+            const container = shallow(<Filter {...props}/>);
+
+            // Assert
+            expect(container.state('announcementId')).toBe(props.filterParams.announcementId);
+            expect(container.state('fromDate')).toEqual(new Date(props.filterParams.fromDate));
+            expect(container.state('toDate')).toEqual(new Date(props.filterParams.toDate));
+            expect(container.state('title')).toBe(props.filterParams.title);
+            expect(container.state('status')).toBe(props.filterParams.status);
+        });
+
+        it('should not set state when isLoadGrid is false', () => {
+            // Arrange
+            const props = {
+                isLoadGrid: false,
+                filterParams: {
+                    announcementId: 123,
+                    fromDate: '2023-01-01',
+                    toDate: '2023-01-31',
+                    title: 'Test Title',
+                    status: '1,2,3'
+                }
+            };
+        
+            //Act
+            const container = shallow(<Filter {...props} />);   
+        
+            //Assert
+            expect(container.state('announcementId')).toBe(null);
+        });
+    });
+
+    describe('getParams', () => {
+        it('should return the expected params when called', () => {
+           // Assert
+            const initialState = {
+                announcementId: 123,
+                fromDate: new Date('2023-01-01'),
+                toDate: new Date('2023-01-31'),
+                title: 'Test Title',
+                status: '1,2,3',
+            };
+            const props = {
+                gridParams: {
+                    pageSize: 10,
+                },
+            };
+            const expectedParams = {
+                announcementId: initialState.announcementId,
+                fromDate: initialState.fromDate.toString(),
+                toDate: initialState.toDate.toString(),
+                title: initialState.title,
+                status: initialState.status,
+                pageIndex: 1,
+                pageSize: props.gridParams.pageSize,
+            };
+      
+            // Act
+            const container = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
+            container.setState(initialState);
+
+            const result = container.instance().getParams();
+      
+            //Assert
+            expect(result).toEqual(expectedParams);
+        });
+    });
 
     describe('handleSubmit', () => {
         it('should call exactly function',() => {
@@ -35,7 +117,7 @@ describe('Filter', () => {
                 preventDefault: jest.fn()
             };
             //Act
-            const container = shallow(<Filter {...initProps} />).instance();
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true }).instance();
             container.getParams = jest.fn();
             container.handleSubmit(event);
 
@@ -57,7 +139,7 @@ describe('Filter', () => {
             };
             toast.error = jest.fn();
             //Act
-            const container = shallow(<Filter {...initProps} />).instance();
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true }).instance();
             container.getParams = jest.fn();
             container.setState(state);
             container.handleSubmit(event);
@@ -73,7 +155,8 @@ describe('Filter', () => {
             const state = {
                 fromDate: new Date('2023-01-02')
             };
-            const container = shallow(<Filter {...initProps} />).instance();
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true }).instance();
+            container.getParams = jest.fn();
             container.setState(state);
             //Act
             container.handleChangeFromDate(new Date('2023-01-03'));
@@ -89,7 +172,8 @@ describe('Filter', () => {
             const state = {
                 toDate: new Date('2023-01-02')
             };
-            const container = shallow(<Filter {...initProps} />).instance();
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true }).instance();
+            container.getParams = jest.fn();
             container.setState(state);
             //Act
             container.handleChangeToDate(new Date('2023-01-03'));
@@ -108,7 +192,8 @@ describe('Filter', () => {
             };
 
             //Act
-            const container = shallow(<Filter {...initProps} />).instance();
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true }).instance();
+            container.getParams = jest.fn();
             container.handleChange(event);
 
             // Assert
@@ -119,7 +204,8 @@ describe('Filter', () => {
     describe('handleChangeStatus ', () => {
         it('should set exact state',() => {
             // Arrange
-            const container = shallow(<Filter {...initProps} />).instance();
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true }).instance();
+            container.getParams = jest.fn();
 
             //Act
             container.handleChangeStatus('currentItem', 'selectedItemsKey');
@@ -132,7 +218,7 @@ describe('Filter', () => {
     describe('handleOpenNewAnnouncement', () => {
         it('should call exact function',() => {
             // Arrange
-            const container = shallow(<Filter {...initProps} />).instance();
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true }).instance();
             container.getParams = jest.fn();
             //Act
             container.handleOpenNewAnnouncement();
@@ -151,7 +237,7 @@ describe('Filter', () => {
                 preventDefault: jest.fn()
             };
 
-            const container = shallow(<Filter {...initProps} />).instance();
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true }).instance();
             //Act
             container.handlePasteAnnouncementId(event );
 
@@ -163,7 +249,7 @@ describe('Filter', () => {
     describe('render', () => {
         it('should call exact function when click submit',() => {
             // Arrange
-            const container = shallow(<Filter {...initProps} />);
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true });
             container.instance().handleSubmit = jest.fn();
             //Act
             const render = container.find('.form-filter');
@@ -174,7 +260,7 @@ describe('Filter', () => {
 
         it('should call exact function when change from date',() => {
             // Arrange
-            const container = shallow(<Filter {...initProps} />);
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true });
             container.instance().handleChangeFromDate = jest.fn();
             //Act
             const render = container.find(DatePicker).at(0);
@@ -185,7 +271,7 @@ describe('Filter', () => {
 
         it('should call exact function when change to date',() => {
             // Arrange
-            const container = shallow(<Filter {...initProps} />);
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true });
             container.instance().handleChangeToDate = jest.fn();
             //Act
             const render = container.find(DatePicker).at(1);
@@ -196,7 +282,7 @@ describe('Filter', () => {
 
         it('should call exact function when change status',() => {
             // Arrange
-            const container = shallow(<Filter {...initProps} />);
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true });
             container.instance().handleChangeStatus = jest.fn();
             //Act
             const render = container.find(MultipleSelect);
@@ -207,7 +293,7 @@ describe('Filter', () => {
 
         it('should call exact function when click open announcement',() => {
             // Arrange
-            const container = shallow(<Filter {...initProps} />);
+            const container = shallow(<Filter {...initProps} />, { disableLifecycleMethods: true });
             container.instance().handleOpenNewAnnouncement = jest.fn();
             //Act
             const render = container.find(Button).at(1);
