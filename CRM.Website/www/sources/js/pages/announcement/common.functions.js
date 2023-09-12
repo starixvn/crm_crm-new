@@ -28,7 +28,7 @@ export const validateFormik = (values, files, state) => {
         errors.sendType = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SendTime'));
     }
 
-    if (values.sendType === 'Send At' && values.sendDate < dateTimeNowClient) {
+    if (values.sendType === 'Send At' && values.sendDate && values.sendDate < dateTimeNowClient) {
         errors.sendType = LangHelper.getResource('SendDateSmallerThanNow');
     }
 
