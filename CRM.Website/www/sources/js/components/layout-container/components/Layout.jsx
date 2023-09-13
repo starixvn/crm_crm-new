@@ -252,28 +252,30 @@ export class Layout extends Component {
     };
 
     handleCheckCustomerInfo = response =>{
-        if(response !== undefined && response.data !== null){
-            this.setState({customerInfo: response.data});
-            const siteCredits = this.state.settings.sitesByIsLicensee.filter(site =>site.name === 'Credit');
-            const isCreditSite = siteCredits.filter(x => x.childSites.some(y => response.data?.siteId === y.id)).length > 0;
-            this.setState({isCreditSite});
-            if(this.props.location.pathname === '/'){
-                this.setState({isCreditSite}, () =>{
-                    this.handleNavigate('Dashboard');
-                });
-            }
-        }else if (response.data === null && !this.state.isGuest) {
-            this.setState({
-                showEmptyConfirmPopup: true
-            });
-        }else if(response.data === null) {
-            this.setState({
-            showEmptyCustomerInfoPopup: true
-            });
-        }else if(response.data.errCode > 0 && response.data.errMsg?.length > 0) {
+        if(response?.data?.errCode > 0 && response?.data?.errMsg?.length > 0) {
             this.setState({
                 showErrorConfirmPopup: true
             });
+        }else{
+            if(response !== undefined && response.data !== null){
+                this.setState({customerInfo: response.data});
+                const siteCredits = this.state.settings.sitesByIsLicensee.filter(site =>site.name === 'Credit');
+                const isCreditSite = siteCredits.filter(x => x.childSites.some(y => response.data?.siteId === y.id)).length > 0;
+                this.setState({isCreditSite});
+                if(this.props.location.pathname === '/'){
+                    this.setState({isCreditSite}, () =>{
+                        this.handleNavigate('Dashboard');
+                    });
+                }
+            }else if (response.data === null && !this.state.isGuest) {
+                this.setState({
+                    showEmptyConfirmPopup: true
+                });
+            }else if(response.data === null) {
+                this.setState({
+                showEmptyCustomerInfoPopup: true
+                });
+            }
         }
     }
 
