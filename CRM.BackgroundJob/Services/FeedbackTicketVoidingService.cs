@@ -178,7 +178,7 @@
                 var transactionInfo = new TransactionInfo
                 {
                     CustId = transaction.CustId,
-                    RequestId = transaction.CustId,
+                    RequestId = transaction.RequestId,
                     MessageId = transaction.MessageId
                 };
                 GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId, relatedCustId);

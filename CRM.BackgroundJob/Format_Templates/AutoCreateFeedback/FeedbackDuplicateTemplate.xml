@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ROOT>
     <Description>
-        Msg ID: {0}, Request No.: {1}{7}
-        Dear Valued Customer,{7}
-        Kindly to be informed duplicated tickets found for below event. Those affected tickets, we retained {2} ticket(s) as valid and had proceed to void the duplicate(s). Please refer to the below message:{8}
-        Message:{7}
-        {3}{7}
-        {4}{8}
-        Kindly refer to below on the affected members &amp; tickets.{8}
-        System ID: {5}{7}
-        {6}
+        Msg ID: {0}, Request No.: {1}{6}
+        Dear Valued Customer,{6}
+        Kindly to be informed duplicated tickets found for below event. Those affected tickets, we retained {2} ticket(s) as valid and had proceed to void the duplicate(s). Please refer to the below message:{7}
+        Message:{6}
+        {3}{6}
+        {4}{7}
+        Kindly refer to below on the affected members &amp; tickets.{7}
+        {5}{6}
         Sorry for the inconvenience caused and thank you for your kind attention!
     </Description>
     <EffectMemberTicketDesc>
         Ref No: {0} [Remain]{2}
-        Ref No: {1} [Voided]{3}
+        Ref No: {1} [Voided]{2}
     </EffectMemberTicketDesc>
 </ROOT>
