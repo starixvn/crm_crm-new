@@ -129,8 +129,8 @@
         <Setting Key="Acc_Crm_Rpt_DirectCustomerReport" SpName="Acc_Crm_Rpt_DirectCustomerReport" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsWagers" SpName="Acc_CRM_Rpt_FeedbackStatisticsWagers" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSummary" SpName="Acc_CRM_Rpt_FeedbackStatisticsSummary" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Rpt_DailyStatistics" SpName="Acc_CRM_Rpt_DailyStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Rpt_DailyStatisticsDetail" SpName="Acc_CRM_Rpt_DailyStatisticsDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Rpt_DailyStatistics" SpName="Acc_CRM_Rpt_DailyStatistics_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Rpt_DailyStatisticsDetail" SpName="Acc_CRM_Rpt_DailyStatisticsDetail_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_LogActionSettingList" SpName="Acc_CRM_LogActionSettingList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsPeriod" SpName="Acc_CRM_Rpt_FeedbackStatisticsPeriod" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatistics" SpName="Acc_CRM_Rpt_FeedbackStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -206,6 +206,7 @@
             <Mapping DataField="danger2" ObjectProperty="ABTDangerLevel" />
             <Mapping DataField="danger3" ObjectProperty="OtherSportsDangerLevel" />
         </Setting>
+        <Setting Key="Acc_CRM_CustomerCheckSiteType" SpName="Acc_CRM_CustomerCheckSiteType_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="CustStatus" ObjectProperty="Status" />
         </Setting>
@@ -228,12 +229,16 @@
             <Mapping DataField="BankCountryId" ObjectProperty="BankAddressCountryId" />
             <Mapping DataField="AccountHolderName" ObjectProperty="BankHolderName" />
         </Setting>
+<<<<<<< HEAD
+        <Setting Key="Acc_CRM_CustomerUpd_New" SpName="Acc_CRM_CustomerUpd_New_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+=======
         <Setting Key="Acc_CRM_CustomerUpd_New" SpName="Acc_CRM_CustomerUpd_New" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+>>>>>>> refactor: SP version & filter duplicated ticket details
         <Setting Key="Acc_CRM_MainInformationSpecialRemarkSel" SpName="Acc_CRM_MainInformationSpecialRemarkSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_MainInformationRedemptionSel" SpName="Acc_CRM_MainInformationRedemptionSel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="RedemptionID" ObjectProperty="Id" />
         </Setting>
-        <Setting Key="Acc_CRM_MainInformationCommunicationLogSel" SpName="Acc_CRM_MainInformationCommunicationLogSel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_MainInformationCommunicationLogSel" SpName="Acc_CRM_MainInformationCommunicationLogSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="HandleBy" ObjectProperty="Handler" />
             <Mapping DataField="ReviewBy" ObjectProperty="Reviewer" />
         </Setting>
@@ -328,11 +333,7 @@
         <Setting Key="Acc_CRM_ChatBot_Announcement_Ins" SpName="Acc_CRM_ChatBot_Announcement_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_Announcement_Upd" SpName="Acc_CRM_ChatBot_Announcement_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_AnnouncementStatus_Upd" SpName="Acc_CRM_ChatBot_AnnouncementStatus_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-<<<<<<< HEAD
         <Setting Key="Acc_CRM_ChatBot_Announcement_Validation" SpName="Acc_CRM_ChatBot_Announcement_Validation" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-=======
-        <Setting Key="Acc_CRM_ChatBot_Announcement_Validation" SpName="Acc_CRM_ChatBot_Announcement_Validation_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
->>>>>>> feat: change sp version local
     </Function>
     <Function Name="Send Notification">
         <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
