@@ -110,7 +110,7 @@ const MenuRouteArray = [
     { url: 'WagerReport', component: WagerReportComponent, nestedUrl: 'Index' },
     { url: 'Announcement/NewAnnouncement', component: NewAnnouncementComponent },
     { url: 'Announcement/EditAnnouncement', component: EditAnnouncementComponent },
-    { url: 'Announcement/CloneAnnouncement', component: EditAnnouncementComponent },
+    { url: 'Announcement/CloneAnnouncement', component: CloneAnnouncementComponent },
 ];
 
 export default class Index extends PureComponent {
