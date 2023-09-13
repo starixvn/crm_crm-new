@@ -315,21 +315,6 @@ export default class Filter extends Component {
                     <SweetModalDialog size="sm"
                         title={LangHelper.getResource('SearchAccount')}
                         contents={
-                            LangHelper.getResource('AuthorizedSearchAccount')
-                        }
-                        buttons={[
-                            <Button variant="primary" size="sm" onClick={handleCloseEmptyCustomerInfoPopup}>
-                                {LangHelper.getResource('OK')}
-                            </Button>
-                        ]}
-                        onClose={handleCloseEmptyCustomerInfoPopup}
-                    />
-                }
-                {
-                    showEmptyCustomerInfoPopup &&
-                    <SweetModalDialog size="sm"
-                        title={LangHelper.getResource('SearchAccount')}
-                        contents={
                             LangHelper.getResource('EmptyData')
                         }
                         buttons={[
