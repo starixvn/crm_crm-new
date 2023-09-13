@@ -1,20 +1,19 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
-    using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.MixParlay;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public interface IFeedbackService
     {
@@ -91,7 +90,6 @@
                     LastRuntimeEnv);
 
                 logService.LogInformation("after ImportVoidingMessageAsync!!!");
-
 
                 IEnumerable<VoidingMessageUserName> failMessages = await messageService.GetFailMessageAsync();
                 var messagesImportCombineDistinct = messagesImport.Concat(failMessages).Distinct().ToList();
@@ -211,8 +209,8 @@
                 {
                     GetLicenseeManager(deposits, siteSettingMappings);
 
-                    var messageByLicenseeManager = messageContents.Where(x=> deposits.Any(y => y.MessageId == x.MessageId));
-
+                    var messageByLicenseeManager = messageContents.Where(x => deposits.Any(y => y.MessageId == x.MessageId));
+                    var ticketDetailsByVoidingHistory = duplicateTicketDetails.Where(ticket => ticket.VoidingHistoryCollectionId == matchInfo.VoidingHistoryCollectionId);
                     await CreateFeedbackForDepositSiteAsync(
                         licenseeInfo,
                         messageByLicenseeManager,
@@ -220,7 +218,7 @@
                         deposits,
                         settings,
                         settingMappings,
-                        duplicateTicketDetails
+                        ticketDetailsByVoidingHistory
                     );
                 }
             }
@@ -663,7 +661,6 @@
                 && mappings.Any(mapping => mapping.SettingId == bettype.SettingId)).ToList();
             }
 
-
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
                 : new List<SettingItem>
@@ -701,7 +698,6 @@
                     && x.ParentIds.Any(y => y == category.SettingId)
                     && x.SettingValue.Equals(IssueTypeId == abnormalAccount ? "Abnormal Account" : "Abnormal Bets", StringComparison.OrdinalIgnoreCase));
                 subCategoryId = subCategory != null ? subCategory.SettingId : 0;
-
             }
 
             return new Tuple<int, int, string>(
@@ -806,7 +802,6 @@
                 {
                     stringBuilder.AppendFormat("<br />{0} {1}", transaction.Username, transaction.TransId);
                 }
-
             }
             return stringBuilder.ToString();
         }
