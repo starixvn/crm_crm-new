@@ -370,7 +370,7 @@
     <value>{0} | {1} - {2}</value>
   </data>
   <data name="MBCDailyLogStatistics" xml:space="preserve">
-    <value>MBC Daily Log Statistics</value>
+    <value>Credit Daily Log Statistics</value>
   </data>
   <data name="LicenseeDailyLogStatistics" xml:space="preserve">
     <value>Licensee Daily Log Statistics</value>
@@ -382,7 +382,7 @@
     <value>Licensee_Daily_Log_Statistics</value>
   </data>
   <data name="MBCDailyLogStatisticsFileName" xml:space="preserve">
-    <value>MBC_Daily_Log_Statistics</value>
+    <value>Credit_Daily_Log_Statistics</value>
   </data>
   <data name="LogStatisticsDetail" xml:space="preserve">
     <value>Log Statistics Detail</value>

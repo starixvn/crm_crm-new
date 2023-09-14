@@ -880,7 +880,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MBC Daily Log Statistics.
+        ///   Looks up a localized string similar to Credit Daily Log Statistics.
         /// </summary>
         public static string MBCDailyLogStatistics {
             get {
@@ -907,7 +907,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MBC_Daily_Log_Statistics.
+        ///   Looks up a localized string similar to Credit_Daily_Log_Statistics.
         /// </summary>
         public static string MBCDailyLogStatisticsFileName {
             get {

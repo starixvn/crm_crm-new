@@ -147,7 +147,7 @@ export class DataGrid extends Component {
         const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
         const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);
         const title = tableName === 'mbc' ?
-            `MBC Daily Log Statistics | ${fromDateFormat} - ${toFormat}` :
+            `Credit Daily Log Statistics | ${fromDateFormat} - ${toFormat}` :
             `Licensee Daily Log Statistics | ${fromDateFormat} - ${toFormat}`;
         return title;
     };
@@ -296,7 +296,7 @@ export class DataGrid extends Component {
     renderTitle = (gridData, fromDateFormat, toFormat) => {
         return (
             <div className='table-title d-flex justify-content-between align-items-center'>
-                <span>{`MBC Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
+                <span>{`Credit Daily Log Statistics | ${fromDateFormat}-${toFormat}`}</span>
                 {
                     gridData.length > 0 && this.renderCustomButtonDailyLog()
                 }
@@ -341,7 +341,7 @@ export class DataGrid extends Component {
     };
 
     getMaxWidth = totalWidth => document.getElementById('right-row-container').clientWidth < totalWidth ?
-                                document.getElementById('right-row-container').clientWidth : totalWidth;
+        document.getElementById('right-row-container').clientWidth : totalWidth;
 
     renderLicenseeDailyStatistic = (fromDateFormat, toFormat) => {
         const { licenseeReport } = this.props.mainReports;
