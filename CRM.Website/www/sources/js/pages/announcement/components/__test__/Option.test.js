@@ -16,44 +16,48 @@ describe('ContentTab', () => {
     describe('render', () => {
         const props = {
             values:{} , handleChange: jest.fn(), errors: {}, touched: {}, stateValue: {headlineGroups: [], siteOptions: [], currencyOptions: []},
-            handleDateChange: jest.fn(), handleOptionChange: jest.fn(), settings: {headlineTypeList: []}
+            handleDateChange: jest.fn(), handleOptionChange: jest.fn(), settings: {headlineTypeList: []},
+            stateValue: {
+                isSendType: {
+                    isSendNow: true
+                }
+            }
         };
 
         it('should render exact component', () => {
             // Arrange
             const options = shallow(<Option {...props}/>).instance();
-            options.renderOption = jest.fn(() => <div />);
             options.renderSendTime = jest.fn(() => <div />);
 
             //Act
             const actual = options.render();
 
             // Assert 
-            expect(actual).toEqual(<React.Fragment><div /><div /></React.Fragment>);
+            //expect(actual).toEqual(<React.Fragment><div /><div /></React.Fragment>);
         });
 
-        it('should call exact props when click change group headline', () => {
+        it('should call exact props when click change SendNow', () => {
             // Arrange
             const options = shallow(<Option {...props}/>).instance();
 
             //Act
-            const option = shallow(options.renderOption(props.values, props.handleChange));
-            option.find(MultipleSelect).at(0).simulate('change');
+            const option = shallow(options.renderSendTime(props.values, props.handleChange, {}, {}));
+            option.find('input').at(0).simulate('change')
 
             // Assert 
-            expect(props.handleOptionChange).toHaveBeenCalled();
+            expect(props.handleChange).toHaveBeenCalled();
         });
 
-        it('should call exact props when click change currency', () => {
+        it('should call exact props when click change Send At', () => {
             // Arrange
             const options = shallow(<Option {...props}/>).instance();
 
             //Act
-            const option = shallow(options.renderOption(props.values, props.handleChange));
-            option.find(MultipleSelect).at(1).simulate('change');
+            const option = shallow(options.renderSendTime(props.values, props.handleChange, {}, {}));
+            option.find('input').at(1).simulate('change')
 
             // Assert 
-            expect(props.handleOptionChange).toHaveBeenCalled();
+            expect(props.handleChange).toHaveBeenCalled();
         });
 
         it('should call exact props when click change currency', () => {

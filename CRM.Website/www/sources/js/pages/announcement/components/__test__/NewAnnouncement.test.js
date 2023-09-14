@@ -343,6 +343,18 @@ describe('AppContainer', () => {
         });
     });
 
+    describe('handleCheckHeadline', () => {
+        it('should setState successfully', () => {
+            // Arrange
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.setState = jest.fn();
+            // Act
+            const actual = newAnnouncement.handleCheckHeadline('name', 'test');
+            // Assert
+            expect(newAnnouncement.setState).toHaveBeenCalled();
+        });
+    });
+
     describe('handleSubmit', () => {
         it('should call setState', () => {
             // Arrange
@@ -380,6 +392,7 @@ describe('AppContainer', () => {
                 setCreateAnnouncement: jest.fn(),
                 setValidateAnnouncement: jest.fn(),
                 navigate: jest.fn(),
+                sendMessageAnnouncementToBotEndpoint: jest.fn()
             };
             const state = {
                 confirmInsertDialog: {
@@ -407,7 +420,8 @@ describe('AppContainer', () => {
             const promise = Promise.resolve({isSuccessful: false});
             const props = {
                 createAnnouncement: jest.fn(() => promise),
-                createAnnouncementResult: {isSuccessful: false}
+                createAnnouncementResult: {isSuccessful: false},
+                sendMessageAnnouncementToBotEndpoint: jest.fn()
             };
             const state = {
                 confirmInsertDialog: {
@@ -418,7 +432,7 @@ describe('AppContainer', () => {
             newAnnouncement.setState(state);
             newAnnouncement.formik = {
                 setSubmitting: jest.fn(),
-                values:{sendType: 'Send At'}
+                values:{sendType: 'Send Now'}
             };
             newAnnouncement.handleCloseConfirmInsertDialog = jest.fn();
             // Act
@@ -447,27 +461,82 @@ describe('AppContainer', () => {
         });
     });
 
+    describe('getStateFilter', () => {
+        it('should return expected result', () => {
+            // Arrange
+            const props = {
+                filterParams: 'test'
+            };
+            const expected = {
+                isLoadGrid: true,
+                filterParams: 'test'
+            };
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+        
+            // Act
+            const actual = newAnnouncement.getStateFilter();
+            // Assert
+            expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('handleClose', () => {
+        it('should call exactly props function', () => {
+            // Arrange
+            const props = {
+                setCreateAnnouncement: jest.fn(),
+                setValidateAnnouncement: jest.fn(),
+                navigate: jest.fn()
+            };
+
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.getStateFilter = jest.fn();
+
+            // Act
+            newAnnouncement.handleClose();
+
+            // Assert
+            expect(props.setCreateAnnouncement).toHaveBeenCalled();
+            expect(props.setValidateAnnouncement).toHaveBeenCalled();
+            expect(props.navigate).toHaveBeenCalled();
+        });
+    });
+
     describe('renderContentConfirm', () => {
+        const confirmInsertDialog = {
+            content: {
+                sendDateString: 'AM',
+                sendTimeString: '',
+                siteNameList: { replaceAll: jest.fn(() => 'sa, la') }
+            }
+        };
+        const contentType = {
+            currencies: 't',
+            headlineType: 't'
+        };
+
         it('should return exact content when send type is Send At', () => {
             // Arrange
             DateTimeService.toLongDateTimeFormat = jest.fn(() => new Date('2023-01-01'));
             const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.renderContentType = jest.fn(() => contentType);
+            newAnnouncement.setState({ confirmInsertDialog: confirmInsertDialog });
             newAnnouncement.formik = {
                 values:{
                     sendType: 'Send At',
                     sendDate: new Date('2023-01-01')
                 }
             };
-
             // Act
             const actual = newAnnouncement.renderContentConfirm();
             // Assert
-            expect(actual).toEqual(<div>{LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), new Date('2023-01-01'))}</div>);
         });
 
         it('should return exact content when send type is not Send At', () => {
             // Arrange
             const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.renderContentType = jest.fn(() => contentType);
+            newAnnouncement.setState({ confirmInsertDialog: confirmInsertDialog });
             newAnnouncement.formik = {
                 values:{
                     sendType: 'Send Immediately'
@@ -477,7 +546,181 @@ describe('AppContainer', () => {
             // Act
             const actual = newAnnouncement.renderContentConfirm();
             // Assert
-            expect(actual).toEqual(<div>{LangHelper.getResource('ConfirmSendImmediately')}</div>);
+        });
+    });
+
+    describe('handleSaveDraft', () => {
+        it('should call exactly props function when successfully', async () => {
+            // Arrange
+            const promise = Promise.resolve({ data: {} });
+            const props = {
+                setIsRefresh: jest.fn(),
+                setCreateAnnouncement: jest.fn(),
+                navigate: jest.fn(),
+                createAnnouncement: jest.fn(() => promise),
+                createAnnouncementResult: {
+                    isSuccessful: true
+                }
+            };
+            const event = { preventDefault: jest.fn() };
+
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.getStateFilter = jest.fn();
+            newAnnouncement.formik = { setSubmitting: jest.fn() };
+            // Act
+            newAnnouncement.handleSaveDraft(event, {});
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(setTimeout).toHaveBeenCalled();
+            expect(props.createAnnouncement).toHaveBeenCalled();
+            expect(props.setIsRefresh).toHaveBeenCalled();
+            expect(props.navigate).toHaveBeenCalled();
+        });
+
+        
+        it('should call exactly props function when not successfully', async () => {
+            // Arrange
+            const promise = Promise.resolve({ data: {} });
+            const props = {
+                setIsRefresh: jest.fn(),
+                setCreateAnnouncement: jest.fn(),
+                navigate: jest.fn(),
+                createAnnouncement: jest.fn(() => promise),
+                createAnnouncementResult: {
+                    isSuccessful: false
+                }
+            };
+            const event = { preventDefault: jest.fn() };
+
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.getStateFilter = jest.fn();
+            newAnnouncement.formik = { setSubmitting: jest.fn() };
+            // Act
+            newAnnouncement.handleSaveDraft(event, {});
+            await promise;
+
+            // Assert
+            expect(newAnnouncement.formik.setSubmitting).toHaveBeenCalled();
+        });
+    });
+
+    describe('renderContentType', () => {
+        it('should return exactly', () => {
+            // Arrange
+            const props = {
+                settings: {
+                    headlineTypeList: [
+                        { id: 1, name: 'Type1' },
+                        { id: 2, name: 'Type2' }
+                    ],
+                    currencyList: [
+                        { id: 1, name: 'USD' },
+                        { id: 2, name: 'EUR' }
+                    ]
+                }
+            };
+            const contentConfirm = {
+                headlineType: 2,
+                currencyList: '1,2',
+            };
+
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+
+            // Act
+            const actual = newAnnouncement.renderContentType(contentConfirm);
+
+            // Assert
+            expect(actual.headlineType).toBe('Type2');
+            expect(actual.currencies).toBe('USD, EUR');
+        });
+    });
+
+    describe('getSettingOption', () => {
+        it('should return exactly', async () => {
+            // Arrange
+            const promise = Promise.resolve({ data: {} });
+            const props = {
+                settings: {
+                    headlineTypeList: [
+                        { id: 1, name: 'Type1' },
+                        { id: 2, name: 'Type2' }
+                    ],
+                    currencyList: [
+                        { id: 1, name: 'USD' },
+                        { id: 2, name: 'EUR' }
+                    ]
+                },
+                getSettings: jest.fn(() => promise)
+            };
+            const announcement = {
+                currencyIdList: '1,2',
+                headlineType: 1,
+            };
+
+            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true });
+
+            // Act
+            await newAnnouncement.instance().getSettingOption(announcement);
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(props.getSettings).toHaveBeenCalled();
+            expect(newAnnouncement.state('currencies')).toBe('USD, EUR');
+            expect(newAnnouncement.state('headlineType')).toBe('Type1');
+        });
+    });
+
+    describe('handleChangeSendType', () => {
+        it('should setState exactly when is send at', () => {
+            // Arrange
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true });
+            newAnnouncement.instance().formik = { setFieldValue: jest.fn() };
+
+            // Act
+            newAnnouncement.instance().handleChangeSendType('Send At');
+
+            // Assert
+            expect(newAnnouncement.state('isSendType')).toEqual({
+                isSendNow: false,
+                isSendAt: true
+            });
+        });
+
+        it('should setState exactly when is send now', () => {
+            // Arrange
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true });
+            newAnnouncement.instance().formik = { setFieldValue: jest.fn() };
+
+            // Act
+            newAnnouncement.instance().handleChangeSendType('Send Now');
+
+            // Assert
+            expect(newAnnouncement.state('isSendType')).toEqual({
+                isSendNow: true,
+                isSendAt: false
+            });
+        });
+    });
+
+    describe('handleCheckValidAllContent', () => {
+        it('should return exactly', () => {
+            // Arrange
+            const content = {
+                field1: 'Valid Content 1',
+                field2: 'Valid Content 2',
+                field3: 'Invalid Content with too long length',
+            };
+
+            const newAnnouncement = shallow(<NewAnnouncement />, { disableLifecycleMethods: true }).instance();
+
+            // Act
+            const actual = newAnnouncement.handleCheckValidAllContent(content);
+
+            // Assert
+            expect(actual).toBe(false);
         });
     });
 

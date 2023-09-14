@@ -8,8 +8,6 @@ describe('component with redux', () => {
     // Arrange
     const mockStore = configureMockStore();
     const initialState = {
-        newAnnouncementPopup: {isShow: false},
-        actionAnnouncementPopup: {isShow: false},
         cancelAnnouncementPopup: {isShow: false},
         contentPopup: {isShow: false},
         gridParams: {pageSize: 100}
@@ -26,12 +24,6 @@ describe('component with redux', () => {
     });
 
     it('component has correct props', () => {
-        expect(wrapper.props().children.props.newAnnouncementPopup).toEqual(
-            initialState.newAnnouncementPopup
-        );
-        expect(wrapper.props().children.props.actionAnnouncementPopup).toEqual(
-            initialState.actionAnnouncementPopup
-        );
         expect(wrapper.props().children.props.cancelAnnouncementPopup).toEqual(
             initialState.cancelAnnouncementPopup
         );

@@ -12,7 +12,9 @@ describe('component with redux', () => {
         createAnnouncementResult: {},
         settings: {},
         editAnnouncementResult: {},
-        actionAnnouncementPopup: {}
+        actionAnnouncementPopup: {},
+        createAnnouncementResult: {},
+        validateAnnouncementResult: {},
     };
 
     const store = mockStore(initialState);
@@ -40,6 +42,12 @@ describe('component with redux', () => {
         );
         expect(wrapper.props().children.props.actionAnnouncementPopup).toEqual(
             initialState.actionAnnouncementPopup
+        );
+        expect(wrapper.props().children.props.createAnnouncementResult).toEqual(
+            initialState.createAnnouncementResult
+        );
+        expect(wrapper.props().children.props.validateAnnouncementResult).toEqual(
+            initialState.validateAnnouncementResult
         );
     });
 });

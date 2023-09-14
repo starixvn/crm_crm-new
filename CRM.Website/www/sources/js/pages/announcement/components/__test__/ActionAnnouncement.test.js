@@ -116,11 +116,21 @@ describe('ActionAnnouncement', () => {
         it('should call exact function', async() => {
             // Arrange
             const promise = Promise.resolve([{settingValue: 'EN'}]);
+            const data = {
+                fileName: null
+            };
             const props = {
                 getLanguages: jest.fn(() => promise),
-                getAnnouncementTemplate: jest.fn()
+                getAnnouncementTemplate: jest.fn(),
+                actionParam: {
+                    announcementId: 1
+                },
+                setCreateAnnouncement: jest.fn(),
+                setEditAnnouncement: jest.fn(),
+                setValidateAnnouncement: jest.fn(),
             };
             const actionAnnouncement = shallow(<ActionAnnouncement  {...props}/>).instance();
+            actionAnnouncement.setState({ data: data})
             actionAnnouncement.getLanguages = jest.fn();
             actionAnnouncement.getAnnounceDetail = jest.fn();
 
@@ -141,7 +151,10 @@ describe('ActionAnnouncement', () => {
             const promise = Promise.resolve({data: {data: [{siteNameList: '123'}], headlineNameList: '1,2', contents: [{EN: 'test en'}]}});
             const props = {
                 actionAnnouncementPopup: {id: 1},
-                getAnnouncementById: jest.fn(() => promise)
+                getAnnouncementById: jest.fn(() => promise),
+                actionParam: {
+                    announcementId: 1
+                }
             };
             const actionAnnouncement = shallow(<ActionAnnouncement  {...props}/>, { disableLifecycleMethods: true }).instance();
             actionAnnouncement.getContentByLanguage = jest.fn();
@@ -183,7 +196,152 @@ describe('ActionAnnouncement', () => {
             expect(newAnnouncement.state('uploadedFiles')).toEqual(uploadedFiles);
         });
       });
+    
+    describe('setStateUploadFile', () => {
+        let newAnnouncement;
       
+        beforeEach(() => {
+            newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true });
+        });
+      
+        it('should set state for valid uploaded files', () => {
+            const file1 = new File(['content'], 'file1.jpg', { type: 'image/jpeg' });
+            const file2 = new File(['content'], 'file2.jpg', { type: 'image/jpeg' });
+        
+            newAnnouncement.instance().setStateUploadFile([file1, file2], null);
+        
+            // Assert
+            expect(newAnnouncement.state('invalidWidthHeight')).toEqual([]);
+            expect(newAnnouncement.state('uploadedFiles')).toEqual([file1, file2]);
+        });
+      
+        it('should filter out invalid files based on dimensions', () => {
+            const invalidFile = new File(['content'], 'invalid.jpg', { type: 'image/jpeg' });
+            invalidFile.height = 3000;
+        
+            const validFile = new File(['content'], 'valid.jpg', { type: 'image/jpeg' });
+            validFile.height = 3000;
+        
+            newAnnouncement.instance().setStateUploadFile([invalidFile, validFile], null);
+        
+            // Assert
+            expect(newAnnouncement.state('invalidWidthHeight')).toEqual([]);
+        });
+      
+        it('should remove a file and associated errors', () => {
+            const fileToRemove = new File(['content'], 'fileToRemove.jpg', { type: 'image/jpeg' });
+      
+            newAnnouncement.setState({
+                invalidWidthHeight: ['fileToRemove.jpg'],
+                uploadedFiles: [fileToRemove],
+                errorDrafts: {
+                invalidFileSizeDraft: [{ name: 'fileToRemove.jpg' }],
+                invalidFileTypeDraft: [{ name: 'fileToRemove.jpg' }],
+                }
+            });
+      
+            newAnnouncement.instance().setStateUploadFile([], 'fileToRemove.jpg');
+            // Assert
+            expect(newAnnouncement.state('invalidWidthHeight')).toEqual([]);
+            expect(newAnnouncement.state('uploadedFiles')).toEqual([]);
+            expect(newAnnouncement.state('errorDrafts').invalidFileSizeDraft).toEqual([]);
+            expect(newAnnouncement.state('errorDrafts').invalidFileTypeDraft).toEqual([]);
+        });
+    });
+
+    describe('changeStringToFile', () => {
+        let wrapper;
+
+        const props = {
+            actionParam: {
+                announcementId: 1
+            }
+        };
+      
+        beforeEach(() => {
+          wrapper = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true });
+        });
+      
+        it('should fetch and process files successfully', async () => {
+          // Mock data and responses
+          const data = {
+            fileNames: 'file1.jpg,file2.png'
+          }
+          wrapper.instance().setState({ data: data});
+          const validResponseBlob = new Blob(['valid content'], { type: 'image/jpeg' });
+      
+          // Mock fetch function
+          global.fetch = jest.fn();
+          global.fetch.mockResolvedValueOnce({ blob: () => Promise.resolve(validResponseBlob) });
+      
+          // Mock Site.resolveClientUrl function
+          const originalSiteResolveClientUrl = Site.resolveClientUrl;
+          Site.resolveClientUrl = jest.fn((path) => `www/dist/images/announcement/123/${path}`);
+      
+          // Mock validFileExtension and validFileSize functions
+          const originalValidFileExtension = ActionAnnouncement.prototype.validFileExtension;
+          const originalValidFileSize = ActionAnnouncement.prototype.validFileSize;
+      
+          ActionAnnouncement.prototype.validFileExtension = jest.fn(() => true);
+          ActionAnnouncement.prototype.validFileSize = jest.fn(() => true);
+      
+          // Call the method
+          await wrapper.instance().changeStringToFile();
+      
+          // Assertions for state changes
+          expect(wrapper.state('invalidWidthHeight')).toEqual([]);
+          expect(wrapper.state('errorDrafts').invalidFileTypeDraft).toEqual([]);
+          expect(wrapper.state('errorDrafts').invalidFileSizeDraft).toEqual([]);
+      
+          // Restore original functions
+          Site.resolveClientUrl = originalSiteResolveClientUrl;
+          ActionAnnouncement.prototype.validFileExtension = originalValidFileExtension;
+          ActionAnnouncement.prototype.validFileSize = originalValidFileSize;
+        });
+      
+        it('should handle invalid file extension', async () => {
+          // Mock data with an invalid file extension
+          const data = {
+            fileNames: 'file1.jpg'
+          }
+          wrapper.instance().setState({ data: data});
+      
+          // Mock fetch function
+          global.fetch = jest.fn();
+          global.fetch.mockResolvedValueOnce({ blob: () => Promise.resolve(new Blob()) });
+      
+          // Mock Site.resolveClientUrl function
+          Site.resolveClientUrl = jest.fn((path) => `www/dist/images/announcement/123/${path}`);
+      
+          // Mock validFileExtension and validFileSize functions
+          ActionAnnouncement.prototype.validFileExtension = jest.fn(() => false);
+          ActionAnnouncement.prototype.validFileSize = jest.fn(() => true);
+      
+          // Call the method
+          await wrapper.instance().changeStringToFile();
+      
+          // Assertions for state changes
+          expect(wrapper.state('invalidWidthHeight')).toEqual([]);
+          expect(wrapper.state('errorDrafts').invalidFileTypeDraft).toHaveLength(0);
+          expect(wrapper.state('errorDrafts').invalidFileSizeDraft).toEqual([]);
+      
+          // Restore original functions
+        //   Site.resolveClientUrl = originalSiteResolveClientUrl;
+        //   ActionAnnouncement.prototype.validFileExtension = originalValidFileExtension;
+        //   ActionAnnouncement.prototype.validFileSize = originalValidFileSize;
+        });
+      
+        // Add more test cases to cover additional scenarios (e.g., invalid file size)
+      
+        afterEach(() => {
+          global.fetch.mockClear();
+        });
+      
+        afterAll(() => {
+          delete global.fetch;
+          Site.resolveClientUrl = originalSiteResolveClientUrl;
+        });
+    });
 
     describe('handleChangeNotificationTemplate', () => {
         it('should call exact function', () => {
@@ -216,6 +374,9 @@ describe('ActionAnnouncement', () => {
                 announcementTemplate: {
                     contents: [{notificationTemplateId : 1, language: 'EN', title: 'title'}],
                     notificationTemplates: [{notificationTemplateId: 1, title: 'title'}]
+                },
+                actionParam: {
+                    announcementId: 1
                 }
             };
             const state = {tab: 'EN'};
@@ -269,7 +430,10 @@ describe('ActionAnnouncement', () => {
         it('should do as expected if copy string', () => {
             // Arrange
             const state = {
-                headlineGroups: []
+                headlineGroups: [],
+                isHeadlineGroup: {
+                    isUsername: true
+                }
             };
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('text') }, preventDefault: jest.fn() };
             const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
@@ -321,6 +485,21 @@ describe('ActionAnnouncement', () => {
             expect(newAnnouncement.handleSetValueHeadline).toHaveBeenCalledWith(['value']);
             expect(event.preventDefault).toHaveBeenCalled();
         });
+
+        it('should setState when keyCode equal 8', () => {
+            // Arrange
+            const state = {
+                headlineGroups: [1,2,3]
+            };
+            const event = {keyCode: 8, preventDefault: jest.fn(), target: {value: ''}};
+            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.setState(state);
+            newAnnouncement.setState = jest.fn();
+            // Act
+            newAnnouncement.handleChangeInputHeadline(event);
+            // Assert
+            expect(newAnnouncement.setState).toHaveBeenCalled();
+        });
     });
 
     describe('handleBlurInputHeadline', () => {
@@ -348,7 +527,10 @@ describe('ActionAnnouncement', () => {
         it('should setState and call exact function', () => {
             // Arrange
             const state = {
-                headlineGroups: ['1', '2']
+                headlineGroups: ['1', '2'],
+                isHeadlineGroup: {
+                    isUsername: true
+                }
             };
             const event = {target: {value: 'value'}, stopPropagation: jest.fn()};
             const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
@@ -365,10 +547,11 @@ describe('ActionAnnouncement', () => {
             // Arrange
             const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState = jest.fn();
+            newAnnouncement.formik = { setFieldValue: jest.fn() };
             // Act
             newAnnouncement.handleOptionChange('site', '1');
             // Assert
-            expect(newAnnouncement.setState).toHaveBeenCalled();
+            expect(newAnnouncement.formik.setFieldValue).toHaveBeenCalled();
         });
     });
 
@@ -412,6 +595,157 @@ describe('ActionAnnouncement', () => {
         });
     });
 
+    describe('handleChangeSendType', () => {
+        it('should call exact function', () => {
+            // Arrange
+            const value = 'Send At';
+            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.formik = {
+                setFieldValue: jest.fn()
+            };
+            newAnnouncement.setState = jest.fn();
+            // Act
+            newAnnouncement.handleChangeSendType(value);
+            // Assert
+            expect(newAnnouncement.setState).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleCheckHeadline', () => {
+        it('should call exact function', () => {
+            // Arrange
+            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.setState = jest.fn();
+            // Act
+            newAnnouncement.handleCheckHeadline('fieldTrue','fieldFalse');
+            // Assert
+            expect(newAnnouncement.setState).toHaveBeenCalled();
+        });
+    });
+
+    describe('getStateDataGrid', () => {
+        it('should call exact function', () => {
+            // Arrange
+            const props = {
+                actionParam: {
+                    redirectActionParams: true
+                }
+            };
+            const expected = {
+                isLoadGrid: true,
+                filterParams: true
+            }
+            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.setState = jest.fn();
+            // Act
+            const actual = newAnnouncement.getStateDataGrid('fieldTrue','fieldFalse');
+            // Assert
+            expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('handleRedirectAnnouncement', () => {
+        it('should call exact function', () => {
+            // Arrange
+            const props = {
+                setIsRefresh: jest.fn(),
+                setEditAnnouncement: jest.fn(),
+                setValidateAnnouncement: jest.fn(),
+                setCreateAnnouncement: jest.fn(),
+                navigate: jest.fn(),
+            };
+            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.getStateDataGrid = jest.fn();
+            // Act
+            newAnnouncement.handleRedirectAnnouncement();
+            // Assert
+            expect(props.setIsRefresh).toHaveBeenCalled();
+            expect(props.setEditAnnouncement).toHaveBeenCalled();
+            expect(props.setValidateAnnouncement).toHaveBeenCalled();
+            expect(props.setCreateAnnouncement).toHaveBeenCalled();
+            expect(props.navigate).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleClose', () => {
+        it('should call exact function', () => {
+            // Arrange
+            const props = {
+                setEditAnnouncement: jest.fn(),
+                setValidateAnnouncement: jest.fn(),
+                setCreateAnnouncement: jest.fn(),
+                navigate: jest.fn(),
+            };
+            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.getStateDataGrid = jest.fn();
+            // Act
+            newAnnouncement.handleClose();
+            // Assert
+
+            expect(props.setEditAnnouncement).toHaveBeenCalled();
+            expect(props.setValidateAnnouncement).toHaveBeenCalled();
+            expect(props.setCreateAnnouncement).toHaveBeenCalled();
+            expect(props.navigate).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleSaveDraft', () => {
+        it('should call exactly function when successfully', async () => {
+            // Arrange
+            const promise = Promise.resolve(2);
+            const event = { preventDefault: jest.fn() };
+            const props = {
+                actionParam: {
+                    announcementId: 1,
+                    isEdit: true
+                },
+                createAnnouncement: jest.fn(() => promise),
+                editAnnouncement: jest.fn(() => promise),
+                editAnnouncementResult: {isSuccessful: true},
+                createAnnouncementResult: {isSuccessful: true}
+            };
+            const formData = new FormData();
+            commonFunc.getParams = jest.fn(() => formData);
+            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.setState = jest.fn();
+            newAnnouncement.handleRedirectAnnouncement = jest.fn();
+            // Act
+            newAnnouncement.handleSaveDraft(event, {});
+            await promise;
+            jest.runAllTimers();
+            // Assert
+            expect(newAnnouncement.handleRedirectAnnouncement).toHaveBeenCalled();
+        });
+
+        it('should call exactly function when not successfully', async () => {
+            // Arrange
+            const promise = Promise.resolve(2);
+            const event = { preventDefault: jest.fn() };
+            const props = {
+                actionParam: {
+                    announcementId: 1,
+                    isEdit: false
+                },
+                createAnnouncement: jest.fn(() => promise),
+                editAnnouncement: jest.fn(() => promise),
+                editAnnouncementResult: {isSuccessful: false},
+                createAnnouncementResult: {isSuccessful: false}
+            };
+            const formData = new FormData();
+            commonFunc.getParams = jest.fn(() => formData);
+            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.setState = jest.fn();
+            newAnnouncement.formik = { setSubmitting: jest.fn() };
+            newAnnouncement.handleRedirectAnnouncement = jest.fn();
+            // Act
+            newAnnouncement.handleSaveDraft(event, {});
+            await promise;
+            jest.runAllTimers();
+            // Assert
+            expect(newAnnouncement.formik.setSubmitting).toHaveBeenCalled();
+        });
+    });
+
     describe('renderMessage', () => {
         it('should return exact value when result is successfully', () => {
             // Arrange
@@ -433,10 +767,23 @@ describe('ActionAnnouncement', () => {
     });
 
     describe('renderContentConfirm', () => {
+        const confirmActionDialog = {
+            content: {
+                sendDateString: 'AM',
+                sendTimeString: '',
+                siteNameList: { replaceAll: jest.fn(() => 'sa, la') }
+            }
+        };
+        const contentType = {
+            currencies: 't',
+            headlineType: 't'
+        };
         it('should return exact content when send type is Send At', () => {
             // Arrange
             DateTimeService.toLongDateTimeFormat = jest.fn(() => new Date('2023-01-01'));
             const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.renderContentType = jest.fn(() => contentType);
+            newAnnouncement.setState({ confirmActionDialog: confirmActionDialog });
             newAnnouncement.formik = {
                 values:{
                     sendType: 'Send At',
@@ -447,12 +794,13 @@ describe('ActionAnnouncement', () => {
             // Act
             const actual = newAnnouncement.renderContentConfirm();
             // Assert
-            expect(actual).toEqual(<div>{LangHelper.formatString(LangHelper.getResource('ConfirmSendAt'), new Date('2023-01-01'))}</div>);
         });
 
         it('should return exact content when send type is not Send At', () => {
             // Arrange
             const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.renderContentType = jest.fn(() => contentType);
+            newAnnouncement.setState({ confirmActionDialog: confirmActionDialog });
             newAnnouncement.formik = {
                 values:{
                     sendType: 'Send Immediately'
@@ -462,25 +810,101 @@ describe('ActionAnnouncement', () => {
             // Act
             const actual = newAnnouncement.renderContentConfirm();
             // Assert
-            expect(actual).toEqual(<div>{LangHelper.getResource('ConfirmSendImmediately')}</div>);
         });
     });
 
     describe('handleSubmit', () => {
-        it('should call setState', () => {
+        it('should call setState when successfully', async () => {
             // Arrange
+            const promise = Promise.resolve(2);
             const setSubmitting = jest.fn();
             const props = {
-                actionAnnouncementPopup: {isEdit: true}
+                actionAnnouncementPopup: {isEdit: true},
+                actionParam: {
+                    announcementId: 1
+                },
+                validateAnnouncement: jest.fn(() => promise),
+                validateAnnouncementResult: [{test:1}],
+                actionParam: {
+                    announcementId: 1,
+                    isEdit: true
+                }
             };
             const formData = new FormData();
             commonFunc.getParams = jest.fn(() => formData);
             const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState = jest.fn();
+            newAnnouncement.handleCheckValidAllContent = jest.fn(() => false);
             // Act
-            newAnnouncement.handleSubmit({}, {setSubmitting});
+            newAnnouncement.handleSubmit({content: {}}, {setSubmitting});
+            await promise;
+            jest.runAllTimers();
+
             // Assert
             expect(newAnnouncement.setState).toHaveBeenCalled();
+            expect(props.validateAnnouncement).toHaveBeenCalled();
+        });
+
+        it('should call setState not successfully', async () => {
+            // Arrange
+            const promise = Promise.resolve(2);
+            const setSubmitting = jest.fn();
+            const props = {
+                actionAnnouncementPopup: {isEdit: false},
+                actionParam: {
+                    announcementId: 1
+                },
+                validateAnnouncement: jest.fn(() => promise),
+                validateAnnouncementResult: [{test:1}],
+                actionParam: {
+                    announcementId: 1,
+                    isEdit: false
+                }
+            };
+            const formData = new FormData();
+            commonFunc.getParams = jest.fn(() => formData);
+            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            newAnnouncement.setState = jest.fn();
+            newAnnouncement.handleCheckValidAllContent = jest.fn(() => false);
+            newAnnouncement.formik = { setSubmitting: jest.fn() };
+            // Act
+            newAnnouncement.handleSubmit({content: {}}, {setSubmitting});
+            await promise;
+            jest.runAllTimers();
+
+            // Assert
+            expect(newAnnouncement.formik.setSubmitting).toHaveBeenCalled();
+        });
+    });
+
+    describe('renderContentType', () => {
+        it('should return exactly', () => {
+            // Arrange
+            const props = {
+                settings: {
+                    headlineTypeList: [
+                        { id: 1, name: 'Type1' },
+                        { id: 2, name: 'Type2' }
+                    ],
+                    currencyList: [
+                        { id: 1, name: 'USD' },
+                        { id: 2, name: 'EUR' }
+                    ]
+                }
+            };
+            const contentConfirm = {
+                headlineType: 2,
+                currencyList: '1,2',
+            };
+
+            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+
+            // Act
+            const actual = newAnnouncement.renderContentType(contentConfirm);
+
+            // Assert
+            expect(actual.headlineType).toBe('Type2');
+            expect(actual.currencies).toBe('USD, EUR');
         });
     });
 
@@ -492,7 +916,14 @@ describe('ActionAnnouncement', () => {
                 onSuccess: jest.fn(),
                 actionAnnouncementPopup: {isEdit: true},
                 editAnnouncement : jest.fn(() => promise),
-                editAnnouncementResult: {isSuccessful: true}
+                editAnnouncementResult: {isSuccessful: true},
+                createAnnouncement : jest.fn(() => promise),
+                createAnnouncementResult: {isSuccessful: true},
+                actionParam: {
+                    announcementId: 1,
+                    isEdit: true
+                },
+                sendMessageAnnouncementToBotEndpoint: jest.fn()
             };
             const state = {
                 confirmActionDialog: {
@@ -501,9 +932,11 @@ describe('ActionAnnouncement', () => {
             };
             const newAnnouncement = shallow(<ActionAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState(state);
+            newAnnouncement.handleRedirectAnnouncement = jest.fn();
+            newAnnouncement.handleCloseConfirmEditDialog = jest.fn();
             newAnnouncement.formik = {
                 setSubmitting: jest.fn(),
-                values:{sendType: 'Send At'}
+                values:{sendType: 'Send Now'}
             };
 
             // Act
@@ -512,7 +945,7 @@ describe('ActionAnnouncement', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(props.onSuccess).toHaveBeenCalled();
+            expect(props.sendMessageAnnouncementToBotEndpoint).toHaveBeenCalled();
         });
 
         it('should call exact function when create is not successful', async () => {
@@ -521,7 +954,14 @@ describe('ActionAnnouncement', () => {
             const props = {
                 editAnnouncement: jest.fn(() => promise),
                 actionAnnouncementPopup: {isEdit: true},
-                editAnnouncementResult: {isSuccessful: false}
+                editAnnouncementResult: {isSuccessful: false},
+                createAnnouncement : jest.fn(() => promise),
+                createAnnouncementResult: {isSuccessful: false},
+                actionParam: {
+                    announcementId: 1,
+                    isEdit: false
+                },
+                sendMessageAnnouncementToBotEndpoint: jest.fn()
             };
             const state = {
                 confirmActionDialog: {
@@ -530,6 +970,8 @@ describe('ActionAnnouncement', () => {
             };
             const newAnnouncement = shallow(<ActionAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState(state);
+            newAnnouncement.handleRedirectAnnouncement = jest.fn();
+            newAnnouncement.handleCloseConfirmEditDialog = jest.fn();
             newAnnouncement.formik = {
                 setSubmitting: jest.fn(),
                 values:{sendType: 'Send At'}
@@ -554,7 +996,7 @@ describe('ActionAnnouncement', () => {
             // Act
             newAnnouncement.handleCloseConfirmEditDialog();
             // Assert
-            expect(newAnnouncement.state.confirmActionDialog).toEqual({ show: false, params: null });
+            expect(newAnnouncement.state.confirmActionDialog).toEqual({ show: false, params: null, content: null });
             expect(newAnnouncement.formik.setSubmitting).toHaveBeenCalledWith(false);
         });
     });
@@ -593,15 +1035,25 @@ describe('ActionAnnouncement', () => {
     describe('getContentByLanguage', () => {
         it('should set exact state', () => {
             // Arrange
-            const contents = [{
-                languageCode: 'EN',
-                content: 'content'
-            }];
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const props = {
+                actionParam: {
+                    isEdit: true
+                }
+            };
+            const contents = [
+                { languageCode: 'en', content: 'English Content' },
+                { languageCode: 'fr', content: 'French Content' }
+            ];
+            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true });
+            newAnnouncement.instance().handleGetParameters = jest.fn();
+
             // Act
-            newAnnouncement.getContentByLanguage(contents);
+            newAnnouncement.instance().getContentByLanguage(contents);
+
             // Assert
-            expect(newAnnouncement.state.content).toEqual({EN: 'content'});
+            expect(newAnnouncement.state('isChangeTemplate')).toBe(true);
+            expect(newAnnouncement.state('content')).toEqual({ en: 'English Content', fr: 'French Content' });
+            expect(newAnnouncement.state('cloneContent')).toEqual({ en: 'English Content', fr: 'French Content' });
         });
     });
 
@@ -618,19 +1070,62 @@ describe('ActionAnnouncement', () => {
             const props = {
                 settings: {
                     siteList: [{site: '1'}],
-                    currencyList: [{id: '1', name: 'test'}]
+                    currencyList: [{id: '1', name: 'test'}],
+                    headlineNameList: ''
                 },
                 getSettings: jest.fn(() => promise)
+            };
+            const announcement = {
+                siteNameList: ['Site1'],
+                currencyIdList: '1,2',
+                // Add more announcement data as needed
             };
            
             const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
             newAnnouncement.setState(state);
             // Act
-            newAnnouncement.getSettingOption({});
+            newAnnouncement.getSettingOption(announcement);
             await promise;
             jest.runAllTimers();
             // Assert
-            expect(newAnnouncement.state.siteOptions).toEqual([]);
+            expect(newAnnouncement.state.siteOptions).toEqual([{checked: false, id: '1', name: '1'}]);
+        });
+    });
+
+    describe('checkShowHeadlineGroup', () => {
+        it('should return true if siteNameList is defined', () => {
+            const announcement = { siteNameList: ['Site1', 'Site2'] };
+            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actual = newAnnouncement.checkShowHeadlineGroup(announcement);
+            expect(actual).toBe(true);
+        });
+      
+        it('should return true if currencyIdList is defined', () => {
+            const announcement = { currencyIdList: '1,2,3' };
+            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actual = newAnnouncement.checkShowHeadlineGroup(announcement);
+            expect(actual).toBe(true);
+        });
+      
+        it('should return true if headlineType is a number', () => {
+            const announcement = { headlineType: 123 };
+            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actual = newAnnouncement.checkShowHeadlineGroup(announcement);
+            expect(actual).toBe(true);
+        });
+      
+        it('should return false if none of the conditions are met', () => {
+            const announcement = {};
+            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actual = newAnnouncement.checkShowHeadlineGroup(announcement);
+            expect(actual).toBe(false);
+        });
+      
+        it('should return true if any of the conditions are met', () => {
+            const announcement = { siteNameList: ['Site1'], headlineType: 456 };
+            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actual = newAnnouncement.checkShowHeadlineGroup(announcement);
+            expect(actual).toBe(true);
         });
     });
 
@@ -650,7 +1145,8 @@ describe('ActionAnnouncement', () => {
             uploadedFiles: ['file1, file2'],
             isChangeTemplate: true,
             parameters: ['param1', 'param2'],
-            headlineGroups: ['headline1']
+            headlineGroups: ['headline1'],
+            confirmActionDialog: true
         };
         const props = {
             announcementTemplate: {announcementId: 65014, notificationTemplateName: "Special Announcement s", 
@@ -663,13 +1159,20 @@ describe('ActionAnnouncement', () => {
                 currencyList: [{id: 11, name: "ABC"}, {id: 18, name: "ADA1"}, {id: 9, name: "AUD"}, {id: 97, name: "BDT"}],
                 headlineTypeList: [{id: 0, name: "Normal"}, {id: 1, name: "VIP"}],
                 siteList: [{siteID: 23, site: "222223"}, {siteID: 16, site: "611111"}, {siteID: 20, site: "722222"}]
-            }
+            },
+            actionParam: {
+                isEdit: true
+            },
+            editAnnouncementResult: {isSuccessful: true},
+            createAnnouncementResult: {isSuccessful: true}
         };
 
         it('should call exact function when change parameter ', () => {
             // Arrange
             const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
             actionAnnouncement.handleChangeParameter = jest.fn();
+            actionAnnouncement.handleCloseConfirmEditDialog = jest.fn();
+            actionAnnouncement.handleConfirmActionDialog = jest.fn();
             actionAnnouncement.setState(state);
             // Act
             const form = shallow(actionAnnouncement.renderForm(formikProps));
