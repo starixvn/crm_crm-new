@@ -10,28 +10,28 @@
         <Setting Key="Acc_CRM_ConfigAutoFeedback_SettingUpd" SpName="Acc_CRM_ConfigAutoFeedback_SettingUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Notification List">
-        <Setting Key="Acc_CRM_ChatBot_NotificationList_Sel" SpName="Acc_CRM_ChatBot_NotificationList_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_NotificationList_Upd" SpName="Acc_CRM_ChatBot_NotificationList_Upd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_NotificationListValidation" SpName="Acc_CRM_ChatBot_NotificationListValidation_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationList_Sel" SpName="Acc_CRM_ChatBot_NotificationList_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationList_Upd" SpName="Acc_CRM_ChatBot_NotificationList_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationListValidation" SpName="Acc_CRM_ChatBot_NotificationListValidation" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Notification Template">
-        <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Sel" SpName="Acc_CRM_ChatBot_NotificationTemplate_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Ins" SpName="Acc_CRM_ChatBot_NotificationTemplate_Ins_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Upd" SpName="Acc_CRM_ChatBot_NotificationTemplate_Upd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Del" SpName="Acc_CRM_ChatBot_NotificationTemplate_Del_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Sel" SpName="Acc_CRM_ChatBot_NotificationTemplate_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Ins" SpName="Acc_CRM_ChatBot_NotificationTemplate_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Upd" SpName="Acc_CRM_ChatBot_NotificationTemplate_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationTemplate_Del" SpName="Acc_CRM_ChatBot_NotificationTemplate_Del" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Notification Type">
-        <Setting Key="Acc_CRM_ChatBot_NotificationType_Sel" SpName="Acc_CRM_ChatBot_NotificationType_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_NotificationType_Ins" SpName="Acc_CRM_ChatBot_NotificationType_Ins_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_NotificationType_Upd" SpName="Acc_CRM_ChatBot_NotificationType_Upd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_NotificationType_Del" SpName="Acc_CRM_ChatBot_NotificationType_Del_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationType_Sel" SpName="Acc_CRM_ChatBot_NotificationType_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationType_Ins" SpName="Acc_CRM_ChatBot_NotificationType_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationType_Upd" SpName="Acc_CRM_ChatBot_NotificationType_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_NotificationType_Del" SpName="Acc_CRM_ChatBot_NotificationType_Del" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="ChatBot">
-        <Setting Key="Acc_CRM_ChatBot_Bot_Sel" SpName="Acc_CRM_ChatBot_Bot_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_ChatBot_Bot_Sel" SpName="Acc_CRM_ChatBot_Bot_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="BotId" ObjectProperty="Id" />
             <Mapping DataField="BotName" ObjectProperty="Name" />
         </Setting>
-        <Setting Key="Acc_CRM_ChatBot_Recipient_Sel" SpName="Acc_CRM_ChatBot_Recipient_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_ChatBot_Recipient_Sel" SpName="Acc_CRM_ChatBot_Recipient_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="RecipientId" ObjectProperty="Id" />
             <Mapping DataField="RecipientName" ObjectProperty="Name" />
         </Setting>
@@ -47,21 +47,21 @@
             <Mapping DataField="HeadlineID" ObjectProperty="Id" />
             <Mapping DataField="HeadlineName" ObjectProperty="Name" />
         </Setting>
-        <Setting Key="Acc_CRM_Chatbot_ResendNotification" SpName="Acc_CRM_Chatbot_ResendNotification_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_ResendNotification" SpName="Acc_CRM_Chatbot_ResendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chat Type Mapping">
-        <Setting Key="Acc_CRM_ChatBot_ChatTypeMapping_Sel" SpName="Acc_CRM_ChatBot_ChatTypeMapping_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_ChatBot_ChatTypeMapping_Ins" SpName="Acc_CRM_ChatBot_ChatTypeMapping_Ins_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_ChatBot_ChatTypeMapping_Upd" SpName="Acc_CRM_ChatBot_ChatTypeMapping_Upd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_GetHeadlineByRecipient" SpName="Acc_CRM_GetHeadlineByRecipient_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_ChatBot_ChatTypeMapping_Sel" SpName="Acc_CRM_ChatBot_ChatTypeMapping_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_ChatBot_ChatTypeMapping_Ins" SpName="Acc_CRM_ChatBot_ChatTypeMapping_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_ChatBot_ChatTypeMapping_Upd" SpName="Acc_CRM_ChatBot_ChatTypeMapping_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_GetHeadlineByRecipient" SpName="Acc_CRM_GetHeadlineByRecipient" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="HeadlineID" ObjectProperty="Id" />
             <Mapping DataField="HeadlineName" ObjectProperty="Name" />
         </Setting>
-        <Setting Key="Acc_CRM_ChatBot_ChatTypeMappingStatus_Upd" SpName="Acc_CRM_ChatBot_ChatTypeMappingStatus_Upd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_ChatBot_ChatTypeMappingRemark_Upd" SpName="Acc_CRM_ChatBot_ChatTypeMappingRemark_Upd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_ChatBot_IgnoredNotificationType_Sel" SpName="Acc_CRM_ChatBot_IgnoredNotificationType_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_ChatBot_ConversationGroup_Del" SpName="Acc_CRM_ChatBot_ConversationGroup_Del_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_ChatBot_Channel_Sel" SpName="Acc_CRM_ChatBot_Channel_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_ChatBot_ChatTypeMappingStatus_Upd" SpName="Acc_CRM_ChatBot_ChatTypeMappingStatus_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_ChatBot_ChatTypeMappingRemark_Upd" SpName="Acc_CRM_ChatBot_ChatTypeMappingRemark_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_ChatBot_IgnoredNotificationType_Sel" SpName="Acc_CRM_ChatBot_IgnoredNotificationType_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_ChatBot_ConversationGroup_Del" SpName="Acc_CRM_ChatBot_ConversationGroup_Del" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_ChatBot_Channel_Sel" SpName="Acc_CRM_ChatBot_Channel_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="ChannelId" ObjectProperty="Id" />
             <Mapping DataField="ChannelName" ObjectProperty="Name" />
         </Setting>
@@ -158,20 +158,20 @@
     </Function>
     <Function Name="Pic and Headline">
         <Setting Key="Acc_CRM_PicIns" SpName="Acc_CRM_PicIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PicUpd" SpName="Acc_CRM_PicUpd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PicUpd" SpName="Acc_CRM_PicUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PicManagementSel" SpName="Acc_CRM_PicManagementSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PICStatusUpd" SpName="Acc_CRM_PICStatusUpd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PICAssignmentValidation" SpName="Acc_CRM_PICAssignmentValidation_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PICStatusUpd" SpName="Acc_CRM_PICStatusUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PICAssignmentValidation" SpName="Acc_CRM_PICAssignmentValidation" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_SiteSel_Credit" SpName="Acc_SiteSel_Credit" DbName="DBEXT.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_PicSel" SpName="Acc_CRM_PicSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PICAssignmentSel" SpName="Acc_CRM_PICAssignmentSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PICAssignment" SpName="Acc_CRM_PICAssignment_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PICAssignmentDel" SpName="Acc_CRM_PICAssignmentDel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PICAssignment" SpName="Acc_CRM_PICAssignment" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PICAssignmentDel" SpName="Acc_CRM_PICAssignmentDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PicDefaultDel" SpName="Acc_CRM_PicDefaultDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_PicDefaultIns" SpName="Acc_CRM_PicDefaultIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PicUpdValidation" SpName="Acc_CRM_PicUpdValidation_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PicUpdValidation" SpName="Acc_CRM_PicUpdValidation" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_DirectAccountLogSel" SpName="Acc_CRM_DirectAccountLogSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PicLogSel" SpName="Acc_CRM_PicLogSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PicLogSel" SpName="Acc_CRM_PicLogSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ActionTypeSel" SpName="Acc_CRM_ActionTypeSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Feedback Subject Template">
@@ -229,7 +229,7 @@
             <Mapping DataField="AccountHolderName" ObjectProperty="BankHolderName" />
         </Setting>
         <Setting Key="Acc_CRM_CustomerUpd_New" SpName="Acc_CRM_CustomerUpd_New" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_MainInformationSpecialRemarkSel" SpName="Acc_CRM_MainInformationSpecialRemarkSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_MainInformationSpecialRemarkSel" SpName="Acc_CRM_MainInformationSpecialRemarkSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_MainInformationRedemptionSel" SpName="Acc_CRM_MainInformationRedemptionSel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="RedemptionID" ObjectProperty="Id" />
         </Setting>
@@ -285,14 +285,14 @@
         <Setting Key="Acc_CRM_CustomerRemarkUpd" SpName="Acc_CRM_CustomerRemarkUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="NewRemark">
-        <Setting Key="Acc_CRM_CustomerRemarkNewSearch" SpName="Acc_CRM_CustomerRemarkNewSearch_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerRemarkNewSearch" SpName="Acc_CRM_CustomerRemarkNewSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerRemarkNewCheck" SpName="Acc_CRM_CustomerRemarkNewCheck" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerRemarkNewDel" SpName="Acc_CRM_CustomerRemarkNewDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerRemarkNewIns" SpName="Acc_CRM_CustomerRemarkNewIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerRemarkNewUpd" SpName="Acc_CRM_CustomerRemarkNewUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerRemarkNewHistory" SpName="Acc_CRM_CustomerRemarkNewHistory" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerPicSel" SpName="Acc_CRM_CustomerPicSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_CustomerRemarkNewSel" SpName="Acc_CRM_CustomerRemarkNewSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerRemarkNewSel" SpName="Acc_CRM_CustomerRemarkNewSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Action Log">
         <Setting Key="Acc_CRM_ActivityLogList" SpName="Acc_CRM_ActivityLogList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
@@ -331,11 +331,11 @@
         <Setting Key="Acc_CRM_ChatBot_Announcement_Validation" SpName="Acc_CRM_ChatBot_Announcement_Validation" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Send Notification">
-        <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_Chatbot_SendNotification_Status_Upd" SpName="Acc_CRM_Chatbot_SendNotification_Status_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
     </Function>
     <Function Name="Send Announcement">
-        <Setting Key="Acc_CRM_Chatbot_Announcement_Notification_Sel" SpName="Acc_CRM_Chatbot_Announcement_Notification_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_Chatbot_Announcement_Notification_Sel" SpName="Acc_CRM_Chatbot_Announcement_Notification_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_Announcement_Notification_UpdStatus" SpName="Acc_CRM_ChatBot_Announcement_Notification_UpdStatus" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
     </Function>
 </Functions>

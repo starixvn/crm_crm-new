@@ -222,14 +222,14 @@ export default class Filter extends Component {
                     Rema<u>r</u>k
                 </a>
             </li>,
+            //<li style={{display: hasReadCustomerInfo ? '' : 'none' }}
+            //    id="li-redemption" key = "li-redemption" className={this.isCheckActive(pathname, 5)}>
+            //    <a onClick = {() => handleNavigate('Redemption')}>
+            //        Redem<u>p</u>tion
+            //    </a>
+            //</li>,
             <li style={{display: hasReadCustomerInfo ? '' : 'none' }}
-                id="li-redemption" key = "li-redemption" className={this.isCheckActive(pathname, 5)}>
-                <a onClick = {() => handleNavigate('Redemption')}>
-                    Redem<u>p</u>tion
-                </a>
-            </li>,
-            <li style={{display: hasReadCustomerInfo ? '' : 'none' }}
-                id="li-activity-log" key = "li-activity-log" className={this.isCheckActive(pathname, 6)}>
+                id="li-activity-log" key = "li-activity-log" className={this.isCheckActive(pathname, 5)}>
                 <a onClick = {() => handleNavigate('ActionLog')}>
                     Ac<u>t</u>ivity Log
                 </a>

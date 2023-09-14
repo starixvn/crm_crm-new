@@ -231,7 +231,7 @@ export default class DataGrid extends PureComponent {
     };
 
     renderCommunicationTool = (values, handleChange, isSubmitting) => {
-        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
+        const hasHostCustomerInfo = document.getElementById('hasHostCustomerInfo').checked;
         return (
                 <div className="hightlight-title">
                     <Row className="item title text-left">{LangHelper.getResource('CommunicationTool')}</Row>
@@ -395,7 +395,7 @@ export default class DataGrid extends PureComponent {
                             <Col md="3" />
                             <Col md="9">
                                 {
-                                    hasCreateFeedbackPermission &&
+                                    hasHostCustomerInfo &&
                                     <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
                                         <UnderlineButton.updateButton />
                                     </Button>
