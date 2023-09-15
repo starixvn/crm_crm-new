@@ -244,8 +244,14 @@ describe('AppContainer', () => {
             const state = {
                 policy: null
             };
+            const props = {
+                newAnnouncementPopup: {show: false},
+                contentPopup: {show: false},
+                actionAnnouncementPopup: {show: false},
+                cancelAnnouncementPopup: {show: false}
+            };
             // Act
-            const container = shallow(<AppContainer />);
+            const container = shallow(<AppContainer {...props}/>, { disableLifecycleMethods: true });
             container.instance().setState(state);
             const actual = container.instance().render();
             // Assert

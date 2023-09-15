@@ -28,7 +28,7 @@ describe('ContentTab', () => {
             const props = {settings: null};
             
             //Act
-            const content = shallow(<Content {...props}/>);
+            const content = shallow(<Content {...props}/>, { disableLifecycleMethods: true });
             content.instance().setState(state);
             // Assert 
             expect(content).toBeNull;
@@ -57,13 +57,37 @@ describe('ContentTab', () => {
                 },
                 id: 1
             };
-            const content = shallow(<Content {...props}/>);
+            const content = shallow(<Content {...props}/>, { disableLifecycleMethods: true });
             content.instance().setState(state);
             content.instance().handlePreviewImage = jest.fn();
             //Act
             content.find('.text-color').at(0).simulate('click');
             // Assert 
             expect(content.instance().handlePreviewImage).toHaveBeenCalled();
+        });
+    });
+
+    describe('componentDidMount', () => {
+        it('should call exact function', async () => {
+            //Arrange
+            const promiseAnnouncement = Promise.resolve({data: {data: [{siteNameList: '123'}], contents: [{EN: 'test en'}]}});
+            const promise = Promise.resolve([{settingValue: 'EN'}]);
+            const props = {
+                id: 1,
+                getLanguages: jest.fn(() => promise),
+                getAnnouncementById: jest.fn(() => promiseAnnouncement)
+            };
+            commonFunc.mapLabelLanguage = jest.fn(() => [{settingValue: 'EN'}]);
+
+            //Act
+            const content = shallow(<Content {...props}/>).instance();
+            content.initData = jest.fn();
+
+            content.componentDidMount();
+            await promise;
+
+            //Assert
+            expect(content.initData).toHaveBeenCalled();
         });
     });
 
@@ -79,7 +103,7 @@ describe('ContentTab', () => {
             commonFunc.mapLabelLanguage = jest.fn(() => [{settingValue: 'EN'}]);
             
             //Act
-            const content = shallow(<Content {...props}/>).instance();
+            const content = shallow(<Content {...props}/>, { disableLifecycleMethods: true }).instance();
             content.getContentByLanguage = jest.fn();
 
             content.initData();
@@ -111,7 +135,7 @@ describe('ContentTab', () => {
             };
             
             //Act
-            const content = shallow(<Content {...props}/>).instance();
+            const content = shallow(<Content {...props}/>, { disableLifecycleMethods: true }).instance();
             content.getSettingOption(announcement);
             await promise;
 
@@ -127,7 +151,7 @@ describe('ContentTab', () => {
                 languageCode: 'EN',
                 content: 'content'
             }];
-            const content = shallow(<Content />).instance();
+            const content = shallow(<Content />, { disableLifecycleMethods: true }).instance();
             // Act
             content.getContentByLanguage(contents);
             // Assert
@@ -138,7 +162,7 @@ describe('ContentTab', () => {
     describe('handleChangeTab', () => {
         it('should set exact state', () => {
             // Arrange
-            const content = shallow(<Content />).instance();
+            const content = shallow(<Content />, { disableLifecycleMethods: true }).instance();
             // Act
             content.handleChangeTab('EN');
             // Assert
@@ -154,7 +178,7 @@ describe('ContentTab', () => {
             };
             const props = {id: 1};
             window.open = jest.fn();
-            const content = shallow(<Content {...props}/>).instance();
+            const content = shallow(<Content {...props}/>, { disableLifecycleMethods: true }).instance();
             // Act
             content.handlePreviewImage(event, 'fileName');
             // Assert

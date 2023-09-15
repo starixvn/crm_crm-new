@@ -171,48 +171,48 @@ describe('ActionAnnouncement', () => {
     });
 
     describe('setStateUploadFile', () => {
-        let newAnnouncement;
+        let actionAnnouncement;
         let uploadedFiles;
         let fileNameRemove;
       
         beforeEach(() => {
-            newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true });
+            actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true });
             uploadedFiles = [new File([''], 'file1.jpg', { type: 'image/jpeg' })];
             fileNameRemove = null;
         });
       
         it('should remove fileNameRemove from invalidWidthHeight when fileNameRemove is passed as an argument', () => {
-            newAnnouncement.setState({ invalidWidthHeight: ['file1.jpg', 'file2.jpg'] });
+            actionAnnouncement.setState({ invalidWidthHeight: ['file1.jpg', 'file2.jpg'] });
             fileNameRemove = 'file2.jpg';
       
-            newAnnouncement.instance().setStateUploadFile(uploadedFiles, fileNameRemove);
+            actionAnnouncement.instance().setStateUploadFile(uploadedFiles, fileNameRemove);
       
-            expect(newAnnouncement.state('invalidWidthHeight')).toEqual(['file1.jpg']);
+            expect(actionAnnouncement.state('invalidWidthHeight')).toEqual(['file1.jpg']);
         });
       
-        it('should set uploadedFiles in the newAnnouncement state', () => {
-            newAnnouncement.instance().setStateUploadFile(uploadedFiles, fileNameRemove);
+        it('should set uploadedFiles in the actionAnnouncement state', () => {
+            actionAnnouncement.instance().setStateUploadFile(uploadedFiles, fileNameRemove);
       
-            expect(newAnnouncement.state('uploadedFiles')).toEqual(uploadedFiles);
+            expect(actionAnnouncement.state('uploadedFiles')).toEqual(uploadedFiles);
         });
       });
     
     describe('setStateUploadFile', () => {
-        let newAnnouncement;
+        let actionAnnouncement;
       
         beforeEach(() => {
-            newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true });
+            actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true });
         });
       
         it('should set state for valid uploaded files', () => {
             const file1 = new File(['content'], 'file1.jpg', { type: 'image/jpeg' });
             const file2 = new File(['content'], 'file2.jpg', { type: 'image/jpeg' });
         
-            newAnnouncement.instance().setStateUploadFile([file1, file2], null);
+            actionAnnouncement.instance().setStateUploadFile([file1, file2], null);
         
             // Assert
-            expect(newAnnouncement.state('invalidWidthHeight')).toEqual([]);
-            expect(newAnnouncement.state('uploadedFiles')).toEqual([file1, file2]);
+            expect(actionAnnouncement.state('invalidWidthHeight')).toEqual([]);
+            expect(actionAnnouncement.state('uploadedFiles')).toEqual([file1, file2]);
         });
       
         it('should filter out invalid files based on dimensions', () => {
@@ -222,16 +222,16 @@ describe('ActionAnnouncement', () => {
             const validFile = new File(['content'], 'valid.jpg', { type: 'image/jpeg' });
             validFile.height = 3000;
         
-            newAnnouncement.instance().setStateUploadFile([invalidFile, validFile], null);
+            actionAnnouncement.instance().setStateUploadFile([invalidFile, validFile], null);
         
             // Assert
-            expect(newAnnouncement.state('invalidWidthHeight')).toEqual([]);
+            expect(actionAnnouncement.state('invalidWidthHeight')).toEqual([]);
         });
       
         it('should remove a file and associated errors', () => {
             const fileToRemove = new File(['content'], 'fileToRemove.jpg', { type: 'image/jpeg' });
       
-            newAnnouncement.setState({
+            actionAnnouncement.setState({
                 invalidWidthHeight: ['fileToRemove.jpg'],
                 uploadedFiles: [fileToRemove],
                 errorDrafts: {
@@ -240,12 +240,12 @@ describe('ActionAnnouncement', () => {
                 }
             });
       
-            newAnnouncement.instance().setStateUploadFile([], 'fileToRemove.jpg');
+            actionAnnouncement.instance().setStateUploadFile([], 'fileToRemove.jpg');
             // Assert
-            expect(newAnnouncement.state('invalidWidthHeight')).toEqual([]);
-            expect(newAnnouncement.state('uploadedFiles')).toEqual([]);
-            expect(newAnnouncement.state('errorDrafts').invalidFileSizeDraft).toEqual([]);
-            expect(newAnnouncement.state('errorDrafts').invalidFileTypeDraft).toEqual([]);
+            expect(actionAnnouncement.state('invalidWidthHeight')).toEqual([]);
+            expect(actionAnnouncement.state('uploadedFiles')).toEqual([]);
+            expect(actionAnnouncement.state('errorDrafts').invalidFileSizeDraft).toEqual([]);
+            expect(actionAnnouncement.state('errorDrafts').invalidFileTypeDraft).toEqual([]);
         });
     });
 
@@ -350,19 +350,19 @@ describe('ActionAnnouncement', () => {
                 preventDefault: jest.fn(),
                 target: {value: 'value'}
             };
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.formik = {
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.formik = {
                 setFieldValue: jest.fn()
             };
-            newAnnouncement.getContentByTemplateId = jest.fn();
+            actionAnnouncement.getContentByTemplateId = jest.fn();
 
             //Act
-            newAnnouncement.handleChangeNotificationTemplate(event);
+            actionAnnouncement.handleChangeNotificationTemplate(event);
 
             // Assert
-            expect(newAnnouncement.formik.setFieldValue).toHaveBeenCalledTimes(2);
-            expect(newAnnouncement.getContentByTemplateId).toHaveBeenCalled();
-            expect(newAnnouncement.state.isChangeTemplate).toEqual(true);
+            expect(actionAnnouncement.formik.setFieldValue).toHaveBeenCalledTimes(2);
+            expect(actionAnnouncement.getContentByTemplateId).toHaveBeenCalled();
+            expect(actionAnnouncement.state.isChangeTemplate).toEqual(true);
 
         });
     });
@@ -381,48 +381,48 @@ describe('ActionAnnouncement', () => {
             };
             const state = {tab: 'EN'};
             commonFunc.setValueContent = jest.fn();
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState(state);
-            newAnnouncement.formik = { setFieldValue: jest.fn() };
-            newAnnouncement.handleGetParameters = jest.fn();
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState(state);
+            actionAnnouncement.formik = { setFieldValue: jest.fn() };
+            actionAnnouncement.handleGetParameters = jest.fn();
 
             //Act
-            newAnnouncement.getContentByTemplateId(1);
+            actionAnnouncement.getContentByTemplateId(1);
 
             // Assert
-            expect(newAnnouncement.formik.setFieldValue).toHaveBeenCalledTimes(1);
-            expect(newAnnouncement.handleGetParameters).toHaveBeenCalled();
+            expect(actionAnnouncement.formik.setFieldValue).toHaveBeenCalledTimes(1);
+            expect(actionAnnouncement.handleGetParameters).toHaveBeenCalled();
         });
     });
 
     describe('handleGetParameters', () => {
         it('set exact params', () => {
             // Arrange
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
 
             //Act
-            newAnnouncement.handleGetParameters("{test param}");
+            actionAnnouncement.handleGetParameters("{test param}");
 
             // Assert
-            expect(newAnnouncement.state.parameters).toEqual(["{test param}"]);
+            expect(actionAnnouncement.state.parameters).toEqual(["{test param}"]);
         });
     });
 
     describe('handleChangeTab', () => {
         it('call exact function', () => {
             // Arrange
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.formik = {
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.formik = {
                 values: { content: {EN: 'test'} },
                 setFieldValue: jest.fn()
             };
-            newAnnouncement.handleGetParameters = jest.fn();
+            actionAnnouncement.handleGetParameters = jest.fn();
             //Act
-            newAnnouncement.handleChangeTab('EN');
+            actionAnnouncement.handleChangeTab('EN');
 
             // Assert
-            expect(newAnnouncement.state.tab).toEqual('EN');
-            expect(newAnnouncement.handleGetParameters).toHaveBeenCalled();
+            expect(actionAnnouncement.state.tab).toEqual('EN');
+            expect(actionAnnouncement.handleGetParameters).toHaveBeenCalled();
         });
     });
 
@@ -436,17 +436,17 @@ describe('ActionAnnouncement', () => {
                 }
             };
             const event = { clipboardData: { getData: jest.fn().mockReturnValueOnce('text') }, preventDefault: jest.fn() };
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.headlineInputRef = {
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.headlineInputRef = {
                 current: {focus: jest.fn()}
             };
-            newAnnouncement.handleSetValueHeadline = jest.fn();
-            newAnnouncement.setState(state);
+            actionAnnouncement.handleSetValueHeadline = jest.fn();
+            actionAnnouncement.setState(state);
             // Act
-            newAnnouncement.handlePasteGroupHeadline(event);
+            actionAnnouncement.handlePasteGroupHeadline(event);
             jest.runAllTimers();
             // Assert
-            expect(newAnnouncement.headlineInputRef.current.focus).toHaveBeenCalled();
+            expect(actionAnnouncement.headlineInputRef.current.focus).toHaveBeenCalled();
         });
     });
 
@@ -456,16 +456,16 @@ describe('ActionAnnouncement', () => {
             const state = {
                 headlineGroups: []
             };
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.headlineInputRef = {
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.headlineInputRef = {
                 current: {value: '1', focus: jest.fn()}
             };
-            newAnnouncement.setState(state);
+            actionAnnouncement.setState(state);
             // Act
-            newAnnouncement.handleSetValueHeadline(['1, 2']);
+            actionAnnouncement.handleSetValueHeadline(['1, 2']);
             // Assert
-            expect(newAnnouncement.state.headlineGroups).toEqual(['1, 2']);
-            expect(newAnnouncement.headlineInputRef.current.value).toEqual('');
+            expect(actionAnnouncement.state.headlineGroups).toEqual(['1, 2']);
+            expect(actionAnnouncement.headlineInputRef.current.value).toEqual('');
         });
     });
 
@@ -476,13 +476,13 @@ describe('ActionAnnouncement', () => {
                 headlineGroups: []
             };
             const event = {target: {value: 'value,'}, preventDefault: jest.fn()};
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState(state);
-            newAnnouncement.handleSetValueHeadline = jest.fn();
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState(state);
+            actionAnnouncement.handleSetValueHeadline = jest.fn();
             // Act
-            newAnnouncement.handleChangeInputHeadline(event);
+            actionAnnouncement.handleChangeInputHeadline(event);
             // Assert
-            expect(newAnnouncement.handleSetValueHeadline).toHaveBeenCalledWith(['value']);
+            expect(actionAnnouncement.handleSetValueHeadline).toHaveBeenCalledWith(['value']);
             expect(event.preventDefault).toHaveBeenCalled();
         });
 
@@ -492,13 +492,13 @@ describe('ActionAnnouncement', () => {
                 headlineGroups: [1,2,3]
             };
             const event = {keyCode: 8, preventDefault: jest.fn(), target: {value: ''}};
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState(state);
-            newAnnouncement.setState = jest.fn();
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState(state);
+            actionAnnouncement.setState = jest.fn();
             // Act
-            newAnnouncement.handleChangeInputHeadline(event);
+            actionAnnouncement.handleChangeInputHeadline(event);
             // Assert
-            expect(newAnnouncement.setState).toHaveBeenCalled();
+            expect(actionAnnouncement.setState).toHaveBeenCalled();
         });
     });
 
@@ -509,17 +509,17 @@ describe('ActionAnnouncement', () => {
                 headlineGroups: []
             };
             const event = {target: {value: 'value'}, preventDefault: jest.fn()};
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState(state);
-            newAnnouncement.handleSetValueHeadline = jest.fn();
-            newAnnouncement.headlineInputRef = {
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState(state);
+            actionAnnouncement.handleSetValueHeadline = jest.fn();
+            actionAnnouncement.headlineInputRef = {
                 current: {value: '1', focus: jest.fn()}
             };
             // Act
-            newAnnouncement.handleBlurInputHeadline(event);
+            actionAnnouncement.handleBlurInputHeadline(event);
             // Assert
-            expect(newAnnouncement.state.headlineGroups).toEqual(['value']);
-            expect(newAnnouncement.headlineInputRef.current.value).toEqual('');
+            expect(actionAnnouncement.state.headlineGroups).toEqual(['value']);
+            expect(actionAnnouncement.headlineInputRef.current.value).toEqual('');
         });
     });
 
@@ -533,37 +533,37 @@ describe('ActionAnnouncement', () => {
                 }
             };
             const event = {target: {value: 'value'}, stopPropagation: jest.fn()};
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState(state);
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState(state);
             // Act
-            newAnnouncement.handleRemoveHeadline(event, '1');
+            actionAnnouncement.handleRemoveHeadline(event, '1');
             // Assert
-            expect(newAnnouncement.state.headlineGroups).toEqual(['2']);
+            expect(actionAnnouncement.state.headlineGroups).toEqual(['2']);
         });
     });
 
     describe('handleOptionChange', () => {
         it('should call setState', () => {
             // Arrange
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState = jest.fn();
-            newAnnouncement.formik = { setFieldValue: jest.fn() };
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState = jest.fn();
+            actionAnnouncement.formik = { setFieldValue: jest.fn() };
             // Act
-            newAnnouncement.handleOptionChange('site', '1');
+            actionAnnouncement.handleOptionChange('site', '1');
             // Assert
-            expect(newAnnouncement.formik.setFieldValue).toHaveBeenCalled();
+            expect(actionAnnouncement.formik.setFieldValue).toHaveBeenCalled();
         });
     });
 
     describe('handleDateChange', () => {
         it('should call exact function', () => {
             // Arrange
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.formik = {setFieldValue: jest.fn()};
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.formik = {setFieldValue: jest.fn()};
             // Act
-            newAnnouncement.handleDateChange('value');
+            actionAnnouncement.handleDateChange('value');
             // Assert
-            expect(newAnnouncement.formik.setFieldValue).toHaveBeenCalled();
+            expect(actionAnnouncement.formik.setFieldValue).toHaveBeenCalled();
         });
     });
 
@@ -574,8 +574,8 @@ describe('ActionAnnouncement', () => {
             const param = 'old value';
             const removeSpaceParam = ['param2', 'param3'];
             const state = {tab: 'tab1'};
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.formik = {
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.formik = {
                 setFieldValue: jest.fn(),
                 values: {
                     cloneContent: {
@@ -587,11 +587,11 @@ describe('ActionAnnouncement', () => {
                     param3: 'param3 value'
                 }
             };
-            newAnnouncement.setState(state);
+            actionAnnouncement.setState(state);
             // Act
-            newAnnouncement.handleChangeParameter(event, param, removeSpaceParam);
+            actionAnnouncement.handleChangeParameter(event, param, removeSpaceParam);
             // Assert
-            expect(newAnnouncement.formik.setFieldValue).toHaveBeenCalledWith('param1', 'new value');
+            expect(actionAnnouncement.formik.setFieldValue).toHaveBeenCalledWith('param1', 'new value');
         });
     });
 
@@ -599,27 +599,27 @@ describe('ActionAnnouncement', () => {
         it('should call exact function', () => {
             // Arrange
             const value = 'Send At';
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.formik = {
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.formik = {
                 setFieldValue: jest.fn()
             };
-            newAnnouncement.setState = jest.fn();
+            actionAnnouncement.setState = jest.fn();
             // Act
-            newAnnouncement.handleChangeSendType(value);
+            actionAnnouncement.handleChangeSendType(value);
             // Assert
-            expect(newAnnouncement.setState).toHaveBeenCalled();
+            expect(actionAnnouncement.setState).toHaveBeenCalled();
         });
     });
 
     describe('handleCheckHeadline', () => {
         it('should call exact function', () => {
             // Arrange
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState = jest.fn();
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState = jest.fn();
             // Act
-            newAnnouncement.handleCheckHeadline('fieldTrue','fieldFalse');
+            actionAnnouncement.handleCheckHeadline('fieldTrue','fieldFalse');
             // Assert
-            expect(newAnnouncement.setState).toHaveBeenCalled();
+            expect(actionAnnouncement.setState).toHaveBeenCalled();
         });
     });
 
@@ -635,10 +635,10 @@ describe('ActionAnnouncement', () => {
                 isLoadGrid: true,
                 filterParams: true
             }
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState = jest.fn();
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState = jest.fn();
             // Act
-            const actual = newAnnouncement.getStateDataGrid('fieldTrue','fieldFalse');
+            const actual = actionAnnouncement.getStateDataGrid('fieldTrue','fieldFalse');
             // Assert
             expect(actual).toEqual(expected);
         });
@@ -654,10 +654,10 @@ describe('ActionAnnouncement', () => {
                 setCreateAnnouncement: jest.fn(),
                 navigate: jest.fn(),
             };
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.getStateDataGrid = jest.fn();
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.getStateDataGrid = jest.fn();
             // Act
-            newAnnouncement.handleRedirectAnnouncement();
+            actionAnnouncement.handleRedirectAnnouncement();
             // Assert
             expect(props.setIsRefresh).toHaveBeenCalled();
             expect(props.setEditAnnouncement).toHaveBeenCalled();
@@ -676,10 +676,10 @@ describe('ActionAnnouncement', () => {
                 setCreateAnnouncement: jest.fn(),
                 navigate: jest.fn(),
             };
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.getStateDataGrid = jest.fn();
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.getStateDataGrid = jest.fn();
             // Act
-            newAnnouncement.handleClose();
+            actionAnnouncement.handleClose();
             // Assert
 
             expect(props.setEditAnnouncement).toHaveBeenCalled();
@@ -706,15 +706,15 @@ describe('ActionAnnouncement', () => {
             };
             const formData = new FormData();
             commonFunc.getParams = jest.fn(() => formData);
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState = jest.fn();
-            newAnnouncement.handleRedirectAnnouncement = jest.fn();
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState = jest.fn();
+            actionAnnouncement.handleRedirectAnnouncement = jest.fn();
             // Act
-            newAnnouncement.handleSaveDraft(event, {});
+            actionAnnouncement.handleSaveDraft(event, {});
             await promise;
             jest.runAllTimers();
             // Assert
-            expect(newAnnouncement.handleRedirectAnnouncement).toHaveBeenCalled();
+            expect(actionAnnouncement.handleRedirectAnnouncement).toHaveBeenCalled();
         });
 
         it('should call exactly function when not successfully', async () => {
@@ -733,34 +733,34 @@ describe('ActionAnnouncement', () => {
             };
             const formData = new FormData();
             commonFunc.getParams = jest.fn(() => formData);
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState = jest.fn();
-            newAnnouncement.formik = { setSubmitting: jest.fn() };
-            newAnnouncement.handleRedirectAnnouncement = jest.fn();
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState = jest.fn();
+            actionAnnouncement.formik = { setSubmitting: jest.fn() };
+            actionAnnouncement.handleRedirectAnnouncement = jest.fn();
             // Act
-            newAnnouncement.handleSaveDraft(event, {});
+            actionAnnouncement.handleSaveDraft(event, {});
             await promise;
             jest.runAllTimers();
             // Assert
-            expect(newAnnouncement.formik.setSubmitting).toHaveBeenCalled();
+            expect(actionAnnouncement.formik.setSubmitting).toHaveBeenCalled();
         });
     });
 
     describe('renderMessage', () => {
         it('should return exact value when result is successfully', () => {
             // Arrange
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
             // Act
-            const actual = newAnnouncement.renderMessage({isSuccessful: true, message: 'test1;test2'});
+            const actual = actionAnnouncement.renderMessage({isSuccessful: true, message: 'test1;test2'});
             // Assert
             expect(actual).toEqual(['test1;test2']);
         });
 
         it('should return exact value when result is not successfully', () => {
             // Arrange
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
             // Act
-            const actual = newAnnouncement.renderMessage({isSuccessful: false, message: 'test1;test2'});
+            const actual = actionAnnouncement.renderMessage({isSuccessful: false, message: 'test1;test2'});
             // Assert
             expect(actual).toEqual(['test1', 'test2']);
         });
@@ -781,10 +781,10 @@ describe('ActionAnnouncement', () => {
         it('should return exact content when send type is Send At', () => {
             // Arrange
             DateTimeService.toLongDateTimeFormat = jest.fn(() => new Date('2023-01-01'));
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.renderContentType = jest.fn(() => contentType);
-            newAnnouncement.setState({ confirmActionDialog: confirmActionDialog });
-            newAnnouncement.formik = {
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.renderContentType = jest.fn(() => contentType);
+            actionAnnouncement.setState({ confirmActionDialog: confirmActionDialog });
+            actionAnnouncement.formik = {
                 values:{
                     sendType: 'Send At',
                     sendDate: new Date('2023-01-01')
@@ -792,23 +792,23 @@ describe('ActionAnnouncement', () => {
             };
 
             // Act
-            const actual = newAnnouncement.renderContentConfirm();
+            const actual = actionAnnouncement.renderContentConfirm();
             // Assert
         });
 
         it('should return exact content when send type is not Send At', () => {
             // Arrange
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.renderContentType = jest.fn(() => contentType);
-            newAnnouncement.setState({ confirmActionDialog: confirmActionDialog });
-            newAnnouncement.formik = {
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.renderContentType = jest.fn(() => contentType);
+            actionAnnouncement.setState({ confirmActionDialog: confirmActionDialog });
+            actionAnnouncement.formik = {
                 values:{
                     sendType: 'Send Immediately'
                 }
             };
 
             // Act
-            const actual = newAnnouncement.renderContentConfirm();
+            const actual = actionAnnouncement.renderContentConfirm();
             // Assert
         });
     });
@@ -832,16 +832,16 @@ describe('ActionAnnouncement', () => {
             };
             const formData = new FormData();
             commonFunc.getParams = jest.fn(() => formData);
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState = jest.fn();
-            newAnnouncement.handleCheckValidAllContent = jest.fn(() => false);
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState = jest.fn();
+            actionAnnouncement.handleCheckValidAllContent = jest.fn(() => false);
             // Act
-            newAnnouncement.handleSubmit({content: {}}, {setSubmitting});
+            actionAnnouncement.handleSubmit({content: {}}, {setSubmitting});
             await promise;
             jest.runAllTimers();
 
             // Assert
-            expect(newAnnouncement.setState).toHaveBeenCalled();
+            expect(actionAnnouncement.setState).toHaveBeenCalled();
             expect(props.validateAnnouncement).toHaveBeenCalled();
         });
 
@@ -863,17 +863,17 @@ describe('ActionAnnouncement', () => {
             };
             const formData = new FormData();
             commonFunc.getParams = jest.fn(() => formData);
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState = jest.fn();
-            newAnnouncement.handleCheckValidAllContent = jest.fn(() => false);
-            newAnnouncement.formik = { setSubmitting: jest.fn() };
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState = jest.fn();
+            actionAnnouncement.handleCheckValidAllContent = jest.fn(() => false);
+            actionAnnouncement.formik = { setSubmitting: jest.fn() };
             // Act
-            newAnnouncement.handleSubmit({content: {}}, {setSubmitting});
+            actionAnnouncement.handleSubmit({content: {}}, {setSubmitting});
             await promise;
             jest.runAllTimers();
 
             // Assert
-            expect(newAnnouncement.formik.setSubmitting).toHaveBeenCalled();
+            expect(actionAnnouncement.formik.setSubmitting).toHaveBeenCalled();
         });
     });
 
@@ -897,10 +897,10 @@ describe('ActionAnnouncement', () => {
                 currencyList: '1,2',
             };
 
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
 
             // Act
-            const actual = newAnnouncement.renderContentType(contentConfirm);
+            const actual = actionAnnouncement.renderContentType(contentConfirm);
 
             // Assert
             expect(actual.headlineType).toBe('Type2');
@@ -930,17 +930,17 @@ describe('ActionAnnouncement', () => {
                     params: {}
                 }
             };
-            const newAnnouncement = shallow(<ActionAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState(state);
-            newAnnouncement.handleRedirectAnnouncement = jest.fn();
-            newAnnouncement.handleCloseConfirmEditDialog = jest.fn();
-            newAnnouncement.formik = {
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState(state);
+            actionAnnouncement.handleRedirectAnnouncement = jest.fn();
+            actionAnnouncement.handleCloseConfirmEditDialog = jest.fn();
+            actionAnnouncement.formik = {
                 setSubmitting: jest.fn(),
                 values:{sendType: 'Send Now'}
             };
 
             // Act
-            newAnnouncement.handleConfirmActionDialog();
+            actionAnnouncement.handleConfirmActionDialog();
             await promise;
             jest.runAllTimers();
 
@@ -968,36 +968,36 @@ describe('ActionAnnouncement', () => {
                     params: {}
                 }
             };
-            const newAnnouncement = shallow(<ActionAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState(state);
-            newAnnouncement.handleRedirectAnnouncement = jest.fn();
-            newAnnouncement.handleCloseConfirmEditDialog = jest.fn();
-            newAnnouncement.formik = {
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState(state);
+            actionAnnouncement.handleRedirectAnnouncement = jest.fn();
+            actionAnnouncement.handleCloseConfirmEditDialog = jest.fn();
+            actionAnnouncement.formik = {
                 setSubmitting: jest.fn(),
                 values:{sendType: 'Send At'}
             };
             // Act
-            newAnnouncement.handleConfirmActionDialog();
+            actionAnnouncement.handleConfirmActionDialog();
             await promise;
             jest.runAllTimers();
 
             // Assert
-            expect(newAnnouncement.formik.setSubmitting).toHaveBeenCalled();
+            expect(actionAnnouncement.formik.setSubmitting).toHaveBeenCalled();
         });
     });
 
     describe('handleCloseConfirmEditDialog', () => {
         it('should call exact function', () => {
             // Arrange
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.formik = {
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.formik = {
                 setSubmitting: jest.fn()
             };
             // Act
-            newAnnouncement.handleCloseConfirmEditDialog();
+            actionAnnouncement.handleCloseConfirmEditDialog();
             // Assert
-            expect(newAnnouncement.state.confirmActionDialog).toEqual({ show: false, params: null, content: null });
-            expect(newAnnouncement.formik.setSubmitting).toHaveBeenCalledWith(false);
+            expect(actionAnnouncement.state.confirmActionDialog).toEqual({ show: false, params: null, content: null });
+            expect(actionAnnouncement.formik.setSubmitting).toHaveBeenCalledWith(false);
         });
     });
 
@@ -1005,10 +1005,10 @@ describe('ActionAnnouncement', () => {
         it('should call exact function', () => {
             // Arrange
             commonFunc.setValueContent = jest.fn();
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.formik = {setFieldValue: jest.fn()};
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.formik = {setFieldValue: jest.fn()};
             // Act
-            newAnnouncement.getContentTab({});
+            actionAnnouncement.getContentTab({});
             // Assert
             expect(commonFunc.setValueContent).toHaveBeenCalled();
         });
@@ -1022,13 +1022,13 @@ describe('ActionAnnouncement', () => {
                 getLanguages: jest.fn(() => promise)
             };
             commonFunc.mapLabelLanguage = jest.fn(() => [{settingValue: 'EN'}]);
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
             // Act
-            newAnnouncement.getLanguages();
+            actionAnnouncement.getLanguages();
             await promise;
             // Assert
-            expect(newAnnouncement.state.languages).toEqual([{settingValue: 'EN'}]);
-            expect(newAnnouncement.state.tab).toEqual('EN');
+            expect(actionAnnouncement.state.languages).toEqual([{settingValue: 'EN'}]);
+            expect(actionAnnouncement.state.tab).toEqual('EN');
         });
     });
 
@@ -1044,16 +1044,16 @@ describe('ActionAnnouncement', () => {
                 { languageCode: 'en', content: 'English Content' },
                 { languageCode: 'fr', content: 'French Content' }
             ];
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true });
-            newAnnouncement.instance().handleGetParameters = jest.fn();
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true });
+            actionAnnouncement.instance().handleGetParameters = jest.fn();
 
             // Act
-            newAnnouncement.instance().getContentByLanguage(contents);
+            actionAnnouncement.instance().getContentByLanguage(contents);
 
             // Assert
-            expect(newAnnouncement.state('isChangeTemplate')).toBe(true);
-            expect(newAnnouncement.state('content')).toEqual({ en: 'English Content', fr: 'French Content' });
-            expect(newAnnouncement.state('cloneContent')).toEqual({ en: 'English Content', fr: 'French Content' });
+            expect(actionAnnouncement.state('isChangeTemplate')).toBe(true);
+            expect(actionAnnouncement.state('content')).toEqual({ en: 'English Content', fr: 'French Content' });
+            expect(actionAnnouncement.state('cloneContent')).toEqual({ en: 'English Content', fr: 'French Content' });
         });
     });
 
@@ -1081,50 +1081,50 @@ describe('ActionAnnouncement', () => {
                 // Add more announcement data as needed
             };
            
-            const newAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.setState(state);
+            const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.setState(state);
             // Act
-            newAnnouncement.getSettingOption(announcement);
+            actionAnnouncement.getSettingOption(announcement);
             await promise;
             jest.runAllTimers();
             // Assert
-            expect(newAnnouncement.state.siteOptions).toEqual([{checked: false, id: '1', name: '1'}]);
+            expect(actionAnnouncement.state.siteOptions).toEqual([{checked: false, id: '1', name: '1'}]);
         });
     });
 
     describe('checkShowHeadlineGroup', () => {
         it('should return true if siteNameList is defined', () => {
             const announcement = { siteNameList: ['Site1', 'Site2'] };
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            const actual = newAnnouncement.checkShowHeadlineGroup(announcement);
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actual = actionAnnouncement.checkShowHeadlineGroup(announcement);
             expect(actual).toBe(true);
         });
       
         it('should return true if currencyIdList is defined', () => {
             const announcement = { currencyIdList: '1,2,3' };
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            const actual = newAnnouncement.checkShowHeadlineGroup(announcement);
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actual = actionAnnouncement.checkShowHeadlineGroup(announcement);
             expect(actual).toBe(true);
         });
       
         it('should return true if headlineType is a number', () => {
             const announcement = { headlineType: 123 };
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            const actual = newAnnouncement.checkShowHeadlineGroup(announcement);
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actual = actionAnnouncement.checkShowHeadlineGroup(announcement);
             expect(actual).toBe(true);
         });
       
         it('should return false if none of the conditions are met', () => {
             const announcement = {};
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            const actual = newAnnouncement.checkShowHeadlineGroup(announcement);
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actual = actionAnnouncement.checkShowHeadlineGroup(announcement);
             expect(actual).toBe(false);
         });
       
         it('should return true if any of the conditions are met', () => {
             const announcement = { siteNameList: ['Site1'], headlineType: 456 };
-            const newAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
-            const actual = newAnnouncement.checkShowHeadlineGroup(announcement);
+            const actionAnnouncement = shallow(<ActionAnnouncement />, { disableLifecycleMethods: true }).instance();
+            const actual = actionAnnouncement.checkShowHeadlineGroup(announcement);
             expect(actual).toBe(true);
         });
     });
@@ -1174,6 +1174,9 @@ describe('ActionAnnouncement', () => {
             actionAnnouncement.handleCloseConfirmEditDialog = jest.fn();
             actionAnnouncement.handleConfirmActionDialog = jest.fn();
             actionAnnouncement.setState(state);
+            actionAnnouncement.formik = {
+                setSubmitting: jest.fn()
+            };
             // Act
             const form = shallow(actionAnnouncement.renderForm(formikProps));
             form.find('.form-input-param').at(0).simulate('change');
