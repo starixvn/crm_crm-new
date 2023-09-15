@@ -13,6 +13,8 @@ namespace CRM.Services.HeadlineNotification
     {
         private readonly IBaseService baseService;
         private readonly ICommonService commonService;
+        private readonly string FormatMMMddyyyy = "MMM dd, yyyy";
+        private readonly string Formathhmmsstt = "hh:mm:ss tt";
 
 
         public AnnouncementService(
@@ -38,14 +40,14 @@ namespace CRM.Services.HeadlineNotification
                 {
                     var convertSendDateToClient = commonService.ConvertToClientDateTime((DateTime)announcement.SendDate);
                     announcement.SendDate = convertSendDateToClient;
-                    announcement.SendDateString = convertSendDateToClient.ToString("MMM dd, yyyy");
-                    announcement.SendTimeString = convertSendDateToClient.ToString("hh:mm:ss tt");
+                    announcement.SendDateString = convertSendDateToClient.ToString(FormatMMMddyyyy);
+                    announcement.SendTimeString = convertSendDateToClient.ToString(Formathhmmsstt);
                 }
 
                 var convertCreatedTimeToClient = commonService.ConvertToClientDateTime(announcement.CreatedTime);
                 announcement.CreatedTime = convertCreatedTimeToClient;
-                announcement.CreatedDateString = convertCreatedTimeToClient.ToString("MMM dd, yyyy");
-                announcement.CreatedTimeString = convertCreatedTimeToClient.ToString("hh:mm:ss tt");
+                announcement.CreatedDateString = convertCreatedTimeToClient.ToString(FormatMMMddyyyy);
+                announcement.CreatedTimeString = convertCreatedTimeToClient.ToString(Formathhmmsstt);
             }
             return announcements;
         }
@@ -82,8 +84,8 @@ namespace CRM.Services.HeadlineNotification
                 {
                     var convertSendDateToClient = commonService.ConvertToClientDateTime((DateTime)announcement.SendDate);
                     announcement.SendDate = convertSendDateToClient;
-                    announcement.SendDateString = convertSendDateToClient.ToString("MMM dd, yyyy");
-                    announcement.SendTimeString = convertSendDateToClient.ToString("hh:mm:ss tt");
+                    announcement.SendDateString = convertSendDateToClient.ToString(FormatMMMddyyyy);
+                    announcement.SendTimeString = convertSendDateToClient.ToString(Formathhmmsstt);
                 }
             }
             return new ValueTuple<IEnumerable<AnnouncementDetail>, IEnumerable<ContentInfo>>(announcements, contents);
@@ -110,8 +112,8 @@ namespace CRM.Services.HeadlineNotification
                     {
                         var convertSendDateToClient = commonService.ConvertToClientDateTime((DateTime)announcement.SendDate);
                         announcement.SendDate = convertSendDateToClient;
-                        announcement.SendDateString = convertSendDateToClient.ToString("MMM dd, yyyy");
-                        announcement.SendTimeString = convertSendDateToClient.ToString("hh:mm:ss tt");
+                        announcement.SendDateString = convertSendDateToClient.ToString(FormatMMMddyyyy);
+                        announcement.SendTimeString = convertSendDateToClient.ToString(Formathhmmsstt);
                     }
                 }
             }
