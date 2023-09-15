@@ -190,7 +190,7 @@ export default class Filter extends Component {
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
         const isReadRemark = this.state.remarksPolicy >= Policy.Read;
-        const {handleNavigate} = this.props;
+        const { handleNavigate } = this.props;
         const subMenusHtml = [
             <li style={{display: hasReadFeedbackPermission || hasReadCustomerInfo ? '' : 'none' }}
                 id="li-main" key= "li-main" className={this.isCheckActive(pathname, 0)}>

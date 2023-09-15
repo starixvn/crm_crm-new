@@ -3,7 +3,7 @@ import { UNSAFE_NavigationContext as NavigationContext } from 'react-router-dom'
 import LangHelper from '@jsroot/common/langHelper';
 
 const useBlocker = function( blocker, when = true ) {
-    const { navigator } = useContext( NavigationContext );
+    const { navigator } = useContext(NavigationContext);
     useEffect( () => {
         if(!when) {
             return undefined;
@@ -36,7 +36,7 @@ const usePrompt = function( message, when = true ) {
     useBlocker( blocker, when );
 };
 
-export const FormCheckDirtyComponent = ({isDirty, tab}) => {
+export const FormCheckDirtyComponent = ({ isDirty, tab }) => {
     const message = LangHelper.formatString(LangHelper.getResource('ThereAreSomeChangesOnTabConfirmMessage'), tab);
     usePrompt(message, isDirty );
     return null;
