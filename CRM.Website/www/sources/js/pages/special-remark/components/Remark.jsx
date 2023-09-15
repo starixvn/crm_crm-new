@@ -7,8 +7,6 @@ import CkEditor from '@jsroot/components/ckeditor/index';
 import LangHelper from '@jsroot/common/langHelper';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import Site from '@jsroot/common/site';
-import { Policy, FunctionKey } from '@jsroot/common/constants';
-import { getPermission } from '@jsroot/common/shareScripts';
 import { FormCheckDirtyComponent } from '@jsroot/components/UseBlocker';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
@@ -31,21 +29,21 @@ export class Remark extends Component {
     }
 
     async componentDidMount() {
-        await this.props.getRemarks({customerId: this.props.id});
+        await this.props.getRemarks({ customerId: this.props.id });
         document.title = LangHelper.getResource('CRMSystem');
         const { gridData } = this.props;
-        if(!gridData){
+        if (!gridData) {
             return;
         }
         this.setState({
-            specialRemarks: [...gridData.specialRemarks,''],
-            dataSpecialRemarks: [...gridData.specialRemarks,''],
-            normalRemarks: [...gridData.normalRemarks,''],
-            dataNormalRemarks: [...gridData.normalRemarks,'']
+            specialRemarks: [...gridData.specialRemarks, ''],
+            dataSpecialRemarks: [...gridData.specialRemarks, ''],
+            normalRemarks: [...gridData.normalRemarks, ''],
+            dataNormalRemarks: [...gridData.normalRemarks, '']
         });
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.resetState();
     }
 
@@ -73,15 +71,15 @@ export class Remark extends Component {
 
     removeSpecialRemarkItem = index => {
         this.setState(prevState => ({
-            specialRemarks: [...prevState.specialRemarks.filter((item,i) => i !== index)],
-            dataSpecialRemarks: [...prevState.dataSpecialRemarks.filter((item,i) => i !== index)]
+            specialRemarks: [...prevState.specialRemarks.filter((item, i) => i !== index)],
+            dataSpecialRemarks: [...prevState.dataSpecialRemarks.filter((item, i) => i !== index)]
         }));
     };
 
     removeNormalRemarkItem = index => {
         this.setState(prevState => ({
-            normalRemarks: [...prevState.normalRemarks.filter((item,i) => i !== index)],
-            dataNormalRemarks: [...prevState.dataNormalRemarks.filter((item,i) => i !== index)]
+            normalRemarks: [...prevState.normalRemarks.filter((item, i) => i !== index)],
+            dataNormalRemarks: [...prevState.dataNormalRemarks.filter((item, i) => i !== index)]
         }));
     };
 
@@ -121,8 +119,8 @@ export class Remark extends Component {
                     await this.props.getRemarks({ customerId: id });
                     this.setState({
                         isSubmitting: false,
-                        specialRemarks: [...this.props.gridData.specialRemarks,''],
-                        normalRemarks: [...this.props.gridData.normalRemarks,'']
+                        specialRemarks: [...this.props.gridData.specialRemarks, ''],
+                        normalRemarks: [...this.props.gridData.normalRemarks, '']
                     });
                 }, 3000);
             } else {
@@ -131,14 +129,14 @@ export class Remark extends Component {
         });
     };
 
-    checkIsDirtyForm = () =>{
-        const {dataSpecialRemarks, dataNormalRemarks} = this.state;
-        const {specialRemarks, normalRemarks} = this.props.gridData;
+    checkIsDirtyForm = () => {
+        const { dataSpecialRemarks, dataNormalRemarks } = this.state;
+        const { specialRemarks, normalRemarks } = this.props.gridData;
         const specialRemarksExtend = [...specialRemarks, ''];
-        const normalRemarksExtend = [...normalRemarks,''];
-        if(JSON.stringify(dataSpecialRemarks) !== JSON.stringify(specialRemarksExtend) ||
+        const normalRemarksExtend = [...normalRemarks, ''];
+        if (JSON.stringify(dataSpecialRemarks) !== JSON.stringify(specialRemarksExtend) ||
             JSON.stringify(dataNormalRemarks) !== JSON.stringify(normalRemarksExtend)
-        ){
+        ) {
             return true;
         }
         return false;
@@ -148,14 +146,14 @@ export class Remark extends Component {
         const { collapse, specialRemarks, dataSpecialRemarks, normalRemarks, dataNormalRemarks, editRemarkResult
         } = this.state;
 
-        if (this.props.gridData === null){
+        if (this.props.gridData === null) {
             return null;
         }
         const canEditRemark = document.getElementById('hasHostCustomerInfo').checked;
         const isDirty = this.checkIsDirtyForm();
         return (
             <div>
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle />
                 {
                     editRemarkResult &&
                     <ResponseMessage isSuccessful={editRemarkResult.isSuccessful}
@@ -181,9 +179,9 @@ export class Remark extends Component {
                                         />
                                         {
                                             canEditRemark && (
-                                                (index + 1)  === specialRemarks.length ?
-                                                <span className="plus-icon fa fa-plus" onClick={() => this.addSpecialRemarkItem(index+item)}/>
-                                                : <span className="cross-icon fa fa-times" onClick={() => this.removeSpecialRemarkItem(index)} />
+                                                (index + 1) === specialRemarks.length ?
+                                                    <span className="plus-icon fa fa-plus" onClick={() => this.addSpecialRemarkItem(index + item)} />
+                                                    : <span className="cross-icon fa fa-times" onClick={() => this.removeSpecialRemarkItem(index)} />
                                             )
                                         }
                                     </div>
@@ -211,9 +209,9 @@ export class Remark extends Component {
                                         />
                                         {
                                             canEditRemark && (
-                                                (index + 1)  === normalRemarks.length ?
-                                                <span className="plus-icon fa fa-plus" onClick={() => this.addNormalRemarkItem(index+item)}/>
-                                                : <span className="cross-icon fa fa-times" onClick={() => this.removeNormalRemarkItem(index)} />
+                                                (index + 1) === normalRemarks.length ?
+                                                    <span className="plus-icon fa fa-plus" onClick={() => this.addNormalRemarkItem(index + item)} />
+                                                    : <span className="cross-icon fa fa-times" onClick={() => this.removeNormalRemarkItem(index)} />
                                             )
                                         }
                                     </div>
@@ -230,7 +228,7 @@ export class Remark extends Component {
                     )
                 }
                 {
-                   !this.state.isSubmitting && <FormCheckDirtyComponent isDirty={isDirty} tab={LangHelper.getResource('RemarkTab')}/>
+                    !this.state.isSubmitting && <FormCheckDirtyComponent isDirty={isDirty} tab={LangHelper.getResource('RemarkTab')} />
                 }
             </div>
         );

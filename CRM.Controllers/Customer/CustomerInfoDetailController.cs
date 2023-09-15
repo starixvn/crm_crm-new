@@ -5,11 +5,9 @@
     using CRM.Core.Filters;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
-    using CRM.Models.Customer;
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
-    using Fanex.Logging;
     using Fanex.Logging.Extensions;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -18,8 +16,8 @@
     using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
-    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
+    [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
+    [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
     public class CustomerInfoDetailController : BaseController
     {
         private readonly INapSession napSession;
@@ -55,7 +53,7 @@
             var logMessage = new LogMessage("Get Customer Feedback Info:")
                        .AddMessage(JsonConvert.SerializeObject(customerInfo, Formatting.Indented))
                        .ToString();
-           
+
             logService.LogInformation(logMessage);
             return Json(customerInfo);
         }
@@ -74,10 +72,11 @@
         }
 
         [HttpPost]
-        [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
-        [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
         public async Task<IActionResult> EditCustomerInfoDetail([FromBody] EditCustomerInfoDetailCommand command)
         {
+            bool isHostCredit = await PermissionService
             command.UserId = napSession.UserId;
             command.IP = ClientIP;
             command.IsUpdateHeadlineInfo = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo, Policy.Host);

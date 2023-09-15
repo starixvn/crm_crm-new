@@ -1,20 +1,18 @@
 ﻿namespace CRM.Core.Filters
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
+    using Fanex.Logging;
     using Fanex.Logging.Extensions;
+    using Fanex.NAP.Client;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
-    using Fanex.NAP.Client;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.AspNetCore.Mvc;
-    using Fanex.Logging;
-    using Fanex.NAP.Core.Business;
+    using Microsoft.AspNetCore.Mvc.Filters;
+    using static Fanex.NAP.Core.Business.Constant;
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class CrmMultiplePermissionAttribute : Attribute, IAsyncAuthorizationFilter
@@ -37,7 +35,7 @@
         }
 
         public string FunctionKey { get; set; }
-        public Constant.Policy Policy { get; set; }
+        public Policy Policy { get; set; }
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
@@ -89,7 +87,6 @@
                     context.HttpContext.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
                     await context.HttpContext.Response.CompleteAsync();
                 }
-
                 else
                 {
                     context.Result = new RedirectToActionResult("405", "error", null);
