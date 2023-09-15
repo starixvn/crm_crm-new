@@ -75,7 +75,8 @@ describe('ContentTab', () => {
             const props = {
                 id: 1,
                 getLanguages: jest.fn(() => promise),
-                getAnnouncementById: jest.fn(() => promiseAnnouncement)
+                getAnnouncementById: jest.fn(() => promiseAnnouncement),
+                getSettings: jest.fn(() => promise)
             };
             commonFunc.mapLabelLanguage = jest.fn(() => [{settingValue: 'EN'}]);
 
@@ -98,13 +99,15 @@ describe('ContentTab', () => {
             const promise = Promise.resolve([{settingValue: 'EN'}]);
             const props = {
                 getLanguages: jest.fn(() => promise),
-                getAnnouncementById: jest.fn(() => promiseAnnouncement)
+                getAnnouncementById: jest.fn(() => promiseAnnouncement),
+                getSettings: jest.fn(() => promise)
             };
             commonFunc.mapLabelLanguage = jest.fn(() => [{settingValue: 'EN'}]);
             
             //Act
             const content = shallow(<Content {...props}/>, { disableLifecycleMethods: true }).instance();
             content.getContentByLanguage = jest.fn();
+            content.getSettingOption = jest.fn();
 
             content.initData();
             await promise;

@@ -707,6 +707,9 @@ describe('ActionAnnouncement', () => {
             const formData = new FormData();
             commonFunc.getParams = jest.fn(() => formData);
             const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.formik = {
+                setSubmitting: jest.fn()
+            };
             actionAnnouncement.setState = jest.fn();
             actionAnnouncement.handleRedirectAnnouncement = jest.fn();
             // Act
@@ -833,6 +836,9 @@ describe('ActionAnnouncement', () => {
             const formData = new FormData();
             commonFunc.getParams = jest.fn(() => formData);
             const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.formik = {
+                setSubmitting: jest.fn()
+            };
             actionAnnouncement.setState = jest.fn();
             actionAnnouncement.handleCheckValidAllContent = jest.fn(() => false);
             // Act
@@ -864,6 +870,9 @@ describe('ActionAnnouncement', () => {
             const formData = new FormData();
             commonFunc.getParams = jest.fn(() => formData);
             const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.formik = {
+                setSubmitting: jest.fn()
+            };
             actionAnnouncement.setState = jest.fn();
             actionAnnouncement.handleCheckValidAllContent = jest.fn(() => false);
             actionAnnouncement.formik = { setSubmitting: jest.fn() };
@@ -932,12 +941,12 @@ describe('ActionAnnouncement', () => {
             };
             const actionAnnouncement = shallow(<ActionAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
             actionAnnouncement.setState(state);
-            actionAnnouncement.handleRedirectAnnouncement = jest.fn();
-            actionAnnouncement.handleCloseConfirmEditDialog = jest.fn();
             actionAnnouncement.formik = {
                 setSubmitting: jest.fn(),
                 values:{sendType: 'Send Now'}
             };
+            actionAnnouncement.handleRedirectAnnouncement = jest.fn();
+            actionAnnouncement.handleCloseConfirmEditDialog = jest.fn();
 
             // Act
             actionAnnouncement.handleConfirmActionDialog();
@@ -970,12 +979,13 @@ describe('ActionAnnouncement', () => {
             };
             const actionAnnouncement = shallow(<ActionAnnouncement {...props} />, { disableLifecycleMethods: true }).instance();
             actionAnnouncement.setState(state);
-            actionAnnouncement.handleRedirectAnnouncement = jest.fn();
-            actionAnnouncement.handleCloseConfirmEditDialog = jest.fn();
             actionAnnouncement.formik = {
                 setSubmitting: jest.fn(),
                 values:{sendType: 'Send At'}
             };
+            actionAnnouncement.handleRedirectAnnouncement = jest.fn();
+            actionAnnouncement.handleCloseConfirmEditDialog = jest.fn();
+
             // Act
             actionAnnouncement.handleConfirmActionDialog();
             await promise;
@@ -1170,13 +1180,13 @@ describe('ActionAnnouncement', () => {
         it('should call exact function when change parameter ', () => {
             // Arrange
             const actionAnnouncement = shallow(<ActionAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+            actionAnnouncement.formik = {
+                setSubmitting: jest.fn()
+            };
             actionAnnouncement.handleChangeParameter = jest.fn();
             actionAnnouncement.handleCloseConfirmEditDialog = jest.fn();
             actionAnnouncement.handleConfirmActionDialog = jest.fn();
             actionAnnouncement.setState(state);
-            actionAnnouncement.formik = {
-                setSubmitting: jest.fn()
-            };
             // Act
             const form = shallow(actionAnnouncement.renderForm(formikProps));
             form.find('.form-input-param').at(0).simulate('change');
