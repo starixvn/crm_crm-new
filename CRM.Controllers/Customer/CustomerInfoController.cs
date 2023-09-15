@@ -1,6 +1,5 @@
 ﻿namespace CRM.Controllers
 {
-    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
@@ -14,8 +13,8 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
-    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
+    [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
+    [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
     public class CustomerInfoController : BaseController
     {
         private readonly INapSession napSession;
@@ -23,7 +22,6 @@
         private readonly ISettingService settingService;
         private readonly ISessionService sessionService;
         private readonly IPermissionService permissionService;
-
 
         public CustomerInfoController(
             INapSession napSession,
@@ -59,14 +57,14 @@
                 sessionService.CurrentCustomer = null;
             }
             var isError = criteria.ErrCode > 0 && !string.IsNullOrEmpty(criteria.ErrMsg);
-            var errorJson = new {
+            var errorJson = new
+            {
                 criteria.ErrCode,
                 criteria.ErrMsg
             };
 
             return Json(isError ? errorJson : customerInfo);
         }
-
 
         [HttpPost]
         public async Task<JsonResult> UpdateCustomerSuggestion([FromBody] UpdateCustomerSuggestionCriteria criteria)
@@ -95,7 +93,8 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
         public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
         {
             command.UserId = napSession.UserId;
