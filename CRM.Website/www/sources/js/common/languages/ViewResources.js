@@ -420,6 +420,7 @@
     RelatedCustomer: 'Related Customer',
     RelatedTo: 'Related To',
     Remark: 'Remark',
+    RemarkClassification: 'Remark Classification',
     Remove: 'Remove',
     RemoveAndAssign: 'Remove & Assign',
     RemoveAssignmentSuccessfully: 'Remove {0} assignment successfully!',
