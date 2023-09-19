@@ -75,7 +75,7 @@
         public async Task<IActionResult> GetCustomerFeedbackById(int id)
         {
             CustomerFeedback feedback = await feedbackService.GetCustomerFeedbackByIdAsync(id);
-            var isDeletedFeedbackView = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Read);
+            var isDeletedFeedbackView = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
             var settings = await GetEditCustomerFeedbackSettingAsync(feedback, isDeletedFeedbackView);
             var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
             return Json(new { feedback, settings, hasReviewFeedbackPermission });
@@ -237,7 +237,7 @@
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
 
             if (!isDeletedFeedbackView
-                || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host))
+                || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host))
             {
                 return statuses.Where(x => x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted).ToList();
             }

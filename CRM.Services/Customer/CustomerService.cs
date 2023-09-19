@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
@@ -22,7 +23,9 @@
 
         Task<CustomerInfoDetails> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria);
 
-        Task<IEnumerable<Models.Customer.UserInfo>> GetAllCustomerAsync(GetAllCustomersCriteria criteria);
+        Task<IEnumerable<UserInfo>> GetAllCustomerAsync(GetAllCustomersCriteria criteria);
+
+        Task<SiteType?> GetSiteTypeByCustIdAsync(int custId);
     }
 
     public class CustomerService : ICustomerService
@@ -95,19 +98,13 @@
         }
 
         public async Task<CommandResult> UpdateCustomerInfoAsync(UpdateCustomerInfoCommand command)
-        {
-            return await baseService.ExecuteNonQueryAsync(command);
-        }
+            => await baseService.ExecuteNonQueryAsync(command);
 
         public async Task<CommandResult> UpdateCustomerSuggestionAsync(UpdateCustomerSuggestionCriteria criteria)
-        {
-            return await baseService.ExecuteNonQueryAsync(criteria);
-        }
+            => await baseService.ExecuteNonQueryAsync(criteria);
 
         public async Task<IEnumerable<string>> GetCustomerAutoSuggestionAsync(CustomerSuggestionCriteria criteria)
-        {
-            return await baseService.GetDataAsync<string>(criteria);
-        }
+            => await baseService.GetDataAsync<string>(criteria);
 
         private CustomerInfoDetails GetUnAssignedCustomerInfo()
         {
@@ -149,10 +146,10 @@
             return customerInfo;
         }
 
-        public async Task<IEnumerable<Models.Customer.UserInfo>> GetAllCustomerAsync(GetAllCustomersCriteria criteria)
+        public async Task<IEnumerable<UserInfo>> GetAllCustomerAsync(GetAllCustomersCriteria criteria)
         {
             criteria.Environment = Environment;
-            return await baseService.GetDataAsync<Models.Customer.UserInfo>(criteria);
+            return await baseService.GetDataAsync<UserInfo>(criteria);
         }
 
         private async Task<bool> CheckDirectAccount(int customerId)
@@ -163,6 +160,18 @@
             };
 
             return await baseService.GetDataEntityAsync<bool>(criteria);
+        }
+
+        public async Task<SiteType?> GetSiteTypeByCustIdAsync(int custId)
+        {
+            var criteria = new GetSiteTypeByCustIdCriteria { CustId = custId };
+            var custType = await baseService.GetDataEntityAsync<short>(criteria);
+
+            if (criteria.ErrCode == 0)
+            {
+                return (SiteType)custType;
+            }
+            return null;
         }
     }
 }

@@ -44,11 +44,13 @@
             CustomerInfoDetails customerInfo = await customerService.GetCustomerInfoAsync(criteria);
             if (customerInfo != null)
             {
-                CurrentCustomer currentCustomer = new CurrentCustomer
+                var siteType = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
+                CurrentCustomer currentCustomer = new()
                 {
                     CustId = customerInfo.CustId,
                     Name = criteria.Username,
-                    IsGuest = criteria.IsGuest
+                    IsGuest = criteria.IsGuest,
+                    CustType = siteType
                 };
                 sessionService.CurrentCustomer = currentCustomer;
             }

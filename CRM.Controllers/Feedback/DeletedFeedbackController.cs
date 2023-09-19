@@ -1,17 +1,17 @@
 ﻿namespace CRM.Controllers.Feedback
 {
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
-    using CRM.Models.Feedback;
+    using CRM.Core.Filters;
     using CRM.Models.DeletedFeedback;
+    using CRM.Models.Feedback;
     using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
     using Microsoft.AspNetCore.Mvc;
-    using CRM.Core.Filters;
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.DeleteFeedback, Policy = Policy.Read)]
@@ -52,9 +52,9 @@
 
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);
 
-            IList<DeletedFeedback> feedbacks = feedbacksTask.Result.ToList();
-            IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
-            
+            IList<DeletedFeedback> feedbacks = (await feedbacksTask).ToList();
+            IEnumerable<Setting> mainCategories = await mainCategoriesTask;
+
             int totalItems = feedbacks.Count;
             if (totalItems > 0)
             {
@@ -72,7 +72,7 @@
 
             IEnumerable<DeletedFeedback> feedbacks = feedbacksTask.Result;
             IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
-            
+
             var bytes = excelService.ExportDeletedFeedbackReport(feedbacks, mainCategories);
             string reportName = ViewResources.DeletedFeedbackReport_Title;
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
