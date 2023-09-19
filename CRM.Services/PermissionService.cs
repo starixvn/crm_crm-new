@@ -1,6 +1,5 @@
 ﻿namespace CRM.Services
 {
-    using System;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
@@ -12,8 +11,11 @@
     public interface IPermissionService
     {
         Task<int> GetPolicyPermissionAsync(string functionKey);
+
         Task<bool> IsHavingPermissionByPolicyAsync(string functionKey, Policy policy = Policy.Read);
+
         Task<short> GetSitePermissionAsync();
+
         Task<bool> IsHavingPermissionAsync(string functionKey);
     }
 

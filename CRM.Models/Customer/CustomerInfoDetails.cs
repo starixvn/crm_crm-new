@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
     using CRM.Core.Models;
     using CRM.Models.Common;
 
@@ -178,6 +179,8 @@
 
         public string RoleName { get; set; }
 
+        public SiteType? CustomerType { get; set; }
+
         public BaseSetting SiteSetting { get; set; } = new BaseSetting();
 
         public string Line1 { get; set; }
@@ -191,7 +194,6 @@
         public string State { get; set; }
 
         public string PostCode { get; set; }
-
 
         public BaseSetting Country { get; set; } = new BaseSetting();
 
@@ -228,7 +230,7 @@
                 }
             }
         };
-        
+
         public Address AddressInfo => new Address
         {
             LineList = new List<string>
@@ -251,7 +253,6 @@
                 new PersonalInfoContact { Name = Pic3Name, Phone = Pic3 },
                 new PersonalInfoContact { Name = Pic4Name, Phone = Pic4 }
             };
-
 
         public List<Phone> PhoneInfo =>
             new List<Phone>

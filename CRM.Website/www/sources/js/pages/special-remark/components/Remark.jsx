@@ -10,6 +10,8 @@ import Site from '@jsroot/common/site';
 import { FormCheckDirtyComponent } from '@jsroot/components/UseBlocker';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import { hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+
 
 export class Remark extends Component {
     constructor(props) {
@@ -149,7 +151,10 @@ export class Remark extends Component {
         if (this.props.gridData === null) {
             return null;
         }
-        const canEditRemark = document.getElementById('hasHostCustomerInfo').checked;
+        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
+        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
+        const canEditRemark = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, this.props.customerType);
+       
         const isDirty = this.checkIsDirtyForm();
         return (
             <div>

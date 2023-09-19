@@ -77,7 +77,7 @@ export class EditCommunicationLog extends Component {
         const urlStatusForEdit = Site.resolveClientUrl('CommunicationLog/GetAllStatus?isEdit=true');
 
         await DataService.getDataAsync(`${urlLogByFeedbackId}/${this.props.feedbackId}`).then(response => {
-            if(!response || !response.data){
+            if (!response || !response.data) {
                 return;
             }
             this.setState({ logFeedback: response.data });
@@ -173,7 +173,7 @@ export class EditCommunicationLog extends Component {
             this.formik.submitForm();
         }
 
-        if(event.ctrlKey && event.key === 'e'){
+        if (event.ctrlKey && event.key === 'e') {
             event.preventDefault();
             this.handleVerifyRelatedCustomer(this.state.verifySection.customerNameInput);
         }
@@ -349,7 +349,7 @@ export class EditCommunicationLog extends Component {
         const url = 'CustomerSetting/VerifyUsername';
         const customersInput = customerNameInput.trim()
             .replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',');
-        if(customersInput === ''){
+        if (customersInput === '') {
             return;
         }
         if (isValidCustomer(customersInput)) {
@@ -535,7 +535,7 @@ export class EditCommunicationLog extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle />
                     <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         editResult &&

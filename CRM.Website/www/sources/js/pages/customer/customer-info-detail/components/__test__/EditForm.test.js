@@ -11,13 +11,13 @@ import toJson from 'enzyme-to-json';
 describe('EditForm', () => {
     beforeAll(() => {
         const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'hasHostCustomerInfo');
+        appContainer.setAttribute('id', 'hasHostOnCurrentCustomer');
         appContainer.checked = true;
         document.body.appendChild(appContainer);
     });
 
     afterAll(() => {
-        const appContainer = document.getElementById('hasHostCustomerInfo');
+        const appContainer = document.getElementById('hasHostOnCurrentCustomer');
         if (appContainer) {
             document.body.removeChild(appContainer);
         }
@@ -25,27 +25,27 @@ describe('EditForm', () => {
     });
 
     const initProps = {
-        allSettings: { 
+        allSettings: {
             countries: [{ id: 1, name: 'country' }],
-            languages: [{ languageId: 1, name: 'English'}],
-            titles: [{ id: 1, value: 'Mr'}],
-            licenseeTypes: [{ id: 1, name: 'Betting'}],
-            sites: [{ id: 1, name: '22225'}]
+            languages: [{ languageId: 1, name: 'English' }],
+            titles: [{ id: 1, value: 'Mr' }],
+            licenseeTypes: [{ id: 1, name: 'Betting' }],
+            sites: [{ id: 1, name: '22225' }]
         },
-        customerInfo: { firstName: 'test', siteSetting: { id: 1, name: '22223'}, titleId: 2 },
+        customerInfo: { firstName: 'test', siteSetting: { id: 1, name: '22223' }, titleId: 2 },
         getAllSettings: jest.fn(),
         getCustomerById: jest.fn(),
         id: 1754
     };
     const state = {
-            languages: [1],
-            titleId: 1
+        languages: [1],
+        titleId: 1
     };
 
     describe('componentDidMount', () => {
         it('should call functions api', async () => {
             // Arrange
-            commonFunc.ParamsCustomerInfo = jest.fn(() => {});
+            commonFunc.ParamsCustomerInfo = jest.fn(() => { });
             //Act
             const container = shallow(<EditForm {...initProps} />);
             container.instance().setState(state);
@@ -58,7 +58,7 @@ describe('EditForm', () => {
     describe('handleCollapseExpand', () => {
         it('should update state correct', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
@@ -75,7 +75,7 @@ describe('EditForm', () => {
         });
         it('should not update state correct', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
@@ -96,7 +96,7 @@ describe('EditForm', () => {
     describe('handleChange', () => {
         it('should call setState when change firstName field', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const mockEvent = { target: { value: 'test', name: 'firstName' } };
             const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
@@ -111,7 +111,7 @@ describe('EditForm', () => {
     describe('handleChangeCheck', () => {
         it('should call setState when change check', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const mockEvent = { target: { type: 'checkbox', checked: true, name: 'isVip' } };
 
             const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
@@ -127,17 +127,17 @@ describe('EditForm', () => {
     describe('handleChangeValue', () => {
         it('should call setState when change check', () => {
             // Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             // Act
-            container.handleChangeValue('languages','1200');
+            container.handleChangeValue('languages', '1200');
 
             // Assert
             expect(container.state.languages).toEqual('1200');
         });
     });
-    
+
     describe('handleSubmit', () => {
         it('should call exactly function when success', async () => {
             // Arrange
@@ -183,11 +183,11 @@ describe('EditForm', () => {
     describe('renderOptions', () => {
         it('should render option correctly', () => {
             //Arrange
-            const props = {...initProps};
+            const props = { ...initProps };
             //Act
             const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
-            const option = container.renderOptions('test',1);
+            const option = container.renderOptions('test', 1);
 
             //Assert
             expect(option).toEqual(<option key={1} value={1}>test</option>);
@@ -195,7 +195,7 @@ describe('EditForm', () => {
     });
 
     describe('renderPersonalInfo', () => {
-        const props = {...initProps};
+        const props = { ...initProps };
 
         it('onClick call exact function', () => {
             // Arrange
@@ -246,7 +246,7 @@ describe('EditForm', () => {
             // Arrange
             const propsData = {
                 ...initProps,
-                customerInfo: { firstName: 'test', isHeadline: false, isDirectAccount: true, siteSetting: { id: 1, name: '22223'}, titleId: 2 }
+                customerInfo: { firstName: 'test', isHeadline: false, isDirectAccount: true, siteSetting: { id: 1, name: '22223' }, titleId: 2 }
             }
             const mockEvent = { target: { type: 'checkbox', checked: true, name: 'isVip' } };
             const container = shallow(<EditForm {...propsData} />, { disableLifecycleMethods: true }).instance();
@@ -267,7 +267,7 @@ describe('EditForm', () => {
             const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true }).instance();
             container.setState(state);
             const formRender = shallow(container.renderPersonalInfo(container.state));
-           
+
             // Assert
             expect(formRender.find(SelectWithSearch).length).toBe(1);
         });
@@ -296,7 +296,7 @@ describe('EditForm', () => {
     describe('renderHeadlineInfo', () => {
         const props = {
             ...initProps,
-            customerInfo: { firstName: 'test', isHeadline: true, siteSetting: { id: 1, name: '22223'}, titleId: 2 }
+            customerInfo: { firstName: 'test', isHeadline: true, siteSetting: { id: 1, name: '22223' }, titleId: 2 }
         };
 
         it('onClick call exact function', () => {
@@ -346,7 +346,7 @@ describe('EditForm', () => {
     });
 
     describe('renderCommunicationInfo', () => {
-        const props = {...initProps};
+        const props = { ...initProps };
 
         it('onClick call exact function', () => {
             // Arrange
@@ -379,7 +379,7 @@ describe('EditForm', () => {
     });
 
     describe('renderHomeAddress', () => {
-        const props = {...initProps};
+        const props = { ...initProps };
 
         it('onClick call exact function', () => {
             // Arrange
@@ -412,7 +412,7 @@ describe('EditForm', () => {
     });
 
     describe('renderBankInfo', () => {
-        const props = {...initProps};
+        const props = { ...initProps };
 
         it('onClick call exact function', () => {
             // Arrange
@@ -447,7 +447,7 @@ describe('EditForm', () => {
     describe('render', () => {
         it('should render EditForm correctly', () => {
             //Act
-            const props = {...initProps};
+            const props = { ...initProps };
             const container = shallow(<EditForm {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
 

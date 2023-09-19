@@ -14,12 +14,12 @@ describe('Remark', () => {
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
         const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'hasHostCustomerInfo');
+        appContainer.setAttribute('id', 'hasHostOnCurrentCustomer');
         appContainer.checked = true;
     });
 
     afterAll(() => {
-        const appContainer = document.getElementById('hasHostCustomerInfo');
+        const appContainer = document.getElementById('hasHostOnCurrentCustomer');
         if (appContainer || appContainer1) {
             document.body.removeChild(appContainer);
         }
@@ -42,15 +42,15 @@ describe('Remark', () => {
             container.componentDidMount();
             await promise;
 
-             // Assert
+            // Assert
             expect(await props.getRemarks).toHaveBeenCalledWith({ customerId: 1754 });
-            expect(container.state.specialRemarks).toEqual(['test','']);
-            expect(container.state.dataSpecialRemarks).toEqual(['test','']);
-            expect(container.state.normalRemarks).toEqual(['testing','']);
-            expect(container.state.dataNormalRemarks).toEqual(['testing','']);
+            expect(container.state.specialRemarks).toEqual(['test', '']);
+            expect(container.state.dataSpecialRemarks).toEqual(['test', '']);
+            expect(container.state.normalRemarks).toEqual(['testing', '']);
+            expect(container.state.dataNormalRemarks).toEqual(['testing', '']);
         });
     });
-    
+
     describe('componentWillUnmount', () => {
         const props = {
             resetState: jest.fn(),
@@ -74,7 +74,7 @@ describe('Remark', () => {
         it('should call setState when handle change', async () => {
             // Act
             const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
-            container.handleChange('123',0,'specialRemarks',['test']);
+            container.handleChange('123', 0, 'specialRemarks', ['test']);
             expect(container.state.specialRemarks).toEqual(['123']);
         });
     });
@@ -113,16 +113,16 @@ describe('Remark', () => {
         it('should call setState when remove specialRemarkItem', async () => {
             // Arrange
             const state = {
-                specialRemarks: ['test','test1','test2'],
-                dataSpecialRemarks: ['test','test1','test2']
+                specialRemarks: ['test', 'test1', 'test2'],
+                dataSpecialRemarks: ['test', 'test1', 'test2']
             };
 
             // Act
             const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
             container.setState({ specialRemarks: state.specialRemarks, dataSpecialRemarks: state.dataSpecialRemarks });
             container.removeSpecialRemarkItem(1);
-            expect(container.state.specialRemarks).toEqual(['test','test2']);
-            expect(container.state.dataSpecialRemarks).toEqual(['test','test2']);
+            expect(container.state.specialRemarks).toEqual(['test', 'test2']);
+            expect(container.state.dataSpecialRemarks).toEqual(['test', 'test2']);
         });
     });
 
@@ -130,16 +130,16 @@ describe('Remark', () => {
         it('should call setState when remove normalRemarkItem', async () => {
             // Arrange
             const state = {
-                normalRemarks: ['testing','testing1','testing2'],
-                dataNormalRemarks: ['testing','testing1','testing2']
+                normalRemarks: ['testing', 'testing1', 'testing2'],
+                dataNormalRemarks: ['testing', 'testing1', 'testing2']
             };
 
             // Act
             const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
             container.setState({ normalRemarks: state.normalRemarks, dataNormalRemarks: state.dataNormalRemarks });
             container.removeNormalRemarkItem(1);
-            expect(container.state.normalRemarks).toEqual(['testing','testing2']);
-            expect(container.state.dataNormalRemarks).toEqual(['testing','testing2']);
+            expect(container.state.normalRemarks).toEqual(['testing', 'testing2']);
+            expect(container.state.dataNormalRemarks).toEqual(['testing', 'testing2']);
         });
     });
 
@@ -147,15 +147,15 @@ describe('Remark', () => {
         it('should call setState when add specialRemarkItem', async () => {
             // Arrange
             const state = {
-                specialRemarks: ['test','test1','test2'],
-                dataSpecialRemarks: ['test','test1','test2']
+                specialRemarks: ['test', 'test1', 'test2'],
+                dataSpecialRemarks: ['test', 'test1', 'test2']
             };
 
             // Act
             const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
             container.setState({ specialRemarks: state.specialRemarks, dataSpecialRemarks: state.dataSpecialRemarks });
             container.addSpecialRemarkItem('123');
-            expect(container.state.specialRemarks).toEqual(['test','test1','test2','123']);
+            expect(container.state.specialRemarks).toEqual(['test', 'test1', 'test2', '123']);
         });
     });
 
@@ -163,22 +163,22 @@ describe('Remark', () => {
         it('should call setState when add normalRemarkItem', async () => {
             // Arrange
             const state = {
-                normalRemarks: ['testing','testing1','testing2'],
-                dataNormalRemarks: ['testing','testing1','testing2']
+                normalRemarks: ['testing', 'testing1', 'testing2'],
+                dataNormalRemarks: ['testing', 'testing1', 'testing2']
             };
 
             // Act
             const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
             container.setState({ normalRemarks: state.normalRemarks, dataNormalRemarks: state.dataNormalRemarks });
             container.addNormalRemarkItem('123');
-            expect(container.state.normalRemarks).toEqual(['testing','testing1','testing2','123']);
+            expect(container.state.normalRemarks).toEqual(['testing', 'testing1', 'testing2', '123']);
         });
     });
 
     describe('handleSubmit', () => {
         it('should call exactly functions when create successful', async () => {
             // Arrange
-            const promise = Promise.resolve({ data: { code: 0, isSuccessful: true }});
+            const promise = Promise.resolve({ data: { code: 0, isSuccessful: true } });
             const props = {
                 gridData: { specialRemarks: ['test'], normalRemarks: ['testing'] },
                 editRemarks: jest.fn(() => promise),
@@ -201,7 +201,7 @@ describe('Remark', () => {
 
         it('should call exactly functions when create unsuccessful', async () => {
             // Arrange
-            const promise = Promise.resolve({ data: { code: 1 }});
+            const promise = Promise.resolve({ data: { code: 1 } });
             const props = {
                 gridData: { specialRemarks: ['test'], normalRemarks: ['testing'] },
                 editRemarks: jest.fn(() => promise)
@@ -224,12 +224,12 @@ describe('Remark', () => {
         it('should render not correctly', () => {
             // Arrange
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
-                policy : 2
+                policy: 2
             };
-            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             // Assert
             expect(container).toEqual({});
@@ -238,12 +238,12 @@ describe('Remark', () => {
         it('should render correctly', () => {
             //Act
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
-                policy : 2
+                policy: 2
             };
-            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
 
             //Assert
@@ -253,19 +253,19 @@ describe('Remark', () => {
         it('handle message responses if unsuccessful', () => {
             // Arrange
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
                 editRemarkResult: {
                     isSuccessful: false,
                     message: 'unsuccessful'
                 },
-                policy : 2
+                policy: 2
             };
-            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
-    
-            // Assert 
+
+            // Assert
             expect(container.find(ResponseMessage).props().isSuccessful).toBe(false);
             expect(container.find(ResponseMessage).props().message).toEqual('unsuccessful');
         });
@@ -273,19 +273,19 @@ describe('Remark', () => {
         it('handle message responses if successful', () => {
             // Arrange
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
                 editRemarkResult: {
                     isSuccessful: true,
                     message: 'UpdateRemarkSuccessfully'
                 },
-                policy : 2
-            };        
-            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
+                policy: 2
+            };
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.setState(state);
 
-            // Assert 
+            // Assert
             expect(container.find(ResponseMessage).props().isSuccessful).toBe(true);
             expect(container.find(ResponseMessage).props().message).toEqual('UpdateRemarkSuccessfully');
         });
@@ -293,19 +293,18 @@ describe('Remark', () => {
         it('handle default message responses if successful', () => {
             // Arrange
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
                 editRemarkResult: {
                     isSuccessful: true
                 },
-                policy : 2
-            };  
-            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
+                policy: 2
+            };
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.setState(state);
 
-    
-            // Assert 
+            // Assert
             expect(container.find(ResponseMessage).props().isSuccessful).toBe(true);
             expect(container.find(ResponseMessage).props().message).toEqual('UpdateRemarkSuccessfully');
         });
@@ -313,12 +312,12 @@ describe('Remark', () => {
         it('onClick should call exact function when handleCollapse specialRemark', () => {
             //Act
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
-                policy : 2
-            };  
-            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
+                policy: 2
+            };
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.setState(state);
             container.instance().handleCollapseExpand = jest.fn();
 
@@ -332,12 +331,12 @@ describe('Remark', () => {
         it('onClick should call exact function when handleCollapse normalRemark', () => {
             //Act
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
-                policy : 2
-            };  
-            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
+                policy: 2
+            };
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().handleCollapseExpand = jest.fn();
 
@@ -351,14 +350,14 @@ describe('Remark', () => {
         it('onChange should call exact function when handleChange specialRemark', () => {
             //Act
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
                 specialRemarks: ['test'],
                 normalRemarks: ['test'],
-                policy : 2
+                policy: 2
             };
-            const container = shallow(<Remark {...props}/>, { disableLifecycleMethods: true });
+            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
             container.instance().handleChange = jest.fn();
             container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
@@ -367,18 +366,18 @@ describe('Remark', () => {
             container.find(CkEditor).at(0).simulate('change', 'value');
 
             //Assert
-            expect(container.instance().handleChange).toHaveBeenCalledWith('value', 0, 'dataSpecialRemarks', []);    
+            expect(container.instance().handleChange).toHaveBeenCalledWith('value', 0, 'dataSpecialRemarks', []);
         });
 
         it('onChange should call exact function when handleChange normalRemark', () => {
             //Act
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
                 specialRemarks: ['test'],
                 normalRemarks: ['test'],
-                policy : 2
+                policy: 2
             };
             const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
@@ -389,18 +388,18 @@ describe('Remark', () => {
             container.find(CkEditor).at(1).simulate('change', 'value');
 
             //Assert
-            expect(container.instance().handleChange).toHaveBeenCalledWith('value', 0, 'dataNormalRemarks', []);    
+            expect(container.instance().handleChange).toHaveBeenCalledWith('value', 0, 'dataNormalRemarks', []);
         });
 
         it('should render plus-icon specialRemark', () => {
             //Act
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
                 specialRemarks: ['test'],
                 normalRemarks: ['test'],
-                policy : 2
+                policy: 2
             };
             const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
@@ -411,18 +410,18 @@ describe('Remark', () => {
             container.find('span').at(1).simulate('click');
 
             //Assert
-            expect(container.instance().addSpecialRemarkItem).toHaveBeenCalledWith('0test');    
+            expect(container.instance().addSpecialRemarkItem).toHaveBeenCalledWith('0test');
         });
 
         it('should render cross-icon specialRemark', () => {
             //Act
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
-                specialRemarks: ['test','test1'],
+                specialRemarks: ['test', 'test1'],
                 normalRemarks: ['test'],
-                policy : 2
+                policy: 2
             };
             const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
@@ -433,18 +432,18 @@ describe('Remark', () => {
             container.find('span').at(1).simulate('click');
 
             //Assert
-            expect(container.instance().removeSpecialRemarkItem).toHaveBeenCalledWith(0);    
+            expect(container.instance().removeSpecialRemarkItem).toHaveBeenCalledWith(0);
         });
 
         it('should render plus-icon normalRemark', () => {
             //Act
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
                 specialRemarks: ['test'],
                 normalRemarks: ['test'],
-                policy : 2
+                policy: 2
             };
             const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
@@ -455,18 +454,18 @@ describe('Remark', () => {
             container.find('span').at(3).simulate('click');
 
             //Assert
-            expect(container.instance().addNormalRemarkItem).toHaveBeenCalledWith('0test');    
+            expect(container.instance().addNormalRemarkItem).toHaveBeenCalledWith('0test');
         });
 
         it('should render cross-icon normalRemark', () => {
             //Act
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
                 specialRemarks: ['test'],
-                normalRemarks: ['test','test1'],
-                policy : 2
+                normalRemarks: ['test', 'test1'],
+                policy: 2
             };
             const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
@@ -477,18 +476,18 @@ describe('Remark', () => {
             container.find('span').at(3).simulate('click');
 
             //Assert
-            expect(container.instance().removeNormalRemarkItem).toHaveBeenCalledWith(0);    
+            expect(container.instance().removeNormalRemarkItem).toHaveBeenCalledWith(0);
         });
 
         it('should render button correctly', () => {
             //Act
             const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test','test1']}
+                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
             };
             const state = {
                 specialRemarks: ['test'],
-                normalRemarks: ['test','test1'],
-                policy : 2
+                normalRemarks: ['test', 'test1'],
+                policy: 2
             };
             const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
             container.instance().setState(state);
@@ -499,7 +498,7 @@ describe('Remark', () => {
             container.find(Button).at(0).simulate('click');
 
             //Assert
-            expect(container.instance().handleSubmit).toHaveBeenCalled();    
+            expect(container.instance().handleSubmit).toHaveBeenCalled();
         });
     });
 });

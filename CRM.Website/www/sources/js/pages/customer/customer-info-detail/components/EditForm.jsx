@@ -11,12 +11,11 @@ import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import { Policy } from '@jsroot/common/constants';
 import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
-import { changeSiteSetting, getSiteLabel } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, getSiteLabel, hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class EditForm extends Component {
-
     constructor(props) {
         super(props);
         const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
@@ -748,12 +747,12 @@ export class EditForm extends Component {
                     <div className="panel-content">
                         <Form.Group as={Row} className="pt-2">
                             <Col md="12" sm="12">
-                            <div className='d-flex'>
-                                <Form.Label className='label-width-line' htmlFor="line1">{LangHelper.getResource('Line1')}</Form.Label>
-                                <Form.Control type="text" size="sm" className="shadow-none control-width-line" autoComplete="off" onChange={this.handleChange}
-                                    value={values.homeAddressLine1} id="homeAddressLine1" name="homeAddressLine1"
-                                />
-                            </div>
+                                <div className='d-flex'>
+                                    <Form.Label className='label-width-line' htmlFor="line1">{LangHelper.getResource('Line1')}</Form.Label>
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-line" autoComplete="off" onChange={this.handleChange}
+                                        value={values.homeAddressLine1} id="homeAddressLine1" name="homeAddressLine1"
+                                    />
+                                </div>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
@@ -787,7 +786,7 @@ export class EditForm extends Component {
                             </Col>
                             <Col sm="6" md="6">
                                 <div className='d-flex'>
-                                    <Form.Label  className='label-width-bank' htmlFor="state">{LangHelper.getResource('State')}
+                                    <Form.Label className='label-width-bank' htmlFor="state">{LangHelper.getResource('State')}
                                     </Form.Label>
                                     <Form.Control type="text" value={values.homeAddressState} autoComplete="off" onChange={this.handleChange}
                                         name="homeAddressState" size="sm" className="shadow-none control-width-bank" id="homeAddressState"
@@ -915,9 +914,9 @@ export class EditForm extends Component {
                             <Col sm="6" md="6">
                                 <div className='d-flex'>
                                     <Form.Label className='label-width-bank' md="4">{LangHelper.getResource('State')}</Form.Label>
-                                        <Form.Control type="text" size="sm" className="shadow-none control-width-bank" value={values.bankAddressState}
-                                            autoComplete="off" onChange={this.handleChange} name="bankAddressState" id="bankAddressState"
-                                        />
+                                    <Form.Control type="text" size="sm" className="shadow-none control-width-bank" value={values.bankAddressState}
+                                        autoComplete="off" onChange={this.handleChange} name="bankAddressState" id="bankAddressState"
+                                    />
                                 </div>
                             </Col>
                         </Form.Group>
@@ -949,13 +948,16 @@ export class EditForm extends Component {
 
     render() {
         const { allSettings, customerInfo, updateHeadlineInfoPolicy } = this.props;
-        const hasHostCustomerInfo = document.getElementById('hasHostCustomerInfo').checked;
+      
         const values = this.state;
         const updatePolicy = updateHeadlineInfoPolicy;
         const canEditHeadline = updatePolicy === Policy.Host;
         if (!allSettings || !customerInfo) {
             return null;
         }
+        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
+        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
+        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
 
         return (
             <Form onSubmit={this.handleSubmit}>
@@ -969,7 +971,7 @@ export class EditForm extends Component {
                 {this.renderHomeAddress(values)}
                 {this.renderBankInfo(values)}
                 {
-                    hasHostCustomerInfo &&
+                    hasHostOnCurrentCustomer &&
                     (
                         <Button type="submit" variant="primary" size="sm" className="mt-3" disabled={this.state.isSubmitting}>
                             <UnderlineButton.saveButton />

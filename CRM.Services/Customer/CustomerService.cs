@@ -26,6 +26,8 @@
         Task<IEnumerable<UserInfo>> GetAllCustomerAsync(GetAllCustomersCriteria criteria);
 
         Task<SiteType?> GetSiteTypeByCustIdAsync(int custId);
+
+        Task<bool> HasHostPermissionOnCustIdAsync(bool isHostCredit, bool isHostLicensee, int custId);
     }
 
     public class CustomerService : ICustomerService
@@ -172,6 +174,30 @@
                 return (SiteType)custType;
             }
             return null;
+        }
+
+        public async Task<bool> HasHostPermissionOnCustIdAsync(bool isHostCredit, bool isHostLicensee, int custId)
+        {
+            var custType = await GetSiteTypeByCustIdAsync(custId);
+            bool isHostOnCustId = false;
+            if (custType is not null)
+            {
+                if (custType == SiteType.NA)
+                {
+                    isHostOnCustId = isHostCredit || isHostLicensee;
+                }
+
+                if (custType == SiteType.Licensee)
+                {
+                    isHostOnCustId = isHostLicensee;
+                }
+
+                if (custType == SiteType.Credit)
+                {
+                    isHostOnCustId |= isHostCredit;
+                }
+            }
+            return isHostOnCustId;
         }
     }
 }

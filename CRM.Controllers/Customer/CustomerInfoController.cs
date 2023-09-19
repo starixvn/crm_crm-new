@@ -7,6 +7,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Models.Customer;
+    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Customer;
     using Fanex.NAP.Client.Helpers.Web;
@@ -45,6 +46,7 @@
             if (customerInfo != null)
             {
                 var siteType = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
+                customerInfo.CustomerType = siteType;
                 CurrentCustomer currentCustomer = new()
                 {
                     CustId = customerInfo.CustId,
@@ -99,9 +101,21 @@
         [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
         public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
         {
-            command.UserId = napSession.UserId;
-            command.IP = ClientIP;
-            var result = await customerService.UpdateCustomerInfoAsync(command);
+            var result = new CommandResult();
+            bool isHostCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
+            bool isHostLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
+            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(isHostCredit, isHostLicensee, command.CustId);
+            if (canEdit)
+            {
+                command.UserId = napSession.UserId;
+                command.IP = ClientIP;
+                result = await customerService.UpdateCustomerInfoAsync(command);
+            }
+            else
+            {
+                result.Message = ViewResources.NoPermission;
+            }
+
             return Json(result);
         }
 

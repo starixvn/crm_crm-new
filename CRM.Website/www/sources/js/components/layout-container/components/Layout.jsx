@@ -258,7 +258,7 @@ export class Layout extends Component {
             });
         }else{
             if(response !== undefined && response.data !== null){
-                this.setState({customerInfo: response.data});
+                this.setState({ customerInfo: response.data });
                 const siteCredits = this.state.settings.sitesByIsLicensee.filter(site =>site.name === 'Credit');
                 const isCreditSite = siteCredits.filter(x => x.childSites.some(y => response.data?.siteId === y.id)).length > 0;
                 this.setState({isCreditSite});

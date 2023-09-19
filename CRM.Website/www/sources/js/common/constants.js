@@ -51,6 +51,12 @@ export const Policy = {
     Host: 2
 };
 
+export const CustomerType = {
+    NA: 0,
+    Credit: 1,
+    Licensee: 2
+}
+
 export const FunctionKey = {
     NotificationList: 'NotificationList',
     ChatTypeMapping: 'ChatTypeMapping',

@@ -59,7 +59,7 @@
         public async Task<IActionResult> GetAllStatus(bool isEdit)
         {
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            if (!isEdit || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host))
+            if (isEdit && !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host))
             {
                 statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
             }

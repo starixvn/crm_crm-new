@@ -3,8 +3,10 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
+    using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
+    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
@@ -27,6 +29,7 @@
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
         private readonly ICRMLogService logService;
+        private readonly IPermissionService permissionService;
 
         public CustomerInfoDetailController(
             INapSession napSession,
@@ -35,7 +38,8 @@
             ICustomerService customerService,
             ISettingService settingService,
             IBaseService baseService,
-            ICRMLogService logService)
+            ICRMLogService logService,
+            IPermissionService permissionService)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
@@ -44,12 +48,14 @@
             this.settingService = settingService;
             this.baseService = baseService;
             this.logService = logService;
+            this.permissionService = permissionService;
         }
 
         [HttpPost]
         public async Task<IActionResult> GetCustomerById([FromBody] GetCustomerInfoDetailByIdCriteria criteria)
         {
             var customerInfo = await customerService.GetCustomerByIdAsync(criteria);
+            customerInfo.CustomerType = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
             var logMessage = new LogMessage("Get Customer Feedback Info:")
                        .AddMessage(JsonConvert.SerializeObject(customerInfo, Formatting.Indented))
                        .ToString();
@@ -76,10 +82,22 @@
         [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
         public async Task<IActionResult> EditCustomerInfoDetail([FromBody] EditCustomerInfoDetailCommand command)
         {
-            command.UserId = napSession.UserId;
-            command.IP = ClientIP;
-            command.IsUpdateHeadlineInfo = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo, Policy.Host);
-            var result = await baseService.ExecuteNonQueryAsync(command);
+            var result = new CommandResult();
+            bool isHostCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
+            bool isHostLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
+            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(isHostCredit, isHostLicensee, command.CustomerId);
+            if (canEdit)
+            {
+                command.UserId = napSession.UserId;
+                command.IP = ClientIP;
+                command.IsUpdateHeadlineInfo = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo, Policy.Host);
+                result = await baseService.ExecuteNonQueryAsync(command);
+            }
+            else
+            {
+                result.Message = ViewResources.NoPermission;
+            }
+
             return Json(result);
         }
     }

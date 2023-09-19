@@ -9,7 +9,7 @@ import EditNoOfInquiry from '../../feedback/edit-no-of-inquiry/AppContainer';
 import EditCommunicationLog from './EditCommunicationLog';
 import CreateCommunicationLog from './CreateCommunicationLog';
 import { FunctionKey } from '@jsroot/common/constants';
-import { getPermission } from '@jsroot/common/shareScripts';
+import { getPermission, hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
@@ -69,10 +69,14 @@ export class AppContainer extends Component {
             return null;
         }
 
+        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
+        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
+        const canCreateLog = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
+
         return (
             <div>
                 <Filter id={this.props.id}/>
-                <DataGrid customerInfoPolicy={customerInfoPolicy} />
+                <DataGrid canCreateCommunicationLog={canCreateLog} />
                 {
                     editNoOfInquiryDialog.show &&
                     <EditNoOfInquiry feedbackId={editNoOfInquiryDialog.feedbackId}

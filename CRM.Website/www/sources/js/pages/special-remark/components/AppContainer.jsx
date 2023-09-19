@@ -4,7 +4,7 @@ import Remark from './Remark';
 export class AppContainer extends Component {
     render() {
         return (
-            <Remark id={this.props.id}/>
+            <Remark id={this.props.id} customerType={this.props.customerType} />
         );
     }
 }
