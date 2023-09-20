@@ -36,6 +36,7 @@
         private readonly IFeedbackService feedbackService;
         private readonly ITicketRefService ticketRefService;
         private readonly ICRMLogService logService;
+        private readonly IPermissionService permissionService;
 
         public FeedbackController(
             INapSession napSession,
@@ -44,7 +45,8 @@
             ISettingService settingService,
             IFeedbackService feedbackService,
             ITicketRefService ticketRefService,
-            ICRMLogService logService)
+            ICRMLogService logService,
+            IPermissionService permissionService)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
@@ -53,6 +55,7 @@
             this.feedbackService = feedbackService;
             this.ticketRefService = ticketRefService;
             this.logService = logService;
+            this.permissionService = permissionService;
         }
 
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
@@ -75,9 +78,9 @@
         public async Task<IActionResult> GetCustomerFeedbackById(int id)
         {
             CustomerFeedback feedback = await feedbackService.GetCustomerFeedbackByIdAsync(id);
-            var isDeletedFeedbackView = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host);
+            var isDeletedFeedbackView = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
             var settings = await GetEditCustomerFeedbackSettingAsync(feedback, isDeletedFeedbackView);
-            var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
+            var hasReviewFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
             return Json(new { feedback, settings, hasReviewFeedbackPermission });
         }
 
@@ -85,7 +88,7 @@
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
         public async Task<IActionResult> EditCustomerFeedback([FromBody] EditCustomerFeedbackCommand command)
         {
-            CommandResult commandResult = CheckEditCustomerFeedbackPermission(command);
+            CommandResult commandResult = await CheckEditCustomerFeedbackPermission(command);
             if (commandResult.IsSuccessful)
             {
                 command.UserId = napSession.UserId;
@@ -135,11 +138,11 @@
             return balanceDayFormat;
         }
 
-        private CommandResult CheckEditCustomerFeedbackPermission(EditCustomerFeedbackCommand command)
+        private async Task<CommandResult> CheckEditCustomerFeedbackPermission(EditCustomerFeedbackCommand command)
         {
             var commandResult = new CommandResult { Code = 0 };
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host)
-                || (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host) &&
+            if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read)
+                || (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host) &&
                     command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate))
             {
                 commandResult = new CommandResult
@@ -151,7 +154,7 @@
 
             var isChangedStatusFromDeleted = command.IsDeletedFeedbackView && command.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted;
             var isChangedStatusToDeleted = !command.IsDeletedFeedbackView && command.StatusId == (int)Core.Enumerables.FeedbackStatus.Deleted;
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host)
+            if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read)
                 && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
             {
                 commandResult = new CommandResult
@@ -237,7 +240,7 @@
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
 
             if (!isDeletedFeedbackView
-                || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host))
+                || !await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host))
             {
                 return statuses.Where(x => x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted).ToList();
             }

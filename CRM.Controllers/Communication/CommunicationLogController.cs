@@ -17,7 +17,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermissionAttribute(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Read)]
     public class CommunicationLogController : BaseController
     {
         private readonly INapSession napSession;

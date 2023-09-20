@@ -351,9 +351,6 @@ export class Layout extends Component {
     render() {
         const {customerInfo, isGuest, customerSuggestions, showEmptyConfirmPopup, showErrorConfirmPopup,
             username, showEmptyCustomerInfoPopup, menus, isShowingLeftPanel } = this.state;
-        if(menus.length <= 0){
-            return null;
-        }
 
         const currentCustomerInfo = this.getCurrentCustomerInfo();
         const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
