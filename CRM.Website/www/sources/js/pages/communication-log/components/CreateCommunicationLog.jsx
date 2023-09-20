@@ -73,7 +73,7 @@ export class CreateCommunicationLog extends Component {
 
     async componentDidMount() {
         Site.blockUI();
-        const urlAllSettings = Site.resolveClientUrl('CommunicationLog/GetAllSettings');
+        const urlAllSettings = Site.resolveClientUrl('CommunicationLog/GetAllSettings?isEdit=false');
         const urlBalanceUpday = Site.resolveClientUrl('Feedback/GetBalanceUpday');
         const options = this.props.options;
         if (options) {

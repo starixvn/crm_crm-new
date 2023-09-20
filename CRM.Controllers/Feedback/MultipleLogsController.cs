@@ -1,9 +1,10 @@
 ﻿namespace CRM.Controllers.Feedback
 {
-    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -32,6 +33,7 @@
         private readonly ISettingService settingService;
         private readonly IFeedbackService feedbackService;
         private readonly ICommonService commonService;
+        private readonly IPermissionService permissionService;
 
         public MultipleLogsController(
             INapSession napSession,
@@ -40,7 +42,8 @@
             IBaseService baseService,
             ISettingService settingService,
             IFeedbackService feedbackService,
-            ICommonService commonService
+            ICommonService commonService,
+            IPermissionService permissionService
         )
         {
             this.napSession = napSession;
@@ -50,6 +53,7 @@
             this.settingService = settingService;
             this.feedbackService = feedbackService;
             this.commonService = commonService;
+            this.permissionService = permissionService;
         }
 
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
@@ -179,7 +183,7 @@
         private async Task<CreateFeedbackViewModel> GetAllSettingAsync()
         {
             var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
-            var statusesTask = settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var statusesTask = GetStatusListAsync();
             var productsTask = settingService.GetProductAsync(SettingConstants.Active);
             var subproductsTask = settingService.GetSubProductAsync(active: SettingConstants.Active);
             var bettypesTask = settingService.GetBetTypeAsync(active: SettingConstants.Active);
@@ -213,6 +217,19 @@
             };
 
             return settings;
+        }
+
+        private async Task<IEnumerable<Models.Setting.FeedbackStatus>> GetStatusListAsync()
+        {
+            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var isHostDeleteFbPermision = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
+
+            if (!isHostDeleteFbPermision)
+            {
+                statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
+            }
+
+            return statuses;
         }
     }
 }

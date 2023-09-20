@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers.Communication
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
@@ -12,9 +13,7 @@
     using CRM.Services;
     using CRM.Services.Communication;
     using CRM.ViewModels.Feedback;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -22,29 +21,26 @@
     public class CommunicationLogController : BaseController
     {
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ICommunicationService communicationService;
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
         private readonly ICommonService commonService;
+        private readonly IPermissionService permissionService;
 
         public CommunicationLogController(
             INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             ICommunicationService communicationService,
             ISettingService settingService,
             IBaseService baseService,
-            ICommonService commonService)
+            ICommonService commonService,
+            IPermissionService permissionService)
         {
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.communicationService = communicationService;
             this.settingService = settingService;
             this.baseService = baseService;
             this.commonService = commonService;
+            this.permissionService = permissionService;
         }
        
 
@@ -58,19 +54,15 @@
 
         public async Task<IActionResult> GetAllStatus(bool isEdit)
         {
-            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
-            if (isEdit && !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.DeleteFeedback, Policy.Host))
-            {
-                statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
-            }
+            var statuses = await GetStatusListAsync(isEdit);
             return Json(statuses);
         }
 
         public async Task<IActionResult> GetLogByFeedbackId(int id)
         {
             var log = await communicationService.GetLogByFeedbackIdAsync(id);
-            var settings = await GetAllSettings();
-            var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
+            var settings = await GetAllSettings(true);
+            var hasReviewFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
 
             return Json(new { log, settings, hasReviewFeedbackPermission });
         }
@@ -79,7 +71,7 @@
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
         public async Task<IActionResult> EditCommunicationLog([FromBody] EditCommunicationLogCommand command)
         {
-            CommandResult commandResult = CheckEditCustomerFeedbackPermission(command);
+            CommandResult commandResult = await CheckEditCustomerFeedbackPermission(command);
             if (commandResult.IsSuccessful)
             {
                 command.UserId = napSession.UserId;
@@ -101,11 +93,11 @@
             return Json(commandResult);
         }
 
-        private CommandResult CheckEditCustomerFeedbackPermission(EditCommunicationLogCommand command)
+        private async Task<CommandResult> CheckEditCustomerFeedbackPermission(EditCommunicationLogCommand command)
         {
             var commandResult = new CommandResult { Code = 0 };
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host)
-                || (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host) &&
+            if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read)
+                || (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host) &&
                     command.UpdateReviewedMode != EditReviewedModeConstants.NotChange))
             {
                 commandResult = new CommandResult
@@ -117,7 +109,7 @@
 
             var isChangedStatusFromDeleted = command.IsDeletedFeedbackView && command.StatusId != (int)FeedbackStatus.Deleted;
             var isChangedStatusToDeleted = !command.IsDeletedFeedbackView && command.StatusId == (int)FeedbackStatus.Deleted;
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host)
+            if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read)
                 && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
             {
                 commandResult = new CommandResult
@@ -130,10 +122,10 @@
             return commandResult;
         }
 
-        public async Task<CreateFeedbackViewModel> GetAllSettings()
+        public async Task<CreateFeedbackViewModel> GetAllSettings(bool isEdit)
         {
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
-            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var statuses = await GetStatusListAsync(isEdit);
             var products = await settingService.GetProductAsync(SettingConstants.Active);
             var subproducts = await settingService.GetSubProductAsync(active: SettingConstants.Active);
             var bettypes = await settingService.GetBetTypeAsync(active: SettingConstants.Active);
@@ -172,6 +164,19 @@
             command.EndTime = commonService.ConvertToServerDateTime(command.EndTime);
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
+        }
+
+        private async Task<IEnumerable<Models.Setting.FeedbackStatus>> GetStatusListAsync(bool isEdit = false)
+        {
+            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var isHostDeleteFbPermision = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
+
+            if (!isEdit || !isHostDeleteFbPermision)
+            {
+                statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
+            }
+
+            return statuses;
         }
     }
 }

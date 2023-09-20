@@ -8,9 +8,9 @@ import { changeSiteSetting } from '@jsroot/common/shareScripts';
 export default class DropdownDetail extends PureComponent {
     renderCreateCommunication = () => {
         const { values, touched, errors, handleChange, setFieldValue, onChangeStartTime, onChangeEndTime,
-                handleChangeCommunicationTool, communicationTools, extensions} = this.props;
+            handleChangeCommunicationTool, communicationTools, extensions } = this.props;
         const { languages, responses } = this.props.allSettings;
-        return(
+        return (
             <div>
                 <Form.Group as={Row}>
                     <Col sm="6" md="6">
@@ -119,10 +119,10 @@ export default class DropdownDetail extends PureComponent {
 
     renderCreateDropDown = () => {
         const { subCategories, subProducts, betTypes, allSettings, values, touched, errors, handleChange, setFieldValue, setStateSubProduct,
-                setStateBetType, handleChangeProduct, handleChangeSubProduct, handleChangeMainCategory, mainCategories, products } = this.props;
+            setStateBetType, handleChangeProduct, handleChangeSubProduct, handleChangeMainCategory, mainCategories, products } = this.props;
         const { countries, statuses, roles, sites, licenseeTypes } = allSettings;
         const siteOptions = changeSiteSetting(sites, 'childSites', 'childSites');
-        return(
+        return (
             <div>
                 <Form.Group as={Row}>
                     <Col sm="6" md="6">
@@ -299,10 +299,10 @@ export default class DropdownDetail extends PureComponent {
     };
     render() {
         return (
-        <Fragment>
-            { this.renderCreateCommunication() }
-            { this.renderCreateDropDown() }
-        </Fragment>
+            <Fragment>
+                {this.renderCreateCommunication()}
+                {this.renderCreateDropDown()}
+            </Fragment>
         );
     }
 }

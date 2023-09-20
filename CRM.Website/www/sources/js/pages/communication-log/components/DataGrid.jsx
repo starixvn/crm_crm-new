@@ -153,6 +153,8 @@ export class DataGrid extends Component {
 
     render() {
         const { gridData, gridParams, canCreateCommunicationLog } = this.props;
+        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
+
         if (!gridData) {
             return null;
         }
@@ -182,7 +184,7 @@ export class DataGrid extends Component {
                     adjustedHeight={10}
                 />
                 {
-                    canCreateCommunicationLog &&
+                    hasCreateFeedbackPermission &&
                     <Button variant="primary" size="sm" className="mt-3" onClick={this.handleCreate}>
                         <UnderlineButton.insertCaseButton />
                     </Button>
