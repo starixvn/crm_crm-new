@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Functions>
     <Function Name="System Setting">
-        <Setting Key="Acc_CRM_SettingSel" SpName="Acc_CRM_SettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SettingRelationSel" SpName="Acc_CRM_SettingRelationSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingSel" SpName="Acc_CRM_SettingSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingRelationSel" SpName="Acc_CRM_SettingRelationSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Job Setting Management">
         <Setting Key="Acc_CRM_ConfigAutoFeedback_ServiceSel" SpName="Acc_CRM_ConfigAutoFeedback_ServiceSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -67,33 +67,33 @@
         </Setting>
     </Function>
     <Function Name="Setting">
-        <Setting Key="Acc_CRM_CommunicationToolList" SpName="Acc_CRM_CommunicationToolList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_CommunicationToolList" SpName="Acc_CRM_CommunicationToolList_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="CommunicationID" ObjectProperty="Id" />
         </Setting>
-        <Setting Key="Acc_CRM_MainCategoryList" SpName="Acc_CRM_MainCategoryList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SubCategoryList" SpName="Acc_CRM_SubCategoryList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SettingGetRelationBySettingName" SpName="Acc_CRM_SettingGetRelationBySettingName" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_MainCategoryList" SpName="Acc_CRM_MainCategoryList_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SubCategoryList" SpName="Acc_CRM_SubCategoryList_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingGetRelationBySettingName" SpName="Acc_CRM_SettingGetRelationBySettingName_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="SettingId" ObjectProperty="Id" />
             <Mapping DataField="SettingValue" ObjectProperty="Value" />
             <Mapping DataField="IsSub" ObjectProperty="IsChild" />
         </Setting>
-        <Setting Key="Acc_CRM_CountryList" SpName="Acc_CRM_CountryList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_CountryList" SpName="Acc_CRM_CountryList_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="CountryID" ObjectProperty="Id" />
             <Mapping DataField="CountryName" ObjectProperty="Name" />
         </Setting>
-        <Setting Key="Acc_CRM_ProvinceSel" SpName="Acc_CRM_ProvinceSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_LanguageList" SpName="Acc_CRM_LanguageList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SiteSel" SpName="Acc_CRM_SiteSel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_ProvinceSel" SpName="Acc_CRM_ProvinceSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_LanguageList" SpName="Acc_CRM_LanguageList_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SiteSel" SpName="Acc_CRM_SiteSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="SiteId" ObjectProperty="Id" Class="SiteInfo" />
             <Mapping DataField="SiteName" ObjectProperty="Name" Class="SiteInfo" />
         </Setting>
-        <Setting Key="Acc_CRM_StatusList" SpName="Acc_CRM_StatusList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_BetTypeList" SpName="Acc_CRM_BetTypeList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_StatusList" SpName="Acc_CRM_StatusList_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_BetTypeList" SpName="Acc_CRM_BetTypeList_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="BetTypeId" ObjectProperty="Id" Class="Product" />
             <Mapping DataField="Name" ObjectProperty="Value" Class="Product" />
             <Mapping DataField="ProductId" ObjectProperty="ParentId" Class="Product" />
         </Setting>
-        <Setting Key="Acc_CRM_SubProductList" SpName="Acc_CRM_SubProductList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_SubProductList" SpName="Acc_CRM_SubProductList_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="SubProductId" ObjectProperty="Id" Class="Product" />
             <Mapping DataField="Name" ObjectProperty="Value" Class="Product" />
             <Mapping DataField="ProductId" ObjectProperty="ParentId" Class="Product" />
@@ -107,8 +107,8 @@
             <Mapping DataField="Currency" ObjectProperty="Name" />
         </Setting>
         <Setting Key="Acc_CRM_SourceSettingMappingSel" SpName="Acc_CRM_SourceSettingMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_StationList" SpName="Acc_CRM_StationList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_PicRoleSel" SpName="Acc_CRM_PicRoleSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_StationList" SpName="Acc_CRM_StationList_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_PicRoleSel" SpName="Acc_CRM_PicRoleSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SettingRelationUpd" SpName="Acc_CRM_SettingRelationUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Default Communication Setting">
@@ -308,8 +308,8 @@
     </Function>
     <Function Name="SettingManagement">
         <Setting Key="Acc_CRM_SettingDel" SpName="Acc_CRM_SettingDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SettingIns" SpName="Acc_CRM_SettingIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_SettingUpd" SpName="Acc_CRM_SettingUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingIns" SpName="Acc_CRM_SettingIns_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_SettingUpd" SpName="Acc_CRM_SettingUpd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SourceSettingMappingUpd" SpName="Acc_CRM_SourceSettingMappingUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_SourceLicenseeMappingSel" SpName="Acc_CRM_SourceLicenseeMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_LicenseeManagerSel" SpName="Acc_CRM_LicenseeManagerSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
