@@ -1000,7 +1000,7 @@ export class EditMultipleLogs extends Component {
             isUpdateCategory: isCheck.mainCategory,
             noInquiries: values.noInquiries === '' ? 0 : parseInt(values.noInquiries, 10),
             isUpdateNoInquiries: isCheck.inquiry,
-            updateReviewedMode: !this.state.hasReviewFeedbackPermission ? 0 : this.reviewMode(isCheck.reviewed, values.review)
+            updateReviewedMode: this.reviewMode(isCheck.reviewed, values.review)
         };
         this.confirmEditMultipleLogs(params);
     };
@@ -1037,8 +1037,17 @@ export class EditMultipleLogs extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('MultipleLogs/EditMultipleLogs');
         await DataService.postDataAsync(url, params).then(response => {
+            this.setState({ editResult: response.data });
+            const modal = document.querySelector('.modal');
+            if (modal) {
+                modal.scrollTop = 0;
+            } else {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
             if (response.data.isSuccessful) {
-                this.setState({ editResult: response.data });
                 setTimeout(() => {
                     this.props.onClose(true);
                 }, 3000);

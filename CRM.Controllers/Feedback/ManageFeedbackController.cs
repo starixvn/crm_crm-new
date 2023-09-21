@@ -41,8 +41,8 @@
             var responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response);
             var mainCategories = await settingService.GetMainCategoryAsync();
             var subCategories = await settingService.GetSubCategoryAsync();
-            var communications = await settingService.GetCommunicationToolAsync(isIncludeNA:true);
-            var status = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var communications = await settingService.GetCommunicationToolAsync(isIncludeNA: true);
+            var status = await GetStatusListAsync();
             var settings = new
             {
                 CustomerTypes = customerTypes,
@@ -91,6 +91,19 @@
             var bytes = exportExcelService.ExportManageFeedbackReport(feedbacksOrder, mainCategories, reportName, reportTitle);
 
             return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+        }
+
+        private async Task<IEnumerable<FeedbackStatus>> GetStatusListAsync(bool isEdit = false)
+        {
+            var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var isHostDeleteFbPermision = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
+
+            if (!isEdit || !isHostDeleteFbPermision)
+            {
+                statuses = statuses.Where(x => x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted);
+            }
+
+            return statuses;
         }
     }
 }

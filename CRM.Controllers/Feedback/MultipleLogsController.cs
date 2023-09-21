@@ -170,14 +170,25 @@
         [HttpPost]
         public async Task<ActionResult> EditMultipleLogs([FromBody] EditMultipleLogsCommand command)
         {
-            command.ReviewerId = !command.IsReviewed ? 0 : napSession.UserId;
-            command.UserId = napSession.UserId;
-            command.IP = ClientIP;
-            command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
-            command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
-            CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
-            return Json(commandResult);
-            
+            var result = new CommandResult();
+
+            bool hostReviewFb = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
+
+            if (command.IsUpdateReview && !hostReviewFb)
+            {
+                result.Message = ViewResources.DoNotEditCommunicationLogPermission;
+            }
+            else
+            {
+                command.ReviewerId = !command.IsReviewed ? 0 : napSession.UserId;
+                command.UserId = napSession.UserId;
+                command.IP = ClientIP;
+                command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
+                command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
+                result = await baseService.ExecuteNonQueryAsync(command);
+            }
+
+            return Json(result);
         }
 
         private async Task<CreateFeedbackViewModel> GetAllSettingAsync()
