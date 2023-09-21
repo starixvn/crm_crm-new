@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment  } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Form, Row, Collapse, Modal } from 'react-bootstrap';
 import { Formik } from 'formik';
@@ -22,7 +22,6 @@ import {
     getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories,
     getProductParams, getCategoryParams
 } from '@jsroot/common/shareScripts';
-import { toast } from 'react-toastify';
 import { changeSiteSetting } from '@jsroot/common/shareScripts';
 import WithHotKey from '@jsroot/components/WithHotKey';
 
@@ -930,7 +929,7 @@ export class EditMultipleLogs extends Component {
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
                     <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
-                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)}  />
                     {
                         this.state.editResult &&
                         <ResponseMessage isSuccessful={this.state.editResult.isSuccessful}
@@ -1038,15 +1037,6 @@ export class EditMultipleLogs extends Component {
         const url = Site.resolveClientUrl('MultipleLogs/EditMultipleLogs');
         await DataService.postDataAsync(url, params).then(response => {
             this.setState({ editResult: response.data });
-            const modal = document.querySelector('.modal');
-            if (modal) {
-                modal.scrollTop = 0;
-            } else {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            }
             if (response.data.isSuccessful) {
                 setTimeout(() => {
                     this.props.onClose(true);
@@ -1071,7 +1061,7 @@ export class EditMultipleLogs extends Component {
         }
 
         return (
-            <div>
+            <Fragment>
                 <Modal show className="edit-multiple-log" dialogAs={DraggableModalDialog}
                     backdrop="static" keyboard={false} size="xl" centered
                     onHide={() => this.props.onClose(false)}
@@ -1104,7 +1094,7 @@ export class EditMultipleLogs extends Component {
                         onClose={this.handleCloseConfirmEditMultipleLogsDialog}
                     />
                 }
-            </div>
+            </Fragment>
         );
     }
 }

@@ -108,7 +108,7 @@
         [HttpPost]
         public async Task<ActionResult> EditMultipleLogStatuses([FromBody] EditMultipleLogStatusCommand command)
         {
-            CommandResult commandResult = CheckEditMultipleLogPermission();
+            CommandResult commandResult = await CheckEditMultipleLogPermission(command);
             if (commandResult.IsSuccessful)
             {
                 command.ReviewerId = string.IsNullOrEmpty(command.ReviewNote) ? 0 : napSession.UserId;
@@ -120,25 +120,17 @@
             return Json(commandResult);
         }
 
-        private CommandResult CheckEditMultipleLogPermission()
+        private async Task<CommandResult> CheckEditMultipleLogPermission(EditMultipleLogStatusCommand command)
         {
             var commandResult = new CommandResult { Code = 0 };
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host)
-                || !userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host))
+            bool isHostCreateFb = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
+            bool isHostReviewFb = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
+            if (!isHostCreateFb || (command.IsReviewed && !isHostReviewFb))
             {
                 commandResult = new CommandResult
                 {
                     Code = 1,
                     Message = ViewResources.DoNotEditFeedbackPermission
-                };
-            }
-
-            if (!userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host))
-            {
-                commandResult = new CommandResult
-                {
-                    Code = 1,
-                    Message = ViewResources.DoNotDeleteFeedbackPermission
                 };
             }
 

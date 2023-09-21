@@ -202,14 +202,8 @@
 .edit-multiple-log {
     .modal-dialog {
         max-width: 987px;
-        overflow-y: initial !important;
 
         .modal-content {
-            .modal-body{
-                height: 85vh;
-                overflow-y: auto;
-            }
-
             .panel-group {
                 border: 1px solid #b1b1b1;
 
