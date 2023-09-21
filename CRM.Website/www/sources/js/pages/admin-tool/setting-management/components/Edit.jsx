@@ -75,8 +75,7 @@ export class Edit extends Component {
             settingName: values.settingName,
             extraInfo: values.extraInfo,
             settingValue: values.settingValue,
-            settingSource: this.state.sourceMappings === ''? null : this.state.sourceMappings,
-            displayOrder: values.displayOrder === '' ? 0 : values.displayOrder
+            settingSource: this.state.sourceMappings === ''? null : this.state.sourceMappings
         };
         setSubmitting(true);
         this.props.editNewSetting(params).then(() => {
@@ -161,19 +160,6 @@ export class Edit extends Component {
                             </Col>
                         </Form.Group>
                     }
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" htmlFor="displayOrder">
-                            {LangHelper.getResource('DisplayOrder')}
-                        </Form.Label>
-                        <Col sm="8" md="9">
-                            <Form.Control type="number"
-                                name="displayOrder" id="displayOrder"
-                                className="shadow-none form-control"
-                                value={values.displayOrder}
-                                onChange={handleChange}
-                            />
-                        </Col>
-                    </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" type="submit" size="sm" disabled={isSubmitting}>
@@ -198,8 +184,7 @@ export class Edit extends Component {
             settingName: editPopup.data.settingName,
             extraInfo: editPopup.data.extraInfo,
             settingValue: editPopup.data.settingValue,
-            settingSource: editPopup.data.settingSource,
-            displayOrder: editPopup.data.displayOrder
+            settingSource: editPopup.data.settingSource
         };
 
         return (

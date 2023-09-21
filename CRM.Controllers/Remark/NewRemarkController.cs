@@ -50,7 +50,7 @@
         public async Task<IActionResult> GetRemarkTitles()
         {
             var remarkSettings = await settingService.GetSettingAsync(SettingName.RemarkTitles, true);
-            var remarkSettingsOrder = remarkSettings.OrderBy(s => s.DisplayOrder).ToList();
+            var remarkSettingsOrder = remarkSettings.ToList();
             return Json(remarkSettingsOrder);
         }
 

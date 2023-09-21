@@ -19,7 +19,6 @@ export class NewSettingValue extends Component {
             settingName: values.settingName,
             settingValue: values.settingValue,
             extraInfo: values.extraInfo,
-            displayOrder: values.displayOrder === '' ? 0 : values.displayOrder,
             parentId: this.props.settingName !== '' ? 0 : parseInt(values.parentId, 10)
         };
 
@@ -138,19 +137,6 @@ export class NewSettingValue extends Component {
                             </Form.Control>
                         </Col>
                     </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="4" md="3" htmlFor="displayOrder">
-                            {LangHelper.getResource('DisplayOrder')}
-                        </Form.Label>
-                        <Col sm="8" md="9">
-                            <Form.Control type="number"
-                                value={values.displayOrder}
-                                name="displayOrder" id="displayOrder"
-                                className="shadow-none form-control"
-                                onChange={handleChange}
-                            />
-                        </Col>
-                    </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button type="submit" size="sm" variant="primary" disabled={isSubmitting}>
@@ -174,8 +160,7 @@ export class NewSettingValue extends Component {
             settingName: settingName,
             settingValue: '',
             extraInfo: '',
-            parentId: 0,
-            displayOrder: ''
+            parentId: 0
         };
 
         return (

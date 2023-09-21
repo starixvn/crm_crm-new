@@ -49,7 +49,6 @@ export class Update extends Component {
             <HeaderRow>
                 <HeaderCell colWidth={50}>{LangHelper.getResource('Setting')}</HeaderCell>
                 <HeaderCell colWidth={10}>{LangHelper.getResource('IsSub')}</HeaderCell>
-                <HeaderCell colWidth={10}>{LangHelper.getResource('Order')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -77,12 +76,6 @@ export class Update extends Component {
                         type='checkbox'
                         checked={item.isChild}
                         onChange={e => this.onChangeCheckBox(item.value, e.target.checked)}
-                    />
-                </Cell>
-                <Cell>
-                    <Form.Control type="number" size="sm" disabled="disabled" className="shadow-none"
-                        value={item.displayOrder}
-                        onChange={e => this.onChangeDisplay(item.value, e.target.value)}
                     />
                 </Cell>
             </Row>
@@ -189,25 +182,12 @@ export class Update extends Component {
         this.setState({shouldResetScrollPosition: true});
     };
 
-    onChangeDisplay = (value, displayOrder) =>{
-        const settingRelationFilter = this.state.settingRelation.map(setting =>{
-            return {
-                id: setting.id,
-                value: setting.value,
-                isChild: setting.isChild,
-                displayOrder: setting.value === value ? displayOrder : setting.displayOrder
-            };
-        });
-        this.setState({settingRelation: settingRelationFilter, shouldResetScrollPosition: false});
-    };
-
     onChangeCheckBox = (value, checked) =>{
         const settingRelationFilter = this.state.settingRelation.map(setting =>{
             return {
                 id: setting.id,
                 value: setting.value,
-                isChild: setting.value === value ? checked : setting.isChild,
-                displayOrder: setting.displayOrder
+                isChild: setting.value === value ? checked : setting.isChild
             };
         });
         this.setState({settingRelation: settingRelationFilter, shouldResetScrollPosition: false});

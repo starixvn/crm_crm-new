@@ -80,9 +80,11 @@ export class FilterEditInforms extends PureComponent {
         const { siteOptions } = this.state;
 
         const allPositions = [
-            { id: 4, name: 'Super' }, { id: 3, name: 'Master' },
-            { id: 2, name: 'Agent' },{ id: 1, name: 'Member' },
-            { id: 0, name: 'Guest' }
+            { id: 2, name: 'Agent' },
+            { id: 0, name: 'Guest' },
+            { id: 3, name: 'Master' },
+            { id: 1, name: 'Member' },
+            { id: 4, name: 'Super' }
         ];
 
         const allIsVip = [

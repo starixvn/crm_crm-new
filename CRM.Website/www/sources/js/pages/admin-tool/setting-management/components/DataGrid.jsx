@@ -20,7 +20,6 @@ export class DataGrid extends Component {
                 }
                 <HeaderCell colWidth={15}>{LangHelper.getResource('ExtraInfo')}</HeaderCell>
                 <HeaderCell colWidth={15}>{LangHelper.getResource('SettingId')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Order')}</HeaderCell>
                 {
                     isHost && <HeaderCell colWidth={13}>{LangHelper.getResource('Edit')}</HeaderCell>
                 }
@@ -42,7 +41,6 @@ export class DataGrid extends Component {
                 }
                 <Cell className='text-left'>{item.extraInfo}</Cell>
                 <Cell className='text-right'>{item.settingId}</Cell>
-                <Cell className='text-right'>{item.displayOrder}</Cell>
                 {
                     isHost &&
                     <Cell className='text-center'>

@@ -28,7 +28,6 @@ export class DataGrid extends Component {
                     isHost && <HeaderCell colWidth={10}>{LangHelper.getResource('Relation')}</HeaderCell>
                 }
                 <HeaderCell colWidth={12}>{LangHelper.getResource('SettingId')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('Order')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -67,7 +66,6 @@ export class DataGrid extends Component {
                     </Cell>
                 }
                 <Cell className='text-right'>{item.settingId}</Cell>
-                <Cell className='text-right'>{item.displayOrder}</Cell>
             </Row>
         );
         if (item.childSettings.length > 0) {
@@ -89,7 +87,6 @@ export class DataGrid extends Component {
                     <Cell className='pl-4'>{sub.settingValue}</Cell>
                     <Cell />
                     <Cell className='text-right'>{sub.settingId}</Cell>
-                    <Cell className='text-right'>{sub.displayOrder}</Cell>
                 </Row>
             );
             return rows;

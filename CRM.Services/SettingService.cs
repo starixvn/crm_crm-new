@@ -27,7 +27,7 @@
                 Active = active
             };
 
-            var tools = (await baseService.GetDataAsync<Setting>(criteria)).OrderBy(s => s.DisplayOrder);
+            var tools = await baseService.GetDataAsync<Setting>(criteria);
             return isIncludeNA
                 ? tools.ToList()
                 : tools.Where(t => t.Id != SettingConstants.CommunicationNA).ToList();
@@ -52,11 +52,11 @@
             var settingGroupByType = new List<Setting>();
             foreach (var group in settingGroups)
             {
-                var subList = allSettings.Where(s => s.SettingName == group.Key.Type).Select(s => s).OrderBy(s => s.DisplayOrder).ToList();
+                var subList = allSettings.Where(s => s.SettingName == group.Key.Type).Select(s => s).ToList();
                 var setting = new Setting { SettingName = group.Key.Type, ChildSettings = subList };
                 settingGroupByType.Add(setting);
             }
-            var settingGroupOrder = settingGroupByType.OrderBy(s => s.DisplayOrder).ToList();
+            var settingGroupOrder = settingGroupByType.ToList();
             return settingGroupOrder.ToList();
         }
 
@@ -66,20 +66,18 @@
             IEnumerable<Setting> relations = await GetSettingRelationAsync();
             IEnumerable<Setting> result = allSettings
                 .Where(s => s.SettingName == settingName)
-                .GroupBy(s => s.SettingId).Select(x => x.First())
-                .OrderBy(s => s.DisplayOrder);
+                .GroupBy(s => s.SettingId).Select(x => x.First());
 
             foreach (Setting item in result)
             {
                 var settingIds = relations
                     .Where(r => r.ParentID == item.SettingId)
-                    .Select(s => new { s.SettingId, s.DisplayOrder });
+                    .Select(s => new { s.SettingId });
                 if (settingIds.Any())
                 {
                     item.ChildSettings = allSettings.Where(x => settingIds.Any(y => x.SettingId == y.SettingId))
                         .GroupBy(x => x.SettingId)
-                        .Select(x => x.First())
-                        .OrderBy(s => s.DisplayOrder).ToList();
+                        .Select(x => x.First()).ToList();
                 }
 
                 var sources = allSettings.Where(x => x.SettingValue == item.SettingValue && x.SettingSource != null && item.SettingName == x.SettingName).ToList();
@@ -150,7 +148,7 @@
                 Active = active
             };
             var relations = await baseService.GetDataAsync<SettingRelation>(criteria);
-            return relations.OrderBy(setting => setting.DisplayOrder).ToList();
+            return relations.ToList();
         }
 
         public async Task<IEnumerable<SettingRelation>> GetMainSettingRelationAsync(GetSettingRelationByNameCriteria criteria)
@@ -238,8 +236,7 @@
                 ProductId = productId,
                 Active = active
             };
-            var bettypes = await baseService.GetDataAsync<Product>(criteria);
-            return bettypes.OrderBy(b => b.DisplayOrder);
+            return await baseService.GetDataAsync<Product>(criteria);
         }
 
         public async Task<IEnumerable<Product>> GetProductAsync(byte active = SettingConstants.ActiveAndInactive)
@@ -251,7 +248,7 @@
                 Active = active
             };
             var products = await baseService.GetDataAsync<Product>(criteria);
-            return products.OrderBy(setting => setting.DisplayOrder).ToList();
+            return products.ToList();
         }
 
         public async Task<IEnumerable<Product>> GetSubProductAsync(int productId = 0, byte active = SettingConstants.ActiveAndInactive)
@@ -271,7 +268,7 @@
 
         public async Task<IEnumerable<BaseModel>> GetLicenseeTypeAsync()
         {
-            var liscenseeTypes = (await baseService.GetDataAsync<BaseModel>(new GetAllLicenseeTypeCriteria())).ToList();
+            var liscenseeTypes = (await baseService.GetDataAsync<BaseModel>(new GetAllLicenseeTypeCriteria())).OrderBy(s => s.Name).ToList();
             liscenseeTypes.Insert(
                 0,
                 new BaseModel
@@ -451,7 +448,7 @@
             var subCategories = await GetSubCategoryAsync();
             foreach (var category in mainCategories)
             {
-                category.ChildSettings = subCategories.Where(x => x.MainCategoryID == category.MainCategoryID).OrderBy(s => s.DisplayOrder).ToList();
+                category.ChildSettings = subCategories.Where(x => x.MainCategoryID == category.MainCategoryID).ToList();
             }
             return mainCategories;
         }
@@ -463,7 +460,7 @@
 
             foreach (var category in mainCategories)
             {
-                category.ChildSettings = subCategories.Where(x => x.MainCategoryID == category.SettingId).OrderBy(s => s.DisplayOrder).ToList();
+                category.ChildSettings = subCategories.Where(x => x.MainCategoryID == category.SettingId).ToList();
             }
 
             return mainCategories;

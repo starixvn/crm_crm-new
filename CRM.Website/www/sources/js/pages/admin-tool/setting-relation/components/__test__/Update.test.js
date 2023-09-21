@@ -92,7 +92,7 @@ describe('Update', () => {
             const header = shallow(container.buildHeader());
 
             // Assert
-            expect(header.find(HeaderCell).length).toBe(3);
+            expect(header.find(HeaderCell).length).toBe(2);
         });
     });
 
@@ -145,20 +145,6 @@ describe('Update', () => {
             row.find(Form.Control).at(0).simulate('change', {target:{checked: true}});
             // Assert
             expect(container.instance().onChangeCheckBox).toHaveBeenCalled();
-        });
-
-        it('form control change call onChangeCheckBox', () => {
-            // Arrange
-            const item = initProps.mainSettingRelation[0];
-            
-            const container = shallow(<Update {...initProps} />);
-            container.instance().onChangeDisplay = jest.fn();
-
-            const row = shallow(container.instance().renderRow(item, 1));
-            // Act
-            row.find(Form.Control).at(1).simulate('change', {target:{value: '10'}});
-            // Assert
-            expect(container.instance().onChangeDisplay).toHaveBeenCalled();
         });
     });
 
@@ -222,35 +208,6 @@ describe('Update', () => {
             // Assert
             expect(initProps.getMainSettingRelation).toHaveBeenCalledWith(expectedParams);
             expect(container.state.shouldResetScrollPosition).toEqual(true);
-        });
-    });
-
-    describe('onChangeDisplay ', () => {
-        it('should call setState',() => {
-            // Arrange
-            const state = {
-                settingRelation: [{
-                    id: 1,
-                    value: 'test',
-                    isChild: true,
-                    displayOrder: 0
-                }]
-            };
-            const expectedState = [{
-                id: 1,
-                value: 'test',
-                isChild: true,
-                displayOrder: 10
-            }];
-
-            const container = shallow(<Update {...initProps} />).instance();
-            container.setState(state);
-            //Act
-            container.onChangeDisplay('test', 10);
-
-            // Assert
-            expect(container.state.shouldResetScrollPosition).toEqual(false);
-            expect(container.state.settingRelation).toEqual(expectedState);
         });
     });
 });
