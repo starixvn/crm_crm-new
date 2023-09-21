@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Models;
@@ -259,7 +260,7 @@
             napSession.UserId = user.Id;
             napSession.UserName = user.Username;
             napSession.OnUserId = onUserId;
-            var menus = userService.GetMenuItem(user.Id, napSettings.SiteId, napSettings.Environment, true).ToList();
+            var menus = await GetMenuAsync(user.Id);
             napSession.MenuItemList = menus;
             var claims = new List<Claim>
             {
@@ -269,6 +270,18 @@
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+        }
+
+        private async Task<List<MenuItem>> GetMenuAsync(int userId)
+        {
+            var menus = userService.GetMenuItem(userId, napSettings.SiteId, napSettings.Environment, true).ToList();
+            bool isHaveCustInfoPermission = await userService.IsHavingPermissionAsync(userId, napSettings.SiteId, FunctionKey.Credit, Fanex.NAP.Core.Business.Constant.Policy.Read) ||
+                await userService.IsHavingPermissionAsync(userId, napSettings.SiteId, FunctionKey.Licensee, Fanex.NAP.Core.Business.Constant.Policy.Read);
+            if (!isHaveCustInfoPermission)
+            {
+                menus = menus.Where(i => !i.ParentName.Equals("Feedback")).ToList();
+            }
+            return menus.ToList();
         }
 
         private async Task<bool> IsValidTime(string time)
