@@ -679,10 +679,10 @@ export class AppContainer extends Component {
     };
 
     isReviewed = values => {
-        if (!values.isReviewed) {
-            return 2;
+        if (this.state.feedback.review === values.review && this.state.feedback.isReviewed === values.isReviewed) {
+            return 0;
         }
-        return this.state.feedback.review === values.review ? 0 : 1;
+        return !values.isReviewed ? 2 : 1;
     };
 
     handleReVerifyInactiveAndConfirm = async (params, setSubmitting) => {

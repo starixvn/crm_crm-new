@@ -141,9 +141,11 @@
         private async Task<CommandResult> CheckEditCustomerFeedbackPermission(EditCustomerFeedbackCommand command)
         {
             var commandResult = new CommandResult { Code = 0 };
-            if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read)
-                || (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host) &&
-                    command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate))
+            var isReadCustInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit) || await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee);
+            var isHostCreateFeedback = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
+            var isHostReviewFeedback = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
+
+            if (!isReadCustInfo || !isHostCreateFeedback || (command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate && !isHostReviewFeedback))
             {
                 commandResult = new CommandResult
                 {
