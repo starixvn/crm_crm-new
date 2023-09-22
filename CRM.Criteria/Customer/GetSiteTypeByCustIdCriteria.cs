@@ -8,6 +8,6 @@
 
         public override string GetSettingKey() => "Acc_CRM_CustomerCheckSiteType";
 
-        public override bool IsValid() => CustId > 0;
+        public override bool IsValid() => true;
     }
 }
