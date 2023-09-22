@@ -1,7 +1,9 @@
 ﻿namespace CRM.Criteria.Report.LogStatistics
 {
     using System;
+    using CRM.Core.Constants;
     using Fanex.Data.Repository;
+
     public class LogStatisticsCriteria : CriteriaBase
     {
         public DateTime FromDate { get; set; }
@@ -19,6 +21,7 @@
         public string MainCategoryId { get; set; }
 
         public string CommunicationId { get; set; }
+        public short LicenseeType { get; set; } = LicenseeTypeConstants.All;
 
         public override string GetSettingKey()
         {

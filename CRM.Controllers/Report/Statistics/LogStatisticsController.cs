@@ -14,17 +14,19 @@
         private readonly ILogStatisticsService logStatisticsService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
+        private readonly IPermissionService permissionService;
+
         public LogStatisticsController(
             ILogStatisticsService logStatisticsService,
             ISettingService settingService,
-            IExportExcelService excelService
-            )
+            IExportExcelService excelService,
+            IPermissionService permissionService)
         {
             this.logStatisticsService = logStatisticsService;
             this.settingService = settingService;
             this.excelService = excelService;
+            this.permissionService = permissionService;
         }
-
 
         public async Task<IActionResult> GetAllSettings()
         {
@@ -43,6 +45,7 @@
         [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetMainReport([FromBody] LogStatisticsCriteria criteria)
         {
+            var licenseeType = await permissionService.GetSitePermissionAsync();
             var ibcReportTask = logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
@@ -52,7 +55,8 @@
                 ToDate = criteria.ToDate,
                 ProductType = LogStatisticConstants.ProductTypeDetails,
                 CategoryType = LogStatisticConstants.SubCategory,
-                SiteType = LogStatisticConstants.IBC
+                SiteType = LogStatisticConstants.IBC,
+                LicenseeType = licenseeType
             });
 
             var licenseeReportTask = logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
@@ -64,7 +68,8 @@
                 ToDate = criteria.ToDate,
                 ProductType = LogStatisticConstants.ProductTypeDetails,
                 CategoryType = LogStatisticConstants.SubCategory,
-                SiteType = LogStatisticConstants.Licensee
+                SiteType = LogStatisticConstants.Licensee,
+                LicenseeType = licenseeType
             });
 
             await Task.WhenAll(ibcReportTask, licenseeReportTask);
@@ -96,8 +101,12 @@
 
             return Json(new
             {
-                report, mainCategories, communicationTools,
-                products, subProducts, extensions,
+                report,
+                mainCategories,
+                communicationTools,
+                products,
+                subProducts,
+                extensions,
                 totalRows = criteria.TotalRows
             });
         }
@@ -105,6 +114,7 @@
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] LogStatisticsCriteria criteria)
         {
+            var licenseeType = await permissionService.GetSitePermissionAsync();
             var param = new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
@@ -114,7 +124,8 @@
                 ToDate = criteria.ToDate,
                 ProductType = LogStatisticConstants.ProductTypeDetails,
                 CategoryType = LogStatisticConstants.SubCategory,
-                SiteType = criteria.SiteType
+                SiteType = criteria.SiteType,
+                LicenseeType = licenseeType
             };
 
             var logStatistics = await logStatisticsService.GetReportDataAsync(param);
