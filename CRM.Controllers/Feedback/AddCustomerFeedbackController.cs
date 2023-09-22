@@ -11,7 +11,6 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
-    using Fanex.Data.Repository;
     using Fanex.Logging.Extensions;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -30,7 +29,7 @@
         private readonly IUserService userService;
         private readonly ICommonService commonService;
         private readonly ICRMLogService logService;
-
+        private readonly IPermissionService permissionService;
 
         public AddCustomerFeedbackController(
             INapSession napSession,
@@ -39,7 +38,8 @@
             INapSettings napSettings,
             IUserService userService,
             ICommonService commonService,
-            ICRMLogService logService)
+            ICRMLogService logService,
+            IPermissionService permissionService)
         {
             this.napSession = napSession;
             this.settingService = settingService;
@@ -48,14 +48,17 @@
             this.userService = userService;
             this.commonService = commonService;
             this.logService = logService;
+            this.permissionService = permissionService;
         }
 
         public async Task<ActionResult> AllSetting()
         {
+            var licenseeType = await permissionService.GetSitePermissionAsync();
+
             var languagesTask = settingService.GetLanguageAsync(SettingConstants.Active, true);
             var countriesTask = settingService.GetCountryAsync(SettingConstants.Active, true);
             var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
-            var statusesTask =  settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
+            var statusesTask = settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var communicationToolsTask = settingService.GetCommunicationToolAsync(SettingConstants.Active);
             var responsesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
             var titlesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
@@ -66,7 +69,7 @@
             var mainCategorysTask = settingService.GetMainCategoryAsync(SettingConstants.Active);
             var subCategorysTask = settingService.GetSubCategoryAsync(active: SettingConstants.Active);
             var rolesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
-            var sitesTask = settingService.GetAllSitesWithGroupAsync();
+            var sitesTask = settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType);
             await Task.WhenAll(languagesTask, countriesTask, extentionsTask, statusesTask, communicationToolsTask, responsesTask,
                 titlesTask, licenseeTypesTask, productsTask, subproductsTask, bettypesTask, mainCategorysTask, subCategorysTask, rolesTask, sitesTask);
 

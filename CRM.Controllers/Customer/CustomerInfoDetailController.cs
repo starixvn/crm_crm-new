@@ -66,12 +66,14 @@
 
         public async Task<IActionResult> GetAllSettings()
         {
+            short licenseeType = await permissionService.GetSitePermissionAsync();
+
             var allSettings = new CreateCustomerInfoViewModel
             {
                 Countries = await settingService.GetCountryAsync(SettingConstants.Active, true),
                 Languages = await settingService.GetLanguageAsync(SettingConstants.Active),
                 LicenseeTypes = await settingService.GetLicenseeTypeAsync(),
-                Sites = await settingService.GetAllSitesWithGroupAsync(),
+                Sites = await settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType),
                 Titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active)
             };
             return Json(allSettings);

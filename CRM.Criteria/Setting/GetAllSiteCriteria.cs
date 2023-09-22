@@ -1,13 +1,12 @@
 ﻿namespace CRM.Criteria.Setting
 {
-    using CRM.Core.Constants;
     using Fanex.Data.Repository;
 
     public class GetAllSiteCriteria : CriteriaBase
     {
-        public byte UserRole { get; } = Constants.UserRole;
+        public short UserRole { get; set; }
 
-        public byte LicenseeType { get; } = LicenseeTypeConstants.All;
+        public short LicenseeType { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_SiteSel";
 

@@ -85,9 +85,10 @@
 
         public async Task<IActionResult> GetSettings()
         {
+            short licenseeType = await permissionService.GetSitePermissionAsync();
             var settings = new
             {
-                sites = await settingService.GetAllSitesWithGroupAsync(),
+                sites = await settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType),
                 sitesByIsLicensee = await settingService.GetAllSitesGroupByIsLicenseeAsync(),
                 countries = await settingService.GetCountryAsync(SettingConstants.Active),
                 languages = await settingService.GetLanguageAsync(SettingConstants.Active),

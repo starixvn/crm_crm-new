@@ -139,10 +139,12 @@
 
         public async Task<IActionResult> GetLogSettingByFeedbackId(int id)
         {
+            short licenseeType = await permissionService.GetSitePermissionAsync();
+
             var communicationLogTask = feedbackService.GetLogByFeedbackIdAsync(id);
             var settingTask = GetAllSettingAsync();
             var rolesTask =  settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active);
-            var sitesTask = settingService.GetAllSitesWithGroupAsync();
+            var sitesTask = settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType);
             var licenseeTypesTask = settingService.GetLicenseeTypeAsync();
 
             await Task.WhenAll(communicationLogTask, settingTask, rolesTask, sitesTask, licenseeTypesTask);

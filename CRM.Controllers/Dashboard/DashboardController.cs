@@ -46,7 +46,7 @@
         {
             var communicationLogs = await dashboardService.GetCommunicationLogsAsync(criteria);
             var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
-            return Json(new { data = communicationLogs, mainCategories});
+            return Json(new { data = communicationLogs, mainCategories });
         }
 
         public async Task<IActionResult> GetCustomerInfoVerify(GetCustomerInfoVerifyCriteria criteria)
@@ -56,8 +56,8 @@
         }
 
         [HttpPost]
-        [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
-        [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
         public async Task<IActionResult> EditCustomerVerify([FromBody] EditCustomerVerifyCommand command)
         {
             command.IP = ClientIP;

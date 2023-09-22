@@ -10,7 +10,7 @@
 
     public interface ISettingService
     {
-        Task<IEnumerable<Setting>> GetSettingAsync(string settingName="", bool? isActive = null);
+        Task<IEnumerable<Setting>> GetSettingAsync(string settingName = "", bool? isActive = null);
 
         Task<IEnumerable<Setting>> GetMainSettingAsync();
 
@@ -22,7 +22,7 @@
 
         Task<SiteSetting> GetSiteByIdAsync(int siteId);
 
-        Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync();
+        Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All);
 
         Task<IEnumerable<SiteInfo>> GetAllSitesGroupByIsLicenseeAsync();
 
@@ -31,6 +31,7 @@
         Task<IEnumerable<Setting>> GetCommunicationToolAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 
         Task<IEnumerable<Setting>> GetMainCategoryAsync(byte active = SettingConstants.ActiveAndInactive);
+
         Task<IEnumerable<Setting>> GetAllMainSubCategoriesAsync();
 
         Task<IEnumerable<Setting>> GetSubCategoryAsync(int? mainCategoryId = null, byte active = SettingConstants.ActiveAndInactive);

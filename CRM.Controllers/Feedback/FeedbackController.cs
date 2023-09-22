@@ -171,6 +171,8 @@
 
         private async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback, bool isDeletedFeedbackView = false)
         {
+            short licenseeType = await permissionService.GetSitePermissionAsync();
+
             var feedbackSettings = feedback.Settings;
             var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension);
             var communicationToolsTask = settingService.GetCommunicationToolAsync(isIncludeNA: true);
@@ -185,7 +187,7 @@
             var statusesTask = GetStatusAsync(isDeletedFeedbackView);
             var licenseeTypesTask = settingService.GetLicenseeTypeAsync();
             var titleTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
-            var sitesTask = settingService.GetAllSitesWithGroupAsync();
+            var sitesTask = settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType);
             var subCategoriesTask = GetSubCategoryAsync(feedbackSettings);
 
             await Task.WhenAll(extentionsTask, communicationToolsTask, productsTask, subProductsTask, betTypesTask, responsesTask,

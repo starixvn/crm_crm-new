@@ -24,6 +24,7 @@
         private readonly INapSettings napSettings;
         private readonly IUserService userService;
         private readonly ICommonService commonService;
+        private readonly IPermissionService permissionService;
 
         public AddGuestFeedbackController(
             INapSession napSession,
@@ -31,7 +32,8 @@
             IBaseService baseService,
             INapSettings napSettings,
             IUserService userService,
-            ICommonService commonService)
+            ICommonService commonService,
+            IPermissionService permissionService)
         {
             this.napSession = napSession;
             this.settingService = settingService;
@@ -39,10 +41,13 @@
             this.napSettings = napSettings;
             this.userService = userService;
             this.commonService = commonService;
+            this.permissionService = permissionService;
         }
 
         public async Task<ActionResult> AllSetting()
         {
+            short licenseeType = await permissionService.GetSitePermissionAsync();
+
             var subproductsTask = settingService.GetSubProductAsync(active: SettingConstants.Active);
             var bettypesTask = settingService.GetBetTypeAsync(active: SettingConstants.Active);
             var mainCategorysTask = settingService.GetMainCategoryAsync(SettingConstants.Active);
@@ -57,7 +62,7 @@
             var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var statusesTask = settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var productsTask = settingService.GetProductAsync(SettingConstants.Active);
-            var sitesTask = settingService.GetAllSitesWithGroupAsync();
+            var sitesTask = settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType);
 
             await Task.WhenAll(languagesTask, countriesTask, extentionsTask, statusesTask, communicationToolsTask, responsesTask, titlesTask, licenseeTypesTask,
                 productsTask, subproductsTask, bettypesTask, mainCategorysTask, subCategorysTask, sitesTask);
@@ -66,7 +71,6 @@
             var productNA = productsTask.Result.FirstOrDefault(p => p.Id == NAConstants.ProductNA);
             var subproductNA = subproductsTask.Result.FirstOrDefault(s => s.Id == NAConstants.SubProductNA);
             var bettypeNA = bettypesTask.Result.FirstOrDefault(b => b.Id == NAConstants.BettypeNA);
-
 
             var settings = new CreateFeedbackViewModel
             {

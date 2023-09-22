@@ -33,7 +33,7 @@
                 : tools.Where(t => t.Id != SettingConstants.CommunicationNA).ToList();
         }
 
-        public async Task<IEnumerable<Setting>> GetSettingAsync(string settingName="", bool? isActive = null)
+        public async Task<IEnumerable<Setting>> GetSettingAsync(string settingName = "", bool? isActive = null)
         {
             var criteria = new GetSettingCriteria
             {
@@ -60,7 +60,7 @@
             return settingGroupOrder.ToList();
         }
 
-        public async Task<IEnumerable<Setting>>GetSettingByTypes(string settingName)
+        public async Task<IEnumerable<Setting>> GetSettingByTypes(string settingName)
         {
             var allSettings = await GetSettingAsync();
             IEnumerable<Setting> relations = await GetSettingRelationAsync();
@@ -83,7 +83,8 @@
                 }
 
                 var sources = allSettings.Where(x => x.SettingValue == item.SettingValue && x.SettingSource != null && item.SettingName == x.SettingName).ToList();
-                if (sources.Any()) { 
+                if (sources.Any())
+                {
                     item.SettingSource = string.Join(", ", sources.Select(r => r.SettingSource));
                 }
             }
@@ -291,7 +292,6 @@
             return await baseService.GetDataAsync<CRM.Models.PicAndHeadline.SiteInfo>(criteria);
         }
 
-
         public async Task<IEnumerable<SettingMapping>> GetSettingMappingAsync(string settings)
         {
             var allSettings = await GetSettingAsync();
@@ -306,9 +306,9 @@
             return sourceMappings;
         }
 
-        public async Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync()
+        public async Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All)
         {
-            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());
+            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { LicenseeType = licenseeType, UserRole = userRole });
 
             var allSites = (from n in sites
                             where n.IsActive
@@ -324,7 +324,7 @@
                                               select new SiteInfo
                                               {
                                                   Name = s.Key,
-                                                  ChildSites= s.ToList()
+                                                  ChildSites = s.ToList()
                                               }).ToList()
                             }).ToList();
             return allSites;
@@ -351,7 +351,6 @@
                             }).ToList();
             return allSites;
         }
-
 
         public async Task<IEnumerable<SiteInfo>> GetAllSitesLicenseeInactive()
         {
@@ -440,6 +439,7 @@
 
                 case PeriodTypeConstants.Yearly:
                     return ViewResources.Yearly;
+
                 default:
                     return string.Empty;
             }
