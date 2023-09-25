@@ -342,6 +342,7 @@ export class CustomerInfo extends PureComponent{
         const {customerInfo, handleChange, settings, renderOptions, customerDetail, handleChangeValueInfo} = this.props;
         const maxDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
+        const isAddGuestFb = customerInfo.siteId === undefined;
         return (
             <div>
                 <Form.Group as={Row} className="pt-2" >
@@ -455,10 +456,10 @@ export class CustomerInfo extends PureComponent{
                                     <SelectWithSearch
                                         className='basic-single'
                                         options={siteOptions}
-                                        value={customerInfo.siteId}
-                                        name={customerInfo.siteName}
-                                        isSelectOption
-                                        isHideNA
+                                        value={!isAddGuestFb ? customerInfo.siteId : 0}
+                                        name={!isAddGuestFb ? customerInfo.siteName : ''}
+                                        isSelectOption={!isAddGuestFb}
+                                        isHideNA={!isAddGuestFb}
                                         OnChangeValue={item => handleChangeValueInfo('siteId', item.id)}
                                     />
                                 </Col>
