@@ -2,8 +2,10 @@
 {
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Criteria.Report.LogStatistics;
+    using CRM.Models.Report.LogStatistics;
     using CRM.Services;
     using CRM.Services.Report;
     using Fanex.NAP.Core.Business;
@@ -45,8 +47,9 @@
         [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetMainReport([FromBody] LogStatisticsCriteria criteria)
         {
-            var licenseeType = await permissionService.GetSitePermissionAsync();
-            var ibcReportTask = logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
+            var licenseeType = (SitePermission)await permissionService.GetSitePermissionAsync();
+
+            var ibcReport = licenseeType == SitePermission.Both || licenseeType == SitePermission.Credit ? await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
                 MainCategoryId = criteria.MainCategoryId,
@@ -56,10 +59,10 @@
                 ProductType = LogStatisticConstants.ProductTypeDetails,
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = LogStatisticConstants.IBC,
-                LicenseeType = licenseeType
-            });
+                LicenseeType = (short)licenseeType
+            }) : new LogStatisticsViewModel();
 
-            var licenseeReportTask = logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
+            var licenseeReport = licenseeType == SitePermission.Both || licenseeType == SitePermission.Licensee ? await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
                 MainCategoryId = criteria.MainCategoryId,
@@ -69,14 +72,10 @@
                 ProductType = LogStatisticConstants.ProductTypeDetails,
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = LogStatisticConstants.Licensee,
-                LicenseeType = licenseeType
-            });
+                LicenseeType = (short)licenseeType
+            }) : new LogStatisticsViewModel();
 
-            await Task.WhenAll(ibcReportTask, licenseeReportTask);
-            var ibcReport = ibcReportTask.Result;
-            var licenseeReport = licenseeReportTask.Result;
-
-            return Json(new { ibcReport, licenseeReport });
+            return Json(new { ibcReport, licenseeReport, licenseeType });
         }
 
         [HttpPost]

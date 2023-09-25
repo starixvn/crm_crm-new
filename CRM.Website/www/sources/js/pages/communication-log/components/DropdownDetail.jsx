@@ -122,6 +122,7 @@ export default class DropdownDetail extends PureComponent {
             setStateBetType, handleChangeProduct, handleChangeSubProduct, handleChangeMainCategory, mainCategories, products } = this.props;
         const { countries, statuses, roles, sites, licenseeTypes } = allSettings;
         const siteOptions = changeSiteSetting(sites, 'childSites', 'childSites');
+        
         return (
             <div>
                 <Form.Group as={Row}>

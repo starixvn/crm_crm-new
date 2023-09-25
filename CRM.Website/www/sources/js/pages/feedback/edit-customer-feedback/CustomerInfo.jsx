@@ -479,7 +479,7 @@ export default class CustomerInfo extends PureComponent {
                                         <SelectWithSearch className='basic-single'
                                             OnChangeValue ={value => setFieldValue('siteId', value.id)}
                                             options={siteOptions}
-                                            name={values.siteName} value={values.siteId}
+                                            value={fieldInput.siteId}
                                         />
                                     </Col>
                                 </Form.Group>

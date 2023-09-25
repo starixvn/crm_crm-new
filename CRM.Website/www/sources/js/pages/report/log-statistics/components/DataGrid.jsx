@@ -377,10 +377,18 @@ export class DataGrid extends Component {
         }
         const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
         const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);
+        const isShowCreditReport = mainReports.licenseeType === 0 || mainReports.licenseeType === 1;
+        const isShowLicenseeReport = mainReports.licenseeType === 0 || mainReports.licenseeType === 2;
         return (
             <div>
-                {this.renderDailyLogStatistic(fromDateFormat, toFormat)}
-                {this.renderLicenseeDailyStatistic(fromDateFormat, toFormat)}
+                {
+                    isShowCreditReport &&
+                    this.renderDailyLogStatistic(fromDateFormat, toFormat)
+                }
+                {
+                    isShowLicenseeReport &&
+                    this.renderLicenseeDailyStatistic(fromDateFormat, toFormat)
+                }
             </div>
         );
     }

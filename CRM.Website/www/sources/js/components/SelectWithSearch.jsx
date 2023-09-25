@@ -19,7 +19,7 @@ export default class SelectWithSearch extends Component {
             selectFormStatus: '',
             selectedItem: {
                 id: this.props.value,
-                name: this.props.name || 'N/A'
+                name: this.props.value === 0 ? 'N/A' : this.getLabel(this.props.options, this.props.value)
             },
             options: this.props.options,
             filter: '',
@@ -48,6 +48,20 @@ export default class SelectWithSearch extends Component {
         document.removeEventListener('click', this.clickHandler);
     }
 
+    getLabel = (sites, siteId) => {
+        for (const site of sites) {
+            if (site.id === siteId) {
+                return site.name;
+            }
+
+            if (site.childSites != null && site.childSites.length > 0) {
+                const label = this.getLabel(site.childSites, siteId);
+                if (label !== undefined) {
+                    return label;
+                }
+            }
+        }
+    }
     toggleSelect = () => {
         if (this.state.selectFormStatus === 'open') {
             this.setState({

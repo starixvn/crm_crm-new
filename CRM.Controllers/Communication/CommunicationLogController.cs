@@ -126,6 +126,7 @@
 
         public async Task<CreateFeedbackViewModel> GetAllSettings(bool isEdit)
         {
+            var licenseeType = await permissionService.GetSitePermissionAsync();
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var statuses = await GetStatusListAsync(isEdit);
             var products = await settingService.GetProductAsync(SettingConstants.Active);
@@ -141,7 +142,7 @@
                 Languages = await settingService.GetLanguageAsync(SettingConstants.Active, true),
                 Responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
                 Roles = roles.Where(x => x.IsActive),
-                Sites = await settingService.GetAllSitesWithGroupAsync(),
+                Sites = await settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType),
                 Countries = await settingService.GetCountryAsync(SettingConstants.Active, true),
                 MainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
                 SubCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active),

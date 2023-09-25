@@ -304,6 +304,7 @@ export class AppContainer extends Component {
             letstalk: feedback.yahoo,
             qq: feedback.qq,
             zalo: feedback.bbm,
+            siteId: feedback.siteId,
             relatedCustomers: feedback.relatedCustomers
         };
     };
