@@ -103,7 +103,7 @@ export class AppContainer extends Component {
             custId, editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
             createCommunicationDialog, editCustomerVerifyDialog, currentCustomer
         } = this.props;
-        
+       
         return (
             <>
                 <div>
