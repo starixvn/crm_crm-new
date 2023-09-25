@@ -190,7 +190,6 @@ export class EditForm extends Component {
             };
         });
         const siteOptions = changeSiteSetting(this.props.allSettings.sites, 'childSites', 'childSites');
-        const siteLabel = getSiteLabel(siteOptions, customerInfo.siteSetting.id);
 
         return (
             <div className="panel-group border-bottom-0">
@@ -299,8 +298,7 @@ export class EditForm extends Component {
                                         <SelectWithSearch
                                             className='basic-single'
                                             options={siteOptions}
-                                            value={values.siteId}
-                                            name={`${customerInfo.siteSetting.name} ${siteLabel && `(${siteLabel})`}`}
+                                            value={customerInfo.siteId}
                                             isHideNA={false}
                                             OnChangeValue={item => this.handleChangeValue('siteId', item.id)}
                                         />
