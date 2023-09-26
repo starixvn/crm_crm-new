@@ -34,11 +34,11 @@ export default class SelectWithSearch extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.name !== prevProps.name) {
+        if (this.props.value !== prevProps.value) {
             this.setState({
                 selectedItem: {
                     id: this.props.value,
-                    name: this.props.name
+                    name: this.props.value === 0 ? 'N/A' : this.getLabel(this.props.options, this.props.value)
                 }
             });
         }

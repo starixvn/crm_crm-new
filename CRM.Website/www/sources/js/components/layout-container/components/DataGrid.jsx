@@ -129,7 +129,6 @@ export default class DataGrid extends PureComponent {
                             onChange={handleChange}
                             options={siteOptions}
                             value={values.siteId}
-                            name='18LUCK'
                             isHideNA={false}
                             OnChangeValue={this.handleChangeSite}
                         />
