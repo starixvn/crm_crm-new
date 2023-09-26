@@ -7,6 +7,7 @@ import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/reac
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import ChildRow from './ChildRow';
+import { toast } from 'react-toastify';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -29,6 +30,7 @@ export class DataGrid extends Component {
         if (this.state.toggleRowDaily.length > 0 || this.state.toggleRowLicensee.length > 0) {
             nextState.shouldResetScrollPosition = false;
         }
+
         return true;
     }
 
@@ -370,15 +372,33 @@ export class DataGrid extends Component {
         );
     };
 
+    noPermissionOnBothCreditAndLicenseeHandler = () => {
+        const { mainReports } = this.props;
+        const isShowCreditReport = mainReports.licenseeType === 0 || mainReports.licenseeType === 1;
+        const isShowLicenseeReport = mainReports.licenseeType === 0 || mainReports.licenseeType === 2;
+
+        if (!isShowCreditReport && !isShowLicenseeReport) {
+            toast.error("You don't have Credit or Licensee permission");
+            return null;
+        }
+    }
+
     render() {
         const { mainReports, gridParams } = this.props;
         if (mainReports === null) {
             return null;
         }
+
         const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
         const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);
         const isShowCreditReport = mainReports.licenseeType === 0 || mainReports.licenseeType === 1;
         const isShowLicenseeReport = mainReports.licenseeType === 0 || mainReports.licenseeType === 2;
+
+        if (!isShowCreditReport && !isShowLicenseeReport) {
+            toast.error("You don't have Credit or Licensee permission");
+            return null;
+        }
+
         return (
             <div>
                 {

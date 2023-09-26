@@ -1,7 +1,6 @@
 ﻿namespace CRM.Criteria.Report.LogStatistics
 {
     using System;
-    using CRM.Core.Constants;
     using Fanex.Data;
     using Fanex.Data.Repository;
 
@@ -26,6 +25,8 @@
         public int PageIndex { get; set; }
 
         public int TotalRows { get; set; }
+
+        public short LicenseeType { get; set; }
 
         [SpParam(Ignored = true)]
         public bool IsGetFullReport { get; set; }

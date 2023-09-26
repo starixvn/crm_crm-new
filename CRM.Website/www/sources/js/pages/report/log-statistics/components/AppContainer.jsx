@@ -26,7 +26,8 @@ export class AppContainer extends Component {
     const {settings, details, chart} = this.props;
     if(settings === null || !settings){
       return null;
-    }
+      }
+
     return (
       <Fragment>
         <Filter />
