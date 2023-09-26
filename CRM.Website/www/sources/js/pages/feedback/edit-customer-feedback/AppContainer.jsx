@@ -224,7 +224,7 @@ export class AppContainer extends Component {
             custId: feedback.custId,
             maxDate: new Date(DateTimeService.toShortDateFormat(currentClientTime)),
             birthday: feedback.birthday ? new Date(feedback.birthday) : null,
-            siteId: feedback.siteSetting.id,
+            siteId: feedback.siteId,
             siteName: feedback.siteSetting.name,
             isVIP: feedback.isVIP,
             // feedback info
@@ -675,7 +675,7 @@ export class AppContainer extends Component {
             updateReviewedMode: this.isReviewed(values),
             isDeletedFeedbackView: this.props.isDeletedFeedbackView
         };
-
+       
         this.handleReVerifyInactiveAndConfirm(params, setSubmitting);
     };
 

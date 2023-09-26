@@ -291,7 +291,7 @@ export default class CustomerInfo extends PureComponent {
     };
 
     renderPhoneSection = () => {
-        const {  fieldInput, handleChangeInput } = this.props;
+        const { fieldInput, handleChangeInput } = this.props;
         return (
             <div>
                 <Form.Group as={Row}>
@@ -346,7 +346,7 @@ export default class CustomerInfo extends PureComponent {
                                     <div className="phone">
                                         <Form.Control type="text" size="sm"
                                             name="phoneNumber2" className="shadow-none" autoComplete="off"
-                                            value={fieldInput.phoneNumber2} onChange={handleChangeInput}/>
+                                            value={fieldInput.phoneNumber2} onChange={handleChangeInput} />
                                     </div>
                                 </div>
                             </Col>
@@ -477,7 +477,7 @@ export default class CustomerInfo extends PureComponent {
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <SelectWithSearch className='basic-single'
-                                            OnChangeValue ={value => setFieldValue('siteId', value.id)}
+                                            OnChangeValue={value => setFieldValue('siteId', value.id)}
                                             options={siteOptions}
                                             value={fieldInput.siteId}
                                         />
@@ -541,9 +541,9 @@ export default class CustomerInfo extends PureComponent {
                         </Form.Group>
                         <hr className="mt-0" />
 
-                        { this.renderPhoneSection() }
-                        { this.renderCustomerInformationSection() }
-                        { this.renderCommunicationToolSection() }
+                        {this.renderPhoneSection()}
+                        {this.renderCustomerInformationSection()}
+                        {this.renderCommunicationToolSection()}
                     </div>
                 </Collapse>
             </div>
