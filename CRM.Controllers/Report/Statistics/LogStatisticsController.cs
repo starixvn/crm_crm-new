@@ -60,7 +60,7 @@
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = LogStatisticConstants.IBC,
                 LicenseeType = (short)licenseeType
-            }) : new LogStatisticsViewModel();
+            }) : null;
 
             var licenseeReport = licenseeType == SitePermission.Both || licenseeType == SitePermission.Licensee ? await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
@@ -73,7 +73,7 @@
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = LogStatisticConstants.Licensee,
                 LicenseeType = (short)licenseeType
-            }) : new LogStatisticsViewModel();
+            }) : null;
 
             return Json(new { ibcReport, licenseeReport, licenseeType });
         }

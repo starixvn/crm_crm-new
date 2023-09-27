@@ -186,9 +186,10 @@ export class DataGrid extends Component {
     };
 
     handleCollapseExpandLicensee = () => {
+        console.log(this.props.mainReports);
         const { toggleRowLicensee, isCollapseLicensee } = this.state;
         if (!isCollapseLicensee) {
-            this.props.mainReports.ibcReport.mainCategories.forEach(main => {
+            this.props.mainReports.licenseeReport.mainCategories.forEach(main => {
                 if (toggleRowLicensee.indexOf(main) < 0) {
                     toggleRowLicensee.push(main.id);
                 }
@@ -318,12 +319,13 @@ export class DataGrid extends Component {
     };
 
     renderDailyLogStatistic = (fromDateFormat, toFormat) => {
-        const { ibcReport } = this.props.mainReports;
+        const { ibcReport, licenseeType } = this.props.mainReports;
         const defaultWidth = 400;
         const totalWidth = defaultWidth + ibcReport.communicationColumns.length * 115;
         const maxWidth = this.getMaxWidth(totalWidth);
+        const className = licenseeType === 0 ? 'table-mbc' : 'table-mbc single-table';
         return (
-            <div className='table-mbc'>
+            <div className={className}>
                 <Table
                     maxWidth={maxWidth}
                     shouldUseMaxWidth
@@ -346,12 +348,13 @@ export class DataGrid extends Component {
         document.getElementById('right-row-container').clientWidth : totalWidth;
 
     renderLicenseeDailyStatistic = (fromDateFormat, toFormat) => {
-        const { licenseeReport } = this.props.mainReports;
+        const { licenseeReport, licenseeType } = this.props.mainReports;
         const defaultWidth = 400;
         const totalWidth = defaultWidth + licenseeReport.communicationColumns.length * 115;
         const maxWidth = this.getMaxWidth(totalWidth);
+        const className = licenseeType === 0 ? 'table-licensee' : 'table-licensee single-table'
         return (
-            <div className='table-licensee'>
+            <div className={className}>
                 {
                     <Table
                         maxWidth={maxWidth}
