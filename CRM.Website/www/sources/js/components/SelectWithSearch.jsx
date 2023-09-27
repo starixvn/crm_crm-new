@@ -49,20 +49,25 @@ export default class SelectWithSearch extends Component {
     }
 
     getLabel = (sites, siteId) => {
+        const label = this.getLabelRecursive(sites, siteId);
+        return label !== undefined ? label : '';
+    }
+
+    getLabelRecursive = (sites, siteId) => {
         for (const site of sites) {
             if (site.id === siteId) {
                 return site.name;
             }
 
             if (site.childSites != null && site.childSites.length > 0) {
-                const label = this.getLabel(site.childSites, siteId);
+                const label = this.getLabelRecursive(site.childSites, siteId);
                 if (label !== undefined) {
                     return label;
                 }
-                return '';
             }
         }
     }
+
     toggleSelect = () => {
         if (this.state.selectFormStatus === 'open') {
             this.setState({
