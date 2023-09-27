@@ -59,6 +59,7 @@ export default class SelectWithSearch extends Component {
                 if (label !== undefined) {
                     return label;
                 }
+                return '';
             }
         }
     }
