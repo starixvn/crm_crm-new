@@ -90,7 +90,12 @@ export default class Filter extends Component {
                 const urlUpdateSuggestion = Site.resolveClientUrl('CustomerInfo/UpdateCustomerSuggestion');
                 const paramsUpdateSuggestion  = {CustID: this.props.customerInfo.custId, UserName: this.props.username};
                 DataService.postDataAsync(urlUpdateSuggestion, paramsUpdateSuggestion);
-                this.props.handleNavigate('Dashboard');
+
+                const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
+                const isReadRemark = this.state.remarksPolicy >= Policy.Read;
+                const isHideMainMenu = this.props.customerInfo.customerType === 1 && !hasReadFeedbackPermission && !isReadRemark;
+                var activeMenu = isHideMainMenu ? 'Detail' : 'Dashboard';
+                this.props.handleNavigate(activeMenu);
             }
         });
     };
@@ -190,16 +195,17 @@ export default class Filter extends Component {
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
         const isReadRemark = this.state.remarksPolicy >= Policy.Read;
-        const { handleNavigate } = this.props;
+        const { handleNavigate, customerInfo } = this.props;
+        const isHideMainMenu = customerInfo.customerType === 1 && !hasReadFeedbackPermission && !isReadRemark;
         const subMenusHtml = [
-            <li style={{display: hasReadFeedbackPermission || hasReadCustomerInfo ? '' : 'none' }}
+            <li style={{ display: isHideMainMenu ? 'none' : '' }}
                 id="li-main" key= "li-main" className={this.isCheckActive(pathname, 0)}>
                 <a onClick = {() => handleNavigate('Dashboard')}>
                     <u>M</u>ain
                 </a>
             </li>,
             <li style={{display: hasReadCustomerInfo ? '' : 'none' }} 
-                id="li-detail" key= "li-detail" className={this.isCheckActive(pathname, 1)}>
+                id="li-detail" key="li-detail" className={isHideMainMenu ? 'active' : this.isCheckActive(pathname, 1)}>
                 <a onClick = {() => handleNavigate('Detail')}>
                     <u>D</u>etail
                 </a>
@@ -222,12 +228,6 @@ export default class Filter extends Component {
                     Rema<u>r</u>k
                 </a>
             </li>,
-            //<li style={{display: hasReadCustomerInfo ? '' : 'none' }}
-            //    id="li-redemption" key = "li-redemption" className={this.isCheckActive(pathname, 5)}>
-            //    <a onClick = {() => handleNavigate('Redemption')}>
-            //        Redem<u>p</u>tion
-            //    </a>
-            //</li>,
             <li style={{display: hasReadCustomerInfo ? '' : 'none' }}
                 id="li-activity-log" key = "li-activity-log" className={this.isCheckActive(pathname, 5)}>
                 <a onClick = {() => handleNavigate('ActionLog')}>
