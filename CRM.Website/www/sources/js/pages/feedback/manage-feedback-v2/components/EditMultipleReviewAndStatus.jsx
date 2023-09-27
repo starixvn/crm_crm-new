@@ -28,6 +28,7 @@ export default class EditMultipleReviewAndStatus extends Component {
         super(props);
         this.state = {
             feedbackIds: props.feedbackIds,
+            statusesOptions: [],
             logInfo: null,
             editResult: null,
             isReviewed: false,
@@ -39,7 +40,12 @@ export default class EditMultipleReviewAndStatus extends Component {
         const id = this.props.feedbackIds[0];
         const url = Site.resolveClientUrl(`MultipleLogs/GetLogByFeedbackId/${id}`);
         await DataService.getDataAsync(url).then(response => {
-            this.setState({ logInfo: response.data, isReviewed: response.data.isReviewed });
+            const { logInfo, statuses } = response.data;
+            this.setState({
+                logInfo: logInfo,
+                isReviewed: logInfo.isReviewed,
+                statusesOptions: statuses
+            });
         }).catch(Site.handleAxiosError);
     }
 
@@ -123,7 +129,7 @@ export default class EditMultipleReviewAndStatus extends Component {
                                         onChange={handleChange}
                                     >
                                         {
-                                            this.props.statuses.map(item =>
+                                            this.state.statusesOptions.map(item =>
                                             (<option key={item.statusId} value={item.statusId}>
                                                 {item.name}
                                             </option>)

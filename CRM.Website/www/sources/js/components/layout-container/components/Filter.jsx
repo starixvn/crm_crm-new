@@ -205,7 +205,7 @@ export default class Filter extends Component {
                 </a>
             </li>,
             <li style={{display: hasReadCustomerInfo ? '' : 'none' }} 
-                id="li-detail" key="li-detail" className={isHideMainMenu ? 'active' : this.isCheckActive(pathname, 1)}>
+                id="li-detail" key="li-detail" className={this.isCheckActive(pathname, 1)}>
                 <a onClick = {() => handleNavigate('Detail')}>
                     <u>D</u>etail
                 </a>

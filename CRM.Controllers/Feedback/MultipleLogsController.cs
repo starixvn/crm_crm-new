@@ -100,8 +100,9 @@
 
         public async Task<ActionResult> GetLogByFeedbackId(int id)
         {
-            var result = await feedbackService.GetLogByFeedbackIdAsync(id);
-            return Json(result);
+            var logInfo = await feedbackService.GetLogByFeedbackIdAsync(id);
+            var statuses = await GetStatusListAsync();
+            return Json(new { logInfo, statuses});
         }
 
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
