@@ -30,7 +30,7 @@ const SettingLogComponent  = lazy(() => import(/* webpackChunkName: 'setting-log
 const SettingManagementComponent  = lazy(() => import(/* webpackChunkName: 'setting-management' */ '@jsroot/pages/admin-tool/setting-management/index'));
 const SettingRelationComponent = lazy(() => import(/* webpackChunkName: 'setting-relation' */ '@jsroot/pages/admin-tool/setting-relation/index'));
 const JobSettingManagementComponent = lazy(() => import(/* webpackChunkName: 'job-setting-management' */ '@jsroot/pages/admin-tool/job-setting-management/index'));
-const RemarkClassificationComponent = lazy(() => import(/* webpackChunkName: 'remark-classification' */ '@jsroot/pages/admin-tool/remark-classification/index'));
+const CategoryClassificationComponent = lazy(() => import(/* webpackChunkName: 'remark-classification' */ '@jsroot/pages/admin-tool/category-classification/index'));
 
 const InformHeadlineComponent = lazy(() => import(/* webpackChunkName: 'inform-headline' */ '@jsroot/pages/informheadline/index'));
 
@@ -96,7 +96,7 @@ const MenuRouteArray = [
     { url: 'SpecialRemark', component: SpecialRemarkComponent },
     { url: 'NewRemark', component: NewRemMarkComponent },
     { url: 'Remark', component: ReMarkComponent },
-    { url: 'RemarkClassification', component: RemarkClassificationComponent },
+    { url: 'CategoryClassification', component: CategoryClassificationComponent },
     { url: 'Redemption', component: RedemptionComponent },
     { url: 'ActionLog', component: ActionLogComponent },
     { url: 'DeletedFeedbackStatistics', component: DeletedFeedbackStatisticsComponent },

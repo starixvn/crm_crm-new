@@ -46,6 +46,6 @@
         public const string SettingRelationManagement = "SettingRelationshipManagement";
         public const string SettingManagement = "SettingManagement";
         public const string JobSettingManagement = "JobSettingManagement";
-        public const string RemarkClassification = "RemarkClassification";
+        public const string CategoryClassification = "CategoryClassification";
     }
 }
