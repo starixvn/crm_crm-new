@@ -20,6 +20,7 @@
         private readonly ICommonService commonService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
+
         public DeletedFeedbackStatisticsController(IFeedbackRepository feedbackRepository,
             ICommonService commonService,
             ISettingService settingService,
@@ -38,6 +39,13 @@
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var deletedFeedbacks = await feedbackRepository.GetDeletedFeedbackStatisticAsync(criteria);
+            if (deletedFeedbacks.Any())
+            {
+                foreach (var deletedFeedback in deletedFeedbacks)
+                {
+                    deletedFeedback.CreateDate = commonService.ConvertToClientDateTime(deletedFeedback.CreateDate);
+                }
+            }
             var deletedFeedbackGroup = deletedFeedbacks.GroupBy(p => p.Handler);
             var deletedFeedbackByHandler = deletedFeedbackGroup.Select(p =>
                      new DeletedFeedbackByHandler

@@ -434,8 +434,6 @@ export class CustomerInfo extends PureComponent{
                                         options={siteOptions}
                                         value={customerInfo.siteId}
                                         name={customerInfo.siteName}
-                                        isSelectOption
-                                        isHideNA
                                         OnChangeValue={item => handleChangeValueInfo('siteId', item.id)}
                                     />
                                 </Col>

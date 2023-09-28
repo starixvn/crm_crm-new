@@ -402,6 +402,7 @@ export class Filter extends Component {
         const subCategoryOptions = this.filterSubCategoryOptions(allSettings.subCategories, this.state.mainCategoryId);
         const subProductOptions = this.filterSubProductOptions(allSettings.subProducts, this.state.productId);
         const siteOptions = changeSiteSetting(allSettings.sites, 'childSites', 'childSites');
+        const siteId = this.state.siteId;
 
         return (
             <Form className="form-filter" onSubmit={this.handleSubmit}>
@@ -480,6 +481,7 @@ export class Filter extends Component {
                                 <div className="form-control-wrapper">
                                     <SelectWithSearch className='basic-single'
                                         maxWidth="140%"
+                                        value={siteId}
                                         OnChangeValue={this.handleChangeSite}
                                         options={siteOptions}
                                     />
