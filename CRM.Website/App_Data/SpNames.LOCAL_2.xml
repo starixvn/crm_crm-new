@@ -339,4 +339,9 @@
         <Setting Key="Acc_CRM_Chatbot_Announcement_Notification_Sel" SpName="Acc_CRM_Chatbot_Announcement_Notification_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_ChatBot_Announcement_Notification_UpdStatus" SpName="Acc_CRM_ChatBot_Announcement_Notification_UpdStatus" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
     </Function>
+    <Function Name="Category Classification">
+        <Setting Key="Acc_CRM_CategoryClassificationList" SpName="Acc_CRM_CategoryClassificationList" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_CategoryClassificationSel" SpName="Acc_CRM_CategoryClassificationSel" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_CategoryClassificationUpd" SpName="Acc_CRM_CategoryClassificationUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+    </Function>
 </Functions>
