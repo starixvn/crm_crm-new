@@ -8,6 +8,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import DataService from '@jsroot/common/dataService';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
+import { getSubCategories } from '@jsroot/common/shareScripts';
 
 export class DataGridCommunication extends Component {
     componentDidMount() {
@@ -100,14 +101,11 @@ export class DataGridCommunication extends Component {
                 checked: createLogSettings.mainCategoryIds.includes(item.mainCategoryID)
             };
         });
-        const subCategories = data.settings.subCategories.filter(item => createLogSettings.mainCategoryIds.includes(item.mainCategoryID));
-        const subCategoryOptions = subCategories.map(item => {
-            return {
-                subCategoryId: item.subCategoryId,
-                name: item.name,
-                checked: createLogSettings.subCategoryIds.includes(item.subCategoryId)
-            };
-        });
+
+        const mainCategoryIds = createLogSettings.mainCategoryIds.join(',').split(',');
+        const subCategoryIds = createLogSettings.subCategoryIds.join(',').split(',');
+        const subCategoryOptions = getSubCategories(mainCategoryIds, data.settings.subCategories, subCategoryIds, false);
+
         const productOptions = data.settings.products.map(item => {
             return {
                 id: item.id, value: item.value,

@@ -74,7 +74,6 @@ export class EditCommunicationLog extends Component {
     async componentDidMount() {
         Site.blockUI();
         const urlLogByFeedbackId = Site.resolveClientUrl('CommunicationLog/GetLogByFeedbackId');
-        const urlStatusForEdit = Site.resolveClientUrl('CommunicationLog/GetAllStatus?isEdit=true');
 
         await DataService.getDataAsync(`${urlLogByFeedbackId}/${this.props.feedbackId}`).then(response => {
             if (!response || !response.data) {
@@ -82,9 +81,7 @@ export class EditCommunicationLog extends Component {
             }
             this.setState({ logFeedback: response.data });
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
-        //await DataService.getDataAsync(urlStatusForEdit).then(response => {
-        //    this.setState({ statusEdit: response.data });
-        //}).catch(Site.handleAxiosError);
+      
         const { logFeedback } = this.state;
         const logSettings = this.getLogSettings(logFeedback.log, logFeedback.settings);
         const relatedCustomers = logFeedback.log.relatedCustomers.map(customer => {
@@ -116,14 +113,12 @@ export class EditCommunicationLog extends Component {
                 checked: logSettings.mainCategoryIds.includes(item.mainCategoryID)
             };
         });
-        const subCategories = logFeedback.settings.subCategories.filter(item => logSettings.mainCategoryIds.includes(item.mainCategoryID));
-        const subCategoryOptions = subCategories.map(item => {
-            return {
-                subCategoryId: item.subCategoryId,
-                name: item.name,
-                checked: logSettings.subCategoryIds.includes(item.subCategoryId)
-            };
-        });
+
+
+        const mainCategoryIds = logSettings.mainCategoryIds.join(',').split(',');
+        const subCategoryIds = logSettings.subCategoryIds.join(',').split(',');
+        const subCategoryOptions = getSubCategories(mainCategoryIds, logFeedback.settings.subCategories, subCategoryIds, false);
+
         const productOptions = logFeedback.settings.products.map(item => {
             return {
                 id: item.id,

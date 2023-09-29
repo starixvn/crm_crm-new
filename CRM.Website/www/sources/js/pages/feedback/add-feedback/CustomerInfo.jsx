@@ -342,7 +342,6 @@ export class CustomerInfo extends PureComponent{
         const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
         const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
         const { customerDetail } = this.props;
-        console.log(customerDetail.customerType);
         if (customerDetail === null) return false;
         if (customerDetail.customerType === 0) return hasHostCredit || hasHostLicensee;
 
