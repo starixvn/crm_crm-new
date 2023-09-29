@@ -7,12 +7,13 @@ const initialState = {
         remark: '',
         inactiveSettings: false,
         pageIndex: 1,
-        pageSize: 50
+        pageSize: 100
     },
     gridData: null,
     selectCategoryClass: null,
     editCategoryClassResult: null,
     editCategoryClassPopup: { show: false },
+    deleteCategoryClassPopup: { show: false },
 };
 
 const categoryClassificationSlide = createSlice({
@@ -34,6 +35,9 @@ const categoryClassificationSlide = createSlice({
         setEditCategoryClassPopup: (state, action) => {
             state.editCategoryClassPopup = action.payload;
         },
+        setDeleteCategoryClassPopup: (state, action) => {
+            state.deleteCategoryClassPopup = action.payload;
+        }
     }
 });
 
@@ -44,7 +48,8 @@ export const {
     setGridData,
     setCategoryClassId,
     setEditCategoryClassResult,
-    setEditCategoryClassPopup
+    setEditCategoryClassPopup,
+    setDeleteCategoryClassPopup
 } = actions;
 
 export default reducer;

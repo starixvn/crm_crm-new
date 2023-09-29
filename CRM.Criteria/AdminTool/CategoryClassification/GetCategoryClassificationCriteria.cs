@@ -15,6 +15,8 @@
         [SpParam(SqlParamName = "Category")]
         public string CategoryXml => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
 
+        public string RemarkSearch { get; set; }
+
         public byte Active { get; set; }
 
         public int PageIndex { get; set; }

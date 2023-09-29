@@ -14,9 +14,13 @@ export class DataGrid extends Component {
     }
 
     handleEdit = async (mainCategoryId, subCategoryId) => {
-        console.log(mainCategoryId, subCategoryId);
         await this.props.getCategoryClassById(mainCategoryId, subCategoryId);
         this.props.setEditCategoryClassPopup({ show: true });
+    };
+
+    handleDelete = async (mainCategoryId, subCategoryId) => {
+        await this.props.getCategoryClassById(mainCategoryId, subCategoryId);
+        this.props.setDeleteCategoryClassPopup({ show: true });
     };
 
     buildHeader = isHost => {
@@ -46,7 +50,8 @@ export class DataGrid extends Component {
                     key === 0 && <Cell className='text-left' rowSpan={item.length}><div>{data.mainCategory}</div></Cell>
                 }
                 <Cell className='text-left'><div>{data.subCategory}</div></Cell>
-                <Cell className='text-left'><div>{data.remark}</div></Cell>
+                <Cell className='text-left' dangerouslySetInnerHTML={{__html: data.remark}}></Cell>
+                
                 {
                     isHost &&
                     <Cell className="text-center">
@@ -54,7 +59,7 @@ export class DataGrid extends Component {
                             onClick={() => this.handleEdit(data.mainCategoryID, data.subCategoryID)}
                         />
                         <span className="rounded-circle fa fa-trash icon-delete"
-                            //onClick={() => this.handleDelete(item.defaultCommId, index + this.startIndex)}
+                            onClick={() => this.handleDelete(data.mainCategoryID, data.subCategoryID)}
                         />
                     </Cell>
                 }

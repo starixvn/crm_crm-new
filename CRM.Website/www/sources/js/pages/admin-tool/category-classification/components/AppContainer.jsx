@@ -47,9 +47,39 @@ export class AppContainer extends Component {
         this.props.setEditCategoryClassResult(null);
     };
 
+    handleCloseDeletePopup = () => {
+        this.props.setDeleteCategoryClassPopup({ show: false });
+    };
+
     handleEditSuccess = () => {
         this.handleCloseEditPopup();
         this.props.getGridData(this.props.gridParams);
+    };
+
+    handleDeleteSuccess = () => {
+        this.props.setCategoryClassId(null);
+        this.props.setEditCategoryClassResult(null);
+        this.props.getGridData(this.props.gridParams);
+    };
+
+    handleDelete = () => {
+        const { selectCategoryClass } = this.props;
+        const params = {
+            mainCategoryID: selectCategoryClass.mainCategoryID,
+            subCategoryID: selectCategoryClass.subCategoryID,
+            remarkNewValue: null,
+            actionType: 2
+        };
+
+        this.props.editCategoryClass(params).then(() => {
+            if (this.props.editCategoryClassResult.isSuccessful) {
+                toast.success(LangHelper.getResource('RemoveRemarkSuccessfully'));
+            } else {
+                toast.error(LangHelper.getResource('RemoveRemarkFailed'));
+            }
+            this.handleCloseDeletePopup();
+            this.handleDeleteSuccess();
+        });
     };
 
     render() {
@@ -57,6 +87,7 @@ export class AppContainer extends Component {
             return null;
         }
         const isHost = this.state.policy === Policy.Host;
+        const { selectCategoryClass } = this.props;
 
         return (
             <Fragment>
@@ -69,6 +100,24 @@ export class AppContainer extends Component {
                         onSuccess={this.handleEditSuccess}
                     />
                 }
+                {
+                    this.props.deleteCategoryClassPopup.show &&
+                    <SweetModalDialog size='md'
+                        title={LangHelper.getResource('RemoveRemark')}
+                        contents={
+                            <div>Are you sure you want to remove the remark of <strong>{selectCategoryClass?.mainCategory}/{selectCategoryClass?.subCategory}</strong>?</div>
+                        }
+                        buttons={[
+                            <Button variant="primary" size="sm" onClick={this.handleDelete}>
+                                {LangHelper.getResource('OK')}
+                            </Button>,
+                            <Button variant="primary" size="sm" onClick={this.handleCloseDeletePopup}>
+                                {LangHelper.getResource('Cancel')}
+                            </Button>
+                        ]}
+                        onClose={this.handleCloseDeletePopup}
+                    />
+                }
             </Fragment>
         );
     };
@@ -77,8 +126,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridData, gridParams, editCategoryClassPopup } = state;
-    return { gridData, gridParams, editCategoryClassPopup };
+    const { gridData, gridParams, editCategoryClassPopup, editCategoryClassResult, selectCategoryClass, deleteCategoryClassPopup } = state;
+    return { gridData, gridParams, editCategoryClassPopup, editCategoryClassResult, selectCategoryClass, deleteCategoryClassPopup };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

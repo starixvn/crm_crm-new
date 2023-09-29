@@ -1,0 +1,72 @@
+﻿namespace CRM.Services.AdminTool
+{
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using CRM.Criteria.AdminTool.CategoryClassification;
+    using CRM.Models.AdminTool.CategoryClassification;
+    using CRM.Models.AdminTool.CommunicationToolSetting;
+    using Fanex.NAP.Client.Helpers.Web;
+
+    public interface ICategoryClassificationService
+    {
+        Task<IEnumerable<CategoryClassification>> GetCategoryClassificationAsync(GetCategoryClassification param);
+        Task<CategoryClassification> GetCategoryClassByIdAsync(int mainCategoryId, int subCategoryId);
+        Task<CommandResult> EditCategoryClassificationAsync(EditCategoryClassification modal);
+    }
+
+    public class CategoryClassificationService : ICategoryClassificationService
+    {
+        private readonly INapSession napSession;
+        private readonly IBaseService baseService;
+
+        public CategoryClassificationService(
+            INapSession napSession,
+            IBaseService baseService
+        )
+        {
+            this.napSession = napSession;
+            this.baseService = baseService;
+        }
+
+        public async Task<IEnumerable<CategoryClassification>> GetCategoryClassificationAsync(GetCategoryClassification param)
+        {
+            var criteria = new GetCategoryClassificationCriteria
+            {
+                Categories = param.Categories,
+                Active = param.Active,
+                RemarkSearch = param.Remark,
+                PageIndex = param.PageIndex,
+                PageSize = param.PageSize
+            };
+            var categoryClassifications = await baseService.GetDataAsync<CategoryClassification>(criteria);
+            param.TotalRows = criteria.TotalRows;
+            return categoryClassifications;
+        }
+
+        public async Task<CategoryClassification> GetCategoryClassByIdAsync(int mainCategoryId, int subCategoryId)
+        {
+            var criteria = new GetCategoryClassificationByIdCriteria
+            {
+                MainCategoryID = mainCategoryId,
+                SubCategoryID = subCategoryId
+            };
+            return await baseService.GetDataEntityAsync<CategoryClassification>(criteria);
+        }
+
+        public async Task<CommandResult> EditCategoryClassificationAsync(EditCategoryClassification modal)
+        {
+            var command = new EditCategoryClassificationCriteria
+            {
+                UserId = napSession.UserId,
+                IP = string.Empty,
+                MainCategoryID = modal.MainCategoryID,
+                SubCategoryID = modal.SubCategoryID,
+                ActionType = modal.ActionType,
+                RemarkNewValue = modal.RemarkNewValue
+            };
+            return await baseService.ExecuteNonQueryAsync(command);
+        }
+    }
+}

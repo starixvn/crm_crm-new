@@ -5,7 +5,8 @@ import {
     setGridData,
     setCategoryClassId,
     setEditCategoryClassResult,
-    setEditCategoryClassPopup
+    setEditCategoryClassPopup,
+    setDeleteCategoryClassPopup
 } from './categoryClassificationSlice';
 
 const getAllSettings = () => async () => {
@@ -45,5 +46,6 @@ export const ActionCreators = {
     getCategoryClassById,
     editCategoryClass,
     setEditCategoryClassPopup,
-    setEditCategoryClassResult
+    setEditCategoryClassResult,
+    setDeleteCategoryClassPopup
 };

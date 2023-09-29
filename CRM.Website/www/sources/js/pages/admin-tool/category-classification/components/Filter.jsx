@@ -8,6 +8,7 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import { toast } from 'react-toastify';
 import {
     getSubCategories, getCategoryParams
 } from '@jsroot/common/shareScripts';
@@ -115,12 +116,11 @@ export class Filter extends Component {
     };
 
     handleChangeSubCategory = (currentItem, selectedItemsKey) => {
-        const countSubCatagoriesChange = selectedItemsKey.split(',').length;
         this.setState(prevState => ({
             selectedSubCategoryIdsFilter: selectedItemsKey,
             filter: {
                 ...prevState.filter,
-                subCategoriesTypes: countSubCatagoriesChange === this.state.subCategoryOptionsFilter.length ? '0' : selectedItemsKey
+                subCategoriesTypes: selectedItemsKey
             }
         }));
     };
@@ -156,11 +156,34 @@ export class Filter extends Component {
         };
     };
 
+    isValidParams = () => {
+        const errMsg = [];
+        let isValid = true;
+        const { filter } = this.state;
+
+        if (!filter.mainCategoriesTypes) {
+            isValid = false;
+            errMsg.push(LangHelper.getResource('Category'));
+        }
+        if (!filter.subCategoriesTypes) {
+            isValid = false;
+            errMsg.push(LangHelper.getResource('SubCategory'));
+        }
+
+        return { isValid, errMsg };
+    };
+
     handleSubmit = async event => {
         event.preventDefault();
-        const params = this.getParams();
-        this.props.setGridParams(params);
-        await this.props.getGridData(params);
+        if (this.isValidParams().isValid) {
+            const params = this.getParams();
+            this.props.setGridParams(params);
+            await this.props.getGridData(params);
+        } else {
+            this.isValidParams().errMsg.forEach(item => {
+                toast.error(item);
+            });
+        }
     };
 
     render() {
