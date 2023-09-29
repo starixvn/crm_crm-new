@@ -338,11 +338,23 @@ export class CustomerInfo extends PureComponent{
         </Col>
     );
 
+    isDisplayOverrideCustInfo = () => {
+        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
+        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
+        const { customerDetail } = this.props;
+        console.log(customerDetail.customerType);
+        if (customerDetail === null) return false;
+        if (customerDetail.customerType === 0) return hasHostCredit || hasHostLicensee;
+
+        return customerDetail.customerType === 1 ? hasHostCredit : hasHostLicensee;
+    }
     render() {
         const {customerInfo, handleChange, settings, renderOptions, customerDetail, handleChangeValueInfo} = this.props;
         const maxDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
         const isAddGuestFb = customerInfo.siteId === undefined;
+        const isDisplayOverrideCustInfo = this.isDisplayOverrideCustInfo();
+        
         return (
             <div>
                 <Form.Group as={Row} className="pt-2" >
@@ -497,7 +509,7 @@ export class CustomerInfo extends PureComponent{
                     </Form.Group>
                 }
                 {
-                    customerDetail !== null &&
+                    customerDetail !== null && isDisplayOverrideCustInfo &&
                     <Form.Group as={Row} className="pt-1 pb-2">
                         <Col sm="3" md="3">
                             <Form.Check type="checkbox" id="check-box-overwrite" label={LangHelper.getResource('OverwriteCurrentCRMInfo')}
