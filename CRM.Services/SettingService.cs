@@ -8,6 +8,7 @@
     using CRM.Criteria.PicAndHeadline;
     using CRM.Criteria.Setting;
     using CRM.Models;
+    using CRM.Models.AdminTool.SettingLog;
     using CRM.Models.Setting;
     using CRM.Resources;
 
@@ -479,6 +480,17 @@
                 ActionType = actionType
             };
             return await baseService.GetDataAsync<BaseModel>(criteria);
+        }
+
+        public async Task<int> GetSettingRelationConfirmAsync(GetSettingRelationConfirm param)
+        {
+            var criteria = new GetSettingRelationConfirmCriteria
+            {
+                SettingID = param.SettingID,
+                SettingName = param.SettingName,
+                ParentID = param.ParentID
+            };
+            return await baseService.GetDataEntityAsync<int>(criteria);
         }
     }
 }

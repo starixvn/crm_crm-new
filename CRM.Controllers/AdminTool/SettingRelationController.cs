@@ -7,6 +7,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.AdminTool;
     using CRM.Criteria.Setting;
+    using CRM.Models.AdminTool.SettingLog;
     using CRM.Services;
     using CRM.ViewModels;
     using Fanex.NAP.Client.Configuration;
@@ -61,6 +62,13 @@
             command.UserId = napSession.UserId;
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
+        }
+
+        [HttpPost]
+        public async Task<int> GetSettingRelationConfirm([FromBody] GetSettingRelationConfirm param)
+        {
+            var isHaveRemark = await settingService.GetSettingRelationConfirmAsync(param);
+            return isHaveRemark;
         }
     }
 }

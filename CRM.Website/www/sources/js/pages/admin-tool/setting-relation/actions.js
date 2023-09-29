@@ -7,7 +7,8 @@ import {
     setSettingTypes,
     setMainSettingRelation,
     setUpdateResult,
-    setOpenUpdatePopup
+    setOpenUpdatePopup,
+    setRelationConfirmPopup
 } from './settingRelationSlice';
 
 const getMainSettings = () => async dispatch => {
@@ -41,6 +42,11 @@ const updateRelation = params => async dispatch => {
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
+const getSettingRelationConfirm = params => async () => {
+    const url = Site.resolveClientUrl('SettingRelation/GetSettingRelationConfirm');
+    return await DataService.postDataAsync(url, params).then(response => response.data).catch(Site.handleAxiosError);
+};
+
 export const ActionCreators = {
     resetState,
     getMainSettings,
@@ -52,5 +58,7 @@ export const ActionCreators = {
     setMainSettingRelation,
     updateRelation,
     setUpdateResult,
-    setOpenUpdatePopup
+    setOpenUpdatePopup,
+    setRelationConfirmPopup,
+    getSettingRelationConfirm
 };

@@ -8,7 +8,8 @@ const initialState = {
     gridDataSettingLogs: null,
     mainSettingRelation: [],
     updateResult: null,
-    updatePopup: { show: false, title: '', parentId: null, parentName: '' }
+    updatePopup: { show: false, title: '', parentId: null, parentName: '' },
+    relationConfirmPopup: { show: false }
 };
 const settingRelationSlice = createSlice({
     name: 'settingRelation',
@@ -32,6 +33,9 @@ const settingRelationSlice = createSlice({
         },
         setOpenUpdatePopup: (state, action) => {
             state.updatePopup = action.payload;
+        },
+        setRelationConfirmPopup: (state, action) => {
+            state.relationConfirmPopup = action.payload;
         }
     }
 });
@@ -45,7 +49,8 @@ export const {
     setMainSettingRelation,
     setUpdateResult,
     setOpenUpdatePopup,
-    resetState
+    resetState,
+    setRelationConfirmPopup
 } = actions;
 
 export default reducer;

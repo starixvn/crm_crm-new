@@ -6,6 +6,7 @@
     using CRM.Criteria.PicAndHeadline;
     using CRM.Criteria.Setting;
     using CRM.Models;
+    using CRM.Models.AdminTool.SettingLog;
     using CRM.Models.Setting;
 
     public interface ISettingService
@@ -77,5 +78,7 @@
         Task<IEnumerable<Station>> GetStations();
 
         Task<IEnumerable<BaseModel>> GetAllLogActionAsync(int actionType);
+
+        Task<int> GetSettingRelationConfirmAsync(GetSettingRelationConfirm param);
     }
 }
