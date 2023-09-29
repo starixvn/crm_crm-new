@@ -3,7 +3,6 @@
 .communication-log{
     max-width: 1300px;
     .table-container table tr{
-        cursor: pointer;
         &:hover td{
             background-color: #E2FFFF !important;
         }

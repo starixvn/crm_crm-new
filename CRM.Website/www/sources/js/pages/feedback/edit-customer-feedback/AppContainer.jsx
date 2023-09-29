@@ -160,7 +160,7 @@ export class AppContainer extends Component {
             this.formik.submitForm();
         }
 
-        if(event.ctrlKey && event.key === 'e' && this.formik.values.hasRelated){
+        if (event.ctrlKey && event.key === 'e' && this.formik.values.hasRelated) {
             this.handleVerifyRelatedCustomer(event);
         }
     }
@@ -227,6 +227,7 @@ export class AppContainer extends Component {
             siteId: feedback.siteId,
             siteName: feedback.siteSetting.name,
             isVIP: feedback.isVIP,
+            custType: feedback.customerType,
             // feedback info
             feedbackDate: new Date(feedback.feedbackDate),
             resolutionDate: new Date(feedback.resolutionDate),
@@ -407,7 +408,7 @@ export class AppContainer extends Component {
 
     handleVerifyRelatedCustomer = async event => {
         event.preventDefault();
-        if(this.state.fieldInput.customerNameInput === ''){
+        if (this.state.fieldInput.customerNameInput === '') {
             return;
         }
         const regex1 = new RegExp(/,\s+/g),
@@ -527,7 +528,6 @@ export class AppContainer extends Component {
 
         return relatedCustomerIds;
     };
-    
 
     confirmEditFeedback = params => {
         this.setState({
@@ -585,10 +585,10 @@ export class AppContainer extends Component {
             if (data.isSuccessful) {
                 setTimeout(() => {
                     this.props.onClose(true);
-                    if(params.isOverwrite){
+                    if (params.isOverwrite) {
                         window.localStorage.setItem('updateLeftPanel', params.custId);
                         const pathname = Site.resolveClientUrl(this.props.location.pathname.slice(1, this.props.location.pathname.length));
-                        this.props.navigate(pathname, {state: this.props.currentCustomer});
+                        this.props.navigate(pathname, { state: this.props.currentCustomer });
                     }
                 }, 3000);
             } else {
@@ -675,7 +675,7 @@ export class AppContainer extends Component {
             updateReviewedMode: this.isReviewed(values),
             isDeletedFeedbackView: this.props.isDeletedFeedbackView
         };
-       
+
         this.handleReVerifyInactiveAndConfirm(params, setSubmitting);
     };
 
@@ -734,12 +734,12 @@ export class AppContainer extends Component {
         isSubmitting
     }) => {
         const { collapse, settings, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
-            productOptions, subProductOptions, betTypeOptions, relatedCustomers, feedbackSubjectTemplates, editResult
+            productOptions, subProductOptions, betTypeOptions, relatedCustomers, feedbackSubjectTemplates, editResult, feedback
         } = this.state;
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <Form noValidate onSubmit={handleSubmit}>
-                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle />
                 <Modal.Body>
                     <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
@@ -753,6 +753,7 @@ export class AppContainer extends Component {
                         values={values}
                         handleChangeInput={this.handleChangeInput}
                         onCollapseExpand={this.handleCollapseExpand}
+                        customerType={feedback.customerType}
                     />
                     <FeedbackInfo collapse={collapse} values={values} touched={touched} errors={errors} settings={settings}
                         extensionOptions={extensionOptions} communicationToolOptions={communicationToolOptions}

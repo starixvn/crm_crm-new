@@ -16,6 +16,7 @@
     using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
+    using CRM.Services.Customer;
     using CRM.Services.Feedback;
     using CRM.ViewModels.Feedback;
     using Fanex.Logging.Extensions;
@@ -37,6 +38,7 @@
         private readonly ITicketRefService ticketRefService;
         private readonly ICRMLogService logService;
         private readonly IPermissionService permissionService;
+        private readonly ICustomerService customerService;
 
         public FeedbackController(
             INapSession napSession,
@@ -46,7 +48,8 @@
             IFeedbackService feedbackService,
             ITicketRefService ticketRefService,
             ICRMLogService logService,
-            IPermissionService permissionService)
+            IPermissionService permissionService,
+            ICustomerService customerService)
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
@@ -56,6 +59,7 @@
             this.ticketRefService = ticketRefService;
             this.logService = logService;
             this.permissionService = permissionService;
+            this.customerService = customerService;
         }
 
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
@@ -78,6 +82,10 @@
         public async Task<IActionResult> GetCustomerFeedbackById(int id)
         {
             CustomerFeedback feedback = await feedbackService.GetCustomerFeedbackByIdAsync(id);
+            if (feedback is not null && feedback.CustId != 0)
+            {
+                feedback.CustomerType = await customerService.GetSiteTypeByCustIdAsync(feedback.CustId);
+            }
             var isDeletedFeedbackView = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
             var settings = await GetEditCustomerFeedbackSettingAsync(feedback, isDeletedFeedbackView);
             var hasReviewFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);

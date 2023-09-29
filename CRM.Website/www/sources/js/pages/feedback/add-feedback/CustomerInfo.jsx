@@ -347,6 +347,7 @@ export class CustomerInfo extends PureComponent{
 
         return customerDetail.customerType === 1 ? hasHostCredit : hasHostLicensee;
     }
+
     render() {
         const {customerInfo, handleChange, settings, renderOptions, customerDetail, handleChangeValueInfo} = this.props;
         const maxDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));

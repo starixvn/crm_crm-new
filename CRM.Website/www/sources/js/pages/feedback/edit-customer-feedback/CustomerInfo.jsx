@@ -385,10 +385,21 @@ export default class CustomerInfo extends PureComponent {
         );
     };
 
+    isDisplayOverrideCustInfo = () => {
+        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
+        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
+
+        const { customerType } = this.props;
+        if (customerType === 0) return hasHostCredit || hasHostLicensee;
+
+        return customerType === 1 ? hasHostCredit : hasHostLicensee;
+    }
+
     render() {
         const { collapse, fieldInput, settings, values, handleChangeInput, setFieldValue
         } = this.props;
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
+        const isDisplayOverrideCustInfo = this.isDisplayOverrideCustInfo();
 
         return (
             <div className="panel-group">
@@ -525,20 +536,24 @@ export default class CustomerInfo extends PureComponent {
                                 </Form.Group>
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row}>
-                            <Col sm="4" md="4">
-                                <Form.Group as={Row}>
-                                    <Col>
-                                        <Form.Check type="checkbox" id="checkbox-overwrite-customerInfo"
-                                            htmlFor="checkbox-overwrite-customerInfo"
-                                            label={LangHelper.getResource('OverwriteCurrentCRMInfo')}
-                                            checked={values.isOverwrite}
-                                            onChange={event => setFieldValue('isOverwrite', event.target.checked)}
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </Form.Group>
+                        {
+                            isDisplayOverrideCustInfo &&
+                            <Form.Group as={Row}>
+                                <Col sm="4" md="4">
+                                    <Form.Group as={Row}>
+                                        <Col>
+                                            <Form.Check type="checkbox" id="checkbox-overwrite-customerInfo"
+                                                htmlFor="checkbox-overwrite-customerInfo"
+                                                label={LangHelper.getResource('OverwriteCurrentCRMInfo')}
+                                                checked={values.isOverwrite}
+                                                onChange={event => setFieldValue('isOverwrite', event.target.checked)}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                            </Form.Group>
+                        }
+
                         <hr className="mt-0" />
 
                         {this.renderPhoneSection()}
