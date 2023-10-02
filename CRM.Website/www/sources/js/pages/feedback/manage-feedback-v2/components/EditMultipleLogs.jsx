@@ -111,14 +111,11 @@ export class EditMultipleLogs extends Component {
                     checked: communicationSettings.mainCategoryIds.includes(item.mainCategoryID)
                 };
             });
-            const subCategories = data.settings.subCategories.filter(item => communicationSettings.mainCategoryIds.includes(item.mainCategoryID));
-            const subCategoryOptions = subCategories.map(item => {
-                return {
-                    subCategoryId: item.subCategoryId,
-                    name: item.name,
-                    checked: communicationSettings.subCategoryIds.includes(item.subCategoryId)
-                };
-            });
+
+            const mainCategoryIds = communicationSettings.mainCategoryIds.join(',').split(',');
+            const subCategoryIds = communicationSettings.subCategoryIds.join(',').split(',');
+            const subCategoryOptions = getSubCategories(mainCategoryIds, data.settings.subCategories, subCategoryIds, false);
+
             const productsDistinct = data.settings.products.filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
             const productOptions = productsDistinct.map(item => {
                 return {

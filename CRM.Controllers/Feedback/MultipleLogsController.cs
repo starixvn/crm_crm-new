@@ -72,7 +72,7 @@
         public async Task<IActionResult> GetSettings()
         {
             var settings = await GetAllSettingAsync();
-            var statusRemoveDelete =  settings.Statuses.Where(x => x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted);
+            var statusRemoveDelete = settings.Statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
             settings.Statuses = statusRemoveDelete;
             return Json(settings);
         }
@@ -102,7 +102,7 @@
         {
             var logInfo = await feedbackService.GetLogByFeedbackIdAsync(id);
             var statuses = await GetStatusListAsync();
-            return Json(new { logInfo, statuses});
+            return Json(new { logInfo, statuses });
         }
 
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]

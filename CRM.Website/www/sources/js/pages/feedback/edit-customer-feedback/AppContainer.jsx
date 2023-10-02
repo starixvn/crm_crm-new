@@ -102,14 +102,10 @@ export class AppContainer extends Component {
                     checked: feedbackSettings.mainCategoryIds.includes(item.mainCategoryID)
                 };
             });
-            const subCategories = data.settings.subCategories.filter(item => feedbackSettings.mainCategoryIds.includes(item.mainCategoryID));
-            const subCategoryOptions = subCategories.map(item => {
-                return {
-                    subCategoryId: item.subCategoryId,
-                    name: item.name,
-                    checked: feedbackSettings.subCategoryIds.includes(item.subCategoryId)
-                };
-            });
+
+            const mainCategoryIds = feedbackSettings.mainCategoryIds.join(',').split(',');
+            const subCategoryIds = feedbackSettings.subCategoryIds.join(',').split(',');
+            const subCategoryOptions = getSubCategories(mainCategoryIds, data.settings.subCategories, subCategoryIds, false);
 
             const productOptions = data.settings.products.map(item => {
                 return {

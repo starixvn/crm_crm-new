@@ -12,6 +12,7 @@
     {
         [SpParam(SqlParamName = "FeedbackDate")]
         public DateTime StartTime { get; set; }
+
         public int LanguageId { get; set; }
         public int CountryId { get; set; }
 
@@ -28,7 +29,7 @@
         public IEnumerable<CategorySubCategorySetting> Categories { get; set; } = new List<CategorySubCategorySetting>();
 
         [SpParam(SqlParamName = "Category")]
-        public string CategoryXml => Categories.Any() ? Categories.ToXML("ROOT").ToString() : string.Empty;
+        public string CategoryXml => Categories.Any() ? Categories.DistinctBy(x => new { x.MainCategoryId, x.SubCategoryId }).ToXML("ROOT").ToString() : string.Empty;
 
         [SpParam(SqlParamName = "CustId")]
         public int CustomerId { get; set; }
