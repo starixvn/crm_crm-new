@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Text.Json.Nodes;
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
@@ -14,6 +15,7 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
 
     public interface IFeedbackService
     {
@@ -102,34 +104,34 @@
                 IEnumerable<int> messageIds = messagesImportCombineDistinct.Where(x => x.MessageId != 0).Select(y => y.MessageId).Distinct().ToList();
                 IEnumerable<Message> messages = await messageService.GetMessageInfoAsync(messageIds);
 
-                ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<DuplicateTicketDetail>, string> ticketInfo = await ticketVoidingService.GetTicketVoidingInfoAsync(
-                    messagesImportCombineDistinct, setting
-                );
+                var (matchInfo, transInfo, duplicateTicketDetails, checkTrans) = await ticketVoidingService.GetTicketVoidingInfoAsync(messagesImportCombineDistinct, setting);
 
                 var transactionTickets = Enumerable.Empty<TransactionInfo>();
-                if (!string.IsNullOrEmpty(ticketInfo.Item4))
+                if (!string.IsNullOrEmpty(checkTrans))
                 {
-                    transactionTickets = await ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item4);
+                    transactionTickets = await ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, checkTrans);
                 }
                 var castTransactions = new List<TransactionInfo>();
-                foreach (var duplicateTicket in ticketInfo.Item3)
+                foreach (var ticket in duplicateTicketDetails)
                 {
                     var castTransaction = new TransactionInfo
                     {
-                        CustId = duplicateTicket.CustId,
-                        MessageId = duplicateTicket.MessageId,
-                        RequestId = duplicateTicket.RequestID,
-                        Username = duplicateTicket.Username,
-                        IsDeposit = duplicateTicket.IsDeposit,
-                        Site = duplicateTicket.Site
+                        CustId = ticket.CustId,
+                        MessageId = ticket.MessageId,
+                        RequestId = ticket.RequestID,
+                        Username = ticket.Username,
+                        IsDeposit = ticket.IsDeposit,
+                        Site = ticket.Site,
+                        VoidingHistoryCollectionId = ticket.VoidingHistoryCollectionId
                     };
                     castTransactions.Add(castTransaction);
                 }
-                var transactionTicketsCombine = transactionTickets.Concat(ticketInfo.Item2).Concat(castTransactions);
+                var transactionTicketsCombine = transactionTickets.Concat(transInfo).Concat(castTransactions);
 
-                IEnumerable<MatchInfo> matchInfos = ticketInfo.Item1.Where(x => transactionTicketsCombine.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId)).ToList();
-                IEnumerable<MatchInfo> matchInfosDuplicate = ticketInfo.Item1.Where(x => ticketInfo.Item3.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId)).ToList();
+                IEnumerable<MatchInfo> matchInfos = matchInfo.Where(x => transactionTicketsCombine.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId)).ToList();
+                IEnumerable<MatchInfo> matchInfosDuplicate = matchInfo.Where(x => duplicateTicketDetails.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId)).ToList();
                 IEnumerable<MatchInfo> matchInfosCombine = matchInfos.Concat(matchInfosDuplicate);
+
                 if (!matchInfosCombine.Any())
                 {
                     logService.LogInformation("Abnormal Bet - import do not have any ticket");
@@ -139,11 +141,11 @@
                 }
 
                 logService.LogInformation(string.Format("Abnormal Bet - Create feedback for voidingHistoryCollectionId: {0}",
-                    string.Join(",", ticketInfo.Item1.Select(x => x.VoidingHistoryCollectionId)))
+                    string.Join(",", matchInfo.Select(x => x.VoidingHistoryCollectionId)))
                 );
 
-                var ticketDuplicate = ticketInfo.Item1.Where(x => x.IssueTypeId == duplicate);
-                var ticketDuplicateDetail = ticketInfo.Item3.Where(x => ticketDuplicate.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId));
+                var ticketDuplicate = matchInfo.Where(x => x.IssueTypeId == duplicate);
+                var ticketDuplicateDetail = duplicateTicketDetails.Where(x => ticketDuplicate.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId));
 
                 await CreateFeedbackForCreditDepositSiteAsync(
                     messages,
@@ -180,13 +182,13 @@
             IEnumerable<GroupHeadline> headlines = await customerService.GetGroupHeadlineVipAsync(custIds);
             var transactionByHeadline = transactionInfos.Where(x => headlines.Any(y => y.CustId == x.CustId));
 
-            (IEnumerable<MatchInfo> newMatchInfos, IEnumerable<TransactionInfo> newTransactionInfos) = await ticketVoidingService.ImportTicketVoidingInfoAsync(
-                messagesImportCombineDistinct,
-                matchInfos,
-                transactionInfos,
-                siteSettingMappings,
-                headlines,
-                licenseeInfo);
+            var (newMatchInfos, newTransactionInfos) = await ticketVoidingService.ImportTicketVoidingInfoAsync(
+                                                                messagesImportCombineDistinct,
+                                                                matchInfos,
+                                                                transactionInfos,
+                                                                siteSettingMappings,
+                                                                headlines,
+                                                                licenseeInfo);
 
             foreach (MatchInfo matchInfo in newMatchInfos)
             {

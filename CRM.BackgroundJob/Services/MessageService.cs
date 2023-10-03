@@ -7,7 +7,6 @@
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Models;
     using Fanex.CRM.BackgroundJob.Criteria;
-    using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Criteria.AutoFeedback;
     using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
@@ -87,13 +86,13 @@
         {
             const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MsgID='{1}' ReqID='{2}' UsernameList='{3}' CustIdList='{4}'/>";
             var stringBuilder = new StringBuilder(Constants.Constants.BeginRootTag);
-            var voidingMessageGroupBy = voidingMessageUserName.GroupBy(x => new { x.VoidingHistoryCollectionId ,x.RequestId, x.MessageId }).Select(y => new VoidingMessageUserName
+            var voidingMessageGroupBy = voidingMessageUserName.GroupBy(x => new { x.VoidingHistoryCollectionId, x.RequestId, x.MessageId }).Select(y => new VoidingMessageUserName
             {
                 VoidingHistoryCollectionId = y.Key.VoidingHistoryCollectionId,
-                CustIdList = String.Join(",", y.Select(u => u.CustIdList)),
+                CustIdList = string.Join(",", y.Select(u => u.CustIdList)),
                 RequestId = y.Key.RequestId,
                 MessageId = y.Key.MessageId,
-                UsernameList = String.Join(",", y.Select(u => u.UsernameList))
+                UsernameList = string.Join(",", y.Select(u => u.UsernameList))
             });
             foreach (var message in voidingMessages.Where(x => x.MessageId != 0))
             {

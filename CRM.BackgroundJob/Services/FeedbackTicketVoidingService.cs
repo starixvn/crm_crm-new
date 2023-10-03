@@ -23,8 +23,8 @@
 
         Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> ImportTicketVoidingInfoAsync(
             IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
-            IEnumerable<MatchInfo> matchInfos,
-            IEnumerable<TransactionInfo> transactionInfos,
+            IEnumerable<MatchInfo> matchInfo,
+            IEnumerable<TransactionInfo> transactionInfo,
             IEnumerable<SiteSettingMapping> siteSettingMappings,
             IEnumerable<GroupHeadline> headlines,
             CustomerInfo licenseeInfo);
@@ -87,10 +87,10 @@
                 ConfigPRO = setting.ConfigPRO,
                 Environment = Environment
             };
-            var ticketInfo = await baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, DuplicateTicketDetail>(criteria);
+            var (matchInfo, transactionInfo, duplicateTicketDetails) = await baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, DuplicateTicketDetail>(criteria);
 
-            var collectionId = ticketInfo.Item1.Where(x => 
-                    !ticketInfo.Item2.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId))
+            var collectionId = matchInfo.Where(x =>
+                    !transactionInfo.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId))
                     .Select(x => x.VoidingHistoryCollectionId).ToList();
             if (collectionId.Any())
             {
@@ -100,28 +100,28 @@
             }
 
             return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>,
-                IEnumerable<DuplicateTicketDetail>, string>(ticketInfo.Item1, ticketInfo.Item2, ticketInfo.Item3, criteria.TranIDs);
+                IEnumerable<DuplicateTicketDetail>, string>(matchInfo, transactionInfo, duplicateTicketDetails, criteria.TranIDs);
         }
 
-        public async Task<ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>> ImportTicketVoidingInfoAsync(
+        public async Task<(IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>)> ImportTicketVoidingInfoAsync(
             IEnumerable<VoidingMessageUserName> voidingMessageUserNames,
-            IEnumerable<MatchInfo> matchInfos,
-            IEnumerable<TransactionInfo> transactionInfos,
+            IEnumerable<MatchInfo> matchInfo,
+            IEnumerable<TransactionInfo> transactionInfo,
             IEnumerable<SiteSettingMapping> siteSettingMappings,
             IEnumerable<GroupHeadline> headlines,
             CustomerInfo licenseeInfo)
         {
             logService.LogInformation("Abnormal Bet - Begin import ticket info");
-            var xml = GetXmlImportTicketFeedback(matchInfos, transactionInfos, siteSettingMappings, headlines, licenseeInfo);
+            var xml = GetXmlImportTicketFeedback(matchInfo, transactionInfo, siteSettingMappings, headlines, licenseeInfo);
 
             var criteria = new ImportFeedbackInfoCriteria
             {
                 Xml = xml,
                 Environment = Environment
             };
-            var feedbackInfos = await baseService.GetDataAsync<AutoFeedbackInfo>(criteria);
+            var feedbackInfo = await baseService.GetDataAsync<AutoFeedbackInfo>(criteria);
 
-            var voidingHistoryCollectionIds = matchInfos.Where(x => !feedbackInfos.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId))
+            var voidingHistoryCollectionIds = matchInfo.Where(x => !feedbackInfo.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId))
                 .Select(x => x.VoidingHistoryCollectionId).ToList();
             if (voidingHistoryCollectionIds.Any())
             {
@@ -130,11 +130,11 @@
                 logService.LogInformation(string.Format("Abnormal Bet - Don't have ticket info or created: {0}", string.Join(",", voidingHistoryCollectionIds)));
             }
 
-            matchInfos = matchInfos.Where(x => feedbackInfos.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId) && x.VoidingHistoryCollectionId != 0);
-            transactionInfos = transactionInfos.Where(x => feedbackInfos.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId
+            var resultMatchInfo = matchInfo.Where(x => feedbackInfo.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId) && x.VoidingHistoryCollectionId != 0);
+            var resultTransactionInfo = transactionInfo.Where(x => feedbackInfo.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId
                                                             && y.CustId == x.CustId) && x.VoidingHistoryCollectionId != 0);
             logService.LogInformation("Abnormal Bet - End import ticket info");
-            return new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
+            return (resultMatchInfo, resultTransactionInfo);
         }
 
         protected internal virtual string GetXmlImportTicketFeedback(
@@ -181,12 +181,8 @@
                     RequestId = transaction.RequestId,
                     MessageId = transaction.MessageId
                 };
-                GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId, relatedCustId);
 
-                if(transaction.IsDeposit && matchInfo?.IssueTypeId == duplicateType)
-                {
-                    GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId, transaction.CustId);
-                }
+                GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId, transaction.IsDeposit && matchInfo?.IssueTypeId == duplicateType ? transaction.CustId : relatedCustId);
             }
 
             stringBuilder.Append(Constants.EndRootTag);
