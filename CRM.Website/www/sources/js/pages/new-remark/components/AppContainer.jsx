@@ -72,7 +72,7 @@ export class AppContainer extends Component {
             return null;
         }
         const isHost = remarksPolicy == Policy.Host;
-        const isRead = remarksPolicy == Policy.Read;
+        const isRead = remarksPolicy >= Policy.Read;
 
         return (
             <Fragment>

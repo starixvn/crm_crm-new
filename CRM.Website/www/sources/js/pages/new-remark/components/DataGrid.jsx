@@ -186,7 +186,7 @@ export class DataGrid extends Component {
 
         const { totalItems } = this.props.gridData;
         const { pageIndex, pageSize } = this.props.gridParams;
-        const { isHost,isRead, popupDeleteConfirm} = this.props;
+        const { isHost, isRead, popupDeleteConfirm } = this.props;
 
         const pagingOptions = {
             PageIndex: pageIndex,
