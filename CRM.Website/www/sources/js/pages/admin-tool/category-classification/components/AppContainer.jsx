@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -13,20 +12,7 @@ import Filter from './Filter';
 import DataGrid from './DataGrid';
 import EditCategoryClassification from './EditCategoryClassification';
 
-
 export class AppContainer extends Component {
-    static propTypes = {
-        editRemarkPopup: PropTypes.shape({ show: PropTypes.bool }).isRequired,
-        getAllSettings: PropTypes.func
-    };
-
-    static defaultProps = {
-        editRemarkPopup: { show: false },
-        getAllSettings: function () {
-            // nothing
-        }
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -35,7 +21,7 @@ export class AppContainer extends Component {
     };
 
     componentDidMount() {
-        getPermission(FunctionKey.CategoryClassification).then(response => {
+        getPermission(FunctionKey.CategoryClassification, true).then(response => {
             this.setState({policy: response});
         });
         document.title = LangHelper.getResource('CategoryClassification');
@@ -83,15 +69,12 @@ export class AppContainer extends Component {
     };
 
     render() {
-        if(!this.state.policy){
-            return null;
-        }
         const isHost = this.state.policy === Policy.Host;
         const { selectCategoryClass } = this.props;
 
         return (
             <Fragment>
-                <Filter isHost={isHost} />
+                <Filter />
                 <DataGrid isHost={isHost} />
                 {
                     this.props.editCategoryClassPopup.show &&

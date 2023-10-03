@@ -5,8 +5,6 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
-import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
 import { toast } from 'react-toastify';
 import {
@@ -41,11 +39,14 @@ export class Filter extends Component {
         });
     };
 
-    getSettings = settings => {
+    getActiveItems = items => {
         const { isInactiveSettings } = this.state.filter;
+        return isInactiveSettings ? items : items.filter(item => item.isActive);
+    };
 
-        const mainCategoriesSettings = isInactiveSettings ? settings.mainCategories : settings.mainCategories.filter(item => item.isActive);
+    getSettings = settings => {
         const mainCategoriesTypesId = [];
+        const mainCategoriesSettings = this.getActiveItems(settings.mainCategories);
         const mainCategoryOptionsFilter = mainCategoriesSettings.map(main => {
             mainCategoriesTypesId.push(main.mainCategoryID.toString());
             return {
@@ -56,10 +57,11 @@ export class Filter extends Component {
         });
 
         const subCategoriesTypesId = [];
-        const subCategorySettings = isInactiveSettings ? settings.subCategories : settings.subCategories.filter(item => item.isActive);
+        const subCategorySettings = this.getActiveItems(settings.subCategories);
         subCategorySettings.map(sub => {
             subCategoriesTypesId.push(sub.subCategoryId.toString());
         });
+        const filterSubCategoriesTypesId = [...new Set(subCategoriesTypesId)];
 
         const isCheckDefault = true;
         const subCategoryOptionsFilter = getSubCategories(mainCategoriesTypesId, subCategorySettings, [], isCheckDefault);
@@ -70,14 +72,17 @@ export class Filter extends Component {
             filter: {
                 ...prevState.filter,
                 mainCategoriesTypes: mainCategoriesTypesId.toString(),
-                subCategoriesTypes: subCategoriesTypesId.toString()
+                subCategoriesTypes: filterSubCategoriesTypesId.toString()
             }
-        }));
+        }), () => {
+            const params = this.getParams();
+            this.props.setGridParams(params);
+            this.props.getGridData(params);
+        });
     };
 
     handleChangeMainCategory = (currentItem, selectedItemsKey) => {
-        const { isInactiveSettings } = this.state.filter;
-        const subCategorySettings = isInactiveSettings ? this.state.settings.subCategories : this.state.settings.subCategories.filter(item => item.isActive);
+        const subCategorySettings = this.getActiveItems(this.state.settings.subCategories);
 
         this.setState(prevState => ({
             filter: {
@@ -146,7 +151,8 @@ export class Filter extends Component {
 
     getParams = () => {
         const { mainCategoriesTypes, subCategoriesTypes, remark, isInactiveSettings } = this.state.filter;
-        const subCategorySettings = isInactiveSettings ? this.state.settings.subCategories : this.state.settings.subCategories.filter(item => item.isActive);
+        const subCategorySettings = this.getActiveItems(this.state.settings.subCategories);
+
         return {
             categories: getCategoryParams(mainCategoriesTypes.split(','), subCategoriesTypes.split(','), subCategorySettings),
             remark: remark,
@@ -178,7 +184,7 @@ export class Filter extends Component {
         if (this.isValidParams().isValid) {
             const params = this.getParams();
             this.props.setGridParams(params);
-            await this.props.getGridData(params);
+            this.props.getGridData(params);
         } else {
             this.isValidParams().errMsg.forEach(item => {
                 toast.error(item);

@@ -653,18 +653,23 @@ export class CreateForm extends Component {
                                 <Form.Group className="pt-2 custom-form-group">
                                     <Form.Label className="custom-label required">{LangHelper.getResource('SubCategory')}</Form.Label>
                                     <Form.Group className="custom-input">
-                                    <MultipleSelect
-                                        isInvalid={touched.subCategoryIds && errors.subCategoryIds}
-                                        dataSource={subCategoryOptions}
-                                        keyField='subCategoryId' valueField='name'
-                                        hasAllOption={subCategoryOptions.length > 0}
-                                        isAllTextShown={subCategoryOptions.length > 0}
-                                        hasSearchBox isNAOption
-                                        maxDisplayItemCount={1}
-                                        onChange={(currentItem, selectedItemsKey) => {
-                                            setFieldValue('subCategoryIds', selectedItemsKey);
-                                        }}
-                                    />
+                                        <MultipleSelect
+                                            isInvalid={touched.subCategoryIds && errors.subCategoryIds}
+                                            dataSource={subCategoryOptions}
+                                            keyField='subCategoryId' valueField='name'
+                                            hasAllOption={subCategoryOptions.length > 0}
+                                            isAllTextShown={subCategoryOptions.length > 0}
+                                            hasSearchBox isNAOption
+                                            maxDisplayItemCount={1}
+                                            onChange={(currentItem, selectedItemsKey) => {
+                                                setFieldValue('subCategoryIds', selectedItemsKey);
+                                            }}
+                                        />
+                                        <OverlayTrigger placement="bottom-start"
+                                            overlay={<Tooltip>{LangHelper.getResource('ViewCategoryClassification')}</Tooltip>}
+                                        >
+                                            <span onClick={() => window.open('/CategoryClassification')} className="fa fa-question-circle-o" />
+                                        </OverlayTrigger>
                                     </Form.Group>
                                 </Form.Group>
                             </Col>

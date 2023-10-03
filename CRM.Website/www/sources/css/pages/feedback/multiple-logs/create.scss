@@ -12,12 +12,17 @@
             gap: 10px;
             align-items: center;
             width: 100%;
-        }
-        .multiple-select-container {
-            width: 100%;
+            
+            .multiple-select-container {
+                width: 100%;
+            }
+            .fa-question-circle-o {
+                font-size: 17px;
+                color: #0789d1;
+                cursor: pointer;
+            }
         }
     }
-
 
     .fa-exclamation-circle {
         font-size: 16px;

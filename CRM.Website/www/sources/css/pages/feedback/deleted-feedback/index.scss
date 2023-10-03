@@ -158,6 +158,28 @@
                         }
                     }
                 }
+
+                .custom-form-group{
+                    display: flex;
+                    align-items: center;
+                    .custom-label{
+                        flex: 1 0 140px;
+                    }
+                    .custom-input{
+                        display: flex;
+                        align-items: center;
+                        width: 100%;
+
+                        .multiple-select-container {
+                            width: 100%;
+                        }
+                        .fa-question-circle-o {
+                            font-size: 17px;
+                            color: #0789d1;
+                            cursor: pointer;
+                        }
+                    }
+                }
             }
         }
     }

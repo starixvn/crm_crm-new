@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
-import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
-import MultipleSelect from '@jsroot/components/multiple-select/index';
 import LangHelper from '@jsroot/common/langHelper';
 import CkEditor from '@jsroot/components/ckeditor/index';
 

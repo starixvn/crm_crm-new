@@ -12,7 +12,6 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.CategoryClassification, Policy = Policy.Read)]
     public class CategoryClassificationController : BaseController
     {
         private readonly ISettingService settingService;
@@ -57,7 +56,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.DefaultCommunicationSetting, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.CategoryClassification, Policy = Policy.Host)]
         public async Task<IActionResult> EditCategoryClassification([FromBody] EditCategoryClassification model)
         {
             CommandResult commandResult = await categoryClassificationService.EditCategoryClassificationAsync(model);

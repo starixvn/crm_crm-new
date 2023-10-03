@@ -593,6 +593,7 @@
     Validate: 'Validate',
     Version: 'Version',
     ViewAllRemarks: 'View All Remarks',
+    ViewCategoryClassification: 'Click to view the Category Classification',
     WithoutAnyGroup: 'Without any group',
     WeChat: 'WeChat',
     WhatApp: "What's App",
