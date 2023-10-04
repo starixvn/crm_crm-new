@@ -388,8 +388,9 @@ export default class CustomerInfo extends PureComponent {
     isDisplayOverrideCustInfo = () => {
         const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
         const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-
+      
         const { customerType } = this.props;
+
         if (customerType === 0) return hasHostCredit || hasHostLicensee;
 
         return customerType === 1 ? hasHostCredit : hasHostLicensee;

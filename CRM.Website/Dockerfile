@@ -13,11 +13,13 @@ COPY ["CRM.Criteria/CRM.Criteria.csproj", "CRM.Criteria/"]
 COPY ["CRM.Repositories/CRM.Repositories.csproj", "CRM.Repositories/"]
 COPY ["CRM.ViewModel/CRM.ViewModels.csproj", "CRM.ViewModel/"]
 
-RUN dotnet restore "CRM.Website/CRM.Website.csproj"
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet restore "CRM.Website/CRM.Website.csproj"
 COPY . .
 WORKDIR "/src/CRM.Website"
 
-RUN dotnet publish -r linux-x64 --self-contained false -o /app
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet publish -r linux-x64 --self-contained false -o /app
 
 FROM hub.nexdev.net/nexus/aspnet6_crm_website AS base
 

@@ -732,6 +732,7 @@ export class AppContainer extends Component {
         const { collapse, settings, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
             productOptions, subProductOptions, betTypeOptions, relatedCustomers, feedbackSubjectTemplates, editResult, feedback
         } = this.state;
+
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <Form noValidate onSubmit={handleSubmit}>
@@ -749,7 +750,7 @@ export class AppContainer extends Component {
                         values={values}
                         handleChangeInput={this.handleChangeInput}
                         onCollapseExpand={this.handleCollapseExpand}
-                        customerType={feedback.customerType}
+                        customerType={feedback.custType}
                     />
                     <FeedbackInfo collapse={collapse} values={values} touched={touched} errors={errors} settings={settings}
                         extensionOptions={extensionOptions} communicationToolOptions={communicationToolOptions}
