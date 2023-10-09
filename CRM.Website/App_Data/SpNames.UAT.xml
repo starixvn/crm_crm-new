@@ -126,11 +126,11 @@
             <Mapping DataField="Currency" ObjectProperty="Name" />
         </Setting>
         <Setting Key="Acc_CRM_Rpt_DeletedFeedbackStatistics" SpName="Acc_CRM_Rpt_DeletedFeedbackStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSummary" SpName="Acc_CRM_Rpt_FeedbackStatisticsSummary" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_Crm_Rpt_DirectCustomerReport" SpName="Acc_Crm_Rpt_DirectCustomerReport" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsWagers" SpName="Acc_CRM_Rpt_FeedbackStatisticsWagers" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Rpt_DailyStatistics" SpName="Acc_CRM_Rpt_DailyStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Rpt_DailyStatisticsDetail" SpName="Acc_CRM_Rpt_DailyStatisticsDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsSummary" SpName="Acc_CRM_Rpt_FeedbackStatisticsSummary" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Rpt_DailyStatistics" SpName="Acc_CRM_Rpt_DailyStatistics_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Rpt_DailyStatisticsDetail" SpName="Acc_CRM_Rpt_DailyStatisticsDetail_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_LogActionSettingList" SpName="Acc_CRM_LogActionSettingList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatisticsPeriod" SpName="Acc_CRM_Rpt_FeedbackStatisticsPeriod" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Rpt_FeedbackStatistics" SpName="Acc_CRM_Rpt_FeedbackStatistics" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -181,14 +181,14 @@
         <Setting Key="Acc_CRM_SubjectTemplateDel" SpName="Acc_CRM_SubjectTemplateDel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Feedback">
-        <Setting Key="Acc_CRM_FeedbackSelTop" SpName="Acc_CRM_FeedbackSelTop" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_FeedbackSelTop" SpName="Acc_CRM_FeedbackSelTop_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackSelTopByCustId" SpName="Acc_CRM_FeedbackSelTopByCustId" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerFeedbackQuickUpd" SpName="Acc_CRM_CustomerFeedbackQuickUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackQuickSel" SpName="Acc_CRM_FeedbackQuickSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackInfoUpd" SpName="Acc_CRM_FeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackSelByID" SpName="Acc_CRM_FeedbackSelByID" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackGetDeleted" SpName="Acc_CRM_FeedbackGetDeleted" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ManageFeedbackList" SpName="Acc_CRM_ManageFeedbackList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ManageFeedbackList" SpName="Acc_CRM_ManageFeedbackList_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_UpdMultipleReviewAndStatus" SpName="Acc_CRM_UpdMultipleReviewAndStatus" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_FeedbackDoubleCheck" SpName="Acc_CRM_FeedbackDoubleCheck" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Age_SelBalanceUpDay" SpName="Age_SelBalanceUpDay" DbName="DBAGE.bodb02.bodbAdminNet" />
@@ -196,7 +196,7 @@
         <Setting Key="Acc_CRM_GuestFeedbackIns" SpName="Acc_CRM_GuestFeedbackIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Funtcion name="Customer">
-        <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_CustomerSearch" SpName="Acc_CRM_CustomerSearch_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="Wire_BankName" ObjectProperty="BankName" />
             <Mapping DataField="Wire_SwiftCode" ObjectProperty="BankSwiftCode" />
             <Mapping DataField="Wire_AccountName" ObjectProperty="BankAccountName" />
@@ -229,12 +229,12 @@
             <Mapping DataField="BankCountryId" ObjectProperty="BankAddressCountryId" />
             <Mapping DataField="AccountHolderName" ObjectProperty="BankHolderName" />
         </Setting>
-        <Setting Key="Acc_CRM_CustomerUpd_New" SpName="Acc_CRM_CustomerUpd_New" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_CustomerUpd_New" SpName="Acc_CRM_CustomerUpd_New_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_MainInformationSpecialRemarkSel" SpName="Acc_CRM_MainInformationSpecialRemarkSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_MainInformationRedemptionSel" SpName="Acc_CRM_MainInformationRedemptionSel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="RedemptionID" ObjectProperty="Id" />
         </Setting>
-        <Setting Key="Acc_CRM_MainInformationCommunicationLogSel" SpName="Acc_CRM_MainInformationCommunicationLogSel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_MainInformationCommunicationLogSel" SpName="Acc_CRM_MainInformationCommunicationLogSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="HandleBy" ObjectProperty="Handler" />
             <Mapping DataField="ReviewBy" ObjectProperty="Reviewer" />
         </Setting>
