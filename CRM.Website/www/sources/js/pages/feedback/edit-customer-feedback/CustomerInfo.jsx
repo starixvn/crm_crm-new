@@ -401,7 +401,6 @@ export default class CustomerInfo extends PureComponent {
         } = this.props;
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
         const isDisplayOverrideCustInfo = this.isDisplayOverrideCustInfo();
-
         return (
             <div className="panel-group">
                 <Form.Group as={Row} className="panel-title border-bottom-0" onClick={() => this.props.onCollapseExpand('customerInfo')}
@@ -492,6 +491,7 @@ export default class CustomerInfo extends PureComponent {
                                             OnChangeValue={value => setFieldValue('siteId', value.id)}
                                             options={siteOptions}
                                             value={fieldInput.siteId}
+                                            name={values.siteName}
                                         />
                                     </Col>
                                 </Form.Group>

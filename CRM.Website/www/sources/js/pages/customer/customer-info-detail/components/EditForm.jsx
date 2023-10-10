@@ -190,7 +190,7 @@ export class EditForm extends Component {
             };
         });
         const siteOptions = changeSiteSetting(this.props.allSettings.sites, 'childSites', 'childSites');
-
+        
         return (
             <div className="panel-group border-bottom-0">
                 <Form.Group as={Row} className="panel-title" onClick={() => this.handleCollapseExpand('personalInfo')}
@@ -299,6 +299,7 @@ export class EditForm extends Component {
                                             className='basic-single'
                                             options={siteOptions}
                                             value={customerInfo.siteId}
+                                            name={customerInfo.siteSetting.name}
                                             isHideNA={false}
                                             OnChangeValue={item => this.handleChangeValue('siteId', item.id)}
                                         />

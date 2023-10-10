@@ -81,8 +81,6 @@ export default class DataGrid extends PureComponent {
         const { customerInfo, settings } = this.props;
         const isShowInactiveMsg = settings.sitesLicenseeInactive.filter(x => x.id === customerInfo.siteId).length > 0;
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
-        console.log(values);
-        console.log(customerInfo);
         return (
             <Form className="left-form-customer" id="left-form-container" noValidate onSubmit={handleSubmit}>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
