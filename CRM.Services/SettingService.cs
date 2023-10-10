@@ -110,9 +110,9 @@
             };
         }
 
-        public async Task<IEnumerable<SiteSetting>> GetSiteAsync()
+        public async Task<IEnumerable<SiteSetting>> GetSiteAsync(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All)
         {
-            var siteInfos = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());
+            var siteInfos = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { UserRole = userRole, LicenseeType = licenseeType });
             return siteInfos.Select(x => new SiteSetting
             {
                 Id = x.Id,
@@ -330,9 +330,9 @@
             return allSites;
         }
 
-        public async Task<IEnumerable<SiteInfo>> GetAllSitesGroupByIsLicenseeAsync()
+        public async Task<IEnumerable<SiteInfo>> GetAllSitesGroupByIsLicenseeAsync(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All)
         {
-            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());
+            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { LicenseeType = licenseeType, UserRole = userRole });
             var allSites = (from n in sites
                             where n.IsActive
                             group n by n.IsLicensee into g
@@ -352,9 +352,9 @@
             return allSites;
         }
 
-        public async Task<IEnumerable<SiteInfo>> GetAllSitesLicenseeInactive()
+        public async Task<IEnumerable<SiteInfo>> GetAllSitesLicenseeInactive(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All)
         {
-            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria());
+            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { LicenseeType = licenseeType, UserRole = userRole });
             return sites.Where(x => !x.IsActive && x.IsLicensee);
         }
 

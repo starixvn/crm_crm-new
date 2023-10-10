@@ -89,10 +89,10 @@
             var settings = new
             {
                 sites = await settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType),
-                sitesByIsLicensee = await settingService.GetAllSitesGroupByIsLicenseeAsync(),
+                sitesByIsLicensee = await settingService.GetAllSitesGroupByIsLicenseeAsync(licenseeType: licenseeType),
                 countries = await settingService.GetCountryAsync(SettingConstants.Active),
                 languages = await settingService.GetLanguageAsync(SettingConstants.Active),
-                sitesLicenseeInactive = await settingService.GetAllSitesLicenseeInactive()
+                sitesLicenseeInactive = await settingService.GetAllSitesLicenseeInactive(licenseeType: licenseeType)
             };
             return Json(settings);
         }

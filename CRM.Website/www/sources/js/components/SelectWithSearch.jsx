@@ -19,7 +19,7 @@ export default class SelectWithSearch extends Component {
             selectFormStatus: '',
             selectedItem: {
                 id: this.props.value,
-                name: this.props.value === 0 ? 'N/A' : this.getLabel(this.props.options, this.props.value)
+                name: this.props.name || (this.props.value === 0 ? 'N/A' : this.getLabel(this.props.options, this.props.value))
             },
             options: this.props.options,
             filter: '',
@@ -38,7 +38,7 @@ export default class SelectWithSearch extends Component {
             this.setState({
                 selectedItem: {
                     id: this.props.value,
-                    name: this.props.value === 0 ? 'N/A' : this.getLabel(this.props.options, this.props.value)
+                    name: this.props.name || (this.props.value === 0 ? 'N/A' : this.getLabel(this.props.options, this.props.value))
                 }
             });
         }

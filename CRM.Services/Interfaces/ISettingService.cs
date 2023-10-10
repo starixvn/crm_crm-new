@@ -16,7 +16,7 @@
 
         Task<IEnumerable<Setting>> GetRolesByPicAsync(int picType);
 
-        Task<IEnumerable<SiteSetting>> GetSiteAsync();
+        Task<IEnumerable<SiteSetting>> GetSiteAsync(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All);
 
         Task<IEnumerable<Setting>> GetSettingByTypes(string settingName);
 
@@ -24,9 +24,9 @@
 
         Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All);
 
-        Task<IEnumerable<SiteInfo>> GetAllSitesGroupByIsLicenseeAsync();
+        Task<IEnumerable<SiteInfo>> GetAllSitesGroupByIsLicenseeAsync(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All);
 
-        Task<IEnumerable<SiteInfo>> GetAllSitesLicenseeInactive();
+        Task<IEnumerable<SiteInfo>> GetAllSitesLicenseeInactive(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All);
 
         Task<IEnumerable<Setting>> GetCommunicationToolAsync(byte active = SettingConstants.ActiveAndInactive, bool isIncludeNA = false);
 
