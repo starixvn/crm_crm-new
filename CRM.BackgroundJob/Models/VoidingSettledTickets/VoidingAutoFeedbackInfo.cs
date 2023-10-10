@@ -17,6 +17,7 @@
         public string SiteLabel { get; set; }
         public string ListMsgTargetId { get; set; }
         public string Listbettype { get; set; }
+        public int IssueTypeId { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }

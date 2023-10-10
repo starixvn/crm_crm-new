@@ -33,6 +33,7 @@
         private readonly IFixture fixture = new Fixture();
 
         #region CreateFeedbackForVoidingSettledTickets
+
         [Fact]
         public async Task CreateFeedbackForVoidingSettledTickets_WhenCalled_CallExactFunction()
         {
@@ -89,7 +90,6 @@
             voidingSettledTicketsService.GetVoidingMessasgeCheckAsync(messageVoidSettled, "LIVE").Returns(voidingMessageCheck);
             voidingSettledTicketsService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck).Returns(settledTicket);
             voidingSettledTicketsService.ImportMessageVoidSettledAsync(settledTicket).Returns(commandResult);
-            
 
             // Act
             await service.CreateFeedbackForVoidingSettledTickets(voidingSettledTicketSetting, true, voidingSettledTicketSetting.LastRuntime, SystemSettingName.LastRuntime, SystemSettingName.JobStatus, "LIVE");
@@ -98,9 +98,11 @@
 
             logService.Received(2).LogInformation(Arg.Any<string>());
         }
+
         #endregion CreateFeedbackForVoidingSettledTickets
 
         #region CreateVoidingSettledTicketsAsync
+
         public async Task CreateVoidingSettledTicketsAsync_WhenCalled_CallExactFunction()
         {
             // Arrange
@@ -113,7 +115,7 @@
             service.Protected("GetVoidingSettledTicketDescription", Arg.Any<VoidingAutoFeedbackInfo>(), Arg.Any<IEnumerable<AutoVoidingEventDetails>>()).Returns("Description");
 
             // Act
-            await service.Public_CreateVoidingSettledTicketsAsync(Arg.Any<VoidingAutoFeedbackInfo>(), Arg.Any<IEnumerable<AutoVoidingEventDetails>>(), 
+            await service.Public_CreateVoidingSettledTicketsAsync(Arg.Any<VoidingAutoFeedbackInfo>(), Arg.Any<IEnumerable<AutoVoidingEventDetails>>(),
                 Arg.Any<IEnumerable<Message>>(), Arg.Any<IEnumerable<SettingItem>>(), Arg.Any<IEnumerable<SystemSettingMapping>>(), "LIVE");
 
             // Assert
@@ -122,7 +124,6 @@
                 Arg.Any<VoidingAutoFeedbackInfo>(),
                 Arg.Any<CreateMutipleFeedbackCommand>(),
                 Arg.Any<string>());
-
         }
 
         #endregion CreateVoidingSettledTicketsAsync
@@ -210,6 +211,7 @@
         #endregion CheckValidVoidingSettledParamsAndInsertFeedbackAsync
 
         #region GetVoidingSettledTicketsProductXml
+
         [Fact]
         public void GetVoidingSettledTicketsProductXml_ExistedProduct_ReturnExpectedXml()
         {
@@ -236,10 +238,9 @@
             var productIds = new List<int> { 1 };
             var sportTypeIds = new List<short> { 1 };
             service.Protected("GetVoidingSettledTicketsProduct", settings, settingMappings, productIds).Returns(products);
-            service.Protected("GetVoidingSettledTicketsSubProduct", products.Select(x=>x.SettingId), sportTypeIds, settings, settingMappings).Returns(subProducts);
+            service.Protected("GetVoidingSettledTicketsSubProduct", products.Select(x => x.SettingId), sportTypeIds, settings, settingMappings).Returns(subProducts);
             service.Protected("GetVoidingSettledTicketsBettype", Arg.Any<string[]>(), settingMappings).Returns(bettypesMapping);
             service.Protected("GetProductSubXml", Arg.Any<SettingItem>(), Arg.Any<IList<SettingItem>>(), Arg.Any<IList<SystemSettingMapping>>()).Returns(productSubproductXml);
-            
 
             // Act
             var actual = service.Public_GetVoidingSettledTicketsProductXml(productIds, sportTypeIds, "1,2", settings, settingMappings);
@@ -279,16 +280,18 @@
             // Assert
             Assert.Equal("<ROOT><Product ProductID='46004' SubProductID='8063' BetTypeID='9144' /></ROOT>", actual);
         }
+
         #endregion GetVoidingSettledTicketsProductXml
 
         #region GetProductSubXml
+
         [Fact]
         public void GetProductSubXml_NotExistSubProduct_ReturnDefaultProduct()
         {
             // Arrange
             var service = MockService();
             var settingMappings = fixture.Create<IList<SystemSettingMapping>>();
-            var products = new SettingItem{ SettingId = 1};
+            var products = new SettingItem { SettingId = 1 };
             var subProducts = new List<SettingItem>();
 
             // Act
@@ -314,6 +317,7 @@
             // Assert
             Assert.Equal("test", actual);
         }
+
         #endregion GetProductSubXml
 
         #region GetVoidingSettledTicketsProduct
@@ -456,7 +460,7 @@
                     new SettingItem { SettingName = SettingName.SubProduct, SettingValue = "1" , SettingId = 2, ParentIds = new List<int>{ 1,2} }
                 };
 
-            var sportTypeIds = new List<short>{ 1 };
+            var sportTypeIds = new List<short> { 1 };
             var productIds = new List<int> { 1 };
             var settingMappings = new List<SystemSettingMapping>
                 {
@@ -489,7 +493,6 @@
                     new SystemSettingMapping { SettingName = SettingName.SubProduct, SettingValue = "1" , SettingSource = "1", SettingId = 1}
                 };
 
-
             var service = MockService();
             commonFeedback.GetSportName("1", Language.en_US).Returns("1");
 
@@ -513,7 +516,7 @@
                     new SystemSettingMapping { SettingName = "Bettype", SettingValue = "1" , SettingSource = "1"}
                 };
 
-            var betTypeMappings = new string[]{ "2", "3" };
+            var betTypeMappings = new string[] { "2", "3" };
             var service = MockService();
 
             // Act
@@ -600,7 +603,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended);
+            var actual = service.Public_GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended, 10);
 
             // Assert
             Assert.Equal(0, actual.Item1);
@@ -619,7 +622,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategoryVoidingSettledTicket(settings, "test");
+            var actual = service.Public_GetCategorySubCategoryVoidingSettledTicket(settings, "test", 20);
 
             // Assert
             Assert.Equal(0, actual.Item1);
@@ -639,7 +642,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategoryVoidingSettledTicket(settings, "test");
+            var actual = service.Public_GetCategorySubCategoryVoidingSettledTicket(settings, "test", 10);
 
             // Assert
             Assert.Equal(0, actual.Item1);
@@ -660,7 +663,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended);
+            var actual = service.Public_GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended, 10);
 
             // Assert
             Assert.Equal(1, actual.Item1);
@@ -681,7 +684,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended);
+            var actual = service.Public_GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended, 10);
 
             // Assertg
             Assert.Equal(1, actual.Item1);
@@ -730,12 +733,13 @@
         #endregion GetRelatedCustomerXml
 
         #region GetVoidingSettledTicketSolution
+
         [Fact]
         public void GetVoidingSettledTicketSolution_IsVip_ReturnExactSolution()
         {
             // Arrange
             var service = MockService();
-            var feedbackInfo = new VoidingAutoFeedbackInfo { IsVip = true, SiteLabel = "789y"};
+            var feedbackInfo = new VoidingAutoFeedbackInfo { IsVip = true, SiteLabel = "789y" };
             var ticketSolTemplate = new VoidingSettledTicketSolutionTemplate
             {
                 SolutionENSC = "SolutionENSC",
@@ -751,7 +755,6 @@
 
             // Assert
             Assert.Equal(expect, actual);
-            
         }
 
         [Fact]
@@ -776,11 +779,12 @@
 
             // Assert
             Assert.Equal(expect, actual);
-
         }
+
         #endregion GetVoidingSettledTicketSolution
 
         #region GetVoidingSettledTicketDescription
+
         [Fact]
         public void GetVoidingSettledTicketDescription_IsMainParlay_ReturnExpectedDescription()
         {
@@ -834,9 +838,11 @@
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
         }
+
         #endregion GetVoidingSettledTicketDescription
 
         #region GetVoidingSettledTicketDescriptionByProduct
+
         [Fact]
         public void GetVoidingSettledTicketDescriptionByProduct_ProductIsVirtualSports_ReturnExpectedDescription()
         {
@@ -935,9 +941,11 @@
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
         }
+
         #endregion GetVoidingSettledTicketDescriptionByProduct
 
         #region GetDescriptionSportBook
+
         [Fact]
         public void GetDescriptionSportBook_ProductIsOutright_ReturnExpectedDescription()
         {
@@ -977,6 +985,7 @@
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
         }
+
         #endregion GetDescriptionSportBook
 
         #region Helpers

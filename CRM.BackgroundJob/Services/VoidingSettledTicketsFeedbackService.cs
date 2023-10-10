@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using CRM.BackgroundJob.Criteria.VoidingSettledTickets;
     using CRM.BackgroundJob.Models.ResultAmendment;
     using CRM.BackgroundJob.Models.VoidingSettledTickets;
     using CRM.Core.Models;
@@ -41,6 +42,7 @@
         private readonly int SportType180 = 180;
         private readonly int SportType186 = 186;
         private readonly int SportType161 = 161;
+        private readonly int DuplicateTicketIssueTypeId = 20;
 
 #pragma warning disable S107 // Methods should not have too many parameters
 
@@ -63,6 +65,7 @@
             this.voidingSettledTicketsService = voidingSettledTicketsService;
             this.feedbackTransaction = feedbackTransaction;
         }
+
         public async Task CreateFeedbackForVoidingSettledTickets(ResultAmendmentSetting voidingSettledTicketSetting, bool isUAT,
             DateTime lastRuntimeEnv, string lastRuntimeNameEnv,
             string jobStatusNameEnv, string environment)
@@ -108,13 +111,24 @@
                 return;
             }
             await voidingSettledTicketsService.ImportVoidingAutoFeedbackInfoAsync(voidingTickets.Item1, environment);
-            var feedbackInfos = await voidingSettledTicketsService.GetVoidingAutoFeedbackInfoAsync(voidingSettledTicketSetting.BatchSize);
-            var groupFeedbackByMsgId = feedbackInfos.Item1.GroupBy(x => new { x.HeadlineId, x.MessageId }).Select(y => y.ToList());
+            var (feedbackInfo, eventVoiding) = await voidingSettledTicketsService.GetVoidingAutoFeedbackInfoAsync(voidingSettledTicketSetting.BatchSize);
 
-            foreach (var feedbackInfo in groupFeedbackByMsgId)
+            var messageIssueTypes = await baseService.GetDataAsync<MsgIssueType>(new GetAutoVoidingIssueTypeCriteria { VoidingMessages = feedbackInfo.Select(i => i.MessageId).ToList() });
+            foreach (var fb in feedbackInfo)
             {
-                var feedbackInfoFirst = feedbackInfo.First();
-                var eventDetails = feedbackInfos.Item2.Where(x => x.LogVoidingID == feedbackInfoFirst.LogVoidingID);
+                var msg = messageIssueTypes.FirstOrDefault(i => i.MessageId == fb.MessageId);
+                if (msg is not null)
+                {
+                    fb.IssueTypeId = msg.IssueTypeId;
+                }
+            }
+
+            var groupFeedbackByMsgId = feedbackInfo.GroupBy(x => new { x.HeadlineId, x.MessageId }).Select(y => y.ToList());
+
+            foreach (var feedback in groupFeedbackByMsgId)
+            {
+                var feedbackInfoFirst = feedback.First();
+                var eventDetails = eventVoiding.Where(x => x.LogVoidingID == feedbackInfoFirst.LogVoidingID);
                 var messages = await feedbackTransaction.GetMessageContentInfoAsync(feedbackInfoFirst.MessageId);
                 await CreateVoidingSettledTicketsAsync(feedbackInfoFirst, eventDetails, messages, settings, settingMappings, environment);
             }
@@ -141,7 +155,7 @@
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(DefaultValue.Closed, StringComparison.OrdinalIgnoreCase));
 
-            var category = GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended);
+            var category = GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended, feedbackInfo.IssueTypeId);
             var sportTypeIds = eventDetails.Select(x => x.Sporttype);
             var productIds = eventDetails.Select(x => x.ProductId).Distinct();
             var criteria = new CreateMutipleFeedbackCommand
@@ -372,16 +386,19 @@
                 };
         }
 
-        protected internal virtual Tuple<int, int, string> GetCategorySubCategoryVoidingSettledTicket(IEnumerable<SettingItem> settings, string settingValueName)
+        protected internal virtual Tuple<int, int, string> GetCategorySubCategoryVoidingSettledTicket(IEnumerable<SettingItem> settings, string settingValueName, int issueTypeId)
         {
+            string settingName = issueTypeId == DuplicateTicketIssueTypeId ? "Special Notification" : settingValueName;
             var category = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.MainCategory, StringComparison.OrdinalIgnoreCase)
-                && x.SettingValue.Equals(settingValueName, StringComparison.OrdinalIgnoreCase));
+                && x.SettingValue.Equals(settingName, StringComparison.OrdinalIgnoreCase));
             var subCategoryId = 0;
 
             if (category != null)
             {
-                var subCategory = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.SubCategory, StringComparison.OrdinalIgnoreCase)
-                    && x.SettingId == 4029);
+                var subCategories = settings.Where(x => x.SettingName.Equals(SettingName.SubCategory, StringComparison.OrdinalIgnoreCase));
+                var subCategory = issueTypeId == DuplicateTicketIssueTypeId ?
+                    subCategories.FirstOrDefault(x => x.ParentIds.Any(y => y == category.SettingId) && x.SettingValue.Equals("Duplicate Tickets", StringComparison.OrdinalIgnoreCase)) :
+                    subCategories.FirstOrDefault(x => x.SettingId == 4029);
                 subCategoryId = subCategory != null ? subCategory.SettingId : 0;
             }
 

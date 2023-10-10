@@ -1,5 +1,4 @@
-﻿
-namespace CRM.BackgroundJob.UnitTests.Testable
+﻿namespace CRM.BackgroundJob.UnitTests.Testable
 {
     using System;
     using System.Collections.Generic;
@@ -52,6 +51,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
         {
             await base.CheckValidVoidingSettledParamsAndInsertFeedbackAsync(feedbackInfo, criteria, environment);
         }
+
         public string Public_GetVoidingSettledTicketsProductXml(
             IEnumerable<int> productIds,
             IEnumerable<short> sportTypeId,
@@ -94,9 +94,9 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             return base.GetVoidingSettledTicketsBettype(listBetTypes, settingMappings);
         }
 
-        public Tuple<int, int, string> Public_GetCategorySubCategoryVoidingSettledTicket(IEnumerable<SettingItem> settings, string settingValueName)
+        public Tuple<int, int, string> Public_GetCategorySubCategoryVoidingSettledTicket(IEnumerable<SettingItem> settings, string settingValueName, int issueTypeId)
         {
-            return base.GetCategorySubCategoryVoidingSettledTicket(settings, settingValueName);
+            return base.GetCategorySubCategoryVoidingSettledTicket(settings, settingValueName, issueTypeId);
         }
 
         public string Public_GetRelatedCustomerXml(VoidingAutoFeedbackInfo feedbackInfo)
