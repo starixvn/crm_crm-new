@@ -50,7 +50,7 @@ export default class SelectWithSearch extends Component {
 
     getLabel = (sites, siteId) => {
         const label = this.getLabelRecursive(sites, siteId);
-        return label !== undefined ? label : '';
+        return label !== undefined ? label : (this.props.name || '');
     }
 
     getLabelRecursive = (sites, siteId) => {
@@ -162,7 +162,7 @@ export default class SelectWithSearch extends Component {
                 <button type="button" className="btn" onClick={this.toggleSelect}>
                     <span className="pull-left">{`${this.state.selectedItem.name} ${siteLabel && `(${siteLabel})`}`}</span><span className="fa fa-caret-down pull-right" />
                 </button>
-                <ul className="dropdown-menu" style={{"width": `${this.props.maxWidth}`}}>
+                <ul className="dropdown-menu" style={{ "width": `${this.props.maxWidth}` }}>
                     <li>
                         <div>
                             <Form.Control type="text" size="sm" className="filter shadow-none" name="filter"
