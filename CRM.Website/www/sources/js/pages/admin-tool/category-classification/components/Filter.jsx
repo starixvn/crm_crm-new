@@ -166,6 +166,7 @@ export class Filter extends Component {
 
     isValidParams = () => {
         const errMsg = [];
+        const errResult = [];
         let isValid = true;
         const { filter } = this.state;
 
@@ -177,8 +178,11 @@ export class Filter extends Component {
             isValid = false;
             errMsg.push(LangHelper.getResource('SubCategory'));
         }
+        if (errMsg.length > 0) {
+            errResult.push(`${LangHelper.getResource('PleaseChoose')} ${errMsg.join(', ').toString()}`);
+        }
 
-        return { isValid, errMsg };
+        return { isValid, errResult };
     };
 
     handleSubmit = async event => {
@@ -188,7 +192,7 @@ export class Filter extends Component {
             this.props.setGridParams(params);
             this.props.getGridData(params);
         } else {
-            this.isValidParams().errMsg.forEach(item => {
+            this.isValidParams().errResult.forEach(item => {
                 toast.error(item);
             });
         }

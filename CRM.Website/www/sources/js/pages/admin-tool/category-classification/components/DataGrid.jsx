@@ -90,7 +90,7 @@ export class DataGrid extends Component {
         };
         return (
             <Fragment>
-                <div className='table-title'>{LangHelper.getResource('DefaultCommunicationSetting')}</div>
+                <div className='table-title'>{LangHelper.getResource('CategoryClassification')}</div>
                 <Table
                     minWidth={960}
                     maxWidth={document.getElementById('right-row-container').clientWidth}
