@@ -35,7 +35,7 @@ export class Filter extends Component {
     componentDidMount() {
         this.props.getAllSettings().then(response => {
             this.setState({ settings: response });
-            this.getSettings(response);
+            this.getSettings(response, true);
         });
     };
 
@@ -44,7 +44,7 @@ export class Filter extends Component {
         return isInactiveSettings ? items : items.filter(item => item.isActive);
     };
 
-    getSettings = settings => {
+    getSettings = (settings, isGetData) => {
         const mainCategoriesTypesId = [];
         const mainCategoriesSettings = this.getActiveItems(settings.mainCategories);
         const mainCategoryOptionsFilter = mainCategoriesSettings.map(main => {
@@ -75,9 +75,11 @@ export class Filter extends Component {
                 subCategoriesTypes: filterSubCategoriesTypesId.toString()
             }
         }), () => {
-            const params = this.getParams();
-            this.props.setGridParams(params);
-            this.props.getGridData(params);
+            if (isGetData) {
+                const params = this.getParams();
+                this.props.setGridParams(params);
+                this.props.getGridData(params);
+            }
         });
     };
 
@@ -136,7 +138,7 @@ export class Filter extends Component {
                 ...prevState.filter,
                 isInactiveSettings: !this.state.filter.isInactiveSettings
             }
-        }), () => this.getSettings(this.state.settings));
+        }), () => this.getSettings(this.state.settings, false));
     };
 
     handleChangeRemark = event => {
