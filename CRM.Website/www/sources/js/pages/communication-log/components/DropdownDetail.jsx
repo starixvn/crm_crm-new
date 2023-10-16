@@ -2,6 +2,8 @@ import React, { PureComponent, Fragment } from 'react';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import LangHelper from '@jsroot/common/langHelper';
 import { Form, Row, Col } from 'react-bootstrap';
 import { changeSiteSetting } from '@jsroot/common/shareScripts';
@@ -146,9 +148,9 @@ export default class DropdownDetail extends PureComponent {
                         </Form.Group>
                     </Col>
                     <Col sm="6" md="6">
-                        <Form.Group as={Row}>
+                        <Form.Group as={Row} className="custom-form-group">
                             <Form.Label column sm="4" md="4" htmlFor="subCategory" className="required">{LangHelper.getResource('SubCategory')}</Form.Label>
-                            <Col sm="8" md="8">
+                            <Col sm="8" md="8" className="custom-input">
                                 <MultipleSelect
                                     isInvalid={touched.subCategoryIds && errors.subCategoryIds}
                                     dataSource={subCategories}
@@ -161,6 +163,12 @@ export default class DropdownDetail extends PureComponent {
                                     }}
                                     hasSearchBox isNAOption
                                 />
+                                <OverlayTrigger placement="bottom-start"
+                                    overlay={<Tooltip>{LangHelper.getResource('ViewCategoryClassification')}</Tooltip>}
+                                >
+                                    <span onClick={() => window.open('/CategoryClassification')} className="fa fa-question-circle-o" />
+                                </OverlayTrigger>
+
                             </Col>
                         </Form.Group>
                     </Col>
