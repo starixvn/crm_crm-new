@@ -18,6 +18,7 @@
     using CRM.Models.AdminTool.SettingLog;
     using CRM.Models.Setting;
     using CRM.Resources;
+    using Microsoft.AspNetCore.DataProtection.KeyManagement;
     using Microsoft.Extensions.Options;
 
     public interface IActionLogService
@@ -87,6 +88,19 @@
 
         }
 
+        public static bool IsCategoryRemark(IDictionary<string, string> oldResults, IDictionary<string, string> newResults)
+        {
+            const string remarkKey = "Remark";
+            var oldRemark = oldResults.ContainsKey(remarkKey) ? oldResults[remarkKey] : string.Empty;
+            var newRemark = newResults.ContainsKey(remarkKey) ? newResults[remarkKey] : string.Empty;
+
+            if (!string.Equals(oldRemark, newRemark, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public void FilterOldNewResults(ActionLogInfo log)
         {
             string oldValue = log.OldValues;
@@ -115,7 +129,7 @@
                 {
                     var oldString = oldResults.ContainsKey(key) ? oldResults[key] : string.Empty;
                     var newString = newResults[key];
-                    if (!string.Equals(oldString, newString, StringComparison.OrdinalIgnoreCase))
+                    if (!string.Equals(oldString, newString, StringComparison.OrdinalIgnoreCase) || IsCategoryRemark(oldResults, newResults))
                     {
                         var fieldName = key;
                         log.OldValuesList.Add(GetSettingValue(key, oldString, ref fieldName));

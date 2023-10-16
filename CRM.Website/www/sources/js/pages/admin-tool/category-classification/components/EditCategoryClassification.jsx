@@ -7,38 +7,28 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import CkEditor from '@jsroot/components/ckeditor/index';
+import { Formik } from 'formik';
 
 export class EditCategoryClassification extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isSubmitting: false,
-            remark: null
-        }
     };
 
-    getParams = () => {
+    getParams = values => {
         const { selectCategoryClass } = this.props;
-        const { remark } = this.state;
         const actionEdit = 1, actionDelete = 2;
         const params = {
             mainCategoryID: selectCategoryClass.mainCategoryID,
             subCategoryID: selectCategoryClass.subCategoryID,
-            remarkNewValue: remark,
-            actionType: remark ? actionEdit : actionDelete
+            remarkNewValue: values.remark,
+            actionType: values.remark ? actionEdit : actionDelete
         };
         return params;
     };
 
-    handleChangeCkEditor = value => {
-        this.setState({
-            remark: value
-        });
-    };
-
-    handleSubmit = event => {
-        event.preventDefault();
-        const params = this.getParams();
+    handleSubmit = (values, { setSubmitting }) => {
+        setSubmitting(true);
+        const params = this.getParams(values);
 
         this.props.editCategoryClass(params).then(() => {
             if (this.props.editCategoryClassResult.isSuccessful) {
@@ -46,16 +36,32 @@ export class EditCategoryClassification extends Component {
                     this.props.onSuccess();
                 }, 3000);
             } else {
-                this.setState({isSubmitting: true});
+                setSubmitting(false);
             }
         });
     };
 
-    renderForm = () => {
+    getInitValues = () => {
+        const { selectCategoryClass } = this.props;
+        const initialValues = {
+            remark: selectCategoryClass.remark
+        };
+        return initialValues;
+    };
+
+    renderForm = ({
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleSubmit,
+        setFieldValue,
+        isSubmitting
+    }) => {
         const { selectCategoryClass, editCategoryClassResult } = this.props;
 
         return (
-            <Form noValidate onSubmit={this.handleSubmit}>
+            <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
                     {
                         editCategoryClassResult &&
@@ -79,15 +85,16 @@ export class EditCategoryClassification extends Component {
                         </Form.Label>
                         <CkEditor
                             className='col-md-12 col-sm-12'
-                            name='remarkContent'
-                            data={selectCategoryClass.remark}
+                            name='remark'
+                            isInvalid={touched.remark && errors.remark}
+                            data={values.remark}
                             username={window.currentUsername}
-                            onChange={value => this.handleChangeCkEditor(value)}
+                            onChange={value => setFieldValue('remark', value)}
                         />
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" variant="primary" size="sm" onClick={this.handleSubmit} disabled={this.state.isSubmitting}>
+                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
                         {LangHelper.getResource('Save')}
                     </Button>
                     <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>
@@ -107,7 +114,13 @@ export class EditCategoryClassification extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title as="div">{LangHelper.getResource('EditRemark')}</Modal.Title>
                 </Modal.Header>
-                {this.renderForm()}
+                <Formik
+                    innerRef={p => this.formik = p}
+                    initialValues={this.getInitValues()}
+                    onSubmit={this.handleSubmit}
+                >
+                    {this.renderForm}
+                </Formik>
             </Modal>
         );
     };
