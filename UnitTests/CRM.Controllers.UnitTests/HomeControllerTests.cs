@@ -1,11 +1,9 @@
 ﻿namespace CRM.Controllers.UnitTests
 {
     using System.Threading.Tasks;
-    using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
+    using CRM.Services.Customer;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -13,6 +11,8 @@
     public class HomeControllerTests
     {
         private IPermissionService permissionService;
+        private ISessionService sessionService;
+        private ICustomerService customerService;
 
         [Fact]
         public async Task Index_WhenCalled_ReturnExpectedViewResult()
@@ -28,13 +28,14 @@
             Assert.Null(viewResult.ViewName);
         }
 
-
         #region Helpers
 
         private HomeController GetController()
         {
             permissionService = Substitute.For<IPermissionService>();
-            return new HomeController(permissionService);
+            sessionService = Substitute.For<ISessionService>();
+            customerService = Substitute.For<ICustomerService>();
+            return new HomeController(permissionService, sessionService, customerService);
         }
 
         #endregion Helpers

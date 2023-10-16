@@ -21,7 +21,7 @@
         private ILogStatisticsService logStatisticsService;
         private ISettingService settingService;
         private IExportExcelService excelService;
-        
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetAllSettings_WhenCalled_ReturnAsExpectedResult()
@@ -74,7 +74,6 @@
             var controller = GetController();
             logStatisticsService.GetReportDataAsync(Arg.Do<LogStatisticsCriteria>(x => criteriaIbc = x)).Returns(ibcReport);
 
-
             // Act
             var result = await controller.GetMainReport(criteria);
 
@@ -105,7 +104,7 @@
             var subProducts = new List<Product> { new Product { Id = 1, Name = "subProducts" } };
             var mainCategories = new List<Setting> { new Setting { Id = 1, Name = "mainCategory" } };
             var communicationTools = new List<Setting> { new Setting { Id = 1, Name = "communicationTool" } };
-            var extensions = new List<SettingRelation> { new SettingRelation { Id = 1, Value = "extension" } }; 
+            var extensions = new List<SettingRelation> { new SettingRelation { Id = 1, Value = "extension" } };
 
             var controller = GetController();
             logStatisticsService.GetReportDetailsAsync(criteria).Returns(reportDetails);
@@ -153,7 +152,7 @@
                 SiteType = criteria.SiteType
             };
             var logStatistics = fixture.Create<LogStatisticsViewModel>();
-            
+
             logStatisticsService.GetReportDataAsync(param).Returns(logStatistics);
 
             // Act
@@ -208,8 +207,9 @@
             logStatisticsService = Substitute.For<ILogStatisticsService>();
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
+            permissionService = Substitute.For<IPermissionService>();
 
-            return new LogStatisticsController(logStatisticsService, settingService, excelService);
+            return new LogStatisticsController(logStatisticsService, settingService, excelService, permissionService);
         }
 
         #endregion Helpers

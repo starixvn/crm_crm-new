@@ -11,9 +11,7 @@
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
     using Fanex.Logging.Extensions;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
@@ -23,8 +21,6 @@
     public class CustomerInfoDetailController : BaseController
     {
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ICustomerService customerService;
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
@@ -33,8 +29,6 @@
 
         public CustomerInfoDetailController(
             INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             ICustomerService customerService,
             ISettingService settingService,
             IBaseService baseService,
@@ -42,8 +36,6 @@
             IPermissionService permissionService)
         {
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.customerService = customerService;
             this.settingService = settingService;
             this.baseService = baseService;
@@ -92,7 +84,7 @@
             {
                 command.UserId = napSession.UserId;
                 command.IP = ClientIP;
-                command.IsUpdateHeadlineInfo = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.Updateheadlineinfo, Policy.Host);
+                command.IsUpdateHeadlineInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Updateheadlineinfo, Policy.Host);
                 result = await baseService.ExecuteNonQueryAsync(command);
             }
             else

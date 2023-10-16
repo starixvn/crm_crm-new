@@ -17,9 +17,7 @@
     using CRM.Services;
     using CRM.Services.Feedback;
     using CRM.ViewModels.Feedback;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -27,8 +25,6 @@
     public class MultipleLogsController : BaseController
     {
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
         private readonly IFeedbackService feedbackService;
@@ -37,8 +33,6 @@
 
         public MultipleLogsController(
             INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             IBaseService baseService,
             ISettingService settingService,
             IFeedbackService feedbackService,
@@ -47,8 +41,6 @@
         )
         {
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.baseService = baseService;
             this.settingService = settingService;
             this.feedbackService = feedbackService;
@@ -157,7 +149,7 @@
             settings.Roles = rolesTask.Result;
             settings.LicenseeTypes = licenseeTypesTask.Result;
 
-            var hasReviewFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host);
+            var hasReviewFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
             return Json(new { communicationLog, settings, hasReviewFeedbackPermission });
         }
 

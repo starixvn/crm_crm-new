@@ -21,9 +21,7 @@
     using CRM.ViewModels.Feedback;
     using Fanex.Logging.Extensions;
     using Fanex.Logging;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
@@ -31,8 +29,6 @@
     public class FeedbackController : BaseController
     {
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ISettingService settingService;
         private readonly IFeedbackService feedbackService;
         private readonly ITicketRefService ticketRefService;
@@ -42,8 +38,6 @@
 
         public FeedbackController(
             INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
             ISettingService settingService,
             IFeedbackService feedbackService,
             ITicketRefService ticketRefService,
@@ -52,8 +46,6 @@
             ICustomerService customerService)
         {
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.settingService = settingService;
             this.feedbackService = feedbackService;
             this.ticketRefService = ticketRefService;

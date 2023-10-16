@@ -12,28 +12,26 @@
     using CRM.Models;
     using CRM.Models.Customer;
     using CRM.Models.Setting;
+    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
+    using static Fanex.NAP.Core.Business.Constant;
 
     public class CustomerInfoDetailControllerTest : BaseController
     {
         private readonly IFixture fixture = new Fixture();
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private ICustomerService customerService;
         private ISettingService settingService;
         private IBaseService baseService;
         private ICRMLogService logService;
-
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetCustomerById_WhenCalled_ReturnAsExpectedResult()
@@ -86,11 +84,10 @@
         }
 
         [Fact]
-        public async Task EditCustomerInfoDetail_WhenCalled_ReturnExpectedData()
+        public async Task EditCustomerInfoDetail_WhenNoPermissionCalled_ReturnExpectedData()
         {
             //Arrange
             var command = fixture.Create<EditCustomerInfoDetailCommand>();
-            var commandResult = fixture.Create<CommandResult>();
             var clientIP = new DefaultHttpContext
             {
                 Connection =
@@ -100,7 +97,6 @@
             };
             var controller = GetController();
             controller.ControllerContext.HttpContext = clientIP;
-            baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
 
             //Act
             var result = await controller.EditCustomerInfoDetail(command);
@@ -108,9 +104,36 @@
             //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
             var actual = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
-            Assert.Equal(napSession.UserId, command.UserId);
-            Assert.Equal("1.0.0.0", command.IP);
-            Assert.Equal(commandResult, actual);
+            Assert.False(actual.IsSuccessful);
+            Assert.Equal(ViewResources.NoPermission, actual.Message);
+        }
+
+        [Fact]
+        public async Task EditCustomerInfoDetail_WhenHavePermissionCalled_ReturnExpectedData()
+        {
+            var expected = fixture.Create<CommandResult>();
+            //Arrange
+            var command = fixture.Create<EditCustomerInfoDetailCommand>();
+            var clientIP = new DefaultHttpContext
+            {
+                Connection =
+                {
+                    RemoteIpAddress = new IPAddress(1)
+                }
+            };
+            var controller = GetController();
+            controller.ControllerContext.HttpContext = clientIP;
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host).Returns(true);
+            customerService.HasHostPermissionOnCustIdAsync(Arg.Any<bool>(), Arg.Any<bool>(), Arg.Any<int>()).Returns(true);
+            baseService.ExecuteNonQueryAsync(Arg.Any<EditCustomerInfoDetailCommand>()).Returns(expected);
+            //Act
+            var result = await controller.EditCustomerInfoDetail(command);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(result);
+            var actual = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
+            Assert.Equal(expected, actual);
         }
 
         #region Helpers
@@ -120,11 +143,10 @@
             customerService = Substitute.For<ICustomerService>();
             settingService = Substitute.For<ISettingService>();
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
             baseService = Substitute.For<IBaseService>();
             logService = Substitute.For<ICRMLogService>();
-            return new CustomerInfoDetailController(napSession, napSettings, userService, customerService, settingService, baseService, logService);
+            permissionService = Substitute.For<IPermissionService>();
+            return new CustomerInfoDetailController(napSession, customerService, settingService, baseService, logService, permissionService);
         }
 
         #endregion Helpers

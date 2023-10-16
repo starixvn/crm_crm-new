@@ -14,6 +14,7 @@
     using CRM.Models.Feedback;
     using CRM.Models.Setting;
     using CRM.Services;
+    using CRM.Services.Customer;
     using CRM.Services.Feedback;
     using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Configuration;
@@ -35,6 +36,8 @@
         private IFeedbackService feedbackService;
         private ITicketRefService ticketRefService;
         private ICRMLogService logService;
+        private IPermissionService permissionService;
+        private ICustomerService customerService;
 
         [Fact]
         public async Task GetNoOfInquiryByFeedbackId_WhenCalled_ReturnAsExpectedResult()
@@ -152,7 +155,8 @@
             };
             var controller = GetController();
             feedbackService.GetCustomerFeedbackByIdAsync(1).Returns(feedback);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host).Returns(true);
             settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension).Returns(extentions);
             settingService.GetCommunicationToolAsync(isIncludeNA: true).Returns(communicationTools);
             settingService.GetMainCategoryAsync().Returns(mainCategories);
@@ -201,10 +205,11 @@
                 item => Assert.Equal(languages[0], item),
                 item => Assert.Equal(languages[1], item));
 
-            Assert.Equal(2, settings.Statuses.Count());
+            Assert.Equal(3, settings.Statuses.Count());
             Assert.Collection(settings.Statuses,
                 item => Assert.Equal(statuses[0], item),
-                item => Assert.Equal(statuses[1], item));
+                item => Assert.Equal(statuses[1], item),
+                item => Assert.Equal(statuses[2], item));
 
             Assert.Equal(2, settings.Roles.Count());
             Assert.Collection(settings.Roles,
@@ -279,8 +284,9 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit).Returns(true);
             feedbackService.EditCustomerFeedbackAsync(Arg.Do<EditCustomerFeedbackCommand>(x => command = x)).Returns(commandResult);
 
             // Act
@@ -310,8 +316,9 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit).Returns(true);
             feedbackService.EditCustomerFeedbackAsync(Arg.Do<EditCustomerFeedbackCommand>(x => command = x)).Returns(commandResult);
 
             // Act
@@ -352,7 +359,9 @@
             feedbackService = Substitute.For<IFeedbackService>();
             ticketRefService = Substitute.For<ITicketRefService>();
             logService = Substitute.For<ICRMLogService>();
-            return new FeedbackController(napSession, napSettings, userService, settingService, feedbackService, ticketRefService, logService);
+            permissionService = Substitute.For<IPermissionService>();
+            customerService = Substitute.For<ICustomerService>();
+            return new FeedbackController(napSession, settingService, feedbackService, ticketRefService, logService, permissionService, customerService);
         }
 
         #endregion Helpers

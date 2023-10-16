@@ -13,9 +13,7 @@
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -26,11 +24,9 @@
         private INapSession napSession;
         private ISettingService settingService;
         private IBaseService baseService;
-        private INapSettings napSettings;
-        private IUserService userService;
         private ICommonService commonService;
+        private IPermissionService permissionService;
         private readonly Fixture fixture = new Fixture();
-
 
         [Fact]
         public async Task AllSetting_WhenCalled_ReturnExpectedSettings()
@@ -128,10 +124,9 @@
             napSession = Substitute.For<INapSession>();
             settingService = Substitute.For<ISettingService>();
             baseService = Substitute.For<IBaseService>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
             commonService = Substitute.For<ICommonService>();
-            return new AddGuestFeedbackController(napSession, settingService, baseService, napSettings, userService, commonService);
+            permissionService = Substitute.For<IPermissionService>();
+            return new AddGuestFeedbackController(napSession, settingService, baseService, commonService, permissionService);
         }
 
         #endregion Helpers

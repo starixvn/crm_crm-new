@@ -18,11 +18,10 @@
     using CRM.Services;
     using CRM.Services.Feedback;
     using CRM.ViewModels.Feedback;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
     using NSubstitute;
     using Xunit;
     using static Fanex.NAP.Core.Business.Constant;
@@ -31,13 +30,11 @@
     {
         private readonly IFixture fixture = new Fixture();
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private IBaseService baseService;
         private ISettingService settingService;
         private IFeedbackService feedbackService;
         private ICommonService commonService;
-
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task Create_Post_WhenCalled_ReturnAsExpectedResult()
@@ -213,15 +210,18 @@
             // Arrange
             var controller = GetController();
             var communicationLog = fixture.Create<CommunicationLog>();
+            var statuses = fixture.Create<IEnumerable<FeedbackStatus>>();
             feedbackService.GetLogByFeedbackIdAsync(1).Returns(communicationLog);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host).Returns(true);
+            settingService.GetStatusAsync(Arg.Any<byte>()).Returns(statuses);
 
             // Act
             var result = await controller.GetLogByFeedbackId(1);
 
             // Arrange
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var actual = Assert.IsAssignableFrom<CommunicationLog>(jsonResult.Value);
-            Assert.Equal(communicationLog, actual);
+            var actual = Assert.IsAssignableFrom<dynamic>(jsonResult.Value);
+            Assert.Equal(JsonConvert.SerializeObject(new { logInfo = communicationLog, statuses = statuses }), JsonConvert.SerializeObject(actual));
         }
 
         #region EditMultipleLogStatuses
@@ -232,7 +232,7 @@
             // Arrange
             var command = fixture.Create<EditMultipleLogStatusCommand>();
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(false);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read).Returns(false);
 
             // Act
             var result = await controller.EditMultipleLogStatuses(command);
@@ -241,7 +241,7 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
             var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
             Assert.Equal(1, commandResult.Code);
-            Assert.Equal("You don't have permission to delete feedback.", commandResult.Message);
+            Assert.Equal("You don't have permission to update feedback.", commandResult.Message);
         }
 
         [Fact]
@@ -250,8 +250,8 @@
             // Arrange
             var command = new EditMultipleLogStatusCommand();
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(false);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(false);
 
             // Act
             var result = await controller.EditMultipleLogStatuses(command);
@@ -268,7 +268,7 @@
         {
             // Arrange
             var commandResult = fixture.Create<CommandResult>();
-            var command = new EditMultipleLogStatusCommand {ReviewNote = "review" };
+            var command = new EditMultipleLogStatusCommand { ReviewNote = "review" };
             var controller = GetController();
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
@@ -277,8 +277,8 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             baseService.ExecuteNonQueryAsync(Arg.Do<EditMultipleLogStatusCommand>(x => command = x)).Returns(commandResult);
 
             // Act
@@ -308,8 +308,8 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             baseService.ExecuteNonQueryAsync(Arg.Do<EditMultipleLogStatusCommand>(x => command = x)).Returns(commandResult);
 
             // Act
@@ -370,7 +370,8 @@
             settingService.GetLicenseeTypeAsync().Returns(licenseeTypes);
             var communicationLog = fixture.Create<CommunicationLog>();
             feedbackService.GetLogByFeedbackIdAsync(1).Returns(communicationLog);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host).Returns(true);
 
             // Act
             var result = await controller.GetLogSettingByFeedbackId(1);
@@ -389,6 +390,7 @@
         }
 
         #region EditMultipleLogs
+
         [Fact]
         public async Task EditMultipleLogs_NotReview_ReturnAsExpectedResult()
         {
@@ -403,8 +405,8 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             baseService.ExecuteNonQueryAsync(Arg.Do<EditMultipleLogsCommand>(x => command = x)).Returns(commandResult);
 
             // Act
@@ -425,7 +427,7 @@
         {
             // Arrange
             var commandResult = fixture.Create<CommandResult>();
-            var command = new EditMultipleLogsCommand { IsReviewed = true};
+            var command = new EditMultipleLogsCommand { IsReviewed = true };
             var controller = GetController();
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
@@ -434,8 +436,8 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
             baseService.ExecuteNonQueryAsync(Arg.Do<EditMultipleLogsCommand>(x => command = x)).Returns(commandResult);
 
             // Act
@@ -458,13 +460,12 @@
         private MultipleLogsController GetController()
         {
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>(); 
-            userService = Substitute.For<IUserService>();
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
             feedbackService = Substitute.For<IFeedbackService>();
             commonService = Substitute.For<ICommonService>();
-            return new MultipleLogsController(napSession, napSettings, userService, baseService, settingService, feedbackService, commonService);
+            permissionService = Substitute.For<IPermissionService>();
+            return new MultipleLogsController(napSession, baseService, settingService, feedbackService, commonService, permissionService);
         }
 
         #endregion Helpers

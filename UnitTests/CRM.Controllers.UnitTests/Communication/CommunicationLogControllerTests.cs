@@ -15,9 +15,7 @@
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.Communication;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
@@ -28,12 +26,11 @@
     {
         private readonly IFixture fixture = new Fixture();
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private IBaseService baseService;
         private ISettingService settingService;
         private ICommunicationService communicationService;
         private ICommonService commonService;
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetLogsByCustomerId_WhenCalled_ReturnAsExpectedResult()
@@ -98,7 +95,7 @@
             // Arrange
             var command = fixture.Create<EditCommunicationLogCommand>();
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(false);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback).Returns(false);
 
             // Act
             var result = await controller.EditCommunicationLog(command);
@@ -116,8 +113,8 @@
             // Arrange
             var command = new EditCommunicationLogCommand { UpdateReviewedMode = 1 };
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(false);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(false);
 
             // Act
             var result = await controller.EditCommunicationLog(command);
@@ -135,7 +132,7 @@
             // Arrange
             var command = new EditCommunicationLogCommand { IsDeletedFeedbackView = false, StatusId = 11004 };
             var controller = GetController();
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(false);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read).Returns(false);
 
             // Act
             var result = await controller.EditCommunicationLog(command);
@@ -151,8 +148,8 @@
         public async Task EditCommunicationLog_IsReviewed_ReturnAsExpectedResult()
         {
             // Arrange
-            var commandResult = fixture.Create<CommandResult>();
-            var command = new EditCommunicationLogCommand { IsReviewed = true, Review = "review" };
+            var commandResult = new CommandResult { Code = 0 };
+            var command = new EditCommunicationLogCommand { IsReviewed = true, Review = "review", UpdateReviewedMode = 1 };
             var controller = GetController();
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
@@ -161,8 +158,9 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(Arg.Any<string>()).Returns(true);
             baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
 
             // Act
@@ -192,8 +190,9 @@
                     RemoteIpAddress = new IPAddress(1)
                 }
             };
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
-            userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(Arg.Any<string>()).Returns(true);
+
             baseService.ExecuteNonQueryAsync(command).Returns(commandResult);
 
             // Act
@@ -246,7 +245,7 @@
             settingService.GetSubProductAsync(active: SettingConstants.Active).Returns(subProducts);
 
             // Act
-            var result = await controller.GetAllSettings();
+            var result = await controller.GetAllSettings(true);
 
             // Assert
             Assert.Equal(extentions, result.Extensions);
@@ -298,13 +297,12 @@
         private CommunicationLogController GetController()
         {
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
+            permissionService = Substitute.For<IPermissionService>();
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
             communicationService = Substitute.For<ICommunicationService>();
             commonService = Substitute.For<ICommonService>();
-            return new CommunicationLogController(napSession, napSettings, userService, communicationService, settingService, baseService, commonService);
+            return new CommunicationLogController(napSession, communicationService, settingService, baseService, commonService, permissionService);
         }
 
         #endregion Helpers

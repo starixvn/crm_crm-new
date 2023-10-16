@@ -2,9 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
-    using System.Text;
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.Feedback;
@@ -17,9 +15,7 @@
     using CRM.Resources;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
@@ -32,10 +28,9 @@
         private INapSession napSession;
         private ISettingService settingService;
         private IBaseService baseService;
-        private INapSettings napSettings;
-        private IUserService userService;
         private ICommonService commonService;
         private ICRMLogService logService;
+        private IPermissionService permissionService;
 
         private readonly Fixture fixture = new Fixture();
 
@@ -46,11 +41,10 @@
             napSession = Substitute.For<INapSession>();
             settingService = Substitute.For<ISettingService>();
             baseService = Substitute.For<IBaseService>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
             commonService = Substitute.For<ICommonService>();
             logService = Substitute.For<ICRMLogService>();
-            return new AddCustomerFeedbackController(napSession, settingService, baseService, napSettings, userService, commonService, logService);
+            permissionService = Substitute.For<IPermissionService>();
+            return new AddCustomerFeedbackController(napSession, settingService, baseService, commonService, logService, permissionService);
         }
 
         [Fact]
@@ -121,7 +115,7 @@
         {
             // Arrange
             var controller = GetController();
-            userService.IsHavingPermission(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(Arg.Any<string>(), Policy.Read).Returns(true);
             var expectedDate = new DateTime();
             commonService.ConvertToServerDateTime(Arg.Any<DateTime>()).Returns(expectedDate);
             var command = fixture.Create<AddCustomerFeedbackCommand>();
@@ -150,8 +144,8 @@
         {
             // Arrange
             var controller = GetController();
-            userService.IsHavingPermission(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Policy.Host).Returns(false);
-            var expectCommandResult  = new CommandResult
+            permissionService.IsHavingPermissionByPolicyAsync(Arg.Any<string>(), Policy.Host).Returns(false);
+            var expectCommandResult = new CommandResult
             {
                 Code = 1,
                 Message = ViewResources.DoNotEditFeedbackPermission
@@ -168,5 +162,4 @@
 
         #endregion Helpers
     }
-
 }

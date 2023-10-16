@@ -11,6 +11,7 @@ using CRM.Criteria.Customer;
 using CRM.Models;
 using CRM.Models.Customer;
 using CRM.Models.Setting;
+using CRM.Resources;
 using CRM.Services;
 using CRM.Services.Customer;
 using Fanex.NAP.Client.Helpers.Web;
@@ -18,6 +19,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Xunit;
+using static Fanex.NAP.Core.Business.Constant;
 
 namespace CRM.Controllers.UnitTests.Customer
 {
@@ -89,13 +91,34 @@ namespace CRM.Controllers.UnitTests.Customer
         }
 
         [Fact]
-        public async Task EditCustomerInfo_WhenCalled_ReturnExpectedData()
+        public async Task EditCustomerInfo_WhenNoPermission_ReturnExpectedData()
+        {
+            //Arrange
+            var fixture = new Fixture();
+            var model = fixture.Create<UpdateCustomerInfoCommand>();
+            var controller = GetController();
+
+            //Act
+            var result = await controller.EditCustomerInfo(model);
+
+            //Assert
+            var jsonResult = Assert.IsType<JsonResult>(result);
+            var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
+            Assert.False(commandResult.IsSuccessful);
+            Assert.Equal(ViewResources.NoPermission, commandResult.Message);
+        }
+
+        [Fact]
+        public async Task EditCustomerInfo_WhenHaveCorrectPermission_ReturnExpectedData()
         {
             //Arrange
             var fixture = new Fixture();
             var expected = fixture.Create<CommandResult>();
             var model = fixture.Create<UpdateCustomerInfoCommand>();
             var controller = GetController();
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host).Returns(true);
+            customerService.HasHostPermissionOnCustIdAsync(Arg.Any<bool>(), Arg.Any<bool>(), Arg.Any<int>()).Returns(true);
             customerService.UpdateCustomerInfoAsync(model).Returns(expected);
 
             //Act

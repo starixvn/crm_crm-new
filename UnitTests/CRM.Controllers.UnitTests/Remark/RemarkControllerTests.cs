@@ -4,21 +4,27 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.Remark;
+    using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Criteria.Remark;
     using CRM.Models.Remark;
+    using CRM.Services;
+    using CRM.Services.Customer;
     using CRM.Services.Remark;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
+    using static Fanex.NAP.Core.Business.Constant;
 
     public class RemarkControllerTests
     {
         private readonly IFixture fixture = new Fixture();
         private INapSession napSession;
         private IRemarkService remarkService;
+        private IPermissionService permissionService;
+        private ICustomerService customerService;
 
         [Fact]
         public async Task GetRemarks_WhenCalled_ReturnAsExpectedResult()
@@ -53,6 +59,9 @@
             };
             var controller = GetController();
             controller.ControllerContext.HttpContext = clientIP;
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host).Returns(true);
+            customerService.HasHostPermissionOnCustIdAsync(Arg.Any<bool>(), Arg.Any<bool>(), Arg.Any<int>()).Returns(true);
             remarkService.EditRemarkAsync(command).Returns(commandResult);
 
             //Act
@@ -72,7 +81,9 @@
         {
             napSession = Substitute.For<INapSession>();
             remarkService = Substitute.For<IRemarkService>();
-            return new RemarkController(napSession, remarkService);
+            permissionService = Substitute.For<IPermissionService>();
+            customerService = Substitute.For<ICustomerService>();
+            return new RemarkController(napSession, remarkService, permissionService, customerService);
         }
 
         #endregion Helpers

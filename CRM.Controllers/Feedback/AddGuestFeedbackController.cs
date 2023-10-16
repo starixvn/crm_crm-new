@@ -9,9 +9,7 @@
     using CRM.Criteria.Feedback.AddFeedback;
     using CRM.Services;
     using CRM.ViewModels.Feedback;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -21,8 +19,6 @@
         private readonly INapSession napSession;
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ICommonService commonService;
         private readonly IPermissionService permissionService;
 
@@ -30,16 +26,12 @@
             INapSession napSession,
             ISettingService settingService,
             IBaseService baseService,
-            INapSettings napSettings,
-            IUserService userService,
             ICommonService commonService,
             IPermissionService permissionService)
         {
             this.napSession = napSession;
             this.settingService = settingService;
             this.baseService = baseService;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.commonService = commonService;
             this.permissionService = permissionService;
         }
@@ -56,7 +48,7 @@
             var responsesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
             var titlesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
             var licenseeTypesTask = settingService.GetLicenseeTypeAsync();
-            var hasCreateFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host);
+            var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read);
             var languagesTask = settingService.GetLanguageAsync(SettingConstants.Active, true);
             var countriesTask = settingService.GetCountryAsync(SettingConstants.Active, true);
             var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);

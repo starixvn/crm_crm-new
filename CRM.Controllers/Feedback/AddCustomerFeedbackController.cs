@@ -12,9 +12,7 @@
     using CRM.Services;
     using CRM.ViewModels.Feedback;
     using Fanex.Logging.Extensions;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
@@ -25,8 +23,6 @@
         private readonly INapSession napSession;
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
         private readonly ICommonService commonService;
         private readonly ICRMLogService logService;
         private readonly IPermissionService permissionService;
@@ -35,8 +31,6 @@
             INapSession napSession,
             ISettingService settingService,
             IBaseService baseService,
-            INapSettings napSettings,
-            IUserService userService,
             ICommonService commonService,
             ICRMLogService logService,
             IPermissionService permissionService)
@@ -44,8 +38,6 @@
             this.napSession = napSession;
             this.settingService = settingService;
             this.baseService = baseService;
-            this.napSettings = napSettings;
-            this.userService = userService;
             this.commonService = commonService;
             this.logService = logService;
             this.permissionService = permissionService;
@@ -109,7 +101,7 @@
         {
             try
             {
-                CommandResult commandResult = CheckAddCustomerFeedbackPermission();
+                CommandResult commandResult = await CheckAddCustomerFeedbackPermission();
                 if (commandResult.IsSuccessful)
                 {
                     command.CreatorId = napSession.UserId;
@@ -138,9 +130,9 @@
             }
         }
 
-        private CommandResult CheckAddCustomerFeedbackPermission()
+        private async Task<CommandResult> CheckAddCustomerFeedbackPermission()
         {
-            var hasCreateFeedbackPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host);
+            var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read);
             var commandResult = new CommandResult { Code = 0 };
             if (!hasCreateFeedbackPermission)
             {
