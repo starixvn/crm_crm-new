@@ -4,15 +4,12 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
-    using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback.ManageFeedback;
     using CRM.Criteria.Feedback.MultipleLogs;
-    using CRM.Models;
     using CRM.Models.Feedback.MultipleLogs;
-    using CRM.Models.Setting;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Feedback;
@@ -64,11 +61,11 @@
         public async Task<IActionResult> GetSettings()
         {
             var settings = await GetAllSettingAsync();
-            var statusRemoveDelete = settings.Statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
+            var statusRemoveDelete = settings.Statuses.Where(x => x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted);
             settings.Statuses = statusRemoveDelete;
             return Json(settings);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> VerifyCustomer([FromBody] VerifyCustomerCriteria criteria)
         {
@@ -136,7 +133,7 @@
 
             var communicationLogTask = feedbackService.GetLogByFeedbackIdAsync(id);
             var settingTask = GetAllSettingAsync();
-            var rolesTask =  settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active);
+            var rolesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role, SettingConstants.Active);
             var sitesTask = settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType);
             var licenseeTypesTask = settingService.GetLicenseeTypeAsync();
 
@@ -203,8 +200,8 @@
                 Responses = responseTask.Result,
                 Languages = languagesTask.Result,
                 Countries = countriesTask.Result,
-                MainCategories = mainCategoriesTask.Result ,
-                SubCategories = subCategoriesTask.Result ,
+                MainCategories = mainCategoriesTask.Result,
+                SubCategories = subCategoriesTask.Result,
                 Products = productsTask.Result.Where(x => x.Id != NAConstants.ProductNA),
                 SubProducts = subproductsTask.Result.Where(x => x.Id != NAConstants.SubProductNA),
                 Bettypes = bettypesTask.Result.Where(x => x.Id != NAConstants.BettypeNA),
@@ -224,7 +221,7 @@
 
             if (!isHostDeleteFbPermision)
             {
-                statuses = statuses.Where(x => x.StatusId != (int)FeedbackStatus.Deleted);
+                statuses = statuses.Where(x => x.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted);
             }
 
             return statuses;
