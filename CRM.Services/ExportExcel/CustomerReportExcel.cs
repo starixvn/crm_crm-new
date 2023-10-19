@@ -61,10 +61,11 @@
             var customers = customerReportInfo.CustomerList.ToList();
 
             int rowIndex = RowStartBody;
-            int index = 1;
+            int index = 0;
             int key = 0;
             foreach (var customer in customers)
             {
+                index++;
                 if (index == MaxRowPerSheet)
                 {
                     key++;
@@ -72,7 +73,6 @@
                     rowIndex = RowStartBody;
                 }
                 RenderRow(worksheet.Workbook.Worksheets[key], customer, index, rowIndex++);
-                index++;
             }
         }
 
