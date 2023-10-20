@@ -2,7 +2,7 @@
 {
     using CRM.Core.Models;
 
-    public class EditCategoryClassificationCriteria : BaseNonQueryCommand
+    public class EditCategoryClassificationCommand : BaseNonQueryCommand
     {
         public int MainCategoryID { get; set; }
 

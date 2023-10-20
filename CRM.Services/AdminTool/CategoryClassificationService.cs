@@ -57,7 +57,7 @@
 
         public async Task<CommandResult> EditCategoryClassificationAsync(EditCategoryClassification modal)
         {
-            var command = new EditCategoryClassificationCriteria
+            var command = new EditCategoryClassificationCommand
             {
                 UserId = napSession.UserId,
                 IP = string.Empty,
