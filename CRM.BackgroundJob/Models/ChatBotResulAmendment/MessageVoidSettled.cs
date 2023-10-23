@@ -12,5 +12,9 @@
         public int MsgTargetId { get; set; }
         [XMLName("BetTransId")]
         public string BetTransId { get; set; }
+        [XMLName("MsgContentsType")]
+        public byte MsgContentsType { get; set; }
+        [XMLName("MatchId")]
+        public int MatchId { get; set; }
     }
 }

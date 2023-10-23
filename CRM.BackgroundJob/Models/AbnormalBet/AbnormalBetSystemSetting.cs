@@ -17,6 +17,7 @@
         public DateTime LastRuntimeUAT { get; set; }
         public DateTime SubmitDate { get; set; }
         public int BatchSizeGetMsg { get; set; }
+        public int MaxMsgTargetId { get; set; }
         public int Seq { get; set; }
         public int MaxVoidingHistoryCollectionId { get; set; }
         public int MaxVoidingHistoryCollectionIdUAT { get; set; }

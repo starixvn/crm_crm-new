@@ -17,12 +17,12 @@
 
     public interface IChatBotResultAmendmentService
     {
-        Task<IEnumerable<MessageVoidSettled>> GetChatBotMessageVoidSettledAsync();
+        Task<(IEnumerable<MessageVoidSettled>, IEnumerable<MessageVoidSettled>)> GetChatBotMessageVoidSettledAsync(int lastMsgTargetId, int batchSizeGetMsg);
         Task<IEnumerable<MessageVoidSettled>> GetVoidingMessasgeCheckAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds, string environment);
-        Task<IEnumerable<MessageVoidSettled>> VoidingMessageGetSettledTicketAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds);
+        Task<IEnumerable<MessageVoidSettled>> VoidingMessageGetSettledTicketAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds, int siteDBGroupId);
         Task<CommandResult> ImportMessageVoidSettledAsync(IEnumerable<MessageVoidSettled> messages);
         Task<ValueTuple<IEnumerable<int>, IEnumerable<TargetMessage>, IEnumerable<TargetMessageInfo>>>
-             GetChatbotMessageVoidSettledInfoAsync(int BatchSizeGetMsg);
+             GetChatbotMessageVoidSettledInfoAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds);
 
         Task<ValueTuple<ValueTuple<IEnumerable<AmendmentResultTicketEvent>, IEnumerable<AmendmentResultTransaction>, IEnumerable<int>>, string>>
             GetChatBotResultAmendmentInfoAsync(AbnormalBetSystemSetting settingResultAmendment);
@@ -51,10 +51,14 @@
             this.commonFeedback = commonFeedback;
         }
 
-        public async Task<IEnumerable<MessageVoidSettled>> GetChatBotMessageVoidSettledAsync()
+        public async Task<(IEnumerable<MessageVoidSettled>, IEnumerable<MessageVoidSettled>)> GetChatBotMessageVoidSettledAsync(int lastMsgTargetId, int batchSizeGetMsg)
         {
-            var criteria = new GetMesssagesVoidSettledCriteria();
-            return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
+            var criteria = new GetMesssagesVoidSettledCriteria
+            {
+                LastMsgTargetId = lastMsgTargetId,
+                BatchSizeGetMsg = batchSizeGetMsg
+            };
+            return await baseService.FetchMultipleAsync<MessageVoidSettled, MessageVoidSettled>(criteria);
         }
 
         public async Task<IEnumerable<MessageVoidSettled>> GetVoidingMessasgeCheckAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds, string environment)
@@ -67,11 +71,12 @@
             return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
         }
 
-        public async Task<IEnumerable<MessageVoidSettled>> VoidingMessageGetSettledTicketAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds)
+        public async Task<IEnumerable<MessageVoidSettled>> VoidingMessageGetSettledTicketAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds, int siteDBGroupId)
         {
             var criteria = new VoidingMessageGetSettledTicket
             {
-                Message = messageVoidSettleds.ToXML("root").ToString()
+                Message = messageVoidSettleds.ToXML("root").ToString(),
+                SiteDBGroupId = siteDBGroupId
             };
             return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
         }
@@ -86,11 +91,11 @@
         }
 
         public async Task<ValueTuple<IEnumerable<int>, IEnumerable<TargetMessage>, IEnumerable<TargetMessageInfo>>> GetChatbotMessageVoidSettledInfoAsync(
-            int BatchSizeGetMsg)
+            IEnumerable<MessageVoidSettled> messageVoidSettleds)
         {
             var criteria = new GetChatbotMessageVoidSettledInfo
             {
-                BatchSizeGetMsg = BatchSizeGetMsg
+                Message = messageVoidSettleds.ToXML("root").ToString()
             };
             return await baseService.FetchMultipleAsync<int, TargetMessage, TargetMessageInfo>(criteria);
         }

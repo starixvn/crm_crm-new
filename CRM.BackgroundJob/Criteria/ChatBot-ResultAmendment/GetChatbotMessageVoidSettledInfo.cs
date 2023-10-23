@@ -4,7 +4,7 @@
 
     public class GetChatbotMessageVoidSettledInfo : CriteriaBase
     {
-        public int BatchSizeGetMsg { get; set; }
+        public string Message { get; set; }
         public override string GetSettingKey() => "Acc_CRM_Chatbot_VodingMessage_Sel";
         public override bool IsValid() => true;
     }

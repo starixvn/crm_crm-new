@@ -12,8 +12,10 @@
     using global::CRM.BackgroundJob.Models.ChatBotCTO;
     using global::CRM.BackgroundJob.Models.ChatBotCWL;
     using global::CRM.BackgroundJob.Models.ChatBotProblemsAccount;
+    using global::CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Extensions.XML;
+    using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
 
@@ -43,6 +45,7 @@
         private readonly IChatBotProblemAccountService chatBotProblemAccountService;
         private readonly IChatBotResultAmendmentService chatBotResultAmendmentService;
         private readonly IChatBotArchivingDAService chatBotArchivingDAService;
+        private readonly IBaseService baseService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -59,7 +62,8 @@
             IChatBotCTOService chatBotCTOService,
             IChatBotProblemAccountService chatBotProblemAccountService,
             IChatBotResultAmendmentService chatBotResultAmendmentService,
-            IChatBotArchivingDAService chatBotArchivingDAService
+            IChatBotArchivingDAService chatBotArchivingDAService,
+            IBaseService baseService
             )
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -72,6 +76,7 @@
             this.chatBotProblemAccountService = chatBotProblemAccountService;
             this.chatBotResultAmendmentService = chatBotResultAmendmentService;
             this.chatBotArchivingDAService = chatBotArchivingDAService;
+            this.baseService = baseService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -227,20 +232,23 @@
                     logService.LogInformation("Chat Bot Result Amendment Service is shutdown.");
                     return;
                 }
+                var maxMsgTargetId = settingResultAmendment.MaxMsgTargetId;
+                var batchSizeGetMsg = settingResultAmendment.BatchSizeGetMsg;
+                var (voiddingMessageInfo, voidingMesssageSettled) = await chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync(maxMsgTargetId, batchSizeGetMsg);
 
-                var voidingMesssageSettled = await chatBotResultAmendmentService.GetChatBotMessageVoidSettledAsync();
-                var voidingMessageCheck = await chatBotResultAmendmentService.GetVoidingMessasgeCheckAsync(voidingMesssageSettled, Environment);
-                if (voidingMessageCheck.Any())
+                IEnumerable<MessageVoidSettled> settledTickets = new List<MessageVoidSettled>();
+                if (voidingMesssageSettled.Any())
                 {
-                    var settledTicket = await chatBotResultAmendmentService.VoidingMessageGetSettledTicketAsync(voidingMessageCheck);
-                    var commandMessage = await chatBotResultAmendmentService.ImportMessageVoidSettledAsync(settledTicket);
-                    if (!commandMessage.IsSuccessful)
+                    var siteDbConfigs = await baseService.GetSiteDbConfigAsync(new GetSiteDbConfigCriteria());
+
+                    foreach (var item in siteDbConfigs)
                     {
-                        logService.LogInformation("Import Messages Settled Fail!!!");
-                        return;
+                        var settledTicket = await chatBotResultAmendmentService.VoidingMessageGetSettledTicketAsync(voidingMesssageSettled, item.SiteDBGroupID);
+                        settledTickets = settledTickets.Concat(settledTicket);
                     }
                 }
-                var voidingMessageInfo = await chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(settingResultAmendment.BatchSizeGetMsg);
+                var settledTicketInfo = settledTickets.Concat(voiddingMessageInfo);
+                var voidingMessageInfo = await chatBotResultAmendmentService.GetChatbotMessageVoidSettledInfoAsync(settledTicketInfo);
                 var resultAmendmentInfo = await chatBotResultAmendmentService.GetChatBotResultAmendmentInfoAsync(settingResultAmendment);
                 var messagesCombineDistinct = resultAmendmentInfo.Item1.Item3.Concat(voidingMessageInfo.Item1).Distinct().ToList();
                 var messages = Enumerable.Empty<Message>();
