@@ -1,6 +1,5 @@
 ﻿namespace CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment
 {
-    using System;
     using Fanex.Data.Repository;
     public class GetChatBotResultAmendmentCriteria : CriteriaBase
     {
