@@ -1,8 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-        <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
         <UserSecretsId>9e4464f9-af12-46c5-ade4-26788aad9b4f</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
@@ -13,7 +12,6 @@
         <None Remove="App_Data\SpNames.SIT_1.xml" />
     </ItemGroup>
     <ItemGroup>
-        <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
         <Content Include="App_Data\SpNames.PROD_1.xml">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

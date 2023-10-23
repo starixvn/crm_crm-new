@@ -61,18 +61,18 @@
             var customers = customerReportInfo.CustomerList.ToList();
 
             int rowIndex = RowStartBody;
-            int index = 0;
-            int key = 0;
+            var index = 1;
+            var key = 0;
             foreach (var customer in customers)
             {
-                index++;
                 if (index == MaxRowPerSheet)
                 {
                     key++;
                     index = 1;
                     rowIndex = RowStartBody;
                 }
-                RenderRow(worksheet.Workbook.Worksheets[key], customer, index, rowIndex++);
+
+                RenderRow(worksheet.Workbook.Worksheets[key], customer, index++, rowIndex++);
             }
         }
 

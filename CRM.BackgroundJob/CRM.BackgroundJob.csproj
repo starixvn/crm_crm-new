@@ -1,11 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
     <PropertyGroup>
         <PublishProtocol>FileSystem</PublishProtocol>
         <Configuration>Release</Configuration>
         <Platform>Any CPU</Platform>
         <TargetFramework>net6.0</TargetFramework>
         <PublishDir>D:\Deploy\CRM.Service</PublishDir>
-        <CodeAnalysisRuleSet>..\.sonarlint\crmnewcsharp.ruleset</CodeAnalysisRuleSet>
         <UserSecretsId>c6191107-6326-45fb-b4bb-3f2d9239f558</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
@@ -49,7 +48,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="..\.sonarlint\crmnew\CSharp\SonarLint.xml" Link="SonarLint.xml" />
         <Content Include="App_Data\SpNames.SIT_1.xml">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
