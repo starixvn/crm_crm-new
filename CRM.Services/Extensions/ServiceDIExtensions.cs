@@ -25,7 +25,6 @@
         {
             services.AddScoped<IFeedbackRepository, FeedbackRepository>();
             services.AddScoped<IRemarkRepository, RemarkRepository>();
-
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ISettingService, SettingService>();
             services.AddScoped<INotificationListService, NotificationListService>();
