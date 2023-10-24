@@ -25,7 +25,7 @@
             // Arrange
             var criteria = new GetChatbotMessageVoidSettledInfo
             {
-                BatchSizeGetMsg = 10
+                Message = "<root></root>"
             };
 
             // Act

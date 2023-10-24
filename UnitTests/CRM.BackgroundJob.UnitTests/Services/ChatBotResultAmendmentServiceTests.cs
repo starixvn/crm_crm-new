@@ -28,12 +28,12 @@
         {
             // Arrange
             var fixture = new Fixture();
-            var expected = fixture.Create<IEnumerable<MessageVoidSettled>>();
+            var expected = fixture.Create<(IEnumerable<MessageVoidSettled>, IEnumerable<MessageVoidSettled>)>();
             var service = GetService();
             baseService.GetDataAsync<MessageVoidSettled>(Arg.Any<GetMesssagesVoidSettledCriteria>()).Returns(expected);
 
             // Act
-            var actual = await service.GetChatBotMessageVoidSettledAsync();
+            var actual = await service.GetChatBotMessageVoidSettledAsync(1,1);
 
             // Assert
             Assert.Equal(expected, actual);
