@@ -161,7 +161,7 @@ export class CreateForm extends Component {
     };
 
     verifyCustomers = (setFieldValue, customerNameInput) => {
-        const username = customerNameInput.trim().replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',');
+        const username = customerNameInput.trim().replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',').replace(/,{2,}/g, ',').replace(/ /g, ',');
         if (username === '') {
             return;
         }
