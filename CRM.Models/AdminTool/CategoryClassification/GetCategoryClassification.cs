@@ -10,8 +10,6 @@
 
         public string Remark { get; set; }
 
-        public byte Active { get; set; }
-
         public int PageIndex { get; set; }
 
         public int PageSize { get; set; }

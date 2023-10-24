@@ -22,8 +22,7 @@ export class Filter extends Component {
             filter: {
                 mainCategoriesTypes: '',
                 subCategoriesTypes: '',
-                remark: '',
-                isInactiveSettings: false
+                remark: ''
             },
             selectedSubCategoryIdsFilter: [],
             mainCategoryOptionsFilter: [],
@@ -39,14 +38,9 @@ export class Filter extends Component {
         });
     };
 
-    getActiveItems = items => {
-        const { isInactiveSettings } = this.state.filter;
-        return isInactiveSettings ? items : items.filter(item => item.isActive);
-    };
-
     getSettings = (settings, isGetData) => {
         const mainCategoriesTypesId = [];
-        const mainCategoriesSettings = this.getActiveItems(settings.mainCategories);
+        const mainCategoriesSettings = settings.mainCategories;
         const mainCategoryOptionsFilter = mainCategoriesSettings.map(main => {
             mainCategoriesTypesId.push(main.mainCategoryID.toString());
             return {
@@ -57,7 +51,7 @@ export class Filter extends Component {
         });
 
         const subCategoriesTypesId = [];
-        const subCategorySettings = this.getActiveItems(settings.subCategories);
+        const subCategorySettings = settings.subCategories;
         subCategorySettings.map(sub => {
             subCategoriesTypesId.push(sub.subCategoryId.toString());
         });
@@ -84,7 +78,7 @@ export class Filter extends Component {
     };
 
     handleChangeMainCategory = (currentItem, selectedItemsKey) => {
-        const subCategorySettings = this.getActiveItems(this.state.settings.subCategories);
+        const subCategorySettings = this.state.settings.subCategories;
 
         this.setState(prevState => ({
             filter: {
@@ -132,15 +126,6 @@ export class Filter extends Component {
         }));
     };
 
-    checkInactiveSettings = () => {
-        this.setState(prevState => ({
-            filter: {
-                ...prevState.filter,
-                isInactiveSettings: !this.state.filter.isInactiveSettings
-            }
-        }), () => this.getSettings(this.state.settings, false));
-    };
-
     handleChangeRemark = event => {
         const { filter } = this.state;
         this.setState({
@@ -152,13 +137,12 @@ export class Filter extends Component {
     };
 
     getParams = () => {
-        const { mainCategoriesTypes, subCategoriesTypes, remark, isInactiveSettings } = this.state.filter;
-        const subCategorySettings = this.getActiveItems(this.state.settings.subCategories);
+        const { mainCategoriesTypes, subCategoriesTypes, remark } = this.state.filter;
+        const subCategorySettings = this.state.settings.subCategories;
 
         return {
             categories: getCategoryParams(mainCategoriesTypes.split(','), subCategoriesTypes.split(','), subCategorySettings),
             remark: remark,
-            active: isInactiveSettings ? 2 : 1,
             pageIndex: 1,
             pageSize: this.props.gridParams.pageSize
         };
@@ -243,10 +227,6 @@ export class Filter extends Component {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Check className="mr-5" type="checkbox" label={LangHelper.getResource('InactiveSettings')}
-                            checked={this.state.filter.isInactiveSettings}
-                            onChange={this.checkInactiveSettings}
-                        />
                         <Button className="mr-4" variant="primary"
                             size="sm" type="submit"
                             onClick={this.handleSubmit}

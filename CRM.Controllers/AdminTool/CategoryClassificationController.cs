@@ -30,8 +30,8 @@
         {
             var settings = new
             {
-                MainCategories = await settingService.GetMainCategoryAsync(),
-                SubCategories = await settingService.GetSubCategoryAsync()
+                MainCategories = await settingService.GetMainCategoryAsync(SettingConstants.Active),
+                SubCategories = await settingService.GetSubCategoryAsync(active: SettingConstants.Active)
             };
 
             return Json(settings);

@@ -35,7 +35,7 @@
             var criteria = new GetCategoryClassificationCriteria
             {
                 Categories = param.Categories,
-                Active = param.Active,
+                Active = 1,
                 RemarkSearch = param.Remark,
                 PageIndex = param.PageIndex,
                 PageSize = param.PageSize
