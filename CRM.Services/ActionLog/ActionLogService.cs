@@ -307,6 +307,7 @@
 
             foreach (var log in settingLogsFilter)
             {
+                log.LogDate = commonService.ConvertToClientDateTime(log.LogDate);
                 if (log.ActionName == ActionUpdateJobSettingLog)
                 {
                     var oldSettingLog = ParseLogOldNewUpdateJobSetting(log.OldValues);
