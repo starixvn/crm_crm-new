@@ -3,6 +3,7 @@
     using CRM.Core.Services;
     using CRM.Repositories;
     using CRM.Services.ActionLog;
+    using CRM.Services.AdminTool;
     using CRM.Services.BotServices;
     using CRM.Services.BotServices.Interfaces;
     using CRM.Services.Communication;
@@ -59,6 +60,7 @@
             services.AddScoped<ITelegramApiService, TelegramApiService>();
             services.AddScoped<ISendAnnouncementService, SendAnnouncementService>();
             services.AddScoped<IPermissionService, PermissionService>();
+            services.AddScoped<ICategoryClassificationService, CategoryClassificationService>();
         }
     }
 }
