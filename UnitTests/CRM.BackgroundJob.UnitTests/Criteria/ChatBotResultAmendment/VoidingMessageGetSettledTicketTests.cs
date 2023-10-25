@@ -10,7 +10,7 @@
         {
             // Arrange
             var criteria = new VoidingMessageGetSettledTicket();
-            var expected = "Acc_CRM_VodingMessage_GetSettledTickets";
+            var expected = "Acc_CRM_ChatBot_VodingMessage_GetSettledTickets";
 
             // Act
             var actual = criteria.GetSettingKey();

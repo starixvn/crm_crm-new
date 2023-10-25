@@ -10,7 +10,7 @@
         {
             // Arrange
             var criteria = new GetMesssagesVoidSettledCriteria();
-            var expected = "Acc_CRM_VoidingMsg_GetMessage";
+            var expected = "Acc_CRM_ChatBot_VoidingMsg_GetMessage";
 
             // Act
             var actual = criteria.GetSettingKey();
