@@ -319,7 +319,7 @@ export class CreateCommunicationLog extends Component {
     handleVerifyCreateRelatedCustomer = async customerNameInput => {
         const url = 'CustomerSetting/VerifyUsername';
         const customersInput = customerNameInput.trim()
-            .replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',');
+            .replace(/,\s+/g, ',').replace(/^,+|,+$/g, '').replace(/,{2,}/g, ',').replace(/ /g, ',');
         if(customersInput === ''){
             return;
         }

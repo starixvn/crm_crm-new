@@ -52,10 +52,12 @@ export class NewCommunitionSetting extends PureComponent {
         const regex1 = new RegExp(/,\s+/g);
         const regex2 = new RegExp(/^,+|,+$/g);
         const regex3 = new RegExp(/,{2,}/g);
+        const regex4 = new RegExp(/ /g);
 
         const customersInput = value.trim().replace(regex1, ',') // NOSONAR
             .replace(regex2, '') // NOSONAR
-            .replace(regex3, ','); // NOSONAR
+            .replace(regex3, ',')
+            .replace(regex4, ','); // NOSONAR
 
         if(customersInput === ''){
             return;

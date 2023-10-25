@@ -232,9 +232,13 @@ export class CreateForm extends Component {
         const regex1 = new RegExp(/,\s+/g);
         const regex2 = new RegExp(/^,+|,+$/g);
         const regex3 = new RegExp(/,{2,}/g);
+        const regex4 = new RegExp(/ /g);
+
         const customersInput = value.trim().replace(regex1, ',') // NOSONAR
             .replace(regex2, '') // NOSONAR
-            .replace(regex3, ','); // NOSONAR
+            .replace(regex3, ',') // NOSONAR
+            .replace(regex4, ','); // NOSONAR
+
         const isValid = customersInput.split(',').filter(value => value.length > 50).length === 0;
 
         if (isValid) {

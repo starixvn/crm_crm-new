@@ -410,11 +410,14 @@ export class AppContainer extends Component {
         const regex1 = new RegExp(/,\s+/g),
             regex2 = new RegExp(/^,+|,+$/g),
             regex3 = new RegExp(/,{2,}/g);
+        const regex4 = new RegExp(/ /g);
+
         const formikValues = this.formik.values;
 
         const customersInput = this.state.fieldInput.customerNameInput.trim().replace(regex1, ',') // NOSONAR
             .replace(regex2, '') // NOSONAR
-            .replace(regex3, ','); // NOSONAR
+            .replace(regex3, ',')
+            .replace(regex4, ','); // NOSONAR
 
         if (this.isValidCustomer(customersInput)) {
             this.formik.errors.customerNameInput = '';
