@@ -9,6 +9,7 @@ import { ActionCreators } from '../actions';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
+import { toast } from 'react-toastify';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
@@ -74,6 +75,8 @@ export class NewCommunitionSetting extends PureComponent {
                 });
             });
             setFieldValue('isVerifiedCustomers', true);
+        } else {
+            toast.error('The customer name must not be longer than 50 characters!');
         }
         setFieldValue('customerNameInput', '');
     };

@@ -16,6 +16,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import AddRelatedCustomerDialog from './AddRelatedCustomerDialog';
 import Site from '@jsroot/common/site';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import { toast } from 'react-toastify';
 import LangHelper from '@jsroot/common/langHelper';
 import {
     getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories,
@@ -166,14 +167,20 @@ export class CreateForm extends Component {
             return;
         }
 
-        this.setState({ createMultipleLogsResult: null });
-        Site.blockUI();
-        this.props.verifyCustomers({ username }).then(response => {
-            this.props.setVerifyCustomerResults(response.data);
-            setFieldValue('customerNameInput', '');
+        const isValid = username.split(',').filter(value => value.length > 50).length === 0;
 
-            Site.unblockUI();
-        });
+        if (isValid) {
+            this.setState({ createMultipleLogsResult: null });
+            Site.blockUI();
+            this.props.verifyCustomers({ username }).then(response => {
+                this.props.setVerifyCustomerResults(response.data);
+                setFieldValue('customerNameInput', '');
+
+                Site.unblockUI();
+            });
+        } else {
+            toast.error('The customer name must not be longer than 50 characters!');
+        }
     };
 
     reVerifyInactiveSiteAndConfirm = (username, params, setSubmitting, values) => {
