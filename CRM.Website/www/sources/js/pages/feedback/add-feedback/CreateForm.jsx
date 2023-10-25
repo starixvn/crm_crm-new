@@ -255,7 +255,7 @@ export class CreateForm extends Component {
             });
             setFieldValue('isVerifiedCustomers', true);
         } else {
-            toast.error('Customer Name must not over 50 characters long!');
+            toast.error('The customer name must not be longer than 50 characters!');
         }
         setFieldValue('customerNameInput', '');
     };

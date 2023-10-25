@@ -443,7 +443,7 @@ export class AppContainer extends Component {
                 });
             }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
         } else {
-            this.formik.errors.customerNameInput = 'Customer Name must not over 50 characters long!';
+            this.formik.errors.customerNameInput = 'The customer name must not be longer than 50 characters!';
         }
     };
 

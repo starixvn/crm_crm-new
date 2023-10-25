@@ -544,7 +544,7 @@ describe('CreateCommunicationLog', () => {
             jest.runAllTimers();
 
             // Assert
-            expect(toast.error).toHaveBeenCalledWith('Customer Name must not over 50 characters long!');
+            expect(toast.error).toHaveBeenCalledWith('The customer name must not be longer than 50 characters!');
         });
     });
 

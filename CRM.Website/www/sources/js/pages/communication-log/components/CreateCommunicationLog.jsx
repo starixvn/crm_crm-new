@@ -335,7 +335,7 @@ export class CreateCommunicationLog extends Component {
                 this.handleChangeVerifySection('customerNameInput', '');
             }).catch(Site.handleAxiosError);
         } else {
-            toast.error('Customer Name must not over 50 characters long!');
+            toast.error('The customer name must not be longer than 50 characters!');
         }
     };
 

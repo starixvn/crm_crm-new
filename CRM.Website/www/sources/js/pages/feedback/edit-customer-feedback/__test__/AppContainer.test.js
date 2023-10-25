@@ -847,7 +847,7 @@ describe('AppContainer', () => {
             container.handleVerifyRelatedCustomer(event);
 
             // Assert
-            expect(container.formik.errors.customerNameInput).toEqual('Customer Name must not over 50 characters long!');
+            expect(container.formik.errors.customerNameInput).toEqual('The customer name must not be longer than 50 characters!');
         });
     });
 });
