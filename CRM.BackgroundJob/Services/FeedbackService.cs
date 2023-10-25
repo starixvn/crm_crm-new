@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using System.Text.Json.Nodes;
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Criteria;
@@ -15,7 +14,6 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
-    using Newtonsoft.Json;
 
     public interface IFeedbackService
     {
@@ -688,6 +686,21 @@
             return bettypes;
         }
 
+        private static string GetSubCategorySettingValue(int issueTypeId)
+        {
+            string subCategory = "Abnormal Bets";
+            if (issueTypeId == abnormalAccount)
+            {
+                subCategory = "Abnormal Account";
+            }
+
+            if (issueTypeId == duplicate)
+            {
+                subCategory = "Duplicate Tickets";
+            }
+            return subCategory;
+        }
+
         protected internal virtual Tuple<int, int, string> GetCategorySubCategory(IEnumerable<SettingItem> settings, int IssueTypeId)
         {
             var category = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.MainCategory, StringComparison.OrdinalIgnoreCase)
@@ -698,7 +711,7 @@
             {
                 var subCategory = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.SubCategory, StringComparison.OrdinalIgnoreCase)
                     && x.ParentIds.Any(y => y == category.SettingId)
-                    && x.SettingValue.Equals(IssueTypeId == abnormalAccount ? "Abnormal Account" : "Abnormal Bets", StringComparison.OrdinalIgnoreCase));
+                    && x.SettingValue.Equals(GetSubCategorySettingValue(IssueTypeId), StringComparison.OrdinalIgnoreCase));
                 subCategoryId = subCategory != null ? subCategory.SettingId : 0;
             }
 

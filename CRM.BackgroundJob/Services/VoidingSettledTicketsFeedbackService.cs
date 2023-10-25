@@ -42,7 +42,7 @@
         private readonly int SportType180 = 180;
         private readonly int SportType186 = 186;
         private readonly int SportType161 = 161;
-        private readonly int DuplicateTicketIssueTypeId = 20;
+        private const int DuplicateTicketIssueTypeId = 20;
 
 #pragma warning disable S107 // Methods should not have too many parameters
 
@@ -93,24 +93,24 @@
             var failVoidingMessages = await voidingSettledTicketsService.GetFailVoidingMessageAsync();
             var voidingMessageDistinct = voidingMessages.Concat(failVoidingMessages).Distinct().ToList();
             logService.LogInformation("before GetAutoVoidingTicketAsync!!!");
-            var voidingTickets = await voidingSettledTicketsService.GetAutoVoidingTicketAsync(voidingSettledTicketSetting, voidingMessageDistinct, environment);
+            var (voidingTickets, msgTargets) = await voidingSettledTicketsService.GetAutoVoidingTicketAsync(voidingSettledTicketSetting, voidingMessageDistinct, environment);
             logService.LogInformation("end GetAutoVoidingTicketAsync!!!");
 
             logService.LogInformation(string.Format("GetAutoVoidingTicketAsync Item1: {0}, {1}",
-                string.Join(",", voidingTickets.Item1?.Select(x => x.MessageId)),
-                string.Join(",", voidingTickets.Item1?.Select(x => x.TransId)))
+                string.Join(",", voidingTickets?.Select(x => x.MessageId)),
+                string.Join(",", voidingTickets?.Select(x => x.TransId)))
             );
-            if (voidingTickets.Item2.Any())
+            if (msgTargets.Any())
             {
-                await voidingSettledTicketsService.UpdateAutoVoidingMessageAsync(voidingTickets.Item2, environment);
+                await voidingSettledTicketsService.UpdateAutoVoidingMessageAsync(msgTargets, environment);
             }
-            if (!voidingTickets.Item1.Any())
+            if (!voidingTickets.Any())
             {
                 await commonFeedback.EditSystemSettingAsyncByEnvFormatDate(jobStatusNameEnv, lastRuntimeNameEnv, JobStatus.Completed, Constants.ServiceName_AutoVoidFB);
                 logService.LogInformation("Do not have any data set1, return voiding settled tickets!!!");
                 return;
             }
-            await voidingSettledTicketsService.ImportVoidingAutoFeedbackInfoAsync(voidingTickets.Item1, environment);
+            await voidingSettledTicketsService.ImportVoidingAutoFeedbackInfoAsync(voidingTickets, environment);
             var (feedbackInfo, eventVoiding) = await voidingSettledTicketsService.GetVoidingAutoFeedbackInfoAsync(voidingSettledTicketSetting.BatchSize);
 
             var messageIssueTypes = await baseService.GetDataAsync<MsgIssueType>(new GetAutoVoidingIssueTypeCriteria { VoidingMessages = feedbackInfo.Select(i => i.MessageId).ToList() });
@@ -175,7 +175,7 @@
                 AutoField = string.Empty,
                 AutoField1 = string.Empty,
                 UserRole = Constants.UserRole,
-                Subject = DefaultValue.ResultAmended,
+                Subject = feedbackInfo.IssueTypeId == DuplicateTicketIssueTypeId ? DefaultValue.Special_Notification : DefaultValue.ResultAmended,
                 AutoField3 = $"{Environment.NewLine}System ID: ",
                 CustomerXml = string.Format(DefaultValue.CustomerXml, feedbackInfo.HeadlineId, feedbackInfo.HeadlineName),
                 ProductXml = GetVoidingSettledTicketsProductXml(productIds, sportTypeIds, feedbackInfo.Listbettype, settings, settingMappings),
