@@ -5,10 +5,8 @@
 
     public class GetMesssagesVoidSettledCriteria : CriteriaBase
     {
-        [SpParam(Ignored = true)]
         public int LastMsgTargetId { get; set; }
 
-        [SpParam(Ignored = true)]
         public int BatchSizeGetMsg { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_VoidingMsg_GetMessage";

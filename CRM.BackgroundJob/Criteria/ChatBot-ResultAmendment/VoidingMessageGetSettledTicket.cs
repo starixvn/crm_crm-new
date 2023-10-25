@@ -6,7 +6,6 @@
     {
         public string Message { get; set; }
 
-        [SpParam(Ignored = true)]
         public int SiteDBGroupId { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_VodingMessage_GetSettledTickets";
