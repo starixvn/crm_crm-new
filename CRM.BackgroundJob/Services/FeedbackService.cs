@@ -34,8 +34,8 @@
         private readonly ICommonFeedback commonFeedback;
 
         private const int abnormalAccount = 13;
-        private const int mixParlay = 11;
-        private const int duplicate = 20;
+        private const int mixParlayIssueTypeId = 11;
+        private const int duplicatedTicketIssueTypeId = 20;
         private const string templateXml = "MixParlayTemplate.xml";
         private const string templateDuplicateXml = "FeedbackDuplicateTemplate.xml";
 
@@ -142,7 +142,7 @@
                     string.Join(",", matchInfo.Select(x => x.VoidingHistoryCollectionId)))
                 );
 
-                var ticketDuplicate = matchInfo.Where(x => x.IssueTypeId == duplicate);
+                var ticketDuplicate = matchInfo.Where(x => x.IssueTypeId == duplicatedTicketIssueTypeId);
                 var ticketDuplicateDetail = duplicateTicketDetails.Where(x => ticketDuplicate.Any(y => x.VoidingHistoryCollectionId == y.VoidingHistoryCollectionId));
 
                 await CreateFeedbackForCreditDepositSiteAsync(
@@ -194,7 +194,7 @@
                 IEnumerable<Message> messageByHeadline = messageContents.Where(x => transactionByHeadline.Any(y => y.MessageId == x.MessageId)).DistinctBy(x => x.MessageId);
                 IEnumerable<TransactionInfo> credits = newTransactionInfos.Where(x => x.VoidingHistoryCollectionId == matchInfo.VoidingHistoryCollectionId && !x.IsDeposit);
                 IEnumerable<TransactionInfo> deposits = newTransactionInfos.Where(x => x.VoidingHistoryCollectionId == matchInfo.VoidingHistoryCollectionId && x.IsDeposit);
-                if (credits.Any())
+                if (credits.Any() && matchInfo.IssueTypeId != duplicatedTicketIssueTypeId)
                 {
                     await CreateFeedbackForCreditSiteAsync(
                         messageByHeadline,
@@ -326,7 +326,7 @@
 
                 IEnumerable<TransactionInfo> transactions = transactionInfos.Where(x => batch.Any(y => y == x.CustId));
                 var isVip = headline.IsVip && headline.SiteLabel == "789y";
-                var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
+                var isMixParlay = matchInfo.IssueTypeId == mixParlayIssueTypeId && matchInfo.FilterBy == 1;
                 criteria.ProductXml = GetProductXml(isMixParlay, matchInfo, transactions, settings, settingMappings);
                 var solution = isMixParlay ? GetSolutionMixParlayForCreditSite(messages.FirstOrDefault(), transactions, isVip) :
                                              GetSolutionForCreditSite(messages.FirstOrDefault(), transactions, matchInfo.IssueTypeId);
@@ -403,7 +403,7 @@
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
                 && x.SettingId == Constants.ExtentionNA);
             var category = GetCategorySubCategory(settings, matchInfo.IssueTypeId);
-            var isMixParlay = matchInfo.IssueTypeId == mixParlay && matchInfo.FilterBy == 1;
+            var isMixParlay = matchInfo.IssueTypeId == mixParlayIssueTypeId && matchInfo.FilterBy == 1;
 
             var criteria = new CreateFeedbackCommand
             {
@@ -559,7 +559,7 @@
 
         protected internal virtual SettingItem GetCommunicationTool(IEnumerable<SettingItem> settings, int issueTypeId)
         {
-            string settingValue = issueTypeId == duplicate ? "Emails" : "Skype";
+            string settingValue = issueTypeId == duplicatedTicketIssueTypeId ? "Emails" : "Skype";
             var communication = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.CommunicationTool, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(settingValue, StringComparison.OrdinalIgnoreCase));
 
@@ -695,7 +695,7 @@
                 subCategory = "Abnormal Account";
             }
 
-            if (issueTypeId == duplicate)
+            if (issueTypeId == duplicatedTicketIssueTypeId)
             {
                 subCategory = "Duplicate Tickets";
             }
