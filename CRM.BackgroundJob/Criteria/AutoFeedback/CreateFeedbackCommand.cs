@@ -38,7 +38,6 @@
         public string IP { get; set; } = string.Empty;
         public int NoInquiries { get; set; }
         public bool IsOverwrite { get; set; }
-
         public string MessageId { get; set; }
         public string RequestIds { get; set; }
         public string ListOrigCustIds { get; set; }
