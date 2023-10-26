@@ -395,7 +395,7 @@
             logService.LogInformation("Abnormal Bet - Begin mapping setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
             var feedbackDate = DateTime.Now.Add(timeSpan);
-            var communicationTool = GetCommunicationTool(settings);
+            var communicationTool = GetCommunicationTool(settings, matchInfo.IssueTypeId);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals("Closed", StringComparison.OrdinalIgnoreCase));
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
@@ -557,10 +557,11 @@
             return stringBuilder.ToString();
         }
 
-        protected internal virtual SettingItem GetCommunicationTool(IEnumerable<SettingItem> settings)
+        protected internal virtual SettingItem GetCommunicationTool(IEnumerable<SettingItem> settings, int issueTypeId)
         {
+            string settingValue = issueTypeId == duplicate ? "Emails" : "Skype";
             var communication = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.CommunicationTool, StringComparison.OrdinalIgnoreCase)
-                && x.SettingValue.Equals("Skype", StringComparison.OrdinalIgnoreCase));
+                && x.SettingValue.Equals(settingValue, StringComparison.OrdinalIgnoreCase));
 
             return communication ?? new SettingItem { SettingId = Constants.CommunicationNA };
         }

@@ -111,7 +111,7 @@
 
         public SettingItem Public_GetCommunicationTool(IEnumerable<SettingItem> settings)
         {
-            return base.GetCommunicationTool(settings);
+            return base.GetCommunicationTool(settings, 1);
         }
 
         public string Public_GetProductXml(
