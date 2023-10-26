@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ROOT>
     <Description>
-        Msg ID: {0}, Request No.: {1}{6}
         Dear Valued Customer,{6}
         Kindly to be informed duplicated tickets found for below event. Those affected tickets, we retained {2} ticket(s) as valid and had proceed to void the duplicate(s). Please refer to the below message:{7}
         Message:{6}
