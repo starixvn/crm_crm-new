@@ -551,7 +551,12 @@
             if ((productName == "Sportsbook" && eventDetail.EventType != EventType2) || productName == "Virtual Sports 2")
             {
                 stringBuilder.AppendFormat(line, Constants.Break);
-                stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, leagueName, homeName, awayName, Constants.Break);
+                string league = leagueName;
+                if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase))
+                {
+                    league = sportName;
+                }
+                stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, Constants.Break);
             }
 
             return stringBuilder.ToString();

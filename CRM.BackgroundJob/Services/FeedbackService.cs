@@ -14,6 +14,7 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
 
     public interface IFeedbackService
     {
@@ -620,6 +621,13 @@
                 var productName = commonFeedback.GetProductName(productId.ToString(), Language.en_US);
                 productNames.Add(productName);
             }
+            logService.InfoMessageAsync(JsonConvert.SerializeObject(new
+            {
+                settings,
+                productNames,
+                productIds,
+                settingMappings
+            })).RunSynchronously();
             List<SystemSettingMapping> productMappings = settingMappings.Where(p => p.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(p.SettingSource)
                 && productNames.Any(productName => p.SettingSource.Equals(productName, StringComparison.OrdinalIgnoreCase))).ToList();
