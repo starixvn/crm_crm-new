@@ -454,12 +454,13 @@
             {
                 IList<int> batch = licenseeManagerIds.Skip(i * itemEachBatch).Take(itemEachBatch).ToList();
                 IList<TransactionInfo> transactions = transactionInfos.Where(x => batch.Any(y => y == x.LicenseeManagerId)).ToList();
-                IList<string> licenseeManagers = transactions.Where(x => x.LicenseeManagerId != 0).Select(x => x.LicenseeManager).Distinct().ToList();
+                List<string> licenseeManagers = transactions.Where(x => x.LicenseeManagerId != 0).Select(x => x.LicenseeManager).Distinct().ToList();
                 IList<int> custIds = transactions.Select(x => x.CustId).Distinct().ToList();
                 List<int> relatedIds = batch.ToList();
                 if (duplicateTicketDetails.Any())
                 {
-                    relatedIds.AddRange(transactionInfos.Select(transaction => transaction.CustId));
+                    relatedIds.AddRange(transactionInfos.Select(transaction => transaction.CustId).Distinct());
+                    licenseeManagers.AddRange(transactionInfos.Select(transaction => transaction.Username).Distinct());
                 }
                 criteria.RelatedCustId = string.Join(", ", relatedIds.Where(x => x != 0).Select(x => x));
                 criteria.AutoField = GetAutoField(DateTime.Now, communicationTool, licenseeManagers);
