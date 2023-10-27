@@ -13,5 +13,8 @@
         public bool IsDeposit { get; set; }
         public bool IsTest { get; set; }
         public string Bettype { get; set; }
+        public int ProductId { get; set; }
+        public int BetTypeId { get; set; }
+        public short SportTypeId { get; set; }
     }
 }

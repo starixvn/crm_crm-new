@@ -15,5 +15,8 @@
         public string RelatedUserName { get; set; }
         public int LicenseeManagerId { get; set; }
         public string LicenseeManager { get; set; }
+        public int ProductId { get; set; }
+        public int BetTypeId { get; set; }
+        public short SportTypeId { get; set; }
     }
 }
