@@ -14,7 +14,6 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
-    using Newtonsoft.Json;
 
     public interface IFeedbackService
     {
@@ -161,7 +160,7 @@
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -175,7 +174,7 @@
             IEnumerable<DuplicateTicketDetail> duplicateTicketDetails
         )
         {
-            var settingNames = new[] { SettingName.SubProduct, SettingName.Bettype };
+            var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
             IEnumerable<SystemSettingMapping> settingMappings = await settingService.GetSystemSettingMappingAsync(settingNames);
             IEnumerable<SiteSettingMapping> siteSettingMappings = await settingService.GetSiteSettingMappingAsync();
@@ -591,8 +590,11 @@
             var sportTypeIds = transactions.Select(t => t.SportTypeId);
             IList<SettingItem> products = GetProductByIds(settings, settingMappings, productIds);
             var productSettingIds = products.Select(x => x.SettingId);
+
             IList<SettingItem> subProducts = GetSubProducts(productSettingIds, sportTypeIds, settings, settingMappings);
+
             IList<SystemSettingMapping> bettypesMapping = GetBettypes(listBetTypes.ToArray(), settingMappings);
+
             if (products.Any())
             {
                 foreach (SettingItem product in products)
@@ -621,13 +623,7 @@
                 var productName = commonFeedback.GetProductName(productId.ToString(), Language.en_US);
                 productNames.Add(productName);
             }
-            logService.InfoMessageAsync(JsonConvert.SerializeObject(new
-            {
-                settings,
-                productNames,
-                productIds,
-                settingMappings
-            })).RunSynchronously();
+
             List<SystemSettingMapping> productMappings = settingMappings.Where(p => p.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(p.SettingSource)
                 && productNames.Any(productName => p.SettingSource.Equals(productName, StringComparison.OrdinalIgnoreCase))).ToList();
