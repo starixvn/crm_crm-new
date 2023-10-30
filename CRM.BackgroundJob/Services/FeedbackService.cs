@@ -14,6 +14,7 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
 
     public interface IFeedbackService
     {
@@ -407,7 +408,7 @@
                 && x.SettingId == Constants.ExtentionNA);
             var category = GetCategorySubCategory(settings, matchInfo.IssueTypeId);
             var isMixParlay = matchInfo.IssueTypeId == mixParlayIssueTypeId && matchInfo.FilterBy == 1;
-
+            await logService.InfoMessageAsync(JsonConvert.SerializeObject(matchInfo));
             var criteria = new CreateFeedbackCommand
             {
                 CreatorId = appSettings.CreatorId,
