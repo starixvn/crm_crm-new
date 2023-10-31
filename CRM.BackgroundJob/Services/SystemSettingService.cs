@@ -8,6 +8,7 @@
     using Fanex.CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Criteria.ArchivingDA;
     using global::CRM.BackgroundJob.Criteria.ProblemsAccount;
+    using global::CRM.BackgroundJob.Criteria.RefundSettledTicket;
     using global::CRM.BackgroundJob.Criteria.ResultAmendment;
     using global::CRM.BackgroundJob.Criteria.TurnoverControll;
     using global::CRM.BackgroundJob.Criteria.VoidingSettledTickets;
@@ -15,6 +16,7 @@
     using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.ArchivingDA;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
+    using global::CRM.BackgroundJob.Models.RefundSettledTicket;
     using global::CRM.BackgroundJob.Models.ResultAmendment;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.Core.Extensions.XML;
@@ -46,6 +48,8 @@
         Task<ResultAmendmentSetting> GetVoidingSettledTicketsSettingAsync();
 
         Task<ArchivingDASetting> GetArchivingDASettingAsync();
+
+        Task<RefundSystemSettingInfo> GetRefundSystemSettingAsync();
     }
 
     public class SystemSettingService : ISystemSettingService
@@ -138,5 +142,10 @@
             return await baseService.GetDataEntityAsync<ArchivingDASetting>(criteria);
         }
 
+        public async Task<RefundSystemSettingInfo> GetRefundSystemSettingAsync()
+        {
+            var criteria = new GetRefundSystemSettingCriteria();
+            return await baseService.GetDataEntityAsync<RefundSystemSettingInfo>(criteria);
+        }
     }
 }

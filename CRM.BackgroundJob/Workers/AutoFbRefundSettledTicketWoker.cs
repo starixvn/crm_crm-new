@@ -1,0 +1,33 @@
+﻿namespace CRM.BackgroundJob.Workers
+{
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using CRM.BackgroundJob.Extensions;
+    using CRM.BackgroundJob.Models;
+    using CRM.Core.Services;
+    using Fanex.CRM.BackgroundJob.Constants;
+    using Fanex.CRM.BackgroundJob.Services;
+    using Microsoft.Extensions.Options;
+    using ONEbook.UM.Services;
+
+    public class AutoFbRefundSettledTicketWoker : BaseWorker
+    {
+        private readonly IChatBotJobService chatBotJobService;
+
+        public AutoFbRefundSettledTicketWoker(
+            IChatBotJobService chatBotJobService,
+            IMaintenanceService maintenanceService,
+            IOptions<List<JobSetting>> jobSettings,
+            ICRMLogService logService)
+                : base(maintenanceService, logService)
+        {
+            this.chatBotJobService = chatBotJobService;
+            jobSetting = JobHelper.GetJobConfig(jobSettings.Value, JobName.CreateFeedbackForRefundSettledTicket);
+        }
+
+        public override async Task ExecuteJobAsync()
+        {
+            await chatBotJobService.RefundSettledTicketJobAsync();
+        }
+    }
+}

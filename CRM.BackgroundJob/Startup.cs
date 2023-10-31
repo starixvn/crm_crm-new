@@ -169,6 +169,7 @@
             services.AddSingleton<IVoidingSettledTicketsService, VoidingSettledTicketsService>();
             services.AddSingleton<IArchivingDAService, ArchivingDAService>();
             services.AddSingleton<ISendAnnouncementService, SendAnnouncementService>();
+            services.AddSingleton<IRefundSettledTicketService, RefundSettledTicketService>();
         }
 
         private static void AddWorker(IServiceCollection services)
