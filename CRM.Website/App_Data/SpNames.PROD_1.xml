@@ -35,7 +35,7 @@
             <Mapping DataField="RecipientId" ObjectProperty="Id" />
             <Mapping DataField="RecipientName" ObjectProperty="Name" />
         </Setting>
-        <Setting Key="Acc_CRM_ChatBot_RecipientType_Sel" SpName="Acc_CRM_ChatBot_RecipientType_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_ChatBot_RecipientType_Sel" SpName="Acc_CRM_ChatBot_RecipientType_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="RecipientTypeId" ObjectProperty="Id" />
             <Mapping DataField="RecipientTypeName" ObjectProperty="Name" />
         </Setting>
@@ -267,7 +267,7 @@
             <Mapping DataField="Position" ObjectProperty="Positions" />
             <Mapping DataField="ExcludeIgnored" ObjectProperty="ExcludeIgnoredAccounts" />
         </Setting>
-        <Setting Key="Acc_CRM_InformHeadlineStatusSel" SpName="Acc_CRM_InformHeadlineStatusSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_InformHeadlineStatusSel" SpName="Acc_CRM_InformHeadlineStatusSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_InformHeadlineDetail" SpName="Acc_CRM_InformHeadlineDetail" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_InformHeadlineUpd" SpName="Acc_CRM_InformHeadlineUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_InformHeadlineSearchSel" SpName="Acc_CRM_InformHeadlineSearchSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
