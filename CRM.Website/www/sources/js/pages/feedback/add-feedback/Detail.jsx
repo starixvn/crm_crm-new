@@ -248,7 +248,8 @@ export default class Detail extends PureComponent {
                             <Form.Label column sm="4" md="4" htmlFor="responseId">{LangHelper.getResource('Response')}</Form.Label>
                             <Col sm="8" md="8">
                                 <Form.Control as="select" size="sm" className="shadow-none"
-                                    name="responseId" id="responseId" value={values.responseId} onChange={handleChange}>
+                                    name="responseId" id="responseId"
+                                    value={values.responseId} onChange={handleChange}>
                                     <option value="" hidden disabled />
                                     {responses.map(item => renderOptions(item.value, item.id))}
                                 </Form.Control>

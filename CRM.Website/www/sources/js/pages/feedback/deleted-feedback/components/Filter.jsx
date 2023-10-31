@@ -37,8 +37,8 @@ export class Filter extends Component {
     componentDidUpdate = prevProps => {
         if (prevProps.settings !== this.props.settings) {
             this.setState({
-                communicationId: this.props.settings.communications[0].id,
-                responseId: this.props.settings.customerResponses[0].id
+                communicationId: '',
+                responseId: ''
             });
         }
     };
@@ -123,6 +123,8 @@ export class Filter extends Component {
             { settingValue: 'Customer', settingId: 0 },
             { settingValue: 'Guest', settingId: 1 }
         ];
+        const customerResponses = [{ id: '', value: 'All' }, ...data.customerResponses];
+        const communications = [{ id: '', name: 'All' }, ...data.communications];
 
         return (
             <Form onSubmit={this.handleSubmit} className="form-filter" action="javascript:void(0)">
@@ -221,7 +223,7 @@ export class Filter extends Component {
                                 onChange={this.handleChange}
                             >
                                 {
-                                    data.communications.map((value, key) => this.renderOptions(value.name, value.id, key))
+                                    communications.map((value, key) => this.renderOptions(value.name, value.id, key))
                                 }
                             </Form.Control>
                         </Form.Group>
@@ -234,7 +236,7 @@ export class Filter extends Component {
                                 onChange={this.handleChange}
                             >
                                 {
-                                    data.customerResponses.map((value, key) => this.renderOptions(value.value, value.id, key))
+                                    customerResponses.map((value, key) => this.renderOptions(value.value, value.id, key))
                                 }
                             </Form.Control>
                         </Form.Group>

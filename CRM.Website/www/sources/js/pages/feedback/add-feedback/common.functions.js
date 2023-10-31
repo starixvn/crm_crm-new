@@ -3,7 +3,7 @@ import { getInvalidCategoryParams } from '@jsroot/common/shareScripts';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { getProductParams, getCategoryParams }from '@jsroot/common/shareScripts';
 import { DefaultLanguages } from '@jsroot/common/constants';
-import { sortAndReplaceRelatedCust } from '@jsroot/common/shareScripts';
+import { sortAndReplaceRelatedCust, getIdDefaultValueResponse } from '@jsroot/common/shareScripts';
 import moment from 'moment';
 
 export const validateFormik = (values, customerDetail, settings, content) => {
@@ -73,7 +73,7 @@ export const initValues = settings =>{
         category: '',
         subCategory: '',
         statusId: statuses[0].statusId,
-        responseId: responses[0].id,
+        responseId: getIdDefaultValueResponse(responses),
         product: '',
         subProduct: '',
         betType: '',
@@ -153,7 +153,7 @@ export const initValuesAddCustomerFb = (settings, customerDetail) =>{
         category: '',
         subCategory: '',
         statusId: statuses[0].statusId,
-        responseId: responses[0].id,
+        responseId: getIdDefaultValueResponse(responses),
         product: '',
         subProduct: '',
         betType: '',
