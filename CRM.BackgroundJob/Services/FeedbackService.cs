@@ -14,7 +14,6 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
-    using Newtonsoft.Json;
 
     public interface IFeedbackService
     {
@@ -37,6 +36,7 @@
         private const int abnormalAccount = 13;
         private const int mixParlayIssueTypeId = 11;
         private const int duplicatedTicketIssueTypeId = 20;
+        private readonly int[] parlayBetTypeIds = new int[] { 7, 29, 2799 };
         private const string templateXml = "MixParlayTemplate.xml";
         private const string templateDuplicateXml = "FeedbackDuplicateTemplate.xml";
 
@@ -124,7 +124,8 @@
                         VoidingHistoryCollectionId = ticket.VoidingHistoryCollectionId,
                         ProductId = ticket.ProductId,
                         BetTypeId = ticket.BetTypeId,
-                        SportTypeId = ticket.SportTypeId
+                        SportTypeId = ticket.SportTypeId,
+                        Bettype = ticket.Bettype
                     };
                     castTransactions.Add(castTransaction);
                 }
@@ -408,7 +409,7 @@
                 && x.SettingId == Constants.ExtentionNA);
             var category = GetCategorySubCategory(settings, matchInfo.IssueTypeId);
             var isMixParlay = matchInfo.IssueTypeId == mixParlayIssueTypeId && matchInfo.FilterBy == 1;
-            await logService.InfoMessageAsync(JsonConvert.SerializeObject(matchInfo));
+
             var criteria = new CreateFeedbackCommand
             {
                 CreatorId = appSettings.CreatorId,
@@ -563,7 +564,8 @@
                 foreach (var ticket in duplicateGroupByTransIdList)
                 {
                     var refNoVoided = string.Join(", ", ticket.Select(x => x.VoidedTransId));
-                    stringBuilderTicket.AppendFormat(templateDuplicate.EffectMemberTicketDesc, ticket.Key, refNoVoided, Constants.Break, Constants.LineBreak);
+                    string remainTicket = ticket.Key.Split(',').Count() > 1 ? string.Empty : ticket.Key;
+                    stringBuilderTicket.AppendFormat(templateDuplicate.EffectMemberTicketDesc, remainTicket, refNoVoided, Constants.Break, Constants.LineBreak);
                 }
             }
 
@@ -589,12 +591,14 @@
             var listBetTypes = transactions.Select(t => t.BetTypeId.ToString());
             var productIds = transactions.Select(t => t.ProductId);
             var sportTypeIds = transactions.Select(t => t.SportTypeId);
+
+            var isMixParlay = transactions.All(x => parlayBetTypeIds.Contains(x.BetTypeId));
             IList<SettingItem> products = GetProductByIds(settings, settingMappings, productIds);
             var productSettingIds = products.Select(x => x.SettingId);
 
-            IList<SettingItem> subProducts = GetSubProducts(productSettingIds, sportTypeIds, settings, settingMappings);
+            IList<SettingItem> subProducts = GetSubProducts(isMixParlay, productSettingIds, sportTypeIds, settings, settingMappings);
 
-            IList<SystemSettingMapping> bettypesMapping = GetBettypes(listBetTypes.ToArray(), settingMappings);
+            IList<SystemSettingMapping> bettypesMapping = GetBettypes(isMixParlay, listBetTypes.ToArray(), settingMappings);
 
             if (products.Any())
             {
@@ -641,6 +645,7 @@
         }
 
         private IList<SettingItem> GetSubProducts(
+            bool isMixParlay,
             IEnumerable<int> productSettingIds,
             IEnumerable<short> sportTypeIds,
             IEnumerable<SettingItem> settings,
@@ -657,10 +662,12 @@
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && sportNames.Any(sportName => mapping.SettingSource.Equals(sportName, StringComparison.OrdinalIgnoreCase))).ToList();
 
-            List<SettingItem> subProducts = settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+            List<SettingItem> subProducts = isMixParlay ? settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && sub.ParentIds.Any(parent => productSettingIds.Any(productName => productName == parent))
-                && mappings != null
-                && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
+                && mappings != null && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList() :
+                            settings.Where(x => x.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+                && x.SettingValue.Equals("Multiple Sports", StringComparison.OrdinalIgnoreCase)).ToList();
+
             logService.LogInformation("End mapping subproduct.");
 
             return subProducts.Any()
@@ -672,19 +679,25 @@
         }
 
         private List<SystemSettingMapping> GetBettypes(
+            bool isMixParlay,
             string[] listBetTypes,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             logService.LogInformation("Begin mapping betType.");
             var betTypeMappings = new List<string>();
+
             foreach (var betType in listBetTypes)
             {
                 var betTypeName = commonFeedback.GetBettypeName(betType, Language.en_US);
                 betTypeMappings.Add(betTypeName);
             }
-            var bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+            var bettypes = isMixParlay ? settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
+                && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList() :
+                settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrWhiteSpace(mapping.SettingSource)
+                && mapping.SettingSource.Equals("Mix Parlay", StringComparison.OrdinalIgnoreCase)).ToList();
+
             logService.LogInformation("End mapping betType.");
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
