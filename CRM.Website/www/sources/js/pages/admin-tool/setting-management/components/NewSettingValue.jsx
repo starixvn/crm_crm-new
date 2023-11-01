@@ -19,7 +19,7 @@ export class NewSettingValue extends Component {
             settingName: values.settingName,
             settingValue: values.settingValue,
             extraInfo: values.extraInfo,
-            parentId: this.props.settingName !== '' ? 0 : parseInt(values.parentId, 10)
+            parentId: values.settingName === '' ? 0 : parseInt(values.parentId, 10)
         };
 
         this.props.insertNewSetting(params).then(() => {
