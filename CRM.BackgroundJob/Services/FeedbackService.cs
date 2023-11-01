@@ -14,7 +14,6 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
-    using Newtonsoft.Json;
 
     public interface IFeedbackService
     {
@@ -456,8 +455,6 @@
             if (duplicateTicketDetails.Any())
             {
                 messages = messages.Where(m => duplicateTicketDetails.Any(t => t.MessageId == m.MessageId && t.IsDeposit));
-                await logService.ErrorMessageAsync($"Duplicated ticket: {JsonConvert.SerializeObject(duplicateTicketDetails)}");
-                await logService.ErrorMessageAsync($"Transactions: {JsonConvert.SerializeObject(transactionInfos)}");
             }
             var joinMessageString = string.Join(",", messages.Select(x => x.MessageId));
 

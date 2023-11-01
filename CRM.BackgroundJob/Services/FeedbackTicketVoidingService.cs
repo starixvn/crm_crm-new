@@ -174,15 +174,17 @@
                     headlineId = headline != null ? headline.HeadlineId : 0;
                     relatedCustId = transaction.CustId;
                 }
-
-                var transactionInfo = new TransactionInfo
+                if (transaction.IsDeposit || (!transaction.IsDeposit && matchInfo?.IssueTypeId != duplicateType))
                 {
-                    CustId = transaction.CustId,
-                    RequestId = transaction.RequestId,
-                    MessageId = transaction.MessageId
-                };
+                    var transactionInfo = new TransactionInfo
+                    {
+                        CustId = transaction.CustId,
+                        RequestId = transaction.RequestId,
+                        MessageId = transaction.MessageId
+                    };
 
-                GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId, transaction.IsDeposit && matchInfo?.IssueTypeId == duplicateType ? transaction.CustId : relatedCustId);
+                    GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId, transaction.IsDeposit && matchInfo?.IssueTypeId == duplicateType ? transaction.CustId : relatedCustId);
+                }
             }
 
             stringBuilder.Append(Constants.EndRootTag);
@@ -226,7 +228,7 @@
             return await baseService.GetDataFromSiteDbAsync<TransactionInfo>(criteria);
         }
 
-        private StringBuilder GetXmlTemplate(StringBuilder stringBuilder, string xmlTemlate,
+        private void GetXmlTemplate(StringBuilder stringBuilder, string xmlTemlate,
            TransactionInfo transaction, MatchInfo matchInfo, int headlineId, int relatedCustId)
         {
             stringBuilder.AppendFormat(xmlTemlate,
@@ -237,7 +239,6 @@
                     relatedCustId,
                     string.Format("{0} -vs- {1}", HttpUtility.HtmlEncode(matchInfo?.HomeName), HttpUtility.HtmlEncode(matchInfo?.AwayName)),
                     matchInfo?.IssueTypeId);
-            return stringBuilder;
         }
     }
 }
