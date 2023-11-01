@@ -559,7 +559,10 @@
             stringBuilder.Append(Constants.Break);
             var stringBuilderTicket = new StringBuilder();
             var message = messages.First();
-            var noOfRefTickets = duplicateTicketDetails.Select(x => x.VoidedTransId).Distinct().ToList();
+
+            var origTransIds = string.Join(",", duplicateTicketDetails.Select(x => x.OrgTransIds));
+            var noOfRemainedTickets = origTransIds.Split(",").Distinct().Count();
+
             var duplicateGroupByUsernames = duplicateTicketDetails.GroupBy(x => x.Username);
             foreach (var duplicateTicket in duplicateGroupByUsernames.ToList())
             {
@@ -574,7 +577,7 @@
                 }
             }
 
-            stringBuilder.AppendFormat(templateDuplicate.Description, messageIds, requestIds, noOfRefTickets.Count,
+            stringBuilder.AppendFormat(templateDuplicate.Description, messageIds, requestIds, noOfRemainedTickets,
                    message.Content_en, message.Content_cs,
                    stringBuilderTicket.ToString(), Constants.Break, Constants.LineBreak);
 

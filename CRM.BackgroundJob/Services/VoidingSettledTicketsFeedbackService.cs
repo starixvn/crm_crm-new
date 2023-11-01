@@ -158,7 +158,6 @@
             var sportTypeIds = eventDetails.Select(x => x.Sporttype);
             var productIds = eventDetails.Select(x => x.ProductId).Distinct();
             var isMixParlay = eventDetails.All(e => MixParlayMatchIds.Contains(e.MatchId));
-            await logService.InfoMessageAsync($"IsMixParlay Void Settled Tickets: {isMixParlay}");
             var criteria = new CreateMutipleFeedbackCommand
             {
                 IsCheckedDefaultComm = true,
@@ -380,9 +379,14 @@
                 var betTypeName = commonFeedback.GetBettypeName(betType, Language.en_US);
                 betTypeMappings.Add(betTypeName);
             }
-            var bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+
+            var bettypes = isMixParlay ? settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrWhiteSpace(mapping.SettingSource)
+                && mapping.SettingSource.Equals("Mix Parlay", StringComparison.OrdinalIgnoreCase)).ToList() :
+                settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
+
             logService.LogInformation("End mapping betType.");
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
