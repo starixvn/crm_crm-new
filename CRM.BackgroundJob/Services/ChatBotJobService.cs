@@ -33,8 +33,6 @@
         Task PullMessageResultAmendmentAndSendNotificationToHeadlineAsync();
 
         Task PullMessagArchivingDAAndSendNotificationToHeadlineAsync();
-
-        Task RefundSettledTicketJobAsync();
     }
 
     public class ChatBotJobService : IChatBotJobService
@@ -48,7 +46,6 @@
         private readonly IChatBotProblemAccountService chatBotProblemAccountService;
         private readonly IChatBotResultAmendmentService chatBotResultAmendmentService;
         private readonly IChatBotArchivingDAService chatBotArchivingDAService;
-        private readonly IRefundSettledTicketService refundSettledTicketService;
         private readonly IBaseService baseService;
         private readonly string Environment;
 
@@ -81,7 +78,6 @@
             this.chatBotProblemAccountService = chatBotProblemAccountService;
             this.chatBotResultAmendmentService = chatBotResultAmendmentService;
             this.chatBotArchivingDAService = chatBotArchivingDAService;
-            this.refundSettledTicketService = refundSettledTicketService;
             this.baseService = baseService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
@@ -308,35 +304,6 @@
             }
             catch (Exception ex)
             {
-                await logService.ErrorAsync(ex);
-            }
-        }
-
-        public async Task RefundSettledTicketJobAsync()
-        {
-            try
-            {
-                RefundSystemSettingInfo refundSettledSetting = await systemSettingService.GetRefundSystemSettingAsync();
-                if (!refundSettledSetting.ServiceFlag)
-                {
-                    logService.LogInformation("Service Refund Settled Tickets is shutdown.");
-                    return;
-                }
-                var (message, messageContent) = await refundSettledTicketService.GetMessageRefundSettledTicketAsync(refundSettledSetting.LastMsgTarget, refundSettledSetting.BatchSize);
-                var (commandResult, command) = await refundSettledTicketService.ImportRefundSettledTicketAsync(message, messageContent, Environment);
-                if (commandResult.IsSuccessful)
-                {
-                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
-                }
-                else
-                {
-                    logService.LogInformation(commandResult.Message);
-                    await logService.ErrorAsync(commandResult, command);
-                }
-            }
-            catch (Exception ex)
-            {
-
                 await logService.ErrorAsync(ex);
             }
         }

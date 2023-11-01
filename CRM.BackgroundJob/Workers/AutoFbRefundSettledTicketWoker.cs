@@ -12,22 +12,22 @@
 
     public class AutoFbRefundSettledTicketWoker : BaseWorker
     {
-        private readonly IChatBotJobService chatBotJobService;
+        private readonly IAutoFeedbackService autoFeedbackService;
 
         public AutoFbRefundSettledTicketWoker(
-            IChatBotJobService chatBotJobService,
+            IAutoFeedbackService autoFeedbackService,
             IMaintenanceService maintenanceService,
             IOptions<List<JobSetting>> jobSettings,
             ICRMLogService logService)
                 : base(maintenanceService, logService)
         {
-            this.chatBotJobService = chatBotJobService;
+            this.autoFeedbackService = autoFeedbackService;
             jobSetting = JobHelper.GetJobConfig(jobSettings.Value, JobName.CreateFeedbackForRefundSettledTicket);
         }
 
         public override async Task ExecuteJobAsync()
         {
-            await chatBotJobService.RefundSettledTicketJobAsync();
+            await autoFeedbackService.RefundSettledTicketJobAsync();
         }
     }
 }

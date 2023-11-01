@@ -8,6 +8,7 @@
     using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.ArchivingDA;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
+    using global::CRM.BackgroundJob.Models.RefundSettledTicket;
     using global::CRM.BackgroundJob.Models.ResultAmendment;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.BackgroundJob.Services;
@@ -26,6 +27,7 @@
         Task SynchronizeNewLicenseeOICExecuteJobAsync();
         Task VoidingSettledTicketsExecuteJobAsync();
         Task ArchivingDAExecuteJobAsync();
+        Task RefundSettledTicketJobAsync();
     }
 
     public class AutoFeedbackService : IAutoFeedbackService
@@ -42,6 +44,8 @@
         private readonly ISynchronizeLicenseeService licenseeService;
         private readonly IVoidingSettledTicketsFeedbackService voidingSettledTicketsService;
         private readonly IArchivingDAService archivingDAService;
+        private readonly ISendNotificationService sendNotificationService;
+        private readonly IRefundSettledTicketService refundSettledTicketService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -61,6 +65,8 @@
             ISynchronizeLicenseeService licenseeService,
             IVoidingSettledTicketsFeedbackService voidingSettledTicketsService,
             IArchivingDAService archivingDAService,
+            ISendNotificationService sendNotificationService,
+            IRefundSettledTicketService refundSettledTicketService,
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -76,6 +82,8 @@
             this.licenseeService = licenseeService;
             this.voidingSettledTicketsService = voidingSettledTicketsService;
             this.archivingDAService = archivingDAService;
+            this.sendNotificationService = sendNotificationService;
+            this.refundSettledTicketService = refundSettledTicketService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -508,5 +516,33 @@
             }
         }
 
+        public async Task RefundSettledTicketJobAsync()
+        {
+            try
+            {
+                RefundSystemSettingInfo refundSettledSetting = await systemSettingService.GetRefundSystemSettingAsync();
+                if (!refundSettledSetting.ServiceFlag)
+                {
+                    logService.LogInformation("Service Refund Settled Tickets is shutdown.");
+                    return;
+                }
+                var (message, messageContent) = await refundSettledTicketService.GetMessageRefundSettledTicketAsync(refundSettledSetting.LastMsgTarget, refundSettledSetting.BatchSize);
+                var (commandResult, command) = await refundSettledTicketService.ImportRefundSettledTicketAsync(message, messageContent, Environment);
+                if (commandResult.IsSuccessful)
+                {
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
+                }
+                else
+                {
+                    logService.LogInformation(commandResult.Message);
+                    await logService.ErrorAsync(commandResult, command);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                await logService.ErrorAsync(ex);
+            }
+        }
     }
 }
