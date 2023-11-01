@@ -35,9 +35,8 @@
 
         private readonly string descTemplateXml = "VoidingSettledTicketDescriptionTemplate.xml";
         private readonly string solTemplateXml = "VoidingSettledTicketSolutionTemplate.xml";
-        private readonly int MatchId9 = 9;
-        private readonly int MatchId29 = 29;
-        private readonly int MatchId2799 = 2799;
+        private readonly int[] MixParlayMatchIds = new int[] { 9, 20, 2799 };
+
         private readonly int EventType2 = 2;
         private readonly int SportType180 = 180;
         private readonly int SportType186 = 186;
@@ -466,7 +465,7 @@
             var countAppendMainParlay = 0;
             foreach (var eventDetail in eventDetails)
             {
-                var isMainParlay = eventDetail.MatchId == MatchId9 || eventDetail.MatchId == MatchId29 || eventDetail.MatchId == MatchId2799;
+                var isMainParlay = MixParlayMatchIds.Contains(eventDetail.MatchId);
                 if (!isMainParlay)
                 {
                     if (countAppendTicket == 0)
