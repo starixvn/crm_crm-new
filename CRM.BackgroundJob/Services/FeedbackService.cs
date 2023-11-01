@@ -14,7 +14,6 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
-    using Newtonsoft.Json;
 
     public interface IFeedbackService
     {
@@ -564,7 +563,7 @@
                 stringBuilderTicket.Append("System ID: " + duplicateTicket.Key + Constants.Break);
                 foreach (var ticket in duplicateGroupByTransIdList)
                 {
-                    var refNoVoided = string.Join(", ", ticket.Select(x => x.VoidedTransId)).Distinct();
+                    var refNoVoided = string.Join(", ", ticket.Select(x => x.VoidedTransId).Distinct());
                     string remainTicket = ticket.Key.Split(',').Count() > 1 ? string.Empty : ticket.Key;
                     stringBuilderTicket.AppendFormat(templateDuplicate.EffectMemberTicketDesc, remainTicket, refNoVoided, Constants.Break, Constants.LineBreak);
                 }
@@ -592,10 +591,7 @@
             var listBetTypes = transactions.Select(t => t.BetTypeId.ToString());
             var productIds = transactions.Select(t => t.ProductId);
             var sportTypeIds = transactions.Select(t => t.SportTypeId);
-            logService.InfoMessageAsync(JsonConvert.SerializeObject(transactions));
             var isMixParlay = transactions.All(x => parlayBetTypeIds.Contains(x.BetTypeId));
-
-            logService.InfoMessageAsync($"Is MixParlay:{isMixParlay}");
 
             IList<SettingItem> products = GetProductByIds(settings, settingMappings, productIds);
             var productSettingIds = products.Select(x => x.SettingId);
@@ -666,11 +662,11 @@
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && sportNames.Any(sportName => mapping.SettingSource.Equals(sportName, StringComparison.OrdinalIgnoreCase))).ToList();
 
-            List<SettingItem> subProducts = isMixParlay ? settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+            List<SettingItem> subProducts = isMixParlay ? settings.Where(x => x.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+                && x.SettingValue.Equals("Multiple Sports", StringComparison.OrdinalIgnoreCase)).ToList() :
+                settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && sub.ParentIds.Any(parent => productSettingIds.Any(productName => productName == parent))
-                && mappings != null && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList() :
-                            settings.Where(x => x.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
-                && x.SettingValue.Equals("Multiple Sports", StringComparison.OrdinalIgnoreCase)).ToList();
+                && mappings != null && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
 
             logService.LogInformation("End mapping subproduct.");
 
@@ -697,10 +693,11 @@
             }
             var bettypes = isMixParlay ? settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList() :
+                && mapping.SettingSource.Equals("Mix Parlay", StringComparison.OrdinalIgnoreCase)).ToList() :
                 settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && mapping.SettingSource.Equals("Mix Parlay", StringComparison.OrdinalIgnoreCase)).ToList();
+                && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList()
+                ;
 
             logService.LogInformation("End mapping betType.");
             return bettypes != null && bettypes.Any()
