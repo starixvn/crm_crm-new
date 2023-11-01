@@ -453,14 +453,13 @@
             CreateFeedbackCommand criteria,
             IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
         {
-            await logService.ErrorMessageAsync($"Befor: {JsonConvert.SerializeObject(messages)}");
             if (duplicateTicketDetails.Any())
             {
                 messages = messages.Where(m => duplicateTicketDetails.Any(t => t.MessageId == m.MessageId && t.IsDeposit));
-                await logService.ErrorMessageAsync($"After: {JsonConvert.SerializeObject(messages)}");
+                await logService.ErrorMessageAsync($"Duplicated ticket: {JsonConvert.SerializeObject(duplicateTicketDetails)}");
+                await logService.ErrorMessageAsync($"Transactions: {JsonConvert.SerializeObject(transactionInfos)}");
             }
             var joinMessageString = string.Join(",", messages.Select(x => x.MessageId));
-            await logService.ErrorMessageAsync($"MessageID string: {joinMessageString}");
 
             IList<int> licenseeManagerIds = transactionInfos.Select(x => x.LicenseeManagerId).Distinct().ToList();
             int itemEachBatch = appSettings.NoOfRelatedCustomerPerFeedback;

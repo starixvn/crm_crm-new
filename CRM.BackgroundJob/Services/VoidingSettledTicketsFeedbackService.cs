@@ -35,7 +35,7 @@
 
         private readonly string descTemplateXml = "VoidingSettledTicketDescriptionTemplate.xml";
         private readonly string solTemplateXml = "VoidingSettledTicketSolutionTemplate.xml";
-        private readonly int[] MixParlayMatchIds = new int[] { 9, 20, 2799 };
+        private readonly int[] MixParlayMatchIds = new int[] { 9, 29, 2799 };
 
         private readonly int EventType2 = 2;
         private readonly int SportType180 = 180;
