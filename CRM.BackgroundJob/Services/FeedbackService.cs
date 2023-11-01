@@ -14,6 +14,7 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
 
     public interface IFeedbackService
     {
@@ -452,7 +453,8 @@
             CreateFeedbackCommand criteria,
             IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
         {
-            var joinMessageString = string.Join(",", messages.Select(x => x.MessageId));
+            var depositMsgs = messages.Where(m => duplicateTicketDetails.Any(i => i.IsDeposit && i.MessageId == m.MessageId && i.VoidingHistoryCollectionId == m.VoidingHistoryCollectionId));
+            var joinMessageString = string.Join(",", depositMsgs.Select(x => x.MessageId));
             IList<int> licenseeManagerIds = transactionInfos.Select(x => x.LicenseeManagerId).Distinct().ToList();
             int itemEachBatch = appSettings.NoOfRelatedCustomerPerFeedback;
             int totalBatch = (int)Math.Ceiling((double)licenseeManagerIds.Count() / itemEachBatch);
@@ -475,10 +477,10 @@
                 criteria.ListOrigCustIds = string.Join(",", custIds);
                 IEnumerable<int> requestIds = transactions.Select(x => x.RequestId).Distinct().ToList();
                 criteria.RequestIds = string.Join(",", requestIds);
-                var duplicateTickets = duplicateTicketDetails.Where(x => transactionInfos.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId));
+                var duplicateTickets = duplicateTicketDetails.Where(x => transactionInfos.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId) && x.IsDeposit);
 
                 criteria.Description = duplicateTickets.Any() ?
-                    GetDescriptionDuplicateForDepositeSite(duplicateTickets, messages, joinMessageString, string.Join(",", requestIds)) :
+                    GetDescriptionDuplicateForDepositeSite(duplicateTickets, depositMsgs, joinMessageString, string.Join(",", requestIds)) :
                     GetDescriptionForDepositeSite(joinMessageString, criteria.RequestIds);
                 try
                 {
@@ -563,7 +565,7 @@
                 stringBuilderTicket.Append("System ID: " + duplicateTicket.Key + Constants.Break);
                 foreach (var ticket in duplicateGroupByTransIdList)
                 {
-                    var refNoVoided = string.Join(", ", ticket.Select(x => x.VoidedTransId));
+                    var refNoVoided = string.Join(", ", ticket.Select(x => x.VoidedTransId)).Distinct();
                     string remainTicket = ticket.Key.Split(',').Count() > 1 ? string.Empty : ticket.Key;
                     stringBuilderTicket.AppendFormat(templateDuplicate.EffectMemberTicketDesc, remainTicket, refNoVoided, Constants.Break, Constants.LineBreak);
                 }
@@ -591,7 +593,7 @@
             var listBetTypes = transactions.Select(t => t.BetTypeId.ToString());
             var productIds = transactions.Select(t => t.ProductId);
             var sportTypeIds = transactions.Select(t => t.SportTypeId);
-
+            logService.LogInformation(JsonConvert.SerializeObject(transactions));
             var isMixParlay = transactions.All(x => parlayBetTypeIds.Contains(x.BetTypeId));
             IList<SettingItem> products = GetProductByIds(settings, settingMappings, productIds);
             var productSettingIds = products.Select(x => x.SettingId);
