@@ -37,7 +37,7 @@
         private const int abnormalAccount = 13;
         private const int mixParlayIssueTypeId = 11;
         private const int duplicatedTicketIssueTypeId = 20;
-        private readonly int[] parlayBetTypeIds = new int[] { 7, 29, 2799 };
+        private readonly int[] parlayBetTypeIds = new int[] { 9, 29, 2799 };
         private const string templateXml = "MixParlayTemplate.xml";
         private const string templateDuplicateXml = "FeedbackDuplicateTemplate.xml";
 
@@ -216,7 +216,7 @@
                     GetLicenseeManager(deposits, siteSettingMappings);
 
                     var messageByLicenseeManager = messageContents.Where(x => deposits.Any(y => y.MessageId == x.MessageId));
-                    var ticketDetailsByVoidingHistory = duplicateTicketDetails.Where(ticket => ticket.VoidingHistoryCollectionId == matchInfo.VoidingHistoryCollectionId);
+                    var ticketDetailsByVoidingHistory = duplicateTicketDetails.Where(ticket => ticket.VoidingHistoryCollectionId == matchInfo.VoidingHistoryCollectionId && ticket.IsDeposit);
                     await CreateFeedbackForDepositSiteAsync(
                         licenseeInfo,
                         messageByLicenseeManager,
@@ -453,8 +453,7 @@
             CreateFeedbackCommand criteria,
             IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
         {
-            var depositMsgs = messages.Where(m => duplicateTicketDetails.Any(i => i.IsDeposit && i.MessageId == m.MessageId && i.VoidingHistoryCollectionId == m.VoidingHistoryCollectionId));
-            var joinMessageString = string.Join(",", depositMsgs.Select(x => x.MessageId));
+            var joinMessageString = string.Join(",", messages.Select(x => x.MessageId));
             IList<int> licenseeManagerIds = transactionInfos.Select(x => x.LicenseeManagerId).Distinct().ToList();
             int itemEachBatch = appSettings.NoOfRelatedCustomerPerFeedback;
             int totalBatch = (int)Math.Ceiling((double)licenseeManagerIds.Count() / itemEachBatch);
@@ -480,7 +479,7 @@
                 var duplicateTickets = duplicateTicketDetails.Where(x => transactionInfos.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId) && x.IsDeposit);
 
                 criteria.Description = duplicateTickets.Any() ?
-                    GetDescriptionDuplicateForDepositeSite(duplicateTickets, depositMsgs, joinMessageString, string.Join(",", requestIds)) :
+                    GetDescriptionDuplicateForDepositeSite(duplicateTickets, messages, joinMessageString, string.Join(",", requestIds)) :
                     GetDescriptionForDepositeSite(joinMessageString, criteria.RequestIds);
                 try
                 {
@@ -593,8 +592,11 @@
             var listBetTypes = transactions.Select(t => t.BetTypeId.ToString());
             var productIds = transactions.Select(t => t.ProductId);
             var sportTypeIds = transactions.Select(t => t.SportTypeId);
-            logService.LogInformation(JsonConvert.SerializeObject(transactions));
+            logService.InfoMessageAsync(JsonConvert.SerializeObject(transactions));
             var isMixParlay = transactions.All(x => parlayBetTypeIds.Contains(x.BetTypeId));
+
+            logService.InfoMessageAsync($"Is MixParlay:{isMixParlay}");
+
             IList<SettingItem> products = GetProductByIds(settings, settingMappings, productIds);
             var productSettingIds = products.Select(x => x.SettingId);
 
