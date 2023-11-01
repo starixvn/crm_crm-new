@@ -36,6 +36,8 @@
         private IFeedbackService feedbackService;
         private IVoidingSettledTicketsFeedbackService voidingSettledTicketsService;
         private IArchivingDAService archivingDAService;
+        private ISendNotificationService sendNotificationService;
+        private IRefundSettledTicketService refundSettledTicketService;
 
         private readonly IFixture fixture = new Fixture();
 
@@ -1101,6 +1103,8 @@
             configuration = Substitute.For<IConfiguration>();
             voidingSettledTicketsService = Substitute.For<IVoidingSettledTicketsFeedbackService>();
             archivingDAService = Substitute.For<IArchivingDAService>();
+            sendNotificationService = Substitute.For<ISendNotificationService>();
+            refundSettledTicketService = Substitute.For<IRefundSettledTicketService>();
             return Substitute.For<AutoFeedbackServiceTestable>(
                 appJobSettings,
                 jobRunningChecker,
@@ -1114,6 +1118,8 @@
                 licenseeService,
                 voidingSettledTicketsService,
                 archivingDAService,
+                sendNotificationService,
+                refundSettledTicketService,
                 configuration);
         }
 

@@ -13,7 +13,6 @@
     using global::CRM.BackgroundJob.Models.ChatBotCWL;
     using global::CRM.BackgroundJob.Models.ChatBotProblemsAccount;
     using global::CRM.BackgroundJob.Models.ChatBotResulAmendment;
-    using global::CRM.BackgroundJob.Models.RefundSettledTicket;
     using global::CRM.BackgroundJob.Services;
     using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Models;
@@ -64,7 +63,6 @@
             IChatBotProblemAccountService chatBotProblemAccountService,
             IChatBotResultAmendmentService chatBotResultAmendmentService,
             IChatBotArchivingDAService chatBotArchivingDAService,
-            IRefundSettledTicketService refundSettledTicketService,
             IBaseService baseService
             )
 #pragma warning restore S107 // Methods should not have too many parameters
