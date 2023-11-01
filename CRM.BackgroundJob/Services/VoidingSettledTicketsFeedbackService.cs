@@ -157,6 +157,8 @@
             var category = GetCategorySubCategoryVoidingSettledTicket(settings, DefaultValue.ResultAmended, feedbackInfo.IssueTypeId);
             var sportTypeIds = eventDetails.Select(x => x.Sporttype);
             var productIds = eventDetails.Select(x => x.ProductId).Distinct();
+            var isMixParlay = eventDetails.All(e => MixParlayMatchIds.Contains(e.MatchId));
+            await logService.InfoMessageAsync($"IsMixParlay Void Settled Tickets: {isMixParlay}");
             var criteria = new CreateMutipleFeedbackCommand
             {
                 IsCheckedDefaultComm = true,
@@ -177,7 +179,7 @@
                 Subject = feedbackInfo.IssueTypeId == DuplicateTicketIssueTypeId ? DefaultValue.Special_Notification : DefaultValue.ResultAmended,
                 AutoField3 = $"{Environment.NewLine}System ID: ",
                 CustomerXml = string.Format(DefaultValue.CustomerXml, feedbackInfo.HeadlineId, feedbackInfo.HeadlineName),
-                ProductXml = GetVoidingSettledTicketsProductXml(productIds, sportTypeIds, feedbackInfo.Listbettype, settings, settingMappings),
+                ProductXml = GetVoidingSettledTicketsProductXml(isMixParlay, productIds, sportTypeIds, feedbackInfo.Listbettype, settings, settingMappings),
                 Solution = GetVoidingSettledTicketSolution(feedbackInfo, messages),
                 RelatedCustomerXml = GetRelatedCustomerXml(feedbackInfo),
                 MessageId = feedbackInfo.MessageId.ToString(),
@@ -235,6 +237,7 @@
         }
 
         protected internal virtual string GetVoidingSettledTicketsProductXml(
+            bool isMixParlay,
             IEnumerable<int> productIds,
             IEnumerable<short> sportTypeIds,
             string bettypes,
@@ -245,8 +248,8 @@
             var listBetTypes = bettypes.Split(",");
             IList<SettingItem> products = GetVoidingSettledTicketsProduct(settings, settingMappings, productIds);
             var productSettingIds = products.Select(x => x.SettingId);
-            IList<SettingItem> subProducts = GetVoidingSettledTicketsSubProduct(productSettingIds, sportTypeIds, settings, settingMappings);
-            IList<SystemSettingMapping> bettypesMapping = GetVoidingSettledTicketsBettype(listBetTypes, settingMappings);
+            IList<SettingItem> subProducts = GetVoidingSettledTicketsSubProduct(isMixParlay, productSettingIds, sportTypeIds, settings, settingMappings);
+            IList<SystemSettingMapping> bettypesMapping = GetVoidingSettledTicketsBettype(isMixParlay, listBetTypes, settingMappings);
             if (products.Any())
             {
                 foreach (SettingItem product in products)
@@ -332,6 +335,7 @@
         }
 
         protected internal virtual IList<SettingItem> GetVoidingSettledTicketsSubProduct(
+            bool isMixParlay,
             IEnumerable<int> productSettingIds,
             IEnumerable<short> sportTypeIds,
             IEnumerable<SettingItem> settings,
@@ -348,10 +352,12 @@
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
                 && sportNames.Any(sportName => mapping.SettingSource.Equals(sportName, StringComparison.OrdinalIgnoreCase))).ToList();
 
-            List<SettingItem> subProducts = settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+            List<SettingItem> subProducts = isMixParlay ? settings.Where(x => x.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
+                && x.SettingValue.Equals("Multiple Sports", StringComparison.OrdinalIgnoreCase)).ToList() :
+                settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && sub.ParentIds.Any(parent => productSettingIds.Any(productName => productName == parent))
-                && mappings != null
-                && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
+                && mappings != null && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
+
             logService.LogInformation("End mapping subproduct.");
 
             return subProducts.Any()
@@ -363,6 +369,7 @@
         }
 
         protected internal virtual List<SystemSettingMapping> GetVoidingSettledTicketsBettype(
+            bool isMixParlay,
             string[] listBetTypes,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
