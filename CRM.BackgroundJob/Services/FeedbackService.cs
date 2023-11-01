@@ -14,6 +14,7 @@
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
 
     public interface IFeedbackService
     {
@@ -452,7 +453,15 @@
             CreateFeedbackCommand criteria,
             IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
         {
+            await logService.ErrorMessageAsync($"Befor: {JsonConvert.SerializeObject(messages)}");
+            if (duplicateTicketDetails.Any())
+            {
+                messages = messages.Where(m => duplicateTicketDetails.Any(t => t.MessageId == m.MessageId && t.IsDeposit));
+                await logService.ErrorMessageAsync($"After: {JsonConvert.SerializeObject(messages)}");
+            }
             var joinMessageString = string.Join(",", messages.Select(x => x.MessageId));
+            await logService.ErrorMessageAsync($"MessageID string: {joinMessageString}");
+
             IList<int> licenseeManagerIds = transactionInfos.Select(x => x.LicenseeManagerId).Distinct().ToList();
             int itemEachBatch = appSettings.NoOfRelatedCustomerPerFeedback;
             int totalBatch = (int)Math.Ceiling((double)licenseeManagerIds.Count() / itemEachBatch);
@@ -478,7 +487,7 @@
                 var duplicateTickets = duplicateTicketDetails.Where(x => transactionInfos.Any(y => y.VoidingHistoryCollectionId == x.VoidingHistoryCollectionId) && x.IsDeposit);
 
                 criteria.Description = duplicateTickets.Any() ?
-                    GetDescriptionDuplicateForDepositeSite(duplicateTickets, messages, joinMessageString, string.Join(",", requestIds)) :
+                    GetDescriptionDuplicateForDepositeSite(duplicateTickets.Where(i => i.IsDeposit), messages, joinMessageString, string.Join(",", requestIds)) :
                     GetDescriptionForDepositeSite(joinMessageString, criteria.RequestIds);
                 try
                 {
