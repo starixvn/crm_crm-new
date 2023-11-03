@@ -249,7 +249,6 @@ export class Layout extends Component {
         await DataService.postDataAsync(url,params).then(response => {
             this.handleCheckCustomerInfo(response);
             window.dispatchEvent(new Event('resize'));
-            //document.body.style.overflow = 'auto';
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
