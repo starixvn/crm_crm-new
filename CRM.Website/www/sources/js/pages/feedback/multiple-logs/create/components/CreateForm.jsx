@@ -651,7 +651,7 @@ export class CreateForm extends Component {
                             <Col sm="4" md="4">
                                 <Form.Group className="pt-2 custom-form-group">
                                     <Form.Label className="custom-label required">{LangHelper.getResource('SubCategory')}</Form.Label>
-                                    <Form.Group className="custom-input">
+                                    <Form.Group className="custom-input icon-question">
                                         <MultipleSelect
                                             isInvalid={touched.subCategoryIds && errors.subCategoryIds}
                                             dataSource={subCategoryOptions}
