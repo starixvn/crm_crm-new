@@ -76,7 +76,7 @@ export default class Detail extends PureComponent {
                                     valueField='name'
                                 />
                                 <OverlayTrigger placement="bottom-start"
-                                    overlay={<Tooltip>{LangHelper.getResource('ViewCategoryClassification')}</Tooltip>}
+                                    overlay={<Tooltip id={'view-category-classification'}>{LangHelper.getResource('ViewCategoryClassification')}</Tooltip>}
                                 >
                                     <span onClick={() => window.open('/CategoryClassification')} className="fa fa-question-circle-o" />
                                 </OverlayTrigger>

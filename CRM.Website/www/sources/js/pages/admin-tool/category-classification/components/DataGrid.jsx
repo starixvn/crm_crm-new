@@ -24,8 +24,8 @@ export class DataGrid extends Component {
     buildHeader = isHost => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={17}>{LangHelper.getResource('Category')}</HeaderCell>
-                <HeaderCell colWidth={17}>{LangHelper.getResource('SubSCategory')}</HeaderCell>
+                <HeaderCell colWidth={18}>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={18}>{LangHelper.getResource('SubSCategory')}</HeaderCell>
                 <HeaderCell colWidth={70}>{LangHelper.getResource('Remark')}</HeaderCell>
                 {
                     isHost && <HeaderCell colWidth={5}>{LangHelper.getResource('Action')}</HeaderCell>
