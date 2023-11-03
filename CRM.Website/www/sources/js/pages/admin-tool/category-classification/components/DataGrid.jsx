@@ -28,7 +28,7 @@ export class DataGrid extends Component {
                 <HeaderCell colWidth={30}>{LangHelper.getResource('SubSCategory')}</HeaderCell>
                 <HeaderCell colWidth={70}>{LangHelper.getResource('Remark')}</HeaderCell>
                 {
-                    isHost && <HeaderCell colWidth={10}>{LangHelper.getResource('Action')}</HeaderCell>
+                    isHost && <HeaderCell colWidth={7}>{LangHelper.getResource('Action')}</HeaderCell>
                 }
             </HeaderRow>
         );
