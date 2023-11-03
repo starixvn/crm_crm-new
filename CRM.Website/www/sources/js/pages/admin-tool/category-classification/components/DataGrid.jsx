@@ -24,11 +24,11 @@ export class DataGrid extends Component {
     buildHeader = isHost => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={30}>{LangHelper.getResource('Category')}</HeaderCell>
-                <HeaderCell colWidth={30}>{LangHelper.getResource('SubSCategory')}</HeaderCell>
+                <HeaderCell colWidth={17}>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={22}>{LangHelper.getResource('SubSCategory')}</HeaderCell>
                 <HeaderCell colWidth={70}>{LangHelper.getResource('Remark')}</HeaderCell>
                 {
-                    isHost && <HeaderCell colWidth={7}>{LangHelper.getResource('Action')}</HeaderCell>
+                    isHost && <HeaderCell colWidth={6}>{LangHelper.getResource('Action')}</HeaderCell>
                 }
             </HeaderRow>
         );
