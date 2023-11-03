@@ -28,6 +28,10 @@ export class AppContainer extends Component {
         document.body.style.overflow = 'hidden';
     };
 
+    componentWillUnmount() {
+        document.body.style.overflow = 'visible';
+    };
+
     handleCloseEditPopup = () => {
         this.props.setEditCategoryClassPopup({ show: false });
         this.props.setCategoryClassId(null);
