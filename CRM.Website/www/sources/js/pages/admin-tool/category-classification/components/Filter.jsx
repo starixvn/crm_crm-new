@@ -71,7 +71,7 @@ export class Filter extends Component {
         }), async () => {
             if (isGetData) {
                 const params = this.getParams();
-                await new Promise(resolve => setTimeout(resolve, 200));
+                await new Promise(resolve => setTimeout(resolve, 400));
                 this.props.setGridParams(params);
                 this.props.getGridData(params);
             }
