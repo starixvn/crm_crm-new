@@ -586,7 +586,7 @@
 
         protected internal virtual SettingItem GetCommunicationTool(IEnumerable<SettingItem> settings, int issueTypeId)
         {
-            string settingValue = issueTypeId == duplicatedTicketIssueTypeId ? "Emails" : "Skype";
+            string settingValue = issueTypeId == duplicatedTicketIssueTypeId ? "Email" : "Skype";
             var communication = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.CommunicationTool, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(settingValue, StringComparison.OrdinalIgnoreCase));
 
