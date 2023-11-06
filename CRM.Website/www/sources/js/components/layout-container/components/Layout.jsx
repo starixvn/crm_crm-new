@@ -248,7 +248,6 @@ export class Layout extends Component {
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
         await DataService.postDataAsync(url,params).then(response => {
             this.handleCheckCustomerInfo(response);
-            window.dispatchEvent(new Event('resize'));
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 

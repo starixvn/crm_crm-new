@@ -68,9 +68,10 @@ export class Filter extends Component {
                 mainCategoriesTypes: mainCategoriesTypesId.toString(),
                 subCategoriesTypes: filterSubCategoriesTypesId.toString()
             }
-        }), () => {
+        }), async () => {
             if (isGetData) {
                 const params = this.getParams();
+                await new Promise(resolve => setTimeout(resolve, 200));
                 this.props.setGridParams(params);
                 this.props.getGridData(params);
             }

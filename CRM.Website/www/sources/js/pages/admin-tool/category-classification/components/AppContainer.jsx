@@ -25,11 +25,6 @@ export class AppContainer extends Component {
             this.setState({policy: response});
         });
         document.title = LangHelper.getResource('CategoryClassification');
-        document.body.style.overflow = 'hidden';
-    };
-
-    componentWillUnmount() {
-        document.body.style.overflow = 'visible';
     };
 
     handleCloseEditPopup = () => {
