@@ -49,7 +49,7 @@
 
         Task<ArchivingDASetting> GetArchivingDASettingAsync();
 
-        Task<RefundSystemSettingInfo> GetRefundSystemSettingAsync();
+        Task<RefundSystemSettingInfo> GetRefundSystemSettingAsync(string environment);
     }
 
     public class SystemSettingService : ISystemSettingService
@@ -142,9 +142,13 @@
             return await baseService.GetDataEntityAsync<ArchivingDASetting>(criteria);
         }
 
-        public async Task<RefundSystemSettingInfo> GetRefundSystemSettingAsync()
+        public async Task<RefundSystemSettingInfo> GetRefundSystemSettingAsync(string environment)
         {
-            var criteria = new GetRefundSystemSettingCriteria();
+            var criteria = new GetRefundSystemSettingCriteria
+            {
+                ServiceName = "AutoFB - Refund Settled tickets",
+                Environment = environment
+            };
             return await baseService.GetDataEntityAsync<RefundSystemSettingInfo>(criteria);
         }
     }

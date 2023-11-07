@@ -520,7 +520,7 @@
         {
             try
             {
-                RefundSystemSettingInfo refundSettledSetting = await systemSettingService.GetRefundSystemSettingAsync();
+                RefundSystemSettingInfo refundSettledSetting = await systemSettingService.GetRefundSystemSettingAsync(Environment);
                 if (!refundSettledSetting.ServiceFlag)
                 {
                     logService.LogInformation("Service Refund Settled Tickets is shutdown.");
