@@ -19,6 +19,7 @@
     {
         private ISettingService settingService;
         private ICategoryClassificationService categoryClassificationService;
+        private readonly IExportExcelService excelService;
 
         [Fact]
         public async Task GetAllSettings_WhenCalled_ReturnExpectedDataAsync()
@@ -75,7 +76,8 @@
         {
             categoryClassificationService = Substitute.For<ICategoryClassificationService>();
             settingService = Substitute.For<ISettingService>();
-            return new CategoryClassificationController(settingService, categoryClassificationService);
+            excelService = Substitute.For<IExportExcelService>();
+            return new CategoryClassificationController(settingService, categoryClassificationService, excelService);
         }
         #endregion Helpers
     }

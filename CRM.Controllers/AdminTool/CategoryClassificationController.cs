@@ -75,7 +75,7 @@
             IEnumerable<CategoryClassification> categoryClassifications = await categoryClassificationService.GetCategoryClassificationAsync(param);
             var groupCategory = categoryClassifications.GroupBy(x => x.MainCategoryID);
 
-            var bytes = excelService.ExportChatTypeMapping(groupCategory);
+            var bytes = excelService.ExportCategoryClassification(categoryClassifications);
             return File(bytes, MimeType.XLSX, $"{ViewResources.CategoryClassification}.xlsx");
         }
     }

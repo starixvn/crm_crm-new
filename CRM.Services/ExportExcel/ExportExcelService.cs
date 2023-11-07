@@ -297,7 +297,7 @@
         {
             const string ExcelTemplatePath = "ExcelTemplates/CategoryClassification.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
-            var excel = new ChatTypeMappingExcel(templatePath, categoryClassifications);
+            var excel = new CategoryClassificationExcel(templatePath, categoryClassifications);
             return excel.Export();
         }
     }

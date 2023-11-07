@@ -13,14 +13,6 @@
         private const byte RowStartHeaderChatType = 4;
         private const byte RowStartBody = 5;
         private const byte TotalColumnsChatType = 3;
-        private const byte WidthExtraSmall = 7;
-        private const byte WidthSmall = 10;
-        private const byte WidthNormal = 15;
-        private const byte WidthLarge = 25;
-        private const byte ColIndexMergeDefault = 7;
-        private const byte mappingGroup = 1;
-
-        private int rowIndex = RowStartBody;
 
         private readonly IEnumerable<CategoryClassification> categoryClassifications;
 
@@ -54,13 +46,6 @@
 
         protected internal virtual void RenderRow(CategoryClassification category, int rowNum, ExcelWorksheet worksheet)
         {
-            var colIndex = 1;
-
-            worksheet.Cells[rowIndex, colIndex++].Value = rowNum;
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChannelName;
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.BotName;
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.ChatType;
-            worksheet.Cells[rowIndex, colIndex++].Value = chatType.DisplayName;
         }
     }
 }
