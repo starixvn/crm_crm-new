@@ -151,6 +151,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category Classification.
+        /// </summary>
+        public static string CategoryClassification {
+            get {
+                return ResourceManager.GetString("CategoryClassification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Changes Log.
         /// </summary>
         public static string ChangesLog {

@@ -5,6 +5,8 @@ import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -73,6 +75,26 @@ export class DataGrid extends Component {
         this.props.getGridData(params);
     };
 
+    renderExportExcel = () => {
+        return (
+            <OverlayTrigger
+                placement="auto"
+                overlay={
+                    <Tooltip>
+                        <span>Export to Excel</span>
+                    </Tooltip>
+                }
+            >
+                <span className="fa fa-file-excel-o icon-excel" onClick={this.handleExportExcel} />
+            </OverlayTrigger>
+        );
+    };
+
+    handleExportExcel = () => {
+        const { gridParams } = this.props;
+        this.props.exportExcel(gridParams);
+    };
+
     render() {
         if (!this.props.gridData || !this.props.gridData.data) {
             return null;
@@ -90,7 +112,12 @@ export class DataGrid extends Component {
         };
         return (
             <Fragment>
-                <div className='table-title'>{LangHelper.getResource('CategoryClassification')}</div>
+                <div className='table-title d-flex justify-content-between align-items-center'>
+                    {LangHelper.getResource('CategoryClassification')}
+                    {
+                        this.props.gridData.data.length > 0 && this.renderExportExcel()
+                    }
+                </div>
                 <Table
                     minWidth={960}
                     maxWidth={document.getElementById('right-row-container').clientWidth}

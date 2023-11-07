@@ -37,6 +37,15 @@ const editCategoryClass = data => async dispatch => {
     }).catch(Site.handleAxiosError);
 };
 
+const exportExcel = () => async () => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('CategoryClassification/ExportExcel');
+    await DataService.getFileAsync(url).then(response => {
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
+        Site.downloadFile(response.data, fileName);
+    }).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
     setGridParams,
     setGridData,
@@ -47,5 +56,6 @@ export const ActionCreators = {
     editCategoryClass,
     setEditCategoryClassPopup,
     setEditCategoryClassResult,
-    setDeleteCategoryClassPopup
+    setDeleteCategoryClassPopup,
+    exportExcel
 };

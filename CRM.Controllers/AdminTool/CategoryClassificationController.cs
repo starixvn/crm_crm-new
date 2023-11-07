@@ -6,7 +6,10 @@
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Models;
+    using CRM.Criteria.Feedback;
     using CRM.Models.AdminTool.CategoryClassification;
+    using CRM.Models.Feedback;
+    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.AdminTool;
     using Microsoft.AspNetCore.Mvc;
@@ -16,14 +19,17 @@
     {
         private readonly ISettingService settingService;
         private readonly ICategoryClassificationService categoryClassificationService;
+        private readonly IExportExcelService excelService;
 
         public CategoryClassificationController(
             ISettingService settingService,
-            ICategoryClassificationService categoryClassificationService
+            ICategoryClassificationService categoryClassificationService,
+            IExportExcelService excelService
         )
         {
             this.settingService = settingService;
             this.categoryClassificationService = categoryClassificationService;
+            this.excelService = excelService;
         }
 
         public async Task<IActionResult> GetAllSettings()
@@ -61,6 +67,16 @@
         {
             CommandResult commandResult = await categoryClassificationService.EditCategoryClassificationAsync(model);
             return Json(commandResult);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportExcel([FromBody] GetCategoryClassification param)
+        {
+            IEnumerable<CategoryClassification> categoryClassifications = await categoryClassificationService.GetCategoryClassificationAsync(param);
+            var groupCategory = categoryClassifications.GroupBy(x => x.MainCategoryID);
+
+            var bytes = excelService.ExportChatTypeMapping(groupCategory);
+            return File(bytes, MimeType.XLSX, $"{ViewResources.CategoryClassification}.xlsx");
         }
     }
 }

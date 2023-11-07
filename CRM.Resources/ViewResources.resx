@@ -609,4 +609,7 @@
   <data name="NoSessionAvailable" xml:space="preserve">
     <value>No session available, please refresh and try again!</value>
   </data>
+  <data name="CategoryClassification" xml:space="preserve">
+    <value>Category Classification</value>
+  </data>
 </root>

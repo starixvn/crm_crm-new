@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using CRM.Models;
+    using CRM.Models.AdminTool.CategoryClassification;
     using CRM.Models.ChatTypeMapping;
     using CRM.Models.Feedback;
     using CRM.Models.InformHeadline;
@@ -81,6 +82,8 @@
         byte[] ExportRedemptionStatisticsDetail(IEnumerable<RedemptionStatisticsDetailEntity> redemptionStatisticsDetails);
 
         byte[] ExportCustomerReport(CustomerReportInfo customerReportInfo);
+
+        byte[] ExportCategoryClassification(IEnumerable<CategoryClassification> categoryClassifications);
     }
 
     public class ExportExcelService : IExportExcelService
@@ -288,6 +291,14 @@
             var excel = new WagerReportExcel(templatePath, wagerreportInfo, year);
             return excel.Export();
             
+        }
+
+        public byte[] ExportCategoryClassification(IEnumerable<CategoryClassification> categoryClassifications)
+        {
+            const string ExcelTemplatePath = "ExcelTemplates/CategoryClassification.xlsx";
+            var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
+            var excel = new ChatTypeMappingExcel(templatePath, categoryClassifications);
+            return excel.Export();
         }
     }
 }

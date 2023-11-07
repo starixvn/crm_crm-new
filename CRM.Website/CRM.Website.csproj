@@ -76,6 +76,9 @@
         <ProjectReference Include="..\CRM.Services\CRM.Services.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <None Update="ExcelTemplates\CategoryClassification.xlsx">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
         <None Update="ExcelTemplates\CustomerReport.xlsx">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
