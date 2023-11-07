@@ -192,6 +192,7 @@
             services.AddHostedService<AutoFbArchivingDAWoker>();
             services.AddHostedService<AutoChatbotArchivingDAWoker>();
             services.AddHostedService<LetstalkHealthCheckWorker>();
+            services.AddHostedService<AutoFbRefundSettledTicketWoker>();
         }
 
         private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
