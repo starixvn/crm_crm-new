@@ -10,7 +10,7 @@
 
         public int BatchSize { get; set; }
 
-        public int LastMsgTarget { get; set; }
+        public int LastMsgTargetId { get; set; }
 
         public bool IncludeUUSCurency { get; set; }
 

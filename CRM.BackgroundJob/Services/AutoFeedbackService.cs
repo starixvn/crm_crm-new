@@ -526,7 +526,7 @@
                     logService.LogInformation("Service Refund Settled Tickets is shutdown.");
                     return;
                 }
-                var (messageContent, message) = await refundSettledTicketService.GetMessageRefundSettledTicketAsync(refundSettledSetting.LastMsgTarget, refundSettledSetting.BatchSize);
+                var (messageContent, message) = await refundSettledTicketService.GetMessageRefundSettledTicketAsync(refundSettledSetting.LastMsgTargetId, refundSettledSetting.BatchSize);
                 var (commandResult, command) = await refundSettledTicketService.ImportRefundSettledTicketAsync(messageContent, message, Environment);
                 if (commandResult.IsSuccessful)
                 {
