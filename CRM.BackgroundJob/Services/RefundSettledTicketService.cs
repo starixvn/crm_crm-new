@@ -14,7 +14,7 @@
     {
         Task<ValueTuple<IEnumerable<MessageRefundSettledTicket>, IEnumerable<MessageVoidSettled>>> GetMessageRefundSettledTicketAsync(int lastMsgTargetId, int batchSize);
 
-        Task<ValueTuple<CommandResult, InsertRefundSettledTicketCommand>> ImportRefundSettledTicketAsync(IEnumerable<MessageRefundSettledTicket> message, IEnumerable<MessageVoidSettled> messageContent, string environment);
+        Task<ValueTuple<CommandResult, InsertRefundSettledTicketCommand>> ImportRefundSettledTicketAsync(IEnumerable<MessageRefundSettledTicket> messageContent, IEnumerable<MessageVoidSettled> message, string environment);
     }
 
     public class RefundSettledTicketService : IRefundSettledTicketService
@@ -36,7 +36,7 @@
             return await baseService.FetchMultipleAsync<MessageRefundSettledTicket, MessageVoidSettled>(criteria);
         }
 
-        public async Task<ValueTuple<CommandResult, InsertRefundSettledTicketCommand>> ImportRefundSettledTicketAsync(IEnumerable<MessageRefundSettledTicket> message, IEnumerable<MessageVoidSettled> messageContent, string environment)
+        public async Task<ValueTuple<CommandResult, InsertRefundSettledTicketCommand>> ImportRefundSettledTicketAsync(IEnumerable<MessageRefundSettledTicket> messageContent, IEnumerable<MessageVoidSettled> message, string environment)
         {
             var command = new InsertRefundSettledTicketCommand
             {
