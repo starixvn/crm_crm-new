@@ -42,7 +42,7 @@
 
         public async Task<IEnumerable<MessageVoidSettled>> GetMessageVoidSettledAsync()
         {
-            var criteria = new GetMesssagesVoidSettledCriteria();
+            var criteria = new GetMesssagesVoidingSettledCriteria();
             return await baseService.GetDataAsync<MessageVoidSettled>(criteria);
         }
 
@@ -93,7 +93,7 @@
 
         public async Task<IEnumerable<MessageVoidSettled>> VoidingMessageGetSettledTicketAsync(IEnumerable<MessageVoidSettled> messageVoidSettleds)
         {
-            var criteria = new VoidingMessageGetSettledTicket
+            var criteria = new VoidingGetSettledTicketMessageCriteria
             {
                 Message = messageVoidSettleds.ToXML("root").ToString()
             };
