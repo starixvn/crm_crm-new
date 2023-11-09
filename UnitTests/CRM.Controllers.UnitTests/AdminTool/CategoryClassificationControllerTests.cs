@@ -7,7 +7,6 @@
     using CRM.Controllers.AdminTool;
     using CRM.Core.Constants;
     using CRM.Models.AdminTool.CategoryClassification;
-    using CRM.Models.AdminTool.CommunicationToolSetting;
     using CRM.Models.Setting;
     using CRM.Services;
     using CRM.Services.AdminTool;
@@ -19,7 +18,7 @@
     {
         private ISettingService settingService;
         private ICategoryClassificationService categoryClassificationService;
-        private readonly IExportExcelService excelService;
+        private IExportExcelService excelService;
 
         [Fact]
         public async Task GetAllSettings_WhenCalled_ReturnExpectedDataAsync()
@@ -34,8 +33,8 @@
                 new Setting {Id = 1, Name = "test"}
             };
             var controller = GetController();
-            settingService.GetMainCategoryAsync().Returns(mainCategories);
-            settingService.GetSubCategoryAsync().Returns(subCategories);
+            settingService.GetMainCategoryAsync(SettingConstants.Active).Returns(mainCategories);
+            settingService.GetSubCategoryAsync(active: SettingConstants.Active).Returns(subCategories);
 
             // Act
             var result = await controller.GetAllSettings();
