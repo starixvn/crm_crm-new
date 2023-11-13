@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text.RegularExpressions;
     using CRM.Models.AdminTool.CategoryClassification;
     using CRM.Resources;
+    using HtmlAgilityPack;
     using OfficeOpenXml;
 
     public class CategoryClassificationExcel : ExcelBase
@@ -57,9 +57,16 @@
         {
             var colIndex = 2;
             worksheet.Cells[rowIndexChild, colIndex++].Value = category.SubCategory;
-            worksheet.Cells[rowIndexChild, colIndex].Value = category.Remark != null ? Regex.Replace(category.Remark, "<.*?>", string.Empty) : category.Remark;
-
+            worksheet.Cells[rowIndexChild, colIndex].Value = category.Remark != null ? ConvertHtmlToPlainText(category.Remark) : category.Remark;
             rowIndexChild++;
+        }
+
+        private static string ConvertHtmlToPlainText(string html)
+        {
+            HtmlDocument doc = new();
+            doc.LoadHtml(html);
+
+            return doc.DocumentNode.InnerText;
         }
 
         protected internal virtual void StyleMergeCell(ExcelWorksheet worksheet, int startRow, int colIndex, int endRow)
@@ -81,7 +88,7 @@
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const int WidthNormal = 30;
-            const int RowHeight = 60;
+            const int RowHeight = 15;
             const int WidthLarge = 80;
             const int ColumnCategory = 1;
             const int ColumnSubCategory = 2;
