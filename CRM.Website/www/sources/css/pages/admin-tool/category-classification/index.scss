@@ -1,5 +1,6 @@
 .category-classification {
     .form-filter {
+        max-width: 1200px !important;
         .form-row {
             .form-group {
                 width: 320px;
@@ -9,6 +10,10 @@
             }    
         }
     }
+    
+    .page-container, .table-title{
+        max-width: 1200px !important;
+    }
 
     table {
         td {
@@ -17,7 +22,7 @@
     }
     
     .multiple-select-options-container {
-        width: 300px;
+        width: 320px;
     }
     
     @media (min-width: 768px) {

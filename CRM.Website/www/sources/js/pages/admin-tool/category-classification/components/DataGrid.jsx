@@ -26,11 +26,11 @@ export class DataGrid extends Component {
     buildHeader = isHost => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={18}>{LangHelper.getResource('Category')}</HeaderCell>
-                <HeaderCell colWidth={18}>{LangHelper.getResource('SubSCategory')}</HeaderCell>
-                <HeaderCell colWidth={70}>{LangHelper.getResource('Remark')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('Category')}</HeaderCell>
+                <HeaderCell colWidth={20}>{LangHelper.getResource('SubSCategory')}</HeaderCell>
+                <HeaderCell colWidth={60}>{LangHelper.getResource('Remark')}</HeaderCell>
                 {
-                    isHost && <HeaderCell colWidth={5}>{LangHelper.getResource('Action')}</HeaderCell>
+                    isHost && <HeaderCell colWidth={7}>{LangHelper.getResource('Action')}</HeaderCell>
                 }
             </HeaderRow>
         );
@@ -119,9 +119,9 @@ export class DataGrid extends Component {
                     }
                 </div>
                 <Table
-                    minWidth={960}
-                    maxWidth={document.getElementById('right-row-container').clientWidth}
-                    autoWidth
+                    width={1200}
+                    autoWidth={false}
+                    containerPadding={0}
                     header={this.buildHeader(isHost)}
                     body={this.buildBody(isHost)}
                     isPaging

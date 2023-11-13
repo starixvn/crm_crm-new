@@ -227,14 +227,12 @@ export class Filter extends Component {
                             onChange={this.handleChangeRemark}
                         />
                     </Form.Group>
-                    <Form.Group>
-                        <Button className="mr-4" variant="primary"
-                            size="sm" type="submit"
-                            onClick={this.handleSubmit}
-                        >
-                            <UnderlineButton.submitButton />
-                        </Button>
-                    </Form.Group>
+                    <Button className="mr-4" variant="primary"
+                        size="sm" type="submit"
+                        onClick={this.handleSubmit}
+                    >
+                        <UnderlineButton.submitButton />
+                    </Button>
                 </Form.Row>
             </Form>
         );
