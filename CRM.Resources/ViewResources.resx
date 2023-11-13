@@ -610,6 +610,6 @@
     <value>No session available, please refresh and try again!</value>
   </data>
   <data name="CategoryClassification" xml:space="preserve">
-    <value>Category Classification</value>
+    <value>CategoryClassification</value>
   </data>
 </root>

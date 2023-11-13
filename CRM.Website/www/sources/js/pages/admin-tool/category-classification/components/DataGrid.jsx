@@ -114,6 +114,9 @@ export class DataGrid extends Component {
             <Fragment>
                 <div className='table-title d-flex justify-content-between align-items-center'>
                     {LangHelper.getResource('CategoryClassification')}
+                    {
+                        this.props.gridData.data.length > 0 && this.renderExportExcel()
+                    }
                 </div>
                 <Table
                     minWidth={960}

@@ -151,7 +151,7 @@ namespace CRM.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Category Classification.
+        ///   Looks up a localized string similar to CategoryClassification.
         /// </summary>
         public static string CategoryClassification {
             get {

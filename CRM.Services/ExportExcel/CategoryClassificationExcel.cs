@@ -2,17 +2,18 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using CRM.Models.AdminTool.CategoryClassification;
-    using CRM.Models.ChatTypeMapping;
     using CRM.Resources;
     using OfficeOpenXml;
-    using OfficeOpenXml.Style;
 
     public class CategoryClassificationExcel : ExcelBase
     {
         private const byte RowStartHeaderChatType = 4;
         private const byte RowStartBody = 5;
         private const byte TotalColumnsChatType = 3;
+        private int rowIndex = RowStartBody;
+        private int rowIndexChild = RowStartBody;
 
         private readonly IEnumerable<CategoryClassification> categoryClassifications;
 
@@ -36,16 +37,69 @@
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            var rowNum = 0;
-            foreach (var category in categoryClassifications)
+            var colIndex = 1;
+            var groupCategory = categoryClassifications.GroupBy(x => x.MainCategoryID);
+
+            foreach (var category in groupCategory)
             {
-                rowNum++;
-                RenderRow(category, rowNum, worksheet);
+                var numberChildCate = category.Count();
+                StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + numberChildCate - 1);
+                worksheet.Cells[rowIndex, colIndex].Value = category.First().MainCategory;
+                foreach (var item in category)
+                {
+                    RenderRow(item, worksheet);
+                }
+                rowIndex = rowIndex + numberChildCate;
             }
         }
 
-        protected internal virtual void RenderRow(CategoryClassification category, int rowNum, ExcelWorksheet worksheet)
+        protected internal virtual void RenderRow(CategoryClassification category, ExcelWorksheet worksheet)
         {
+            var colIndex = 2;
+            worksheet.Cells[rowIndexChild, colIndex++].Value = category.SubCategory;
+            worksheet.Cells[rowIndexChild, colIndex].Value = category.Remark != null ? Regex.Replace(category.Remark, "<.*?>", string.Empty) : category.Remark;
+
+            rowIndexChild++;
+        }
+
+        protected internal virtual void StyleMergeCell(ExcelWorksheet worksheet, int startRow, int colIndex, int endRow)
+        {
+            worksheet.Cells[startRow, colIndex, endRow, colIndex].Merge = true;
+        }
+
+        protected internal override void ProcessUI(ExcelWorksheet worksheet)
+        {
+            SetStyle(worksheet);
+            SetWidthColumn(worksheet);
+        }
+
+        protected internal virtual void SetStyle(ExcelWorksheet worksheet)
+        {
+            StyleDefault(worksheet);
+        }
+
+        protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
+        {
+            const int WidthNormal = 30;
+            const int RowHeight = 60;
+            const int WidthLarge = 80;
+            const int ColumnCategory = 1;
+            const int ColumnSubCategory = 2;
+            const int ColumnRemark = 3;
+            const int TotalColumn = 3;
+            worksheet.DefaultColWidth = WidthLarge;
+            worksheet.Cells.AutoFitColumns();
+
+            worksheet.Column(ColumnCategory).Width = WidthNormal;
+            worksheet.Column(ColumnSubCategory).Width = WidthNormal;
+            worksheet.Column(ColumnRemark).Width = WidthLarge;
+            worksheet.Column(ColumnRemark).AutoFit();
+
+            for (var index = 0; index < categoryClassifications.Count(); index++)
+            {
+                worksheet.Row(RowStartBody + index).Height = RowHeight;
+                DrawBorderCell(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalColumn]);
+            }
         }
     }
 }
