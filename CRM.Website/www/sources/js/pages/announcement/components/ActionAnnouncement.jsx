@@ -521,6 +521,7 @@ export class ActionAnnouncement extends Component {
                             <div className="list-title"> {LangHelper.getResource('Username')}</div>
                             <div className="list-info">{usernames ? usernames.replaceAll(',', ', ') : ''}</div>
                         </div>
+                        <div className="num-usernames">{LangHelper.getResource('NoOfUsernames')}: {usernames.split(',').length}</div>
                     </div>
                 </div>
                 <div className="group-item">
@@ -675,6 +676,7 @@ export class ActionAnnouncement extends Component {
                                     </div>
                                     <Form.Label className="notice-line">
                                         {LangHelper.getResource('GroupHeadlineEnterNotice')}
+                                        <p>{LangHelper.getResource('NoOfUsernames')}: {this.state.headlineGroups.length}</p>
                                     </Form.Label>
                                 </Form.Group>
                             </div>

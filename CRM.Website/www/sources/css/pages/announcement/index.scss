@@ -255,6 +255,10 @@
 
     .group-content {
       padding: 12px;
+
+      .num-usernames {
+        text-align: right;
+      }
     }
   }
 
@@ -560,6 +564,8 @@
 
           .notice-line {
             margin: 6px 0 0;
+            display: flex;
+            justify-content: space-between;
           }
         }
 

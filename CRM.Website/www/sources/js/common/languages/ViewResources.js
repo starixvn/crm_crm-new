@@ -367,6 +367,7 @@
     NotificationTypeRequired: 'Notification Type is required!',
     NotRefresh: 'Not refresh',
     NoOfInquiries: 'No. of Inquiries',
+    NoOfUsernames: 'No. of usernames',
     None: 'None',
     Now: 'Now',
     NoPermission: 'You don\'t have permission on this function!',
