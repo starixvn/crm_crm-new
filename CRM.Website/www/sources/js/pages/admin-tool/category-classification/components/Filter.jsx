@@ -170,7 +170,7 @@ export class Filter extends Component {
         return { isValid, errResult };
     };
 
-    handleSubmit = async event => {
+    handleSubmit = event => {
         event.preventDefault();
         if (this.isValidParams().isValid) {
             const params = this.getParams();
