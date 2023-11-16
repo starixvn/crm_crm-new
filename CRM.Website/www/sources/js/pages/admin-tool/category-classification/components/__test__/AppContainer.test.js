@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
 import { toast } from 'react-toastify';
 import LangHelper from '@jsroot/common/langHelper';
-import toJson from 'enzyme-to-json';
 import * as shareScripts from '@jsroot/common/shareScripts';
 
 jest.mock('react-toastify');

@@ -1,11 +1,9 @@
 import React from 'react';
 import LangHelper from '@jsroot/common/langHelper';
-import FilterWrapper, { Filter } from '../Filter';
+import { Filter } from '../Filter';
 import { shallow, mount } from 'enzyme';
-import configureMockStore from 'redux-mock-store';
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import toJson from 'enzyme-to-json';
 import { toast } from 'react-toastify';
 
 jest.mock('react-toastify');
