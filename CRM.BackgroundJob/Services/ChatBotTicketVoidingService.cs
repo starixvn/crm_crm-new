@@ -27,17 +27,21 @@
 
         Task<IEnumerable<Message>> GetMessageInfoAsync(IEnumerable<VoidingMessage> voidingMessages);
 
-        Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int>> GetTicketVoidingInfoAsync(
+        Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int>> GetTicketVoidingInfoAsync(
             IEnumerable<ChatBotUserNameList> userNames,
             string environment,
-            bool IncludeUUSCurrency
+            bool IncludeUUSCurrency,
+            IEnumerable<ChatBotVoidingBetIdHistory> voidingBetIdMessages
             );
 
         Task<ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>> ImportTicketVoidingAsync(
            IEnumerable<Message> messages,
            IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
            int MAXVoidingHistoryCollectionId,
+           int MAXMsgTargetId,
            string Environment = Constants.DefaultEnvironment);
+
+        Task<IEnumerable<ChatBotVoidingBetIdHistory>> GetVoidingBetIdMessageAsync(int lastMsgTargetId, int batchSize);
     }
 
     public class ChatBotTicketVoidingService : IChatBotTicketVoidingService
@@ -103,26 +107,29 @@
             return messages;
         }
 
-        public async Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int>> GetTicketVoidingInfoAsync(
+        public async Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int>> GetTicketVoidingInfoAsync(
             IEnumerable<ChatBotUserNameList> userNames,
             string environment,
-            bool IncludeUUSCurrency
+            bool IncludeUUSCurrency,
+            IEnumerable<ChatBotVoidingBetIdHistory> voidingBetIdMessages
             )
         {
             var criteria = new GetChatBotTicketVoidingInfoCriteria
             {
                 Messages = userNames.ToXML("root").ToString(),
                 Environment = environment,
-                IncludeUUSCurrency = IncludeUUSCurrency
+                IncludeUUSCurrency = IncludeUUSCurrency,
+                Messages_VoidByBetID = voidingBetIdMessages.ToXML("root").ToString()
             };
             var data = await baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, VoidingMessage>(criteria);
-            return new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int> (data.Item1, data.Item2, criteria.MAXVoidingHistoryCollectionId);
+            return new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int> (data.Item1, data.Item2, criteria.MAXVoidingHistoryCollectionId, criteria.MAXMsgTargetId);
         }
 
         public async Task<ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>> ImportTicketVoidingAsync(
             IEnumerable<Message> messages,
             IEnumerable<ChatBotVoidingTicketInfo> ticketInfos,
             int MAXVoidingHistoryCollectionId,
+            int MAXMsgTargetId,
             string Environment = Constants.DefaultEnvironment)
         {
             const string XmlTemplate = "<r VoidingHistoryCollectionId='{0}' MessageId='{1}' UsernameList='{2}' CustId='{3}' " +
@@ -157,11 +164,22 @@
             {
                 XmlData = stringBuilder.ToString(),
                 MAXVoidingHistoryCollectionId = MAXVoidingHistoryCollectionId,
+                MAXMsgTargetId = MAXMsgTargetId,
                 Environment = Environment,
             };
             var commandResult = await baseService.ExecuteNonQueryAsync(criteria);
             var valueTupe = new ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>(commandResult, criteria);
             return valueTupe;
+        }
+
+        public async Task<IEnumerable<ChatBotVoidingBetIdHistory>> GetVoidingBetIdMessageAsync(int lastMsgTargetId, int batchSize)
+        {
+            var criteria = new GetChatBotVoidingBetIdMessageCriteria
+            {
+                LastMsgTargetId = lastMsgTargetId,
+                BatchSize = batchSize
+            };
+            return await baseService.GetDataAsync<ChatBotVoidingBetIdHistory>(criteria);
         }
     }
 }

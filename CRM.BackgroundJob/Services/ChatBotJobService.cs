@@ -102,6 +102,8 @@
                     userNameList = await ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(criteria);
                 }
 
+                var voidingBetIdInfo = await ticketVoidingService.GetVoidingBetIdMessageAsync(setting.LastMsgTargetId, setting.BatchSize);
+
                 var voidingHistoryCollectionIds = voidingInfo.Item1
                     .Select(voidingCollectionId => new ChatBotUserNameList
                     {
@@ -110,13 +112,14 @@
                     })
                     .ToList();
                 var combineHistoryCollectionIds = userNameList.Concat(voidingHistoryCollectionIds);
-                var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(combineHistoryCollectionIds, Environment, setting.IncludeUUSCurrency);
+                var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(combineHistoryCollectionIds, Environment, setting.IncludeUUSCurrency, voidingBetIdInfo);
                 IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2);
 
                 var commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(
                     messages,
                     ticketInfos.Item1,
                     ticketInfos.Item3,
+                    ticketInfos.Item4,
                     Environment);
 
                 if (commandResultImportTicket.Item1.IsSuccessful)
