@@ -22,5 +22,6 @@
         public int MaxVoidingHistoryCollectionId { get; set; }
         public int MaxVoidingHistoryCollectionIdUAT { get; set; }
         public int LastVoidingHistoryCollectionId { get; set; }
+        public int LastMsgTargetId { get; set; }
     }
 }
