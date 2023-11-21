@@ -14,7 +14,7 @@
     {
         Task<ValueTuple<IEnumerable<MessageRefundSettledTicket>, IEnumerable<MessageVoidSettled>>> GetMessageRefundSettledTicketAsync(int lastMsgTargetId, int batchSize);
 
-        Task<ValueTuple<CommandResult, InsertRefundSettledTicketCommand>> ImportRefundSettledTicketAsync(IEnumerable<MessageRefundSettledTicket> messageContent, IEnumerable<MessageVoidSettled> message, string environment);
+        Task<ValueTuple<CommandResult, ImportRefundSettledTicketCommand>> ImportRefundSettledTicketAsync(IEnumerable<MessageRefundSettledTicket> messageContent, IEnumerable<MessageVoidSettled> message, string environment);
     }
 
     public class RefundSettledTicketService : IRefundSettledTicketService
@@ -36,16 +36,16 @@
             return await baseService.FetchMultipleAsync<MessageRefundSettledTicket, MessageVoidSettled>(criteria);
         }
 
-        public async Task<ValueTuple<CommandResult, InsertRefundSettledTicketCommand>> ImportRefundSettledTicketAsync(IEnumerable<MessageRefundSettledTicket> messageContent, IEnumerable<MessageVoidSettled> message, string environment)
+        public async Task<ValueTuple<CommandResult, ImportRefundSettledTicketCommand>> ImportRefundSettledTicketAsync(IEnumerable<MessageRefundSettledTicket> messageContent, IEnumerable<MessageVoidSettled> message, string environment)
         {
-            var command = new InsertRefundSettledTicketCommand
+            var command = new ImportRefundSettledTicketCommand
             {
                 Message = message.ToXML("root").ToString(),
                 MessageContent = messageContent.ToXML("root").ToString(),
                 Environment = environment
             };
             var commandResult = await baseService.ExecuteNonQueryAsync(command);
-            return new ValueTuple<CommandResult, InsertRefundSettledTicketCommand>(commandResult, command);
+            return new ValueTuple<CommandResult, ImportRefundSettledTicketCommand>(commandResult, command);
         }
     }
 }

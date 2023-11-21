@@ -2,7 +2,7 @@
 {
     using Fanex.Data.Repository;
 
-    public class InsertRefundSettledTicketCommand : NonQueryCommand
+    public class ImportRefundSettledTicketCommand : NonQueryCommand
     {
         public string Message { get; set; }
 
