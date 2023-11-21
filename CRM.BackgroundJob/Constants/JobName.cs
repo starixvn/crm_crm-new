@@ -20,5 +20,6 @@
         public const string CreateFeedbackForVoidingSettledTickets = "CreateFeedbackForVoidingSettledTickets";
         public const string CreateFeedbackForArchivingDA = "CreateFeedbackForArchivingDA";
         public const string CreateFeedbackForRefundSettledTicket = "CreateFeedbackForRefundSettledTicket";
+        public const string CreateFeedbackForVoidBetID = "CreateFeedbackForVoidBetID";
     }
 }

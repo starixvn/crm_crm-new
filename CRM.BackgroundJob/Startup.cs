@@ -179,6 +179,7 @@
             services.AddHostedService<AutoFbVoidingAbnormalBetWorker>();
             services.AddHostedService<AutoFbWinLossLimitWorker>();
             services.AddHostedService<AutoFbTurnoverControlWorker>();
+            services.AddHostedService<AutoFbVoidingBetIDWorker>();
 
             services.AddHostedService<AutoChatbotWorker>();
             services.AddHostedService<AutoChatbotCWLWoker>();

@@ -34,5 +34,6 @@
         public const string ServiceName_ResultAmendment = "AmendmentNotiFB";
         public const string ServiceName_AutoVoidFB = "AutoVoidFB";
         public const string ServiceName_ArchivingDA = "ArchivedAccountFB";
+        public const string ServiceName_AutoVoidBetID = "AutoVoidBetIDFB";
     }
 }

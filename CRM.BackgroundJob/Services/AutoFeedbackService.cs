@@ -28,6 +28,7 @@
         Task VoidingSettledTicketsExecuteJobAsync();
         Task ArchivingDAExecuteJobAsync();
         Task RefundSettledTicketJobAsync();
+        Task VoidingBetIDExecuteJobAsync();
     }
 
     public class AutoFeedbackService : IAutoFeedbackService
@@ -543,6 +544,11 @@
 
                 await logService.ErrorAsync(ex);
             }
+        }
+
+        public async Task VoidingBetIDExecuteJobAsync()
+        {
+
         }
     }
 }
