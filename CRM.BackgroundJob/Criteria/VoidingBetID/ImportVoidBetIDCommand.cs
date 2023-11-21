@@ -1,8 +1,8 @@
 ﻿namespace CRM.BackgroundJob.Criteria.VoidingBetID
 {
-    using Fanex.Data.Repository;
+    using CRM.Core.Models;
 
-    public class ImportVoidBetIDCommand : NonQueryCommand
+    public class ImportVoidBetIDCommand : BaseNonQueryCommand
     {
         public string Message { get; set; }
 
