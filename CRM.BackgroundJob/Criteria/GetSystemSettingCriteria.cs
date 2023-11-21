@@ -1,8 +1,8 @@
-﻿namespace CRM.BackgroundJob.Criteria.RefundSettledTicket
+﻿namespace CRM.BackgroundJob.Criteria
 {
     using Fanex.Data.Repository;
 
-    public class GetRefundSystemSettingCriteria : CriteriaBase
+    public class GetSystemSettingCriteria : CriteriaBase
     {
         public string ServiceName { get; set; }
 

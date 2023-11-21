@@ -1,8 +1,8 @@
-﻿namespace CRM.BackgroundJob.Models.RefundSettledTicket
+﻿namespace CRM.BackgroundJob.Models
 {
     using System;
 
-    public class RefundSystemSettingInfo
+    public class SystemSettingInfo
     {
         public DateTime LastRuntime { get; set; }
 

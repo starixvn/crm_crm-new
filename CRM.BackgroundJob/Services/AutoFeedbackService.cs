@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.ArchivingDA;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
@@ -521,7 +522,7 @@
         {
             try
             {
-                RefundSystemSettingInfo refundSettledSetting = await systemSettingService.GetRefundSystemSettingAsync(Environment);
+                SystemSettingInfo refundSettledSetting = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_RefundSettledTickets, Environment);
                 if (!refundSettledSetting.ServiceFlag)
                 {
                     logService.LogInformation("Service Refund Settled Tickets is shutdown.");
@@ -548,7 +549,15 @@
 
         public async Task VoidingBetIDExecuteJobAsync()
         {
+            try
+            {
+                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoVoidBetID, Environment);
+            }
+            catch (Exception ex )
+            {
 
+                await logService.ErrorAsync(ex);
+            }
         }
     }
 }

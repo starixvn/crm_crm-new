@@ -6,17 +6,17 @@
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Criteria.ChatBot;
     using Fanex.CRM.BackgroundJob.Models;
+    using global::CRM.BackgroundJob.Criteria;
     using global::CRM.BackgroundJob.Criteria.ArchivingDA;
     using global::CRM.BackgroundJob.Criteria.ProblemsAccount;
-    using global::CRM.BackgroundJob.Criteria.RefundSettledTicket;
     using global::CRM.BackgroundJob.Criteria.ResultAmendment;
     using global::CRM.BackgroundJob.Criteria.TurnoverControll;
     using global::CRM.BackgroundJob.Criteria.VoidingSettledTickets;
     using global::CRM.BackgroundJob.Criteria.WinLossLimit;
+    using global::CRM.BackgroundJob.Models;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.ArchivingDA;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
-    using global::CRM.BackgroundJob.Models.RefundSettledTicket;
     using global::CRM.BackgroundJob.Models.ResultAmendment;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.Core.Extensions.XML;
@@ -49,7 +49,7 @@
 
         Task<ArchivingDASetting> GetArchivingDASettingAsync();
 
-        Task<RefundSystemSettingInfo> GetRefundSystemSettingAsync(string environment);
+        Task<SystemSettingInfo> GetSystemSettingAsync(string serviceName, string environment);
     }
 
     public class SystemSettingService : ISystemSettingService
@@ -142,14 +142,14 @@
             return await baseService.GetDataEntityAsync<ArchivingDASetting>(criteria);
         }
 
-        public async Task<RefundSystemSettingInfo> GetRefundSystemSettingAsync(string environment)
+        public async Task<SystemSettingInfo> GetSystemSettingAsync(string serviceName, string environment)
         {
-            var criteria = new GetRefundSystemSettingCriteria
+            var criteria = new GetSystemSettingCriteria
             {
-                ServiceName = "AutoFB - Refund Settled tickets",
+                ServiceName = serviceName,
                 Environment = environment
             };
-            return await baseService.GetDataEntityAsync<RefundSystemSettingInfo>(criteria);
+            return await baseService.GetDataEntityAsync<SystemSettingInfo>(criteria);
         }
     }
 }
