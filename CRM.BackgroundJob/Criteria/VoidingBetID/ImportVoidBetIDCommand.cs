@@ -4,7 +4,7 @@
 
     public class ImportVoidBetIDCommand : BaseNonQueryCommand
     {
-        public string Message { get; set; }
+        public string Messages { get; set; }
 
         public string Environment { get; set; }
 

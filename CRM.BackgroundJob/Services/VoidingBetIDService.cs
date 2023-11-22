@@ -50,7 +50,7 @@
         {
             var command = new ImportVoidBetIDCommand
             {
-                Message = messages.ToXML("root").ToString(),
+                Messages = messages.ToXML("root").ToString(),
                 Environment = environment
             };
             var commandResult = await baseService.ExecuteNonQueryAsync(command);
