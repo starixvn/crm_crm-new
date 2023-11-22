@@ -1,8 +1,8 @@
 ﻿namespace CRM.BackgroundJob.Criteria.RefundSettledTicket
 {
-    using Fanex.Data.Repository;
+    using CRM.Core.Models;
 
-    public class ImportRefundSettledTicketCommand : NonQueryCommand
+    public class ImportRefundSettledTicketCommand : BaseNonQueryCommand
     {
         public string Message { get; set; }
 

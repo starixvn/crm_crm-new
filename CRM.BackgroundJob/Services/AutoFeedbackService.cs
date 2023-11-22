@@ -9,7 +9,6 @@
     using global::CRM.BackgroundJob.Models.AbnormalBet;
     using global::CRM.BackgroundJob.Models.ArchivingDA;
     using global::CRM.BackgroundJob.Models.ProblemsAccount;
-    using global::CRM.BackgroundJob.Models.RefundSettledTicket;
     using global::CRM.BackgroundJob.Models.ResultAmendment;
     using global::CRM.BackgroundJob.Models.WinLossLimit;
     using global::CRM.BackgroundJob.Services;
@@ -48,6 +47,7 @@
         private readonly IArchivingDAService archivingDAService;
         private readonly ISendNotificationService sendNotificationService;
         private readonly IRefundSettledTicketService refundSettledTicketService;
+        private readonly IVoidingBetIDService voidingBetIDService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -69,6 +69,7 @@
             IArchivingDAService archivingDAService,
             ISendNotificationService sendNotificationService,
             IRefundSettledTicketService refundSettledTicketService,
+            IVoidingBetIDService voidingBetIDService,
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -86,6 +87,7 @@
             this.archivingDAService = archivingDAService;
             this.sendNotificationService = sendNotificationService;
             this.refundSettledTicketService = refundSettledTicketService;
+            this.voidingBetIDService = voidingBetIDService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -552,8 +554,25 @@
             try
             {
                 SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoVoidBetID, Environment);
+                if (!systemSettingInfo.ServiceFlag)
+                {
+                    logService.LogInformation("Service VoidBetID is shutdown.");
+                    return;
+                }
+                var message = await voidingBetIDService.GetMessageVoidBetIDAsync(systemSettingInfo.LastMsgTargetId, systemSettingInfo.BatchSize);
+                var messageNotDuplicated = await voidingBetIDService.CleanMessageVoidBetIDAsync(message);
+                var (commandResult, command) = await voidingBetIDService.ImportVoidBetIDAsync(messageNotDuplicated, Environment);
+                if (commandResult.IsSuccessful)
+                {
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
+                }
+                else
+                {
+                    logService.LogInformation(commandResult.Message);
+                    await logService.ErrorAsync(commandResult, command);
+                }
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
 
                 await logService.ErrorAsync(ex);

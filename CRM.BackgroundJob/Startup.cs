@@ -170,6 +170,7 @@
             services.AddSingleton<IArchivingDAService, ArchivingDAService>();
             services.AddSingleton<ISendAnnouncementService, SendAnnouncementService>();
             services.AddSingleton<IRefundSettledTicketService, RefundSettledTicketService>();
+            services.AddSingleton<IVoidingBetIDService, VoidingBetIDService>();
         }
 
         private static void AddWorker(IServiceCollection services)
