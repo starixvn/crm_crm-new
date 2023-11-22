@@ -72,10 +72,12 @@
             var userNameList = fixture.Create<IEnumerable<ChatBotUserNameList>>();
             var voidingMessagesImport = fixture.Create<IEnumerable<VoidingMessage>>();
             var voidingMessagesHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
+            var chatBotVoidingBetIdHistory = fixture.Create<IEnumerable<ChatBotVoidingBetIdHistory>>();
             var MAXVoidingHistoryCollectionId = fixture.Create<int>();
+            var MAXMessageTargetId = fixture.Create<int>();
             var voidingInfo = new ValueTuple<IEnumerable<int>, IEnumerable<ChatBotVoidingHistory>>(voidingMessages, voidingMessagesHis);
             var ticketInfo = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
-            var ticketInfos = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int>(ticketInfo, voidingMessagesImport, MAXVoidingHistoryCollectionId);
+            var ticketInfos = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int>(ticketInfo, voidingMessagesImport, MAXVoidingHistoryCollectionId, MAXMessageTargetId);
             var commandResultImportTicket = new CommandResult { Code = 0 };
             var criteriaVoiding = fixture.Create<ImportChatBotTicketVoidingInfoCommand>();
             var valueTupeImportVoiding = new ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>(commandResultImportTicket, criteriaVoiding);
@@ -86,9 +88,10 @@
             ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(
                 Arg.Any<GetChatBotAbnormalAccountGetUsernameListCriteria>()
             ).Returns(userNameList);
-            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotUserNameList>>(), Constants.DefaultEnvironment, setting.IncludeUUSCurrency).Returns(ticketInfos);
+            ticketVoidingService.GetVoidingBetIdMessageAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(chatBotVoidingBetIdHistory);
+            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotUserNameList>>(), Constants.DefaultEnvironment, setting.IncludeUUSCurrency, chatBotVoidingBetIdHistory).Returns(ticketInfos);
             ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2).Returns(messages);
-            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos.Item1, ticketInfos.Item3, Constants.DefaultEnvironment).Returns(valueTupeImportVoiding);
+            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos.Item1, ticketInfos.Item3, ticketInfos.Item4, Constants.DefaultEnvironment).Returns(valueTupeImportVoiding);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();
@@ -109,10 +112,12 @@
             var userNameList = fixture.Create<IEnumerable<ChatBotUserNameList>>();
             var voidingMessagesImport = fixture.Create<IEnumerable<VoidingMessage>>();
             var voidingMessagesHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
+            var chatBotVoidingBetIdHistory = fixture.Create<IEnumerable<ChatBotVoidingBetIdHistory>>();
             var MAXVoidingHistoryCollectionId = fixture.Create<int>();
+            var MAXMsgTargetId = fixture.Create<int>();
             var voidingInfo = new ValueTuple<IEnumerable<int>, IEnumerable<ChatBotVoidingHistory>>(voidingMessages, voidingMessagesHis);
             var ticketInfo = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
-            var ticketInfos = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int>(ticketInfo, voidingMessagesImport, MAXVoidingHistoryCollectionId);
+            var ticketInfos = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int>(ticketInfo, voidingMessagesImport, MAXVoidingHistoryCollectionId, MAXMsgTargetId);
             var commandResultImportTicket = new CommandResult { Code = 1 };
             var criteriaVoiding = fixture.Create<ImportChatBotTicketVoidingInfoCommand>();
             var valueTupeImportVoiding = new ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>(commandResultImportTicket, criteriaVoiding);
@@ -123,9 +128,10 @@
             ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(
                 Arg.Any<GetChatBotAbnormalAccountGetUsernameListCriteria>()
             ).Returns(userNameList);
-            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotUserNameList>>(), Constants.DefaultEnvironment, setting.IncludeUUSCurrency).Returns(ticketInfos);
+            ticketVoidingService.GetVoidingBetIdMessageAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(chatBotVoidingBetIdHistory);
+            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotUserNameList>>(), Constants.DefaultEnvironment, setting.IncludeUUSCurrency, chatBotVoidingBetIdHistory).Returns(ticketInfos);
             ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2).Returns(messages);
-            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos.Item1, ticketInfos.Item3, Constants.DefaultEnvironment).Returns(valueTupeImportVoiding);
+            ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos.Item1, ticketInfos.Item3, ticketInfos.Item4 ,Constants.DefaultEnvironment).Returns(valueTupeImportVoiding);
 
             // Act
             await service.PullMessageAndSendNotificationAsync();

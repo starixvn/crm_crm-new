@@ -143,8 +143,9 @@
             // Arrange
             var fixture = new Fixture();
             var data = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>>();
-            var expected = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int>();
+            var expected = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int>();
             var userNameList = fixture.Create<IEnumerable<ChatBotUserNameList>>();
+            var chatBotVoidingBetIdHistory = fixture.Create<IEnumerable<ChatBotVoidingBetIdHistory>>();
             var xml = userNameList.ToXML("root").ToString();
             var criteria = new GetChatBotTicketVoidingInfoCriteria
             {
@@ -154,7 +155,7 @@
             baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, VoidingMessage>(Arg.Any<GetChatBotTicketVoidingInfoCriteria>()).Returns(data);
 
             // Act
-            var actual = await service.GetTicketVoidingInfoAsync(userNameList, "Live", true);
+            var actual = await service.GetTicketVoidingInfoAsync(userNameList, "Live", true, chatBotVoidingBetIdHistory);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -172,6 +173,7 @@
             var fixture = new Fixture();
 
             var MAXVoidingHistoryCollectionId = fixture.Create<int>();
+            var MAXMsgTargetId = fixture.Create<int>();
             messageStringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
 
             var messages = new List<Message>
@@ -215,7 +217,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(valueTupe.Item1);
 
             // Act
-            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, MAXVoidingHistoryCollectionId, Constants.DefaultEnvironment);
+            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, MAXVoidingHistoryCollectionId, MAXMsgTargetId, Constants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(valueTupe.Item1, actual.Item1);
@@ -253,6 +255,7 @@
             };
 
             var MAXVoidingHistoryCollectionId = fixture.Create<int>();
+            var MAXMsgTargetId = fixture.Create<int>();
 
             ticketInfos.First().MessageId = messages.First().MessageId;
             var ticketInfo = ticketInfos.FirstOrDefault();
@@ -280,7 +283,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Do<ImportChatBotTicketVoidingInfoCommand>(x => criteria = x)).Returns(valueTupe.Item1);
 
             // Act
-            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, MAXVoidingHistoryCollectionId, Constants.DefaultEnvironment);
+            var actual = await service.ImportTicketVoidingAsync(messages, ticketInfos, MAXVoidingHistoryCollectionId, MAXMsgTargetId, Constants.DefaultEnvironment);
 
             // Assert
             Assert.Equal(valueTupe.Item1, actual.Item1);
