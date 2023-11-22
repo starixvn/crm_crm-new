@@ -80,7 +80,7 @@
                 feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
                 feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
                 feedback.RelatedCustomers = relatedCustomers.OrderBy(x => x.Username);
-                feedback.Settings = settingItems.ToList();
+                feedback.Settings = settingItems.Where(x => !string.IsNullOrEmpty(x.SettingType)).ToList();
 
                 var siteSetting = await settingService.GetSiteByIdAsync(feedback.SiteId);
                 feedback.SiteSetting = new BaseSetting
