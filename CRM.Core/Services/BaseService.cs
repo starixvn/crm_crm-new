@@ -2,24 +2,19 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
+    using CRM.Core.Criteria;
     using CRM.Core.Models;
-    using CRM.Core.Repositories;
     using Fanex.Caching;
-    using Fanex.Data;
     using Fanex.Data.Repository;
-    using Fanex.Data.SqlServer;
-    using Fanex.Logging.Extensions.Database;
-    using Fanex.Logging.Extensions;
+    using Fanex.NAP.Core.Extensions;
 
     public interface IBaseService
     {
         Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria);
         Task<IEnumerable<SiteDbConfig>> GetSiteDbConfigAsync(ICriteria criteria);
-        Task<IEnumerable<T>> GetDataByIpConfigAsync<T>(string ipConfig, string connectionAlias, CriteriaBaseSiteDb criteria);
-        Task<IEnumerable<T>> GetDataFromSiteDbAsync<T>(CriteriaBaseSiteDb criteria);
+        Task<IEnumerable<T>> GetDataFromSiteDbAsync<T>(SiteDbBaseCriteria criteria);
 
         Task<T> GetDataEntityAsync<T>(ICriteria criteria);
 
@@ -33,23 +28,15 @@
     public class BaseService : IBaseService
     {
         private readonly IDynamicRepository dynamicRepository;
-        private readonly IBaseRepository baseRepository;
         private readonly ICacheService cacheService;
-        private readonly ICRMLogService logService;
         private const string Config_SiteDb_Key = "ConfigSiteDbKey";
-        private const int Command_Timeout = 120;
-        private const bool Ignore_Redundant_Parameters = false;
 
         public BaseService(
             IDynamicRepository dynamicRepository,
-            IBaseRepository baseRepository,
-            ICacheService cacheService,
-            ICRMLogService logService)
+            ICacheService cacheService)
         {
             this.dynamicRepository = dynamicRepository;
-            this.baseRepository = baseRepository;
             this.cacheService = cacheService;
-            this.logService = logService;
         }
 
         public async Task<IEnumerable<T>> GetDataAsync<T>(ICriteria criteria)
@@ -73,7 +60,7 @@
             return siteConfigs;
         }
 
-        public async Task<IEnumerable<T>> GetDataFromSiteDbAsync<T>(CriteriaBaseSiteDb criteria)
+        public async Task<IEnumerable<T>> GetDataFromSiteDbAsync<T>(SiteDbBaseCriteria criteria)
         {
             var siteDbCriteria = new GetSiteDbConfigCriteria();
             var siteConfigs = await GetSiteDbConfigAsync(siteDbCriteria);
@@ -81,44 +68,11 @@
             foreach (var siteConfig in siteConfigs)
             {
                 criteria.SiteDBGroupID = siteConfig.SiteDBGroupID;
-                var result = await GetDataByIpConfigAsync<T>(siteConfig.AGIP, siteConfig.LinkedServerName, criteria);
+                var result = await dynamicRepository.FetchAsync<T>(criteria, siteConfig.AGIP);
                 results.AddRange(result);
             }
 
             return results;
-        }
-
-        public virtual async Task<IEnumerable<T>> GetDataByIpConfigAsync<T>(string ipConfig, string connectionAlias, CriteriaBaseSiteDb criteria)
-        {
-            try
-            {
-                (var sqlRunner, var dbCommand) = CreateNewDbcommand(ipConfig, connectionAlias, criteria);
-                return await sqlRunner.QueryAsync<T>(dbCommand);
-            }
-            catch (Exception ex)
-            {
-                var taskEmpty = Enumerable.Empty<T>();
-                var errorMessage = new LogMessage(ex.Message)
-                       .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(ex))
-                       .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
-                       .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(ex))
-                       .AddMessage("Ipconfig: " + ipConfig)
-                       .ToString();
-                await logService.ErrorMessageAsync(errorMessage);
-                return taskEmpty;
-            }
-        }
-
-        private static ValueTuple<SqlStoredProcedureRunner, DbCommandDefinition> CreateNewDbcommand(string ipConfig, string connectionAlias, CriteriaBaseSiteDb criteria)
-        {
-            var dbsettingProvider = DbSettingProviderManager.GetCurrentDbSettingProvider();
-            dbsettingProvider.SettingDataSource.TryGetValue(criteria.GetSettingKey(), out IDbSetting oldDbSetting);
-            var newSqlConnectionStringBuilder = new SqlConnectionStringBuilder(oldDbSetting.ConnectionString);
-            newSqlConnectionStringBuilder.DataSource = ipConfig;
-            var newSqlRunner = new SqlStoredProcedureRunner(connectionAlias, newSqlConnectionStringBuilder.ToString());
-            var newDbCommand = newSqlRunner.CreateDbCommandDefinition(oldDbSetting.SpName, Command_Timeout, Ignore_Redundant_Parameters, oldDbSetting.ColumnMaps);
-            newDbCommand.AssignParameters(criteria);
-            return new ValueTuple<SqlStoredProcedureRunner, DbCommandDefinition>(newSqlRunner, newDbCommand);
         }
 
         public async Task<T> GetDataEntityAsync<T>(ICriteria criteria)
@@ -156,7 +110,14 @@
             var commandResult = new CommandResult();
             if (command != null && command.IsValid())
             {
-                commandResult = await baseRepository.ExecuteNonQueryAsync(command);
+                await dynamicRepository.ExecuteAsync(command);
+
+                var properties = command.ToPropertyDictionary();
+                if (properties.ContainsKey("ErrCode"))
+                {
+                    commandResult.Code = int.Parse(properties["ErrCode"].ToString());
+                    commandResult.Message = properties["ErrMsg"] != null ? properties["ErrMsg"].ToString() : string.Empty;
+                }
             }
 
             return commandResult;

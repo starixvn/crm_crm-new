@@ -10,28 +10,24 @@
     using CRM.Criteria.Report.FeedbackStatistic;
     using CRM.Models.Feedback;
     using CRM.Models.Setting;
-    using CRM.Repositories;
     using CRM.Resources;
     using CRM.Services.Feedback;
     using Microsoft.AspNetCore.Mvc;
 
     public class FeedbackStatisticController : BaseController
     {
-        private readonly IFeedbackRepository feedbackRepository;
         private readonly IFeedbackService feedbackService;
         private readonly ICommonService commonService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         private readonly IPermissionService permissionService;
 
-        public FeedbackStatisticController(IFeedbackRepository feedbackRepository,
             IFeedbackService feedbackService,
             ICommonService commonService,
             ISettingService settingService,
             IExportExcelService excelService,
             IPermissionService permissionService)
         {
-            this.feedbackRepository = feedbackRepository;
             this.feedbackService = feedbackService;
             this.settingService = settingService;
             this.commonService = commonService;
@@ -42,6 +38,8 @@
         [HttpPost]
         public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStatisticCriteria criteria)
         {
+            var pageSize = criteria.PageSize;
+            var pageIndex = criteria.PageIndex;
             var title = string.Format(ViewResources.FeedbackStatisticTitle,
                                         criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
@@ -49,12 +47,11 @@
             criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
-            var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
             feedbackStatistic.Title = title;
             feedbackStatistic.TotalItems = feedbackStatistic.FeedbackCategories.Count;
             if (feedbackStatistic.TotalItems > 0)
             {
-                feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories.Skip(criteria.PageSize * (criteria.PageIndex - 1)).Take(criteria.PageSize).ToList();
+                feedbackStatistic.FeedbackCategories = feedbackStatistic.FeedbackCategories.Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
             }
 
             return Json(feedbackStatistic);
@@ -65,7 +62,6 @@
         {
             criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
-            var feedbackDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
             var total = feedbackDetail.Count();
             if (feedbackDetail.Any())
             {
@@ -89,7 +85,6 @@
             criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
-            var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
             feedbackStatistic.Title = title;
             var bytes = excelService.ExportStatisticFeedback(feedbackStatistic);
             string reportName = string.Format(ViewResources.FeedbackStatistic_ExcelFile, fromDateFormat, toDateFormat);
@@ -108,7 +103,7 @@
             var title = string.Format(ViewResources.FeedbackStatisticDetail_ExcelTitle,
                                         criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             IEnumerable<Setting> mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
-            IEnumerable<DeletedFeedback> feedbacksDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
+            IEnumerable<DeletedFeedback> feedbacksDetail = await feedbackService.GetFeedbackStatisticDetailAsync(criteria);
             var feedbacksOrder = feedbacksDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
 
             var bytes = excelService.ExportStatisticFeedbackDetail(feedbacksOrder, mainCategories, title);

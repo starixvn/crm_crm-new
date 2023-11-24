@@ -4,7 +4,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Fanex.Data.Repository" Version="4.2.3" />
         <PackageReference Include="SonarAnalyzer.CSharp" Version="8.56.0.67649">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

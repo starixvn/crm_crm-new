@@ -12,7 +12,6 @@
     using CRM.Models.Customer;
     using CRM.Models.Remark;
     using CRM.Models.RemarkNew;
-    using CRM.Repositories;
 
     public interface IRemarkService
     {
@@ -40,18 +39,38 @@
     public class RemarkService : IRemarkService
     {
         private readonly IBaseService baseService;
-        private readonly IRemarkRepository remarkRepository;
 
-        public RemarkService(IBaseService baseService, IRemarkRepository remarkRepository)
+        public RemarkService(IBaseService baseService)
         {
             this.baseService = baseService;
-            this.remarkRepository = remarkRepository;
         }
 
         public async Task<RemarkInfo> GetRemarkAsync(GetRemarkCriteria criteria)
         {
-            var remarks = await remarkRepository.GetRemarkAsync(criteria);
-            return remarks;
+            var remarks = await baseService.GetDataAsync<RemarkRaw>(criteria);
+            var normalRemarks = new List<string>();
+            var specialRemarks = new List<string>();
+
+            foreach (var remark in remarks)
+            {
+                var tempRemark = remark.Remark;
+                string[] newLine = new[] { "\n", "\r", "\n\r", "\r\n" };
+                for (int index = 0; index < newLine.Length; index++)
+                {
+                    tempRemark = tempRemark.Replace(newLine[index], "<br/>");
+                }
+                if (remark.IsSpecial)
+                {
+                    specialRemarks.Add(tempRemark);
+                }
+                else
+                {
+                    normalRemarks.Add(tempRemark);
+                }
+            }
+
+            var remarkInfo =  new RemarkInfo { SpecialRemarks = specialRemarks, NormalRemarks = normalRemarks };
+            return remarkInfo;
         }
 
         public async Task<CommandResult> EditRemarkAsync(EditRemarkCommand command)

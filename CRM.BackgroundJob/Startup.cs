@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.HealthCheck;
     using CRM.BackgroundJob.Services;
@@ -13,14 +12,9 @@
     using CRM.Core.Services;
     using Fanex.Caching;
     using Fanex.CRM.BackgroundJob.Models;
-    using Fanex.CRM.BackgroundJob.Repositories;
     using Fanex.CRM.BackgroundJob.Services;
     using Fanex.Data;
-    using Fanex.Data.SqlServer;
     using Fanex.Logging;
-    using Fanex.Logging.Extensions;
-    using Fanex.Logging.Extensions.AspNetCore;
-    using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Sentry;
     using Fanex.RemotingRef;
     using Microsoft.AspNetCore.Builder;
@@ -59,27 +53,11 @@
                     })
                });
 
-            var connections = Configuration.GetSection("ConnectionStrings")
-                .GetChildren()
-                .AsEnumerable()
-                .Where(x => !string.IsNullOrWhiteSpace(x.GetValue<string>("Name")))
-                .ToDictionary(x => x.GetValue<string>("Name"),
-                    y => new ConnectionConfiguration(y.GetValue<string>("Name"), y.GetValue<string>("ConnectionString"), y.GetValue<string>("ProviderName")));
-
-            DbSettingProviderManager
-              .StartNewSession()
-               .Use(connections)
-               .WithSqlServer()
-               .UseDefaultDbSettingProvider("~/App_Data/SpNames.xml")
-               .Run();
+            services.AddFanexData(Configuration);
 
             RefDataTypeContainer
             .ConnectTo(new Uri(Configuration.GetSection("RemotingRefService:Fanex.RemotingRef.Service.Url").Value))
             .FromApplication("CRM.BackgroundJob");
-
-            ExceptionHandler
-               .UseConfig(new LoggingConfiguration())
-               .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
             services.AddSingleton(Configuration);
             services.AddControllers();
@@ -142,7 +120,6 @@
             services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<IJobRunningChecker, JobRunningChecker>();
             services.AddSingleton<ICommonFeedback, CommonFeedback>();
-            services.AddSingleton<ICustomerRepository, CustomerRepository>();
             services.AddSingleton<ISettingService, SettingService>();
             services.AddSingleton<ISystemSettingService, SystemSettingService>();
             services.AddSingleton<IMessageService, MessageService>();

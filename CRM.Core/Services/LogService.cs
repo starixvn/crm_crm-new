@@ -5,7 +5,6 @@
     using CRM.Core.Models;
     using Fanex.Data.Repository;
     using Fanex.Logging.Extensions;
-    using Fanex.Logging.Extensions.Database;
     using Newtonsoft.Json;
     using NLog;
     using NLog.Web;
@@ -45,7 +44,6 @@
 #pragma warning restore S4136 // Method overloads should be grouped together
         {
             var logMessage = new LogMessage(exception.Message)
-                       .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(exception))
                        .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
                        .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
                        .ToString();
@@ -73,7 +71,6 @@
         public async Task ErrorAsync(Exception exception, ICriteria criteria)
         {
             var logMessage = new LogMessage(exception.Message)
-                      .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(exception))
                       .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
                       .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
                       .AddMessage(JsonConvert.SerializeObject(criteria, Formatting.Indented))

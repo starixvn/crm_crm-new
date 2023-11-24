@@ -1,7 +1,6 @@
 ﻿namespace CRM.Services.Extensions
 {
     using CRM.Core.Services;
-    using CRM.Repositories;
     using CRM.Services.ActionLog;
     using CRM.Services.AdminTool;
     using CRM.Services.BotServices;
@@ -23,8 +22,6 @@
     {
         public static void ResolveServiceDI(this IServiceCollection services)
         {
-            services.AddScoped<IFeedbackRepository, FeedbackRepository>();
-            services.AddScoped<IRemarkRepository, RemarkRepository>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ISettingService, SettingService>();
             services.AddScoped<INotificationListService, NotificationListService>();

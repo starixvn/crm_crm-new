@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -12,25 +13,30 @@
     using CRM.Criteria.Feedback.ManageFeedback;
     using CRM.Criteria.MultipleLogs;
     using CRM.Criteria.Report.FeedbackStatistic;
+    using CRM.Models;
     using CRM.Models.CommunicationLogs;
     using CRM.Models.Customer;
     using CRM.Models.DeletedFeedback;
     using CRM.Models.Feedback;
-    using CRM.Repositories;
+    using CRM.Models.Report.FeedbackStatistic;
     using CRM.Resources;
     using Fanex.Data.Repository;
 
     public interface IFeedbackService
     {
+        Task<CustomerFeedback> GetCustomerFeedbackByIdAsync(int feedbackId);
+
+        Task<IEnumerable<DeletedFeedbackStatistic>> GetDeletedFeedbackStatisticAsync(ICriteria criteria);
+
+        Task<FeedbackStatisticInfo> GetFeedbackStatisticAsync(ICriteria criteria);
+
         Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(ICriteria criteria);
 
-        Task<IEnumerable<DeletedFeedback>> GetFeedbackStatisticAsyncDetail(GetFeedbackStatisticDetailCriteria criteria);
+        Task<IEnumerable<DeletedFeedback>> GetFeedbackStatisticDetailAsync(GetFeedbackStatisticDetailCriteria criteria);
 
         Task<CommandResult> EditNoOfInquiryAsync(EditNoOfInquiryCommand command);
 
         Task<EditNoOfInquiry> GetNoOfInquiryByFeedbackIdAsync(int feedbackId);
-
-        Task<CustomerFeedback> GetCustomerFeedbackByIdAsync(int feedbackId);
 
         Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command);
         Task<CommandResult> EditCustomerNewManualFeedbackAsync(EditCustomerNewManualFeedbackCommand command);
@@ -48,22 +54,22 @@
     {
         private readonly IDynamicRepository dynamicRepository;
         private readonly IBaseService baseService;
+        private readonly IDynamicRepository dynamicRepository;
         private readonly ISettingService settingService;
         private readonly ICommonService commonService;
-        private readonly IFeedbackRepository feedbackRepository;
 
         public FeedbackService(
             IDynamicRepository dynamicRepository,
             IBaseService baseService,
+            IDynamicRepository dynamicRepository,
             ISettingService settingService,
-            ICommonService commonService,
-            IFeedbackRepository feedbackRepository)
+            ICommonService commonService)
         {
             this.dynamicRepository = dynamicRepository;
             this.baseService = baseService;
             this.settingService = settingService;
             this.commonService = commonService;
-            this.feedbackRepository = feedbackRepository;
+            this.dynamicRepository = dynamicRepository;
         }
 
         public async Task<CustomerFeedback> GetCustomerFeedbackByIdAsync(int feedbackId)
@@ -102,9 +108,118 @@
             return feedback;
         }
 
+        public async Task<IEnumerable<DeletedFeedbackStatistic>> GetDeletedFeedbackStatisticAsync(ICriteria criteria)
+        {
+            var results = await baseService.FetchMultipleAsync<DeletedFeedbackStatistic, FeedbackSettingRelation>(criteria);
+            var feedbacks = results.Item1;
+            var settings = results.Item2;
+
+            foreach (var feedback in feedbacks)
+            {
+                feedback.Settings = settings.Where(x => x.FeedbackId == feedback.FeedbackId).ToList();
+                feedback.RelatedCustomer = string.IsNullOrEmpty(feedback.RelatedCustomer) ? "" : string.Join(",", feedback.RelatedCustomer.Split(",").OrderBy(x => x));
+            }
+
+            return feedbacks;
+        }
+
+        public async Task<FeedbackStatisticInfo> GetFeedbackStatisticAsync(ICriteria criteria)
+        {
+            var dataset = await dynamicRepository.FetchDataSetAsync(criteria);
+            var datareader = dataset.Tables[0].CreateDataReader();
+            var datareader2 = dataset.Tables[1].CreateDataReader();
+            var results = ReadFeedbackStatistic(datareader, datareader2);
+
+            return results;
+        }
+        private static FeedbackStatisticInfo ReadFeedbackStatistic(IDataReader reader, IDataReader reader2)
+        {
+            var userNames = new List<BaseModel>();
+            for (int i = 4; i < reader.FieldCount; i++)
+            {
+                userNames.Add(new BaseModel { Name = reader.GetName(i) });
+            }
+
+            var userNamesCount = userNames.Count;
+            var grandTotals = new int[userNamesCount];
+            var report = new FeedbackStatisticInfo
+            {
+                Usernames = userNames,
+                FeedbackCategories = new List<FeedbackCategory>(),
+                GrandTotals = grandTotals
+            };
+            var previousCategory = 0;
+            var categoryId = 0;
+            FeedbackCategory feedbackCategory = null;
+            while (reader.Read())
+            {
+                categoryId = int.Parse(reader["MainCategoryId"].ToString());
+                if (categoryId != previousCategory)
+                {
+                    previousCategory = categoryId;
+                    feedbackCategory = new FeedbackCategory
+                    {
+                        Id = categoryId,
+                        Name = reader["MainCategory"].ToString(),
+                        FeedbackSubcategories = new List<FeedbackSubcategory>(),
+                        SubTotal = InitializeSubTotal(userNamesCount)
+                    };
+
+                    report.FeedbackCategories.Add(feedbackCategory);
+                }
+
+                if (feedbackCategory != null)
+                {
+                    var feedbackSubcategory = new FeedbackSubcategory
+                    {
+                        Id = int.Parse(reader["SubCategoryId"].ToString()),
+                        Name = reader["SubCategory"].ToString(),
+                        Resolves = new List<int>(),
+                    };
+
+                    for (int i = 0; i < userNamesCount; i++)
+                    {
+                        var resolve = int.Parse(reader[userNames[i].Name].ToString());
+                        feedbackSubcategory.Resolves.Add(resolve);
+                        feedbackCategory.SubTotal.Resolves[i] += resolve;
+                        grandTotals[i] += resolve;
+                    }
+
+                    feedbackCategory.FeedbackSubcategories.Add(feedbackSubcategory);
+                }
+            }
+
+            ReadUsernameIds(reader2, report);
+            return report;
+        }
+
+        private static void ReadUsernameIds(IDataReader reader, FeedbackStatisticInfo report)
+        {
+            int index = 0;
+            while (reader.Read())
+            {
+                report.Usernames[index++].Id = int.Parse(reader["Item"].ToString());
+            }
+        }
+
+        private static FeedbackSubcategory InitializeSubTotal(int length)
+        {
+            var resolves = Enumerable.Repeat(0, length).ToList();
+            return new FeedbackSubcategory { Resolves = resolves };
+        }
+
         public async Task<IEnumerable<DeletedFeedback>> GetLatestFeedbackAsync(ICriteria criteria)
         {
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
+            var results = await baseService.FetchMultipleAsync<DeletedFeedback, FeedbackSettingRelation>(criteria);
+
+            var feedbacks = results.Item1;
+            var settings = results.Item2;
+
+            foreach (var feedback in feedbacks)
+            {
+                feedback.Settings = settings.Where(x => x.FeedbackId == feedback.FeedbackId).ToList();
+            }
+
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var statusHash = statusList.ToDictionary(k => k.StatusId, v => v.Name);
             statusHash.Add(1, ViewResources.Symbol_NotApply);
@@ -150,6 +265,21 @@
             command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
             return await baseService.ExecuteNonQueryAsync(command);
         }
+	
+         private async Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(ICriteria criteria)
+        {
+            var results = await baseService.FetchMultipleAsync<DeletedFeedback, FeedbackSettingRelation>(criteria);
+            var feedbacks = results.Item1;
+            var settings = results.Item2;
+
+            foreach (var feedback in feedbacks)
+            {
+                feedback.Settings = settings.Where(x => x.FeedbackId == feedback.FeedbackId).ToList();
+            }
+
+            return feedbacks;
+        }
+
 
         public async Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(GetDeletedFeedbackParam param)
         {
@@ -165,7 +295,7 @@
                 ResponseId = param.ResponseId,
                 IsReviewed = param.IsReviewed,
             };
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
+            IEnumerable<DeletedFeedback> feedbacks = await GetDeletedFeedbackAsync(criteria);
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var statusHash = statusList.ToDictionary(k => k.StatusId, v => v.Name);
             statusHash.Add(1, ViewResources.Symbol_NotApply);
@@ -196,14 +326,14 @@
                                                         totalDays.Seconds);
         }
 
-        public async Task<IEnumerable<DeletedFeedback>> GetFeedbackStatisticAsyncDetail(GetFeedbackStatisticDetailCriteria criteria)
+        public async Task<IEnumerable<DeletedFeedback>> GetFeedbackStatisticDetailAsync(GetFeedbackStatisticDetailCriteria criteria)
         {
             var status = await settingService.GetStatusAsync(ViewTypeConstants.All);
             var statusHash = status.ToDictionary(k => k.StatusId, v => v.Name);
             statusHash.Add(1, ViewResources.Symbol_NotApply);
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            var feedbackStatistic = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
+            var feedbackStatistic = await GetDeletedFeedbackAsync(criteria);
 
             foreach (var feedback in feedbackStatistic)
             {
@@ -221,7 +351,7 @@
         {
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
+            IEnumerable<DeletedFeedback> feedbacks = await GetDeletedFeedbackAsync(criteria);
 
             foreach (var feedback in feedbacks)
             {

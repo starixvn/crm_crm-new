@@ -8,25 +8,25 @@
     using CRM.Criteria.Report.DeletedFeedbackStatisticsCriteria;
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Setting;
-    using CRM.Repositories;
     using CRM.Resources;
     using CRM.Services;
+    using CRM.Services.Feedback;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     public class DeletedFeedbackStatisticsController : BaseController
     {
-        private readonly IFeedbackRepository feedbackRepository;
+        private readonly IFeedbackService feedbackService;
         private readonly ICommonService commonService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
 
-        public DeletedFeedbackStatisticsController(IFeedbackRepository feedbackRepository,
+        public DeletedFeedbackStatisticsController(IFeedbackService feedbackService,
             ICommonService commonService,
             ISettingService settingService,
             IExportExcelService excelService)
         {
-            this.feedbackRepository = feedbackRepository;
+            this.feedbackService = feedbackService;
             this.commonService = commonService;
             this.settingService = settingService;
             this.excelService = excelService;
@@ -38,7 +38,7 @@
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            var deletedFeedbacks = await feedbackRepository.GetDeletedFeedbackStatisticAsync(criteria);
+            var deletedFeedbacks = await feedbackService.GetDeletedFeedbackStatisticAsync(criteria);
             if (deletedFeedbacks.Any())
             {
                 foreach (var deletedFeedback in deletedFeedbacks)
@@ -63,7 +63,7 @@
         {
             criteria.FromDate = commonService.ConvertToServerDateTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            var deletedFeedbacks = await feedbackRepository.GetDeletedFeedbackStatisticAsync(criteria);
+            var deletedFeedbacks = await feedbackService.GetDeletedFeedbackStatisticAsync(criteria);
             var deletedFeedbackGroup = deletedFeedbacks.GroupBy(p => p.Handler);
             var deletedFeedbackByHandler = deletedFeedbackGroup.Select(p =>
                      new DeletedFeedbackByHandler

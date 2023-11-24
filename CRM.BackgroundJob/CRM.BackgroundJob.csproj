@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
     <PropertyGroup>
         <PublishProtocol>FileSystem</PublishProtocol>
         <Configuration>Release</Configuration>
@@ -123,10 +123,8 @@
 
     <ItemGroup>
         <PackageReference Include="Fanex.Caching.Redis.AspNetCore" Version="2.2.1" />
-        <PackageReference Include="Fanex.Data.Repository" Version="4.2.3" />
-        <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.3" />
+        <PackageReference Include="Fanex.Data.ProxyClient" Version="0.0.2-alpha06" />
         <PackageReference Include="Fanex.Logging.Extensions.AspNetCore" Version="1.0.0" />
-        <PackageReference Include="Fanex.Logging.Extensions.Database" Version="1.0.8" />
         <PackageReference Include="Fanex.RemotingRef" Version="1.5.2" />
         <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />

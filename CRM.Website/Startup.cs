@@ -3,18 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
     using CRM.Services.Extensions;
     using Fanex.Data;
-    using Fanex.Data.SqlServer;
     using Fanex.Logging;
-    using Fanex.Logging.Extensions;
-    using Fanex.Logging.Extensions.AspNetCore;
-    using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Sentry;
     using Fanex.NAP.Client;
     using Fanex.NAP.Client.Configuration;
@@ -54,19 +49,7 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connections = Configuration.GetSection("ConnectionStrings")
-                     .GetChildren()
-                     .AsEnumerable()
-                     .Where(x => !string.IsNullOrWhiteSpace(x.GetValue<string>("Name")))
-                     .ToDictionary(x => x.GetValue<string>("Name"),
-                         y => new ConnectionConfiguration(y.GetValue<string>("Name"), y.GetValue<string>("ConnectionString"), y.GetValue<string>("ProviderName")));
-
-            DbSettingProviderManager
-               .StartNewSession()
-               .Use(connections)
-               .WithSqlServer()
-               .UseDefaultDbSettingProvider("~/App_Data/SpNames.xml")
-               .Run();
+            services.AddFanexData(Configuration);
 
             LogManager
                 .SetDefaultLogCategory(Configuration.GetSection("Sentry:LogCategory").Value)
@@ -78,10 +61,6 @@
                         FrontEndDsn = new Dsn(Configuration.GetSection("Sentry:FrontEndDsn").Value)
                     })
                 });
-
-            ExceptionHandler
-                .UseConfig(new LoggingConfiguration())
-                .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
             services.AddAuthentication(options =>
             {

@@ -50,7 +50,7 @@ namespace CRM.Models.ChatTypeMapping
 
         public string Remark { get; set; }
 
-        public byte IsTest { get; set; }
+        public bool IsTest { get; set; }
 
         public string IgnoredNotificationTypeList { get; set; }
 

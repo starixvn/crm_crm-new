@@ -1,11 +1,12 @@
 ﻿namespace Fanex.CRM.BackgroundJob.Services
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Criteria;
     using Fanex.CRM.BackgroundJob.Models;
-    using Fanex.CRM.BackgroundJob.Repositories;
+    using Fanex.Data.Repository;
     using global::CRM.BackgroundJob.Criteria.AutoFeedback;
     using global::CRM.BackgroundJob.Criteria.ProblemsAccount;
     using global::CRM.BackgroundJob.Criteria.ResultAmendment;
@@ -39,18 +40,18 @@
 
     public class CustomerService : ICustomerService
     {
-        private readonly ICustomerRepository repository;
+        private readonly IDynamicRepository dynamicRepository;
         private readonly IBaseService baseService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.Constants.DefaultEnvironment;
 
         public CustomerService(
-            ICustomerRepository repository,
+            IDynamicRepository dynamicRepository,
             IBaseService baseService,
             IConfiguration configuration)
         {
-            this.repository = repository;
+            this.dynamicRepository = dynamicRepository;
             this.baseService = baseService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
@@ -62,7 +63,14 @@
                 Username = username,
                 IsGuest = isGuest
             };
-            return await repository.GetCustomerInfoByUsernameAsync(criteria);
+            var result = await dynamicRepository.FetchMultipleAsync<CustomerInfo, int>(criteria);
+            var customer = result.Item1.FirstOrDefault();
+            if (customer != null)
+            {
+                customer.LanguageId = result.Item2.FirstOrDefault();
+            }
+
+            return customer;
         }
 
         public async Task<IEnumerable<GroupHeadline>> GetGroupHeadlineAsync(IEnumerable<int> custIds)

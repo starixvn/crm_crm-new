@@ -1,13 +1,10 @@
-﻿
-namespace CRM.BackgroundJob.Criteria.ChatBot
+﻿namespace CRM.BackgroundJob.Criteria.ChatBot
 {
-    using CRM.Core.Models;
-    using Fanex.Data.Repository;
+    using CRM.Core.Criteria;
 
-    public class GetChatBotAbnormalAccountGetUsernameListCriteria : CriteriaBase, CriteriaBaseSiteDb
+    public class GetChatBotAbnormalAccountGetUsernameListCriteria : SiteDbBaseCriteria
     {
         public string Messages { get; set; }
-        public int SiteDBGroupID { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_ChatBot_AbnormalAccount_GetUsernameList";
 

@@ -16,7 +16,6 @@
     using CRM.Core.Models.BotServices;
     using CRM.Core.Services;
     using Fanex.Logging.Extensions;
-    using Fanex.Logging.Extensions.Database;
     using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
@@ -205,7 +204,6 @@
                 { "chatId", notificationMessage.ConversationId }
             };
             var logMessage = new LogMessage(exception.Message)
-                .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(exception))
                 .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
                 .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(exception))
                 .AddSection("Params", param);

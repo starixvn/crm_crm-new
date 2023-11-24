@@ -1,7 +1,6 @@
 ﻿namespace CRM.BotService.Endpoint
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
     using System.Threading;
     using CRM.BotService.Core.Extensions;
@@ -10,16 +9,11 @@
     using CRM.BotService.Core.Services.Interfaces;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
-    using CRM.Core.Repositories;
     using CRM.Core.Services;
     using Fanex.Caching;
     using Fanex.Data;
     using Fanex.Data.Repository;
-    using Fanex.Data.SqlServer;
     using Fanex.Logging;
-    using Fanex.Logging.Extensions;
-    using Fanex.Logging.Extensions.AspNetCore;
-    using Fanex.Logging.Extensions.Database;
     using Fanex.Logging.Sentry;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
@@ -43,6 +37,8 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddFanexData(Configuration);
+
             LogManager
             .SetDefaultLogCategory(Configuration.GetSection("LogCategory").Value)
             .Use(new List<ILogEngine>
@@ -52,24 +48,6 @@
                     Dsn = new Dsn(Configuration.GetSection("SentryEngineOptions:Dsn").Value),
                 })
             });
-
-            var connections = Configuration.GetSection("ConnectionStrings")
-                     .GetChildren()
-                     .AsEnumerable()
-                     .Where(x => !string.IsNullOrWhiteSpace(x.GetValue<string>("Name")))
-                     .ToDictionary(x => x.GetValue<string>("Name"),
-                         y => new ConnectionConfiguration(y.GetValue<string>("Name"), y.GetValue<string>("ConnectionString"), y.GetValue<string>("ProviderName")));
-
-            DbSettingProviderManager
-               .StartNewSession()
-               .Use(connections)
-               .WithSqlServer()
-               .UseDefaultDbSettingProvider("~/App_Data/SpNames.xml")
-               .Run();
-
-            ExceptionHandler
-                .UseConfig(new LoggingConfiguration())
-                .UseGetDbExceptionInfo(DatabaseInfoGetters.GetDbExceptionInfo);
 
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
@@ -104,7 +82,6 @@
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
-            services.AddSingleton<IBaseRepository, BaseRepository>();
             services.AddSingleton<IBaseService, BaseService>();
             services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<ILogger, Logger>();

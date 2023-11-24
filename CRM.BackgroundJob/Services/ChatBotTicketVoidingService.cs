@@ -137,6 +137,7 @@
                 "Recommend='{4}' Mrecommend='{5}' Srecommend='{6}' IsTest='{7}' " +
                 "Content_en='{8}' Content_cs='{9}' Content_th='{10}' Content_vn='{11}' Type='{12}'/>";
             var stringBuilder = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
+            
             foreach (ChatBotVoidingTicketInfo ticketInfo in ticketInfos)
             {
                 Message message = messages.FirstOrDefault(x => x.VoidingHistoryCollectionId == ticketInfo.VoidingHistoryCollectionId);
@@ -159,7 +160,6 @@
            
 
             stringBuilder.Append(Constants.EndRootTag.ToLowerInvariant());
-            new StringBuilder(Constants.BeginRootTag.ToLowerInvariant()).Append(Constants.EndRootTag.ToLowerInvariant());
             var criteria = new ImportChatBotTicketVoidingInfoCommand
             {
                 XmlData = stringBuilder.ToString(),
