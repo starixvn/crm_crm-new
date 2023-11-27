@@ -35,6 +35,9 @@ export default class DataGrid extends PureComponent {
         if (JSON.stringify(prevProps.customerInfo) !== JSON.stringify(this.props.customerInfo)) {
             this.handleCheckLanguage();
         }
+        if (prevProps.customerInfo.custId !== this.props.customerInfo.custId) {
+            this.setState({ siteId: null });
+        }
     }
 
     componentWillUnmount() {
