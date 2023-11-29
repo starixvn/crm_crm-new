@@ -63,7 +63,7 @@ export class VerifyCustomerResult extends Component {
                     <Col sm="2" md="2"><span className="customer mr-3" />{LangHelper.getResource('Customer')}</Col>
                     <Col sm="2" md="2"><span className="guest mr-3" />{LangHelper.getResource('Guest')}</Col>
                     <Col sm="2" md="2"><span className="invalid mr-3" />{LangHelper.getResource('Invalid')}</Col>
-                    <Col sm="2" md="2"><span className="inactive mr-3" />{LangHelper.getResource('Invalid')}</Col>
+                    <Col sm="2" md="2"><span className="inactive mr-3" />{LangHelper.getResource('InactiveSite')}</Col>
                 </Row>
                 <Row className="mt-2 mb-2">
                     <Col>
