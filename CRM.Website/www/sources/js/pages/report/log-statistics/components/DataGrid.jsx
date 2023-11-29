@@ -159,7 +159,7 @@ export class DataGrid extends Component {
         const fromDateFormat = DateTimeService.toShortDateFormat(gridParams.fromDate);
         const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);
         const title = tableName === 'mbc' ?
-            `MBC Daily Customer Complaints/Enquiries From ${fromDateFormat} To ${toFormat}` :
+            `Credit Daily Customer Complaints/Enquiries From ${fromDateFormat} To ${toFormat}` :
             `Licensee Daily Customer Complaints/Enquiries From ${fromDateFormat} To ${toFormat}`;
         return title;
     };
