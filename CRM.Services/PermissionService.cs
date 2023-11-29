@@ -1,5 +1,6 @@
 ﻿namespace CRM.Services
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
@@ -17,6 +18,8 @@
         Task<short> GetSitePermissionAsync();
 
         Task<bool> IsHavingPermissionAsync(string functionKey);
+
+        Task<string> GetChildPermissionsAsync(string parentFunctionKey);
     }
 
     public class PermissionService : IPermissionService
@@ -63,6 +66,18 @@
         {
             int policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, functionKey);
             return policy > 0;
+        }
+
+        public async Task<string> GetChildPermissionsAsync(string parentFunctionKey)
+        {
+            var siteLabels = string.Empty;
+            var functions = await userService.GetPermissionsAsync(napSession.UserId, napSettings.SiteId, parentFunctionKey);
+            if (functions is not null && functions.Any())
+            {
+                var functionKeys = functions.Select(f => f.Name).ToArray();
+                siteLabels = string.Join(",", functionKeys);
+            }
+            return siteLabels;
         }
     }
 }

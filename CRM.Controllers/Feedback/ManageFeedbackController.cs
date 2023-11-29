@@ -62,6 +62,7 @@
         {
             var sitePermission = await permissionService.GetSitePermissionAsync();
             criteria.LicenseeType = sitePermission;
+            criteria.SiteLabel = await permissionService.GetChildPermissionsAsync(FunctionKey.Credit);
             var feedbacksTask = feedbackService.GetManageFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);

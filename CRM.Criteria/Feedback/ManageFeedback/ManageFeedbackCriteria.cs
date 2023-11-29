@@ -43,6 +43,7 @@
 
         public int TotalRows { get; set; }
         public short LicenseeType { get; set; } = (short)SitePermission.Both;
+        public string SiteLabel { get; set; }
 
         public override bool IsValid() => true;
 
