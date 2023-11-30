@@ -21,5 +21,11 @@
 
         [XMLName("Content_cs")]
         public string Content_cs { get; set; }
+
+        [XMLName("MsgTargetId")]
+        public int MsgTargetId { get; set; }
+
+        [XMLName("TargetId")]
+        public int TargetId { get; set; }
     }
 }
