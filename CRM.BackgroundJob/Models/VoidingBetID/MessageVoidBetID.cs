@@ -13,8 +13,8 @@
         [XMLName("MAXMsgTargetId")]
         public int MAXMsgTargetId { get; set; }
 
-        [XMLName("ListBetTransId")]
-        public string ListBetTransId { get; set; }
+        [XMLName("BetTransId")]
+        public string BetTransId { get; set; }
 
         [XMLName("Content_en")]
         public string Content_en { get; set; }
