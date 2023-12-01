@@ -38,9 +38,10 @@
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<VoidingMessageUserName> messagesImportCombineDistinct,
              bool isUAT,
-            AbnormalBetSystemSetting setting)
+            AbnormalBetSystemSetting setting,
+            IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
         {
-            await base.CreateFeedbackForCreditDepositSiteAsync(messages, matchInfos, transactionInfos, messagesImportCombineDistinct, isUAT, setting);
+            await base.CreateFeedbackForCreditDepositSiteAsync(messages, matchInfos, transactionInfos, messagesImportCombineDistinct, isUAT, setting, duplicateTicketDetails);
         }
 
         public async Task Public_CreateFeedbackForCreditSiteAsync(
@@ -81,20 +82,20 @@
             MatchInfo matchInfo,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<SettingItem> settings,
-            IEnumerable<SystemSettingMapping> settingMappings)
+            IEnumerable<SystemSettingMapping> settingMappings,
+            IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
         {
-            await base.CreateFeedbackForDepositSiteAsync(licenseeInfo, messages, matchInfo, transactionInfos, settings, settingMappings);
+            await base.CreateFeedbackForDepositSiteAsync(licenseeInfo, messages, matchInfo, transactionInfos, settings, settingMappings, duplicateTicketDetails);
         }
 
         public async Task Public_CreateFeedbackForDepositByBatchAsync(
-            CustomerInfo licenseeInfo,
             IEnumerable<Message> messages,
             IEnumerable<TransactionInfo> transactionInfos,
-            DateTime feedbackDate,
             string communicationTool,
-            CreateFeedbackCommand criteria)
+            CreateFeedbackCommand criteria,
+            IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
         {
-            await base.CreateFeedbackForDepositByBatchAsync(licenseeInfo, messages, transactionInfos, feedbackDate, communicationTool, criteria);
+            await base.CreateFeedbackForDepositByBatchAsync(messages, transactionInfos, communicationTool, criteria, duplicateTicketDetails);
         }
 
         public async Task Public_UpdateSystemSetting(bool isUAT, AbnormalBetSystemSetting setting, int maxVoidingHistoryCollectionId)

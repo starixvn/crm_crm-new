@@ -53,13 +53,14 @@
         }
 
         public string Public_GetVoidingSettledTicketsProductXml(
+            bool isMixParlay,
             IEnumerable<int> productIds,
             IEnumerable<short> sportTypeId,
             string bettypes,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            return base.GetVoidingSettledTicketsProductXml(productIds, sportTypeId, bettypes, settings, settingMappings);
+            return base.GetVoidingSettledTicketsProductXml(isMixParlay, productIds, sportTypeId, bettypes, settings, settingMappings);
         }
 
         public string Public_GetProductSubXml(
@@ -79,19 +80,21 @@
         }
 
         public IList<SettingItem> Public_GetVoidingSettledTicketsSubProduct(
+            bool isMixParlay,
             IEnumerable<int> productIds,
             IEnumerable<short> sportTypeId,
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            return base.GetVoidingSettledTicketsSubProduct(productIds, sportTypeId, settings, settingMappings);
+            return base.GetVoidingSettledTicketsSubProduct(isMixParlay, productIds, sportTypeId, settings, settingMappings);
         }
 
         public IList<SystemSettingMapping> Public_GetVoidingSettledTicketsBettype(
+            bool isMixParlay,
             string[] listBetTypes,
             IEnumerable<SystemSettingMapping> settingMappings)
         {
-            return base.GetVoidingSettledTicketsBettype(listBetTypes, settingMappings);
+            return base.GetVoidingSettledTicketsBettype(isMixParlay, listBetTypes, settingMappings);
         }
 
         public Tuple<int, int, string> Public_GetCategorySubCategoryVoidingSettledTicket(IEnumerable<SettingItem> settings, string settingValueName, int issueTypeId)

@@ -77,16 +77,17 @@
             var voidingMessageUserName = new List<VoidingMessageUserName>();
             var matchInfos = new List<MatchInfo>();
             var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
-            var transCheck = fixture.Create<IEnumerable<string>>();
+            var transCheck = fixture.Create<string>();
             var transactionTickets = fixture.Create<IEnumerable<TransactionInfo>>();
-            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>(matchInfos, transactionInfos, transCheck);
+            var duplicateTicketDetail = fixture.Create<IEnumerable<DuplicateTicketDetail>>();
+            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<DuplicateTicketDetail>, string>(matchInfos, transactionInfos, duplicateTicketDetail, transCheck);
             var service = MockService();
             messageService.GetVoidingMessageAsync(Arg.Any<int>()).Returns(voidingMessages);
             messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2).Returns(messageImportCheck);
             messageService.ImportVoidingMessageAsync(voidingMessageUserName, voidingMessages.Item1, setting.BatchSize, "Live", setting.LastDateUAT).Returns(voidingMessageUserName);
             messageService.GetFailMessageAsync().Returns(failMessages);
             ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>(), setting).Returns(ticketInfo);
-            ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item3.FirstOrDefault()).Returns(transactionTickets);
+            ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item4).Returns(transactionTickets);
 
             // Act
             await service.CreateFeedbackForVoidingAbnormalBetAsync(setting, false, setting.LastDateUAT, "LastRuntime", SystemSettingName.JobStatus, "LIVE");
@@ -122,16 +123,17 @@
             var messageImportCheck = fixture.Create<IEnumerable<VoidingHisMessage>>();
             var failMessages = fixture.Create<IEnumerable<VoidingMessageUserName>>();
             var voidingMessageUserName = new List<VoidingMessageUserName>();
-            var transCheck = fixture.Create<IEnumerable<string>>();
+            var transCheck = fixture.Create<string>();
             var transactionTickets = fixture.Create<IEnumerable<TransactionInfo>>();
-            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>(matchInfos, transactionInfos, transCheck);
+            var duplicateTicketDetail = fixture.Create<IEnumerable<DuplicateTicketDetail>>();
+            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<DuplicateTicketDetail>, string>(matchInfos, transactionInfos, duplicateTicketDetail, transCheck);
             var service = MockService();
             messageService.GetVoidingMessageAsync(Arg.Any<int>()).Returns(voidingMessages);
             messageService.ImportVoidingMessageHistoryCheckAsync(voidingMessages.Item2).Returns(messageImportCheck);
             messageService.ImportVoidingMessageAsync(voidingMessageUserName, voidingMessages.Item1, setting.BatchSize, "Live", setting.LastDateUAT).Returns(voidingMessageUserName);
             messageService.GetFailMessageAsync().Returns(failMessages);
             ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<VoidingMessageUserName>>(), setting).Returns(ticketInfo);
-            ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item3.FirstOrDefault()).Returns(transactionTickets);
+            ticketVoidingService.GetAbnormalTicketsByTransAsync(setting, ticketInfo.Item4).Returns(transactionTickets);
 
             // Act
             await service.CreateFeedbackForVoidingAbnormalBetAsync(setting, false, setting.LastDateUAT, "LastRuntime", setting.JobStatus, "Live");
@@ -179,6 +181,7 @@
             var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>>(matchInfos, transactionInfos);
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var siteSettingMappings = fixture.Create<IEnumerable<SiteSettingMapping>>();
+            var duplicateTicketDetails = fixture.Create<IEnumerable<DuplicateTicketDetail>>();
             var licenseeInfo = fixture.Create<CustomerInfo>();
             var headlines = new List<GroupHeadline>
             {
@@ -205,7 +208,8 @@
                         ticketInfo.Item2,
                         voidingMessageUserName,
                         false,
-                        setting
+                        setting,
+                        duplicateTicketDetails
                         );
 
             // Assert
@@ -224,7 +228,8 @@
                 Arg.Any<MatchInfo>(),
                 Arg.Any<IEnumerable<TransactionInfo>>(),
                 settings,
-                settingMappings);
+                settingMappings,
+                Arg.Any<IEnumerable<DuplicateTicketDetail>>());
         }
         #endregion CreateFeedbackForCreditDepositSiteAsync
 
@@ -416,6 +421,8 @@
             var matchInfo = fixture.Create<MatchInfo>();
             var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
             var communicationTool = fixture.Create<SettingItem>();
+            var category = fixture.Create<Tuple<int, int, string>>();
+            var duplicateTicketDetails = fixture.Create<IEnumerable<DuplicateTicketDetail>>();
             var settings = new List<SettingItem>
             {
                 new SettingItem { SettingId = 1, SettingName = "Status", SettingValue = "Closed" },
@@ -424,7 +431,8 @@
             };
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var service = MockService();
-            service.Protected("GetCommunicationTool", settings).Returns(communicationTool);
+            service.Protected("GetCommunicationTool", settings, matchInfo.IssueTypeId).Returns(communicationTool);
+            service.Protected("GetCategorySubCategory", settings, matchInfo.IssueTypeId).Returns(category);
 
             // Act
             await service.Public_CreateFeedbackForDepositSiteAsync(
@@ -433,13 +441,14 @@
                 matchInfo,
                 transactionInfos,
                 settings,
-                settingMappings);
+                settingMappings,
+                duplicateTicketDetails);
 
             // Assert
             logService.Received(2).LogInformation(Arg.Any<string>());
             service.Received().Protected("GetCategorySubCategory", settings, matchInfo.IssueTypeId);
             service.Received().Protected("GetProductXml", false, matchInfo, transactionInfos, settings, settingMappings);
-            service.Received().Protected("CreateFeedbackForDepositByBatchAsync", licenseeInfo, messages, transactionInfos, Arg.Any<DateTime>(), Arg.Any<string>(), Arg.Any<CreateFeedbackCommand>());
+            service.Received().Protected("CreateFeedbackForDepositByBatchAsync", messages, transactionInfos, Arg.Any<string>(), Arg.Any<CreateFeedbackCommand>(), duplicateTicketDetails);
         }
         #endregion CreateFeedbackForDepositSiteAsync
 

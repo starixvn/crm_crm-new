@@ -243,7 +243,7 @@
             service.Protected("GetProductSubXml", Arg.Any<SettingItem>(), Arg.Any<IList<SettingItem>>(), Arg.Any<IList<SystemSettingMapping>>()).Returns(productSubproductXml);
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsProductXml(productIds, sportTypeIds, "1,2", settings, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsProductXml(true, productIds, sportTypeIds, "1,2", settings, settingMappings);
 
             // Assert
             Assert.Equal("<ROOT><Product ProductID='1' SubProductID='1' BetTypeID='1' /></ROOT>", actual);
@@ -275,7 +275,7 @@
             service.Protected("GetVoidingSettledTicketsBettype", Arg.Any<string[]>(), settingMappings).Returns(bettypesMapping);
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsProductXml(productIds, sportTypeIds, "1,2", settings, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsProductXml(true, productIds, sportTypeIds, "1,2", settings, settingMappings);
 
             // Assert
             Assert.Equal("<ROOT><Product ProductID='46004' SubProductID='8063' BetTypeID='9144' /></ROOT>", actual);
@@ -419,7 +419,7 @@
             commonFeedback.GetSportName("1", Language.en_US).Returns("1");
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsSubProduct(productIds, sportTypeIds, setting, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsSubProduct(true, productIds, sportTypeIds, setting, settingMappings);
 
             // Assert
             Assert.Single(actual);
@@ -445,7 +445,7 @@
             commonFeedback.GetProductName("1", Language.en_US).Returns("1");
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsSubProduct(productIds, sportTypeIds, setting, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsSubProduct(true, productIds, sportTypeIds, setting, settingMappings);
 
             // Assert
             Assert.Equal(Constants.SubProductNA, actual.First().SettingId);
@@ -470,7 +470,7 @@
             commonFeedback.GetProductName("2", Language.en_US).Returns("1");
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsSubProduct(productIds, sportTypeIds, setting, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsSubProduct(true, productIds, sportTypeIds, setting, settingMappings);
 
             // Assert
             Assert.Equal(Constants.SubProductNA, actual.First().SettingId);
@@ -497,7 +497,7 @@
             commonFeedback.GetSportName("1", Language.en_US).Returns("1");
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsSubProduct(productIds, sportTypeIds, setting, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsSubProduct(true, productIds, sportTypeIds, setting, settingMappings);
 
             // Assert
             Assert.Equal(1, actual.First().SettingId);
@@ -520,7 +520,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsBettype(betTypeMappings, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsBettype(true, betTypeMappings, settingMappings);
 
             // Assert
             Assert.Single(actual);
@@ -540,7 +540,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsBettype(betTypeMappings, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsBettype(true, betTypeMappings, settingMappings);
 
             // Assert
             Assert.Single(actual);
@@ -560,7 +560,7 @@
             var service = MockService();
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsBettype(betTypeMappings, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsBettype(true, betTypeMappings, settingMappings);
 
             // Assert
             Assert.Single(actual);
@@ -581,7 +581,7 @@
             commonFeedback.GetBettypeName(Arg.Any<string>(), Language.en_US).Returns("BettypeName");
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsBettype(listBetTypes, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsBettype(true, listBetTypes, settingMappings);
 
             // Assert
             Assert.Single(actual);
