@@ -5,7 +5,6 @@
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Criteria.Report.LogStatistics;
-    using CRM.Models.Report.LogStatistics;
     using CRM.Services;
     using CRM.Services.Report;
     using Fanex.NAP.Core.Business;
@@ -59,7 +58,8 @@
                 ProductType = LogStatisticConstants.ProductTypeDetails,
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = LogStatisticConstants.IBC,
-                LicenseeType = (short)licenseeType
+                LicenseeType = (short)licenseeType,
+                SiteLabel = await permissionService.GetCreditPermissionsAsync()
             }) : null;
 
             var licenseeReport = licenseeType == SitePermission.Both || licenseeType == SitePermission.Licensee ? await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
@@ -72,7 +72,8 @@
                 ProductType = LogStatisticConstants.ProductTypeDetails,
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = LogStatisticConstants.Licensee,
-                LicenseeType = (short)licenseeType
+                LicenseeType = (short)licenseeType,
+                SiteLabel = string.Empty
             }) : null;
 
             return Json(new { ibcReport, licenseeReport, licenseeType });
@@ -83,6 +84,8 @@
         public async Task<IActionResult> GetReportDetails([FromBody] LogStatisticsDetailCriteria criteria)
         {
             criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+
             var reportDetailsTask = logStatisticsService.GetReportDetailsAsync(criteria);
             var mainCategoriesTask = settingService.GetAllMainSubCategoriesAsync();
             var communicationToolsTask = settingService.GetCommunicationToolAsync();
@@ -125,7 +128,8 @@
                 ProductType = LogStatisticConstants.ProductTypeDetails,
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = criteria.SiteType,
-                LicenseeType = licenseeType
+                LicenseeType = licenseeType,
+                SiteLabel = await permissionService.GetCreditPermissionsAsync()
             };
 
             var logStatistics = await logStatisticsService.GetReportDataAsync(param);
@@ -139,6 +143,7 @@
             criteria.PageIndex = 0;
             criteria.PageSize = 0;
             criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
 
             var logStatisticsDetailTask = logStatisticsService.GetReportDetailsAsync(criteria);
             var mainCategoriesTask = settingService.GetAllMainSubCategoriesAsync();

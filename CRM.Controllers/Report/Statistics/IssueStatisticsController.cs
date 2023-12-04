@@ -1,32 +1,31 @@
 ﻿using System.Threading.Tasks;
 using CRM.Core;
 using CRM.Core.Constants;
-using CRM.Core.Filters;
 using CRM.Criteria.Report;
 using CRM.Resources;
 using CRM.Services;
 using CRM.Services.Report;
-using Fanex.NAP.Core.Business;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.Controllers.Report.Statistics
 {
-
     public class IssueStatisticsController : BaseController
     {
         private readonly IIssueStatisticsService issueStatisticsService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
+        private readonly IPermissionService permissionService;
 
         public IssueStatisticsController(
             IIssueStatisticsService issueStatisticsService,
             ISettingService settingService,
-            IExportExcelService excelService
-        )
+            IExportExcelService excelService,
+            IPermissionService permissionService)
         {
             this.issueStatisticsService = issueStatisticsService;
             this.settingService = settingService;
             this.excelService = excelService;
+            this.permissionService = permissionService;
         }
 
         public async Task<ActionResult> GetAllSettings()
@@ -40,6 +39,9 @@ namespace CRM.Controllers.Report.Statistics
         [HttpPost]
         public async Task<IActionResult> GetIssuesStatistics([FromBody] GetIssuesStatisticReportCriteria criteria)
         {
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+
             var data = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
             return Json(data);
         }
@@ -55,6 +57,9 @@ namespace CRM.Controllers.Report.Statistics
                                 criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             var fileName = string.Format(ViewResources.IssueStatistics_ExcelFile, typeName,
                                 criteria.FromDate.ToShortDateFormatDash(), criteria.ToDate.ToShortDateFormatDash());
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+
             var data = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
             var bytes = excelService.ExportIssueStatisticsReport(data, titleExcel);
             return File(bytes, MimeType.XLSX, $"{fileName}.xlsx");

@@ -12,26 +12,24 @@
     using CRM.Services.Remark;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Remarks, Policy = Policy.Read)]
+    [CrmMultiplePermission(FunctionKey = FunctionKey.Remarks, Policy = Policy.Read)]
     public class NewRemarkController : BaseController
     {
         private readonly INapSession napSession;
         private readonly INapSettings napSettings;
-        private readonly IUserService userService;
+        private readonly IPermissionService permissionService;
         private readonly IRemarkService remarkService;
         private readonly ISettingService settingService;
         private readonly ICommonService commonService;
         private readonly ICustomerService customerService;
 
-
         public NewRemarkController(
             INapSession napSession,
             INapSettings napSettings,
-            IUserService userService,
+            IPermissionService permissionService,
             IRemarkService remarkService,
             ISettingService settingService,
             ICommonService commonService,
@@ -40,7 +38,7 @@
         {
             this.napSession = napSession;
             this.napSettings = napSettings;
-            this.userService = userService;
+            this.permissionService = permissionService;
             this.remarkService = remarkService;
             this.settingService = settingService;
             this.commonService = commonService;
@@ -62,10 +60,11 @@
             };
             var users = await customerService.GetAllCustomerAsync(userCriteria);
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
-            return Json(new {
+            return Json(new
+            {
                 extentions,
                 users,
-                userId = napSession.UserId 
+                userId = napSession.UserId
             });
         }
 
@@ -79,18 +78,23 @@
         {
             criteria.Fromdate = commonService.ConvertClientFromTimeToServerTime(criteria.Fromdate);
             criteria.Todate = commonService.ConvertClientToTimeToServerTime(criteria.Todate);
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
             var newRemarks = await remarkService.GetNewRemarkAsync(criteria);
-            foreach(var remark in newRemarks)
+            foreach (var remark in newRemarks)
             {
                 remark.CreatedDate = commonService.ConvertToClientDateTime(remark.CreatedDate);
                 remark.LastUpdate = commonService.ConvertToClientDateTime(remark.LastUpdate);
             }
-            return Json(new{data = newRemarks, totalItems = criteria.TotalRows});
+            return Json(new { data = newRemarks, totalItems = criteria.TotalRows });
         }
 
         [HttpPost]
         public async Task<IActionResult> ValidateUsername([FromBody] CustomerRemarkNewCheckCriteria command)
         {
+            command.LicenseeType = await permissionService.GetSitePermissionAsync();
+            command.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+
             var relatedCustomers = await remarkService.ValidateUsernameAsyn(command);
             return Json(relatedCustomers);
         }
@@ -104,7 +108,6 @@
             command.IP = ClientIP;
             CommandResult commandResult = await remarkService.CreateNewAsync(command);
             return Json(commandResult);
-            
         }
 
         [HttpPost]
@@ -120,9 +123,8 @@
         [HttpPost]
         public async Task<IActionResult> GetNewRemarkHistory([FromBody] GetCustomerRemarkNewHistoryCriteria criteria)
         {
-
             var histories = await remarkService.GetCustomerNewRemarkHistoryAsync(criteria);
-            foreach(var history in histories)
+            foreach (var history in histories)
             {
                 history.LastUpdate = commonService.ConvertToClientDateTime(history.LastUpdate);
             }

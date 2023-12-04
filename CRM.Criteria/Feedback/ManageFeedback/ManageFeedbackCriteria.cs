@@ -1,16 +1,11 @@
 ﻿namespace CRM.Criteria.Feedback.ManageFeedback
 {
     using System;
-    using CRM.Core.Constants;
-    using CRM.Core.Enumerables;
     using Fanex.Data;
-    using Fanex.Data.Repository;
 
-    public class ManageFeedbackCriteria : CriteriaBase
+    public class ManageFeedbackCriteria : BaseSitePermisionCriteria
     {
         public int? FeedbackId { get; set; }
-
-        public short UserRole { get; } = Constants.UserRole;
 
         public DateTime FromDate { get; set; }
 
@@ -42,8 +37,6 @@
         public int PageSize { get; set; }
 
         public int TotalRows { get; set; }
-        public short LicenseeType { get; set; } = (short)SitePermission.Both;
-        public string SiteLabel { get; set; }
 
         public override bool IsValid() => true;
 

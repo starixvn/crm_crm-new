@@ -1,8 +1,8 @@
 ﻿namespace CRM.Criteria.Report.CategoriesSummaryReport
 {
     using Fanex.Data;
-    using Fanex.Data.Repository;
-    public class GetSummaryReportCriteria : CriteriaBase
+
+    public class GetSummaryReportCriteria : BaseSitePermisionCriteria
     {
         private readonly int minYear = 2011;
 
@@ -21,6 +21,5 @@
         }
 
         public override bool IsValid() => Year >= minYear;
-
     }
 }

@@ -6,12 +6,10 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
-    using CRM.Core.Extensions;
     using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Feedback;
-    using CRM.Criteria.Setting;
     using CRM.Models.Feedback;
     using CRM.Models.Setting;
     using CRM.Resources;
@@ -20,7 +18,6 @@
     using CRM.Services.Feedback;
     using CRM.ViewModels.Feedback;
     using Fanex.Logging.Extensions;
-    using Fanex.Logging;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
@@ -76,7 +73,8 @@
             CustomerFeedback feedback = await feedbackService.GetCustomerFeedbackByIdAsync(id);
             if (feedback is not null && feedback.CustId != 0)
             {
-                feedback.CustomerType = await customerService.GetSiteTypeByCustIdAsync(feedback.CustId);
+                var custPermissionInfo = await customerService.GetSiteTypeByCustIdAsync(feedback.CustId);
+                feedback.CustomerType = custPermissionInfo.CustomerType;
             }
             var isDeletedFeedbackView = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.DeleteFeedback, Policy.Host);
             var settings = await GetEditCustomerFeedbackSettingAsync(feedback, isDeletedFeedbackView);

@@ -37,8 +37,8 @@
         [HttpPost]
         public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackCriteria criteria)
         {
-            var sitePermission = await permissionService.GetSitePermissionAsync();
-            criteria.LicenseeType = sitePermission;
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync(); ;
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
 
@@ -47,12 +47,13 @@
             IEnumerable<DeletedFeedback> feedbacks = feedbacksTask.Result;
             IEnumerable<Setting> mainCategories = mainCategoriesTask.Result;
 
-            return Json(new { data = feedbacks, mainCategories});
+            return Json(new { data = feedbacks, mainCategories });
         }
 
         [HttpPost]
         public async Task<IActionResult> GetLatestFeedbackByCustId([FromBody] GetLatestFeedbackByCustIdCriteria criteria)
         {
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
 
@@ -67,8 +68,8 @@
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] GetLatestFeedbackCriteria criteria)
         {
-            var sitePermission = await permissionService.GetSitePermissionAsync();
-            criteria.LicenseeType = sitePermission;
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);
@@ -86,7 +87,8 @@
             var criteria = new GetLatestFeedbackByCustIdCriteria
             {
                 Top = param.Top,
-                CustID = param.CustID
+                CustID = param.CustID,
+                SiteLabel = await permissionService.GetCreditPermissionsAsync()
             };
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();

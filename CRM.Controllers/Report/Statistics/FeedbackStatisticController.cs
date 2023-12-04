@@ -21,19 +21,22 @@
         private readonly ICommonService commonService;
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
+        private readonly IPermissionService permissionService;
+
         public FeedbackStatisticController(IFeedbackRepository feedbackRepository,
             IFeedbackService feedbackService,
             ICommonService commonService,
             ISettingService settingService,
-            IExportExcelService excelService)
+            IExportExcelService excelService,
+            IPermissionService permissionService)
         {
             this.feedbackRepository = feedbackRepository;
             this.feedbackService = feedbackService;
             this.settingService = settingService;
             this.commonService = commonService;
             this.excelService = excelService;
+            this.permissionService = permissionService;
         }
-
 
         [HttpPost]
         public async Task<IActionResult> GetFeedbackStatistic([FromBody] GetFeedbackStatisticCriteria criteria)
@@ -42,6 +45,9 @@
                                         criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+
             var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
             feedbackStatistic.Title = title;
             feedbackStatistic.TotalItems = feedbackStatistic.FeedbackCategories.Count;
@@ -56,6 +62,8 @@
         [HttpPost]
         public async Task<IActionResult> GetFeedbackStatisticDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
         {
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
             var feedbackDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
             var total = feedbackDetail.Count();
             if (feedbackDetail.Any())
@@ -77,6 +85,9 @@
                             criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+
             var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
             feedbackStatistic.Title = title;
             var bytes = excelService.ExportStatisticFeedback(feedbackStatistic);
@@ -88,6 +99,9 @@
         public async Task<IActionResult> ExportExcelDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
         {
             criteria.PageIndex = 0;
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+
             var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
             var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();
             var title = string.Format(ViewResources.FeedbackStatisticDetail_ExcelTitle,

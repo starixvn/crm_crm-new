@@ -3,9 +3,8 @@
     using System;
     using CRM.Core.Constants;
     using Fanex.Data;
-    using Fanex.Data.Repository;
 
-    public class GetDynamicReportCriteria : CriteriaBase
+    public class GetDynamicReportCriteria : BaseSitePermisionCriteria
     {
         [SpParam(Ignored = true)]
         public int ReportType { get; set; }
@@ -52,8 +51,6 @@
 
         [SpParam(Ignored = true)]
         public bool IsGetFullReport { get; set; }
-
-        public short UserRole { get; } = Constants.UserRole;
 
         public override string GetSettingKey() => "Acc_CRM_Rpt_DynamicFeedback";
 

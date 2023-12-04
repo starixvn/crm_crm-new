@@ -33,7 +33,7 @@
         Task<IEnumerable<CusReachAmendmentNotification>> GetListResultAmendmentNotificationAsync(ResultAmendmentSetting resultAmendmentSetting);
 
         Task<IEnumerable<CustOutStanding>> GetListCustOutStandingAsync(IEnumerable<TONotification> custNotifications);
-        
+
         Task<IEnumerable<CustCategoryInfor>> GetCustCategoryInfor(ProblemsAccountSetting problemsAccountSetting, bool isUAT);
     }
 
@@ -125,7 +125,7 @@
                 BatchSizeTicket = resultAmendmentSetting.BatchSizeTicket,
                 ConfigUAT = resultAmendmentSetting.ConfigUAT,
                 ConfigPRO = resultAmendmentSetting.ConfigPRO,
-                IsCredit =  resultAmendmentSetting.IsCredit,
+                IsCredit = resultAmendmentSetting.IsCredit,
                 IsDeposit = resultAmendmentSetting.IsDeposit,
                 Environment = Environment
             };

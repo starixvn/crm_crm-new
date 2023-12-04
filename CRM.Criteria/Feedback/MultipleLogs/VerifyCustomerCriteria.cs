@@ -1,8 +1,6 @@
 ﻿namespace CRM.Criteria.Feedback.MultipleLogs
 {
-    using Fanex.Data.Repository;
-
-    public class VerifyCustomerCriteria : CriteriaBase
+    public class VerifyCustomerCriteria : BaseSitePermisionCriteria
     {
         public string Username { get; set; }
 

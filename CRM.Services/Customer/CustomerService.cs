@@ -10,6 +10,7 @@
     using CRM.Criteria.Customer;
     using CRM.Models.Customer;
     using Microsoft.Extensions.Configuration;
+    using static Fanex.NAP.Core.Business.Constant;
 
     public interface ICustomerService
     {
@@ -25,22 +26,24 @@
 
         Task<IEnumerable<UserInfo>> GetAllCustomerAsync(GetAllCustomersCriteria criteria);
 
-        Task<SiteType?> GetSiteTypeByCustIdAsync(int custId);
+        Task<CustomerPermissionInfo> GetSiteTypeByCustIdAsync(int custId);
 
-        Task<bool> HasHostPermissionOnCustIdAsync(bool isHostCredit, bool isHostLicensee, int custId);
+        Task<bool> HasHostPermissionOnCustIdAsync(int custId);
     }
 
     public class CustomerService : ICustomerService
     {
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
+        private readonly IPermissionService permissionService;
         private readonly string Environment;
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
 
-        public CustomerService(IBaseService baseService, ISettingService settingService, IConfiguration configuration)
+        public CustomerService(IBaseService baseService, ISettingService settingService, IPermissionService permissionService, IConfiguration configuration)
         {
             this.baseService = baseService;
             this.settingService = settingService;
+            this.permissionService = permissionService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -108,18 +111,16 @@
         public async Task<IEnumerable<string>> GetCustomerAutoSuggestionAsync(CustomerSuggestionCriteria criteria)
             => await baseService.GetDataAsync<string>(criteria);
 
-        private CustomerInfoDetails GetUnAssignedCustomerInfo()
+        private static CustomerInfoDetails GetUnAssignedCustomerInfo()
+        => new CustomerInfoDetails
         {
-            return new CustomerInfoDetails
-            {
-                Username = "Unassigned",
-                IsActive = false,
-                IsClosed = false,
-                IsSuspended = false,
-                RoleId = RoleIdConstants.Headline,
-                RoleName = RoleSettingService.GetRoleName(RoleIdConstants.Headline)
-            };
-        }
+            Username = "Unassigned",
+            IsActive = false,
+            IsClosed = false,
+            IsSuspended = false,
+            RoleId = RoleIdConstants.Headline,
+            RoleName = RoleSettingService.GetRoleName(RoleIdConstants.Headline)
+        };
 
         public async Task<CustomerInfoDetails> GetCustomerByIdAsync(GetCustomerInfoDetailByIdCriteria criteria)
         {
@@ -164,37 +165,41 @@
             return await baseService.GetDataEntityAsync<bool>(criteria);
         }
 
-        public async Task<SiteType?> GetSiteTypeByCustIdAsync(int custId)
+        public async Task<CustomerPermissionInfo> GetSiteTypeByCustIdAsync(int custId)
         {
             var criteria = new GetSiteTypeByCustIdCriteria { CustId = custId };
-            var custType = await baseService.GetDataEntityAsync<short>(criteria);
+            var custPermissionInfo = await baseService.GetDataEntityAsync<CustomerPermissionInfo>(criteria);
 
             if (criteria.ErrCode == 0)
             {
-                return (SiteType)custType;
+                return custPermissionInfo;
             }
             return null;
         }
 
-        public async Task<bool> HasHostPermissionOnCustIdAsync(bool isHostCredit, bool isHostLicensee, int custId)
+        public async Task<bool> HasHostPermissionOnCustIdAsync(int custId)
         {
-            var custType = await GetSiteTypeByCustIdAsync(custId);
+            var custPermissionInfo = await GetSiteTypeByCustIdAsync(custId);
             bool isHostOnCustId = false;
-            if (custType is not null)
+
+            bool isHostCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
+            bool isHostLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
+            if (custPermissionInfo is not null)
             {
-                if (custType == SiteType.NA)
+                if (custPermissionInfo.CustomerType == SiteType.NA)
                 {
                     isHostOnCustId = isHostCredit || isHostLicensee;
                 }
 
-                if (custType == SiteType.Licensee)
+                if (custPermissionInfo.CustomerType == SiteType.Licensee)
                 {
                     isHostOnCustId = isHostLicensee;
                 }
 
-                if (custType == SiteType.Credit)
+                if (custPermissionInfo.CustomerType == SiteType.Credit)
                 {
-                    isHostOnCustId |= isHostCredit;
+                    bool isHostOnCreditSiteLabel = await permissionService.IsHavingPermissionByPolicyAsync(custPermissionInfo.SiteLabel, Policy.Host);
+                    isHostOnCustId = isHostCredit && isHostOnCreditSiteLabel;
                 }
             }
             return isHostOnCustId;

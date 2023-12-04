@@ -20,20 +20,25 @@
         private readonly ISettingService settingService;
         private readonly IDynamicReportService dynamicReportService;
         private readonly IExportExcelService excelService;
+        private readonly IPermissionService permissionService;
 
         public DynamicReportController(
             ISettingService settingService,
             IDynamicReportService dynamicReportService,
-            IExportExcelService excelService
-        )
+            IExportExcelService excelService,
+            IPermissionService permissionService)
         {
             this.settingService = settingService;
             this.dynamicReportService = dynamicReportService;
             this.excelService = excelService;
+            this.permissionService = permissionService;
         }
 
         public async Task<IActionResult> GetDynamicReports([FromBody] GetDynamicReportCriteria criteria)
         {
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+
             var logs = await dynamicReportService.GetDynamicReportAsync(criteria);
             var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
             return Json(new { data = logs, mainCategories });
@@ -80,6 +85,8 @@
                  criteria.ToDate.ToShortDateFormat()
             );
             criteria.IsGetFullReport = true;
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
 
             var logs = await dynamicReportService.GetDynamicReportAsync(criteria);
             var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();

@@ -349,7 +349,7 @@ export const hasHostPermissionOnCurrentCustomer = (hostCredit, hostLicensee, cus
     if (customerType === CustomerType.Credit) return hostCredit;
     if (customerType === CustomerType.Licensee) return hostLicensee;
     return false;
-}
+};
 
 export const getIdDefaultValueResponse = response => {
     const neutral = response.find(item => item.value === 'Neutral');

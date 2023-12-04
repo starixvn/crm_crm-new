@@ -48,9 +48,8 @@
         public async Task<IActionResult> EditRemarks([FromBody] EditRemarkCommand command)
         {
             var result = new CommandResult();
-            bool isHostCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
-            bool isHostLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
-            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(isHostCredit, isHostLicensee, command.CustomerId);
+
+            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(command.CustomerId);
             if (canEdit)
             {
                 command.UserId = napSession.UserId;

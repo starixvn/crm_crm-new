@@ -42,17 +42,20 @@
         {
             var sitePermission = await permissionService.GetSitePermissionAsync();
             criteria.LicenseeType = sitePermission;
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
             CustomerInfoDetails customerInfo = await customerService.GetCustomerInfoAsync(criteria);
             if (customerInfo != null)
             {
-                var siteType = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
-                customerInfo.CustomerType = siteType;
+                var custPermissionInfo = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
+                customerInfo.SiteLabel = custPermissionInfo.SiteLabel;
+                customerInfo.CustomerType = custPermissionInfo.CustomerType;
                 CurrentCustomer currentCustomer = new()
                 {
                     CustId = customerInfo.CustId,
                     Name = criteria.Username,
                     IsGuest = criteria.IsGuest,
-                    CustType = siteType
+                    CustType = custPermissionInfo.CustomerType,
+                    SiteLabel = customerInfo.SiteLabel,
                 };
                 sessionService.CurrentCustomer = currentCustomer;
             }
@@ -86,6 +89,7 @@
         public async Task<IActionResult> GetSettings()
         {
             short licenseeType = await permissionService.GetSitePermissionAsync();
+
             var settings = new
             {
                 sites = await settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType),
@@ -103,9 +107,8 @@
         public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
         {
             var result = new CommandResult();
-            bool isHostCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
-            bool isHostLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
-            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(isHostCredit, isHostLicensee, command.CustId);
+
+            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(command.CustId);
             if (canEdit)
             {
                 command.UserId = napSession.UserId;

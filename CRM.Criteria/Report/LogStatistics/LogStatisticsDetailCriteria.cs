@@ -2,31 +2,20 @@
 {
     using System;
     using Fanex.Data;
-    using Fanex.Data.Repository;
 
-    public class LogStatisticsDetailCriteria : CriteriaBase
+    public class LogStatisticsDetailCriteria : BaseSitePermisionCriteria
     {
         private const int LogStatisticDayValid = 93;
 
         public DateTime FromDate { get; set; }
-
         public DateTime ToDate { get; set; }
-
         public short SiteType { get; set; }
-
         public string ProductId { get; set; }
-
         public string MainCategoryId { get; set; }
-
         public string CommunicationId { get; set; }
-
         public int PageSize { get; set; }
-
         public int PageIndex { get; set; }
-
         public int TotalRows { get; set; }
-
-        public short LicenseeType { get; set; }
 
         [SpParam(Ignored = true)]
         public bool IsGetFullReport { get; set; }

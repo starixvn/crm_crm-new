@@ -1,9 +1,8 @@
 ﻿namespace CRM.Criteria.NewRemark
 {
     using System;
-    using Fanex.Data.Repository;
 
-    public class GetNewRemarkCriteria : CriteriaBase
+    public class GetNewRemarkCriteria : BaseSitePermisionCriteria
     {
         public string Username { get; set; }
         public DateTime Fromdate { get; set; }

@@ -1,13 +1,10 @@
 ﻿namespace CRM.Criteria.Report
 {
     using System;
-    using CRM.Core.Constants;
     using Fanex.Data;
-    using Fanex.Data.Repository;
 
-    public class GetIssuesStatisticReportCriteria : CriteriaBase
+    public class GetIssuesStatisticReportCriteria : BaseSitePermisionCriteria
     {
-        public short UserRole { get; } = Constants.UserRole;
         [SpParam(Ignored = true)]
         public int ReportType { get; set; }
 

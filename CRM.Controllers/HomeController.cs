@@ -5,7 +5,6 @@
     using CRM.Core.Filters;
     using CRM.Core.Services;
     using CRM.Services;
-    using CRM.Services.Customer;
     using Microsoft.AspNetCore.Mvc;
     using ONEbook.UM.AspNetCore.Filters;
     using static Fanex.NAP.Core.Business.Constant;
@@ -16,13 +15,11 @@
     {
         private readonly IPermissionService permissionService;
         private readonly ISessionService sessionService;
-        private readonly ICustomerService customerService;
 
-        public HomeController(IPermissionService permissionService, ISessionService sessionService, ICustomerService customerService)
+        public HomeController(IPermissionService permissionService, ISessionService sessionService)
         {
             this.permissionService = permissionService;
             this.sessionService = sessionService;
-            this.customerService = customerService;
         }
 
         public async Task<IActionResult> Index()

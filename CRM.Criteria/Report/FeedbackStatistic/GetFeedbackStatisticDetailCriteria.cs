@@ -3,10 +3,9 @@
     using System;
     using CRM.Core.Constants;
     using Fanex.Data;
-    using Fanex.Data.Repository;
-    public class GetFeedbackStatisticDetailCriteria: CriteriaBase
+
+    public class GetFeedbackStatisticDetailCriteria : BaseSitePermisionCriteria
     {
-        public short UserRole { get; } = Constants.UserRole;
         public DateTime FromDate { get; set; }
 
         public DateTime ToDate { get; set; }
@@ -34,6 +33,6 @@
             return "Acc_CRM_Rpt_FeedbackStatisticDetails";
         }
 
-        public override bool IsValid() => FromDate <= ToDate && (ToDate - FromDate).Days <=  Constants.DaysOfYear;
+        public override bool IsValid() => FromDate <= ToDate && (ToDate - FromDate).Days <= Constants.DaysOfYear;
     }
 }

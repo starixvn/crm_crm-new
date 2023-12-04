@@ -1,9 +1,8 @@
 ﻿namespace CRM.Criteria.Customer
 {
     using CRM.Core.Constants;
-    using Fanex.Data.Repository;
 
-    public class VerifyRelatedCustomerCriteria : CriteriaBase
+    public class VerifyRelatedCustomerCriteria : BaseSitePermisionCriteria
     {
         public string Username { get; set; }
 

@@ -19,7 +19,7 @@
 
         Task<bool> IsHavingPermissionAsync(string functionKey);
 
-        Task<string> GetChildPermissionsAsync(string parentFunctionKey);
+        Task<string> GetCreditPermissionsAsync(Policy policy = Policy.Read);
     }
 
     public class PermissionService : IPermissionService
@@ -68,13 +68,13 @@
             return policy > 0;
         }
 
-        public async Task<string> GetChildPermissionsAsync(string parentFunctionKey)
+        public async Task<string> GetCreditPermissionsAsync(Policy policy = Policy.Read)
         {
             var siteLabels = string.Empty;
-            var functions = await userService.GetPermissionsAsync(napSession.UserId, napSettings.SiteId, parentFunctionKey);
+            var functions = await userService.GetPermissionsAsync(napSession.UserId, napSettings.SiteId, FunctionKey.Credit);
             if (functions is not null && functions.Any())
             {
-                var functionKeys = functions.Select(f => f.Name).ToArray();
+                var functionKeys = functions.Where(i => i.Policy >= (int)policy).Select(f => f.Name).ToArray();
                 siteLabels = string.Join(",", functionKeys);
             }
             return siteLabels;

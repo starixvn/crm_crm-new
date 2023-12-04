@@ -10,10 +10,8 @@
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
-    using Fanex.Logging.Extensions;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
-    using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
@@ -24,7 +22,6 @@
         private readonly ICustomerService customerService;
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
-        private readonly ICRMLogService logService;
         private readonly IPermissionService permissionService;
 
         public CustomerInfoDetailController(
@@ -32,14 +29,12 @@
             ICustomerService customerService,
             ISettingService settingService,
             IBaseService baseService,
-            ICRMLogService logService,
             IPermissionService permissionService)
         {
             this.napSession = napSession;
             this.customerService = customerService;
             this.settingService = settingService;
             this.baseService = baseService;
-            this.logService = logService;
             this.permissionService = permissionService;
         }
 
@@ -47,12 +42,10 @@
         public async Task<IActionResult> GetCustomerById([FromBody] GetCustomerInfoDetailByIdCriteria criteria)
         {
             var customerInfo = await customerService.GetCustomerByIdAsync(criteria);
-            customerInfo.CustomerType = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
-            var logMessage = new LogMessage("Get Customer Feedback Info:")
-                       .AddMessage(JsonConvert.SerializeObject(customerInfo, Formatting.Indented))
-                       .ToString();
+            var customerPermissionInfo = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
+            customerInfo.SiteLabel = customerPermissionInfo.SiteLabel;
+            customerInfo.CustomerType = customerPermissionInfo.CustomerType;
 
-            logService.LogInformation(logMessage);
             return Json(customerInfo);
         }
 
@@ -77,9 +70,8 @@
         public async Task<IActionResult> EditCustomerInfoDetail([FromBody] EditCustomerInfoDetailCommand command)
         {
             var result = new CommandResult();
-            bool isHostCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
-            bool isHostLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
-            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(isHostCredit, isHostLicensee, command.CustomerId);
+
+            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(command.CustomerId);
             if (canEdit)
             {
                 command.UserId = napSession.UserId;

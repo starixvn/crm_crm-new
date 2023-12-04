@@ -69,6 +69,8 @@
         [HttpPost]
         public async Task<IActionResult> VerifyCustomer([FromBody] VerifyCustomerCriteria criteria)
         {
+            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
             var customers = await baseService.GetDataAsync<VerifyCustomerResult>(criteria);
             return Json(customers);
         }

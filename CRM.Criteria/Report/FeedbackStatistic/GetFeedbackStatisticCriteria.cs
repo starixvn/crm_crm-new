@@ -3,11 +3,9 @@
     using System;
     using CRM.Core.Constants;
     using Fanex.Data;
-    using Fanex.Data.Repository;
 
-    public class GetFeedbackStatisticCriteria : CriteriaBase
+    public class GetFeedbackStatisticCriteria : BaseSitePermisionCriteria
     {
-        public short UserRole { get; } = Constants.UserRole;
         public DateTime FromDate { get; set; }
 
         public DateTime ToDate { get; set; }
