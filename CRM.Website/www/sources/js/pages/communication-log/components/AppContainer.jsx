@@ -9,7 +9,7 @@ import EditNoOfInquiry from '../../feedback/edit-no-of-inquiry/AppContainer';
 import EditCommunicationLog from './EditCommunicationLog';
 import CreateCommunicationLog from './CreateCommunicationLog';
 import { FunctionKey } from '@jsroot/common/constants';
-import { getPermission, hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+import { getPermission, checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 import LangHelper from '@jsroot/common/langHelper';
 
 export class AppContainer extends Component {
@@ -28,13 +28,19 @@ export class AppContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            customerInfoPolicy: null
+            customerInfoPolicy: null,
+            canCreateLog: false
         };
     }
 
     componentDidMount(){
         getPermission(FunctionKey.CreateUpdateFeedback).then(response => {
             this.setState({customerInfoPolicy: response});
+        });
+        checkHostPermissionOnCurrentCustomer().then(response => {
+            this.setState({
+                canCreateLog: response
+            });
         });
         document.title = LangHelper.getResource('CRMSystem');
     }
@@ -69,9 +75,7 @@ export class AppContainer extends Component {
             return null;
         }
 
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const canCreateLog = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
+        const { canCreateLog } = this.state;
 
         return (
             <div>

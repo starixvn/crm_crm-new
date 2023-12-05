@@ -1,10 +1,10 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import LangHelper from '@jsroot/common/langHelper';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import { changeSiteSetting, hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
@@ -21,7 +21,8 @@ export default class DataGrid extends PureComponent {
         this.state = {
             languages: [],
             siteId: null,
-            isShowDetail: true
+            isShowDetail: true,
+            isHostOnCurrentCustomer: false
         };
     }
 
@@ -29,11 +30,21 @@ export default class DataGrid extends PureComponent {
         this.handleCheckLanguage();
         const leftContainer = document.getElementById('left-row-container');
         leftContainer.addEventListener("keydown", this.handleKeyDownFunc, false);
+        checkHostPermissionOnCurrentCustomer().then(response => {
+            this.setState({
+                isHostOnCurrentCustomer: response
+            });
+        });
     }
 
     componentDidUpdate(prevProps) {
         if (JSON.stringify(prevProps.customerInfo) !== JSON.stringify(this.props.customerInfo)) {
             this.handleCheckLanguage();
+            checkHostPermissionOnCurrentCustomer().then(response => {
+                this.setState({
+                    isHostOnCurrentCustomer: response
+                });
+            });
         }
         if (prevProps.customerInfo.custId !== this.props.customerInfo.custId) {
             this.setState({ siteId: null });
@@ -233,9 +244,8 @@ export default class DataGrid extends PureComponent {
     };
 
     renderCommunicationTool = (values, handleChange, isSubmitting) => {
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, this.props.customerInfo.customerType);
+        const { isHostOnCurrentCustomer } = this.state;
+
         return (
             <div className="hightlight-title">
                 <Row className="item title text-left">{LangHelper.getResource('CommunicationTool')}</Row>
@@ -399,7 +409,7 @@ export default class DataGrid extends PureComponent {
                     <Col md="3" />
                     <Col md="9">
                         {
-                            hasHostOnCurrentCustomer &&
+                            isHostOnCurrentCustomer &&
                             <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
                                 <UnderlineButton.updateButton />
                             </Button>

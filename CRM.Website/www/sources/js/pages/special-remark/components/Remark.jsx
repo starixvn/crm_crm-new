@@ -10,7 +10,7 @@ import Site from '@jsroot/common/site';
 import { FormCheckDirtyComponent } from '@jsroot/components/UseBlocker';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
-import { hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+import { checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 
 
 export class Remark extends Component {
@@ -26,7 +26,8 @@ export class Remark extends Component {
             specialRemarks: [],
             dataSpecialRemarks: [],
             normalRemarks: [],
-            dataNormalRemarks: []
+            dataNormalRemarks: [],
+            canEditRemark: false
         };
     }
 
@@ -41,7 +42,8 @@ export class Remark extends Component {
             specialRemarks: [...gridData.specialRemarks, ''],
             dataSpecialRemarks: [...gridData.specialRemarks, ''],
             normalRemarks: [...gridData.normalRemarks, ''],
-            dataNormalRemarks: [...gridData.normalRemarks, '']
+            dataNormalRemarks: [...gridData.normalRemarks, ''],
+            canEditRemark: await checkHostPermissionOnCurrentCustomer()
         });
     }
 
@@ -151,9 +153,7 @@ export class Remark extends Component {
         if (this.props.gridData === null) {
             return null;
         }
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const canEditRemark = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, this.props.customerType);
+        const { canEditRemark } = this.state;
        
         const isDirty = this.checkIsDirtyForm();
         return (

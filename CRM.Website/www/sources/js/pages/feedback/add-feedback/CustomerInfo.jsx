@@ -4,9 +4,24 @@ import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import { changeSiteSetting } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 
 export class CustomerInfo extends PureComponent{
+    constructor(props) {
+        super(props);
+        this.state = {
+            isHostOnCurrentCustomer: false
+        };
+    }
+
+    componentDidMount() {
+        checkHostPermissionOnCurrentCustomer().then(response => {
+            this.setState({
+                isHostOnCurrentCustomer: response
+            });
+        });
+    }
+
     renderCustomerInformation = (customerInfo, handleChange) => {
         return (
             <div>
@@ -337,24 +352,13 @@ export class CustomerInfo extends PureComponent{
             </Form.Group>
         </Col>
     );
-
-    isDisplayOverrideCustInfo = () => {
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-        const { customerDetail } = this.props;
-        if (customerDetail === null) return false;
-        if (customerDetail.customerType === 0) return hasHostCredit || hasHostLicensee;
-
-        return customerDetail.customerType === 1 ? hasHostCredit : hasHostLicensee;
-    }
-
+   
     render() {
         const {customerInfo, handleChange, settings, renderOptions, customerDetail, handleChangeValueInfo} = this.props;
         const maxDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
         const isAddGuestFb = customerInfo.siteId === undefined;
-        const isDisplayOverrideCustInfo = this.isDisplayOverrideCustInfo();
-        
+        const isDisplayOverrideCustInfo = this.state.isHostOnCurrentCustomer;
         return (
             <div>
                 <Form.Group as={Row} className="pt-2" >

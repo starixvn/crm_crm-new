@@ -1,8 +1,6 @@
 import moment from 'moment';
 import LangHelper from '@jsroot/common/langHelper';
-import { ActionCreators } from './actions';
 import { getSubProducts, getBetTypes } from '@jsroot/common/shareScripts';
-import Site from '@jsroot/common/site';
 import { validateMainCategorySubCategory } from '../feedback/common.functions';
 
 export const validateFormik = (values, contents, verifySection, settings) => {

@@ -1,11 +1,15 @@
 ﻿namespace CRM.Controllers
 {
     using System.Threading.Tasks;
+    using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
+    using CRM.Core.Services;
     using CRM.Criteria.Common;
     using CRM.Criteria.NotificationType;
     using CRM.Models.FeedbackSubject;
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Core.Business.Constant;
 
     public class CommonController : BaseController
     {
@@ -13,20 +17,20 @@
         private readonly ICommonService commonService;
         private readonly IFeedbackSubjectService feedbackSubjectService;
         private readonly IPermissionService permissionService;
+        private readonly ISessionService sessionService;
 
         public CommonController(
             INotificationTypeService notificationTypeService,
             ICommonService commonService,
             IFeedbackSubjectService feedbackSubjectService,
-            IPermissionService permissionService
-            )
+            IPermissionService permissionService,
+            ISessionService sessionService)
         {
             this.notificationTypeService = notificationTypeService;
             this.commonService = commonService;
             this.feedbackSubjectService = feedbackSubjectService;
             this.permissionService = permissionService;
-
-
+            this.sessionService = sessionService;
         }
 
         [HttpPost]
@@ -34,6 +38,32 @@
         {
             var permission = await permissionService.GetPolicyPermissionAsync(criteria.functionKey);
             return Json(permission);
+        }
+
+        public async Task<IActionResult> GetHostPermissionOnCurrentCustomer()
+        {
+            bool hasHostOnCurrentCustomer = false;
+            var currentCustomer = sessionService.CurrentCustomer;
+            var hasHostCreditPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
+            var hasHostLicenseePermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
+            if (currentCustomer is not null)
+            {
+                if (currentCustomer.CustType is null || currentCustomer.CustType == SiteType.NA)
+                {
+                    hasHostOnCurrentCustomer = hasHostCreditPermission || hasHostLicenseePermission;
+                }
+
+                if (currentCustomer.CustType == SiteType.Licensee)
+                {
+                    hasHostOnCurrentCustomer = hasHostLicenseePermission;
+                }
+
+                if (currentCustomer.CustType == SiteType.Credit)
+                {
+                    hasHostOnCurrentCustomer = await permissionService.IsHavingPermissionByPolicyAsync(currentCustomer.SiteLabel, Policy.Host);
+                }
+            }
+            return Json(hasHostOnCurrentCustomer);
         }
 
         public async Task<IActionResult> GetNotificationTypes()

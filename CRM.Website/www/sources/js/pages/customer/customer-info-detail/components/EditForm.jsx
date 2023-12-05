@@ -11,7 +11,7 @@ import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import { Policy } from '@jsroot/common/constants';
 import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
-import { changeSiteSetting, getSiteLabel, hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
 
@@ -92,7 +92,8 @@ export class EditForm extends Component {
             bankAddressCity: '',
             bankAddressCountryId: 0,
             bankAddressState: '',
-            bankAddressPostCode: ''
+            bankAddressPostCode: '',
+            hasHostOnCurrentCustomer: false
         };
     }
 
@@ -102,6 +103,10 @@ export class EditForm extends Component {
         const { customerInfo } = this.props;
         const params = ParamsCustomerInfo(customerInfo);
         this.setState(params);
+        this.setState({
+            hasHostOnCurrentCustomer: await checkHostPermissionOnCurrentCustomer()
+        });
+        
     }
 
     handleKeyDownFunc = event => {
@@ -954,9 +959,8 @@ export class EditForm extends Component {
         if (!allSettings || !customerInfo) {
             return null;
         }
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
+       
+        const { hasHostOnCurrentCustomer } = this.state;
 
         return (
             <Form onSubmit={this.handleSubmit}>

@@ -3,9 +3,24 @@ import { Col, Form, Row, Collapse } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
-import { changeSiteSetting } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 
 export default class CustomerInfo extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isHostOnCurrentCustomer: false
+        };
+    }
+
+    componentDidMount() {
+        checkHostPermissionOnCurrentCustomer().then(response => {
+            this.setState({
+                isHostOnCurrentCustomer: response
+            });
+        });
+    }
+
     renderCommunicationToolSection = () => {
         const { fieldInput, handleChangeInput } = this.props;
         return (
@@ -385,22 +400,11 @@ export default class CustomerInfo extends PureComponent {
         );
     };
 
-    isDisplayOverrideCustInfo = () => {
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-      
-        const { customerType } = this.props;
-
-        if (customerType === 0) return hasHostCredit || hasHostLicensee;
-
-        return customerType === 1 ? hasHostCredit : hasHostLicensee;
-    }
-
     render() {
         const { collapse, fieldInput, settings, values, handleChangeInput, setFieldValue
         } = this.props;
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
-        const isDisplayOverrideCustInfo = this.isDisplayOverrideCustInfo();
+        const isDisplayOverrideCustInfo = this.state.isHostOnCurrentCustomer();
         return (
             <div className="panel-group">
                 <Form.Group as={Row} className="panel-title border-bottom-0" onClick={() => this.props.onCollapseExpand('customerInfo')}

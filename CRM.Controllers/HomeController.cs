@@ -3,7 +3,6 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
-    using CRM.Core.Services;
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
     using ONEbook.UM.AspNetCore.Filters;
@@ -14,12 +13,10 @@
     public class HomeController : Controller
     {
         private readonly IPermissionService permissionService;
-        private readonly ISessionService sessionService;
 
-        public HomeController(IPermissionService permissionService, ISessionService sessionService)
+        public HomeController(IPermissionService permissionService)
         {
             this.permissionService = permissionService;
-            this.sessionService = sessionService;
         }
 
         public async Task<IActionResult> Index()
@@ -31,13 +28,10 @@
             var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
 
             var hasReadCustomerInfo = hasReadCreditPermission || hasReadLicenseePermission;
-            var hasHostCreditPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
-            var hasHostLicenseePermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
 
             ViewBag.hasReadFeedbackPermission = hasReadFeedbackInfoPermission && hasReadCustomerInfo;
             ViewBag.hasReadCustomerInfo = hasReadCustomerInfo;
-            ViewBag.hasHostCreditPermission = hasHostCreditPermission;
-            ViewBag.hasHostLicenseePermission = hasHostLicenseePermission;
+
             return View(hasCreateFeedbackPermission);
         }
     }
