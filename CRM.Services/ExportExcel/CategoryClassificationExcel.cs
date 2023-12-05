@@ -88,7 +88,7 @@
         protected internal virtual void SetWidthColumn(ExcelWorksheet worksheet)
         {
             const int WidthNormal = 30;
-            const int RowHeight = 15;
+            const int RowHeight = 60;
             const int WidthLarge = 80;
             const int ColumnCategory = 1;
             const int ColumnSubCategory = 2;

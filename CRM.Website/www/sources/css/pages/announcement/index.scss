@@ -269,6 +269,13 @@
 
 .add-announcement {
   max-width: 1000px;
+
+  .alert {
+    .ml-2.d-inline {
+      overflow: hidden;
+      word-wrap: break-word;
+  }
+  }
 }
 
 .add-announcement,

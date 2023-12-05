@@ -70,6 +70,7 @@
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] GetCategoryClassification param)
         {
+            param.PageIndex = 0;
             IEnumerable<CategoryClassification> categoryClassifications = await categoryClassificationService.GetCategoryClassificationAsync(param);
             var bytes = excelService.ExportCategoryClassification(categoryClassifications);
             return File(bytes, MimeType.XLSX, $"{ViewResources.CategoryClassification}.xlsx");
