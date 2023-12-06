@@ -28,7 +28,7 @@
             var fixture = new Fixture();
             var expected = fixture.Create<IEnumerable<MessageVoidSettled>>();
             var service = GetVoidingSettledService();
-            baseService.GetDataAsync<MessageVoidSettled>(Arg.Any<GetMesssagesVoidSettledCriteria>()).Returns(expected);
+            baseService.GetDataAsync<MessageVoidSettled>(Arg.Any<GetMesssagesVoidingSettledCriteria>()).Returns(expected);
 
             // Act
             var actual = await service.GetMessageVoidSettledAsync();
@@ -112,7 +112,7 @@
             var expected = fixture.Create<IEnumerable<MessageVoidSettled>>();
             var messageVoidSettleds = fixture.Create<IEnumerable<MessageVoidSettled>>();
             var service = GetVoidingSettledService();
-            baseService.GetDataAsync<MessageVoidSettled>(Arg.Any<VoidingMessageGetSettledTicket>()).Returns(expected);
+            baseService.GetDataAsync<MessageVoidSettled>(Arg.Any<VoidingGetSettledTicketMessageCriteria>()).Returns(expected);
 
             // Act
             var actual = await service.VoidingMessageGetSettledTicketAsync(messageVoidSettleds);

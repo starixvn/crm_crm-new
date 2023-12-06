@@ -52,11 +52,11 @@
             stringBuilder.Append(Constants.EndRootTag);
             var matchInfos = fixture.Create<IEnumerable<MatchInfo>>();
             var transactionInfos = new List<TransactionInfo>();
-            var checksTran = fixture.Create<IEnumerable<string>>();
-            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>(matchInfos, transactionInfos, checksTran);
+            var duplicateTicketDetail = fixture.Create<IEnumerable<DuplicateTicketDetail>>();
+            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<DuplicateTicketDetail>> (matchInfos, transactionInfos, duplicateTicketDetail);
             var criteria = new GetAbnormalTicketInfoCriteria();
             var service = GetService();
-            baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, string>(Arg.Do<GetAbnormalTicketInfoCriteria>(x => criteria = x)).Returns(ticketInfo);
+            baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, DuplicateTicketDetail>(Arg.Do<GetAbnormalTicketInfoCriteria>(x => criteria = x)).Returns(ticketInfo);
 
             // Act
             var actual = await service.GetTicketVoidingInfoAsync(voidingMessageUserNames, setting);
@@ -97,11 +97,11 @@
             stringBuilder.Append(Constants.EndRootTag);
             var matchInfos = fixture.Create<IEnumerable<MatchInfo>>();
             var transactionInfos = fixture.Create<IEnumerable<TransactionInfo>>();
-            var checksTran = fixture.Create<IEnumerable<string>>();
-            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<string>>(matchInfos, transactionInfos, checksTran);
+            var duplicateTicketDetail = fixture.Create<IEnumerable<DuplicateTicketDetail>>();
+            var ticketInfo = new ValueTuple<IEnumerable<MatchInfo>, IEnumerable<TransactionInfo>, IEnumerable<DuplicateTicketDetail>>(matchInfos, transactionInfos, duplicateTicketDetail);
             var criteria = new GetAbnormalTicketInfoCriteria();
             var service = GetService();
-            baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, string>(Arg.Do<GetAbnormalTicketInfoCriteria>(x => criteria = x)).Returns(ticketInfo);
+            baseService.FetchMultipleAsync<MatchInfo, TransactionInfo, DuplicateTicketDetail>(Arg.Do<GetAbnormalTicketInfoCriteria>(x => criteria = x)).Returns(ticketInfo);
 
             // Act
             var actual = await service.GetTicketVoidingInfoAsync(voidingMessageUserNames, setting);

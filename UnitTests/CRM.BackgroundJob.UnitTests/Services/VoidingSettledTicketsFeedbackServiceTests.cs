@@ -219,6 +219,7 @@
             var service = MockService();
             var settings = fixture.Create<IEnumerable<SettingItem>>();
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
+            var isMixParlay = fixture.Create<bool>();
             var products = new List<SettingItem>
             {
                 new SettingItem{ SettingId = 1 }
@@ -238,12 +239,12 @@
             var productIds = new List<int> { 1 };
             var sportTypeIds = new List<short> { 1 };
             service.Protected("GetVoidingSettledTicketsProduct", settings, settingMappings, productIds).Returns(products);
-            service.Protected("GetVoidingSettledTicketsSubProduct", products.Select(x => x.SettingId), sportTypeIds, settings, settingMappings).Returns(subProducts);
-            service.Protected("GetVoidingSettledTicketsBettype", Arg.Any<string[]>(), settingMappings).Returns(bettypesMapping);
+            service.Protected("GetVoidingSettledTicketsSubProduct", isMixParlay, products.Select(x => x.SettingId), sportTypeIds, settings, settingMappings).Returns(subProducts);
+            service.Protected("GetVoidingSettledTicketsBettype", isMixParlay, Arg.Any<string[]>(), settingMappings).Returns(bettypesMapping);
             service.Protected("GetProductSubXml", Arg.Any<SettingItem>(), Arg.Any<IList<SettingItem>>(), Arg.Any<IList<SystemSettingMapping>>()).Returns(productSubproductXml);
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsProductXml(true, productIds, sportTypeIds, "1,2", settings, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsProductXml(isMixParlay, productIds, sportTypeIds, "1,2", settings, settingMappings);
 
             // Assert
             Assert.Equal("<ROOT><Product ProductID='1' SubProductID='1' BetTypeID='1' /></ROOT>", actual);
@@ -257,6 +258,7 @@
             var settings = fixture.Create<IEnumerable<SettingItem>>();
             var settingMappings = fixture.Create<IEnumerable<SystemSettingMapping>>();
             var products = new List<SettingItem>();
+            var isMixParlay = fixture.Create<bool>();
             var subProducts = new List<SettingItem>
             {
                 new SettingItem{ SettingId = 1 }
@@ -271,8 +273,8 @@
             var productIds = new List<int> { 1 };
             var sportTypeIds = new List<short> { 1 };
             service.Protected("GetVoidingSettledTicketsProduct", settings, settingMappings, productIds).Returns(products);
-            service.Protected("GetVoidingSettledTicketsSubProduct", products.Select(x => x.SettingId), sportTypeIds, settings, settingMappings).Returns(subProducts);
-            service.Protected("GetVoidingSettledTicketsBettype", Arg.Any<string[]>(), settingMappings).Returns(bettypesMapping);
+            service.Protected("GetVoidingSettledTicketsSubProduct", isMixParlay, products.Select(x => x.SettingId), sportTypeIds, settings, settingMappings).Returns(subProducts);
+            service.Protected("GetVoidingSettledTicketsBettype", isMixParlay, Arg.Any<string[]>(), settingMappings).Returns(bettypesMapping);
 
             // Act
             var actual = service.Public_GetVoidingSettledTicketsProductXml(true, productIds, sportTypeIds, "1,2", settings, settingMappings);
@@ -497,10 +499,37 @@
             commonFeedback.GetSportName("1", Language.en_US).Returns("1");
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsSubProduct(true, productIds, sportTypeIds, setting, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsSubProduct(false, productIds, sportTypeIds, setting, settingMappings);
 
             // Assert
             Assert.Equal(1, actual.First().SettingId);
+        }
+
+        [Fact]
+        public void GetVoidingSettledTicketsSubProduct_NotExistSportName_ReturnSubProductNA()
+        {
+            // Arrange
+            var setting = new List<SettingItem>
+                {
+                    new SettingItem { SettingName = SettingName.SubProduct, SettingValue = "1" , SettingId = 1, ParentIds = new List<int>{ 1,2} }
+                };
+
+            var sportTypeIds = new List<short> { 1 };
+            var productIds = new List<int> { 1 };
+
+            var settingMappings = new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingName = SettingName.SubProduct, SettingValue = "1" , SettingSource = "1", SettingId = 1}
+                };
+
+            var service = MockService();
+            commonFeedback.GetSportName("1", Language.en_US).Returns("1");
+
+            // Act
+            var actual = service.Public_GetVoidingSettledTicketsSubProduct(true, productIds, sportTypeIds, setting, settingMappings);
+
+            // Assert
+            Assert.Equal(Constants.SubProductNA, actual.First().SettingId);
         }
 
         #endregion GetVoidingSettledTicketsSubProduct
@@ -581,11 +610,32 @@
             commonFeedback.GetBettypeName(Arg.Any<string>(), Language.en_US).Returns("BettypeName");
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketsBettype(true, listBetTypes, settingMappings);
+            var actual = service.Public_GetVoidingSettledTicketsBettype(false, listBetTypes, settingMappings);
 
             // Assert
             Assert.Single(actual);
             Assert.Equal(1, actual.First().SettingId);
+        }
+
+        [Fact]
+        public void GetVoidingSettledTicketsBettype_NotExistBettypes_ReturnBetTypeNA()
+        {
+            // Arrange
+            var settingMappings = new List<SystemSettingMapping>
+                {
+                    new SystemSettingMapping { SettingName = "Bettype", SettingValue = "1", SettingSource = "BettypeName", SettingId = 1}
+                };
+
+            var listBetTypes = new string[] { "2", "3" };
+            var service = MockService();
+            commonFeedback.GetBettypeName(Arg.Any<string>(), Language.en_US).Returns("BettypeName");
+
+            // Act
+            var actual = service.Public_GetVoidingSettledTicketsBettype(true, listBetTypes, settingMappings);
+
+            // Assert
+            Assert.Single(actual);
+            Assert.Equal(Constants.BettypeNA, actual.First().SettingId);
         }
 
         #endregion GetVoidingSettledTicketsBettype

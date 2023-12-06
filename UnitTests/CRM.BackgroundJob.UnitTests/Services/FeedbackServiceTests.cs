@@ -63,7 +63,8 @@
                Arg.Any<IEnumerable<TransactionInfo>>(),
                Arg.Any<List<VoidingMessageUserName>>(),
                Arg.Any<bool>(),
-               Arg.Any<AbnormalBetSystemSetting>()
+               Arg.Any<AbnormalBetSystemSetting>(),
+               Arg.Any<IEnumerable<DuplicateTicketDetail>>()
                );
         }
         [Fact]
@@ -101,7 +102,8 @@
                Arg.Any<IEnumerable<TransactionInfo>>(),
                Arg.Any<List<VoidingMessageUserName>>(),
                Arg.Any<bool>(),
-               Arg.Any<AbnormalBetSystemSetting>()
+               Arg.Any<AbnormalBetSystemSetting>(),
+               Arg.Any<IEnumerable<DuplicateTicketDetail>>()
                );
         }
 
@@ -148,7 +150,8 @@
                Arg.Any<IEnumerable<TransactionInfo>>(),
                Arg.Any<List<VoidingMessageUserName>>(),
                Arg.Any<bool>(),
-               Arg.Any<AbnormalBetSystemSetting>()
+               Arg.Any<AbnormalBetSystemSetting>(),
+               Arg.Any<IEnumerable<DuplicateTicketDetail>>()
                );
         }
 
