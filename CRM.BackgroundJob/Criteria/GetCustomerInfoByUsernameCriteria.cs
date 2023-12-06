@@ -8,6 +8,7 @@
         public string Username { get; set; }
         public bool IsGuest { get; set; }
         public short UserRole { get; } = Constants.UserRole;
+        public string SiteLabel { get; set; } = string.Empty;
         public bool IsCheckPermission { get; set; } = false;
 
         public override string GetSettingKey() => "Acc_CRM_CustomerSearch";

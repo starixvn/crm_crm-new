@@ -45,7 +45,9 @@ namespace CRM.Controllers.UnitTests.Customer
             };
             var controller = GetController();
             permissionService.GetCurrentUserSitePermissionAsync().Returns((short)SitePermission.Both);
+            permissionService.GetCurrentUserCreditPermissionsAsync().Returns("Label");
             customerService.GetCustomerInfoAsync(param).Returns(customer);
+            customerService.GetSiteTypeByCustIdAsync(Arg.Any<int>()).Returns(new CustomerPermissionInfo { CustomerType = customer.CustomerType, SiteLabel = customer.SiteLabel });
 
             //Act
             var result = await controller.GetCustomerInfo(param);
