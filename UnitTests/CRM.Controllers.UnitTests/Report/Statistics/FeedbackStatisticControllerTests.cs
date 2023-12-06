@@ -27,6 +27,7 @@
         private ICommonService commonService;
         private ISettingService settingService;
         private IExportExcelService excelService;
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetFeedbackStatistic_WhenCalled_ReturnAsExpectedResult()
@@ -67,13 +68,12 @@
                 new Setting { MainCategoryID = 1, Name = "Special Notification" }
             };
             var feedbackDetail = fixture.Create<IEnumerable<DeletedFeedback>>();
-            fixture.Customize<GetFeedbackStatisticDetailCriteria>(x => x.With(b => b.PageIndex, 1).With(b=> b.PageSize, 100));
+            fixture.Customize<GetFeedbackStatisticDetailCriteria>(x => x.With(b => b.PageIndex, 1).With(b => b.PageSize, 100));
             var param = fixture.Create<GetFeedbackStatisticDetailCriteria>();
             var controller = GetController();
             feedbackService.GetFeedbackStatisticAsyncDetail(param).Returns(feedbackDetail);
             settingService.GetMainCategoryWithSubCategoryAsync().Returns(mainCategories);
             var feedbacksOrder = feedbackDetail.OrderByDescending(x => x.FeedbackDate).ThenByDescending(y => y.FeedbackId);
-
 
             // Act
             var result = await controller.GetFeedbackStatisticDetails(param);
@@ -155,8 +155,9 @@
             commonService = Substitute.For<ICommonService>();
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
+            permissionService = Substitute.For<IPermissionService>();
 
-            return new FeedbackStatisticController(feedbackRepository, feedbackService, commonService, settingService, excelService);
+            return new FeedbackStatisticController(feedbackRepository, feedbackService, commonService, settingService, excelService, permissionService);
         }
 
         #endregion Helpers

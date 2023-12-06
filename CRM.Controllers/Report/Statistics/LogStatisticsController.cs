@@ -46,7 +46,7 @@
         [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetMainReport([FromBody] LogStatisticsCriteria criteria)
         {
-            var licenseeType = (SitePermission)await permissionService.GetSitePermissionAsync();
+            var licenseeType = (SitePermission)await permissionService.GetCurrentUserSitePermissionAsync();
 
             var ibcReport = licenseeType == SitePermission.Both || licenseeType == SitePermission.Credit ? await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
@@ -59,7 +59,7 @@
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = LogStatisticConstants.IBC,
                 LicenseeType = (short)licenseeType,
-                SiteLabel = await permissionService.GetCreditPermissionsAsync()
+                SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync()
             }) : null;
 
             var licenseeReport = licenseeType == SitePermission.Both || licenseeType == SitePermission.Licensee ? await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
@@ -83,8 +83,8 @@
         [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetReportDetails([FromBody] LogStatisticsDetailCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var reportDetailsTask = logStatisticsService.GetReportDetailsAsync(criteria);
             var mainCategoriesTask = settingService.GetAllMainSubCategoriesAsync();
@@ -117,7 +117,7 @@
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] LogStatisticsCriteria criteria)
         {
-            var licenseeType = await permissionService.GetSitePermissionAsync();
+            var licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
             var param = new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
@@ -129,7 +129,7 @@
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = criteria.SiteType,
                 LicenseeType = licenseeType,
-                SiteLabel = await permissionService.GetCreditPermissionsAsync()
+                SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync()
             };
 
             var logStatistics = await logStatisticsService.GetReportDataAsync(param);
@@ -142,8 +142,8 @@
         {
             criteria.PageIndex = 0;
             criteria.PageSize = 0;
-            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var logStatisticsDetailTask = logStatisticsService.GetReportDetailsAsync(criteria);
             var mainCategoriesTask = settingService.GetAllMainSubCategoriesAsync();

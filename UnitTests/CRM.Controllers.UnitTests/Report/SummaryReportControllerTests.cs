@@ -1,5 +1,8 @@
 ﻿namespace CRM.Controllers.UnitTests.Report
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.Report;
     using CRM.Core.Constants;
@@ -12,15 +15,13 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using NSubstitute;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using Xunit;
 
     public class SummaryReportControllerTests
     {
         private ISummaryReportService summaryReportService;
         private IExportExcelService exportExcelService;
+        private IPermissionService permissionService;
         private AppSettings appSettings;
         private readonly Fixture fixture = new Fixture();
 
@@ -31,7 +32,6 @@
             fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList().ForEach(b => fixture.Behaviors.Remove(b));
             fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
             var allSettings = fixture.Create<AllSetting>();
-
 
             var controller = GetController();
             summaryReportService.AllSettings().Returns(allSettings);
@@ -82,19 +82,22 @@
         }
 
         #region Helpers
+
         private SummaryReportController GetController()
         {
             summaryReportService = Substitute.For<ISummaryReportService>();
             exportExcelService = Substitute.For<IExportExcelService>();
+            permissionService = Substitute.For<IPermissionService>();
             var optionsAppSettings = Substitute.For<IOptionsSnapshot<AppSettings>>();
             appSettings = new AppSettings
             {
                 TimeSpan = 12
             };
             optionsAppSettings.Value.Returns(appSettings);
-            return new SummaryReportController(summaryReportService, exportExcelService, optionsAppSettings);
+            return new SummaryReportController(summaryReportService, exportExcelService, permissionService, optionsAppSettings);
         }
-        private SummaryReportModel CreateReportInfo()
+
+        private static SummaryReportModel CreateReportInfo()
         {
             var title = "Categories Summary Report For Year 2021";
             List<string> months = new List<string> { "FEB", "APR", "SEP" };
@@ -141,6 +144,7 @@
                 Months = months
             };
         }
+
         #endregion Helpers
     }
 }

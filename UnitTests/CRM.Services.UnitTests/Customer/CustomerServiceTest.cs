@@ -19,6 +19,7 @@
         private IBaseService baseService;
         private ISettingService settingService;
         private IConfiguration configuration;
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetCustomerInfoAsync_WhenCalledWithIsNotGuest_ReturnExpectedCustomerInfo()
@@ -131,10 +132,10 @@
         {
             //Arrange
             var fixture = new Fixture();
-            var expected = fixture.Create<IEnumerable<Models.Customer.UserInfo>>();
+            var expected = fixture.Create<IEnumerable<UserInfo>>();
             var service = GetCustomerService();
             var param = fixture.Create<GetAllCustomersCriteria>();
-            baseService.GetDataAsync<Models.Customer.UserInfo>(Arg.Do<GetAllCustomersCriteria>(x => param = x)).Returns(expected);
+            baseService.GetDataAsync<UserInfo>(Arg.Do<GetAllCustomersCriteria>(x => param = x)).Returns(expected);
 
             //Act
             var actual = await service.GetAllCustomerAsync(param);
@@ -142,7 +143,6 @@
             //Assert
             Assert.Equal(expected, actual);
         }
-        
 
         #region Helpers
 
@@ -150,8 +150,9 @@
         {
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
+            permissionService = Substitute.For<IPermissionService>();
             configuration = Substitute.For<IConfiguration>();
-            var service = new CustomerService(baseService, settingService, configuration);
+            var service = new CustomerService(baseService, settingService, permissionService, configuration);
 
             return service;
         }

@@ -17,6 +17,7 @@
     {
         private readonly IFixture fixture = new Fixture();
         private IBaseService baseService;
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetCommunicationToolAsync_WhenCalled_ReturnExpectedSettings()
@@ -38,7 +39,7 @@
         public async Task GetCommunicationToolAsync_NotsIncludeNA_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = new List<Setting> { 
+            var expected = new List<Setting> {
                 new Setting {
                     Id = SettingConstants.CommunicationNA,
                 },
@@ -48,7 +49,7 @@
                 }
             };
             var criteria = new GetAllCommunicationToolCriteria();
-            var expectedOrder = expected.Where(x=> x.Id != SettingConstants.CommunicationNA).OrderBy(s => s.DisplayOrder).ToList();
+            var expectedOrder = expected.Where(x => x.Id != SettingConstants.CommunicationNA).OrderBy(s => s.DisplayOrder).ToList();
             var service = GetService();
             baseService.GetDataAsync<Setting>(Arg.Do<GetAllCommunicationToolCriteria>(x => criteria = x)).Returns(expected);
 
@@ -75,8 +76,6 @@
             // Assert
             Assert.Equal(expected, actual);
         }
-
-        
 
         [Fact]
         public async Task GetSettingAsync_WhenCalled_ReturnExpectedListSettings()
@@ -109,7 +108,6 @@
             Assert.Equal(expected, actual);
             Assert.Equal(0, criteria.Active);
         }
-
 
         [Fact]
         public async Task GetSettingRelationByNameAsync_WhenCalled_ReturnExpectedSettingRelations()
@@ -221,7 +219,6 @@
             Assert.Equal(0, criteria.Active);
         }
 
-
         [Fact]
         public async Task GetProvinceAsync_WhenCalled_ReturnExpectedSettings()
         {
@@ -331,7 +328,7 @@
         public async Task GetBetTypeAsync_WhenCalled_ReturnExpectedSettings()
         {
             // Arrange
-            var expected = new List<Product> { new Product { Id = 1, Name ="Name"} };
+            var expected = new List<Product> { new Product { Id = 1, Name = "Name" } };
             var criteria = new GetAllBetTypeCriteria();
             var service = GetService();
             baseService.GetDataAsync<Product>(Arg.Do<GetAllBetTypeCriteria>(x => criteria = x)).Returns(expected);
@@ -358,7 +355,6 @@
             // Assert
             Assert.Equal(expected, actual);
         }
-        
 
         [Fact]
         public async Task GetSubProductAsync_WhenCalled_ReturnExpectedSettings()
@@ -452,7 +448,7 @@
         public async Task GetAllSitesWithGroupAsync_WhenCalled_ReturnExpectedSiteInfos()
         {
             // Arrange
-            var siteInfos = new List<SiteInfo> { 
+            var siteInfos = new List<SiteInfo> {
                 new SiteInfo {Id = 1, IsLicensee = true, IsActive = true},
                 new SiteInfo {Id = 2, IsLicensee = true, IsActive = true},
                 new SiteInfo {Id = 3, IsLicensee = false, IsActive = true}
@@ -470,7 +466,6 @@
             // Assert
             Assert.Equal(expected.FirstOrDefault().Name, actual.FirstOrDefault().Name);
             Assert.Equal(expected.LastOrDefault().Name, actual.LastOrDefault().Name);
-
         }
 
         [Fact]
@@ -562,7 +557,8 @@
         private SettingService GetService()
         {
             baseService = Substitute.For<IBaseService>();
-            return new SettingService(baseService);
+            permissionService = Substitute.For<IPermissionService>();
+            return new SettingService(baseService, permissionService);
         }
 
         #endregion Helpers

@@ -30,7 +30,6 @@
         private ICustomerService customerService;
         private ISettingService settingService;
         private IBaseService baseService;
-        private ICRMLogService logService;
         private IPermissionService permissionService;
 
         [Fact]
@@ -125,7 +124,7 @@
             controller.ControllerContext.HttpContext = clientIP;
             permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host).Returns(true);
             permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host).Returns(true);
-            customerService.HasHostPermissionOnCustIdAsync(Arg.Any<bool>(), Arg.Any<bool>(), Arg.Any<int>()).Returns(true);
+            customerService.HasHostPermissionOnCustIdAsync(Arg.Any<int>()).Returns(true);
             baseService.ExecuteNonQueryAsync(Arg.Any<EditCustomerInfoDetailCommand>()).Returns(expected);
             //Act
             var result = await controller.EditCustomerInfoDetail(command);
@@ -144,9 +143,8 @@
             settingService = Substitute.For<ISettingService>();
             napSession = Substitute.For<INapSession>();
             baseService = Substitute.For<IBaseService>();
-            logService = Substitute.For<ICRMLogService>();
             permissionService = Substitute.For<IPermissionService>();
-            return new CustomerInfoDetailController(napSession, customerService, settingService, baseService, logService, permissionService);
+            return new CustomerInfoDetailController(napSession, customerService, settingService, baseService, permissionService);
         }
 
         #endregion Helpers

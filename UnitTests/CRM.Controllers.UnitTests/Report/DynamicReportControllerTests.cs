@@ -23,6 +23,7 @@
         private ISettingService settingService;
         private IExportExcelService excelService;
         private IDynamicReportService dynamicReportService;
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetDynamicReport_WhenCalled_ReturnAsExpectedResult()
@@ -137,13 +138,16 @@
         }
 
         #region Helpers
+
         private DynamicReportController GetController()
         {
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
             dynamicReportService = Substitute.For<IDynamicReportService>();
-            return new DynamicReportController(settingService, dynamicReportService, excelService);
+            permissionService = Substitute.For<IPermissionService>();
+            return new DynamicReportController(settingService, dynamicReportService, excelService, permissionService);
         }
-        #endregion
+
+        #endregion Helpers
     }
 }

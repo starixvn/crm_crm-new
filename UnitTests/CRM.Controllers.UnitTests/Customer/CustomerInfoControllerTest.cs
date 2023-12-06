@@ -44,7 +44,7 @@ namespace CRM.Controllers.UnitTests.Customer
                 IsGuest = true
             };
             var controller = GetController();
-            permissionService.GetSitePermissionAsync().Returns((short)SitePermission.Both);
+            permissionService.GetCurrentUserSitePermissionAsync().Returns((short)SitePermission.Both);
             customerService.GetCustomerInfoAsync(param).Returns(customer);
 
             //Act
@@ -118,7 +118,7 @@ namespace CRM.Controllers.UnitTests.Customer
             var controller = GetController();
             permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host).Returns(true);
             permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host).Returns(true);
-            customerService.HasHostPermissionOnCustIdAsync(Arg.Any<bool>(), Arg.Any<bool>(), Arg.Any<int>()).Returns(true);
+            customerService.HasHostPermissionOnCustIdAsync(Arg.Any<int>()).Returns(true);
             customerService.UpdateCustomerInfoAsync(model).Returns(expected);
 
             //Act

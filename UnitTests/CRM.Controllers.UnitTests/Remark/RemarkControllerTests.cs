@@ -61,7 +61,7 @@
             controller.ControllerContext.HttpContext = clientIP;
             permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host).Returns(true);
             permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host).Returns(true);
-            customerService.HasHostPermissionOnCustIdAsync(Arg.Any<bool>(), Arg.Any<bool>(), Arg.Any<int>()).Returns(true);
+            customerService.HasHostPermissionOnCustIdAsync(Arg.Any<int>()).Returns(true);
             remarkService.EditRemarkAsync(command).Returns(commandResult);
 
             //Act

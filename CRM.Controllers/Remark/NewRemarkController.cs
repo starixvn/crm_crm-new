@@ -78,8 +78,8 @@
         {
             criteria.Fromdate = commonService.ConvertClientFromTimeToServerTime(criteria.Fromdate);
             criteria.Todate = commonService.ConvertClientToTimeToServerTime(criteria.Todate);
-            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var newRemarks = await remarkService.GetNewRemarkAsync(criteria);
             foreach (var remark in newRemarks)
             {
@@ -92,8 +92,8 @@
         [HttpPost]
         public async Task<IActionResult> ValidateUsername([FromBody] CustomerRemarkNewCheckCriteria command)
         {
-            command.LicenseeType = await permissionService.GetSitePermissionAsync();
-            command.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+            command.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            command.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var relatedCustomers = await remarkService.ValidateUsernameAsyn(command);
             return Json(relatedCustomers);

@@ -22,6 +22,7 @@
         private IIssueStatisticsService issueStatisticsService;
         private ISettingService settingService;
         private IExportExcelService excelService;
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetAllSettings_WhenCalled_ReturnAsExpectedResult()
@@ -100,8 +101,9 @@
             issueStatisticsService = Substitute.For<IIssueStatisticsService>();
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
+            permissionService = Substitute.For<IPermissionService>();
 
-            return new IssueStatisticsController(issueStatisticsService, settingService, excelService);
+            return new IssueStatisticsController(issueStatisticsService, settingService, excelService, permissionService);
         }
 
         #endregion Helpers

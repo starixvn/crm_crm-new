@@ -177,7 +177,7 @@
 
         private async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback, bool isDeletedFeedbackView = false)
         {
-            short licenseeType = await permissionService.GetSitePermissionAsync();
+            short licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
 
             var feedbackSettings = feedback.Settings;
             var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension);

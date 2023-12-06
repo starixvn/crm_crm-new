@@ -145,6 +145,7 @@
             app.UseForwardedHeaders();
             if (env.IsDevelopment())
             {
+                app.UseMiddleware<ErrorHandler>();
                 app.UseForwardedHeaders();
                 app.UseDeveloperExceptionPage();
             }

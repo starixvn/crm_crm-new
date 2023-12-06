@@ -126,7 +126,7 @@
 
         public async Task<CreateFeedbackViewModel> GetAllSettings(bool isEdit)
         {
-            var licenseeType = await permissionService.GetSitePermissionAsync();
+            var licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var statuses = await GetStatusListAsync(isEdit);
             var products = await settingService.GetProductAsync(SettingConstants.Active);

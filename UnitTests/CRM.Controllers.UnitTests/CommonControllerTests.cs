@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.Core.Services;
     using CRM.Criteria.Common;
     using CRM.Criteria.NotificationType;
     using CRM.Models;
@@ -10,9 +11,6 @@
     using CRM.Models.FeedbackSubject;
     using CRM.Models.NotificationType;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -23,6 +21,7 @@
         private ICommonService commonService;
         private IFeedbackSubjectService feedbackSubjectService;
         private IPermissionService permissionService;
+        private ISessionService sessionService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -97,7 +96,8 @@
             commonService = Substitute.For<ICommonService>();
             feedbackSubjectService = Substitute.For<IFeedbackSubjectService>();
             permissionService = Substitute.For<IPermissionService>();
-            return new CommonController(notificationTypeService, commonService, feedbackSubjectService, permissionService);
+            sessionService = Substitute.For<ISessionService>();
+            return new CommonController(notificationTypeService, commonService, feedbackSubjectService, permissionService, sessionService);
         }
     }
 }

@@ -18,18 +18,16 @@
     using CRM.Services.Remark;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class NewRemarkControllerTests
     {
         private INapSession napSession;
         private INapSettings napSettings;
-        private IUserService userService;
+        private IPermissionService permissionService;
         private IRemarkService remarkService;
         private ISettingService settingService;
         private ICommonService commonService;
@@ -38,7 +36,7 @@
         [Fact]
         public async Task GetRemarkTitles_WhenCalled_ReturnExpectedJsonResult()
         {
-            var remarkSettings = new List<Setting> { new Setting { Name = " test" } };
+            var remarkSettings = new List<Setting> { new() { Name = " test" } };
             var expected = remarkSettings.OrderBy(s => s.DisplayOrder).ToList();
 
             var controller = GetController();
@@ -56,7 +54,7 @@
         {
             var fixture = new Fixture();
             var users = fixture.Create<IEnumerable<Models.Customer.UserInfo>>();
-            var extentions = fixture.Create<IEnumerable<SettingRelation>>(); 
+            var extentions = fixture.Create<IEnumerable<SettingRelation>>();
             var controller = GetController();
 
             customerService.GetAllCustomerAsync(Arg.Any<GetAllCustomersCriteria>()).Returns(users);
@@ -95,7 +93,7 @@
         {
             var fixture = new Fixture();
             var newRemarks = fixture.Create<IEnumerable<RemarkNewInfo>>();
-            var criteria = fixture.Create <GetNewRemarkCriteria>();
+            var criteria = fixture.Create<GetNewRemarkCriteria>();
 
             var controller = GetController();
 
@@ -116,7 +114,7 @@
         public async Task ValidateUsername_WhenCalled_ReturnExpectedCommandResult()
         {
             var fixture = new Fixture();
-            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>> ();
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>>();
             var criteria = fixture.Create<CustomerRemarkNewCheckCriteria>();
 
             var controller = GetController();
@@ -234,12 +232,11 @@
             Assert.Equal(criteria.TotalRows, totalItems);
         }
 
-
         #region helper
 
         private NewRemarkController GetController()
         {
-            userService = Substitute.For<IUserService>();
+            permissionService = Substitute.For<IPermissionService>();
             napSession = Substitute.For<INapSession>();
             napSettings = Substitute.For<INapSettings>();
             settingService = Substitute.For<ISettingService>();
@@ -250,13 +247,12 @@
             return new NewRemarkController(
                 napSession,
                 napSettings,
-                userService,
+                permissionService,
                 remarkService,
                 settingService,
                 commonService,
                 customerService
            );
-
         }
 
         #endregion helper

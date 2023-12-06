@@ -7,6 +7,7 @@ namespace CRM.Controllers.UnitTests
     public class ErrorControllerTests
     {
         private IMaintenanceService maintenanceService;
+
         [Fact]
         public void PageNotFound_WhenCalled_ReturnExpectedViewResult()
         {

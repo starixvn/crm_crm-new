@@ -15,11 +15,11 @@
 
         Task<bool> IsHavingPermissionByPolicyAsync(string functionKey, Policy policy = Policy.Read);
 
-        Task<short> GetSitePermissionAsync();
+        Task<short> GetCurrentUserSitePermissionAsync();
 
         Task<bool> IsHavingPermissionAsync(string functionKey);
 
-        Task<string> GetCreditPermissionsAsync(Policy policy = Policy.Read);
+        Task<string> GetCurrentUserCreditPermissionsAsync(Policy policy = Policy.Read);
     }
 
     public class PermissionService : IPermissionService
@@ -49,7 +49,7 @@
             return await userService.IsHavingPermissionAsync(napSession.UserId, napSettings.SiteId, functionKey, policy);
         }
 
-        public async Task<short> GetSitePermissionAsync()
+        public async Task<short> GetCurrentUserSitePermissionAsync()
         {
             var isHavingPermissionCredit = await IsHavingPermissionAsync(FunctionKey.Credit);
             var isHavingPermissionLicensee = await IsHavingPermissionAsync(FunctionKey.Licensee);
@@ -68,7 +68,7 @@
             return policy > 0;
         }
 
-        public async Task<string> GetCreditPermissionsAsync(Policy policy = Policy.Read)
+        public async Task<string> GetCurrentUserCreditPermissionsAsync(Policy policy = Policy.Read)
         {
             var siteLabels = string.Empty;
             var functions = await userService.GetPermissionsAsync(napSession.UserId, napSettings.SiteId, FunctionKey.Credit);

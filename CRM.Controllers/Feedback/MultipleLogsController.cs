@@ -69,8 +69,8 @@
         [HttpPost]
         public async Task<IActionResult> VerifyCustomer([FromBody] VerifyCustomerCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCreditPermissionsAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var customers = await baseService.GetDataAsync<VerifyCustomerResult>(criteria);
             return Json(customers);
         }
@@ -140,7 +140,7 @@
 
         public async Task<IActionResult> GetLogSettingByFeedbackId(int id)
         {
-            short licenseeType = await permissionService.GetSitePermissionAsync();
+            short licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
 
             var communicationLogTask = feedbackService.GetLogByFeedbackIdAsync(id);
             var settingTask = GetAllSettingAsync();
