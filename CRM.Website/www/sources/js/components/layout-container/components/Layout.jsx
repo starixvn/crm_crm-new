@@ -26,8 +26,6 @@ export class Layout extends Component {
                 username: null,
                 isGuest: false
             },
-            showEmptyConfirmPopup: false,
-            showEmptyCustomerInfoPopup: false,
             customerSuggestions: [],
             editCustomerInfoPopup: { show: false },
             isShowingLeftPanel: false,
@@ -164,7 +162,6 @@ export class Layout extends Component {
         this.setState({
             isGuest: true
         }, () => {
-            this.handleCloseEmptyConfirm();
             const params = this.getParams();
             this.getDataGrid(params).then(() => this.handleNavigate('Dashboard'));
         });
@@ -183,14 +180,6 @@ export class Layout extends Component {
 
     setUserName = username => {
         this.setState({ username });
-    };
-
-    handleCloseEmptyConfirm = () => {
-        this.setState({ showEmptyConfirmPopup: false });
-    };
-
-    handleCloseEmptyCustomerInfoPopup = () => {
-        this.setState({ showEmptyCustomerInfoPopup: false });
     };
 
     handleCloseErrorPopup = () => {
@@ -248,6 +237,9 @@ export class Layout extends Component {
         const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
         await DataService.postDataAsync(url, params).then(response => {
             this.handleCheckCustomerInfo(response);
+            this.setState({ isShowingLeftPanel: true }, () => {
+                this.handleSetStorage(this.state.isShowingLeftPanel);
+            });
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
@@ -269,14 +261,6 @@ export class Layout extends Component {
                         this.handleNavigate('Dashboard');
                     });
                 }
-            } else if (response.data === null && !this.state.isGuest) {
-                this.setState({
-                    showEmptyConfirmPopup: true
-                });
-            } else if (response.data === null) {
-                this.setState({
-                    showEmptyCustomerInfoPopup: true
-                });
             }
         }
     }
@@ -297,9 +281,6 @@ export class Layout extends Component {
 
     handleCollapseExpandLayout = event => {
         event.preventDefault();
-        if (!this.state.customerInfo) {
-            return;
-        }
         this.setState(prevState => ({
             isShowingLeftPanel: !prevState.isShowingLeftPanel
         }), () => {
@@ -314,21 +295,21 @@ export class Layout extends Component {
     };
 
     renderLeftRightContent = customerInfo => {
-        const { settings, gridParams } = this.state;
+        const { settings, gridParams, isShowingLeftPanel } = this.state;
 
         return (
             <div className="d-flex">
-                <div style={{ maxHeight: `${this.state.maxHeightLeft}px` }} id={customerInfo !== null ? 'left-row-container' : 'left-row-hidden'} tabIndex="1" className="slide-bar">
+                <div style={{ maxHeight: `${this.state.maxHeightLeft}px` }} id={isShowingLeftPanel ? 'left-row-container' : 'left-row-hidden'} tabIndex="1" className="slide-bar">
                     {
-                        customerInfo !== null && settings !== null &&
+                    isShowingLeftPanel && settings !== null &&
                         <DataGrid
                             customerInfo={customerInfo} settings={settings} gridParams={gridParams} setGridParams={this.setGridParams}
-                            handleSearchUplineInfo={this.handleSearchUplineInfo} getCustomerInfo={this.getCustomerInfo}
+                            handleSearchUplineInfo={this.handleSearchUplineInfo} getCustomerInfo={this.getCustomerInfo}                            
                             handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup} handleNavigate={this.handleNavigate}
                         />
                     }
                 </div>
-                <div id='right-row-container' tabIndex="2" style={{ width: customerInfo !== null ? '81%' : '100%' }} className='main-content'>
+                <div id='right-row-container' tabIndex="2" style={{ width: isShowingLeftPanel ? '81%' : '100%'}} className='main-content'>
                     <div id='child-app-container'>
                         {this.props.children}
                     </div>
@@ -351,8 +332,8 @@ export class Layout extends Component {
     };
 
     render() {
-        const { customerInfo, isGuest, customerSuggestions, showEmptyConfirmPopup, showErrorConfirmPopup,
-            username, showEmptyCustomerInfoPopup, menus, isShowingLeftPanel } = this.state;
+        const {customerInfo, isGuest, customerSuggestions, showErrorConfirmPopup,
+            username, menus, isShowingLeftPanel } = this.state;
 
         const currentCustomerInfo = this.getCurrentCustomerInfo();
         const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
@@ -367,11 +348,10 @@ export class Layout extends Component {
                         hasReadSitePermission &&
                         <Filter
                             getDataGrid={this.getDataGrid} isGuest={isGuest} username={username} menus={menus} customerInfo={customerInfo}
-                            customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion={this.handleChangeSuggestion}
-                            showEmptyCustomerInfoPopup={showEmptyCustomerInfoPopup} showEmptyConfirmPopup={showEmptyConfirmPopup}
-                            handleCloseEmptyCustomerInfoPopup={this.handleCloseEmptyCustomerInfoPopup} isCreditSite={this.state.isCreditSite}
+                            customerSuggestions={customerSuggestions} handleChange={this.handleChange} handleChangeSuggestion={this.handleChangeSuggestion}                            
+                            isCreditSite={this.state.isCreditSite}
                             handleGetCustomerIsGuest={this.handleGetCustomerIsGuest} handleNavigate={this.handleNavigate}
-                            handleCloseEmptyConfirm={this.handleCloseEmptyConfirm} debounceUserNameInputChange={this.debounceUserNameInputChange}
+                            debounceUserNameInputChange={this.debounceUserNameInputChange}
                         />
                     }
                 </div>
@@ -391,11 +371,10 @@ export class Layout extends Component {
                     />
                 }
                 {
-                    !showEmptyCustomerInfoPopup &&
                     <div className='row-content'>
                         <ResponsiveComponent isShowingLeftPanel={isShowingLeftPanel}>
                             {
-                                isShowingLeftPanel && customerInfo !== null ?
+                                isShowingLeftPanel ?
                                     this.renderLeftRightContent(customerInfo) :
                                     this.renderFullWidthContent()
                             }

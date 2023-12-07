@@ -29,6 +29,7 @@ export default class DataGrid extends PureComponent {
     componentDidMount() {
         this.handleCheckLanguage();
         const leftContainer = document.getElementById('left-row-container');
+
         leftContainer.addEventListener("keydown", this.handleKeyDownFunc, false);
         checkHostPermissionOnCurrentCustomer().then(response => {
             this.setState({
@@ -527,9 +528,21 @@ export default class DataGrid extends PureComponent {
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
+    renderEmptyData = () => {
+        return (<div className="left-form-customer" id="left-form-container">
+            <Form.Group className="mrb0">
+                <Row className="item align-items-end">
+                    {
+                        LangHelper.getResource('EmptyData')
+                    }
+                </Row>
+            </Form.Group>
+        </div>);
+    };
+
     render() {
         if (!this.props.customerInfo) {
-            return null;
+            return this.renderEmptyData();
         }
 
         const customerInfo = this.props.customerInfo;

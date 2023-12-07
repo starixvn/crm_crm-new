@@ -298,8 +298,7 @@ export default class Filter extends Component {
             return null;
         }
 
-        const { username, customerSuggestions, isGuest, handleChange, showEmptyCustomerInfoPopup, debounceUserNameInputChange, handleChangeSuggestion,
-            handleCloseEmptyCustomerInfoPopup, showEmptyConfirmPopup, handleGetCustomerIsGuest, handleCloseEmptyConfirm } = this.props;
+        const {username, customerSuggestions, isGuest, handleChange, debounceUserNameInputChange, handleChangeSuggestion} = this.props;
 
         return (
             <div className='row-search'>
@@ -324,39 +323,6 @@ export default class Filter extends Component {
                     </Form.Group>
                 </Form>
                 {this.renderRightContainer()}
-                {
-                    showEmptyCustomerInfoPopup &&
-                    <SweetModalDialog size="sm"
-                        title={LangHelper.getResource('SearchAccount')}
-                        contents={
-                            LangHelper.getResource('EmptyData')
-                        }
-                        buttons={[
-                            <Button variant="primary" size="sm" onClick={handleCloseEmptyCustomerInfoPopup}>
-                                {LangHelper.getResource('OK')}
-                            </Button>
-                        ]}
-                        onClose={handleCloseEmptyCustomerInfoPopup}
-                    />
-                }
-                {
-                    showEmptyConfirmPopup &&
-                    <SweetModalDialog size="sm"
-                        title={LangHelper.getResource('SearchAccount')}
-                        contents={
-                            <div>{LangHelper.getResource('ConfirmCustomerSearchGuest')}</div>
-                        }
-                        buttons={[
-                            <Button size="sm" variant="primary" onClick={handleGetCustomerIsGuest}>
-                                {LangHelper.getResource('OK')}
-                            </Button>,
-                            <Button size="sm" variant="primary" onClick={handleCloseEmptyConfirm}>
-                                {LangHelper.getResource('Cancel')}
-                            </Button>
-                        ]}
-                        onClose={handleCloseEmptyConfirm}
-                    />
-                }
             </div>
         );
     }
