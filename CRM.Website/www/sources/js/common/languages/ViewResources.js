@@ -1,6 +1,7 @@
 ﻿window._language_en_US = {
     AccName: 'Acc. Name',
     AccountNo: 'Account No',
+    AccountDetail: 'Account Detail',
     Action: 'Action',
     Active: 'Active',
     ActiveFeedBackSubjectTemplateSuccessfully: 'Active feedback subject template successfully',

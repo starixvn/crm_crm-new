@@ -96,6 +96,9 @@ export default class DataGrid extends PureComponent {
         const { customerInfo, settings } = this.props;
         const isShowInactiveMsg = settings.sitesLicenseeInactive.filter(x => x.id === customerInfo.siteId).length > 0;
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
+        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
+        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
+        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, this.props.customerInfo.customerType);
         return (
             <Form className="left-form-customer" id="left-form-container" noValidate onSubmit={handleSubmit}>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
@@ -234,9 +237,20 @@ export default class DataGrid extends PureComponent {
                         </Col>
                     </Form.Group>
                 }
-                {
-                    this.renderCommunicationTool(values, handleChange, isSubmitting)
-                }
+                <Form.Group className="row item no-border-bg align-items-end">
+                    <Col md="4" />
+                    <Col md="8">
+                        {
+                            hasHostOnCurrentCustomer &&
+                            <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
+                                <UnderlineButton.updateButton />
+                            </Button>
+                        }
+                    </Col>
+                </Form.Group>
+                {/*{*/}
+                {/*    this.renderCommunicationTool(values, handleChange, isSubmitting)*/}
+                {/*}*/}
                 {
                     this.renderDetail(isShowInactiveMsg)
                 }
@@ -244,182 +258,183 @@ export default class DataGrid extends PureComponent {
         );
     };
 
-    renderCommunicationTool = (values, handleChange, isSubmitting) => {
-        const { isHostOnCurrentCustomer } = this.state;
+    //renderCommunicationTool = (values, handleChange, isSubmitting) => {
+    //    const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
+    //    const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
+    //    const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, this.props.customerInfo.customerType);
+    //    return (
+    //        <div className="hightlight-title">
+    //            <Row className="item title text-left">{LangHelper.getResource('CommunicationTool')}</Row>
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Form.Label column md="3" htmlFor="phoneCountryCode" >
+    //                    {LangHelper.getResource('Phone1')}
+    //                </Form.Label>
+    //                <Col md="9">
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
+    //                        onChange={handleChange} name="phoneCountryCode" value={values.phoneCountryCode} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
+    //                        onChange={handleChange} name="phoneAreaCode" value={values.phoneAreaCode} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox phone"
+    //                        onChange={handleChange} name="phone" value={values.phone} autoComplete="off"
+    //                    />
+    //                </Col>
+    //            </Form.Group>
 
-        return (
-            <div className="hightlight-title">
-                <Row className="item title text-left">{LangHelper.getResource('CommunicationTool')}</Row>
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="phoneCountryCode" >
-                        {LangHelper.getResource('Phone1')}
-                    </Form.Label>
-                    <Col md="9">
-                        <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
-                            onChange={handleChange} name="phoneCountryCode" value={values.phoneCountryCode} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
-                            onChange={handleChange} name="phoneAreaCode" value={values.phoneAreaCode} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
-                            onChange={handleChange} name="phone" value={values.phone} autoComplete="off"
-                        />
-                    </Col>
-                </Form.Group>
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Form.Label column md="3" htmlFor="phoneCountryCode" >
+    //                    {LangHelper.getResource('Phone2')}
+    //                </Form.Label>
+    //                <Col md="9">
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
+    //                        onChange={handleChange} name="phone2CountryCode" value={values.phone2CountryCode} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
+    //                        onChange={handleChange} name="phone2AreaCode" value={values.phone2AreaCode} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox phone"
+    //                        onChange={handleChange} name="phone2" value={values.phone2} autoComplete="off"
+    //                    />
+    //                </Col>
+    //            </Form.Group>
 
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="phoneCountryCode" >
-                        {LangHelper.getResource('Phone2')}
-                    </Form.Label>
-                    <Col md="9">
-                        <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
-                            onChange={handleChange} name="phone2CountryCode" value={values.phone2CountryCode} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
-                            onChange={handleChange} name="phone2AreaCode" value={values.phone2AreaCode} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
-                            onChange={handleChange} name="phone2" value={values.phone2} autoComplete="off"
-                        />
-                    </Col>
-                </Form.Group>
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Form.Label column md="3" htmlFor="phoneCountryCode" >
+    //                    {LangHelper.getResource('Phone3')}
+    //                </Form.Label>
+    //                <Col md="9">
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
+    //                        onChange={handleChange} name="phone3CountryCode" value={values.phone3CountryCode} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
+    //                        onChange={handleChange} name="phone3AreaCode" value={values.phone3AreaCode} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox phone"
+    //                        onChange={handleChange} name="phone3" value={values.phone3} autoComplete="off"
+    //                    />
+    //                </Col>
+    //            </Form.Group>
 
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="phoneCountryCode" >
-                        {LangHelper.getResource('Phone3')}
-                    </Form.Label>
-                    <Col md="9">
-                        <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
-                            onChange={handleChange} name="phone3CountryCode" value={values.phone3CountryCode} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
-                            onChange={handleChange} name="phone3AreaCode" value={values.phone3AreaCode} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
-                            onChange={handleChange} name="phone3" value={values.phone3} autoComplete="off"
-                        />
-                    </Col>
-                </Form.Group>
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Form.Label column md="3" htmlFor="mobile" >
+    //                    {LangHelper.getResource('Mobile')}
+    //                </Form.Label>
+    //                <Col md="9">
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
+    //                        onChange={handleChange} name="mobilePhoneCountryCode" value={values.mobilePhoneCountryCode} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
+    //                        onChange={handleChange} name="mobilePhoneAreaCode" value={values.mobilePhoneAreaCode} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox phone"
+    //                        onChange={handleChange} name="mobilePhone" value={values.mobilePhone} autoComplete="off"
+    //                    />
+    //                </Col>
+    //            </Form.Group>
 
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="mobile" >
-                        {LangHelper.getResource('Mobile')}
-                    </Form.Label>
-                    <Col md="9">
-                        <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
-                            onChange={handleChange} name="mobilePhoneCountryCode" value={values.mobilePhoneCountryCode} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
-                            onChange={handleChange} name="mobilePhoneAreaCode" value={values.mobilePhoneAreaCode} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox phone"
-                            onChange={handleChange} name="mobilePhone" value={values.mobilePhone} autoComplete="off"
-                        />
-                    </Col>
-                </Form.Group>
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Form.Label column md="3" htmlFor="email">
+    //                    {LangHelper.getResource('Email')}
+    //                </Form.Label>
+    //                <Col md="9">
+    //                    <Form.Control type="text" size="sm" className="shadow-none"
+    //                        onChange={handleChange} name="email" value={values.email} autoComplete="off"
+    //                    />
+    //                </Col>
+    //            </Form.Group>
 
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="email">
-                        {LangHelper.getResource('Email')}
-                    </Form.Label>
-                    <Col md="9">
-                        <Form.Control type="text" size="sm" className="shadow-none"
-                            onChange={handleChange} name="email" value={values.email} autoComplete="off"
-                        />
-                    </Col>
-                </Form.Group>
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Form.Label column md="3" htmlFor="msn" >
+    //                    {LangHelper.getResource('Telegram')}
+    //                </Form.Label>
+    //                <Col md="9">
+    //                    <Form.Control type="text" size="sm" className="shadow-none"
+    //                        onChange={handleChange} name="msn" value={values.msn} autoComplete="off"
+    //                    />
+    //                </Col>
+    //            </Form.Group>
 
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="msn" >
-                        {LangHelper.getResource('Telegram')}
-                    </Form.Label>
-                    <Col md="9">
-                        <Form.Control type="text" size="sm" className="shadow-none"
-                            onChange={handleChange} name="msn" value={values.msn} autoComplete="off"
-                        />
-                    </Col>
-                </Form.Group>
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Form.Label column md="3" htmlFor="skype" >
+    //                    {LangHelper.getResource('Skype')}
+    //                </Form.Label>
+    //                <Col md="9">
+    //                    <Form.Control type="text" size="sm" className="shadow-none"
+    //                        onChange={handleChange} name="skype" value={values.skype} autoComplete="off"
+    //                    />
+    //                </Col>
+    //            </Form.Group>
 
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="skype" >
-                        {LangHelper.getResource('Skype')}
-                    </Form.Label>
-                    <Col md="9">
-                        <Form.Control type="text" size="sm" className="shadow-none"
-                            onChange={handleChange} name="skype" value={values.skype} autoComplete="off"
-                        />
-                    </Col>
-                </Form.Group>
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Form.Label column md="3" htmlFor="name" >
+    //                    {LangHelper.getResource('PIC1')}
+    //                </Form.Label>
+    //                <Col md="9">
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
+    //                        onChange={handleChange} name="pic1Name" value={values.pic1Name} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
+    //                        onChange={handleChange} name="pic1" value={values.pic1} autoComplete="off"
+    //                    />
+    //                </Col>
+    //            </Form.Group>
 
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="name" >
-                        {LangHelper.getResource('PIC1')}
-                    </Form.Label>
-                    <Col md="9">
-                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
-                            onChange={handleChange} name="pic1Name" value={values.pic1Name} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
-                            onChange={handleChange} name="pic1" value={values.pic1} autoComplete="off"
-                        />
-                    </Col>
-                </Form.Group>
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Form.Label column md="3" htmlFor="name" >
+    //                    {LangHelper.getResource('PIC2')}
+    //                </Form.Label>
+    //                <Col md="9">
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
+    //                        onChange={handleChange} name="pic2Name" value={values.pic2Name} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
+    //                        onChange={handleChange} name="pic2" value={values.pic2} autoComplete="off"
+    //                    />
+    //                </Col>
+    //            </Form.Group>
 
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="name" >
-                        {LangHelper.getResource('PIC2')}
-                    </Form.Label>
-                    <Col md="9">
-                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
-                            onChange={handleChange} name="pic2Name" value={values.pic2Name} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
-                            onChange={handleChange} name="pic2" value={values.pic2} autoComplete="off"
-                        />
-                    </Col>
-                </Form.Group>
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Form.Label column md="3" htmlFor="name" >
+    //                    {LangHelper.getResource('PIC3')}
+    //                </Form.Label>
+    //                <Col md="9">
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
+    //                        onChange={handleChange} name="pic3Name" value={values.pic3Name} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
+    //                        onChange={handleChange} name="pic3" value={values.pic3} autoComplete="off"
+    //                    />
+    //                </Col>
+    //            </Form.Group>
 
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="name" >
-                        {LangHelper.getResource('PIC3')}
-                    </Form.Label>
-                    <Col md="9">
-                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
-                            onChange={handleChange} name="pic3Name" value={values.pic3Name} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
-                            onChange={handleChange} name="pic3" value={values.pic3} autoComplete="off"
-                        />
-                    </Col>
-                </Form.Group>
-
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="name" >
-                        {LangHelper.getResource('PIC4')}
-                    </Form.Label>
-                    <Col md="9">
-                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
-                            onChange={handleChange} name="pic4Name" value={values.pic4Name} autoComplete="off"
-                        />
-                        <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
-                            onChange={handleChange} name="pic4" value={values.pic4} autoComplete="off"
-                        />
-                    </Col>
-                </Form.Group>
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Col md="3" />
-                    <Col md="9">
-                        {
-                            isHostOnCurrentCustomer &&
-                            <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
-                                <UnderlineButton.updateButton />
-                            </Button>
-                        }
-                    </Col>
-                </Form.Group>
-            </div>
-        );
-    };
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Form.Label column md="3" htmlFor="name" >
+    //                    {LangHelper.getResource('PIC4')}
+    //                </Form.Label>
+    //                <Col md="9">
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
+    //                        onChange={handleChange} name="pic4Name" value={values.pic4Name} autoComplete="off"
+    //                    />
+    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
+    //                        onChange={handleChange} name="pic4" value={values.pic4} autoComplete="off"
+    //                    />
+    //                </Col>
+    //            </Form.Group>
+    //            <Form.Group className="row item no-border-bg align-items-end">
+    //                <Col md="3" />
+    //                <Col md="9">
+    //                    {
+    //                        hasHostOnCurrentCustomer &&
+    //                        <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
+    //                            <UnderlineButton.updateButton />
+    //                        </Button>
+    //                    }
+    //                </Col>
+    //            </Form.Group>
+    //        </div>
+    //    );
+    //};
 
     renderDetail = isShowInactiveMsg => {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
@@ -436,14 +451,7 @@ export default class DataGrid extends PureComponent {
                 {
                     this.state.isShowDetail &&
                     <Form.Group className="row item no-border-bg form-row-detail">
-                        <ul className='list-unstyled list-menu pull-left'>
-                            {
-                                hasReadSitePermission &&
-                                <li>
-                                    <i className="fa fa-angle-right" aria-hidden="true" />
-                                    <a onClick={() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
-                                </li>
-                            }
+                        <ul className='list-unstyled list-menu pull-left'>                            
                             {
                                 !isShowInactiveMsg && hasCreateFeedbackPermission &&
                                 <li>
@@ -451,20 +459,64 @@ export default class DataGrid extends PureComponent {
                                     <a onClick={() => this.props.handleNavigate('AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
                                 </li>
                             }
+                            {
+                                hasReadFeedbackPermission &&
+                                <li>
+                                    <i className="fa fa-angle-right" aria-hidden="true" />
+                                    <a onClick={() => this.props.handleNavigate('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
+                                </li>
+                            }
                         </ul>
                         {
                             hasReadFeedbackPermission &&
-                            <ul className='list-unstyled list-menu pull-left'>
+                            <ul className='list-unstyled list-menu pull-left list-menu-right'>
                                 <li>
                                     <i className="fa fa-angle-right" aria-hidden="true" />
                                     <a onClick={() => this.props.handleNavigate('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
                                 </li>
                                 <li>
                                     <i className="fa fa-angle-right" aria-hidden="true" />
-                                    <a onClick={() => this.props.handleNavigate('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
+                                            <a onClick={() => this.props.handleNavigate('CommunicationLog')}>{LangHelper.getResource('CommunicationLog')}</a>
                                 </li>
                             </ul>
                         }
+                    </Form.Group>
+                }
+                <div className="dot-detail"></div>
+                {
+                    this.state.isShowDetail &&
+                    <Form.Group className="row item no-border-bg form-row-detail">
+                        <ul className='list-unstyled list-menu pull-left'>
+                            <li>
+                                <i className="fa fa-angle-right" aria-hidden="true" />
+                                    <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Dashboard')}</a>
+                            </li>
+                            <li>
+                                <i className="fa fa-angle-right" aria-hidden="true" />
+                                    <a onClick={() => this.props.handleNavigate('Remark')}>{LangHelper.getResource('Remark')}</a>
+                                </li>
+                            <li>
+                                <i className="fa fa-angle-right" aria-hidden="true" />
+                                    <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PicManagement')}</a>
+                            </li>
+                        </ul>
+                        <ul className='list-unstyled list-menu pull-left list-menu-right'>
+                            <li>
+                                <i className="fa fa-angle-right" aria-hidden="true" />
+                                <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetail')}</a>
+                            </li>
+                            <li>
+                                <i className="fa fa-angle-right" aria-hidden="true" />
+                                <a onClick={() => this.props.handleNavigate('ActionLog')}>{LangHelper.getResource('ActivityLog')}</a>
+                            </li>
+                            {
+                                hasReadCustomerInfo &&
+                                <li>
+                                    <i className="fa fa-angle-right" aria-hidden="true" />
+                                    <a onClick={() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
+                                </li>
+                            }
+                        </ul>
                     </Form.Group>
                 }
             </div>

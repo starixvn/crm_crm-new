@@ -34,6 +34,7 @@
     .text-search {
         background-color: #373e4e;
         padding-right: 0;
+        display: flex;
 
         input::placeholder {
             color: white;
@@ -56,6 +57,7 @@
 
 .left-form-customer {
     background-color: rgb(241,241,241);
+
     .upline-username {
         color: #2f70b4;
         cursor: pointer;
@@ -82,7 +84,7 @@
             }
         }
 
-        &.form-row-detail{
+        &.form-row-detail {
             justify-content: space-between;
         }
 
@@ -137,7 +139,7 @@
         width: 40%;
     }
 
-    .pic-width{
+    .pic-width {
         width: 59%;
     }
 
@@ -174,7 +176,15 @@
         }
     }
 
-    .hightlight-title{
-        margin-top : 8px;
+    .hightlight-title {
+        margin-top: 8px;
+
+        .dot-detail {
+            border-bottom: dotted 2px
+        }
+
+        .list-menu-right{
+            width: 160px;
+        }
     }
 }

@@ -291,6 +291,8 @@ export default class Filter extends Component {
         return parentNames;
     };
 
+
+
     render() {
         const hasCustomerInfoPermission = document.getElementById('hasReadCustomerInfo').checked;
 
@@ -298,7 +300,7 @@ export default class Filter extends Component {
             return null;
         }
 
-        const {username, customerSuggestions, isGuest, handleChange, debounceUserNameInputChange, handleChangeSuggestion} = this.props;
+        const { username, customerSuggestions, isGuest, handleChange, debounceUserNameInputChange, handleChangeSuggestion} = this.props;
 
         return (
             <div className='row-search'>
@@ -313,6 +315,10 @@ export default class Filter extends Component {
                                 onInputChange={searchText => debounceUserNameInputChange(searchText)}
                             />
                             <input type="button" className="btn-search" onClick={this.handleSubmit} />
+                            {
+                                username != '' && username != null &&
+                                <i className="fa fa-times icon-clear" onClick={value => handleChangeSuggestion('')}></i>
+                            }
                         </Col>
                         <Col sm="3" md="3">
                             <Form.Check className="checked-guest" type="checkbox" name="isGuest" label={LangHelper.getResource('Guest')}

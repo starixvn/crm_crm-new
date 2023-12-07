@@ -34,14 +34,15 @@
         .checked-guest {
             background-color: #464d5d;
             color: #ebebeb;
-            padding-left:0;
-            display : flex;
-            align-items : center;
-            justify-content : center;
+            padding-left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
             .form-check-input {
                 margin-top: 0;
-                position : unset;
-                margin-right : 5px;
+                position: unset;
+                margin-right: 5px;
             }
 
             label {
@@ -59,6 +60,19 @@
             border: none;
             position: absolute;
             left: 25px;
+            top: 10px;
+        }
+
+        .icon-clear {
+            background: unset;
+            color: white;
+            cursor: pointer;
+            height: 16px;
+            vertical-align: middle;
+            width: 16px;
+            border: none;
+            position: absolute;
+            right: 0px;
             top: 10px;
         }
     }
@@ -148,4 +162,3 @@
         border-left: 1px solid #252525;
     }
 }
-
