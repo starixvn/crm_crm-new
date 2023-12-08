@@ -91,7 +91,7 @@
         {
             logService.LogInformation("Start SendNotifyAsync: " + notificationMessage.ConversationId);
             await SendTextMessageAsync(notificationMessage, sendResult);
-            sendResult.SentTime = DateTime.UtcNow;
+            sendResult.SentTime = DateTimeOffset.UtcNow.DateTime;
             await WriteLogCommandAsync(notificationMessage, sendResult);
             logService.LogInformation("End SendNotifyAsync: " + notificationMessage.ConversationId);
         }

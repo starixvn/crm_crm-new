@@ -1,7 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Models.ArchivingDA
 {
     using System;
-    using CRM.Core.Models;
 
     public class ArchivingAutoFbInfo
     {

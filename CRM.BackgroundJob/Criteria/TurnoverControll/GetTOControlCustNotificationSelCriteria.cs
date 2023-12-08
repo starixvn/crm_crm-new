@@ -1,6 +1,5 @@
 ﻿namespace CRM.BackgroundJob.Criteria.TurnoverControll
 {
-    using System;
     using Fanex.Data.Repository;
     public class GetTOControlCustNotificationSelCriteria : CriteriaBase
     {

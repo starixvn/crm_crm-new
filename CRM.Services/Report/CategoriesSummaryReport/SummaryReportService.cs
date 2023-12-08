@@ -145,7 +145,7 @@
         public async Task<AllSetting> AllSettings()
         {
             var minReportDate = Convert.ToInt32(ViewResources.MinReportDate);
-            var currentYear = DateTime.Now.Year;
+            var currentYear = DateTimeOffset.Now.DateTime.Year;
             var yearRange = new List<Setting>();
             for (int i = minReportDate; i <= currentYear; i++)
             {

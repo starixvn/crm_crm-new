@@ -13,9 +13,11 @@
         public const string LongDateTimeFormat = "MMM dd, yyyy hh:mm:ss tt";
         public const string MonthYear = "MMM yyyy";
 
-        public static DateTime ToStartOfDay(this DateTime date) => new DateTime(date.Year, date.Month, date.Day);
+        public static DateTime ToStartOfDay(this DateTime date) => 
+            new DateTimeOffset(date.Year, date.Month, date.Day,0,0,0,TimeSpan.Zero).DateTime;
 
-        public static DateTime ToEndOfDay(this DateTime date) => new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
+        public static DateTime ToEndOfDay(this DateTime date) => 
+            new DateTimeOffset(date.Year, date.Month, date.Day, 23, 59, 59, TimeSpan.Zero).DateTime;
 
         public static DateTime FirstDayOfWeek(this DateTime date)
         {
@@ -25,7 +27,8 @@
 
         public static DateTime LastDayOfWeek(this DateTime date) => date.FirstDayOfWeek().AddDays(6);
 
-        public static DateTime FirstDayOfMonth(this DateTime date) => new DateTime(date.Year, date.Month, 1);
+        public static DateTime FirstDayOfMonth(this DateTime date) => 
+            new DateTimeOffset(date.Year, date.Month, 1, 0, 0, 0, TimeSpan.Zero).DateTime;
 
         public static DateTime LastDayOfMonth(this DateTime date) => date.FirstDayOfMonth().AddMonths(1).AddDays(-1);
 

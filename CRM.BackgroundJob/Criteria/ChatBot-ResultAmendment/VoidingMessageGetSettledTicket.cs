@@ -1,6 +1,5 @@
 ﻿namespace CRM.BackgroundJob.Criteria.ChatBot_ResultAmendment
 {
-    using Fanex.Data;
     using Fanex.Data.Repository;
     public class VoidingMessageGetSettledTicket : CriteriaBase
     {

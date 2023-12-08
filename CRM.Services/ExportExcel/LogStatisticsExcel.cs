@@ -46,7 +46,7 @@
 
                 for (int j = 0; j < communicationColumns.Count; j++)
                 {
-                    SetStyleHeaderCommunication(worksheet, currentColumnIndex, communicationColumns.ElementAt(j).Name);
+                    SetStyleHeaderCommunication(worksheet, currentColumnIndex, communicationColumns[j].Name);
                     currentColumnIndex++;
                 }
                 SetStyleHeaderCommunication(worksheet, currentColumnIndex, "Total");

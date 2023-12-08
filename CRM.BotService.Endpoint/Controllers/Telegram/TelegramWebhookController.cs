@@ -45,7 +45,7 @@
         [Route("api/telegram/bot/getWebhookInfo")]
         public async Task<IActionResult> GetWebhookInfo(long botId)
         {
-            var bot = botConfigurations.FirstOrDefault(config => config.BotId == botId);
+            var bot = botConfigurations.Find(config => config.BotId == botId);
             if (bot is not null)
             {
                 var webhookInfo = await telegramBotService(bot.BotId).GetWebhookInfoAsync(bot);

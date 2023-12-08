@@ -7,7 +7,6 @@
     using CRM.Core.Services;
     using CRM.Criteria.Feedback;
     using CRM.Models.Feedback;
-    using CRM.Models.Setting;
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
 
@@ -44,7 +43,7 @@
         {
             var criteria = new BalanceUpDayCriteria();
             var balance = await baseService.GetDataAsync<BalanceUpday>(criteria);
-            return balance.Any() ? balance.First().BalanceUpDay : new DateTime();
+            return balance.Any() ? balance.First().BalanceUpDay : new DateTimeOffset().DateTime;
         }
     }
 }

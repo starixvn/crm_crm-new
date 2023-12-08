@@ -54,10 +54,10 @@
                 .GroupBy(x => new { Type = x.SettingName })
                 .Select(group => new { group.Key, Count = group.Count() });
             var settingGroupByType = new List<Setting>();
-            foreach (var group in settingGroups)
+            foreach (var type in settingGroups.Select(x => x.Key.Type))
             {
-                var subList = allSettings.Where(s => s.SettingName == group.Key.Type).Select(s => s).ToList();
-                var setting = new Setting { SettingName = group.Key.Type, ChildSettings = subList };
+                var subList = allSettings.Where(s => s.SettingName == type).Select(s => s).ToList();
+                var setting = new Setting { SettingName = type, ChildSettings = subList };
                 settingGroupByType.Add(setting);
             }
             var settingGroupOrder = settingGroupByType.ToList();
@@ -224,7 +224,7 @@
             };
 
             var statuses = (await baseService.GetDataAsync<Models.Setting.FeedbackStatus>(criteria)).ToList();
-            var closedStatus = statuses.FirstOrDefault(d => d.StatusId == (int)Core.Enumerables.FeedbackStatus.Closed);
+            var closedStatus = statuses.Find(d => d.StatusId == (int)Core.Enumerables.FeedbackStatus.Closed);
             if (closedStatus != null)
             {
                 statuses.Remove(closedStatus);

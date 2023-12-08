@@ -40,7 +40,7 @@
         public string ImageUrl { get; set; }
     }
 
-    internal static class MulticastType
+    public static class MulticastType
     {
         public const string Text = "text";
         public const string HTML = "html";

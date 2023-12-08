@@ -126,7 +126,7 @@
 
             foreach (var feedback in groupFeedbackByMsgId)
             {
-                var feedbackInfoFirst = feedback.First();
+                var feedbackInfoFirst = feedback[0];
                 var eventDetails = eventVoiding.Where(x => x.LogVoidingID == feedbackInfoFirst.LogVoidingID);
                 var messages = await feedbackTransaction.GetMessageContentInfoAsync(feedbackInfoFirst.MessageId);
                 await CreateVoidingSettledTicketsAsync(feedbackInfoFirst, eventDetails, messages, settings, settingMappings, environment);
@@ -146,7 +146,7 @@
         {
             logService.LogInformation("begin CreateVoidingSettledTicketsAsync!!!");
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            var feedbackDate = DateTime.Now.Add(timeSpan);
+            var feedbackDate = DateTimeOffset.Now.DateTime.Add(timeSpan);
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(DefaultValue.Neutral, StringComparison.OrdinalIgnoreCase));
             var station = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Extension, StringComparison.OrdinalIgnoreCase)
@@ -320,11 +320,11 @@
             }
             List<SystemSettingMapping> productMappings = settingMappings.Where(p => p.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(p.SettingSource)
-                && productNames.Any(productName => p.SettingSource.Equals(productName, StringComparison.OrdinalIgnoreCase))).ToList();
+                && productNames.Exists(productName => p.SettingSource.Equals(productName, StringComparison.OrdinalIgnoreCase))).ToList();
 
             var products = settings.Where(x => x.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && productMappings != null
-                && productMappings.Any(mapping => x.SettingId == mapping.SettingId)).ToList();
+                && productMappings.Exists(mapping => x.SettingId == mapping.SettingId)).ToList();
 
             logService.LogInformation("End mapping amenment product.");
 
@@ -349,13 +349,13 @@
             }
             List<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && sportNames.Any(sportName => mapping.SettingSource.Equals(sportName, StringComparison.OrdinalIgnoreCase))).ToList();
+                && sportNames.Exists(sportName => mapping.SettingSource.Equals(sportName, StringComparison.OrdinalIgnoreCase))).ToList();
 
             List<SettingItem> subProducts = isMixParlay ? settings.Where(x => x.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals("Multiple Sports", StringComparison.OrdinalIgnoreCase)).ToList() :
                 settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && sub.ParentIds.Any(parent => productSettingIds.Any(productName => productName == parent))
-                && mappings != null && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
+                && mappings != null && mappings.Exists(mapping => mapping.SettingId == sub.SettingId)).ToList();
 
             logService.LogInformation("End mapping subproduct.");
 
@@ -385,7 +385,7 @@
                 && mapping.SettingSource.Equals("Mix Parlay", StringComparison.OrdinalIgnoreCase)).ToList() :
                 settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
+                && betTypeMappings.Exists(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
 
             logService.LogInformation("End mapping betType.");
             return bettypes != null && bettypes.Any()

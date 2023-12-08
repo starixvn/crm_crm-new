@@ -199,7 +199,7 @@
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString(Constants.FormatDatetimeString) },
+                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTimeOffset.Now.DateTime.ToString(Constants.FormatDatetimeString) },
                 new SystemSettingItem { SettingName = SystemSettingName.LastLogID, Value = LastLogID.ToString() }
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, ServiceName);
@@ -211,7 +211,7 @@
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatusValue},
-                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(Constants.FormatDatetimeString) },
+                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString(Constants.FormatDatetimeString) },
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
         }
@@ -223,7 +223,7 @@
             {
                 new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed},
                 new SystemSettingItem { SettingName = VoidingHistoryCollectionNameEnv, Value = MaxVoidingHistoryCollectionId.ToString()},
-                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(Constants.FormatDatetimeString) },
+                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString(Constants.FormatDatetimeString) },
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus);
         }
@@ -234,7 +234,7 @@
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatusValue},
-                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") },
+                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString("yyyy-MM-dd hh:mm:ss") },
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);
         }
@@ -245,7 +245,7 @@
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
-                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(Constants.FormatDatetimeString) },
+                new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString(Constants.FormatDatetimeString) },
                 new SystemSettingItem { SettingName = lastLogIdName, Value = maxLastLogId.ToString() },
             };
             return await systemSetting.EditSystemSettingAsync(settingJobStatus, serviceName);

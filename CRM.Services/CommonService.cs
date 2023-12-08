@@ -100,19 +100,19 @@
 
         public DateTime GetEndOfDate(DateTime date)
         {
-            date = new DateTime(date.Year, date.Month, date.Day).AddDays(1).AddSeconds(-1);
+            date = new DateTimeOffset(date.Year, date.Month, date.Day,0,0,0,TimeSpan.Zero).AddDays(1).AddSeconds(-1).DateTime;
             return date;
         }
 
         public DateTime GetStartOfDate(DateTime date)
         {
-            date = new DateTime(date.Year, date.Month, date.Day);
+            date = new DateTimeOffset(date.Year, date.Month, date.Day, 0, 0, 0, TimeSpan.Zero).DateTime;
             return date;
         }
 
         public DateTime FirstDayOfMonth(DateTime dateTime)
         {
-            return new DateTime(dateTime.Year, dateTime.Month, 1);
+            return new DateTimeOffset(dateTime.Year, dateTime.Month, 1, 0, 0, 0, TimeSpan.Zero).DateTime;
         }
 
         public DateTime LastDayOfMonth(DateTime dateTime)

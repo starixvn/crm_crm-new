@@ -152,7 +152,7 @@
                 CountryCode = ResolveCountry(HttpContext.Request)?.GeoId.ToString(CultureInfo.CurrentCulture),
                 NetSessionId = HttpContext.Session.Id,
                 Platform = Environment.OSVersion.Platform.ToString(),
-                LoginDate = DateTime.Now
+                LoginDate = DateTimeOffset.Now.DateTime
             };
 
             return await securityService.LoginAsync(loginParam);
@@ -234,7 +234,7 @@
                 CountryCode = ResolveCountry(HttpContext.Request)?.GeoId.ToString(CultureInfo.CurrentCulture),
                 NetSessionId = HttpContext?.Session.Id,
                 Platform = Environment.OSVersion.Platform.ToString(),
-                LoginDate = DateTime.Now
+                LoginDate = DateTimeOffset.Now.DateTime
             };
             return await securityService.SSOLoginAsync(ssoLoginParam);
         }
@@ -276,8 +276,10 @@
 
         private async Task<bool> IsValidTime(string time)
         {
+            #pragma warning disable S6580
             DateTime.TryParse(Cryptography.DecryptPassword(time.Replace(" ", "+")), out DateTime descryptTime1);
             DateTime.TryParse(await securityService.GetTimeAsync(), out DateTime descryptTime2);
+            #pragma warning restore S6580
             var expiration = descryptTime2 - descryptTime1;
 
             return expiration.TotalSeconds <= appSettings.SingleSignOnExpiredTime;

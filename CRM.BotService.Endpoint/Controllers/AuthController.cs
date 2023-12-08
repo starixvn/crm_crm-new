@@ -26,7 +26,7 @@
         {
             if (IsValidCredential(auth))
             {
-                var expiredAt = DateTime.UtcNow.AddDays(webSettings.ExpirationByDay);
+                var expiredAt = DateTimeOffset.UtcNow.DateTime.AddDays(webSettings.ExpirationByDay);
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(webSettings.Secret);
                 var tokenDescriptor = new SecurityTokenDescriptor

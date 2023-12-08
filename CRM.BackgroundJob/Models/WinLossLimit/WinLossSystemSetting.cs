@@ -1,6 +1,5 @@
 ﻿namespace CRM.BackgroundJob.Models.WinLossLimit
 {
-    using System;
     using CRM.BackgroundJob.Models.AbnormalBet;
 
     public class WinLossSystemSetting : AbnormalBetSystemSetting

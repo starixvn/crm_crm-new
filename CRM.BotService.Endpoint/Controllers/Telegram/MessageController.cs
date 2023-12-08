@@ -219,7 +219,7 @@
 
             if (!botCommonService.IsActiveChannel(notification.ChannelId))
             {
-                result.SentTime = DateTime.UtcNow;
+                result.SentTime = DateTimeOffset.UtcNow.DateTime;
                 result.ErrorCode = 1;
                 result.ErrorMessage = $"Channel {notification.ChannelId} is current inactivated";
                 result.IsIgnoreRetry = true;
@@ -237,7 +237,7 @@
             catch (Exception ex)
             {
                 result.ErrorCode = 1;
-                result.SentTime = DateTime.UtcNow;
+                result.SentTime = DateTimeOffset.UtcNow.DateTime;
                 result.ErrorMessage = TelegramBotServiceErrorMessage;
                 var writeLogCommand = new WriteLogMessageCommand
                 {

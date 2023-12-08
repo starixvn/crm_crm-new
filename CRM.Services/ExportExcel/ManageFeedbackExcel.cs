@@ -182,7 +182,7 @@
             IEnumerable<Setting> mainCategories)
         {
             var mainCategory = mainCategories.FirstOrDefault(c => c.SettingId == mainCategoryId);
-            var child = mainCategory?.ChildSettings.FirstOrDefault(c => c.SubCategoryId == subCategoryId);
+            var child = mainCategory?.ChildSettings.Find(c => c.SubCategoryId == subCategoryId);
             return child == null ? string.Empty : child.Name;
         }
 

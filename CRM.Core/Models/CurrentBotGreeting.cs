@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-namespace CRM.Core.Models
+﻿namespace CRM.Core.Models
 {
     public class CurrentBotGreeting
     {

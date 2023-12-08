@@ -68,7 +68,7 @@
 
         public Site SiteSetting { get; set; } = new Site();
 
-        public string DurationTime => ResolutionDate != DateTime.MinValue ? GetResolvingTime() : string.Empty;
+        public string DurationTime => ResolutionDate != DateTimeOffset.MinValue.DateTime ? GetResolvingTime() : string.Empty;
 
         private string GetResolvingTime()
         {

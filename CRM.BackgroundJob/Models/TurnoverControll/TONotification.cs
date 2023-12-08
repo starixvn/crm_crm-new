@@ -1,6 +1,5 @@
 ﻿namespace CRM.BackgroundJob.Models.TurnoverControll
 {
-    using System;
     public class TONotification
     {
         public int LogID { get; set; }

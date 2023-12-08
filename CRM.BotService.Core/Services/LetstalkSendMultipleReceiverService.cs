@@ -234,7 +234,7 @@
             }
             else
             {
-                foreach (var result in sendResult.Where(result => pushResult.FailList.Any(i => i.Equals(result.ConversationId))))
+                foreach (var result in sendResult.Where(result => pushResult.FailList.Exists(i => i.Equals(result.ConversationId))))
                 {
                     SetResultSendImage(result, image);
                 }
@@ -251,7 +251,7 @@
 
         private static void HandleFailedList(List<string> failList, List<SendNotificationResult> sendResult)
         {
-            foreach (var result in sendResult.Where(result => failList.Any(i => i.Equals(result.ConversationId))))
+            foreach (var result in sendResult.Where(result => failList.Exists(i => i.Equals(result.ConversationId))))
             {
                 result.IsSuccessful = false;
                 result.ErrMsg = LetstalkBotServiceErrorMessage;
@@ -260,7 +260,7 @@
 
         private static void HandlleBlockList(List<string> blockList, List<SendNotificationResult> sendResult)
         {
-            foreach (var result in sendResult.Where(result => blockList.Any(i => i.Equals(result.ConversationId))))
+            foreach (var result in sendResult.Where(result => blockList.Exists(i => i.Equals(result.ConversationId))))
             {
                 result.IsSuccessful = false;
                 result.IsBotBlocked = true;

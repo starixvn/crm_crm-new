@@ -1,7 +1,6 @@
 ﻿namespace CRM.ViewModels.ChatTypeMapping
 {
     using System.Collections.Generic;
-    using CRM.Models.ChatTypeMapping;
 
     public class TelegramVerificationViewModel
     {

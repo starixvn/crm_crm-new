@@ -122,7 +122,8 @@
                 Messages_VoidByBetID = voidingBetIdMessages.ToXML("root").ToString()
             };
             var data = await baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, VoidingMessage>(criteria);
-            return new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int> (data.Item1, data.Item2, criteria.MAXVoidingHistoryCollectionId, criteria.MAXMsgTargetId);
+            return new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int> 
+                (data.Item1, data.Item2, criteria.MAXVoidingHistoryCollectionId, criteria.MAXMsgTargetId);
         }
 
         public async Task<ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>> ImportTicketVoidingAsync(

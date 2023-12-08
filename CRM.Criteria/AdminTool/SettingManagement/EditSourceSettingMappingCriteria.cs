@@ -1,6 +1,5 @@
 ﻿namespace CRM.Criteria.AdminTool.SettingManagement
 {
-    using CRM.Core.Models;
     using Fanex.Data.Repository;
 
     public class EditSourceSettingMappingCriteria : NonQueryCommand

@@ -132,7 +132,7 @@
 
         private async Task<CommandResult> CheckAddCustomerFeedbackPermission()
         {
-            var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read);
+            var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback);
             var commandResult = new CommandResult { Code = 0 };
             if (!hasCreateFeedbackPermission)
             {

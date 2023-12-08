@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CRM.Core.Constants
+﻿namespace CRM.Core.Constants
 {
     public static class LogStatisticConstants
     {

@@ -125,7 +125,7 @@
             {
                 var monthReport = new SettlementReportInfo
                 {
-                    Name = new DateTime(criteria.Year, monthGroup.Key, 1).ToString("MMM", CultureInfo.InvariantCulture),
+                    Name = new DateTimeOffset(criteria.Year, monthGroup.Key, 1,0,0,0,TimeSpan.Zero).DateTime.ToString("MMM", CultureInfo.InvariantCulture),
                     ChildReports = new List<SettlementReportInfo>()
                 };
 

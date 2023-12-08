@@ -294,7 +294,7 @@
                 {
                     foreach (var letstalk in item.Letstalks)
                     {
-                        var account = accounts.FirstOrDefault(i => i.LetstalkId.Trim().Equals(letstalk.LetstalkId.Trim(), StringComparison.CurrentCultureIgnoreCase));
+                        var account = accounts.Find(i => i.LetstalkId.Trim().Equals(letstalk.LetstalkId.Trim(), StringComparison.CurrentCultureIgnoreCase));
                         letstalk.IsGroupMember = account is not null && account.IsGroupMember;
                         letstalk.IsBotFriend = account is not null && account.IsBotFriend;
                     }

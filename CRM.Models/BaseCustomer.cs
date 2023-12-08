@@ -1,10 +1,7 @@
 ﻿
 namespace CRM.Models
 {
-    using System;
     using System.Collections.Generic;
-    using CRM.Core.Constants;
-    using CRM.Core.Enumerables;
     using CRM.Models.Common;
 
     public class BaseCustomer : BaseModel

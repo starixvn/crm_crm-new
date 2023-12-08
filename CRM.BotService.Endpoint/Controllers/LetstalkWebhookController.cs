@@ -34,7 +34,7 @@
         [Route("api/setwebhook/{id}")]
         public async Task<IActionResult> SetWebhook(int id)
         {
-            var botConfigs = webhookConfigurations.FirstOrDefault(config => config.BotId == id);
+            var botConfigs = webhookConfigurations.Find(config => config.BotId == id);
             if (botConfigs != null && botConfigs.IsAllowedSet)
             {
                 var webhookUrl = $"{botConfigs.WebhookBaseUrl}api/webhook/{id}";
@@ -48,7 +48,7 @@
         [Route("api/getwebhook/{id}")]
         public async Task<IActionResult> GetWebhook(int id)
         {
-            var botConfigs = webhookConfigurations.FirstOrDefault(config => config.BotId == id);
+            var botConfigs = webhookConfigurations.Find(config => config.BotId == id);
             if (botConfigs != null && botConfigs.IsAllowedGet)
             {
                 var result = await letstalkService(id).GetWebhookAsync();

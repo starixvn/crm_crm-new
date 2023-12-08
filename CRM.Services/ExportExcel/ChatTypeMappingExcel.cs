@@ -118,11 +118,11 @@
             SetStyle(worksheet);
             SetWidthColumn(worksheet);
             var countMergeCells = 0;
-            foreach(var chatType in chatTypeMappings)
+            foreach(var recipients in chatTypeMappings.Select(x => x.Recipients))
             {
-                if(chatType.Recipients.Count() > 1)
+                if(recipients.Count() > 1)
                 {
-                    countMergeCells += chatType.Recipients.Count() -1;
+                    countMergeCells += recipients.Count() -1;
                 }
             }
             var chatTypeCountDrawBoder = RowStartBody + chatTypeMappings.Count() + countMergeCells - 1;

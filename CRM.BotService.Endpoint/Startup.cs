@@ -8,7 +8,6 @@
     using CRM.BotService.Core.Models;
     using CRM.BotService.Core.Services;
     using CRM.BotService.Core.Services.Interfaces;
-    using CRM.Core.Extensions;
     using CRM.Core.Middlewares;
     using CRM.Core.Models;
     using CRM.Core.Repositories;

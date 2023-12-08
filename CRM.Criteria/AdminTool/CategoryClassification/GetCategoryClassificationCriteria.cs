@@ -1,11 +1,11 @@
 ﻿namespace CRM.Criteria.AdminTool.CategoryClassification
 {
-    using CRM.Models.Feedback;
-    using Fanex.Data;
     using System.Collections.Generic;
-    using Fanex.Data.Repository;
     using System.Linq;
     using CRM.Core.Extensions.XML;
+    using CRM.Models.Feedback;
+    using Fanex.Data;
+    using Fanex.Data.Repository;
 
     public class GetCategoryClassificationCriteria : CriteriaBase
     {

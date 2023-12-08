@@ -21,7 +21,6 @@
     using CRM.Models.Report.SettlementReport;
     using CRM.Models.Report.WagerReport;
     using CRM.Models.Setting;
-    using CRM.Resources;
     using CRM.Services.ExportExcel;
     using Microsoft.AspNetCore.Hosting;
 

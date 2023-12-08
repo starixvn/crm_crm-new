@@ -17,10 +17,10 @@ namespace CRM.Models.Report.LogStatistics
             {
                 List<int> sumOfCommunications =
                         Enumerable.Repeat(0, ProductColumns.Count() * CommunicationColumns.Count()).ToList();
-                foreach (var mainCategory in MainCategories)
+                foreach (var listOfCommunication in MainCategories.Select(x => x.ListOfCommunicationCount))
                 {
-                    var totalListOfCommunications = mainCategory.ListOfCommunicationCount.Count();
-                    var listOfCommunicationCount = mainCategory.ListOfCommunicationCount;
+                    var totalListOfCommunications = listOfCommunication.Count();
+                    var listOfCommunicationCount = listOfCommunication;
                     for (int i = 0; i < totalListOfCommunications; i++)
                     {
                         sumOfCommunications[i] += listOfCommunicationCount.ElementAt(i);
@@ -37,10 +37,10 @@ namespace CRM.Models.Report.LogStatistics
             {
                 List<int> sumOfCommunicationsByProduct =
                         Enumerable.Repeat(0, ProductColumns.Count()).ToList();
-                foreach (var mainCategory in MainCategories)
+                foreach (var lstOfCommunicationSumByProduct in MainCategories.Select(x => x.ListOfCommunicationSumByProduct))
                 {
-                    var totalListOfCommunicationSumByProduct = mainCategory.ListOfCommunicationSumByProduct.Count();
-                    var listOfCommunicationSumByProduct = mainCategory.ListOfCommunicationSumByProduct;
+                    var totalListOfCommunicationSumByProduct = lstOfCommunicationSumByProduct.Count();
+                    var listOfCommunicationSumByProduct = lstOfCommunicationSumByProduct;
                     for (int i = 0; i < totalListOfCommunicationSumByProduct; i++)
                     {
                         sumOfCommunicationsByProduct[i] += listOfCommunicationSumByProduct.ElementAt(i);

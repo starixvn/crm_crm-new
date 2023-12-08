@@ -10,7 +10,6 @@
     using CRM.Models.Setting;
     using CRM.Resources;
     using OfficeOpenXml;
-    using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
     using OfficeOpenXml.Style;
 
     public class PicAssignmentExcel : ExcelBase
@@ -75,7 +74,7 @@
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
             var MergePicGroupHeadlineIds = GetIdMergePic(assignments);
-            var mergeCommonPIC = assignments.Where(x => MergePicGroupHeadlineIds.Any(y => y == x.HeadlineID)).ToList();
+            var mergeCommonPIC = assignments.Where(x => MergePicGroupHeadlineIds.Exists(y => y == x.HeadlineID)).ToList();
             var excludeMergeCommonPIC = assignments.Except(mergeCommonPIC).ToList();
             var mergePICGroupByPicMappingAndHeadline = mergeCommonPIC
             .GroupBy(x => new { x.HeadlineID, x.PicForMapping, x.HeadlineName })
@@ -96,21 +95,21 @@
             var rowNum = 1;
             var mergeHeadlineForPic = 0;
             StyleDefault(worksheet);
-            foreach (var mergePICByHeadline in mergePICByHeadlinesOrderBy)
+            foreach (var groupPicMapping in mergePICByHeadlinesOrderBy.Select(x => x.GroupPicMapping))
             {
                 var countMergePic = 0;
-                foreach (var mergeHeadlineByPic in mergePICByHeadline.GroupPicMapping.Select(x => x.mergePicAndHeadline).ToList())
+                foreach (var mergeHeadlineByPic in groupPicMapping.Select(x => x.mergePicAndHeadline).ToList())
                 {
                     countMergePic += mergeHeadlineByPic.Count;
                 }
-                var picMappingByMergeHealine = mergePICByHeadline.GroupPicMapping.Select(x => x.PicList).First().ToList();
+                var picMappingByMergeHealine = groupPicMapping.Select(x => x.PicList).First().ToList();
                 var merPicCell = GetPicCell(picMappingByMergeHealine);
                 StyleMergeCell(worksheet, rowIndex, colIndexMergePic, rowIndexMergePIC + countMergePic - 1);
                 worksheet.Cells[rowIndex, colIndexMergePic].Value = merPicCell;
                 rowIndexMergePIC = rowIndexMergePIC + countMergePic;
                 var countCommIncludeMergeHeadline = 0;
                 var commIncludeMergeHeadline = GetUniqueCommunicationToolsByPicModel(picMappingByMergeHealine).ToList();
-                var mergePICByHeadlineOrderByCount = mergePICByHeadline.GroupPicMapping.Select(x => x.mergePicAndHeadline).ToList();
+                var mergePICByHeadlineOrderByCount = groupPicMapping.Select(x => x.mergePicAndHeadline).ToList();
 
                 foreach (var mergeHeadlineByPic in mergePICByHeadlineOrderByCount)
                 {
@@ -359,7 +358,7 @@
         {
             var splitPicModels = picModels.Select(x => x.PicId).ToList();
             return splitPicModels.Count > 0 ? groupAssignmentCommunications.Where(x =>
-                splitPicModels.Any(y => y == x.PicId))
+                splitPicModels.Exists(y => y == x.PicId))
                 .ToList()
             : new List<GroupAssignmentCommunication>();
         }
@@ -372,11 +371,11 @@
                 return Enumerable.Empty<GroupAssignmentCommunication>();
             }
             var picIds = new List<string>();
-            foreach (var pic in headlinePic)
+            foreach (var pic in headlinePic.Select(x => x.Pic))
             {
-                if (pic.Pic != null)
+                if (pic != null)
                 {
-                    picIds.AddRange(pic.Pic?.Select(x=>x.PicName));
+                    picIds.AddRange(pic?.Select(x=>x.PicName));
                 }
             }
             var uniquePicMapping = picIds.Distinct();

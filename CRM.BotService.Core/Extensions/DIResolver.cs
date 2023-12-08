@@ -51,7 +51,7 @@
             services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<Func<long, ILetstalkClientService>>(serviceProvider => botId =>
             {
-                var botConfig = botConfigs.FirstOrDefault(config => config.BotAccountId == botId);
+                var botConfig = botConfigs.Find(config => config.BotAccountId == botId);
 
                 if (botConfig is null)
                 {
@@ -84,7 +84,7 @@
 
             services.AddSingleton<Func<long, ITelegramBotService>>(serviceProvider => botId =>
             {
-                var botConfig = telegramBots.FirstOrDefault(config => config.BotId == botId);
+                var botConfig = telegramBots.Find(config => config.BotId == botId);
 
                 if (botConfig is null)
                 {

@@ -1,9 +1,7 @@
 ﻿namespace CRM.Core.Services
 {
-    using System.Collections.Generic;
     using CRM.Core.Extensions;
     using CRM.Core.Models;
-    using Fanex.NAP.Client.Models;
     using Microsoft.AspNetCore.Http;
 
     public interface ISessionService

@@ -128,7 +128,7 @@
         private string GetSubCategoryValue(int mainCategoryId, int subCategoryId)
         {
             var mainCategory = mainCategories.FirstOrDefault(c => c.MainCategoryID == mainCategoryId);
-            var child = mainCategory?.ChildSettings.FirstOrDefault(c => c.SubCategoryId == subCategoryId);
+            var child = mainCategory?.ChildSettings.Find(c => c.SubCategoryId == subCategoryId);
             return child?.Name ?? string.Empty;
         }
 

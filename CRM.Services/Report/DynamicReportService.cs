@@ -8,7 +8,6 @@
     using CRM.Core.Constants;
     using CRM.Core.Services;
     using CRM.Criteria.Report.DynamicReport;
-    using CRM.Models;
     using CRM.Models.Common;
     using CRM.Models.Report.DynamicReport;
     using CRM.Resources;
@@ -191,7 +190,8 @@
                 return dynamicReport;
             }
 
-            var periodGroups = dynamicReportInfos.GroupBy(data => new DateTime(data.FeedbackDate.Year, data.FeedbackDate.Month, 1));
+            var periodGroups = dynamicReportInfos.GroupBy(data => 
+                new DateTimeOffset(data.FeedbackDate.Year, data.FeedbackDate.Month, 1,0,0,0,TimeSpan.Zero).DateTime);
             foreach (var periodGroup in periodGroups)
             {
                 var periodReport = new DynamicReportInfo

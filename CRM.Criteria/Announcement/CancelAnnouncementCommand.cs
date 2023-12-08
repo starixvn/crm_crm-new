@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using CRM.Core.Models;
+﻿using CRM.Core.Models;
 
 namespace CRM.Criteria.Announcement
 {

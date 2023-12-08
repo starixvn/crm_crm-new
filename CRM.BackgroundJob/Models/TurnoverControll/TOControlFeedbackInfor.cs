@@ -1,7 +1,5 @@
 ﻿namespace CRM.BackgroundJob.Models.TurnoverControll
 {
-    using System;
-
     public class TOControlFeedbackInfor : CustOutStanding
     {
         public int LogID { get; set; }

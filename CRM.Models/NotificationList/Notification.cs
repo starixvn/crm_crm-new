@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using CRM.Core.Enumerables;
 
     public class Notification
     {

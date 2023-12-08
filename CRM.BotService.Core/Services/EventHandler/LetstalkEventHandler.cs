@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Threading.Channels;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Constants;
     using CRM.BotService.Core.Criteria;
@@ -50,7 +49,7 @@
             CheckArgumentHelper.CheckValidBot(botConfigs, botId);
 
             string requestJson;
-            var botConfig = botConfigs.FirstOrDefault(config => config.BotAccountId == botId);
+            var botConfig = botConfigs.Find(config => config.BotAccountId == botId);
             if (botConfig is not null)
             {
                 using (TextReader reader = new StreamReader(request.Body))

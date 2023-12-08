@@ -31,7 +31,6 @@
         private ISecurityService securityService;
         private IGroupService groupService;
         private INapSettings napSettings;
-        private ISiteService siteService;
         private IOptionsSnapshot<AppSettings> appSettings;
 
         [Fact]
@@ -297,7 +296,6 @@
             napSettings = Substitute.For<INapSettings>();
             securityService = Substitute.For<ISecurityService>();
             napSession = Substitute.For<INapSession>();
-            siteService = Substitute.For<ISiteService>();
             appSettings = Substitute.For<IOptionsSnapshot<AppSettings>>();
             appSettings.Value.Returns(new AppSettings { SingleSignOnExpiredTime = -1 });
 

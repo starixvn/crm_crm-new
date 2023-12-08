@@ -94,7 +94,7 @@
                     .Select(x => x.VoidingHistoryCollectionId).ToList();
             if (collectionId.Any())
             {
-                var collectionIds = voidingMessageUserNames.Where(x => collectionId.Any(y => x.VoidingHistoryCollectionId == y));
+                var collectionIds = voidingMessageUserNames.Where(x => collectionId.Exists(y => x.VoidingHistoryCollectionId == y));
                 await messageService.EditStatusVoidingMessageAsync(collectionIds, Environment);
                 logService.LogInformation(string.Format("Don't have ticket info: {0}", string.Join(",", collectionIds)));
             }
@@ -125,7 +125,7 @@
                 .Select(x => x.VoidingHistoryCollectionId).ToList();
             if (voidingHistoryCollectionIds.Any())
             {
-                var messages = voidingMessageUserNames.Where(x => voidingHistoryCollectionIds.Any(y => x.VoidingHistoryCollectionId == y));
+                var messages = voidingMessageUserNames.Where(x => voidingHistoryCollectionIds.Exists(y => x.VoidingHistoryCollectionId == y));
                 await messageService.EditStatusVoidingMessageAsync(messages, Environment);
                 logService.LogInformation(string.Format("Abnormal Bet - Don't have ticket info or created: {0}", string.Join(",", voidingHistoryCollectionIds)));
             }
@@ -183,7 +183,8 @@
                         MessageId = transaction.MessageId
                     };
 
-                    GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId, transaction.IsDeposit && matchInfo?.IssueTypeId == duplicateType ? transaction.CustId : relatedCustId);
+                    GetXmlTemplate(stringBuilder, XmlTemplate, transactionInfo, matchInfo, headlineId, 
+                        transaction.IsDeposit && matchInfo?.IssueTypeId == duplicateType ? transaction.CustId : relatedCustId);
                 }
             }
 
@@ -228,7 +229,7 @@
             return await baseService.GetDataFromSiteDbAsync<TransactionInfo>(criteria);
         }
 
-        private void GetXmlTemplate(StringBuilder stringBuilder, string xmlTemlate,
+        private static void GetXmlTemplate(StringBuilder stringBuilder, string xmlTemlate,
            TransactionInfo transaction, MatchInfo matchInfo, int headlineId, int relatedCustId)
         {
             stringBuilder.AppendFormat(xmlTemlate,

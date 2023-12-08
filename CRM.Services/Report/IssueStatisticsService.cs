@@ -180,7 +180,8 @@
                 return statisticReport;
             }
 
-            var dateGroups = issuesStatistics.GroupBy(data => new DateTime(data.FeedbackDate.Year, data.FeedbackDate.Month, 1));
+            var dateGroups = issuesStatistics.GroupBy(data => 
+                new DateTimeOffset(data.FeedbackDate.Year, data.FeedbackDate.Month, 1, 0, 0, 0, TimeSpan.Zero).DateTime);
             foreach (var dateGroup in dateGroups)
             {
                 var dateReport = new IssuesStatisticsReportInfo
@@ -205,13 +206,13 @@
                 dateReport.PeriodRange.ToDateString = dateReport.PeriodRange.ToDate.ToShortDateString();
                 var timeGroups = dateGroup
                      .OrderBy(data => data.FeedbackDate.Hour)
-                     .GroupBy(data => new DateTime(
+                     .GroupBy(data => new DateTimeOffset(
                         dateGroup.Key.Year,
                         dateGroup.Key.Month,
                         dateGroup.Key.Day,
                         data.FeedbackDate.Hour,
                         0,
-                        0));
+                        0,TimeSpan.Zero).DateTime);
                 foreach (var timeGroup in timeGroups)
                 {
                     var timeReport = new IssuesStatisticsReportInfo

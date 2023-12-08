@@ -74,7 +74,7 @@
 
         public string EndTime => ResolutionDate.ToString("hh:mm tt");
 
-        public string DurationTime => ResolutionDate != DateTime.MinValue ? GetResolvingTime() : string.Empty;
+        public string DurationTime => ResolutionDate != DateTimeOffset.MinValue.DateTime ? GetResolvingTime() : string.Empty;
 
         public string UserName { get; set; }
 

@@ -62,7 +62,7 @@
             var settingJobStatus = new List<SystemSettingItem>
             {
                 new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
-                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTimeOffset.Now.DateTime.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
             };
             logService.LogInformation(string.Format("Start run WL serivce with last log ID: {0}!", setting.LastLogId));
             await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
@@ -110,7 +110,7 @@
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            var feedbackDate = DateTime.Now.Add(timeSpan);
+            var feedbackDate = DateTimeOffset.Now.DateTime.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(DefaultValue.Closed, StringComparison.OrdinalIgnoreCase));
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
@@ -119,15 +119,9 @@
                 && x.SettingId == Constants.ExtentionNA);
             var category = commonFeedback.GetCategorySubCategoryCWL(settings, DefaultValue.CompanyWLLimit);
             string[] betTypeLists = winLimit.BettypeIDList.Split(",");
-            var betTypeMappings = new List<BettypeInfo>();
-            foreach (var bet in bettype)
-            {
-                if (betTypeLists.Contains(bet.Bettype))
-                {
-                    betTypeMappings.Add(bet);
-                }
-            }
-
+            var betTypeMappings = (from bet in bettype
+                                   where betTypeLists.Contains(bet.Bettype)
+                                   select bet).ToList();
             var criteria = new CreateMutipleFeedbackCommand
             {
                 CreatorId = appSettings.CreatorId,
@@ -213,19 +207,19 @@
             IList<SettingItem> bettypes = GetBettype(subProducts.Select(x => x.SettingId), betTypeMappings, settingMappings, settings);
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
 
-            foreach (SettingItem subProduct in subProducts)
+            foreach (var settingId in subProducts.Select(x => x.SettingId))
             {
-                IList<SettingItem> tempBettypes = bettypes.Where(x => x.ParentIds.Any(y => y == subProduct.SettingId)).ToList();
+                IList<SettingItem> tempBettypes = bettypes.Where(x => x.ParentIds.Any(y => y == settingId)).ToList();
                 if (tempBettypes.Any())
                 {
                     foreach (SettingItem bettype in tempBettypes)
                     {
-                        stringBuilder.AppendFormat(XmlTemplate, product.SettingId, subProduct.SettingId, bettype.SettingId);
+                        stringBuilder.AppendFormat(XmlTemplate, product.SettingId, settingId, bettype.SettingId);
                     }
                 }
                 else
                 {
-                    stringBuilder.AppendFormat(XmlTemplate, product.SettingId, subProduct.SettingId, Constants.BettypeNA);
+                    stringBuilder.AppendFormat(XmlTemplate, product.SettingId, settingId, Constants.BettypeNA);
                 }
             }
             return stringBuilder.Append(Constants.EndRootTag).ToString();
@@ -263,7 +257,7 @@
             IList<SettingItem> subProducts = settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && sub.ParentIds.Any(parent => parent == productId)
                 && subProductsMapping != null
-                && subProductsMapping.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
+                && subProductsMapping.Exists(mapping => mapping.SettingId == sub.SettingId)).ToList();
 
             return subProducts.Any()
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
@@ -281,7 +275,7 @@
         {
             IList<SystemSettingMapping> bettypeMapping = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && betTypeMappings.Any(betInfo => betInfo.Name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
+                && betTypeMappings.Exists(betInfo => betInfo.Name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
 
             IList<SettingItem> bettypes = settings.Where(bettype => bettype.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && subProducts.Any(sub => bettype.ParentIds.Any(parent => parent == sub))

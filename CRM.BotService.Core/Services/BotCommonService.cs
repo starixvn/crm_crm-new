@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using CRM.BotService.Core.Criteria;
@@ -26,7 +25,7 @@
         }
 
         public bool IsActiveChannel(BotChannel channel)
-            => botChannelInfos is not null && botChannelInfos.Any(c => c.Name == channel && c.IsActive);
+            => botChannelInfos is not null && botChannelInfos.Exists(c => c.Name == channel && c.IsActive);
 
         public async Task<byte[]> ReadImageAsByteAsync(string imgUrl)
         {

@@ -1,6 +1,5 @@
 ﻿namespace CRM.BackgroundJob.Models.WinLossLimit
 {
-    using System;
     public class WinLimitFeedBackInfo : CustomerWinLimit
     {
         public string Currency { get; set; }

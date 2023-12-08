@@ -48,7 +48,7 @@
             var responsesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active);
             var titlesTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active);
             var licenseeTypesTask = settingService.GetLicenseeTypeAsync();
-            var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read);
+            var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback);
             var languagesTask = settingService.GetLanguageAsync(SettingConstants.Active, true);
             var countriesTask = settingService.GetCountryAsync(SettingConstants.Active, true);
             var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);

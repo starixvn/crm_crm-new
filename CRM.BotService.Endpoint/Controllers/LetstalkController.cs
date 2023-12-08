@@ -140,7 +140,7 @@
 
             if (!botCommonService.IsActiveChannel(notification.ChannelId))
             {
-                result.SentTime = DateTime.UtcNow;
+                result.SentTime = DateTimeOffset.UtcNow.DateTime;
                 result.ErrorCode = 1;
                 result.ErrorMessage = $"Channel {notification.ChannelId} is current inactivated";
                 result.IsIgnoreRetry = true;
@@ -172,7 +172,7 @@
                 };
                 await botCommonService.WriteLogMessageAsync(writeLogCommand);
 
-                result.SentTime = DateTime.UtcNow;
+                result.SentTime = DateTimeOffset.UtcNow.DateTime;
                 result.ErrorCode = 1;
                 result.ErrorMessage = ex.Message;
                 await logService.ErrorMessageAsync(JsonConvert.SerializeObject(notification));
@@ -192,11 +192,11 @@
 
             var sendResult = await letstalkClientService(notification.BotId).PushPersonalAsync(notification.ConversationId, outGoingMsg);
 
-            result.SentTime = DateTime.UtcNow;
+            result.SentTime = DateTimeOffset.UtcNow.DateTime;
             result.ErrorCode = sendResult.IsSuccess && !sendResult.BlockList.Any() ? 0 : 1;
-            result.IsBlockedBot = sendResult.BlockList.Any(x => x.Equals(notification.ConversationId, StringComparison.CurrentCultureIgnoreCase));
+            result.IsBlockedBot = sendResult.BlockList.Exists(x => x.Equals(notification.ConversationId, StringComparison.CurrentCultureIgnoreCase));
             result.ErrorMessage = !sendResult.IsSuccess &&
-                sendResult.FailList.Any(x => x.Equals(notification.ConversationId, StringComparison.CurrentCultureIgnoreCase))
+                sendResult.FailList.Exists(x => x.Equals(notification.ConversationId, StringComparison.CurrentCultureIgnoreCase))
                 ? SendNotificationErrorMessage.LetstalkIdInvalid
                 : string.Empty;
 
@@ -224,7 +224,7 @@
 
             var sendResult = await letstalkClientService(notification.BotId).PushRoomAsync(notification.ConversationId, outGoingMsg);
 
-            result.SentTime = DateTime.UtcNow;
+            result.SentTime = DateTimeOffset.UtcNow.DateTime;
             result.ErrorCode = sendResult.IsSuccess ? 0 : 1;
             result.ErrorMessage = !sendResult.IsSuccess ? string.Format(SendNotificationErrorMessage.BotServiceErrorMsg, BotChannel.Letstalk.ToString().ToLowerInvariant()) : string.Empty;
 

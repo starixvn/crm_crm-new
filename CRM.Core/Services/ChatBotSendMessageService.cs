@@ -58,6 +58,6 @@
         }
 
         private ApiConfig GetApiConfig(BotChannel botChannel) =>
-            botSettings.ApiConfigs.FirstOrDefault(x => x.Channel == botChannel) ?? throw new ArgumentException($"Missing config for bot service type {botChannel}");
+            botSettings.ApiConfigs.Find(x => x.Channel == botChannel) ?? throw new ArgumentException($"Missing config for bot service type {botChannel}");
     }
 }

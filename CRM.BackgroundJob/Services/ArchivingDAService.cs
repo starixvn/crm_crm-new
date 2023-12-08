@@ -109,7 +109,7 @@ namespace CRM.BackgroundJob.Services
         {
             logService.LogInformation(string.Format("Start create achiving DA feedback logId: {0} , headlineName: {1}!" , archivingAutoFbInfo.LogFeedbackId, archivingAutoFbInfo.HeadlineName));
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            var feedbackDate = DateTime.Now.Add(timeSpan);
+            var feedbackDate = DateTimeOffset.Now.DateTime.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(DefaultValue.Closed, StringComparison.OrdinalIgnoreCase));
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)

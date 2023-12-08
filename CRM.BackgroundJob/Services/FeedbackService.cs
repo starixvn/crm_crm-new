@@ -36,7 +36,7 @@
         private const int abnormalAccount = 13;
         private const int mixParlayIssueTypeId = 11;
         private const int duplicatedTicketIssueTypeId = 20;
-        private readonly int[] parlayBetTypeIds = new int[] { 9, 29, 2799 };
+        private readonly int[] parlayBetTypeIds = { 9, 29, 2799 };
         private const string templateXml = "MixParlayTemplate.xml";
         private const string templateDuplicateXml = "FeedbackDuplicateTemplate.xml";
 
@@ -253,7 +253,7 @@
         {
             logService.LogInformation("Abnormal Bet - Begin mapping common setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            var feedbackDate = DateTime.Now.Add(timeSpan);
+            var feedbackDate = DateTimeOffset.Now.DateTime.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals("Closed", StringComparison.OrdinalIgnoreCase));
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
@@ -329,7 +329,7 @@
                     headline.HeadlineId,
                     string.Join(",", batch)));
 
-                IEnumerable<TransactionInfo> transactions = transactionInfos.Where(x => batch.Any(y => y == x.CustId));
+                IEnumerable<TransactionInfo> transactions = transactionInfos.Where(x => batch.Exists(y => y == x.CustId));
                 var isVip = headline.IsVip && headline.SiteLabel == "789y";
                 var isMixParlay = matchInfo.IssueTypeId == mixParlayIssueTypeId && matchInfo.FilterBy == 1;
                 criteria.ProductXml = GetProductXml(isMixParlay, matchInfo, transactions, settings, settingMappings);
@@ -399,7 +399,7 @@
         {
             logService.LogInformation("Abnormal Bet - Begin mapping setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            var feedbackDate = DateTime.Now.Add(timeSpan);
+            var feedbackDate = DateTimeOffset.Now.DateTime.Add(timeSpan);
             var communicationTool = GetCommunicationTool(settings, matchInfo.IssueTypeId);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals("Closed", StringComparison.OrdinalIgnoreCase));
@@ -475,7 +475,7 @@
                     licenseeManagers.Sort();
                 }
                 criteria.RelatedCustId = string.Join(", ", relatedIds.Where(x => x != 0).Select(x => x));
-                criteria.AutoField = GetAutoField(DateTime.Now, communicationTool, licenseeManagers);
+                criteria.AutoField = GetAutoField(DateTimeOffset.Now.DateTime, communicationTool, licenseeManagers);
                 criteria.MessageId = joinMessageString;
                 criteria.ListOrigCustIds = string.Join(",", custIds);
                 IEnumerable<int> requestIds = transactions.Select(x => x.RequestId).Distinct().ToList();
@@ -639,11 +639,11 @@
 
             List<SystemSettingMapping> productMappings = settingMappings.Where(p => p.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(p.SettingSource)
-                && productNames.Any(productName => p.SettingSource.Equals(productName, StringComparison.OrdinalIgnoreCase))).ToList();
+                && productNames.Exists(productName => p.SettingSource.Equals(productName, StringComparison.OrdinalIgnoreCase))).ToList();
 
             var products = settings.Where(x => x.SettingName.Equals(SettingName.Product, StringComparison.OrdinalIgnoreCase)
                 && productMappings != null
-                && productMappings.Any(mapping => x.SettingId == mapping.SettingId)).ToList();
+                && productMappings.Exists(mapping => x.SettingId == mapping.SettingId)).ToList();
 
             logService.LogInformation("End mapping amenment product.");
 
@@ -668,13 +668,13 @@
             }
             List<SystemSettingMapping> mappings = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && sportNames.Any(sportName => mapping.SettingSource.Equals(sportName, StringComparison.OrdinalIgnoreCase))).ToList();
+                && sportNames.Exists(sportName => mapping.SettingSource.Equals(sportName, StringComparison.OrdinalIgnoreCase))).ToList();
 
             List<SettingItem> subProducts = isMixParlay ? settings.Where(x => x.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals("Multiple Sports", StringComparison.OrdinalIgnoreCase)).ToList() :
                 settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && sub.ParentIds.Any(parent => productSettingIds.Any(productName => productName == parent))
-                && mappings != null && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
+                && mappings != null && mappings.Exists(mapping => mapping.SettingId == sub.SettingId)).ToList();
 
             logService.LogInformation("End mapping subproduct.");
 
@@ -704,7 +704,7 @@
                 && mapping.SettingSource.Equals("Mix Parlay", StringComparison.OrdinalIgnoreCase)).ToList() :
                 settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
+                && betTypeMappings.Exists(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
 
             logService.LogInformation("End mapping betType.");
             return bettypes != null && bettypes.Any()
@@ -743,7 +743,7 @@
             return stringBuilder.ToString();
         }
 
-        private string GetBettypeXml(
+        private static string GetBettypeXml(
            SettingItem product,
            SettingItem subProduct,
            IList<SystemSettingMapping> bettypesMapping)
@@ -770,19 +770,19 @@
             var bettypes = GetBettype(isMixParlay, subProducts.Select(x => x.SettingId), transactionInfos, settings, settingMappings);
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
 
-            foreach (SettingItem subProduct in subProducts)
+            foreach (var settingId in subProducts.Select(x => x.SettingId))
             {
-                IList<SettingItem> tempBettypes = bettypes.Where(x => x.ParentIds.Any(y => y == subProduct.SettingId)).ToList();
+                IList<SettingItem> tempBettypes = bettypes.Where(x => x.ParentIds.Any(y => y == settingId)).ToList();
                 if (tempBettypes.Any())
                 {
                     foreach (SettingItem bettype in tempBettypes)
                     {
-                        stringBuilder.AppendFormat(XmlTemplate, sportsbook.SettingId, subProduct.SettingId, bettype.SettingId);
+                        stringBuilder.AppendFormat(XmlTemplate, sportsbook.SettingId, settingId, bettype.SettingId);
                     }
                 }
                 else
                 {
-                    stringBuilder.AppendFormat(XmlTemplate, sportsbook.SettingId, subProduct.SettingId, Constants.BettypeNA);
+                    stringBuilder.AppendFormat(XmlTemplate, sportsbook.SettingId, settingId, Constants.BettypeNA);
                 }
             }
 

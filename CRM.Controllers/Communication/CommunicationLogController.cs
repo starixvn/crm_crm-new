@@ -118,7 +118,9 @@
             return Json(commandResult);
         }
 
+        #pragma warning disable S1541
         private async Task<CommandResult> CheckEditCustomerFeedbackPermission(EditCommunicationLogCommand command)
+        #pragma warning restore S1541
         {
             var commandResult = new CommandResult { Code = 0 };
             var isReadCustInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit) || await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee);
@@ -145,7 +147,7 @@
 
             var isChangedStatusFromDeleted = command.IsDeletedFeedbackView && command.StatusId != (int)FeedbackStatus.Deleted;
             var isChangedStatusToDeleted = !command.IsDeletedFeedbackView && command.StatusId == (int)FeedbackStatus.Deleted;
-            if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Read)
+            if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback)
                 && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
             {
                 commandResult = new CommandResult

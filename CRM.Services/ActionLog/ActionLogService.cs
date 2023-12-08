@@ -18,7 +18,6 @@
     using CRM.Models.AdminTool.SettingLog;
     using CRM.Models.Setting;
     using CRM.Resources;
-    using Microsoft.AspNetCore.DataProtection.KeyManagement;
     using Microsoft.Extensions.Options;
 
     public interface IActionLogService

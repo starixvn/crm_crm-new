@@ -279,6 +279,6 @@
             logService.LogInformation("end AddBotToPersonal!!!");
         }
 
-        private bool checkExistBot(long botId) => botConfigurations.Any(x => x.BotId == botId);
+        private bool checkExistBot(long botId) => botConfigurations.Exists(x => x.BotId == botId);
     }
 }

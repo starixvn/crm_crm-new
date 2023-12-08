@@ -127,7 +127,7 @@
                     {
                         NotificationId = notification.NotificationId,
                         ConversationGroupId = notification.ConversationGroupId,
-                        SentDate = DateTime.UtcNow,
+                        SentDate = DateTimeOffset.UtcNow.DateTime,
                         Status = SendNotificationStatuses.Error,
                         ErrMsg = SendNotificationErrorMessage.BotRemovedMsg
                     };

@@ -147,12 +147,12 @@
             else
             {
                 isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingAbnormalBet);
-                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTimeOffset.Now.DateTime)
                 {
                     var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
-                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
                         };
                     await systemSettingService.EditSystemSettingAsync(settingJobStatus);
                 }
@@ -183,13 +183,13 @@
                 else
                 {
                     isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForWinLossLimit);
-                    if (!isRunning && setting.LastRuntime.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                    if (!isRunning && setting.LastRuntime.AddMinutes(appSettings.RetryRuntime) < DateTimeOffset.Now.DateTime)
                     {
                         logService.LogInformation("Rerun Company Winloss service.");
                         var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString(dateTimeParse) },
+                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTimeOffset.Now.DateTime.ToString(dateTimeParse) },
                         };
                         await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_WinLimitFB);
                     }
@@ -226,13 +226,13 @@
                 else
                 {
                     isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForTurnoverControl);
-                    if (!isRunning && turnOverSetting.LastRuntime.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                    if (!isRunning && turnOverSetting.LastRuntime.AddMinutes(appSettings.RetryRuntime) < DateTimeOffset.Now.DateTime)
                     {
                         logService.LogInformation("Rerun Turnover Controll service.");
                         var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Completed },
-                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString(dateTimeParse)},
+                           new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTimeOffset.Now.DateTime.ToString(dateTimeParse)},
                         };
                         await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
                     }
@@ -296,13 +296,13 @@
             {
                 logService.LogInformation("Result amendment service is running.");
                 isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForResultAmendment);
-                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTimeOffset.Now.DateTime)
                 {
                     logService.LogInformation("Update  status and return serive result amendment.");
                     var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
-                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(dateTimeParse) },
+                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString(dateTimeParse) },
                         };
                     await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ResultAmendment);
                 }
@@ -362,13 +362,13 @@
             {
                 logService.LogInformation("Problems account service is running.");
                 isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForProblemsAccount);
-                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTimeOffset.Now.DateTime)
                 {
                     logService.LogInformation("Update  status and return serive problems account.");
                     var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
-                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(dateTimeParse) },
+                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString(dateTimeParse) },
                         };
                     await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ProblemsAccount);
                 }
@@ -445,13 +445,13 @@
             {
                 logService.LogInformation("Voidding settled tickets service is running.");
                 isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForVoidingSettledTickets);
-                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTimeOffset.Now.DateTime)
                 {
                     logService.LogInformation("Update  status and return serive voidding settled tickets.");
                     var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
-                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") },
+                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString("yyyy-MM-dd hh:mm:ss") },
                         };
                     await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_AutoVoidFB);
                 }
@@ -511,13 +511,13 @@
             {
                 logService.LogInformation("Archiving DA service is running.");
                 isRunning = await jobRunningChecker.IsRunning(JobName.CreateFeedbackForArchivingDA);
-                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTime.Now)
+                if (!isRunning && LastRuntimeEnv.AddMinutes(appSettings.RetryRuntime) < DateTimeOffset.Now.DateTime)
                 {
                     logService.LogInformation("Update  status and return serive archiving DA.");
                     var settingJobStatus = new List<SystemSettingItem>
                         {
                            new SystemSettingItem { SettingName = JobStatusNameEnv, Value = JobStatus.Completed },
-                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTime.Now.ToString(dateTimeParse) },
+                           new SystemSettingItem { SettingName = LastRuntimeNameEnv, Value = DateTimeOffset.Now.DateTime.ToString(dateTimeParse) },
                         };
                     await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_ArchivingDA);
                 }

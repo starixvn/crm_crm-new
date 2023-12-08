@@ -63,7 +63,7 @@
             var settingJobStatus = new List<SystemSettingItem>
                 {
                     new SystemSettingItem { SettingName = SystemSettingName.JobStatus, Value = JobStatus.Running },
-                    new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
+                    new SystemSettingItem { SettingName = SystemSettingName.LastRuntime, Value = DateTimeOffset.Now.DateTime.ToString("yyyy-MM-dd hh:mm:ss.fff tt") },
                 };
 
             await systemSettingService.EditSystemSettingAsync(settingJobStatus, Constants.ServiceName_TOControlFB);
@@ -111,7 +111,7 @@
             IEnumerable<SystemSettingMapping> settingMappings)
         {
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
-            var feedbackDate = DateTime.Now.Add(timeSpan);
+            var feedbackDate = DateTimeOffset.Now.DateTime.Add(timeSpan);
             var status = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Status, StringComparison.OrdinalIgnoreCase)
                 && x.SettingValue.Equals(DefaultValue.Closed, StringComparison.OrdinalIgnoreCase));
             var response = settings.FirstOrDefault(x => x.SettingName.Equals(SettingName.Response, StringComparison.OrdinalIgnoreCase)
@@ -210,18 +210,18 @@
             IList<SystemSettingMapping> tempBettypes = GetTOBettype(betTypeMappings, settingMappings);
 
             var stringBuilder = new StringBuilder(Constants.BeginRootTag);
-            foreach (SettingItem subProduct in subProducts)
+            foreach (var settingId in subProducts.Select(x => x.SettingId))
             {
                 if (tempBettypes.Any())
                 {
                     foreach (SystemSettingMapping bettype in tempBettypes)
                     {
-                        stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, subProduct.SettingId, bettype.SettingId);
+                        stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, settingId, bettype.SettingId);
                     }
                 }
                 else
                 {
-                    stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, subProduct.SettingId, Constants.BettypeNA);
+                    stringBuilder.AppendFormat(DefaultValue.ProductXml, product.SettingId, settingId, Constants.BettypeNA);
                 }
             }
             return stringBuilder.Append(Constants.EndRootTag).ToString();
@@ -247,7 +247,7 @@
             List<SettingItem> subProducts = settings.Where(sub => sub.SettingName.Equals(SettingName.SubProduct, StringComparison.OrdinalIgnoreCase)
                 && sub.ParentIds.Any(parent => parent == productId)
                 && mappings != null
-                && mappings.Any(mapping => mapping.SettingId == sub.SettingId)).ToList();
+                && mappings.Exists(mapping => mapping.SettingId == sub.SettingId)).ToList();
 
             return subProducts.Any()
                 ? subProducts.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()
@@ -263,7 +263,7 @@
         {
             IList<SystemSettingMapping> bettypes = settingMappings.Where(mapping => mapping.SettingName.Equals(SettingName.Bettype, StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mapping.SettingSource)
-                && betTypeMappings.Any(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
+                && betTypeMappings.Exists(name => name.Equals(mapping.SettingSource, StringComparison.OrdinalIgnoreCase))).ToList();
 
             return bettypes != null && bettypes.Any()
                 ? bettypes.GroupBy(x => x.SettingId).Select(x => x.First()).ToList()

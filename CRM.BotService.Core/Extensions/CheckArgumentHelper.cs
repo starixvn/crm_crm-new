@@ -8,7 +8,7 @@
     {
         public static void CheckValidBot(List<LetstalkBotConfig> botConfigs, int botId)
         {
-            if (!botConfigs.Any(config => config.BotAccountId == botId))
+            if (!botConfigs.Exists(config => config.BotAccountId == botId))
             {
                 throw new KeyNotFoundException($"Not found the bot ID {botId} in configurations!");
             }
