@@ -65,9 +65,11 @@
             this.commonFeedback = commonFeedback;
         }
 
+#pragma warning disable S138
         public async Task CreateFeedbackForVoidingAbnormalBetAsync(AbnormalBetSystemSetting setting, bool isUAT,
                 DateTime LastRuntimeEnv, string LastRuntimeNameEnv,
                 string JobStatusNameEnv, string Environment)
+#pragma warning restore S138
         {
             try
             {
@@ -162,10 +164,13 @@
             }
             catch (Exception ex)
             {
+                #pragma warning disable S3445
                 throw ex;
+                #pragma warning restore S3445
             }
         }
 
+        #pragma warning disable S1541
         protected internal virtual async Task CreateFeedbackForCreditDepositSiteAsync(
             IEnumerable<Message> messages,
             IEnumerable<MatchInfo> matchInfos,
@@ -175,6 +180,7 @@
             AbnormalBetSystemSetting setting,
             IEnumerable<DuplicateTicketDetail> duplicateTicketDetails
         )
+        #pragma warning restore S1541
         {
             var settingNames = new[] { SettingName.Product, SettingName.SubProduct, SettingName.Bettype };
             IEnumerable<SettingItem> settings = await settingService.GetAllSettingAsync();
@@ -388,6 +394,7 @@
             }
         }
 
+        #pragma warning disable S1541
         protected internal virtual async Task CreateFeedbackForDepositSiteAsync(
             CustomerInfo licenseeInfo,
             IEnumerable<Message> messages,
@@ -396,6 +403,7 @@
             IEnumerable<SettingItem> settings,
             IEnumerable<SystemSettingMapping> settingMappings,
             IEnumerable<DuplicateTicketDetail> duplicateTicketDetails)
+        #pragma warning restore S1541
         {
             logService.LogInformation("Abnormal Bet - Begin mapping setting for VoidingHistoryCollectionId: " + matchInfo.VoidingHistoryCollectionId);
             var timeSpan = new TimeSpan(appSettings.TimeSpan, 0, 0);
@@ -715,7 +723,7 @@
                 };
         }
 
-        private string GetProductSubXml(
+        private static string GetProductSubXml(
             SettingItem product,
             IList<SettingItem> subProducts,
             IList<SystemSettingMapping> bettypesMapping)

@@ -137,12 +137,16 @@
             return (resultMatchInfo, resultTransactionInfo);
         }
 
+#pragma warning disable S3776
+#pragma warning disable S1541
         protected internal virtual string GetXmlImportTicketFeedback(
             IEnumerable<MatchInfo> matchInfos,
             IEnumerable<TransactionInfo> transactionInfos,
             IEnumerable<SiteSettingMapping> siteSettingMappings,
             IEnumerable<GroupHeadline> headlines,
             CustomerInfo licenseeInfo)
+#pragma warning restore S3776
+#pragma warning restore S1541
         {
             const string XmlTemplate = "<r msgid='{0}' reqid='{1}' custid='{2}' hl='{3}' related='{4}' event='{5}' IssueTypeId='{6}' />";
             const int duplicateType = 20;

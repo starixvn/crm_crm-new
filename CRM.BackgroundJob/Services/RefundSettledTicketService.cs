@@ -38,7 +38,8 @@
             return await baseService.FetchMultipleAsync<MessageRefundSettledTicket, MessageVoidSettled>(criteria);
         }
 
-        public async Task<ValueTuple<CommandResult, ImportRefundSettledTicketCommand>> ImportRefundSettledTicketAsync(IEnumerable<MessageRefundSettledTicket> messageContent, IEnumerable<MessageVoidSettled> message, string environment)
+        public async Task<ValueTuple<CommandResult, ImportRefundSettledTicketCommand>> ImportRefundSettledTicketAsync
+            (IEnumerable<MessageRefundSettledTicket> messageContent, IEnumerable<MessageVoidSettled> message, string environment)
         {
             var command = new ImportRefundSettledTicketCommand
             {

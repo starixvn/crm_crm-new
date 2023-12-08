@@ -12,7 +12,9 @@
 
     public interface ICRMLogService
     {
+#pragma warning disable S4136 // Method overloads should be grouped together
         Task ErrorAsync(Exception exception);
+#pragma warning restore S4136 // Method overloads should be grouped together
 
         Task ErrorMessageAsync(string error);
 

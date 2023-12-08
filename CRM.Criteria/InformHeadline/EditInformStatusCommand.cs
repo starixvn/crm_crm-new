@@ -1,12 +1,6 @@
 ﻿namespace CRM.Criteria.InformHeadline
 {
     using CRM.Core.Models;
-    using CRM.Models.InformHeadline;
-    using Fanex.Data;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     public class EditInformStatusCommand : BaseNonQueryCommand
     {
         public int TitleId { get; set; }

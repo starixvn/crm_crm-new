@@ -1,8 +1,7 @@
 ﻿namespace CRM.Models.AdminTool.CategoryClassification
 {
-    using CRM.Models.Feedback;
-    using Fanex.Data;
     using System.Collections.Generic;
+    using CRM.Models.Feedback;
 
     public class GetCategoryClassification
     {

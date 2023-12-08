@@ -1,7 +1,6 @@
 ﻿namespace CRM.BotService.Core.Extensions
 {
     using System.Collections.Generic;
-    using System.Linq;
     using CRM.BotService.Core.Models.Letstalk.BotConfig;
 
     public static class CheckArgumentHelper
