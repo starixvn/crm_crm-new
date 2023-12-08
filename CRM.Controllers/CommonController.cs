@@ -5,9 +5,6 @@
     using CRM.Criteria.NotificationType;
     using CRM.Models.FeedbackSubject;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
 
     public class CommonController : BaseController
