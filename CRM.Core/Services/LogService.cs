@@ -40,7 +40,9 @@
             this.logger = logger;
         }
 
+#pragma warning disable S4136 // Method overloads should be grouped together
         public async Task ErrorAsync(Exception exception)
+#pragma warning restore S4136 // Method overloads should be grouped together
         {
             var logMessage = new LogMessage(exception.Message)
                        .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(exception))
