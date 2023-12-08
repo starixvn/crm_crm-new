@@ -327,10 +327,10 @@
         <Setting Key="Acc_CRM_ChatBot_Announcement_Sel" SpName="Acc_CRM_ChatBot_Announcement_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_AnnouncementNotificationTemplate_Sel" SpName="Acc_CRM_ChatBot_AnnouncementNotificationTemplate_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_AnnouncementDetail_Sel" SpName="Acc_CRM_ChatBot_AnnouncementDetail_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_Announcement_Ins" SpName="Acc_CRM_ChatBot_Announcement_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_Announcement_Upd" SpName="Acc_CRM_ChatBot_Announcement_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_Announcement_Ins" SpName="Acc_CRM_ChatBot_Announcement_Ins_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_Announcement_Upd" SpName="Acc_CRM_ChatBot_Announcement_Upd_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_AnnouncementStatus_Upd" SpName="Acc_CRM_ChatBot_AnnouncementStatus_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_ChatBot_Announcement_Validation" SpName="Acc_CRM_ChatBot_Announcement_Validation" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_ChatBot_Announcement_Validation" SpName="Acc_CRM_ChatBot_Announcement_Validation_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Send Notification">
         <Setting Key="Acc_CRM_Chatbot_SendNotification" SpName="Acc_CRM_Chatbot_SendNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
