@@ -272,8 +272,7 @@
 
   .alert {
     .ml-2.d-inline {
-      overflow: hidden;
-      word-wrap: break-word;
+      word-break: break-all;
   }
   }
 }
