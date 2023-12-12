@@ -67,7 +67,8 @@ export class Filter extends Component {
                 ...prevState.filter,
                 mainCategoriesTypes: mainCategoriesTypesId.toString(),
                 subCategoriesTypes: filterSubCategoriesTypesId.toString()
-            }
+            },
+            selectedSubCategoryIdsFilter: filterSubCategoriesTypesId.toString()
         }), async () => {
             if (isGetData) {
                 const params = this.getParams();
@@ -80,7 +81,6 @@ export class Filter extends Component {
 
     handleChangeMainCategory = (currentItem, selectedItemsKey) => {
         const subCategorySettings = this.state.settings.subCategories;
-
         this.setState(prevState => ({
             filter: {
                 ...prevState.filter,
@@ -95,9 +95,13 @@ export class Filter extends Component {
                 const resetSelectedSub = selectedSub.length === 0 ? [] : selectedSub.filter(selected => findSubByMain.some(sub => sub.subCategoryId.toString() === selected));
                 const resetSelectedSubJoin = resetSelectedSub.length > 1 ? resetSelectedSub.join(',') : resetSelectedSub;
 
-                this.setState({
-                    selectedSubCategoryIdsFilter: resetSelectedSubJoin
-                }, () => {
+                this.setState(prevState =>({
+                    selectedSubCategoryIdsFilter: resetSelectedSubJoin,
+                    filter: {
+                        ...prevState.filter,
+                        subCategoriesTypes: resetSelectedSubJoin.length > 0 ? resetSelectedSubJoin : ''
+                    }
+                }), () => {
                     const isCheckDefault = false;
                     const setSubCatagories = getSubCategories(selectedMain, subCategorySettings, selectedSubCategoryIds, isCheckDefault);
                     this.setState({
