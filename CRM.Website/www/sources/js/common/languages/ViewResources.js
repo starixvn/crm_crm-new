@@ -119,6 +119,7 @@
     ConfirmVerifySend: 'Please verify the information and confirm to send it.',
     ConfirmNewAnnouncement: 'Confirm Create New Announcement',
     ConfirmEditAnnouncement: 'Confirm Edit Announcement',
+    ConfirmCloneAnnouncement: 'Confirm Clone Announcement',
     ChatID: 'Chat ID',
     CancelThisAnnouncement: 'Cancel this announcement',
     CancelAnnouncementSuccessfully: 'Cancel announcement successfully!',

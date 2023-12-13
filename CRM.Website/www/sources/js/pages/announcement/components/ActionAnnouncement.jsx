@@ -829,7 +829,7 @@ export class ActionAnnouncement extends Component {
                 {
                     this.state.confirmActionDialog.show &&
                     <SweetModalDialog size="lg" className="announcement-content-modal"
-                        title={LangHelper.getResource('ConfirmEditAnnouncement')}
+                        title={this.props.actionParam.isEdit ? LangHelper.getResource('ConfirmEditAnnouncement') : LangHelper.getResource('ConfirmCloneAnnouncement')}
                         contents={this.renderContentConfirm()}
                         buttons={[
                             <Button variant="primary" size="sm" onClick={() => this.handleConfirmActionDialog()}>
