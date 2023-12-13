@@ -251,13 +251,12 @@ export default class DataGrid extends PureComponent {
                         }
                     </Col>
                 </Form.Group>
-                {/*{*/}
-                {/*    this.renderCommunicationTool(values, handleChange, isSubmitting)*/}
-                {/*}*/}
-
                 {
-                    this.renderAccountInfo()
+                    values.isGroupHeadLine && this.renderAccountHeadlineInfo(values)
                 }
+                {/*{*/}
+                {/*    !values.isGroupHeadLine && this.renderOtherAccountInfo(values)*/}
+                {/*}*/}
                 {
                     this.renderDetail(isShowInactiveMsg)
                 }
@@ -265,265 +264,52 @@ export default class DataGrid extends PureComponent {
         );
     };
 
-    //renderCommunicationTool = (values, handleChange, isSubmitting) => {
-    //    const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-    //    const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-    //    const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, this.props.customerInfo.customerType);
-    //    return (
-    //        <div className="hightlight-title">
-    //            <Row className="item title text-left">{LangHelper.getResource('CommunicationTool')}</Row>
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Form.Label column md="3" htmlFor="phoneCountryCode" >
-    //                    {LangHelper.getResource('Phone1')}
-    //                </Form.Label>
-    //                <Col md="9">
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
-    //                        onChange={handleChange} name="phoneCountryCode" value={values.phoneCountryCode} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
-    //                        onChange={handleChange} name="phoneAreaCode" value={values.phoneAreaCode} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox phone"
-    //                        onChange={handleChange} name="phone" value={values.phone} autoComplete="off"
-    //                    />
-    //                </Col>
-    //            </Form.Group>
-
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Form.Label column md="3" htmlFor="phoneCountryCode" >
-    //                    {LangHelper.getResource('Phone2')}
-    //                </Form.Label>
-    //                <Col md="9">
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
-    //                        onChange={handleChange} name="phone2CountryCode" value={values.phone2CountryCode} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
-    //                        onChange={handleChange} name="phone2AreaCode" value={values.phone2AreaCode} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox phone"
-    //                        onChange={handleChange} name="phone2" value={values.phone2} autoComplete="off"
-    //                    />
-    //                </Col>
-    //            </Form.Group>
-
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Form.Label column md="3" htmlFor="phoneCountryCode" >
-    //                    {LangHelper.getResource('Phone3')}
-    //                </Form.Label>
-    //                <Col md="9">
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
-    //                        onChange={handleChange} name="phone3CountryCode" value={values.phone3CountryCode} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
-    //                        onChange={handleChange} name="phone3AreaCode" value={values.phone3AreaCode} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox phone"
-    //                        onChange={handleChange} name="phone3" value={values.phone3} autoComplete="off"
-    //                    />
-    //                </Col>
-    //            </Form.Group>
-
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Form.Label column md="3" htmlFor="mobile" >
-    //                    {LangHelper.getResource('Mobile')}
-    //                </Form.Label>
-    //                <Col md="9">
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-country"
-    //                        onChange={handleChange} name="mobilePhoneCountryCode" value={values.mobilePhoneCountryCode} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox code-area"
-    //                        onChange={handleChange} name="mobilePhoneAreaCode" value={values.mobilePhoneAreaCode} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox phone"
-    //                        onChange={handleChange} name="mobilePhone" value={values.mobilePhone} autoComplete="off"
-    //                    />
-    //                </Col>
-    //            </Form.Group>
-
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Form.Label column md="3" htmlFor="email">
-    //                    {LangHelper.getResource('Email')}
-    //                </Form.Label>
-    //                <Col md="9">
-    //                    <Form.Control type="text" size="sm" className="shadow-none"
-    //                        onChange={handleChange} name="email" value={values.email} autoComplete="off"
-    //                    />
-    //                </Col>
-    //            </Form.Group>
-
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Form.Label column md="3" htmlFor="msn" >
-    //                    {LangHelper.getResource('Telegram')}
-    //                </Form.Label>
-    //                <Col md="9">
-    //                    <Form.Control type="text" size="sm" className="shadow-none"
-    //                        onChange={handleChange} name="msn" value={values.msn} autoComplete="off"
-    //                    />
-    //                </Col>
-    //            </Form.Group>
-
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Form.Label column md="3" htmlFor="skype" >
-    //                    {LangHelper.getResource('Skype')}
-    //                </Form.Label>
-    //                <Col md="9">
-    //                    <Form.Control type="text" size="sm" className="shadow-none"
-    //                        onChange={handleChange} name="skype" value={values.skype} autoComplete="off"
-    //                    />
-    //                </Col>
-    //            </Form.Group>
-
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Form.Label column md="3" htmlFor="name" >
-    //                    {LangHelper.getResource('PIC1')}
-    //                </Form.Label>
-    //                <Col md="9">
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
-    //                        onChange={handleChange} name="pic1Name" value={values.pic1Name} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
-    //                        onChange={handleChange} name="pic1" value={values.pic1} autoComplete="off"
-    //                    />
-    //                </Col>
-    //            </Form.Group>
-
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Form.Label column md="3" htmlFor="name" >
-    //                    {LangHelper.getResource('PIC2')}
-    //                </Form.Label>
-    //                <Col md="9">
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
-    //                        onChange={handleChange} name="pic2Name" value={values.pic2Name} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
-    //                        onChange={handleChange} name="pic2" value={values.pic2} autoComplete="off"
-    //                    />
-    //                </Col>
-    //            </Form.Group>
-
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Form.Label column md="3" htmlFor="name" >
-    //                    {LangHelper.getResource('PIC3')}
-    //                </Form.Label>
-    //                <Col md="9">
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
-    //                        onChange={handleChange} name="pic3Name" value={values.pic3Name} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
-    //                        onChange={handleChange} name="pic3" value={values.pic3} autoComplete="off"
-    //                    />
-    //                </Col>
-    //            </Form.Group>
-
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Form.Label column md="3" htmlFor="name" >
-    //                    {LangHelper.getResource('PIC4')}
-    //                </Form.Label>
-    //                <Col md="9">
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-name"
-    //                        onChange={handleChange} name="pic4Name" value={values.pic4Name} autoComplete="off"
-    //                    />
-    //                    <Form.Control type="text" size="sm" className="shadow-none textbox pic-width"
-    //                        onChange={handleChange} name="pic4" value={values.pic4} autoComplete="off"
-    //                    />
-    //                </Col>
-    //            </Form.Group>
-    //            <Form.Group className="row item no-border-bg align-items-end">
-    //                <Col md="3" />
-    //                <Col md="9">
-    //                    {
-    //                        hasHostOnCurrentCustomer &&
-    //                        <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
-    //                            <UnderlineButton.updateButton />
-    //                        </Button>
-    //                    }
-    //                </Col>
-    //            </Form.Group>
-    //        </div>
-    //    );
-    //};
-
-    renderAccountInfo = () => {
-
-        const accountInfo = [
-            {
-              id: 1,
-              letstalk: 'mta-lt',
-              name: 'John Doe',
-              phone: '123-456-7890',
-              skype: 'johndoe123',
-            },
-            {
-              id: 2,
-              letstalk: 'mta-lt',
-              name: 'Jane Smith',
-              phone: '987-654-3210',
-              skype: 'janesmith456',
-            },
-            {
-              id: 3,
-              letstalk: 'mta-lt',
-              name: 'Bob Johnson',
-              phone: '0911 222 333, 0123456789',
-              skype: 'bobjohnson789',
-            },
-            {
-                id: 4,
-                letstalk: 'mta-lt',
-                name: 'Bob Johnson',
-                phone: '0911 222 333, 0123456789',
-                skype: 'bobjohnson789',
-            },
-            {
-                id: 5,
-                letstalk: 'mta-lt',
-                name: 'Bob Johnson',
-                phone: '0911 222 333, 0123456789',
-                skype: 'bobjohnson789',
+    getListPicId = headlineStaffInfos => {
+        let listPic = [];
+        headlineStaffInfos.map(value => {
+            if (!listPic.find(pic => pic.id === value.picID)) {
+                listPic.push({id: value.picID, name: value. picName});
             }
-          ];
+        });
+        return listPic;
+    }
 
+    renderAccountHeadlineInfo = values => {
+        let listPic = this.getListPicId(values.headlineStaffInfos);
         return (
             <div className='form-account-info'>
                 <div className='custom-scrollbar'>
                     {
-                        accountInfo.map((value, index) => {
+                        listPic.map(pic => {
                             return (
-                            <div className='account-item' key={index}>
-                                <Form.Group>
-                                    <Form.Label htmlFor="name" >
-                                        {LangHelper.getResource('Name')}
-                                    </Form.Label>
-                                    <Col className='field-name'>
-                                        {value.name}
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label htmlFor="letstalk" >
-                                        {LangHelper.getResource('Letstalk')}
-                                    </Form.Label>
-                                    <Col>
-                                        {value.letstalk}
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label htmlFor="phone" >
-                                        {LangHelper.getResource('Phone')}
-                                    </Form.Label>
-                                    <Col>
-                                        {value.phone}
-                                    </Col>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label htmlFor="skype" >
-                                        {LangHelper.getResource('Skype')}
-                                    </Form.Label>
-                                    <Col >
-                                        {value.skype}
-                                    </Col>
-                                </Form.Group>
-                            </div>
+                                <div className='account-item' key={pic.id}>
+                                    <Form.Group>
+                                        <Form.Label htmlFor="name" >
+                                            {LangHelper.getResource('Name')}
+                                        </Form.Label>
+                                        <Col className='field-name'>
+                                            {pic.name}
+                                        </Col>
+                                    </Form.Group>
+                                    {
+                                        values.headlineStaffInfos.map(value => {
+                                            if (value.picID === pic.id) {
+                                                return <>
+                                                    <Form.Group>
+                                                        <Form.Label >
+                                                            {value.picCommunicationName}
+                                                        </Form.Label>
+                                                        <Col>
+                                                            {value.picCommunicationValue}
+                                                        </Col>
+                                                    </Form.Group>
+                                                </>
+                                            }
+                                        })
+                                    }
+                                </div>
                             );
+                            
                         })
                     }
                 </div>
@@ -740,7 +526,9 @@ export default class DataGrid extends PureComponent {
             roleName: customerInfo.roleName,
             uplineInfo: customerInfo.uplineInfo,
             status: customerInfo.status,
-            isGroupHeadLine: customerInfo.isGroupHeadLine
+            isGroupHeadLine: customerInfo.isGroupHeadLine,
+            headlineStaffInfos: customerInfo.headlineStaffInfos,
+            otherAccountCommunicationInfos: customerInfo.otherAccountCommunicationInfos
         };
         return (
             <Formik
