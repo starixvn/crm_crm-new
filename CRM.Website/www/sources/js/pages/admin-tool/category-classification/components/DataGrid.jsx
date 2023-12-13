@@ -43,6 +43,21 @@ export class DataGrid extends Component {
         return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 4 : 3}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
+    renderTooltipComponent = (title, component) => {
+        return(
+            <OverlayTrigger
+                placement="bottom"
+                overlay={
+                    <Tooltip>
+                        <span>{title}</span>
+                    </Tooltip>
+                }
+            >
+                { component }
+            </OverlayTrigger>
+        )
+    }
+
     renderRow = (item, index, isHost) => (
         item.length > 0 && item.map((data, key) => (
             <Row key={key+data.subCategory}>
@@ -50,17 +65,22 @@ export class DataGrid extends Component {
                     key === 0 && <Cell className='text-left' rowSpan={item.length}><div>{data.mainCategory}</div></Cell>
                 }
                 <Cell className='text-left'><div>{data.subCategory}</div></Cell>
-                <Cell className='text-left' dangerouslySetInnerHTML={{__html: data.remark}}></Cell>
-                
+                <Cell className='text-left' dangerouslySetInnerHTML={{__html: data.remark}}></Cell>                
                 {
                     isHost &&
                     <Cell className="text-center">
-                        <span className="rounded-circle fa fa-pencil icon-edit"
-                            onClick={() => this.handleEdit(data.mainCategoryID, data.subCategoryID)}
-                        />
-                        <span className="rounded-circle fa fa-trash icon-delete"
-                            onClick={() => this.handleDelete(data.mainCategoryID, data.subCategoryID)}
-                        />
+                        { 
+                            this.renderTooltipComponent('Edit Remark', 
+                            <span className="rounded-circle fa fa-pencil icon-edit"
+                                onClick={() => this.handleEdit(data.mainCategoryID, data.subCategoryID)}
+                            />)
+                        }
+                        {
+                            this.renderTooltipComponent('Remove Remark', 
+                            <span className="rounded-circle fa fa-trash icon-delete"
+                                onClick={() => this.handleDelete(data.mainCategoryID, data.subCategoryID)}
+                            />)
+                        }
                     </Cell>
                 }
             </Row>

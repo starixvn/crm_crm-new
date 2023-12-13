@@ -218,6 +218,7 @@
     }
 
     .list-title {
+      width: 100%;
       background: #e7eaef;
       padding: 7px 12px;
       color: #333;
@@ -700,4 +701,23 @@
     border: none;
     padding: 12px 16px 16px;
   }
+}
+
+.label-username {
+  display: flex;
+  
+  .no-usernames {
+    display: flex;
+    margin-left: 5px;
+    font-weight: bold;
+
+    .red-number {
+      color: #ff0000;
+    }
+  }
+}
+
+.flex-maxItem {
+  display: flex;
+  width: 100%;
 }

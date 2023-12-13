@@ -390,7 +390,18 @@ export class NewAnnouncement extends Component {
                             )
                         }
                         <div className="group-list">
-                            <div className="list-title"> {LangHelper.getResource('Username')}</div>
+                            <div className='label-username'>
+                                <div className="list-title flex-maxItem"> 
+                                    <div>{LangHelper.getResource('Username')}</div>
+                                        <div className='no-usernames'>
+                                        {`(`}
+                                        <div>{`${LangHelper.getResource('NoOfUsernames')}: `}</div>
+                                        &nbsp;
+                                        <div className='red-number'>{usernames.split(',').length}</div>
+                                        {`)`}
+                                    </div>
+                                </div>
+                            </div>
                             <div className="list-info">{usernames ? usernames.replaceAll(',', ', ') : ''}</div>
                         </div>
                         <div className="num-usernames">{LangHelper.getResource('NoOfUsernames')}: {usernames.split(',').length}</div>
@@ -516,9 +527,18 @@ export class NewAnnouncement extends Component {
                                     onChange={() => this.handleCheckHeadline('isUsername', 'isSiteType')}
                                 />
                                 <Form.Group as={Row}>
-                                    <Form.Label>
-                                        {LangHelper.getResource('Username')}
-                                    </Form.Label>
+                                    <div className='label-username'>
+                                        <Form.Label>
+                                            {LangHelper.getResource('Username')}
+                                        </Form.Label>
+                                        <div className='no-usernames'>
+                                            {`(`}
+                                            <div>{`${LangHelper.getResource('NoOfUsernames')}: `}</div>
+                                            &nbsp;
+                                            <div className='red-number'>{this.state.headlineGroups.length}</div>
+                                            {`)`}
+                                        </div>
+                                    </div>
                                     <div className="headline-group-form" onClick={() => this.headlineInputRef.current.focus()}>
                                         {
                                             this.state.headlineGroups.map((headline, index) => (
@@ -538,7 +558,6 @@ export class NewAnnouncement extends Component {
                                     </div>
                                     <Form.Label className="notice-line">
                                         {LangHelper.getResource('GroupHeadlineEnterNotice')}
-                                        <p>{LangHelper.getResource('NoOfUsernames')}: {this.state.headlineGroups.length}</p>
                                     </Form.Label>
                                 </Form.Group>
                             </div>
