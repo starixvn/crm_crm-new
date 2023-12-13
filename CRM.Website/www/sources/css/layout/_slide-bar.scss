@@ -187,4 +187,59 @@
             width: 160px;
         }
     }
+
+    .form-account-info{
+        border-radius: 3px;
+        border: 1px #B7B7B7 solid;
+        margin: 12px;
+        padding: 3px 4px;
+
+        .custom-scrollbar{
+            padding: 9px 0px 9px 9px;
+            max-height: 400px;
+            overflow-y: auto;
+
+            &::-webkit-scrollbar-track
+            {
+                background-color: rgb(241, 241, 241);;
+            }
+
+            &::-webkit-scrollbar
+            {
+                width: 8px;
+            }
+
+            &::-webkit-scrollbar-thumb
+            {
+                border-radius: 4px;
+                background-color: #B7B7B7;
+            }
+        }
+
+        .form-group{
+            display: flex;
+            margin-bottom: 6px;
+            line-height: 1.2;
+
+            .form-label{
+                width: 70px;
+                padding: 0;
+                margin: 0;
+            }
+        }
+
+        .account-item{
+            &:not(:last-child){
+                border-bottom: 1px #A6A6A6 dotted;
+            }
+
+            &:not(:first-child){
+                padding-top: 8px;
+            }
+
+            .field-name{
+                color: #0255A5;;
+            }
+        }
+    }
 }

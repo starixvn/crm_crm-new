@@ -251,6 +251,10 @@ export default class DataGrid extends PureComponent {
                 {/*{*/}
                 {/*    this.renderCommunicationTool(values, handleChange, isSubmitting)*/}
                 {/*}*/}
+
+                {
+                    this.renderAccountInfo()
+                }
                 {
                     this.renderDetail(isShowInactiveMsg)
                 }
@@ -436,6 +440,95 @@ export default class DataGrid extends PureComponent {
     //    );
     //};
 
+    renderAccountInfo = () => {
+
+        const accountInfo = [
+            {
+              id: 1,
+              letstalk: 'mta-lt',
+              name: 'John Doe',
+              phone: '123-456-7890',
+              skype: 'johndoe123',
+            },
+            {
+              id: 2,
+              letstalk: 'mta-lt',
+              name: 'Jane Smith',
+              phone: '987-654-3210',
+              skype: 'janesmith456',
+            },
+            {
+              id: 3,
+              letstalk: 'mta-lt',
+              name: 'Bob Johnson',
+              phone: '0911 222 333, 0123456789',
+              skype: 'bobjohnson789',
+            },
+            {
+                id: 4,
+                letstalk: 'mta-lt',
+                name: 'Bob Johnson',
+                phone: '0911 222 333, 0123456789',
+                skype: 'bobjohnson789',
+            },
+            {
+                id: 5,
+                letstalk: 'mta-lt',
+                name: 'Bob Johnson',
+                phone: '0911 222 333, 0123456789',
+                skype: 'bobjohnson789',
+            }
+          ];
+
+        return (
+            <div className='form-account-info'>
+                <div className='custom-scrollbar'>
+                    {
+                        accountInfo.map((value, index) => {
+                            return (
+                            <div className='account-item' key={index}>
+                                <Form.Group>
+                                    <Form.Label htmlFor="name" >
+                                        {LangHelper.getResource('Name')}
+                                    </Form.Label>
+                                    <Col className='field-name'>
+                                        {value.name}
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label htmlFor="letstalk" >
+                                        {LangHelper.getResource('Letstalk')}
+                                    </Form.Label>
+                                    <Col>
+                                        {value.letstalk}
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label htmlFor="phone" >
+                                        {LangHelper.getResource('Phone')}
+                                    </Form.Label>
+                                    <Col>
+                                        {value.phone}
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label htmlFor="skype" >
+                                        {LangHelper.getResource('Skype')}
+                                    </Form.Label>
+                                    <Col >
+                                        {value.skype}
+                                    </Col>
+                                </Form.Group>
+                            </div>
+                            );
+                        })
+                    }
+                </div>
+            </div>
+
+        );
+    };
+
     renderDetail = isShowInactiveMsg => {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
@@ -451,7 +544,7 @@ export default class DataGrid extends PureComponent {
                 {
                     this.state.isShowDetail &&
                     <Form.Group className="row item no-border-bg form-row-detail">
-                        <ul className='list-unstyled list-menu pull-left'>                            
+                        <ul className='list-unstyled list-menu pull-left'>
                             {
                                 !isShowInactiveMsg && hasCreateFeedbackPermission &&
                                 <li>
