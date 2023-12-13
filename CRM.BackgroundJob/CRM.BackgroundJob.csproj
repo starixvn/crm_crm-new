@@ -28,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Remove="App_Data\SpNames.KLDR.xml" />
         <None Remove="App_Data\SpNames.LOCAL_1.xml" />
         <None Remove="App_Data\SpNames.LOCAL_2.xml" />
         <None Remove="App_Data\SpNames.SIT_1.xml" />
@@ -49,6 +50,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="App_Data\SpNames.KLDR.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="App_Data\SpNames.SIT_1.xml">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
@@ -142,5 +146,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CRM.Core\CRM.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="appsettings.KLDR.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
     </ItemGroup>
 </Project>

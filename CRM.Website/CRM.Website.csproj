@@ -6,12 +6,16 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
     <ItemGroup>
+        <None Remove="App_Data\SpNames.KLDR.xml" />
         <None Remove="App_Data\SpNames.LOCAL_1.xml" />
         <None Remove="App_Data\SpNames.LOCAL_2.xml" />
         <None Remove="App_Data\SpNames.PROD_1.xml" />
         <None Remove="App_Data\SpNames.SIT_1.xml" />
     </ItemGroup>
     <ItemGroup>
+        <Content Include="App_Data\SpNames.KLDR.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="App_Data\SpNames.PROD_1.xml">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
