@@ -37,12 +37,12 @@
 
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
-            var colIndex = 1;
+            const int colIndex = 1;
             var groupCategory = categoryClassifications.GroupBy(x => x.MainCategoryID);
 
             foreach (var category in groupCategory)
             {
-                var numberChildCate = category.Count();
+                int numberChildCate = category.Count();
                 StyleMergeCell(worksheet, rowIndex, colIndex, rowIndex + numberChildCate - 1);
                 worksheet.Cells[rowIndex, colIndex].Value = category.First().MainCategory;
                 foreach (var item in category)
@@ -55,7 +55,7 @@
 
         protected internal virtual void RenderRow(CategoryClassification category, ExcelWorksheet worksheet)
         {
-            var colIndex = 2;
+            int colIndex = 2;
             worksheet.Cells[rowIndexChild, colIndex++].Value = category.SubCategory;
             worksheet.Cells[rowIndexChild, colIndex].Value = category.Remark != null ? ConvertHtmlToPlainText(category.Remark) : category.Remark;
             rowIndexChild++;
