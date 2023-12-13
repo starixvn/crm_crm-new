@@ -6,6 +6,7 @@ import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { changeSiteSetting, checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
+import SearchableDropdown from '@jsroot/components/SearchableDropdown';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import { toast } from 'react-toastify';
@@ -22,6 +23,7 @@ export default class DataGrid extends PureComponent {
             languages: [],
             siteId: null,
             isShowDetail: true,
+            countryId: null,
             isHostOnCurrentCustomer: false
         };
     }
@@ -166,14 +168,15 @@ export default class DataGrid extends PureComponent {
                         {LangHelper.getResource('Country')}
                     </Form.Label>
                     <Col md="9">
-                        <Form.Control as="select" size="sm" className="shadow-none" id="countryId"
-                            name="countryId"
-                            value={values.countryId}
+                        <SearchableDropdown
+                            className='basic-single'
                             onChange={handleChange}
-                        >
-                            <option value="0">N/A</option>
-                            {settings.countries.map(this.renderSystemOption)}
-                        </Form.Control>
+                            options={settings.countries}
+                            value={values.countryId}
+                            name="countryId"
+                            isHideNA={false}
+                            OnChangeValue={this.handleChangeSite}
+                        />
                     </Col>
                 </Form.Group>
 
@@ -622,11 +625,17 @@ export default class DataGrid extends PureComponent {
         });
     };
 
+    handleChangeSite = item => {
+        this.setState({
+            countryId: item.id
+        });
+    };
+
     handleSubmit = async (values, { setSubmitting }) => {
         const data = {
             custId: values.custId,
             site: this.state.siteId === null ? values.siteId : this.state.siteId,
-            countryId: values.countryId,
+            countryId: countryIdthis.state.countryId === null ? values.countryId : this.state.countryId,
             provinceId: this.props.customerInfo.provinceId,
             firstName: values.firstName,
             lastName: values.lastName,
