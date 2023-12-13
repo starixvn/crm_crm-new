@@ -1,6 +1,7 @@
 ﻿namespace CRM.Services.ExportExcel
 {
     using System.Collections.Generic;
+    using System.Linq;
     using CRM.Models.AdminTool.CategoryClassification;
     using CRM.Resources;
     using HtmlAgilityPack;
@@ -9,6 +10,7 @@
     public class CategoryClassificationExcel : ExcelBase
     {
         private const byte RowStartHeaderChatType = 4;
+        private const byte RowStartBody = 5;
         private const byte TotalColumnsChatType = 3;
         private int rowIndex = RowStartBody;
         private int rowIndexChild = RowStartBody;
