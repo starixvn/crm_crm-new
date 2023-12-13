@@ -404,7 +404,6 @@ export class NewAnnouncement extends Component {
                             </div>
                             <div className="list-info">{usernames ? usernames.replaceAll(',', ', ') : ''}</div>
                         </div>
-                        <div className="num-usernames">{LangHelper.getResource('NoOfUsernames')}: {usernames.split(',').length}</div>
                     </div>
                 </div>
                 <div className="group-item">
