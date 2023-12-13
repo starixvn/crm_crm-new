@@ -10,7 +10,7 @@
     using CRM.Criteria.Customer;
     using CRM.Models.Customer;
     using Microsoft.Extensions.Configuration;
-    using static Fanex.NAP.Client.Helpers.Business.Constant;
+    using NLog.LayoutRenderers;
 
     public interface ICustomerService
     {
@@ -68,6 +68,13 @@
                 if (!criteria.IsGuest)
                 {
                     customerInfo.UplineInfo = await GetUplineInfoAsync(customerInfo.CustId);
+                }
+                if(customerInfo.IsGroupHeadLine){
+                    customerInfo.HeadlineStaffInfos = await baseService.GetDataAsync<HeadlineStaffInfo>(
+                        new GetHeadlineStaffInfoCriteria{HeadlineID = customerInfo.CustId});
+                }else{
+                    customerInfo.OtherAccountCommunicationInfos = await baseService.GetDataAsync<OtherAccountCommunicationInfo>(
+                        new GetOtherAccountCommunicationInfoCriteria{CustomerId = customerInfo.CustId});
                 }
             }
 

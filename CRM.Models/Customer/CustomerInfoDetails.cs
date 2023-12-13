@@ -108,6 +108,8 @@
         public List<string> BettingCode => new List<string> { RefCode1, RefCode2 };
         public List<int> Languages { get; set; }
         public IEnumerable<CustomerInfoDetails> UplineInfo { get; set; } = new List<CustomerInfoDetails>();
+        public IEnumerable<HeadlineStaffInfo> HeadlineStaffInfos { get; set; }
+        public IEnumerable<OtherAccountCommunicationInfo> OtherAccountCommunicationInfos { get; set; }
         public Setting Title => new Setting { Id = TitleId, Name = string.Empty };
         public Fax FaxInfo => new Fax { CountryCode = FaxCountryCode, AreaCode = FaxAreaCode, FaxNumber = Fax };
 

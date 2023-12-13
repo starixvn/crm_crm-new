@@ -210,7 +210,9 @@
             <Mapping DataField="danger" ObjectProperty="OriginalDangerLevel" />
             <Mapping DataField="danger2" ObjectProperty="ABTDangerLevel" />
             <Mapping DataField="danger3" ObjectProperty="OtherSportsDangerLevel" />
-        </Setting>
+        </Setting>        
+        <Setting Key="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" SpName="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" SpName="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_CustomerCheckSiteType" SpName="Acc_CRM_CustomerCheckSiteType" DbName="DBCRM.bodb_CRM.wsv_nap">
             <Mapping DataField="SiteType" ObjectProperty="CustomerType" class="CustomerPermissionInfo" />
         </Setting>
