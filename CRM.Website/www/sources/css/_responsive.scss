@@ -25,39 +25,18 @@
                 }
 
                 .item{
-                    padding: 0 2px;
+                    padding: 3px 4px;
                     margin: 0;
-                }
-
-                .item.title{
-                    height: 20px;
-                    cursor: pointer;
-                    margin-bottom: 0.4rem;
                 }
 
                 .form-group{
                     margin-bottom: 0.4rem !important;
                 }
+
+                .form-account-info{
+                    margin: 4px 6px;
+                }
             }
-
-            .no-border-bg{
-                label{
-                    flex: 0 0 27% !important;
-                    max-width: 27%;
-                }
-    
-                .col-md-9{
-                    flex: 0 0 73% !important;
-                }
-
-                .form-control-language{
-                    max-width: 73% !important;
-                }
-
-                .btn-sm{
-                    margin-left: 4px;
-                }
-            } 
         }
 
         #left-container{

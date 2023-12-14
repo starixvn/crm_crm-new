@@ -106,18 +106,18 @@ export default class DataGrid extends PureComponent {
                     {
                         values.uplineInfo.map((value, index) => {
                             return (
-                                <Row className="item align-items-end" key={index}>
-                                    <Col md="3" className="text-left pl-1">
+                                <Row className="item " key={index}>
+                                    <Col className="text-left">
                                         {value.roleName}
                                     </Col>
-                                    <Col md="5" className="text-left">
+                                    <Col className="text-left">
                                         {
                                             value.username === 'Unassigned'
                                                 ? value.username
                                                 : <span className='upline-username' onClick={() => this.props.handleSearchUplineInfo(value.username)}>{value.username}</span>
                                         }
                                     </Col>
-                                    <Col md="4" className="status text-right">
+                                    <Col className="status text-right">
                                         {value.status !== '' ? value.status : ''}
                                     </Col>
                                 </Row>
@@ -125,22 +125,26 @@ export default class DataGrid extends PureComponent {
                         })
                     }
                 </Form.Group>
-                <Form.Group className="row item current align-items-end">
-                    <Col md="3" className="text-left pl-1">
+                <Form.Group className="row item current ">
+                    <Col className="text-left">
                         {values.roleName}
                     </Col>
-                    <Col md="5" className="text-left">
+                    <Col className="text-left group-icon-acc">
                         {values.username}
+                        <div className='show-icon'>
+                            <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-acc-boss.png')} alt='icon acc boss'/>
+                            <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-vip.png')} alt='icon vip'/>
+                        </div>
                     </Col>
-                    <Col md="4" className="status text-right">
+                    <Col className="status text-right">
                         {values.status}
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="name" >
+                <Form.Group className="row item field-info">
+                    <Form.Label column htmlFor="name" >
                         {LangHelper.getResource('Site')}
                     </Form.Label>
-                    <Col md="9">
+                    <Col >
                         <SelectWithSearch
                             className='basic-single'
                             onChange={handleChange}
@@ -154,18 +158,18 @@ export default class DataGrid extends PureComponent {
                 </Form.Group>
                 {
                     isShowInactiveMsg &&
-                    <Form.Group className="row item no-border-bg inactive-site align-items-end">
-                        <Form.Label column md="3" />
-                        <Col md="9">
+                    <Form.Group className="row item inactive-site field-info">
+                        <Form.Label column />
+                        <Col >
                             {LangHelper.getResource('CannotCreateInactiveSite')}
                         </Col>
                     </Form.Group>
                 }
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="name" >
+                <Form.Group className="row item field-info country-select">
+                    <Form.Label column htmlFor="name" >
                         {LangHelper.getResource('Country')}
                     </Form.Label>
-                    <Col md="9">
+                    <Col>
                         <SearchableDropdown
                             className='basic-single'
                             onChange={handleChange}
@@ -178,41 +182,41 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
 
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="name" >
+                <Form.Group className="row item field-info">
+                    <Form.Label column htmlFor="name" >
                         {LangHelper.getResource('FirstName')}
                     </Form.Label>
-                    <Col md="9">
+                    <Col>
                         <Form.Control type="text" size="sm" className="shadow-none"
                             onChange={handleChange} name="firstName" value={values.firstName} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="lastName" >
+                <Form.Group className="row item field-info">
+                    <Form.Label column htmlFor="lastName" >
                         {LangHelper.getResource('LastName')}
                     </Form.Label>
-                    <Col md="9">
+                    <Col>
                         <Form.Control type="text" size="sm" className="shadow-none"
                             onChange={handleChange} name="lastName" value={values.lastName} autoComplete="off"
                         />
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="nickname" >
+                <Form.Group className="row item field-info">
+                    <Form.Label column htmlFor="nickname" >
                         {LangHelper.getResource('Nickname')}
                     </Form.Label>
-                    <Col md="9">
-                        <Form.Label size="sm" className="">
-                            {values.nickname}
-                        </Form.Label>
+                    <Col>
+                        <Form.Control type="text" size="sm" className="shadow-none"
+                            onChange={handleChange} name="lastName" value={values.nickname} autoComplete="off"
+                        />
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Form.Label column md="3" htmlFor="name" >
+                <Form.Group className="row item field-info">
+                    <Form.Label column htmlFor="name" >
                         {LangHelper.getResource('Language')}
                     </Form.Label>
-                    <Col md="9" className="form-control-wrapper form-control-language">
+                    <Col className="form-control-wrapper form-control-language">
                         <MultipleSelect
                             isInvalid={touched.languageId && errors.languageId}
                             dataSource={this.state.languages}
@@ -227,12 +231,12 @@ export default class DataGrid extends PureComponent {
                         />
                     </Col>
                 </Form.Group>
-                <Form.Group className="row item no-border-bg align-items-end">
-                    <Col md="4" />
-                    <Col md="8">
+                <Form.Group className="row item btn-submit">
+                    <Col />
+                    <Col>
                         {
                             hasHostOnCurrentCustomer &&
-                            <Button className="mr-4 mt-1" variant="primary" size="sm" type="submit" disabled={isSubmitting}>
+                            <Button variant="primary" size="sm" type="submit" disabled={isSubmitting}>
                                 <UnderlineButton.updateButton />
                             </Button>
                         }
@@ -255,7 +259,7 @@ export default class DataGrid extends PureComponent {
         let listPic = [];
         headlineStaffInfos.map(value => {
             if (!listPic.find(pic => pic.id === value.picID)) {
-                listPic.push({id: value.picID, name: value. picName});
+                listPic.push({ id: value.picID, name: value.picName });
             }
         });
         return listPic;
@@ -263,22 +267,22 @@ export default class DataGrid extends PureComponent {
 
     renderOtherAccountInfo = values => {
         return (
-                    <div className='account-item'>
-                        {
-                            values.map(value => {
-                                return <>
-                                    <Form.Group className="row item no-border-bg align-items-end">
-                                        <Form.Label column md="3" htmlFor="name" >
-                                            {value.communiationName}
-                                        </Form.Label>
-                                        <Col md="9">
-                                            {value.communicationValue}
-                                        </Col>
-                                    </Form.Group>
-                                </>
-                            })
-                        }
-                    </div>
+            <div className='account-item'>
+                {
+                    values.map(value => {
+                        return <>
+                            <Form.Group className="row item  ">
+                                <Form.Label column md="3" htmlFor="name" >
+                                    {value.communiationName}
+                                </Form.Label>
+                                <Col md="9">
+                                    {value.communicationValue}
+                                </Col>
+                            </Form.Group>
+                        </>
+                    })
+                }
+            </div>
         );
     };
 
@@ -317,7 +321,6 @@ export default class DataGrid extends PureComponent {
                                     }
                                 </div>
                             );
-                            
                         })
                     }
                 </div>
@@ -333,16 +336,16 @@ export default class DataGrid extends PureComponent {
 
         return (
             <div className="group-detail-link">
-                <Row className="item title text-left btn-detail"
+                <Row className="title text-left btn-detail"
                     onClick={() => this.setState(prevState => ({ isShowDetail: !prevState.isShowDetail }))}
                 >
                     {LangHelper.getResource('Detail')}
-                    <i class="fa fa-caret-down" aria-hidden="true"/>
+                    <i class="fa fa-caret-down" aria-hidden="true" />
                 </Row>
                 {
                     this.state.isShowDetail &&
                     <div className='detail-link-content'>
-                        <Form.Group className="row item no-border-bg form-row-detail">
+                        <Form.Group className="row form-row-detail">
                             <ul className='list-unstyled list-menu pull-left'>
                                 {
                                     !isShowInactiveMsg && hasCreateFeedbackPermission &&
@@ -369,16 +372,16 @@ export default class DataGrid extends PureComponent {
                                 </ul>
                             }
                         </Form.Group>
-                        <Form.Group className="row item no-border-bg form-row-detail">
+                        <Form.Group className="row form-row-detail">
                             <ul className='list-unstyled list-menu pull-left'>
                                 <li>
-                                <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Main')}</a>
+                                    <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Main')}</a>
                                 </li>
                                 <li>
                                     <a onClick={() => this.props.handleNavigate('Remark')}>{LangHelper.getResource('Remark')}</a>
-                                    </li>
+                                </li>
                                 <li>
-                                <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PicManagement')}</a>
+                                    <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PicManagement')}</a>
                                 </li>
                             </ul>
                             <ul className='list-unstyled list-menu pull-left list-menu-right'>
@@ -468,7 +471,7 @@ export default class DataGrid extends PureComponent {
     renderEmptyData = () => {
         return (<div className="left-form-customer" id="left-form-container">
             <Form.Group className="mrb0">
-                <Row className="item align-items-end">
+                <Row className="item  no-data">
                     {
                         LangHelper.getResource('EmptyData')
                     }
