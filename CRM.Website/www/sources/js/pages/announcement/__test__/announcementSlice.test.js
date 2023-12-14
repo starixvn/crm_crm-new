@@ -50,7 +50,9 @@ describe('announcementSlice reducer', () => {
             countDown: AUTO_REFRESH_TIMES[0],
             isSubmit: false
         },
-        isRefresh: true
+        isRefresh: true,
+        validateAnnouncementResult: null,
+        redirectActionParams: null
     };
 
     it('should handle reset state', () => {

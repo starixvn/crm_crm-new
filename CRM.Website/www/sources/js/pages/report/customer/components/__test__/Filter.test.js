@@ -277,7 +277,7 @@ describe('Filter', () => {
             container.instance().setState({ isShowFilter: true });
 
             // Assert
-            expect(container.find('span').at(0).props().className).toEqual('fa fa-caret-up icon');
+            expect(container.find('span').at(0).props().className).toEqual('fa fa-caret-up icon icon-toggle');
         });
 
         it('should render exactly className of span when not showFiler', () => {
@@ -288,7 +288,7 @@ describe('Filter', () => {
             container.instance().setState({ isShowFilter: false });
 
             // Assert
-            expect(container.find('span').at(0).props().className).toEqual('fa fa-caret-down icon');
+            expect(container.find('span').at(0).props().className).toEqual('fa fa-caret-down icon icon-toggle');
         });
     });
 });

@@ -173,10 +173,10 @@ describe('actionCreators', () => {
             DataService.getDataAsync = jest.fn(() => promise);
 
             // Act
-            const actual = await store.dispatch(ActionCreators.cancelAnnouncementId(1));
+            const actual = await store.dispatch(ActionCreators.cancelAnnouncementId(1,'done'));
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('Announcement/Cancel/1');
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('Announcement/Cancel?id=1&status=done');
         });
     });
 });

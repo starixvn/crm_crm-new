@@ -138,6 +138,9 @@ describe('popupHandlerActions', () => {
                 { type: types.GROUP_MAPPING_LETSTALK_VERIFICATION_DATA, data: {
                             "isBotRemoved": false,
                             "recipients": []}},
+                { type: types.GROUP_MAPPING_TELEGRAM_VERIFICATION_DATA, data: {
+                            "isBotRemoved": false,
+                            "recipients": []}},
                 { type: types.RECIPIENT_DATA, data: [] },
                 { type: types.GROUP_HEADLINE_DATA, data: [] }
             ];

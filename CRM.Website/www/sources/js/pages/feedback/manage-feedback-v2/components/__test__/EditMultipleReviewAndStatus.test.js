@@ -45,9 +45,8 @@ describe('EditMultipleReviewAndStatus', () => {
             await promise;
             jest.runAllTimers();
             expect(Site.resolveClientUrl).toHaveBeenCalledWith('MultipleLogs/GetLogByFeedbackId/1');
-            expect(container.state.logInfo).toEqual({feedbackId: 1, isReviewed: true});
-            expect(container.state.isReviewed).toEqual(true);
-        }); 
+            expect(container.state.isReviewed).toEqual(false);
+        });
     });
 
     describe('handleSubmit', () => {

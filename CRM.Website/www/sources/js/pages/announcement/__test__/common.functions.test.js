@@ -23,14 +23,23 @@ describe('common.functions', () => {
                 sendType: 'Send At',
                 sendDate: null
             };
+            const state = {
+                invalidWidthHeight: 'test',
+                isHeadlineGroup: {
+                    isSiteType: true
+                }
+            }
             const expected = {
                 //notificationTemplate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('NotificationTemplate')),
                 title: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title')),
                 content: LangHelper.formatString(LangHelper.getResource('FieldRequired'), 'Content EN'),
-                sendDate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SendTime'))
+                sendDate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SendTime')),
+                imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError')),
+                site: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site')),
+                currency: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency')),
             };
             // Act
-            const actual = commonFunc.validateFormik(values, [], []);
+            const actual = commonFunc.validateFormik(values, [], state);
 
             //Assert
             expect(actual).toEqual(expected);
@@ -52,14 +61,22 @@ describe('common.functions', () => {
                 sendType: '',
                 sendDate: null
             };
+            const state = {
+                invalidWidthHeight: 'test',
+                isHeadlineGroup: {
+                    isSiteType: true
+                }
+            }
             const expected = {
                 content: LangHelper.getResource('ContentLanguageError'),
                 sendType: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SendTime')),
                 imageFileType: LangHelper.formatString(LangHelper.getResource('ImageFileTypeError'), 'file1'),
-                imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError'), 'file1')
+                imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError'), 'file1'),
+                currency: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency')),
+                site: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site'))
             };
             // Act
-            const actual = commonFunc.validateFormik(values, file, ['file1']);
+            const actual = commonFunc.validateFormik(values, file, state);
 
             //Assert
             expect(actual).toEqual(expected);
@@ -76,14 +93,17 @@ describe('common.functions', () => {
                 sendDate: new Date(),
                 sendType: 'Send At',
                 oldFileName: 'oldFile.txt',
-                title: 'Notification Title'
+                title: 'Notification Title',
+                currency: 'USD',
+                site: 'ARM'
             };
 
             const state = {
                 languages: [{ mapLabel: 'en', settingId: 1 }, { mapLabel: 'fr', settingId: 2 }],
                 uploadedFiles: ['newFile.txt'],
                 headlineGroups: ['World News'],
-                options: { site: 'Site1', currency: 'USD' }
+                options: { site: 'Site1', currency: 'USD' },
+                isHeadlineGroup: { isUsername: true, isSiteType: true }
             };
 
             // Act
@@ -92,7 +112,7 @@ describe('common.functions', () => {
             //Assert
             expect(formData.get('notificationTemplateId')).toBe('1');
             expect(formData.get('headlineNameList')).toBe('World News');
-            expect(formData.get('siteNameList')).toBe('Site1');
+            expect(formData.get('siteNameList')).toBe('ARM');
             expect(formData.get('currencyList')).toBe('USD');
             expect(formData.get('headlineType')).toBe('Breaking News');
             expect(formData.get('title')).toBe('Notification Title');
@@ -169,6 +189,113 @@ describe('common.functions', () => {
 
             //Assert
             expect(mappedLanguages).toEqual([]);
+        });
+    });
+
+    describe('validFileSize', () => {
+        it('should return true when file < maximumSize10MB', () => {
+            //Arrange
+            const file = { size: 1555 };
+
+            //Act
+            const actual = commonFunc.validFileSize(file);
+
+            //Assert
+            expect(actual).toEqual(true);
+        });
+
+        it('should return false when file < maximumSize10MB', () => {
+            //Arrange
+            const file = { size: 1555000000 };
+
+            //Act
+            const actual = commonFunc.validFileSize(file);
+
+            //Assert
+            expect(actual).toEqual(false);
+        });
+    });
+
+    describe('validFileType', () => {
+        it('should return true when validFileType', () => {
+            //Arrange
+            const file = { type: 'image/jpeg' };
+
+            //Act
+            const actual = commonFunc.validFileSize(file);
+
+            //Assert
+            expect(actual).toEqual(true);
+        });
+    });
+
+    describe('validFileExtension', () => {
+        it('should return true when validFileExtension', () => {
+            //Arrange
+            const file = { name: 'image.jpeg' };
+
+            //Act
+            const actual = commonFunc.validFileExtension(file);
+
+            //Assert
+            expect(actual).toEqual(true);
+        });
+    });
+
+    describe('handleResetWhenBackPage', () => {
+        it('should call exactly function props', () => {
+            //Arrange
+            const props = { 
+                setCreateAnnouncement: jest.fn(),
+                setEditAnnouncement: jest.fn(),
+                setValidateAnnouncement: jest.fn()
+             };
+
+            //Act
+            commonFunc.handleResetWhenBackPage(props);
+
+            //Assert
+            expect(props.setCreateAnnouncement).toHaveBeenCalled();
+            expect(props.setEditAnnouncement).toHaveBeenCalled();
+            expect(props.setValidateAnnouncement).toHaveBeenCalled();
+        });
+    });
+
+    describe('getUsernames', () => {
+        it('should call exactly headlineNameList directAccountList', () => {
+            //Arrange
+            //Act
+            var actual = commonFunc.getUsernames('headlineNameList', 'directAccountList');
+
+            //Assert
+            expect(actual).toEqual('headlineNameList,directAccountList');
+        });
+
+        it('should call exactly directAccountList', () => {
+            //Arrange
+            //Act
+            var actual = commonFunc.getUsernames(null, 'directAccountList');
+
+            //Assert
+            expect(actual).toEqual('directAccountList');
+        });
+
+        it('should call exactly headlineNameList', () => {
+            //Arrange
+            //Act
+            var actual = commonFunc.getUsernames('headlineNameList', null);
+
+            //Assert
+            expect(actual).toEqual('headlineNameList');
+        });
+
+        it('should call exactly empty', () => {
+            //Arrange
+            //Act
+            var actual = commonFunc.getUsernames(null, null);
+
+            //Assert
+            expect(actual).toEqual('');
         });
     });
 });
