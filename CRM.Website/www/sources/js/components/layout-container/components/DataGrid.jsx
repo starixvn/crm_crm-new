@@ -332,82 +332,71 @@ export default class DataGrid extends PureComponent {
         const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
 
         return (
-            <div className="hightlight-title">
+            <div className="group-detail-link">
                 <Row className="item title text-left btn-detail"
                     onClick={() => this.setState(prevState => ({ isShowDetail: !prevState.isShowDetail }))}
                 >
                     {LangHelper.getResource('Detail')}
+                    <i class="fa fa-caret-down" aria-hidden="true"/>
                 </Row>
                 {
                     this.state.isShowDetail &&
-                    <Form.Group className="row item no-border-bg form-row-detail">
-                        <ul className='list-unstyled list-menu pull-left'>
-                            {
-                                !isShowInactiveMsg && hasCreateFeedbackPermission &&
-                                <li>
-                                    <i className="fa fa-angle-right" aria-hidden="true" />
-                                    <a onClick={() => this.props.handleNavigate('AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
-                                </li>
-                            }
+                    <div className='detail-link-content'>
+                        <Form.Group className="row item no-border-bg form-row-detail">
+                            <ul className='list-unstyled list-menu pull-left'>
+                                {
+                                    !isShowInactiveMsg && hasCreateFeedbackPermission &&
+                                    <li>
+                                        <a onClick={() => this.props.handleNavigate('AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
+                                    </li>
+                                }
+                                {
+                                    hasReadFeedbackPermission &&
+                                    <li>
+                                        <a onClick={() => this.props.handleNavigate('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
+                                    </li>
+                                }
+                            </ul>
                             {
                                 hasReadFeedbackPermission &&
-                                <li>
-                                    <i className="fa fa-angle-right" aria-hidden="true" />
-                                    <a onClick={() => this.props.handleNavigate('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
-                                </li>
+                                <ul className='list-unstyled list-menu pull-left list-menu-right'>
+                                    <li>
+                                        <a onClick={() => this.props.handleNavigate('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
+                                    </li>
+                                    <li>
+                                        <a onClick={() => this.props.handleNavigate('CommunicationLog')}>{LangHelper.getResource('CommunicationLog')}</a>
+                                    </li>
+                                </ul>
                             }
-                        </ul>
-                        {
-                            hasReadFeedbackPermission &&
-                            <ul className='list-unstyled list-menu pull-left list-menu-right'>
+                        </Form.Group>
+                        <Form.Group className="row item no-border-bg form-row-detail">
+                            <ul className='list-unstyled list-menu pull-left'>
                                 <li>
-                                    <i className="fa fa-angle-right" aria-hidden="true" />
-                                    <a onClick={() => this.props.handleNavigate('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
+                                <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Main')}</a>
                                 </li>
                                 <li>
-                                    <i className="fa fa-angle-right" aria-hidden="true" />
-                                            <a onClick={() => this.props.handleNavigate('Communication')}>{LangHelper.getResource('CommunicationLog')}</a>
+                                    <a onClick={() => this.props.handleNavigate('Remark')}>{LangHelper.getResource('Remark')}</a>
+                                    </li>
+                                <li>
+                                <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PicManagement')}</a>
                                 </li>
                             </ul>
-                        }
-                    </Form.Group>
-                }
-                <div className="dot-detail"></div>
-                {
-                    this.state.isShowDetail &&
-                    <Form.Group className="row item no-border-bg form-row-detail">
-                        <ul className='list-unstyled list-menu pull-left'>
-                            <li>
-                                <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Main')}</a>
-                            </li>
-                            <li>
-                                <i className="fa fa-angle-right" aria-hidden="true" />
-                                    <a onClick={() => this.props.handleNavigate('Remark')}>{LangHelper.getResource('Remark')}</a>
-                                </li>
-                            <li>
-                                <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PicManagement')}</a>
-                            </li>
-                        </ul>
-                        <ul className='list-unstyled list-menu pull-left list-menu-right'>
-                            <li>
-                                <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetail')}</a>
-                            </li>
-                            <li>
-                                <i className="fa fa-angle-right" aria-hidden="true" />
-                                <a onClick={() => this.props.handleNavigate('ActionLog')}>{LangHelper.getResource('ActivityLog')}</a>
-                            </li>
-                            {
-                                hasReadCustomerInfo &&
+                            <ul className='list-unstyled list-menu pull-left list-menu-right'>
                                 <li>
-                                    <i className="fa fa-angle-right" aria-hidden="true" />
-                                    <a onClick={() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
+                                    <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetail')}</a>
                                 </li>
-                            }
-                        </ul>
-                    </Form.Group>
+                                <li>
+                                    <a onClick={() => this.props.handleNavigate('ActionLog')}>{LangHelper.getResource('ActivityLog')}</a>
+                                </li>
+                                {
+                                    hasReadCustomerInfo &&
+                                    <li>
+                                        <a onClick={() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
+                                    </li>
+                                }
+                            </ul>
+                        </Form.Group>
+                    </div>
                 }
             </div>
         );
