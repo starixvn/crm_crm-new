@@ -106,7 +106,7 @@
     ChangesLog: 'Changes Log',
     ClaimedDate: 'Claimed Date',
     CommunicationLog: 'Communication Log',
-    CRMInfo: 'CRM Info',
+    CRMInfo: 'CRM Info (Old)',
     Creator: 'Creator',
     CreateNewRemarkSuccessfully: 'Create new remark successfully!',
     CategoriesSummaryReport: 'Categories Summary Report',

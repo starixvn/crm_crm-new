@@ -84,8 +84,6 @@ export default class DataGrid extends PureComponent {
         });
     };
 
-    renderSystemOption = item => <option key={item.id} value={item.id} >{item.name}</option>;
-
     renderForm = ({
         errors,
         values,
@@ -229,17 +227,6 @@ export default class DataGrid extends PureComponent {
                         />
                     </Col>
                 </Form.Group>
-                {
-                    values.isGroupHeadLine &&
-                    <Form.Group className="row item no-border-bg align-items-end">
-                        <Form.Label column md="3" />
-                        <Col md="9" className="form-control-wrapper">
-                            <Form.Check className="checked-headline" type="checkbox" name="isGroupHeadLine"
-                                label={LangHelper.getResource('Headline')} checked disabled
-                            />
-                        </Col>
-                    </Form.Group>
-                }
                 <Form.Group className="row item no-border-bg align-items-end">
                     <Col md="4" />
                     <Col md="8">
@@ -252,11 +239,11 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
                 {
-                    values.isGroupHeadLine && this.renderAccountHeadlineInfo(values)
+                    values.isGroupHeadLine && this.renderAccountHeadlineInfo(values.headlineStaffInfos)
                 }
-                {/*{*/}
-                {/*    !values.isGroupHeadLine && this.renderOtherAccountInfo(values)*/}
-                {/*}*/}
+                {
+                    !values.isGroupHeadLine && this.renderOtherAccountInfo(values.otherAccountCommunicationInfos)
+                }
                 {
                     this.renderDetail(isShowInactiveMsg)
                 }
@@ -274,8 +261,29 @@ export default class DataGrid extends PureComponent {
         return listPic;
     }
 
+    renderOtherAccountInfo = values => {
+        return (
+                    <div className='account-item'>
+                        {
+                            values.map(value => {
+                                return <>
+                                    <Form.Group className="row item no-border-bg align-items-end">
+                                        <Form.Label column md="3" htmlFor="name" >
+                                            {value.communiationName}
+                                        </Form.Label>
+                                        <Col md="9">
+                                            {value.communicationValue}
+                                        </Col>
+                                    </Form.Group>
+                                </>
+                            })
+                        }
+                    </div>
+        );
+    };
+
     renderAccountHeadlineInfo = values => {
-        let listPic = this.getListPicId(values.headlineStaffInfos);
+        let listPic = this.getListPicId(values);
         return (
             <div className='form-account-info'>
                 <div className='custom-scrollbar'>
@@ -292,7 +300,7 @@ export default class DataGrid extends PureComponent {
                                         </Col>
                                     </Form.Group>
                                     {
-                                        values.headlineStaffInfos.map(value => {
+                                        values.map(value => {
                                             if (value.picID === pic.id) {
                                                 return <>
                                                     <Form.Group>
@@ -358,7 +366,7 @@ export default class DataGrid extends PureComponent {
                                 </li>
                                 <li>
                                     <i className="fa fa-angle-right" aria-hidden="true" />
-                                            <a onClick={() => this.props.handleNavigate('CommunicationLog')}>{LangHelper.getResource('CommunicationLog')}</a>
+                                            <a onClick={() => this.props.handleNavigate('Communication')}>{LangHelper.getResource('CommunicationLog')}</a>
                                 </li>
                             </ul>
                         }
@@ -371,7 +379,7 @@ export default class DataGrid extends PureComponent {
                         <ul className='list-unstyled list-menu pull-left'>
                             <li>
                                 <i className="fa fa-angle-right" aria-hidden="true" />
-                                    <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Dashboard')}</a>
+                                <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Main')}</a>
                             </li>
                             <li>
                                 <i className="fa fa-angle-right" aria-hidden="true" />
@@ -379,7 +387,7 @@ export default class DataGrid extends PureComponent {
                                 </li>
                             <li>
                                 <i className="fa fa-angle-right" aria-hidden="true" />
-                                    <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PicManagement')}</a>
+                                <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PicManagement')}</a>
                             </li>
                         </ul>
                         <ul className='list-unstyled list-menu pull-left list-menu-right'>
