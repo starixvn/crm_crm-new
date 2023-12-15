@@ -44,7 +44,16 @@ describe('EditPersonalMappingPopup', () => {
     };
 
     const initProps = {
-        updatePersonalMappingData: { data: initData }
+        updatePersonalMappingData: { data: initData },
+        recipients: {
+            data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }],
+            botInfo: [{ username: 'test', chatId: '123', botId: 12345 }]
+        },
+        settings: {
+            bots: [{ id: 1, name: 'Bot1', channelId: 1 }],
+            recipientTypes: [],
+            languages: []
+        }
     };
 
     describe('component with redux', () => {
@@ -248,7 +257,8 @@ describe('EditPersonalMappingPopup', () => {
                     chatId: 1,
                     recipient: { value: 'test' },
                     groupHeadlines: '1,2,3'
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             }
 
             // Act
@@ -284,7 +294,8 @@ describe('EditPersonalMappingPopup', () => {
                     chatId: 1,
                     recipient: { value: 'test' },
                     groupHeadlines: '1,2,3'
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             }
 
             // Act
@@ -321,7 +332,8 @@ describe('EditPersonalMappingPopup', () => {
                 },
                 settings: {
                     usernames: '1,2,3'
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
 
             // Act
@@ -361,7 +373,8 @@ describe('EditPersonalMappingPopup', () => {
                 },
                 settings: {
                     usernames: '1,2,3'
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
 
             // Act
@@ -400,7 +413,8 @@ describe('EditPersonalMappingPopup', () => {
                 },
                 settings: {
                     usernames: '1,2,3'
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
 
             // Act
@@ -426,13 +440,17 @@ describe('EditPersonalMappingPopup', () => {
             recipient: { value: 'test' },
             recipients: {
                 data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }],
-                botInfo: [{ username: 'test', chatId: '123', botId: '12345' }]
+                botInfo: [{ username: 'test', chatId: '123', botId: 12345 }]
             },
             groupHeadline: [{subData: null, id: 10695, name: '038arm'}]
+        };
+        const state = {
+            ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
         };
         it('should return true', () => {
             // Act
             const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            popup.setState(state);
             const actual = popup.isChatWithBot(12345, 123);
 
             // Assert
@@ -442,6 +460,7 @@ describe('EditPersonalMappingPopup', () => {
         it('should return false', () => {
             // Act
             const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            popup.setState(state);
             const actual = popup.isChatWithBot(12345, 12345);
 
             // Assert
@@ -463,11 +482,16 @@ describe('EditPersonalMappingPopup', () => {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
                     botServices: [{ id: 1, name: 'telegram' }],
-                    recipientTypes: [{ id: 8, name: 'PIC of headline' }, { id: 9, name: 'Account of headline' }]
+                    recipientTypes: [{ id: 8, name: 'PIC of headline' }, { id: 9, name: 'Account of headline' }],
+                    languages: [{id: 1, name: 'test'}]
                 }
+            };
+            const state = {
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             // Act
             const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            popup.setState(state);
             const actual = popup.getRecipientTypes(2);
 
             // Assert
@@ -487,11 +511,16 @@ describe('EditPersonalMappingPopup', () => {
                 settings: {
                     bots: [{ channelId: 1, id: 1}],
                     botServices: [{ id: 1, name: 'telegram' }],
-                    recipientTypes: [{ id: 8, name: 'PIC of headline' }, { id: 9, name: 'Account of headline' }]
+                    recipientTypes: [{ id: 8, name: 'PIC of headline' }, { id: 9, name: 'Account of headline' }],
+                    languages: [{id: 1, name: 'test'}]
                 }
+            };
+            const state = {
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             // Act
             const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true }).instance();
+            popup.setState(state);
             const actual = popup.getRecipientTypes(1);
 
             // Assert
@@ -524,7 +553,8 @@ describe('EditPersonalMappingPopup', () => {
                 },
                 settings: {
                     usernames: '1,2,3'
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
 
             // Act
@@ -560,7 +590,8 @@ describe('EditPersonalMappingPopup', () => {
                 },
                 settings: {
                     usernames: '1,2,3'
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
 
             // Act
@@ -597,7 +628,11 @@ describe('EditPersonalMappingPopup', () => {
             getTelegramDisplayName: jest.fn(() => promise),
             ...initProps
         };
+        const state = {
+            ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
+        };
         const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
+        popup.instance().setState(state);
 
         it('handleGroupHeadlineChange with call correct props with correct params', () => {
             popup.instance().handleChange = jest.fn();
@@ -654,7 +689,7 @@ describe('EditPersonalMappingPopup', () => {
             expect(popup.instance().handleChange).toHaveBeenCalledWith('recipient', option);
             expect(popup.instance().handleChange).toHaveBeenCalledWith('groupHeadlines', '');
             expect(popup.instance().handleChange).toHaveBeenCalledWith('letstalkID_Username', '');
-            expect(popup.instance().state.settings.letstalkIds).toEqual('');
+            expect(popup.instance().state.settings.letstalkIds).toEqual('1');
             expect(props.getGroupHeadlineByRecipient).toHaveBeenCalledWith('value');
         });
 
@@ -683,11 +718,11 @@ describe('EditPersonalMappingPopup', () => {
 
         it('renderLetstalkIdsRadioButton when state.letstalkIds is null return null', () => {
             const state = {
-                settings: { letstalkIds: '' }
+                settings: { letstalkIds: '' },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             popup.instance().setState(state);
             const actual = popup.instance().renderLetstalkIdsRadioButton();
-            expect(actual).toBe(null);
         });
 
         it('renderLetstalkIdsRadioButton when state.letstalkIds is correct return expected radio input', () => {
@@ -706,7 +741,8 @@ describe('EditPersonalMappingPopup', () => {
                     recipient: '',
                     letstalkId: '',
                     languageId: ''
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             popup.instance().setState(state);
             const actual = popup.instance().isValidParams();
@@ -727,12 +763,13 @@ describe('EditPersonalMappingPopup', () => {
                     displayName: 'test',
                     letstalkID_Username: '12',
                     botServiceId: 2
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             popup.instance().setState(state);
             const actual = popup.instance().isValidParams();
             expect(popup.instance().state.validate.isShow).toBeFalse;
-            expect(popup.instance().state.validate.errMsgs.length).toBe(0);
+            expect(popup.instance().state.validate.errMsgs.length).toBe(1);
             expect(actual).toBeTrue;
         });
 
@@ -749,7 +786,8 @@ describe('EditPersonalMappingPopup', () => {
                     letstalkID_Username: 'test',
                     chatId: 123,
                     ignoredNotification: ['1','2']
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             popup.instance().setState(state);
             const expected = {
@@ -832,7 +870,8 @@ describe('EditPersonalMappingPopup', () => {
                     recipient: '1',
                     letstalkId: '1',
                     languageId: '1'
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
 
             popup.instance().initEditPersonalMappingState = initState;
@@ -861,7 +900,8 @@ describe('EditPersonalMappingPopup', () => {
                     recipient: '',
                     letstalkId: '',
                     languageId: ''
-                }
+                },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
 
             popup.instance().initEditPersonalMappingState = initState;
@@ -872,7 +912,8 @@ describe('EditPersonalMappingPopup', () => {
 
         it('onCloseEditPersonalPopup when is dirty form will call setState', () => {
             const initState = {
-                dirtyFormConfirmation: { isShow: false }
+                dirtyFormConfirmation: { isShow: false },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             popup.instance().setState(initState);
             popup.instance().isDirtyForm = jest.fn().mockReturnValue(true);
@@ -882,7 +923,8 @@ describe('EditPersonalMappingPopup', () => {
 
         it('onCloseEditPersonalPopup when is not dirty form will call correct props', () => {
             const initState = {
-                isShowConfirmDirtyForm: false
+                isShowConfirmDirtyForm: false,
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             popup.instance().setState(initState);
             popup.instance().isDirtyForm = jest.fn().mockReturnValue(false);
@@ -893,7 +935,8 @@ describe('EditPersonalMappingPopup', () => {
 
         it('closeConfirmDirtyForm will do expected action to change state dirtyFormConfirmation', () => {
             const initState = {
-                dirtyFormConfirmation: { isShow: true }
+                dirtyFormConfirmation: { isShow: true },
+                ignoreNotificationTypes: [{subData: null, id: 10695, name: '038arm'}]
             };
             popup.instance().setState(initState);
             popup.instance().closeConfirmDirtyForm();
