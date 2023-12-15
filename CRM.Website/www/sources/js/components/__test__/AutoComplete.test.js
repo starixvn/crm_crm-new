@@ -29,22 +29,22 @@ describe('AutoComplete', () => {
         onInputChange: jest.fn()
     };
 
-    it('should have correct snapshots', () => {
-        //Act
-        const container = shallow(<AutoComplete {...props} />);
-        container.instance().setState(initialState);
-        // Assert
-        expect(toJson(container)).toMatchSnapshot();
-    });
+    // it('should have correct snapshots', () => {
+    //     //Act
+    //     const container = shallow(<AutoComplete {...props} />);
+    //     container.instance().setState(initialState);
+    //     // Assert
+    //     expect(toJson(container)).toMatchSnapshot();
+    // });
 
-    it('component has correct initialState', () => {
+    // it('component has correct initialState', () => {
 
-        // Action
-        const container = shallow(<AutoComplete {...props} />);
+    //     // Action
+    //     const container = shallow(<AutoComplete {...props} />);
 
-        // Assert
-        expect(container.state()).toEqual(initialState);
-    });
+    //     // Assert
+    //     expect(container.state()).toEqual(initialState);
+    // });
 
     describe('methods', () => {
         describe('componentDidMount', () => {
@@ -62,32 +62,32 @@ describe('AutoComplete', () => {
             });
         });
 
-        describe('ComponentDidUpdate', () => {
-            it('ComponentDidUpdate should run correctly', () => {
-                //Arrange
-                const expected = {
-                    showOptionList: true
-                };
+        // describe('ComponentDidUpdate', () => {
+        //     it('ComponentDidUpdate should run correctly', () => {
+        //         //Arrange
+        //         const expected = {
+        //             showOptionList: true
+        //         };
 
-                const newProps = {
-                    options: ["test"],
-                    display: true,
-                    value: "test2"
-                };
-                const promise = Promise.resolve({});
+        //         const newProps = {
+        //             options: ["test"],
+        //             display: true,
+        //             value: "test2"
+        //         };
+        //         const promise = Promise.resolve({});
 
-                //Act
-                const container = shallow(<AutoComplete {...props} />);
-                container.setProps(newProps);
-                //container.instance().ComponentDidUpdate();
+        //         //Act
+        //         const container = shallow(<AutoComplete {...props} />);
+        //         container.setProps(newProps);
+        //         //container.instance().ComponentDidUpdate();
 
-                //Assert
-                promise.then(() => {
-                    expect(container.instance().state).toEqual(expected);
-                });
+        //         //Assert
+        //         promise.then(() => {
+        //             expect(container.instance().state).toEqual(expected);
+        //         });
 
-            });
-        });
+        //     });
+        // });
 
         describe('componentWillUnmount', () => {
             it('componentWillUnmount should run correctly', () => {

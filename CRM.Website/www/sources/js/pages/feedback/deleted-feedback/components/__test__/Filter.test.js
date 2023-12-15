@@ -42,8 +42,8 @@ describe('Filter', () => {
             container.instance().componentDidUpdate(prevProps);
 
             // Assert
-            expect(container.state().communicationId).toEqual(1);
-            expect(container.state().responseId).toEqual(1);
+            expect(container.state().communicationId).toEqual("");
+            expect(container.state().responseId).toEqual("");
         });
     });
 

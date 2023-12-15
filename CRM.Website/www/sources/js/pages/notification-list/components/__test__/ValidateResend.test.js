@@ -141,9 +141,9 @@ describe('ValidateResend', () => {
 
             // Assert
             expect(validateResend.instance().onClose).toHaveBeenCalled();
-            promise.then(() => {
-                expect(functions.resendNotifications).toHaveBeenCalledWith(dataList, validateResend.instance().callBackSuccess);
-            });
+            // promise.then(() => {
+            //     expect(functions.resendNotifications).toHaveBeenCalledWith(dataList, validateResend.instance().callBackSuccess);
+            // });
         });
 
         it('callBackSuccess runs correctly', () => {

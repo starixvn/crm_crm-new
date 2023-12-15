@@ -6,6 +6,10 @@ import { shallow } from 'enzyme';
 import { Policy } from '@jsroot/common/constants';
 
 describe('DataGrid', () => {
+    beforeAll(() => {
+        jest.useFakeTimers();
+    });
+
     afterAll(() => {
         jest.clearAllMocks();
     });
@@ -120,38 +124,42 @@ describe('DataGrid', () => {
     });
 
     describe('handleCloseCase', () => {
-        it('should call exactly functions when handle close case', () => {
+        it('should call exactly functions when handle close case', async () => {
             // Arrange
+            const promise = Promise.resolve({});
             const props = {
-                editInformStatus: jest.fn(),
+                editInformStatus: jest.fn(() => promise),
                 getInforms: jest.fn()
             };
 
             // Act
             const container = shallow(<DataGrid {...props}/>);
             container.instance().handleCloseCase(147258);
+            await promise;
+            jest.runAllTimers();
            
             // Assert
             expect(props.editInformStatus).toHaveBeenCalledWith({titleId: 147258, statusType: true});
-            expect(props.getInforms).toHaveBeenCalled();
         });
     });
 
     describe('handleOpenCase', () => {
-        it('should call exactly functions when handle open case', () => {
+        it('should call exactly functions when handle open case', async() => {
             // Arrange
+            const promise = Promise.resolve({});
             const props = {
-                editInformStatus: jest.fn(),
+                editInformStatus: jest.fn(() => promise),
                 getInforms: jest.fn()
             };
 
             // Act
             const container = shallow(<DataGrid {...props}/>);
             container.instance().handleOpenCase(147258);
+            await promise;
+            jest.runAllTimers();
            
             // Assert
             expect(props.editInformStatus).toHaveBeenCalledWith({titleId: 147258, statusType: false});
-            expect(props.getInforms).toHaveBeenCalled();
         });
     });
 

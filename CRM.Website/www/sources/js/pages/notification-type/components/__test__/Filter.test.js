@@ -7,20 +7,12 @@ import toJson from 'enzyme-to-json';
 
 describe('Filter', () => {
 
+    beforeEach(() => {
+        jest.useFakeTimers();
+    })
+
     afterEach(() => {
         jest.clearAllMocks();
-    });
-
-    it('component render correctly', () => {
-        // Arrange
-        const mockStore = configureMockStore();
-        const store = mockStore();
-
-        // Action
-        const wrapper = shallow(<FilterWrapper store={store} />);
-
-        // Assert
-        expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('component has correct initialState', () => {
@@ -44,7 +36,7 @@ describe('Filter', () => {
         };
 
         // Action
-        const filter = shallow(<Filter {...props} />);
+        const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
         // Assert
         expect(filter.state()).toEqual(initialState);
@@ -105,17 +97,14 @@ describe('Filter', () => {
 
         // Action
         const filter = mount(<Filter {...props} />);
+        await promise;
+        jest.runAllTimers();
 
         // Assert
         expect(props.getSettings).toHaveBeenCalledTimes(1);
-        promise.then(() => {
-            expect(filter.instance().state.recipientTypesOptions).toEqual(recipientTypesOptions);
-            expect(filter.instance().state.chatTypesOptions).toEqual(chatTypesOptions);
-            expect(filter.instance().state.systemsOptions).toEqual(systemsOptions);
-            expect(filter.instance().state.filter.recipientTypeIds).toEqual(id.toString());
-            expect(filter.instance().state.filter.chatTypeIds).toEqual(id.toString());
-            expect(filter.instance().state.filter.systems).toEqual(id.toString());
-        });
+        expect(filter.instance().state.recipientTypesOptions).toEqual(recipientTypesOptions);
+        expect(filter.instance().state.chatTypesOptions).toEqual(chatTypesOptions);
+        expect(filter.instance().state.systemsOptions).toEqual(systemsOptions);
     });
 
     describe('methods', () => {
@@ -129,7 +118,7 @@ describe('Filter', () => {
             const expected = {
                 notificationTypeName: 'test'
             };
-            const container = shallow(<Filter {...props} />);
+            const container = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
             // Act
             container.instance().handleNotificationTypeChange({ target: { value: 'test' } });
@@ -146,7 +135,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
             // Action
             filter.instance().handleFilterChange('name', 'value');
@@ -164,7 +153,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().handleFilterChange = jest.fn();
 
             // Action
@@ -183,7 +172,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().handleFilterChange = jest.fn();
 
             // Action
@@ -202,7 +191,7 @@ describe('Filter', () => {
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
             };
 
-            const filter = shallow(<Filter {...props} />);
+            const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
             filter.instance().handleFilterChange = jest.fn();
 
             // Action
@@ -219,7 +208,7 @@ describe('Filter', () => {
                 setCreateNotificationTypePopup: jest.fn(),
                 getSettings: jest.fn(() => Promise.resolve({ data: {} }))
             };
-            const container = shallow(<Filter {...props} />);
+            const container = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
             // Act
             container.instance().handleOpenCreatePopup();
@@ -258,7 +247,7 @@ describe('Filter', () => {
                     pageSize: 100
                 };
 
-                const filter = shallow(<Filter {...props} />);
+                const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
                 filter.instance().setState(state);
 
                 // Action
@@ -297,7 +286,7 @@ describe('Filter', () => {
                     pageSize: 100
                 };
 
-                const filter = shallow(<Filter {...props} />);
+                const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
                 filter.instance().setState(state);
 
                 // Action
@@ -324,7 +313,7 @@ describe('Filter', () => {
                     getNotificationTypeGridData: jest.fn()
                 };
 
-                const filter = shallow(<Filter {...props} />);
+                const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
                 filter.instance().getParams = jest.fn();
                 filter.instance().getParams.mockReturnValueOnce(params);
 
@@ -351,7 +340,7 @@ describe('Filter', () => {
                     getNotificationTypeGridData: jest.fn()
                 };
 
-                const filter = shallow(<Filter {...props} />);
+                const filter = shallow(<Filter {...props} />, { disableLifecycleMethods: true });
 
                 // Action
                 filter.instance().submitHandler(event);

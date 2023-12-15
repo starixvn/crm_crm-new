@@ -151,11 +151,14 @@ describe('Filter', () => {
                 pageIndex: 1,
                 pageSize: 100
             };
+            const event = {
+                preventDefault: jest.fn()
+            };
 
             // Act
             const container = shallow(<Filter {...props}/>, { disableLifecycleMethods: true });
             container.instance().setState(state);
-            container.instance().handleSubmit();
+            container.instance().handleSubmit(event);
 
             // Assert
             expect(props.setGridParams).toHaveBeenCalledWith(expectParams);

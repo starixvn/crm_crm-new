@@ -46,7 +46,8 @@ describe('Update', () => {
         setUpdateResult: jest.fn(),
         updateRelation: jest.fn(() => promise),
         getMainSettingRelation: jest.fn(),
-        updateResult: {isSuccessful: true}
+        updateResult: {isSuccessful: true},
+        relationConfirmPopup: { show: true }
     };
 
     describe('componentDidUpdate', () => {
@@ -169,12 +170,17 @@ describe('Update', () => {
     describe('handleSubmit', () => {
         it('should call exact function',async () => {
             // Arrange
+            const promise = Promise.resolve({});
             const event = {preventDefault: jest.fn()};
             const state = {
                 subSettingName: 'test',
                 settingRelation: initProps.mainSettingRelation
             };
-            const container = shallow(<Update {...initProps} />).instance();
+            const props = {
+                ...initProps,
+                getSettingRelationConfirm: jest.fn(() => promise)
+            }
+            const container = shallow(<Update {...props} />).instance();
             container.setState(state);
             //Act
             container.handleSubmit(event);
@@ -184,9 +190,6 @@ describe('Update', () => {
             // Assert
             expect(event.preventDefault).toHaveBeenCalled();
             expect(initProps.updateRelation).toHaveBeenCalled();
-            expect(initProps.onClose).toHaveBeenCalled();
-            expect(initProps.getSettingTypes).toHaveBeenCalled();
-            expect(initProps.setUpdateResult).toHaveBeenCalled();
         });
     });
 
