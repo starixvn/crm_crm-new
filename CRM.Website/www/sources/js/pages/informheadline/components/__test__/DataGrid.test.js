@@ -19,13 +19,16 @@ describe('DataGrid', () => {
             searchPolicy: Policy.Host,
             contactPolicy: Policy.Host,
             hasHostPermission: false
-        }
+        },
+        informs: [
+            { titleId: 720, title:'test'}
+        ]
     };
 
     describe('buildHeader', () => {
         it('should render expected header', () => {
             // Act
-            const container = shallow(<DataGrid />).instance();
+            const container = shallow(<DataGrid {...initProps}/>).instance();
             const header = shallow(container.buildHeader());
 
             // Assert
@@ -75,7 +78,8 @@ describe('DataGrid', () => {
             // Arrange
             const props = {
                 editContactInformDialog: { show: false },
-                setEditContactInformDialog: jest.fn()
+                setEditContactInformDialog: jest.fn(),
+                ...initProps
             };
 
             // Act
@@ -91,7 +95,8 @@ describe('DataGrid', () => {
         it('should call exactly functions when handle edit', () => {
             // Arrange
             const props = {
-                setEditInformDialog: jest.fn()
+                setEditInformDialog: jest.fn(),
+                ...initProps
             };
 
             // Act
@@ -109,7 +114,8 @@ describe('DataGrid', () => {
             const props = {
                 setGridParamRemovedLogs: jest.fn(),
                 getRemovedAccountLogs: jest.fn(),
-                setRemovedLogDialog: jest.fn()
+                setRemovedLogDialog: jest.fn(),
+                ...initProps
             };
 
             // Act
@@ -126,10 +132,12 @@ describe('DataGrid', () => {
     describe('handleCloseCase', () => {
         it('should call exactly functions when handle close case', async () => {
             // Arrange
-            const promise = Promise.resolve({});
+            const response = { data: { isSuccessful: true } };
+            const promise = Promise.resolve(response);
             const props = {
                 editInformStatus: jest.fn(() => promise),
-                getInforms: jest.fn()
+                getInforms: jest.fn(),
+                ...initProps
             };
 
             // Act
@@ -146,10 +154,12 @@ describe('DataGrid', () => {
     describe('handleOpenCase', () => {
         it('should call exactly functions when handle open case', async() => {
             // Arrange
-            const promise = Promise.resolve({});
+            const response = { data: { isSuccessful: true } };
+            const promise = Promise.resolve(response);
             const props = {
                 editInformStatus: jest.fn(() => promise),
-                getInforms: jest.fn()
+                getInforms: jest.fn(),
+                ...initProps
             };
 
             // Act
@@ -167,7 +177,8 @@ describe('DataGrid', () => {
         it('should call exactly functions when handle new informs', () => {
             // Arrange
             const props = {
-                setNewInformDialog: jest.fn()
+                setNewInformDialog: jest.fn(),
+                ...initProps
             };
 
             // Act
