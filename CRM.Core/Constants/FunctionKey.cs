@@ -2,6 +2,8 @@
 {
     public static class FunctionKey
     {
+        public const string AccountDetail = "AccountDetail";
+
         public const string NotificationList = "NotificationList";
         public const string ChatTypeMapping = "ChatTypeMapping";
         public const string NotificationTemplate = "NotificationTemplate";

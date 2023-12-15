@@ -9,6 +9,7 @@ import Site from '@jsroot/common/site';
 import { RemovePageUrl } from '@jsroot/common/constants';
 
 const DashboardComponent = lazy(() => import(/* webpackChunkName: 'dashboard' */ '@jsroot/pages/dashboard/index'));
+const AccountDetailComponent = lazy(() => import(/* webpackChunkName: 'AccountDetail' */ '@jsroot/pages/customer/account-detail/index'));
 
 const NotificationListComponent  = lazy(() => import(/* webpackChunkName: 'notification-list' */ '@jsroot/pages/notification-list/index'));
 const NotificationTemplateComponent = lazy(() => import(/* webpackChunkName: 'notification-template' */ '@jsroot/pages/notification-template/index'));
@@ -92,6 +93,7 @@ const MenuRouteArray = [
     { url: 'MultipleLogs/Create', component: MultipleLogsComponent },
     { url: 'Dashboard', component: DashboardComponent },
     { url: 'Detail', component: CustomerInfoDetailComponent },
+    { url: 'AccountDetail', component: AccountDetailComponent },
     { url: 'Communication', component: CommunicationComponent },
     { url: 'SpecialRemark', component: SpecialRemarkComponent },
     { url: 'NewRemark', component: NewRemMarkComponent },
