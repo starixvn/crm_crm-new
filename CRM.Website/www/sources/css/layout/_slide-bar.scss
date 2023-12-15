@@ -52,7 +52,8 @@
 
     .group-icon-acc{
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
+        padding-left: 4px !important;
 
         img{
             margin-right: 4px;
@@ -100,7 +101,7 @@
         margin: 0;
         padding: 6px 12px;
         display: grid;
-        grid-template-columns: 28% 52% 20%;
+        grid-template-columns: 28% auto auto;
         word-break: break-word;
 
         &.btn-submit{

@@ -129,14 +129,14 @@ export default class DataGrid extends PureComponent {
                     <Col className="text-left">
                         {values.roleName}
                     </Col>
-                    <Col className="text-left group-icon-acc">
+                    <Col className="text-left">
                         {values.username}
-                        <div className='show-icon'>
-                            <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-acc-boss.png')} alt='icon acc boss'/>
-                            <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-vip.png')} alt='icon vip'/>
-                        </div>
                     </Col>
-                    <Col className="status text-right">
+                    <Col className="status text-right group-icon-acc">
+                        <div className='show-icon'>
+                                <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-acc-boss.png')} alt='icon acc boss'/>
+                                <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-vip.png')} alt='icon vip'/>
+                        </div>
                         {values.status}
                     </Col>
                 </Form.Group>
