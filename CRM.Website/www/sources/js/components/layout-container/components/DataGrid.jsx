@@ -249,10 +249,10 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
                 {
-                    values.isGroupHeadLine && !values.headlineStaffInfos && this.renderAccountHeadlineInfo(values.headlineStaffInfos)
+                    values.isGroupHeadLine && this.renderAccountHeadlineInfo(values.headlineStaffInfos)
                 }
                 {
-                    !values.isGroupHeadLine && !values.otherAccountCommunicationInfos && this.renderOtherAccountInfo(values.otherAccountCommunicationInfos)
+                    !values.isGroupHeadLine && this.renderOtherAccountInfo(values.otherAccountCommunicationInfos)
                 }
                 {
                     this.renderDetail(isShowInactiveMsg)
@@ -272,6 +272,9 @@ export default class DataGrid extends PureComponent {
     }
 
     renderOtherAccountInfo = values => {
+        if (values.length === 0) {
+            return null;
+        }
         return (
             <div className='form-account-info'>
                 <div className='custom-scrollbar'>
@@ -298,6 +301,9 @@ export default class DataGrid extends PureComponent {
 
     renderAccountHeadlineInfo = values => {
         let listPic = this.getListPicId(values);
+        if (listPic.length === 0) {
+            return null;
+        }
         return (
             <div className='form-account-info'>
                 <div className='custom-scrollbar'>

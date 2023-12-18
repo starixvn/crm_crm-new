@@ -168,7 +168,7 @@ export default class Filter extends Component {
     renderBreadcrumbsMenu = (breadcrumbsMenu, pathname) => {
         return (
                 <ul className='breadcrumbsMenu sub-menu list-inline list-unstyled'>
-                {this.renderIconHome()}
+                {breadcrumbsMenu.length !== 0 && this.renderIconHome()}
                     {
                         breadcrumbsMenu.map((item, key) =>
                             <li key={key}>{item}</li>

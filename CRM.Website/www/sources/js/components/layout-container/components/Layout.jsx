@@ -43,10 +43,6 @@ export class Layout extends Component {
         this.initDataMenu(window.menus);
         const storage = window.localStorage;
         const isShowingLeftPanel = storage.getItem('isShowingLeftPanel');
-        const isKeepLeftPanel = storage.getItem('isKeepLeftPanel');
-        if (isKeepLeftPanel !== null) {
-            this.setState({ isShowingLeftPanel: JSON.parse(isKeepLeftPanel) });
-        }
         if (isShowingLeftPanel !== null) {
             storage.removeItem('isShowingLeftPanel');
         }
