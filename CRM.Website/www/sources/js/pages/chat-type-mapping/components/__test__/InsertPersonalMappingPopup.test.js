@@ -537,7 +537,7 @@ describe('InsertPersonalMappingPopup', () => {
     });
 
     describe('handleChangeUsername', () => {
-        it('should return exactly', () => {
+        it('should return exactly', async() => {
             // Arrange
             const promise = Promise.resolve([]);
             const props = {
@@ -574,7 +574,9 @@ describe('InsertPersonalMappingPopup', () => {
             const popup = shallow(<InsertPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
             popup.instance().setState(state);
             popup.instance().handleChange = jest.fn();
+            popup.instance().isChatWithBot = jest.fn();
             popup.instance().handleChangeUsername('test');
+            await promise;
 
             // Assert
             expect(popup.instance().handleChange).toHaveBeenCalledWith('username', 'test');

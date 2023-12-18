@@ -389,7 +389,7 @@ describe('EditPersonalMappingPopup', () => {
     });
 
     describe('handleChangeUsername', () => {
-        it('should return exactly', () => {
+        it('should return exactly', async() => {
             // Arrange
             const promise = Promise.resolve([]);
             const props = {
@@ -399,7 +399,7 @@ describe('EditPersonalMappingPopup', () => {
                 getTelegramDisplayName: jest.fn(() => promise),
                 recipients: {
                     data: [{ id: 1, letstalkIds: '1',  usernames: 'tets' }],
-                    botInfo: [{ username: 'test', chatId: '123' }]
+                    botInfo: [{ username: 'test', chatId: '123', botId: 12345 }]
                 },
                 groupHeadline: [{ id: 1 }],
                 recipient: { value: 'test' }
@@ -421,7 +421,9 @@ describe('EditPersonalMappingPopup', () => {
             const popup = shallow(<EditPersonalMappingPopup {...props} />, { disableLifecycleMethods: true });
             popup.instance().setState(state);
             popup.instance().handleChange = jest.fn();
+            popup.instance().isChatWithBot = jest.fn();
             popup.instance().handleChangeUsername('test');
+            await promise;
 
             // Assert
             expect(popup.instance().handleChange).toHaveBeenCalledWith('letstalkID_Username', 'test');
