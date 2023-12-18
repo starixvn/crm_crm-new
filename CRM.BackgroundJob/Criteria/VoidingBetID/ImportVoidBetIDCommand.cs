@@ -10,6 +10,8 @@
 
         public string IP { get; set; } = string.Empty;
 
+        public int MAXMsgTargetId { get; set; }
+
         public override string GetSettingKey() => "Acc_CRM_AutoFB_VoidByBetID_Import";
 
         public override bool IsValid() => true;

@@ -10,9 +10,6 @@
         [XMLName("MessageId")]
         public int MessageId { get; set; }
 
-        [XMLName("MAXMsgTargetId")]
-        public int MAXMsgTargetId { get; set; }
-
         [XMLName("BetTransId")]
         public string BetTransId { get; set; }
 

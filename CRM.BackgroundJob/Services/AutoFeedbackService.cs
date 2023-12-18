@@ -560,8 +560,8 @@
                     return;
                 }
                 var message = await voidingBetIDService.GetMessageVoidBetIDAsync(systemSettingInfo.LastMsgTargetId, systemSettingInfo.BatchSize);
-                var messageNotDuplicated = await voidingBetIDService.CleanMessageVoidBetIDAsync(message);
-                var (commandResult, command) = await voidingBetIDService.ImportVoidBetIDAsync(messageNotDuplicated, Environment);
+                var (messageNotDuplicated, maxMsgTargetId) = await voidingBetIDService.CleanMessageVoidBetIDAsync(message);
+                var (commandResult, command) = await voidingBetIDService.ImportVoidBetIDAsync(messageNotDuplicated, Environment, maxMsgTargetId);
                 if (commandResult.IsSuccessful)
                 {
                     await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();

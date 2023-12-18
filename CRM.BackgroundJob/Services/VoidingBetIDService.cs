@@ -13,9 +13,9 @@
     {
         Task<IEnumerable<MessageVoidBetID>> GetMessageVoidBetIDAsync(int lastMsgTargetId, int batchSize);
 
-        Task<IEnumerable<MessageVoidBetID>> CleanMessageVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages);
+        Task<ValueTuple<IEnumerable<MessageVoidBetID>, int>> CleanMessageVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages);
 
-        Task<ValueTuple<CommandResult, ImportVoidBetIDCommand>> ImportVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages, string environment);
+        Task<ValueTuple<CommandResult, ImportVoidBetIDCommand>> ImportVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages, string environment, int maxMsgTargetId);
     }
 
     public class VoidingBetIDService : IVoidingBetIDService
@@ -37,21 +37,23 @@
             return await baseService.GetDataAsync<MessageVoidBetID>(criteria);
         }
 
-        public async Task<IEnumerable<MessageVoidBetID>> CleanMessageVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages)
+        public async Task<ValueTuple<IEnumerable<MessageVoidBetID>, int>> CleanMessageVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages)
         {
             var criteria = new CleanMessageVoidByBetIDCriteria
             {
                 Messages = messages.ToXML("root").ToString()
             };
-            return await baseService.GetDataAsync<MessageVoidBetID>(criteria);
+            var cleanMessage = await baseService.GetDataAsync<MessageVoidBetID>(criteria);
+            return new ValueTuple<IEnumerable<MessageVoidBetID>, int>(cleanMessage, criteria.MAXMsgTargetId);
         }
 
-        public async Task<ValueTuple<CommandResult, ImportVoidBetIDCommand>> ImportVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages, string environment)
+        public async Task<ValueTuple<CommandResult, ImportVoidBetIDCommand>> ImportVoidBetIDAsync(IEnumerable<MessageVoidBetID> messages, string environment, int maxMsgTargetId)
         {
             var command = new ImportVoidBetIDCommand
             {
                 Messages = messages.ToXML("root").ToString(),
-                Environment = environment
+                Environment = environment,
+                MAXMsgTargetId = maxMsgTargetId
             };
             var commandResult = await baseService.ExecuteNonQueryAsync(command);
             return new ValueTuple<CommandResult, ImportVoidBetIDCommand>(commandResult, command);
