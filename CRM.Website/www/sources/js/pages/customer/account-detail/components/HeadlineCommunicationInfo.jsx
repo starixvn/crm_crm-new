@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 export class HeadlineCommunicationInfo extends Component {
     render() {
         return (
-            <>HeadlineCommunicationInfo</>
+            <div className='tab-child active'>Headline Communication info</div>
         );
     }
 }

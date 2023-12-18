@@ -1,0 +1,85 @@
+.group-account{
+    border: 1px #B7B7B7 solid;
+
+    &:first-child{
+        border-bottom: none;
+    }
+
+    .group-title{
+        padding: 10px 12px;
+        color: #0255A5;
+        border-bottom: 1px #B7B7B7 solid;
+        background: #E5E5E5;
+    }
+
+    .group-content{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        column-gap: 60px;
+        row-gap: 12px;
+        padding: 12px;
+        background: #F1F1F1;
+
+       .form-group{
+            display: flex;
+            flex-direction: column;
+            max-width: 200px;
+            width: 100%;
+            margin-bottom: 0;
+       }
+
+       .form-check{
+            padding-left: 0;
+            display: flex;
+            align-items: center;
+
+            input[type=checkbox]{
+                width: 18px;
+                height: 18px;
+                margin: 3px 7px 3px 3px;
+            }
+
+            .form-check-input{
+                margin: 0;
+                position: relative;
+            }
+       }
+    }
+}
+
+.headline-info{
+    margin-top: 16px;
+
+    .tab-title{
+        display: flex;
+        gap: 6px;
+
+        .tab-child{
+            border-radius: 5px 5px 0 0;
+            border: 1px #D1D1D1 solid;
+            border-bottom: none;
+            padding: 6px 12px;
+            color: #4B4B4B;
+            background: #E6E6E6;
+
+            &.active{
+                color: #0255A5;
+                background: #fff;
+                position: relative;
+                top: 1px;
+            }
+        }
+    }
+
+    .tab-content{
+        border: 1px #D1D1D1 solid;
+        padding: 16px 12px;
+    }
+}
+
+@media only screen and (max-width: 1366px) {
+    .group-account .group-content{
+        column-gap: 12px;
+    }
+}

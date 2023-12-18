@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 export class CompanyService extends Component {
     render() {
         return (
-            <>CompanyService</>
+            <div className='tab-child'>Company Service</div>
         );
     }
 }

@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 export class HeadlineStaffsAndAuthority extends Component {
     render() {
         return (
-            <>HeadlineStaffsAndAuthority</>
+            <div className='tab-child'>Headline Staffs And Authority</div>
         );
     }
 }
