@@ -46,7 +46,7 @@
             var actual = await service.CleanMessageVoidBetIDAsync(message);
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected, actual.Item1);
         }
 
         [Fact]
@@ -62,7 +62,7 @@
             baseService.ExecuteNonQueryAsync(Arg.Any<ImportVoidBetIDCommand>()).Returns(commandResult);
 
             // Act
-            var actual = await service.ImportVoidBetIDAsync(message, "UAT");
+            var actual = await service.ImportVoidBetIDAsync(message, "UAT", 1);
 
             // Assert
             Assert.Equal(expected.Item1, actual.Item1);
