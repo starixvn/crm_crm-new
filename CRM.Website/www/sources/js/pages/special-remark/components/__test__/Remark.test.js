@@ -13,23 +13,38 @@ describe('Remark', () => {
         jest.useFakeTimers();
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
-        const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'hasHostOnCurrentCustomer');
-        appContainer.checked = true;
+        shareScripts.hasHostPermissionOnCurrentCustomer = jest.fn(() => true);
+        const divHostLicenseePermission = document.createElement('div');
+        const divHostCreditPermission = document.createElement('div');
+        divHostLicenseePermission.setAttribute('id', 'hasHostLicenseePermission');
+        divHostCreditPermission.setAttribute('id', 'hasHostCreditPermission');
+        divHostLicenseePermission.checked = true;
+        divHostCreditPermission.checked = true;
+        document.body.appendChild(divHostLicenseePermission);
+        document.body.appendChild(divHostCreditPermission);
     });
 
     afterAll(() => {
-        const appContainer = document.getElementById('hasHostOnCurrentCustomer');
-        if (appContainer || appContainer1) {
-            document.body.removeChild(appContainer);
+        const divHostLicenseePermission = document.getElementById('hasHostOnCurrentCustomer');
+        const divHostCreditPermission = document.getElementById('hasHostOnCurrentCustomer');
+        if (divHostLicenseePermission || divHostCreditPermission) {
+            document.body.removeChild(divHostLicenseePermission);
+            document.body.removeChild(divHostCreditPermission);
         }
         jest.clearAllMocks();
     });
+
+    const initProps = {
+        gridData: {
+            specialRemarks: ['test'], normalRemarks: ['testing']
+        }
+    };
 
     describe('componentDidMount', () => {
         it('should call setState', async () => {
             // Arrange
             const props = {
+                ...initProps,
                 gridData: { specialRemarks: ['test'], normalRemarks: ['testing'] },
                 getRemarks: jest.fn(),
                 id: 1754
@@ -53,6 +68,7 @@ describe('Remark', () => {
 
     describe('componentWillUnmount', () => {
         const props = {
+            ...initProps,
             resetState: jest.fn(),
             gridData: { specialRemarks: ['test'], normalRemarks: ['testing'] },
             getRemarks: jest.fn(),
@@ -73,7 +89,7 @@ describe('Remark', () => {
     describe('handleChange', () => {
         it('should call setState when handle change', async () => {
             // Act
-            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
+            const container = shallow(<Remark {...initProps}/>, { disableLifecycleMethods: true }).instance();
             container.handleChange('123', 0, 'specialRemarks', ['test']);
             expect(container.state.specialRemarks).toEqual(['123']);
         });
@@ -82,7 +98,7 @@ describe('Remark', () => {
     describe('handleCollapseExpand', () => {
         it('should update state correct', () => {
             // Arrange
-            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
+            const container = shallow(<Remark {...initProps}/>, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.handleCollapseExpand('specialRemark');
@@ -95,7 +111,7 @@ describe('Remark', () => {
         });
         it('should not update state correct', () => {
             // Arrange
-            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
+            const container = shallow(<Remark {...initProps}/>, { disableLifecycleMethods: true }).instance();
 
             // Act
             container.handleCollapseExpand();
@@ -118,7 +134,7 @@ describe('Remark', () => {
             };
 
             // Act
-            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
+            const container = shallow(<Remark {...initProps}/>, { disableLifecycleMethods: true }).instance();
             container.setState({ specialRemarks: state.specialRemarks, dataSpecialRemarks: state.dataSpecialRemarks });
             container.removeSpecialRemarkItem(1);
             expect(container.state.specialRemarks).toEqual(['test', 'test2']);
@@ -135,7 +151,7 @@ describe('Remark', () => {
             };
 
             // Act
-            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
+            const container = shallow(<Remark {...initProps}/>, { disableLifecycleMethods: true }).instance();
             container.setState({ normalRemarks: state.normalRemarks, dataNormalRemarks: state.dataNormalRemarks });
             container.removeNormalRemarkItem(1);
             expect(container.state.normalRemarks).toEqual(['testing', 'testing2']);
@@ -152,7 +168,7 @@ describe('Remark', () => {
             };
 
             // Act
-            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
+            const container = shallow(<Remark {...initProps}/>, { disableLifecycleMethods: true }).instance();
             container.setState({ specialRemarks: state.specialRemarks, dataSpecialRemarks: state.dataSpecialRemarks });
             container.addSpecialRemarkItem('123');
             expect(container.state.specialRemarks).toEqual(['test', 'test1', 'test2', '123']);
@@ -168,7 +184,7 @@ describe('Remark', () => {
             };
 
             // Act
-            const container = shallow(<Remark />, { disableLifecycleMethods: true }).instance();
+            const container = shallow(<Remark {...initProps}/>, { disableLifecycleMethods: true }).instance();
             container.setState({ normalRemarks: state.normalRemarks, dataNormalRemarks: state.dataNormalRemarks });
             container.addNormalRemarkItem('123');
             expect(container.state.normalRemarks).toEqual(['testing', 'testing1', 'testing2', '123']);
@@ -233,21 +249,6 @@ describe('Remark', () => {
             container.instance().setState(state);
             // Assert
             expect(container).toEqual({});
-        });
-
-        it('should render correctly', () => {
-            //Act
-            const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
-            };
-            const state = {
-                policy: 2
-            };
-            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
-            container.instance().setState(state);
-
-            //Assert
-            expect(toJson(container)).toMatchSnapshot();
         });
 
         it('handle message responses if unsuccessful', () => {

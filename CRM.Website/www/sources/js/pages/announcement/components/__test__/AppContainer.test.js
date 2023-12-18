@@ -37,6 +37,7 @@ describe('AppContainer', () => {
                 setRedirectActionParams: jest.fn(),
                 contentPopup: {show: false},
                 actionAnnouncementPopup: {show: false},
+                cancelAnnouncementPopup: {show: true}
             };
             const promise = Promise.resolve(2);
             shareScripts.getPermission = jest.fn(() => promise);
@@ -64,6 +65,7 @@ describe('AppContainer', () => {
                 setRedirectActionParams: jest.fn(),
                 contentPopup: {show: false},
                 actionAnnouncementPopup: {show: false},
+                cancelAnnouncementPopup: {show: true}
             };
             const promise = Promise.resolve(2);
             shareScripts.getPermission = jest.fn(() => promise);
@@ -85,6 +87,7 @@ describe('AppContainer', () => {
             const props = {
                 contentPopup: {show: false},
                 actionAnnouncementPopup: {show: false},
+                cancelAnnouncementPopup: {show: true}
             };
         
             const appContainer = shallow(<AppContainer {...props}/>, { disableLifecycleMethods: true });
@@ -112,6 +115,7 @@ describe('AppContainer', () => {
             const props = {
                 contentPopup: {show: false},
                 actionAnnouncementPopup: {show: false},
+                cancelAnnouncementPopup: {show: true}
             };
             const isAction = true;
         
@@ -141,6 +145,7 @@ describe('AppContainer', () => {
                 resetState: jest.fn(),
                 contentPopup: {show: false},
                 actionAnnouncementPopup: {show: false},
+                cancelAnnouncementPopup: {show: true}
             };
             //Act
             const appContainer = shallow(<AppContainer {...props}/>, { disableLifecycleMethods: true }).instance();
@@ -159,6 +164,7 @@ describe('AppContainer', () => {
                 setIsRefresh: jest.fn(),
                 contentPopup: {show: false},
                 actionAnnouncementPopup: {show: false},
+                cancelAnnouncementPopup: {show: true}
             };
             const appContainer = shallow(<AppContainer {...props} />, { disableLifecycleMethods: true }).instance();
             //Act
@@ -182,6 +188,7 @@ describe('AppContainer', () => {
                 gridParams: {},
                 contentPopup: {show: false},
                 actionAnnouncementPopup: {show: false},
+                cancelAnnouncementPopup: {show: true}
             };
             toast.success = jest.fn();
             const appContainer = shallow(<AppContainer {...props} />, { disableLifecycleMethods: true }).instance();
@@ -207,6 +214,7 @@ describe('AppContainer', () => {
                 gridParams: {},
                 contentPopup: {show: false},
                 actionAnnouncementPopup: {show: false},
+                cancelAnnouncementPopup: {show: true}
             };
             toast.error = jest.fn();
             const appContainer = shallow(<AppContainer {...props} />, { disableLifecycleMethods: true }).instance();
@@ -229,6 +237,7 @@ describe('AppContainer', () => {
                 setIsRefresh: jest.fn(),
                 contentPopup: {show: false},
                 actionAnnouncementPopup: {show: false},
+                cancelAnnouncementPopup: {show: true}
             };
             const appContainer = shallow(<AppContainer {...props} />, { disableLifecycleMethods: true }).instance();
             //Act
@@ -251,7 +260,7 @@ describe('AppContainer', () => {
                 newAnnouncementPopup: {show: false},
                 contentPopup: {show: false},
                 actionAnnouncementPopup: {show: false},
-                cancelAnnouncementPopup: {show: false}
+                cancelAnnouncementPopup: {show: true}
             };
             // Act
             const container = shallow(<AppContainer {...props} />, { disableLifecycleMethods: true });

@@ -11,9 +11,23 @@ describe('CustomerInfo', () => {
         window.currentClientTime = '7/28/2021 2:26:28 PM';
         jest.useFakeTimers();
         LangHelper.getResource = jest.fn(key => key);
+        const divHostLicenseePermission = document.createElement('div');
+        const divHostCreditPermission = document.createElement('div');
+        divHostLicenseePermission.setAttribute('id', 'hasHostLicenseePermission');
+        divHostCreditPermission.setAttribute('id', 'hasHostCreditPermission');
+        divHostLicenseePermission.checked = true;
+        divHostCreditPermission.checked = true;
+        document.body.appendChild(divHostLicenseePermission);
+        document.body.appendChild(divHostCreditPermission);
     });
 
     afterAll(() => {
+        const divHostLicenseePermission = document.getElementById('hasHostOnCurrentCustomer');
+        const divHostCreditPermission = document.getElementById('hasHostOnCurrentCustomer');
+        if (divHostLicenseePermission || divHostCreditPermission) {
+            document.body.removeChild(divHostLicenseePermission);
+            document.body.removeChild(divHostCreditPermission);
+        }
         jest.clearAllMocks();
     });
 

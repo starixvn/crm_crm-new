@@ -47,7 +47,8 @@ describe('Update', () => {
         updateRelation: jest.fn(() => promise),
         getMainSettingRelation: jest.fn(),
         updateResult: {isSuccessful: true},
-        relationConfirmPopup: { show: true }
+        relationConfirmPopup: { show: true },
+        setRelationConfirmPopup: jest.fn()
     };
 
     describe('componentDidUpdate', () => {

@@ -10,16 +10,22 @@ import toJson from 'enzyme-to-json';
 
 describe('EditForm', () => {
     beforeAll(() => {
-        const appContainer = document.createElement('div');
-        appContainer.setAttribute('id', 'hasHostOnCurrentCustomer');
-        appContainer.checked = true;
-        document.body.appendChild(appContainer);
+        const divHostLicenseePermission = document.createElement('div');
+        const divHostCreditPermission = document.createElement('div');
+        divHostLicenseePermission.setAttribute('id', 'hasHostLicenseePermission');
+        divHostCreditPermission.setAttribute('id', 'hasHostCreditPermission');
+        divHostLicenseePermission.checked = true;
+        divHostCreditPermission.checked = true;
+        document.body.appendChild(divHostLicenseePermission);
+        document.body.appendChild(divHostCreditPermission);
     });
 
     afterAll(() => {
-        const appContainer = document.getElementById('hasHostOnCurrentCustomer');
-        if (appContainer) {
-            document.body.removeChild(appContainer);
+        const divHostLicenseePermission = document.getElementById('hasHostOnCurrentCustomer');
+        const divHostCreditPermission = document.getElementById('hasHostOnCurrentCustomer');
+        if (divHostLicenseePermission || divHostCreditPermission) {
+            document.body.removeChild(divHostLicenseePermission);
+            document.body.removeChild(divHostCreditPermission);
         }
         jest.clearAllMocks();
     });

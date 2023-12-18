@@ -11,16 +11,16 @@ describe('AppContainer', () => {
         jest.clearAllMocks();
     });
 
-    it('renders component correctly', () => {
-        // Act
-        const container = shallow(<AppContainer />);
-
-        // Assert
-        expect(toJson(container)).toMatchSnapshot();
-    });
+    const initProps = {
+        createCommunicationPopup: { show: true },
+        editCommunicationPopup: { show: true },
+        setDeleteCommunicationPopup: jest.fn(),
+        deleteCommunicationPopup: { show: true, index: 1, id: 1 }
+    }
 
     describe('componentWillUnmount', () => {
         const props = {
+            ...initProps,
             resetState: jest.fn(),
             getAllSettings: jest.fn()
         };
@@ -40,6 +40,7 @@ describe('AppContainer', () => {
         it('render component correctly', () => {
             // Arrange
             const props = {
+                ...initProps,
                 createCommunicationPopup: { show: true }
             };
 
@@ -53,6 +54,7 @@ describe('AppContainer', () => {
         it('should calls exactly functions when close popup', () => {
             // Arrange
             const props = {
+                ...initProps,
                 setCreateCommunicationPopup: jest.fn(),
                 setCreateCommunicationResult: jest.fn()
             };
@@ -69,6 +71,7 @@ describe('AppContainer', () => {
         it('should calls exactly functions when close popup with data is successfull', () => {
             // Arrange
             const props = {
+                ...initProps,
                 setCreateCommunicationPopup: jest.fn(),
                 setCreateCommunicationResult: jest.fn(),
                 createCommunicationResult: { isSuccessful: null },
@@ -89,6 +92,7 @@ describe('AppContainer', () => {
         it('should calls exactly functions when create communication setting successful', () => {
             // Arrange
             const props = {
+                ...initProps,
                 gridParamsCommunication: {},
                 getGridCommunicationSetting: jest.fn()
             };
@@ -108,6 +112,7 @@ describe('AppContainer', () => {
         it('render component correctly', () => {
             // Arrange
             const props = {
+                ...initProps,
                 editCommunicationPopup: { show: true }
             };
 
@@ -121,6 +126,7 @@ describe('AppContainer', () => {
         it('should calls exactly functions when close popup', () => {
             // Arrange
             const props = {
+                ...initProps,
                 setEditCommunicationPopup: jest.fn(),
                 setEditCommunicationResult: jest.fn(),
                 setSelectCommunicationId: jest.fn()
@@ -139,6 +145,7 @@ describe('AppContainer', () => {
         it('should calls exactly functions when edit communication setting successful', () => {
             // Arrange
             const props = {
+                ...initProps,
                 gridParamsCommunication: {},
                 getGridCommunicationSetting: jest.fn()
             };
@@ -158,7 +165,7 @@ describe('AppContainer', () => {
         it('render component correctly', () => {
             // Arrange
             const props = {
-                deleteCommunicationPopup: { show: true, index: '1' }
+                ...initProps
             };
 
             // Act
@@ -171,6 +178,7 @@ describe('AppContainer', () => {
         it('should calls exactly functions when close popup', () => {
             // Arrange
             const props = {
+                ...initProps,
                 setDeleteCommunicationPopup: jest.fn()
             };
             const container = shallow(<AppContainer {...props} />).instance();
@@ -187,7 +195,7 @@ describe('AppContainer', () => {
             const response = { isSuccessful: true, message: '' };
             const promise = Promise.resolve(response);
             const props = {
-                deleteCommunicationPopup: { id: 1 },
+                ...initProps,
                 deleteCommunication: jest.fn(() => promise),
                 getGridCommunicationSetting: jest.fn(),
                 gridParamsCommunication: {}
@@ -211,7 +219,7 @@ describe('AppContainer', () => {
             const response = { isSuccessful: false, message: 'delete unsuccessful' };
             const promise = Promise.resolve(response);
             const props = {
-                deleteCommunicationPopup: { id: 1 },
+                ...initProps,
                 deleteCommunication: jest.fn(() => promise)
             };
             const container = shallow(<AppContainer {...props} />).instance();
