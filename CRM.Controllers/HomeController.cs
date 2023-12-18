@@ -34,6 +34,9 @@
             ViewBag.hasReadLicenseePermission = hasReadLicenseePermission;
             ViewBag.hasReadCreditPermission = hasReadCreditPermission;
 
+            var hasHostPicManagementPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.PICManagement);
+
+            ViewBag.hasHostPicManagementPermission = hasHostPicManagementPermission;
             return View(hasCreateFeedbackPermission);
         }
     }

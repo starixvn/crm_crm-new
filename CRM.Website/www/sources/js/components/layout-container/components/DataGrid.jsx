@@ -134,8 +134,14 @@ export default class DataGrid extends PureComponent {
                     </Col>
                     <Col className="status text-right group-icon-acc">
                         <div className='show-icon'>
-                                <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-acc-boss.png')} alt='icon acc boss'/>
+                            {
+                                values.isGroupHeadLine &&
+                                <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-acc-boss.png')} title='Headline Account' alt='icon acc boss' />
+                            }
+                            {
+                                values.isVIP &&
                                 <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-vip.png')} alt='icon vip'/>
+                            }
                         </div>
                         {values.status}
                     </Col>
@@ -177,7 +183,7 @@ export default class DataGrid extends PureComponent {
                             value={values.countryId}
                             name="countryId"
                             isHideNA={false}
-                            OnChangeValue={this.handleChangeSite}
+                            OnChangeValue={this.handleChangeCountry}
                         />
                     </Col>
                 </Form.Group>
@@ -207,9 +213,9 @@ export default class DataGrid extends PureComponent {
                         {LangHelper.getResource('Nickname')}
                     </Form.Label>
                     <Col>
-                        <Form.Control type="text" size="sm" className="shadow-none"
-                            onChange={handleChange} name="lastName" value={values.nickname} autoComplete="off"
-                        />
+                        <Form.Label size="sm" className="">
+                            {values.nickname}
+                        </Form.Label>
                     </Col>
                 </Form.Group>
                 <Form.Group className="row item field-info">
@@ -243,10 +249,10 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
                 {
-                    values.isGroupHeadLine && this.renderAccountHeadlineInfo(values.headlineStaffInfos)
+                    values.isGroupHeadLine && !values.headlineStaffInfos && this.renderAccountHeadlineInfo(values.headlineStaffInfos)
                 }
                 {
-                    !values.isGroupHeadLine && this.renderOtherAccountInfo(values.otherAccountCommunicationInfos)
+                    !values.isGroupHeadLine && !values.otherAccountCommunicationInfos && this.renderOtherAccountInfo(values.otherAccountCommunicationInfos)
                 }
                 {
                     this.renderDetail(isShowInactiveMsg)
@@ -267,21 +273,25 @@ export default class DataGrid extends PureComponent {
 
     renderOtherAccountInfo = values => {
         return (
-            <div className='account-item'>
-                {
-                    values.map(value => {
-                        return <>
-                            <Form.Group className="row item  ">
-                                <Form.Label column md="3" htmlFor="name" >
-                                    {value.communiationName}
-                                </Form.Label>
-                                <Col md="9">
-                                    {value.communicationValue}
-                                </Col>
-                            </Form.Group>
-                        </>
-                    })
-                }
+            <div className='form-account-info'>
+                <div className='custom-scrollbar'>
+                    <div className='account-item'>
+                        {
+                            values.map(value => {
+                                return <>
+                                    <Form.Group>
+                                        <Form.Label >
+                                            {value.communiationName}
+                                        </Form.Label>
+                                        <Col>
+                                            {value.communicationValue}
+                                        </Col>
+                                    </Form.Group>
+                                </>
+                            })
+                        }
+                    </div>
+                </div>
             </div>
         );
     };
@@ -333,6 +343,7 @@ export default class DataGrid extends PureComponent {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
+        const hasHostPicManagementPermission = document.getElementById('hasHostPicManagementPermission').checked;
 
         return (
             <div className="group-detail-link">
@@ -360,17 +371,18 @@ export default class DataGrid extends PureComponent {
                                     </li>
                                 }
                             </ul>
-                            {
-                                hasReadFeedbackPermission &&
-                                <ul className='list-unstyled list-menu pull-left list-menu-right'>
+                                
+                            <ul className='list-unstyled list-menu pull-left list-menu-right'>
+                                {
+                                    hasReadFeedbackPermission &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
                                     </li>
-                                    <li>
-                                        <a onClick={() => this.props.handleNavigate('CommunicationLog')}>{LangHelper.getResource('CommunicationLog')}</a>
-                                    </li>
-                                </ul>
-                            }
+                                }
+                                <li>
+                                    <a onClick={() => this.props.handleNavigate('Communication')}>{LangHelper.getResource('CommunicationLog')}</a>
+                                </li>
+                            </ul>
                         </Form.Group>
                         <Form.Group className="row form-row-detail">
                             <ul className='list-unstyled list-menu pull-left'>
@@ -380,9 +392,12 @@ export default class DataGrid extends PureComponent {
                                 <li>
                                     <a onClick={() => this.props.handleNavigate('Remark')}>{LangHelper.getResource('Remark')}</a>
                                 </li>
-                                <li>
-                                    <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PicManagement')}</a>
-                                </li>
+                                {
+                                    hasHostPicManagementPermission && 
+                                    <li>
+                                        <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PicManagement')}</a>
+                                    </li>
+                                }
                             </ul>
                             <ul className='list-unstyled list-menu pull-left list-menu-right'>
                                 <li>
@@ -411,7 +426,7 @@ export default class DataGrid extends PureComponent {
         });
     };
 
-    handleChangeSite = item => {
+    handleChangeCountry = item => {
         this.setState({
             countryId: item.id
         });
@@ -421,7 +436,7 @@ export default class DataGrid extends PureComponent {
         const data = {
             custId: values.custId,
             site: this.state.siteId === null ? values.siteId : this.state.siteId,
-            countryId: countryIdthis.state.countryId === null ? values.countryId : this.state.countryId,
+            countryId: this.state.countryId === null ? values.countryId : this.state.countryId,
             provinceId: this.props.customerInfo.provinceId,
             firstName: values.firstName,
             lastName: values.lastName,
@@ -528,7 +543,8 @@ export default class DataGrid extends PureComponent {
             status: customerInfo.status,
             isGroupHeadLine: customerInfo.isGroupHeadLine,
             headlineStaffInfos: customerInfo.headlineStaffInfos,
-            otherAccountCommunicationInfos: customerInfo.otherAccountCommunicationInfos
+            otherAccountCommunicationInfos: customerInfo.otherAccountCommunicationInfos,
+            isVIP: customerInfo.isVIP
         };
         return (
             <Formik

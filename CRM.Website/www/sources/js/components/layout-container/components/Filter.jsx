@@ -166,13 +166,9 @@ export default class Filter extends Component {
     renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={() => this.props.handleNavigate('Dashboard')} /></li>;
 
     renderBreadcrumbsMenu = (breadcrumbsMenu, pathname) => {
-        const isHome = breadcrumbsMenu.length > 0 && breadcrumbsMenu[0].toLowerCase() === 'home'
-            || SubMainMenu.filter(x => this.getUrlPath(x.url) === pathname.toLowerCase()).length > 0;
         return (
-            isHome ?
-                this.props.customerInfo !== null && this.renderHomeSubMenu(pathname) :
                 <ul className='breadcrumbsMenu sub-menu list-inline list-unstyled'>
-                    {this.renderIconHome(pathname)}
+                {this.renderIconHome()}
                     {
                         breadcrumbsMenu.map((item, key) =>
                             <li key={key}>{item}</li>
@@ -191,81 +187,9 @@ export default class Filter extends Component {
         return '';
     };
 
-    renderHomeSubMenu = pathname => {
-        const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
-        const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
-        const hasReadLicenseePermission = document.getElementById('hasReadLicenseePermission').checked;
-        const hasReadCreditPermission = document.getElementById('hasReadCreditPermission').checked;
 
-        const isReadRemark = this.state.remarksPolicy >= Policy.Read;
-        const { handleNavigate, customerInfo } = this.props;
-        const isHideMainMenu = customerInfo.customerType === 1 && !hasReadFeedbackPermission && !isReadRemark;
-        const subMenusHtml = [
-            <li style={{ display: isHideMainMenu ? 'none' : '' }}
-                id="li-main" key="li-main" className={this.isCheckActive(pathname, 0)}>
-                <a onClick={() => handleNavigate('Dashboard')}>
-                    <u>M</u>ain
-                </a>
-            </li>,
-            <li style={{ display: hasReadSitePermission ? '' : 'none' }}
-                id="li-detail" key="li-detail"
-                className={this.isCheckActive(pathname, 1)}
-            >
-                <a onClick={() => handleNavigate('Detail')}>
-                    <u>D</u>etail
-                </a>
-            </li>,
-            <li style={{ display: (hasReadLicenseePermission || hasReadCreditPermission) && hasReadFeedbackPermission ? '' : 'none' }}
-                id="li-communication-log" key="li-communication-log" className={this.isCheckActive(pathname, 2)}
-            >
-                <a onClick={() => handleNavigate('Communication')}>
-                    Communication <u>L</u>og
-                </a>
-            </li>,
-            <li style={{ display: hasReadLicenseePermission || hasReadCreditPermission ? '' : 'none' }}
-                id="li-special-remark" key="li-special-remark" className={this.isCheckActive(pathname, 3)}
-            >
-                <a onClick={() => handleNavigate('SpecialRemark')}>
-                    Special Remar<u>k</u>
-                </a>
-            </li>,
-            <li style={{ display: this.props.isCreditSite && isReadRemark ? '' : 'none' }}
-                id="li-special-new-remark"
-                key="li-special-new-remark"
-                className={this.isCheckActive(pathname, 4)}
-            >
-                <a onClick={() => handleNavigate('Remark')}>
-                    Rema<u>r</u>k
-                </a>
-            </li>,
-            <li style={{ display: hasReadSitePermission ? '' : 'none' }}
-                id="li-activity-log" key="li-activity-log"
-                className={this.isCheckActive(pathname, 5)}
-            >
-                <a onClick={() => handleNavigate('ActionLog')}>
-                    Ac<u>t</u>ivity Log
-                </a>
-            </li>
-        ];
 
-        return (
-            (hasReadFeedbackPermission || hasReadSitePermission) ?
-                <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
-                    {this.renderIconHome()}
-                    {
-                        subMenusHtml.map(item => item)
-                    }
-                </ul> :
-                <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
-                    {this.renderIconHome()}
-                    <li id="li-main" className='active'>
-                        <a onClick={() => handleNavigate('Dashboard')}>
-                            {LangHelper.getResource('Main')}
-                        </a>
-                    </li>
-                </ul>
-        );
-    };
+
 
     handleConcatMenu = menus => {
         let menusArr = [];
