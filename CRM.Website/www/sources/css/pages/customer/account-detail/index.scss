@@ -6,28 +6,22 @@
     }
 
     .group-title{
-        padding: 10px 12px;
+        padding: 6px;
         color: #0255A5;
         border-bottom: 1px #B7B7B7 solid;
         background: #E5E5E5;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        img{
+            cursor: pointer;
+        }
     }
 
     .group-content{
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        column-gap: 60px;
-        row-gap: 12px;
-        padding: 12px;
         background: #F1F1F1;
-
-       .form-group{
-            display: flex;
-            flex-direction: column;
-            max-width: 200px;
-            width: 100%;
-            margin-bottom: 0;
-       }
+        padding: 12px;
 
        .form-check{
             padding-left: 0;
@@ -38,6 +32,7 @@
                 width: 18px;
                 height: 18px;
                 margin: 3px 7px 3px 3px;
+                cursor: pointer;
             }
 
             .form-check-input{
@@ -46,6 +41,22 @@
             }
        }
     }
+}
+
+.group-content, .group-item{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    column-gap: 60px;
+    row-gap: 12px;
+
+   .form-group{
+        display: flex;
+        flex-direction: column;
+        max-width: 200px;
+        width: 100%;
+        margin-bottom: 0;
+   }
 }
 
 .headline-info{
@@ -62,6 +73,7 @@
             padding: 6px 12px;
             color: #4B4B4B;
             background: #E6E6E6;
+            cursor: pointer;
 
             &.active{
                 color: #0255A5;
@@ -74,7 +86,22 @@
 
     .tab-content{
         border: 1px #D1D1D1 solid;
-        padding: 16px 12px;
+        padding: 16px 12px ;
+
+        .group-item{
+            border-bottom: 1px #D9D9D9 solid;
+            padding: 12px 0;
+        }
+
+        button{
+            margin-top: 12px;
+            padding: 5px 16px;
+            font-weight: 700;
+            box-shadow: 0px 2px 1px rgba(255, 255, 255, 0.25) inset; 
+            border-radius: 3px;
+            border: 1px #3C5B9B solid;
+            height: 26px;
+        }
     }
 }
 
