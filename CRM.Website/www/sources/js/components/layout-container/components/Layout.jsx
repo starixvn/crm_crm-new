@@ -245,9 +245,10 @@ export class Layout extends Component {
                 showErrorConfirmPopup: true
             });
         } else {
+            this.setState({ customerInfo: response.data });
             if (response !== undefined && response.data !== null) {
                 const isCreditSite = response.data.customerType === 1;
-
+                this.setState({ isCreditSite });
                 this.setState({
                     customerInfo: response.data,
                     isCreditSite: isCreditSite
