@@ -30,48 +30,12 @@ export class AppContainer extends Component {
                         <CompanyService />
                     </div>
                     <div className='tab-content'>
-                        <div className='group-item'>
-                            <Form.Group>
-                                <Form.Label className="required">
-                                    {LangHelper.getResource('Name')}
-                                </Form.Label>
-                                <Form.Control type="text" name="name" value={null} autoComplete="off"/>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label className="required" >
-                                    {LangHelper.getResource('Role')}
-                                </Form.Label>
-                                <Form.Control type="text" name="role" value={null} autoComplete="off"/>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label >
-                                    {LangHelper.getResource('Language')}
-                                </Form.Label>
-                                <Form.Control type="text" name="language" value={null} autoComplete="off"/>
-                            </Form.Group><Form.Group>
-                                <Form.Label>
-                                    {LangHelper.getResource('Country')}
-                                </Form.Label>
-                                <Form.Control type="text" name="country" value={null} autoComplete="off"/>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label >
-                                    {LangHelper.getResource('Email')}
-                                </Form.Label>
-                                <Form.Control type="text" name="Email" value={null} autoComplete="off"/>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label >
-                                    {LangHelper.getResource('Letstalk')}
-                                </Form.Label>
-                                <Form.Control type="text" name="Letstalk" value={null} autoComplete="off"/>
-                            </Form.Group><Form.Group>
-                                <Form.Label>
-                                    {LangHelper.getResource('Phone')}
-                                </Form.Label>
-                                <Form.Control type="text" name="countPhoney" value={null} autoComplete="off"/>
-                            </Form.Group>
-                        </div>
+                        {
+                            this.renderTabHeadlineCommunicationInfo()
+                        }
+                        {
+                            this.renderTabHeadlineCommunicationInfo()
+                        }
                         <Button type="submit" variant="primary" size="sm">
                             {LangHelper.getResource('Save')}
                         </Button>
@@ -194,6 +158,67 @@ export class AppContainer extends Component {
                     />
                 </div>
             </Form>
+        );
+    }
+
+    renderTabHeadlineCommunicationInfo = () => {
+
+        return(
+        <div className='group-item'>
+            <Form.Group>
+                <Form.Label className="required">
+                    {LangHelper.getResource('Name')}
+                </Form.Label>
+                <Form.Control type="text" name="name" value={null} autoComplete="off"/>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label className="required" >
+                    {LangHelper.getResource('Role')}
+                </Form.Label>
+                <Form.Control type="text" name="role" value={null} autoComplete="off"/>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label >
+                    {LangHelper.getResource('Language')}
+                </Form.Label>
+                <Form.Control type="text" name="language" value={null} autoComplete="off"/>
+            </Form.Group><Form.Group>
+                <Form.Label>
+                    {LangHelper.getResource('Country')}
+                </Form.Label>
+                <Form.Control type="text" name="country" value={null} autoComplete="off"/>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label >
+                    {LangHelper.getResource('Email')}
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                </Form.Label>
+                <div className='field-icon'>
+                    <Form.Control type="text" name="Email" value={null} autoComplete="off"/>
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                </div>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label >
+                    {LangHelper.getResource('Letstalk')}
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                </Form.Label>
+                <div className='field-icon'>
+                    <Form.Control type="text" name="Letstalk" value={null} autoComplete="off"/>
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                </div>
+            </Form.Group><Form.Group>
+                <Form.Label>
+                    {LangHelper.getResource('Phone')}
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                </Form.Label>
+                <div className='field-icon'>
+                    <Form.Control type="text" name="countPhoney" value={null} autoComplete="off"/>
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </div>
+            </Form.Group>
+        </div>
         );
     }
 }
