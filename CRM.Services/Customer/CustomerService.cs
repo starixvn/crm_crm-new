@@ -155,6 +155,18 @@
                     Name = site.Name
                 };
                 customerInfo.IsDirectAccount = await CheckDirectAccount(customerInfo.CustId);
+                if (customerInfo.IsGroupHeadLine)
+                {
+                    (customerInfo.HeadlineStaffInfoPics,
+                        customerInfo.HeadlineStaffInfoLanguages,
+                        customerInfo.HeadlineStaffInfoCommunications) = await baseService.FetchMultipleAsync<HeadlineStaffInfoPic,
+                        HeadlineStaffInfoLanguage, HeadlineStaffInfoCommunication>(new GetHeadlineStaffInfoCriteria { HeadlineID = customerInfo.CustId });
+                }
+                else
+                {
+                    customerInfo.OtherAccountCommunicationInfos = await baseService.GetDataAsync<OtherAccountCommunicationInfo>(
+                        new GetOtherAccountCommunicationInfoCriteria { CustomerId = customerInfo.CustId });
+                }
             }
 
             return customerInfo;

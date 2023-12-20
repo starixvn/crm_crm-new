@@ -6,124 +6,69 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
-    using CRM.Models.Customer;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Customer;
+    using CRM.ViewModels.Customer;
+    using Fanex.Logging.Extensions;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.AccountDetail, Policy = Policy.Read)]
+    [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
+    [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
     public class AccountDetailController : BaseController
     {
         private readonly INapSession napSession;
         private readonly ICustomerService customerService;
         private readonly ISettingService settingService;
-        private readonly ISessionService sessionService;
+        private readonly IBaseService baseService;
+        private readonly ICRMLogService logService;
         private readonly IPermissionService permissionService;
 
         public AccountDetailController(
             INapSession napSession,
             ICustomerService customerService,
             ISettingService settingService,
-            ISessionService sessionService,
+            IBaseService baseService,
+            ICRMLogService logService,
             IPermissionService permissionService)
         {
             this.napSession = napSession;
             this.customerService = customerService;
             this.settingService = settingService;
-            this.sessionService = sessionService;
+            this.baseService = baseService;
+            this.logService = logService;
             this.permissionService = permissionService;
         }
 
-        public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
-        {
-            var sitePermission = await permissionService.GetSitePermissionAsync();
-            criteria.LicenseeType = sitePermission;
-            CustomerInfoDetails customerInfo = await customerService.GetCustomerInfoAsync(criteria);
-            if (customerInfo != null)
-            {
-                var siteType = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
-                customerInfo.CustomerType = siteType;
-                CurrentCustomer currentCustomer = new()
-                {
-                    CustId = customerInfo.CustId,
-                    Name = criteria.Username,
-                    IsGuest = criteria.IsGuest,
-                    CustType = siteType
-                };
-                sessionService.CurrentCustomer = currentCustomer;
-            }
-            else
-            {
-                sessionService.CurrentCustomer = null;
-            }
-            var isError = criteria.ErrCode > 0 && !string.IsNullOrEmpty(criteria.ErrMsg);
-            var errorJson = new
-            {
-                criteria.ErrCode,
-                criteria.ErrMsg
-            };
-
-            return Json(isError ? errorJson : customerInfo);
-        }
-
         [HttpPost]
-        public async Task<JsonResult> UpdateCustomerSuggestion([FromBody] UpdateCustomerSuggestionCriteria criteria)
+        public async Task<IActionResult> GetCustomerById([FromBody] GetCustomerInfoDetailByIdCriteria criteria)
         {
-            criteria.UserID = napSession.UserId;
-            var commandResult = await customerService.UpdateCustomerSuggestionAsync(criteria);
-            return Json(commandResult);
+            var customerInfo = await customerService.GetCustomerByIdAsync(criteria);
+            customerInfo.CustomerType = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
+            var logMessage = new LogMessage("Get Customer Feedback Info:")
+                       .AddMessage(JsonConvert.SerializeObject(customerInfo, Formatting.Indented))
+                       .ToString();
+
+            logService.LogInformation(logMessage);
+            return Json(customerInfo);
         }
 
-        public IActionResult GetCurrentCustomer()
-        {
-            return Json(sessionService.CurrentCustomer);
-        }
-
-        public async Task<IActionResult> GetSettings()
+        public async Task<IActionResult> GetAllSettings()
         {
             short licenseeType = await permissionService.GetSitePermissionAsync();
-            var settings = new
+
+            var allSettings = new CreateCustomerInfoViewModel
             {
-                sites = await settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType),
-                sitesByIsLicensee = await settingService.GetAllSitesGroupByIsLicenseeAsync(licenseeType: licenseeType),
-                countries = await settingService.GetCountryAsync(SettingConstants.Active),
-                languages = await settingService.GetLanguageAsync(SettingConstants.Active),
-                sitesLicenseeInactive = await settingService.GetAllSitesLicenseeInactive(licenseeType: licenseeType)
+                Countries = await settingService.GetCountryAsync(SettingConstants.Active, true),
+                Languages = await settingService.GetLanguageAsync(SettingConstants.Active),
+                LicenseeTypes = await settingService.GetLicenseeTypeAsync(),
+                Sites = await settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType),
+                Titles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Title, SettingConstants.Active)
             };
-            return Json(settings);
-        }
-
-        [HttpPost]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
-        public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
-        {
-            var result = new CommandResult();
-            bool isHostCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
-            bool isHostLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
-            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(isHostCredit, isHostLicensee, command.CustId);
-            if (canEdit)
-            {
-                command.UserId = napSession.UserId;
-                command.IP = ClientIP;
-                result = await customerService.UpdateCustomerInfoAsync(command);
-            }
-            else
-            {
-                result.Message = ViewResources.NoPermission;
-            }
-
-            return Json(result);
-        }
-
-        public async Task<IActionResult> GetCustomerAutoSuggestion([FromBody] CustomerSuggestionCriteria criteria)
-        {
-            criteria.UserId = napSession.UserId;
-            var customerInfo = await customerService.GetCustomerAutoSuggestionAsync(criteria);
-            return Json(customerInfo);
+            return Json(allSettings);
         }
     }
 }
