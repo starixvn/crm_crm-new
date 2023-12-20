@@ -246,7 +246,7 @@ export class Layout extends Component {
             });
         } else {
             this.setState({ customerInfo: response.data });
-            if (response !== undefined && response.data !== null) {
+            if (response?.data !== null) {
                 const isCreditSite = response.data.customerType === 1;
                 this.setState({ isCreditSite });
                 this.setState({

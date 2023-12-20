@@ -69,10 +69,14 @@
                 {
                     customerInfo.UplineInfo = await GetUplineInfoAsync(customerInfo.CustId);
                 }
-                if(customerInfo.IsGroupHeadLine){
-                    customerInfo.HeadlineStaffInfos = await baseService.GetDataAsync<HeadlineStaffInfo>(
-                        new GetHeadlineStaffInfoCriteria{HeadlineID = customerInfo.CustId});
-                }else{
+               
+                if (customerInfo.IsGroupHeadLine){
+                    (customerInfo.HeadlineStaffInfoPics,
+                    customerInfo.HeadlineStaffInfoLanguages,
+                    customerInfo.HeadlineStaffInfoCommunications) = await baseService.FetchMultipleAsync<HeadlineStaffInfoPic,
+                    HeadlineStaffInfoLanguage, HeadlineStaffInfoCommunication>(new GetHeadlineStaffInfoCriteria { HeadlineID = customerInfo.CustId });
+                }
+                else{
                     customerInfo.OtherAccountCommunicationInfos = await baseService.GetDataAsync<OtherAccountCommunicationInfo>(
                         new GetOtherAccountCommunicationInfoCriteria{CustomerId = customerInfo.CustId});
                 }

@@ -249,7 +249,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
                 {
-                    values.isGroupHeadLine && this.renderAccountHeadlineInfo(values.headlineStaffInfos)
+                    values.isGroupHeadLine && this.renderAccountHeadlineInfo(values)
                 }
                 {
                     !values.isGroupHeadLine && this.renderOtherAccountInfo(values.otherAccountCommunicationInfos)
@@ -260,16 +260,6 @@ export default class DataGrid extends PureComponent {
             </Form>
         );
     };
-
-    getListPicId = headlineStaffInfos => {
-        let listPic = [];
-        headlineStaffInfos.map(value => {
-            if (!listPic.find(pic => pic.id === value.picID)) {
-                listPic.push({ id: value.picID, name: value.picName });
-            }
-        });
-        return listPic;
-    }
 
     renderOtherAccountInfo = values => {
         if (values.length === 0) {
@@ -300,28 +290,27 @@ export default class DataGrid extends PureComponent {
     };
 
     renderAccountHeadlineInfo = values => {
-        let listPic = this.getListPicId(values);
-        if (listPic.length === 0) {
+        if (values.headlineStaffInfoPics.length === 0) {
             return null;
         }
         return (
             <div className='form-account-info'>
                 <div className='custom-scrollbar'>
                     {
-                        listPic.map(pic => {
+                        values.headlineStaffInfoPics.map(pic => {
                             return (
-                                <div className='account-item' key={pic.id}>
+                                <div className='account-item' key={pic.picID}>
                                     <Form.Group>
                                         <Form.Label htmlFor="name" >
                                             {LangHelper.getResource('Name')}
                                         </Form.Label>
                                         <Col className='field-name'>
-                                            {pic.name}
+                                            {pic.picName}
                                         </Col>
                                     </Form.Group>
                                     {
-                                        values.map(value => {
-                                            if (value.picID === pic.id) {
+                                        values.headlineStaffInfoCommunications.map(value => {
+                                            if (value.picID === pic.picID) {
                                                 return <>
                                                     <Form.Group>
                                                         <Form.Label >
@@ -548,7 +537,9 @@ export default class DataGrid extends PureComponent {
             uplineInfo: customerInfo.uplineInfo,
             status: customerInfo.status,
             isGroupHeadLine: customerInfo.isGroupHeadLine,
-            headlineStaffInfos: customerInfo.headlineStaffInfos,
+            headlineStaffInfoPics: customerInfo.headlineStaffInfoPics,
+            headlineStaffInfoLanguages: customerInfo.headlineStaffInfoLanguages,
+            headlineStaffInfoCommunications: customerInfo.headlineStaffInfoCommunications,
             otherAccountCommunicationInfos: customerInfo.otherAccountCommunicationInfos,
             isVIP: customerInfo.isVIP
         };
