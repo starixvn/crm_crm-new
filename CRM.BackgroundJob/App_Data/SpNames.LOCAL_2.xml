@@ -37,8 +37,8 @@
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Ins" SpName="Acc_CRM_ChatBot_crmMessageImport_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Sel" SpName="Acc_CRM_ChatBot_crmMessageImport_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_AbnormalBets_Message_Sel" SpName="Acc_CRM_Chatbot_AbnormalBets_Message_Sel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Chatbot_AbnormalBets_VoidingInfo_Sel" SpName="Acc_CRM_Chatbot_AbnormalBets_VoidingInfo_Sel_xtest" DbName="DBACC.bodb02.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Chatbot_AbnormalBets_Import" SpName="Acc_CRM_Chatbot_AbnormalBets_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_AbnormalBets_VoidingInfo_Sel" SpName="Acc_CRM_Chatbot_AbnormalBets_VoidingInfo_Sel" DbName="DBACC.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_AbnormalBets_Import" SpName="Acc_CRM_Chatbot_AbnormalBets_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_SystemSetting_Sel" SpName="Acc_CRM_Chatbot_SystemSetting_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Upd" SpName="Acc_CRM_ChatBot_crmMessageImport_Upd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_AbnormalAccount_GetUsernameList" SpName="Acc_CRM_ChatBot_AbnormalAccount_GetUsernameList" DbName="DBTXN.bodb02.bodbAdminNet.ReadOnly" />
@@ -131,7 +131,7 @@
     </Function>
     <Function Name="VoidBetID">
         <Setting Key="Acc_CRM_AutoFB_VoidByBetID_GetMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_GetMessage" DbName="DBMSG.bodb_Message.bodbAdminNet" />
-        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_CleanMessage_xtest" DbName="DBACC.bodb02.bodbAdminNet" />
-        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_Import" SpName="Acc_CRM_AutoFB_VoidByBetID_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" DbName="DBACC.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_Import" SpName="Acc_CRM_AutoFB_VoidByBetID_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
 </Functions>
