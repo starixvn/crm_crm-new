@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import HeadlineStaffsAndAuthority from './HeadlineStaffsAndAuthority';
 import HeadlineCommunicationInfo from './HeadlineCommunicationInfo';
 import CompanyService from './CompanyService';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
@@ -14,7 +14,20 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import Site from '@jsroot/common/site';
 
 export class AppContainer extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          activeTab: 'headlineCommunicationInfo'
+        };
+      }
+    
+      handleTabClick = (tabName) => {
+        this.setState({ activeTab: tabName });
+      };
+
     render() {
+        const { activeTab } = this.state;
+
         return (
             <>
                 {
@@ -24,17 +37,32 @@ export class AppContainer extends Component {
                     this.renderAccountPIC()
                 }
                 <div className='headline-info'>
-                    <div className='tab-title'>
-                        <HeadlineCommunicationInfo />
-                        <HeadlineStaffsAndAuthority />
-                        <CompanyService />
+                    <div className="tab-title">
+                        <div className={`tab-child ${activeTab === 'headlineCommunicationInfo' ? 'active' : ''}`}
+                        onClick={() => this.handleTabClick('headlineCommunicationInfo')}>
+                            Headline Communication info
+                        </div>
+                        <div className={`tab-child ${activeTab === 'headlineStaffsAndAuthority' ? 'active' : ''}`}
+                        onClick={() => this.handleTabClick('headlineStaffsAndAuthority')}>
+                            Headline Staffs And Authority
+                        </div>
+                        <div className={`tab-child ${activeTab === 'companyService' ? 'active' : ''}`}
+                        onClick={() => this.handleTabClick('companyService')}>
+                            Company Service
+                        </div>
                     </div>
                     <div className='tab-content'>
-                        {
-                            this.renderTabHeadlineCommunicationInfo()
+                        { 
+                            activeTab === 'headlineCommunicationInfo' &&
+                            <HeadlineCommunicationInfo/>
                         }
                         {
-                            this.renderTabHeadlineCommunicationInfo()
+                            activeTab === 'headlineStaffsAndAuthority' &&
+                            <HeadlineStaffsAndAuthority />
+                        }
+                        {
+                            activeTab === 'companyService' &&
+                            <CompanyService />
                         }
                         <Button type="submit" variant="primary" size="sm">
                             {LangHelper.getResource('Save')}
@@ -158,67 +186,6 @@ export class AppContainer extends Component {
                     />
                 </div>
             </Form>
-        );
-    }
-
-    renderTabHeadlineCommunicationInfo = () => {
-
-        return(
-        <div className='group-item'>
-            <Form.Group>
-                <Form.Label className="required">
-                    {LangHelper.getResource('Name')}
-                </Form.Label>
-                <Form.Control type="text" name="name" value={null} autoComplete="off"/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label className="required" >
-                    {LangHelper.getResource('Role')}
-                </Form.Label>
-                <Form.Control type="text" name="role" value={null} autoComplete="off"/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label >
-                    {LangHelper.getResource('Language')}
-                </Form.Label>
-                <Form.Control type="text" name="language" value={null} autoComplete="off"/>
-            </Form.Group><Form.Group>
-                <Form.Label>
-                    {LangHelper.getResource('Country')}
-                </Form.Label>
-                <Form.Control type="text" name="country" value={null} autoComplete="off"/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label >
-                    {LangHelper.getResource('Email')}
-                    <i class="fa fa-caret-down" aria-hidden="true"></i>
-                </Form.Label>
-                <div className='field-icon'>
-                    <Form.Control type="text" name="Email" value={null} autoComplete="off"/>
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                </div>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label >
-                    {LangHelper.getResource('Letstalk')}
-                    <i class="fa fa-caret-down" aria-hidden="true"></i>
-                </Form.Label>
-                <div className='field-icon'>
-                    <Form.Control type="text" name="Letstalk" value={null} autoComplete="off"/>
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                </div>
-            </Form.Group><Form.Group>
-                <Form.Label>
-                    {LangHelper.getResource('Phone')}
-                    <i class="fa fa-caret-down" aria-hidden="true"></i>
-                </Form.Label>
-                <div className='field-icon'>
-                    <Form.Control type="text" name="countPhoney" value={null} autoComplete="off"/>
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                </div>
-            </Form.Group>
-        </div>
         );
     }
 }

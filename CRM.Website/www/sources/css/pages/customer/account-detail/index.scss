@@ -154,6 +154,52 @@
     }
 }
 
+.table-container{
+    .header-content{
+        padding-right: 0;
+    }
+
+    .table{
+        width: 100% !important;
+
+        tbody{
+            tr{
+                &:nth-child(2n) td{
+                    background: #fff;
+                }
+
+                &:hover td {
+                    background: #fcf4df;
+
+                    img{
+                        display: inline-block;
+                    }
+                }
+
+                td{
+                    position: relative;
+
+                    img{
+                        display: none;
+                        position: absolute;
+                        right: 6px;
+                        top: 6px;
+                        cursor: pointer;
+                    }
+
+                    input{
+                        padding:0 6px;
+                    }
+                }
+            }
+        } 
+    }
+
+    .header-content, .body-content{
+        border-right: none;
+    }
+}
+
 @media only screen and (max-width: 1366px) {
     .group-account .group-content{
         column-gap: 12px;
