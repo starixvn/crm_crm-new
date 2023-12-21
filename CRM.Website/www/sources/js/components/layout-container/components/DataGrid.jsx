@@ -394,10 +394,13 @@ export default class DataGrid extends PureComponent {
                                     </li>
                                 }
                             </ul>
-                            <ul className='list-unstyled list-menu pull-left list-menu-right'>
-                                <li>
-                                    <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetail')}</a>
-                                </li>
+                                <ul className='list-unstyled list-menu pull-left list-menu-right'>
+                                {
+                                    hasReadCustomerInfo &&
+                                    <li>
+                                        <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetail')}</a>
+                                    </li>
+                                }
                                 <li>
                                     <a onClick={() => this.props.handleNavigate('ActionLog')}>{LangHelper.getResource('ActivityLog')}</a>
                                 </li>
