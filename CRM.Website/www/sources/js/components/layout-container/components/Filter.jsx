@@ -127,7 +127,8 @@ export default class Filter extends Component {
         const selectPathAnnouncement = arrPathAnnouncement.find(x => x === pathname);
 
         if (isLefDetailMenu) {
-            return this.renderDetailBreadcrumbsMenu(pathname);
+            let title = DetailMenu.filter(x => this.getUrlPath(x.url).toLowerCase() === pathname.toLowerCase())[0].title;
+            return this.renderDetailBreadcrumbsMenu(title);
         } else if (selectPathAnnouncement) {
             const path = pathAnnouncement[selectPathAnnouncement];
             return this.renderBreadcrumbsMenu(path, pathname);
@@ -146,8 +147,7 @@ export default class Filter extends Component {
     renderDetailBreadcrumbsMenu = pathname => {
         return (
             <ul className='breadcrumbsMenu sub-menu list-inline list-unstyled'>
-                {this.renderIconHome()}
-                <li><a>{LangHelper.getResource(pathname.substring(1))}</a></li>
+                <li><a>{LangHelper.getResource(pathname)}</a></li>
             </ul>
         );
     };

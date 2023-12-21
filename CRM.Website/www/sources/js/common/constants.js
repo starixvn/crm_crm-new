@@ -179,10 +179,16 @@ export const SubMainMenu = [
     {id: 7, url: '/ActionLog'}
 ];
 
-export const DetailMenu = [
-    {id: 1, url: '/LatestFeedback'},
-    {id: 2, url: '/AddFeedback'},
-    {id: 3, url: '/ManageFeedback'}
+export const DetailMenu = [    
+    { id: 1, url: '/LatestFeedback', title: 'LatestFeedback'},
+    { id: 2, url: '/AddFeedback', title: 'LatestFeedback' },
+    { id: 3, url: '/ManageFeedback', title: 'LatestFeedback' },
+    { id: 4, url: '/Communication', title: 'CommunicationLog' },
+    { id: 5, url: '/Dashboard', title: 'Main' },
+    { id: 6, url: '/AccountDetail', title: 'AccountDetail' },
+    { id: 7, url: '/Remark', title: 'Remark' },
+    { id: 8, url: '/ActionLog', title: 'ActivityLog' },
+    { id: 9, url: '/Detail', title: 'CRMInfo' },
 ];
 
 export const Languages = ['EN', 'SC', 'TC', 'TH', 'YN'];

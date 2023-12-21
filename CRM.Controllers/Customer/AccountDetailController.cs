@@ -70,5 +70,29 @@
             };
             return Json(allSettings);
         }
+
+        [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
+        public async Task<IActionResult> EditCustomerInfoDetail([FromBody] EditCustomerInfoDetailCommand command)
+        {
+            var result = new CommandResult();
+            bool isHostCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
+            bool isHostLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
+            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(isHostCredit, isHostLicensee, command.CustomerId);
+            if (canEdit)
+            {
+                command.UserId = napSession.UserId;
+                command.IP = ClientIP;
+                command.IsUpdateHeadlineInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Updateheadlineinfo, Policy.Host);
+                result = await baseService.ExecuteNonQueryAsync(command);
+            }
+            else
+            {
+                result.Message = ViewResources.NoPermission;
+            }
+
+            return Json(result);
+        }
     }
 }
