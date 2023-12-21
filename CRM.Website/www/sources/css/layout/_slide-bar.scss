@@ -60,7 +60,6 @@
             padding: 6px 0 !important;
             grid-template-columns: auto !important;
             text-align: center;
-            line-height: normal;
         }
     }
 
@@ -118,6 +117,7 @@
         display: grid;
         grid-template-columns: 28% auto auto;
         word-break: break-word;
+        line-height: normal;
 
         &.btn-submit{
             padding-bottom: 12px;
@@ -130,14 +130,19 @@
             .col{
                 input, button {
                     border-radius: 3px; 
-                    padding: 4px 6px;
+                    padding: 3px 5px !important;
                     font-size: 13px;
                     font-weight: 400;
+                    height: 24px;
                 }
 
                 .multiple-select-container {
                     border-radius: 3px; 
                 }
+            }
+
+            label{
+                margin-bottom: 0;
             }
 
             .caret {
@@ -154,8 +159,8 @@
 
         &.current {
             background-color: #CDD6EA;
-            margin-top: 2px;
-            padding: 4px 12px;
+            margin: 2px 0 4px;
+            padding: 3px 12px;
         }
 
         &.status {
@@ -251,10 +256,12 @@
             font-size: 14px;
             font-weight: 400;
             justify-content: space-between;
+            align-items: center;
             background: #E4E4E4;
             color: #333333;
-            padding: 7px 12px 6px;
+            padding: 5px 12px 4px;
             margin: 0;
+            line-height: normal;
         }
 
         .detail-link-content{
@@ -285,7 +292,7 @@
 
         .custom-scrollbar{
             padding: 9px 0px 9px 9px;
-            max-height: 400px;
+            max-height: 386px;
             overflow-y: auto;
 
             &::-webkit-scrollbar-track
