@@ -27,8 +27,7 @@ export class CompanyService extends Component {
             <HeaderRow>
                 <HeaderCell colWidth={30}>{LangHelper.getResource('Name')}</HeaderCell>
                 <HeaderCell colWidth={8}>{LangHelper.getResource('Offer')}</HeaderCell>
-                <HeaderCell colWidth={8}></HeaderCell>
-                <HeaderCell colWidth={20}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
+                <HeaderCell colspan={2} colWidth={20}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -74,7 +73,7 @@ export class CompanyService extends Component {
         return (
             <Row key={item.id}>
                 <Cell>{item.name}
-                <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-copy.png')} alt="icon copy" /></Cell>
+                <img className='icon-copy' src={Site.resolveClientUrl('www/dist/css/images/icon/icon-copy.svg')} alt="icon copy" /></Cell>
                 <Cell>
                     <Form.Control type="text"  name="" value={item.offer} autoComplete="off"/>
                 </Cell>

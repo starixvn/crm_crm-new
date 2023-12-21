@@ -131,8 +131,10 @@
                     }
                 }
 
-                .fa-plus{
+                .plus-icon{
                     right: -40px;
+                    font-weight: 900;
+                    font-size: 21px;
 
                     &:hover{
                         color: #009E0F;
@@ -150,6 +152,10 @@
             border: 1px #3C5B9B solid;
             height: auto;
             line-height: normal;
+        }
+
+        .btn-add{
+            margin: 0 0 12px;
         }
     }
 }
@@ -179,7 +185,7 @@
                 td{
                     position: relative;
 
-                    img{
+                    .icon-copy{
                         display: none;
                         position: absolute;
                         right: 6px;
@@ -190,6 +196,14 @@
                     input{
                         padding:0 6px;
                     }
+
+                    &[rowspan]:not([rowspan="1"]) {
+                        border-bottom: none;
+                      }
+                }
+
+                &.row-add td{
+                    background: #FFFAEA;
                 }
             }
         } 

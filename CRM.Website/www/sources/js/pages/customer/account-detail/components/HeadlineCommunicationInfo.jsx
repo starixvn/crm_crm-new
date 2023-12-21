@@ -68,7 +68,7 @@ export class HeadlineCommunicationInfo extends Component {
                 <div className='field-icon'>
                     <Form.Control type="text" name="countPhoney" value={null} autoComplete="off"/>
                     <i class="fa fa-trash" aria-hidden="true"></i>
-                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <span className="fa plus-icon" >+</span>
                 </div>
             </Form.Group>
         </div>

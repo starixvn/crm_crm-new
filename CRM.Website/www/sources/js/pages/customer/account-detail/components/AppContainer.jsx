@@ -79,7 +79,7 @@ export class AppContainer extends Component {
             <Form className='group-account'>
                 <div className='group-title'>
                     Account Info
-                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.png')} />
+                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                 </div>
                 <div className='group-content'>
                     <Form.Group>
@@ -159,7 +159,7 @@ export class AppContainer extends Component {
             <Form className='group-account'>
                 <div className='group-title'>
                     Accountant PIC
-                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.png')} />
+                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                 </div>
                 <div className='group-content'>
                     <Form.Group>
