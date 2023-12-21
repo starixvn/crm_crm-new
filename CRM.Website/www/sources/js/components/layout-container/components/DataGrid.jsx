@@ -483,7 +483,7 @@ export default class DataGrid extends PureComponent {
 
     renderEmptyData = () => {
         return (<div className="left-form-customer" id="left-form-container">
-            <Form.Group className="mrb0">
+            <Form.Group className="group-empty">
                 <Row className="item  no-data">
                     {
                         LangHelper.getResource('EmptyData')
