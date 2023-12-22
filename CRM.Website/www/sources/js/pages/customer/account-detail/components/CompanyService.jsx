@@ -11,7 +11,7 @@ export class CompanyService extends Component {
     render() {
         return (
             <Table
-                    width={1000}
+                    width={1005}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
@@ -25,9 +25,11 @@ export class CompanyService extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={30}>{LangHelper.getResource('Name')}</HeaderCell>
-                <HeaderCell colWidth={8}>{LangHelper.getResource('Offer')}</HeaderCell>
-                <HeaderCell colspan={2} colWidth={20}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
+                <HeaderCell colWidth={460}>{LangHelper.getResource('Name')}</HeaderCell>
+                <HeaderCell colWidth={120 }>{LangHelper.getResource('Offer')}</HeaderCell>
+                <HeaderCell colspan={2} colWidth={120}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
+                <HeaderCell className='display-colSpan' colWidth={300}></HeaderCell>
+
             </HeaderRow>
         );
     };

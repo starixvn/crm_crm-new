@@ -48,7 +48,7 @@ export class HeadlineCommunicationInfo extends Component {
                 </Form.Label>
                 <div className='field-icon'>
                     <Form.Control type="text" name="Email" value={null} autoComplete="off"/>
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <div className='icon icon-delete'></div>
                 </div>
             </Form.Group>
             <Form.Group>
@@ -58,7 +58,7 @@ export class HeadlineCommunicationInfo extends Component {
                 </Form.Label>
                 <div className='field-icon'>
                     <Form.Control type="text" name="Letstalk" value={null} autoComplete="off"/>
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <div className='icon icon-delete'></div>
                 </div>
             </Form.Group><Form.Group>
                 <Form.Label>
@@ -66,9 +66,9 @@ export class HeadlineCommunicationInfo extends Component {
                     <i class="fa fa-caret-down" aria-hidden="true"></i>
                 </Form.Label>
                 <div className='field-icon'>
-                    <Form.Control type="text" name="countPhoney" value={null} autoComplete="off"/>
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                    <span className="fa plus-icon" >+</span>
+                    <Form.Control type="text" name="countPhone" value={null} autoComplete="off"/>
+                    <div className='icon icon-delete'></div>
+                    <div className='icon icon-plus'></div>
                 </div>
             </Form.Group>
         </div>

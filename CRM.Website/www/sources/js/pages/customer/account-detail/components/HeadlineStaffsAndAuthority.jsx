@@ -10,17 +10,18 @@ import Site from '@jsroot/common/site';
 export class HeadlineStaffsAndAuthority extends Component {
 
     state = {
-        showAddRow: false 
+        showAddStaffAuthor: false,
+        showAddTool: false
     };
 
     render() {
         return (
             <>
-                <Button className='btn-add' type="submit" variant="primary" size="sm" onClick={this.handleClickAdd}>
+                <Button className='btn-add' type="submit" variant="primary" size="sm" onClick={this.handleAddStaffAuthor}>
                     {LangHelper.getResource('Add')}
                 </Button>
                 <Table
-                    width={1500}
+                    width={1504}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
@@ -32,31 +33,36 @@ export class HeadlineStaffsAndAuthority extends Component {
         );
     }
 
-    handleClickAdd = () => {
-        this.setState({ showAddRow: true });
+    handleAddStaffAuthor = () => {
+        this.setState({ showAddStaffAuthor: true });
+    };
+
+    handleAddTool = () => {
+        this.setState({ showAddTool: true });
     };
 
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={5}>{LangHelper.getResource('Name')}</HeaderCell>
-                <HeaderCell colWidth={3}>{LangHelper.getResource('Role')}</HeaderCell>
-                <HeaderCell colspan={2} colWidth={6}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
-                <HeaderCell colWidth={4}>{LangHelper.getResource('Authority')}</HeaderCell>
-                <HeaderCell colWidth={8}>{LangHelper.getResource('Remark')}</HeaderCell>
-                <HeaderCell colWidth={4}>{LangHelper.getResource('Action')}</HeaderCell>
+                <HeaderCell colWidth={200}>{LangHelper.getResource('Name')}</HeaderCell>
+                <HeaderCell colWidth={120}>{LangHelper.getResource('Role')}</HeaderCell>
+                <HeaderCell colWidth={170} colspan={2}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
+                <HeaderCell colWidth={270} className="display-colSpan"></HeaderCell>
+                <HeaderCell colWidth={160}>{LangHelper.getResource('Authority')}</HeaderCell>
+                <HeaderCell colWidth={460}>{LangHelper.getResource('Remark')}</HeaderCell>
+                <HeaderCell colWidth={120}>{LangHelper.getResource('Action')}</HeaderCell>
             </HeaderRow>
         );
     };
 
     buildBody = () => {
-        const { showAddRow } = this.state;
+        const { showAddStaffAuthor } = this.state;
         const data = [
             {
               id: 1,
               name: 'PIC01',
               role: 'Boss',
-              offer: 'Letstalk',
+              offer: 'Add/Reduce Credit Adjust Bet Limit',
               CommTool: 'Tool 1'
             },
             {
@@ -79,7 +85,7 @@ export class HeadlineStaffsAndAuthority extends Component {
             return [
                 <Fragment key={'body'}>
                     {data.map(item => this.renderRow(item))}
-                    {showAddRow  && this.addNewRow()}
+                    {showAddStaffAuthor  && this.addNewRow()}
                 </Fragment>
             ];
         }
@@ -92,29 +98,68 @@ export class HeadlineStaffsAndAuthority extends Component {
     };
 
     addNewRow = () => {
+        const { showAddTool } = this.state;
         return(
-            <Row className='row-add'>
+            <>
+                <Row className='row-add'>
+                    <Cell rowSpan={2}>
+                        <Form.Control type="text"  name="" value={null} autoComplete="off"/>
+                    </Cell>
+                    <Cell rowSpan={2}>
+                        <Form.Control type="text"  name="" value={null} autoComplete="off"/>
+                    </Cell>
+                    <Cell>
+                        <div className='col-add'>
+                            <Form.Control className='select-item' type="text"  name="" value={null} autoComplete="off"/>
+                            {
+                                showAddTool && 
+                                <div className='icon icon-delete'></div>
+                            }
+                            {
+                                !showAddTool && 
+                                <div className='icon icon-plus' onClick={this.handleAddTool}></div>
+                            }
+                        </div>
+                    </Cell>
+                    <Cell>
+                        <Form.Control type="text"  name="" value={null} autoComplete="off"/>
+                    </Cell>
+                    <Cell>
+                        <Form.Control type="text"  name="" value={null} autoComplete="off"/>
+                    </Cell>
+                    <Cell>
+                        <Form.Control type="text"  name="" value={null} autoComplete="off"/>
+                    </Cell>
+                    <Cell rowSpan={2}>
+                        <div className='row-icon'>
+                            <div className='icon icon-save'></div>
+                            <div className='icon icon-cancel'></div>
+                        </div>
+                    </Cell>
+                </Row>
+                { showAddTool  && this.addTool()}
+            </>
+        );
+    }
+
+    addTool = () => {
+        return(
+            <Row class="row-add">
                 <Cell>
-                    <Form.Control type="text"  name="" value={null} autoComplete="off"/>
+                <div className='col-add'>
+                    <Form.Control className='select-item' type="text"  name="" value={null} autoComplete="off"/>
+                    <div className='icon icon-delete'></div>
+                    <div className='icon icon-plus' onClick={this.handleAddTool}></div>
+                </div>
                 </Cell>
                 <Cell>
                     <Form.Control type="text"  name="" value={null} autoComplete="off"/>
                 </Cell>
                 <Cell>
                     <Form.Control type="text"  name="" value={null} autoComplete="off"/>
-                    <span className="fa plus-icon" >+</span>
                 </Cell>
                 <Cell>
                     <Form.Control type="text"  name="" value={null} autoComplete="off"/>
-                </Cell>
-                <Cell>
-                    <Form.Control type="text"  name="" value={null} autoComplete="off"/>
-                </Cell>
-                <Cell>
-                    <Form.Control type="text"  name="" value={null} autoComplete="off"/>
-                </Cell>
-                <Cell>
-                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                 </Cell>
             </Row>
         );
@@ -123,25 +168,27 @@ export class HeadlineStaffsAndAuthority extends Component {
     renderRow = (item) => {
         return (
             <>
-                <Row key={item.id}>
+                <Row key={item.id} className='row-staff-authority'>
                     <Cell rowSpan={3}>{item.name}</Cell>
                     <Cell rowSpan={3} className='text-center'>{item.role}</Cell>
                     <Cell>{item.offer}</Cell>
                     <Cell>{item.offer}</Cell>
                     <Cell>{item.offer}</Cell>
                     <Cell>{item.offer}</Cell>
-                    <Cell rowSpan={3} className='text-center'>
-                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    <Cell rowSpan={3}>
+                        <div className='row-icon'>
+                            <div className='icon icon-edit'></div>
+                            <div className='icon icon-clear'></div>
+                        </div>
                     </Cell>
                 </Row>
-                <Row>
+                <Row className='row-staff-authority row-child'>
                     <Cell>{item.offer}</Cell>
                     <Cell>{item.offer}</Cell>
                     <Cell>{item.offer}</Cell>
                     <Cell>{item.offer}</Cell>
                 </Row>
-                <Row>
+                <Row className='row-staff-authority row-child'>
                     <Cell>{item.offer}</Cell>
                     <Cell>{item.offer}</Cell>
                     <Cell>{item.offer}</Cell>

@@ -97,6 +97,75 @@
         border: 1px #D1D1D1 solid;
         padding: 16px 12px ;
 
+        .icon{
+            position: absolute;
+            cursor: pointer;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            background-size: 17px !important;
+        }
+
+        .icon-delete{
+            right: -24px;
+            background: url('/www/dist/css/images/icon/icon-delete.svg');
+
+            &:hover{
+                background: url('/www/dist/css/images/icon/icon-delete-hover.svg');
+            }
+        }
+
+        .icon-plus{
+            height: 16px;
+            width: 16px;
+            right: -44px;
+            background: url('/www/dist/css/images/icon/icon-plus.svg');
+
+            &:hover{
+                background: url('/www/dist/css/images/icon/icon-plus-hover.svg');
+            }
+        }
+
+        .icon-edit{
+            height: 20px;
+            width: 20px;
+            background: url('/www/dist/css/images/icon/icon-edit.svg');
+
+            &:hover{
+                background: url('/www/dist/css/images/icon/icon-edit-hover.svg');
+            }
+        }
+
+        .icon-clear{
+            height: 20px;
+            width: 20px;
+            background: url('/www/dist/css/images/icon/icon-clear.svg');
+
+            &:hover{
+                background: url('/www/dist/css/images/icon/icon-clear-hover.svg');
+            }
+        }
+
+        .icon-cancel{
+            height: 20px;
+            width: 20px;
+            background: url('/www/dist/css/images/icon/icon-cancel.svg');
+        }
+
+        .icon-save{
+            height: 20px;
+            width: 20px;
+            background: url('/www/dist/css/images/icon/icon-save.svg');
+        }
+
+        .row-icon{
+            display: flex;
+            justify-content: space-evenly;
+
+            .icon{
+                position: relative;
+            }
+        }
+
         .group-item{
             border-bottom: 1px #D9D9D9 solid;
             padding: 12px 267px 12px 0;
@@ -116,30 +185,6 @@
                 display: flex;
                 align-items: center;
                 position: relative;
-
-                .fa{
-                    position: absolute;
-                    font-size: medium;
-                    cursor: pointer;
-                }
-
-                .fa-trash{
-                    right: -20px;
-
-                    &:hover{
-                        color: red;
-                    }
-                }
-
-                .plus-icon{
-                    right: -40px;
-                    font-weight: 900;
-                    font-size: 21px;
-
-                    &:hover{
-                        color: #009E0F;
-                    }
-                }
             }
         }
 
@@ -168,17 +213,23 @@
     .table{
         width: 100% !important;
 
+        .display-colSpan{
+            display: none;
+        }
+
         tbody{
             tr{
                 &:nth-child(2n) td{
                     background: #fff;
                 }
 
-                &:hover td {
-                    background: #fcf4df;
+                &:hover, &:active , &:focus {
+                    td{
+                        background: #fcf4df;
 
-                    img{
-                        display: inline-block;
+                        img{
+                            display: inline-block;
+                        }
                     }
                 }
 
@@ -204,6 +255,31 @@
 
                 &.row-add td{
                     background: #FFFAEA;
+
+                    .col-add{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        .icon-plus{
+                            right: 4px;
+                            background: url('/www/dist/css/images/icon/icon-plus-hover.svg');
+                        }
+
+                        .icon-delete{
+                            right: 20px;
+                            background: url('/www/dist/css/images/icon/icon-delete-hover.svg');
+
+                        }
+
+                        .select-item{
+                            width: 120px;
+                        }
+                    }
+                }
+
+                &.row-staff-authority td{
+                    padding: 8px 6px;
                 }
             }
         } 
@@ -223,4 +299,67 @@
     .headline-info .tab-content .group-item{
         padding-right: 12px;
     }
+
+    .display-colSpan{
+        display: none;
+    }
+
+    tbody{
+        tr{
+            &:nth-child(2n) {
+            td{
+                background: #fff !important;
+            }
+
+            &:focus, &:active, &:hover{
+                td{
+                    background: #fcf4df !important;
+                }
+            }
+        }
+
+
+        &:focus, &:active, &:hover{
+            td{
+                background: #fcf4df !important;
+            }
+        }
+        }
+    }
+
+    .fix-table-container {
+        border-right: none;
+
+        .fix-table table tbody tr.row-child td:last-child{
+            border-right: 1px solid #b7b7b7 !important;
+        }
+
+        .row-add td{
+            background: #FFFAEA !important;
+        }
+
+        .col-add{
+            display: flex;
+            align-items: center;
+
+            .icon-plus{
+                position: relative;
+                margin-left: 4px;
+                left: 0;
+                background: url('/www/dist/css/images/icon/icon-plus-hover.svg');
+            }
+
+            .icon-delete{
+                position: relative;
+                right: 0;
+                background: url('/www/dist/css/images/icon/icon-delete-hover.svg');
+
+            }
+
+            .select-item{
+                width: 120px;
+            }
+        }
+    }
+
 }
