@@ -11,7 +11,6 @@ namespace CRM.Core.Models
         public int SingleSignOnExpiredTime { get; set; }
         public string CRMActionLogKey { get; set; }
         public string CRMActionLogBoolValue { get; set; }
-        public static DateTime MinReportDate => Convert.ToDateTime(ConfigurationManager.AppSettings["minReportDate"]);
 
     }
 }
