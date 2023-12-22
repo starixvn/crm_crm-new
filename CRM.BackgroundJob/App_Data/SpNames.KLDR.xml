@@ -31,7 +31,7 @@
         <Setting Key="Acc_CRM_AutoFB_RefundSettledTickets_Import" SpName="Acc_CRM_AutoFB_RefundSettledTickets_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot">
-        <Setting Key="Acc_SiteDBConfigSel" SpName="Acc_SiteDBConfigSel" DbName="DBACC.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_SiteDBConfigSel" SpName="Acc_SiteDBConfigSel_KL" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_AbnormalBets_GetMessage" SpName="Acc_CRM_Chatbot_AbnormalBets_GetMessage" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_crmMessageImport_Check" SpName="Acc_CRM_crmMessageImport_Check" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_crmMessageImport_Ins" SpName="Acc_CRM_ChatBot_crmMessageImport_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
