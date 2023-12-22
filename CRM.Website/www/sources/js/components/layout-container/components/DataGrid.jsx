@@ -390,7 +390,7 @@ export default class DataGrid extends PureComponent {
                                 {
                                     hasHostPicManagementPermission && 
                                     <li>
-                                        <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PicManagement')}</a>
+                                        <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PICManagement')}</a>
                                     </li>
                                 }
                             </ul>
