@@ -4,13 +4,15 @@ import { Formik } from 'formik';
 import LangHelper from '@jsroot/common/langHelper';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import { changeSiteSetting, checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, hasHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import { toast } from 'react-toastify';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
+
 export default class DataGrid extends PureComponent {
     static defaultProps = {
         customerInfo: null,
@@ -24,6 +26,8 @@ export default class DataGrid extends PureComponent {
             siteId: null,
             isShowDetail: true,
             countryId: null,
+            isShowDetail: true,
+            remarksPolicy: null,
             isHostOnCurrentCustomer: false
         };
     }
@@ -31,11 +35,13 @@ export default class DataGrid extends PureComponent {
     componentDidMount() {
         this.handleCheckLanguage();
         const leftContainer = document.getElementById('left-row-container');
-
         leftContainer.addEventListener("keydown", this.handleKeyDownFunc, false);
         checkHostPermissionOnCurrentCustomer().then(response => {
             this.setState({
                 isHostOnCurrentCustomer: response
+        getPermission(FunctionKey.Remarks, true).then(response => {
+            this.setState({ remarksPolicy: response });
+        });
             });
         });
     }
@@ -140,7 +146,7 @@ export default class DataGrid extends PureComponent {
                             }
                             {
                                 values.isVIP &&
-                                <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-vip.svg')} alt='icon vip'/>
+                                <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-vip.svg')} alt='icon vip' />
                             }
                         </div>
                         {values.status}
@@ -339,6 +345,7 @@ export default class DataGrid extends PureComponent {
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
         const hasHostPicManagementPermission = document.getElementById('hasHostPicManagementPermission').checked;
+        const isReadRemark = this.state.remarksPolicy >= Policy.Read;
 
         return (
             <div className="group-detail-link">
@@ -366,7 +373,7 @@ export default class DataGrid extends PureComponent {
                                     </li>
                                 }
                             </ul>
-                                
+
                             <ul className='list-unstyled list-menu pull-left list-menu-right'>
                                 {
                                     hasReadFeedbackPermission &&
@@ -384,17 +391,26 @@ export default class DataGrid extends PureComponent {
                                 <li>
                                     <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Main')}</a>
                                 </li>
-                                <li>
-                                    <a onClick={() => this.props.handleNavigate('Remark')}>{LangHelper.getResource('Remark')}</a>
-                                </li>
                                 {
-                                    hasHostPicManagementPermission && 
+                                    this.props.isCreditSite && isReadRemark &&
+                                    <li>
+                                        <a onClick={() => this.props.handleNavigate('Remark')}>{LangHelper.getResource('Remark')}</a>
+                                    </li>
+                                }
+                                {
+                                    hasReadCustomerInfo && !this.props.isCreditSite &&
+                                    <li>
+                                        <a onClick={() => this.props.handleNavigate('SpecialRemark')}>{LangHelper.getResource('SpecialRemark')}</a>
+                                    </li>
+                                }
+                                {
+                                    hasHostPicManagementPermission &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PICManagement')}</a>
                                     </li>
                                 }
                             </ul>
-                                <ul className='list-unstyled list-menu pull-left list-menu-right'>
+                            <ul className='list-unstyled list-menu pull-left list-menu-right'>
                                 {
                                     hasReadCustomerInfo &&
                                     <li>

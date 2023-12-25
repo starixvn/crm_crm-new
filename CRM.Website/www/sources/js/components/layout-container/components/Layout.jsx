@@ -303,6 +303,7 @@ export class Layout extends Component {
                             customerInfo={customerInfo} settings={settings} gridParams={gridParams} setGridParams={this.setGridParams}
                         handleSearchUplineInfo={this.handleSearchUplineInfo} getCustomerInfo={this.getCustomerInfo}
                         showErrorConfirmPopup={showErrorConfirmPopup} handleNavigate={this.handleNavigate}
+                        isCreditSite={this.state.isCreditSite}
                         handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup}
                         />
                     }
