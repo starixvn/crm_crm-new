@@ -481,12 +481,12 @@ export default class DataGrid extends PureComponent {
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     };
 
-    renderEmptyData = () => {
+    renderEmptyData = value => {
         return (<div className="left-form-customer" id="left-form-container">
             <Form.Group className="group-empty">
                 <Row className="item  no-data">
                     {
-                        LangHelper.getResource('EmptyData')
+                        LangHelper.getResource(value)
                     }
                 </Row>
             </Form.Group>
@@ -494,8 +494,13 @@ export default class DataGrid extends PureComponent {
     };
 
     render() {
-        if (!this.props.customerInfo) {
-            return this.renderEmptyData();
+
+        if (!this.props.customerInfo && this.props.showErrorConfirmPopup) {
+            return this.renderEmptyData('AuthorizedSearchAccount');
+        }
+
+        if (!this.props.customerInfo && !this.props.showErrorConfirmPopup) {
+            return this.renderEmptyData('EmptyData');
         }
 
         const customerInfo = this.props.customerInfo;

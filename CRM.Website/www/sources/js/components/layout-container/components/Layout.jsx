@@ -292,7 +292,7 @@ export class Layout extends Component {
     };
 
     renderLeftRightContent = customerInfo => {
-        const { settings, gridParams, isShowingLeftPanel } = this.state;
+        const { settings, gridParams, isShowingLeftPanel, showErrorConfirmPopup } = this.state;
 
         return (
             <div className="d-flex">
@@ -301,8 +301,9 @@ export class Layout extends Component {
                     isShowingLeftPanel && settings !== null &&
                         <DataGrid
                             customerInfo={customerInfo} settings={settings} gridParams={gridParams} setGridParams={this.setGridParams}
-                            handleSearchUplineInfo={this.handleSearchUplineInfo} getCustomerInfo={this.getCustomerInfo}                            
-                            handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup} handleNavigate={this.handleNavigate}
+                        handleSearchUplineInfo={this.handleSearchUplineInfo} getCustomerInfo={this.getCustomerInfo}
+                        showErrorConfirmPopup={showErrorConfirmPopup} handleNavigate={this.handleNavigate}
+                        handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup}
                         />
                     }
                 </div>
@@ -329,7 +330,7 @@ export class Layout extends Component {
     };
 
     render() {
-        const {customerInfo, isGuest, customerSuggestions, showErrorConfirmPopup,
+        const {customerInfo, isGuest, customerSuggestions,
             username, menus, isShowingLeftPanel } = this.state;
 
         const currentCustomerInfo = this.getCurrentCustomerInfo();
@@ -352,21 +353,6 @@ export class Layout extends Component {
                         />
                     }
                 </div>
-                {
-                    showErrorConfirmPopup &&
-                    <SweetModalDialog size="sm"
-                        title={LangHelper.getResource('SearchAccount')}
-                        contents={
-                            <div>{LangHelper.getResource('AuthorizedSearchAccount')}</div>
-                        }
-                        buttons={[
-                            <Button size="sm" variant="primary" onClick={this.handleCloseErrorPopup}>
-                                {LangHelper.getResource('OK')}
-                            </Button>,
-                        ]}
-                        onClose={this.handleCloseErrorPopup}
-                    />
-                }
                 {
                     <div className='row-content'>
                         <ResponsiveComponent isShowingLeftPanel={isShowingLeftPanel}>
