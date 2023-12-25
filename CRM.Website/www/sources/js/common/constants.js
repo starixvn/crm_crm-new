@@ -189,6 +189,7 @@ export const DetailMenu = [
     { id: 7, url: '/Remark', title: 'Remark' },
     { id: 8, url: '/ActionLog', title: 'ActivityLog' },
     { id: 9, url: '/Detail', title: 'CRMInfo' },
+    { id: 10, url: '/SpecialRemark', title: 'SpecialRemark' }
 ];
 
 export const Languages = ['EN', 'SC', 'TC', 'TH', 'YN'];
