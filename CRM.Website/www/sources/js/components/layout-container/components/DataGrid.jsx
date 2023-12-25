@@ -345,6 +345,7 @@ export default class DataGrid extends PureComponent {
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
         const hasHostPicManagementPermission = document.getElementById('hasHostPicManagementPermission').checked;
+        const hasHostLicenseePermission = document.getElementById('hasHostLicenseePermission').checked;
         const isReadRemark = this.state.remarksPolicy >= Policy.Read;
 
         return (
@@ -392,7 +393,7 @@ export default class DataGrid extends PureComponent {
                                     <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Main')}</a>
                                 </li>
                                 {
-                                    this.props.isCreditSite && isReadRemark &&
+                                    isReadRemark && (this.props.isCreditSite || hasHostLicenseePermission) &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('Remark')}>{LangHelper.getResource('Remark')}</a>
                                     </li>
