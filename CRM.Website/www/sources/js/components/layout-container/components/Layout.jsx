@@ -241,6 +241,7 @@ export class Layout extends Component {
 
     handleCheckCustomerInfo = response => {
         if (response?.data?.errCode > 0 && response?.data?.errMsg?.length > 0) {
+            this.setState({ customerInfo: null });
             this.setState({
                 showErrorConfirmPopup: true
             });
