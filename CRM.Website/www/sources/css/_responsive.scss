@@ -38,10 +38,13 @@
                     margin: 4px 6px;
                 }
 
-                .multiple-select-container {
-                    max-width: 170px;
-                }
+                .form-control-wrapper{
+                    max-width: 168px;
 
+                    .text-display{
+                        width: 130px;
+                    }
+                }
             }
             }
 
