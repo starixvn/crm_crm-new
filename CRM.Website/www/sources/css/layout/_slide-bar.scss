@@ -159,8 +159,14 @@
                 color: #676767;
             }
 
-            .multiple-select-label .text-display{
-                padding-left: 0;
+            .multiple-select-label{
+                height: auto !important;
+                min-height: 22px;
+
+                .text-display{
+                    padding-left: 0;
+                    white-space: normal;
+                }
             }
         }
 
