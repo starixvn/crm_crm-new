@@ -12,6 +12,7 @@ import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
+import { toast } from 'react-toastify';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DatePicker from '@jsroot/components/date-picker/index';
 import { changeSiteSetting, getSiteLabel, hasHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
@@ -105,6 +106,17 @@ export class AppContainer extends Component {
         this.setState(params);
         document.title = LangHelper.getResource('CRMSystem');
     }
+
+    handleSubmit = () => {
+        const values = this.state;
+        const { customerInfo } = this.props;
+        const params = ParamsSubmit(customerInfo.custId, values);
+        this.props.editCustomerInfoDetail(params).then(() => {
+            if (this.props.editCustomerInfoDetailResult.isSuccessful) {
+                toast.success(LangHelper.getResource('EditCustomerInfoSuccessfully'));
+            } 
+        });
+    };
 
     handleTabClick = (tabName) => {
         this.setState({ activeTab: tabName });
@@ -206,7 +218,7 @@ export class AppContainer extends Component {
             <Form className='group-account'>
                 <div className='group-title'>
                     Account Info
-                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
+                    <img onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                 </div>
                 <div className='group-content'>
                     <Form.Group>
@@ -324,7 +336,7 @@ export class AppContainer extends Component {
             <Form className='group-account'>
                 <div className='group-title'>
                     Accountant PIC
-                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
+                    <img onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                 </div>
                 <div className='group-content'>
                     <Form.Group>
