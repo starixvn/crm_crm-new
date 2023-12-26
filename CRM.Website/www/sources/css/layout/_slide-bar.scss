@@ -141,6 +141,13 @@
                 }
             }
 
+            .selectwithsearchtree{
+                .btn{
+                    min-height: 24px !important;
+                    height: auto !important;
+                }
+            }
+
             label{
                 margin-bottom: 0;
             }
@@ -150,6 +157,10 @@
                 border-right: 6px solid transparent;
                 border-left: 6px solid transparent;
                 color: #676767;
+            }
+
+            .multiple-select-label .text-display{
+                padding-left: 0;
             }
         }
 
