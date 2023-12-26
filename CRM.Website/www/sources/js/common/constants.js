@@ -181,8 +181,8 @@ export const SubMainMenu = [
 
 export const DetailMenu = [    
     { id: 1, url: '/LatestFeedback', title: 'LatestFeedback'},
-    { id: 2, url: '/AddFeedback', title: 'LatestFeedback' },
-    { id: 3, url: '/ManageFeedback', title: 'LatestFeedback' },
+    { id: 2, url: '/AddFeedback', title: 'AddFeedback' },
+    { id: 3, url: '/ManageFeedback', title: 'ManageFeedback' },
     { id: 4, url: '/Communication', title: 'CommunicationLog' },
     { id: 5, url: '/Dashboard', title: 'Main' },
     { id: 6, url: '/AccountDetail', title: 'AccountDetail' },

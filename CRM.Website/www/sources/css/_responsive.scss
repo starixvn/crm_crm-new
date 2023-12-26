@@ -3,7 +3,7 @@
     html {
         font-size: 12px !important;
 
-        .left-header img{
+        .left-header img {
             width: 50% !important;
         }
 
@@ -11,123 +11,129 @@
             padding: 8px 10px 9px !important;
         }
 
-        #left-row-container{
-            .left-form-customer{
+        #left-row-container {
+            .left-form-customer {
                 .list-menu {
                     padding-left: 1px;
+
                     li {
                         padding-right: 10px !important;
                     }
                 }
 
-                select{
+                select {
                     padding: 0 2px !important;
                 }
 
-                .item{
+                .item {
                     padding: 3px 4px;
                     margin: 0;
                 }
 
-                .form-group{
+                .form-group {
                     margin-bottom: 0.4rem !important;
                 }
 
-                .form-account-info{
+                .form-account-info {
                     margin: 4px 6px;
                 }
-            }
-        }
 
-        #left-container{
-            .autocomplete-container{
-                input{
-                    &::placeholder {
-                        font-size: 10px !important;
+                .multiple-select-container {
+                    max-width: 170px;
+                }
+
+            }
+            }
+
+            #left-container {
+                .autocomplete-container {
+                    input {
+                        &::placeholder {
+                            font-size: 10px !important;
+                        }
+
+                        padding: 5px 0 5px 30px !important;
                     }
-                    padding: 5px 0 5px 30px !important;
                 }
             }
-        }
 
-        .multiple-select-container {
-            max-width: 170px;
+            .multiple-select-container {
+                .text-display {
+                    padding-left: 5px;
+                }
+            }
 
-            .text-display {
+            .react-select-container {
+                height: 21px;
+
+                .css-1f3xvel-Input {
+                    margin: 0;
+                }
+            }
+
+            .checked-guest {
+                label {
+                    padding: 0 3px 0 0 !important;
+                }
+
+                .form-check-input {
+                    margin-right: 2px !important;
+                }
+            }
+
+            .form-check label {
                 padding-left: 5px;
+                padding-top: 2px;
             }
-        }
 
-        .react-select-container{
-            height: 21px;
-            .css-1f3xvel-Input{
-                margin: 0;
+            .toggle-filter, .icon-toggle {
+                margin-top: 2px;
+                font-size: 9px !important;
+                width: 20px !important;
             }
-        }
 
-        .checked-guest{
-            label{
-                padding:0 3px 0 0 !important;
+            .react-datepicker-wrapper-container {
+                height: 20px !important;
             }
-            
-            .form-check-input {
-                margin-right: 2px !important;
+
+            .react-select__control {
+                height: 24px !important;
             }
-        }
 
-        .form-check label{
-            padding-left: 5px;
-            padding-top: 2px;
-        }
+            .form-filter {
+                padding: 0.6rem 1rem 0 !important;
 
-        .toggle-filter, .icon-toggle{
-            margin-top: 2px;
-            font-size: 9px !important;
-            width: 20px !important;
-        }
-
-        .react-datepicker-wrapper-container {
-            height: 20px !important;
-        }
-
-        .react-select__control{
-            height: 24px !important;
-        }
-
-        .form-filter{
-            padding: 0.6rem 1rem 0 !important;
-            .form-group, .form-group-button{
-                margin-bottom: 0.6rem !important;
+                .form-group, .form-group-button {
+                    margin-bottom: 0.6rem !important;
+                }
             }
-        }
 
-        .new-remark{
-            #dateTypeSelect{
-                width: 150px !important;
+            .new-remark {
+                #dateTypeSelect {
+                    width: 150px !important;
+                }
             }
-        }
 
-        .deleted-feedback .form-filter {
-            .form-group{
-                &:first-child{
-                    .col-form-label-username{
-                        width: 139px;
+            .deleted-feedback .form-filter {
+                .form-group {
+                    &:first-child {
+                        .col-form-label-username {
+                            width: 139px;
+                        }
                     }
                 }
             }
-           
-        }
 
-        .report-customer .form-filter .w-auto .label-exclude {
-            width: 184px !important;
-        }
+            .report-customer .form-filter .w-auto .label-exclude {
+                width: 184px !important;
+            }
 
-        .change-logs{
-            .form-filter-pic{
-                .form-group{
-                    width: 230px !important;
+            .change-logs {
+                .form-filter-pic {
+                    .form-group {
+                        width: 230px !important;
+                    }
                 }
             }
         }
     }
-}
