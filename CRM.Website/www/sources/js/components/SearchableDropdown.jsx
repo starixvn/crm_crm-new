@@ -80,7 +80,7 @@ export default class SelectWithSearch extends Component {
                 name: item.name
             }
         });
-        this.props.OnChangeValue(item);
+        this.props.OnChangeValue(item, this.props.index);
     };
 
     handleChangeSearchInput = event => {

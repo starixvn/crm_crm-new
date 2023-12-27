@@ -1,12 +1,11 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import HeadlineStaffsAndAuthority from './HeadlineStaffsAndAuthority';
 import HeadlineCommunicationInfo from './HeadlineCommunicationInfo';
 import CompanyService from './CompanyService';
-import { Button, Col, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
@@ -15,7 +14,7 @@ import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DatePicker from '@jsroot/components/date-picker/index';
-import { changeSiteSetting, getSiteLabel, hasHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, hasHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 
@@ -136,6 +135,13 @@ export class AppContainer extends Component {
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
+    handleChangeCheck = event => {
+        const name = event.target.name;
+        this.setState({
+            [name]: event.target.checked
+        });
+    };
+
     handleChange = event => {
         const name = event.target.name;
         this.setState({
@@ -157,7 +163,7 @@ export class AppContainer extends Component {
         return (
             <>
                 {
-                    this.renderAccountInfo(values)
+                    this.renderAccountInfo(values, hasHostOnCurrentCustomer)
                 }
                 {
                     (customerInfo.isGroupHeadLine && (updatePolicy === Policy.Read || canEditHeadline)) && 
@@ -185,7 +191,7 @@ export class AppContainer extends Component {
                         }
                         {
                             values.activeTab === 'headlineStaffsAndAuthority' &&
-                            <HeadlineStaffsAndAuthority />
+                            <HeadlineStaffsAndAuthority/>
                         }
                         {
                             values.activeTab === 'companyService' &&
@@ -203,7 +209,7 @@ export class AppContainer extends Component {
         );
     }
 
-    renderAccountInfo = values => {
+    renderAccountInfo = (values, hasHostOnCurrentCustomer) => {
         const { customerInfo, allSettings } = this.props;
         const languageSelected = this.props.allSettings.languages.map(item => {
             return {
@@ -218,7 +224,10 @@ export class AppContainer extends Component {
             <Form className='group-account'>
                 <div className='group-title'>
                     Account Info
-                    <img onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
+                    {
+                        hasHostOnCurrentCustomer &&
+                        <img onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')}/>
+                    }
                 </div>
                 <div className='group-content'>
                     <Form.Group>
@@ -336,7 +345,10 @@ export class AppContainer extends Component {
             <Form className='group-account'>
                 <div className='group-title'>
                     Accountant PIC
-                    <img onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
+                    {
+                        canEditHeadline &&
+                        <img onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
+                    }
                 </div>
                 <div className='group-content'>
                     <Form.Group>

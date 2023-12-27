@@ -5,7 +5,10 @@ import {
     resetState,
     setCustomerById,
     setAllSettings,
-    setEditCustomerInfoDetail
+    setEditCustomerInfoDetail,
+    setHeadlinePicRoles,
+    setAccountingPicRoles,
+    setCommunicationTool
 } from './accountDetailSlice';
 
 const getCustomerById = params => async dispatch => {
@@ -32,9 +35,37 @@ const editCustomerInfoDetail = params => async dispatch => {
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
+const getPicCommunicationTools = () => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('AccountDetail/GetPicCommunicationTools');
+    await DataService.postDataAsync(url).then(response => {
+        dispatch(setCommunicationTool(response.data));
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+};
+
+const getHeadlinePicRoles = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('AccountDetail/GetRolesByPic?id=' + params);
+    await DataService.postDataAsync(url).then(response => {
+        dispatch(setHeadlinePicRoles(response.data));
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+};
+
+const getAccountingPicRoles = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('AccountDetail/GetRolesByPic?id=' + params);
+    await DataService.postDataAsync(url).then(response => {
+        dispatch(setAccountingPicRoles(response.data));
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+};
+
+
 export const ActionCreators = {
     resetState,
     getCustomerById,
     getAllSettings,
-    editCustomerInfoDetail
+    editCustomerInfoDetail,
+    getPicCommunicationTools,
+    getHeadlinePicRoles,
+    getAccountingPicRoles
 };

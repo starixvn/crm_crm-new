@@ -9,6 +9,9 @@ export const SMALL_PAGING_SIZES = [1, 5, 7, 10];
 
 export const DefaultPageSize = 100;
 
+export const HeadlinePicID = 51000;
+export const AccountingPicID = 51001;
+
 export const DateFormat = 'MM/dd/yyyy';
 
 export const DateTimeFormat = 'MM/dd/yyyy hh:mm:ss a';

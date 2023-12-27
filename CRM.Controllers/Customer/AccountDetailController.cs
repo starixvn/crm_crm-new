@@ -94,5 +94,17 @@
 
             return Json(result);
         }
+
+        public async Task<IActionResult> GetRolesByPic( int id)
+        {
+            var roles = await settingService.GetRolesByPicAsync(id);
+            return Json(roles);
+        }
+
+        public async Task<IActionResult> GetPicCommunicationTools()
+        {
+            var settings = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true);
+            return Json(settings);
+        }
     }
 }
