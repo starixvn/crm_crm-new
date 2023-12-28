@@ -77,9 +77,9 @@ describe('Filter', () => {
                 notificationIdLower: '',
                 notificationIdUpper: '',
                 content: '',
-                referenceType: 'Msg ID',
-                referenceId: '',
-                botService: null
+                botService: null,
+                announcementId: null,
+                messageId: null
             },
             maxDate: now,
             notificationTypeOptions: [],
@@ -601,7 +601,7 @@ describe('Filter', () => {
             };
 
             const expected = {
-                announcementId: null,
+                announcementId: 1,
                 channelId: null,
                 notificationTypeIds: state.filter.notificationTypes,
                 fromDate: null,
@@ -609,7 +609,7 @@ describe('Filter', () => {
                 channelId: null,
                 headline: 'headline',
                 recipientName: 'recipient',
-                messageId: 1,
+                messageId: NaN,
                 notificationIdLower: state.filter.notificationIdLower,
                 notificationIdUpper: state.filter.notificationIdUpper,
                 content: state.filter.content,

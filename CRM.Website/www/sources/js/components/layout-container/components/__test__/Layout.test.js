@@ -76,6 +76,14 @@ describe('Layout', () => {
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
 
+        const fixHeaderMenu = document.createElement('div');
+        fixHeaderMenu.setAttribute('id', 'fix-header-menu');
+        document.body.appendChild(fixHeaderMenu);
+
+        const crmContainer = document.createElement('div');
+        crmContainer.setAttribute('id', 'crm-container');
+        document.body.appendChild(crmContainer);
+
         const promise = Promise.resolve({});
         commonFunc.CheckForIndexHTMLChange = jest.fn(() => promise);
         window.localStorage.setItem('isKeepLeftPanel', true);
@@ -87,9 +95,13 @@ describe('Layout', () => {
         jest.clearAllMocks();
         const appContainer = document.getElementById('hasCreateFeedbackPermission');
         const appContainer1 = document.getElementById('hasReadCustomerInfo');
-        if (appContainer || appContainer1) {
+        const fixHeaderMenu = document.getElementById('fix-header-menu');
+        const crmContainer = document.getElementById('crm-container');
+        if (appContainer || appContainer1 || fixHeaderMenu || crmContainer) {
             document.body.removeChild(appContainer);
             document.body.removeChild(appContainer1);
+            document.body.removeChild(fixHeaderMenu);
+            document.body.removeChild(crmContainer);
         }
 
         window.localStorage.removeItem('isKeepLeftPanel');
@@ -101,6 +113,9 @@ describe('Layout', () => {
     describe('componentDidMount',() => {
         it('should call set state when lef panel is not null',async () => {
             //Arrange
+            const crmContainer = document.createElement('div');
+            crmContainer.setAttribute('id', 'crm-container');
+            document.body.appendChild(crmContainer);
             window.localStorage.setItem('isKeepLeftPanel', true);
             window.localStorage.setItem('isShowingLeftPanel', true);
             window.localStorage.setItem('updateLeftPanel', {});
@@ -397,7 +412,11 @@ describe('Layout', () => {
         const props = {
           navigate: jest.fn()
         };
+        const state = {
+          customerInfo: null
+        };
         const container = shallow(<Layout {...props}/>).instance();
+        container.setState(state);
         container.setState = jest.fn();
         // Action
         container.handleCollapseExpandLayout(event);
@@ -407,13 +426,12 @@ describe('Layout', () => {
 
     it('should call exact function', () => {
       // Arrange
+      global.window.dispatchEvent = jest.fn();
       const event = {
         preventDefault: jest.fn()
       };
       const state = {
-        customerInfo: {id: 1, name: 'test'}
-      };
-      const prevState = {
+        customerInfo: {id: 1, name: 'test'},
         isShowingLeftPanel: false
       };
       const props = {
@@ -422,13 +440,13 @@ describe('Layout', () => {
       const container = shallow(<Layout {...props}/>).instance();
       container.handleSetStorage = jest.fn();
       container.setState(state);
-      container.setState(prevState);
       // Action
       container.handleCollapseExpandLayout(event);
       jest.runAllTimers();
       // Assert
       expect(container.state.isShowingLeftPanel).toEqual(true);
       expect(container.handleSetStorage).toHaveBeenCalled();
+      expect(global.window.dispatchEvent).toHaveBeenCalled();
     });
   });
 

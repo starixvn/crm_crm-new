@@ -15,7 +15,11 @@ describe('AppContainer', () => {
         createCommunicationPopup: { show: true },
         editCommunicationPopup: { show: true },
         setDeleteCommunicationPopup: jest.fn(),
-        deleteCommunicationPopup: { show: true, index: 1, id: 1 }
+        deleteCommunicationPopup: { show: true, index: 1, id: 1 },
+        getGridCommunicationSetting: jest.fn(),
+        gridParamsCommunication: [],
+        gridDataCommunication: [],
+        deleteCommunicationResult: { isSuccessful: true }
     }
 
     describe('componentWillUnmount', () => {
