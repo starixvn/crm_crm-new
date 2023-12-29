@@ -1,3 +1,34 @@
+.customer-info-detail{
+    .multiple-select-container,
+    .selectwithsearchtree .btn,
+    .form-control
+    {
+        border-radius: 3px;
+        border-color: #CECCCD;
+    }
+
+    .fa-caret-down, .caret{
+        background: url(/www/dist/css/images/icon/icon-dropdown.svg) no-repeat;
+        width: 12px;
+        height: 6px;
+    }
+
+    .caret{
+        border: none;
+        right: 5px;
+    }
+
+    .fa-caret-down::before{
+        content: none;
+    }
+
+    .selectwithsearchtree .btn{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
 .group-account{
     border: 1px #B7B7B7 solid;
 
@@ -65,6 +96,15 @@
             display: flex;
             align-items: flex-end;
         }
+
+        .custom-select-communicationTool{
+            border: none;
+            background: url(/www/dist/css/images/icon/icon-dropdown.svg) no-repeat;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-position:right;
+        }
    }
 }
 
@@ -95,7 +135,25 @@
 
     .tab-content{
         border: 1px #D1D1D1 solid;
-        padding: 16px 12px ;
+        padding: 13px 4px 12px 12px;
+
+        .custom-scrollbar{
+            padding: 3px 8px 3px 0;
+            max-height: 440px;
+            overflow-y: auto;
+
+            &::-webkit-scrollbar
+            {
+                width: 8px;
+            }
+    
+            &::-webkit-scrollbar-thumb
+            {
+                border-radius: 4px;
+                background-color: #B7B7B7;
+            }
+        }
+    
 
         .icon{
             position: absolute;
@@ -188,7 +246,7 @@
             }
         }
 
-        button{
+        .btn-save, .btn-add{
             margin-top: 12px;
             padding: 5px 16px;
             font-weight: 700;
@@ -296,8 +354,15 @@
         padding-right: 12px;
     }
 
-    .headline-info .tab-content .group-item{
+    .headline-info .tab-content
+    {
+        .custom-scrollbar{
+            max-height: 300px;
+        }
+
+        .group-item {
         padding-right: 12px;
+        }
     }
 
     .display-colSpan{

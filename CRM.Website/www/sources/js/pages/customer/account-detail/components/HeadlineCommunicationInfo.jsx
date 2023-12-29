@@ -179,7 +179,7 @@ export class HeadlineCommunicationInfo extends Component {
                     pic.picCommunicationTools.map((picCommunicationTool, indexPicCommunicationTool) => {
                         return <>
                             <Form.Group>
-                                <Form.Control as="select" size="sm" className="shadow-none" value={picCommunicationTool.type} onChange={event => {
+                                <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" value={picCommunicationTool.type} onChange={event => {
                                     this.handleChangeCommunicationValue('picCommunicationTools', 'type', parseInt(event.target.value, 10), indexPic, indexPicCommunicationTool);
                                 }}>
                                     <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>

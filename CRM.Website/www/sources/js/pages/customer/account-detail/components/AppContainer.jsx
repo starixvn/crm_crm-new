@@ -190,24 +190,26 @@ export class AppContainer extends Component {
                         </div>
                     </div>
                     <div className='tab-content'>
-                        {
-                            values.activeTab === 'headlineCommunicationInfo' &&
-                            <HeadlineCommunicationInfo />
-                        }
-                        {
-                            values.activeTab === 'headlineStaffsAndAuthority' &&
-                            <HeadlineStaffsAndAuthority />
-                        }
-                        {
-                            values.activeTab === 'companyService' &&
-                            <CompanyService />
-                        }
-                        {
-                            hasHostOnCurrentCustomer &&
-                            <Button type="submit" variant="primary" size="sm">
-                                {LangHelper.getResource('Save')}
-                            </Button>
-                        }
+                        <div className='custom-scrollbar'>
+                            {
+                                values.activeTab === 'headlineCommunicationInfo' &&
+                                <HeadlineCommunicationInfo />
+                            }
+                            {
+                                values.activeTab === 'headlineStaffsAndAuthority' &&
+                                <HeadlineStaffsAndAuthority />
+                            }
+                            {
+                                values.activeTab === 'companyService' &&
+                                <CompanyService />
+                            }
+                            {
+                                hasHostOnCurrentCustomer &&
+                                <Button type="submit" className='btn-save'>
+                                    {LangHelper.getResource('Save')}
+                                </Button>
+                            }
+                        </div>
                     </div>
                 </div>
             </>);
