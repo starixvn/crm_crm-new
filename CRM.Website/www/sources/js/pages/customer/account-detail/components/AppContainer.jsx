@@ -163,11 +163,6 @@ export class AppContainer extends Component {
         return (
             <>
                 {
-                    !customerInfo.isGroupHeadLine &&
-                    <p>other account</p>
-                }
-
-                {
                     this.renderAccountInfo(values, hasHostOnCurrentCustomer)
                 }
                 {
@@ -236,7 +231,7 @@ export class AppContainer extends Component {
 
     renderAccountInfo = (values, hasHostOnCurrentCustomer) => {
         const { customerInfo, allSettings } = this.props;
-        const languageSelected = this.props.allSettings.languages.map(item => {
+        const languageSelected = allSettings.languages.map(item => {
             return {
                 languageId: item.languageId,
                 name: item.name,

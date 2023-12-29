@@ -7,6 +7,7 @@ import { Form } from 'react-bootstrap';
 import { HeadlinePicID, AccountingPicID } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
+import { changeSiteSetting, hasHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
 
 export class HeadlineCommunicationInfo extends Component {
     constructor(props) {
@@ -52,20 +53,7 @@ export class HeadlineCommunicationInfo extends Component {
             });
         });
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
-    }
-
-    render() {
-        let { headlinePicRoles, accountingPicRoles, communicationTool } = this.props;
-        let { headlineCommunicationInfo } = this.state;
-        if (!headlinePicRoles || !accountingPicRoles || !communicationTool || !headlineCommunicationInfo) {
-            return null;
-        }
-        return (
-            <>
-                {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
-            </>
-        );
-    }
+    }   
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
@@ -204,7 +192,7 @@ export class HeadlineCommunicationInfo extends Component {
                                     {
                                         indexPicCommunicationTool === ( pic.picCommunicationTools.length - 1) &&
                                         <div onClick={() => { this.addNewCommunicationTool(indexPic); }}
-                                                className='icon icon-plus'>
+                                            className='icon icon-plus'>
                                         </div>
                                     }
                                 </div>
@@ -215,6 +203,28 @@ export class HeadlineCommunicationInfo extends Component {
             </div>
         );
     };
+
+    render() {
+        let { headlinePicRoles, accountingPicRoles, communicationTool } = this.props;
+        let { headlineCommunicationInfo } = this.state;
+        if (!headlinePicRoles || !accountingPicRoles || !communicationTool || !headlineCommunicationInfo) {
+            return null;
+        }
+        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
+        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
+        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
+        return (
+            <>
+                {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
+                {
+                    hasHostOnCurrentCustomer &&
+                    <Button type="submit" variant="primary" size="sm">
+                        {LangHelper.getResource('Save')}
+                    </Button>
+                }
+            </>
+        );
+    }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
