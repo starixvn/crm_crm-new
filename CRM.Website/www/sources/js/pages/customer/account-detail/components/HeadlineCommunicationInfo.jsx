@@ -81,9 +81,9 @@ export class HeadlineCommunicationInfo extends Component {
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
     }
 
-    deleteCommunicationTool = (value, indexPic) => {
+    deleteCommunicationTool = (value, type, indexPic) => {
         let { headlineCommunicationInfo } = this.state;
-        let picCommunicationTools = headlineCommunicationInfo[indexPic].picCommunicationTools.filter(comTool => comTool.value !== value);
+        let picCommunicationTools = headlineCommunicationInfo[indexPic].picCommunicationTools.filter(comTool => comTool.value !== value && comTool.type !== type);
         headlineCommunicationInfo[indexPic].picCommunicationTools = picCommunicationTools;
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
     }
@@ -182,15 +182,25 @@ export class HeadlineCommunicationInfo extends Component {
                                 <Form.Control as="select" size="sm" className="shadow-none" value={picCommunicationTool.type} onChange={event => {
                                     this.handleChangeCommunicationValue('picCommunicationTools', 'type', parseInt(event.target.value, 10), indexPic, indexPicCommunicationTool);
                                 }}>
+                                    <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                     {communicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                                 </Form.Control>
+                                {
+                                    indexPicCommunicationTool === 0 &&
+                                    <span
+                                        className="required"
+                                    >*</span>
+                                }
                                 <div className='field-icon'>
                                     <Form.Control type="text" value={picCommunicationTool.value} autoComplete="off" onChange={event => {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
                                     }} />
-                                    <div onClick={() => {this.deleteCommunicationTool(picCommunicationTool.value, indexPic);}}
-                                        className='icon icon-delete'>
-                                    </div>
+                                    {
+                                        indexPicCommunicationTool !== 0 && 
+                                        <div onClick={() => { this.deleteCommunicationTool(picCommunicationTool.value, picCommunicationTool.type, indexPic); }}
+                                            className='icon icon-delete'>
+                                        </div>
+                                    }
                                     {
                                         indexPicCommunicationTool === ( pic.picCommunicationTools.length - 1) &&
                                         <div onClick={() => { this.addNewCommunicationTool(indexPic); }}

@@ -311,7 +311,7 @@ export default class DataGrid extends PureComponent {
                                             {LangHelper.getResource('Name')}
                                         </Form.Label>
                                         <Col className='field-name'>
-                                            {pic.picName}
+                                            {pic.picName + ' (' + pic.picRoleName + ')'}
                                         </Col>
                                     </Form.Group>
                                     {

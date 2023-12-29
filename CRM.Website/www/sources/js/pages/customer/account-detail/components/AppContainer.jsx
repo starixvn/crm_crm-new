@@ -149,7 +149,7 @@ export class AppContainer extends Component {
         });
     };    
 
-    render() {
+    renderHeadlineAccount = () => {
         const { allSettings, customerInfo } = this.props;
         const values = this.state;
         const updatePolicy = this.state.updateHeadlineInfoPolicy;
@@ -163,10 +163,15 @@ export class AppContainer extends Component {
         return (
             <>
                 {
+                    !customerInfo.isGroupHeadLine &&
+                    <p>other account</p>
+                }
+
+                {
                     this.renderAccountInfo(values, hasHostOnCurrentCustomer)
                 }
                 {
-                    (customerInfo.isGroupHeadLine && (updatePolicy === Policy.Read || canEditHeadline)) && 
+                    (customerInfo.isGroupHeadLine && (updatePolicy === Policy.Read || canEditHeadline)) &&
                     this.renderAccountPIC(values, canEditHeadline)
                 }
                 <div className='headline-info'>
@@ -185,13 +190,13 @@ export class AppContainer extends Component {
                         </div>
                     </div>
                     <div className='tab-content'>
-                        { 
+                        {
                             values.activeTab === 'headlineCommunicationInfo' &&
-                            <HeadlineCommunicationInfo/>
+                            <HeadlineCommunicationInfo />
                         }
                         {
                             values.activeTab === 'headlineStaffsAndAuthority' &&
-                            <HeadlineStaffsAndAuthority/>
+                            <HeadlineStaffsAndAuthority />
                         }
                         {
                             values.activeTab === 'companyService' &&
@@ -205,6 +210,24 @@ export class AppContainer extends Component {
                         }
                     </div>
                 </div>
+            </>);
+    }
+
+    render() {
+        const { allSettings, customerInfo } = this.props;
+        if (!allSettings || !customerInfo) {
+            return null;
+        }
+        return (
+            <>
+                {
+                    !customerInfo.isGroupHeadLine &&
+                    <p>other account</p>
+                }
+                {
+                    customerInfo.isGroupHeadLine &&
+                    this.renderHeadlineAccount()
+                }
             </>
         );
     }

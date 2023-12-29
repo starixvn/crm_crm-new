@@ -6,6 +6,7 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
+    using CRM.Criteria.PicAndHeadline;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Customer;
@@ -105,6 +106,26 @@
         {
             var settings = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true);
             return Json(settings);
+        }
+
+        [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
+        public async Task<IActionResult> EditPic([FromBody] EditPicCriteria criteria)
+        {
+            criteria.UserId = napSession.UserId;
+            criteria.LoginIP = ClientIP;
+            CommandResult commandResult = await customerService.EditPicAsync(criteria);
+            return Json(commandResult);
+        }
+
+        [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
+        public async Task<IActionResult> ValidateEditPic([FromBody] ValidateEditPicCriteria criteria)
+        {
+            var result = await customerService.ValidateEditPicAsync(criteria);
+            return Json(result);
         }
     }
 }

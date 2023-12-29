@@ -8,6 +8,7 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
+    using CRM.Criteria.PicAndHeadline;
     using CRM.Models.Customer;
     using Microsoft.Extensions.Configuration;
     using NLog.LayoutRenderers;
@@ -29,6 +30,8 @@
         Task<CustomerPermissionInfo> GetSiteTypeByCustIdAsync(int custId);
 
         Task<bool> HasHostPermissionOnCustIdAsync(int custId);
+        Task<string> ValidateEditPicAsync(ValidateEditPicCriteria criteria);
+        Task<CommandResult> EditPicAsync(EditPicCriteria criteria);
     }
 
     public class CustomerService : ICustomerService
@@ -45,6 +48,16 @@
             this.settingService = settingService;
             this.permissionService = permissionService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
+        }
+
+        public async Task<CommandResult> EditPicAsync(EditPicCriteria criteria)
+        {
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<string> ValidateEditPicAsync(ValidateEditPicCriteria criteria)
+        {
+            return await baseService.GetDataEntityAsync<string>(criteria);
         }
 
         public async Task<CustomerInfoDetails> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria)
