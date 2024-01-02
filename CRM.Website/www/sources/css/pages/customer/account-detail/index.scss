@@ -9,6 +9,11 @@
         &.invalid{
             border-color: red;
         }
+
+        &:focus, &:active{
+            box-shadow: none;
+            border-color: #80bdff;
+        }
     }
 
     .fa-caret-down, .caret{
