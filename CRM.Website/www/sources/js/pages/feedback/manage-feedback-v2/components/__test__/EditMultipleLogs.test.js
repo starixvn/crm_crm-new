@@ -23,6 +23,7 @@ describe('EditMultipleLogs', () => {
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
         LangHelper.getResource = jest.fn(key => key);
+        window.currentUsername = 'test';
     });
 
     afterAll(() => {
@@ -1526,7 +1527,6 @@ describe('EditMultipleLogs', () => {
                 container.instance().setState(state);
 
                 // Act
-                //const renderEdit = shallow(container.render());
                 container.find(Modal).simulate('hide');
                 // Assert 
                 expect(props.onClose).toHaveBeenCalledWith(false);
@@ -1542,6 +1542,7 @@ describe('EditMultipleLogs', () => {
                 const container = shallow(<EditMultipleLogs />, { disableLifecycleMethods: true });
                 container.instance().getValidateFormik = jest.fn();
                 container.instance().setState(state);
+                container.find(Formik).props().innerRef({});
             });
 
             it('should call correct functions when validate', () => {
@@ -1561,9 +1562,6 @@ describe('EditMultipleLogs', () => {
                 commonFunc.getValidateFormik = jest.fn(() => 'test');
                 container.instance().setState(state);
 
-                // Act
-                //const renderEdit = shallow(container.render());
-    
                 // Act
                 container.find(Formik).props().validate(values);
     

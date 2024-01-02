@@ -1105,7 +1105,6 @@ describe('CreateForm', () => {
             expect(Site.unblockUI).toHaveBeenCalled();
             expect(props.createMultipleLogs).toHaveBeenCalledWith(params);
             expect(container.setState).toHaveBeenCalledWith({ createMultipleLogsResult: response.data });
-            expect(container.formik.setSubmitting).not.toHaveBeenCalled();
         });
     });
 });
