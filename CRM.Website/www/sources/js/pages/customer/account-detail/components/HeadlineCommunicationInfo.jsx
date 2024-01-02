@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import LangHelper from '@jsroot/common/langHelper';
-import { Form } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { HeadlinePicID, AccountingPicID } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
@@ -173,12 +173,6 @@ export class HeadlineCommunicationInfo extends Component {
                                     <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                     {communicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                                 </Form.Control>
-                                {
-                                    indexPicCommunicationTool === 0 &&
-                                    <span
-                                        className="required"
-                                    >*</span>
-                                }
                                 <div className='field-icon'>
                                     <Form.Control type="text" value={picCommunicationTool.value} autoComplete="off" onChange={event => {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
@@ -195,7 +189,7 @@ export class HeadlineCommunicationInfo extends Component {
                                             className='icon icon-plus'>
                                         </div>
                                     }
-                                </div>
+                                </div>                               
                             </Form.Group>
                         </>
                     })
@@ -205,9 +199,9 @@ export class HeadlineCommunicationInfo extends Component {
     };
 
     render() {
-        let { headlinePicRoles, accountingPicRoles, communicationTool } = this.props;
+        let { headlinePicRoles, accountingPicRoles, communicationTool, customerInfo } = this.props;
         let { headlineCommunicationInfo } = this.state;
-        if (!headlinePicRoles || !accountingPicRoles || !communicationTool || !headlineCommunicationInfo) {
+        if (!headlinePicRoles || !accountingPicRoles || !communicationTool || !headlineCommunicationInfo || !customerInfo) {
             return null;
         }
         const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
@@ -215,10 +209,12 @@ export class HeadlineCommunicationInfo extends Component {
         const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
         return (
             <>
-                {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
+                <div className='custom-scrollbar'>
+                    {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
+                </div>
                 {
-                    hasHostOnCurrentCustomer &&
-                    <Button type="submit" variant="primary" size="sm">
+                    hasHostOnCurrentCustomer && 
+                    <Button type="submit" className='btn-save'>
                         {LangHelper.getResource('Save')}
                     </Button>
                 }

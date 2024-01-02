@@ -185,7 +185,7 @@ export class AppContainer extends Component {
                         </div>
                     </div>
                     <div className='tab-content'>
-                        <div className='custom-scrollbar'>
+                        <div>
                             {
                                 values.activeTab === 'headlineCommunicationInfo' &&
                                 <HeadlineCommunicationInfo />
@@ -197,12 +197,6 @@ export class AppContainer extends Component {
                             {
                                 values.activeTab === 'companyService' &&
                                 <CompanyService />
-                            }
-                            {
-                                hasHostOnCurrentCustomer &&
-                                <Button type="submit" className='btn-save'>
-                                    {LangHelper.getResource('Save')}
-                                </Button>
                             }
                         </div>
                     </div>

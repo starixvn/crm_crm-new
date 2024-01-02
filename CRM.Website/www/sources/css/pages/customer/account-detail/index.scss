@@ -102,6 +102,7 @@
         }
 
         .custom-select-communicationTool{
+            width: 40%;
             border: none;
             background: url(/www/dist/css/images/icon/icon-dropdown.svg) no-repeat;
             -webkit-appearance: none;
@@ -143,7 +144,7 @@
 
         .custom-scrollbar{
             padding: 3px 8px 3px 0;
-            max-height: 440px;
+            max-height: 420px;
             overflow-y: auto;
 
             &::-webkit-scrollbar
