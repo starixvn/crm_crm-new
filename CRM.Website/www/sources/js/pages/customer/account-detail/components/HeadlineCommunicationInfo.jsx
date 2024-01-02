@@ -4,10 +4,12 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import LangHelper from '@jsroot/common/langHelper';
 import { Form, Button } from 'react-bootstrap';
-import { HeadlinePicID, AccountingPicID } from '@jsroot/common/constants';
+import { HeadlinePicID, AccountingPicID, FieldErrorHeadlineCommunicationInfo } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
-import { changeSiteSetting, hasHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
+import { hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+import DataService from '@jsroot/common/dataService';
+import Site from '@jsroot/common/site';
 
 export class HeadlineCommunicationInfo extends Component {
     constructor(props) {
@@ -38,7 +40,8 @@ export class HeadlineCommunicationInfo extends Component {
                 if (communication.picID === pic.picID) {
                     communicationTools.push({
                         type: communication.picCommunicationId,
-                        value: communication.picCommunicationValue
+                        value: communication.picCommunicationValue,
+                        isError: false
                     });
                 }
             });
@@ -49,7 +52,9 @@ export class HeadlineCommunicationInfo extends Component {
                 picId: pic.picID,
                 picName: pic.picName,
                 picType: pic.picTypeID,
-                role: pic.picRoleID
+                role: pic.picRoleID,
+                isNameError: false,
+                isRoleError: false
             });
         });
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
@@ -61,26 +66,110 @@ export class HeadlineCommunicationInfo extends Component {
         let { headlineCommunicationInfo } = this.state;
         headlineCommunicationInfo[indexPic][name] = value;
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        this.validateCommunicationInfo();
     }
 
     handleChangeCommunicationValue = (name, typeName, value, indexPic, indexPicCommunicationTool) => {
         let { headlineCommunicationInfo } = this.state;
         headlineCommunicationInfo[indexPic][name][indexPicCommunicationTool][typeName] = value;
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        this.validateCommunicationInfo();
     }
 
     deleteCommunicationTool = (value, type, indexPic) => {
+        const data = [...this.state.headlineCommunicationInfo];
+        const index = data[indexPic].picCommunicationTools.findIndex(comTool => comTool.value === value && comTool.type === type);
+        data[indexPic].picCommunicationTools.splice(index, 1);
+        this.setState({ headlineCommunicationInfo: data });
+    }
+
+    handleSubmit = async () => {
+        this.validateCommunicationInfo();
+        const { errors } = this.props;
+        if (!errors) {
+            let validResult = await this.validateEditPic();
+            let validResult2 = await this.editHeadlineCommunicationPic();
+        }
+    }
+
+    editHeadlineCommunicationPic = async () => {
         let { headlineCommunicationInfo } = this.state;
-        let picCommunicationTools = headlineCommunicationInfo[indexPic].picCommunicationTools.filter(comTool => comTool.value !== value && comTool.type !== type);
-        headlineCommunicationInfo[indexPic].picCommunicationTools = picCommunicationTools;
+        let validResult = null;
+        const params = headlineCommunicationInfo.map(pic => {
+            return {
+                country: pic.country,
+                language: pic.language,
+                picId: pic.picId,
+                picName: pic.picName,
+                picType: pic.picType,
+                role: pic.role,
+                picCommunicationTools: pic.picCommunicationTools.map(com => { return { type: com.type, value: com.value }; }),
+                remark: ''
+            };
+        });
+        Site.blockUI();
+        const url = Site.resolveClientUrl('AccountDetail/EditPic');
+        await DataService.postDataAsync(url, params).then(response => {
+            validResult = response.data;
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+        return validResult;
+    }
+
+    validateEditPic = async () => {
+        let { headlineCommunicationInfo } = this.state;
+        let validResult = null;
+        const params = headlineCommunicationInfo.map(pic => {
+            return {
+                picId: pic.picId,
+                picCommunicationTools: pic.picCommunicationTools.map(com => { return { type: com.type, value: com.value }; })
+            };
+        });
+        Site.blockUI();
+        const url = Site.resolveClientUrl('AccountDetail/ValidateEditPic');
+        await DataService.postDataAsync(url, params).then(response => {
+            validResult = response.data;
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+        return validResult;
+    }
+
+    validateCommunicationInfo = () => {
+        const errors = {};
+        let { headlineCommunicationInfo } = this.state;
+
+        this.state.headlineCommunicationInfo.map((pic,indexPic) => {
+            if (!pic.picName || pic.picName.trim().length === 0) {
+                errors.picName = LangHelper.getResource('NameRequired');
+                headlineCommunicationInfo[indexPic].isNameError = true;
+            } else {
+                headlineCommunicationInfo[indexPic].isNameError = false;
+            }
+
+            if (!pic.role) {
+                errors.role = LangHelper.getResource('RoleRequired');
+                headlineCommunicationInfo[indexPic].isRoleError = true;
+            } else {
+                headlineCommunicationInfo[indexPic].isRoleError = false;
+            }
+
+            pic.picCommunicationTools.map((compic,indexCompic) => {
+                if (!compic.type || !compic.value) {
+                    errors.communication = LangHelper.getResource('CommunicationMustHaveValue');
+                    headlineCommunicationInfo[indexPic].picCommunicationTools[indexCompic].isError = true;
+                } else {
+                    headlineCommunicationInfo[indexPic].picCommunicationTools[indexCompic].isError = false;
+                }
+            });
+        });
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        this.props.setErrors(Object.keys(errors).length === 0 ? null : errors);
     }
 
     addNewCommunicationTool = indexPic => {
         let { headlineCommunicationInfo } = this.state;
         headlineCommunicationInfo[indexPic].picCommunicationTools.push({
-            type: 0,
-            value: ''
+            type: '',
+            value: '',
+            isError: false
         });
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
     }
@@ -106,7 +195,7 @@ export class HeadlineCommunicationInfo extends Component {
                     <Form.Label className="required">
                         {LangHelper.getResource('Name')}
                     </Form.Label>
-                    <Form.Control type="text" name="name" value={pic.picName} autoComplete="off" onChange={event => {
+                    <Form.Control className={pic.isNameError && 'invalid' } type="text" name="name" value={pic.picName} autoComplete="off" onChange={event => {
                         this.handleChangeValue('picName', event.target.value, indexPic);
                     }} />
                 </Form.Group>
@@ -116,7 +205,7 @@ export class HeadlineCommunicationInfo extends Component {
                     </Form.Label>
                     {
                         pic.picType === HeadlinePicID &&
-                        <Form.Control as="select" size="sm" className="shadow-none" value={pic.role} name="picRoleID" id="picRoleID"
+                        <Form.Control as="select" size="sm" className={pic.isRoleError ? 'invalid shadow-none' : 'shadow-none'} value={pic.role} name="picRoleID" id="picRoleID"
                             onChange={(currentItem, selectedItemsKey) => {
                                 this.handleChangeValue('country', selectedItemsKey, indexPic);
                         }}>
@@ -125,7 +214,7 @@ export class HeadlineCommunicationInfo extends Component {
                     }
                     {
                         pic.picType === AccountingPicID &&
-                        <Form.Control as="select" size="sm" className="shadow-none" value={pic.role} name="picRoleID" id="picRoleID"
+                        <Form.Control as="select" size="sm" className={pic.isRoleError ? 'invalid shadow-none' : 'shadow-none'} value={pic.role} name="picRoleID" id="picRoleID"
                             onChange={(currentItem, selectedItemsKey) => {
                                 this.handleChangeValue('country', selectedItemsKey, indexPic);
                         }}>
@@ -170,11 +259,12 @@ export class HeadlineCommunicationInfo extends Component {
                                 <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" value={picCommunicationTool.type} onChange={event => {
                                     this.handleChangeCommunicationValue('picCommunicationTools', 'type', parseInt(event.target.value, 10), indexPic, indexPicCommunicationTool);
                                 }}>
-                                    <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                    <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                     {communicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                                 </Form.Control>
                                 <div className='field-icon'>
-                                    <Form.Control type="text" value={picCommunicationTool.value} autoComplete="off" onChange={event => {
+                                    <Form.Control type="text" className={picCommunicationTool.isError && 'invalid'}
+                                        value={picCommunicationTool.value} autoComplete="off" onChange={event => {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
                                     }} />
                                     {
@@ -215,7 +305,7 @@ export class HeadlineCommunicationInfo extends Component {
                 {
                     hasHostOnCurrentCustomer && 
                     <div className='group-btn'>
-                    <Button type="submit" className='btn-save'>
+                    <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
                         {LangHelper.getResource('Save')}
                     </Button>
                     </div>
@@ -231,6 +321,8 @@ const mapStateToProps = state => {
     const {
         allSettings,
         customerInfo,
+        errors,
+        setErrors,
         getPicCommunicationTools,
         getHeadlinePicRoles,
         getAccountingPicRoles,
@@ -240,6 +332,8 @@ const mapStateToProps = state => {
     return {
         allSettings,
         customerInfo,
+        errors,
+        setErrors,
         getPicCommunicationTools,
         getHeadlinePicRoles,
         getAccountingPicRoles,

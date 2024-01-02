@@ -137,30 +137,3 @@ export const ParamsSubmit = (custId, values) => {
         bbm: values.zalo
     };
 };
-
-export const validateFormik = (values) => {
-    const errors = {};
-
-    if (!values.picName || values.picName.trim().length === 0) {
-        errors.picName = LangHelper.getResource('NameRequired');
-    }
-
-    if (!values.roleId) {
-        errors.roleId = LangHelper.getResource('RoleRequired');
-    }
-
-    let validCommunication = false;
-    for (let key in values) {
-        if (key.includes('communication') && values[key]) {
-            validCommunication = true;
-            if (!values[key].type || !values[key].value) {
-                errors[key] = LangHelper.getResource('CommunicationMustHaveValue');
-            }
-        }
-    }
-
-    if (!validCommunication) {
-        errors.communication = LangHelper.getResource('CommunicationRequired');
-    }
-    return errors;
-};

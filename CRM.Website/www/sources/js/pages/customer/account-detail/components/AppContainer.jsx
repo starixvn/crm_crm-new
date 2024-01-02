@@ -5,11 +5,11 @@ import { bindActionCreators } from 'redux';
 import HeadlineStaffsAndAuthority from './HeadlineStaffsAndAuthority';
 import HeadlineCommunicationInfo from './HeadlineCommunicationInfo';
 import CompanyService from './CompanyService';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Alert } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
-import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { Policy, FunctionKey, FieldErrorHeadlineCommunicationInfo } from '@jsroot/common/constants';
 import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
@@ -149,75 +149,22 @@ export class AppContainer extends Component {
         });
     };    
 
-    renderHeadlineAccount = () => {
-        const { allSettings, customerInfo } = this.props;
-        const values = this.state;
-        const updatePolicy = this.state.updateHeadlineInfoPolicy;
-        const canEditHeadline = updatePolicy === Policy.Host;
-        if (!allSettings || !customerInfo) {
-            return null;
-        }
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
+    renderErrors = errors => {
         return (
             <>
                 {
-                    this.renderAccountInfo(values, hasHostOnCurrentCustomer)
-                }
-                {
-                    (customerInfo.isGroupHeadLine && (updatePolicy === Policy.Read || canEditHeadline)) &&
-                    this.renderAccountPIC(values, canEditHeadline)
-                }
-                <div className='headline-info'>
-                    <div className="tab-title">
-                        <div className={`tab-child ${values.activeTab === 'headlineCommunicationInfo' ? 'active' : ''}`}
-                            onClick={() => this.handleTabClick('headlineCommunicationInfo')}>
-                            Headline Communication info
-                        </div>
-                        <div className={`tab-child ${values.activeTab === 'headlineStaffsAndAuthority' ? 'active' : ''}`}
-                            onClick={() => this.handleTabClick('headlineStaffsAndAuthority')}>
-                            Headline Staffs And Authority
-                        </div>
-                        <div className={`tab-child ${values.activeTab === 'companyService' ? 'active' : ''}`}
-                            onClick={() => this.handleTabClick('companyService')}>
-                            Company Service
-                        </div>
-                    </div>
-                    <div className='tab-content'>
-                        <div>
+                    errors &&
+                    <Alert variant='danger'>
+                        <ul className='list-message-error'>
                             {
-                                values.activeTab === 'headlineCommunicationInfo' &&
-                                <HeadlineCommunicationInfo />
+                                FieldErrorHeadlineCommunicationInfo.map(field => {
+                                    if (errors[field]) {
+                                        return <li key={errors[field]}>{errors[field]}</li>;
+                                    }
+                                })
                             }
-                            {
-                                values.activeTab === 'headlineStaffsAndAuthority' &&
-                                <HeadlineStaffsAndAuthority />
-                            }
-                            {
-                                values.activeTab === 'companyService' &&
-                                <CompanyService />
-                            }
-                        </div>
-                    </div>
-                </div>
-            </>);
-    }
-
-    render() {
-        const { allSettings, customerInfo } = this.props;
-        if (!allSettings || !customerInfo) {
-            return null;
-        }
-        return (
-            <>
-                {
-                    !customerInfo.isGroupHeadLine &&
-                    <p>other account</p>
-                }
-                {
-                    customerInfo.isGroupHeadLine &&
-                    this.renderHeadlineAccount()
+                        </ul>
+                    </Alert>
                 }
             </>
         );
@@ -234,13 +181,13 @@ export class AppContainer extends Component {
         });
         const siteOptions = changeSiteSetting(this.props.allSettings.sites, 'childSites', 'childSites');
 
-        return(
+        return (
             <Form className='group-account'>
                 <div className='group-title'>
                     Account Info
                     {
                         hasHostOnCurrentCustomer &&
-                        <img onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')}/>
+                        <img onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                     }
                 </div>
                 <div className='group-content'>
@@ -349,13 +296,13 @@ export class AppContainer extends Component {
                         />
                     </Form.Group>
                 </div>
-                
+
             </Form>
         );
     }
 
-    renderAccountPIC = (values,canEditHeadline) => {
-        return(
+    renderAccountPIC = (values, canEditHeadline) => {
+        return (
             <Form className='group-account'>
                 <div className='group-title'>
                     Accountant PIC
@@ -397,13 +344,92 @@ export class AppContainer extends Component {
             </Form>
         );
     }
+
+
+
+    renderHeadlineAccount = () => {
+        const { allSettings, customerInfo, errors } = this.props;
+        const values = this.state;
+        const updatePolicy = this.state.updateHeadlineInfoPolicy;
+        const canEditHeadline = updatePolicy === Policy.Host;
+        if (!allSettings || !customerInfo) {
+            return null;
+        }
+        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
+        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
+        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
+        return (
+            <>
+                {
+                    this.renderErrors(errors)
+                }
+                {
+                    this.renderAccountInfo(values, hasHostOnCurrentCustomer)
+                }
+                {
+                    (customerInfo.isGroupHeadLine && (updatePolicy === Policy.Read || canEditHeadline)) &&
+                    this.renderAccountPIC(values, canEditHeadline)
+                }
+                <div className='headline-info'>
+                    <div className="tab-title">
+                        <div className={`tab-child ${values.activeTab === 'headlineCommunicationInfo' ? 'active' : ''}`}
+                            onClick={() => this.handleTabClick('headlineCommunicationInfo')}>
+                            Headline Communication info
+                        </div>
+                        <div className={`tab-child ${values.activeTab === 'headlineStaffsAndAuthority' ? 'active' : ''}`}
+                            onClick={() => this.handleTabClick('headlineStaffsAndAuthority')}>
+                            Headline Staffs And Authority
+                        </div>
+                        <div className={`tab-child ${values.activeTab === 'companyService' ? 'active' : ''}`}
+                            onClick={() => this.handleTabClick('companyService')}>
+                            Company Service
+                        </div>
+                    </div>
+                    <div className='tab-content'>
+                        <div>
+                            {
+                                values.activeTab === 'headlineCommunicationInfo' &&
+                                <HeadlineCommunicationInfo />
+                            }
+                            {
+                                values.activeTab === 'headlineStaffsAndAuthority' &&
+                                <HeadlineStaffsAndAuthority />
+                            }
+                            {
+                                values.activeTab === 'companyService' &&
+                                <CompanyService />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </>);
+    }
+
+    render() {
+        const { allSettings, customerInfo } = this.props;
+        if (!allSettings || !customerInfo) {
+            return null;
+        }
+        return (
+            <>
+                {
+                    !customerInfo.isGroupHeadLine &&
+                    <p>other account</p>
+                }
+                {
+                    customerInfo.isGroupHeadLine &&
+                    this.renderHeadlineAccount()
+                }
+            </>
+        );
+    }    
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, customerInfo, editCustomerInfoDetailResult } = state;
-    return { allSettings, customerInfo, editCustomerInfoDetailResult };
+    const { allSettings, customerInfo, errors, editCustomerInfoDetailResult } = state;
+    return { allSettings, customerInfo, errors, editCustomerInfoDetailResult };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

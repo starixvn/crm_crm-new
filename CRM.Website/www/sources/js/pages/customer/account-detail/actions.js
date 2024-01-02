@@ -8,7 +8,8 @@ import {
     setEditCustomerInfoDetail,
     setHeadlinePicRoles,
     setAccountingPicRoles,
-    setCommunicationTool
+    setCommunicationTool,
+    setErrors
 } from './accountDetailSlice';
 
 const getCustomerById = params => async dispatch => {
@@ -62,6 +63,7 @@ const getAccountingPicRoles = params => async dispatch => {
 
 export const ActionCreators = {
     resetState,
+    setErrors,
     getCustomerById,
     getAllSettings,
     editCustomerInfoDetail,

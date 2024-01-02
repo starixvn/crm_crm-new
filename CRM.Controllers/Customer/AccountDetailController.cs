@@ -1,5 +1,8 @@
 ﻿namespace CRM.Controllers
 {
+    using System.Collections.Generic;
+    using System.Collections.Immutable;
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
@@ -111,21 +114,31 @@
         [HttpPost]
         [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
         [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
-        public async Task<IActionResult> EditPic([FromBody] EditPicCriteria criteria)
+        public async Task<IActionResult> EditPic([FromBody] IList<EditPicCriteria> criterias)
         {
-            criteria.UserId = napSession.UserId;
-            criteria.LoginIP = ClientIP;
-            CommandResult commandResult = await customerService.EditPicAsync(criteria);
-            return Json(commandResult);
+            var commandResultList = new List<CommandResult>();
+            foreach (var criteria in criterias)
+            {
+                criteria.UserId = napSession.UserId;
+                criteria.LoginIP = ClientIP;
+                var commandResult = await customerService.EditPicAsync(criteria);
+                commandResultList.Add(commandResult);
+            }
+            return Json(commandResultList);
         }
 
         [HttpPost]
         [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
         [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
-        public async Task<IActionResult> ValidateEditPic([FromBody] ValidateEditPicCriteria criteria)
+        public async Task<IActionResult> ValidateEditPic([FromBody] IList<ValidateEditPicCriteria> criterias)
         {
-            var result = await customerService.ValidateEditPicAsync(criteria);
-            return Json(result);
+            var resultlList = new List<string>();
+            foreach (var criteria in criterias)
+            {
+                var result = await customerService.ValidateEditPicAsync(criteria);
+                resultlList.Add(result);
+            }
+            return Json(resultlList);
         }
     }
 }
