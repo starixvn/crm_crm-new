@@ -91,28 +91,9 @@
                     return;
                 }
 
-                var voidingInfo = await ticketVoidingService.GetVoidingMessageAsync(setting.LastVoidingHistoryCollectionId, setting.BatchSize);
-                var userNameList = Enumerable.Empty<ChatBotUserNameList>();
-                if (voidingInfo.Item2.Any())
-                {
-                    var criteria = new GetChatBotAbnormalAccountGetUsernameListCriteria
-                    {
-                        Messages = voidingInfo.Item2.ToXML("root").ToString()
-                    };
-                    userNameList = await ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(criteria);
-                }
-
+                var voidingCollectInfo = await ticketVoidingService.GetVoidingMessageAsync(setting.LastVoidingHistoryCollectionId, setting.BatchSize);
                 var voidingBetIdInfo = await ticketVoidingService.GetVoidingBetIdMessageAsync(setting.LastMsgTargetId, setting.BatchSize);
-
-                var voidingHistoryCollectionIds = voidingInfo.Item1
-                    .Select(voidingCollectionId => new ChatBotUserNameList
-                    {
-                        VoidingHistoryCollectionId = voidingCollectionId,
-                        UsernameList = ""
-                    })
-                    .ToList();
-                var combineHistoryCollectionIds = userNameList.Concat(voidingHistoryCollectionIds);
-                var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(combineHistoryCollectionIds, Environment, setting.IncludeUUSCurrency, voidingBetIdInfo);
+                var ticketInfos = await ticketVoidingService.GetTicketVoidingInfoAsync(voidingCollectInfo, voidingBetIdInfo, Environment, setting.IncludeUUSCurrency);
                 IEnumerable<Message> messages = await ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2);
 
                 var commandResultImportTicket = await ticketVoidingService.ImportTicketVoidingAsync(

@@ -21,17 +21,17 @@
     {
         Task<IEnumerable<ChatBotUserNameList>> GetChatBotAbnormalAccountUsernameAsync(GetChatBotAbnormalAccountGetUsernameListCriteria criteria);
 
-        Task<ValueTuple<IEnumerable<int>, IEnumerable<ChatBotVoidingHistory>>> GetVoidingMessageAsync(int LastVoidingHistoryCollectionId, int BatchSize);
+        Task<IEnumerable<ChatBotVoidingHistoryCollection>> GetVoidingMessageAsync(int LastVoidingHistoryCollectionId, int BatchSize);
 
         Task<CommandResult> EditVoidingMessageAsync(IEnumerable<ChatBotVoidingMessage> voidingMessages);
 
         Task<IEnumerable<Message>> GetMessageInfoAsync(IEnumerable<VoidingMessage> voidingMessages);
 
         Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int>> GetTicketVoidingInfoAsync(
-            IEnumerable<ChatBotUserNameList> userNames,
+            IEnumerable<ChatBotVoidingHistoryCollection> messages,
+            IEnumerable<ChatBotVoidingBetIdHistory> voidingBetIdMessages,
             string environment,
-            bool IncludeUUSCurrency,
-            IEnumerable<ChatBotVoidingBetIdHistory> voidingBetIdMessages
+            bool IncludeUUSCurrency
             );
 
         Task<ValueTuple<CommandResult, ImportChatBotTicketVoidingInfoCommand>> ImportTicketVoidingAsync(
@@ -58,14 +58,14 @@
             return await baseService.GetDataFromSiteDbAsync<ChatBotUserNameList>(criteria);
         }
 
-        public async Task<ValueTuple<IEnumerable<int>, IEnumerable<ChatBotVoidingHistory>>> GetVoidingMessageAsync(int LastVoidingHistoryCollectionId, int BatchSize)
+        public async Task<IEnumerable<ChatBotVoidingHistoryCollection>> GetVoidingMessageAsync(int LastVoidingHistoryCollectionId, int BatchSize)
         {
             var criteria = new GetChatBotVoidingMessageCriteria
             {
                 LastVoidingHistoryCollectionId = LastVoidingHistoryCollectionId,
                 BatchSize = BatchSize
             };
-            return await baseService.FetchMultipleAsync<int, ChatBotVoidingHistory>(criteria);
+            return await baseService.GetDataAsync<ChatBotVoidingHistoryCollection>(criteria);
         }
 
         public async Task<IEnumerable<ChatBotVoidingHistory>> ImportVoidingMessageHistoryCheckAsync(
@@ -108,15 +108,15 @@
         }
 
         public async Task<ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int>> GetTicketVoidingInfoAsync(
-            IEnumerable<ChatBotUserNameList> userNames,
+            IEnumerable<ChatBotVoidingHistoryCollection> messages,
+            IEnumerable<ChatBotVoidingBetIdHistory> voidingBetIdMessages,
             string environment,
-            bool IncludeUUSCurrency,
-            IEnumerable<ChatBotVoidingBetIdHistory> voidingBetIdMessages
+            bool IncludeUUSCurrency
             )
         {
             var criteria = new GetChatBotTicketVoidingInfoCriteria
             {
-                Messages = userNames.ToXML("root").ToString(),
+                Messages = messages.ToXML("root").ToString(),
                 Environment = environment,
                 IncludeUUSCurrency = IncludeUUSCurrency,
                 Messages_VoidByBetID = voidingBetIdMessages.ToXML("root").ToString()
