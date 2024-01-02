@@ -5,6 +5,10 @@
     {
         border-radius: 3px;
         border-color: #CECCCD;
+
+        &.invalid{
+            border-color: red;
+        }
     }
 
     .fa-caret-down, .caret{
