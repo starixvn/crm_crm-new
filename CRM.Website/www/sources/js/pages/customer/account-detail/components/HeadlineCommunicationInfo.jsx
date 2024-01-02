@@ -214,9 +214,11 @@ export class HeadlineCommunicationInfo extends Component {
                 </div>
                 {
                     hasHostOnCurrentCustomer && 
+                    <div className='group-btn'>
                     <Button type="submit" className='btn-save'>
                         {LangHelper.getResource('Save')}
                     </Button>
+                    </div>
                 }
             </>
         );
