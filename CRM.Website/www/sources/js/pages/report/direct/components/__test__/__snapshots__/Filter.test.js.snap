@@ -28,9 +28,11 @@ exports[`Filter render filter component 1`] = `
         size="sm"
         type="text"
       />
+    </FormGroup>
+    <FormGroup>
       <FormCheck
         checked={true}
-        className="mr-5"
+        className="mr-2"
         id="checkIgnoredAccountInput"
         onChange={[Function]}
         type="checkbox"
@@ -44,10 +46,6 @@ exports[`Filter render filter component 1`] = `
         ExcludeIgnoredAccounts
       </FormLabel>
     </FormGroup>
-  </FormRow>
-  <FormRow
-    bsPrefix="form-row"
-  >
     <FormGroup>
       <FormLabel
         column={false}
@@ -66,7 +64,7 @@ exports[`Filter render filter component 1`] = `
       />
       <Button
         active={false}
-        className="mr-4 btn-submit"
+        className="ml-3 btn-submit"
         disabled={false}
         onClick={[Function]}
         size="sm"
@@ -76,13 +74,5 @@ exports[`Filter render filter component 1`] = `
       </Button>
     </FormGroup>
   </FormRow>
-  <div
-    className="text-center filter-collapse"
-  >
-    <span
-      className="fa-sm fa fa-caret-up "
-      onClick={[Function]}
-    />
-  </div>
 </Form>
 `;
