@@ -489,7 +489,7 @@ export default class DataGrid extends PureComponent {
                 setSubmitting(false);
                 this.props.handleCloseEditCustomerInfoPopup();
                 this.props.getCustomerInfo();
-                toast.success(LangHelper.getResource('UpdateCRMInfoSuccessful'));
+                toast.success(LangHelper.getResource('UpdateAccountDetailSuccessful'));
             } else {
                 toast.error(LangHelper.getResource(response.data.message));
                 this.props.handleCloseEditCustomerInfoPopup();

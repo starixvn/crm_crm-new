@@ -4,18 +4,24 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import LangHelper from '@jsroot/common/langHelper';
 import { Form, Button } from 'react-bootstrap';
-import { HeadlinePicID, AccountingPicID, FieldErrorHeadlineCommunicationInfo } from '@jsroot/common/constants';
+import { HeadlinePicID, AccountingPicID, Letstalk, Telegram } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
 import { hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import { toast } from 'react-toastify';
 
 export class HeadlineCommunicationInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            headlineCommunicationInfo: null
+            headlineCommunicationInfo: null,
+            confirmSave: {
+                show: false,
+                data: []
+            }
         };
     }
 
@@ -88,13 +94,28 @@ export class HeadlineCommunicationInfo extends Component {
         const { errors } = this.props;
         if (!errors) {
             let validResult = await this.validateEditPic();
-            let validResult2 = await this.editHeadlineCommunicationPic();
+            if (validResult.findIndex(x => x !== '') === -1) {
+                this.setState({
+                    confirmSave: {
+                        show: false,
+                        data: []
+                    }
+                });
+                await this.editHeadlineCommunicationPic();
+            }
+            else {
+                this.setState({
+                    confirmSave: {
+                        show: true,
+                        data: validResult
+                    }
+                });
+            }
         }
     }
 
     editHeadlineCommunicationPic = async () => {
         let { headlineCommunicationInfo } = this.state;
-        let validResult = null;
         const params = headlineCommunicationInfo.map(pic => {
             return {
                 country: pic.country,
@@ -110,9 +131,12 @@ export class HeadlineCommunicationInfo extends Component {
         Site.blockUI();
         const url = Site.resolveClientUrl('AccountDetail/EditPic');
         await DataService.postDataAsync(url, params).then(response => {
-            validResult = response.data;
+            if (response.data.findIndex(x => !x.isSuccessful) === -1) {
+                toast.success(LangHelper.getResource('UpdateHeadlineCommunicationInfoSuccessful'));
+            } else {
+                toast.errors(response.data.find(x => !x.isSuccessful)[0].message);
+            }
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
-        return validResult;
     }
 
     validateEditPic = async () => {
@@ -288,6 +312,20 @@ export class HeadlineCommunicationInfo extends Component {
         );
     };
 
+    handleSubmitEditConfirm = async () => {
+        this.setState({
+            confirmSave: {
+                show: false,
+                data: []
+            }
+        });
+        await this.editHeadlineCommunicationPic();
+    };
+
+    handleCloseEditConfirm = () => {
+        this.setState({ confirmSave: { show: false, data: [] } });
+    };
+
     render() {
         let { headlinePicRoles, accountingPicRoles, communicationTool, customerInfo } = this.props;
         let { headlineCommunicationInfo } = this.state;
@@ -309,6 +347,48 @@ export class HeadlineCommunicationInfo extends Component {
                         {LangHelper.getResource('Save')}
                     </Button>
                     </div>
+                }
+                {
+                    this.state.confirmSave.show &&
+                    <ConfirmPopup
+                        className='confirm-headline-modal'
+                        title={LangHelper.getResource('ConfirmHeadlineCommunicationInfo')}
+                        content={
+                            <>
+                                <div className="confirm-headline">{LangHelper.getResource('ConfirmContentHeadlineCommunicationInfo')}</div>
+                                {
+                                    this.state.confirmSave.data.map((item, index) => {
+                                        if (item !== '') {
+                                            return (<>
+                                                <div>
+                                                    <span>{headlineCommunicationInfo[index].picName}</span>
+                                                    <span>{': '}</span>
+                                                    {
+                                                        headlineCommunicationInfo[index].picCommunicationTools.map((comPic, indexPic) => {
+                                                            let indexCom = communicationTool.findIndex(x => x.settingId === comPic.type &&
+                                                                (x.settingValue === Letstalk || x.settingValue === Telegram))
+                                                            if (indexCom !== -1) {
+                                                                return (
+                                                                    <>
+                                                                        {indexPic !== 0 && <span>{', '}</span>}
+                                                                        <span className="bold">{comPic.value}</span>
+                                                                        <span>{' (' + communicationTool[indexCom].settingValue + ')'}</span>
+                                                                    </>
+                                                                );
+                                                            }
+                                                        })
+                                                    }
+                                                </div>
+                                            </>);
+                                        }
+                                    })
+                                }
+                            </>
+                        }
+                        size='lg'
+                        onSubmit={this.handleSubmitEditConfirm}
+                        onClose={this.handleCloseEditConfirm}
+                    />
                 }
             </>
         );
