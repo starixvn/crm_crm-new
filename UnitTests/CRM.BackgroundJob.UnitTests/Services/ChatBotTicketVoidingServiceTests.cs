@@ -29,9 +29,10 @@
         public async Task GetVoidingMessageAsync_WhenCalled_ReturnExpectedMessages()
         {
             // Arrange
+            var fixture = new Fixture();
+            var expected = fixture.Create<IEnumerable<ChatBotVoidingHistoryCollection>>();
             var service = GetService();
-            var expected = new ValueTuple<IEnumerable<int>, IEnumerable<ChatBotVoidingHistory>>();
-            baseService.FetchMultipleAsync<int, ChatBotVoidingHistory>(Arg.Any<GetChatBotVoidingMessageCriteria>()).Returns(expected);
+            baseService.GetDataAsync<ChatBotVoidingHistoryCollection>(Arg.Any<GetChatBotVoidingMessageCriteria>()).Returns(expected);
 
             // Act
             var actual = await service.GetVoidingMessageAsync(1, 1);
@@ -144,9 +145,9 @@
             var fixture = new Fixture();
             var data = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>>();
             var expected = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int>();
-            var userNameList = fixture.Create<IEnumerable<ChatBotUserNameList>>();
+            var messages = fixture.Create<IEnumerable<ChatBotVoidingHistoryCollection>>();
             var chatBotVoidingBetIdHistory = fixture.Create<IEnumerable<ChatBotVoidingBetIdHistory>>();
-            var xml = userNameList.ToXML("root").ToString();
+            var xml = messages.ToXML("root").ToString();
             var criteria = new GetChatBotTicketVoidingInfoCriteria
             {
                 Messages = xml
@@ -155,7 +156,7 @@
             baseService.FetchMultipleAsync<ChatBotVoidingTicketInfo, VoidingMessage>(Arg.Any<GetChatBotTicketVoidingInfoCriteria>()).Returns(data);
 
             // Act
-            var actual = await service.GetTicketVoidingInfoAsync(userNameList, "Live", true, chatBotVoidingBetIdHistory);
+            var actual = await service.GetTicketVoidingInfoAsync(messages, chatBotVoidingBetIdHistory, "Live", true);
 
             // Assert
             Assert.Equal(expected, actual);

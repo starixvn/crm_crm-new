@@ -68,14 +68,12 @@
 
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true, BatchSize = 10, IncludeUUSCurrency = true };
             var messages = fixture.Create<IEnumerable<Message>>();
-            var voidingMessages = fixture.Create<IEnumerable<int>>();
             var userNameList = fixture.Create<IEnumerable<ChatBotUserNameList>>();
             var voidingMessagesImport = fixture.Create<IEnumerable<VoidingMessage>>();
-            var voidingMessagesHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
+            var voidingMessagesHis = fixture.Create<IEnumerable<ChatBotVoidingHistoryCollection>>();
             var chatBotVoidingBetIdHistory = fixture.Create<IEnumerable<ChatBotVoidingBetIdHistory>>();
             var MAXVoidingHistoryCollectionId = fixture.Create<int>();
             var MAXMessageTargetId = fixture.Create<int>();
-            var voidingInfo = new ValueTuple<IEnumerable<int>, IEnumerable<ChatBotVoidingHistory>>(voidingMessages, voidingMessagesHis);
             var ticketInfo = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
             var ticketInfos = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int>(ticketInfo, voidingMessagesImport, MAXVoidingHistoryCollectionId, MAXMessageTargetId);
             var commandResultImportTicket = new CommandResult { Code = 0 };
@@ -84,12 +82,12 @@
 
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
-            ticketVoidingService.GetVoidingMessageAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(voidingInfo);
+            ticketVoidingService.GetVoidingMessageAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(voidingMessagesHis);
             ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(
                 Arg.Any<GetChatBotAbnormalAccountGetUsernameListCriteria>()
             ).Returns(userNameList);
             ticketVoidingService.GetVoidingBetIdMessageAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(chatBotVoidingBetIdHistory);
-            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotUserNameList>>(), Constants.DefaultEnvironment, setting.IncludeUUSCurrency, chatBotVoidingBetIdHistory).Returns(ticketInfos);
+            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotVoidingHistoryCollection>>(), chatBotVoidingBetIdHistory, Constants.DefaultEnvironment, setting.IncludeUUSCurrency).Returns(ticketInfos);
             ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2).Returns(messages);
             ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos.Item1, ticketInfos.Item3, ticketInfos.Item4, Constants.DefaultEnvironment).Returns(valueTupeImportVoiding);
 
@@ -108,14 +106,12 @@
 
             var setting = new AbnormalBetSystemSetting { ServiceFlag = true, BatchSize = 10, IncludeUUSCurrency = true };
             var messages = fixture.Create<IEnumerable<Message>>();
-            var voidingMessages = fixture.Create<IEnumerable<int>>();
             var userNameList = fixture.Create<IEnumerable<ChatBotUserNameList>>();
             var voidingMessagesImport = fixture.Create<IEnumerable<VoidingMessage>>();
-            var voidingMessagesHis = fixture.Create<IEnumerable<ChatBotVoidingHistory>>();
+            var voidingMessagesHis = fixture.Create<IEnumerable<ChatBotVoidingHistoryCollection>>();
             var chatBotVoidingBetIdHistory = fixture.Create<IEnumerable<ChatBotVoidingBetIdHistory>>();
             var MAXVoidingHistoryCollectionId = fixture.Create<int>();
             var MAXMsgTargetId = fixture.Create<int>();
-            var voidingInfo = new ValueTuple<IEnumerable<int>, IEnumerable<ChatBotVoidingHistory>>(voidingMessages, voidingMessagesHis);
             var ticketInfo = fixture.Create<IEnumerable<ChatBotVoidingTicketInfo>>();
             var ticketInfos = new ValueTuple<IEnumerable<ChatBotVoidingTicketInfo>, IEnumerable<VoidingMessage>, int, int>(ticketInfo, voidingMessagesImport, MAXVoidingHistoryCollectionId, MAXMsgTargetId);
             var commandResultImportTicket = new CommandResult { Code = 1 };
@@ -124,12 +120,12 @@
 
             var service = GetService();
             systemSettingService.GetChatBotSystemSettingAsync(Constants.ServiceName_ChatBot, Constants.DefaultEnvironment).Returns(setting);
-            ticketVoidingService.GetVoidingMessageAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(voidingInfo);
+            ticketVoidingService.GetVoidingMessageAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(voidingMessagesHis);
             ticketVoidingService.GetChatBotAbnormalAccountUsernameAsync(
                 Arg.Any<GetChatBotAbnormalAccountGetUsernameListCriteria>()
             ).Returns(userNameList);
             ticketVoidingService.GetVoidingBetIdMessageAsync(setting.LastMsgTargetId, setting.BatchSize).Returns(chatBotVoidingBetIdHistory);
-            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotUserNameList>>(), Constants.DefaultEnvironment, setting.IncludeUUSCurrency, chatBotVoidingBetIdHistory).Returns(ticketInfos);
+            ticketVoidingService.GetTicketVoidingInfoAsync(Arg.Any<IEnumerable<ChatBotVoidingHistoryCollection>>(), chatBotVoidingBetIdHistory, Constants.DefaultEnvironment, setting.IncludeUUSCurrency).Returns(ticketInfos);
             ticketVoidingService.GetMessageInfoAsync(ticketInfos.Item2).Returns(messages);
             ticketVoidingService.ImportTicketVoidingAsync(messages, ticketInfos.Item1, ticketInfos.Item3, ticketInfos.Item4 ,Constants.DefaultEnvironment).Returns(valueTupeImportVoiding);
 
