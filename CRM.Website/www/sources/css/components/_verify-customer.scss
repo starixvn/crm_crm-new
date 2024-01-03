@@ -14,13 +14,17 @@
     border-left: 18px solid #AAAA00;
 }
 
+.unAuthorizedShow {
+    border-left: 18px solid #FF7F27;
+}
+
 .customersList {
     border: 1px solid #ced4da;
     max-height: 250px;
     overflow: auto;
 }
 
-.txt-customer, .txt-guest, .txt-invalid, .txt-inactive {
+.txt-customer, .txt-guest, .txt-invalid, .txt-inactive, .txt-unauthorized {
     display: flex;
     align-items: center;
 
@@ -28,13 +32,13 @@
         cursor: pointer;
         color: #999999;
 
-        &:hover{
+        &:hover {
             color: #3b3737;
         }
     }
 }
 
-.txt-customer, .txt-guest, .txt-invalid, .txt-inactive {
+.txt-customer, .txt-guest, .txt-invalid, .txt-inactive, .txt-unauthorized {
     font-size: 12px;
     width: 31.333333%;
     word-break: break-all;
@@ -43,6 +47,10 @@
 
 .txt-customer {
     color: #008000;
+}
+
+.txt-unauthorized {
+    color: #FFC90E;
 }
 
 .txt-guest {

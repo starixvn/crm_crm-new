@@ -248,7 +248,7 @@ export class CreateForm extends Component {
                 customers = customers.filter((v, i, a) => a.findIndex(t => t.custId === v.custId && t.val === v.val) === i);
                 this.setState({
                     listOfCustomer: customers,
-                    listOfCustomerValid: customers.filter(item => item.custId !== 0)
+                    listOfCustomerValid: customers.filter(item => item.custId !== 0 && item.isAuthorized)
                 }, () => {
                     setTimeout(() => this.updateTimeAndToolPrefix(), 100);
                 });

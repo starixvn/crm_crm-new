@@ -1,44 +1,49 @@
 ﻿@import '../../../abstracts/variables';
 
-.multiple-logs{
-    .custom-form-group{
+.multiple-logs {
+    .custom-form-group {
         display: flex;
         align-items: center;
-        .custom-label{
+
+        .custom-label {
             flex: 1 0 140px;
         }
-        .custom-input{
+
+        .custom-input {
             display: flex;
             gap: 10px;
             align-items: center;
             width: 100%;
-            
+
             .multiple-select-container {
                 width: 100%;
             }
+
             .fa-question-circle-o {
                 font-size: 17px;
                 color: #0789d1;
                 cursor: pointer;
             }
         }
+
         .icon-question {
             .multiple-select-container {
                 width: 92% !important;
-            }  
+            }
         }
     }
 
     .fa-exclamation-circle {
         font-size: 16px;
     }
+
     .panel-group {
         border: 1px solid #b1b1b1;
-    
+
         .form-group {
             margin-bottom: 0px;
         }
-    
+
         .panel-title {
             display: flex;
             align-items: center;
@@ -48,43 +53,47 @@
             color: #2f70b4;
             background: linear-gradient(#e7e7e7, #e2e2e2);
             cursor: pointer;
-    
+
             .form-label {
                 margin: 0;
             }
         }
-    
+
         .panel-content {
             padding: 4px 15px;
             border-top: 1px solid #b1b1b1;
         }
     }
-    
+
     .color-guide {
         .customer {
             border-left: 17px solid green;
         }
-    
+
         .guest {
             border-left: 17px solid #06c;
         }
-    
+
         .invalid {
             border-left: 17px solid red;
         }
-    
-        .inactive{
+
+        .inactive {
             border-left: 17px solid #AAAA00;
         }
+
+        .unauthorized {
+            border-left: 17px solid #FF7F27;
+        }
     }
-    
+
     .verify-customer-result {
         border: 1px solid #b1b1b1;
         height: auto;
         max-height: 227px;
         overflow: auto;
         padding: 5px;
-    
+
         .add-related-customer {
             clear: both;
             color: #0255a5;
@@ -92,38 +101,43 @@
             font-weight: 700;
             cursor: pointer;
         }
-    
+
         .customer-items {
             display: flex;
             flex-wrap: wrap !important;
+
             .customer-item {
                 margin-right: 5px;
                 border: 1px solid #8e8e8e;
                 border-radius: 5px;
                 padding: 1px 4px;
-    
+
                 .fa-times {
                     cursor: pointer;
-    
+
                     &:hover {
                         color: red;
                     }
                 }
-    
+
                 .customer {
                     color: green;
                 }
-    
+
                 .guest {
                     color: #06c;
                 }
-    
+
                 .invalid {
                     color: red;
                 }
-    
-                .inactive{
-                    color:#AAAA00;
+
+                .inactive {
+                    color: #AAAA00;
+                }
+
+                .unauthorized {
+                    color: #FFC90E;
                 }
             }
         }

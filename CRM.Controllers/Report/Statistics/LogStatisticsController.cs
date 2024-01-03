@@ -59,7 +59,7 @@
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = LogStatisticConstants.IBC,
                 LicenseeType = (short)licenseeType,
-                SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync()
+                SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync()
             }) : null;
 
             var licenseeReport = licenseeType == SitePermission.Both || licenseeType == SitePermission.Licensee ? await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
@@ -73,7 +73,7 @@
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = LogStatisticConstants.Licensee,
                 LicenseeType = (short)licenseeType,
-                SiteLabel = string.Empty
+                SitePermission = string.Empty
             }) : null;
 
             return Json(new { ibcReport, licenseeReport, licenseeType });
@@ -84,7 +84,7 @@
         public async Task<IActionResult> GetReportDetails([FromBody] LogStatisticsDetailCriteria criteria)
         {
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var reportDetailsTask = logStatisticsService.GetReportDetailsAsync(criteria);
             var mainCategoriesTask = settingService.GetAllMainSubCategoriesAsync();
@@ -129,7 +129,7 @@
                 CategoryType = LogStatisticConstants.SubCategory,
                 SiteType = criteria.SiteType,
                 LicenseeType = licenseeType,
-                SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync()
+                SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync()
             };
 
             var logStatistics = await logStatisticsService.GetReportDataAsync(param);
@@ -143,7 +143,7 @@
             criteria.PageIndex = 0;
             criteria.PageSize = 0;
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var logStatisticsDetailTask = logStatisticsService.GetReportDetailsAsync(criteria);
             var mainCategoriesTask = settingService.GetAllMainSubCategoriesAsync();

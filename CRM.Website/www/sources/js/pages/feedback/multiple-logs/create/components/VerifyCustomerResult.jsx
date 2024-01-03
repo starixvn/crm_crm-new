@@ -38,9 +38,11 @@ export class VerifyCustomerResult extends Component {
         if (isInActive && customer.custId !== 0) {
             className = 'inactive';
         } else{
-            if (customer.custId === 0){
+            if (customer.custId === 0) {
                 className = 'invalid';
-            } else{
+            } else if (!customer.isAuthorized) {
+                className = 'unauthorized';
+            } else {
                 className = customer.custId > 0 ? 'customer' : 'guest';
             }
         }
@@ -64,6 +66,7 @@ export class VerifyCustomerResult extends Component {
                     <Col sm="2" md="2"><span className="guest mr-3" />{LangHelper.getResource('Guest')}</Col>
                     <Col sm="2" md="2"><span className="invalid mr-3" />{LangHelper.getResource('Invalid')}</Col>
                     <Col sm="2" md="2"><span className="inactive mr-3" />{LangHelper.getResource('InactiveSite')}</Col>
+                    <Col sm="4" md="4"><span className="unauthorized mr-3" />{LangHelper.getResource('UnauthorizedAccess')}</Col>
                 </Row>
                 <Row className="mt-2 mb-2">
                     <Col>

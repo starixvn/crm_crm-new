@@ -1,9 +1,8 @@
 ﻿namespace CRM.Criteria.CommunicationToolSetting
 {
     using Fanex.Data;
-    using Fanex.Data.Repository;
 
-    public class GetCommunicationToolSettingCriteria : CriteriaBase
+    public class GetCommunicationToolSettingCriteria : BaseSitePermisionCriteria
     {
         public string Username { get; set; }
 

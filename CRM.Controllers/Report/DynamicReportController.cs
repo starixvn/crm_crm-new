@@ -37,7 +37,7 @@
         public async Task<IActionResult> GetDynamicReports([FromBody] GetDynamicReportCriteria criteria)
         {
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var logs = await dynamicReportService.GetDynamicReportAsync(criteria);
             var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
@@ -86,7 +86,7 @@
             );
             criteria.IsGetFullReport = true;
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var logs = await dynamicReportService.GetDynamicReportAsync(criteria);
             var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();

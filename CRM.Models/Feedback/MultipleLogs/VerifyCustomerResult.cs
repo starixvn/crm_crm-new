@@ -10,5 +10,6 @@
         public bool IsDirectAccount { get; set; }
         public bool IsSiteActive { get; set; }
         public bool IsLicensee { get; set; }
+        public bool IsAuthorized { get; set; }
     }
 }

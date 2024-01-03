@@ -3,11 +3,14 @@ import { Form, Row, Col } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 
 export default class ValidateCustomerResult extends PureComponent {
-    renderClassNameCustomer = id => {
-        if (id === 0) {
+    renderClassNameCustomer = customer => {
+        if (customer.id === 0) {
             return 'invalid';
         }
-        return id > 0 ? 'customer' : 'guest';
+        if (!customer.isAuthorized) {
+            return 'unauthorized';
+        }
+        return customer.id > 0 ? 'customer' : 'guest';
     };
 
     render() {
@@ -26,6 +29,9 @@ export default class ValidateCustomerResult extends PureComponent {
                         <div className="pl-2 mr-5 invalidShow">
                             {LangHelper.getResource('Invalid')}
                         </div>
+                        <div className="pl-2 mr-5 unauthorizedShow">
+                            {LangHelper.getResource('UnauthorizedAccess')}
+                        </div>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
@@ -35,7 +41,7 @@ export default class ValidateCustomerResult extends PureComponent {
                             {
                                 listOfCustomers.map((item, index) => {
                                     return (
-                                        <div className={`m-2 px-2 txt-${this.renderClassNameCustomer(item.custId)}`} key={index}>
+                                        <div className={`m-2 px-2 txt-${this.renderClassNameCustomer(item)}`} key={index}>
                                             <div className="fa fa-times  pr-2" onClick={() => this.props.onClick(item.custId)} />
                                             <div className="customer-name">{item.val}</div>
                                         </div>);

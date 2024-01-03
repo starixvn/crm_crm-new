@@ -40,7 +40,7 @@ namespace CRM.Controllers.Report.Statistics
         public async Task<IActionResult> GetIssuesStatistics([FromBody] GetIssuesStatisticReportCriteria criteria)
         {
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var data = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
             return Json(data);
@@ -58,7 +58,7 @@ namespace CRM.Controllers.Report.Statistics
             var fileName = string.Format(ViewResources.IssueStatistics_ExcelFile, typeName,
                                 criteria.FromDate.ToShortDateFormatDash(), criteria.ToDate.ToShortDateFormatDash());
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var data = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
             var bytes = excelService.ExportIssueStatisticsReport(data, titleExcel);

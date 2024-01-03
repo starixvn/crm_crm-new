@@ -179,11 +179,18 @@
 
         public async Task<bool> HasHostPermissionOnCustIdAsync(int custId)
         {
-            var custPermissionInfo = await GetSiteTypeByCustIdAsync(custId);
             bool isHostOnCustId = false;
 
             bool isHostCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
             bool isHostLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
+
+            if (custId < 0)
+            {
+                return isHostCredit || isHostLicensee;
+            }
+
+            var custPermissionInfo = await GetSiteTypeByCustIdAsync(custId);
+
             if (custPermissionInfo is not null)
             {
                 if (custPermissionInfo.CustomerType == SiteType.NA)
@@ -198,7 +205,7 @@
 
                 if (custPermissionInfo.CustomerType == SiteType.Credit)
                 {
-                    bool isHostOnCreditSiteLabel = await permissionService.IsHavingPermissionByPolicyAsync(custPermissionInfo.SiteLabel, Policy.Host);
+                    bool isHostOnCreditSiteLabel = !string.IsNullOrWhiteSpace(custPermissionInfo.SiteLabel) && await permissionService.IsHavingPermissionByPolicyAsync(custPermissionInfo.SiteLabel, Policy.Host);
                     isHostOnCustId = isHostCredit && isHostOnCreditSiteLabel;
                 }
             }

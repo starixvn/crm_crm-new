@@ -46,7 +46,7 @@
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
             feedbackStatistic.Title = title;
@@ -63,7 +63,7 @@
         public async Task<IActionResult> GetFeedbackStatisticDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
         {
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var feedbackDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
             var total = feedbackDetail.Count();
             if (feedbackDetail.Any())
@@ -86,7 +86,7 @@
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
             feedbackStatistic.Title = title;
@@ -100,7 +100,7 @@
         {
             criteria.PageIndex = 0;
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();
             var toDateFormat = criteria.ToDate.ToShortDateFormatNoDash();

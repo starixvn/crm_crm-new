@@ -73,7 +73,8 @@ export class NewRemark extends Component {
             setFieldValue('username', '');
             if(this.props.validateResult.length > 0){
                 const customerValidated = this.props.validateResult[0];
-                const isValidCustomer = customerValidated.custId !== 0 && customerValidated.isCredit;
+                const isValidCustomer = customerValidated.custId !== 0 && customerValidated.isCredit && customerValidated.isAuthorized;
+                
                 if(isValidCustomer){
                     this.props.getRelatedPics({custId: customerValidated.custId}).then(response =>{
                         this.setState({relatedPicsOption: response});
@@ -89,7 +90,7 @@ export class NewRemark extends Component {
     validateFormik = values => {
         const errors = {};
         if(!this.state.isValidCustomer){
-            errors.username = LangHelper.getResource('UsernameIsNotValid');
+            errors.username = this.state.customerValidated.isAuthorized ? LangHelper.getResource('UsernameIsNotValid') : LangHelper.getResource('UsernameIsUnauthorized');
         }
 
         if(values.username !== '' && this.props.validateResult === null && this.props.customerName === ''){
@@ -168,12 +169,15 @@ export class NewRemark extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label className='pr-4 ml-4 col-form-label' />
+                        <Form.Label className='pr-6 ml-6 col-form-label' />
                         <div className="validShow mr-5">
                             {LangHelper.getResource('Valid')}
                         </div>
-                        <div className="invalidShow">
+                        <div className="invalidShow  mr-5">
                             {LangHelper.getResource('Invalid')}
+                        </div>
+                        <div className="unauthorizedShow  mr-5">
+                            {LangHelper.getResource('UnauthorizedAccess')}
                         </div>
                     </Form.Group>
                     {
@@ -181,7 +185,7 @@ export class NewRemark extends Component {
                         <Form.Group as={Row}>
                             <Form.Label className='pr-4 ml-4 col-form-label' />
                             <div className='form-group-customer'>
-                                <div className={`txt-${isValidCustomer ? 'valid' : 'invalid'}`}>{customerValidated.val}</div>
+                                    <div className={`txt-${isValidCustomer ? 'valid' : (this.state.customerValidated.isAuthorized ? 'invalid' : 'unauthorized')}`}>{customerValidated.val}</div>
                             </div>
                         </Form.Group>
                     }

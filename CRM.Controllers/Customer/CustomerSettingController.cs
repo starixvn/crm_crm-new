@@ -5,21 +5,26 @@
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Models.Customer;
+    using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
 
     public class CustomerSettingController : Controller
     {
         private readonly IBaseService baseService;
+        private readonly IPermissionService permissionService;
 
-        public CustomerSettingController(IBaseService baseService)
+        public CustomerSettingController(IBaseService baseService, IPermissionService permissionService)
         {
             this.baseService = baseService;
+            this.permissionService = permissionService;
         }
 
         [HttpPost]
         public async Task<IActionResult> VerifyUsername([FromBody] VerifyRelatedCustomerCriteria criteria)
         {
-            IEnumerable<RelatedCustomer> customers = await baseService.GetDataAsync<RelatedCustomer>(criteria);
+            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            IEnumerable<RelatedCustomerPermission> customers = await baseService.GetDataAsync<RelatedCustomerPermission>(criteria);
             return Json(customers);
         }
     }

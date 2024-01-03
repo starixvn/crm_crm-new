@@ -5,12 +5,9 @@
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Models;
-    using CRM.Criteria.Setting;
     using CRM.Models.AdminTool.CommunicationToolSetting;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
-    using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
+    using CRM.Services.Customer;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
@@ -19,14 +16,18 @@
     {
         private readonly ISettingService settingService;
         private readonly ICommunicationToolSettingService communicationToolService;
+        private readonly ICustomerService customerService;
 
         public CommunicationSettingController(
             ISettingService settingService,
-            ICommunicationToolSettingService communicationToolService)
+            ICommunicationToolSettingService communicationToolService,
+            ICustomerService customerService)
         {
             this.settingService = settingService;
             this.communicationToolService = communicationToolService;
+            this.customerService = customerService;
         }
+
         public async Task<IActionResult> GetAllSettings()
         {
             var settings = new
@@ -58,7 +59,7 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.DefaultCommunicationSetting, Policy = Policy.Host)]
-        public async Task<IActionResult> Create([FromBody]CreateCommunicationToolSetting model)
+        public async Task<IActionResult> Create([FromBody] CreateCommunicationToolSetting model)
         {
             CommandResult commandResult = await communicationToolService.CreateAsync(model);
             return Json(commandResult);
@@ -66,8 +67,13 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.DefaultCommunicationSetting, Policy = Policy.Host)]
-        public async Task<IActionResult> Edit([FromBody]EditCommunicationToolSetting model)
+        public async Task<IActionResult> Edit([FromBody] EditCommunicationToolSetting model)
         {
+            bool isHavePermissionEdit = await IsHavePermissionHostOnCustomer(model.DefaultCommId);
+            if (!isHavePermissionEdit)
+            {
+                return Json(new CommandResult { Code = 1, Message = "No Permission" });
+            }
             CommandResult commandResult = await communicationToolService.EditAsync(model);
             return Json(commandResult);
         }
@@ -76,8 +82,34 @@
         [CrmPermission(FunctionKey = FunctionKey.DefaultCommunicationSetting, Policy = Policy.Host)]
         public async Task<IActionResult> Delete(int id)
         {
+            bool isHavePermissionDelete = await IsHavePermissionHostOnCustomer(id);
+            if (!isHavePermissionDelete)
+            {
+                return Json(new CommandResult { Code = 1, Message = "No Permission" });
+            }
             CommandResult commandResult = await communicationToolService.DeleteAsync(id);
             return Json(commandResult);
+        }
+
+        private async Task<bool> IsHavePermissionHostOnCustomer(int defaultCommunicationId)
+        {
+            bool isHost = false;
+            CommunicationToolSetting communications = await communicationToolService.GetByIdAsync(defaultCommunicationId);
+            if (communications is not null)
+            {
+                string username = communications.Username;
+                var cust = await customerService.GetCustomerInfoAsync(new Criteria.Customer.GetCustomerInfoByUsernameCriteria { Username = username, IsCheckPermission = false });
+                if (cust is null)
+                {
+                    cust = await customerService.GetCustomerInfoAsync(new Criteria.Customer.GetCustomerInfoByUsernameCriteria { Username = username, IsCheckPermission = false, IsGuest = true });
+                }
+
+                if (cust is not null)
+                {
+                    isHost = await customerService.HasHostPermissionOnCustIdAsync(cust.CustId);
+                }
+            }
+            return isHost;
         }
     }
 }

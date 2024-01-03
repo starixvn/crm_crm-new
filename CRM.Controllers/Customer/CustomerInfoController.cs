@@ -42,7 +42,7 @@
         {
             var sitePermission = await permissionService.GetCurrentUserSitePermissionAsync();
             criteria.LicenseeType = sitePermission;
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             CustomerInfoDetails customerInfo = await customerService.GetCustomerInfoAsync(criteria);
             if (customerInfo != null)
             {

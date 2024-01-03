@@ -37,31 +37,36 @@
 
 .communication-setting-modal {
     overflow-x: auto !important;
+
     .modal-content {
         width: 83%;
         min-width: 950px;
         margin-left: 101px;
-        
+
         .modal-body {
             .customerShow {
                 border-left: 18px solid green;
             }
-    
+
             .guestShow {
                 border-left: 18px solid #06c;
             }
-    
+
             .invalidShow {
                 border-left: 18px solid red;
             }
-    
+
+            .unauthorizedShow {
+                border-left: 18px solid #FF7F27;
+            }
+
             .customersList {
                 border: 1px solid #ced4da;
                 max-height: 250px;
                 overflow: auto;
             }
-    
-            .txt-customer, .txt-guest, .txt-invalid {
+
+            .txt-customer, .txt-guest, .txt-invalid, .txt-unauthorized {
                 display: flex;
                 align-items: center;
                 width: fit-content !important;
@@ -73,19 +78,23 @@
                     cursor: pointer;
                 }
             }
-    
-            .txt-customer, .txt-customer .fa-times{
+
+            .txt-customer, .txt-customer .fa-times {
                 color: green;
             }
-    
+
             .txt-guest, .txt-guest .fa-times {
                 color: #06c
             }
-    
+
             .txt-invalid, .txt-invalid .fa-times {
                 color: red;
             }
-    
+
+            .txt-unauthorized, .txt-unauthorized .fa-times {
+                color: #FFC90E;
+            }
+
             .fa-question-circle-o {
                 font-size: 14px;
                 color: #0789d1;

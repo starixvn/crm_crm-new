@@ -61,7 +61,7 @@
         public async Task<ActionResult> SearchManageFeedback([FromBody] ManageFeedbackCriteria criteria)
         {
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var feedbacksTask = feedbackService.GetManageFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
@@ -80,7 +80,7 @@
         {
             criteria.PageIndex = 0;
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var feedbacksTask = feedbackService.GetManageFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();

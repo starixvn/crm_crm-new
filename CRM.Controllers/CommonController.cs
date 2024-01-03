@@ -46,6 +46,7 @@
             var currentCustomer = sessionService.CurrentCustomer;
             var hasHostCreditPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
             var hasHostLicenseePermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
+
             if (currentCustomer is not null)
             {
                 if (currentCustomer.CustType is null || currentCustomer.CustType == SiteType.NA)
@@ -60,7 +61,7 @@
 
                 if (currentCustomer.CustType == SiteType.Credit)
                 {
-                    hasHostOnCurrentCustomer = await permissionService.IsHavingPermissionByPolicyAsync(currentCustomer.SiteLabel, Policy.Host);
+                    hasHostOnCurrentCustomer = currentCustomer.IsGuest ? hasHostCreditPermission : await permissionService.IsHavingPermissionByPolicyAsync(currentCustomer.SiteLabel, Policy.Host);
                 }
             }
             return Json(hasHostOnCurrentCustomer);

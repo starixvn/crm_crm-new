@@ -9,9 +9,11 @@ export default class VerifyCustomer extends PureComponent {
         if (isInActive && item.custId !== 0) {
             className = 'inactive';
         } else{
-            if (item.custId === 0){
+            if (item.custId === 0) {
                 className = 'invalid';
-            } else{
+            } else if (!item.isAuthorized) {
+                className = 'unauthorized';
+            } else {
                 className = item.custId > 0 ? 'customer' : 'guest';
             }
         }
@@ -46,6 +48,9 @@ export default class VerifyCustomer extends PureComponent {
                         </Col>
                         <Col sm="2" md="2" className="inActiveShow">
                             {LangHelper.getResource('InactiveSite')}
+                        </Col>
+                        <Col sm="2" md="2" className="unAuthorizedShow">
+                            {LangHelper.getResource('UnauthorizedAccess')}
                         </Col>
                     </Col>
                 </Form.Group>

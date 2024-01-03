@@ -87,53 +87,62 @@
     text-align: left;
 }
 
-.new-remark-modal, .edit-remark-modal{
+.new-remark-modal, .edit-remark-modal {
     .modal-lg, .modal-xl {
         max-width: 900px;
 
-        .col-form-label{
+        .col-form-label {
             width: 125px;
         }
 
-        .small-label-width{
+        .small-label-width {
             width: 100px !important;
         }
 
-        .width-multiple-select{
+        .width-multiple-select {
             width: 735px;
         }
 
-        .disable-content .ckeditor-container{
+        .disable-content .ckeditor-container {
             background-color: #e9ecef;
             opacity: 0.6;
             cursor: not-allowed;
-            pointer-events:none;
+            pointer-events: none;
         }
 
         .validShow {
             padding-left: 10px;
             border-left: 18px solid #008000;
         }
-        
+
         .invalidShow {
             padding-left: 10px;
             border-left: 18px solid #FF0000;
         }
 
-        .txt-valid, .txt-invalid {
+        .unauthorizedShow {
+            padding-left: 10px;
+            border-left: 18px solid #FF7F27;
+        }
+
+        .txt-valid, .txt-invalid, .txt-unauthorized {
             align-items: center;
             font-size: 12px;
         }
-        
+
+        .txt-unauthorized {
+            color: #FFC90E;
+        }
+
         .txt-valid {
             color: #008000;
         }
-        
+
         .txt-invalid {
             color: #FF0000;
         }
 
-        .form-group-customer{
+        .form-group-customer {
             border: 1px solid #ced4da;
             width: 537px;
             padding: 10px;

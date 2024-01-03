@@ -38,7 +38,7 @@
         public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackCriteria criteria)
         {
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync(); ;
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
 
@@ -69,7 +69,7 @@
         public async Task<IActionResult> ExportExcel([FromBody] GetLatestFeedbackCriteria criteria)
         {
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
             await Task.WhenAll(feedbacksTask, mainCategoriesTask);

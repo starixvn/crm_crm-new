@@ -114,7 +114,7 @@
         public async Task<IEnumerable<SiteSetting>> GetSiteAsync(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All)
         {
             var siteLabels = await permissionService.GetCurrentUserCreditPermissionsAsync();
-            var siteInfos = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { UserRole = userRole, LicenseeType = licenseeType, SiteLabel = siteLabels });
+            var siteInfos = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { UserRole = userRole, LicenseeType = licenseeType, SitePermission = siteLabels });
             return siteInfos.Select(x => new SiteSetting
             {
                 Id = x.Id,
@@ -310,7 +310,7 @@
         public async Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All)
         {
             var siteLabels = await permissionService.GetCurrentUserCreditPermissionsAsync();
-            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { LicenseeType = licenseeType, UserRole = userRole, SiteLabel = siteLabels });
+            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { LicenseeType = licenseeType, UserRole = userRole, SitePermission = siteLabels });
 
             var allSites = (from n in sites
                             where n.IsActive
@@ -336,7 +336,7 @@
         {
             var siteLabels = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
-            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { LicenseeType = licenseeType, UserRole = userRole, SiteLabel = siteLabels });
+            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { LicenseeType = licenseeType, UserRole = userRole, SitePermission = siteLabels });
             var allSites = (from n in sites
                             where n.IsActive
                             group n by n.IsLicensee into g
@@ -360,7 +360,7 @@
         {
             var siteLabels = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
-            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { LicenseeType = licenseeType, UserRole = userRole, SiteLabel = siteLabels });
+            var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { LicenseeType = licenseeType, UserRole = userRole, SitePermission = siteLabels });
             return sites.Where(x => !x.IsActive && x.IsLicensee);
         }
 

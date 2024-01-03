@@ -314,7 +314,7 @@ export class CreateForm extends Component {
         const { mainCategories, subCategories } = this.props.settings;
         validateMainCategorySubCategory(errors, values.mainCategoryIds, values.subCategoryIds, mainCategories, subCategories);
 
-        if (this.props.verifyCustomerResults.filter(item => item.custId !== 0).length === 0) {
+        if (this.props.verifyCustomerResults.filter(item => item.custId !== 0 && item.isAuthorized).length === 0) {
             errors.customerNameInput = LangHelper.getResource('ListofcustomersRequired');
         }
 
@@ -403,7 +403,7 @@ export class CreateForm extends Component {
     getCustomers = () => {
         const customers = [];
         this.props.verifyCustomerResults.forEach(customer => {
-            if (customer.custId !== 0) {
+            if (customer.custId !== 0 && customer.isAuthorized) {
                 customers.push({ id: customer.custId, name: customer.username });
             }
         });

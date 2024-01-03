@@ -43,7 +43,7 @@
         {
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var report = await summaryReportService.GetSummaryReportAsync(criteria);
             return Json(report);
@@ -54,7 +54,7 @@
         {
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var reports = await summaryReportService.GetSummaryReportAsync(criteria);
             var bytes = exportExcelService.ExportSummaryReport(reports, criteria.Year);

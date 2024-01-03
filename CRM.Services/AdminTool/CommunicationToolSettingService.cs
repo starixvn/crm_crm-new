@@ -26,19 +26,24 @@
     {
         private readonly INapSession napSession;
         private readonly IBaseService baseService;
+        private readonly IPermissionService permissionService;
 
         public CommunicationToolSettingService(
             INapSession napSession,
-            IBaseService baseService)
+            IBaseService baseService,
+            IPermissionService permissionService)
         {
             this.napSession = napSession;
             this.baseService = baseService;
+            this.permissionService = permissionService;
         }
 
         public async Task<IEnumerable<CommunicationToolSetting>> GetAllAsync(GetGridDataParam param)
         {
             var criteria = new GetCommunicationToolSettingCriteria
             {
+                LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync(),
+                SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync(),
                 Username = param.Username,
                 CategoryIds = param.CategoryIds,
                 SubCategoryIds = param.SubCategoryIds,

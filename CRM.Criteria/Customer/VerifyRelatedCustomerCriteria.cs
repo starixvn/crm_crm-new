@@ -1,7 +1,5 @@
 ﻿namespace CRM.Criteria.Customer
 {
-    using CRM.Core.Constants;
-
     public class VerifyRelatedCustomerCriteria : BaseSitePermisionCriteria
     {
         public string Username { get; set; }

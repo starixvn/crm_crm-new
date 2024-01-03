@@ -1,7 +1,5 @@
 ﻿namespace CRM.Criteria.NewRemark
 {
-    using CRM.Core.Constants;
-
     public class CustomerRemarkNewCheckCriteria : BaseSitePermisionCriteria
     {
         public string Username { get; set; }
