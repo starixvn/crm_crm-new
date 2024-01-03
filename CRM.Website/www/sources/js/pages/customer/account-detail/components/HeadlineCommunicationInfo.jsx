@@ -204,6 +204,8 @@ export class HeadlineCommunicationInfo extends Component {
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
     }
 
+    getWidth = (picCommunicationTool, communicationTool) => (8 * communicationTool.find(x => x.settingId === picCommunicationTool.type).settingValue.length) + 15;
+
     renderInfo = (pic, indexPic) => {        
         let { allSettings, headlinePicRoles, accountingPicRoles, communicationTool } = this.props;
         const languageSelected = this.props.allSettings.languages.map(item => {
@@ -280,7 +282,10 @@ export class HeadlineCommunicationInfo extends Component {
                     pic.picCommunicationTools.map((picCommunicationTool, indexPicCommunicationTool) => {
                         return <>
                             <Form.Group>
-                                <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" value={picCommunicationTool.type} onChange={event => {
+                                <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool"
+                                    style={{
+                                        width: `${picCommunicationTool.type !== '' ? this.getWidth(picCommunicationTool, communicationTool) : 115}px` }}
+                                    value={picCommunicationTool.type} onChange={event => {
                                     this.handleChangeCommunicationValue('picCommunicationTools', 'type', parseInt(event.target.value, 10), indexPic, indexPicCommunicationTool);
                                 }}>
                                     <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
@@ -366,7 +371,7 @@ export class HeadlineCommunicationInfo extends Component {
                                                     {
                                                         headlineCommunicationInfo[index].picCommunicationTools.map((comPic, indexPic) => {
                                                             let indexCom = communicationTool.findIndex(x => x.settingId === comPic.type &&
-                                                                (x.settingValue === Letstalk || x.settingValue === Telegram))
+                                                                (x.settingValue === Letstalk || x.settingValue === Telegram));
                                                             if (indexCom !== -1) {
                                                                 return (
                                                                     <>
