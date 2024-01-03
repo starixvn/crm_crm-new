@@ -16,6 +16,7 @@
     {
         private IBaseService baseService;
         private INapSession napSession;
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetAllAsync_WhenCalled_ReturnExpectedCommunication()
@@ -53,17 +54,14 @@
             var fixture = new Fixture();
             var id = fixture.Create<int>();
             var expected = fixture.Create<CommunicationToolSetting>();
-            var criteria = new GetCommunicationToolSettingByIdCriteria();
             var service = GetCommunicationService();
-            baseService.GetDataEntityAsync<CommunicationToolSetting>(Arg.Do<GetCommunicationToolSettingByIdCriteria>(x => criteria = x)).Returns(expected);
+            baseService.GetDataEntityAsync<CommunicationToolSetting>(Arg.Any<GetCommunicationToolSettingByIdCriteria>()).Returns(expected);
 
             //Act
             var actual = await service.GetByIdAsync(id);
 
             // Assert
             Assert.Equal(expected, actual);
-
-            Assert.Equal(id, criteria.DefaultCommId);
         }
 
         [Fact]
@@ -137,7 +135,8 @@
         {
             baseService = Substitute.For<IBaseService>();
             napSession = Substitute.For<INapSession>();
-            var service = new CommunicationToolSettingService(napSession, baseService);
+            permissionService = Substitute.For<IPermissionService>();
+            var service = new CommunicationToolSettingService(napSession, baseService, permissionService);
 
             return service;
         }

@@ -114,7 +114,7 @@
         public async Task ValidateUsername_WhenCalled_ReturnExpectedCommandResult()
         {
             var fixture = new Fixture();
-            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>>();
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
             var criteria = fixture.Create<CustomerRemarkNewCheckCriteria>();
 
             var controller = GetController();

@@ -6,6 +6,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Models.Customer;
+    using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
@@ -13,6 +14,7 @@
     public class CustomerSettingControllerTests
     {
         private IBaseService baseService;
+        private IPermissionService permissionService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -21,15 +23,15 @@
             // Arrange
             var controler = GetController();
             var criteria = fixture.Create<VerifyRelatedCustomerCriteria>();
-            var expected = fixture.Create<IEnumerable<RelatedCustomer>>();
-            baseService.GetDataAsync<RelatedCustomer>(criteria).Returns(expected);
+            var expected = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
+            baseService.GetDataAsync<RelatedCustomerPermission>(criteria).Returns(expected);
 
             // Act
             var result = await controler.VerifyUsername(criteria);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var actual = Assert.IsAssignableFrom<IEnumerable<RelatedCustomer>>(jsonResult.Value);
+            var actual = Assert.IsAssignableFrom<IEnumerable<RelatedCustomerPermission>>(jsonResult.Value);
             Assert.Equal(expected, actual);
         }
 
@@ -38,7 +40,8 @@
         private CustomerSettingController GetController()
         {
             baseService = Substitute.For<IBaseService>();
-            return new CustomerSettingController(baseService);
+            permissionService = Substitute.For<IPermissionService>();
+            return new CustomerSettingController(baseService, permissionService);
         }
 
         #endregion Helpers

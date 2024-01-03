@@ -5,19 +5,22 @@
     using AutoFixture;
     using CRM.Core.Constants;
     using CRM.Core.Models;
+    using CRM.Criteria.Customer;
     using CRM.Models.AdminTool.CommunicationToolSetting;
+    using CRM.Models.Customer;
     using CRM.Models.Setting;
     using CRM.Services;
+    using CRM.Services.Customer;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class CommunicationSettingControllerTests : Controller
 
     {
         private ISettingService settingService;
         private ICommunicationToolSettingService communicationToolService;
+        private ICustomerService customerService;
 
         [Fact]
         public async Task GetAllSettings_WhenCalled_ReturnExpectedDataAsync()
@@ -139,6 +142,10 @@
             var model = fixture.Create<EditCommunicationToolSetting>();
             var controller = GetController();
             communicationToolService.EditAsync(model).Returns(expected);
+            communicationToolService.GetByIdAsync(model.DefaultCommId).Returns(new CommunicationToolSetting { Username = "abc" });
+            customerService.GetCustomerInfoAsync(Arg.Any<GetCustomerInfoByUsernameCriteria>())
+                .Returns(new CustomerInfoDetails { CustId = 1 });
+            customerService.HasHostPermissionOnCustIdAsync(1).Returns(true);
 
             // Act
             var result = await controller.Edit(model);
@@ -150,7 +157,7 @@
         }
 
         [Fact]
-        public async Task Delete_WhenCalled_ReturnExpectedData()
+        public async Task Delete_WhenCalled__NoPermissionOnUsername_ReturnExpectedData()
         {
             // Arrange
             var fixture = new Fixture();
@@ -158,6 +165,30 @@
             var id = fixture.Create<int>();
             var controller = GetController();
             communicationToolService.DeleteAsync(id).Returns(expected);
+
+            // Act
+            var result = await controller.Delete(id);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult>(result);
+            var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
+            Assert.Equal(1, commandResult.Code);
+            Assert.Equal("No Permission", commandResult.Message);
+        }
+
+        [Fact]
+        public async Task Delete_WhenCalled__HavePermissionOnUsername_ReturnExpectedData()
+        {
+            // Arrange
+            var fixture = new Fixture();
+            var expected = fixture.Create<CommandResult>();
+            var id = fixture.Create<int>();
+            var controller = GetController();
+            communicationToolService.DeleteAsync(id).Returns(expected);
+            communicationToolService.GetByIdAsync(id).Returns(new CommunicationToolSetting { Username = "abc" });
+            customerService.GetCustomerInfoAsync(Arg.Any<GetCustomerInfoByUsernameCriteria>())
+                .Returns(new CustomerInfoDetails { CustId = 1 });
+            customerService.HasHostPermissionOnCustIdAsync(1).Returns(true);
 
             // Act
             var result = await controller.Delete(id);
@@ -174,7 +205,8 @@
         {
             communicationToolService = Substitute.For<ICommunicationToolSettingService>();
             settingService = Substitute.For<ISettingService>();
-            return new CommunicationSettingController(settingService, communicationToolService);
+            customerService = Substitute.For<ICustomerService>();
+            return new CommunicationSettingController(settingService, communicationToolService, customerService);
         }
 
         #endregion Helpers
