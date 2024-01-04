@@ -1,6 +1,5 @@
 ﻿namespace CRM.Criteria.Customer
 {
-    using CRM.Core.Constants;
     using Fanex.Data;
     using Fanex.Data.Repository;
 

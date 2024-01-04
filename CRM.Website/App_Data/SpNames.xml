@@ -213,8 +213,8 @@
         </Setting>        
         <Setting Key="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" SpName="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" SpName="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
-        <Setting Key="Acc_CRM_CustomerCheckSiteType" SpName="Acc_CRM_CustomerCheckSiteType" DbName="DBCRM.bodb_CRM.wsv_nap">
-            <Mapping DataField="SiteType" ObjectProperty="CustomerType" class="CustomerPermissionInfo" />
+        <Setting Key="Acc_CRM_NewAccDetail_GetHeadlineCompanyService" SpName="Acc_CRM_NewAccDetail_GetHeadlineCompanyService" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" SpName="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         </Setting>
         <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.wsv_nap">
             <Mapping DataField="CustStatus" ObjectProperty="Status" />

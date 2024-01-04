@@ -1,5 +1,6 @@
 ﻿namespace CRM.Services.Customer
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -11,7 +12,8 @@
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models.Customer;
     using Microsoft.Extensions.Configuration;
-    using NLog.LayoutRenderers;
+    using Microsoft.VisualBasic;
+    using Constants = Core.Constants.Constants;
 
     public interface ICustomerService
     {
@@ -32,6 +34,8 @@
         Task<bool> HasHostPermissionOnCustIdAsync(int custId);
         Task<string> ValidateEditPicAsync(ValidateEditPicCriteria criteria);
         Task<CommandResult> EditPicAsync(EditPicCriteria criteria);
+        Task<Tuple<IEnumerable<HeadlineCompanyService>, IEnumerable<HeadlineAccountCommunicationInfo>>> GetHeadlineCompanyServiceAsync(GetHeadlineCompanyServiceCriteria criteria);
+        Task<CommandResult> EditHeadlineCompanyService(UpdateHeadlineCompanyServiceCommand criteria);
     }
 
     public class CustomerService : ICustomerService
@@ -51,6 +55,11 @@
         }
 
         public async Task<CommandResult> EditPicAsync(EditPicCriteria criteria)
+        {
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<CommandResult> EditHeadlineCompanyService(UpdateHeadlineCompanyServiceCommand criteria)
         {
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
@@ -189,6 +198,13 @@
         {
             criteria.Environment = Environment;
             return await baseService.GetDataAsync<UserInfo>(criteria);
+        }
+
+        public async Task<Tuple<IEnumerable<HeadlineCompanyService>, IEnumerable<HeadlineAccountCommunicationInfo>>> 
+            GetHeadlineCompanyServiceAsync(GetHeadlineCompanyServiceCriteria criteria)
+        {
+            var demo = await baseService.FetchMultipleAsync<HeadlineCompanyService, HeadlineAccountCommunicationInfo>(criteria);
+            return Tuple.Create(demo.Item1, demo.Item2);
         }
 
         private async Task<bool> CheckDirectAccount(int customerId)

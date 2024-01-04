@@ -1,8 +1,6 @@
 ﻿namespace CRM.Controllers
 {
     using System.Collections.Generic;
-    using System.Collections.Immutable;
-    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
@@ -139,6 +137,21 @@
                 resultlList.Add(result);
             }
             return Json(resultlList);
+        }
+
+        public async Task<IActionResult> GetHeadlineCompanyService([FromBody] GetHeadlineCompanyServiceCriteria criteria)
+        {
+            var result = await customerService.GetHeadlineCompanyServiceAsync(criteria);
+            return Json(result);
+        }
+
+        [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
+        public async Task<IActionResult> EditHeadlineCompanyService([FromBody] UpdateHeadlineCompanyServiceCommand command)
+        {
+            var result = await customerService.EditHeadlineCompanyService(command);
+            return Json(result);
         }
     }
 }
