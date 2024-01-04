@@ -106,14 +106,29 @@ export class AppContainer extends Component {
         document.title = LangHelper.getResource('CRMSystem');
     }
 
-    handleSubmit = () => {
+    handleSubmitAccountInfo = () => {
         const values = this.state;
         const { customerInfo } = this.props;
         const params = ParamsSubmit(customerInfo.custId, values);
         this.props.editCustomerInfoDetail(params).then(() => {
             if (this.props.editCustomerInfoDetailResult.isSuccessful) {
-                toast.success(LangHelper.getResource('EditCustomerInfoSuccessfully'));
-            } 
+                toast.success(LangHelper.getResource('UpdateAccountInfoSuccessful'));
+            } else {
+                toast.error(LangHelper.getResource(this.props.editCustomerInfoDetailResult.message));
+            }
+        });
+    };
+
+    handleSubmitAccountPIC = () => {
+        const values = this.state;
+        const { customerInfo } = this.props;
+        const params = ParamsSubmit(customerInfo.custId, values);
+        this.props.editCustomerInfoDetail(params).then(() => {
+            if (this.props.editCustomerInfoDetailResult.isSuccessful) {
+                toast.success(LangHelper.getResource('UpdateAccountPicSuccessful'));
+            } else {
+                toast.error(LangHelper.getResource(this.props.editCustomerInfoDetailResult.message));
+            }
         });
     };
 
@@ -187,7 +202,7 @@ export class AppContainer extends Component {
                     Account Info
                     {
                         hasHostOnCurrentCustomer &&
-                        <img onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
+                        <img onClick={this.handleSubmitAccountInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                     }
                 </div>
                 <div className='group-content'>
@@ -296,7 +311,6 @@ export class AppContainer extends Component {
                         />
                     </Form.Group>
                 </div>
-
             </Form>
         );
     }
@@ -308,7 +322,7 @@ export class AppContainer extends Component {
                     Accountant PIC
                     {
                         canEditHeadline &&
-                        <img onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
+                        <img onClick={this.handleSubmitAccountPIC} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                     }
                 </div>
                 <div className='group-content'>

@@ -90,9 +90,8 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     handleSubmit = async () => {
-        this.validateCommunicationInfo();
-        const { errors } = this.props;
-        if (!errors) {
+        const errors = this.validateCommunicationInfo();
+        if (errors === null) {
             let validResult = await this.validateEditPic();
             if (validResult.findIndex(x => x !== '') === -1) {
                 this.setState({
@@ -184,8 +183,11 @@ export class HeadlineCommunicationInfo extends Component {
                 }
             });
         });
-        this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        this.setState({
+            headlineCommunicationInfo: headlineCommunicationInfo
+        });
         this.props.setErrors(Object.keys(errors).length === 0 ? null : errors);
+        return Object.keys(errors).length === 0 ? null : errors;
     }
 
     addNewCommunicationTool = indexPic => {
@@ -285,9 +287,9 @@ export class HeadlineCommunicationInfo extends Component {
                                 <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool"
                                     style={{
                                         width: `${picCommunicationTool.type !== '' ? this.getWidth(picCommunicationTool, communicationTool) : 115}px` }}
-                                    value={picCommunicationTool.type} onChange={event => {
-                                    this.handleChangeCommunicationValue('picCommunicationTools', 'type', parseInt(event.target.value, 10), indexPic, indexPicCommunicationTool);
-                                }}>
+                                        value={picCommunicationTool.type} onChange={event => {
+                                        this.handleChangeCommunicationValue('picCommunicationTools', 'type', parseInt(event.target.value, 10), indexPic, indexPicCommunicationTool);
+                                    }}>
                                     <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                     {communicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                                 </Form.Control>
@@ -366,8 +368,7 @@ export class HeadlineCommunicationInfo extends Component {
                                         if (item !== '') {
                                             return (<>
                                                 <div>
-                                                    <span>{headlineCommunicationInfo[index].picName}</span>
-                                                    <span>{': '}</span>
+                                                    <span>{`${headlineCommunicationInfo[index].picName}: `}</span>
                                                     {
                                                         headlineCommunicationInfo[index].picCommunicationTools.map((comPic, indexPic) => {
                                                             let indexCom = communicationTool.findIndex(x => x.settingId === comPic.type &&
@@ -377,7 +378,7 @@ export class HeadlineCommunicationInfo extends Component {
                                                                     <>
                                                                         {indexPic !== 0 && <span>{', '}</span>}
                                                                         <span className="bold">{comPic.value}</span>
-                                                                        <span>{' (' + communicationTool[indexCom].settingValue + ')'}</span>
+                                                                        <span>{` (${communicationTool[indexCom].settingValue})`}</span>
                                                                     </>
                                                                 );
                                                             }

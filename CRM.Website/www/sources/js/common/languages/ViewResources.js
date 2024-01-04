@@ -595,6 +595,8 @@
     UsernameIsUnauthorized: 'This username is unauthorized to access!',
     UpdateAccountDetailSuccessful: 'Update Account Detail successfully!',
     UpdateHeadlineCommunicationInfoSuccessful: 'Update Headline Communication Info successfully!',
+    UpdateAccountInfoSuccessful: 'Update Account Info successfully!',
+    UpdateAccountPicSuccessful: 'Update Account PIC successfully!',
     Verify: 'Verify',
     VerifyCustomerInfo: 'Verify Customer Info',
     VerifyListOfUsernameBeforeInsertSetting: 'You must verify the list of usernames before inserting this setting!',
