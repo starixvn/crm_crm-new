@@ -12,7 +12,6 @@
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models.Customer;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.VisualBasic;
     using Constants = Core.Constants.Constants;
 
     public interface ICustomerService

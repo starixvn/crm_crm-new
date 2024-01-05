@@ -7,19 +7,9 @@ import LangHelper from '@jsroot/common/langHelper';
 import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/react-grid/index';
 import Site from '@jsroot/common/site';
 
-export class CompanyService extends Component {
-    render() {
-        return (
-            <Table
-                    width={1005}
-                    autoWidth={false}
-                    header={this.buildHeader()}
-                    body={this.buildBody()}
-                    isPaging={false}
-                    containerPadding={0}
-                    adjustedHeight={10}
-                />
-        );
+export class CompanyService extends Component {    
+    async componentDidMount() {
+        await this.props.getPicCommunicationTools({ HeadlineID: this.props.id });
     }
 
     buildHeader = () => {
@@ -29,7 +19,6 @@ export class CompanyService extends Component {
                 <HeaderCell colWidth={120 }>{LangHelper.getResource('Offer')}</HeaderCell>
                 <HeaderCell colspan={2} colWidth={120}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
                 <HeaderCell className='display-colSpan' colWidth={300}></HeaderCell>
-
             </HeaderRow>
         );
     };
@@ -88,13 +77,27 @@ export class CompanyService extends Component {
             </Row>
         );
     };
+
+    render() {
+        return (
+            <Table
+                width={1005}
+                autoWidth={false}
+                header={this.buildHeader()}
+                body={this.buildBody()}
+                isPaging={false}
+                containerPadding={0}
+                adjustedHeight={10}
+            />
+        );
+    }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, customerInfo, editCustomerInfoDetailResult } = state;
-    return { allSettings, customerInfo, editCustomerInfoDetailResult };
+    const { allSettings, customerInfo, getHeadlineCompanyService, communicationTool, headlineCompanyService } = state;
+    return { allSettings, customerInfo, getHeadlineCompanyService, communicationTool, headlineCompanyService };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompanyService);
