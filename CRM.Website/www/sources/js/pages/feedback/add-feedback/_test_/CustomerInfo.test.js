@@ -12,9 +12,23 @@ describe('CustomerInfo', () => {
         LangHelper.getResource = jest.fn(key => key);
         //JSON.parse = jest.fn();
         // JSON.stringify = jest.fn()
+        const divHostLicenseePermission = document.createElement('div');
+        const divHostCreditPermission = document.createElement('div');
+        divHostLicenseePermission.setAttribute('id', 'hasHostLicenseePermission');
+        divHostCreditPermission.setAttribute('id', 'hasHostCreditPermission');
+        divHostLicenseePermission.checked = true;
+        divHostCreditPermission.checked = true;
+        document.body.appendChild(divHostLicenseePermission);
+        document.body.appendChild(divHostCreditPermission);
     });
 
     afterAll(() => {
+        const divHostLicenseePermission = document.getElementById('hasHostOnCurrentCustomer');
+        const divHostCreditPermission = document.getElementById('hasHostOnCurrentCustomer');
+        if (divHostLicenseePermission || divHostCreditPermission) {
+            document.body.removeChild(divHostLicenseePermission);
+            document.body.removeChild(divHostCreditPermission);
+        }
         jest.clearAllMocks();
     });
 
@@ -30,6 +44,7 @@ describe('CustomerInfo', () => {
             sites: [{}]
             },
         customerInfo:{},
+        customerDetail: {customerType: 0},
         handleChange: jest.fn(),
         handleChangeValueInfo: jest.fn(),
         renderOptions: jest.fn(()=> '<div></div>')
