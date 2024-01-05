@@ -119,7 +119,7 @@
         <Setting Key="Acc_CRM_AutoVoidingMessageSel" SpName="Acc_CRM_AutoVoidingMessageSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AutoVoidingMessageUpd" SpName="Acc_CRM_AutoVoidingMessageUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AutoVoidingTicketSel" SpName="Acc_CRM_AutoVoidingTicketSel" DbName="DBACC.bodb02.bodbAdminNet" />
-        <Setting Key="Acc_CRM_AutoVoidingIssueType_Sel" SpName="Acc_CRM_AutoVoidingIssueType_Sel" DbName="DBACC.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AutoVoidingIssueType_Sel" SpName="Acc_CRM_AutoVoidingIssueType_Sel_xtest" DbName="DBACC.bodb02.bodbAdminNet" />
     </Function>
     <Function Name="ArchivingDA">
         <Setting Key="Acc_CRM_Service_SystemSettingSel" SpName="Acc_CRM_Service_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -131,7 +131,7 @@
     </Function>
     <Function Name="VoidBetID">
         <Setting Key="Acc_CRM_AutoFB_VoidByBetID_GetMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_GetMessage" DbName="DBMSG.bodb_Message.bodbAdminNet" />
-        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" DbName="DBACC.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_CleanMessage_xtest" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_AutoFB_VoidByBetID_Import" SpName="Acc_CRM_AutoFB_VoidByBetID_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
 </Functions>
