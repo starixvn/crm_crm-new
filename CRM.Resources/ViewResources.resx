@@ -612,4 +612,7 @@
   <data name="CategoryClassification" xml:space="preserve">
     <value>CategoryClassification</value>
   </data>
+  <data name="NoReviewPermission" xml:space="preserve">
+    <value>You don't have permission to review feedback.</value>
+  </data>
 </root>

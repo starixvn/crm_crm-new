@@ -57,14 +57,14 @@ export default class EditMultipleReviewAndStatus extends Component {
     }
 
     handleSubmit = async values => {
+        const { isReviewed } = this.state;
         this.setState({ isSubmitting: true });
         const params = {
             listFeedbackId: this.props.feedbackIds.join(', '),
             statusId: parseInt(values.statusId, 10),
             reviewNote: values.review,
-            isReviewed: this.state.isReviewed
+            isReviewed: isReviewed
         };
-
         const url = Site.resolveClientUrl('MultipleLogs/EditMultipleLogStatuses');
         await DataService.postDataAsync(url, params).then(response => {
             this.setState({ editResult: response.data });
@@ -106,8 +106,8 @@ export default class EditMultipleReviewAndStatus extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
-                    <FormikErrorMessage isSubmitting={this.state.isSubmitting}touched={touched} errors={errors} fieldNames={Object.keys(values)} />
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle />
+                    <FormikErrorMessage isSubmitting={this.state.isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         editResult &&
                         <ResponseMessage isSuccessful={editResult.isSuccessful}

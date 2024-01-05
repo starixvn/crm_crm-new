@@ -115,12 +115,21 @@
             var commandResult = new CommandResult { Code = 0 };
             bool isHostCreateFb = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
             bool isHostReviewFb = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
-            if (!isHostCreateFb || (command.IsReviewed && !isHostReviewFb))
+            if (!isHostCreateFb)
             {
                 commandResult = new CommandResult
                 {
                     Code = 1,
                     Message = ViewResources.DoNotEditFeedbackPermission
+                };
+            }
+
+            if (command.IsReviewed && !isHostReviewFb)
+            {
+                commandResult = new CommandResult
+                {
+                    Code = 1,
+                    Message = ViewResources.NoReviewPermission
                 };
             }
 
@@ -160,7 +169,7 @@
 
             if (command.IsUpdateReview && !hostReviewFb)
             {
-                result.Message = ViewResources.DoNotEditCommunicationLogPermission;
+                result.Message = ViewResources.NoReviewPermission;
             }
             else
             {
