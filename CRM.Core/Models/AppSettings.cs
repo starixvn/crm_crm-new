@@ -1,7 +1,4 @@
-﻿using System;
-using System.Configuration;
-
-namespace CRM.Core.Models
+﻿namespace CRM.Core.Models
 {
     public class AppSettings
     {

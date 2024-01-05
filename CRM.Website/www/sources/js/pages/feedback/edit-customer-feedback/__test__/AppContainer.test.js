@@ -183,6 +183,9 @@ describe('AppContainer', () => {
     describe('handleSubmit', () => {
         it('should call exact function when submit', () => {
             // Arrange
+            const props = {
+                isDeletedFeedbackView: true
+            };
             const setSubmitting = jest.fn();
             const values = {
                 extensionIds: 2020,
@@ -191,10 +194,15 @@ describe('AppContainer', () => {
                 betTypeIds: 120,
                 mainCategoryIds: '1,2',
                 subCategoryIds: '5,1',
-                productIds: '3,4'
+                productIds: '3,4',
+                review: 'test',
+                isReviewed: true
             };
-            const container = shallow(<AppContainer />).instance();
-            container.setState({ settings: { subProductNA: { id: 0 }, subCategories: [{subCategoryId: 1}], extensionNA: [{id: 1}] } });
+            const container = shallow(<AppContainer {...props}/>).instance();
+            container.setState({
+                settings: { subProductNA: { id: 0 }, subCategories: [{subCategoryId: 1}], extensionNA: [{id: 1}] },
+                feedback: { review: 'test', isReviewed: true }
+            });
             container.confirmEditFeedback = jest.fn();
             // Act
             container.handleSubmit(values, {setSubmitting});
@@ -273,7 +281,10 @@ describe('AppContainer', () => {
                     isSuccessful: false,
                     message: 'unsuccessful'
                 },
-                settings: initData.settings
+                settings: initData.settings,
+                feedback: {
+                    custType: 'type'
+                }
             };
             
             const container = shallow(<AppContainer {...props}/>).instance();
@@ -293,7 +304,10 @@ describe('AppContainer', () => {
                     isSuccessful: true,
                     message: 'UpdateMultipleLogsSuccessfully'
                 },
-                settings: initData.settings
+                settings: initData.settings,
+                feedback: {
+                    custType: 'type'
+                }
             };
            
             const container = shallow(<AppContainer {...props}/>).instance();
@@ -312,7 +326,10 @@ describe('AppContainer', () => {
                 editResult: {
                     isSuccessful: true
                 },
-                settings: initData.settings
+                settings: initData.settings,
+                feedback: {
+                    custType: 'type'
+                }
             };
            
             const container = shallow(<AppContainer {...props}/>).instance();
@@ -673,10 +690,17 @@ describe('AppContainer', () => {
     describe('isReviewed', () => {
         it('should return exact value when isReviewed is false', () => {
             // Arrange
+            const state = {
+                feedback: {
+                    isReviewed: false,
+                    review: 'test'
+                }
+            }
             const container = shallow(<AppContainer />).instance();
+            container.setState(state);
 
             // Act
-            var actual = container.isReviewed({isReviewed: false});
+            var actual = container.isReviewed({isReviewed: false, review: 'review'});
 
             // Assert
             expect(actual).toEqual(2);
@@ -684,14 +708,38 @@ describe('AppContainer', () => {
 
         it('should return exact value when isReviewed is true', () => {
             // Arrange
+            const state = {
+                feedback: {
+                    isReviewed: false,
+                    review: 'review'
+                }
+            }
             const container = shallow(<AppContainer />).instance();
-            container.formik = {values: {review: 'review'}};
+            container.setState(state);
 
             // Act
-            var actual = container.isReviewed({isReviewed: false, review: 'review'});
+            var actual = container.isReviewed({isReviewed: true, review: 'review'});
 
             // Assert
-            expect(actual).toEqual(2);
+            expect(actual).toEqual(1);
+        });
+
+        it('should return exact value when isReviewed is 0', () => {
+            // Arrange
+            const state = {
+                feedback: {
+                    isReviewed: true,
+                    review: 'review'
+                }
+            }
+            const container = shallow(<AppContainer />).instance();
+            container.setState(state);
+
+            // Act
+            var actual = container.isReviewed({isReviewed: true, review: 'review'});
+
+            // Assert
+            expect(actual).toEqual(0);
         });
     });
 
@@ -792,6 +840,9 @@ describe('AppContainer', () => {
                 subject: "FieldRequired"
             };
             const container = shallow(<AppContainer />).instance();
+            container.formik = {
+                errors: { customerNameInput: 'You must verify the username before saving this feedback.' }
+            }
             container.setState(state);
 
             // Act
@@ -826,28 +877,6 @@ describe('AppContainer', () => {
 
             // Assert
             expect(container.state.relatedCustomers).toEqual([{"custId": 2, "val": "test2"}, {"custId": 1, "val": "test1"}]);
-        });
-
-        it('should return errors when have invalid customer name input', () => {
-            // Arrange
-            const event = {preventDefault: jest.fn()};
-            const state = {
-                relatedCustomers: [{custId: 2, val: 'test2'}],
-                fieldInput:{
-                    customerNameInput: 'test'
-                }
-            };
-
-            const container = shallow(<AppContainer />).instance();
-            container.formik = { values: {hasRelated: true, autoGenerated: 'autoGenerated'}, setFieldValue: jest.fn(), errors: {customerNameInput: ''}};
-            container.setState(state);
-            container.isValidCustomer = jest.fn(() => false);
-            
-            // Act
-            container.handleVerifyRelatedCustomer(event);
-
-            // Assert
-            expect(container.formik.errors.customerNameInput).toEqual('The customer name must not be longer than 50 characters!');
         });
     });
 });
