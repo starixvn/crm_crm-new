@@ -12,6 +12,7 @@
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
+    using Fanex.Data.Repository;
     using Fanex.Logging.Extensions;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;

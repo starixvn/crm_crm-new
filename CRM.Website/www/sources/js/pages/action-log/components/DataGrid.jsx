@@ -84,9 +84,6 @@ export class DataGrid extends Component {
 
     renderValue = (fieldName, value) => {
         value = this.replaceText(value);
-        if (this.isEncode(fieldName)) {
-            value = this.encodeHtml(value);
-        }
         return value;
     };
 

@@ -8,8 +8,19 @@ import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/reac
 import Site from '@jsroot/common/site';
 
 export class CompanyService extends Component {    
+    constructor(props) {
+        super(props);
+        this.state = {
+            companyService: null,
+            chatTypeMapping: null
+        };
+    }
     async componentDidMount() {
-        await this.props.getPicCommunicationTools({ HeadlineID: this.props.id });
+        await this.props.getHeadlineCompanyService({ headlineID: this.props.customerInfo.custId });
+        this.setState({
+            companyService: this.props.headlineCompanyService.item1,
+            chatTypeMapping: this.props.headlineCompanyService.item2
+        });
     }
 
     buildHeader = () => {
@@ -79,6 +90,10 @@ export class CompanyService extends Component {
     };
 
     render() {
+        const { headlineCompanyService } = this.props;
+        if (!headlineCompanyService) {
+            return null;
+        }
         return (
             <Table
                 width={1005}

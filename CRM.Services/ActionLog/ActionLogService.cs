@@ -161,11 +161,11 @@
 
                 if (!results.ContainsKey(node.Name))
                 {
-                    results.Add(node.Name, node.InnerText);
+                    results.Add(node.Name, node.InnerXml);
                 }
                 else
                 {
-                    bld.Append("<br/>" + node.InnerText);
+                    bld.Append("<br/>" + node.InnerXml);
                     results[node.Name] = bld.ToString();
                 }
             }
