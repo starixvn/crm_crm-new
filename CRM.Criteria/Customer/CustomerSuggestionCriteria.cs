@@ -5,12 +5,11 @@
 
     public class CustomerSuggestionCriteria : CriteriaBase
     {
-        public int UserId { get; set; }
-        public string Username { get; set; }
+        public string SearchInfo { get; set; }
         public bool IsGuest { get; set; }
         public short UserRole { get; } = Constants.UserRole;
 
-        public override string GetSettingKey() => "Acc_CRM_CustomerSelUserSearch";
+        public override string GetSettingKey() => "Acc_CRM_NewLeftPanel_CustomerSelUserSearch";
 
         public override bool IsValid() => true;
     }

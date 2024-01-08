@@ -51,7 +51,7 @@
                 CurrentCustomer currentCustomer = new()
                 {
                     CustId = customerInfo.CustId,
-                    Name = criteria.Username,
+                    Name = criteria.SearchInfo,
                     IsGuest = criteria.IsGuest,
                     CustType = custPermissionInfo.CustomerType,
                     SiteLabel = customerInfo.SitePermission,
@@ -119,7 +119,6 @@
 
         public async Task<IActionResult> GetCustomerAutoSuggestion([FromBody] CustomerSuggestionCriteria criteria)
         {
-            criteria.UserId = napSession.UserId;
             var customerInfo = await customerService.GetCustomerAutoSuggestionAsync(criteria);
             return Json(customerInfo);
         }

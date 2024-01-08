@@ -780,7 +780,7 @@ export class CreateForm extends Component {
             this.props.setConfirmCreateGuestDialog({ show: false });
             if (this.props.addFeedbackResult && this.props.addFeedbackResult.isSuccessful) {
                 const paramsCustomer = {
-                    username: params.UserName,
+                    searchInfo: params.UserName,
                     isGuest: !this.props.currentCustomer ? true : this.props.currentCustomer.isGuest
                 };
                 const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');

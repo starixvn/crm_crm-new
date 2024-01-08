@@ -165,7 +165,7 @@ export class Layout extends Component {
 
     getParams = () => {
         return {
-            username: this.state.username,
+            searchInfo: this.state.username,
             isGuest: this.state.isGuest
         };
     };
