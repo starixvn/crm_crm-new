@@ -404,7 +404,7 @@ export default class CustomerInfo extends PureComponent {
         const { collapse, fieldInput, settings, values, handleChangeInput, setFieldValue
         } = this.props;
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
-        const isDisplayOverrideCustInfo = this.state.isHostOnCurrentCustomer();
+        const isDisplayOverrideCustInfo = this.state.isHostOnCurrentCustomer;
         return (
             <div className="panel-group">
                 <Form.Group as={Row} className="panel-title border-bottom-0" onClick={() => this.props.onCollapseExpand('customerInfo')}
