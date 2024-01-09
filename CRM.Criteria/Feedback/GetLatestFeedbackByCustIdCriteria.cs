@@ -8,7 +8,6 @@ namespace CRM.Criteria.Feedback
         public int Top { get; set; }
         public int CustID { get; set; }
         public byte UserRole { get; } = Constants.UserRole;
-        public string SiteLabel { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_FeedbackSelTopByCustId";
 

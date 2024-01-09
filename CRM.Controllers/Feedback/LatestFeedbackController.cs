@@ -53,7 +53,6 @@
         [HttpPost]
         public async Task<IActionResult> GetLatestFeedbackByCustId([FromBody] GetLatestFeedbackByCustIdCriteria criteria)
         {
-            criteria.SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
 
@@ -87,8 +86,7 @@
             var criteria = new GetLatestFeedbackByCustIdCriteria
             {
                 Top = param.Top,
-                CustID = param.CustID,
-                SiteLabel = await permissionService.GetCurrentUserCreditPermissionsAsync()
+                CustID = param.CustID
             };
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
