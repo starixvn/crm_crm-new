@@ -46,7 +46,7 @@
 
         public async Task<bool> IsHavingPermissionByPolicyAsync(string functionKey, Policy policy = Policy.Read)
         {
-            return await userService.IsHavingPermissionAsync(napSession.UserId, napSettings.SiteId, functionKey, policy);
+            return !string.IsNullOrEmpty(functionKey) && await userService.IsHavingPermissionAsync(napSession.UserId, napSettings.SiteId, functionKey, policy);
         }
 
         public async Task<short> GetCurrentUserSitePermissionAsync()

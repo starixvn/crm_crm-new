@@ -205,7 +205,7 @@
 
                 if (custPermissionInfo.CustomerType == SiteType.Credit)
                 {
-                    bool isHostOnCreditSiteLabel = !string.IsNullOrWhiteSpace(custPermissionInfo.SiteLabel) && await permissionService.IsHavingPermissionByPolicyAsync(custPermissionInfo.SiteLabel, Policy.Host);
+                    bool isHostOnCreditSiteLabel = !string.IsNullOrWhiteSpace(custPermissionInfo.SitePermission) && await permissionService.IsHavingPermissionByPolicyAsync(custPermissionInfo.SitePermission, Policy.Host);
                     isHostOnCustId = isHostCredit && isHostOnCreditSiteLabel;
                 }
             }

@@ -43,7 +43,7 @@
         {
             var customerInfo = await customerService.GetCustomerByIdAsync(criteria);
             var customerPermissionInfo = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
-            customerInfo.SiteLabel = customerPermissionInfo.SiteLabel;
+            customerInfo.SitePermission = customerPermissionInfo.SitePermission;
             customerInfo.CustomerType = customerPermissionInfo.CustomerType;
 
             return Json(customerInfo);

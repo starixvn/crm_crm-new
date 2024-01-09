@@ -41,7 +41,7 @@
             var param = fixture.Create<GetCustomerInfoDetailByIdCriteria>();
             var controller = GetController();
             customerService.GetCustomerByIdAsync(param).Returns(customer);
-            customerService.GetSiteTypeByCustIdAsync(Arg.Any<int>()).Returns(new CustomerPermissionInfo { CustomerType = customer.CustomerType, SiteLabel = customer.SiteLabel });
+            customerService.GetSiteTypeByCustIdAsync(Arg.Any<int>()).Returns(new CustomerPermissionInfo { CustomerType = customer.CustomerType, SitePermission = customer.SitePermission });
 
             //Act
             var result = await controller.GetCustomerById(param);

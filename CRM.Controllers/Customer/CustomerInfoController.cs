@@ -47,7 +47,7 @@
             if (customerInfo != null)
             {
                 var custPermissionInfo = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
-                customerInfo.SiteLabel = custPermissionInfo.SiteLabel;
+                customerInfo.SitePermission = custPermissionInfo.SitePermission;
                 customerInfo.CustomerType = custPermissionInfo.CustomerType;
                 CurrentCustomer currentCustomer = new()
                 {
@@ -55,7 +55,7 @@
                     Name = criteria.Username,
                     IsGuest = criteria.IsGuest,
                     CustType = custPermissionInfo.CustomerType,
-                    SiteLabel = customerInfo.SiteLabel,
+                    SiteLabel = customerInfo.SitePermission,
                 };
                 sessionService.CurrentCustomer = currentCustomer;
             }
