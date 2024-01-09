@@ -154,11 +154,11 @@ export default class AutoComplete extends Component {
 
     render() {
         const { showOptionList, searchValue, placeholder } = this.state;
-        const { options, displayField, isInvalid } = this.props;
+        const { options, displayField, isInvalid, isError } = this.props;
         return (
             <div className="autocomplete-container" ref={this.wrapperRef}>
                 <Form.Control type="text" size="sm" autoComplete="off" name="autocomplete-search-value"
-                    className="shadow-none" isInvalid={isInvalid}
+                    className={isError ? "shadow-none invalid" : "shadow-none"} isInvalid={isInvalid}
                     value={searchValue}
                     placeholder ={placeholder}
                     onChange={this.handleChange}

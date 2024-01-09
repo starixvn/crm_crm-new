@@ -415,8 +415,8 @@ export default class DataGrid extends PureComponent {
                                 {
                                     hasReadCustomerInfo &&
                                     <li>
-                                        <a>{LangHelper.getResource('AccountDetail')}</a>
-                                        {/*<a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetail')}</a>*/}
+                                        {/*<a>{LangHelper.getResource('AccountDetail')}</a>*/}
+                                        <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetail')}</a>
                                     </li>
                                 }
                                 <li>

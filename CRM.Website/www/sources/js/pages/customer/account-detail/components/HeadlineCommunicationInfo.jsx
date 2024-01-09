@@ -176,7 +176,7 @@ export class HeadlineCommunicationInfo extends Component {
 
             pic.picCommunicationTools.map((compic,indexCompic) => {
                 if (!compic.type || !compic.value) {
-                    errors.communication = LangHelper.getResource('CommunicationMustHaveValue');
+                    errors.communication = LangHelper.getResource('CommunicationRequired');
                     headlineCommunicationInfo[indexPic].picCommunicationTools[indexCompic].isError = true;
                 } else {
                     headlineCommunicationInfo[indexPic].picCommunicationTools[indexCompic].isError = false;

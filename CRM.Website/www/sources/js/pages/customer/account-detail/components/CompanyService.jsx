@@ -2,10 +2,12 @@ import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import { Form } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/react-grid/index';
 import Site from '@jsroot/common/site';
+import AutoComplete from '@jsroot/components/AutoComplete';
+import { hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 
 export class CompanyService extends Component {    
     constructor(props) {
@@ -18,9 +20,72 @@ export class CompanyService extends Component {
     async componentDidMount() {
         await this.props.getHeadlineCompanyService({ headlineID: this.props.customerInfo.custId });
         this.setState({
-            companyService: this.props.headlineCompanyService.item1,
+            companyService: this.props.headlineCompanyService.item1.map(item => {
+                return {
+                    headlineID: item.headlineID,
+                    companyServiceID: item.companyServiceID,
+                    companyServiceName: item.companyServiceName,
+                    isOffered: item.isOffered,
+                    communicationID: item.communicationID,
+                    communiationName: item.communiationName,
+                    communicationValue: item.communicationValue,
+                    isError: false
+                }
+            }),
             chatTypeMapping: this.props.headlineCompanyService.item2
         });
+    }
+
+    validateCommunicationTool = () => {
+        const errors = {};
+        let { companyService } = this.state;
+
+        this.state.companyService.map((service, index) => {
+            if (service.isOffered && (service.communicationID === 0 || service.communicationValue === null)) {
+                errors.communication = LangHelper.getResource('CommunicationRequired');
+                companyService[index].isError = true;
+            } else {
+                companyService[index].isError = false;
+            }
+        });
+        this.setState({
+            companyService: companyService
+        });
+        this.props.setErrors(Object.keys(errors).length === 0 ? null : errors);
+        return Object.keys(errors).length === 0 ? null : errors;
+    }
+
+    editHeadlineCompanyService = async () => {
+        let { companyService } = this.state;
+        const params = {
+            demo: companyService.map(service => {
+                return {
+                    companyServiceID: item.companyServiceID,
+                    companyServiceName: item.companyServiceName,
+                    isOffered: item.isOffered,
+                    communicationID: item.communicationID,
+                    communiationName: item.communiationName,
+                    communicationValue: item.communicationValue
+                };
+            })
+        }
+
+        Site.blockUI();
+        const url = Site.resolveClientUrl('AccountDetail/EditPic');
+        await DataService.postDataAsync(url, params).then(response => {
+            if (response.data.findIndex(x => !x.isSuccessful) === -1) {
+                toast.success(LangHelper.getResource('UpdateHeadlineCommunicationInfoSuccessful'));
+            } else {
+                toast.errors(response.data.find(x => !x.isSuccessful)[0].message);
+            }
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+    }
+
+    handleSubmit = async () => {
+        const errors = this.validateCommunicationTool();
+        if (errors === null) {
+            await this.editHeadlineCompanyService();
+        }
     }
 
     buildHeader = () => {
@@ -35,31 +100,23 @@ export class CompanyService extends Component {
     };
 
     buildBody = () => {
-        const data = [
-            {
-              id: 1,
-              name: 'Abnormal Bet: Notify void abnormal bet message',
-              offer: 'Letstalk',
-              CommTool: 'Tool 1'
-            },
-            {
-              id: 2,
-              name: 'Others Products: Max Win/Lose reach RM1000,000 and above',
-              offer: 'Letstalk',
-              CommTool: '+66 222 333 444'
-            },
-            {
-              id: 3,
-              name: 'Settlement Issue',
-              offer: 'Phone',
-              CommTool: 'All Staff have authority to request'
-            }
-          ];
-
-        if (data.length > 0) {
+        const { companyService } = this.state;
+        const { communicationTool, customerInfo } = this.props;
+        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
+        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
+        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
+        if (companyService.length > 0) {
             return [
                 <Fragment key={'body'}>
-                    {data.map(item => this.renderRow(item))}
+                    {companyService.map((item, indexService) => this.renderRow(item, indexService, communicationTool))}
+                    {
+                        hasHostOnCurrentCustomer &&
+                        <div className='group-btn'>
+                            <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
+                                {LangHelper.getResource('Save')}
+                            </Button>
+                        </div>
+                    }
                 </Fragment>
             ];
         }
@@ -71,27 +128,77 @@ export class CompanyService extends Component {
         ];
     };
 
-    renderRow = (item) => {
+    handleChangeValue = (name, value, indexService) => {
+        let { companyService } = this.state;
+        companyService[indexService][name] = value;
+        this.setState({ companyService: companyService });
+    }
+
+    handleCoppy = service => {
+        let { companyService } = this.state;
+        this.state.companyService.map((ser, indexSer) => {
+            companyService[indexSer].isOffered = service.isOffered;
+            companyService[indexSer].communicationID = service.communicationID;
+            companyService[indexSer].communicationValue = service.communicationValue;
+        })
+        this.setState({ companyService: companyService });
+    }
+
+    renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
+
+    debounceInputChange = (searchText, communicationID) => {
+        let suggestions = [];
+        this.state.chatTypeMapping.map(x => {
+            if (x.communicationID === communicationID && x.communicationValue.includes(searchText)) {
+                suggestions.push(x.communicationValue);
+            }
+        })
+        return suggestions;
+    }
+
+    renderRow = (item, indexService, communicationTool) => {
+        const communicationSuggestions = this.debounceInputChange(item.communicationValue, item.communicationID);
         return (
-            <Row key={item.id}>
-                <Cell>{item.name}
-                <img className='icon-copy' src={Site.resolveClientUrl('www/dist/css/images/icon/icon-copy.svg')} alt="icon copy" /></Cell>
-                <Cell>
-                    <Form.Control type="text"  name="" value={item.offer} autoComplete="off"/>
+            <Row key={item.companyServiceID}>
+                <Cell>{item.companyServiceName}
+                    <img className='icon-copy' src={Site.resolveClientUrl('www/dist/css/images/icon/icon-copy.svg')} alt="icon copy"
+                        onClick={event => {this.handleCoppy(item);}} />
                 </Cell>
                 <Cell>
-                    <Form.Control type="text"  name="" value={item.offer} autoComplete="off"/>
+                    <Form.Control as="select" size="sm" value={item.isOffered} name="isOffered" id="isOffered"
+                        onChange={event => {
+                            this.handleChangeValue('isOffered', event.target.value === "true", indexService);
+                        }}>
+                            <option value={true}>{LangHelper.getResource('Yes')}</option>
+                            <option value={false}>{LangHelper.getResource('No')}</option>
+                    </Form.Control>
                 </Cell>
                 <Cell>
-                    <Form.Control type="text"  name="" value={item.CommTool} autoComplete="off"/>
+                    <Form.Control as="select" size="sm" className={item.isError && 'invalid'}
+                        value={item.communicationID} onChange={event => {
+                            this.handleChangeValue('communicationID', parseInt(event.target.value, 10), indexService);
+                        }}>
+                            <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                            {communicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                    </Form.Control>
+                </Cell>
+                <Cell>
+                    <AutoComplete
+                        isError={item.isError}
+                        value={item.communicationValue}
+                        options={communicationSuggestions}
+                        placeholder=''
+                        onChange={value => this.handleChangeValue('communicationValue', value, indexService)}
+                        onInputChange={searchText => this.debounceInputChange(searchText, item.communicationID)}
+                    />
                 </Cell>
             </Row>
         );
     };
 
     render() {
-        const { headlineCompanyService } = this.props;
-        if (!headlineCompanyService) {
+        const { companyService, chatTypeMapping } = this.state;
+        if (!companyService && !chatTypeMapping) {
             return null;
         }
         return (

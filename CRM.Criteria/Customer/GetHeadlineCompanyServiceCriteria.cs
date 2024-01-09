@@ -1,6 +1,5 @@
 ﻿namespace CRM.Criteria.Customer
 {
-    using Fanex.Data;
     using Fanex.Data.Repository;
 
     public class GetHeadlineCompanyServiceCriteria : CriteriaBase
