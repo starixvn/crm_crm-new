@@ -49,7 +49,7 @@ export default class VerifyCustomer extends PureComponent {
                         <Col sm="2" md="2" className="inActiveShow">
                             {LangHelper.getResource('InactiveSite')}
                         </Col>
-                        <Col sm="2" md="2" className="unAuthorizedShow">
+                        <Col sm="4" md="4" className="unAuthorizedShow">
                             {LangHelper.getResource('UnauthorizedAccess')}
                         </Col>
                     </Col>

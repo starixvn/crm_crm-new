@@ -9,6 +9,8 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Communication;
+    using CRM.Criteria.Customer;
+    using CRM.Models.Customer;
     using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Communication;
@@ -42,7 +44,6 @@
             this.commonService = commonService;
             this.permissionService = permissionService;
         }
-       
 
         [HttpPost]
         public async Task<IActionResult> GetLogsByCustomerId([FromBody] GetLogsByCustomerIdCriteria criteria)
@@ -61,10 +62,32 @@
         public async Task<IActionResult> GetLogByFeedbackId(int id)
         {
             var log = await communicationService.GetLogByFeedbackIdAsync(id);
+
+            if (log.RelatedCustomers is not null && log.RelatedCustomers.Any())
+            {
+                await VerifyCustomerByUsernames(log.RelatedCustomers);
+            }
+
             var settings = await GetAllSettings(true);
             var hasReviewFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
 
             return Json(new { log, settings, hasReviewFeedbackPermission });
+        }
+
+        private async Task VerifyCustomerByUsernames(IEnumerable<RelatedCustomerPermission> customers)
+        {
+            var criteria = new VerifyRelatedCustomerCriteria
+            {
+                Username = string.Join(",", customers.Select(x => x.Username)),
+                LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync(),
+                SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync()
+            };
+            IEnumerable<RelatedCustomerPermission> verifiedCustomers = await baseService.GetDataAsync<RelatedCustomerPermission>(criteria);
+            foreach (var cust in customers)
+            {
+                var customer = verifiedCustomers.FirstOrDefault(x => x.CustId == cust.CustId);
+                cust.IsAuthorized = customer != null && customer.IsAuthorized;
+            }
         }
 
         [HttpPost]

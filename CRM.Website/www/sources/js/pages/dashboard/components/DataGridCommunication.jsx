@@ -79,7 +79,8 @@ export class DataGridCommunication extends Component {
                 isSiteActive: customer.isSiteActive,
                 isLicensee: customer.isLicensee,
                 custId: customer.custId,
-                val: customer.username
+                val: customer.username,
+                isAuthorized: customer.isAuthorized
             };
         });
         const extensionOptions = data.settings.extensions.map(item => {

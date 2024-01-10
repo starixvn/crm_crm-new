@@ -13,6 +13,7 @@
     public interface ICommunicationService
     {
         Task<IEnumerable<CommunicationLog>> GetLogsByCustomerIdAsync(GetLogsByCustomerIdCriteria criteria);
+
         Task<CommunicationLog> GetLogByFeedbackIdAsync(int id);
     }
 
@@ -40,7 +41,7 @@
                 communicationLog.FeedbackDate = commonService.ConvertToClientDateTime(communicationLog.FeedbackDate);
                 communicationLog.RelatedCustomers = communicationLog.RelatedCustomers.OrderBy(x => x.Username);
             }
-            
+
             return communicationLogInfos;
         }
 
@@ -51,7 +52,7 @@
                 FeedbackId = id
             };
 
-            var (communicationLogInfos, relatedCustomers, settingItems) = await baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomer, FeedbackSettingRelation>(criteria);
+            var (communicationLogInfos, relatedCustomers, settingItems) = await baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomerPermission, FeedbackSettingRelation>(criteria);
             CommunicationLog communicationLog = null;
 
             if (communicationLogInfos.Any())
@@ -70,7 +71,7 @@
                     Name = siteSetting.Name
                 };
             }
-            
+
             return communicationLog;
         }
     }

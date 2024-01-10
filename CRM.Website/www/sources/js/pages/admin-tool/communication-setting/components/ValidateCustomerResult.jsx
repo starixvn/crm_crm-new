@@ -4,7 +4,7 @@ import LangHelper from '@jsroot/common/langHelper';
 
 export default class ValidateCustomerResult extends PureComponent {
     renderClassNameCustomer = customer => {
-        if (customer.id === 0) {
+        if (customer.custId === 0) {
             return 'invalid';
         }
         if (!customer.isAuthorized) {

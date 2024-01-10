@@ -736,7 +736,6 @@ export class AppContainer extends Component {
         const { collapse, settings, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
             productOptions, subProductOptions, betTypeOptions, relatedCustomers, feedbackSubjectTemplates, editResult, feedback
         } = this.state;
-        console.log(this.state.relatedCustomers);
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <Form noValidate onSubmit={handleSubmit}>

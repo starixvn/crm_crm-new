@@ -89,7 +89,8 @@ export class EditCommunicationLog extends Component {
                 custId: customer.custId,
                 val: customer.username,
                 isSiteActive: customer.isSiteActive,
-                isLicensee: customer.isLicensee
+                isLicensee: customer.isLicensee,
+                isAuthorized: customer.isAuthorized
             };
         });
         const extensionOptions = logFeedback.settings.extensions.map(item => {

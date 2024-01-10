@@ -31,7 +31,7 @@
         public int CountryId { get; set; }
 
         public int LanguageId { get; set; }
-        
+
         public int SiteId { get; set; }
 
         public int ResponseId { get; set; }
@@ -50,7 +50,7 @@
 
         public int LicenseeType { get; set; }
 
-        public IEnumerable<RelatedCustomer> RelatedCustomers { get; set; } = new List<RelatedCustomer>();
+        public IEnumerable<RelatedCustomerPermission> RelatedCustomers { get; set; } = new List<RelatedCustomerPermission>();
 
         public string Remark { get; set; }
 
