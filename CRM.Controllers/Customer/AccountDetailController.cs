@@ -151,7 +151,9 @@
         [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
         public async Task<IActionResult> EditHeadlineCompanyService([FromBody] UpdateHeadlineCompanyServiceCommand command)
         {
-            var result = await customerService.EditHeadlineCompanyService(command);
+            command.UserID = napSession.UserId;
+            command.IP = ClientIP;
+            var result = await customerService.EditHeadlineCompanyService(command);                     
             return Json(result);
         }
     }

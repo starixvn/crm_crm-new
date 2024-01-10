@@ -6,8 +6,10 @@ import { Form, Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/react-grid/index';
 import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import { hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+import { toast } from 'react-toastify';
 
 export class CompanyService extends Component {    
     constructor(props) {
@@ -58,25 +60,24 @@ export class CompanyService extends Component {
     editHeadlineCompanyService = async () => {
         let { companyService } = this.state;
         const params = {
-            demo: companyService.map(service => {
+            headlineID: this.props.customerInfo.custId,
+            headlineCompanyServices: companyService.map(service => {
                 return {
-                    companyServiceID: item.companyServiceID,
-                    companyServiceName: item.companyServiceName,
-                    isOffered: item.isOffered,
-                    communicationID: item.communicationID,
-                    communiationName: item.communiationName,
-                    communicationValue: item.communicationValue
+                    companyServiceID: service.companyServiceID,
+                    isOffered: service.isOffered,
+                    communicationID: service.communicationID,
+                    communicationValue: service.communicationValue
                 };
             })
         }
 
         Site.blockUI();
-        const url = Site.resolveClientUrl('AccountDetail/EditPic');
+        const url = Site.resolveClientUrl('AccountDetail/EditHeadlineCompanyService');
         await DataService.postDataAsync(url, params).then(response => {
-            if (response.data.findIndex(x => !x.isSuccessful) === -1) {
+            if (response.data.isSuccessful) {
                 toast.success(LangHelper.getResource('UpdateHeadlineCommunicationInfoSuccessful'));
             } else {
-                toast.errors(response.data.find(x => !x.isSuccessful)[0].message);
+                toast.errors(response.data.message);
             }
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
@@ -92,7 +93,7 @@ export class CompanyService extends Component {
         return (
             <HeaderRow>
                 <HeaderCell colWidth={460}>{LangHelper.getResource('Name')}</HeaderCell>
-                <HeaderCell colWidth={120 }>{LangHelper.getResource('Offer')}</HeaderCell>
+                <HeaderCell colWidth={120}>{LangHelper.getResource('Offer')}</HeaderCell>
                 <HeaderCell colspan={2} colWidth={120}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
                 <HeaderCell className='display-colSpan' colWidth={300}></HeaderCell>
             </HeaderRow>

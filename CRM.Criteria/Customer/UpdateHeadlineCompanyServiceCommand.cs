@@ -12,7 +12,7 @@
         public int UserID { get; set; }
         public string IP { get; set; }
         [SpParam(Ignored = true)]
-        public IEnumerable<HeadlineCompanyService> HeadlineCompanyServices { get; set; }
+        public IEnumerable<CompanyService> HeadlineCompanyServices { get; set; }
         public string CompanyServices => XMLIO.ToXML(HeadlineCompanyServices, "ROOT").ToString();
 
         public override string GetSettingKey() => "Acc_CRM_NewAccDetail_UpdHeadlineCompanyService";
