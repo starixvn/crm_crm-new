@@ -1,30 +1,35 @@
 ﻿namespace CRM.Services.Report.CategoriesSummaryReport
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Services;
     using CRM.Criteria.Report.CategoriesSummaryReport;
     using CRM.Models.Common;
     using CRM.Models.Report.CategoriesSummaryReport;
     using CRM.Resources;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Threading.Tasks;
+
     public interface ISummaryReportService
     {
         Task<SummaryReportModel> GetSummaryReportAsync(GetSummaryReportCriteria criteria);
+
         Task<AllSetting> AllSettings();
     }
+
     public class SummaryReportService : ISummaryReportService
     {
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
+        private readonly IPermissionService permissionService;
 
-        public SummaryReportService(IBaseService baseService, ISettingService settingService)
+        public SummaryReportService(IBaseService baseService, ISettingService settingService, IPermissionService permissionService)
         {
             this.baseService = baseService;
             this.settingService = settingService;
+            this.permissionService = permissionService;
         }
 
         public async Task<SummaryReportModel> GetSummaryReportAsync(GetSummaryReportCriteria criteria)
@@ -58,9 +63,9 @@
         }
 
         private void MappingDataSummaryReport(
-            IEnumerable<IGrouping<(int MainCategoryId, string MainCategory), 
-            SummaryRawData>> mainCategoryGroup, List<string> monthData, 
-            IList<CategorySummary> categorySummaries, IDictionary<string, 
+            IEnumerable<IGrouping<(int MainCategoryId, string MainCategory),
+            SummaryRawData>> mainCategoryGroup, List<string> monthData,
+            IList<CategorySummary> categorySummaries, IDictionary<string,
             Summary> grandTotal
             )
         {
@@ -146,14 +151,21 @@
             {
                 yearRange.Add(new Setting { Id = i, Value = i.ToString() });
             }
-
+            var isHasPermissionOnCredit = await permissionService.IsHavingPermissionAsync(FunctionKey.Credit);
+            var isHasPermissionOnLicensee = await permissionService.IsHavingPermissionAsync(FunctionKey.Licensee);
             var siteTypes = new List<Setting>
             {
-                new Setting { Id = SiteConstants.All, Name = ViewResources.All },
-                new Setting { Id = SiteConstants.NA, Name = ViewResources.Symbol_NotApply },
-                new Setting { Id = SiteConstants.IBCGroup, Name = ViewResources.Credit },
-                new Setting { Id = SiteConstants.LicenseeGroup, Name = ViewResources.Licensee },
+                new() { Id = SiteConstants.All, Name = ViewResources.All },
+                new() { Id = SiteConstants.NA, Name = ViewResources.Symbol_NotApply }
             };
+            if (isHasPermissionOnCredit)
+            {
+                siteTypes.Add(new Setting { Id = SiteConstants.IBCGroup, Name = ViewResources.Credit });
+            }
+            if (isHasPermissionOnLicensee)
+            {
+                siteTypes.Add(new Setting { Id = SiteConstants.LicenseeGroup, Name = ViewResources.Licensee });
+            }
             var categories = await settingService.GetMainCategoryAsync(SettingConstants.Active);
             return new AllSetting
             {

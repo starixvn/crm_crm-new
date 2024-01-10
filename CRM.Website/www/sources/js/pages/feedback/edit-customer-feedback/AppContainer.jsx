@@ -79,7 +79,8 @@ export class AppContainer extends Component {
                     custId: customer.custId,
                     val: customer.username,
                     isSiteActive: customer.isSiteActive,
-                    isLicensee: customer.isLicensee
+                    isLicensee: customer.isLicensee,
+                    isAuthorized: customer.isAuthorized
                 };
             });
             const extensionOptions = data.settings.extensions.map(item => {
@@ -735,7 +736,7 @@ export class AppContainer extends Component {
         const { collapse, settings, extensionOptions, communicationToolOptions, mainCategoryOptions, subCategoryOptions,
             productOptions, subProductOptions, betTypeOptions, relatedCustomers, feedbackSubjectTemplates, editResult, feedback
         } = this.state;
-
+        console.log(this.state.relatedCustomers);
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         return (
             <Form noValidate onSubmit={handleSubmit}>

@@ -25,7 +25,7 @@
         public int LanguageId { get; set; }
         public bool HasRelated { get; set; }
 
-        public IEnumerable<RelatedCustomer> RelatedCustomers { get; set; } = new List<RelatedCustomer>();
+        public IEnumerable<RelatedCustomerPermission> RelatedCustomers { get; set; } = new List<RelatedCustomerPermission>();
 
         public string Subject { get; set; }
         public string Description { get; set; }

@@ -1,5 +1,9 @@
 ﻿namespace CRM.Services.Feedback
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
@@ -12,14 +16,9 @@
     using CRM.Models.Customer;
     using CRM.Models.DeletedFeedback;
     using CRM.Models.Feedback;
-    using CRM.Models.LatestFeedback;
     using CRM.Repositories;
     using CRM.Resources;
     using Fanex.Data.Repository;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public interface IFeedbackService
     {
@@ -69,7 +68,7 @@
             {
                 FeedbackId = feedbackId
             };
-            var (feedbackInfos, relatedCustomers, settingItems) = await baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomer, FeedbackSettingRelation>(criteria);
+            var (feedbackInfos, relatedCustomers, settingItems) = await baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomerPermission, FeedbackSettingRelation>(criteria);
             CustomerFeedback feedback = null;
 
             if (feedbackInfos.Any())
@@ -149,7 +148,6 @@
                 CommunicationId = param.CommunicationId,
                 ResponseId = param.ResponseId,
                 IsReviewed = param.IsReviewed,
-
             };
             IEnumerable<DeletedFeedback> feedbacks = await feedbackRepository.GetDeletedFeedbackAsync(criteria);
             var statusList = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);

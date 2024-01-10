@@ -9,7 +9,9 @@
     using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Core.Services;
+    using CRM.Criteria.Customer;
     using CRM.Criteria.Feedback;
+    using CRM.Models.Customer;
     using CRM.Models.Feedback;
     using CRM.Models.Setting;
     using CRM.Resources;
@@ -32,6 +34,7 @@
         private readonly ICRMLogService logService;
         private readonly IPermissionService permissionService;
         private readonly ICustomerService customerService;
+        private readonly IBaseService baseService;
 
         public FeedbackController(
             INapSession napSession,
@@ -40,7 +43,8 @@
             ITicketRefService ticketRefService,
             ICRMLogService logService,
             IPermissionService permissionService,
-            ICustomerService customerService)
+            ICustomerService customerService,
+            IBaseService baseService)
         {
             this.napSession = napSession;
             this.settingService = settingService;
@@ -49,6 +53,7 @@
             this.logService = logService;
             this.permissionService = permissionService;
             this.customerService = customerService;
+            this.baseService = baseService;
         }
 
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
@@ -73,6 +78,10 @@
             CustomerFeedback feedback = await feedbackService.GetCustomerFeedbackByIdAsync(id);
             if (feedback is not null && feedback.CustId != 0)
             {
+                if (feedback.RelatedCustomers is not null && feedback.RelatedCustomers.Any())
+                {
+                    await VerifyCustomerByUsernames(feedback.RelatedCustomers);
+                }
                 var custPermissionInfo = await customerService.GetSiteTypeByCustIdAsync(feedback.CustId);
                 feedback.CustomerType = custPermissionInfo.CustomerType;
             }
@@ -80,6 +89,22 @@
             var settings = await GetEditCustomerFeedbackSettingAsync(feedback, isDeletedFeedbackView);
             var hasReviewFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
             return Json(new { feedback, settings, hasReviewFeedbackPermission });
+        }
+
+        private async Task VerifyCustomerByUsernames(IEnumerable<RelatedCustomerPermission> customers)
+        {
+            var criteria = new VerifyRelatedCustomerCriteria
+            {
+                Username = string.Join(",", customers.Select(x => x.Username)),
+                LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync(),
+                SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync()
+            };
+            IEnumerable<RelatedCustomerPermission> verifiedCustomers = await baseService.GetDataAsync<RelatedCustomerPermission>(criteria);
+            foreach (var cust in customers)
+            {
+                var customer = verifiedCustomers.FirstOrDefault(x => x.CustId == cust.CustId);
+                cust.IsAuthorized = customer != null && customer.IsAuthorized;
+            }
         }
 
         [HttpPost]

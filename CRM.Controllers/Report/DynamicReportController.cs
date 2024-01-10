@@ -51,7 +51,7 @@
             var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
-
+            var licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
             var allSettings = new CreateFeedbackViewModel
             {
                 CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active, true),
@@ -62,7 +62,7 @@
                 SubProducts = subproducts.Where(x => x.Id != NAConstants.SubProductNA),
                 Responses = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Response, SettingConstants.Active),
                 Roles = roles.Where(x => x.IsActive),
-                Sites = await settingService.GetAllSitesWithGroupAsync(),
+                Sites = await settingService.GetAllSitesWithGroupAsync(licenseeType: licenseeType),
                 Statuses = statuses.Where(s => s.StatusId != (int)FeedbackStatus.Deleted),
                 PeriodTypes = settingService.GetAllPeriodTypes()
             };
