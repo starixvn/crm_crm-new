@@ -146,6 +146,28 @@
             return Json(result);
         }
 
+        public async Task<IActionResult> GetHeadlineStaffsAndAuthority([FromBody] GetHeadlineStaffsAndAuthorityCriteria criteria)
+        {
+            await customerService.SyncHeadlineStaffsAndAuthority(new SyncHeadlineStaffsAndAuthorityCriteria()
+            {
+                UserID = napSession.UserId,
+                IP = ClientIP
+            });
+            var result = await customerService.GetHeadlineStaffsAndAuthority(criteria);
+            return Json(result);
+        }
+
+        [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
+        public async Task<IActionResult> EditHeadlineStaffsAndAuthority([FromBody] UpdHeadlineStaffsAndAuthorityCommand command)
+        {
+            command.UserID = napSession.UserId;
+            command.IP = ClientIP;
+            var result = await customerService.EditHeadlineStaffsAndAuthority(command);
+            return Json(result);
+        }
+
         [HttpPost]
         [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
         [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]

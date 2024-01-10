@@ -213,12 +213,15 @@
         </Setting>
         <Setting Key="Acc_CRM_CustomerCheckSiteType" SpName="Acc_CRM_CustomerCheckSiteType" DbName="DBCRM.bodb_CRM.wsv_nap">
             <Mapping DataField="SiteType" ObjectProperty="CustomerType" class="CustomerPermissionInfo" />
-        <Setting Key="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" SpName="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>        
-        <Setting Key="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" SpName="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_NewLeftPanel_CustomerSearch" SpName="Acc_CRM_NewLeftPanel_CustomerSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_NewLeftPanel_CustomerSelUserSearch" SpName="Acc_CRM_NewLeftPanel_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" SpName="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
-        <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.wsv_nap">
+        <Setting Key="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" SpName="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>        
+        <Setting Key="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" SpName="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewLeftPanel_CustomerSearch" SpName="Acc_CRM_NewLeftPanel_CustomerSearch" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewLeftPanel_CustomerSelUserSearch" SpName="Acc_CRM_NewLeftPanel_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" SpName="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_SyncHeadlineStaffsAndAuthority" SpName="Acc_CRM_NewAccDetail_SyncHeadlineStaffsAndAuthority" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_GetHeadlineStaffsAndAuthority" SpName="Acc_CRM_NewAccDetail_GetHeadlineStaffsAndAuthority" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_UpdHeadlineStaffsAndAuthority" SpName="Acc_CRM_NewAccDetail_UpdHeadlineStaffsAndAuthority" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="CustStatus" ObjectProperty="Status" />
         </Setting>
         <Setting Key="Acc_CRM_CustomerUpdateBasicInfo" SpName="Acc_CRM_CustomerUpdateBasicInfo" DbName="DBCRM.bodb_CRM.wsv_nap" />

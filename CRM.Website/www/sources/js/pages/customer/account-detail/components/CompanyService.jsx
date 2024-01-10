@@ -75,7 +75,7 @@ export class CompanyService extends Component {
         const url = Site.resolveClientUrl('AccountDetail/EditHeadlineCompanyService');
         await DataService.postDataAsync(url, params).then(response => {
             if (response.data.isSuccessful) {
-                toast.success(LangHelper.getResource('UpdateHeadlineCommunicationInfoSuccessful'));
+                toast.success(LangHelper.getResource('UpdateHeadlineCompanyServiceSuccessful'));
             } else {
                 toast.errors(response.data.message);
             }

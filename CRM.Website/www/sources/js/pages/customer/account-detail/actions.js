@@ -10,7 +10,8 @@ import {
     setAccountingPicRoles,
     setCommunicationTool,
     setErrors,
-    setHeadlineCompanyService
+    setHeadlineCompanyService,
+    setHeadlineStaffsAndAuthority
 } from './accountDetailSlice';
 
 const getCustomerById = params => async dispatch => {
@@ -69,6 +70,13 @@ const getHeadlineCompanyService = params => async dispatch => {
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
+const getHeadlineStaffsAndAuthority = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('AccountDetail/GetHeadlineStaffsAndAuthority');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setHeadlineStaffsAndAuthority(response.data));
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+};
 
 export const ActionCreators = {
     resetState,
@@ -79,5 +87,6 @@ export const ActionCreators = {
     getPicCommunicationTools,
     getHeadlinePicRoles,
     getAccountingPicRoles,
-    getHeadlineCompanyService
+    getHeadlineCompanyService,
+    getHeadlineStaffsAndAuthority
 };

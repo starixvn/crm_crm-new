@@ -34,7 +34,10 @@
         Task<string> ValidateEditPicAsync(ValidateEditPicCriteria criteria);
         Task<CommandResult> EditPicAsync(EditPicCriteria criteria);
         Task<Tuple<IEnumerable<HeadlineCompanyService>, IEnumerable<HeadlineAccountCommunicationInfo>>> GetHeadlineCompanyServiceAsync(GetHeadlineCompanyServiceCriteria criteria);
+        Task<IEnumerable<HeadlineStaffsAndAuthority>> GetHeadlineStaffsAndAuthority(GetHeadlineStaffsAndAuthorityCriteria criteria);
+        Task<CommandResult> SyncHeadlineStaffsAndAuthority(SyncHeadlineStaffsAndAuthorityCriteria criteria);
         Task<CommandResult> EditHeadlineCompanyService(UpdateHeadlineCompanyServiceCommand criteria);
+        Task<CommandResult> EditHeadlineStaffsAndAuthority(UpdHeadlineStaffsAndAuthorityCommand criteria);
     }
 
     public class CustomerService : ICustomerService
@@ -59,6 +62,16 @@
         }
 
         public async Task<CommandResult> EditHeadlineCompanyService(UpdateHeadlineCompanyServiceCommand criteria)
+        {
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<CommandResult> EditHeadlineStaffsAndAuthority(UpdHeadlineStaffsAndAuthorityCommand criteria)
+        {
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<CommandResult> SyncHeadlineStaffsAndAuthority(SyncHeadlineStaffsAndAuthorityCriteria criteria)
         {
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
@@ -202,8 +215,14 @@
         public async Task<Tuple<IEnumerable<HeadlineCompanyService>, IEnumerable<HeadlineAccountCommunicationInfo>>> 
             GetHeadlineCompanyServiceAsync(GetHeadlineCompanyServiceCriteria criteria)
         {
-            var demo = await baseService.FetchMultipleAsync<HeadlineCompanyService, HeadlineAccountCommunicationInfo>(criteria);
-            return Tuple.Create(demo.Item1, demo.Item2);
+            var result  = await baseService.FetchMultipleAsync<HeadlineCompanyService, HeadlineAccountCommunicationInfo>(criteria);
+            return Tuple.Create(result.Item1, result.Item2);
+        }
+
+        public async Task<IEnumerable<HeadlineStaffsAndAuthority>> GetHeadlineStaffsAndAuthority(GetHeadlineStaffsAndAuthorityCriteria criteria)
+        {
+            var result = await baseService.GetDataAsync<HeadlineStaffsAndAuthority>(criteria);
+            return result;
         }
 
         private async Task<bool> CheckDirectAccount(int customerId)

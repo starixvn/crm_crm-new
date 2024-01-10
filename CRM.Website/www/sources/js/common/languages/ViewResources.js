@@ -595,6 +595,7 @@
     UsernameIsUnauthorized: 'This username is unauthorized to access!',
     UpdateAccountDetailSuccessful: 'Update Account Detail successfully!',
     UpdateHeadlineCommunicationInfoSuccessful: 'Update Headline Communication Info successfully!',
+    UpdateHeadlineCompanyServiceSuccessful: 'Update Company Service successfully!',
     UpdateAccountInfoSuccessful: 'Update Account Info successfully!',
     UpdateAccountPicSuccessful: 'Update Account PIC successfully!',
     Verify: 'Verify',
