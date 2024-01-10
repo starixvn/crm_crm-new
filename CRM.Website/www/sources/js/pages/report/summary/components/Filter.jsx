@@ -4,6 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
+import { toast } from 'react-toastify';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
@@ -51,7 +52,11 @@ export class Filter extends Component {
 
     submitHandler = event => {
         event.preventDefault();
-        const { year, categories, siteType } = this.state;
+        const { year, categories, siteType, siteOptions } = this.state;
+        if (!siteOptions || siteOptions.length === 0) {
+            toast.error(LangHelper.getResource('NoPermissionOnCreditOrLicensee'));
+            return;
+        }
         const params = { year, categories, siteType };
         this.props.setGridParams({ ...params });
         this.props.getGridData({ ...params });
@@ -78,7 +83,7 @@ export class Filter extends Component {
                     <Form.Group>
                         <Form.Label className='label-width' htmlFor="site">Site</Form.Label>
                         <Form.Control as="select" size="sm" className="shadow-none w-100"
-                            id="year" onChange={evt => this.setState({siteType: evt.target.value})}
+                            id="siteType" onChange={evt => this.setState({siteType: evt.target.value})}
                         >
                             {
                                 siteOptions.map(item =>

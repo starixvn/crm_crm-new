@@ -153,19 +153,22 @@
             }
             var isHasPermissionOnCredit = await permissionService.IsHavingPermissionAsync(FunctionKey.Credit);
             var isHasPermissionOnLicensee = await permissionService.IsHavingPermissionAsync(FunctionKey.Licensee);
-            var siteTypes = new List<Setting>
+            var siteTypes = new List<Setting>();
+
+            if (isHasPermissionOnCredit || isHasPermissionOnLicensee)
             {
-                new() { Id = SiteConstants.All, Name = ViewResources.All },
-                new() { Id = SiteConstants.NA, Name = ViewResources.Symbol_NotApply }
-            };
+                siteTypes.Add(new() { Id = SiteConstants.All, Name = ViewResources.All });
+                siteTypes.Add(new() { Id = SiteConstants.NA, Name = ViewResources.Symbol_NotApply });
+            }
             if (isHasPermissionOnCredit)
             {
-                siteTypes.Add(new Setting { Id = SiteConstants.IBCGroup, Name = ViewResources.Credit });
+                siteTypes.Add(new() { Id = SiteConstants.IBCGroup, Name = ViewResources.Credit });
             }
             if (isHasPermissionOnLicensee)
             {
-                siteTypes.Add(new Setting { Id = SiteConstants.LicenseeGroup, Name = ViewResources.Licensee });
+                siteTypes.Add(new() { Id = SiteConstants.LicenseeGroup, Name = ViewResources.Licensee });
             }
+
             var categories = await settingService.GetMainCategoryAsync(SettingConstants.Active);
             return new AllSetting
             {

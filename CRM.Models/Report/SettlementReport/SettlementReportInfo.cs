@@ -22,5 +22,6 @@
         public int TotalChildReports { get; set; }
 
         public SettlementReportInfo ChartInfo { get; set; }
+        public bool IsNoCustomerPermission { get; set; }
     }
 }

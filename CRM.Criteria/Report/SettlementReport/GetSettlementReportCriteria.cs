@@ -1,10 +1,8 @@
 ﻿namespace CRM.Criteria.Report.SettlementReport
 {
-    using CRM.Core.Constants;
     using Fanex.Data;
-    using Fanex.Data.Repository;
 
-    public class GetSettlementReportCriteria : CriteriaBase
+    public class GetSettlementReportCriteria : BaseSitePermisionCriteria
     {
         private readonly int minYear = 2011;
 
@@ -26,6 +24,6 @@
             return "Acc_CRM_Rpt_FeedbackStatisticsSettlement";
         }
 
-        public override bool IsValid() => Year >= minYear;
+        public override bool IsValid() => Year >= minYear && LicenseeType >= 0;
     }
 }

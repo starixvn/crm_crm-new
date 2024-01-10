@@ -1,4 +1,4 @@
-﻿﻿import LangHelper from '@jsroot/common/langHelper';
+﻿import LangHelper from '@jsroot/common/langHelper';
 import { Cell, HeaderCell, HeaderRow, Row, Table } from '@jsroot/components/react-grid/index';
 import React, { Fragment, PureComponent } from 'react';
 import { connect } from 'react-redux';
@@ -100,6 +100,7 @@ export class DataGrid extends PureComponent {
         if (!gridData || !gridData.childReports) {
             return null;
         }
+
         const { totalChildReports } = gridData;
         const { pageIndex, pageSize } = this.props.gridParams;
         const pagingOption = {

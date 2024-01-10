@@ -372,6 +372,7 @@
     None: 'None',
     Now: 'Now',
     NoPermission: 'You don\'t have permission on this function!',
+    NoPermissionOnCreditOrLicensee: 'You don\'t have Credit or Licensee permission',
     NumberOfRemovedEditedAccounts: 'Number Of Removed Edited Accounts',
     NoResultFound : 'No results found',
     NewAnnouncement: 'New Announcement',

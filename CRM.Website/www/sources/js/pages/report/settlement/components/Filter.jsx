@@ -4,6 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
+import { toast } from 'react-toastify';
 
 export class Filter extends Component {
     constructor(props) {
@@ -13,7 +14,14 @@ export class Filter extends Component {
     submitHandler = event => {
         event.preventDefault();
         const { gridParams } = this.props;
-        this.props.getGridData({ ...gridParams, pageIndex: 1 });
+        this.props.getGridData({ ...gridParams, pageIndex: 1 }).then(() => {
+            const { gridData } = this.props;
+            if (gridData.isNoCustomerPermission) {
+                toast.error(LangHelper.getResource('NoPermissionOnCreditOrLicensee'));
+                return;
+            }
+        });
+        
         this.props.setGridParams({ ...gridParams, pageIndex: 1 });
     };
 
@@ -60,9 +68,10 @@ export class Filter extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { gridParams } = state;
+    const { gridParams, gridData } = state;
     return {
-        gridParams
+        gridParams,
+        gridData
     };
 };
 

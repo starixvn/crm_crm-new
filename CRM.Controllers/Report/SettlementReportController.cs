@@ -19,14 +19,17 @@
     {
         private readonly ISettlementReportService settlementReportService;
         private readonly IExportExcelService excelService;
+        private readonly IPermissionService permissionService;
         private readonly AppSettings appSettings;
 
         public SettlementReportController(
             ISettlementReportService settlementReportService,
             IExportExcelService excelService,
+            IPermissionService permissionService,
             IOptionsSnapshot<AppSettings> appSettings)
         {
             this.settlementReportService = settlementReportService;
+            this.permissionService = permissionService;
             this.excelService = excelService;
             this.appSettings = appSettings.Value;
         }
@@ -35,8 +38,12 @@
         [Route("GetSettlementReport")]
         public async Task<IActionResult> GetSettlementReport([FromBody] GetSettlementReportCriteria criteria)
         {
+            var licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
             criteria.TimeSpan = appSettings.TimeSpan * -1;
+            criteria.LicenseeType = licenseeType;
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var logs = await settlementReportService.GetSettlementReportAsync(criteria);
+            logs.IsNoCustomerPermission = licenseeType == -1;
             return Json(logs);
         }
 
@@ -44,8 +51,12 @@
         [Route("ExportSettlementReport")]
         public async Task<IActionResult> ExportSettlementReport([FromBody] GetSettlementReportCriteria criteria)
         {
+            var licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             criteria.IsGetFullReport = true;
+            criteria.LicenseeType = licenseeType;
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var reports = await settlementReportService.GetSettlementReportAsync(criteria);
             var bytes = excelService.ExportSettlementReport(reports);
             string reportName = string.Format(ViewResources.SettlementReport_ExcelTitle, criteria.Year);
