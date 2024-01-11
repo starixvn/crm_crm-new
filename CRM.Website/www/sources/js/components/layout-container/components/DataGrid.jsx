@@ -423,7 +423,7 @@ export default class DataGrid extends PureComponent {
     renderDetail = isShowInactiveMsg => {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
-        const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
 
         return (
             <div className="hightlight-title">
@@ -437,7 +437,7 @@ export default class DataGrid extends PureComponent {
                     <Form.Group className="row item no-border-bg form-row-detail">
                         <ul className='list-unstyled list-menu pull-left'>
                             {
-                                hasReadCustomerInfo &&
+                                hasReadSitePermission &&
                                 <li>
                                     <i className="fa fa-angle-right" aria-hidden="true" />
                                     <a onClick={() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>

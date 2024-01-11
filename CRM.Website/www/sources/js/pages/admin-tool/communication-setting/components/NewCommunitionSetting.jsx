@@ -149,11 +149,12 @@ export class NewCommunitionSetting extends PureComponent {
 
     validateNewCommunication = values => {
         const errors = {};
+        const { listOfCustomerValid } = this.state;
         if (values.customerNameInput.length > 0 && !values.isVerifiedCustomers) {
             errors.isVerifiedCustomers = LangHelper.getResource('VerifyListOfUsernameBeforeInsertSetting');
         }
 
-        if (this.state.listOfCustomerValid.length === 0) {
+        if (listOfCustomerValid.length === 0) {
             errors.customerNameInput = LangHelper.getResource('ListofcustomersRequired');
         }
 

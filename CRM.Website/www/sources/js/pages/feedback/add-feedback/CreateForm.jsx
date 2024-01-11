@@ -288,7 +288,7 @@ export class CreateForm extends Component {
 
     deleteCustomerVerify = id => {
         const listOfCustomer = this.state.listOfCustomer.filter(item => item.custId !== id);
-        const listOfCustomerValid = this.state.listOfCustomerValid.filter(item => item.custId !== id);
+        const listOfCustomerValid = this.state.listOfCustomerValid.filter(item => item.custId !== id && item.isAuthorized);
         this.setState({
             listOfCustomer,
             listOfCustomerValid

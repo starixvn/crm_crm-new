@@ -9,6 +9,7 @@
         public const string DefaultCommunicationSetting = "DefaultCommunicationSetting";
         public const string Announcement = "Announcement";
         public const string SMAPersonalMessage = "SMAPersonalMessage";
+        public const string CustomerInfo = "CustomerInfo";
 
         public const string SettlementIssuesReport = "SettlementIssuesReport";
         public const string CategoriesSummaryReport = "CategoriesSummaryReport";

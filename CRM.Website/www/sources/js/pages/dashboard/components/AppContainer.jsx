@@ -14,7 +14,7 @@ import CustomerInfoVerify from './CustomerInfoVerify';
 import EditCustomerInfoVerify from './EditCustomerInfoVerify';
 import LastFiveRemarkDataGrid from './LastFiveRemarkDataGrid';
 import LangHelper from '@jsroot/common/langHelper';
-import {IsRemoveDatagridRedemption, IsRemoveVerify, Policy, FunctionKey} from '@jsroot/common/constants';
+import { IsRemoveDatagridRedemption, IsRemoveVerify, Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
@@ -41,16 +41,16 @@ export class AppContainer extends Component {
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         document.title = LangHelper.getResource('CRMSystem');
         getPermission(FunctionKey.Remarks, true).then(response => {
-            this.setState({remarksPolicy: response});
+            this.setState({ remarksPolicy: response });
         });
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.resetState();
-     }
+    }
 
     handleCloseEditRedemptionDialog = isSuccessful => {
         this.props.setEditRedemptionDialog({ show: false });
@@ -86,12 +86,12 @@ export class AppContainer extends Component {
 
     render() {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
-        const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const isReadRemark = this.state.remarksPolicy >= Policy.Read;
 
-        if(!this.props.custId){
-            return(
+        if (!this.props.custId) {
+            return (
                 <div className='alert-boxer'>
                     <span className="fa fa-exclamation-triangle pr-2" aria-hidden="true" />
                     <span>Please search customer first!</span>
@@ -103,28 +103,28 @@ export class AppContainer extends Component {
             custId, editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
             createCommunicationDialog, editCustomerVerifyDialog, currentCustomer
         } = this.props;
-       
+
         return (
             <>
                 <div>
                     {
-                        hasReadCustomerInfo ?
+                        hasReadSitePermission ?
                             !currentCustomer.isCreditSite ?
                                 <div><DataGridRemark id={custId} /></div> :
                                 isReadRemark && <div><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} /></div>
-                        : null
+                            : null
                     }
                     {
                         !IsRemoveVerify &&
-                        <div className="information"><CustomerInfoVerify id={custId}/></div>
+                        <div className="information"><CustomerInfoVerify id={custId} /></div>
                     }
                 </div>
                 {
-                    !IsRemoveDatagridRedemption && 
+                    !IsRemoveDatagridRedemption &&
                     <DataGridRedemption id={custId} />
                 }
                 {
-                    hasReadFeedbackPermission && <DataGridCommunication id={custId} isHost={hasCreateFeedbackPermission}/>
+                    hasReadFeedbackPermission && <DataGridCommunication id={custId} isHost={hasCreateFeedbackPermission} />
                 }
                 {
                     editRedemptionDialog.show &&

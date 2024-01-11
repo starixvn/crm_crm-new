@@ -193,7 +193,8 @@ export default class Filter extends Component {
 
     renderHomeSubMenu = pathname => {
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
-        const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
+
         const isReadRemark = this.state.remarksPolicy >= Policy.Read;
         const { handleNavigate, customerInfo } = this.props;
         const isHideMainMenu = customerInfo.customerType === 1 && !hasReadFeedbackPermission && !isReadRemark;
@@ -204,7 +205,7 @@ export default class Filter extends Component {
                     <u>M</u>ain
                 </a>
             </li>,
-            <li style={{ display: hasReadCustomerInfo ? '' : 'none' }}
+            <li style={{ display: hasReadSitePermission ? '' : 'none' }}
                 id="li-detail" key="li-detail" className={this.isCheckActive(pathname, 1)}>
                 <a onClick={() => handleNavigate('Detail')}>
                     <u>D</u>etail
@@ -216,7 +217,7 @@ export default class Filter extends Component {
                     Communication <u>L</u>og
                 </a>
             </li>,
-            <li style={{ display: hasReadCustomerInfo ? '' : 'none' }}
+            <li style={{ display: hasReadSitePermission ? '' : 'none' }}
                 id="li-special-remark" key="li-special-remark" className={this.isCheckActive(pathname, 3)}>
                 <a onClick={() => handleNavigate('SpecialRemark')}>
                     Special Remar<u>k</u>
@@ -228,7 +229,7 @@ export default class Filter extends Component {
                     Rema<u>r</u>k
                 </a>
             </li>,
-            <li style={{ display: hasReadCustomerInfo ? '' : 'none' }}
+            <li style={{ display: hasReadSitePermission ? '' : 'none' }}
                 id="li-activity-log" key="li-activity-log" className={this.isCheckActive(pathname, 5)}>
                 <a onClick={() => handleNavigate('ActionLog')}>
                     Ac<u>t</u>ivity Log
@@ -237,7 +238,7 @@ export default class Filter extends Component {
         ];
 
         return (
-            (hasReadFeedbackPermission || hasReadCustomerInfo) ?
+            (hasReadFeedbackPermission || hasReadSitePermission) ?
                 <ul className='breadcrumbsMenu sub-main-menu list-inline list-unstyled'>
                     {this.renderIconHome()}
                     {
@@ -280,9 +281,9 @@ export default class Filter extends Component {
     };
 
     render() {
-        const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
+        const hasCustomerInfoPermission = document.getElementById('hasReadCustomerInfo').checked;
 
-        if (!hasReadCustomerInfo) {
+        if (!hasCustomerInfoPermission) {
             return null;
         }
 

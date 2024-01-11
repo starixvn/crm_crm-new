@@ -103,6 +103,13 @@
         [CrmPermission(FunctionKey = FunctionKey.Remarks, Policy = Policy.Host)]
         public async Task<IActionResult> Create([FromBody] CreateNewReamarkCommand command)
         {
+            if (!await IsValidPermisionOnCustId(command.CustID))
+            {
+                return Json(new CommandResult
+                {
+                    Message = Resources.ViewResources.NoPermission
+                });
+            }
             command.CreatorID = napSession.UserId;
             command.ModifierID = napSession.UserId;
             command.IP = ClientIP;
@@ -114,10 +121,28 @@
         [CrmPermission(FunctionKey = FunctionKey.Remarks, Policy = Policy.Host)]
         public async Task<IActionResult> Edit([FromBody] EditNewRemarkCommand command)
         {
+            if (!await IsValidPermisionOnCustId(command.CustID))
+            {
+                return Json(new CommandResult
+                {
+                    Message = Resources.ViewResources.NoPermission
+                });
+            }
             command.ModifierID = napSession.UserId;
             command.IP = ClientIP;
             CommandResult commandResult = await remarkService.EditNewAsync(command);
             return Json(commandResult);
+        }
+
+        private async Task<bool> IsValidPermisionOnCustId(int custId)
+        {
+            bool isValid = false;
+            var cust = await customerService.GetSiteTypeByCustIdAsync(custId);
+            if (cust is not null)
+            {
+                isValid = await permissionService.IsHavingPermissionByPolicyAsync(cust.SitePermission, Policy.Host);
+            }
+            return isValid;
         }
 
         [HttpPost]

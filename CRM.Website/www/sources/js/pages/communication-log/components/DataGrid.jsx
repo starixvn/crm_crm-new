@@ -144,7 +144,7 @@ export class DataGrid extends Component {
     };
 
     render() {
-        const { gridData, gridParams, canCreateCommunicationLog } = this.props;
+        const { gridData, gridParams } = this.props;
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
 
         if (!gridData) {

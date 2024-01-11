@@ -27,10 +27,10 @@
             var hasReadFeedbackInfoPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback);
             var hasCreateFeedbackPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
 
-            var hasReadCustomerInfo = hasReadCreditPermission || hasReadLicenseePermission;
-
-            ViewBag.hasReadFeedbackPermission = hasReadFeedbackInfoPermission && hasReadCustomerInfo;
-            ViewBag.hasReadCustomerInfo = hasReadCustomerInfo;
+            var hasReadSitePermission = hasReadCreditPermission || hasReadLicenseePermission;
+            ViewBag.hasReadFeedbackPermission = hasReadFeedbackInfoPermission && hasReadSitePermission;
+            ViewBag.hasReadSitePermission = hasReadSitePermission;
+            ViewBag.hasReadCustomerInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CustomerInfo);
 
             return View(hasCreateFeedbackPermission);
         }

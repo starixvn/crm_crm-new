@@ -39,8 +39,8 @@ export class AppContainer extends Component {
 
     render() {
         const { updateHeadlineInfoPolicy } = this.state;
-        const hasReadCustomerInfo = document.getElementById('hasReadCustomerInfo').checked;
-        if (!hasReadCustomerInfo) {
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
+        if (!hasReadSitePermission) {
             return null;
         }
 

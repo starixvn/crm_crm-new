@@ -24,11 +24,11 @@ export class NewRemark extends Component {
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.getAllSettings();
-        if(this.props.customerName !== ''){
-            this.props.getRelatedPics({custId: this.props.custId}).then(response =>{
-                this.setState({relatedPicsOption: response});
+        if (this.props.customerName !== '') {
+            this.props.getRelatedPics({ custId: this.props.custId }).then(response => {
+                this.setState({ relatedPicsOption: response });
             });
         }
     }
@@ -40,11 +40,10 @@ export class NewRemark extends Component {
         }
     }
 
-
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         const params = {
-            custId: this.props.customerName !== '' ? this.props.custId  : this.state.customerValidated.custId,
+            custId: this.props.customerName !== '' ? this.props.custId : this.state.customerValidated.custId,
             remark: values.remarkContent,
             remarkTitle: values.remarkTitle,
             relatedPICs: values.relatedPics === '' ? null : values.relatedPics,
@@ -65,22 +64,22 @@ export class NewRemark extends Component {
         });
     };
 
-    handleValidateCustomer = (username, isGuest, setFieldValue, validateForm) =>{
-        if(this.state.customerValidated.val === username){
+    handleValidateCustomer = (username, isGuest, setFieldValue, validateForm) => {
+        if (this.state.customerValidated.val === username) {
             return;
         }
-        this.props.validateUsername({username, isGuest}).then(()=>{
+        this.props.validateUsername({ username, isGuest }).then(() => {
             setFieldValue('username', '');
-            if(this.props.validateResult.length > 0){
+            if (this.props.validateResult.length > 0) {
                 const customerValidated = this.props.validateResult[0];
                 const isValidCustomer = customerValidated.custId !== 0 && customerValidated.isCredit && customerValidated.isAuthorized;
-                
-                if(isValidCustomer){
-                    this.props.getRelatedPics({custId: customerValidated.custId}).then(response =>{
-                        this.setState({relatedPicsOption: response});
+
+                if (isValidCustomer) {
+                    this.props.getRelatedPics({ custId: customerValidated.custId }).then(response => {
+                        this.setState({ relatedPicsOption: response });
                     });
                 }
-                this.setState({customerValidated , isValidCustomer}, () =>{
+                this.setState({ customerValidated, isValidCustomer }, () => {
                     validateForm();
                 });
             }
@@ -89,24 +88,31 @@ export class NewRemark extends Component {
 
     validateFormik = values => {
         const errors = {};
-        if(!this.state.isValidCustomer){
-            errors.username = this.state.customerValidated.isAuthorized ? LangHelper.getResource('UsernameIsNotValid') : LangHelper.getResource('UsernameIsUnauthorized');
+        const { customerValidated } = this.state;
+        if (!this.state.isValidCustomer) {
+            errors.username = customerValidated.custId !== 0 && !customerValidated.isAuthorized ? LangHelper.getResource('UsernameIsUnauthorized') :
+                LangHelper.getResource('UsernameIsNotValid');
         }
 
-        if(values.username !== '' && this.props.validateResult === null && this.props.customerName === ''){
+        if (values.username !== '' && this.props.validateResult === null && this.props.customerName === '') {
             errors.username = LangHelper.getResource('UsernameIsChanged');
         }
 
-        if(values.remarkTitle === ''){
+        if (values.remarkTitle === '') {
             errors.remarkTitle = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkTitle'));
         }
 
-        if(values.remarkContent === ''){
+        if (values.remarkContent === '') {
             errors.remarkContent = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('RemarkContent'));
         }
         return errors;
     };
 
+    getUsernameVerifyClassName = (customer, isValidCustomer) => {
+        if (isValidCustomer) return 'txt-valid';
+        if (customer.custId !== 0 && !customer.isAuthorized) return 'txt-unauthorized';
+        return 'txt-invalid';
+    }
     renderForm = ({
         values,
         errors,
@@ -117,13 +123,13 @@ export class NewRemark extends Component {
         isSubmitting,
         validateForm
     }) => {
-        const { allSettings, remarkTitles, customerName} = this.props;
-        const {customerValidated, isValidCustomer} = this.state;
+        const { allSettings, remarkTitles, customerName } = this.props;
+        const { customerValidated, isValidCustomer } = this.state;
         const isDisabled = customerName !== '';
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle />
                     <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.props.createResult &&
@@ -132,7 +138,7 @@ export class NewRemark extends Component {
                             isSuccessful={this.props.createResult.isSuccessful}
                         />
                     }
-                   <Form.Group as={Row}>
+                    <Form.Group as={Row}>
                         <Form.Label className='pr-4 ml-4 col-form-label required' htmlFor="username">
                             {LangHelper.getResource('Username')}
                         </Form.Label>
@@ -149,7 +155,7 @@ export class NewRemark extends Component {
                                         onChange={handleChange}
                                     />
                                 </Col>
-                                <div className='mr-2 mt-1'  controlId="newCheckboxGuest">
+                                <div className='mr-2 mt-1' controlId="newCheckboxGuest">
                                     <Form.Check type="checkbox" label={LangHelper.getResource('IsGuest')}
                                         id='isGuest' name='isGuest'
                                         checked={values.isGuest}
@@ -159,8 +165,8 @@ export class NewRemark extends Component {
                                 </div>
                                 <Col sm="2" md="2">
                                     <Button variant="primary" size="sm"
-                                        disabled={values.username==='' || isDisabled}
-                                        onClick={() => this.handleValidateCustomer(values.username, values.isGuest, setFieldValue, validateForm )}
+                                        disabled={values.username === '' || isDisabled}
+                                        onClick={() => this.handleValidateCustomer(values.username, values.isGuest, setFieldValue, validateForm)}
                                     >
                                         {LangHelper.getResource('Validate')}
                                     </Button>
@@ -185,15 +191,15 @@ export class NewRemark extends Component {
                         <Form.Group as={Row}>
                             <Form.Label className='pr-4 ml-4 col-form-label' />
                             <div className='form-group-customer'>
-                                    <div className={`txt-${isValidCustomer ? 'valid' : (this.state.customerValidated.isAuthorized ? 'invalid' : 'unauthorized')}`}>{customerValidated.val}</div>
+                                <div className={this.getUsernameVerifyClassName(customerValidated, isValidCustomer)}>{customerValidated.val}</div>
                             </div>
                         </Form.Group>
                     }
                     {
                         <RemarkInfo
-                            touched = {touched} errors={errors} values = {values}
-                            handleChange = {handleChange} remarkTitles = {remarkTitles} setFieldValue = {setFieldValue}
-                            relatedPicsOption = {this.state.relatedPicsOption} allSettings = {allSettings} isValidCustomer = {isValidCustomer}
+                            touched={touched} errors={errors} values={values}
+                            handleChange={handleChange} remarkTitles={remarkTitles} setFieldValue={setFieldValue}
+                            relatedPicsOption={this.state.relatedPicsOption} allSettings={allSettings} isValidCustomer={isValidCustomer}
                         />
                     }
                 </Modal.Body>
@@ -210,9 +216,9 @@ export class NewRemark extends Component {
     };
 
     render() {
-        const {allSettings, customerName, isGuestSearch} = this.props;
+        const { allSettings, customerName, isGuestSearch } = this.props;
 
-        if(allSettings === null || !allSettings){
+        if (allSettings === null || !allSettings) {
             return null;
         }
 
