@@ -5,7 +5,7 @@ using CRM.Models.Customer;
 
 namespace CRM.Criteria.Customer
 {
-    public class UpdHeadlineStaffsAndAuthorityCommand : BaseNonQueryCommand
+    public class UpdateHeadlineStaffsAndAuthorityCommand : BaseNonQueryCommand
     {
         public int HeadlineID { get; set; }
         public int UserID { get; set; }

@@ -106,8 +106,8 @@
 
         public async Task<IActionResult> GetPicCommunicationTools()
         {
-            var settings = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true);
-            return Json(settings);
+            var communicationTools = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true);
+            return Json(communicationTools);
         }
 
         [HttpPost]
@@ -148,23 +148,23 @@
 
         public async Task<IActionResult> GetHeadlineStaffsAndAuthority([FromBody] GetHeadlineStaffsAndAuthorityCriteria criteria)
         {
-            await customerService.SyncHeadlineStaffsAndAuthority(new SyncHeadlineStaffsAndAuthorityCriteria()
+            await customerService.SyncHeadlineStaffsAndAuthorityAsync(new SyncHeadlineStaffsAndAuthorityCriteria()
             {
                 UserID = napSession.UserId,
                 IP = ClientIP
             });
-            var result = await customerService.GetHeadlineStaffsAndAuthority(criteria);
+            var result = await customerService.GetHeadlineStaffsAndAuthorityAsync(criteria);
             return Json(result);
         }
 
         [HttpPost]
         [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
         [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
-        public async Task<IActionResult> EditHeadlineStaffsAndAuthority([FromBody] UpdHeadlineStaffsAndAuthorityCommand command)
+        public async Task<IActionResult> EditHeadlineStaffsAndAuthority([FromBody] UpdateHeadlineStaffsAndAuthorityCommand command)
         {
             command.UserID = napSession.UserId;
             command.IP = ClientIP;
-            var result = await customerService.EditHeadlineStaffsAndAuthority(command);
+            var result = await customerService.EditHeadlineStaffsAndAuthorityAsync(command);
             return Json(result);
         }
 
@@ -175,7 +175,18 @@
         {
             command.UserID = napSession.UserId;
             command.IP = ClientIP;
-            var result = await customerService.EditHeadlineCompanyService(command);                     
+            var result = await customerService.EditHeadlineCompanyServiceAsync(command);                     
+            return Json(result);
+        }
+
+        [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
+        public async Task<IActionResult> EditOtherAccCommunicationInfo([FromBody] UpdateOtherAccCommunicationInfoCommand command)
+        {
+            command.UserID = napSession.UserId;
+            command.IP = ClientIP;
+            var result = await customerService.EditOtherAccCommunicationInfoAsync(command);
             return Json(result);
         }
     }

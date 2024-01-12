@@ -8,11 +8,36 @@ import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/reac
 import Site from '@jsroot/common/site';
 
 export class HeadlineStaffsAndAuthority extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            headlineStaffsAndAuthority: null,
+            showAddStaffAuthor: false,
+            showAddTool: false
+        };
+    }
 
-    state = {
-        showAddStaffAuthor: false,
-        showAddTool: false
-    };
+    async componentDidMount() {
+        await this.props.getHeadlineStaffsAndAuthority({ headlineID: this.props.customerInfo.custId });
+        //this.setState({
+        //    headlineStaffsAndAuthority: this.props.headlineStaffsAndAuthority.map(item => {
+        //        return {
+        //            rowID: item.rowID,
+        //            picID: item.picID,
+        //            picName: item.picName,
+        //            picRoleID: item.picRoleID,
+        //            picRoleName: item.picRoleName,
+        //            picCommuniationID: item.picCommuniationID,
+        //            picCommuniationName: item.picCommuniationName,
+        //            picCommunicationValue: item.picCommunicationValue,
+        //            authority: item.authority,
+        //            remark: item.remark,
+        //            isSyncFromPicTable: item.isSyncFromPicTable,
+        //            createdDate: item.createdDate
+        //        }
+        //    })
+        //});
+    }
 
     render() {
         return (
@@ -202,8 +227,8 @@ export class HeadlineStaffsAndAuthority extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, customerInfo, editCustomerInfoDetailResult } = state;
-    return { allSettings, customerInfo, editCustomerInfoDetailResult };
+    const { allSettings, customerInfo, headlineStaffsAndAuthority, getHeadlineStaffsAndAuthority } = state;
+    return { allSettings, customerInfo, headlineStaffsAndAuthority, getHeadlineStaffsAndAuthority };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeadlineStaffsAndAuthority);

@@ -26,7 +26,6 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     async componentDidMount() {
-        await this.props.getPicCommunicationTools();
         await this.props.getHeadlinePicRoles(HeadlinePicID);
         await this.props.getAccountingPicRoles(AccountingPicID);
         this.getHeadlineCommunicationInfo(this.props.customerInfo);
@@ -409,7 +408,6 @@ const mapStateToProps = state => {
         customerInfo,
         errors,
         setErrors,
-        getPicCommunicationTools,
         getHeadlinePicRoles,
         getAccountingPicRoles,
         headlinePicRoles,
@@ -420,7 +418,6 @@ const mapStateToProps = state => {
         customerInfo,
         errors,
         setErrors,
-        getPicCommunicationTools,
         getHeadlinePicRoles,
         getAccountingPicRoles,
         headlinePicRoles,

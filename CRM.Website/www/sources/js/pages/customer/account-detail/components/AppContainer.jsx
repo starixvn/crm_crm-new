@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import HeadlineStaffsAndAuthority from './HeadlineStaffsAndAuthority';
 import HeadlineCommunicationInfo from './HeadlineCommunicationInfo';
 import CompanyService from './CompanyService';
-import { Button, Form, Alert } from 'react-bootstrap';
+import { Button, Form, Alert, Col } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
@@ -17,6 +17,7 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import { changeSiteSetting, hasHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
+import DataService from '@jsroot/common/dataService';
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -24,6 +25,7 @@ export class AppContainer extends Component {
         const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
             updateHeadlineInfoPolicy: null,
+            otherAccountCommunication:null,
             activeTab: 'headlineCommunicationInfo',
             isSubmitting: false,
             titleId: 0,
@@ -96,6 +98,7 @@ export class AppContainer extends Component {
 
     async componentDidMount() {
         await this.props.getAllSettings();
+        await this.props.getPicCommunicationTools();
         await this.props.getCustomerById({ customerId: this.props.id });
         getPermission(FunctionKey.UpdateHeadlineInfo, true).then(response => {
             this.setState({ updateHeadlineInfoPolicy: response });
@@ -103,6 +106,15 @@ export class AppContainer extends Component {
         const { customerInfo } = this.props;
         const params = ParamsCustomerInfo(customerInfo);
         this.setState(params);
+        this.setState({
+            otherAccountCommunication: customerInfo.otherAccountCommunicationInfos?.map(x => {
+                return {
+                    communicationID: x.communicationID,
+                    communicationValue: x.communicationValue,
+                    isError: false
+                }
+            })
+        });
         document.title = LangHelper.getResource('CRMSystem');
     }
 
@@ -185,7 +197,7 @@ export class AppContainer extends Component {
         );
     }
 
-    renderAccountInfo = (values, hasHostOnCurrentCustomer) => {
+    renderAccountInfo = (values, hasHostOnCurrentCustomer, canEditHeadline) => {
         const { customerInfo, allSettings } = this.props;
         const languageSelected = allSettings.languages.map(item => {
             return {
@@ -310,10 +322,41 @@ export class AppContainer extends Component {
                             OnChangeValue={this.handleChangeCountry}
                         />
                     </Form.Group>
+                    {
+                        !customerInfo.isGroupHeadLine &&
+                        <>
+                            <Form.Group >
+                                <Form.Label htmlFor="licenseeType">
+                                    {LangHelper.getResource('LicenseeType')}
+                                </Form.Label>
+                                <Form.Control as="select" size="sm" className="shadow-none"
+                                    name="licenseeTypeId" id="licenseeTypeId" value={values.licenseeTypeId} onChange={this.handleChange}
+                                >
+                                    <option value='' hidden disabled />
+                                    {allSettings.licenseeTypes.map(item => this.renderOptions(item.name, item.id))}
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Check type="checkbox"
+                                label={LangHelper.getResource('VIP')}
+                                checked={values.isVip}
+                                name='isVip' id="isVip"
+                                disabled={!canEditHeadline}
+                                onChange={event => this.handleChangeCheck(event)}
+                            />
+                            <Form.Check type="checkbox"
+                                label={LangHelper.getResource('Ignore')}
+                                checked={values.isIgnored}
+                                name='isIgnored' id="isIgnored"
+                                disabled={!canEditHeadline}
+                                onChange={event => this.handleChangeCheck(event)}
+                            />
+                        </>
+                    }
                 </div>
             </Form>
         );
     }
+
 
     renderAccountPIC = (values, canEditHeadline) => {
         return (
@@ -359,10 +402,131 @@ export class AppContainer extends Component {
         );
     }
 
+    validateCommunicationInfo = () => {
+        const errors = {};
+        let { otherAccountCommunication } = this.state;
 
+        this.state.otherAccountCommunication.map((pic, indexPic) => {
+            if (!pic.communicationID || !pic.communicationValue) {
+                errors.communication = LangHelper.getResource('CommunicationRequired');
+                otherAccountCommunication[indexPic].isError = true;
+            } else {
+                otherAccountCommunication[indexPic].isError = false;
+            }
+        });
+        this.setState({
+            otherAccountCommunication: otherAccountCommunication
+        });
+        this.props.setErrors(Object.keys(errors).length === 0 ? null : errors);
+        return Object.keys(errors).length === 0 ? null : errors;
+    }
+
+    handleChangeCommunication = (name, value, indexPicCommunicationTool) => {
+        let { otherAccountCommunication } = this.state;
+        otherAccountCommunication[indexPicCommunicationTool][name] = value;
+        this.setState({ otherAccountCommunication: otherAccountCommunication });
+        this.validateCommunicationInfo();
+    }
+
+    getWidth = (picCommunicationTool, communicationTool) => (8 * communicationTool.find(x => x.settingId === picCommunicationTool.communicationID).settingValue.length) + 15;
+
+    deleteCommunicationTool = (value, type) => {
+        const data = [...this.state.otherAccountCommunication];
+        const index = data.findIndex(comTool => comTool.communicationID === type && comTool.communicationValue === value);
+        data.splice(index, 1);
+        this.setState({ otherAccountCommunication: data });
+    }
+
+    addNewCommunicationTool = () => {
+        let { otherAccountCommunication } = this.state;
+        otherAccountCommunication.push({
+            communicationID: '',
+            value: '',
+            isError: false
+        });
+        this.setState({ otherAccountCommunication: otherAccountCommunication });
+    }
+
+    handleSubmitOtherCommunicationInfo = async () => {
+        const errors = this.validateCommunicationInfo();
+        if (errors === null) {
+            let { otherAccountCommunication } = this.state;
+            const params = {
+                custID: this.props.id,
+                otherCommunicationTools: otherAccountCommunication.map(acc => {
+                    return {
+                        communicationID: acc.communicationID,
+                        communicationValue: acc.communicationValue
+                    };
+                })
+            };
+            
+            Site.blockUI(); 
+            const url = Site.resolveClientUrl('AccountDetail/EditOtherAccCommunicationInfo');
+            await DataService.postDataAsync(url, params).then(response => {
+                if (response.data.isSuccessful) {
+                    toast.success(LangHelper.getResource('UpdateCommunicationInfoSuccessful'));
+                } else {
+                    toast.errors(response.data.find(x => !x.isSuccessful)[0].message);
+                }
+            }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+        }
+    }
+
+    renderOtherPIC = (values, canEditHeadline) => {
+        return (
+            <Form className='group-account'>                
+                <div className='group-title'>
+                    Communication Info
+                    {
+                        canEditHeadline &&
+                        <img onClick={this.handleSubmitOtherCommunicationInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
+                    }
+                </div>
+                <div className='group-content'>
+                    <Button className='btn-add' variant="primary" size="sm" onClick={this.addNewCommunicationTool}>
+                        {LangHelper.getResource('AddCommunicationTool')}
+                    </Button>
+                    {
+                        values.otherAccountCommunication?.map((picCommunicationTool, indexPicCommunicationTool) => {
+                            return <>
+                                <Form.Group>
+                                    <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="CommunicationID" id="CommunicationID"
+                                        style={{
+                                            width: `${picCommunicationTool.communicationID !== '' ? this.getWidth(picCommunicationTool, this.props.communicationTool) : 115}px`
+                                        }}
+                                        value={picCommunicationTool.communicationID} onChange={event => {
+                                            this.handleChangeCommunication('communicationID', parseInt(event.target.value, 10), indexPicCommunicationTool);
+                                        }}>
+                                        <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                        {this.props.communicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                    </Form.Control>
+                                    <div className='field-icon'>
+                                        <Form.Control type="text" className={picCommunicationTool.isError && 'invalid'}
+                                            value={picCommunicationTool.communicationValue} autoComplete="off" onChange={event => {
+                                                this.handleChangeCommunication('communicationValue', event.target.value, indexPicCommunicationTool);
+                                            }} />
+                                        {
+                                            <div onClick={() => { this.deleteCommunicationTool(picCommunicationTool.communicationValue, picCommunicationTool.communicationID); }}
+                                                className='icon icon-delete'>
+                                            </div>
+                                        }
+                                    </div>
+                                </Form.Group>
+                            </>
+                        })
+                    }
+                    {
+                        values.otherAccountCommunication?.length === 0 &&
+                        <p>{LangHelper.getResource('ThereIsNoData')}</p>
+                    }
+                </div>
+            </Form>
+        );
+    }
 
     renderHeadlineAccount = () => {
-        const { allSettings, customerInfo, errors } = this.props;
+        const { allSettings, customerInfo } = this.props;
         const values = this.state;
         const updatePolicy = this.state.updateHeadlineInfoPolicy;
         const canEditHeadline = updatePolicy === Policy.Host;
@@ -373,12 +537,9 @@ export class AppContainer extends Component {
         const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
         const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
         return (
-            <>
+            <>                
                 {
-                    this.renderErrors(errors)
-                }
-                {
-                    this.renderAccountInfo(values, hasHostOnCurrentCustomer)
+                    this.renderAccountInfo(values, hasHostOnCurrentCustomer, canEditHeadline)
                 }
                 {
                     (customerInfo.isGroupHeadLine && (updatePolicy === Policy.Read || canEditHeadline)) &&
@@ -419,16 +580,41 @@ export class AppContainer extends Component {
             </>);
     }
 
-    render() {
+    renderOtherAccount = () => {
         const { allSettings, customerInfo } = this.props;
+        const values = this.state;
+        if (!allSettings || !customerInfo) {
+            return null;
+        }
+        const updatePolicy = this.state.updateHeadlineInfoPolicy;
+        const canEditHeadline = updatePolicy === Policy.Host;
+        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
+        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
+        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
+        return (
+            <>
+                {
+                    this.renderAccountInfo(values, hasHostOnCurrentCustomer, canEditHeadline)
+                }
+                {
+                    this.renderOtherPIC(values, canEditHeadline)
+                }
+            </>);
+    }
+
+    render() {
+        const { allSettings, customerInfo, errors } = this.props;
         if (!allSettings || !customerInfo) {
             return null;
         }
         return (
             <>
                 {
+                    this.renderErrors(errors)
+                }
+                {
                     !customerInfo.isGroupHeadLine &&
-                    <p>other account</p>
+                    this.renderOtherAccount()
                 }
                 {
                     customerInfo.isGroupHeadLine &&
@@ -442,8 +628,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, customerInfo, errors, editCustomerInfoDetailResult } = state;
-    return { allSettings, customerInfo, errors, editCustomerInfoDetailResult };
+    const { allSettings, customerInfo, communicationTool, errors, editCustomerInfoDetailResult, setErrors } = state;
+    return { allSettings, customerInfo, communicationTool, errors, editCustomerInfoDetailResult, setErrors };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

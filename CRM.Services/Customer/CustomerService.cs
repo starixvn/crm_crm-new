@@ -34,10 +34,11 @@
         Task<string> ValidateEditPicAsync(ValidateEditPicCriteria criteria);
         Task<CommandResult> EditPicAsync(EditPicCriteria criteria);
         Task<Tuple<IEnumerable<HeadlineCompanyService>, IEnumerable<HeadlineAccountCommunicationInfo>>> GetHeadlineCompanyServiceAsync(GetHeadlineCompanyServiceCriteria criteria);
-        Task<IEnumerable<HeadlineStaffsAndAuthority>> GetHeadlineStaffsAndAuthority(GetHeadlineStaffsAndAuthorityCriteria criteria);
-        Task<CommandResult> SyncHeadlineStaffsAndAuthority(SyncHeadlineStaffsAndAuthorityCriteria criteria);
-        Task<CommandResult> EditHeadlineCompanyService(UpdateHeadlineCompanyServiceCommand criteria);
-        Task<CommandResult> EditHeadlineStaffsAndAuthority(UpdHeadlineStaffsAndAuthorityCommand criteria);
+        Task<IEnumerable<HeadlineStaffsAndAuthority>> GetHeadlineStaffsAndAuthorityAsync(GetHeadlineStaffsAndAuthorityCriteria criteria);
+        Task<CommandResult> SyncHeadlineStaffsAndAuthorityAsync(SyncHeadlineStaffsAndAuthorityCriteria criteria);
+        Task<CommandResult> EditHeadlineCompanyServiceAsync(UpdateHeadlineCompanyServiceCommand criteria);
+        Task<CommandResult> EditOtherAccCommunicationInfoAsync(UpdateOtherAccCommunicationInfoCommand criteria);
+        Task<CommandResult> EditHeadlineStaffsAndAuthorityAsync(UpdateHeadlineStaffsAndAuthorityCommand criteria);
     }
 
     public class CustomerService : ICustomerService
@@ -61,17 +62,22 @@
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
-        public async Task<CommandResult> EditHeadlineCompanyService(UpdateHeadlineCompanyServiceCommand criteria)
+        public async Task<CommandResult> EditHeadlineCompanyServiceAsync(UpdateHeadlineCompanyServiceCommand criteria)
         {
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
-        public async Task<CommandResult> EditHeadlineStaffsAndAuthority(UpdHeadlineStaffsAndAuthorityCommand criteria)
+        public async Task<CommandResult> EditOtherAccCommunicationInfoAsync(UpdateOtherAccCommunicationInfoCommand criteria)
         {
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
-        public async Task<CommandResult> SyncHeadlineStaffsAndAuthority(SyncHeadlineStaffsAndAuthorityCriteria criteria)
+        public async Task<CommandResult> EditHeadlineStaffsAndAuthorityAsync(UpdateHeadlineStaffsAndAuthorityCommand criteria)
+        {
+            return await baseService.ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task<CommandResult> SyncHeadlineStaffsAndAuthorityAsync(SyncHeadlineStaffsAndAuthorityCriteria criteria)
         {
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
@@ -219,7 +225,7 @@
             return Tuple.Create(result.Item1, result.Item2);
         }
 
-        public async Task<IEnumerable<HeadlineStaffsAndAuthority>> GetHeadlineStaffsAndAuthority(GetHeadlineStaffsAndAuthorityCriteria criteria)
+        public async Task<IEnumerable<HeadlineStaffsAndAuthority>> GetHeadlineStaffsAndAuthorityAsync(GetHeadlineStaffsAndAuthorityCriteria criteria)
         {
             var result = await baseService.GetDataAsync<HeadlineStaffsAndAuthority>(criteria);
             return result;
