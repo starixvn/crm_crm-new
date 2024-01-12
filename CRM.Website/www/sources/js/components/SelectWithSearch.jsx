@@ -18,13 +18,14 @@ export default class SelectWithSearch extends Component {
         this.state = {
             selectFormStatus: '',
             selectedItem: {
-                id: this.props.value,
-                name: this.props.name || (this.props.value === 0 ? 'N/A' : this.getLabel(this.props.options, this.props.value))
+                id: this.props.isSelectAll ? -1 : this.props.value,
+                name: this.props.isSelectAll ? 'All' :  (this.props.name || (this.props.value === 0 ? 'N/A' : this.getLabel(this.props.options, this.props.value)))
             },
             options: this.props.options,
             filter: '',
             isHideNA: this.props.isHideNA,
             isSelectOption: this.props.isSelectOption,
+            isSelectAll: this.props.isSelectAll,
             collapsedAll: true
         };
     }
@@ -35,10 +36,18 @@ export default class SelectWithSearch extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.value !== prevProps.value) {
+            let label = '';
+            if (this.props.value === 0) {
+                label = 'N/A';
+            } else if (this.props.value === -1) {
+                label = 'All';
+            } else {
+                label = this.getLabel(this.props.options, this.props.value);
+            }
             this.setState({
                 selectedItem: {
                     id: this.props.value,
-                    name: this.props.value === 0 ? 'N/A' : this.getLabel(this.props.options, this.props.value)
+                    name: label
                 }
             });
         }
@@ -59,7 +68,7 @@ export default class SelectWithSearch extends Component {
                 return site.name;
             }
 
-            if (site.childSites != null && site.childSites.length > 0) {
+            if (site.childSites !== null && site.childSites.length > 0) {
                 const label = this.getLabelRecursive(site.childSites, siteId);
                 if (label !== undefined) {
                     return label;
@@ -139,6 +148,18 @@ export default class SelectWithSearch extends Component {
         this.props.OnChangeValue(item);
     };
 
+    onSelectAll = () => {
+        const item = {
+            id: -1,
+            name: 'All'
+        };
+        this.setState({
+            selectFormStatus: '',
+            selectedItem: item
+        });
+        this.props.OnChangeValue(item);
+    }
+
     toggleCollapseExpanse = () => {
         this.setState({
             collapsedAll: !this.state.collapsedAll
@@ -156,7 +177,7 @@ export default class SelectWithSearch extends Component {
     render() {
         const { options } = this.state;
         const siteLabel = getSiteLabel(options, this.state.selectedItem.id);
-
+       
         return (
             <div className={'dropdown selectwithsearchtree ' + this.state.selectFormStatus} ref={this.wrapperRef}>
                 <button type="button" className="btn" onClick={this.toggleSelect}>
@@ -170,7 +191,7 @@ export default class SelectWithSearch extends Component {
                                 onChange={this.handleChangeSearchInput}
                                 value={this.state.filter}
                             />
-                            <span className="searchclear fa fa-times" onClick={this.clearSearchBox}></span>
+                            <span className="searchclear fa fa-times" onClick={this.clearSearchBox} />
                         </div>
                     </li>
                     <li className="toolbar">
@@ -178,14 +199,22 @@ export default class SelectWithSearch extends Component {
                             <a>&nbsp;</a>
                             <span className="input-group-btn" >
                                 <span onClick={this.toggleCollapseExpanse}
-                                    className={this.state.collapsedAll ? 'fa fa-upload' : 'fa fa-download'}></span>
+                                    className={this.state.collapsedAll ? 'fa fa-upload' : 'fa fa-download'} />
                             </span>
                         </div>
                     </li>
-                    <li className="divider"></li>
+                    <li className="divider" />
                     <li>
                         <div className="tree">
                             <ul>
+                                {
+                                    this.state.isSelectAll &&
+                                    <li>
+                                            <a onClick={this.onSelectAll}>
+                                            <span className="group-text">All</span>
+                                        </a>
+                                    </li>
+                                }
                                 {
                                     !this.state.isHideNA &&
                                     <li>

@@ -1,4 +1,4 @@
-import React, { Component, Fragment  } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Form, Row, Collapse, Modal } from 'react-bootstrap';
 import { Formik } from 'formik';
@@ -434,7 +434,7 @@ export class EditMultipleLogs extends Component {
 
     renderReview = (values, touched, errors, setFieldValue) => {
         const { isCheck } = this.state;
-        console.log(isCheck);
+
         return (
             <div className="panel-group">
                 <Form.Group as={Row} className={`panel-title justify-content-between ${!isCheck.reviewed ? 'border-bottom-0' : ''}`}>
@@ -926,8 +926,8 @@ export class EditMultipleLogs extends Component {
         return (
             <Form noValidate onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle/>
-                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)}  />
+                    <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} isDocumentHandle />
+                    <FormikErrorMessage isSubmitting={isSubmitting} touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                     {
                         this.state.editResult &&
                         <ResponseMessage isSuccessful={this.state.editResult.isSuccessful}

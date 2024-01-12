@@ -18,5 +18,8 @@
 
         [XmlIgnore]
         public byte ResultTypeId { get; set; }
+
+        [XmlIgnore]
+        public bool IsAuthorized { get; set; }
     }
 }

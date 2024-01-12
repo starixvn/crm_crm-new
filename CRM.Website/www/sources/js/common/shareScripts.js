@@ -326,7 +326,7 @@ export const getSiteLabel = (sites, siteId) => {
                         siteLabel = element.childSites.find(data => data.id === siteId).siteLabel;
                     }
                 }
-            })
+            });
         }
     });
     return siteLabel;

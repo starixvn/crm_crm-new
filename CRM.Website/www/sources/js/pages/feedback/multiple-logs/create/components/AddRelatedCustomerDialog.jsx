@@ -205,7 +205,7 @@ export class AddRelatedCustomerDialog extends Component {
             return;
         }
 
-        const headlines = this.props.verifyCustomerResults.filter(item => item.isHeadline || item.isDirectAccount),
+        const headlines = this.props.verifyCustomerResults.filter(item => item.isAuthorized && (item.isHeadline || item.isDirectAccount)),
             headlineIds = headlines.map(x => x.custId).join(','),
             username = this.state.relatedCustomers.map(x => x.username)
                 .filter((value, index, self) => self.indexOf(value) === index).join(',');

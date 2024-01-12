@@ -30,7 +30,7 @@ export class Filter extends Component {
             subCategoryId: 0,
             reportType: 1,
             statusId: 0,
-            siteId: 0,
+            siteId: -1,
             roleId: 0,
             communicationToolId: 0,
             handler: null,
@@ -88,11 +88,11 @@ export class Filter extends Component {
         maxDate = maxDateEndWeek;
 
         let currentToDate = new Date();
-        if(currentToDate < fromDate){
+        if (currentToDate < fromDate) {
             currentToDate = fromDate;
-        }else if(currentToDate > maxDate){
+        } else if (currentToDate > maxDate) {
             currentToDate = maxDate;
-        }else{
+        } else {
             currentToDate = new Date(this.state.toDate);
         }
 
@@ -161,16 +161,16 @@ export class Filter extends Component {
 
     getWeekYear = dateTime => {
         const date = new Date(dateTime);
-        let oneJan = new Date(date.getFullYear(),0,1);
+        let oneJan = new Date(date.getFullYear(), 0, 1);
         let numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000)) - 7;
-        let result = Math.ceil(( date.getDay() + 1 + numberOfDays) / 7);
-        if(result === 0){
-            oneJan = new Date(date.getFullYear()-1,0,1);
+        let result = Math.ceil((date.getDay() + 1 + numberOfDays) / 7);
+        if (result === 0) {
+            oneJan = new Date(date.getFullYear() - 1, 0, 1);
             numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000)) - 7;
-            result = Math.ceil(( date.getDay() + 1 + numberOfDays) / 7);
+            result = Math.ceil((date.getDay() + 1 + numberOfDays) / 7);
         }
         return result;
-      }
+    }
 
     renderFilterDate = () => {
         let resFromDate = {}, resToDate = {};
@@ -321,7 +321,7 @@ export class Filter extends Component {
         this.setState({ siteId: site.id });
     };
 
-    handleChangeSubject = value =>{
+    handleChangeSubject = value => {
         this.setState({ subject: value });
     };
 
@@ -346,7 +346,7 @@ export class Filter extends Component {
             showFilter: isToggle
         });
         window.dispatchEvent(new Event('resize'));
-        if(isToggle){
+        if (isToggle) {
             document.getElementsByTagName('html')[0].style.overflow = 'hidden';
         }
     };
@@ -409,7 +409,7 @@ export class Filter extends Component {
                 {
                     showFilter &&
                     <React.Fragment>
-                        <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
+                        <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
                         <Form.Row className='form-row'>
                             <Form.Group>
                                 <Form.Label htmlFor="groupBy" className="col-auto col-form-label">{LangHelper.getResource('GroupBy')}</Form.Label>
@@ -484,6 +484,7 @@ export class Filter extends Component {
                                         value={siteId}
                                         OnChangeValue={this.handleChangeSite}
                                         options={siteOptions}
+                                        isSelectAll
                                     />
                                 </div>
                             </Form.Group>
@@ -576,7 +577,7 @@ export class Filter extends Component {
                         <Form.Row>
                             <Form.Group className="form-group-subject">
                                 <Form.Label htmlFor="subject" className="col-auto col-form-label">{LangHelper.getResource('Subject')}</Form.Label>
-                                <div style={{width: '100%'}}>
+                                <div style={{ width: '100%' }}>
                                     <AutoComplete
                                         value={this.state.subject}
                                         options={this.props.feedbackSubjectTemplates} displayField="subject"

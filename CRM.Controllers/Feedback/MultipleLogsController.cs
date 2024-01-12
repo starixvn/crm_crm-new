@@ -78,6 +78,8 @@
         [HttpPost]
         public async Task<IActionResult> VerifyRelatedCustomer([FromBody] VerifyRelatedCustomerCriteria criteria)
         {
+            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var customers = await baseService.GetDataAsync<VerifyRelatedCustomerResult>(criteria);
             return Json(customers);
         }

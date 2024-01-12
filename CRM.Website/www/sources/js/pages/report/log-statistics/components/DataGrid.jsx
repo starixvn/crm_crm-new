@@ -186,7 +186,6 @@ export class DataGrid extends Component {
     };
 
     handleCollapseExpandLicensee = () => {
-        console.log(this.props.mainReports);
         const { toggleRowLicensee, isCollapseLicensee } = this.state;
         if (!isCollapseLicensee) {
             this.props.mainReports.licenseeReport.mainCategories.forEach(main => {
@@ -352,7 +351,7 @@ export class DataGrid extends Component {
         const defaultWidth = 400;
         const totalWidth = defaultWidth + licenseeReport.communicationColumns.length * 115;
         const maxWidth = this.getMaxWidth(totalWidth);
-        const className = licenseeType === 0 ? 'table-licensee' : 'table-licensee single-table'
+        const className = licenseeType === 0 ? 'table-licensee' : 'table-licensee single-table';
         return (
             <div className={className}>
                 {
@@ -381,7 +380,7 @@ export class DataGrid extends Component {
         const isShowLicenseeReport = mainReports.licenseeType === 0 || mainReports.licenseeType === 2;
 
         if (!isShowCreditReport && !isShowLicenseeReport) {
-            toast.error("You don't have Credit or Licensee permission");
+            toast.error(LangHelper.getResource('NoPermissionOnCreditOrLicensee'));
             return null;
         }
     }
@@ -398,7 +397,7 @@ export class DataGrid extends Component {
         const isShowLicenseeReport = mainReports.licenseeType === 0 || mainReports.licenseeType === 2;
 
         if (!isShowCreditReport && !isShowLicenseeReport) {
-            toast.error("You don't have Credit or Licensee permission");
+            toast.error(LangHelper.getResource('NoPermissionOnCreditOrLicensee'));
             return null;
         }
 
