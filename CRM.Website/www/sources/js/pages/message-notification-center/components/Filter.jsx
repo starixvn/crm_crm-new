@@ -5,7 +5,6 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import { Button, Form } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
-import Select from '@jsroot/components/CustomReactSelect';
 import {Statuses} from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 
@@ -130,6 +129,13 @@ export default class Filter extends Component {
                                     this.handleChangeStatus(currentItem, selectedItemsKey);
                                 }}
                             />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <div className='btn-submit'>
+                            <Button variant='primary' id='btn-submit-notification' size='sm' type='submit'>
+                                {LangHelper.getResource('Submit')}
+                            </Button>
                         </div>
                     </Form.Group>
                 </Form.Row>
