@@ -25,7 +25,7 @@ export default class CommentInfo extends PureComponent {
       );
   };
 
-  renderDescriptionSection = currentUsername => {
+    renderDescriptionSection = currentUsername => {
       const { collapse, values, touched, errors, setFieldValue, onCollapseExpand } = this.props;
       return (
           <div className="panel-group border-bottom-0">
