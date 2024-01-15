@@ -12,7 +12,6 @@
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
-    using Fanex.Data.Repository;
     using Fanex.Logging.Extensions;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
@@ -104,10 +103,22 @@
             return Json(roles);
         }
 
-        public async Task<IActionResult> GetPicCommunicationTools()
+        public async Task<IActionResult> GetStaffAndAuthority()
         {
-            var communicationTools = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true);
-            return Json(communicationTools);
+            var staffAndAuthority = await settingService.GetSettingAsync(SettingName.StaffAndAuthority, true);
+            return Json(staffAndAuthority);
+        }
+
+        public async Task<IActionResult> GetSettingPicRole()
+        {
+            var settings = await settingService.GetSettingAsync(SettingName.PicRole, true);
+            return Json(settings);
+        }
+
+        public async Task<IActionResult> GetSettingPicCommunicationTools()
+        {
+            var settings = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true);
+            return Json(settings);
         }
 
         [HttpPost]
@@ -146,9 +157,9 @@
             return Json(result);
         }
 
-        public async Task<IActionResult> GetHeadlineStaffsAndAuthority([FromBody] GetHeadlineStaffsAndAuthorityCriteria criteria)
+        public async Task<IActionResult> GetHeadlineStaffsAndAuthority([FromBody] GetHeadlineStaffAndAuthorityCriteria criteria)
         {
-            await customerService.SyncHeadlineStaffsAndAuthorityAsync(new SyncHeadlineStaffsAndAuthorityCriteria()
+            _ = await customerService.SyncHeadlineStaffsAndAuthorityAsync(new SyncHeadlineStaffAndAuthorityCriteria()
             {
                 UserID = napSession.UserId,
                 IP = ClientIP

@@ -205,10 +205,10 @@ export class HeadlineCommunicationInfo extends Component {
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
     }
 
-    getWidth = (picCommunicationTool, communicationTool) => (8 * communicationTool.find(x => x.settingId === picCommunicationTool.type).settingValue.length) + 15;
+    getWidth = (picCommunicationTool, settingCommunicationTool) => (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.type).settingValue.length) + 15;
 
     renderInfo = (pic, indexPic) => {        
-        let { allSettings, headlinePicRoles, accountingPicRoles, communicationTool } = this.props;
+        let { allSettings, headlinePicRoles, accountingPicRoles, settingCommunicationTool } = this.props;
         const languageSelected = this.props.allSettings.languages.map(item => {
             return {
                 languageId: item.languageId,
@@ -285,12 +285,12 @@ export class HeadlineCommunicationInfo extends Component {
                             <Form.Group>
                                 <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool"
                                     style={{
-                                        width: `${picCommunicationTool.type !== '' ? this.getWidth(picCommunicationTool, communicationTool) : 115}px` }}
+                                        width: `${picCommunicationTool.type !== '' ? this.getWidth(picCommunicationTool, settingCommunicationTool) : 115}px` }}
                                         value={picCommunicationTool.type} onChange={event => {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'type', parseInt(event.target.value, 10), indexPic, indexPicCommunicationTool);
                                     }}>
                                     <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                    {communicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                    {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                                 </Form.Control>
                                 <div className='field-icon'>
                                     <Form.Control type="text" className={picCommunicationTool.isError && 'invalid'}
@@ -333,9 +333,9 @@ export class HeadlineCommunicationInfo extends Component {
     };
 
     render() {
-        let { headlinePicRoles, accountingPicRoles, communicationTool, customerInfo } = this.props;
+        let { headlinePicRoles, accountingPicRoles, settingCommunicationTool, customerInfo } = this.props;
         let { headlineCommunicationInfo } = this.state;
-        if (!headlinePicRoles || !accountingPicRoles || !communicationTool || !headlineCommunicationInfo || !customerInfo) {
+        if (!headlinePicRoles || !accountingPicRoles || !settingCommunicationTool || !headlineCommunicationInfo || !customerInfo) {
             return null;
         }
         const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
@@ -370,14 +370,14 @@ export class HeadlineCommunicationInfo extends Component {
                                                     <span>{`${headlineCommunicationInfo[index].picName}: `}</span>
                                                     {
                                                         headlineCommunicationInfo[index].picCommunicationTools.map((comPic, indexPic) => {
-                                                            let indexCom = communicationTool.findIndex(x => x.settingId === comPic.type &&
+                                                            let indexCom = settingCommunicationTool.findIndex(x => x.settingId === comPic.type &&
                                                                 (x.settingValue === Letstalk || x.settingValue === Telegram));
                                                             if (indexCom !== -1) {
                                                                 return (
                                                                     <>
                                                                         {indexPic !== 0 && <span>{', '}</span>}
                                                                         <span className="bold">{comPic.value}</span>
-                                                                        <span>{` (${communicationTool[indexCom].settingValue})`}</span>
+                                                                        <span>{` (${settingCommunicationTool[indexCom].settingValue})`}</span>
                                                                     </>
                                                                 );
                                                             }
@@ -412,7 +412,7 @@ const mapStateToProps = state => {
         getAccountingPicRoles,
         headlinePicRoles,
         accountingPicRoles,
-        communicationTool } = state;
+        settingCommunicationTool } = state;
     return {
         allSettings,
         customerInfo,
@@ -422,7 +422,7 @@ const mapStateToProps = state => {
         getAccountingPicRoles,
         headlinePicRoles,
         accountingPicRoles,
-        communicationTool
+        settingCommunicationTool
     };
 };
 

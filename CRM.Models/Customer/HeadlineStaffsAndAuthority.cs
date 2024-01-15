@@ -13,6 +13,7 @@ namespace CRM.Models.Customer
         public int PicCommuniationID { get; set; }
         public string PicCommuniationName { get; set; }
         public string PicCommunicationValue { get; set; }
+        public int AuthorityID { get; set; }
         public string Authority { get; set; }
         public string Remark { get; set; }
         public bool IsSyncFromPicTable { get; set; }

@@ -3,12 +3,13 @@ const initialState = {
     customerInfo: null,
     headlinePicRoles: null,
     accountingPicRoles: null,
-    communicationTool: null,
+    settingCommunicationTool: null,
     allSettings: null,
     editCustomerInfoDetailResult: '',
     errors: null,
     headlineCompanyService: null,
-    headlineStaffsAndAuthority: null
+    headlineStaffsAndAuthority: null,
+    settingStaffAndAuthority: null
 };
 const accountDetailSlice = createSlice({
     name: 'customerInfoDetail',
@@ -30,8 +31,8 @@ const accountDetailSlice = createSlice({
         setAccountingPicRoles: (state, action) => {
             state.accountingPicRoles = action.payload;
         },
-        setCommunicationTool: (state, action) => {
-            state.communicationTool = action.payload;
+        setSettingCommunicationTool: (state, action) => {
+            state.settingCommunicationTool = action.payload;
         },
         setErrors: (state, action) => {
             state.errors = action.payload;
@@ -41,6 +42,9 @@ const accountDetailSlice = createSlice({
         },
         setHeadlineStaffsAndAuthority: (state, action) => {
             state.headlineStaffsAndAuthority = action.payload;
+        },
+        setSettingStaffAndAuthority: (state, action) => {
+            state.settingStaffAndAuthority = action.payload;
         }
     }
 });
@@ -54,10 +58,11 @@ export const {
     setEditCustomerInfoDetail,
     setHeadlinePicRoles,
     setAccountingPicRoles,
-    setCommunicationTool,
+    setSettingCommunicationTool,
     setErrors,
     setHeadlineCompanyService,
-    setHeadlineStaffsAndAuthority
+    setHeadlineStaffsAndAuthority,
+    setSettingStaffAndAuthority
 } = actions;
 
 export default reducer;

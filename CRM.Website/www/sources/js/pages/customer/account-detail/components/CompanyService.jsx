@@ -102,14 +102,14 @@ export class CompanyService extends Component {
 
     buildBody = () => {
         const { companyService } = this.state;
-        const { communicationTool, customerInfo } = this.props;
+        const { settingCommunicationTool, customerInfo } = this.props;
         const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
         const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
         const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
         if (companyService.length > 0) {
             return [
                 <Fragment key={'body'}>
-                    {companyService.map((item, indexService) => this.renderRow(item, indexService, communicationTool))}
+                    {companyService.map((item, indexService) => this.renderRow(item, indexService, settingCommunicationTool))}
                     {
                         hasHostOnCurrentCustomer &&
                         <div className='group-btn'>
@@ -157,7 +157,7 @@ export class CompanyService extends Component {
         return suggestions;
     }
 
-    renderRow = (item, indexService, communicationTool) => {
+    renderRow = (item, indexService, settingCommunicationTool) => {
         const communicationSuggestions = this.debounceInputChange(item.communicationValue, item.communicationID);
         return (
             <Row key={item.companyServiceID}>
@@ -180,7 +180,7 @@ export class CompanyService extends Component {
                             this.handleChangeValue('communicationID', parseInt(event.target.value, 10), indexService);
                         }}>
                             <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                            {communicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                            {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                     </Form.Control>
                 </Cell>
                 <Cell>
@@ -219,8 +219,8 @@ export class CompanyService extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, customerInfo, getHeadlineCompanyService, communicationTool, headlineCompanyService } = state;
-    return { allSettings, customerInfo, getHeadlineCompanyService, communicationTool, headlineCompanyService };
+    const { allSettings, customerInfo, getHeadlineCompanyService, settingCommunicationTool, headlineCompanyService } = state;
+    return { allSettings, customerInfo, getHeadlineCompanyService, settingCommunicationTool, headlineCompanyService };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompanyService);

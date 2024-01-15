@@ -34,8 +34,8 @@
         Task<string> ValidateEditPicAsync(ValidateEditPicCriteria criteria);
         Task<CommandResult> EditPicAsync(EditPicCriteria criteria);
         Task<Tuple<IEnumerable<HeadlineCompanyService>, IEnumerable<HeadlineAccountCommunicationInfo>>> GetHeadlineCompanyServiceAsync(GetHeadlineCompanyServiceCriteria criteria);
-        Task<IEnumerable<HeadlineStaffsAndAuthority>> GetHeadlineStaffsAndAuthorityAsync(GetHeadlineStaffsAndAuthorityCriteria criteria);
-        Task<CommandResult> SyncHeadlineStaffsAndAuthorityAsync(SyncHeadlineStaffsAndAuthorityCriteria criteria);
+        Task<IEnumerable<HeadlineStaffsAndAuthority>> GetHeadlineStaffsAndAuthorityAsync(GetHeadlineStaffAndAuthorityCriteria criteria);
+        Task<CommandResult> SyncHeadlineStaffsAndAuthorityAsync(SyncHeadlineStaffAndAuthorityCriteria criteria);
         Task<CommandResult> EditHeadlineCompanyServiceAsync(UpdateHeadlineCompanyServiceCommand criteria);
         Task<CommandResult> EditOtherAccCommunicationInfoAsync(UpdateOtherAccCommunicationInfoCommand criteria);
         Task<CommandResult> EditHeadlineStaffsAndAuthorityAsync(UpdateHeadlineStaffsAndAuthorityCommand criteria);
@@ -77,7 +77,7 @@
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
-        public async Task<CommandResult> SyncHeadlineStaffsAndAuthorityAsync(SyncHeadlineStaffsAndAuthorityCriteria criteria)
+        public async Task<CommandResult> SyncHeadlineStaffsAndAuthorityAsync(SyncHeadlineStaffAndAuthorityCriteria criteria)
         {
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
@@ -225,7 +225,7 @@
             return Tuple.Create(result.Item1, result.Item2);
         }
 
-        public async Task<IEnumerable<HeadlineStaffsAndAuthority>> GetHeadlineStaffsAndAuthorityAsync(GetHeadlineStaffsAndAuthorityCriteria criteria)
+        public async Task<IEnumerable<HeadlineStaffsAndAuthority>> GetHeadlineStaffsAndAuthorityAsync(GetHeadlineStaffAndAuthorityCriteria criteria)
         {
             var result = await baseService.GetDataAsync<HeadlineStaffsAndAuthority>(criteria);
             return result;

@@ -19,27 +19,50 @@ export class HeadlineStaffsAndAuthority extends Component {
 
     async componentDidMount() {
         await this.props.getHeadlineStaffsAndAuthority({ headlineID: this.props.customerInfo.custId });
-        //this.setState({
-        //    headlineStaffsAndAuthority: this.props.headlineStaffsAndAuthority.map(item => {
-        //        return {
-        //            rowID: item.rowID,
-        //            picID: item.picID,
-        //            picName: item.picName,
-        //            picRoleID: item.picRoleID,
-        //            picRoleName: item.picRoleName,
-        //            picCommuniationID: item.picCommuniationID,
-        //            picCommuniationName: item.picCommuniationName,
-        //            picCommunicationValue: item.picCommunicationValue,
-        //            authority: item.authority,
-        //            remark: item.remark,
-        //            isSyncFromPicTable: item.isSyncFromPicTable,
-        //            createdDate: item.createdDate
-        //        }
-        //    })
-        //});
+        await this.props.getStaffAndAuthority();
+        this.getHeadlineStaffsAndAuthorityInfo(this.props.headlineStaffsAndAuthority);
     }
 
+    getHeadlineStaffsAndAuthorityInfo = value => {
+        let headlineStaffsAndAuthority = [];
+        value.map(staff => {
+            let communicationTools = [];
+            value.map(com => {
+                if (staff.picID === com.picID) {
+                    communicationTools.push({
+                        picCommuniationID: com.picCommuniationID,
+                        picCommuniationName: com.picCommuniationName,
+                        picCommunicationValue: com.picCommunicationValue,
+                        authorityID: com.authorityID,
+                        authority: com.authority,
+                        remark: com.remark,
+                        isSyncFromPicTable: com.isSyncFromPicTable,
+                        createdDate: com.createdDate
+                    });
+                }
+            });
+            if (headlineStaffsAndAuthority.findIndex(x => x.picID === staff.picID) === -1) {
+                headlineStaffsAndAuthority.push({
+                    rowID: staff.rowID,
+                    picID: staff.picID,
+                    picName: staff.picName,
+                    picRoleID: staff.picRoleID,
+                    picRoleName: staff.picRoleName,
+                    communicationTools: communicationTools
+                });
+            }
+        });
+        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+    }  
+
     render() {
+        const { headlineStaffsAndAuthority } = this.state;
+        const { settingStaffAndAuthority } = this.props;
+
+        if (!settingStaffAndAuthority || !headlineStaffsAndAuthority) {
+            return null;
+        }
+
         return (
             <>
                 <Button className='btn-add' type="submit" variant="primary" size="sm" onClick={this.handleAddStaffAuthor}>
@@ -81,35 +104,12 @@ export class HeadlineStaffsAndAuthority extends Component {
     };
 
     buildBody = () => {
-        const { showAddStaffAuthor } = this.state;
-        const data = [
-            {
-              id: 1,
-              name: 'PIC01',
-              role: 'Boss',
-              offer: 'Add/Reduce Credit Adjust Bet Limit',
-              CommTool: 'Tool 1'
-            },
-            {
-              id: 2,
-              name: 'PIC01',
-              role: 'Boss',
-              offer: 'Letstalk',
-              CommTool: '+66 222 333 444'
-            },
-            {
-              id: 3,
-              name: 'Settlement Issue',
-              role: 'PIC',
-              offer: 'Phone',
-              CommTool: 'All Staff have authority to request'
-            }
-          ];
-
-        if (data.length > 0) {
+        const { showAddStaffAuthor, headlineStaffsAndAuthority } = this.state;
+       
+        if (headlineStaffsAndAuthority.length > 0) {
             return [
                 <Fragment key={'body'}>
-                    {data.map(item => this.renderRow(item))}
+                    {headlineStaffsAndAuthority.map(item => this.renderRow(item))}
                     {showAddStaffAuthor  && this.addNewRow()}
                 </Fragment>
             ];
@@ -194,12 +194,14 @@ export class HeadlineStaffsAndAuthority extends Component {
         return (
             <>
                 <Row key={item.id} className='row-staff-authority'>
-                    <Cell rowSpan={3}>{item.name}</Cell>
-                    <Cell rowSpan={3} className='text-center'>{item.role}</Cell>
+                    <Cell rowSpan={3}>{item.picName}</Cell>
+                    <Cell rowSpan={3} className='text-center'>{item.picRoleName}</Cell>
+
                     <Cell>{item.offer}</Cell>
                     <Cell>{item.offer}</Cell>
                     <Cell>{item.offer}</Cell>
                     <Cell>{item.offer}</Cell>
+
                     <Cell rowSpan={3}>
                         <div className='row-icon'>
                             <div className='icon icon-edit'></div>
@@ -227,8 +229,8 @@ export class HeadlineStaffsAndAuthority extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, customerInfo, headlineStaffsAndAuthority, getHeadlineStaffsAndAuthority } = state;
-    return { allSettings, customerInfo, headlineStaffsAndAuthority, getHeadlineStaffsAndAuthority };
+    const { allSettings, customerInfo, headlineStaffsAndAuthority, getHeadlineStaffsAndAuthority, getStaffAndAuthority, settingStaffAndAuthority } = state;
+    return { allSettings, customerInfo, headlineStaffsAndAuthority, getHeadlineStaffsAndAuthority, getStaffAndAuthority, settingStaffAndAuthority };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeadlineStaffsAndAuthority);

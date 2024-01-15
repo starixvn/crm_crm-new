@@ -8,10 +8,11 @@ import {
     setEditCustomerInfoDetail,
     setHeadlinePicRoles,
     setAccountingPicRoles,
-    setCommunicationTool,
+    setSettingCommunicationTool,
     setErrors,
     setHeadlineCompanyService,
-    setHeadlineStaffsAndAuthority
+    setHeadlineStaffsAndAuthority,
+    setSettingStaffAndAuthority
 } from './accountDetailSlice';
 
 const getCustomerById = params => async dispatch => {
@@ -38,11 +39,11 @@ const editCustomerInfoDetail = params => async dispatch => {
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
-const getPicCommunicationTools = () => async dispatch => {
+const getSettingPicCommunicationTools = () => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('AccountDetail/GetPicCommunicationTools');
+    const url = Site.resolveClientUrl('AccountDetail/GetSettingPicCommunicationTools');
     await DataService.postDataAsync(url).then(response => {
-        dispatch(setCommunicationTool(response.data));
+        dispatch(setSettingCommunicationTool(response.data));
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
@@ -78,15 +79,24 @@ const getHeadlineStaffsAndAuthority = params => async dispatch => {
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
+const getStaffAndAuthority = params => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('AccountDetail/GetStaffAndAuthority');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setSettingStaffAndAuthority(response.data));
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+};
+
 export const ActionCreators = {
     resetState,
     setErrors,
     getCustomerById,
     getAllSettings,
     editCustomerInfoDetail,
-    getPicCommunicationTools,
+    getSettingPicCommunicationTools,
     getHeadlinePicRoles,
     getAccountingPicRoles,
     getHeadlineCompanyService,
-    getHeadlineStaffsAndAuthority
+    getHeadlineStaffsAndAuthority,
+    getStaffAndAuthority
 };

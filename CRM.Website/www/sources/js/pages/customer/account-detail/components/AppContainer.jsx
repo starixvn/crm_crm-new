@@ -98,7 +98,7 @@ export class AppContainer extends Component {
 
     async componentDidMount() {
         await this.props.getAllSettings();
-        await this.props.getPicCommunicationTools();
+        await this.props.getSettingPicCommunicationTools();
         await this.props.getCustomerById({ customerId: this.props.id });
         getPermission(FunctionKey.UpdateHeadlineInfo, true).then(response => {
             this.setState({ updateHeadlineInfoPolicy: response });
@@ -428,7 +428,7 @@ export class AppContainer extends Component {
         this.validateCommunicationInfo();
     }
 
-    getWidth = (picCommunicationTool, communicationTool) => (8 * communicationTool.find(x => x.settingId === picCommunicationTool.communicationID).settingValue.length) + 15;
+    getWidth = (picCommunicationTool, settingCommunicationTool) => (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.communicationID).settingValue.length) + 15;
 
     deleteCommunicationTool = (value, type) => {
         const data = [...this.state.otherAccountCommunication];
@@ -493,7 +493,7 @@ export class AppContainer extends Component {
                                 <Form.Group>
                                     <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="CommunicationID" id="CommunicationID"
                                         style={{
-                                            width: `${picCommunicationTool.communicationID !== '' ? this.getWidth(picCommunicationTool, this.props.communicationTool) : 115}px`
+                                            width: `${picCommunicationTool.communicationID !== '' ? this.getWidth(picCommunicationTool, this.props.settingCommunicationTool) : 115}px`
                                         }}
                                         value={picCommunicationTool.communicationID} onChange={event => {
                                             this.handleChangeCommunication('communicationID', parseInt(event.target.value, 10), indexPicCommunicationTool);
@@ -628,8 +628,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, customerInfo, communicationTool, errors, editCustomerInfoDetailResult, setErrors } = state;
-    return { allSettings, customerInfo, communicationTool, errors, editCustomerInfoDetailResult, setErrors };
+    const { allSettings, customerInfo, settingCommunicationTool, errors, editCustomerInfoDetailResult, setErrors } = state;
+    return { allSettings, customerInfo, settingCommunicationTool, errors, editCustomerInfoDetailResult, setErrors };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

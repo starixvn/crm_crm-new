@@ -17,6 +17,7 @@
         public static readonly string Response = "Response";
         public const string PicType = "PicType";
         public const string RemarkTitles = "RemarkTitles";
+        public const string StaffAndAuthority = "StaffAndAuthority";
 
     }
 }
