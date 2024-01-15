@@ -81,7 +81,7 @@ export class EditCommunicationLog extends Component {
             }
             this.setState({ logFeedback: response.data });
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
-      
+
         const { logFeedback } = this.state;
         const logSettings = this.getLogSettings(logFeedback.log, logFeedback.settings);
         const relatedCustomers = logFeedback.log.relatedCustomers.map(customer => {
@@ -114,7 +114,6 @@ export class EditCommunicationLog extends Component {
                 checked: logSettings.mainCategoryIds.includes(item.mainCategoryID)
             };
         });
-
 
         const mainCategoryIds = logSettings.mainCategoryIds.join(',').split(',');
         const subCategoryIds = logSettings.subCategoryIds.join(',').split(',');
@@ -246,7 +245,7 @@ export class EditCommunicationLog extends Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
-        const { settings, relatedCustomers, review, isReviewed,  contents, verifySection } = this.state;
+        const { settings, relatedCustomers, review, isReviewed, contents, verifySection } = this.state;
         const mainCategoryIds = [...new Set(values.mainCategoryIds.split(','))];
         const productIds = values.productIds ? [...new Set(values.productIds.split(','))] : [settings.productNA.id];
         const relatedCustValid = relatedCustomers.filter(item => item.custId !== 0 && item.isAuthorized);
@@ -263,7 +262,7 @@ export class EditCommunicationLog extends Component {
                 values.subProductIds.length > 0 ? values.subProductIds.split(',') : [],
                 values.betTypeIds.length > 0 ? values.betTypeIds.split(',') : [], settings),
             categories: getCategoryParams(mainCategoryIds, values.subCategoryIds.split(','), settings.subCategories),
-            relatedCustomerIds: relatedCustomers.length > 0 ? relatedCustValid.map(item => item.custId).join(',') : null,
+            relatedCustomerIds: relatedCustomers.length > 0 ? relatedCustValid.filter(i => i.custId !== 0 && i.isAuthorized).map(item => item.custId).join(',') : null,
             responseId: values.responseId,
             languageId: parseInt(values.languageId, 10),
             licenseeTypeId: values.licenseeTypeId,
