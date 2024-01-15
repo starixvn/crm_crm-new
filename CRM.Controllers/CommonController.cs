@@ -44,24 +44,31 @@
         {
             bool hasHostOnCurrentCustomer = false;
             var currentCustomer = sessionService.CurrentCustomer;
-            var hasHostCreditPermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
-            var hasHostLicenseePermission = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
+            var hostOnCustomerInfoTask = permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CustomerInfo, Policy.Host);
+            var hasReadOnCreditTask = permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit);
+            var hasReadOnLicenseeTask = permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee);
 
-            if (currentCustomer is not null)
+            await Task.WhenAll(hostOnCustomerInfoTask, hasReadOnCreditTask, hasReadOnLicenseeTask);
+
+            bool hostOnCustomerInfo = await hostOnCustomerInfoTask,
+                hasReadOnCredit = await hasReadOnCreditTask,
+                hasReadOnLicensee = await hasReadOnLicenseeTask;
+
+            if (currentCustomer is not null && hostOnCustomerInfo)
             {
                 if (currentCustomer.CustType is null || currentCustomer.CustType == SiteType.NA)
                 {
-                    hasHostOnCurrentCustomer = hasHostCreditPermission || hasHostLicenseePermission;
+                    hasHostOnCurrentCustomer = hasReadOnCredit || hasReadOnLicensee;
                 }
 
                 if (currentCustomer.CustType == SiteType.Licensee)
                 {
-                    hasHostOnCurrentCustomer = hasHostLicenseePermission;
+                    hasHostOnCurrentCustomer = hasReadOnLicensee;
                 }
 
                 if (currentCustomer.CustType == SiteType.Credit)
                 {
-                    hasHostOnCurrentCustomer = currentCustomer.IsGuest ? hasHostCreditPermission : await permissionService.IsHavingPermissionByPolicyAsync(currentCustomer.SiteLabel, Policy.Host);
+                    hasHostOnCurrentCustomer = currentCustomer.IsGuest ? hasReadOnCredit : await permissionService.IsHavingPermissionByPolicyAsync(currentCustomer.SiteLabel);
                 }
             }
             return Json(hasHostOnCurrentCustomer);
