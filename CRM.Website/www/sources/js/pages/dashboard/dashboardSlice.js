@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
-    customerRemarks: null,
+    lastFiveSpecialRemarks: null,
     redemptions: null,
     editRedemptionDialog: { show: false },
     communicationLogs: null,
@@ -9,15 +9,15 @@ const initialState = {
     createCommunicationDialog: { show: false },
     customerInfoVerify: null,
     editCustomerVerifyDialog: { show: false },
-    lastFiveRemarks: null
+    lastRemark: null
 };
 const dashboardSlice = createSlice({
     name: 'dashboard',
     initialState: initialState,
     reducers: {
         resetState: () => initialState,
-        setCustomerRemarks: (state, action) => {
-            state.customerRemarks = action.payload;
+        setLastFiveSpecialRemarks: (state, action) => {
+            state.lastFiveSpecialRemarks = action.payload;
         },
         setRedemptionLogs: (state, action) => {
             state.redemptions = action.payload;
@@ -43,8 +43,8 @@ const dashboardSlice = createSlice({
         setEditCustomerVerifyDialog: (state, action) => {
             state.editCustomerVerifyDialog = action.payload;
         },
-        setLastFiveRemark: (state, action) => {
-            state.lastFiveRemarks = action.payload;
+        setLastRemark: (state, action) => {
+            state.lastRemark = action.payload;
         }
     }
 });
@@ -52,7 +52,7 @@ const dashboardSlice = createSlice({
 const { actions, reducer } = dashboardSlice;
 
 export const {
-    setCustomerRemarks,
+    setLastFiveSpecialRemarks,
     setRedemptionLogs,
     setEditRedemptionDialog,
     setCommunicationLogs,
@@ -61,7 +61,7 @@ export const {
     setCreateCommunicationDialog,
     setCustomerInfoVerify,
     setEditCustomerVerifyDialog,
-    setLastFiveRemark,
+    setLastRemark,
     resetState
 } = actions;
 

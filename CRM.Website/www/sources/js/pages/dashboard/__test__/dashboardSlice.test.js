@@ -1,7 +1,7 @@
 import dashboard, {
     resetState,
     setLastFiveRemark,
-    setCustomerRemarks,
+    setLastFiveSpecialRemarks,
     setRedemptionLogs,
     setEditRedemptionDialog,
     setCommunicationLogs,
@@ -46,10 +46,10 @@ describe('dashboardSlice reducer', () => {
         });
     });
 
-    it('should handle setCustomerRemarks', () => {
+    it('should handle setLastFiveSpecialRemarks', () => {
         expect(
             dashboard({}, {
-                type: setCustomerRemarks.type,
+                type: setLastFiveSpecialRemarks.type,
                 payload: ['<div>test</div>']
             })
         ).toEqual({

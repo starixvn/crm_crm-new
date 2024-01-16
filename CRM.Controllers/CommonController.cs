@@ -36,7 +36,7 @@
         [HttpPost]
         public async Task<IActionResult> GetPermission([FromBody] GetPermissionCriteria criteria)
         {
-            var permission = await permissionService.GetPolicyPermissionAsync(criteria.functionKey);
+            var permission = await permissionService.GetPolicyPermissionAsync(criteria.FunctionKey);
             return Json(permission);
         }
 

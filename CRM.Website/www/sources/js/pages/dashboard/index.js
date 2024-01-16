@@ -4,12 +4,12 @@ import { configureStore } from '@reduxjs/toolkit';
 import dashboard from './dashboardSlice';
 import AppContainer from './components/AppContainer';
 import WithNavigation from '@jsroot/components/WithNavigation';
+import '@cssroot/pages/dashboard/index.scss';
 
 const store = configureStore({
     reducer: dashboard
 });
 
-import '@cssroot/pages/dashboard/index.scss';
 
 class index extends PureComponent {
     render(){

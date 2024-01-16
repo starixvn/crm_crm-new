@@ -5,7 +5,7 @@ import DataService from '@jsroot/common/dataService';
 import { ActionCreators } from '../actions';
 
 import {
-    setCustomerRemarks,
+    setLastFiveSpecialRemarks,
     setRedemptionLogs,
     setCommunicationLogs,
     setCustomerInfoVerify,
@@ -26,21 +26,21 @@ describe('actionCreators', () => {
         jest.clearAllMocks();
     });
 
-    describe('getCustomerRemarks', () => {
-        it('should hanlde getCustomerRemarks when fetching data have been done', async () => {
+    describe('getLastFiveSpecialRemarks', () => {
+        it('should hanlde getLastFiveSpecialRemarks when fetching data have been done', async () => {
             // Arrange
             const expectedParams = { customerId: 123 };
             const response = { data: ['<div>test</div>'] };
-            const expectedActions = [{ type: setCustomerRemarks.type, payload: response.data }];
+            const expectedActions = [{ type: setLastFiveSpecialRemarks.type, payload: response.data }];
             const store = mockStore({ customerRemarks: null });
             const promise = Promise.resolve(response);
             DataService.getDataAsync = jest.fn(() => promise);
             
             // Act
-            await store.dispatch(ActionCreators.getCustomerRemarks(expectedParams));
+            await store.dispatch(ActionCreators.getLastFiveSpecialRemarks(expectedParams));
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('Dashboard/GetCustomerRemarks', expectedParams);
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('Dashboard/getLastFiveSpecialRemarks', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });

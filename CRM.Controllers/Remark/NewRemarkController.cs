@@ -167,7 +167,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetLastFiveRemark([FromBody] GetLastFiveRemarksCriteria criteria)
+        public async Task<IActionResult> GetLastRemark([FromBody] GetLastFiveRemarksCriteria criteria)
         {
             var remarks = await remarkService.GetLastFiveRemarkAsync(criteria);
             foreach (var remark in remarks)

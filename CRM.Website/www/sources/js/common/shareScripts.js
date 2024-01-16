@@ -3,7 +3,6 @@ import LangHelper from '@jsroot/common/langHelper';
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import moment from 'moment';
-import { CustomerType } from './constants';
 
 export const getPermission = async (functionKey, isNoRedirectAccessDeniedPage) => {
     const url = Site.resolveClientUrl('Common/GetPermission');

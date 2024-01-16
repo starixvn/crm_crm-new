@@ -2,6 +2,6 @@
 {
     public class GetPermissionCriteria
     {
-        public string functionKey { get; set; }
+        public string FunctionKey { get; set; }
     }
 }

@@ -9,16 +9,15 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import WithNavigation from '@jsroot/components/WithNavigation';
-export class LastFiveRemarkDataGrid extends Component {
+export class LastRemarkDataGrid extends Component {
     componentDidMount() {
-        const param = {custId: this.props.custId};
-        this.props.getLastFiveRemark(param);
-        
+        const param = { custId: this.props.custId };
+        this.props.getLastRemark(param);
     }
 
-    componentDidUpdate(prevProps , prevState) {
-        if ( this.props.custId !== prevProps.custId ) {
-            this.props.getLastFiveRemark({ custId: this.props.custId });
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.custId !== prevProps.custId) {
+            this.props.getLastRemark({ custId: this.props.custId });
         }
     }
 
@@ -36,8 +35,8 @@ export class LastFiveRemarkDataGrid extends Component {
     };
 
     buildBody = () => {
-        if (this.props.lastFiveRemarks.length > 0) {
-            return this.props.lastFiveRemarks.map((item, index) => this.renderRow(item, index));
+        if (this.props.lastRemark.length > 0) {
+            return this.props.lastRemark.map((item, index) => this.renderRow(item, index));
         }
 
         return [<Row key='new-remark-body' className="no-data" ><Cell colSpan={6}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
@@ -53,12 +52,12 @@ export class LastFiveRemarkDataGrid extends Component {
                     placement="auto"
                     overlay={
                         <Tooltip id="tooltip-remark-content">
-                            <span dangerouslySetInnerHTML={{__html: item.remark.substring(0, 550)}} />
+                            <span dangerouslySetInnerHTML={{ __html: item.remark.substring(0, 550) }} />
                         </Tooltip>
                     }
                 >
                     <Cell className='remark-content'
-                        dangerouslySetInnerHTML={{__html: item.remark}}
+                        dangerouslySetInnerHTML={{ __html: item.remark }}
                     />
                 </OverlayTrigger>
                 <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
@@ -68,23 +67,22 @@ export class LastFiveRemarkDataGrid extends Component {
         );
     };
 
-    handleViewNewRemark = event =>{
+    handleViewNewRemark = event => {
         event.preventDefault();
         this.props.navigate(Site.resolveClientUrl('Remark'),
-                {state: this.props.currentCustomer}
+            { state: this.props.currentCustomer }
         );
     };
-    
 
     render() {
-        const {lastFiveRemarks} = this.props;
-        if(!lastFiveRemarks){
+        const { lastRemark } = this.props;
+        if (!lastRemark) {
             return null;
         }
         return (
             <div className="table-last-five-remarks mb-5">
                 <div className='table-title d-flex justify-content-between align-items-center'>
-                    <span>{LangHelper.getResource('LastRemark')}</span>
+                    <span>{LangHelper.getResource('LastFiveSpecialRemark')}</span>
                     <u onClick={this.handleViewNewRemark}>{LangHelper.getResource('ViewAllRemarks')}</u>
                 </div>
                 <Table
@@ -104,12 +102,12 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const {
-        lastFiveRemarks
+        lastRemark
     } = state;
     return {
-        lastFiveRemarks
+        lastRemark
     };
 };
 
-const FunctionBarWithNavigation = WithNavigation(LastFiveRemarkDataGrid);
+const FunctionBarWithNavigation = WithNavigation(LastRemarkDataGrid);
 export default connect(mapStateToProps, mapDispatchToProps)(FunctionBarWithNavigation);

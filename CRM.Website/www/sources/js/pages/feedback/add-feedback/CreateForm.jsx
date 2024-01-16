@@ -786,11 +786,12 @@ export class CreateForm extends Component {
                     }
                     if(this.props.addFeedbackResult.isSuccessful){
                         const data = response.data;
+                        console.log(data);
                         const currentCustomer = {
                             custId: data.custId,
                             isGuest: data.isGuest,
                             username: data.username,
-                            isCreditSite: data.isCreditSite
+                            isCreditSite: data.customerType === 1
                         };
                         const state = this.props.currentCustomer || currentCustomer;
                         setTimeout(() => {

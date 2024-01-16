@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import DataGridRemark from './DataGridRemark';
+import LastFiveSpecialRemarkDataGrid from './LastFiveSpecialRemarkDataGrid';
 import DataGridRedemption from './DataGridRedemption';
 import EditRedemptionLog from '../../redemption/components/EditRedemptionLog';
 import DataGridCommunication from './DataGridCommunication';
@@ -12,7 +12,7 @@ import EditCommunicationLog from '../../communication-log/components/EditCommuni
 import CreateCommunicationLog from '../../communication-log/components/CreateCommunicationLog';
 import CustomerInfoVerify from './CustomerInfoVerify';
 import EditCustomerInfoVerify from './EditCustomerInfoVerify';
-import LastFiveRemarkDataGrid from './LastFiveRemarkDataGrid';
+import LastRemarkDataGrid from './LastRemarkDataGrid';
 import LangHelper from '@jsroot/common/langHelper';
 import { IsRemoveDatagridRedemption, IsRemoveVerify, Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
@@ -84,11 +84,22 @@ export class AppContainer extends Component {
         }
     };
 
+    renderRemark = () => {
+        const { currentCustomer, custId } = this.props;
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
+        if (!hasReadSitePermission) {
+            return null;
+        }
+
+        if (currentCustomer.isCreditSite) {
+            return this.state.remarksPolicy >= Policy.Read ? <div><LastFiveSpecialRemarkDataGrid id={custId} /></div> : null;
+        }
+
+        return <div><LastRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} /></div>;
+    }
     render() {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
-        const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
-        const isReadRemark = this.state.remarksPolicy >= Policy.Read;
 
         if (!this.props.custId) {
             return (
@@ -101,18 +112,13 @@ export class AppContainer extends Component {
 
         const {
             custId, editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
-            createCommunicationDialog, editCustomerVerifyDialog, currentCustomer
+            createCommunicationDialog, editCustomerVerifyDialog
         } = this.props;
-
         return (
             <>
                 <div>
                     {
-                        hasReadSitePermission ?
-                            !currentCustomer.isCreditSite ?
-                                <div><DataGridRemark id={custId} /></div> :
-                                isReadRemark && <div><LastFiveRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} /></div>
-                            : null
+                        this.renderRemark()
                     }
                     {
                         !IsRemoveVerify &&

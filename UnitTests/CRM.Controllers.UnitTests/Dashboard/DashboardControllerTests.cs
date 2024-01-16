@@ -37,7 +37,7 @@
             dashboardService.GetCustomerRemarksAsync(criteria).Returns(customerRemarks);
 
             // Act
-            var result = await controller.GetCustomerRemarks(criteria);
+            var result = await controller.GetLastFiveSpecialRemarks(criteria);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result).Value;

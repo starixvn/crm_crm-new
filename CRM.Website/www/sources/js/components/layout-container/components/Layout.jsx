@@ -258,10 +258,12 @@ export class Layout extends Component {
             });
         } else {
             if (response !== undefined && response.data !== null) {
-                this.setState({ customerInfo: response.data });
-
                 const isCreditSite = response.data.customerType === 1;
-                this.setState({ isCreditSite });
+
+                this.setState({
+                    customerInfo: response.data,
+                    isCreditSite: isCreditSite
+                });
                 if (this.props.location.pathname === '/') {
                     this.setState({ isCreditSite }, () => {
                         this.handleNavigate('Dashboard');

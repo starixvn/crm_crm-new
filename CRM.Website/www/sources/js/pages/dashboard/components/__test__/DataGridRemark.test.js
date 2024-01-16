@@ -15,7 +15,7 @@ describe('DataGridRemark', () => {
 
     const initProps = {
         id:1,
-        getCustomerRemarks: jest.fn()
+        getLastFiveSpecialRemarks: jest.fn()
     };
 
     describe('componentDidMount', () => {
@@ -29,7 +29,7 @@ describe('DataGridRemark', () => {
             container.componentDidMount();
 
             // Assert
-            expect(props.getCustomerRemarks).toHaveBeenCalled();
+            expect(props.getLastFiveSpecialRemarks).toHaveBeenCalled();
         });
     });
 
@@ -44,7 +44,7 @@ describe('DataGridRemark', () => {
             container.componentDidUpdate(prevProps);
 
             // Assert
-            expect(props.getCustomerRemarks).toHaveBeenCalled();
+            expect(props.getLastFiveSpecialRemarks).toHaveBeenCalled();
         });
     });
 

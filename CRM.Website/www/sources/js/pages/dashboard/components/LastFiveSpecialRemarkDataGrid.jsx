@@ -6,22 +6,22 @@ import { Row, Cell } from '@jsroot/components/react-grid/index';
 import { Table } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 
-export class DataGridRemark extends Component {
+export class LastFiveSpecialRemarkDataGrid extends Component {
     componentDidMount() {
-        this.props.getCustomerRemarks({ customerId: this.props.id });
+        this.props.getLastFiveSpecialRemarks({ customerId: this.props.id });
     }
 
     componentDidUpdate(prevProps) {
-        if ( this.props.id !== prevProps.id ) {
-            this.props.getCustomerRemarks({ customerId: this.props.id });
+        if (this.props.id !== prevProps.id) {
+            this.props.getLastFiveSpecialRemarks({ customerId: this.props.id });
         }
     }
 
     buildBody = () => {
-        const { customerRemarks } = this.props;
+        const { lastFiveSpecialRemarks } = this.props;
 
-        if ( customerRemarks.length > 0) {
-            return customerRemarks.map((item, index) => this.renderRow(item, index));
+        if (lastFiveSpecialRemarks.length > 0) {
+            return lastFiveSpecialRemarks.map((item, index) => this.renderRow(item, index));
         }
         return [
             <Row key='body-grid-remark' className="no-data" >
@@ -36,27 +36,26 @@ export class DataGridRemark extends Component {
         return (
             <Row key={index}>
                 <Cell>
-                    <div dangerouslySetInnerHTML={{ __html: `${index + 1}. ${item}`}}></div>
+                    <div dangerouslySetInnerHTML={{ __html: `${index + 1}. ${item}` }}></div>
                 </Cell>
             </Row>
         );
     };
 
     render() {
-        const { customerRemarks } = this.props;
-        if(!customerRemarks){
+        const { lastFiveSpecialRemarks } = this.props;
+        if (!lastFiveSpecialRemarks) {
             return null;
         }
 
         return (
             <>
                 <div className='table-title d-flex justify-content-between align-items-center'>
-                    <span>{LangHelper.getResource('LastFiveSpecialRemark')}</span>
+                    <span>{LangHelper.getResource('LastRemark')}</span>
                 </div>
-
                 <Table>
                     <tbody>
-                        { this.buildBody() }
+                        {this.buildBody()}
                     </tbody>
                 </Table>
 
@@ -68,8 +67,8 @@ export class DataGridRemark extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { customerRemarks } = state;
-    return { customerRemarks };
+    const { lastFiveSpecialRemarks } = state;
+    return { lastFiveSpecialRemarks };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataGridRemark);
+export default connect(mapStateToProps, mapDispatchToProps)(LastFiveSpecialRemarkDataGrid);

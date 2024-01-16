@@ -194,6 +194,7 @@ export default class Filter extends Component {
     renderHomeSubMenu = pathname => {
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
+        const hasReadLicenseePermission = document.getElementById('hasReadLicenseePermission').checked;
 
         const isReadRemark = this.state.remarksPolicy >= Policy.Read;
         const { handleNavigate, customerInfo } = this.props;
@@ -211,13 +212,13 @@ export default class Filter extends Component {
                     <u>D</u>etail
                 </a>
             </li>,
-            <li style={{ display: hasReadFeedbackPermission ? '' : 'none' }}
+            <li style={{ display: !this.props.isCreditSite && hasReadFeedbackPermission ? '' : 'none' }}
                 id="li-communication-log" key="li-communication-log" className={this.isCheckActive(pathname, 2)}>
                 <a onClick={() => handleNavigate('Communication')}>
                     Communication <u>L</u>og
                 </a>
             </li>,
-            <li style={{ display: hasReadSitePermission ? '' : 'none' }}
+            <li style={{ display: hasReadLicenseePermission ? '' : 'none' }}
                 id="li-special-remark" key="li-special-remark" className={this.isCheckActive(pathname, 3)}>
                 <a onClick={() => handleNavigate('SpecialRemark')}>
                     Special Remar<u>k</u>

@@ -3,20 +3,21 @@ import { Col, Form, Row, Collapse } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
-import { changeSiteSetting, checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, getPermission } from '@jsroot/common/shareScripts';
+import { Policy } from '../../../common/constants';
 
 export default class CustomerInfo extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            isHostOnCurrentCustomer: false
+            isHostOnCustomerInfo: false
         };
     }
 
     componentDidMount() {
-        checkHostPermissionOnCurrentCustomer().then(response => {
+        getPermission('CustomerInfo', true).then(response => {
             this.setState({
-                isHostOnCurrentCustomer: response
+                isHostOnCustomerInfo: response === Policy.Host
             });
         });
     }
@@ -404,7 +405,8 @@ export default class CustomerInfo extends PureComponent {
         const { collapse, fieldInput, settings, values, handleChangeInput, setFieldValue
         } = this.props;
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
-        const isDisplayOverrideCustInfo = this.state.isHostOnCurrentCustomer;
+        const isDisplayOverrideCustInfo = this.state.isHostOnCustomerInfo;
+
         return (
             <div className="panel-group">
                 <Form.Group as={Row} className="panel-title border-bottom-0" onClick={() => this.props.onCollapseExpand('customerInfo')}

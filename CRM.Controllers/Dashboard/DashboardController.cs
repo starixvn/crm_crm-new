@@ -30,7 +30,7 @@
             this.dashboardService = dashboardService;
         }
 
-        public async Task<IActionResult> GetCustomerRemarks(GetCustomerRemarksCriteria criteria)
+        public async Task<IActionResult> GetLastFiveSpecialRemarks(GetCustomerRemarksCriteria criteria)
         {
             var customerRemarks = await dashboardService.GetCustomerRemarksAsync(criteria);
             return Json(customerRemarks);

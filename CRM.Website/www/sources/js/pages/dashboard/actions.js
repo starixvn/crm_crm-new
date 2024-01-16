@@ -2,7 +2,7 @@ import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 
 import {
-    setCustomerRemarks,
+    setLastFiveSpecialRemarks,
     setRedemptionLogs,
     setEditRedemptionDialog,
     setCommunicationLogs,
@@ -11,34 +11,34 @@ import {
     setCreateCommunicationDialog,
     setCustomerInfoVerify,
     setEditCustomerVerifyDialog,
-    setLastFiveRemark,
+    setLastRemark,
     resetState
 } from './dashboardSlice';
 
-const getCustomerRemarks = params => async dispatch => {
-    const url = Site.resolveClientUrl(`Dashboard/GetCustomerRemarks`);
-    await DataService.getDataAsync(url,params).then(response => {
-        dispatch(setCustomerRemarks(response.data));
+const getLastFiveSpecialRemarks = params => async dispatch => {
+    const url = Site.resolveClientUrl(`Dashboard/GetLastFiveSpecialRemarks`);
+    await DataService.getDataAsync(url, params).then(response => {
+        dispatch(setLastFiveSpecialRemarks(response.data));
     }).catch(Site.handleAxiosError);
 };
 
 const getRedemptionLogs = params => async dispatch => {
     const url = Site.resolveClientUrl(`Dashboard/GetRedemptionLogs`);
-    await DataService.getDataAsync(url,params).then(response => {
+    await DataService.getDataAsync(url, params).then(response => {
         dispatch(setRedemptionLogs(response.data));
     }).catch(Site.handleAxiosError);
 };
 
 const getCommunicationLogs = params => async dispatch => {
     const url = Site.resolveClientUrl('Dashboard/GetCommunicationLogs');
-    await DataService.getDataAsync(url,params).then(response => {
+    await DataService.getDataAsync(url, params).then(response => {
         dispatch(setCommunicationLogs(response.data));
     }).catch(Site.handleAxiosError);
 };
 
 const getCustomerInfoVerify = params => async dispatch => {
     const url = Site.resolveClientUrl('Dashboard/GetCustomerInfoVerify');
-    await DataService.getDataAsync(url,params).then(response => {
+    await DataService.getDataAsync(url, params).then(response => {
         dispatch(setCustomerInfoVerify(response.data));
     }).catch(Site.handleAxiosError);
 };
@@ -46,20 +46,19 @@ const getCustomerInfoVerify = params => async dispatch => {
 const editCustomerVerify = params => async () => {
     Site.blockUI();
     const url = Site.resolveClientUrl('Dashboard/EditCustomerVerify');
-    return await DataService.postDataAsync(url,params).then(response => response);
+    return await DataService.postDataAsync(url, params).then(response => response);
 };
 
-
-const getLastFiveRemark = params => async dispatch => {
+const getLastRemark = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('NewRemark/GetLastFiveRemark');
-    await DataService.postDataAsync(url,params).then(response => {
-        dispatch(setLastFiveRemark(response.data));
+    const url = Site.resolveClientUrl('NewRemark/GetLastRemark');
+    await DataService.postDataAsync(url, params).then(response => {
+        dispatch(setLastRemark(response.data));
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
 export const ActionCreators = {
-    getCustomerRemarks,
+    getLastFiveSpecialRemarks,
     getRedemptionLogs,
     setEditRedemptionDialog,
     getCommunicationLogs,
@@ -69,7 +68,7 @@ export const ActionCreators = {
     getCustomerInfoVerify,
     setEditCustomerVerifyDialog,
     editCustomerVerify,
-    getLastFiveRemark,
-    setLastFiveRemark,
+    getLastRemark,
+    setLastRemark,
     resetState
 };

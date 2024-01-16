@@ -10,7 +10,7 @@ export default class ValidateCustomerResult extends PureComponent {
         if (!customer.isAuthorized) {
             return 'unauthorized';
         }
-        return customer.id > 0 ? 'customer' : 'guest';
+        return customer.custId > 0 ? 'customer' : 'guest';
     };
 
     render() {
