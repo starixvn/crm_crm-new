@@ -12,10 +12,12 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Xunit;
+
     public class SummaryReportServiceTests
     {
         private IBaseService baseService;
         private ISettingService settingService;
+        private IPermissionService permissionService;
 
         [Fact]
         public async Task GetAsync_WhenCalled_ReturnExpected()
@@ -93,13 +95,16 @@
         }
 
         #region Helpers
+
         private SummaryReportService GetService()
         {
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
+            permissionService = Substitute.For<IPermissionService>();
 
-            return new SummaryReportService(baseService, settingService);
+            return new SummaryReportService(baseService, settingService, permissionService);
         }
+
         #endregion Helpers
     }
 }

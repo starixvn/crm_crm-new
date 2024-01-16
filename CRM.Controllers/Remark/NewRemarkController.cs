@@ -140,7 +140,7 @@
             var cust = await customerService.GetSiteTypeByCustIdAsync(custId);
             if (cust is not null)
             {
-                isValid = await permissionService.IsHavingPermissionByPolicyAsync(cust.SitePermission, Policy.Host);
+                isValid = await permissionService.IsHavingPermissionByPolicyAsync(cust.SitePermission);
             }
             return isValid;
         }

@@ -43,8 +43,6 @@
         }
 
         [HttpPost]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
         public async Task<IActionResult> EditRemarks([FromBody] EditRemarkCommand command)
         {
             var result = new CommandResult();

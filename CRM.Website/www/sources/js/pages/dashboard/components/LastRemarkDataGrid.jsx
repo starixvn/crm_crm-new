@@ -75,6 +75,7 @@ export class LastRemarkDataGrid extends Component {
     };
 
     render() {
+        console.log('Last remark');
         const { lastRemark } = this.props;
         if (!lastRemark) {
             return null;
@@ -82,7 +83,7 @@ export class LastRemarkDataGrid extends Component {
         return (
             <div className="table-last-five-remarks mb-5">
                 <div className='table-title d-flex justify-content-between align-items-center'>
-                    <span>{LangHelper.getResource('LastFiveSpecialRemark')}</span>
+                    <span>{LangHelper.getResource('LastRemark')}</span>
                     <u onClick={this.handleViewNewRemark}>{LangHelper.getResource('ViewAllRemarks')}</u>
                 </div>
                 <Table

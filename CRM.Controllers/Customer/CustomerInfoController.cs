@@ -102,8 +102,8 @@
         }
 
         [HttpPost]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
         public async Task<IActionResult> EditCustomerInfo([FromBody] UpdateCustomerInfoCommand command)
         {
             var result = new CommandResult();

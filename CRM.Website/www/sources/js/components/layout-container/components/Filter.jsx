@@ -195,6 +195,7 @@ export default class Filter extends Component {
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
         const hasReadLicenseePermission = document.getElementById('hasReadLicenseePermission').checked;
+        const hasReadCreditPermission = document.getElementById('hasReadCreditPermission').checked;
 
         const isReadRemark = this.state.remarksPolicy >= Policy.Read;
         const { handleNavigate, customerInfo } = this.props;
@@ -207,31 +208,40 @@ export default class Filter extends Component {
                 </a>
             </li>,
             <li style={{ display: hasReadSitePermission ? '' : 'none' }}
-                id="li-detail" key="li-detail" className={this.isCheckActive(pathname, 1)}>
+                id="li-detail" key="li-detail"
+                className={this.isCheckActive(pathname, 1)}
+            >
                 <a onClick={() => handleNavigate('Detail')}>
                     <u>D</u>etail
                 </a>
             </li>,
-            <li style={{ display: !this.props.isCreditSite && hasReadFeedbackPermission ? '' : 'none' }}
-                id="li-communication-log" key="li-communication-log" className={this.isCheckActive(pathname, 2)}>
+            <li style={{ display: (hasReadLicenseePermission || hasReadCreditPermission) && hasReadFeedbackPermission ? '' : 'none' }}
+                id="li-communication-log" key="li-communication-log" className={this.isCheckActive(pathname, 2)}
+            >
                 <a onClick={() => handleNavigate('Communication')}>
                     Communication <u>L</u>og
                 </a>
             </li>,
-            <li style={{ display: hasReadLicenseePermission ? '' : 'none' }}
-                id="li-special-remark" key="li-special-remark" className={this.isCheckActive(pathname, 3)}>
+            <li style={{ display: hasReadLicenseePermission || hasReadCreditPermission ? '' : 'none' }}
+                id="li-special-remark" key="li-special-remark" className={this.isCheckActive(pathname, 3)}
+            >
                 <a onClick={() => handleNavigate('SpecialRemark')}>
                     Special Remar<u>k</u>
                 </a>
             </li>,
-            <li style={{ display: this.props.isCreditSite && isReadRemark ? '' : 'none' }} id="li-special-new-remark"
-                key="li-special-new-remark" className={this.isCheckActive(pathname, 4)}>
+            <li style={{ display: this.props.isCreditSite && isReadRemark ? '' : 'none' }}
+                id="li-special-new-remark"
+                key="li-special-new-remark"
+                className={this.isCheckActive(pathname, 4)}
+            >
                 <a onClick={() => handleNavigate('Remark')}>
                     Rema<u>r</u>k
                 </a>
             </li>,
             <li style={{ display: hasReadSitePermission ? '' : 'none' }}
-                id="li-activity-log" key="li-activity-log" className={this.isCheckActive(pathname, 5)}>
+                id="li-activity-log" key="li-activity-log"
+                className={this.isCheckActive(pathname, 5)}
+            >
                 <a onClick={() => handleNavigate('ActionLog')}>
                     Ac<u>t</u>ivity Log
                 </a>

@@ -169,6 +169,11 @@ export class AddRelatedCustomerDialog extends Component {
             errMsgs.push('Invalid usernames: ' + invalidRelatedCustomers.map(x => x.username).join(', '));
         }
 
+        invalidRelatedCustomers = data.filter(item => item.resultTypeId !== 1 && !item.isAuthorized);
+        if (invalidRelatedCustomers.length > 0) {
+            errMsgs.push('These usernames are unauthorized to access: ' + invalidRelatedCustomers.map(x => x.username).join(', '));
+        }
+
         invalidRelatedCustomers = data.filter(item => item.resultTypeId === 2 || item.resultTypeId === 3);
         if (invalidRelatedCustomers.length > 0) {
             errMsgs.push('The system does not support to add related customer for deposit and guest customer. Please check usernames: '
@@ -213,7 +218,7 @@ export class AddRelatedCustomerDialog extends Component {
         Site.blockUI();
         this.props.verifyRelatedCustomers({ headlineIds, username }).then(response => {
             const relatedCustomers = [...this.state.relatedCustomers].map(item => {
-                const index = response.data.findIndex(x => x.username.toLowerCase() === item.username.toLowerCase() && x.resultTypeId > 0);
+                const index = response.data.findIndex(x => x.username.toLowerCase() === item.username.toLowerCase() && (x.resultTypeId > 0 || !x.isAuthorized));
                 return {
                     ...item,
                     isValid: index > -1 ? false : true

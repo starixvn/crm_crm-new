@@ -88,10 +88,13 @@ export class NewRemark extends Component {
 
     validateFormik = values => {
         const errors = {};
-        const { customerValidated } = this.state;
-        if (!this.state.isValidCustomer) {
-            errors.username = customerValidated.custId !== 0 && !customerValidated.isAuthorized ? LangHelper.getResource('UsernameIsUnauthorized') :
-                LangHelper.getResource('UsernameIsNotValid');
+        const { customerValidated, isValidCustomer } = this.state;
+        if (!isValidCustomer) {
+            if (customerValidated !== '' &&customerValidated.custId !== 0 && !customerValidated.isAuthorized) {
+                errors.username = LangHelper.getResource('UsernameIsUnauthorized');
+            } else {
+                errors.username = LangHelper.getResource('UsernameIsNotValid');
+            }
         }
 
         if (values.username !== '' && this.props.validateResult === null && this.props.customerName === '') {
@@ -109,7 +112,7 @@ export class NewRemark extends Component {
     };
 
     getUsernameVerifyClassName = (customer, isValidCustomer) => {
-        if (isValidCustomer) return 'txt-valid';
+        if (!customer || isValidCustomer) return 'txt-valid';
         if (customer.custId !== 0 && !customer.isAuthorized) return 'txt-unauthorized';
         return 'txt-invalid';
     }
@@ -175,7 +178,7 @@ export class NewRemark extends Component {
                         </div>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label className='pr-6 ml-6 col-form-label' />
+                        <Form.Label className='pr-4 ml-4 col-form-label' />
                         <div className="validShow mr-5">
                             {LangHelper.getResource('Valid')}
                         </div>

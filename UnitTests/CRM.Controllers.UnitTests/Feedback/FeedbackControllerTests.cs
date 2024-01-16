@@ -38,6 +38,7 @@
         private ICRMLogService logService;
         private IPermissionService permissionService;
         private ICustomerService customerService;
+        private IBaseService baseService;
 
         [Fact]
         public async Task GetNoOfInquiryByFeedbackId_WhenCalled_ReturnAsExpectedResult()
@@ -267,7 +268,7 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
             var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
             Assert.Equal(1, commandResult.Code);
-            Assert.Equal("You don't have permission to update feedback.", commandResult.Message);
+            Assert.Equal("You don't have permission to revỉew feedback.", commandResult.Message);
         }
 
         [Fact]
@@ -361,7 +362,8 @@
             logService = Substitute.For<ICRMLogService>();
             permissionService = Substitute.For<IPermissionService>();
             customerService = Substitute.For<ICustomerService>();
-            return new FeedbackController(napSession, settingService, feedbackService, ticketRefService, logService, permissionService, customerService);
+            baseService = Substitute.For<IBaseService>();
+            return new FeedbackController(napSession, settingService, feedbackService, ticketRefService, logService, permissionService, customerService, baseService);
         }
 
         #endregion Helpers

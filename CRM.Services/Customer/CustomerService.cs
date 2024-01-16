@@ -181,32 +181,33 @@
         {
             bool isHostOnCustId = false;
 
-            bool isHostCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Host);
-            bool isHostLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Host);
+            bool isReadCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit, Policy.Read);
+            bool isReadLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee, Policy.Read);
+            bool isHostOnCustomerInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CustomerInfo, Policy.Host);
 
             if (custId < 0)
             {
-                return isHostCredit || isHostLicensee;
+                return isHostOnCustomerInfo;
             }
 
             var custPermissionInfo = await GetSiteTypeByCustIdAsync(custId);
 
-            if (custPermissionInfo is not null)
+            if (custPermissionInfo is not null && isHostOnCustomerInfo)
             {
                 if (custPermissionInfo.CustomerType == SiteType.NA)
                 {
-                    isHostOnCustId = isHostCredit || isHostLicensee;
+                    isHostOnCustId = isReadCredit || isReadLicensee;
                 }
 
                 if (custPermissionInfo.CustomerType == SiteType.Licensee)
                 {
-                    isHostOnCustId = isHostLicensee;
+                    isHostOnCustId = isReadLicensee;
                 }
 
                 if (custPermissionInfo.CustomerType == SiteType.Credit)
                 {
-                    bool isHostOnCreditSiteLabel = !string.IsNullOrWhiteSpace(custPermissionInfo.SitePermission) && await permissionService.IsHavingPermissionByPolicyAsync(custPermissionInfo.SitePermission, Policy.Host);
-                    isHostOnCustId = isHostCredit && isHostOnCreditSiteLabel;
+                    bool isHostOnCreditSiteLabel = !string.IsNullOrWhiteSpace(custPermissionInfo.SitePermission) && await permissionService.IsHavingPermissionByPolicyAsync(custPermissionInfo.SitePermission);
+                    isHostOnCustId = isHostOnCreditSiteLabel;
                 }
             }
             return isHostOnCustId;

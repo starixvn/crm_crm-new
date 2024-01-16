@@ -19,6 +19,7 @@
     {
         private ISettlementReportService settlementReportService;
         private IExportExcelService excelService;
+        private IPermissionService permissionService;
         private AppSettings appSettings;
 
         [Fact]
@@ -69,13 +70,14 @@
         {
             settlementReportService = Substitute.For<ISettlementReportService>();
             excelService = Substitute.For<IExportExcelService>();
+            permissionService = Substitute.For<IPermissionService>();
             var optionsAppSettings = Substitute.For<IOptionsSnapshot<AppSettings>>();
             appSettings = new AppSettings
             {
                 TimeSpan = 12
             };
             optionsAppSettings.Value.Returns(appSettings);
-            return new SettlementReportController(settlementReportService, excelService, optionsAppSettings);
+            return new SettlementReportController(settlementReportService, excelService, permissionService, optionsAppSettings);
         }
 
         private SettlementReportInfo GetSettlementReportInfo()

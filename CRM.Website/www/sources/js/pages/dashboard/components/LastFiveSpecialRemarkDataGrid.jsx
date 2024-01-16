@@ -51,7 +51,7 @@ export class LastFiveSpecialRemarkDataGrid extends Component {
         return (
             <>
                 <div className='table-title d-flex justify-content-between align-items-center'>
-                    <span>{LangHelper.getResource('LastRemark')}</span>
+                    <span>{LangHelper.getResource('LastFiveSpecialRemark')}</span>
                 </div>
                 <Table>
                     <tbody>

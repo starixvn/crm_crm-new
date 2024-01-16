@@ -92,10 +92,10 @@ export class AppContainer extends Component {
         }
 
         if (currentCustomer.isCreditSite) {
-            return this.state.remarksPolicy >= Policy.Read ? <div><LastFiveSpecialRemarkDataGrid id={custId} /></div> : null;
+            return this.state.remarksPolicy >= Policy.Read ? <div><LastRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} /></div> : null;
         }
 
-        return <div><LastRemarkDataGrid custId={parseInt(custId, 10)} currentCustomer={currentCustomer} /></div>;
+        return <div><LastFiveSpecialRemarkDataGrid id={custId} /></div>;
     }
     render() {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
