@@ -102,16 +102,12 @@ export class CompanyService extends Component {
 
     buildBody = () => {
         const { companyService } = this.state;
-        const { settingCommunicationTool, customerInfo } = this.props;
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
+        const { settingCommunicationTool } = this.props;
         if (companyService.length > 0) {
             return [
                 <Fragment key={'body'}>
                     {companyService.map((item, indexService) => this.renderRow(item, indexService, settingCommunicationTool))}
                     {
-                        hasHostOnCurrentCustomer &&
                         <div className='group-btn'>
                             <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
                                 {LangHelper.getResource('Save')}

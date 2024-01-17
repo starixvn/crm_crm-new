@@ -9,7 +9,8 @@ const initialState = {
     errors: null,
     headlineCompanyService: null,
     headlineStaffsAndAuthority: null,
-    settingStaffAndAuthority: null
+    settingStaffAndAuthority: null,
+    settingPicRole: null
 };
 const accountDetailSlice = createSlice({
     name: 'customerInfoDetail',
@@ -45,6 +46,9 @@ const accountDetailSlice = createSlice({
         },
         setSettingStaffAndAuthority: (state, action) => {
             state.settingStaffAndAuthority = action.payload;
+        },
+        setSettingPicRole: (state, action) => {
+            state.settingPicRole = action.payload;
         }
     }
 });
@@ -62,7 +66,8 @@ export const {
     setErrors,
     setHeadlineCompanyService,
     setHeadlineStaffsAndAuthority,
-    setSettingStaffAndAuthority
+    setSettingStaffAndAuthority,
+    setSettingPicRole
 } = actions;
 
 export default reducer;

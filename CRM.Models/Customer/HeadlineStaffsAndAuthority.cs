@@ -10,8 +10,8 @@ namespace CRM.Models.Customer
         public string PicName { get; set; }
         public int PicRoleID { get; set; }
         public string PicRoleName { get; set; }
-        public int PicCommuniationID { get; set; }
-        public string PicCommuniationName { get; set; }
+        public int PicCommunicationID { get; set; }
+        public string PicCommunicationName { get; set; }
         public string PicCommunicationValue { get; set; }
         public int AuthorityID { get; set; }
         public string Authority { get; set; }

@@ -338,16 +338,12 @@ export class HeadlineCommunicationInfo extends Component {
         if (!headlinePicRoles || !accountingPicRoles || !settingCommunicationTool || !headlineCommunicationInfo || !customerInfo) {
             return null;
         }
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
         return (
             <>
                 <div className='custom-scrollbar'>
                     {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
                 </div>
                 {
-                    hasHostOnCurrentCustomer && 
                     <div className='group-btn'>
                     <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
                         {LangHelper.getResource('Save')}

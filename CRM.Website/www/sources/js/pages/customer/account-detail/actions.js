@@ -12,7 +12,8 @@ import {
     setErrors,
     setHeadlineCompanyService,
     setHeadlineStaffsAndAuthority,
-    setSettingStaffAndAuthority
+    setSettingStaffAndAuthority,
+    setSettingPicRole
 } from './accountDetailSlice';
 
 const getCustomerById = params => async dispatch => {
@@ -44,6 +45,14 @@ const getSettingPicCommunicationTools = () => async dispatch => {
     const url = Site.resolveClientUrl('AccountDetail/GetSettingPicCommunicationTools');
     await DataService.postDataAsync(url).then(response => {
         dispatch(setSettingCommunicationTool(response.data));
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+};
+
+const getSettingPicRole = () => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('AccountDetail/GetSettingPicRole');
+    await DataService.postDataAsync(url).then(response => {
+        dispatch(setSettingPicRole(response.data));
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
@@ -81,7 +90,7 @@ const getHeadlineStaffsAndAuthority = params => async dispatch => {
 
 const getStaffAndAuthority = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('AccountDetail/GetStaffAndAuthority');
+    const url = Site.resolveClientUrl('AccountDetail/GetSettingStaffAndAuthority');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setSettingStaffAndAuthority(response.data));
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
@@ -98,5 +107,6 @@ export const ActionCreators = {
     getAccountingPicRoles,
     getHeadlineCompanyService,
     getHeadlineStaffsAndAuthority,
-    getStaffAndAuthority
+    getStaffAndAuthority,
+    getSettingPicRole
 };
