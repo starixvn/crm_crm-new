@@ -499,7 +499,7 @@ export class AppContainer extends Component {
                                             this.handleChangeCommunication('communicationID', parseInt(event.target.value, 10), indexPicCommunicationTool);
                                         }}>
                                         <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                        {this.props.communicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                        {this.props.settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                                     </Form.Control>
                                     <div className='field-icon'>
                                         <Form.Control type="text" className={picCommunicationTool.isError && 'invalid'}

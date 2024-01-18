@@ -17,17 +17,17 @@ export class HeadlineStaffsAndAuthority extends Component {
                 rowID: -1,
                 picID: null,
                 picName: null,
-                picRoleID: null,
+                picRoleID: 0,
                 picRoleName: null,
                 communicationTools: [{
-                    picCommunicationID: null,
+                    picCommunicationID: 0,
                     picCommunicationName: null,
                     picCommunicationValue: null,
-                    authorityID: null,
+                    authorityID: 0,
                     authority: '',
                     remark: ''
                 }],
-                isSyncFromPicTable: 0
+                isSyncFromPicTable: false
             }
         };
     }
@@ -112,10 +112,10 @@ export class HeadlineStaffsAndAuthority extends Component {
     handleAddTool = () => {
         let { newHeadlineStaffsAndAuthority } = this.state;
         newHeadlineStaffsAndAuthority.communicationTools.push({
-            picCommunicationID: null,
+            picCommunicationID: 0,
             picCommunicationName: null,
             picCommunicationValue: null,
-            authorityID: null,
+            authorityID: 0,
             authority: '',
             remark: ''
         });
@@ -142,7 +142,11 @@ export class HeadlineStaffsAndAuthority extends Component {
         if (headlineStaffsAndAuthority.length > 0) {
             return [
                 <Fragment key={'body'}>
-                    {headlineStaffsAndAuthority.map((item, indexStaff) => this.renderRow(item, indexStaff))}
+                    {headlineStaffsAndAuthority.map((item, indexStaff) => {
+                        if (item.isSyncFromPicTable) {
+                            return this.renderAsyncRow(item, indexStaff)
+                        } 
+                    })}
                     {showAddStaffAuthor  && this.addNewRow()}
                 </Fragment>
             ];
@@ -181,6 +185,14 @@ export class HeadlineStaffsAndAuthority extends Component {
     handleChangeValue = (name, value) => {
         let { newHeadlineStaffsAndAuthority } = this.state;
         newHeadlineStaffsAndAuthority[name] = value;
+        this.setState({ newHeadlineStaffsAndAuthority: newHeadlineStaffsAndAuthority });
+    }
+
+    handleChangeRole = (value) => {
+        let { newHeadlineStaffsAndAuthority } = this.state;
+        const comTool = this.props.settingPicRole.find(x => x.settingId === value);
+        newHeadlineStaffsAndAuthority.picRoleID = value;
+        newHeadlineStaffsAndAuthority.picRoleName = comTool.settingValue;
         this.setState({ newHeadlineStaffsAndAuthority: newHeadlineStaffsAndAuthority });
     }
 
@@ -244,7 +256,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                     authority: '',
                     remark: ''
                 }],
-                isSyncFromPicTable: 0
+                isSyncFromPicTable: false
             },
             showAddStaffAuthor: false
         });
@@ -256,17 +268,17 @@ export class HeadlineStaffsAndAuthority extends Component {
                 rowID: -1,
                 picID: null,
                 picName: null,
-                picRoleID: null,
+                picRoleID: 0,
                 picRoleName: null,
                 communicationTools: [{
-                    picCommunicationID: null,
+                    picCommunicationID: 0,
                     picCommunicationName: null,
                     picCommunicationValue: null,
-                    authorityID: null,
+                    authorityID: 0,
                     authority: '',
                     remark: ''
                 }],
-                isSyncFromPicTable: 0
+                isSyncFromPicTable: false
             },
             showAddStaffAuthor: false
         }
@@ -288,9 +300,10 @@ export class HeadlineStaffsAndAuthority extends Component {
                     </Cell>
                     <Cell rowSpan={newHeadlineStaffsAndAuthority.communicationTools.length}>
                         <Form.Control as="select" size="sm" value={newHeadlineStaffsAndAuthority.picRoleID}
-                            onChange={(currentItem, selectedItemsKey) => {
-                                this.handleChangeValue('picRoleID', selectedItemsKey);
+                            onChange={event => {
+                                this.handleChangeRole(parseInt(event.target.value, 0));
                             }}>
+                            <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                             {settingPicRole.map(item => this.renderOptions(item.settingValue, item.settingId))}
                         </Form.Control>
                     </Cell>
@@ -316,9 +329,9 @@ export class HeadlineStaffsAndAuthority extends Component {
                     </Cell>
                     <Cell>
                         <Form.Control type="text" name="" onChange={event => {
-                            this.handleChangeCommunicationValue('picCommunicationName',event.target.value, 0);
+                            this.handleChangeCommunicationValue('picCommunicationValue',event.target.value, 0);
                             }}
-                            value={newHeadlineStaffsAndAuthority.communicationTools[0].picCommunicationName} autoComplete="off" />
+                            value={newHeadlineStaffsAndAuthority.communicationTools[0].picCommunicationValue} autoComplete="off" />
                     </Cell>
                     <Cell>
                         <Form.Control as="select" size="sm"
@@ -349,7 +362,14 @@ export class HeadlineStaffsAndAuthority extends Component {
                                 <Row key={`${newHeadlineStaffsAndAuthority.rowID}`} class="row-add">
                                     <Cell>
                                         <div className='col-add'>
-                                            <Form.Control className='select-item' type="text" name="" value={null} autoComplete="off" />
+                                            <Form.Control as="select" size="sm"
+                                                value={value.picCommunicationID}
+                                                onChange={event => {
+                                                    this.handleChangeCommunicationID(parseInt(event.target.value, 10), index);
+                                                }}>
+                                                <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                                {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                            </Form.Control>
                                             <div className='icon icon-delete'></div>
                                             {
                                                 newHeadlineStaffsAndAuthority.communicationTools.length === (index + 1) &&
@@ -358,13 +378,25 @@ export class HeadlineStaffsAndAuthority extends Component {
                                         </div>
                                     </Cell>
                                     <Cell>
-                                        <Form.Control type="text" name="" value={index} autoComplete="off" />
+                                        <Form.Control type="text" name="" onChange={event => {
+                                            this.handleChangeCommunicationValue('picCommunicationValue', event.target.value, index);
+                                        }}
+                                            value={value.picCommunicationValue} autoComplete="off" />
                                     </Cell>
                                     <Cell>
-                                        <Form.Control type="text" name="" value={value.authority} autoComplete="off" />
+                                        <Form.Control as="select" size="sm"
+                                            value={value.authorityID}
+                                            onChange={event => {
+                                                this.handleChangeAuthorityID(parseInt(event.target.value, 10), index);
+                                            }}>
+                                            <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                            {settingStaffAndAuthority.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                        </Form.Control>
                                     </Cell>
                                     <Cell>
-                                        <Form.Control type="text" name="" value={value.remark} autoComplete="off" />
+                                        <Form.Control type="text" name="" onChange={event => {
+                                            this.handleChangeCommunicationValue('remark', event.target.value, index);
+                                        }} value={value.remark} autoComplete="off" />
                                     </Cell>
                                 </Row>
                             );
@@ -375,7 +407,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         );
     }
 
-    renderRow = (item, indexStaff) => {
+    renderAsyncRow = (item, indexStaff) => {
         return (
             <>
                 <Row key={item.rowID} className='row-staff-authority'>
