@@ -38,7 +38,7 @@
 
         public async Task<ActionResult> AllSetting()
         {
-            short licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            short licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
 
             var subproductsTask = settingService.GetSubProductAsync(active: SettingConstants.Active);
             var bettypesTask = settingService.GetBetTypeAsync(active: SettingConstants.Active);

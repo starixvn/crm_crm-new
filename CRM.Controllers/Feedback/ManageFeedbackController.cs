@@ -60,7 +60,7 @@
         [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
         public async Task<ActionResult> SearchManageFeedback([FromBody] ManageFeedbackCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var feedbacksTask = feedbackService.GetManageFeedbackAsync(criteria);
@@ -79,7 +79,7 @@
         public async Task<IActionResult> ExportExcel([FromBody] ManageFeedbackCriteria criteria)
         {
             criteria.PageIndex = 0;
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var feedbacksTask = feedbackService.GetManageFeedbackAsync(criteria);

@@ -37,7 +37,7 @@
         [HttpPost]
         public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync(); ;
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync(); ;
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
@@ -53,6 +53,9 @@
         [HttpPost]
         public async Task<IActionResult> GetLatestFeedbackByCustId([FromBody] GetLatestFeedbackByCustIdCriteria criteria)
         {
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
 
@@ -67,7 +70,7 @@
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] GetLatestFeedbackCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();
@@ -86,7 +89,9 @@
             var criteria = new GetLatestFeedbackByCustIdCriteria
             {
                 Top = param.Top,
-                CustID = param.CustID
+                CustID = param.CustID,
+                LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync(),
+                SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync()
             };
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();

@@ -96,7 +96,7 @@
             var criteria = new VerifyRelatedCustomerCriteria
             {
                 Username = string.Join(",", customers.Select(x => x.Username)),
-                LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync(),
+                LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync(),
                 SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync()
             };
             IEnumerable<RelatedCustomerPermission> verifiedCustomers = await baseService.GetDataAsync<RelatedCustomerPermission>(criteria);
@@ -202,7 +202,7 @@
 
         private async Task<CreateFeedbackViewModel> GetEditCustomerFeedbackSettingAsync(CustomerFeedback feedback, bool isDeletedFeedbackView = false)
         {
-            short licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            short licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
 
             var feedbackSettings = feedback.Settings;
             var extentionsTask = settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension);

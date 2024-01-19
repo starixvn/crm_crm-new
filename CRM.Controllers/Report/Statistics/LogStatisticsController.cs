@@ -46,7 +46,7 @@
         [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetMainReport([FromBody] LogStatisticsCriteria criteria)
         {
-            var licenseeType = (SitePermission)await permissionService.GetCurrentUserSitePermissionAsync();
+            var licenseeType = (SitePermission)await permissionService.GetCurrentUserLicenseeTypeAsync();
 
             var ibcReport = licenseeType == SitePermission.Both || licenseeType == SitePermission.Credit ? await logStatisticsService.GetReportDataAsync(new LogStatisticsCriteria
             {
@@ -83,7 +83,7 @@
         [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetReportDetails([FromBody] LogStatisticsDetailCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var reportDetailsTask = logStatisticsService.GetReportDetailsAsync(criteria);
@@ -117,7 +117,7 @@
         [HttpPost]
         public async Task<IActionResult> ExportExcel([FromBody] LogStatisticsCriteria criteria)
         {
-            var licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             var param = new LogStatisticsCriteria
             {
                 ProductId = criteria.ProductId,
@@ -142,7 +142,7 @@
         {
             criteria.PageIndex = 0;
             criteria.PageSize = 0;
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var logStatisticsDetailTask = logStatisticsService.GetReportDetailsAsync(criteria);

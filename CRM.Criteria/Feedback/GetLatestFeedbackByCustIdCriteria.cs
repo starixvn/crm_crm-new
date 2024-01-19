@@ -1,13 +1,9 @@
-﻿using CRM.Core.Constants;
-using Fanex.Data.Repository;
-
-namespace CRM.Criteria.Feedback
+﻿namespace CRM.Criteria.Feedback
 {
-    public class GetLatestFeedbackByCustIdCriteria : CriteriaBase
+    public class GetLatestFeedbackByCustIdCriteria : BaseSitePermisionCriteria
     {
         public int Top { get; set; }
         public int CustID { get; set; }
-        public byte UserRole { get; } = Constants.UserRole;
 
         public override string GetSettingKey() => "Acc_CRM_FeedbackSelTopByCustId";
 

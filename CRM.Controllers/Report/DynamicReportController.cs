@@ -36,7 +36,7 @@
 
         public async Task<IActionResult> GetDynamicReports([FromBody] GetDynamicReportCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var logs = await dynamicReportService.GetDynamicReportAsync(criteria);
@@ -51,7 +51,7 @@
             var roles = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Role);
             var statuses = await settingService.GetStatusAsync(ViewTypeConstants.CommunicationTool);
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
-            var licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             var allSettings = new CreateFeedbackViewModel
             {
                 CommunicationTools = await settingService.GetCommunicationToolAsync(SettingConstants.Active, true),
@@ -85,7 +85,7 @@
                  criteria.ToDate.ToShortDateFormat()
             );
             criteria.IsGetFullReport = true;
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var logs = await dynamicReportService.GetDynamicReportAsync(criteria);

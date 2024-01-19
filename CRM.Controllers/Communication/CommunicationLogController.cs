@@ -48,6 +48,8 @@
         [HttpPost]
         public async Task<IActionResult> GetLogsByCustomerId([FromBody] GetLogsByCustomerIdCriteria criteria)
         {
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             var logs = await communicationService.GetLogsByCustomerIdAsync(criteria);
             var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
             return Json(new { data = logs, mainCategories });
@@ -79,7 +81,7 @@
             var criteria = new VerifyRelatedCustomerCriteria
             {
                 Username = string.Join(",", customers.Select(x => x.Username)),
-                LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync(),
+                LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync(),
                 SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync()
             };
             IEnumerable<RelatedCustomerPermission> verifiedCustomers = await baseService.GetDataAsync<RelatedCustomerPermission>(criteria);
@@ -149,7 +151,7 @@
 
         public async Task<CreateFeedbackViewModel> GetAllSettings(bool isEdit)
         {
-            var licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             var extentions = await settingService.GetSettingRelationByNameAsync(SettingTypeConstants.Extension, SettingConstants.Active);
             var statuses = await GetStatusListAsync(isEdit);
             var products = await settingService.GetProductAsync(SettingConstants.Active);

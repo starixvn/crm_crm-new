@@ -39,7 +39,7 @@ namespace CRM.Controllers.Report.Statistics
         [HttpPost]
         public async Task<IActionResult> GetIssuesStatistics([FromBody] GetIssuesStatisticReportCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var data = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);
@@ -57,7 +57,7 @@ namespace CRM.Controllers.Report.Statistics
                                 criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             var fileName = string.Format(ViewResources.IssueStatistics_ExcelFile, typeName,
                                 criteria.FromDate.ToShortDateFormatDash(), criteria.ToDate.ToShortDateFormatDash());
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var data = await issueStatisticsService.GetIssuesStatisticsReportAsync(criteria);

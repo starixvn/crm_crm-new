@@ -38,7 +38,7 @@
         [Route("GetSettlementReport")]
         public async Task<IActionResult> GetSettlementReport([FromBody] GetSettlementReportCriteria criteria)
         {
-            var licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             criteria.LicenseeType = licenseeType;
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
@@ -51,7 +51,7 @@
         [Route("ExportSettlementReport")]
         public async Task<IActionResult> ExportSettlementReport([FromBody] GetSettlementReportCriteria criteria)
         {
-            var licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
 
             criteria.TimeSpan = appSettings.TimeSpan * -1;
             criteria.IsGetFullReport = true;

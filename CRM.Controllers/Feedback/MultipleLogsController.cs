@@ -69,7 +69,7 @@
         [HttpPost]
         public async Task<IActionResult> VerifyCustomer([FromBody] VerifyCustomerCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var customers = await baseService.GetDataAsync<VerifyCustomerResult>(criteria);
             return Json(customers);
@@ -78,7 +78,7 @@
         [HttpPost]
         public async Task<IActionResult> VerifyRelatedCustomer([FromBody] VerifyRelatedCustomerCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var customers = await baseService.GetDataAsync<VerifyRelatedCustomerResult>(criteria);
             return Json(customers);
@@ -142,7 +142,7 @@
 
         public async Task<IActionResult> GetLogSettingByFeedbackId(int id)
         {
-            short licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            short licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
 
             var communicationLogTask = feedbackService.GetLogByFeedbackIdAsync(id);
             var settingTask = GetAllSettingAsync();

@@ -40,7 +40,7 @@
 
         public async Task<IActionResult> GetCustomerInfo([FromBody] GetCustomerInfoByUsernameCriteria criteria)
         {
-            var sitePermission = await permissionService.GetCurrentUserSitePermissionAsync();
+            var sitePermission = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.LicenseeType = sitePermission;
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             CustomerInfoDetails customerInfo = await customerService.GetCustomerInfoAsync(criteria);
@@ -88,7 +88,7 @@
 
         public async Task<IActionResult> GetSettings()
         {
-            short licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            short licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
 
             var settings = new
             {

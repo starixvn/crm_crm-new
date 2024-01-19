@@ -42,7 +42,7 @@
         public async Task<IActionResult> GetSummaryReport([FromBody] GetSummaryReportCriteria criteria)
         {
             criteria.TimeSpan = appSettings.TimeSpan * -1;
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var report = await summaryReportService.GetSummaryReportAsync(criteria);
@@ -53,7 +53,7 @@
         public async Task<IActionResult> ExportSummaryReport([FromBody] GetSummaryReportCriteria criteria)
         {
             criteria.TimeSpan = appSettings.TimeSpan * -1;
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var reports = await summaryReportService.GetSummaryReportAsync(criteria);

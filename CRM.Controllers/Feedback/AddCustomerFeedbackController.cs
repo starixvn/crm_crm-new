@@ -45,7 +45,7 @@
 
         public async Task<ActionResult> AllSetting()
         {
-            var licenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
 
             var languagesTask = settingService.GetLanguageAsync(SettingConstants.Active, true);
             var countriesTask = settingService.GetCountryAsync(SettingConstants.Active, true);

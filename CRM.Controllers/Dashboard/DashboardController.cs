@@ -11,23 +11,26 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
-    [CrmMultiplePermissionAttribute(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
+    [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
+    [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
     public class DashboardController : BaseController
     {
         private readonly INapSession napSession;
         private readonly ISettingService settingService;
         private readonly IDashboardService dashboardService;
+        private readonly IPermissionService permissionService;
 
         public DashboardController(
             INapSession napSession,
             ISettingService settingService,
-            IDashboardService dashboardService
+            IDashboardService dashboardService,
+            IPermissionService permissionService
         )
         {
             this.napSession = napSession;
             this.settingService = settingService;
             this.dashboardService = dashboardService;
+            this.permissionService = permissionService;
         }
 
         public async Task<IActionResult> GetLastFiveSpecialRemarks(GetCustomerRemarksCriteria criteria)
@@ -44,6 +47,9 @@
 
         public async Task<IActionResult> GetCommunicationLogs(GetCommunicationLogsCriteria criteria)
         {
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+            criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+
             var communicationLogs = await dashboardService.GetCommunicationLogsAsync(criteria);
             var mainCategories = await settingService.GetMainCategoryWithSubCategoryAsync();
             return Json(new { data = communicationLogs, mainCategories });

@@ -45,7 +45,7 @@
                                         criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
@@ -62,7 +62,7 @@
         [HttpPost]
         public async Task<IActionResult> GetFeedbackStatisticDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var feedbackDetail = await feedbackService.GetFeedbackStatisticAsyncDetail(criteria);
             var total = feedbackDetail.Count();
@@ -85,7 +85,7 @@
                             criteria.FromDate.ToShortDateFormat(), criteria.ToDate.ToShortDateFormat());
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var feedbackStatistic = await feedbackRepository.GetFeedbackStatisticAsync(criteria);
@@ -99,7 +99,7 @@
         public async Task<IActionResult> ExportExcelDetails([FromBody] GetFeedbackStatisticDetailCriteria criteria)
         {
             criteria.PageIndex = 0;
-            criteria.LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync();
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
 
             var fromDateFormat = criteria.FromDate.ToShortDateFormatNoDash();

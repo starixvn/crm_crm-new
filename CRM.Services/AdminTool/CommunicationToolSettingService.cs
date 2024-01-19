@@ -42,7 +42,7 @@
         {
             var criteria = new GetCommunicationToolSettingCriteria
             {
-                LicenseeType = await permissionService.GetCurrentUserSitePermissionAsync(),
+                LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync(),
                 SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync(),
                 Username = param.Username,
                 CategoryIds = param.CategoryIds,

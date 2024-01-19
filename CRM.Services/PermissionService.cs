@@ -15,7 +15,7 @@
 
         Task<bool> IsHavingPermissionByPolicyAsync(string functionKey, Policy policy = Policy.Read);
 
-        Task<short> GetCurrentUserSitePermissionAsync();
+        Task<short> GetCurrentUserLicenseeTypeAsync();
 
         Task<bool> IsHavingPermissionAsync(string functionKey);
 
@@ -49,7 +49,7 @@
             return !string.IsNullOrEmpty(functionKey) && await userService.IsHavingPermissionAsync(napSession.UserId, napSettings.SiteId, functionKey, policy);
         }
 
-        public async Task<short> GetCurrentUserSitePermissionAsync()
+        public async Task<short> GetCurrentUserLicenseeTypeAsync()
         {
             var isHavingPermissionCredit = await IsHavingPermissionAsync(FunctionKey.Credit);
             var isHavingPermissionLicensee = await IsHavingPermissionAsync(FunctionKey.Licensee);

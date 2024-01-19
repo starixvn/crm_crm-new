@@ -44,7 +44,7 @@ namespace CRM.Controllers.UnitTests.Customer
                 IsGuest = true
             };
             var controller = GetController();
-            permissionService.GetCurrentUserSitePermissionAsync().Returns((short)SitePermission.Both);
+            permissionService.GetCurrentUserLicenseeTypeAsync().Returns((short)SitePermission.Both);
             permissionService.GetCurrentUserCreditPermissionsAsync().Returns("Label");
             customerService.GetCustomerInfoAsync(param).Returns(customer);
             customerService.GetSiteTypeByCustIdAsync(Arg.Any<int>()).Returns(new CustomerPermissionInfo { CustomerType = customer.CustomerType, SitePermission = customer.SitePermission });
