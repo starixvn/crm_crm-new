@@ -25,7 +25,7 @@ export class AppContainer extends Component {
         const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
             updateHeadlineInfoPolicy: null,
-            otherAccountCommunication:null,
+            otherAccountCommunication: null,
             activeTab: 'headlineCommunicationInfo',
             isSubmitting: false,
             titleId: 0,
@@ -100,7 +100,7 @@ export class AppContainer extends Component {
         await this.props.getAllSettings();
         await this.props.getSettingPicCommunicationTools();
         await this.props.getCustomerById({ customerId: this.props.id });
-        getPermission(FunctionKey.UpdateHeadlineInfo, true).then(response => {
+        getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ updateHeadlineInfoPolicy: response });
         });
         const { customerInfo } = this.props;

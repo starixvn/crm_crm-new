@@ -27,7 +27,7 @@ export class AppContainer extends Component {
     }
 
     componentDidMount() {
-        getPermission(FunctionKey.UpdateHeadlineInfo, true).then(response => {
+        getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ updateHeadlineInfoPolicy: response });
         });
         document.title = LangHelper.getResource('CRMSystem');

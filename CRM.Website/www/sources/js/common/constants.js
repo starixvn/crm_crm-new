@@ -77,7 +77,7 @@ export const FunctionKey = {
     DeleteFeedback: 'DeleteFeedback',
     ReviewFeedback: 'ReviewFeedback',
     CreateUpdateFeedback: 'Create_UpdateFeedback',
-    UpdateHeadlineInfo: 'HeadlineInfo',
+    HeadlineInfo: 'HeadlineInfo',
     InformHeadline: 'InformHeadline',
     InformHeadlineSearch: 'InformHeadlineSearch',
     InformHeadlineContact: 'InformHeadlineContact',

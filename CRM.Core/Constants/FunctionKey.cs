@@ -26,7 +26,7 @@
         public const string DeleteFeedback = "DeleteFeedback";
         public const string ReviewFeedback = "ReviewFeedback";
         public const string CreateUpdateFeedback = "Create_UpdateFeedback";
-        public const string Updateheadlineinfo = "HeadlineInfo";
+        public const string Headlineinfo = "HeadlineInfo";
         public const string Credit = "Credit";
         public const string Licensee = "Licensee";
         public const string Remarks = "Remarks";

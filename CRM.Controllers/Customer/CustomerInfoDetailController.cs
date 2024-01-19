@@ -73,7 +73,7 @@
             {
                 command.UserId = napSession.UserId;
                 command.IP = ClientIP;
-                command.IsUpdateHeadlineInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Updateheadlineinfo, Policy.Host);
+                command.IsUpdateHeadlineInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Headlineinfo, Policy.Host);
                 result = await baseService.ExecuteNonQueryAsync(command);
             }
             else
