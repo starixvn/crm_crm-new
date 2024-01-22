@@ -146,6 +146,7 @@ export class AppContainer extends Component {
 
     handleTabClick = (tabName) => {
         this.setState({ activeTab: tabName });
+        this.props.setErrors(null);
     };
 
     handleChangeCountry = item => {

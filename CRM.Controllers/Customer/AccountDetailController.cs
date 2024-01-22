@@ -160,7 +160,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditHeadlineStaffsAndAuthority([FromBody] UpdateHeadlineStaffsAndAuthorityCommand command)
+        public async Task<IActionResult> EditHeadlineStaffsAndAuthority([FromBody] UpdateHeadlineStaffAndAuthorityCommand command)
         {
             command.UserID = napSession.UserId;
             command.IP = ClientIP;

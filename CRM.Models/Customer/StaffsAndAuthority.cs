@@ -7,9 +7,9 @@
         public int PicID { get; set; }
         public string PicName { get; set; }
         public int PicRoleID { get; set; }
-        public string PicRoleName { get; set; }
         public int PicCommuniationID { get; set; }
         public string PicCommunicationValue { get; set; }
+        public string AuthorityID { get; set; }
         public string Authority { get; set; }
         public string Remark { get; set; }
         public bool IsSyncFromPicTable { get; set; }

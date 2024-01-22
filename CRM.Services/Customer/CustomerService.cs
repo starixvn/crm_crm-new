@@ -38,7 +38,7 @@
         Task<CommandResult> SyncHeadlineStaffsAndAuthorityAsync(SyncHeadlineStaffAndAuthorityCriteria criteria);
         Task<CommandResult> EditHeadlineCompanyServiceAsync(UpdateHeadlineCompanyServiceCommand criteria);
         Task<CommandResult> EditOtherAccCommunicationInfoAsync(UpdateOtherAccCommunicationInfoCommand criteria);
-        Task<CommandResult> EditHeadlineStaffsAndAuthorityAsync(UpdateHeadlineStaffsAndAuthorityCommand criteria);
+        Task<CommandResult> EditHeadlineStaffsAndAuthorityAsync(UpdateHeadlineStaffAndAuthorityCommand criteria);
     }
 
     public class CustomerService : ICustomerService
@@ -72,7 +72,7 @@
             return await baseService.ExecuteNonQueryAsync(criteria);
         }
 
-        public async Task<CommandResult> EditHeadlineStaffsAndAuthorityAsync(UpdateHeadlineStaffsAndAuthorityCommand criteria)
+        public async Task<CommandResult> EditHeadlineStaffsAndAuthorityAsync(UpdateHeadlineStaffAndAuthorityCommand criteria)
         {
             return await baseService.ExecuteNonQueryAsync(criteria);
         }

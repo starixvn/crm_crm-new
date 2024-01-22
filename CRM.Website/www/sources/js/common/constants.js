@@ -219,6 +219,6 @@ export const BotServiceType = {
     Telegram: 2
 };
 
-export const FieldErrorHeadlineCommunicationInfo = ['picName', 'role', 'communication'];
+export const FieldErrorHeadlineCommunicationInfo = ['picName', 'role', 'communication', 'authority'];
 export const Letstalk = 'Letstalk';
 export const Telegram = 'Telegram';

@@ -5,10 +5,12 @@ import { bindActionCreators } from 'redux';
 import { Form, Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/react-grid/index';
+import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import { getPermission } from '@jsroot/common/shareScripts';
 import { FunctionKey } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import { ValidateHeadlineStaffAndAuthority } from '../common.functions';
 
 export class HeadlineStaffsAndAuthority extends Component {
     constructor(props) {
@@ -41,7 +43,9 @@ export class HeadlineStaffsAndAuthority extends Component {
                         picCommunicationValue: com.picCommunicationValue,
                         authorityID: com.authorityID,
                         authority: com.authority,
-                        remark: com.remark
+                        remark: com.remark,
+                        isErrorPicCommunication: false,
+                        isErrorPicAuthorityID: false
                     });
                 }
             });
@@ -53,12 +57,61 @@ export class HeadlineStaffsAndAuthority extends Component {
                     picRoleID: staff.picRoleID,
                     picRoleName: staff.picRoleName,
                     communicationTools: communicationTools,
-                    isSyncFromPicTable: staff.isSyncFromPicTable
+                    isSyncFromPicTable: staff.isSyncFromPicTable,
+                    isErrorPicName: false,
+                    isErrorPicRoleID: false
                 });
             }
         });
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
     }  
+
+    handleSubmit = async () => {
+        const errors = this.validateHeadlineStaffAndAuthority();
+        if (errors === null) {
+            let headlineStaffsAndAuthority = [];
+            this.state.headlineStaffsAndAuthority.map(staff => {
+                staff.communicationTools.map(staffCom => {
+                    headlineStaffsAndAuthority.push({
+                        rowID: staff.rowID,
+                        headlineID: this.props.customerInfo.custId,
+                        picID: staff.picID,
+                        picName: staff.picName,
+                        picRoleID: staff.picRoleID,
+                        picCommuniationID: staffCom.picCommuniationID,
+                        picCommunicationValue: staffCom.picCommunicationValue,
+                        authorityID: staffCom.authorityID,
+                        authority: staffCom.authority,
+                        remark: staffCom.remark,
+                        isSyncFromPicTable: staff.isSyncFromPicTable
+                    });
+                });
+            });
+            const params = {
+                headlineID: this.props.customerInfo.custId,
+                headlineStaffsAndAuthority: headlineStaffsAndAuthority
+            };
+
+            Site.blockUI();
+            const url = Site.resolveClientUrl('AccountDetail/EditHeadlineStaffsAndAuthority');
+            await DataService.postDataAsync(url, params).then(response => {
+                if (response.data.isSuccessful) {
+                    toast.success(LangHelper.getResource('UpdateHeadlineAndAuthoritySuccessfully'));
+                } else {
+                    toast.errors(response.data.message);
+                }
+            }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+        }
+    }
+
+    validateHeadlineStaffAndAuthority = () => {
+        const { errors, headlineStaffsAndAuthority } = ValidateHeadlineStaffAndAuthority(this.state.headlineStaffsAndAuthority);
+        this.setState({
+            headlineStaffsAndAuthority: headlineStaffsAndAuthority
+        });
+        this.props.setErrors(Object.keys(errors).length === 0 ? null : errors);
+        return Object.keys(errors).length === 0 ? null : errors;
+    }
 
     render() {
         const { headlineStaffsAndAuthority, headlineInfoPolicy } = this.state;
@@ -88,7 +141,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                 {
                     headlineInfoPolicy === 2 &&
                     <div className='group-btn'>
-                        <Button type="submit" className='btn-save' >
+                        <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
                             {LangHelper.getResource('Save')}
                         </Button>
                     </div>
@@ -203,9 +256,9 @@ export class HeadlineStaffsAndAuthority extends Component {
 
     handleChangeAuthorityID = (value, indexPicCommunicationTool, indexStaff) => {
         const { headlineStaffsAndAuthority } = this.state;
-        const authorityTool = this.props.settingStaffAndAuthority.find(x => x.settingId === value);
+        const authorityTool = this.props.settingStaffAndAuthority.find(x => value.includes(x.settingId.toString()));
         headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authorityID = value;
-        headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authority = authorityTool.settingValue;
+        headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authority = authorityTool ? authorityTool.settingValue : '';
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
     }
 
@@ -221,7 +274,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         const { settingStaffAndAuthority, settingPicRole, settingCommunicationTool } = this.props;
         const authorityFirstSelected = settingStaffAndAuthority.map(item => {
             return {
-                authorityId: item.settingID,
+                authorityId: item.settingId,
                 name: item.settingValue,
                 checked: staff.communicationTools[0].authorityID.includes(item.settingId.toString())
             };
@@ -242,12 +295,12 @@ export class HeadlineStaffsAndAuthority extends Component {
                         !staff.isSyncFromPicTable &&
                         <>
                             <Cell rowSpan={staff.communicationTools.length}>
-                                <Form.Control type="text" onChange={event => {
+                                <Form.Control type="text" className={staff.isErrorPicName && 'invalid'} onChange={event => {
                                     this.handleChangeValue('picName', event.target.value, indexStaff);
                                 }} value={staff.picName} autoComplete="off" />
                             </Cell>
                             <Cell rowSpan={staff.communicationTools.length}>
-                                <Form.Control as="select" size="sm" value={staff.picRoleID}
+                                <Form.Control as="select" className={staff.isErrorPicRoleID && 'invalid'} size="sm" value={staff.picRoleID}
                                     onChange={event => {
                                         this.handleChangeRole(parseInt(event.target.value, 0), indexStaff);
                                     }}>
@@ -257,7 +310,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                             </Cell>
                             <Cell>
                                 <div className='col-add'>
-                                    <Form.Control as="select" size="sm"
+                                    <Form.Control as="select" className={staff.communicationTools[0].isErrorPicCommunication && 'invalid'} size="sm"
                                         value={staff.communicationTools[0].picCommunicationID}
                                         onChange={event => {
                                             this.handleChangeCommunicationID(parseInt(event.target.value, 10), 0, indexStaff);
@@ -276,7 +329,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                                 </div>
                             </Cell>
                             <Cell>
-                                <Form.Control type="text" name="" onChange={event => {
+                                <Form.Control type="text" name="" className={staff.communicationTools[0].isErrorPicCommunication && 'invalid'} onChange={event => {
                                     this.handleChangeCommunicationValue('picCommunicationValue', event.target.value, 0, indexStaff);
                                 }}
                                     value={staff.communicationTools[0].picCommunicationValue} autoComplete="off" />
@@ -286,12 +339,13 @@ export class HeadlineStaffsAndAuthority extends Component {
                     <Cell>
                         <MultipleSelect
                             dataSource={authorityFirstSelected}
-                            keyField='authorityID'
+                            keyField='authorityId'
                             valueField='name'
                             isAllTextShown
+                            isInvalid={staff.communicationTools[0].isErrorPicAuthorityID}
                             isNAOption
                             onChange={(currentItem, selectedItemsKey) => {
-                                this.handleChangeAuthorityID(selectedItemsKey, index, indexStaff);
+                                this.handleChangeAuthorityID(selectedItemsKey, 0, indexStaff);
                             }}
                         />
                     </Cell>
@@ -317,7 +371,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                     staff.communicationTools.map((value, indexCom) => {
                         const authoritySelected = settingStaffAndAuthority.map(item => {
                             return {
-                                authorityId: item.settingID,
+                                authorityId: item.settingId,
                                 name: item.settingValue,
                                 checked: value.authorityID.includes(item.settingId.toString())
                             };
@@ -339,6 +393,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                                                 <div className='col-add'>
                                                     <Form.Control as="select" size="sm"
                                                         value={value.picCommunicationID}
+                                                        className={value.isErrorPicCommunication && 'invalid'}
                                                         onChange={event => {
                                                             this.handleChangeCommunicationID(parseInt(event.target.value, 10), indexCom, indexStaff);
                                                         }}>
@@ -353,7 +408,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                                                 </div>
                                             </Cell>
                                             <Cell>
-                                                <Form.Control type="text" name="" onChange={event => {
+                                                <Form.Control type="text" name="" className={value.isErrorPicCommunication && 'invalid'} onChange={event => {
                                                     this.handleChangeCommunicationValue('picCommunicationValue', event.target.value, indexCom, indexStaff);
                                                 }}
                                                     value={value.picCommunicationValue} autoComplete="off" />
@@ -363,10 +418,11 @@ export class HeadlineStaffsAndAuthority extends Component {
                                     <Cell>
                                         <MultipleSelect
                                             dataSource={authoritySelected}
-                                            keyField='authorityID'
+                                            keyField='authorityId'
                                             valueField='name'
                                             isAllTextShown
                                             isNAOption
+                                            isInvalid={value.isErrorPicAuthorityID}
                                             onChange={(currentItem, selectedItemsKey) => {
                                                 this.handleChangeAuthorityID(selectedItemsKey, indexCom, indexStaff);
                                             }}
