@@ -8,7 +8,7 @@ import { validateFormik, initValues, initCustomerInfo, initValuesAddCustomerFb, 
 import DateTimeService from '@jsroot/common/dateTimeService';
 import {
     getSubCategories, getSubProducts, getBetTypes, generateTimeAndToolPrefix,
-    getSubjectOnChangeCategories
+    getSubjectOnChangeCategories, isHavePermissionOnSite
 }
     from '@jsroot/common/shareScripts';
 import Site from '@jsroot/common/site';
@@ -706,6 +706,10 @@ export class CreateForm extends Component {
     };
 
     handleSubmit = values => {
+        if (!isHavePermissionOnSite()) {
+            this.formik.setSubmitting(false);
+            return;
+        }
         const userNameInput = this.state.listOfCustomerValid.map(x => x.val).join(',');
         if (userNameInput.length > 0) {
             this.handleReVerifyInactiveAndConfirm(values, userNameInput);

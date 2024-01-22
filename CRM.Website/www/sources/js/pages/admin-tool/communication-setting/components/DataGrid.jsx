@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
+import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -109,6 +110,9 @@ export class DataGrid extends Component {
 
     render() {
         if (!this.props.gridDataCommunication || !this.props.gridDataCommunication.data) {
+            return null;
+        }
+        if (!isHavePermissionOnSite()) {
             return null;
         }
 

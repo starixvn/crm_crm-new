@@ -395,12 +395,6 @@ export class DataGrid extends Component {
         const toFormat = DateTimeService.toShortDateFormat(gridParams.toDate);
         const isShowCreditReport = mainReports.licenseeType === 0 || mainReports.licenseeType === 1;
         const isShowLicenseeReport = mainReports.licenseeType === 0 || mainReports.licenseeType === 2;
-
-        if (!isShowCreditReport && !isShowLicenseeReport) {
-            toast.error(LangHelper.getResource('NoPermissionOnCreditOrLicensee'));
-            return null;
-        }
-
         return (
             <div>
                 {

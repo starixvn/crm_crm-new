@@ -11,6 +11,7 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { DateTypeOption, DateType }from '@jsroot/common/constants';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
 
 export class Filter extends Component {
     constructor(props) {
@@ -163,6 +164,10 @@ export class Filter extends Component {
 
         if (fromDate > toDate) {
             toast.error(LangHelper.getResource('InvalidDateRange'));
+            return;
+        }
+
+        if (!isHavePermissionOnSite()) {
             return;
         }
 

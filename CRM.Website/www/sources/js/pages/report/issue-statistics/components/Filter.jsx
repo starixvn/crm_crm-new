@@ -9,6 +9,8 @@ import LangHelper from '@jsroot/common/langHelper';
 import { toast } from 'react-toastify';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
+
 
 export class Filter extends Component {
     constructor(props) {
@@ -114,7 +116,8 @@ export class Filter extends Component {
     renderOptions = (name, item, key) => <option key={key} value={item}>{name}</option>;
 
     handleSubmit = () => {
-        const { mainCategoryId, fromDate, toDate, subCategoryId, groupBy, fromMonthDate, toMonthDate} = this.state;
+        const { mainCategoryId, fromDate, toDate, subCategoryId, groupBy, fromMonthDate, toMonthDate } = this.state;
+
         if(mainCategoryId === -1){
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('MainCategory')));
             return;
@@ -123,6 +126,8 @@ export class Filter extends Component {
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SubCategory')));
             return;
         }
+        if (!isHavePermissionOnSite()) return;
+
         const endDateOfMonth = new Date(toMonthDate.getFullYear(), toMonthDate.getMonth() + 1, 0);
         const endDateOfMonthFormat = DateTimeService.toShortDateFormat(new Date(endDateOfMonth));
         const params = {

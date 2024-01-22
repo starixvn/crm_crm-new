@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Form, Button, Row } from 'react-bootstrap';
-import { changeSiteSetting } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, isHavePermissionOnSite } from '@jsroot/common/shareScripts';
 import DatePicker from '@jsroot/components/date-picker/index';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
@@ -361,6 +361,8 @@ export class Filter extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
+
+        if (!isHavePermissionOnSite()) return;
 
         const {
             reportType, fromDate, toDate, productId, subProductId, statusId,

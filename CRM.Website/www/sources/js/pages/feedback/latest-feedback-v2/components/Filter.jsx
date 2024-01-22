@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Form } from 'react-bootstrap';
 import { ActionCreators } from '../actions';
 import LangHelper from '@jsroot/common/langHelper';
+import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
 
 export class Filter extends Component {
     constructor(props) {
@@ -18,11 +19,16 @@ export class Filter extends Component {
     };
 
     handleTopChange = event => {
+        if (!isHavePermissionOnSite()) {
+            return null;
+        }
         this.setState({
             top: parseInt(event.target.value, 10)
         });
+       
         const params = this.getParams(parseInt(event.target.value, 10));
         this.props.setGridParams(params);
+
         if(this.props.custId !== undefined && this.props.custId !== 0){
             this.props.getLatestFeedbackByCustId(params);
         }else{

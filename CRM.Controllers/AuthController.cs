@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
     using CRM.Core.Models;
@@ -33,7 +32,6 @@
         private readonly ISecurityService securityService;
         private readonly IGroupService groupService;
         private readonly INapSettings napSettings;
-        private readonly ISiteService siteService;
         private readonly AppSettings appSettings;
 
         public AuthController(
@@ -42,7 +40,6 @@
             ISecurityService securityService,
             IGroupService groupService,
             INapSettings napSettings,
-            ISiteService siteService,
             IOptionsSnapshot<AppSettings> appSettings)
         {
             this.userService = userService;
@@ -50,7 +47,6 @@
             this.securityService = securityService;
             this.groupService = groupService;
             this.napSettings = napSettings;
-            this.siteService = siteService;
             this.appSettings = appSettings.Value;
         }
 
@@ -274,13 +270,7 @@
 
         private async Task<List<MenuItem>> GetMenuAsync(int userId)
         {
-            var menus = userService.GetMenuItem(userId, napSettings.SiteId, napSettings.Environment, true).ToList();
-            bool isHaveCustInfoPermission = await userService.IsHavingPermissionAsync(userId, napSettings.SiteId, FunctionKey.Credit, Fanex.NAP.Core.Business.Constant.Policy.Read) ||
-                await userService.IsHavingPermissionAsync(userId, napSettings.SiteId, FunctionKey.Licensee, Fanex.NAP.Core.Business.Constant.Policy.Read);
-            if (!isHaveCustInfoPermission)
-            {
-                menus = menus.Where(i => !i.ParentName.Equals("Feedback")).ToList();
-            }
+            var menus = await userService.GetMenuItemAsync(userId, napSettings.SiteId, napSettings.Environment, true);
             return menus.ToList();
         }
 

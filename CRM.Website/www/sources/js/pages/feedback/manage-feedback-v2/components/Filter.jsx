@@ -8,6 +8,8 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
+
 export class Filter extends Component {
     constructor(props) {
         super(props);
@@ -78,6 +80,10 @@ export class Filter extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
+        if (!isHavePermissionOnSite()) {
+            return;
+        }
+
         const { mainCategoryId, runningNumber, fromDate, toDate, username, handler, subCategoryId, communicationId,
             reviewer, statusId, responseId, isReviewed, isGuest } = this.state;
         const params = {

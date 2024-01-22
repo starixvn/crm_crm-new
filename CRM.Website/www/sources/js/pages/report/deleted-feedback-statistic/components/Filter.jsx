@@ -67,6 +67,7 @@ export class Filter extends Component {
     };
 
     handleSubmit = e => {
+        e.preventDefault();
         const { handler, fromDate, toDate, deletedBy } = this.state;
         const params = {
             handler: handler !== '' ? handler : null,

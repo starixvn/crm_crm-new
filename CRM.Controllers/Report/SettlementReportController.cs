@@ -38,12 +38,10 @@
         [Route("GetSettlementReport")]
         public async Task<IActionResult> GetSettlementReport([FromBody] GetSettlementReportCriteria criteria)
         {
-            var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.TimeSpan = appSettings.TimeSpan * -1;
-            criteria.LicenseeType = licenseeType;
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var logs = await settlementReportService.GetSettlementReportAsync(criteria);
-            logs.IsNoCustomerPermission = licenseeType == -1;
             return Json(logs);
         }
 

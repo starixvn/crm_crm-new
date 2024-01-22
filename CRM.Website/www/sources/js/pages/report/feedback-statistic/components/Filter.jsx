@@ -10,6 +10,7 @@ import { FeedbackSelectionType }from '@jsroot/common/constants';
 import { toast } from 'react-toastify';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
 
 export class Filter extends Component {
     constructor(props) {
@@ -77,6 +78,8 @@ export class Filter extends Component {
     };
 
     handleSubmit = () => {
+        if (!isHavePermissionOnSite()) return;
+
         const { selectionType, fromDuration, toDuration, fromDate, toDate } = this.state;
         const params = {
             type: selectionType,

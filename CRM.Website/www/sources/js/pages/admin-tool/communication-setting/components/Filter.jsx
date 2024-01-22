@@ -9,6 +9,8 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { MULTI_SELECT_TEXT_OPTIONS } from '@jsroot/common/constants';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
+
 export class Filter extends Component {
     constructor(props) {
         super(props);
@@ -165,6 +167,10 @@ export class Filter extends Component {
 
     searchHandler = e => {
         e.preventDefault();
+        if (!isHavePermissionOnSite()) {
+            return;
+        }
+
         const params = this.getParams();
         this.props.setGridParamsCommunication(params);
         this.props.getGridCommunicationSetting({ ...params });

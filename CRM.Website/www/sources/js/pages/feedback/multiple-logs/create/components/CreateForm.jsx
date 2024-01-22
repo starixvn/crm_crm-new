@@ -20,7 +20,7 @@ import { toast } from 'react-toastify';
 import LangHelper from '@jsroot/common/langHelper';
 import {
     getSubCategories, getSubProducts, getBetTypes, getSubjectOnChangeCategories,
-    getProductParams, getCategoryParams, generateTimeAndToolPrefix, getIdDefaultValueResponse
+    getProductParams, getCategoryParams, generateTimeAndToolPrefix, getIdDefaultValueResponse, isHavePermissionOnSite
 } from '@jsroot/common/shareScripts';
 import { validateNoOfInquiry, validateMainCategorySubCategory } from '../../../common.functions';
 import WithHotKey from '@jsroot/components/WithHotKey';
@@ -448,6 +448,10 @@ export class CreateForm extends Component {
     };
 
     handleSubmit = (values, { setSubmitting }) => {
+        if (!isHavePermissionOnSite()) {
+            return;
+        }
+
         setSubmitting(true);
         const usernames = this.props.verifyCustomerResults.map(x => x.username).join(',');
         const { extensionNA, subCategories } = this.props.settings;

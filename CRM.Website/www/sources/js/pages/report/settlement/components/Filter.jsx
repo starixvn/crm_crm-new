@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { toast } from 'react-toastify';
+import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
 
 export class Filter extends Component {
     constructor(props) {
@@ -13,14 +14,9 @@ export class Filter extends Component {
 
     submitHandler = event => {
         event.preventDefault();
+        if (!isHavePermissionOnSite()) return;
         const { gridParams } = this.props;
-        this.props.getGridData({ ...gridParams, pageIndex: 1 }).then(() => {
-            const { gridData } = this.props;
-            if (gridData.isNoCustomerPermission) {
-                toast.error(LangHelper.getResource('NoPermissionOnCreditOrLicensee'));
-                return;
-            }
-        });
+        this.props.getGridData({ ...gridParams, pageIndex: 1 });
         
         this.props.setGridParams({ ...gridParams, pageIndex: 1 });
     };

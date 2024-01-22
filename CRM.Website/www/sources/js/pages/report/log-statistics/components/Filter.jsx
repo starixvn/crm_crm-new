@@ -11,6 +11,7 @@ import moment from 'moment';
 import { toast } from 'react-toastify';
 import WithHotKey from '@jsroot/components/WithHotKey';
 import UnderlineButton from '@jsroot/common/underlineButton';
+import { isHavePermissionOnSite } from '@jsroot/common/shareScripts';
 
 export class Filter extends Component {
     constructor(props) {
@@ -33,7 +34,7 @@ export class Filter extends Component {
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.handleSettingOptions(this.props.settings);
     }
 
@@ -68,12 +69,12 @@ export class Filter extends Component {
         });
     };
 
-    handleSettingOptions = settings =>{
-        const { products, mainCategories, communicationTools} = settings;
+    handleSettingOptions = settings => {
+        const { products, mainCategories, communicationTools } = settings;
         const productIdFilters = [];
         const mainCategoryIdFilters = [];
         const communicationIdFilters = [];
-        const productOptions = products.map(item =>{
+        const productOptions = products.map(item => {
             productIdFilters.push(item.id);
             return {
                 id: item.id,
@@ -82,7 +83,7 @@ export class Filter extends Component {
             };
         });
 
-        const mainCategoryOptions = mainCategories.map(item =>{
+        const mainCategoryOptions = mainCategories.map(item => {
             mainCategoryIdFilters.push(item.mainCategoryID);
             return {
                 id: item.mainCategoryID,
@@ -91,7 +92,7 @@ export class Filter extends Component {
             };
         });
 
-        const communicationToolOptions = communicationTools.map(item =>{
+        const communicationToolOptions = communicationTools.map(item => {
             communicationIdFilters.push(item.id);
             return {
                 id: item.id,
@@ -111,19 +112,22 @@ export class Filter extends Component {
         });
     };
     handleSubmit = () => {
-        const { fromDate, toDate, productIds, mainCategoryIds, communicationIds} = this.state;
-        if(productIds === ''){
+        const { fromDate, toDate, productIds, mainCategoryIds, communicationIds } = this.state;
+        if (productIds === '') {
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Product')));
             return;
         }
-        if(mainCategoryIds === ''){
+        if (mainCategoryIds === '') {
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('MainCategory')));
             return;
         }
-        if(communicationIds === ''){
+        if (communicationIds === '') {
             toast.error(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Communication')));
             return;
         }
+
+        if (!isHavePermissionOnSite()) return;
+
         const params = {
             fromDate: DateTimeService.toShortDateFormat(fromDate),
             toDate: DateTimeService.toShortDateFormat(toDate),
@@ -131,55 +135,55 @@ export class Filter extends Component {
             mainCategoryId: mainCategoryIds,
             communicationId: communicationIds
         };
-        this.props.setDetailsDataGrid({show: false});
+        this.props.setDetailsDataGrid({ show: false });
         this.props.setGridParams(params);
         this.props.getMainReport(params);
     };
     render() {
-        const {fromDate, toDate, productOptions, mainCategoryOptions, communicationToolOptions}= this.state;
+        const { fromDate, toDate, productOptions, mainCategoryOptions, communicationToolOptions } = this.state;
         return (
             <Form className='form-filter' onSubmit={this.handleSubmit}>
-            <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc}/>
-            <Form.Row bsPrefix='form-row'>
-                <Form.Group className='form-width'>
-                    <Form.Label htmlFor="productIds">{LangHelper.getResource('Product')}</Form.Label>
-                    <div className='form-control-wrapper'>
-                        <MultipleSelect
-                            valueField='value'
-                            dataSource={productOptions}
-                            keyField='id'
-                            onChange={(currentItem, selectedItemsKey) => {
-                                this.handleChangeDropdown('productIds', selectedItemsKey);
-                            }}
-                            maxDisplayItemCount={0}
-                            hasSearchBox
-                            isNAOption
-                        />
-                    </div>
-                </Form.Group>
-                <Form.Group >
-                    <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
-                    <div className='react-datepicker-wrapper-container'>
-                        <DatePicker
-                            maxDate={new Date(this.maxFromDate)}
-                            selected={fromDate}
-                            peekNextMonth useShortMonthInDropdown showMonthDropdown showYearDropdown dropdownMode="select"
-                            onChange={value => this.handleChangeFromDate(value)}
-                        />
-                    </div>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label className='label-width' >{LangHelper.getResource('ToDate')}</Form.Label>
-                    <div className='react-datepicker-wrapper-container'>
-                        <DatePicker
-                            maxDate={new Date(this.maxToDate)}
-                            minDate={new Date(this.minToDate)}
-                            peekNextMonth useShortMonthInDropdown showMonthDropdown showYearDropdown dropdownMode="select"
-                            selected={toDate}
-                            onChange={value => this.handleChangeToDate(value)}
-                        />
-                    </div>
-                </Form.Group>
+                <WithHotKey handleKeyDownFunc={this.handleKeyDownFunc} />
+                <Form.Row bsPrefix='form-row'>
+                    <Form.Group className='form-width'>
+                        <Form.Label htmlFor="productIds">{LangHelper.getResource('Product')}</Form.Label>
+                        <div className='form-control-wrapper'>
+                            <MultipleSelect
+                                valueField='value'
+                                dataSource={productOptions}
+                                keyField='id'
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    this.handleChangeDropdown('productIds', selectedItemsKey);
+                                }}
+                                maxDisplayItemCount={0}
+                                hasSearchBox
+                                isNAOption
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group >
+                        <Form.Label htmlFor="fromDate">{LangHelper.getResource('FromDate')}</Form.Label>
+                        <div className='react-datepicker-wrapper-container'>
+                            <DatePicker
+                                maxDate={new Date(this.maxFromDate)}
+                                selected={fromDate}
+                                peekNextMonth useShortMonthInDropdown showMonthDropdown showYearDropdown dropdownMode="select"
+                                onChange={value => this.handleChangeFromDate(value)}
+                            />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label className='label-width' >{LangHelper.getResource('ToDate')}</Form.Label>
+                        <div className='react-datepicker-wrapper-container'>
+                            <DatePicker
+                                maxDate={new Date(this.maxToDate)}
+                                minDate={new Date(this.minToDate)}
+                                peekNextMonth useShortMonthInDropdown showMonthDropdown showYearDropdown dropdownMode="select"
+                                selected={toDate}
+                                onChange={value => this.handleChangeToDate(value)}
+                            />
+                        </div>
+                    </Form.Group>
                 </Form.Row>
                 <Form.Row bsPrefix='form-row'>
                     <Form.Group className='form-width'>
@@ -229,5 +233,5 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 const mapStateToProps = state => {
     const { settings } = state;
     return { settings };
-  };
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

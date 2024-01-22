@@ -3,6 +3,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 export const getPermission = async (functionKey, isNoRedirectAccessDeniedPage) => {
     const url = Site.resolveClientUrl('Common/GetPermission');
@@ -359,4 +360,12 @@ export const getIdDefaultValueResponse = response => {
         return neutral.id;
     }
     return response[0].id;
+};
+
+export const isHavePermissionOnSite = () => {
+    const hasPermissionOnSite = document.getElementById('hasReadSitePermission').checked;
+    if (!hasPermissionOnSite) {
+        toast.error(LangHelper.getResource('NoPermissionOnCreditOrLicensee'));
+    }
+    return hasPermissionOnSite;
 };

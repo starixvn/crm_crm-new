@@ -1,6 +1,5 @@
 ﻿namespace CRM.Models.Report.SettlementReport
 {
-    using CRM.Core.Models;
     using System;
     using System.Collections.Generic;
 
@@ -22,6 +21,5 @@
         public int TotalChildReports { get; set; }
 
         public SettlementReportInfo ChartInfo { get; set; }
-        public bool IsNoCustomerPermission { get; set; }
     }
 }

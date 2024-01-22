@@ -11,7 +11,7 @@ import EditFeedback from '../../edit-customer-feedback/AppContainer';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import LangHelper from '@jsroot/common/langHelper';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
-import { getPermission } from '@jsroot/common/shareScripts';
+import { getPermission, isHavePermissionOnSite } from '@jsroot/common/shareScripts';
 
 export class AppContainer extends Component {
     static propTypes = {
@@ -53,7 +53,11 @@ export class AppContainer extends Component {
         this.props.resetState();
     }
 
-    handleInitData = () =>{
+    handleInitData = () => {
+        if (!isHavePermissionOnSite()) {
+            return;
+        }
+
         if(this.props.custId !== undefined && this.props.custId !== 0){
             const params = {...this.props.gridParams, custId: this.props.custId, username: this.props.username};
             this.props.setGridParams(params);
