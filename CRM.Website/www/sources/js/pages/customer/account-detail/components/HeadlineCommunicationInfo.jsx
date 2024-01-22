@@ -253,16 +253,16 @@ export class HeadlineCommunicationInfo extends Component {
                     <Form.Label >
                         {LangHelper.getResource('Language')}
                     </Form.Label>
-                    <MultipleSelect
-                        dataSource={languageSelected}
-                        keyField='languageId'
-                        valueField='name'
-                        isAllTextShown
-                        isNAOption
-                        onChange={(currentItem, selectedItemsKey) => {
-                            this.handleChangeValue('language', selectedItemsKey, indexPic);
-                        }}
-                    />
+                        <MultipleSelect
+                            dataSource={languageSelected}
+                            keyField='languageId'
+                            valueField='name'
+                            isAllTextShown
+                            isNAOption
+                            onChange={(currentItem, selectedItemsKey) => {
+                                this.handleChangeValue('language', selectedItemsKey, indexPic);
+                            }}
+                        />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>
@@ -292,7 +292,7 @@ export class HeadlineCommunicationInfo extends Component {
                                     <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                     {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                                 </Form.Control>
-                                <div className='field-icon'>
+                                <div className='field-icon comm-tool'>
                                     <Form.Control type="text" className={picCommunicationTool.isError && 'invalid'}
                                         value={picCommunicationTool.value} autoComplete="off" onChange={event => {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
@@ -309,7 +309,7 @@ export class HeadlineCommunicationInfo extends Component {
                                             className='icon icon-plus'>
                                         </div>
                                     }
-                                </div>                               
+                                </div>
                             </Form.Group>
                         </>
                     })

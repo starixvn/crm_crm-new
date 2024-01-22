@@ -209,7 +209,7 @@ export class AppContainer extends Component {
         const siteOptions = changeSiteSetting(this.props.allSettings.sites, 'childSites', 'childSites');
 
         return (
-            <Form className='group-account'>
+            <Form className='group-account acc-info'>
                 <div className='group-title'>
                     Account Info
                     {
@@ -483,39 +483,41 @@ export class AppContainer extends Component {
                         <img onClick={this.handleSubmitOtherCommunicationInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                     }
                 </div>
-                <div className='group-content'>
+                <div className='add-comm-tool'>
                     <Button className='btn-add' variant="primary" size="sm" onClick={this.addNewCommunicationTool}>
                         {LangHelper.getResource('AddCommunicationTool')}
                     </Button>
-                    {
-                        values.otherAccountCommunication?.map((picCommunicationTool, indexPicCommunicationTool) => {
-                            return <>
-                                <Form.Group>
-                                    <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="CommunicationID" id="CommunicationID"
-                                        style={{
-                                            width: `${picCommunicationTool.communicationID !== '' ? this.getWidth(picCommunicationTool, this.props.settingCommunicationTool) : 115}px`
-                                        }}
-                                        value={picCommunicationTool.communicationID} onChange={event => {
-                                            this.handleChangeCommunication('communicationID', parseInt(event.target.value, 10), indexPicCommunicationTool);
-                                        }}>
-                                        <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                        {this.props.settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
-                                    </Form.Control>
-                                    <div className='field-icon'>
-                                        <Form.Control type="text" className={picCommunicationTool.isError && 'invalid'}
-                                            value={picCommunicationTool.communicationValue} autoComplete="off" onChange={event => {
-                                                this.handleChangeCommunication('communicationValue', event.target.value, indexPicCommunicationTool);
-                                            }} />
-                                        {
-                                            <div onClick={() => { this.deleteCommunicationTool(picCommunicationTool.communicationValue, picCommunicationTool.communicationID); }}
-                                                className='icon icon-delete'>
-                                            </div>
-                                        }
-                                    </div>
-                                </Form.Group>
-                            </>
-                        })
-                    }
+                    <div className='group-content'>
+                        {
+                            values.otherAccountCommunication?.map((picCommunicationTool, indexPicCommunicationTool) => {
+                                return <>
+                                    <Form.Group>
+                                        <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="CommunicationID" id="CommunicationID"
+                                            style={{
+                                                width: `${picCommunicationTool.communicationID !== '' ? this.getWidth(picCommunicationTool, this.props.settingCommunicationTool) : 115}px`
+                                            }}
+                                            value={picCommunicationTool.communicationID} onChange={event => {
+                                                this.handleChangeCommunication('communicationID', parseInt(event.target.value, 10), indexPicCommunicationTool);
+                                            }}>
+                                            <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                            {this.props.settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                        </Form.Control>
+                                        <div className='field-icon'>
+                                            <Form.Control type="text" className={picCommunicationTool.isError && 'invalid'}
+                                                value={picCommunicationTool.communicationValue} autoComplete="off" onChange={event => {
+                                                    this.handleChangeCommunication('communicationValue', event.target.value, indexPicCommunicationTool);
+                                                }} />
+                                            {
+                                                <div onClick={() => { this.deleteCommunicationTool(picCommunicationTool.communicationValue, picCommunicationTool.communicationID); }}
+                                                    className='icon icon-delete'>
+                                                </div>
+                                            }
+                                        </div>
+                                    </Form.Group>
+                                </>
+                            })
+                        }
+                    </div>
                     {
                         values.otherAccountCommunication?.length === 0 &&
                         <p>{LangHelper.getResource('ThereIsNoData')}</p>
