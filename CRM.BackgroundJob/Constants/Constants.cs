@@ -36,5 +36,6 @@
         public const string ServiceName_ArchivingDA = "ArchivedAccountFB";
         public const string ServiceName_RefundSettledTickets = "AutoFB - Refund Settled tickets";
         public const string ServiceName_AutoVoidBetID = "AutoFB - Void by BetID";
+        public const string ServiceName_AutoAbnormalBets = "AutoFB - AbnormalBets";
     }
 }

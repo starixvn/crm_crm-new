@@ -171,6 +171,7 @@
             services.AddSingleton<ISendAnnouncementService, SendAnnouncementService>();
             services.AddSingleton<IRefundSettledTicketService, RefundSettledTicketService>();
             services.AddSingleton<IVoidingBetIDService, VoidingBetIDService>();
+            services.AddSingleton<IAbnormalBetService, AbnormalBetService>();
         }
 
         private static void AddWorker(IServiceCollection services)
@@ -181,6 +182,7 @@
             services.AddHostedService<AutoFbWinLossLimitWorker>();
             services.AddHostedService<AutoFbTurnoverControlWorker>();
             services.AddHostedService<AutoFbVoidingBetIDWorker>();
+            services.AddHostedService<AutoFbAbnormalBetsWorker>();
 
             services.AddHostedService<AutoChatbotWorker>();
             services.AddHostedService<AutoChatbotCWLWoker>();
