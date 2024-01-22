@@ -118,9 +118,9 @@ export class HeadlineStaffsAndAuthority extends Component {
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
     };
 
-    handleAddTool = () => {
-        let { item } = this.state;
-        item.communicationTools.push({
+    handleAddTool = (indexStaff) => {
+        const { headlineStaffsAndAuthority } = this.state;
+        headlineStaffsAndAuthority[indexStaff].communicationTools.push({
             picCommunicationID: 0,
             picCommunicationName: null,
             picCommunicationValue: null,
@@ -128,7 +128,13 @@ export class HeadlineStaffsAndAuthority extends Component {
             authority: '',
             remark: ''
         });
-        this.setState({ newHeadlineStaffsAndAuthority: item });
+        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+    };
+
+    handleDeleteTool = (indexCom, indexStaff) => {
+        const data = [...this.state.headlineStaffsAndAuthority];
+        data[indexStaff].communicationTools.splice(indexCom, 1);
+        this.setState({ headlineStaffsAndAuthority: data });
     };
 
     buildHeader = () => {
@@ -261,11 +267,11 @@ export class HeadlineStaffsAndAuthority extends Component {
                                     </Form.Control>
                                     {
                                         staff.communicationTools.length > 1 &&
-                                        <div className='icon icon-delete'></div>
+                                        <div className='icon icon-delete' onClick={() => { this.handleDeleteTool(0, indexStaff) }}></div>
                                     }
                                     {
                                         staff.communicationTools.length === 1 &&
-                                        <div className='icon icon-plus' onClick={event => { this.handleAddTool() }}></div>
+                                        <div className='icon icon-plus' onClick={() => { this.handleAddTool(indexStaff) }}></div>
                                     }
                                 </div>
                             </Cell>
@@ -288,14 +294,6 @@ export class HeadlineStaffsAndAuthority extends Component {
                                 this.handleChangeAuthorityID(selectedItemsKey, index, indexStaff);
                             }}
                         />
-                        {/*<Form.Control as="select" size="sm"*/}
-                        {/*    value={staff.communicationTools[0].authorityID}*/}
-                        {/*    onChange={event => {*/}
-                        {/*        this.handleChangeAuthorityID(parseInt(event.target.value, 10), 0, indexStaff);*/}
-                        {/*    }}>*/}
-                        {/*    <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>*/}
-                        {/*    {settingStaffAndAuthority.map(item => this.renderOptions(item.settingValue, item.settingId))}*/}
-                        {/*</Form.Control>*/}
                     </Cell>
                     <Cell>
                         <Form.Control type="text" name="" onChange={event => {
@@ -316,7 +314,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                     </Cell>
                 </Row>
                 {
-                    staff.communicationTools.map((value, index) => {
+                    staff.communicationTools.map((value, indexCom) => {
                         const authoritySelected = settingStaffAndAuthority.map(item => {
                             return {
                                 authorityId: item.settingID,
@@ -324,7 +322,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                                 checked: value.authorityID.includes(item.settingId.toString())
                             };
                         });
-                        if (index !== 0) {
+                        if (indexCom !== 0) {
                             return (
                                 <Row key={`${staff.rowID}`} class="row-add">
                                     {
@@ -342,21 +340,21 @@ export class HeadlineStaffsAndAuthority extends Component {
                                                     <Form.Control as="select" size="sm"
                                                         value={value.picCommunicationID}
                                                         onChange={event => {
-                                                            this.handleChangeCommunicationID(parseInt(event.target.value, 10), index, indexStaff);
+                                                            this.handleChangeCommunicationID(parseInt(event.target.value, 10), indexCom, indexStaff);
                                                         }}>
                                                         <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                                         {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                                                     </Form.Control>
-                                                    <div className='icon icon-delete'></div>
+                                                    <div className='icon icon-delete' onClick={() => { this.handleDeleteTool(indexCom, indexStaff) }}></div>
                                                     {
-                                                        staff.communicationTools.length === (index + 1) &&
-                                                        <div className='icon icon-plus' onClick={event => { this.handleAddTool() }}></div>
+                                                        staff.communicationTools.length === (indexCom + 1) &&
+                                                        <div className='icon icon-plus' onClick={() => { this.handleAddTool(indexStaff) }}></div>
                                                     }
                                                 </div>
                                             </Cell>
                                             <Cell>
                                                 <Form.Control type="text" name="" onChange={event => {
-                                                    this.handleChangeCommunicationValue('picCommunicationValue', event.target.value, index, indexStaff);
+                                                    this.handleChangeCommunicationValue('picCommunicationValue', event.target.value, indexCom, indexStaff);
                                                 }}
                                                     value={value.picCommunicationValue} autoComplete="off" />
                                             </Cell>
@@ -370,21 +368,13 @@ export class HeadlineStaffsAndAuthority extends Component {
                                             isAllTextShown
                                             isNAOption
                                             onChange={(currentItem, selectedItemsKey) => {
-                                                this.handleChangeAuthorityID(selectedItemsKey, index, indexStaff);
+                                                this.handleChangeAuthorityID(selectedItemsKey, indexCom, indexStaff);
                                             }}
                                         />
-                                        {/*<Form.Control as="select" size="sm"*/}
-                                        {/*    value={value.authorityID}*/}
-                                        {/*    onChange={event => {*/}
-                                        {/*        this.handleChangeAuthorityID(parseInt(event.target.value, 10), index, indexStaff);*/}
-                                        {/*    }}>*/}
-                                        {/*    <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>*/}
-                                        {/*    {settingStaffAndAuthority.map(item => this.renderOptions(item.settingValue, item.settingId))}*/}
-                                        {/*</Form.Control>*/}
                                     </Cell>
                                     <Cell>
                                         <Form.Control type="text" name="" onChange={event => {
-                                            this.handleChangeCommunicationValue('remark', event.target.value, index, indexStaff);
+                                            this.handleChangeCommunicationValue('remark', event.target.value, indexCom, indexStaff);
                                         }} value={value.remark} autoComplete="off" />
                                     </Cell>
                                 </Row>

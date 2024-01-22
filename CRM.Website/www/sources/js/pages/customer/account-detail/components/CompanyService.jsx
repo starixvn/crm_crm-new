@@ -8,7 +8,6 @@ import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/reac
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import AutoComplete from '@jsroot/components/AutoComplete';
-import { hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 import { toast } from 'react-toastify';
 
 export class CompanyService extends Component {    

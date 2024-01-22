@@ -7,7 +7,6 @@ import { Form, Button } from 'react-bootstrap';
 import { HeadlinePicID, AccountingPicID, Letstalk, Telegram } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
-import { hasHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
@@ -298,7 +297,7 @@ export class HeadlineCommunicationInfo extends Component {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
                                     }} />
                                     {
-                                        indexPicCommunicationTool !== 0 && 
+                                        pic.picCommunicationTools.length > 1 && 
                                         <div onClick={() => { this.deleteCommunicationTool(picCommunicationTool.value, picCommunicationTool.type, indexPic); }}
                                             className='icon icon-delete'>
                                         </div>
@@ -344,11 +343,16 @@ export class HeadlineCommunicationInfo extends Component {
                     {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
                 </div>
                 {
+                    headlineCommunicationInfo.length !== 0 &&
                     <div className='group-btn'>
-                    <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
-                        {LangHelper.getResource('Save')}
-                    </Button>
+                        <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
+                            {LangHelper.getResource('Save')}
+                        </Button>
                     </div>
+                }
+                {
+                    headlineCommunicationInfo.length === 0 &&
+                    <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
                 }
                 {
                     this.state.confirmSave.show &&
