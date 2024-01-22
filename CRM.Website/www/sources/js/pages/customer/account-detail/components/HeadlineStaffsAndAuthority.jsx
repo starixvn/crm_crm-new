@@ -8,6 +8,7 @@ import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/reac
 import Site from '@jsroot/common/site';
 import { getPermission } from '@jsroot/common/shareScripts';
 import { FunctionKey } from '@jsroot/common/constants';
+import MultipleSelect from '@jsroot/components/multiple-select/index';
 
 export class HeadlineStaffsAndAuthority extends Component {
     constructor(props) {
@@ -108,7 +109,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                 picCommunicationID: 0,
                 picCommunicationName: null,
                 picCommunicationValue: null,
-                authorityID: 0,
+                authorityID: '',
                 authority: null,
                 remark: null
             }],
@@ -123,7 +124,7 @@ export class HeadlineStaffsAndAuthority extends Component {
             picCommunicationID: 0,
             picCommunicationName: null,
             picCommunicationValue: null,
-            authorityID: 0,
+            authorityID: '',
             authority: '',
             remark: ''
         });
@@ -212,6 +213,13 @@ export class HeadlineStaffsAndAuthority extends Component {
 
     renderEditRow = (staff, indexStaff) => {
         const { settingStaffAndAuthority, settingPicRole, settingCommunicationTool } = this.props;
+        const authorityFirstSelected = settingStaffAndAuthority.map(item => {
+            return {
+                authorityId: item.settingID,
+                name: item.settingValue,
+                checked: staff.communicationTools[0].authorityID.includes(item.settingId.toString())
+            };
+        });
         return (
             <>
                 <Row className='row-add'>
@@ -270,14 +278,24 @@ export class HeadlineStaffsAndAuthority extends Component {
                         </>
                     }
                     <Cell>
-                        <Form.Control as="select" size="sm"
-                            value={staff.communicationTools[0].authorityID}
-                            onChange={event => {
-                                this.handleChangeAuthorityID(parseInt(event.target.value, 10), 0, indexStaff);
-                            }}>
-                            <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                            {settingStaffAndAuthority.map(item => this.renderOptions(item.settingValue, item.settingId))}
-                        </Form.Control>
+                        <MultipleSelect
+                            dataSource={authorityFirstSelected}
+                            keyField='authorityID'
+                            valueField='name'
+                            isAllTextShown
+                            isNAOption
+                            onChange={(currentItem, selectedItemsKey) => {
+                                this.handleChangeAuthorityID(selectedItemsKey, index, indexStaff);
+                            }}
+                        />
+                        {/*<Form.Control as="select" size="sm"*/}
+                        {/*    value={staff.communicationTools[0].authorityID}*/}
+                        {/*    onChange={event => {*/}
+                        {/*        this.handleChangeAuthorityID(parseInt(event.target.value, 10), 0, indexStaff);*/}
+                        {/*    }}>*/}
+                        {/*    <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>*/}
+                        {/*    {settingStaffAndAuthority.map(item => this.renderOptions(item.settingValue, item.settingId))}*/}
+                        {/*</Form.Control>*/}
                     </Cell>
                     <Cell>
                         <Form.Control type="text" name="" onChange={event => {
@@ -299,6 +317,13 @@ export class HeadlineStaffsAndAuthority extends Component {
                 </Row>
                 {
                     staff.communicationTools.map((value, index) => {
+                        const authoritySelected = settingStaffAndAuthority.map(item => {
+                            return {
+                                authorityId: item.settingID,
+                                name: item.settingValue,
+                                checked: value.authorityID.includes(item.settingId.toString())
+                            };
+                        });
                         if (index !== 0) {
                             return (
                                 <Row key={`${staff.rowID}`} class="row-add">
@@ -338,14 +363,24 @@ export class HeadlineStaffsAndAuthority extends Component {
                                         </>
                                     }
                                     <Cell>
-                                        <Form.Control as="select" size="sm"
-                                            value={value.authorityID}
-                                            onChange={event => {
-                                                this.handleChangeAuthorityID(parseInt(event.target.value, 10), index, indexStaff);
-                                            }}>
-                                            <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                            {settingStaffAndAuthority.map(item => this.renderOptions(item.settingValue, item.settingId))}
-                                        </Form.Control>
+                                        <MultipleSelect
+                                            dataSource={authoritySelected}
+                                            keyField='authorityID'
+                                            valueField='name'
+                                            isAllTextShown
+                                            isNAOption
+                                            onChange={(currentItem, selectedItemsKey) => {
+                                                this.handleChangeAuthorityID(selectedItemsKey, index, indexStaff);
+                                            }}
+                                        />
+                                        {/*<Form.Control as="select" size="sm"*/}
+                                        {/*    value={value.authorityID}*/}
+                                        {/*    onChange={event => {*/}
+                                        {/*        this.handleChangeAuthorityID(parseInt(event.target.value, 10), index, indexStaff);*/}
+                                        {/*    }}>*/}
+                                        {/*    <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>*/}
+                                        {/*    {settingStaffAndAuthority.map(item => this.renderOptions(item.settingValue, item.settingId))}*/}
+                                        {/*</Form.Control>*/}
                                     </Cell>
                                     <Cell>
                                         <Form.Control type="text" name="" onChange={event => {
