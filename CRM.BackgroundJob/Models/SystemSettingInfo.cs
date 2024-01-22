@@ -15,5 +15,7 @@
         public bool IncludeUUSCurency { get; set; }
 
         public bool ServiceFlag { get; set; }
+
+        public int LastVoidingHistoryCollectionId { get; set; }
     }
 }

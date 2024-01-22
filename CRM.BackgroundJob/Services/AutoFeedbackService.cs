@@ -29,6 +29,7 @@
         Task ArchivingDAExecuteJobAsync();
         Task RefundSettledTicketJobAsync();
         Task VoidingBetIDExecuteJobAsync();
+        Task AbnormalBetsExecuteJobAsync();
     }
 
     public class AutoFeedbackService : IAutoFeedbackService
@@ -48,6 +49,7 @@
         private readonly ISendNotificationService sendNotificationService;
         private readonly IRefundSettledTicketService refundSettledTicketService;
         private readonly IVoidingBetIDService voidingBetIDService;
+        private readonly IAbnormalBetService abnormalBetService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -70,6 +72,7 @@
             ISendNotificationService sendNotificationService,
             IRefundSettledTicketService refundSettledTicketService,
             IVoidingBetIDService voidingBetIDService,
+            IAbnormalBetService abnormalBetService,
             IConfiguration configuration)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
@@ -88,6 +91,7 @@
             this.sendNotificationService = sendNotificationService;
             this.refundSettledTicketService = refundSettledTicketService;
             this.voidingBetIDService = voidingBetIDService;
+            this.abnormalBetService = abnormalBetService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -562,6 +566,36 @@
                 var message = await voidingBetIDService.GetMessageVoidBetIDAsync(systemSettingInfo.LastMsgTargetId, systemSettingInfo.BatchSize);
                 var (messageNotDuplicated, maxMsgTargetId) = await voidingBetIDService.CleanMessageVoidBetIDAsync(message);
                 var (commandResult, command) = await voidingBetIDService.ImportVoidBetIDAsync(messageNotDuplicated, Environment, maxMsgTargetId);
+                if (commandResult.IsSuccessful)
+                {
+                    await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
+                }
+                else
+                {
+                    logService.LogInformation(commandResult.Message);
+                    await logService.ErrorAsync(commandResult, command);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        public async Task AbnormalBetsExecuteJobAsync()
+        {
+            try
+            {
+                SystemSettingInfo systemSettingInfo = await systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoAbnormalBets, Environment);
+                if (!systemSettingInfo.ServiceFlag)
+                {
+                    logService.LogInformation("Service AutoFeedback AbnormalBets is shutdown.");
+                    return;
+                }
+                var (voidedCollectionInfo, messageAbnormals, maxVoidingHistoryCollectionId) = await abnormalBetService.GetVoidedInfoAsync(systemSettingInfo.LastVoidingHistoryCollectionId, systemSettingInfo.BatchSize);
+                var messages = await abnormalBetService.GetMessageAbnormalBetAsync(messageAbnormals);
+                var (commandResult, command) = await abnormalBetService.ImportAbnormalBetsAsync(messages, voidedCollectionInfo, Environment, maxVoidingHistoryCollectionId);
                 if (commandResult.IsSuccessful)
                 {
                     await sendNotificationService.ScanAndSendMessageToBotEndpointAsync();
