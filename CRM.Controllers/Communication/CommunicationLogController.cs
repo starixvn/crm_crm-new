@@ -125,12 +125,21 @@
             var isHostCreateFeedback = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback, Policy.Host);
             var isHostReviewFeedback = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host);
 
-            if (!isReadCustInfo || !isHostCreateFeedback || (command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate && !isHostReviewFeedback))
+            if (!isReadCustInfo || !isHostCreateFeedback)
             {
                 commandResult = new CommandResult
                 {
                     Code = 1,
                     Message = ViewResources.DoNotEditCommunicationLogPermission
+                };
+            }
+
+            if ((command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate && !isHostReviewFeedback))
+            {
+                commandResult = new CommandResult
+                {
+                    Code = 1,
+                    Message = ViewResources.NoReviewPermission
                 };
             }
 
