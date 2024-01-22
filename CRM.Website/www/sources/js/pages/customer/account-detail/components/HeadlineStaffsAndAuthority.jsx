@@ -6,28 +6,15 @@ import { Form, Button } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/react-grid/index';
 import Site from '@jsroot/common/site';
+import { getPermission } from '@jsroot/common/shareScripts';
+import { FunctionKey } from '@jsroot/common/constants';
 
 export class HeadlineStaffsAndAuthority extends Component {
     constructor(props) {
         super(props);
         this.state = {
             headlineStaffsAndAuthority: null,
-            item: {
-                rowID: -1,
-                picID: null,
-                picName: null,
-                picRoleID: 0,
-                picRoleName: null,
-                communicationTools: [{
-                    picCommunicationID: 0,
-                    picCommunicationName: null,
-                    picCommunicationValue: null,
-                    authorityID: 0,
-                    authority: '',
-                    remark: ''
-                }],
-                isSyncFromPicTable: false
-            }
+            headlineInfoPolicy: null
         };
     }
 
@@ -36,6 +23,9 @@ export class HeadlineStaffsAndAuthority extends Component {
         await this.props.getStaffAndAuthority();
         await this.props.getSettingPicRole();
         this.getHeadlineStaffsAndAuthorityInfo(this.props.headlineStaffsAndAuthority);
+        getPermission(FunctionKey.HeadlineInfo, true).then(response => {
+            this.setState({ headlineInfoPolicy: response });
+        });
     }
 
     getHeadlineStaffsAndAuthorityInfo = value => {
@@ -70,18 +60,21 @@ export class HeadlineStaffsAndAuthority extends Component {
     }  
 
     render() {
-        const { headlineStaffsAndAuthority } = this.state;
+        const { headlineStaffsAndAuthority, headlineInfoPolicy } = this.state;
         const { settingStaffAndAuthority, settingPicRole } = this.props;
 
-        if (!settingStaffAndAuthority || !headlineStaffsAndAuthority || !settingPicRole) {
+        if (!settingStaffAndAuthority || !headlineStaffsAndAuthority || !settingPicRole || !headlineInfoPolicy) {
             return null;
         }
 
         return (
             <>
-                <Button className='btn-add' type="submit" variant="primary" size="sm" onClick={this.handleAddNewRow}>
-                    {LangHelper.getResource('Add')}
-                </Button>
+                {
+                    headlineInfoPolicy === 2 &&
+                    <Button className='btn-add' type="submit" variant="primary" size="sm" onClick={this.handleAddNewRow}>
+                        {LangHelper.getResource('Add')}
+                    </Button>
+                }
                 <Table
                     width={1504}
                     autoWidth={false}
@@ -92,6 +85,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                     adjustedHeight={10}
                 />
                 {
+                    headlineInfoPolicy === 2 &&
                     <div className='group-btn'>
                         <Button type="submit" className='btn-save' >
                             {LangHelper.getResource('Save')}
@@ -110,16 +104,14 @@ export class HeadlineStaffsAndAuthority extends Component {
             picName: null,
             picRoleID: 0,
             picRoleName: null,
-            communicationTools: newHeadlineStaffsAndAuthority.communicationTools.map(com => {
-                return {
-                    picCommunicationID: 0,
-                    picCommunicationName: null,
-                    picCommunicationValue: null,
-                    authorityID: 0,
-                    authority: null,
-                    remark: null
-                }
-            }),
+            communicationTools: [{
+                picCommunicationID: 0,
+                picCommunicationName: null,
+                picCommunicationValue: null,
+                authorityID: 0,
+                authority: null,
+                remark: null
+            }],
             isSyncFromPicTable: false
         });
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
@@ -139,6 +131,7 @@ export class HeadlineStaffsAndAuthority extends Component {
     };
 
     buildHeader = () => {
+        const { headlineInfoPolicy } = this.state;
         return (
             <HeaderRow>
                 <HeaderCell colWidth={200}>{LangHelper.getResource('Name')}</HeaderCell>
@@ -147,19 +140,26 @@ export class HeadlineStaffsAndAuthority extends Component {
                 <HeaderCell colWidth={270} className="display-colSpan"></HeaderCell>
                 <HeaderCell colWidth={160}>{LangHelper.getResource('Authority')}</HeaderCell>
                 <HeaderCell colWidth={460}>{LangHelper.getResource('Remark')}</HeaderCell>
-                <HeaderCell colWidth={120}>{LangHelper.getResource('Action')}</HeaderCell>
+                {
+                    headlineInfoPolicy === 2 &&
+                    <HeaderCell colWidth={120}>{LangHelper.getResource('Action')}</HeaderCell>
+                }
             </HeaderRow>
         );
     };
 
     buildBody = () => {
-        const { headlineStaffsAndAuthority } = this.state;
-       
+        const { headlineStaffsAndAuthority, headlineInfoPolicy } = this.state;
+
         if (headlineStaffsAndAuthority.length > 0) {
             return [
                 <Fragment key={'body'}>
                     {headlineStaffsAndAuthority.map((item, indexStaff) => {
-                        return this.renderRow(item, indexStaff)
+                        if (headlineInfoPolicy === 2) {
+                            return this.renderEditRow(item, indexStaff)
+                        } else {
+                            return this.renderRow(item)
+                        }
                     })}
                 </Fragment>
             ];
@@ -172,95 +172,108 @@ export class HeadlineStaffsAndAuthority extends Component {
         ];
     };   
 
-    handleChangeValue = (name, value) => {
-        let { item } = this.state;
-        item[name] = value;
-        this.setState({ newHeadlineStaffsAndAuthority: item });
+    handleChangeValue = (name, value, staffIndex) => {
+        const { headlineStaffsAndAuthority } = this.state;
+        headlineStaffsAndAuthority[staffIndex][name] = value;
+        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
     }
 
-    handleChangeRole = (value) => {
-        let { item } = this.state;
+    handleChangeRole = (value, staffIndex) => {
+        const { headlineStaffsAndAuthority } = this.state;
         const comTool = this.props.settingPicRole.find(x => x.settingId === value);
-        item.picRoleID = value;
-        item.picRoleName = comTool.settingValue;
-        this.setState({ newHeadlineStaffsAndAuthority: item });
+        headlineStaffsAndAuthority[staffIndex].picRoleID = value;
+        headlineStaffsAndAuthority[staffIndex].picRoleName = comTool.settingValue;
+        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
     }
 
-    handleChangeCommunicationID = ( value, indexPicCommunicationTool) => {
-        let { item } = this.state;
+    handleChangeCommunicationID = (value, indexPicCommunicationTool, staffIndex) => {
+        const { headlineStaffsAndAuthority } = this.state;
         const comTool = this.props.settingCommunicationTool.find(x => x.settingId === value);
-        item.communicationTools[indexPicCommunicationTool].picCommunicationID = value;
-        item.communicationTools[indexPicCommunicationTool].picCommunicationName = comTool.settingValue;
-        this.setState({ newHeadlineStaffsAndAuthority: item });
+        headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool].picCommunicationID = value;
+        headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool].picCommunicationName = comTool.settingValue;
+        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
     }
 
-    handleChangeAuthorityID = (value, indexPicCommunicationTool) => {
-        let { item } = this.state;
+    handleChangeAuthorityID = (value, indexPicCommunicationTool, indexStaff) => {
+        const { headlineStaffsAndAuthority } = this.state;
         const authorityTool = this.props.settingStaffAndAuthority.find(x => x.settingId === value);
-        item.communicationTools[indexPicCommunicationTool].authorityID = value;
-        item.communicationTools[indexPicCommunicationTool].authority = authorityTool.settingValue;
-        this.setState({ newHeadlineStaffsAndAuthority: item });
+        headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authorityID = value;
+        headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authority = authorityTool.settingValue;
+        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
     }
 
-    handleChangeCommunicationValue = (name, value, indexPicCommunicationTool) => {
-        let { item } = this.state;
-        item.communicationTools[indexPicCommunicationTool][name] = value;
-        this.setState({ newHeadlineStaffsAndAuthority: item });
+    handleChangeCommunicationValue = (name, value, indexPicCommunicationTool, staffIndex) => {
+        const { headlineStaffsAndAuthority } = this.state;
+        headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool][name] = value;
+        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
     }
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
-    renderEditRow = () => {
-        const { item } = this.state;
+    renderEditRow = (staff, indexStaff) => {
         const { settingStaffAndAuthority, settingPicRole, settingCommunicationTool } = this.props;
         return (
             <>
                 <Row className='row-add'>
-                    <Cell rowSpan={item.communicationTools.length}>
-                        <Form.Control type="text" onChange={event => {
-                            this.handleChangeValue('picName', event.target.value);
-                        }} value={item.picName} autoComplete="off"/>
-                    </Cell>
-                    <Cell rowSpan={item.communicationTools.length}>
-                        <Form.Control as="select" size="sm" value={item.picRoleID}
-                            onChange={event => {
-                                this.handleChangeRole(parseInt(event.target.value, 0));
-                            }}>
-                            <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                            {settingPicRole.map(item => this.renderOptions(item.settingValue, item.settingId))}
-                        </Form.Control>
-                    </Cell>
-                    <Cell>
-                        <div className='col-add'>
-                            <Form.Control as="select" size="sm"
-                                value={item.communicationTools[0].picCommunicationID}
-                                onChange={event => {
-                                    this.handleChangeCommunicationID(parseInt(event.target.value, 10), 0);
-                                }}>
-                                <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
-                            </Form.Control>
-                            {
-                                item.communicationTools.length > 1 && 
-                                <div className='icon icon-delete'></div>
-                            }
-                            {
-                                item.communicationTools.length === 1 && 
-                                <div className='icon icon-plus' onClick={event => { this.handleAddTool() }}></div>
-                            }
-                        </div>
-                    </Cell>
-                    <Cell>
-                        <Form.Control type="text" name="" onChange={event => {
-                            this.handleChangeCommunicationValue('picCommunicationValue',event.target.value, 0);
-                            }}
-                            value={item.communicationTools[0].picCommunicationValue} autoComplete="off" />
-                    </Cell>
+                    {
+                        staff.isSyncFromPicTable &&
+                        <>
+                            <Cell rowSpan={staff.communicationTools.length}>{staff.picName}</Cell>
+                            <Cell rowSpan={staff.communicationTools.length} className='text-center'>{staff.picRoleName}</Cell>
+                            <Cell>{staff.communicationTools[0].picCommunicationName}</Cell>
+                            <Cell>{staff.communicationTools[0].picCommunicationValue}</Cell>
+                        </>
+                    }
+                    {
+                        !staff.isSyncFromPicTable &&
+                        <>
+                            <Cell rowSpan={staff.communicationTools.length}>
+                                <Form.Control type="text" onChange={event => {
+                                    this.handleChangeValue('picName', event.target.value, indexStaff);
+                                }} value={staff.picName} autoComplete="off" />
+                            </Cell>
+                            <Cell rowSpan={staff.communicationTools.length}>
+                                <Form.Control as="select" size="sm" value={staff.picRoleID}
+                                    onChange={event => {
+                                        this.handleChangeRole(parseInt(event.target.value, 0), indexStaff);
+                                    }}>
+                                    <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                    {settingPicRole.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                </Form.Control>
+                            </Cell>
+                            <Cell>
+                                <div className='col-add'>
+                                    <Form.Control as="select" size="sm"
+                                        value={staff.communicationTools[0].picCommunicationID}
+                                        onChange={event => {
+                                            this.handleChangeCommunicationID(parseInt(event.target.value, 10), 0, indexStaff);
+                                        }}>
+                                        <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                        {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                    </Form.Control>
+                                    {
+                                        staff.communicationTools.length > 1 &&
+                                        <div className='icon icon-delete'></div>
+                                    }
+                                    {
+                                        staff.communicationTools.length === 1 &&
+                                        <div className='icon icon-plus' onClick={event => { this.handleAddTool() }}></div>
+                                    }
+                                </div>
+                            </Cell>
+                            <Cell>
+                                <Form.Control type="text" name="" onChange={event => {
+                                    this.handleChangeCommunicationValue('picCommunicationValue', event.target.value, 0, indexStaff);
+                                }}
+                                    value={staff.communicationTools[0].picCommunicationValue} autoComplete="off" />
+                            </Cell>
+                        </>
+                    }
                     <Cell>
                         <Form.Control as="select" size="sm"
-                            value={item.communicationTools[0].authorityID}
+                            value={staff.communicationTools[0].authorityID}
                             onChange={event => {
-                                this.handleChangeAuthorityID(parseInt(event.target.value, 10), 0);
+                                this.handleChangeAuthorityID(parseInt(event.target.value, 10), 0, indexStaff);
                             }}>
                             <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                             {settingStaffAndAuthority.map(item => this.renderOptions(item.settingValue, item.settingId))}
@@ -268,49 +281,67 @@ export class HeadlineStaffsAndAuthority extends Component {
                     </Cell>
                     <Cell>
                         <Form.Control type="text" name="" onChange={event => {
-                            this.handleChangeCommunicationValue('remark', event.target.value, 0);
-                        }} value={item.communicationTools[0].remark} autoComplete="off"/>
+                            this.handleChangeCommunicationValue('remark', event.target.value, 0, indexStaff);
+                        }} value={staff.communicationTools[0].remark} autoComplete="off"/>
                     </Cell>
-                    <Cell rowSpan={item.communicationTools.length}>
+                    <Cell rowSpan={staff.communicationTools.length}>
                         <div className='row-icon'>
-                            <div className='icon icon-save' onClick={event => { this.handleSaveNewHeadlineStaffsAndAuthority(); }}></div>
-                            <div className='icon icon-cancel' onClick={event => { this.handleCancelNewHeadlineStaffsAndAuthority(); }}></div>
+                            {
+                                staff.isSyncFromPicTable &&
+                                <div className='icon icon-clear' onClick={() => this.handleClear(indexStaff)}></div>
+                            }
+                            {
+                                !staff.isSyncFromPicTable &&
+                                <div className='icon icon-delete' onClick={() => this.handleDelete(indexStaff)}></div>
+                            }
                         </div>
                     </Cell>
                 </Row>
                 {
-                    item.communicationTools.map((value, index) => {
+                    staff.communicationTools.map((value, index) => {
                         if (index !== 0) {
                             return (
-                                <Row key={`${item.rowID}`} class="row-add">
-                                    <Cell>
-                                        <div className='col-add'>
-                                            <Form.Control as="select" size="sm"
-                                                value={value.picCommunicationID}
-                                                onChange={event => {
-                                                    this.handleChangeCommunicationID(parseInt(event.target.value, 10), index);
-                                                }}>
-                                                <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                                {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
-                                            </Form.Control>
-                                            <div className='icon icon-delete'></div>
-                                            {
-                                                item.communicationTools.length === (index + 1) &&
-                                                <div className='icon icon-plus' onClick={event => { this.handleAddTool() }}></div>
-                                            }
-                                        </div>
-                                    </Cell>
-                                    <Cell>
-                                        <Form.Control type="text" name="" onChange={event => {
-                                            this.handleChangeCommunicationValue('picCommunicationValue', event.target.value, index);
-                                        }}
-                                            value={value.picCommunicationValue} autoComplete="off" />
-                                    </Cell>
+                                <Row key={`${staff.rowID}`} class="row-add">
+                                    {
+                                        staff.isSyncFromPicTable &&
+                                        <>
+                                            <Cell>{value.picCommunicationName}</Cell>
+                                            <Cell>{value.picCommunicationValue}</Cell>
+                                        </>
+                                    }
+                                    {
+                                        !staff.isSyncFromPicTable &&
+                                        <>
+                                            <Cell>
+                                                <div className='col-add'>
+                                                    <Form.Control as="select" size="sm"
+                                                        value={value.picCommunicationID}
+                                                        onChange={event => {
+                                                            this.handleChangeCommunicationID(parseInt(event.target.value, 10), index, indexStaff);
+                                                        }}>
+                                                        <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                                        {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                                    </Form.Control>
+                                                    <div className='icon icon-delete'></div>
+                                                    {
+                                                        staff.communicationTools.length === (index + 1) &&
+                                                        <div className='icon icon-plus' onClick={event => { this.handleAddTool() }}></div>
+                                                    }
+                                                </div>
+                                            </Cell>
+                                            <Cell>
+                                                <Form.Control type="text" name="" onChange={event => {
+                                                    this.handleChangeCommunicationValue('picCommunicationValue', event.target.value, index, indexStaff);
+                                                }}
+                                                    value={value.picCommunicationValue} autoComplete="off" />
+                                            </Cell>
+                                        </>
+                                    }
                                     <Cell>
                                         <Form.Control as="select" size="sm"
                                             value={value.authorityID}
                                             onChange={event => {
-                                                this.handleChangeAuthorityID(parseInt(event.target.value, 10), index);
+                                                this.handleChangeAuthorityID(parseInt(event.target.value, 10), index, indexStaff);
                                             }}>
                                             <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                                             {settingStaffAndAuthority.map(item => this.renderOptions(item.settingValue, item.settingId))}
@@ -318,7 +349,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                                     </Cell>
                                     <Cell>
                                         <Form.Control type="text" name="" onChange={event => {
-                                            this.handleChangeCommunicationValue('remark', event.target.value, index);
+                                            this.handleChangeCommunicationValue('remark', event.target.value, index, indexStaff);
                                         }} value={value.remark} autoComplete="off" />
                                     </Cell>
                                 </Row>
@@ -340,14 +371,13 @@ export class HeadlineStaffsAndAuthority extends Component {
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
     }
 
-    handleDelete = (indexStaff, rowID) => {
+    handleDelete = (indexStaff) => {
         const data = [...this.state.headlineStaffsAndAuthority];
-        const index = data[indexStaff].findIndex(staff => staff.rowID === rowID);
-        data[indexStaff].splice(index, 1);
+        data.splice(indexStaff, 1);
         this.setState({ headlineStaffsAndAuthority: data });
     }
 
-    renderRow = (item, indexStaff) => {
+    renderRow = (item) => {
         return (
             <>
                 <Row key={item.rowID} className='row-staff-authority'>
@@ -357,18 +387,6 @@ export class HeadlineStaffsAndAuthority extends Component {
                     <Cell>{item.communicationTools[0].picCommunicationValue}</Cell>
                     <Cell>{item.communicationTools[0].authority}</Cell>
                     <Cell>{item.communicationTools[0].remark}</Cell>
-                    <Cell rowSpan={item.communicationTools.length}>
-                        <div className='row-icon'>
-                            {
-                                item.isSyncFromPicTable &&
-                                <div className='icon icon-clear' onClick={() => this.handleClear(indexStaff)}></div>
-                            }
-                            {
-                                !item.isSyncFromPicTable &&
-                                <div className='icon icon-delete' onClick={() => this.handleDelete(indexStaff, item.rowID)}></div>
-                            }
-                        </div>
-                    </Cell>
                 </Row>
                 {
                     item.communicationTools.map((value, index) => {
