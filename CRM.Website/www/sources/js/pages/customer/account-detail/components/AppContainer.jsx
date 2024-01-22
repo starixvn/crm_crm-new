@@ -517,11 +517,11 @@ export class AppContainer extends Component {
                                 </>
                             })
                         }
+                        {
+                            values.otherAccountCommunication?.length === 0 &&
+                            <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
+                        }
                     </div>
-                    {
-                        values.otherAccountCommunication?.length === 0 &&
-                        <p>{LangHelper.getResource('ThereIsNoData')}</p>
-                    }
                 </div>
             </Form>
         );
