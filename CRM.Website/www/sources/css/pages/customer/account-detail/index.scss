@@ -217,6 +217,13 @@
     border: 1px #d1d1d1 solid;
     padding: 13px 4px 12px 12px;
 
+    .multiple-select-options-container{
+      position: fixed;
+      min-width: auto;
+      top: initial;
+      left: initial;
+    }
+
     .custom-scrollbar {
       padding: 3px 8px 3px 0;
       max-height: 400px;
