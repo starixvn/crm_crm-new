@@ -44,6 +44,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 26px;
   }
 }
 
@@ -98,29 +99,37 @@
       margin: 12px 12px 0 12px;
     }
 
-    .no-data{
-      background: #E5E5E5;
+    .no-data {
+      background: #e5e5e5;
       border-radius: 3px;
-      border: 1px #B7B7B7 solid;
+      border: 1px #b7b7b7 solid;
       padding: 9px 48px;
       margin: auto;
     }
   }
 }
 
-.group-content,
-.group-item {
+.group-content {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
+}
+
+.group-item {
+  display: grid;
+  grid-template-columns: repeat(4, 200px);
+}
+
+.group-content,
+.group-item {
   column-gap: 60px;
   row-gap: 12px;
 
   .form-group {
     display: flex;
-    flex-direction: column;
     max-width: 200px;
     width: 100%;
+    flex-direction: column;
     margin-bottom: 0;
 
     input {
@@ -130,6 +139,7 @@
     label {
       display: flex;
       align-items: flex-end;
+      line-height: 1.2;
     }
 
     .custom-select-communicationTool {
@@ -142,6 +152,10 @@
       background-position: right;
     }
   }
+}
+
+.form-control {
+  height: calc(1.5em + 0.5rem);
 }
 
 .icon-delete {
@@ -217,11 +231,13 @@
     border: 1px #d1d1d1 solid;
     padding: 13px 4px 12px 12px;
 
-    .multiple-select-options-container{
+    .multiple-select-options-container,
+    .selectwithsearchtree .dropdown-menu {
       position: fixed;
       min-width: auto;
       top: initial;
       left: initial;
+      width: auto;
     }
 
     .custom-scrollbar {
@@ -300,7 +316,7 @@
 
     .group-item {
       border-bottom: 1px solid #d9d9d9;
-      padding: 12px 12px 12px 0;
+      padding: 12px;
 
       &:first-child {
         padding-top: 0;
@@ -320,7 +336,10 @@
 
     .group-btn {
       margin-right: 16px;
-      border-top: 1px solid #d9d9d9;
+
+      &.comm-info-btn {
+        border-top: 1px solid #d9d9d9;
+      }
     }
 
     .btn-add {
@@ -379,26 +398,34 @@
           }
         }
 
-        &.row-add td {
-          background: #fffaea;
+        &.row-add {
+          tr:hover td {
+            background: #fffaea;
+          }
 
-          .col-add {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+          td {
+            .col-add {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
 
-            .icon-plus {
-              right: 4px;
-              background: url("/www/dist/css/images/icon/icon-plus-hover.svg");
-            }
+              select {
+                width: 123px;
+              }
 
-            .icon-delete {
-              right: 20px;
-              background: url("/www/dist/css/images/icon/icon-delete-hover.svg");
-            }
+              .icon-plus {
+                right: 4px;
+                background: url("/www/dist/css/images/icon/icon-plus-hover.svg");
+              }
 
-            .select-item {
-              width: 120px;
+              .icon-delete {
+                right: 20px;
+                background: url("/www/dist/css/images/icon/icon-delete-hover.svg");
+              }
+
+              .select-item {
+                width: 120px;
+              }
             }
           }
         }
@@ -417,8 +444,12 @@
 }
 
 @media only screen and (max-width: 1366px) {
+  .group-account .group-content,
+  .group-item {
+    column-gap: 40px;
+  }
+
   .group-account .group-content {
-    column-gap: 12px;
     padding-right: 12px;
   }
 
@@ -430,6 +461,10 @@
 
   .display-colSpan {
     display: none;
+  }
+
+  .selectwithsearchtree .btn {
+    height: 24px !important;
   }
 
   tbody {
@@ -461,17 +496,22 @@
   .fix-table-container {
     border-right: none;
 
-    .fix-table table tbody tr.row-child td:last-child {
-      border-right: 1px solid #b7b7b7 !important;
-    }
+    .fix-table table tbody tr td:last-child {
+      border-right: 1px solid #b7b7b7;
 
-    .row-add td {
-      background: #fffaea !important;
+      &[rowspan] {
+        border-right: none;
+      }
     }
 
     .col-add {
       display: flex;
+      justify-content: space-between;
       align-items: center;
+
+      select {
+        width: 123px;
+      }
 
       .icon-plus {
         position: relative;
@@ -482,7 +522,7 @@
 
       .icon-delete {
         position: relative;
-        right: 0;
+        right: -4px;
         background: url("/www/dist/css/images/icon/icon-delete-hover.svg");
       }
 

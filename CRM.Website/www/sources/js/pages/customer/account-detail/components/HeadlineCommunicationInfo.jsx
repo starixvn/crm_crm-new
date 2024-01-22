@@ -343,8 +343,7 @@ export class HeadlineCommunicationInfo extends Component {
                     {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
                 </div>
                 {
-                    headlineCommunicationInfo.length !== 0 &&
-                    <div className='group-btn'>
+                    <div className='group-btn comm-info-btn'>
                         <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
                             {LangHelper.getResource('Save')}
                         </Button>

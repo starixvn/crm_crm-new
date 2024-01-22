@@ -142,7 +142,7 @@ export default class DataGrid extends PureComponent {
                         <div className='show-icon'>
                             {
                                 values.isGroupHeadLine &&
-                                <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-acc-boss.svg')} title='Headline Account' alt='icon acc boss' />
+                                <img className='icon-boss' src={Site.resolveClientUrl('www/dist/css/images/icon/icon-acc-boss.svg')} title='Headline Account' alt='icon acc boss' />
                             }
                             {
                                 values.isVIP &&

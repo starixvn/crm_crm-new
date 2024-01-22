@@ -106,13 +106,6 @@ export class CompanyService extends Component {
             return [
                 <Fragment key={'body'}>
                     {companyService.map((item, indexService) => this.renderRow(item, indexService, settingCommunicationTool))}
-                    {
-                        <div className='group-btn'>
-                            <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
-                                {LangHelper.getResource('Save')}
-                            </Button>
-                        </div>
-                    }
                 </Fragment>
             ];
         }
@@ -198,15 +191,22 @@ export class CompanyService extends Component {
             return null;
         }
         return (
-            <Table
-                width={1005}
-                autoWidth={false}
-                header={this.buildHeader()}
-                body={this.buildBody()}
-                isPaging={false}
-                containerPadding={0}
-                adjustedHeight={10}
-            />
+            <>
+                <Table
+                    width={1005}
+                    autoWidth={false}
+                    header={this.buildHeader()}
+                    body={this.buildBody()}
+                    isPaging={false}
+                    containerPadding={0}
+                    adjustedHeight={10}
+                />
+                <div className='group-btn'>
+                    <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
+                        {LangHelper.getResource('Save')}
+                    </Button>
+                </div>
+            </>
         );
     }
 }
