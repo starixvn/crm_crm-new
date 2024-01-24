@@ -4,10 +4,19 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoFixture;
+    using CRM.BackgroundJob.Criteria.AbnormalBet;
+    using CRM.BackgroundJob.Criteria.ChatBotCWL;
+    using CRM.BackgroundJob.Criteria.RefundSettledTicket;
+    using CRM.BackgroundJob.Criteria.VoidingBetID;
+    using CRM.BackgroundJob.Models;
     using CRM.BackgroundJob.Models.AbnormalBet;
+    using CRM.BackgroundJob.Models.ChatBotCWL;
+    using CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using CRM.BackgroundJob.Models.LicenseeInfo;
     using CRM.BackgroundJob.Models.ProblemsAccount;
+    using CRM.BackgroundJob.Models.RefundSettledTicket;
     using CRM.BackgroundJob.Models.ResultAmendment;
+    using CRM.BackgroundJob.Models.VoidingBetID;
     using CRM.BackgroundJob.Models.WinLossLimit;
     using CRM.BackgroundJob.Services;
     using CRM.BackgroundJob.UnitTests.Testable;
@@ -39,6 +48,7 @@
         private ISendNotificationService sendNotificationService;
         private IRefundSettledTicketService refundSettledTicketService;
         private IVoidingBetIDService voidingBetIDService;
+        private IAbnormalBetService abnormalBetService;
 
         private readonly IFixture fixture = new Fixture();
 
@@ -1082,6 +1092,194 @@
 
         #endregion VoidingSettledTicketsExecuteJobAsync
 
+        #region RefundSettledTicketJobAsync
+        [Fact]
+        public async Task RefundSettledTicketJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_RefundSettledTickets, Constants.DefaultEnvironment).Returns(setting);
+
+            // Act
+            await service.RefundSettledTicketJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Service Refund Settled Tickets is shutdown.");
+        }
+
+        [Fact]
+        public async Task RefundSettledTicketJobAsync_ImportRefundSettledTicketAsyncUnsuccessful_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true };
+            var messageContent = fixture.Create<ValueTuple<IEnumerable<MessageRefundSettledTicket>, IEnumerable<MessageVoidSettled>>>();
+            var commandResult = new CommandResult { Code = 1 };
+            var criteria = fixture.Create<ImportRefundSettledTicketCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportRefundSettledTicketCommand>(commandResult, criteria);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_RefundSettledTickets, Constants.DefaultEnvironment).Returns(setting);
+            refundSettledTicketService.GetMessageRefundSettledTicketAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(messageContent);
+            refundSettledTicketService.ImportRefundSettledTicketAsync(messageContent.Item1, messageContent.Item2, Constants.DefaultEnvironment).Returns(valueTupe);
+
+            // Act
+            await service.RefundSettledTicketJobAsync();
+
+            // Assert
+            logService.Received().LogInformation(valueTupe.Item1.Message);
+            await logService.Received().ErrorAsync(valueTupe.Item1, valueTupe.Item2);
+        }
+
+        [Fact]
+        public async Task RefundSettledTicketJobAsync_ImportRefundSettledTicketAsyncSuccessful_ExpectedToCallScanAndSendMessageToBotEndpointAsync()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true };
+            var messageContent = fixture.Create<ValueTuple<IEnumerable<MessageRefundSettledTicket>, IEnumerable<MessageVoidSettled>>>();
+            var commandResult = new CommandResult { Code = 0 };
+            var criteria = fixture.Create<ImportRefundSettledTicketCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportRefundSettledTicketCommand>(commandResult, criteria);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_RefundSettledTickets, Constants.DefaultEnvironment).Returns(setting);
+            refundSettledTicketService.GetMessageRefundSettledTicketAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(messageContent);
+            refundSettledTicketService.ImportRefundSettledTicketAsync(messageContent.Item1, messageContent.Item2, Constants.DefaultEnvironment).Returns(valueTupe);
+
+            // Act
+            await service.RefundSettledTicketJobAsync();
+
+            // Assert
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
+        }
+        #endregion RefundSettledTicketJobAsync
+
+        #region VoidingBetIDExecuteJobAsync
+        [Fact]
+        public async Task VoidingBetIDExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoVoidBetID, Constants.DefaultEnvironment).Returns(setting);
+
+            // Act
+            await service.VoidingBetIDExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Service VoidBetID is shutdown.");
+        }
+
+        [Fact]
+        public async Task VoidingBetIDExecuteJobAsync_ImportVoidBetIDAsyncUnsuccessful_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true };
+            var messages = fixture.Create<IEnumerable<MessageVoidBetID>>();
+            var cleanMessages = fixture.Create<ValueTuple<IEnumerable<MessageVoidBetID>, int>>();
+            var commandResult = new CommandResult { Code = 1 };
+            var criteria = fixture.Create<ImportVoidBetIDCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportVoidBetIDCommand>(commandResult, criteria);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoVoidBetID, Constants.DefaultEnvironment).Returns(setting);
+            voidingBetIDService.GetMessageVoidBetIDAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(messages);
+            voidingBetIDService.CleanMessageVoidBetIDAsync(messages).Returns(cleanMessages);
+            voidingBetIDService.ImportVoidBetIDAsync(cleanMessages.Item1, Constants.DefaultEnvironment, cleanMessages.Item2).Returns(valueTupe);
+
+            // Act
+            await service.VoidingBetIDExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation(valueTupe.Item1.Message);
+            await logService.Received().ErrorAsync(valueTupe.Item1, valueTupe.Item2);
+        }
+
+        [Fact]
+        public async Task VoidingBetIDExecuteJobAsync_ImportVoidBetIDAsyncSuccessful_ExpectedToCallScanAndSendMessageToBotEndpointAsync()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true };
+            var messages = fixture.Create<IEnumerable<MessageVoidBetID>>();
+            var cleanMessages = fixture.Create<ValueTuple<IEnumerable<MessageVoidBetID>, int>>();
+            var commandResult = new CommandResult { Code = 0 };
+            var criteria = fixture.Create<ImportVoidBetIDCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportVoidBetIDCommand>(commandResult, criteria);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoVoidBetID, Constants.DefaultEnvironment).Returns(setting);
+            voidingBetIDService.GetMessageVoidBetIDAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(messages);
+            voidingBetIDService.CleanMessageVoidBetIDAsync(messages).Returns(cleanMessages);
+            voidingBetIDService.ImportVoidBetIDAsync(cleanMessages.Item1, Constants.DefaultEnvironment, cleanMessages.Item2).Returns(valueTupe);
+
+            // Act
+            await service.VoidingBetIDExecuteJobAsync();
+
+            // Assert
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
+        }
+        #endregion VoidingBetIDExecuteJobAsync
+
+        #region AbnormalBetsExecuteJobAsync
+        [Fact]
+        public async Task AbnormalBetsExecuteJobAsync_ServiceIsShutdown_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = false };
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoAbnormalBets, Constants.DefaultEnvironment).Returns(setting);
+
+            // Act
+            await service.AbnormalBetsExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation("Service AutoFeedback AbnormalBets is shutdown.");
+        }
+
+        [Fact]
+        public async Task AbnormalBetsExecuteJobAsync_ImportAbnormalBetsAsyncUnsuccessful_ExpectedWriteLog()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true };
+            var voidedInfo = fixture.Create<ValueTuple<IEnumerable<VoidedInfo>, IEnumerable<VoidingMessage>, int>>();
+            var messages = fixture.Create<IEnumerable<MessageAbnormelBet>>();
+            var commandResult = new CommandResult { Code = 1 };
+            var criteria = fixture.Create<ImportAbnormalBetCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportAbnormalBetCommand>(commandResult, criteria);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoAbnormalBets, Constants.DefaultEnvironment).Returns(setting);
+            abnormalBetService.GetVoidedInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(voidedInfo);
+            abnormalBetService.GetMessageAbnormalBetAsync(voidedInfo.Item2).Returns(messages);
+            abnormalBetService.ImportAbnormalBetsAsync(messages, voidedInfo.Item1, Constants.DefaultEnvironment, voidedInfo.Item3).Returns(valueTupe);
+
+            // Act
+            await service.AbnormalBetsExecuteJobAsync();
+
+            // Assert
+            logService.Received().LogInformation(valueTupe.Item1.Message);
+            await logService.Received().ErrorAsync(valueTupe.Item1, valueTupe.Item2);
+        }
+
+        [Fact]
+        public async Task AbnormalBetsExecuteJobAsync_ImportAbnormalBetsAsyncSuccessful_ExpectedToCallScanAndSendMessageToBotEndpointAsync()
+        {
+            // Arrange
+            var setting = new SystemSettingInfo { ServiceFlag = true };
+            var voidedInfo = fixture.Create<ValueTuple<IEnumerable<VoidedInfo>, IEnumerable<VoidingMessage>, int>>();
+            var messages = fixture.Create<IEnumerable<MessageAbnormelBet>>();
+            var commandResult = new CommandResult { Code = 0 };
+            var criteria = fixture.Create<ImportAbnormalBetCommand>();
+            var valueTupe = new ValueTuple<CommandResult, ImportAbnormalBetCommand>(commandResult, criteria);
+            var service = GetService();
+            systemSettingService.GetSystemSettingAsync(Constants.ServiceName_AutoAbnormalBets, Constants.DefaultEnvironment).Returns(setting);
+            abnormalBetService.GetVoidedInfoAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(voidedInfo);
+            abnormalBetService.GetMessageAbnormalBetAsync(voidedInfo.Item2).Returns(messages);
+            abnormalBetService.ImportAbnormalBetsAsync(messages, voidedInfo.Item1, Constants.DefaultEnvironment, voidedInfo.Item3).Returns(valueTupe);
+
+            // Act
+            await service.AbnormalBetsExecuteJobAsync();
+
+            // Assert
+            await sendNotificationService.Received().ScanAndSendMessageToBotEndpointAsync();
+        }
+        #endregion AbnormalBetsExecuteJobAsync
+
         #region Helpers
 
         private AutoFeedbackServiceTestable GetService()
@@ -1107,6 +1305,7 @@
             sendNotificationService = Substitute.For<ISendNotificationService>();
             refundSettledTicketService = Substitute.For<IRefundSettledTicketService>();
             voidingBetIDService = Substitute.For<IVoidingBetIDService>();
+            abnormalBetService = Substitute.For<IAbnormalBetService>();
             return Substitute.For<AutoFeedbackServiceTestable>(
                 appJobSettings,
                 jobRunningChecker,
@@ -1123,6 +1322,7 @@
                 sendNotificationService,
                 refundSettledTicketService,
                 voidingBetIDService,
+                abnormalBetService,
                 configuration);
         }
 

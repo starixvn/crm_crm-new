@@ -30,6 +30,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
             ISendNotificationService sendNotificationService,
             IRefundSettledTicketService refundSettledTicketService,
             IVoidingBetIDService voidingBetIDService,
+            IAbnormalBetService abnormalBetService,
             IConfiguration configuration
             )
             : base(appSettings,
@@ -47,6 +48,7 @@ namespace CRM.BackgroundJob.UnitTests.Testable
                 sendNotificationService,
                 refundSettledTicketService,
                 voidingBetIDService,
+                abnormalBetService,
                 configuration)
         {
 
