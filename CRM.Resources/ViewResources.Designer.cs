@@ -232,6 +232,42 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Credit Daily Log Statistics.
+        /// </summary>
+        public static string CreditDailyLogStatistics {
+            get {
+                return ResourceManager.GetString("CreditDailyLogStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit Daily Customer Complaints/Enquiries From.
+        /// </summary>
+        public static string CreditDailyLogStatisticsDetail {
+            get {
+                return ResourceManager.GetString("CreditDailyLogStatisticsDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit_Daily_Customer_Complaints_Enquiries_From.
+        /// </summary>
+        public static string CreditDailyLogStatisticsDetail_FileName {
+            get {
+                return ResourceManager.GetString("CreditDailyLogStatisticsDetail_FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit_Daily_Log_Statistics.
+        /// </summary>
+        public static string CreditDailyLogStatisticsFileName {
+            get {
+                return ResourceManager.GetString("CreditDailyLogStatisticsFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CRM System.
         /// </summary>
         public static string CRMSystem {
@@ -885,42 +921,6 @@ namespace CRM.Resources {
         public static string Master {
             get {
                 return ResourceManager.GetString("Master", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Credit Daily Log Statistics.
-        /// </summary>
-        public static string MBCDailyLogStatistics {
-            get {
-                return ResourceManager.GetString("MBCDailyLogStatistics", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to MBC Daily Customer Complaints/Enquiries From.
-        /// </summary>
-        public static string MBCDailyLogStatisticsDetail {
-            get {
-                return ResourceManager.GetString("MBCDailyLogStatisticsDetail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to MBC_Daily_Customer_Complaints_Enquiries_From.
-        /// </summary>
-        public static string MBCDailyLogStatisticsDetail_FileName {
-            get {
-                return ResourceManager.GetString("MBCDailyLogStatisticsDetail_FileName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Credit_Daily_Log_Statistics.
-        /// </summary>
-        public static string MBCDailyLogStatisticsFileName {
-            get {
-                return ResourceManager.GetString("MBCDailyLogStatisticsFileName", resourceCulture);
             }
         }
         

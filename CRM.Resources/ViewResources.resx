@@ -369,7 +369,7 @@
   <data name="LogStatistics_ExcelTitle" xml:space="preserve">
     <value>{0} | {1} - {2}</value>
   </data>
-  <data name="MBCDailyLogStatistics" xml:space="preserve">
+  <data name="CreditDailyLogStatistics" xml:space="preserve">
     <value>Credit Daily Log Statistics</value>
   </data>
   <data name="LicenseeDailyLogStatistics" xml:space="preserve">
@@ -381,7 +381,7 @@
   <data name="LicenseeDailyLogStatisticsFileName" xml:space="preserve">
     <value>Licensee_Daily_Log_Statistics</value>
   </data>
-  <data name="MBCDailyLogStatisticsFileName" xml:space="preserve">
+  <data name="CreditDailyLogStatisticsFileName" xml:space="preserve">
     <value>Credit_Daily_Log_Statistics</value>
   </data>
   <data name="LogStatisticsDetail" xml:space="preserve">
@@ -399,11 +399,11 @@
   <data name="LogStatisticsDetail_FileName" xml:space="preserve">
     <value>Licensee_Daily_Customer_Complaints_Enquiries_From</value>
   </data>
-  <data name="MBCDailyLogStatisticsDetail" xml:space="preserve">
-    <value>MBC Daily Customer Complaints/Enquiries From</value>
+  <data name="CreditDailyLogStatisticsDetail" xml:space="preserve">
+    <value>Credit Daily Customer Complaints/Enquiries From</value>
   </data>
-  <data name="MBCDailyLogStatisticsDetail_FileName" xml:space="preserve">
-    <value>MBC_Daily_Customer_Complaints_Enquiries_From</value>
+  <data name="CreditDailyLogStatisticsDetail_FileName" xml:space="preserve">
+    <value>Credit_Daily_Customer_Complaints_Enquiries_From</value>
   </data>
   <data name="ChangesLog" xml:space="preserve">
     <value>Changes Log</value>

@@ -14,8 +14,10 @@
     public interface ILogStatisticsService
     {
         Task<LogStatisticsViewModel> GetReportDataAsync(LogStatisticsCriteria criteria);
+
         Task<StatisticsDetailReportByDateModel> GetReportDetailsAsync(LogStatisticsDetailCriteria criteria);
     }
+
     public class LogStatisticsService : ILogStatisticsService
     {
         private readonly IBaseService baseService;
@@ -79,7 +81,7 @@
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
             var reportDetails = await baseService.GetDataAsync<StatisticsDetailbyDateModel>(criteria);
-            foreach(var report in reportDetails)
+            foreach (var report in reportDetails)
             {
                 report.FeedbackDate = commonService.ConvertToClientDateTime(report.FeedbackDate);
                 report.ResolutionDate = commonService.ConvertToClientDateTime(report.ResolutionDate);
@@ -215,7 +217,7 @@
                 switch (siteType)
                 {
                     case LogStatisticConstants.IBC:
-                        return ViewResources.MBCDailyLogStatisticsFileName;
+                        return ViewResources.CreditDailyLogStatisticsFileName;
 
                     case LogStatisticConstants.Licensee:
                         return ViewResources.LicenseeDailyLogStatisticsFileName;
@@ -229,7 +231,7 @@
                 switch (siteType)
                 {
                     case LogStatisticConstants.IBC:
-                        return ViewResources.MBCDailyLogStatistics;
+                        return ViewResources.CreditDailyLogStatistics;
 
                     case LogStatisticConstants.Licensee:
                         return ViewResources.LicenseeDailyLogStatistics;
@@ -247,7 +249,7 @@
                 switch (siteType)
                 {
                     case LogStatisticConstants.IBC:
-                        return ViewResources.MBCDailyLogStatisticsDetail_FileName;
+                        return ViewResources.CreditDailyLogStatisticsDetail_FileName;
 
                     case LogStatisticConstants.Licensee:
                         return ViewResources.LogStatisticsDetail_FileName;
@@ -261,7 +263,7 @@
                 switch (siteType)
                 {
                     case LogStatisticConstants.IBC:
-                        return ViewResources.MBCDailyLogStatisticsDetail;
+                        return ViewResources.CreditDailyLogStatisticsDetail;
 
                     case LogStatisticConstants.Licensee:
                         return ViewResources.LicenseeDailyLogStatisticsDetail;

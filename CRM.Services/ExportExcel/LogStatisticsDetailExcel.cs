@@ -27,7 +27,7 @@
             IEnumerable<Setting> mainCategories, IEnumerable<Setting> communicationTools,
             IEnumerable<Product> products, IEnumerable<Product> subProducts,
             IEnumerable<SettingRelation> extensions
-            ) : base(templatePath, 0, logStatisticsDetail.Id == 0 ? "MBC_Detail" : "Licensee_Detail")
+            ) : base(templatePath, 0, logStatisticsDetail.Id == 0 ? "Credit_Detail" : "Licensee_Detail")
         {
             this.logStatisticsDetail = logStatisticsDetail;
             this.mainCategories = mainCategories;
@@ -53,7 +53,8 @@
         protected internal override void RenderBody(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
         {
             var childReport = logStatisticsDetail.ChildReports.ToList();
-            var childReportOjb = childReport.Select((data, index) => {
+            var childReportOjb = childReport.Select((data, index) =>
+            {
                 templateWorksheet.Cells[RowStartBody, 1, RowStartBody, TotalColumns]
                    .Copy(worksheet.Cells[RowStartBody + index, 1, RowStartBody + index, TotalColumns]);
 
@@ -136,7 +137,6 @@
             var activeSetting = settings.FirstOrDefault(x => x.Id == id && x.IsActive);
             return activeSetting?.Value ?? string.Empty;
         }
-
 
         private static string RemoveHtmlTags(string value)
         {
