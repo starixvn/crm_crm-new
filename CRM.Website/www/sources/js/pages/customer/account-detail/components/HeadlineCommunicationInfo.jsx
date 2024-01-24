@@ -411,7 +411,7 @@ const mapStateToProps = state => {
         getAccountingPicRoles,
         headlinePicRoles,
         accountingPicRoles,
-        settingCommunicationTool } = state;
+        settingCommunicationTool, setActiveTab, activeTab } = state;
     return {
         allSettings,
         customerInfo,
@@ -421,7 +421,7 @@ const mapStateToProps = state => {
         getAccountingPicRoles,
         headlinePicRoles,
         accountingPicRoles,
-        settingCommunicationTool
+        settingCommunicationTool, setActiveTab, activeTab
     };
 };
 

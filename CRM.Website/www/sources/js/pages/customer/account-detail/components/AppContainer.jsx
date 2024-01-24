@@ -26,7 +26,6 @@ export class AppContainer extends Component {
         this.state = {
             updateHeadlineInfoPolicy: null,
             otherAccountCommunication: null,
-            activeTab: 'headlineCommunicationInfo',
             isSubmitting: false,
             titleId: 0,
             firstName: '',
@@ -97,6 +96,10 @@ export class AppContainer extends Component {
       }
 
     async componentDidMount() {
+        this.props.setActiveTab({
+            currentTab: 'headlineCommunicationInfo',
+            nextTab: null
+        })
         await this.props.getAllSettings();
         await this.props.getSettingPicCommunicationTools();
         await this.props.getCustomerById({ customerId: this.props.id });
@@ -116,6 +119,28 @@ export class AppContainer extends Component {
             })
         });
         document.title = LangHelper.getResource('CRMSystem');
+    }
+
+    componentDidUpdate(nextProps, nextState) {
+        const { activeTab } = this.props;
+        if (activeTab.nextTab === 'headlineCommunicationInfo') {
+            this.props.setActiveTab({
+                currentTab: activeTab.nextTab,
+                nextTab: null
+            });
+        }
+        if (activeTab.nextTab === 'headlineStaffsAndAuthority') {
+            this.props.setActiveTab({
+                currentTab: activeTab.nextTab,
+                nextTab: null
+            });
+        }
+        if (activeTab.nextTab === 'companyService') {
+            this.props.setActiveTab({
+                currentTab: activeTab.nextTab,
+                nextTab: null
+            });
+        }
     }
 
     handleSubmitAccountInfo = () => {
@@ -145,8 +170,10 @@ export class AppContainer extends Component {
     };
 
     handleTabClick = (tabName) => {
-        this.setState({ activeTab: tabName });
-        this.props.setErrors(null);
+        this.props.setActiveTab({
+            currentTab: this.props.activeTab.currentTab,
+            nextTab: tabName
+        })
     };
 
     handleChangeCountry = item => {
@@ -529,7 +556,7 @@ export class AppContainer extends Component {
     }
 
     renderHeadlineAccount = () => {
-        const { allSettings, customerInfo } = this.props;
+        const { allSettings, customerInfo, activeTab } = this.props;
         const values = this.state;
         const updatePolicy = this.state.updateHeadlineInfoPolicy;
         const canEditHeadline = updatePolicy === Policy.Host;
@@ -550,15 +577,15 @@ export class AppContainer extends Component {
                 }
                 <div className='headline-info'>
                     <div className="tab-title">
-                        <div className={`tab-child ${values.activeTab === 'headlineCommunicationInfo' ? 'active' : ''}`}
+                        <div className={`tab-child ${activeTab.currentTab === 'headlineCommunicationInfo' ? 'active' : ''}`}
                             onClick={() => this.handleTabClick('headlineCommunicationInfo')}>
                             Headline Communication info
                         </div>
-                        <div className={`tab-child ${values.activeTab === 'headlineStaffsAndAuthority' ? 'active' : ''}`}
+                        <div className={`tab-child ${activeTab.currentTab === 'headlineStaffsAndAuthority' ? 'active' : ''}`}
                             onClick={() => this.handleTabClick('headlineStaffsAndAuthority')}>
                             Headline Staffs And Authority
                         </div>
-                        <div className={`tab-child ${values.activeTab === 'companyService' ? 'active' : ''}`}
+                        <div className={`tab-child ${activeTab.currentTab === 'companyService' ? 'active' : ''}`}
                             onClick={() => this.handleTabClick('companyService')}>
                             Company Service
                         </div>
@@ -566,15 +593,15 @@ export class AppContainer extends Component {
                     <div className='tab-content'>
                         <div>
                             {
-                                values.activeTab === 'headlineCommunicationInfo' &&
+                                activeTab.currentTab === 'headlineCommunicationInfo' &&
                                 <HeadlineCommunicationInfo />
                             }
                             {
-                                values.activeTab === 'headlineStaffsAndAuthority' &&
+                                activeTab.currentTab === 'headlineStaffsAndAuthority' &&
                                 <HeadlineStaffsAndAuthority />
                             }
                             {
-                                values.activeTab === 'companyService' &&
+                                activeTab.currentTab === 'companyService' &&
                                 <CompanyService />
                             }
                         </div>
@@ -606,8 +633,8 @@ export class AppContainer extends Component {
     }
 
     render() {
-        const { allSettings, customerInfo, errors } = this.props;
-        if (!allSettings || !customerInfo) {
+        const { allSettings, customerInfo, errors, activeTab } = this.props;
+        if (!allSettings || !customerInfo || !activeTab.currentTab) {
             return null;
         }
         return (
@@ -631,8 +658,8 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, customerInfo, settingCommunicationTool, errors, editCustomerInfoDetailResult, setErrors } = state;
-    return { allSettings, customerInfo, settingCommunicationTool, errors, editCustomerInfoDetailResult, setErrors };
+    const { allSettings, customerInfo, settingCommunicationTool, errors, editCustomerInfoDetailResult, setErrors, setActiveTab, activeTab } = state;
+    return { allSettings, customerInfo, settingCommunicationTool, errors, editCustomerInfoDetailResult, setErrors, setActiveTab, activeTab };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

@@ -14,7 +14,7 @@ namespace CRM.Criteria.Customer
         public string IP { get; set; }
 
         [SpParam(Ignored = true)]
-        public IEnumerable<StaffsAndAuthority> HeadlineStaffsAndAuthority { get; set; }
+        public IEnumerable<StaffAndAuthority> HeadlineStaffsAndAuthority { get; set; }
         public string StaffAndAuthority => XMLIO.ToXML(HeadlineStaffsAndAuthority, "ROOT").ToString();
 
         public override string GetSettingKey() => "Acc_CRM_NewAccDetail_UpdHeadlineStaffAndAuthority";

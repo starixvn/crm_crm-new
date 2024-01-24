@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
+    activeTab: {
+        currentTab: null,
+        nextTab: null
+    },
     customerInfo: null,
     headlinePicRoles: null,
     accountingPicRoles: null,
@@ -49,6 +53,9 @@ const accountDetailSlice = createSlice({
         },
         setSettingPicRole: (state, action) => {
             state.settingPicRole = action.payload;
+        },
+        setActiveTab: (state, action) => {
+            state.activeTab = action.payload;
         }
     }
 });
@@ -67,7 +74,8 @@ export const {
     setHeadlineCompanyService,
     setHeadlineStaffsAndAuthority,
     setSettingStaffAndAuthority,
-    setSettingPicRole
+    setSettingPicRole,
+    setActiveTab
 } = actions;
 
 export default reducer;

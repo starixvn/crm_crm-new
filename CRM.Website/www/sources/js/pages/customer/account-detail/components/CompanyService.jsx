@@ -214,8 +214,8 @@ export class CompanyService extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, customerInfo, getHeadlineCompanyService, settingCommunicationTool, headlineCompanyService } = state;
-    return { allSettings, customerInfo, getHeadlineCompanyService, settingCommunicationTool, headlineCompanyService };
+    const { allSettings, customerInfo, getHeadlineCompanyService, settingCommunicationTool, headlineCompanyService, setActiveTab, activeTab } = state;
+    return { allSettings, customerInfo, getHeadlineCompanyService, settingCommunicationTool, headlineCompanyService, setActiveTab, activeTab };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompanyService);
