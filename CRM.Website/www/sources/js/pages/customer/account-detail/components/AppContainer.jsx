@@ -18,6 +18,7 @@ import { changeSiteSetting, hasHostPermissionOnCurrentCustomer, getPermission } 
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -100,6 +101,7 @@ export class AppContainer extends Component {
             currentTab: 'headlineCommunicationInfo',
             nextTab: null
         })
+        this.props.setErrors(null);
         await this.props.getAllSettings();
         await this.props.getSettingPicCommunicationTools();
         await this.props.getCustomerById({ customerId: this.props.id });
@@ -119,28 +121,6 @@ export class AppContainer extends Component {
             })
         });
         document.title = LangHelper.getResource('CRMSystem');
-    }
-
-    componentDidUpdate(nextProps, nextState) {
-        const { activeTab } = this.props;
-        if (activeTab.nextTab === 'headlineCommunicationInfo') {
-            this.props.setActiveTab({
-                currentTab: activeTab.nextTab,
-                nextTab: null
-            });
-        }
-        if (activeTab.nextTab === 'headlineStaffsAndAuthority') {
-            this.props.setActiveTab({
-                currentTab: activeTab.nextTab,
-                nextTab: null
-            });
-        }
-        if (activeTab.nextTab === 'companyService') {
-            this.props.setActiveTab({
-                currentTab: activeTab.nextTab,
-                nextTab: null
-            });
-        }
     }
 
     handleSubmitAccountInfo = () => {
@@ -632,8 +612,30 @@ export class AppContainer extends Component {
             </>);
     }
 
+    handleClosePopup = () => {
+        const { activeTab } = this.props;
+        if (activeTab.nextTab === 'headlineCommunicationInfo' ||
+            activeTab.nextTab === 'headlineStaffsAndAuthority' ||
+            activeTab.nextTab === 'companyService') {
+            this.props.setActiveTab({
+                currentTab: activeTab.nextTab,
+                nextTab: null
+            });
+        }
+        this.props.setShowConfirmUnSaved(false);
+        this.props.setErrors(null);
+    };
+
+    handleCloseConfirm = () => {
+        this.props.setShowConfirmUnSaved(false);
+        this.props.setActiveTab({
+            currentTab: this.props.activeTab.currentTab,
+            nextTab: null
+        });
+    };
+
     render() {
-        const { allSettings, customerInfo, errors, activeTab } = this.props;
+        const { allSettings, customerInfo, errors, activeTab, showConfirmUnSaved } = this.props;
         if (!allSettings || !customerInfo || !activeTab.currentTab) {
             return null;
         }
@@ -650,6 +652,19 @@ export class AppContainer extends Component {
                     customerInfo.isGroupHeadLine &&
                     this.renderHeadlineAccount()
                 }
+                {
+                    showConfirmUnSaved &&
+                    <ConfirmPopup
+                        title={LangHelper.getResource('Confirmation')}
+                        className='pic-management-modal'
+                        content={
+                            <div>{LangHelper.getResource('ConfirmDirtyMessage')}</div>
+                        }
+                        size='lg'
+                        onSubmit={this.handleClosePopup}
+                        onClose={this.handleCloseConfirm}
+                    />
+                }
             </>
         );
     }    
@@ -658,8 +673,27 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, customerInfo, settingCommunicationTool, errors, editCustomerInfoDetailResult, setErrors, setActiveTab, activeTab } = state;
-    return { allSettings, customerInfo, settingCommunicationTool, errors, editCustomerInfoDetailResult, setErrors, setActiveTab, activeTab };
+    const {
+        allSettings,
+        customerInfo,
+        settingCommunicationTool,
+        errors,
+        editCustomerInfoDetailResult,
+        setErrors,
+        setActiveTab,
+        activeTab,
+        showConfirmUnSaved } = state;
+    return {
+        allSettings,
+        customerInfo,
+        settingCommunicationTool,
+        errors,
+        editCustomerInfoDetailResult,
+        setErrors,
+        setActiveTab,
+        activeTab,
+        showConfirmUnSaved
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

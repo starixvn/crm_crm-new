@@ -26,10 +26,30 @@ export class HeadlineStaffsAndAuthority extends Component {
         await this.props.getHeadlineStaffsAndAuthority({ headlineID: this.props.customerInfo.custId });
         await this.props.getStaffAndAuthority();
         await this.props.getSettingPicRole();
-        this.getHeadlineStaffsAndAuthorityInfo(this.props.headlineStaffsAndAuthority);
+        const headlineStaffsAndAuthority = this.getHeadlineStaffsAndAuthorityInfo(this.props.headlineStaffsAndAuthority);
+        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ headlineInfoPolicy: response });
         });
+    }
+
+    componentDidUpdate() {
+        const { activeTab, headlineStaffsAndAuthority } = this.props;
+        const initialValues = this.getHeadlineStaffsAndAuthorityInfo(headlineStaffsAndAuthority);
+        if (!this.state.headlineStaffsAndAuthority || !initialValues) {
+            return null;
+        }
+        if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'companyService') {
+            if (JSON.stringify(this.state.headlineStaffsAndAuthority).toString() === JSON.stringify(initialValues).toString()) {
+                this.props.setShowConfirmUnSaved(false);
+                this.props.setActiveTab({
+                    currentTab: activeTab.nextTab,
+                    nextTab: null
+                });
+            } else {
+                this.props.setShowConfirmUnSaved(true);
+            }
+        }
     }
 
     getHeadlineStaffsAndAuthorityInfo = value => {
@@ -64,7 +84,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                 });
             }
         });
-        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+        return headlineStaffsAndAuthority;
     }  
 
     handleSubmit = async () => {
@@ -508,7 +528,10 @@ const mapStateToProps = state => {
         settingStaffAndAuthority,
         getSettingPicRole,
         settingPicRole,
-        settingCommunicationTool, setActiveTab, activeTab
+        settingCommunicationTool,
+        setActiveTab,
+        activeTab,
+        setShowConfirmUnSaved
     } = state;
     return {
         allSettings,
@@ -519,7 +542,10 @@ const mapStateToProps = state => {
         settingStaffAndAuthority,
         getSettingPicRole,
         settingPicRole,
-        settingCommunicationTool, setActiveTab, activeTab
+        settingCommunicationTool,
+        setActiveTab,
+        activeTab,
+        setShowConfirmUnSaved
     };
 };
 

@@ -14,7 +14,8 @@ const initialState = {
     headlineCompanyService: null,
     headlineStaffsAndAuthority: null,
     settingStaffAndAuthority: null,
-    settingPicRole: null
+    settingPicRole: null,
+    showConfirmUnSaved: false
 };
 const accountDetailSlice = createSlice({
     name: 'customerInfoDetail',
@@ -56,6 +57,9 @@ const accountDetailSlice = createSlice({
         },
         setActiveTab: (state, action) => {
             state.activeTab = action.payload;
+        },
+        setShowConfirmUnSaved: (state, action) => {
+            state.showConfirmUnSaved = action.payload;
         }
     }
 });
@@ -75,7 +79,8 @@ export const {
     setHeadlineStaffsAndAuthority,
     setSettingStaffAndAuthority,
     setSettingPicRole,
-    setActiveTab
+    setActiveTab,
+    setShowConfirmUnSaved
 } = actions;
 
 export default reducer;

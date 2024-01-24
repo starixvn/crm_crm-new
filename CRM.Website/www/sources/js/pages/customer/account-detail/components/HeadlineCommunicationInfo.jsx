@@ -24,10 +24,31 @@ export class HeadlineCommunicationInfo extends Component {
         };
     }
 
+    componentDidUpdate() {
+        const { activeTab, customerInfo } = this.props;
+        const initialValues = this.getHeadlineCommunicationInfo(customerInfo);
+        if (!this.state.headlineCommunicationInfo || !initialValues) {
+            return null;
+        }
+        if (activeTab.nextTab === 'headlineStaffsAndAuthority' || activeTab.nextTab === 'companyService') {
+            if (JSON.stringify(this.state.headlineCommunicationInfo).toString() === JSON.stringify(initialValues).toString()) {
+                this.props.setShowConfirmUnSaved(false);
+                this.props.setActiveTab({
+                    currentTab: activeTab.nextTab,
+                    nextTab: null
+                });
+            } else {
+                this.props.setShowConfirmUnSaved(true);
+            }
+        }
+    }
+
     async componentDidMount() {
         await this.props.getHeadlinePicRoles(HeadlinePicID);
         await this.props.getAccountingPicRoles(AccountingPicID);
-        this.getHeadlineCommunicationInfo(this.props.customerInfo);
+        const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
+        this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        this.props.setShowConfirmUnSaved(false);
     }
 
     getHeadlineCommunicationInfo = customerInfo => {
@@ -61,7 +82,7 @@ export class HeadlineCommunicationInfo extends Component {
                 isRoleError: false
             });
         });
-        this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        return headlineCommunicationInfo;
     }   
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
@@ -411,7 +432,10 @@ const mapStateToProps = state => {
         getAccountingPicRoles,
         headlinePicRoles,
         accountingPicRoles,
-        settingCommunicationTool, setActiveTab, activeTab } = state;
+        settingCommunicationTool,
+        setActiveTab,
+        activeTab,
+        setShowConfirmUnSaved } = state;
     return {
         allSettings,
         customerInfo,
@@ -421,7 +445,10 @@ const mapStateToProps = state => {
         getAccountingPicRoles,
         headlinePicRoles,
         accountingPicRoles,
-        settingCommunicationTool, setActiveTab, activeTab
+        settingCommunicationTool,
+        setActiveTab,
+        activeTab,
+        setShowConfirmUnSaved
     };
 };
 

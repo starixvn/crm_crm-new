@@ -19,7 +19,7 @@ export class CompanyService extends Component {
         };
     }
     async componentDidMount() {
-        await this.props.getHeadlineCompanyService({ headlineID: this.props.customerInfo.custId });
+        await this.props.getHeadlineCompanyService({ headlineID: this.props.customerInfo?.custId });
         this.setState({
             companyService: this.props.headlineCompanyService.item1.map(item => {
                 return {
@@ -35,6 +35,37 @@ export class CompanyService extends Component {
             }),
             chatTypeMapping: this.props.headlineCompanyService.item2
         });
+    }
+
+    componentDidUpdate() {
+        const { activeTab, headlineCompanyService } = this.props;
+        const initialValues = headlineCompanyService.item1.map(item => {
+            return {
+                headlineID: item.headlineID,
+                companyServiceID: item.companyServiceID,
+                companyServiceName: item.companyServiceName,
+                isOffered: item.isOffered,
+                communicationID: item.communicationID,
+                communiationName: item.communiationName,
+                communicationValue: item.communicationValue,
+                isError: false
+            }
+        });
+        if (!this.state.companyService || !initialValues) {
+            return null;
+        }
+
+        if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'headlineStaffsAndAuthority') {
+            if (JSON.stringify(this.state.companyService).toString() === JSON.stringify(initialValues).toString()) {
+                this.props.setShowConfirmUnSaved(false);
+                this.props.setActiveTab({
+                    currentTab: activeTab.nextTab,
+                    nextTab: null
+                });
+            } else {
+                this.props.setShowConfirmUnSaved(true);
+            }
+        }
     }
 
     validateCommunicationTool = () => {
@@ -214,8 +245,25 @@ export class CompanyService extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { allSettings, customerInfo, getHeadlineCompanyService, settingCommunicationTool, headlineCompanyService, setActiveTab, activeTab } = state;
-    return { allSettings, customerInfo, getHeadlineCompanyService, settingCommunicationTool, headlineCompanyService, setActiveTab, activeTab };
+    const {
+        allSettings,
+        customerInfo,
+        getHeadlineCompanyService,
+        settingCommunicationTool,
+        headlineCompanyService,
+        setActiveTab,
+        activeTab,
+        setShowConfirmUnSaved } = state;
+    return {
+        allSettings,
+        customerInfo,
+        getHeadlineCompanyService,
+        settingCommunicationTool,
+        headlineCompanyService,
+        setActiveTab,
+        activeTab,
+        setShowConfirmUnSaved
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompanyService);

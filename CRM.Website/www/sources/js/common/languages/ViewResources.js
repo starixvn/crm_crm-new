@@ -73,6 +73,7 @@
     ConfirmEditContent: 'Are you sure you want to update {0} of {1}?',
     ConfirmMultipleUpdates: 'Confirm Multiple Updates',
     ConfirmCreateNewMessageSMA: 'Are you sure you want to send this personal message to {0}?',
+    ConfirmUnsaved: 'You have made some changes, are you sure you want to leave this page?',
     Communication: 'Communication ',
     CommunicationLogDetail: 'Communication Log Detail',
     CommunicationInfo: 'Communication Info',

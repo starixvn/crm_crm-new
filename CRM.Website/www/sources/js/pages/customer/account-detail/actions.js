@@ -14,7 +14,8 @@ import {
     setHeadlineStaffsAndAuthority,
     setSettingStaffAndAuthority,
     setSettingPicRole,
-    setActiveTab
+    setActiveTab,
+    setShowConfirmUnSaved
 } from './accountDetailSlice';
 
 const getCustomerById = params => async dispatch => {
@@ -110,5 +111,6 @@ export const ActionCreators = {
     getHeadlineStaffsAndAuthority,
     getStaffAndAuthority,
     getSettingPicRole,
-    setActiveTab
+    setActiveTab,
+    setShowConfirmUnSaved
 };
