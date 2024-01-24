@@ -222,7 +222,7 @@ export class CompanyService extends Component {
             return null;
         }
         return (
-            <>
+            < div className='company-service'>
                 <Table
                     width={1005}
                     autoWidth={false}
@@ -237,7 +237,7 @@ export class CompanyService extends Component {
                         {LangHelper.getResource('Save')}
                     </Button>
                 </div>
-            </>
+            </div>
         );
     }
 }

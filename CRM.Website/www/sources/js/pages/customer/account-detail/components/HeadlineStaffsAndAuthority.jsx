@@ -151,7 +151,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                     </Button>
                 }
                 <Table
-                    width={1504}
+                    width={1495}
                     autoWidth={false}
                     header={this.buildHeader()}
                     body={this.buildBody()}
