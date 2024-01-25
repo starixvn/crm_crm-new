@@ -218,7 +218,7 @@
         <Setting Key="Acc_CRM_RelatedCustomerVerify" SpName="Acc_CRM_RelatedCustomerVerify_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerSelUserSearch" SpName="Acc_CRM_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CheckDirectAccount" SpName="Acc_CRM_CheckDirectAccount" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_CustomerSel_New" SpName="Acc_CRM_CustomerSel_New" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+        <Setting Key="Acc_CRM_CustomerSel_New" SpName="Acc_CRM_CustomerSel_New_xpre" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="Wire_BankName" ObjectProperty="BankName" />
             <Mapping DataField="Wire_SwiftCode" ObjectProperty="BankSwiftCode" />
             <Mapping DataField="Wire_AccountName" ObjectProperty="BankAccountName" />
