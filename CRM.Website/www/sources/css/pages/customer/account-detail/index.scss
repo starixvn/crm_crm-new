@@ -351,6 +351,16 @@
 .company-service .table-container {
   max-width: 1022px !important;
   max-height: 400px;
+
+  .autocomplete-items-container {
+    position: fixed;
+    z-index: 9999;
+    width: 290px;
+
+    .autocomplete-items {
+      position: relative;
+    }
+  }
 }
 
 .table-container {
