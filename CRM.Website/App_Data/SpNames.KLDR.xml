@@ -87,6 +87,10 @@
             <Mapping DataField="SiteId" ObjectProperty="Id" Class="SiteInfo" />
             <Mapping DataField="SiteName" ObjectProperty="Name" Class="SiteInfo" />
         </Setting>
+        <Setting Key="Acc_CRM_SiteSel_InformHeadline" SpName="Acc_CRM_SiteSel_InformHeadline" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+            <Mapping DataField="SiteId" ObjectProperty="Id" Class="SiteInfo" />
+            <Mapping DataField="SiteName" ObjectProperty="Name" Class="SiteInfo" />
+        </Setting>
         <Setting Key="Acc_CRM_StatusList" SpName="Acc_CRM_StatusList" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_BetTypeList" SpName="Acc_CRM_BetTypeList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="BetTypeId" ObjectProperty="Id" Class="Product" />
@@ -207,7 +211,9 @@
             <Mapping DataField="danger2" ObjectProperty="ABTDangerLevel" />
             <Mapping DataField="danger3" ObjectProperty="OtherSportsDangerLevel" />
         </Setting>
-        <Setting Key="Acc_CRM_CustomerCheckSiteType" SpName="Acc_CRM_CustomerCheckSiteType" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_CustomerCheckSiteType" SpName="Acc_CRM_CustomerCheckSiteType" DbName="DBCRM.bodb_CRM.bodbAdminNet">
+            <Mapping DataField="SiteType" ObjectProperty="CustomerType" class="CustomerPermissionInfo" />
+        </Setting>
         <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="CustStatus" ObjectProperty="Status" />
         </Setting>

@@ -66,7 +66,6 @@
             return Json(permission);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> ExportInforms()
         {
@@ -131,7 +130,7 @@
             {
                 Currencies = await settingService.GetCurrencyAsync(),
                 ProductStatuses = await settingService.GetStatusAsync(ViewTypeConstants.InformHeadline),
-                Sites = await settingService.GetAllSitesWithGroupAsync(),
+                Sites = await settingService.GetAllSitesWithGroupInformHeadlineAsync(),
                 Stations = await settingService.GetStations(),
                 Statuses = await informHeadlineService.GetInformStatusesAsync()
             };

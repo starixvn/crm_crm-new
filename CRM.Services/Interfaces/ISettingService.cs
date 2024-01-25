@@ -25,6 +25,8 @@
 
         Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupAsync(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All);
 
+        Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupInformHeadlineAsync();
+
         Task<IEnumerable<SiteInfo>> GetAllSitesGroupByIsLicenseeAsync(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All);
 
         Task<IEnumerable<SiteInfo>> GetAllSitesLicenseeInactive(short userRole = Constants.UserRole, short licenseeType = LicenseeTypeConstants.All);

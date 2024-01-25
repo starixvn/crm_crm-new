@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Services;
+    using CRM.Criteria.InformHeadline;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Criteria.Setting;
     using CRM.Models;
@@ -311,6 +312,30 @@
         {
             var siteLabels = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var sites = await baseService.GetDataAsync<SiteInfo>(new GetAllSiteCriteria { LicenseeType = licenseeType, UserRole = userRole, SitePermission = siteLabels });
+
+            var allSites = (from n in sites
+                            where n.IsActive
+                            group n by n.IsLicensee into g
+                            orderby g.Key
+                            select new SiteInfo
+                            {
+                                Id = g.Key ? SiteConstants.LicenseeGroup : SiteConstants.IBCGroup,
+                                Name = g.Key ? Constants.Licensee : Constants.Credit,
+                                ChildSites = (from c in g
+                                              orderby c.SiteLabel
+                                              group c by c.SiteLabel into s
+                                              select new SiteInfo
+                                              {
+                                                  Name = s.Key,
+                                                  ChildSites = s.ToList()
+                                              }).ToList()
+                            }).ToList();
+            return allSites;
+        }
+
+        public async Task<IEnumerable<SiteInfo>> GetAllSitesWithGroupInformHeadlineAsync()
+        {
+            var sites = await baseService.GetDataAsync<SiteInfo>(new GetSiteOnInformHeadlineCriteria());
 
             var allSites = (from n in sites
                             where n.IsActive
