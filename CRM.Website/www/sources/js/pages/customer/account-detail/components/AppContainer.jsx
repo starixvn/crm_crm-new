@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import HeadlineStaffsAndAuthority from './HeadlineStaffsAndAuthority';
 import HeadlineCommunicationInfo from './HeadlineCommunicationInfo';
 import CompanyService from './CompanyService';
-import { Button, Form, Alert, Col } from 'react-bootstrap';
+import { Button, Form, Alert } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';

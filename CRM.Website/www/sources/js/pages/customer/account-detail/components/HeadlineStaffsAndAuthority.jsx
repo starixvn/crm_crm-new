@@ -174,7 +174,7 @@ export class HeadlineStaffsAndAuthority extends Component {
     handleAddNewRow = () => {
         const errors = this.validateHeadlineStaffAndAuthority();
         if (errors === null) {
-            const { headlineStaffsAndAuthority } = this.state;
+            let { headlineStaffsAndAuthority } = this.state;
             headlineStaffsAndAuthority.push({
                 picID: null,
                 picName: null,
@@ -196,16 +196,20 @@ export class HeadlineStaffsAndAuthority extends Component {
     };
 
     handleAddTool = (indexStaff) => {
-        const { headlineStaffsAndAuthority } = this.state;
-        headlineStaffsAndAuthority[indexStaff].communicationTools.push({
-            picCommunicationID: 0,
-            picCommunicationName: null,
-            picCommunicationValue: null,
-            authorityID: '',
-            authority: '',
-            remark: ''
-        });
-        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+        //const errors = this.validateHeadlineStaffAndAuthority();
+        //if (errors === null) {
+            let { headlineStaffsAndAuthority } = this.state;
+            headlineStaffsAndAuthority[indexStaff].communicationTools.push({
+                rowID: -1,
+                picCommunicationID: 0,
+                picCommunicationName: null,
+                picCommunicationValue: null,
+                authorityID: '',
+                authority: '',
+                remark: ''
+            });
+            this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+        //}
     };
 
     handleDeleteTool = (indexCom, indexStaff) => {
@@ -260,7 +264,6 @@ export class HeadlineStaffsAndAuthority extends Component {
         const { headlineStaffsAndAuthority } = this.state;
         headlineStaffsAndAuthority[staffIndex][name] = value;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        this.validateHeadlineStaffAndAuthority()
     }
 
     handleChangeRole = (value, staffIndex) => {
@@ -269,7 +272,6 @@ export class HeadlineStaffsAndAuthority extends Component {
         headlineStaffsAndAuthority[staffIndex].picRoleID = value;
         headlineStaffsAndAuthority[staffIndex].picRoleName = comTool.settingValue;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        this.validateHeadlineStaffAndAuthority()
     }
 
     handleChangeCommunicationID = (value, indexPicCommunicationTool, staffIndex) => {
@@ -278,7 +280,6 @@ export class HeadlineStaffsAndAuthority extends Component {
         headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool].picCommunicationID = value;
         headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool].picCommunicationName = comTool.settingValue;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        this.validateHeadlineStaffAndAuthority()
     }
 
     handleChangeAuthorityID = (value, indexPicCommunicationTool, indexStaff) => {
@@ -287,14 +288,12 @@ export class HeadlineStaffsAndAuthority extends Component {
         headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authorityID = value;
         headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authority = authorityTool ? authorityTool.settingValue : '';
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        this.validateHeadlineStaffAndAuthority()
     }
 
     handleChangeCommunicationValue = (name, value, indexPicCommunicationTool, staffIndex) => {
         const { headlineStaffsAndAuthority } = this.state;
         headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool][name] = value;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        this.validateHeadlineStaffAndAuthority()
     }
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
@@ -310,7 +309,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         });
         return (
             <>
-                <Row className='row-add'>
+                <Row key={`${staff.communicationTools[0].rowID + indexStaff}`} className='row-add'>
                     {
                         staff.isSyncFromPicTable &&
                         <>
@@ -324,9 +323,10 @@ export class HeadlineStaffsAndAuthority extends Component {
                         !staff.isSyncFromPicTable &&
                         <>
                             <Cell rowSpan={staff.communicationTools.length}>
-                                <Form.Control type="text" className={staff.isErrorPicName && 'invalid'} onChange={event => {
+                                <Form.Control type="text" name="" className={staff.communicationTools[0].isErrorPicCommunication && 'invalid'} onChange={event => {
                                     this.handleChangeValue('picName', event.target.value, indexStaff);
-                                }} value={staff.picName} autoComplete="off" />
+                                }}
+                                    value={staff.picName} autoComplete="off" />
                             </Cell>
                             <Cell rowSpan={staff.communicationTools.length}>
                                 <Form.Control as="select" className={staff.isErrorPicRoleID && 'invalid'} size="sm" value={staff.picRoleID}
@@ -407,7 +407,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                         });
                         if (indexCom !== 0) {
                             return (
-                                <Row key={`${value.rowID}`} class="row-add">
+                                <Row key={`${value.rowID + indexCom}`} class="row-add">
                                     {
                                         staff.isSyncFromPicTable &&
                                         <>
@@ -490,7 +490,7 @@ export class HeadlineStaffsAndAuthority extends Component {
     renderRow = (item) => {
         return (
             <>
-                <Row key={item.picID} className='row-staff-authority'>
+                <Row key={item.rowID} className='row-staff-authority'>
                     <Cell rowSpan={item.communicationTools.length}>{item.picName}</Cell>
                     <Cell rowSpan={item.communicationTools.length} className='text-center'>{item.picRoleName}</Cell>
                     <Cell>{item.communicationTools[0].picCommunicationName}</Cell>
@@ -502,7 +502,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                     item.communicationTools.map((value, index) => {
                         if (index !== 0) {
                             return (
-                                <Row key={`${item.picID}-${value.picCommunicationName}`} className='row-staff-authority row-child'>
+                                <Row key={`${staff.rowID}-${staff.picID}-${staff.picName}-${value.picCommunicationID}`} className='row-staff-authority row-child'>
                                     <Cell>{value.picCommunicationName}</Cell>
                                     <Cell>{value.picCommunicationValue}</Cell>
                                     <Cell>{value.authorityID}</Cell>

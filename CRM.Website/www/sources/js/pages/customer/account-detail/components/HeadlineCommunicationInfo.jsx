@@ -210,13 +210,16 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     addNewCommunicationTool = indexPic => {
-        let { headlineCommunicationInfo } = this.state;
-        headlineCommunicationInfo[indexPic].picCommunicationTools.push({
-            type: '',
-            value: '',
-            isError: false
-        });
-        this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        const error = this.validateCommunicationInfo();
+        if (!error) {
+            let { headlineCommunicationInfo } = this.state;
+            headlineCommunicationInfo[indexPic].picCommunicationTools.push({
+                type: '',
+                value: '',
+                isError: false
+            });
+            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        }
     }
 
     handleChangeCountryValue = (item, indexPic) => {
