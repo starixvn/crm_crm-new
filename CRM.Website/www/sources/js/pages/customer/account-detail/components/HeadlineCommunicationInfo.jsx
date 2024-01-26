@@ -363,7 +363,7 @@ export class HeadlineCommunicationInfo extends Component {
         }
         return (
             <>
-                <div className='custom-scrollbar'>
+                <div className={`${headlineCommunicationInfo.length < 3 && 'custom-dropdown'} custom-scrollbar`}>
                     {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
                 </div>
                 {
