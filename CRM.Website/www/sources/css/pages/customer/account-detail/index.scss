@@ -238,6 +238,10 @@
       top: initial;
       left: initial;
       width: 200px;
+
+      .tree {
+        max-height: 260px;
+      }
     }
 
     .custom-scrollbar {
@@ -521,11 +525,15 @@
   .fix-table-container {
     border-right: none;
 
-    .fix-table table tbody tr td:last-child {
-      border-right: 1px solid #b7b7b7;
+    .fix-table {
+      max-height: 300px !important;
 
-      &[rowspan] {
-        border-right: none;
+      table tbody tr td:last-child {
+        border-right: 1px solid #b7b7b7;
+
+        &[rowspan] {
+          border-right: none;
+        }
       }
     }
 
