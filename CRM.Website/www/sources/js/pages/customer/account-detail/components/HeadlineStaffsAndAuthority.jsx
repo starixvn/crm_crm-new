@@ -150,15 +150,17 @@ export class HeadlineStaffsAndAuthority extends Component {
                         {LangHelper.getResource('Add')}
                     </Button>
                 }
-                <Table
-                    width={1495}
-                    autoWidth={false}
-                    header={this.buildHeader()}
-                    body={this.buildBody()}
-                    isPaging={false}
-                    containerPadding={0}
-                    adjustedHeight={10}
-                />
+                <div className={`${headlineStaffsAndAuthority.length < 3 && 'table-inTab'}`}>
+                    <Table
+                        width={1495}
+                        autoWidth={false}
+                        header={this.buildHeader()}
+                        body={this.buildBody()}
+                        isPaging={false}
+                        containerPadding={0}
+                        adjustedHeight={10}
+                    />
+                </div>
                 {
                     headlineInfoPolicy === 2 &&
                     <div className='group-btn'>
@@ -365,7 +367,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                             </Cell>
                         </>
                     }
-                    <Cell>
+                    <Cell className="col-authority">
                         <MultipleSelect
                             dataSource={authorityFirstSelected}
                             keyField='authorityId'
@@ -444,7 +446,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                                             </Cell>
                                         </>
                                     }
-                                    <Cell>
+                                    <Cell className="col-authority">
                                         <MultipleSelect
                                             dataSource={authoritySelected}
                                             keyField='authorityId'
