@@ -4,13 +4,14 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import LangHelper from '@jsroot/common/langHelper';
 import { Form, Button } from 'react-bootstrap';
-import { HeadlinePicID, AccountingPicID, Letstalk, Telegram } from '@jsroot/common/constants';
+import { HeadlinePicID, AccountingPicID, Letstalk, Telegram, Policy, FunctionKey } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { toast } from 'react-toastify';
+import { getPermission } from '@jsroot/common/shareScripts';
 
 export class HeadlineCommunicationInfo extends Component {
     constructor(props) {
@@ -20,12 +21,18 @@ export class HeadlineCommunicationInfo extends Component {
             confirmSave: {
                 show: false,
                 data: []
-            }
+            },
+            headlineInfoPolicy: null
         };
     }
 
-    componentDidUpdate() {
+    async componentDidUpdate(nextProps, nextState) {
         const { activeTab, customerInfo } = this.props;
+        if (nextProps.customerInfo?.custId !== this.props.customerInfo?.custId) {
+            await this.props.getCustomerById({ customerId: this.props.customerInfo?.custId });
+            const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
+            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        }
         const initialValues = this.getHeadlineCommunicationInfo(customerInfo);
         if (!this.state.headlineCommunicationInfo || !initialValues) {
             return null;
@@ -44,11 +51,15 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     async componentDidMount() {
+        await this.props.getCustomerById({ customerId: this.props.customerInfo?.custId });
         await this.props.getHeadlinePicRoles(HeadlinePicID);
         await this.props.getAccountingPicRoles(AccountingPicID);
         const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
         this.props.setShowConfirmUnSaved(false);
+        getPermission(FunctionKey.HeadlineInfo, true).then(response => {
+            this.setState({ headlineInfoPolicy: response });
+        });
     }
 
     getHeadlineCommunicationInfo = customerInfo => {
@@ -135,6 +146,17 @@ export class HeadlineCommunicationInfo extends Component {
     editHeadlineCommunicationPic = async () => {
         let { headlineCommunicationInfo } = this.state;
         const params = headlineCommunicationInfo.map(pic => {
+            let picCommunicationTools = [];
+            pic.picCommunicationTools.map((picCom, indexCom) => {
+                const index = pic.picCommunicationTools.findIndex(item => item.type === picCom.type);
+                if (index >= 0 && index !== indexCom) {
+                    const newValue = pic.picCommunicationTools[index].value.concat(', ', picCom.value);
+                    picCommunicationTools[index].value = newValue;
+                } else {
+                    picCommunicationTools.push({ ...picCom });
+                }
+            })
+           
             return {
                 country: pic.country,
                 language: pic.language,
@@ -142,15 +164,19 @@ export class HeadlineCommunicationInfo extends Component {
                 picName: pic.picName,
                 picType: pic.picType,
                 role: pic.role,
-                picCommunicationTools: pic.picCommunicationTools.map(com => { return { type: com.type, value: com.value }; }),
+                picCommunicationTools: picCommunicationTools,
                 remark: ''
             };
         });
+
         Site.blockUI();
         const url = Site.resolveClientUrl('AccountDetail/EditPic');
-        await DataService.postDataAsync(url, params).then(response => {
+        await DataService.postDataAsync(url, params).then(async response => {
             if (response.data.findIndex(x => !x.isSuccessful) === -1) {
                 toast.success(LangHelper.getResource('UpdateHeadlineCommunicationInfoSuccessful'));
+                await this.props.getCustomerById({ customerId: this.props.customerInfo.custId });
+                const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
+                this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
             } else {
                 toast.errors(response.data.find(x => !x.isSuccessful)[0].message);
             }
@@ -357,7 +383,7 @@ export class HeadlineCommunicationInfo extends Component {
 
     render() {
         let { headlinePicRoles, accountingPicRoles, settingCommunicationTool, customerInfo } = this.props;
-        let { headlineCommunicationInfo } = this.state;
+        let { headlineCommunicationInfo, headlineInfoPolicy } = this.state;
         if (!headlinePicRoles || !accountingPicRoles || !settingCommunicationTool || !headlineCommunicationInfo || !customerInfo) {
             return null;
         }
@@ -367,6 +393,7 @@ export class HeadlineCommunicationInfo extends Component {
                     {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
                 </div>
                 {
+                    headlineInfoPolicy === Policy.Host && headlineCommunicationInfo.length > 0 &&
                     <div className='group-btn comm-info-btn'>
                         <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
                             {LangHelper.getResource('Save')}

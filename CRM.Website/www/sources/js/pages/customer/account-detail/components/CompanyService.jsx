@@ -9,16 +9,26 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import AutoComplete from '@jsroot/components/AutoComplete';
 import { toast } from 'react-toastify';
+import { getPermission } from '@jsroot/common/shareScripts';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
 
 export class CompanyService extends Component {    
     constructor(props) {
         super(props);
         this.state = {
             companyService: null,
-            chatTypeMapping: null
+            chatTypeMapping: null,
+            headlineInfoPolicy: null
         };
     }
     async componentDidMount() {
+        await this.getHeadlineCompanyService();
+        getPermission(FunctionKey.HeadlineInfo, true).then(response => {
+            this.setState({ headlineInfoPolicy: response });
+        });
+    }
+
+    async getHeadlineCompanyService () {
         await this.props.getHeadlineCompanyService({ headlineID: this.props.customerInfo?.custId });
         this.setState({
             companyService: this.props.headlineCompanyService.item1.map(item => {
@@ -103,8 +113,9 @@ export class CompanyService extends Component {
 
         Site.blockUI();
         const url = Site.resolveClientUrl('AccountDetail/EditHeadlineCompanyService');
-        await DataService.postDataAsync(url, params).then(response => {
+        await DataService.postDataAsync(url, params).then(async response =>  {
             if (response.data.isSuccessful) {
+                await this.getHeadlineCompanyService();
                 toast.success(LangHelper.getResource('UpdateHeadlineCompanyServiceSuccessful'));
             } else {
                 toast.errors(response.data.message);
@@ -217,7 +228,7 @@ export class CompanyService extends Component {
     };
 
     render() {
-        const { companyService, chatTypeMapping } = this.state;
+        const { companyService, chatTypeMapping, headlineInfoPolicy } = this.state;
         if (!companyService && !chatTypeMapping) {
             return null;
         }
@@ -232,11 +243,14 @@ export class CompanyService extends Component {
                     containerPadding={0}
                     adjustedHeight={10}
                 />
-                <div className='group-btn'>
-                    <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
-                        {LangHelper.getResource('Save')}
-                    </Button>
-                </div>
+                {
+                    headlineInfoPolicy === Policy.Host &&
+                    <div className='group-btn'>
+                        <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
+                            {LangHelper.getResource('Save')}
+                        </Button>
+                    </div>
+                }
             </div>
         );
     }

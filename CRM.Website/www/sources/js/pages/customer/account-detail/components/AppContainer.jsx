@@ -205,7 +205,7 @@ export class AppContainer extends Component {
         );
     }
 
-    renderAccountInfo = (values, hasHostOnCurrentCustomer, canEditHeadline) => {
+    renderAccountInfo = (values, hasHostOnCurrentCustomer) => {
         const { customerInfo, allSettings } = this.props;
         const languageSelected = allSettings.languages.map(item => {
             return {
@@ -348,14 +348,14 @@ export class AppContainer extends Component {
                                 label={LangHelper.getResource('VIP')}
                                 checked={values.isVip}
                                 name='isVip' id="isVip"
-                                disabled={!canEditHeadline}
+                                disabled={!hasHostOnCurrentCustomer}
                                 onChange={event => this.handleChangeCheck(event)}
                             />
                             <Form.Check type="checkbox"
                                 label={LangHelper.getResource('Ignore')}
                                 checked={values.isIgnored}
                                 name='isIgnored' id="isIgnored"
-                                disabled={!canEditHeadline}
+                                disabled={!hasHostOnCurrentCustomer}
                                 onChange={event => this.handleChangeCheck(event)}
                             />
                         </>
@@ -481,13 +481,13 @@ export class AppContainer extends Component {
         }
     }
 
-    renderOtherPIC = (values, canEditHeadline) => {
+    renderOtherPIC = (values, hasHostOnCurrentCustomer) => {
         return (
             <Form className='group-account'>                
                 <div className='group-title'>
                     Communication Info
                     {
-                        canEditHeadline &&
+                        hasHostOnCurrentCustomer &&
                         <img onClick={this.handleSubmitOtherCommunicationInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                     }
                 </div>
@@ -549,7 +549,7 @@ export class AppContainer extends Component {
         return (
             <>                
                 {
-                    this.renderAccountInfo(values, hasHostOnCurrentCustomer, canEditHeadline)
+                    this.renderAccountInfo(values, hasHostOnCurrentCustomer)
                 }
                 {
                     (customerInfo.isGroupHeadLine && (updatePolicy === Policy.Read || canEditHeadline)) &&
@@ -596,18 +596,16 @@ export class AppContainer extends Component {
         if (!allSettings || !customerInfo) {
             return null;
         }
-        const updatePolicy = this.state.updateHeadlineInfoPolicy;
-        const canEditHeadline = updatePolicy === Policy.Host;
         const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
         const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
         const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
         return (
             <>
                 {
-                    this.renderAccountInfo(values, hasHostOnCurrentCustomer, canEditHeadline)
+                    this.renderAccountInfo(values, hasHostOnCurrentCustomer)
                 }
                 {
-                    this.renderOtherPIC(values, canEditHeadline)
+                    this.renderOtherPIC(values, hasHostOnCurrentCustomer)
                 }
             </>);
     }

@@ -8,7 +8,7 @@ import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/reac
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import { getPermission } from '@jsroot/common/shareScripts';
-import { FunctionKey } from '@jsroot/common/constants';
+import { FunctionKey, Policy } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { ValidateHeadlineStaffAndAuthority } from '../common.functions';
 import { toast } from 'react-toastify';
@@ -115,9 +115,12 @@ export class HeadlineStaffsAndAuthority extends Component {
 
             Site.blockUI();
             const url = Site.resolveClientUrl('AccountDetail/EditHeadlineStaffsAndAuthority');
-            await DataService.postDataAsync(url, params).then(response => {
+            await DataService.postDataAsync(url, params).then(async response => {
                 if (response.data.isSuccessful) {
                     toast.success(LangHelper.getResource('UpdateHeadlineAndAuthoritySuccessfully'));
+                    await this.props.getHeadlineStaffsAndAuthority({ headlineID: this.props.customerInfo.custId });
+                    const headlineStaffsAndAuthority = this.getHeadlineStaffsAndAuthorityInfo(this.props.headlineStaffsAndAuthority);
+                    this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
                 } else {
                     toast.errors(response.data.message);
                 }
@@ -145,7 +148,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         return (
             <>
                 {
-                    headlineInfoPolicy === 2 &&
+                    headlineInfoPolicy === Policy.Host &&
                     <Button className='btn-add' type="submit" variant="primary" size="sm" onClick={this.handleAddNewRow}>
                         {LangHelper.getResource('Add')}
                     </Button>
@@ -162,7 +165,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                     />
                 </div>
                 {
-                    headlineInfoPolicy === 2 &&
+                    headlineInfoPolicy === Policy.Host &&
                     <div className='group-btn'>
                         <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
                             {LangHelper.getResource('Save')}
@@ -198,8 +201,8 @@ export class HeadlineStaffsAndAuthority extends Component {
     };
 
     handleAddTool = (indexStaff) => {
-        //const errors = this.validateHeadlineStaffAndAuthority();
-        //if (errors === null) {
+        const errors = this.validateHeadlineStaffAndAuthority();
+        if (errors === null) {
             let { headlineStaffsAndAuthority } = this.state;
             headlineStaffsAndAuthority[indexStaff].communicationTools.push({
                 rowID: -1,
@@ -211,7 +214,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                 remark: ''
             });
             this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        //}
+        }
     };
 
     handleDeleteTool = (indexCom, indexStaff) => {
@@ -231,7 +234,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                 <HeaderCell colWidth={160}>{LangHelper.getResource('Authority')}</HeaderCell>
                 <HeaderCell colWidth={460}>{LangHelper.getResource('Remark')}</HeaderCell>
                 {
-                    headlineInfoPolicy === 2 &&
+                    headlineInfoPolicy === Policy.Host &&
                     <HeaderCell colWidth={120}>{LangHelper.getResource('Action')}</HeaderCell>
                 }
             </HeaderRow>
@@ -245,7 +248,7 @@ export class HeadlineStaffsAndAuthority extends Component {
             return [
                 <Fragment key={'body'}>
                     {headlineStaffsAndAuthority.map((item, indexStaff) => {
-                        if (headlineInfoPolicy === 2) {
+                        if (headlineInfoPolicy === Policy.Host) {
                             return this.renderEditRow(item, indexStaff)
                         } else {
                             return this.renderRow(item)

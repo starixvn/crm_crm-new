@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
+    using CRM.Core.Filters;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
@@ -17,6 +18,8 @@
     using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
 
+    [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
+    [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
     public class AccountDetailController : BaseController
     {
         private readonly INapSession napSession;
@@ -71,6 +74,8 @@
         }
 
         [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
         public async Task<IActionResult> EditCustomerInfoDetail([FromBody] EditCustomerInfoDetailCommand command)
         {
             var result = new CommandResult();
@@ -117,6 +122,7 @@
         }
 
         [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Host)]
         public async Task<IActionResult> EditPic([FromBody] IList<EditPicCriteria> criterias)
         {
             var commandResultList = new List<CommandResult>();
@@ -131,6 +137,7 @@
         }
 
         [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Host)]
         public async Task<IActionResult> ValidateEditPic([FromBody] IList<ValidateEditPicCriteria> criterias)
         {
             var resultlList = new List<string>();
@@ -142,12 +149,14 @@
             return Json(resultlList);
         }
 
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Read)]
         public async Task<IActionResult> GetHeadlineCompanyService([FromBody] GetHeadlineCompanyServiceCriteria criteria)
         {
             var result = await customerService.GetHeadlineCompanyServiceAsync(criteria);
             return Json(result);
         }
 
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Read)]
         public async Task<IActionResult> GetHeadlineStaffsAndAuthority([FromBody] GetHeadlineStaffAndAuthorityCriteria criteria)
         {
             _ = await customerService.SyncHeadlineStaffsAndAuthorityAsync(new SyncHeadlineStaffAndAuthorityCriteria
@@ -160,6 +169,7 @@
         }
 
         [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Host)]
         public async Task<IActionResult> EditHeadlineStaffsAndAuthority([FromBody] UpdateHeadlineStaffAndAuthorityCommand command)
         {
             command.UserID = napSession.UserId;
@@ -169,6 +179,7 @@
         }
 
         [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Host)]
         public async Task<IActionResult> EditHeadlineCompanyService([FromBody] UpdateHeadlineCompanyServiceCommand command)
         {
             command.UserID = napSession.UserId;
@@ -178,6 +189,8 @@
         }
 
         [HttpPost]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Host)]
+        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Host)]
         public async Task<IActionResult> EditOtherAccCommunicationInfo([FromBody] UpdateOtherAccCommunicationInfoCommand command)
         {
             command.UserID = napSession.UserId;
