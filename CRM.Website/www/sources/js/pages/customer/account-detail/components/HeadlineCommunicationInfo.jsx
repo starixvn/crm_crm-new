@@ -402,7 +402,9 @@ export class HeadlineCommunicationInfo extends Component {
                 }
                 {
                     headlineCommunicationInfo.length === 0 &&
-                    <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
+                    <div className='group-content group-data'>
+                        <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
+                    </div>
                 }
                 {
                     this.state.confirmSave.show &&

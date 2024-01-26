@@ -109,6 +109,16 @@
   }
 }
 
+.group-data {
+  padding: 12px;
+  .no-data {
+    border-radius: 3px;
+    border: 1px #b7b7b7 solid;
+    padding: 9px 48px;
+    margin: auto;
+  }
+}
+
 .group-content {
   display: flex;
   flex-wrap: wrap;
@@ -362,7 +372,7 @@
   }
 }
 
-.table-inTab{
+.table-inTab {
   overflow: visible;
 
   .table-container {
@@ -456,7 +466,7 @@
             }
           }
 
-          .col-authority{
+          .col-authority {
             overflow: visible;
           }
         }
@@ -528,15 +538,15 @@
         }
       }
 
-      .col-authority{
+      .col-authority {
         overflow: visible;
       }
     }
   }
 
-  .table-inTab{
+  .table-inTab {
     overflow: visible;
-  
+
     .fix-table-container {
       overflow: unset;
     }
