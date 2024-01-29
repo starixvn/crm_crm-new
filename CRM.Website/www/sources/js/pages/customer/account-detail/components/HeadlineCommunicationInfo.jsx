@@ -12,6 +12,7 @@ import Site from '@jsroot/common/site';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { toast } from 'react-toastify';
 import { getPermission } from '@jsroot/common/shareScripts';
+import { ParamsSubmit } from '../common.functions';
 
 export class HeadlineCommunicationInfo extends Component {
     constructor(props) {
@@ -130,7 +131,16 @@ export class HeadlineCommunicationInfo extends Component {
                         data: []
                     }
                 });
-                await this.editHeadlineCommunicationPic();
+
+                Site.blockUI();
+                const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
+                await DataService.postDataAsync(url, {customerId: this.props.customerInfo?.custId}).then(async response => {
+                    if (response.data === 1) {
+                        await this.editHeadlineCommunicationPic();
+                    } else {
+                        await this.updateNewCrmCustomer();
+                    }
+                }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
             }
             else {
                 this.setState({
@@ -141,6 +151,15 @@ export class HeadlineCommunicationInfo extends Component {
                 });
             }
         }
+    }
+
+    updateNewCrmCustomer = async () => {
+        const params = ParamsSubmit(this.props.customerInfo.custId, this.props.customerInfo);
+        this.props.editCustomerInfoDetail(params).then(async () => {
+            if (this.props.editCustomerInfoDetailResult.isSuccessful) {
+                await this.editHeadlineCommunicationPic();
+            }
+        });
     }
 
     editHeadlineCommunicationPic = async () => {
@@ -467,7 +486,9 @@ const mapStateToProps = state => {
         settingCommunicationTool,
         setActiveTab,
         activeTab,
-        setShowConfirmUnSaved } = state;
+        setShowConfirmUnSaved,
+        editCustomerInfoDetail
+    } = state;
     return {
         allSettings,
         customerInfo,
@@ -480,7 +501,8 @@ const mapStateToProps = state => {
         settingCommunicationTool,
         setActiveTab,
         activeTab,
-        setShowConfirmUnSaved
+        setShowConfirmUnSaved,
+        editCustomerInfoDetail
     };
 };
 

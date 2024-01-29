@@ -11,6 +11,7 @@ import AutoComplete from '@jsroot/components/AutoComplete';
 import { toast } from 'react-toastify';
 import { getPermission } from '@jsroot/common/shareScripts';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
+import { ParamsSubmit } from '../common.functions';
 
 export class CompanyService extends Component {    
     constructor(props) {
@@ -40,7 +41,8 @@ export class CompanyService extends Component {
                     communicationID: item.communicationID,
                     communiationName: item.communiationName,
                     communicationValue: item.communicationValue,
-                    isError: false
+                    isError: false,
+                    isSuggest: false
                 }
             }),
             chatTypeMapping: this.props.headlineCompanyService.item2
@@ -58,7 +60,8 @@ export class CompanyService extends Component {
                 communicationID: item.communicationID,
                 communiationName: item.communiationName,
                 communicationValue: item.communicationValue,
-                isError: false
+                isError: false,
+                isSuggest: false
             }
         });
         if (!this.state.companyService || !initialValues) {
@@ -126,8 +129,25 @@ export class CompanyService extends Component {
     handleSubmit = async () => {
         const errors = this.validateCommunicationTool();
         if (errors === null) {
-            await this.editHeadlineCompanyService();
+            Site.blockUI();
+            const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
+            await DataService.postDataAsync(url, { customerId: this.props.customerInfo?.custId }).then(async response => {
+                if (response.data === 1) {
+                    await this.editHeadlineCompanyService();
+                } else {
+                    await this.updateNewCrmCustomer();
+                }
+            }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
         }
+    }
+
+    updateNewCrmCustomer = async () => {
+        const params = ParamsSubmit(this.props.customerInfo.custId, this.props.customerInfo);
+        this.props.editCustomerInfoDetail(params).then(async () => {
+            if (this.props.editCustomerInfoDetailResult.isSuccessful) {
+                await this.editHeadlineCompanyService();
+            }
+        });
     }
 
     buildHeader = () => {
@@ -159,9 +179,15 @@ export class CompanyService extends Component {
         ];
     };
 
-    handleChangeValue = (name, value, indexService) => {
+    handleChangeValue = (name, value, indexService, isSuggest) => {
         let { companyService } = this.state;
+        this.state.companyService.map((item, index) => {
+            if (index != indexService) {
+                companyService[index].isSuggest = false;
+            }
+        });
         companyService[indexService][name] = value;
+        companyService[indexService].isSuggest = isSuggest;
         this.setState({ companyService: companyService });
     }
 
@@ -188,7 +214,7 @@ export class CompanyService extends Component {
     }
 
     renderRow = (item, indexService, settingCommunicationTool) => {
-        const communicationSuggestions = this.debounceInputChange(item.communicationValue, item.communicationID);
+        const communicationSuggestions = item.isSuggest ? this.debounceInputChange(item.communicationValue, item.communicationID) : [];
         return (
             <Row key={item.companyServiceID}>
                 <Cell>{item.companyServiceName}
@@ -198,7 +224,7 @@ export class CompanyService extends Component {
                 <Cell>
                     <Form.Control as="select" size="sm" value={item.isOffered} name="isOffered" id="isOffered"
                         onChange={event => {
-                            this.handleChangeValue('isOffered', event.target.value === "true", indexService);
+                            this.handleChangeValue('isOffered', event.target.value === "true", indexService, false);
                         }}>
                             <option value={true}>{LangHelper.getResource('Yes')}</option>
                             <option value={false}>{LangHelper.getResource('No')}</option>
@@ -207,7 +233,7 @@ export class CompanyService extends Component {
                 <Cell>
                     <Form.Control as="select" size="sm" className={item.isError && 'invalid'}
                         value={item.communicationID} onChange={event => {
-                            this.handleChangeValue('communicationID', parseInt(event.target.value, 10), indexService);
+                            this.handleChangeValue('communicationID', parseInt(event.target.value, 10), indexService, false);
                         }}>
                             <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                             {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
@@ -219,7 +245,7 @@ export class CompanyService extends Component {
                         value={item.communicationValue}
                         options={communicationSuggestions}
                         placeholder=''
-                        onChange={value => this.handleChangeValue('communicationValue', value, indexService)}
+                        onChange={value => this.handleChangeValue('communicationValue', value, indexService, true)}
                         onInputChange={searchText => this.debounceInputChange(searchText, item.communicationID)}
                     />
                 </Cell>
@@ -267,7 +293,9 @@ const mapStateToProps = state => {
         headlineCompanyService,
         setActiveTab,
         activeTab,
-        setShowConfirmUnSaved } = state;
+        setShowConfirmUnSaved,
+        editCustomerInfoDetail
+    } = state;
     return {
         allSettings,
         customerInfo,
@@ -276,7 +304,8 @@ const mapStateToProps = state => {
         headlineCompanyService,
         setActiveTab,
         activeTab,
-        setShowConfirmUnSaved
+        setShowConfirmUnSaved,
+        editCustomerInfoDetail
     };
 };
 

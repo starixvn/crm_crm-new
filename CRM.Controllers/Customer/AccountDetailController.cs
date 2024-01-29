@@ -12,6 +12,7 @@
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
+    using Fanex.Data.Repository;
     using Fanex.Logging.Extensions;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
@@ -196,6 +197,14 @@
             command.UserID = napSession.UserId;
             command.IP = ClientIP;
             var result = await customerService.EditOtherAccCommunicationInfoAsync(command);
+            return Json(result);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CheckCustomerExistsOnCRM([FromBody] CheckCustomerExistsOnCrmCriteria criteria)
+        {
+            var result = await baseService.GetDataEntityAsync<int>(criteria);
             return Json(result);
         }
     }

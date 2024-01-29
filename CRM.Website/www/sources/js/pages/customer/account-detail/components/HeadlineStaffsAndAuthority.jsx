@@ -12,6 +12,7 @@ import { FunctionKey, Policy } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { ValidateHeadlineStaffAndAuthority } from '../common.functions';
 import { toast } from 'react-toastify';
+import { ParamsSubmit } from '../common.functions';
 
 export class HeadlineStaffsAndAuthority extends Component {
     constructor(props) {
@@ -90,42 +91,63 @@ export class HeadlineStaffsAndAuthority extends Component {
     handleSubmit = async () => {
         const errors = this.validateHeadlineStaffAndAuthority();
         if (errors === null) {
-            let headlineStaffsAndAuthority = [];
-            this.state.headlineStaffsAndAuthority.map(staff => {
-                staff.communicationTools.map(staffCom => {
-                    headlineStaffsAndAuthority.push({
-                        rowID: staffCom.rowID,
-                        headlineID: this.props.customerInfo.custId,
-                        picID: staff.picID,
-                        picName: staff.picName,
-                        picRoleID: staff.picRoleID,
-                        picCommunicationID: staffCom.picCommunicationID,
-                        picCommunicationValue: staffCom.picCommunicationValue,
-                        authorityID: staffCom.authorityID,
-                        authority: staffCom.authority,
-                        remark: staffCom.remark,
-                        isSyncFromPicTable: staff.isSyncFromPicTable ? 1 : 0
-                    });
-                });
-            });
-            const params = {
-                headlineID: this.props.customerInfo.custId,
-                headlineStaffsAndAuthority: headlineStaffsAndAuthority
-            };
-
             Site.blockUI();
-            const url = Site.resolveClientUrl('AccountDetail/EditHeadlineStaffsAndAuthority');
-            await DataService.postDataAsync(url, params).then(async response => {
-                if (response.data.isSuccessful) {
-                    toast.success(LangHelper.getResource('UpdateHeadlineAndAuthoritySuccessfully'));
-                    await this.props.getHeadlineStaffsAndAuthority({ headlineID: this.props.customerInfo.custId });
-                    const headlineStaffsAndAuthority = this.getHeadlineStaffsAndAuthorityInfo(this.props.headlineStaffsAndAuthority);
-                    this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+            const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
+            await DataService.postDataAsync(url, { customerId: this.props.customerInfo?.custId }).then(async response => {
+                if (response.data === 1) {
+                    await this.editHeadlineStaffAndAuthority();
                 } else {
-                    toast.errors(response.data.message);
+                    await this.updateNewCrmCustomer();
                 }
             }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
         }
+    }
+
+    updateNewCrmCustomer = async () => {
+        const params = ParamsSubmit(this.props.customerInfo.custId, this.props.customerInfo);
+        this.props.editCustomerInfoDetail(params).then(async () => {
+            if (this.props.editCustomerInfoDetailResult.isSuccessful) {
+                await this.editHeadlineStaffAndAuthority();
+            }
+        });
+    }
+
+    editHeadlineStaffAndAuthority = async () => {
+        let headlineStaffsAndAuthority = [];
+        this.state.headlineStaffsAndAuthority.map(staff => {
+            staff.communicationTools.map(staffCom => {
+                headlineStaffsAndAuthority.push({
+                    rowID: staffCom.rowID,
+                    headlineID: this.props.customerInfo.custId,
+                    picID: staff.picID,
+                    picName: staff.picName,
+                    picRoleID: staff.picRoleID,
+                    picCommunicationID: staffCom.picCommunicationID,
+                    picCommunicationValue: staffCom.picCommunicationValue,
+                    authorityID: staffCom.authorityID,
+                    authority: staffCom.authority,
+                    remark: staffCom.remark,
+                    isSyncFromPicTable: staff.isSyncFromPicTable ? 1 : 0
+                });
+            });
+        });
+        const params = {
+            headlineID: this.props.customerInfo.custId,
+            headlineStaffsAndAuthority: headlineStaffsAndAuthority
+        };
+
+        Site.blockUI();
+        const url = Site.resolveClientUrl('AccountDetail/EditHeadlineStaffsAndAuthority');
+        await DataService.postDataAsync(url, params).then(async response => {
+            if (response.data.isSuccessful) {
+                toast.success(LangHelper.getResource('UpdateHeadlineAndAuthoritySuccessfully'));
+                await this.props.getHeadlineStaffsAndAuthority({ headlineID: this.props.customerInfo.custId });
+                const headlineStaffsAndAuthority = this.getHeadlineStaffsAndAuthorityInfo(this.props.headlineStaffsAndAuthority);
+                this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+            } else {
+                toast.errors(response.data.message);
+            }
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 
     validateHeadlineStaffAndAuthority = () => {

@@ -222,6 +222,7 @@
         <Setting Key="Acc_CRM_NewAccDetail_GetHeadlineStaffAndAuthority" SpName="Acc_CRM_NewAccDetail_GetHeadlineStaffAndAuthority" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_NewAccDetail_UpdHeadlineStaffAndAuthority" SpName="Acc_CRM_NewAccDetail_UpdHeadlineStaffAndAuthority" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo" SpName="Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_CheckCustomerExistsOnCRM" SpName="Acc_CRM_NewAccDetail_CheckCustomerExistsOnCRM" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_CustomerGetUplineList" SpName="Acc_CRM_CustomerGetUplineList" DbName="DBCRM.bodb_CRM.bodbAdminNet">
             <Mapping DataField="CustStatus" ObjectProperty="Status" />
         </Setting>
