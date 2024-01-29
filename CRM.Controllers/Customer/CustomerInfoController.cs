@@ -59,10 +59,7 @@
                 };
                 sessionService.CurrentCustomer = currentCustomer;
             }
-            else
-            {
-                sessionService.CurrentCustomer = null;
-            }
+
             var isError = criteria.ErrCode > 0 && !string.IsNullOrEmpty(criteria.ErrMsg);
             var errorJson = new
             {
