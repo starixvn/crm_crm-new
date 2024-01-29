@@ -233,16 +233,16 @@ export class CompanyService extends Component {
             return null;
         }
         return (
-            < div className='company-service'>
-                <Table
-                    width={1005}
-                    autoWidth={false}
-                    header={this.buildHeader()}
-                    body={this.buildBody()}
-                    isPaging={false}
-                    containerPadding={0}
-                    adjustedHeight={10}
-                />
+                <div className={`${companyService.length < 10 && 'table-inTab'} company-service`}>
+                    <Table
+                        width={1005}
+                        autoWidth={false}
+                        header={this.buildHeader()}
+                        body={this.buildBody()}
+                        isPaging={false}
+                        containerPadding={0}
+                        adjustedHeight={10}
+                    />
                 {
                     headlineInfoPolicy === Policy.Host &&
                     <div className='group-btn'>

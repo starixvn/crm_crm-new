@@ -361,13 +361,18 @@
   max-width: 1022px !important;
   max-height: 400px;
 
+  table tbody tr td{
+    overflow: visible;
+  }
+
   .autocomplete-items-container {
-    position: fixed;
+    position: absolute;
     z-index: 9999;
     width: 290px;
 
     .autocomplete-items {
       position: relative;
+      max-height: 200px;
     }
   }
 }
