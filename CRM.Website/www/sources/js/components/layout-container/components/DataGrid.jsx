@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import LangHelper from '@jsroot/common/langHelper';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import { changeSiteSetting, hasHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, checkHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
 import Site from '@jsroot/common/site';
@@ -26,7 +26,6 @@ export default class DataGrid extends PureComponent {
             siteId: null,
             isShowDetail: true,
             countryId: null,
-            isShowDetail: true,
             remarksPolicy: null,
             isHostOnCurrentCustomer: false
         };
@@ -38,11 +37,12 @@ export default class DataGrid extends PureComponent {
         leftContainer.addEventListener("keydown", this.handleKeyDownFunc, false);
         checkHostPermissionOnCurrentCustomer().then(response => {
             this.setState({
-                isHostOnCurrentCustomer: response
+                isHostOnCurrentCustomer: response        
+            });
+        });
+
         getPermission(FunctionKey.Remarks, true).then(response => {
             this.setState({ remarksPolicy: response });
-        });
-            });
         });
     }
 
@@ -99,12 +99,9 @@ export default class DataGrid extends PureComponent {
         isSubmitting,
         setFieldValue
     }) => {
-        const { customerInfo, settings } = this.props;
+        const { customerInfo, settings, isHostOnCurrentCustomer } = this.props;
         const isShowInactiveMsg = settings.sitesLicenseeInactive.filter(x => x.id === customerInfo.siteId).length > 0;
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, this.props.customerInfo.customerType);
         return (
             <Form className="left-form-customer" id="left-form-container" noValidate onSubmit={handleSubmit}>
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
@@ -247,7 +244,7 @@ export default class DataGrid extends PureComponent {
                     <Col />
                     <Col>
                         {
-                            hasHostOnCurrentCustomer &&
+                            isHostOnCurrentCustomer &&
                             <Button variant="primary" size="sm" type="submit" disabled={isSubmitting}>
                                 <UnderlineButton.updateButton />
                             </Button>
@@ -345,7 +342,6 @@ export default class DataGrid extends PureComponent {
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
         const hasHostPicManagementPermission = document.getElementById('hasHostPicManagementPermission').checked;
-        const hasHostLicenseePermission = document.getElementById('hasHostLicenseePermission').checked;
         const isReadRemark = this.state.remarksPolicy >= Policy.Read;
 
         return (
@@ -393,13 +389,13 @@ export default class DataGrid extends PureComponent {
                                     <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Main')}</a>
                                 </li>
                                 {
-                                    isReadRemark && (this.props.isCreditSite || hasHostLicenseePermission) &&
+                                    isReadRemark && this.props.isCreditSite  &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('Remark')}>{LangHelper.getResource('Remark')}</a>
                                     </li>
                                 }
                                 {
-                                    hasReadCustomerInfo && !this.props.isCreditSite &&
+                                    hasReadSitePermission && !this.props.isCreditSite &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('SpecialRemark')}>{LangHelper.getResource('SpecialRemark')}</a>
                                     </li>
@@ -413,9 +409,8 @@ export default class DataGrid extends PureComponent {
                             </ul>
                             <ul className='list-unstyled list-menu pull-left list-menu-right'>
                                 {
-                                    hasReadCustomerInfo &&
+                                    hasReadSitePermission &&
                                     <li>
-                                        {/*<a>{LangHelper.getResource('AccountDetail')}</a>*/}
                                         <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetail')}</a>
                                     </li>
                                 }
@@ -423,7 +418,7 @@ export default class DataGrid extends PureComponent {
                                     <a onClick={() => this.props.handleNavigate('ActionLog')}>{LangHelper.getResource('ActivityLog')}</a>
                                 </li>
                                 {
-                                    hasReadCustomerInfo &&
+                                    hasReadSitePermission &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
                                     </li>

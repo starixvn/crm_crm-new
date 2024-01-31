@@ -12,6 +12,7 @@
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models.Customer;
     using Microsoft.Extensions.Configuration;
+    using static Fanex.NAP.Core.Business.Constant;
     using Constants = Core.Constants.Constants;
 
     public interface ICustomerService

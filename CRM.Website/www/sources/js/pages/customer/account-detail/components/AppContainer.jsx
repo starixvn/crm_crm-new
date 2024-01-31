@@ -14,7 +14,7 @@ import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import DatePicker from '@jsroot/components/date-picker/index';
-import { changeSiteSetting, hasHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, checkHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
@@ -25,6 +25,7 @@ export class AppContainer extends Component {
         super(props);
         const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
+            isHostOnCurrentCustomer: false,
             updateHeadlineInfoPolicy: null,
             otherAccountCommunication: null,
             isSubmitting: false,
@@ -108,6 +109,12 @@ export class AppContainer extends Component {
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ updateHeadlineInfoPolicy: response });
         });
+        checkHostPermissionOnCurrentCustomer().then(response => {
+            this.setState({
+                isHostOnCurrentCustomer: response
+            });
+        });
+
         const { customerInfo } = this.props;
         const params = ParamsCustomerInfo(customerInfo);
         this.setState(params);
@@ -205,7 +212,7 @@ export class AppContainer extends Component {
         );
     }
 
-    renderAccountInfo = (values, hasHostOnCurrentCustomer) => {
+    renderAccountInfo = values => {
         const { customerInfo, allSettings } = this.props;
         const languageSelected = allSettings.languages.map(item => {
             return {
@@ -221,7 +228,7 @@ export class AppContainer extends Component {
                 <div className='group-title'>
                     Account Info
                     {
-                        hasHostOnCurrentCustomer &&
+                        values. isHostOnCurrentCustomer &&
                         <img onClick={this.handleSubmitAccountInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                     }
                 </div>
@@ -348,14 +355,14 @@ export class AppContainer extends Component {
                                 label={LangHelper.getResource('VIP')}
                                 checked={values.isVip}
                                 name='isVip' id="isVip"
-                                disabled={!hasHostOnCurrentCustomer}
+                                disabled={!values.isHostOnCurrentCustomer}
                                 onChange={event => this.handleChangeCheck(event)}
                             />
                             <Form.Check type="checkbox"
                                 label={LangHelper.getResource('Ignore')}
                                 checked={values.isIgnored}
                                 name='isIgnored' id="isIgnored"
-                                disabled={!hasHostOnCurrentCustomer}
+                                disabled={!values. isHostOnCurrentCustomer}
                                 onChange={event => this.handleChangeCheck(event)}
                             />
                         </>
@@ -481,13 +488,13 @@ export class AppContainer extends Component {
         }
     }
 
-    renderOtherPIC = (values, hasHostOnCurrentCustomer) => {
+    renderOtherPIC = values => {
         return (
             <Form className='group-account'>                
                 <div className='group-title'>
                     Communication Info
                     {
-                        hasHostOnCurrentCustomer &&
+                        values.isHostOnCurrentCustomer &&
                         <img onClick={this.handleSubmitOtherCommunicationInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                     }
                 </div>
@@ -542,14 +549,11 @@ export class AppContainer extends Component {
         const canEditHeadline = updatePolicy === Policy.Host;
         if (!allSettings || !customerInfo) {
             return null;
-        }
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
+        }       
         return (
             <>                
                 {
-                    this.renderAccountInfo(values, hasHostOnCurrentCustomer)
+                    this.renderAccountInfo(values)
                 }
                 {
                     (customerInfo.isGroupHeadLine && (updatePolicy === Policy.Read || canEditHeadline)) &&
@@ -595,17 +599,14 @@ export class AppContainer extends Component {
         const values = this.state;
         if (!allSettings || !customerInfo) {
             return null;
-        }
-        const hasHostLicensee = document.getElementById('hasHostLicenseePermission').checked;
-        const hasHostCredit = document.getElementById('hasHostCreditPermission').checked;
-        const hasHostOnCurrentCustomer = hasHostPermissionOnCurrentCustomer(hasHostCredit, hasHostLicensee, customerInfo.customerType);
+        }        
         return (
             <>
                 {
-                    this.renderAccountInfo(values, hasHostOnCurrentCustomer)
+                    this.renderAccountInfo(values)
                 }
                 {
-                    this.renderOtherPIC(values, hasHostOnCurrentCustomer)
+                    this.renderOtherPIC(values)
                 }
             </>);
     }

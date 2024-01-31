@@ -98,10 +98,10 @@
             if (communications is not null)
             {
                 string username = communications.Username;
-                var cust = await customerService.GetCustomerInfoAsync(new Criteria.Customer.GetCustomerInfoByUsernameCriteria { Username = username, IsCheckPermission = false });
+                var cust = await customerService.GetCustomerInfoAsync(new Criteria.Customer.GetCustomerInfoByUsernameCriteria { SearchInfo = username, IsCheckPermission = false });
                 if (cust is null)
                 {
-                    cust = await customerService.GetCustomerInfoAsync(new Criteria.Customer.GetCustomerInfoByUsernameCriteria { Username = username, IsCheckPermission = false, IsGuest = true });
+                    cust = await customerService.GetCustomerInfoAsync(new Criteria.Customer.GetCustomerInfoByUsernameCriteria { SearchInfo = username, IsCheckPermission = false, IsGuest = true });
                 }
 
                 if (cust is not null)
