@@ -10,9 +10,8 @@ import Site from '@jsroot/common/site';
 import { getPermission } from '@jsroot/common/shareScripts';
 import { FunctionKey, Policy } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
-import { ValidateHeadlineStaffAndAuthority } from '../common.functions';
+import { ValidateHeadlineStaffAndAuthority, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
-import { ParamsSubmit } from '../common.functions';
 
 export class HeadlineStaffsAndAuthority extends Component {
     constructor(props) {

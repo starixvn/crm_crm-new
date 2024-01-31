@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import LangHelper from '@jsroot/common/langHelper';
-import { Button, Form, Col, Row } from 'react-bootstrap';
+import { Form, Col, Row } from 'react-bootstrap';
 import AutoComplete from '@jsroot/components/AutoComplete';
-import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
-import { SubMainMenu, DetailMenu } from '@jsroot/common/constants';
+import { SubMainMenu, DetailMenu, Policy, FunctionKey } from '@jsroot/common/constants';
 import { toast } from 'react-toastify';
 import BreadcrumbTime from './BreadcrumbTime';
-import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { getPermission } from '@jsroot/common/shareScripts';
 export default class Filter extends Component {
     constructor(props) {
