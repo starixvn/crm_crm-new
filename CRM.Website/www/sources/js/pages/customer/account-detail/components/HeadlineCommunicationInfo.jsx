@@ -49,6 +49,10 @@ export class HeadlineCommunicationInfo extends Component {
                 this.props.setShowConfirmUnSaved(true);
             }
         }
+
+        if (window.picID !== undefined) {
+            document.querySelector("#tab-headline-communicaion-info").scrollTo(0, document.querySelector(`#row-${window.picID}`).offsetTop - 437);
+        }
     }
 
     async componentDidMount() {
@@ -285,7 +289,7 @@ export class HeadlineCommunicationInfo extends Component {
             };
         });
         return (
-            <div className='group-item'>
+            <div id={`row-${pic.picId}`} className='group-item'>
                 <Form.Group>
                     <Form.Label className="required">
                         {LangHelper.getResource('Name')}
@@ -319,7 +323,7 @@ export class HeadlineCommunicationInfo extends Component {
                 </Form.Group>
                 <Form.Group>
                     <Form.Label >
-                        {LangHelper.getResource('Language')}
+                        {LangHelper.getResource('Languages')}
                     </Form.Label>
                         <MultipleSelect
                             dataSource={languageSelected}
@@ -408,7 +412,7 @@ export class HeadlineCommunicationInfo extends Component {
         }
         return (
             <>
-                <div className={`${headlineCommunicationInfo.length < 3 && 'custom-dropdown'} custom-scrollbar`}>
+                <div id="tab-headline-communicaion-info" className={`${headlineCommunicationInfo.length < 3 && 'custom-dropdown'} custom-scrollbar`}>
                     {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
                 </div>
                 {

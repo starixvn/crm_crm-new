@@ -292,6 +292,11 @@ export default class DataGrid extends PureComponent {
         );
     };
 
+    focusHeadlineCommunicationInfo = value => {
+        window.picID = value;
+        this.props.handleNavigate('AccountDetail');
+    }
+
     renderAccountHeadlineInfo = values => {
         if (values.headlineStaffInfoPics.length === 0) {
             return null;
@@ -308,7 +313,9 @@ export default class DataGrid extends PureComponent {
                                             {LangHelper.getResource('Name')}
                                         </Form.Label>
                                         <Col className='field-name'>
-                                            {pic.picName + ' (' + pic.picRoleName + ')'}
+                                            <a style={{ cursor: 'pointer' }} onClick={() => this.focusHeadlineCommunicationInfo(pic.picID)}>
+                                                {pic.picName + ' (' + pic.picRoleName + ')'}
+                                            </a>
                                         </Col>
                                     </Form.Group>
                                     {
