@@ -224,32 +224,39 @@ export class CompanyService extends Component {
                         onClick={event => {this.handleCoppy(item);}} />
                 </Cell>
                 <Cell>
-                    <Form.Control as="select" size="sm" value={item.isOffered} name="isOffered" id="isOffered"
+                    <Form.Control as="select" size="sm" disabled={this.state.headlineInfoPolicy !== Policy.Host} value={item.isOffered} name="isOffered" id="isOffered"
                         onChange={event => {
                             this.handleChangeValue('isOffered', event.target.value === "true", indexService, false);
                         }}>
-                            <option value={true}>{LangHelper.getResource('Yes')}</option>
-                            <option value={false}>{LangHelper.getResource('No')}</option>
+                        <option value={true}>{LangHelper.getResource('Yes')}</option>
+                        <option value={false}>{LangHelper.getResource('No')}</option>
                     </Form.Control>
                 </Cell>
                 <Cell>
-                    <Form.Control as="select" size="sm" className={item.isError && 'invalid'}
+                    <Form.Control as="select" size="sm" disabled={this.state.headlineInfoPolicy !== Policy.Host} className={item.isError && 'invalid'}
                         value={item.communicationID} onChange={event => {
                             this.handleChangeValue('communicationID', parseInt(event.target.value, 10), indexService, false);
                         }}>
-                            <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                            {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                        <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                        {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                     </Form.Control>
                 </Cell>
                 <Cell>
-                    <AutoComplete
-                        isError={item.isError}
-                        value={item.communicationValue}
-                        options={communicationSuggestions}
-                        placeholder=''
-                        onChange={value => this.handleChangeValue('communicationValue', value, indexService, true)}
-                        onInputChange={searchText => this.debounceInputChange(searchText, item.communicationID)}
-                    />
+                    {
+                        this.state.headlineInfoPolicy === Policy.Host &&
+                        <AutoComplete
+                            isError={item.isError}
+                            value={item.communicationValue}
+                            options={communicationSuggestions}
+                            placeholder=''
+                            onChange={value => this.handleChangeValue('communicationValue', value, indexService, true)}
+                            onInputChange={searchText => this.debounceInputChange(searchText, item.communicationID)}
+                        />
+                    }
+                    {
+                        this.state.headlineInfoPolicy !== Policy.Host &&
+                        item.communicationValue
+                    }
                 </Cell>
             </Row>
         );
