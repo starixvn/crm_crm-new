@@ -26,8 +26,8 @@
         public string VoidBy { get; set; }
         [XMLName("MatchId")]
         public int MatchId { get; set; }
-        [XMLName("TrasnIdList")]
-        public string TrasnIdList { get; set; }
+        [XMLName("TransIdList")]
+        public string TransIdList { get; set; }
         [XMLName("OriginalTransId")]
         public string OriginalTransId { get; set; }
         [XMLName("UsernameList")]

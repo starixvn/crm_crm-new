@@ -13,8 +13,8 @@
         public int MessageId { get; set; }
         [XMLName("IssueTypeId")]
         public int IssueTypeId { get; set; }
-        [XMLName("TrasnIdList")]
-        public string TrasnIdList { get; set; }
+        [XMLName("TransIdList")]
+        public string TransIdList { get; set; }
         [XMLName("UsernameList")]
         public string UsernameList { get; set; }
         [XMLName("FilterBy")]
