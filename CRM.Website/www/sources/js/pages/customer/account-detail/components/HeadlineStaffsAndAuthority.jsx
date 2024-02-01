@@ -34,20 +34,22 @@ export class HeadlineStaffsAndAuthority extends Component {
     }
 
     componentDidUpdate() {
-        const { activeTab, headlineStaffsAndAuthority } = this.props;
-        const initialValues = this.getHeadlineStaffsAndAuthorityInfo(headlineStaffsAndAuthority);
-        if (!this.state.headlineStaffsAndAuthority || !initialValues) {
-            return null;
-        }
-        if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'companyService') {
-            if (JSON.stringify(this.state.headlineStaffsAndAuthority).toString() === JSON.stringify(initialValues).toString()) {
-                this.props.setShowConfirmUnSaved(false);
-                this.props.setActiveTab({
-                    currentTab: activeTab.nextTab,
-                    nextTab: null
-                });
-            } else {
-                this.props.setShowConfirmUnSaved(true);
+        if (this.props.activeTab != null) {
+            const { activeTab, headlineStaffsAndAuthority } = this.props;
+            const initialValues = this.getHeadlineStaffsAndAuthorityInfo(headlineStaffsAndAuthority);
+            if (!this.state.headlineStaffsAndAuthority || !initialValues) {
+                return null;
+            }
+            if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'companyService') {
+                if (JSON.stringify(this.state.headlineStaffsAndAuthority).toString() === JSON.stringify(initialValues).toString()) {
+                    this.props.setShowConfirmUnSaved(false);
+                    this.props.setActiveTab({
+                        currentTab: activeTab.nextTab,
+                        nextTab: null
+                    });
+                } else {
+                    this.props.setShowConfirmUnSaved(true);
+                }
             }
         }
     }

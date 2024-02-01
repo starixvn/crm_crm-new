@@ -28,27 +28,30 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     async componentDidUpdate(nextProps, nextState) {
-        const { activeTab, customerInfo } = this.props;
         if (nextProps.customerInfo?.custId !== this.props.customerInfo?.custId) {
             await this.props.getCustomerById({ customerId: this.props.customerInfo?.custId });
             const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
             this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
         }
-        const initialValues = this.getHeadlineCommunicationInfo(customerInfo);
-        if (!this.state.headlineCommunicationInfo || !initialValues) {
-            return null;
-        }
-        if (activeTab.nextTab === 'headlineStaffsAndAuthority' || activeTab.nextTab === 'companyService') {
-            if (JSON.stringify(this.state.headlineCommunicationInfo).toString() === JSON.stringify(initialValues).toString()) {
-                this.props.setShowConfirmUnSaved(false);
-                this.props.setActiveTab({
-                    currentTab: activeTab.nextTab,
-                    nextTab: null
-                });
-            } else {
-                this.props.setShowConfirmUnSaved(true);
+
+        if (this.props.activeTab != null) {
+            const { activeTab, customerInfo } = this.props;            
+            const initialValues = this.getHeadlineCommunicationInfo(customerInfo);
+            if (!this.state.headlineCommunicationInfo || !initialValues) {
+                return null;
             }
-        }
+            if (activeTab.nextTab === 'headlineStaffsAndAuthority' || activeTab.nextTab === 'companyService') {
+                if (JSON.stringify(this.state.headlineCommunicationInfo).toString() === JSON.stringify(initialValues).toString()) {
+                    this.props.setShowConfirmUnSaved(false);
+                    this.props.setActiveTab({
+                        currentTab: activeTab.nextTab,
+                        nextTab: null
+                    });
+                } else {
+                    this.props.setShowConfirmUnSaved(true);
+                }
+            }
+        }             
 
         if (window.picID !== undefined) {
             document.querySelector("#tab-headline-communicaion-info").scrollTo(0, document.querySelector(`#row-${window.picID}`).offsetTop - 437);

@@ -50,33 +50,35 @@ export class CompanyService extends Component {
     }
 
     componentDidUpdate() {
-        const { activeTab, headlineCompanyService } = this.props;
-        const initialValues = headlineCompanyService.item1.map(item => {
-            return {
-                headlineID: item.headlineID,
-                companyServiceID: item.companyServiceID,
-                companyServiceName: item.companyServiceName,
-                isOffered: item.isOffered,
-                communicationID: item.communicationID,
-                communiationName: item.communiationName,
-                communicationValue: item.communicationValue,
-                isError: false,
-                isSuggest: false
+        if (this.props.activeTab != null) {
+            const { activeTab, headlineCompanyService } = this.props;
+            const initialValues = headlineCompanyService.item1.map(item => {
+                return {
+                    headlineID: item.headlineID,
+                    companyServiceID: item.companyServiceID,
+                    companyServiceName: item.companyServiceName,
+                    isOffered: item.isOffered,
+                    communicationID: item.communicationID,
+                    communiationName: item.communiationName,
+                    communicationValue: item.communicationValue,
+                    isError: false,
+                    isSuggest: false
+                }
+            });
+            if (!this.state.companyService || !initialValues) {
+                return null;
             }
-        });
-        if (!this.state.companyService || !initialValues) {
-            return null;
-        }
 
-        if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'headlineStaffsAndAuthority') {
-            if (JSON.stringify(this.state.companyService).toString() === JSON.stringify(initialValues).toString()) {
-                this.props.setShowConfirmUnSaved(false);
-                this.props.setActiveTab({
-                    currentTab: activeTab.nextTab,
-                    nextTab: null
-                });
-            } else {
-                this.props.setShowConfirmUnSaved(true);
+            if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'headlineStaffsAndAuthority') {
+                if (JSON.stringify(this.state.companyService).toString() === JSON.stringify(initialValues).toString()) {
+                    this.props.setShowConfirmUnSaved(false);
+                    this.props.setActiveTab({
+                        currentTab: activeTab.nextTab,
+                        nextTab: null
+                    });
+                } else {
+                    this.props.setShowConfirmUnSaved(true);
+                }
             }
         }
     }

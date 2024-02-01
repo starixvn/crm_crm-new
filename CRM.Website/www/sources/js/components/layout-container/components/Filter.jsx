@@ -92,7 +92,7 @@ export default class Filter extends Component {
                 const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
                 const isReadRemark = this.state.remarksPolicy >= Policy.Read;
                 const isHideMainMenu = this.props.customerInfo.customerType === 1 && !hasReadFeedbackPermission && !isReadRemark;
-                var activeMenu = isHideMainMenu ? 'Detail' : 'Dashboard';
+                let activeMenu = isHideMainMenu ? 'Detail' : 'Dashboard';
                 this.props.handleNavigate(activeMenu);
             }
         });
@@ -130,15 +130,13 @@ export default class Filter extends Component {
         } else if (selectPathAnnouncement) {
             const path = pathAnnouncement[selectPathAnnouncement];
             return this.renderBreadcrumbsMenu(path, pathname);
+        } else if (!currentMenu) {
+            return this.renderBreadcrumbsMenu([], pathname);
+        } else if (pathname === '/') {
+            return null;
         } else {
-            if (!currentMenu) {
-                return this.renderBreadcrumbsMenu([], pathname);
-            } else if (pathname === '/') {
-                return null;
-            } else {
-                const breadcrumbsMenu = this.getBreadcrumbsMenu(currentMenu, menus);
-                return this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname);
-            }
+            const breadcrumbsMenu = this.getBreadcrumbsMenu(currentMenu, menus);
+            return this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname);
         }
     };
 
