@@ -361,7 +361,7 @@
   max-width: 1022px !important;
   max-height: 400px;
 
-  table tbody tr td{
+  table tbody tr td {
     overflow: visible;
   }
 
@@ -392,7 +392,13 @@
     padding-right: 0;
     position: sticky;
     top: 0;
+    z-index: 2;
+  }
+
+  .multiple-select-options-container {
     z-index: 1;
+    width: 148px;
+    left: -1px;
   }
 
   .table {
@@ -505,9 +511,13 @@
     padding-right: 12px;
   }
 
-  .headline-info .tab-content {
-    .custom-scrollbar {
-      max-height: 300px;
+  .headline-info {
+    margin-top: 12px;
+    .tab-content {
+      padding: 8px 4px 8px 8px;
+      .custom-scrollbar {
+        max-height: 300px;
+      }
     }
   }
 
@@ -561,8 +571,21 @@
     border-right: none;
 
     .fix-table {
-      max-height: 300px !important;
-
+      max-height: 266px !important;
+      border: none;
+      .header-content {
+        border-left: 1px solid #b7b7b7;
+        z-index: 2;
+      }
+      .multiple-select-options-container {
+        z-index: 1;
+        width: 148px;
+        left: -1px;
+      }
+      .body-content {
+        border-left: 1px solid #b7b7b7;
+        border-bottom: 1px solid #b7b7b7;
+      }
       table tbody tr td:last-child {
         border-right: 1px solid #b7b7b7;
 
@@ -598,5 +621,10 @@
         width: 120px;
       }
     }
+  }
+
+  .company-service .table-container {
+    max-height: 300px;
+    overflow: auto !important;
   }
 }
