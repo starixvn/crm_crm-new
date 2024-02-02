@@ -214,11 +214,13 @@
         <Setting Key="Acc_CRM_CustomerCheckSiteType" SpName="Acc_CRM_CustomerCheckSiteType" DbName="DBCRM.bodb_CRM.wsv_nap">
             <Mapping DataField="SiteType" ObjectProperty="CustomerType" class="CustomerPermissionInfo" />
         </Setting>
-        <Setting Key="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" SpName="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" SpName="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" SpName="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_NewLeftPanel_CustomerSearch" SpName="Acc_CRM_NewLeftPanel_CustomerSearch" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_NewLeftPanel_CustomerSelUserSearch" SpName="Acc_CRM_NewLeftPanel_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" SpName="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
-        <Setting Key="Acc_CRM_NewAccDetail_SyncHeadlineStaffAndAuthority" SpName="Acc_CRM_NewAccDetail_SyncHeadlineStaffAndAuthority" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_SyncHeadlineStaffAndAuthority" SpName="Acc_CRM_NewAccDetail_SyncHeadlineStaffAndAuthority" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
+        <Setting Key="Acc_CRM_NewAccDetail_GetHeadlineCompanyService" SpName="Acc_CRM_NewAccDetail_GetHeadlineCompanyService" DbName="DBCRM.bodb_CRM.bodbAdminNet"></Setting>
         <Setting Key="Acc_CRM_NewAccDetail_GetHeadlineStaffAndAuthority" SpName="Acc_CRM_NewAccDetail_GetHeadlineStaffAndAuthority" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_NewAccDetail_UpdHeadlineStaffAndAuthority" SpName="Acc_CRM_NewAccDetail_UpdHeadlineStaffAndAuthority" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo" SpName="Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
