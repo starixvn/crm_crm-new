@@ -41,7 +41,8 @@ export class HeadlineCommunicationInfo extends Component {
                 return null;
             }
             if (activeTab.nextTab === 'headlineStaffsAndAuthority' || activeTab.nextTab === 'companyService') {
-                if (JSON.stringify(this.state.headlineCommunicationInfo).toString() === JSON.stringify(initialValues).toString()) {
+                if (JSON.stringify(this.state.headlineCommunicationInfo).toString() === JSON.stringify(initialValues).toString() ||
+                    this.state.headlineInfoPolicy !== Policy.Host) {
                     this.props.setShowConfirmUnSaved(false);
                     this.props.setActiveTab({
                         currentTab: activeTab.nextTab,
@@ -107,17 +108,21 @@ export class HeadlineCommunicationInfo extends Component {
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
     handleChangeValue = (name, value, indexPic) => {
-        let { headlineCommunicationInfo } = this.state;
-        headlineCommunicationInfo[indexPic][name] = value;
-        this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
-        this.validateCommunicationInfo();
+        let { headlineCommunicationInfo, headlineInfoPolicy } = this.state;
+        if (headlineInfoPolicy === Policy.Host) {
+            headlineCommunicationInfo[indexPic][name] = value;
+            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+            this.validateCommunicationInfo();
+        }
     }
 
     handleChangeCommunicationValue = (name, typeName, value, indexPic, indexPicCommunicationTool) => {
-        let { headlineCommunicationInfo } = this.state;
-        headlineCommunicationInfo[indexPic][name][indexPicCommunicationTool][typeName] = value;
-        this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
-        this.validateCommunicationInfo();
+        let { headlineCommunicationInfo, headlineInfoPolicy } = this.state;
+        if (headlineInfoPolicy === Policy.Host) {
+            headlineCommunicationInfo[indexPic][name][indexPicCommunicationTool][typeName] = value;
+            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+            this.validateCommunicationInfo();
+        }
     }
 
     deleteCommunicationTool = (value, type, indexPic) => {
@@ -275,9 +280,11 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     handleChangeCountryValue = (item, indexPic) => {
-        let { headlineCommunicationInfo } = this.state;
-        headlineCommunicationInfo[indexPic].country = item.id;
-        this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        let { headlineCommunicationInfo, headlineInfoPolicy } = this.state;
+        if (headlineInfoPolicy === Policy.Host) {
+            headlineCommunicationInfo[indexPic].country = item.id;
+            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        }
     }
 
     getWidth = (picCommunicationTool, settingCommunicationTool) => (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.type).settingValue.length) + 15;
@@ -308,9 +315,9 @@ export class HeadlineCommunicationInfo extends Component {
                     {
                         pic.picType === HeadlinePicID &&
                         <Form.Control as="select" size="sm" className={pic.isRoleError ? 'invalid shadow-none' : 'shadow-none'} value={pic.role} name="picRoleID" id="picRoleID"
-                            onChange={(currentItem, selectedItemsKey) => {
-                                this.handleChangeValue('country', selectedItemsKey, indexPic);
-                        }}>
+                            onChange={event => {
+                                this.handleChangeValue('role', parseInt(event.target.value, 10), indexPic);
+                            }}>
                             {headlinePicRoles.map(item => this.renderOptions(item.settingValue, item.settingId))} 
                         </Form.Control>
                     }
@@ -373,13 +380,13 @@ export class HeadlineCommunicationInfo extends Component {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
                                     }} />
                                     {
-                                        pic.picCommunicationTools.length > 1 && 
+                                        this.state.headlineInfoPolicy === Policy.Host && pic.picCommunicationTools.length > 1 && 
                                         <div onClick={() => { this.deleteCommunicationTool(picCommunicationTool.value, picCommunicationTool.type, indexPic); }}
                                             className='icon icon-delete'>
                                         </div>
                                     }
                                     {
-                                        indexPicCommunicationTool === ( pic.picCommunicationTools.length - 1) &&
+                                        this.state.headlineInfoPolicy === Policy.Host && indexPicCommunicationTool === ( pic.picCommunicationTools.length - 1) &&
                                         <div onClick={() => { this.addNewCommunicationTool(indexPic); }}
                                             className='icon icon-plus'>
                                         </div>

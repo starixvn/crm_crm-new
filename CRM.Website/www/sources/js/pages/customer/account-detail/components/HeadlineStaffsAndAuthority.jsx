@@ -41,7 +41,8 @@ export class HeadlineStaffsAndAuthority extends Component {
                 return null;
             }
             if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'companyService') {
-                if (JSON.stringify(this.state.headlineStaffsAndAuthority).toString() === JSON.stringify(initialValues).toString()) {
+                if (JSON.stringify(this.state.headlineStaffsAndAuthority).toString() === JSON.stringify(initialValues).toString() ||
+                    this.state.headlineInfoPolicy !== Policy.Host) {
                     this.props.setShowConfirmUnSaved(false);
                     this.props.setActiveTab({
                         currentTab: activeTab.nextTab,
@@ -120,13 +121,12 @@ export class HeadlineStaffsAndAuthority extends Component {
                 headlineStaffsAndAuthority.push({
                     rowID: staffCom.rowID,
                     headlineID: this.props.customerInfo.custId,
-                    picID: staff.picID,
+                    picID: staff.picID === null ? 0 : staff.picID,
                     picName: staff.picName,
                     picRoleID: staff.picRoleID,
                     picCommunicationID: staffCom.picCommunicationID,
                     picCommunicationValue: staffCom.picCommunicationValue,
                     authorityID: staffCom.authorityID,
-                    authority: staffCom.authority,
                     remark: staffCom.remark,
                     isSyncFromPicTable: staff.isSyncFromPicTable ? 1 : 0
                 });
@@ -204,7 +204,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         if (errors === null) {
             let { headlineStaffsAndAuthority } = this.state;
             headlineStaffsAndAuthority.push({
-                picID: null,
+                picID: 0,
                 picName: null,
                 picRoleID: 0,
                 picRoleName: null,
@@ -516,6 +516,7 @@ export class HeadlineStaffsAndAuthority extends Component {
     }
 
     renderRow = (item) => {
+        const { settingStaffAndAuthority } = this.props;
         return (
             <>
                 <Row key={item.rowID} className='row-staff-authority'>
@@ -523,7 +524,15 @@ export class HeadlineStaffsAndAuthority extends Component {
                     <Cell rowSpan={item.communicationTools.length} className='text-center'>{item.picRoleName}</Cell>
                     <Cell>{item.communicationTools[0].picCommunicationName}</Cell>
                     <Cell>{item.communicationTools[0].picCommunicationValue}</Cell>
-                    <Cell>{item.communicationTools[0].authority}</Cell>
+                    <Cell>
+                        {
+                            settingStaffAndAuthority.map(setting => {
+                                if (item.communicationTools[0].authority.includes(setting.settingValue)) {
+                                    return <p key={`${item.rowID}-${setting.settingValue}`}>{setting.settingValue}</p>;
+                                }
+                            })
+                        }
+                    </Cell>
                     <Cell>{item.communicationTools[0].remark}</Cell>
                 </Row>
                 {
@@ -533,7 +542,15 @@ export class HeadlineStaffsAndAuthority extends Component {
                                 <Row key={`${item.rowID}-${item.picID}-${item.picName}-${value.picCommunicationID}`} className='row-staff-authority row-child'>
                                     <Cell>{value.picCommunicationName}</Cell>
                                     <Cell>{value.picCommunicationValue}</Cell>
-                                    <Cell>{value.authority}</Cell>
+                                    <Cell>
+                                        {
+                                            settingStaffAndAuthority.map(setting => {
+                                                if (value.authority.includes(setting.settingValue)) {
+                                                    return <p key={`${item.rowID}-${setting.settingValue}`}>{setting.settingValue}</p>;
+                                                }
+                                            })
+                                        }
+                                    </Cell>
                                     <Cell>{value.remark}</Cell>
                                 </Row>
                             );

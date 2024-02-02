@@ -70,7 +70,8 @@ export class CompanyService extends Component {
             }
 
             if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'headlineStaffsAndAuthority') {
-                if (JSON.stringify(this.state.companyService).toString() === JSON.stringify(initialValues).toString()) {
+                if (JSON.stringify(this.state.companyService).toString() === JSON.stringify(initialValues).toString() ||
+                    this.state.headlineInfoPolicy !== Policy.Host) {
                     this.props.setShowConfirmUnSaved(false);
                     this.props.setActiveTab({
                         currentTab: activeTab.nextTab,
@@ -220,8 +221,11 @@ export class CompanyService extends Component {
         return (
             <Row key={item.companyServiceID}>
                 <Cell>{item.companyServiceName}
-                    <img className='icon-copy' src={Site.resolveClientUrl('www/dist/css/images/icon/icon-copy.svg')} alt="icon copy"
-                        onClick={event => {this.handleCoppy(item);}} />
+                    {
+                        this.state.headlineInfoPolicy === Policy.Host && 
+                        <img className='icon-copy' src={Site.resolveClientUrl('www/dist/css/images/icon/icon-copy.svg')} alt="icon copy"
+                            onClick={event => { this.handleCoppy(item); }} />
+                    }
                 </Cell>
                 <Cell>
                     <Form.Control as="select" size="sm" disabled={this.state.headlineInfoPolicy !== Policy.Host} value={item.isOffered} name="isOffered" id="isOffered"
