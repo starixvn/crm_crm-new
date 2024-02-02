@@ -98,6 +98,7 @@ export class HeadlineCommunicationInfo extends Component {
                 picName: pic.picName,
                 picType: pic.picTypeID,
                 role: pic.picRoleID,
+                roleName: pic.picRoleName,
                 isNameError: false,
                 isRoleError: false
             });
@@ -452,7 +453,7 @@ export class HeadlineCommunicationInfo extends Component {
                                         if (item !== '') {
                                             return (<>
                                                 <div>
-                                                    <span>{`${headlineCommunicationInfo[index].picName}: `}</span>
+                                                    <span>{`${headlineCommunicationInfo[index].picName} (${headlineCommunicationInfo[index].roleName}): `}</span>
                                                     {
                                                         headlineCommunicationInfo[index].picCommunicationTools.map((comPic, indexPic) => {
                                                             let indexCom = settingCommunicationTool.findIndex(x => x.settingId === comPic.type &&
