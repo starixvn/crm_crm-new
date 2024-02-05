@@ -563,7 +563,7 @@ export class AppContainer extends Component {
                     <div className="tab-title">
                         <div className={`tab-child ${activeTab.currentTab === 'headlineCommunicationInfo' ? 'active' : ''}`}
                             onClick={() => this.handleTabClick('headlineCommunicationInfo')}>
-                            Headline Communication info
+                            Headline Communication Info
                         </div>
                         <div className={`tab-child ${activeTab.currentTab === 'headlineStaffsAndAuthority' ? 'active' : ''}`}
                             onClick={() => this.handleTabClick('headlineStaffsAndAuthority')}>

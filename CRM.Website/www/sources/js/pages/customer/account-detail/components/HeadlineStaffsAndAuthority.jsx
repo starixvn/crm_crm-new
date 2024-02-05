@@ -12,13 +12,25 @@ import { FunctionKey, Policy } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { ValidateHeadlineStaffAndAuthority, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 
 export class HeadlineStaffsAndAuthority extends Component {
     constructor(props) {
         super(props);
         this.state = {
             headlineStaffsAndAuthority: null,
-            headlineInfoPolicy: null
+            headlineInfoPolicy: null,
+            originalStaffAndAuthority: null,
+            showConfirmDelete: {
+                show: false,
+                name: '', 
+                indexStaff: -1
+            },
+            showConfirmClear: {
+                show: false,
+                name: '',
+                indexStaff: -1
+            }
         };
     }
 
@@ -60,7 +72,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         value.map(staff => {
             let communicationTools = [];
             value.map(com => {
-                if (staff.picID === com.picID) {
+                if (staff.picName === com.picName) {
                     communicationTools.push({
                         rowID: com.rowID,
                         picCommunicationID: com.picCommunicationID,
@@ -74,7 +86,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                     });
                 }
             });
-            if (headlineStaffsAndAuthority.findIndex(x => x.picID === staff.picID) === -1) {
+            if (headlineStaffsAndAuthority.findIndex(x => x.picName === staff.picName) === -1) {
                 headlineStaffsAndAuthority.push({                    
                     picID: staff.picID,
                     picName: staff.picName,
@@ -161,8 +173,28 @@ export class HeadlineStaffsAndAuthority extends Component {
         return Object.keys(errors).length === 0 ? null : errors;
     }
 
+    handleShowConfirmDelete = (name, indexStaff) => {
+        this.setState({
+            showConfirmDelete: {
+                show: true,
+                name: name,
+                indexStaff: indexStaff
+            },
+        })
+    }
+
+    handleShowConfirmClear = (name, indexStaff) => {
+        this.setState({
+            showConfirmClear: {
+                show: true,
+                name: name,
+                indexStaff: indexStaff
+            },
+        })
+    }
+
     render() {
-        const { headlineStaffsAndAuthority, headlineInfoPolicy } = this.state;
+        const { headlineStaffsAndAuthority, headlineInfoPolicy, showConfirmDelete, showConfirmClear } = this.state;
         const { settingStaffAndAuthority, settingPicRole } = this.props;
 
         if (!settingStaffAndAuthority || !headlineStaffsAndAuthority || !settingPicRole || !headlineInfoPolicy) {
@@ -177,7 +209,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                         {LangHelper.getResource('Add')}
                     </Button>
                 }
-                <div className={`${headlineStaffsAndAuthority.length < 3 && 'table-inTab'}`}>
+                <div className={`${headlineStaffsAndAuthority.length < 3 && 'table-inTab'} headline-staff-authority`}>
                     <Table
                         width={1495}
                         autoWidth={false}
@@ -189,12 +221,46 @@ export class HeadlineStaffsAndAuthority extends Component {
                     />
                 </div>
                 {
-                    headlineInfoPolicy === Policy.Host &&
-                    <div className='group-btn'>
-                        <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
-                            {LangHelper.getResource('Save')}
-                        </Button>
-                    </div>
+                    showConfirmDelete.show &&
+                    <ConfirmPopup
+                        title={'Delete Headline Staffs and Authority'}
+                        className='delete-confirm-modal'
+                        content={
+                            <div>Are you sure you want to delete the <span className="bold">{showConfirmDelete.name}</span>?</div>
+                        }
+                        size='lg'
+                        onSubmit={() => this.handleDelete(showConfirmDelete.indexStaff)}
+                        onClose={() => {
+                            this.setState({
+                                showConfirmDelete: {
+                                    show: false,
+                                    name: '',
+                                    indexStaff: -1
+                                },
+                            })
+                        } }
+                    />
+                }
+                {
+                    showConfirmClear.show &&
+                    <ConfirmPopup
+                        title={'Clear Headline Staffs and Authority'}
+                        className='clear-confirm-modal'
+                        content={
+                            <div>Are you sure you want to clear authority and remark of <span className="bold">{showConfirmClear.name}</span>?</div>
+                        }
+                        size='lg'
+                        onSubmit={() => this.handleClear(showConfirmClear.indexStaff)}
+                        onClose={() => {
+                            this.setState({
+                                showConfirmClear: {
+                                    show: false,
+                                    name: '',
+                                    indexStaff: -1
+                                },
+                            })
+                        }}
+                    />
                 }
             </>
         );
@@ -215,10 +281,15 @@ export class HeadlineStaffsAndAuthority extends Component {
                     picCommunicationName: null,
                     picCommunicationValue: null,
                     authorityID: '',
-                    authority: null,
-                    remark: null
+                    authority: '',
+                    remark: null,
+                    isErrorPicCommunication: false,
+                    isErrorPicAuthorityID: false
                 }],
-                isSyncFromPicTable: false
+                isSyncFromPicTable: false,
+                isErrorPicName: false,
+                isErrorPicRoleID: false,
+                isEdit: true
             });
             this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
         }
@@ -266,16 +337,16 @@ export class HeadlineStaffsAndAuthority extends Component {
     };
 
     buildBody = () => {
-        const { headlineStaffsAndAuthority, headlineInfoPolicy } = this.state;
+        const { headlineStaffsAndAuthority } = this.state;
 
         if (headlineStaffsAndAuthority.length > 0) {
             return [
                 <Fragment key={'body'}>
                     {headlineStaffsAndAuthority.map((item, indexStaff) => {
-                        if (headlineInfoPolicy === Policy.Host || (item.isEdit && headlineInfoPolicy === Policy.Host)) {
+                        if (item.isEdit) {
                             return this.renderEditRow(item, indexStaff)
                         } else {
-                            return this.renderRow(item)
+                            return this.renderRow(item, indexStaff)
                         }
                     })}
                 </Fragment>
@@ -414,14 +485,8 @@ export class HeadlineStaffsAndAuthority extends Component {
                     </Cell>
                     <Cell rowSpan={staff.communicationTools.length}>
                         <div className='row-icon'>
-                            {
-                                staff.isSyncFromPicTable &&
-                                <div className='icon icon-clear' onClick={() => this.handleClear(indexStaff)}></div>
-                            }
-                            {
-                                !staff.isSyncFromPicTable &&
-                                <div className='icon icon-delete' onClick={() => this.handleDelete(indexStaff)}></div>
-                            }
+                            <div className='icon icon-save' title='Save' onClick={() => { this.handleSubmit(); }}></div>
+                            <div className='icon icon-cancel' title='Cancel' onClick={() => this.handleCancel(indexStaff)}></div>
                         </div>
                     </Cell>
                 </Row>
@@ -500,23 +565,91 @@ export class HeadlineStaffsAndAuthority extends Component {
         );
     }
 
+    getOriginalStaffAndAuthority = value => {
+        return {
+            picID: value.picID,
+            picName: value.picName,
+            picRoleID: value.picRoleID,
+            picRoleName: value.picRoleName,
+            communicationTools: value.communicationTools.map(com => {
+                return{
+                    rowID: com.rowID,
+                    picCommunicationID: com.picCommunicationID,
+                    picCommunicationName: com.picCommunicationName,
+                    picCommunicationValue: com.picCommunicationValue,
+                    authorityID: com.authorityID,
+                    authority: com.authority,
+                    remark: com.remark,
+                    isErrorPicCommunication: false,
+                    isErrorPicAuthorityID: false
+                };
+            }),
+            isSyncFromPicTable: value.isSyncFromPicTable,
+            isErrorPicName: false,
+            isErrorPicRoleID: false,
+            isEdit: false
+        };
+    }
+
     handleClear = (indexStaff) => {
         const { headlineStaffsAndAuthority } = this.state;
+        const originalStaffAndAuthority = this.getOriginalStaffAndAuthority(headlineStaffsAndAuthority[indexStaff]);
         headlineStaffsAndAuthority[indexStaff].communicationTools.map(item => {
             item.remark = '';
             item.authority = '';
             item.authorityID = '';
         });
-        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+        headlineStaffsAndAuthority[indexStaff].isEdit = true;
+        this.setState({
+            headlineStaffsAndAuthority: headlineStaffsAndAuthority,
+            originalStaffAndAuthority: originalStaffAndAuthority,
+            showConfirmClear: {
+                show: false,
+                name: '',
+                indexStaff: -1
+            }
+        });
+    }
+
+    handleEdit = (indexStaff) => {
+        const { headlineStaffsAndAuthority } = this.state;
+        if (headlineStaffsAndAuthority.findIndex(x => x.isEdit) === -1) {
+            const originalStaffAndAuthority = this.getOriginalStaffAndAuthority(headlineStaffsAndAuthority[indexStaff]);
+            headlineStaffsAndAuthority[indexStaff].isEdit = true;
+            this.setState({
+                headlineStaffsAndAuthority: headlineStaffsAndAuthority,
+                originalStaffAndAuthority: originalStaffAndAuthority
+            });
+        }
+    }
+
+    handleCancel = (indexStaff) => {
+        const { headlineStaffsAndAuthority, originalStaffAndAuthority } = this.state;
+        if (originalStaffAndAuthority) {
+            originalStaffAndAuthority.isEdit = false;
+            headlineStaffsAndAuthority[indexStaff] = originalStaffAndAuthority;
+            this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+        } else {
+            const data = [...this.state.headlineStaffsAndAuthority];
+            data.splice(indexStaff, 1);
+            this.setState({headlineStaffsAndAuthority: data});
+        }
     }
 
     handleDelete = (indexStaff) => {
         const data = [...this.state.headlineStaffsAndAuthority];
         data.splice(indexStaff, 1);
-        this.setState({ headlineStaffsAndAuthority: data });
+        this.setState({
+            headlineStaffsAndAuthority: data,
+            showConfirmDelete: {
+                show: false,
+                name: '',
+                indexStaff: -1
+            }});
+        this.handleSubmit();
     }
 
-    renderRow = (item) => {
+    renderRow = (item, indexStaff) => {
         const { settingStaffAndAuthority } = this.props;
         return (
             <>
@@ -528,13 +661,26 @@ export class HeadlineStaffsAndAuthority extends Component {
                     <Cell>
                         {
                             settingStaffAndAuthority.map(setting => {
-                                if (item.communicationTools[0].authority.includes(setting.settingValue)) {
-                                    return <p key={`${item.rowID}-${setting.settingValue}`}>{setting.settingValue}</p>;
+                                if (item.communicationTools[0].authority?.includes(setting.settingValue)) {
+                                    return <p className="authority-name" key={`${item.rowID}-${setting.settingValue}`}>{setting.settingValue}</p>;
                                 }
                             })
                         }
                     </Cell>
                     <Cell>{item.communicationTools[0].remark}</Cell>
+                    <Cell rowSpan={item.communicationTools.length}>
+                        <div className='row-icon'>
+                            <div className='icon icon-edit' title='Edit staff authority' onClick={() => this.handleEdit(indexStaff)}></div>
+                            {
+                                item.isSyncFromPicTable &&
+                                <div className='icon icon-clear' title='Clear staff authority' onClick={() => this.handleShowConfirmClear(item.picName, indexStaff)}></div>
+                            }
+                            {
+                                !item.isSyncFromPicTable &&
+                                <div className='icon icon-delete' title='Delete staff authority' onClick={() => this.handleShowConfirmDelete(item.picName,indexStaff)}></div>
+                            }
+                        </div>
+                    </Cell>
                 </Row>
                 {
                     item.communicationTools.map((value, index) => {
@@ -546,8 +692,8 @@ export class HeadlineStaffsAndAuthority extends Component {
                                     <Cell>
                                         {
                                             settingStaffAndAuthority.map(setting => {
-                                                if (value.authority.includes(setting.settingValue)) {
-                                                    return <p key={`${item.rowID}-${setting.settingValue}`}>{setting.settingValue}</p>;
+                                                if (value.authority?.includes(setting.settingValue)) {
+                                                    return <p className="authority-name" key={`${item.rowID}-${setting.settingValue}`}>{setting.settingValue}</p>;
                                                 }
                                             })
                                         }

@@ -99,7 +99,7 @@ export default class DataGrid extends PureComponent {
         isSubmitting,
         setFieldValue
     }) => {
-        const { customerInfo, settings, isHostOnCurrentCustomer } = this.props;
+        const { customerInfo, settings } = this.props;
         const isShowInactiveMsg = settings.sitesLicenseeInactive.filter(x => x.id === customerInfo.siteId).length > 0;
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
         return (
@@ -244,7 +244,7 @@ export default class DataGrid extends PureComponent {
                     <Col />
                     <Col>
                         {
-                            isHostOnCurrentCustomer &&
+                            this.state.isHostOnCurrentCustomer &&
                             <Button variant="primary" size="sm" type="submit" disabled={isSubmitting}>
                                 <UnderlineButton.updateButton />
                             </Button>

@@ -1,10 +1,22 @@
-.customer-info-detail {
-    .bold {
-        font-weight: bold;
-    }
+.bold {
+    font-weight: bold;
+}
 
-    .confirm-headline {
-        margin-bottom: 15px;
+.confirm-headline {
+    margin-bottom: 15px;
+}
+
+.clear-confirm-modal, .delete-confirm-modal {
+    left: 10%;
+
+    .modal-content {
+        width: 60%;
+    }
+}
+
+.customer-info-detail {
+    .authority-name{
+        margin: unset;
     }
 
     .group-account {
@@ -207,7 +219,7 @@
 
             .custom-scrollbar {
                 padding: 3px 8px 3px 0;
-                max-height: 440px;
+                max-height: 400px;
                 overflow-y: auto;
 
                 &.custom-dropdown {
@@ -346,7 +358,7 @@
     }
 
     .table-container {
-        max-height: 410px;
+        max-height: 400px;
 
         .header-content {
             padding-right: 0;
