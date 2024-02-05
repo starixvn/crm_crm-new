@@ -83,7 +83,8 @@ export class HeadlineStaffsAndAuthority extends Component {
                     communicationTools: communicationTools,
                     isSyncFromPicTable: staff.isSyncFromPicTable,
                     isErrorPicName: false,
-                    isErrorPicRoleID: false
+                    isErrorPicRoleID: false,
+                    isEdit: false
                 });
             }
         });
@@ -253,8 +254,8 @@ export class HeadlineStaffsAndAuthority extends Component {
                 <HeaderCell colWidth={200}>{LangHelper.getResource('Name')}</HeaderCell>
                 <HeaderCell colWidth={120}>{LangHelper.getResource('Role')}</HeaderCell>
                 <HeaderCell colWidth={170} colspan={2}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
-                <HeaderCell colWidth={270} className="display-colSpan"></HeaderCell>
-                <HeaderCell colWidth={160}>{LangHelper.getResource('Authority')}</HeaderCell>
+                <HeaderCell colWidth={220} className="display-colSpan"></HeaderCell>
+                <HeaderCell colWidth={210}>{LangHelper.getResource('Authority')}</HeaderCell>
                 <HeaderCell colWidth={460}>{LangHelper.getResource('Remark')}</HeaderCell>
                 {
                     headlineInfoPolicy === Policy.Host &&
@@ -271,7 +272,7 @@ export class HeadlineStaffsAndAuthority extends Component {
             return [
                 <Fragment key={'body'}>
                     {headlineStaffsAndAuthority.map((item, indexStaff) => {
-                        if (headlineInfoPolicy === Policy.Host) {
+                        if (headlineInfoPolicy === Policy.Host || (item.isEdit && headlineInfoPolicy === Policy.Host)) {
                             return this.renderEditRow(item, indexStaff)
                         } else {
                             return this.renderRow(item)
