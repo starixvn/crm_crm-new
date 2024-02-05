@@ -470,6 +470,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                             dataSource={authorityFirstSelected}
                             keyField='authorityId'
                             valueField='name'
+                            hasSearchBox
                             isAllTextShown
                             isInvalid={staff.communicationTools[0].isErrorPicAuthorityID}
                             isNAOption
@@ -544,6 +545,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                                             keyField='authorityId'
                                             valueField='name'
                                             isAllTextShown
+                                            hasSearchBox
                                             isNAOption
                                             isInvalid={value.isErrorPicAuthorityID}
                                             onChange={(currentItem, selectedItemsKey) => {

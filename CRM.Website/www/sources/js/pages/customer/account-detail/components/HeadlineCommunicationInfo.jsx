@@ -381,14 +381,14 @@ export class HeadlineCommunicationInfo extends Component {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
                                     }} />
                                     {
-                                        this.state.headlineInfoPolicy === Policy.Host && pic.picCommunicationTools.length > 1 && 
-                                        <div onClick={() => { this.deleteCommunicationTool(picCommunicationTool.value, picCommunicationTool.type, indexPic); }}
+                                        this.state.headlineInfoPolicy === Policy.Host && pic.picCommunicationTools.length > 1 &&
+                                        <div title='Delete communication tool' onClick={() => { this.deleteCommunicationTool(picCommunicationTool.value, picCommunicationTool.type, indexPic); }}
                                             className='icon icon-delete'>
                                         </div>
                                     }
                                     {
                                         this.state.headlineInfoPolicy === Policy.Host && indexPicCommunicationTool === ( pic.picCommunicationTools.length - 1) &&
-                                        <div onClick={() => { this.addNewCommunicationTool(indexPic); }}
+                                        <div title='Add communication tool' onClick={() => { this.addNewCommunicationTool(indexPic); }}
                                             className='icon icon-plus'>
                                         </div>
                                     }
