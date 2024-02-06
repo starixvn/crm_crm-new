@@ -499,9 +499,12 @@ export class AppContainer extends Component {
                     }
                 </div>
                 <div className='add-comm-tool'>
-                    <Button className='btn-add' variant="primary" size="sm" onClick={this.addNewCommunicationTool}>
-                        {LangHelper.getResource('AddCommunicationTool')}
-                    </Button>
+                    {
+                        values.isHostOnCurrentCustomer && 
+                        <Button className='btn-add' variant="primary" size="sm" onClick={this.addNewCommunicationTool}>
+                            {LangHelper.getResource('AddCommunicationTool')}
+                        </Button>
+                    }
                     <div className='group-content'>
                         {
                             values.otherAccountCommunication?.map((picCommunicationTool, indexPicCommunicationTool) => {
@@ -523,6 +526,7 @@ export class AppContainer extends Component {
                                                     this.handleChangeCommunication('communicationValue', event.target.value, indexPicCommunicationTool);
                                                 }} />
                                             {
+                                                values.isHostOnCurrentCustomer &&
                                                 <div onClick={() => { this.deleteCommunicationTool(picCommunicationTool.communicationValue, picCommunicationTool.communicationID); }}
                                                     className='icon icon-delete'>
                                                 </div>

@@ -670,19 +670,22 @@ export class HeadlineStaffsAndAuthority extends Component {
                         }
                     </Cell>
                     <Cell>{item.communicationTools[0].remark}</Cell>
-                    <Cell rowSpan={item.communicationTools.length}>
-                        <div className='row-icon'>
-                            <div className='icon icon-edit' title='Edit staff authority' onClick={() => this.handleEdit(indexStaff)}></div>
-                            {
-                                item.isSyncFromPicTable &&
-                                <div className='icon icon-clear' title='Clear staff authority' onClick={() => this.handleShowConfirmClear(item.picName, indexStaff)}></div>
-                            }
-                            {
-                                !item.isSyncFromPicTable &&
-                                <div className='icon icon-delete' title='Delete staff authority' onClick={() => this.handleShowConfirmDelete(item.picName,indexStaff)}></div>
-                            }
-                        </div>
-                    </Cell>
+                    {
+                        this.state.headlineInfoPolicy === Policy.Host && 
+                        <Cell rowSpan={item.communicationTools.length}>
+                            <div className='row-icon'>
+                                <div className='icon icon-edit' title='Edit staff authority' onClick={() => this.handleEdit(indexStaff)}></div>
+                                {
+                                    item.isSyncFromPicTable &&
+                                    <div className='icon icon-clear' title='Clear staff authority' onClick={() => this.handleShowConfirmClear(item.picName, indexStaff)}></div>
+                                }
+                                {
+                                    !item.isSyncFromPicTable &&
+                                    <div className='icon icon-delete' title='Delete staff authority' onClick={() => this.handleShowConfirmDelete(item.picName, indexStaff)}></div>
+                                }
+                            </div>
+                        </Cell>
+                    }
                 </Row>
                 {
                     item.communicationTools.map((value, index) => {

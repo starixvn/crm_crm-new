@@ -109,21 +109,17 @@ export class HeadlineCommunicationInfo extends Component {
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
     handleChangeValue = (name, value, indexPic) => {
-        let { headlineCommunicationInfo, headlineInfoPolicy } = this.state;
-        if (headlineInfoPolicy === Policy.Host) {
-            headlineCommunicationInfo[indexPic][name] = value;
-            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
-            this.validateCommunicationInfo();
-        }
+        let { headlineCommunicationInfo } = this.state;
+        headlineCommunicationInfo[indexPic][name] = value;
+        this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        this.validateCommunicationInfo();
     }
 
     handleChangeCommunicationValue = (name, typeName, value, indexPic, indexPicCommunicationTool) => {
-        let { headlineCommunicationInfo, headlineInfoPolicy } = this.state;
-        if (headlineInfoPolicy === Policy.Host) {
-            headlineCommunicationInfo[indexPic][name][indexPicCommunicationTool][typeName] = value;
-            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
-            this.validateCommunicationInfo();
-        }
+        let { headlineCommunicationInfo } = this.state;
+        headlineCommunicationInfo[indexPic][name][indexPicCommunicationTool][typeName] = value;
+        this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+        this.validateCommunicationInfo();
     }
 
     deleteCommunicationTool = (value, type, indexPic) => {
@@ -281,11 +277,9 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     handleChangeCountryValue = (item, indexPic) => {
-        let { headlineCommunicationInfo, headlineInfoPolicy } = this.state;
-        if (headlineInfoPolicy === Policy.Host) {
-            headlineCommunicationInfo[indexPic].country = item.id;
-            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
-        }
+        let { headlineCommunicationInfo } = this.state;
+        headlineCommunicationInfo[indexPic].country = item.id;
+        this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
     }
 
     getWidth = (picCommunicationTool, settingCommunicationTool) => (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.type).settingValue.length) + 15;
