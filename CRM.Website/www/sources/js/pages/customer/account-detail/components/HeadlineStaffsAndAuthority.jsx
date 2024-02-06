@@ -211,7 +211,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                 }
                 <div className={`${headlineStaffsAndAuthority.length < 3 && 'table-inTab'} headline-staff-authority`}>
                     <Table
-                        width={1495}
+                        width={1490}
                         autoWidth={false}
                         header={this.buildHeader()}
                         body={this.buildBody()}
@@ -327,10 +327,10 @@ export class HeadlineStaffsAndAuthority extends Component {
                 <HeaderCell colWidth={170} colspan={2}>{LangHelper.getResource('CommunicationTool')}</HeaderCell>
                 <HeaderCell colWidth={220} className="display-colSpan"></HeaderCell>
                 <HeaderCell colWidth={210}>{LangHelper.getResource('Authority')}</HeaderCell>
-                <HeaderCell colWidth={460}>{LangHelper.getResource('Remark')}</HeaderCell>
+                <HeaderCell colWidth={400}>{LangHelper.getResource('Remark')}</HeaderCell>
                 {
                     headlineInfoPolicy === Policy.Host &&
-                    <HeaderCell colWidth={120}>{LangHelper.getResource('Action')}</HeaderCell>
+                    <HeaderCell colWidth={80}>{LangHelper.getResource('Action')}</HeaderCell>
                 }
             </HeaderRow>
         );

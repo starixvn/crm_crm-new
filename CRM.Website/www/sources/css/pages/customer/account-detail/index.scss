@@ -15,7 +15,7 @@
 }
 
 .customer-info-detail {
-    .authority-name{
+    .authority-name {
         margin: unset;
     }
 
@@ -141,6 +141,8 @@
     }
 
     .icon-delete {
+        height: 20px;
+        width: 20px;
         background: url("/www/dist/css/images/icon/icon-delete.svg");
 
         &:hover {
