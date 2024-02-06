@@ -222,8 +222,9 @@ export class CompanyService extends Component {
             <Row key={item.companyServiceID}>
                 <Cell>{item.companyServiceName}
                     {
-                        this.state.headlineInfoPolicy === Policy.Host && 
-                        <img className='icon-copy' src={Site.resolveClientUrl('www/dist/css/images/icon/icon-copy.svg')} alt="icon copy"
+                        this.state.headlineInfoPolicy === Policy.Host &&
+                        <img className='icon-copy' title='Copy offer and communication tool to all services'
+                            src={Site.resolveClientUrl('www/dist/css/images/icon/icon-copy.svg')} alt="icon copy"
                             onClick={event => { this.handleCoppy(item); }} />
                     }
                 </Cell>
