@@ -393,7 +393,7 @@ export default class DataGrid extends PureComponent {
                         <Form.Group className="row form-row-detail">
                             <ul className='list-unstyled list-menu pull-left'>
                                 <li>
-                                    <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Main')}</a>
+                                    <a onClick={() => this.props.handleNavigate('Dashboard')}>{LangHelper.getResource('Home')}</a>
                                 </li>
                                 {
                                     isReadRemark && this.props.isCreditSite  &&
