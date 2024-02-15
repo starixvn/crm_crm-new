@@ -318,7 +318,8 @@ export default class DataGrid extends PureComponent {
                                             {LangHelper.getResource('Name')}
                                         </Form.Label>
                                         <Col className='field-name'>
-                                            <a style={{ cursor: 'pointer' }} onClick={() => this.focusHeadlineCommunicationInfo(pic.picID)}>
+                                            <a style={{ cursor: 'pointer' }}
+                                                onClick={() => this.state.headlineInfoPolicy && this.focusHeadlineCommunicationInfo(pic.picID)}>
                                                 {pic.picName + ' (' + pic.picRoleName + ')'}
                                             </a>
                                         </Col>
