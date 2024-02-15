@@ -27,7 +27,8 @@ export default class DataGrid extends PureComponent {
             isShowDetail: true,
             countryId: null,
             remarksPolicy: null,
-            isHostOnCurrentCustomer: false
+            isHostOnCurrentCustomer: false,
+            headlineInfoPolicy: null
         };
     }
 
@@ -43,6 +44,10 @@ export default class DataGrid extends PureComponent {
 
         getPermission(FunctionKey.Remarks, true).then(response => {
             this.setState({ remarksPolicy: response });
+        });
+
+        getPermission(FunctionKey.HeadlineInfo, true).then(response => {
+            this.setState({ headlineInfoPolicy: response });
         });
     }
 
@@ -258,7 +263,7 @@ export default class DataGrid extends PureComponent {
                     !values.isGroupHeadLine && this.renderOtherAccountInfo(values.otherAccountCommunicationInfos)
                 }
                 {
-                    this.renderDetail(isShowInactiveMsg)
+                    this.renderDetail(isShowInactiveMsg, values)
                 }
             </Form>
         );
@@ -344,7 +349,7 @@ export default class DataGrid extends PureComponent {
         );
     };
 
-    renderDetail = isShowInactiveMsg => {
+    renderDetail = (isShowInactiveMsg, values) => {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
         const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
@@ -416,7 +421,8 @@ export default class DataGrid extends PureComponent {
                             </ul>
                             <ul className='list-unstyled list-menu pull-left list-menu-right'>
                                 {
-                                    hasReadSitePermission &&
+                                    (hasReadSitePermission && (this.state.headlineInfoPolicy >= Policy.Read
+                                        || (this.state.headlineInfoPolicy === 0 && !values.isGroupHeadLine))) &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetail')}</a>
                                     </li>
@@ -425,7 +431,7 @@ export default class DataGrid extends PureComponent {
                                     <a onClick={() => this.props.handleNavigate('ActionLog')}>{LangHelper.getResource('ActivityLog')}</a>
                                 </li>
                                 {
-                                    hasReadSitePermission &&
+                                    hasReadSitePermission  &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('Detail')}>{LangHelper.getResource('CRMInfo')}</a>
                                     </li>
