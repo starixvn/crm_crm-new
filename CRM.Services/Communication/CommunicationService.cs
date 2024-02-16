@@ -52,7 +52,8 @@
                 FeedbackId = id
             };
 
-            var (communicationLogInfos, relatedCustomers, settingItems) = await baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomerPermission, FeedbackSettingRelation>(criteria);
+            var (communicationLogInfos, relatedCustomers, settingItems) = 
+                await baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomerPermission, FeedbackSettingRelation>(criteria);
             CommunicationLog communicationLog = null;
 
             if (communicationLogInfos.Any())

@@ -48,12 +48,13 @@
             // Arrange
             var date = fixture.Create<DateTime>();
             var clientdate = fixture.Create<DateTime>();
-            var communicationLogs = new List<CommunicationLog>
+            var communicationLogs = new[] 
             {
                 new CommunicationLog
                 {
                     FeedbackDate = date,
-                    ResolutionDate = date, SolveDate = date
+                    ResolutionDate = date,
+                    SolveDate = date
                 }
             };
             var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
@@ -62,7 +63,8 @@
             var criteria = new GetLogByFeedbackIdCriteria();
             var service = GetCommunicationService();
             baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomerPermission, FeedbackSettingRelation>(
-                Arg.Do<GetLogByFeedbackIdCriteria>(x => criteria = x)).Returns((communicationLogs, relatedCustomers, settings));
+                Arg.Do<GetLogByFeedbackIdCriteria>(x => criteria = x))
+                .Returns((communicationLogs, relatedCustomers, settings));
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
             settingService.GetSiteByIdAsync(Arg.Any<int>()).Returns(site);
 

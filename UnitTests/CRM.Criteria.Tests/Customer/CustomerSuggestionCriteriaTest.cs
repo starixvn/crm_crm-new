@@ -10,7 +10,7 @@
         {
             //Arrange
             var criteria = new CustomerSuggestionCriteria();
-            var expected = "Acc_CRM_CustomerSelUserSearch";
+            var expected = "Acc_CRM_NewLeftPanel_CustomerSelUserSearch";
 
             //Act
             var actual = criteria.GetSettingKey();

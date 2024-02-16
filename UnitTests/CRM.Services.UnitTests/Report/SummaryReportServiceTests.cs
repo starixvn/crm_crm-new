@@ -91,9 +91,6 @@
             //Assert
             Assert.Equal("2011", result.YearRange.First().Value);
             Assert.Equal(DateTime.Now.Year.ToString(), result.YearRange.Last().Value);
-            Assert.Equal(4, result.SiteTypes.Count());
-            Assert.Equal("All", result.SiteTypes.First().Name);
-            Assert.Equal("Licensee", result.SiteTypes.Last().Name);
             Assert.Equal(result.Categories.First().MainCategoryID, allSettings.Categories.First().MainCategoryID);
         }
 

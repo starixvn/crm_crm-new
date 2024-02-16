@@ -74,7 +74,11 @@
             var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
             var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var site = fixture.Create<SiteSetting>();
-            var criteria = new GetCustomerFeedbackByIdCriteria();
+            var feedbackId = fixture.Create<int>();
+            var criteria = new GetCustomerFeedbackByIdCriteria
+            {
+                FeedbackId = feedbackId
+            };
             var service = GetService();
             baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomerPermission, FeedbackSettingRelation>(
                 Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x)).Returns((feedbacks, relatedCustomers, settings));
@@ -82,7 +86,7 @@
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
 
             // Act
-            var actual = await service.GetCustomerFeedbackByIdAsync(1);
+            var actual = await service.GetCustomerFeedbackByIdAsync(feedbackId);
 
             // Assert
             Assert.Equal(feedbacks.First(), actual);

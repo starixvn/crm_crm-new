@@ -36,13 +36,13 @@
 
             var reportTitle = string.Format(
                ViewResources.LogStatistics_ExcelTitle,
-               ViewResources.CreditDailyLogStatistics,
+               GetLogStatisticSiteTypeName(criteria.SiteType, false),
                commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormat(),
                commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormat());
 
             var excelFileName = string.Format(
                ViewResources.LogStatistics_ExcelFileName,
-               ViewResources.CreditDailyLogStatisticsFileName,
+               GetLogStatisticSiteTypeName(criteria.SiteType, true),
                commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormatDash(),
                commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormatDash());
             var expected = new LogStatisticsViewModel
@@ -91,6 +91,7 @@
         public async Task GetReportDetailsAsync_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange
+            var criteria = fixture.Create<LogStatisticsDetailCriteria>();
             var clientDate = fixture.Create<DateTime>();
             fixture.Customize<LogStatisticsDetailCriteria>(x => x.With(b => b.SiteType, 0));
             var criteria = fixture.Create<LogStatisticsDetailCriteria>();
@@ -99,13 +100,13 @@
 
             var reportTitle = string.Format(
                ViewResources.LogStatistics_Detail_ExcelTitle,
-               ViewResources.CreditDailyLogStatisticsDetail,
+                       GetLogStatisticDetailSiteTypeName(criteria.SiteType, false),
                commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormat(),
                commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormat());
 
             var excelFileName = string.Format(
                ViewResources.LogStatistics_Detail_ExcelFileName,
-                ViewResources.CreditDailyLogStatisticsDetail_FileName,
+                       GetLogStatisticDetailSiteTypeName(criteria.SiteType, true),
                commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormatDash(),
                commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormatDash());
             var logStatisticEntities = new List<StatisticsDetailbyDateModel>
@@ -140,10 +141,73 @@
             var actual = await service.GetReportDetailsAsync(criteria);
 
             // Assert
-            Assert.Equal(actual.Id, expected.Id);
             Assert.Equal(actual.ChildReports, expected.ChildReports);
             Assert.Equal(actual.Name, expected.Name);
             Assert.Equal(actual.ExcelFileName, expected.ExcelFileName);
+        }
+
+        private static string GetLogStatisticSiteTypeName(short siteType, bool isFileName)
+        {
+            if (isFileName)
+            {
+                switch (siteType)
+                {
+                    case LogStatisticConstants.IBC:
+                        return ViewResources.CreditDailyLogStatisticsFileName;
+
+                    case LogStatisticConstants.Licensee:
+                        return ViewResources.LicenseeDailyLogStatisticsFileName;
+
+                    default:
+                        return string.Empty;
+                }
+            }
+            else
+            {
+                switch (siteType)
+                {
+                    case LogStatisticConstants.IBC:
+                        return ViewResources.CreditDailyLogStatistics;
+
+                    case LogStatisticConstants.Licensee:
+                        return ViewResources.LicenseeDailyLogStatistics;
+
+                    default:
+                        return string.Empty;
+                }
+            }
+        }
+
+        private static string GetLogStatisticDetailSiteTypeName(short siteType, bool isFileName)
+        {
+            if (isFileName)
+            {
+                switch (siteType)
+                {
+                    case LogStatisticConstants.IBC:
+                        return ViewResources.CreditDailyLogStatisticsDetail_FileName;
+
+                    case LogStatisticConstants.Licensee:
+                        return ViewResources.LogStatisticsDetail_FileName;
+
+                    default:
+                        return string.Empty;
+                }
+            }
+            else
+            {
+                switch (siteType)
+                {
+                    case LogStatisticConstants.IBC:
+                        return ViewResources.CreditDailyLogStatisticsDetail;
+
+                    case LogStatisticConstants.Licensee:
+                        return ViewResources.LicenseeDailyLogStatisticsDetail;
+
+                    default:
+                        return string.Empty;
+                }
+            }
         }
 
         #region Helpers

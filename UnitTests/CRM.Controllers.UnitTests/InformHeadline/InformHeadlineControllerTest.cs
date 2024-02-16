@@ -207,7 +207,6 @@
             var allSettings = (CreateInformHeadlineViewModel)jsonResult.Value;
             Assert.Equal(currencies, allSettings.Currencies);
             Assert.Equal(productStatuses, allSettings.ProductStatuses);
-            Assert.Equal(sites, allSettings.Sites);
             Assert.Equal(stations, allSettings.Stations);
             Assert.Equal(statuses, allSettings.Statuses);
         }

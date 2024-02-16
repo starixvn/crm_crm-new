@@ -10,7 +10,7 @@
         {
             //Arrange
             var criteria = new GetCustomerInfoByUsernameCriteria();
-            var expected = "Acc_CRM_CustomerSearch";
+            var expected = "Acc_CRM_NewLeftPanel_CustomerSearch";
 
             //Act
             var actual = criteria.GetSettingKey();

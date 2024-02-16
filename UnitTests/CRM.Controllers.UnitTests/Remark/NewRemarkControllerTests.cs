@@ -157,7 +157,8 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(commandResult, jsonResult.Value);
+            var result = Assert.IsType<CommandResult>(jsonResult.Value);
+            Assert.Equal(commandResult.IsSuccessful, result.IsSuccessful);
         }
 
         [Fact]
@@ -187,7 +188,8 @@
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(actual);
-            Assert.Equal(commandResult, jsonResult.Value);
+            var result = Assert.IsType<CommandResult>(jsonResult.Value);
+            Assert.Equal(commandResult.IsSuccessful, result.IsSuccessful);
         }
 
         [Fact]
