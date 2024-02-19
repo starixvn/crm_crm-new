@@ -195,7 +195,6 @@
             return Json(result);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> CheckCustomerExistsOnCRM([FromBody] CheckCustomerExistsOnCrmCriteria criteria)
         {
