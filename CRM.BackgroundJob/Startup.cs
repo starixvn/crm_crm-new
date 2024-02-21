@@ -172,6 +172,8 @@
             services.AddSingleton<IRefundSettledTicketService, RefundSettledTicketService>();
             services.AddSingleton<IVoidingBetIDService, VoidingBetIDService>();
             services.AddSingleton<IAbnormalBetService, AbnormalBetService>();
+            services.AddSingleton<IMessageNotificationCenterService, MessageNotificationCenterService>();
+            services.AddSingleton<ICaptureSettlementDataService, CaptureSettlementDataService>();
         }
 
         private static void AddWorker(IServiceCollection services)
@@ -197,6 +199,8 @@
             services.AddHostedService<AutoChatbotArchivingDAWoker>();
             services.AddHostedService<LetstalkHealthCheckWorker>();
             services.AddHostedService<AutoFbRefundSettledTicketWoker>();
+
+            services.AddHostedService<MncCaptureSettlementDataWorker>();
         }
 
         private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
