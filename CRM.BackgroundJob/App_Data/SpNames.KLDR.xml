@@ -140,16 +140,16 @@
         <Setting Key="Acc_CRM_AutoFB_AbnormalBets_Import" SpName="Acc_CRM_AutoFB_AbnormalBets_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="MessageNotificationCenter">
-        <Setting Key="MNC_SettlResultHist_Initial" SpName="MNC_SettlResultHist_Initial" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="MNC_SettlResultHist_Initial" SpName="MNC_SettlResultHist_Initial" DbName="DBCRM.MessageNotification.bodbAdminNet" />
         <Setting Key="MNC_SettlResultHist_GetSessionByDate" SpName="MNC_SettlResultHist_GetSessionByDate" DbName="DBACC.bodb02.bodbAdminNet" />
-        <Setting Key="MNC_SettlResultHist_DataLoad" SpName="MNC_SettlResultHist_DataLoad" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="MNC_ResultAmendment_PrepareGen" SpName="MNC_ResultAmendment_PrepareGen" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="MNC_ResultAmendment_GenNotification" SpName="MNC_ResultAmendment_GenNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="MNC_ResultAmendment_GetNotificationIDs" SpName="MNC_ResultAmendment_GetNotificationIDs" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="MNC_ResultAmendment_JSParseResult" SpName="MNC_ResultAmendment_JSParseResult" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="MNC_PreparePushNotification" SpName="MNC_PreparePushNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="MNC_SettlResultHist_DataLoad" SpName="MNC_SettlResultHist_DataLoad" DbName="DBCRM.MessageNotification.bodbAdminNet" />
+        <Setting Key="MNC_ResultAmendment_PrepareGen" SpName="MNC_ResultAmendment_PrepareGen" DbName="DBCRM.MessageNotification.bodbAdminNet" />
+        <Setting Key="MNC_ResultAmendment_GenNotification" SpName="MNC_ResultAmendment_GenNotification" DbName="DBCRM.MessageNotification.bodbAdminNet" />
+        <Setting Key="MNC_ResultAmendment_GetNotificationIDs" SpName="MNC_ResultAmendment_GetNotificationIDs" DbName="DBCRM.MessageNotification.bodbAdminNet" />
+        <Setting Key="MNC_ResultAmendment_JSParseResult" SpName="MNC_ResultAmendment_JSParseResult" DbName="DBCRM.MessageNotification.bodbAdminNet" />
+        <Setting Key="MNC_PreparePushNotification" SpName="MNC_PreparePushNotification" DbName="DBCRM.MessageNotification.bodbAdminNet" />
         <Setting Key="MNC_PushNotification" SpName="MNC_PushNotification" DbName="DBMSG.bodb_Message.bodbAdminNet" />
-        <Setting Key="MNC_CompletedPushNotification" SpName="MNC_CompletedPushNotification" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="MNC_CompletedPushNotification" SpName="MNC_CompletedPushNotification" DbName="DBCRM.MessageNotification.bodbAdminNet" />
     </Function>
 >
 </Functions>
