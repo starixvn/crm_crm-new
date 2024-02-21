@@ -95,7 +95,7 @@
             return Json(result);
         }
 
-        public async Task<IActionResult> GetRolesByPic( int id)
+        public async Task<IActionResult> GetRolesByPic(int id)
         {
             var roles = await settingService.GetRolesByPicAsync(id);
             return Json(roles);
