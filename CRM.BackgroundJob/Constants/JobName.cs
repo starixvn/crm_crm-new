@@ -22,5 +22,6 @@
         public const string CreateFeedbackForRefundSettledTicket = "CreateFeedbackForRefundSettledTicket";
         public const string CreateFeedbackForVoidBetID = "CreateFeedbackForVoidBetID";
         public const string CreateFeedbackForAbnormalBets = "CreateFeedbackForAbnormalBets";
+        public const string CaptureSettlementData = "CaptureSettlementData";
     }
 }
