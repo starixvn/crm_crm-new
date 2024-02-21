@@ -1,4 +1,3 @@
-﻿
 namespace CRM.Core.Models
 {
     public class SiteDbConfig
