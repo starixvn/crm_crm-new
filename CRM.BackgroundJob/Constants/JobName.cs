@@ -23,5 +23,6 @@
         public const string CreateFeedbackForVoidBetID = "CreateFeedbackForVoidBetID";
         public const string CreateFeedbackForAbnormalBets = "CreateFeedbackForAbnormalBets";
         public const string CaptureSettlementData = "CaptureSettlementData";
+        public const string GenerateResultAmendment = "GenerateResultAmendment";
     }
 }

@@ -174,6 +174,7 @@
             services.AddSingleton<IAbnormalBetService, AbnormalBetService>();
             services.AddSingleton<IMessageNotificationCenterService, MessageNotificationCenterService>();
             services.AddSingleton<ICaptureSettlementDataService, CaptureSettlementDataService>();
+            services.AddSingleton<IGenerateResultAmendmentService, GenerateResultAmendmentService>();
         }
 
         private static void AddWorker(IServiceCollection services)
@@ -201,6 +202,7 @@
             services.AddHostedService<AutoFbRefundSettledTicketWoker>();
 
             services.AddHostedService<MncCaptureSettlementDataWorker>();
+            services.AddHostedService<MncGenerateResultAmendmentWorker>();
         }
 
         private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
