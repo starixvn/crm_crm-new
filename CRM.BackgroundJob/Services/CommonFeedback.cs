@@ -35,7 +35,10 @@
         string GetMatchCode(string matchCode, string languageCode);
         
         string GetCategogyName(string categoryId, string languageCode);
-        
+
+        string GetResourceCricketName(string resourceCricketId, string languageCode);
+
+
         T GetFeedbackTemplates<T>(string fileXml);
 
         ValueTuple<bool, string> CheckFeedbackValidParams(CreateMutipleFeedbackCommand criteria);
@@ -140,7 +143,13 @@
             var categoryName = remotingRefService.GetResourceDataByRefIdAndResourceId("Category", categoryId, languageCode, string.Empty);
             return categoryName;
         }
-     
+
+        public string GetResourceCricketName(string resourceCricketId, string languageCode)
+        {
+            var categoryName = remotingRefService.GetResourceDataByRefIdAndResourceId("ResourceCricket", resourceCricketId, languageCode, string.Empty);
+            return categoryName;
+        }
+
         public T GetFeedbackTemplates<T>(string fileXml)
         {
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, path, fileXml);
