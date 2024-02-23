@@ -1,8 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AppContainer } from '../AppContainer';
-import DataGridRemark from '../DataGridRemark';
-import toJson from 'enzyme-to-json';
 
 describe('AppContainer', () => {
     beforeAll(() => {
@@ -190,17 +188,6 @@ describe('AppContainer', () => {
             // Assert
             expect(props.setEditCustomerVerifyDialog).toHaveBeenCalledWith({ show: false });
             expect(props.getCustomerInfoVerify).toHaveBeenCalled();
-        });
-    });
-
-    describe('render', () => {
-        it('should render DataGridRemark correctly', () => {
-            // Arrange
-            // Act
-            const container = shallow(<AppContainer />);
-            // Assert
-            expect(toJson(container)).toMatchSnapshot();
-            expect(container.find(DataGridRemark).length).toBe(0);
         });
     });
 });

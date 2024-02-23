@@ -117,10 +117,11 @@ describe('ViewDetail', () => {
         };
 
         const expectedHeader = <HeaderRow>
-            <HeaderCell colWidth={0.2 * state.modalWidth}>{'LetstalkName'}</HeaderCell>
-            <HeaderCell colWidth={0.2 * state.modalWidth}>{'GroupHeadline'}</HeaderCell>
-            <HeaderCell colWidth={0.2 * state.modalWidth}>{'Recipient'}</HeaderCell>
-            <HeaderCell colWidth={0.4 * state.modalWidth}>{'Reason'}</HeaderCell>
+        <HeaderCell colWidth={0.2 * state.modalWidth}>{'BotService'}</HeaderCell>
+        <HeaderCell colWidth={2} onSort={null} sortBy={null} sortOrder={null}>{'DisplayName'}</HeaderCell>
+        <HeaderCell colWidth={0.2 * state.modalWidth}>{'GroupHeadline'}</HeaderCell>
+        <HeaderCell colWidth={0.2 * state.modalWidth}>{'Recipient'}</HeaderCell>
+        <HeaderCell colWidth={0.4 * state.modalWidth}>{'Reason'}</HeaderCell>
         </HeaderRow>;
 
         const props = {
@@ -158,6 +159,7 @@ describe('ViewDetail', () => {
         const viewDetail = shallow(<ViewDetail {...props} />);
         const viewDetailInstance = viewDetail.instance();
         const expectedBody = [<Row key={props.data.notificationId}>
+            <Cell />
             <Cell>{props.data.displayName}</Cell>
             <Cell>{getHeadlines(props.data.headlines)}</Cell>
             <Cell>{getRecipients(props.data.recipients)}</Cell>

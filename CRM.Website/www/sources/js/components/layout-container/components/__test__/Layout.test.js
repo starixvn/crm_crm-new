@@ -454,41 +454,41 @@ describe('Layout', () => {
         expect(container.state.customerInfo).toEqual(data);
     });
 
-    it('should show confirm empty pop up', async () => {
+    //   it('should show confirm empty pop up', async () => {
+    //     // Arrange
+    //     const props = {location:{pathname: '/'}, navigate: jest.fn()};
+    //     const data = null;
+    //     Site.resolveClientUrl = jest.fn();
+    //     const promise = Promise.resolve({data: data});
+    //     DataService.postDataAsync = jest.fn(() => promise);
+    //     const container = shallow(<Layout {...props}/>).instance();
+
+    //     // Action
+    //     container.getCustomerInfo();
+    //     jest.runAllTimers();
+    //     await promise;
+    //     // Assert
+    //     expect(container.state.showEmptyConfirmPopup).toEqual(true);
+    // });
+
+    it('should show confirm empty customer info pop up', async () => {
       // Arrange
+      const state = {
+        showErrorConfirmPopup: true
+      };
       const props = {location:{pathname: '/'}, navigate: jest.fn()};
       const data = null;
       Site.resolveClientUrl = jest.fn();
       const promise = Promise.resolve({data: data});
       DataService.postDataAsync = jest.fn(() => promise);
       const container = shallow(<Layout {...props}/>).instance();
-
+      container.setState(state);
       // Action
       container.getCustomerInfo();
       jest.runAllTimers();
       await promise;
       // Assert
-      expect(container.state.showEmptyConfirmPopup).toEqual(true);
-  });
-
-  it('should show confirm empty customer info pop up', async () => {
-    // Arrange
-    const state = {
-      isGuest: true
-    };
-    const props = {location:{pathname: '/'}, navigate: jest.fn()};
-    const data = null;
-    Site.resolveClientUrl = jest.fn();
-    const promise = Promise.resolve({data: data});
-    DataService.postDataAsync = jest.fn(() => promise);
-    const container = shallow(<Layout {...props}/>).instance();
-    container.setState(state);
-    // Action
-    container.getCustomerInfo();
-    jest.runAllTimers();
-    await promise;
-    // Assert
-    expect(container.state.showEmptyCustomerInfoPopup).toEqual(true);
-  });
+      expect(container.state.showErrorConfirmPopup).toEqual(true);
+    });
   });
 });

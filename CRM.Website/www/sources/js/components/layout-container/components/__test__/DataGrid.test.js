@@ -22,13 +22,17 @@ describe('DataGrid', () => {
         appContainer1.setAttribute('id', 'hasReadFeedbackPermission');
         appContainer1.checked = true;
         const appContainer2 = document.createElement('div');
-        appContainer1.setAttribute('id', 'hasReadSitePermission');
-        appContainer1.checked = false;
+        appContainer2.setAttribute('id', 'hasReadSitePermission');
+        appContainer2.checked = false;
+        const appContainer3 = document.createElement('div');
+        appContainer3.setAttribute('id', 'hasHostPicManagementPermission');
+        appContainer3.checked = false;
         const leftRowContainer = document.createElement('div');
         leftRowContainer.setAttribute('id', 'left-row-container');
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
         document.body.appendChild(appContainer2);
+        document.body.appendChild(appContainer3);
         document.body.appendChild(leftRowContainer);
     });
 
@@ -37,11 +41,13 @@ describe('DataGrid', () => {
         const appContainer = document.getElementById('hasCreateFeedbackPermission');
         const appContainer1 = document.getElementById('hasReadFeedbackPermission');
         const appContainer2 = document.getElementById('hasReadSitePermission');
+        const appContainer3 = document.getElementById('hasHostPicManagementPermission');
         const leftRowContainer = document.getElementById('left-row-container');
-        if (appContainer || appContainer1 || appContainer2 || leftRowContainer) {
+        if (appContainer || appContainer1 || appContainer2 || appContainer3 || leftRowContainer) {
             document.body.removeChild(appContainer);
             document.body.removeChild(appContainer1);
             document.body.removeChild(appContainer2);
+            document.body.removeChild(appContainer3);
             document.body.removeChild(leftRowContainer);
         }
     });
@@ -171,7 +177,9 @@ describe('DataGrid', () => {
                     customerInfo: {
                         languages: [1, 2],
                         uplineInfo: [],
-                        roleName:'test'
+                        roleName:'test',
+                        otherAccountCommunicationInfos: [],
+                        headlineStaffInfoCommunications: []
                     },
                     getSettings: jest.fn(),
                     settings: {
@@ -210,7 +218,9 @@ describe('DataGrid', () => {
                     customerInfo: {
                         languages: [1, 2],
                         uplineInfo: [],
-                        roleName:'test'
+                        roleName:'test',
+                        otherAccountCommunicationInfos: [],
+                        headlineStaffInfoCommunications: []
                     },
                     getSettings: jest.fn(),
                     settings: {
@@ -270,7 +280,13 @@ describe('DataGrid', () => {
                     sitesLicenseeInactive: [],
                     countries:[],
                     sites: []
-                }
+                }, customerInfo: {
+                    languages: [1, 2],
+                    uplineInfo: [],
+                    roleName:'test',
+                    otherAccountCommunicationInfos: [],
+                    headlineStaffInfoCommunications: []
+                },
 
             };
             const leftRowContainer = document.createElement('div');
@@ -329,7 +345,14 @@ describe('DataGrid', () => {
                         sitesLicenseeInactive: [],
                         countries:[],
                         sites: []
-                    }
+                    },
+                    customerInfo: {
+                        languages: [1, 2],
+                        uplineInfo: [],
+                        roleName:'test',
+                        otherAccountCommunicationInfos: [],
+                        headlineStaffInfoCommunications: []
+                    },
                 };
 
                 const container = shallow(<DataGrid {...props} />);
@@ -391,7 +414,7 @@ describe('DataGrid', () => {
                 expect( container.instance().state.isShowDetail).toEqual(true);
             });
 
-            const cases = [['Detail', 0], ['AddFeedback', 1], ['LatestFeedback', 2], ['ManageFeedback', 3]];
+            const cases = [['AddFeedback', 0], ['ManageFeedback', 1], ['LatestFeedback', 2], ['Communication', 3]];
             test.each(cases)(
                 "should navigate to %s",
                 (firstArg, secondArg) => {

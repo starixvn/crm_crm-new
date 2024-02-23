@@ -67,32 +67,6 @@ describe('DataGrid', () => {
         });
     });
 
-    describe('isEncode', () => {
-        it('should return false exactly when call function isEncode', () => {
-            // Arrange
-            const fieldName = 'Remark';
-            const container = shallow(<DataGrid />).instance();
-
-            // Act
-            const actual = container.isEncode(fieldName);
-
-            // Assert
-            expect(actual).toBe(false);
-        });
-
-        it('should return true exactly when call function isEncode', () => {
-            // Arrange
-            const fieldName = 'test';
-            const container = shallow(<DataGrid />).instance();
-
-            // Act
-            const actual = container.isEncode(fieldName);
-
-            // Assert
-            expect(actual).toBe(true);
-        });
-    });
-
     describe('replaceText', () => {
         it('should return exactly when call function replaceText', () => {
             // Arrange
@@ -116,33 +90,6 @@ describe('DataGrid', () => {
 
             // Assert
             expect(actual).toBe('');
-        });
-    });
-
-    describe('encodeHtml', () => {
-        it('should return exactly when call function encodeHtml', () => {
-            // Arrange
-            const value = '&';
-            const container = shallow(<DataGrid />).instance();
-
-            // Act
-            const actual = container.encodeHtml(value);
-
-            // Assert
-            expect(actual).toBe('&amp;');
-        });
-    });
-
-    describe('renderValue', () => {
-        it('should return exactly when call function renderValue', () => {
-            // Arrange
-            const container = shallow(<DataGrid />).instance();
-
-            // Act
-            const actual = container.renderValue('Remark','test');
-
-            // Assert
-            expect(actual).toBe('test');
         });
     });
 

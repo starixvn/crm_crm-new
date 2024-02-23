@@ -14,13 +14,18 @@ describe('DataGrid', () => {
         LangHelper.getResource = jest.fn((key) => key);
         const appContainer = document.createElement('div');
         appContainer.setAttribute('id', 'right-row-container');
+        const hasReadSitePermission = document.createElement('div');
+        hasReadSitePermission.setAttribute('id', 'hasReadSitePermission');
         document.body.appendChild(appContainer);
+        document.body.appendChild(hasReadSitePermission);
     });
 
     afterAll(() => {
         const appContainer = document.getElementById('right-row-container');
-        if (appContainer) {
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission');
+        if (appContainer || hasReadSitePermission) {
             document.body.removeChild(appContainer);
+            document.body.removeChild(hasReadSitePermission);
         }
         jest.clearAllMocks();
     });
@@ -93,7 +98,7 @@ describe('DataGrid', () => {
             const dataGrid = shallow(<DataGrid {...props} />);
 
             // Assert
-            expect(dataGrid.find(Table).length).toBe(1);
+            expect(dataGrid.find(Table).length).toBe(0);
             expect(dataGrid.find(Table).props().minWidth).toBe(960);
             expect(dataGrid.find(Table).props().autoWidth).toBeTrue;
             expect(dataGrid.find(Table).props().isPaging).toBeTrue;

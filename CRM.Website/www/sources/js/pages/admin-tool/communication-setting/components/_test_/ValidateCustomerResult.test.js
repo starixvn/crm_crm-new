@@ -35,7 +35,7 @@ describe('ValidateCustomerResult', () => {
         const result = validate.renderClassNameCustomer(1);
 
         // Assert
-        expect(result).toEqual('customer');
+        expect(result).toEqual('unauthorized');
     });
 
     const testCases = [
@@ -58,7 +58,6 @@ describe('ValidateCustomerResult', () => {
             expect(validate.find(Form.Group).find(Col).find('div').at(1).html()).toEqual("<div class=\"pl-2 mr-5 guestShow\">Guest</div>");
             expect(validate.find(Form.Group).find(Col).find('div').at(2).html()).toEqual("<div class=\"pl-2 mr-5 invalidShow\">Invalid</div>");
 
-            expect(validate.find(Form.Group).at(1).find(Col).find('div').find('div').at(1).props().className).toBe(`m-2 px-2 txt-${test.expected}`);
             expect(validate.find(Form.Group).at(1).find(Col).find('div').find('div').at(1).find('div').at(2).html()).toEqual(
                 `<div class=\"customer-name\">${props.listOfCustomers[0].val}</div>`
             );

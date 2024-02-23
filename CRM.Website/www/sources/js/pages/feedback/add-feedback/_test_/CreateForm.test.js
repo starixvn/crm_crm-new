@@ -13,15 +13,22 @@ import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import { shallow } from 'enzyme';
 
 describe('CreateForm', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         window.currentClientTime = '7/28/2021 2:26:28 PM';
         jest.useFakeTimers();
         Site.blockUI = jest.fn();
         Site.unblockUI = jest.fn();
         LangHelper.getResource = jest.fn(key => key);
+        const hasReadSitePermission = document.createElement('div');
+        hasReadSitePermission.setAttribute('id', 'hasReadSitePermission');
+        document.body.appendChild(hasReadSitePermission);
     });
 
-    afterAll(() => {
+    afterEach(() => {
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission');
+        if (hasReadSitePermission) {
+            document.body.removeChild(hasReadSitePermission);
+        }
         jest.clearAllMocks();
     });
 

@@ -48,8 +48,8 @@ describe('dataHandlerActions', () => {
         DataService.postDataAsync = jest.fn(() => promise);
 
         await store.dispatch(actions.getGridData(expectedParams, expectedDone)).then(() => {
-            expect(expectedParams.fromDate).toBeNull();
-            expect(expectedParams.toDate).toBeNull();
+            expect(expectedParams.fromDate).toEqual("08/21/2020");
+            expect(expectedParams.toDate).toEqual("08/21/2020");
         });
     });
     

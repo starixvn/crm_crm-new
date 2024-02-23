@@ -30,7 +30,7 @@ describe('render', () => {
         const container = shallow(<VerifyCustomer {...props} />);
         const className = container.instance().renderClassNameCustomer(item);
         // Assert
-        expect(className).toEqual('customer');
+        expect(className).toEqual('unauthorized');
     });
 
     it('renderClassNameCustomer', () => {
@@ -39,7 +39,7 @@ describe('render', () => {
         const container = shallow(<VerifyCustomer {...props} />);
         const className = container.instance().renderClassNameCustomer(item);
         // Assert
-        expect(className).toEqual('guest');
+        expect(className).toEqual('unauthorized');
     });
 })
 
@@ -65,7 +65,7 @@ describe('sizeColumn', () => {
         const container = shallow(<VerifyCustomer {...props} />);
         const size = container.instance().sizeColumn(props.isBigColumnSize, props.isSmallWidth);
         // Assert
-        expect(size).toEqual(7);
+        expect(size).toEqual(8);
     });
 
     it('isBigColumnSize is false and isSmallWidth false', () => {

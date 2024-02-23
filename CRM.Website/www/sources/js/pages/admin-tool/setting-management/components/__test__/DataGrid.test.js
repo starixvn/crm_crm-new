@@ -14,7 +14,7 @@ describe('DataGrid', () => {
 
     const initProps = {
         isHost: true,
-        settingType:[{id: 55001, value: "test", displayOrder: 0, isChild: false, isActive: true, 
+        settingType:[{id: 55001, settingValue: "test", displayOrder: 0, isChild: false, isActive: true, 
                       childSettings: [{id: 0, name: null, settingId: 1002, settingName: "test", settingValue: "Zalo"}]}],
         gridParams: { settingName: '' },
         mainSettings: [{ 

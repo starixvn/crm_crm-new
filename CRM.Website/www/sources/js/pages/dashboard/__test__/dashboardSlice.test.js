@@ -1,6 +1,6 @@
 import dashboard, {
     resetState,
-    setLastFiveRemark,
+    setlastFiveSpecialRemarks,
     setLastFiveSpecialRemarks,
     setRedemptionLogs,
     setEditRedemptionDialog,
@@ -18,11 +18,11 @@ describe('dashboardSlice reducer', () => {
             type: resetState.type,
             payload: { data: {} }
         })).toEqual({
-            customerRemarks: null,
             redemptions: null,
             editRedemptionDialog: { show: false },
+            lastFiveSpecialRemarks: null,
+            lastRemark: null,
             communicationLogs: null,
-            lastFiveRemarks: null,
             noOfInquiryDialog: { show: false },
             editCommunicationDialog: { show: false },
             createCommunicationDialog: { show: false },
@@ -33,11 +33,11 @@ describe('dashboardSlice reducer', () => {
 
     it('should handle initial state', () => {
         expect(dashboard(undefined, {})).toEqual({
-            customerRemarks: null,
             redemptions: null,
             editRedemptionDialog: { show: false },
             communicationLogs: null,
-            lastFiveRemarks: null,
+            lastFiveSpecialRemarks: null,
+            lastRemark: null,
             noOfInquiryDialog: { show: false },
             editCommunicationDialog: { show: false },
             createCommunicationDialog: { show: false },
@@ -53,7 +53,7 @@ describe('dashboardSlice reducer', () => {
                 payload: ['<div>test</div>']
             })
         ).toEqual({
-            customerRemarks: ['<div>test</div>']
+            lastFiveSpecialRemarks: ['<div>test</div>']
         });
     });
 
@@ -151,10 +151,10 @@ describe('dashboardSlice reducer', () => {
         });
     });
 
-    it('should handle setLastFiveRemark', () => {
+    it('should handle setLastFiveSpecialRemarks', () => {
         expect(
             dashboard({}, {
-                type: setLastFiveRemark.type,
+                type: setLastFiveSpecialRemarks.type,
                 payload: { acknowledger: null,
                     acknowledgerID: 0,
                     approver: null,

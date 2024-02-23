@@ -11,6 +11,19 @@ describe('Filter', () => {
         jest.clearAllMocks();
     });
 
+    beforeEach(() => {
+        const hasReadSitePermission = document.createElement('div');
+        hasReadSitePermission.setAttribute('id', 'hasReadSitePermission');
+        document.body.appendChild(hasReadSitePermission);
+    });
+
+    afterEach(() => {
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission');
+        if (hasReadSitePermission) {
+            document.body.removeChild(hasReadSitePermission);
+        }
+    });
+
     describe('component with redux', () => {
         // Arrange
         const mockStore = configureMockStore();

@@ -40,7 +40,7 @@ describe('actionCreators', () => {
             await store.dispatch(ActionCreators.getLastFiveSpecialRemarks(expectedParams));
 
             // Assert
-            expect(DataService.getDataAsync).toHaveBeenCalledWith('Dashboard/getLastFiveSpecialRemarks', expectedParams);
+            expect(DataService.getDataAsync).toHaveBeenCalledWith('Dashboard/GetLastFiveSpecialRemarks', expectedParams);
             expect(store.getActions()).toEqual(expectedActions);
         });
     });

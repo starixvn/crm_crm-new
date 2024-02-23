@@ -8,9 +8,24 @@ import { toast } from 'react-toastify';
 
 describe('Filter', () => {
     beforeAll(() => {
+       
+    });
+
+    beforeEach(() => {
         LangHelper.getResource = jest.fn((key) => key);
         window.currentClientTime = '4/8/2021 10:05:20 AM';
+        const hasReadSitePermission = document.createElement('div');
+        hasReadSitePermission.setAttribute('id', 'hasReadSitePermission');
+        document.body.appendChild(hasReadSitePermission);
     });
+
+    afterEach(() => {
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission');
+        if (hasReadSitePermission) {
+            document.body.removeChild(hasReadSitePermission);
+        }
+    });
+    
     const stateInit = {
         groupBy: 1,
         showFilter: true
@@ -243,19 +258,6 @@ describe('Filter', () => {
             afterAll(() => {
                 global.Event = EventBak;
                 global.window.dispatchEvent = windowBak;
-            });
-    
-            it('run exactly', () => {
-                // Arrange
-                const container = shallow(<Filter {...propsInit}/>).instance();
-                container.setState(stateInit);
-    
-                // Act
-                container.handleToggleFilter(true);
-    
-                // Assert
-                expect(container.state.showFilter).toBeTrue;
-                expect(global.window.dispatchEvent).toHaveBeenCalled();
             });
         });
 

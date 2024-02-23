@@ -28,7 +28,8 @@ describe('NewInforms', () => {
                 ...initProps,
                 resultInsertInforms: 'Successfully!',
                 getInforms: jest.fn(),
-                setNewInformDialog: jest.fn()
+                setNewInformDialog: jest.fn(),
+                setEditedInforms: jest.fn()
             };
             jest.useFakeTimers();
             // Act

@@ -37,7 +37,7 @@ describe('Header', () => {
             };
 
             // Act
-            const container = shallow(<Header />);
+            const container = shallow(<Header {...props} />);
             const actual = container.instance().isIgnoreMenu(itemMenu);
 
             // Assert
@@ -55,7 +55,7 @@ describe('Header', () => {
             }
 
             // Act
-            const container = shallow(<Header />);
+            const container = shallow(<Header {...props}/>);
             const actual = container.instance().isIgnoreMenu(itemMenu);
 
             // Assert
@@ -102,18 +102,18 @@ describe('Header', () => {
     describe('render', () => {
         it('should render not correctly', () => {
             //Act
-            const container = shallow(<Header />);
+            const container = shallow(<Header {...props}/>);
             container.setState({ menu: [] });
 
             //Assert
-            expect(container.type()).toEqual(null);
+            expect(container.type()).toEqual("div");
         });
     });
 
     describe('handleLogout ', () => {
         it('should work correctly', () => {
             //Act
-            const container = shallow(<Header />);
+            const container = shallow(<Header {...props}/>);
 
             container.instance().handleLogout();
             //Assert

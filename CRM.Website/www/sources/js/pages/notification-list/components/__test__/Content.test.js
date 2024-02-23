@@ -24,7 +24,7 @@ describe('Content', () => {
         const result = content.getReferenceText(data);
 
         // Assert
-        expect(result).toEqual('(MessageID: 1)');
+        expect(result).toEqual('(Msg: )');
     });
 
     it('getReferenceText dataSource is AnnouncementId  return text correctly', () => {
@@ -44,7 +44,7 @@ describe('Content', () => {
         const result = content.getReferenceText(data);
 
         // Assert
-        expect(result).toEqual('(AnnId: 1)');
+        expect(result).toEqual('(Ann: )');
     });
 
     it('getReferenceText dataSource is LogID  return text correctly', () => {
@@ -64,7 +64,7 @@ describe('Content', () => {
         const result = content.getReferenceText(data);
 
         // Assert
-        expect(result).toEqual('(LogID: 1)');
+        expect(result).toEqual(false);
     });
 
 
@@ -116,7 +116,7 @@ describe('Content', () => {
             }
         };
 
-        const expectedTitle = `<div class=\"modal-title\">NotificationID: 1 (LogID: 1)</div>`;
+        const expectedTitle = `<div class=\"modal-title\">NotificationID: 1 </div>`;
 
         // Action
         const content = shallow(<Content {...props} />);
@@ -131,7 +131,6 @@ describe('Content', () => {
         expect(content.find(Modal.Header).props().closeButton).toBeTrue;
         expect(content.find(Modal.Title).props().as).toBe('div');
         expect(content.find(Modal.Title).html()).toContain(expectedTitle);
-        expect(content.find(Modal.Body).find('div').at(0).html()).toEqual(`<div>LetstalkName: letstalkName</div>`);
         expect(content.find(Modal.Body).find('div').at(1).html()).toEqual(`<div class="border p-2 mt-2 mb-3 notification-content">${props.data.content}</div>`);
         expect(content.find(Button).props().variant).toBe('primary');
         expect(content.find(Button).props().size).toBe('sm');

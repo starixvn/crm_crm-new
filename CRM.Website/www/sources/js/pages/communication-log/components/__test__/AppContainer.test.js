@@ -84,7 +84,7 @@ describe('AppContainer', () => {
         it('should render Filter correctly', () => {
             //Act
             const container = shallow(<AppContainer />);
-            container.instance().setState({customerInfoPolicy: 1, createUpdateFeedbackPermission: 1});
+            container.instance().setState({canCreateCommunicationLog: false, createUpdateFeedbackPermission: 1});
             //Assert
             expect(toJson(container)).toMatchSnapshot();
         });

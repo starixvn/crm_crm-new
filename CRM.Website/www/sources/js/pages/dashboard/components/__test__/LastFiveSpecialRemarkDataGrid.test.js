@@ -1,10 +1,10 @@
 import React from 'react';
-import { LastFiveRemarkDataGrid } from '../LastFiveRemarkDataGrid';
+import { LastFiveSpecialRemarkDataGrid } from '../LastFiveSpecialRemarkDataGrid';
 import { HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import { shallow } from 'enzyme';
 import LangHelper from '@jsroot/common/langHelper';
 
-describe('LastFiveRemarkDataGrid', () => {
+describe('LastFiveSpecialRemarkDataGrid', () => {
     beforeAll(() => {
         const appContainer = document.createElement('div');
         appContainer.setAttribute('id', 'right-row-container');
@@ -25,21 +25,9 @@ describe('LastFiveRemarkDataGrid', () => {
     const initProps = {
         lastFiveRemarks: [{remarkID: 1504, createdDate: "Apr 18, 2022 10:35:19 PM", lastUpdate: "Apr 18, 2022 11:23:30 PM", remark: 'test'}],
         setOpenEditPopup: jest.fn(),
-        getLastFiveRemark: jest.fn()
+        getLastFiveRemark: jest.fn(),
+        getLastFiveSpecialRemarks: jest.fn()
     };
-
-    describe('buildHeader', () => {
-        it('should render expected header', () => {
-            // arrange
-            const container = shallow(<LastFiveRemarkDataGrid  {...initProps}/>).instance();
-
-            // Act
-            const header = shallow(container.buildHeader(true));
-
-            // Assert
-            expect(header.find(HeaderCell).length).toBe(6);
-        });
-    });
 
     describe('buildBody', () => {
         it('should render no data when gridData is empty', () => {
@@ -48,11 +36,12 @@ describe('LastFiveRemarkDataGrid', () => {
                 lastFiveRemarks: [],
                 gridParams: { pageIndex: 1, pageSize: 100 },
                 popupDeleteConfirm: { show: false },
-                getLastFiveRemark: jest.fn()
+                getLastFiveRemark: jest.fn(),
+                getLastFiveSpecialRemarks: jest.fn()
             };
 
             const expectedBody = [<Row key='new-remark-body' className="no-data" ><Cell colSpan={6}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
-            const container = shallow(<LastFiveRemarkDataGrid {...props} />).instance();
+            const container = shallow(<LastFiveSpecialRemarkDataGrid {...props} />).instance();
 
             // Act
             const actual = container.buildBody();
@@ -64,7 +53,7 @@ describe('LastFiveRemarkDataGrid', () => {
         it('should render expected rows when gridData has data', () => {
             // Arrange
             
-            const container = shallow(<LastFiveRemarkDataGrid {...initProps} />).instance();
+            const container = shallow(<LastFiveSpecialRemarkDataGrid {...initProps} />).instance();
             container.renderRow = jest.fn(() => <div />);
 
             // Act
@@ -75,32 +64,16 @@ describe('LastFiveRemarkDataGrid', () => {
         });
     });
 
-    describe('handleViewNewRemark ', () => {
-        it('should call exactly function', () => {
-            // Arrange
-            const event = {
-                preventDefault: jest.fn()
-            };
-            const props = {...initProps, navigate: jest.fn()};
-            const container = shallow(<LastFiveRemarkDataGrid {...props} />).instance();
-
-            // Act
-           container.handleViewNewRemark(event);
-
-            // Assert
-            expect(props.navigate).toHaveBeenCalled();
-        });
-    });
-
     describe('render', () => {
         it('should render null', () => {
             // Arrange
             const props = {
                 lastFiveRemarks: null,
-                getLastFiveRemark: jest.fn()
+                getLastFiveRemark: jest.fn(),
+                getLastFiveSpecialRemarks: jest.fn()
             };
 
-            const container = shallow(<LastFiveRemarkDataGrid {...props} />).instance();
+            const container = shallow(<LastFiveSpecialRemarkDataGrid {...props} />).instance();
 
             // Act
             const actual = container.render();

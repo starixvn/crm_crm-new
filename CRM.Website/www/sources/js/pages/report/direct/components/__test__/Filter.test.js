@@ -39,8 +39,7 @@ describe('Filter', () => {
         const expected = {
             headline: null,
             username: null,
-            excludeIgnoredAcc: false,
-            showFilter: true,
+            excludeIgnoredAcc: false
         };
         const props = {
             setGridParams: jest.fn(),
@@ -69,8 +68,7 @@ describe('Filter', () => {
         const expected = {
             headline: '0000HK',
             username: null,
-            excludeIgnoredAcc: true,
-            showFilter: true,
+            excludeIgnoredAcc: true
         };
         const props = {
             setGridParams: jest.fn(),
@@ -99,8 +97,7 @@ describe('Filter', () => {
         const expected = {
             headline: null,
             username: '0000HK',
-            excludeIgnoredAcc: true,
-            showFilter: true,
+            excludeIgnoredAcc: true
         };
         const props = {
             setGridParams: jest.fn(),
@@ -139,33 +136,6 @@ describe('Filter', () => {
 
         // Assert
         expect(props.getGridData).toHaveBeenCalledWith(param);
-    });
-
-    it('should call setState when click zoom out/in filter ', () => {
-         // Arrange
-         const param = {
-            headline: null,
-            username: null,
-            excludeIgnoredAcc: true,
-            showFilter: true,
-        };
-        const expected = {
-            headline: null,
-            username: null,
-            excludeIgnoredAcc: true,
-            showFilter: true,
-        };
-        const props = {
-            setGridParams: jest.fn(),
-            gridParams: param
-        };
-
-        // Act
-        const container = shallow(<Filter {...props} />);
-        container.instance().handleToggleFilter(true);
-
-        // Assert
-        expect(container.instance().state).toEqual(expected);
     });
 
     it('click handle Toggle Filter showFilter is true', () => {

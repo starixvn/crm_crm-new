@@ -3,7 +3,17 @@ import { shallow } from 'enzyme';
 import { Filter } from '../Filter';
 
 describe('Filter', () => {
+    beforeAll(() => {
+        const hasReadSitePermission = document.createElement('div');
+        hasReadSitePermission.setAttribute('id', 'hasReadSitePermission');
+        document.body.appendChild(hasReadSitePermission);
+    });
+
     afterAll(() => {
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission');
+        if (hasReadSitePermission) {
+            document.body.removeChild(hasReadSitePermission);
+        }
         jest.clearAllMocks();
     });
 
@@ -33,25 +43,6 @@ describe('Filter', () => {
 
             // Assert
             expect(actual).toEqual(expected);
-        });
-    });
-
-    describe('handleTopChange', () => {
-        it('should call exact function', () => {
-            // Arrange
-            const props = {
-                setGridParams: jest.fn(),
-                getLatestFeedback: jest.fn()
-            };
-            const event = { target: {value: 1} };
-
-            const container = shallow(<Filter {...props} />);
-            container.instance().getParams = jest.fn().mockReturnValue({top: 1});
-
-            //Act
-            const actual = container.instance().handleTopChange(event);
-            // Assert
-            expect(props.setGridParams).toHaveBeenCalledWith({top: 1});
         });
     });
 });

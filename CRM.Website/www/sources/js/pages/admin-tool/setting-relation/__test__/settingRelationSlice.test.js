@@ -11,6 +11,10 @@ describe('settingRelationSlice reducer', () => {
     it('should handle initial state', () => {
         expect(settingLog(undefined, {})).toEqual({
             mainSettings: null,
+            mainSettings: null,
+            relationConfirmPopup: {
+                show: false,
+            },
             settingType: null,
             gridParams: {
                 settingName: ''

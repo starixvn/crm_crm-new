@@ -8,6 +8,19 @@ describe('AppContainer', () => {
         jest.clearAllMocks();
     });
 
+    beforeEach(() => {
+        const hasReadSitePermission = document.createElement('div');
+        hasReadSitePermission.setAttribute('id', 'hasReadSitePermission');
+        document.body.appendChild(hasReadSitePermission);
+    });
+
+    afterEach(() => {
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission');
+        if (hasReadSitePermission) {
+            document.body.removeChild(hasReadSitePermission);
+        }
+    });
+
     describe('componentDidMount', () => {
         it('should call getLatestFeedback', () => {
             // Arrange

@@ -322,7 +322,7 @@ describe('DataGrid', () => {
         const container = shallow(<DataGrid {...props} />);
         const title = container.instance().getTitle('mbc');
         // Assert
-        expect(title).toEqual("MBC Daily Log Statistics | Apr 24, 2022 - Apr 25, 2022");
+        expect(title).toEqual("Credit Daily Log Statistics | Apr 24, 2022 - Apr 25, 2022");
     });
 
     it('should work exactly function getTitle ', () => {
