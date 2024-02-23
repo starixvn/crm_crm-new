@@ -34,7 +34,7 @@
 
         public async Task InsertGenResultAmendmentAsync(string environment, IEnumerable<SettlementRemotingRefInfo> jSRemotingRef)
         {
-            var command = new InsertGenResultAmendmentCriteria
+            var command = new InsertGenResultAmendmentCommand
             {
                 Environment = environment,
                 JSRemotingRef = JsonConvert.SerializeObject(jSRemotingRef)

@@ -12,6 +12,8 @@
         Task CaptureSettlementDataAsync();
 
         Task GenerateResultAmendmentAsync();
+
+        Task PushNotificationResultAmendmentAsync();
     }
 
     public class MessageNotificationCenterService : IMessageNotificationCenterService
@@ -20,6 +22,7 @@
         private readonly ICommonFeedback commonFeedback;
         private readonly ICaptureSettlementDataService captureSettlementDataService;
         private readonly IGenerateResultAmendmentService generateResultAmendmentService;
+        private readonly IPushNotificationResultAmendmentService pushNotificationResultAmendmentService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -29,13 +32,15 @@
             IConfiguration configuration,
             ICommonFeedback commonFeedback,
             ICaptureSettlementDataService captureSettlementDataService,
-            IGenerateResultAmendmentService generateResultAmendmentService
+            IGenerateResultAmendmentService generateResultAmendmentService,
+            IPushNotificationResultAmendmentService pushNotificationResultAmendmentService
         )
         {
             this.logService = logService;
             this.commonFeedback = commonFeedback;
             this.captureSettlementDataService = captureSettlementDataService;
             this.generateResultAmendmentService = generateResultAmendmentService;
+            this.pushNotificationResultAmendmentService = pushNotificationResultAmendmentService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -90,6 +95,20 @@
                     item.RefValueCS = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_CN);
                 }
                 await generateResultAmendmentService.InsertGenResultAmendmentAsync(Environment, settlementGen);
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        public async Task PushNotificationResultAmendmentAsync()
+        {
+            try
+            {
+                var mncMessage = await pushNotificationResultAmendmentService.GetPreparePushNotificationAsync();
+                var mncPushNotification = await pushNotificationResultAmendmentService.GetMessagePushResultAmendmentAsync(mncMessage.MNC_Msg, mncMessage.MNC_MsgTarget);
+                await pushNotificationResultAmendmentService.InsertPushResultAmendmentAsync(mncPushNotification.NotificationIDs, mncPushNotification.MessageIDs);
             }
             catch (Exception ex)
             {

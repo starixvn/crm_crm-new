@@ -2,7 +2,7 @@
 {
     using CRM.Core.Models;
 
-    public class InsertGenResultAmendmentCriteria : BaseNonQueryCommand
+    public class InsertGenResultAmendmentCommand : BaseNonQueryCommand
     {
         public string Environment { get; set; }
 
