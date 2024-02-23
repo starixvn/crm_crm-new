@@ -183,10 +183,6 @@ export default class Filter extends Component {
         return '';
     };
 
-
-
-
-
     handleConcatMenu = menus => {
         let menusArr = [];
         menus.forEach(menu => {

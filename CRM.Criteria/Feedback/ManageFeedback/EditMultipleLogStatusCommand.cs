@@ -1,7 +1,6 @@
 ﻿namespace CRM.Criteria.Feedback.ManageFeedback
 {
     using CRM.Core.Models;
-    using Fanex.Data;
 
     public class EditMultipleLogStatusCommand : BaseNonQueryCommand
     {

@@ -44,9 +44,10 @@
                 IsGuest = true
             };
             var controller = GetController();
-            permissionService.GetSitePermissionAsync().Returns((short)SitePermission.Both);
+            permissionService.GetCurrentUserLicenseeTypeAsync().Returns((short)SitePermission.Both);
             customerService.GetCustomerInfoAsync(param).Returns(customer);
-            customerService.GetSiteTypeByCustIdAsync(Arg.Any<int>()).Returns(new CustomerPermissionInfo { CustomerType = customer.CustomerType, SitePermission = customer.SitePermission });
+            customerService.GetSiteTypeByCustIdAsync(Arg.Any<int>()).
+                Returns(new CustomerPermissionInfo { CustomerType = customer.CustomerType, SitePermission = customer.SitePermission });
 
             //Act
             var result = await controller.GetCustomerInfo(param);

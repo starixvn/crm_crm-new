@@ -36,6 +36,7 @@
         private readonly ICustomerService customerService;
         private readonly IBaseService baseService;
 
+#pragma warning disable S107
         public FeedbackController(
             INapSession napSession,
             ISettingService settingService,
@@ -45,6 +46,7 @@
             IPermissionService permissionService,
             ICustomerService customerService,
             IBaseService baseService)
+#pragma warning restore S107
         {
             this.napSession = napSession;
             this.settingService = settingService;

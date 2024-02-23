@@ -21,10 +21,14 @@ describe('DataGrid', () => {
         const appContainer1 = document.createElement('div');
         appContainer1.setAttribute('id', 'hasReadFeedbackPermission');
         appContainer1.checked = true;
+        const appContainer2 = document.createElement('div');
+        appContainer1.setAttribute('id', 'hasReadSitePermission');
+        appContainer1.checked = false;
         const leftRowContainer = document.createElement('div');
         leftRowContainer.setAttribute('id', 'left-row-container');
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
+        document.body.appendChild(appContainer2);
         document.body.appendChild(leftRowContainer);
     });
 
@@ -32,10 +36,12 @@ describe('DataGrid', () => {
         jest.clearAllMocks();
         const appContainer = document.getElementById('hasCreateFeedbackPermission');
         const appContainer1 = document.getElementById('hasReadFeedbackPermission');
+        const appContainer2 = document.getElementById('hasReadSitePermission');
         const leftRowContainer = document.getElementById('left-row-container');
-        if (appContainer || appContainer1 || leftRowContainer) {
+        if (appContainer || appContainer1 || appContainer2 || leftRowContainer) {
             document.body.removeChild(appContainer);
             document.body.removeChild(appContainer1);
+            document.body.removeChild(appContainer2);
             document.body.removeChild(leftRowContainer);
         }
     });
@@ -274,8 +280,13 @@ describe('DataGrid', () => {
             hasCreateFeedbackPermission.setAttribute('id', 'hasCreateFeedbackPermission');
             hasCreateFeedbackPermission.checked = true;
 
+            const hasReadFeedbackPermission = document.createElement('div');
+            hasReadFeedbackPermission.setAttribute('id', 'hasReadFeedbackPermission');
+            hasReadFeedbackPermission.checked = true;
+
             document.body.appendChild(leftRowContainer);
             document.body.appendChild(hasCreateFeedbackPermission);
+            document.body.appendChild(hasReadFeedbackPermission);
 
             const container = shallow(<DataGrid {...props} />);
             const form = shallow(container.instance().renderForm(param));
@@ -335,8 +346,12 @@ describe('DataGrid', () => {
             it('should call setState', () => {
                 //Arrange
                 const expected = {
+                    countryId: null,
+                    headlineInfoPolicy: null,
+                    isHostOnCurrentCustomer: false,
                     isShowDetail: true,
                     languages: [],
+                    remarksPolicy: null,
                     siteId: 1
                 };
                 const props = {

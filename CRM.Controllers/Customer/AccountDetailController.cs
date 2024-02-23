@@ -62,7 +62,7 @@
 
         public async Task<IActionResult> GetAllSettings()
         {
-            short licenseeType = await permissionService.GetSitePermissionAsync();
+            short licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
 
             var allSettings = new CreateCustomerInfoViewModel
             {

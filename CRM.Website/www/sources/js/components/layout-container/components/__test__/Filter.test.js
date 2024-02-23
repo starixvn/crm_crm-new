@@ -16,6 +16,9 @@ describe('filter', () => {
         const appContainer1 = document.createElement('div');
         appContainer1.setAttribute('id', 'hasReadFeedbackPermission');
         appContainer1.checked = true;
+        const appContainer2 = document.createElement('div');
+        appContainer1.setAttribute('id', 'hasReadCustomerInfo');
+        appContainer1.checked = true;
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
     });
@@ -23,9 +26,11 @@ describe('filter', () => {
         jest.clearAllMocks();
         const appContainer = document.getElementById('hasCreateFeedbackPermission');
         const appContainer1 = document.getElementById('hasReadFeedbackPermission');
-        if (appContainer || appContainer1) {
+        const appContainer2 = document.getElementById('hasReadCustomerInfo');
+        if (appContainer || appContainer1 || appContainer2) {
             document.body.removeChild(appContainer);
             document.body.removeChild(appContainer1);
+            document.body.removeChild(appContainer2);
         }
     });
 

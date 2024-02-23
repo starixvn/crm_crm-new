@@ -44,7 +44,7 @@
             var customer = fixture.Create<CustomerInfoDetails>();
             var criteria = fixture.Create<GetCustomerInfoDetailByIdCriteria>();
 
-            permissionService.GetSitePermissionAsync().Returns((short)SitePermission.Both);
+            permissionService.GetCurrentUserLicenseeTypeAsync().Returns((short)SitePermission.Both);
             customerService.GetCustomerByIdAsync(criteria).Returns(customer);
             customerService.GetSiteTypeByCustIdAsync(Arg.Any<int>()).
                 Returns(new CustomerPermissionInfo
@@ -147,7 +147,7 @@
             var id = fixture.Create<int>();
             var roles = fixture.Create<IEnumerable<Setting>>();
 
-            permissionService.GetSitePermissionAsync().Returns((short)SitePermission.Both);
+            permissionService.GetCurrentUserLicenseeTypeAsync().Returns((short)SitePermission.Both);
             settingService.GetRolesByPicAsync(id).Returns(roles);
             //Act
             var result = await controller.GetRolesByPic(id);
@@ -166,7 +166,7 @@
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var staffAndAuthority = fixture.Create<IEnumerable<Setting>>();
 
-            permissionService.GetSitePermissionAsync().Returns((short)SitePermission.Both);
+            permissionService.GetCurrentUserLicenseeTypeAsync().Returns((short)SitePermission.Both);
             settingService.GetSettingAsync(SettingName.StaffAndAuthority, true).Returns(staffAndAuthority);
             //Act
             var result = await controller.GetSettingStaffAndAuthority();
@@ -185,7 +185,7 @@
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var settings = fixture.Create<IEnumerable<Setting>>();
 
-            permissionService.GetSitePermissionAsync().Returns((short)SitePermission.Both);
+            permissionService.GetCurrentUserLicenseeTypeAsync().Returns((short)SitePermission.Both);
             settingService.GetSettingAsync(SettingName.PicRole, true).Returns(settings);
             //Act
             var result = await controller.GetSettingPicRole();
@@ -204,7 +204,7 @@
             fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var settings = fixture.Create<IEnumerable<Setting>>();
 
-            permissionService.GetSitePermissionAsync().Returns((short)SitePermission.Both);
+            permissionService.GetCurrentUserLicenseeTypeAsync().Returns((short)SitePermission.Both);
             settingService.GetSettingAsync(SettingName.PicCommunicationTool, true).Returns(settings);
             //Act
             var result = await controller.GetSettingPicCommunicationTools();

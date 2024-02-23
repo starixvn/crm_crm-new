@@ -50,9 +50,9 @@
 
             await Task.WhenAll(hostOnCustomerInfoTask, hasReadOnCreditTask, hasReadOnLicenseeTask);
 
-            bool hostOnCustomerInfo = await hostOnCustomerInfoTask,
-                hasReadOnCredit = await hasReadOnCreditTask,
-                hasReadOnLicensee = await hasReadOnLicenseeTask;
+            var hostOnCustomerInfo = await hostOnCustomerInfoTask;
+            var hasReadOnCredit = await hasReadOnCreditTask;
+            var hasReadOnLicensee = await hasReadOnLicenseeTask;
 
             if (currentCustomer is not null && hostOnCustomerInfo)
             {

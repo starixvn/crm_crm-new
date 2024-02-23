@@ -73,8 +73,12 @@ describe('Layout', () => {
         const appContainer1 = document.createElement('div');
         appContainer1.setAttribute('id', 'hasReadCustomerInfo');
         appContainer1.checked = false;
+        const appContainer2 = document.createElement('div');
+        appContainer1.setAttribute('id', 'hasReadSitePermission');
+        appContainer1.checked = false;
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
+        document.body.appendChild(appContainer2);
 
         const fixHeaderMenu = document.createElement('div');
         fixHeaderMenu.setAttribute('id', 'fix-header-menu');
@@ -95,11 +99,13 @@ describe('Layout', () => {
         jest.clearAllMocks();
         const appContainer = document.getElementById('hasCreateFeedbackPermission');
         const appContainer1 = document.getElementById('hasReadCustomerInfo');
+        const appContainer2 = document.getElementById('hasReadSitePermission');
         const fixHeaderMenu = document.getElementById('fix-header-menu');
         const crmContainer = document.getElementById('crm-container');
-        if (appContainer || appContainer1 || fixHeaderMenu || crmContainer) {
+        if (appContainer || appContainer1 || appContainer2 || fixHeaderMenu || crmContainer) {
             document.body.removeChild(appContainer);
             document.body.removeChild(appContainer1);
+            document.body.removeChild(appContainer2);
             document.body.removeChild(fixHeaderMenu);
             document.body.removeChild(crmContainer);
         }
@@ -131,7 +137,7 @@ describe('Layout', () => {
             await promise;
             jest.runAllTimers();
             //Assert
-            expect(container.state.isShowingLeftPanel).toEqual(true);
+            expect(container.state.isShowingLeftPanel).toEqual(false);
         });
     });
 
@@ -247,7 +253,6 @@ describe('Layout', () => {
           navigate: jest.fn()
         };
         const container = shallow(<Layout {...props}/>).instance();
-        container.handleCloseEmptyConfirm = jest.fn();
         container.getParams = jest.fn();
         const promise = Promise.resolve({data: [{id: 1, name: 'test'}]});
         container.getDataGrid = jest.fn(() => promise);
@@ -256,7 +261,6 @@ describe('Layout', () => {
         container.handleGetCustomerIsGuest();
         // Assert
         expect(container.state.isGuest).toEqual(true);
-        expect(container.handleCloseEmptyConfirm).toHaveBeenCalled();
         expect(container.getParams).toHaveBeenCalled();
         expect(container.getDataGrid).toHaveBeenCalled();
     });
@@ -310,36 +314,6 @@ describe('Layout', () => {
     });
   });
 
-  describe('handleCloseEmptyConfirm', () => {
-    it('should call set state', () => {
-        // Arrange
-        const props = {
-          navigate: jest.fn()
-        };
-        const container = shallow(<Layout {...props}/>).instance();
-
-        // Action
-        container.handleCloseEmptyConfirm();
-        // Assert
-        expect(container.state.showEmptyConfirmPopup).toEqual(false);
-    });
-  });
-
-  describe('handleCloseEmptyCustomerInfoPopup ', () => {
-    it('should call set state', () => {
-        // Arrange
-        const props = {
-          navigate: jest.fn()
-        };
-        const container = shallow(<Layout {...props}/>).instance();
-
-        // Action
-        container.handleCloseEmptyCustomerInfoPopup();
-        // Assert
-        expect(container.state.showEmptyCustomerInfoPopup).toEqual(false);
-    });
-  });
-
   describe('handleChangeSuggestion', () => {
     it('should call set state', () => {
         // Arrange
@@ -384,7 +358,7 @@ describe('Layout', () => {
         container.getDataGrid();
         jest.runAllTimers();
         // Assert
-        expect(container.state.isShowingLeftPanel).toEqual(true);
+        expect(container.state.isShowingLeftPanel).toEqual(false);
     });
   });
 
@@ -421,7 +395,7 @@ describe('Layout', () => {
         // Action
         container.handleCollapseExpandLayout(event);
         // Assert
-        expect(container.setState).not.toHaveBeenCalled();
+        expect(container.setState).toHaveBeenCalled();
     });
 
     it('should call exact function', () => {

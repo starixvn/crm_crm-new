@@ -24,8 +24,6 @@
         Task<bool> IsHavingPermissionAsync(string functionKey);
 
         Task<string> GetCurrentUserCreditPermissionsAsync(Policy policy = Policy.Read);
-
-        Task<short> GetSitePermissionAsync();
     }
 
     public class PermissionService : IPermissionService
@@ -125,18 +123,17 @@
             return siteLabels;
         }
 
-        public async Task<short> GetSitePermissionAsync()
-        {
-            var isHavingPermissionCredit = await IsHavingPermissionAsync(FunctionKey.Credit);
-            var isHavingPermissionLicensee = await IsHavingPermissionAsync(FunctionKey.Licensee);
-            return (isHavingPermissionCredit, isHavingPermissionLicensee) switch
-            {
-                (true, true) => (short)SitePermission.Both,
-                (true, false) => (short)SitePermission.Credit,
-                (false, true) => (int)SitePermission.Licensee,
-                _ => (short)SitePermission.NA,
-            };
-        }
-
+        //public async Task<short> GetSitePermissionAsync()
+        //{
+        //    var isHavingPermissionCredit = await IsHavingPermissionAsync(FunctionKey.Credit);
+        //    var isHavingPermissionLicensee = await IsHavingPermissionAsync(FunctionKey.Licensee);
+        //    return (isHavingPermissionCredit, isHavingPermissionLicensee) switch
+        //    {
+        //        (true, true) => (short)SitePermission.Both,
+        //        (true, false) => (short)SitePermission.Credit,
+        //        (false, true) => (int)SitePermission.Licensee,
+        //        _ => (short)SitePermission.NA,
+        //    };
+        //}
     }
 }
