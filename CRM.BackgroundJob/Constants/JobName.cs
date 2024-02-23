@@ -24,5 +24,6 @@
         public const string CreateFeedbackForAbnormalBets = "CreateFeedbackForAbnormalBets";
         public const string CaptureSettlementData = "CaptureSettlementData";
         public const string GenerateResultAmendment = "GenerateResultAmendment";
+        public const string PushNotificationResultAmendment = "PushNotificationResultAmendment";
     }
 }

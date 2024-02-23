@@ -175,6 +175,7 @@
             services.AddSingleton<IMessageNotificationCenterService, MessageNotificationCenterService>();
             services.AddSingleton<ICaptureSettlementDataService, CaptureSettlementDataService>();
             services.AddSingleton<IGenerateResultAmendmentService, GenerateResultAmendmentService>();
+            services.AddSingleton<IPushNotificationResultAmendmentService, PushNotificationResultAmendmentService>();
         }
 
         private static void AddWorker(IServiceCollection services)
@@ -203,6 +204,7 @@
 
             services.AddHostedService<MncCaptureSettlementDataWorker>();
             services.AddHostedService<MncGenerateResultAmendmentWorker>();
+            services.AddHostedService<MncPushNotificationResultAmendmentWorker>();
         }
 
         private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
