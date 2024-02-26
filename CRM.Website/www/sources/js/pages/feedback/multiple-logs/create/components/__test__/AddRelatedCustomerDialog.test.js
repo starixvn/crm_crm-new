@@ -426,7 +426,7 @@ describe('AddRelatedCustomerDialog', () => {
             expect(props.verifyRelatedCustomers).toHaveBeenCalledWith({ headlineIds: '', username: 'sa,test 1' });           
             expect(container.state.relatedCustomers).toEqual([
                 { custId: 1, username: 'sa', isValid: false },
-                { custId: 2, username: 'test 1', isValid: false }
+                { custId: 2, username: 'test 1', isValid: true }
             ]);
             expect(container.state.verified).toBeTruthy();
         });

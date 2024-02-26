@@ -45,6 +45,7 @@ describe('CustomerInfo', () => {
             },
         customerInfo:{},
         customerDetail: {customerType: 0},
+        isHostOnCurrentCustomer: true,
         handleChange: jest.fn(),
         handleChangeValueInfo: jest.fn(),
         renderOptions: jest.fn(()=> '<div></div>')

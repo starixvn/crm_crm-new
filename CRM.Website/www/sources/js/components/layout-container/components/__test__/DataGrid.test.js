@@ -300,9 +300,19 @@ describe('DataGrid', () => {
             hasReadFeedbackPermission.setAttribute('id', 'hasReadFeedbackPermission');
             hasReadFeedbackPermission.checked = true;
 
+            const hasReadSitePermission = document.createElement('div');
+            hasReadSitePermission.setAttribute('id', 'hasReadSitePermission');
+            hasReadSitePermission.checked = true;
+
+            const hasHostPicManagementPermission = document.createElement('div');
+            hasHostPicManagementPermission.setAttribute('id', 'hasHostPicManagementPermission');
+            hasHostPicManagementPermission.checked = true;
+
             document.body.appendChild(leftRowContainer);
             document.body.appendChild(hasCreateFeedbackPermission);
             document.body.appendChild(hasReadFeedbackPermission);
+            document.body.appendChild(hasReadSitePermission);
+            document.body.appendChild(hasHostPicManagementPermission);
 
             const container = shallow(<DataGrid {...props} />);
             const form = shallow(container.instance().renderForm(param));

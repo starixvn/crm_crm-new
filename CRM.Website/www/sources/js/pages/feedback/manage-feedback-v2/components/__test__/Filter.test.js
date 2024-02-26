@@ -7,6 +7,17 @@ import DatePicker from '@jsroot/components/date-picker/index';
 describe('Filter', () => {
     beforeAll(() => {
         window.currentClientTime = '4/8/2021 10:05:20 AM';
+        const hasReadSitePermission = document.createElement('div');
+        hasReadSitePermission.setAttribute('id', 'hasReadSitePermission');
+        document.body.appendChild(hasReadSitePermission);
+    });
+
+    afterAll(() => {
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission');
+        if (hasReadSitePermission) {
+            document.body.removeChild(hasReadSitePermission);
+        }
+        jest.clearAllMocks();
     });
 
     describe('functions', () => {

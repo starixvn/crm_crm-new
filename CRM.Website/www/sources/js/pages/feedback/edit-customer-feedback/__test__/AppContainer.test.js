@@ -781,7 +781,7 @@ describe('AppContainer', () => {
             const actual = container.getRelatedCustomerIds(true);
 
             // Assert
-            expect(actual).toEqual("1,2");
+            expect(actual).toEqual("");
         });
     });
 

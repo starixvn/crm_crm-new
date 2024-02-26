@@ -9,10 +9,17 @@ import toJson from 'enzyme-to-json';
 
 describe('Filter', () => {
     afterAll(() => {
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission');
+        if (hasReadSitePermission) {
+            document.body.removeChild(hasReadSitePermission);
+        }
         jest.clearAllMocks();
     });
 
     beforeAll(() => {
+        const hasReadSitePermission = document.createElement('div');
+        hasReadSitePermission.setAttribute('id', 'hasReadSitePermission');
+        document.body.appendChild(hasReadSitePermission);
         window.currentClientTime = '4/8/2021 10:05:20 AM';
     });
 

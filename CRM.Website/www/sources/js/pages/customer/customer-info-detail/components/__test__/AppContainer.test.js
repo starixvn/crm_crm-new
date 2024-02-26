@@ -9,19 +9,21 @@ describe('AppContainer', () => {
         const appContainer = document.createElement('div');
         appContainer.setAttribute('id', 'hasReadCustomerInfo');
         appContainer.checked = true;
-        const appContainer1 = document.getElementById('right-row-container');
+        const hasReadSitePermission = document.createElement('div');
+        hasReadSitePermission.setAttribute('id', 'hasReadSitePermission');
+        hasReadSitePermission.checked = true;
         document.body.appendChild(appContainer);
-        document.body.appendChild(appContainer1);
+        document.body.appendChild(hasReadSitePermission);
     });
 
     afterAll(() => {
-        const appContainer = document.getElementById('hasReadCustomerInfo');
-        const appContainer1 = document.getElementById('right-row-container');
-        if (appContainer || appContainer1) {
-            document.body.removeChild(appContainer);
-            document.body.removeChild(appContainer1);
-        }
         jest.clearAllMocks();
+        const appContainer = document.getElementById('hasReadCustomerInfo');
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission');
+        if (appContainer || hasReadSitePermission) {
+            document.body.removeChild(appContainer);
+            document.body.removeChild(hasReadSitePermission);
+        }
     });
 
     describe('componentWillUnmount', () => {

@@ -74,8 +74,8 @@ describe('Layout', () => {
         appContainer1.setAttribute('id', 'hasReadCustomerInfo');
         appContainer1.checked = false;
         const appContainer2 = document.createElement('div');
-        appContainer1.setAttribute('id', 'hasReadSitePermission');
-        appContainer1.checked = false;
+        appContainer2.setAttribute('id', 'hasReadSitePermission');
+        appContainer2.checked = false;
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
         document.body.appendChild(appContainer2);

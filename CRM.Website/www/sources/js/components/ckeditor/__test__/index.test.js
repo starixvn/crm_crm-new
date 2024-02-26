@@ -174,6 +174,12 @@ describe('CkEditor', () => {
         });
 
         it('should set the editor instance and unblock the UI when the instanceReady event fires', () => {
+            this.dataProcessor = {
+                writer: {
+                    lineBreakChars: '',
+                    setRules: jest.fn()
+                }
+            }
             const wrapper = shallow(<CkEditor {...props} />).instance();
             wrapper.onLoaded(editorMock);
 

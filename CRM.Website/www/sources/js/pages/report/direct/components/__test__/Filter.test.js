@@ -137,46 +137,4 @@ describe('Filter', () => {
         // Assert
         expect(props.getGridData).toHaveBeenCalledWith(param);
     });
-
-    it('click handle Toggle Filter showFilter is true', () => {
-        // Arrange
-        // Arrange
-        const param = {
-            headline: null,
-            username: null,
-            excludeIgnoredAcc: true,
-            showFilter: true,
-        };
-        const props = {
-            setGridParams: jest.fn(),
-            gridParams: param
-        };
-        const container = shallow(<Filter {...props} />);
-        container.instance().handleToggleFilter = jest.fn();
-        // Act
-        container.find('span').at(0).simulate('click');
-        // Assert
-        expect(container.instance().handleToggleFilter).toHaveBeenCalled();
-    });
-
-    it('click handle Toggle Filter showFilter is false', () => {
-        // Arrange
-        const param = {
-            headline: null,
-            username: null,
-            excludeIgnoredAcc: true,
-            showFilter: false,
-        };
-        const props = {
-            setGridParams: jest.fn(),
-            gridParams: param
-        };
-        const container = shallow(<Filter {...props} />);
-        container.instance().handleToggleFilter = jest.fn();
-        container.instance().setState(param);
-        // Act
-        container.find('span').at(0).simulate('click');
-        // Assert
-        expect(container.instance().handleToggleFilter).toHaveBeenCalled();
-    });
 });

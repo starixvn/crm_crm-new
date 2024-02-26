@@ -11,9 +11,17 @@ describe('Filter', () => {
     beforeAll(() => {
         window.currentClientTime = '01/04/2022 10:05:20 AM';
         LangHelper.getResource = jest.fn(key => key);
+        const appContainer2 = document.createElement('div');
+        appContainer2.setAttribute('id', 'hasReadSitePermission');
+        appContainer2.checked = false;
+        document.body.appendChild(appContainer2);
     });
 
     afterAll(() => {
+        const hasReadSitePermission = document.getElementById('hasReadSitePermission');
+        if (hasReadSitePermission) {
+            document.body.removeChild(hasReadSitePermission);
+        }
         jest.clearAllMocks();
     });
 

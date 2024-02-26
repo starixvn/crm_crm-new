@@ -23,7 +23,7 @@ describe('LastFiveSpecialRemarkDataGrid', () => {
     
 
     const initProps = {
-        lastFiveRemarks: [{remarkID: 1504, createdDate: "Apr 18, 2022 10:35:19 PM", lastUpdate: "Apr 18, 2022 11:23:30 PM", remark: 'test'}],
+        lastFiveSpecialRemarks: [{remarkID: 1504, createdDate: "Apr 18, 2022 10:35:19 PM", lastUpdate: "Apr 18, 2022 11:23:30 PM", remark: 'test'}],
         setOpenEditPopup: jest.fn(),
         getLastFiveRemark: jest.fn(),
         getLastFiveSpecialRemarks: jest.fn()
@@ -33,21 +33,21 @@ describe('LastFiveSpecialRemarkDataGrid', () => {
         it('should render no data when gridData is empty', () => {
             // Arrange
             const props = {
-                lastFiveRemarks: [],
+                lastFiveSpecialRemarks: [],
                 gridParams: { pageIndex: 1, pageSize: 100 },
                 popupDeleteConfirm: { show: false },
                 getLastFiveRemark: jest.fn(),
                 getLastFiveSpecialRemarks: jest.fn()
             };
 
-            const expectedBody = [<Row key='new-remark-body' className="no-data" ><Cell colSpan={6}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+            const expectedBody = [<Row key='new-remark-body' className="no-data" ><Cell className="text-center" colSpan={1}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
             const container = shallow(<LastFiveSpecialRemarkDataGrid {...props} />).instance();
 
             // Act
             const actual = container.buildBody();
 
             // Assert
-            expect(actual).toEqual(expectedBody);
+            expect(JSON.stringify(actual)).toEqual(JSON.stringify(expectedBody));
         });
 
         it('should render expected rows when gridData has data', () => {
@@ -68,7 +68,7 @@ describe('LastFiveSpecialRemarkDataGrid', () => {
         it('should render null', () => {
             // Arrange
             const props = {
-                lastFiveRemarks: null,
+                lastFiveSpecialRemarks: null,
                 getLastFiveRemark: jest.fn(),
                 getLastFiveSpecialRemarks: jest.fn()
             };

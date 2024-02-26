@@ -270,7 +270,7 @@ export default class DataGrid extends PureComponent {
     };
 
     renderOtherAccountInfo = values => {
-        if (values.length === 0) {
+        if (values === undefined || values.length === 0) {
             return null;
         }
         return (

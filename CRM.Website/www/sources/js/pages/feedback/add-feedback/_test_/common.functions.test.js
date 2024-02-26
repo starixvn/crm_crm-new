@@ -286,8 +286,8 @@ describe('common functions', () => {
             noOfInquiries: ''
         };
         const listOfCustomerValid = [
-            {custId: '1'},
-            {custId: '2'}
+            {custId: '1', localeCompare: jest.fn()},
+            {custId: '2', localeCompare: jest.fn()}
         ];
         
         const settings = {

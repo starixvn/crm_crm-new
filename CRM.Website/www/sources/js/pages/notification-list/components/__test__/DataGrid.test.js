@@ -243,9 +243,9 @@ describe('DataGrid', () => {
                 expect(header.find(HeaderCell).at(2).props().colWidth).toBe(23);
                 expect(header.find(HeaderCell).at(2).html()).toContain('Sender');
                 expect(header.find(HeaderCell).at(2).html()).toContain('NotificationType');
-                expect(header.find(HeaderCell).at(3).props().colWidth).toBe(12);
+                expect(header.find(HeaderCell).at(3).props().colWidth).toBe(15);
                 expect(header.find(HeaderCell).at(3).html()).toContain('SendDateTimeGMTA8');
-                expect(header.find(HeaderCell).at(4).props().colWidth).toBe(12);
+                expect(header.find(HeaderCell).at(4).props().colWidth).toBe(11);
                 expect(header.find(HeaderCell).at(4).html()).toContain('BotService');
                 expect(header.find(HeaderCell).at(5).props().colWidth).toBe(16);
                 expect(header.find(HeaderCell).at(5).html()).toContain('DisplayName');
@@ -651,13 +651,13 @@ describe('DataGrid', () => {
                 expect(row.find(Cell).at(0).html()).toContain(index + startIndex);
                 expect(row.find(Cell).at(1).props().className).toBe('text-center');
                 expect(row.find(Cell).at(1).find('div').at(0).html()).toEqual(`<div>${item.notificationId}</div>`);
-                expect(row.find(Cell).at(1).find('div').at(1).html()).toEqual(`<div>(Log: ${item.referenceIdList})</div>`);
+                expect(row.find(Cell).at(1).find('div').at(1).html()).toEqual(`<div>(Log: 1, 2)</div>`);
                 expect(row.find(Cell).at(2).find('div').at(0).html()).toEqual(`<div>${item.sender}</div>`);
                 expect(row.find(Cell).at(2).find('div').at(1).html()).toEqual(`<div>${item.notificationTypeName}</div>`);
                 expect(row.find(Cell).at(3).props().className).toBe('text-center');
                 expect(row.find(Cell).at(3).find('div').at(0).html()).toEqual(`<div>${item.sendDateString}</div>`);
                 expect(row.find(Cell).at(3).find('div').at(1).html()).toEqual(`<div>${item.sendTimeString}</div>`);
-                expect(row.find(Cell).at(4).html()).toContain('BotService');
+                expect(row.find(Cell).at(4).html()).toContain('<td></td>');
                 expect(row.find(Cell).at(5).props().className).toBe('text-center');
                 expect(row.find(Cell).at(5).html()).toContain(headlines);
                 expect(row.find(Cell).at(6).html()).toContain(recipients);

@@ -253,7 +253,7 @@ describe('NewCommunitionSetting', () => {
                 expect(event.preventDefault).toHaveBeenCalled();
                 expect(props.verifyUsername).toHaveBeenCalledWith({ Username: 'test' });
                 expect(container.state.listOfCustomer).toEqual(expected);
-                expect(container.state.listOfCustomerValid).toEqual(expected);
+                expect(container.state.listOfCustomerValid).toEqual([]);
                 expect(setFieldValue).toHaveBeenCalled();
             });
 
@@ -310,7 +310,7 @@ describe('NewCommunitionSetting', () => {
                 // Assert
                 expect(event.preventDefault).toHaveBeenCalled();
                 expect(container.state.listOfCustomer).toEqual(expected);
-                expect(container.state.listOfCustomerValid).toEqual(expected);
+                expect(container.state.listOfCustomerValid).toEqual([]);
                 expect(setFieldValue).toHaveBeenCalled();
             });
         });

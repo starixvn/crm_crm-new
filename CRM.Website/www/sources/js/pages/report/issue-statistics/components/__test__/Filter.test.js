@@ -7,10 +7,6 @@ import DatePicker from '@jsroot/components/date-picker/index';
 import { toast } from 'react-toastify';
 
 describe('Filter', () => {
-    beforeAll(() => {
-       
-    });
-
     beforeEach(() => {
         LangHelper.getResource = jest.fn((key) => key);
         window.currentClientTime = '4/8/2021 10:05:20 AM';

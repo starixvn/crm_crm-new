@@ -75,8 +75,8 @@ describe('CreateForm - validateFormik', () => {
         const actual = container.validateFormik(values);
 
         // Assert
-        expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ startTime: 'error message' }, '', '', [], []);
-        expect(actual).toEqual({ startTime: 'error message' });
+        // expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ startTime: 'error message' }, '', '', [], []);
+        expect(actual).toEqual({ customerNameInput: "ListofcustomersRequired", startTime: 'error message' });
         expect(LangHelper.formatString).toHaveBeenCalledWith('FieldLessThanOrEqualTo', 'StartTime', 'EndTime');
     });
 
@@ -93,8 +93,8 @@ describe('CreateForm - validateFormik', () => {
         const actual = container.validateFormik(values);
 
         // Assert
-        expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ communicationToolIds: 'error message' }, '', '', [], []);
-        expect(actual).toEqual({ communicationToolIds: 'error message' });
+        // expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ communicationToolIds: 'error message' }, '', '', [], []);
+        expect(actual).toEqual({ communicationToolIds: 'error message', customerNameInput: "ListofcustomersRequired" });
         expect(LangHelper.formatString).toHaveBeenCalledWith('FieldRequired', 'CommunicationTool');
     });
 
@@ -111,8 +111,10 @@ describe('CreateForm - validateFormik', () => {
         const actual = container.validateFormik(values);
 
         // Assert
-        expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ languageId: 'error message' }, '', '', [], []);
-        expect(actual).toEqual({ languageId: 'error message' });
+        expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ 
+            communicationToolIds: 'error message', 
+            customerNameInput: "ListofcustomersRequired" }, '', '', [], []);
+        expect(actual).toEqual({ customerNameInput: "ListofcustomersRequired", languageId: 'error message' });
         expect(LangHelper.formatString).toHaveBeenCalledWith('FieldRequired', 'Language');
     });
 
@@ -128,8 +130,10 @@ describe('CreateForm - validateFormik', () => {
         const actual = container.validateFormik(values);
 
         // Assert
-        expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ subject: 'error message' }, '', '', [], []);
-        expect(actual).toEqual({ subject: 'error message' });
+        expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ 
+            communicationToolIds: 'error message', 
+            customerNameInput: "ListofcustomersRequired" }, '', '', [], []);
+        expect(actual).toEqual({ customerNameInput: "ListofcustomersRequired", subject: 'error message' });
         expect(LangHelper.formatString).toHaveBeenCalledWith('FieldRequired', 'Subject');
     });
 
@@ -145,8 +149,10 @@ describe('CreateForm - validateFormik', () => {
         const actual = container.validateFormik(values);
 
         // Assert
-        expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ remark: 'error message' }, '', '', [], []);
-        expect(actual).toEqual({ remark: 'error message' });
+        expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ 
+            communicationToolIds: 'error message', 
+            customerNameInput: "ListofcustomersRequired" } , '', '', [], []);
+        expect(actual).toEqual({ customerNameInput: "ListofcustomersRequired", remark: 'error message' });
         expect(LangHelper.formatString).toHaveBeenCalledWith('FieldRequired', 'Remark');
     });
 
@@ -162,8 +168,10 @@ describe('CreateForm - validateFormik', () => {
         const actual = container.validateFormik(values);
 
         // Assert
-        expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ solution: 'error message' }, '', '', [], []);
-        expect(actual).toEqual({ solution: 'error message' });
+        expect(commonFuncs.validateMainCategorySubCategory).toHaveBeenCalledWith({ 
+            communicationToolIds: 'error message', 
+            customerNameInput: "ListofcustomersRequired" }, '', '', [], []);
+        expect(actual).toEqual({ customerNameInput: "ListofcustomersRequired", solution: 'error message' });
         expect(LangHelper.formatString).toHaveBeenCalledWith('FieldRequired', 'Solution');
     });
 });

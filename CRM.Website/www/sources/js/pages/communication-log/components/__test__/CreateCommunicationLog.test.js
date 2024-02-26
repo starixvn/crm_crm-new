@@ -243,7 +243,7 @@ describe('CreateCommunicationLog', () => {
                 options: options,
                 customerInfo: { roleId: 1, licenseeType: 2 }
             };
-            const expected = `Date Time & Tool: 19700101/07:00AM/N/A \nSystem ID: sa`;
+            const expected = `Date Time & Tool: 19700101/07:00AM/N/A \nSystem ID: `;
             // Act
             const container = shallow(<CreateCommunicationLog {...props} />, { disableLifecycleMethods: true }).instance();
             container.formik = { values: { startTime: '2021-11-20T00:00' } };

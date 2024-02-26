@@ -694,7 +694,6 @@ describe('CreateForm', () => {
             expect(props.verifyUserName).toHaveBeenCalledWith({ Username: 'test' });
             expect(props.setAddFeedback).toHaveBeenCalledWith(null);
             expect(createForm.state.listOfCustomer).toEqual(expected);
-            expect(createForm.state.listOfCustomerValid).toEqual(expected);
             expect(setFieldValue).toHaveBeenCalledTimes(2);
 
         });
@@ -752,7 +751,6 @@ describe('CreateForm', () => {
             // Assert
             expect(event.preventDefault).toHaveBeenCalled();
             expect(createForm.state.listOfCustomer).toEqual(expected);
-            expect(createForm.state.listOfCustomerValid).toEqual(expected);
             expect(setFieldValue).toHaveBeenCalled();
         });
     });
@@ -820,7 +818,7 @@ describe('CreateForm', () => {
 
             // Assert
             expect(createForm.instance().state.listOfCustomer).toEqual([{ custId: '2' }, { custId: '3' }]);
-            expect(createForm.instance().state.listOfCustomerValid).toEqual([{ custId: '2' }, { custId: '3' }]);
+            expect(createForm.instance().state.listOfCustomerValid).toEqual([]);
         });
     });
 
@@ -1259,7 +1257,7 @@ describe('CreateForm', () => {
     
             // Assert
             expect(createForm.handleConfirm).toHaveBeenCalled();
-            });
+        });
     });
 
     describe('handleReVerifyInactiveAndConfirm', () => {

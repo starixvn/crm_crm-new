@@ -169,7 +169,7 @@ describe('dashboardSlice reducer', () => {
                     handlerID: 0}
             })
         ).toEqual({
-            lastFiveRemarks: { acknowledger: null,
+            lastFiveSpecialRemarks: { acknowledger: null,
                 acknowledgerID: 0,
                 approver: null,
                 approverID: 0,
