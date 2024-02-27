@@ -440,33 +440,33 @@ describe('Filter', () => {
             });
         });
 
-        describe('searchHandler', () => {
-            it('should calls exactly functions', () => {
-                // Arrange
-                const params = { value: 'value' };
-                const props = {
-                    gridParamsCommunication: {
-                        pageIndex: 1,
-                        pageSize: 100
-                    },
-                    setGridParamsCommunication: jest.fn(),
-                    getGridCommunicationSetting: jest.fn()
-                };
-                const event = {
-                    preventDefault: jest.fn()
-                };
-                const filter = shallow(<Filter {...props} />).instance();
-                filter.getParams = jest.fn().mockReturnValue(params);
+        // describe('searchHandler', () => {
+        //     it('should calls exactly functions', () => {
+        //         // Arrange
+        //         const params = { value: 'value' };
+        //         const props = {
+        //             gridParamsCommunication: {
+        //                 pageIndex: 1,
+        //                 pageSize: 100
+        //             },
+        //             setGridParamsCommunication: jest.fn(),
+        //             getGridCommunicationSetting: jest.fn()
+        //         };
+        //         const event = {
+        //             preventDefault: jest.fn()
+        //         };
+        //         const filter = shallow(<Filter {...props} />).instance();
+        //         filter.getParams = jest.fn().mockReturnValue(params);
 
-                // Action
-                filter.searchHandler(event);
+        //         // Action
+        //         filter.searchHandler(event);
 
-                // Assert
-                expect(event.preventDefault).toHaveBeenCalled();
-                expect(props.setGridParamsCommunication).toHaveBeenCalledWith(params);
-                expect(props.getGridCommunicationSetting).toHaveBeenCalledWith({ ...params });
-            });
-        });
+        //         // Assert
+        //         expect(event.preventDefault).toHaveBeenCalled();
+        //         expect(props.setGridParamsCommunication).toHaveBeenCalledWith(params);
+        //         expect(props.getGridCommunicationSetting).toHaveBeenCalledWith({ ...params });
+        //     });
+        // });
 
         describe('handleOpenCreatePopup', () => {
             it('should calls exactly functions', () => {

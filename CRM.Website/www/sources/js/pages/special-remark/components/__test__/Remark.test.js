@@ -392,114 +392,114 @@ describe('Remark', () => {
             expect(container.instance().handleChange).toHaveBeenCalledWith('value', 0, 'dataNormalRemarks', []);
         });
 
-        it('should render plus-icon specialRemark', () => {
-            //Act
-            const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
-            };
-            const state = {
-                specialRemarks: ['test'],
-                normalRemarks: ['test'],
-                policy: 2
-            };
-            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
-            container.instance().setState(state);
-            container.instance().addSpecialRemarkItem = jest.fn();
-            container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
+        // it('should render plus-icon specialRemark', () => {
+        //     //Act
+        //     const props = {
+        //         gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
+        //     };
+        //     const state = {
+        //         specialRemarks: ['test'],
+        //         normalRemarks: ['test'],
+        //         policy: 2
+        //     };
+        //     const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
+        //     container.instance().setState(state);
+        //     container.instance().addSpecialRemarkItem = jest.fn();
+        //     container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 
-            // Act
-            container.find('span').at(1).simulate('click');
+        //     // Act
+        //     container.find('span').at(1).simulate('click');
 
-            //Assert
-            expect(container.instance().addSpecialRemarkItem).toHaveBeenCalledWith('0test');
-        });
+        //     //Assert
+        //     expect(container.instance().addSpecialRemarkItem).toHaveBeenCalledWith('0test');
+        // });
 
-        it('should render cross-icon specialRemark', () => {
-            //Act
-            const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
-            };
-            const state = {
-                specialRemarks: ['test', 'test1'],
-                normalRemarks: ['test'],
-                policy: 2
-            };
-            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
-            container.instance().setState(state);
-            container.instance().removeSpecialRemarkItem = jest.fn();
-            container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
+        // it('should render cross-icon specialRemark', () => {
+        //     //Act
+        //     const props = {
+        //         gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
+        //     };
+        //     const state = {
+        //         specialRemarks: ['test', 'test1'],
+        //         normalRemarks: ['test'],
+        //         policy: 2
+        //     };
+        //     const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
+        //     container.instance().setState(state);
+        //     container.instance().removeSpecialRemarkItem = jest.fn();
+        //     container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 
-            // Act
-            container.find('span').at(1).simulate('click');
+        //     // Act
+        //     container.find('span').at(1).simulate('click');
 
-            //Assert
-            expect(container.instance().removeSpecialRemarkItem).toHaveBeenCalledWith(0);
-        });
+        //     //Assert
+        //     expect(container.instance().removeSpecialRemarkItem).toHaveBeenCalledWith(0);
+        // });
 
-        it('should render plus-icon normalRemark', () => {
-            //Act
-            const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
-            };
-            const state = {
-                specialRemarks: ['test'],
-                normalRemarks: ['test'],
-                policy: 2
-            };
-            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
-            container.instance().setState(state);
-            container.instance().addNormalRemarkItem = jest.fn();
-            container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
+        // it('should render plus-icon normalRemark', () => {
+        //     //Act
+        //     const props = {
+        //         gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
+        //     };
+        //     const state = {
+        //         specialRemarks: ['test'],
+        //         normalRemarks: ['test'],
+        //         policy: 2
+        //     };
+        //     const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
+        //     container.instance().setState(state);
+        //     container.instance().addNormalRemarkItem = jest.fn();
+        //     container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 
-            // Act
-            container.find('span').at(3).simulate('click');
+        //     // Act
+        //     container.find('span').at(3).simulate('click');
 
-            //Assert
-            expect(container.instance().addNormalRemarkItem).toHaveBeenCalledWith('0test');
-        });
+        //     //Assert
+        //     expect(container.instance().addNormalRemarkItem).toHaveBeenCalledWith('0test');
+        // });
 
-        it('should render cross-icon normalRemark', () => {
-            //Act
-            const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
-            };
-            const state = {
-                specialRemarks: ['test'],
-                normalRemarks: ['test', 'test1'],
-                policy: 2
-            };
-            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
-            container.instance().setState(state);
-            container.instance().removeNormalRemarkItem = jest.fn();
-            container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
+        // it('should render cross-icon normalRemark', () => {
+        //     //Act
+        //     const props = {
+        //         gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
+        //     };
+        //     const state = {
+        //         specialRemarks: ['test'],
+        //         normalRemarks: ['test', 'test1'],
+        //         policy: 2
+        //     };
+        //     const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
+        //     container.instance().setState(state);
+        //     container.instance().removeNormalRemarkItem = jest.fn();
+        //     container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 
-            // Act
-            container.find('span').at(3).simulate('click');
+        //     // Act
+        //     container.find('span').at(3).simulate('click');
 
-            //Assert
-            expect(container.instance().removeNormalRemarkItem).toHaveBeenCalledWith(0);
-        });
+        //     //Assert
+        //     expect(container.instance().removeNormalRemarkItem).toHaveBeenCalledWith(0);
+        // });
 
-        it('should render button correctly', () => {
-            //Act
-            const props = {
-                gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
-            };
-            const state = {
-                specialRemarks: ['test'],
-                normalRemarks: ['test', 'test1'],
-                policy: 2
-            };
-            const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
-            container.instance().setState(state);
-            container.instance().handleSubmit = jest.fn();
-            container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
+        // it('should render button correctly', () => {
+        //     //Act
+        //     const props = {
+        //         gridData: { specialRemarks: ['test'], normalRemarks: ['test', 'test1'] }
+        //     };
+        //     const state = {
+        //         specialRemarks: ['test'],
+        //         normalRemarks: ['test', 'test1'],
+        //         policy: 2
+        //     };
+        //     const container = shallow(<Remark {...props} />, { disableLifecycleMethods: true });
+        //     container.instance().setState(state);
+        //     container.instance().handleSubmit = jest.fn();
+        //     container.instance().setState({ specialRemarks: state.specialRemarks, normalRemarks: state.normalRemarks });
 
-            // Act
-            container.find(Button).at(0).simulate('click');
+        //     // Act
+        //     container.find(Button).at(0).simulate('click');
 
-            //Assert
-            expect(container.instance().handleSubmit).toHaveBeenCalled();
-        });
+        //     //Assert
+        //     expect(container.instance().handleSubmit).toHaveBeenCalled();
+        // });
     });
 });

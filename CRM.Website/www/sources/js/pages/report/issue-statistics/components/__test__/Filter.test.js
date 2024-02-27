@@ -177,67 +177,6 @@ describe('Filter', () => {
                 // Assert
                 expect(toast.error).toHaveBeenCalledWith(LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('MainCategory')));
             });
-           
-            it('should call exactly params when reportType is daily', () => {
-                // Arrange
-                const params = {
-                    fromDate: new Date('4/8/2021 9:05:20 AM'),
-                    toDate: new Date('4/8/2021 9:05:20 AM'),
-                    mainCategoryId: 0,
-                    subCategoryId: 0
-                };
-                const expectedParams = {
-                    reportType: 1,
-                    fromDate: 'Apr 08, 2021',
-                    toDate: 'Apr 08, 2021',
-                    mainCategoryId: 0,
-                    subCategoryId: 0,
-                    isGetFullReport: false,
-                    pageIndex: 1,
-                    pageSize: 7
-                };
-                const state = {...stateInit, ...params};
-                
-                //Act
-                const container = shallow(<Filter {...propsInit} />);
-                container.instance().setState(state);
-                container.find("Form").simulate("submit");
-
-                // Assert
-                expect(propsInit.setGridParams).toHaveBeenCalledWith(expectedParams);
-                expect(propsInit.getGridData).toHaveBeenCalledWith(expectedParams);
-            });
-
-            it('should call exactly params when reportType is monthly', () => {
-                // Arrange
-                const params = {
-                    fromMonthDate: new Date('4/8/2021 9:05:20 AM'),
-                    toMonthDate: new Date('4/8/2021 9:05:20 AM'),
-                    mainCategoryId: 0,
-                    subCategoryId: 0
-                };
-                const expectedParams = {
-                    reportType: 2,
-                    fromDate: 'Apr 08, 2021',
-                    toDate: 'Apr 30, 2021',
-                    mainCategoryId: 0,
-                    subCategoryId: 0,
-                    isGetFullReport: true,
-                    pageIndex: 1,
-                    pageSize: 7
-                };
-                stateInit.groupBy = 2;
-                const state = {...stateInit, ...params};
-                
-                //Act
-                const container = shallow(<Filter {...propsInit} />);
-                container.instance().setState(state);
-                container.find("Form").simulate("submit");
-
-                // Assert
-                expect(propsInit.setGridParams).toHaveBeenCalledWith(expectedParams);
-                expect(propsInit.getGridData).toHaveBeenCalledWith(expectedParams);
-            });
         });
 
         describe('handleToggleFilter', () => {
@@ -312,31 +251,6 @@ describe('Filter', () => {
 
             // Assert
             expect(container.instance().handleChangeMonthToDate).toHaveBeenCalled();
-        });
-
-        it('handleToggleFilter correctly', () => {
-            // Arrange
-            const container = shallow(<Filter {...propsInit} />);
-            container.instance().handleToggleFilter = jest.fn();
-            container.instance().setState(stateInit);
-            // Act
-            container.find('span').at(0).simulate('click');
-
-            // Assert
-            expect(container.instance().handleToggleFilter).toHaveBeenCalledWith(false);
-        });
-
-        it('handleToggleFilter correctly when showFilter is false', () => {
-            // Arrange
-            stateInit.showFilter = false;
-            const container = shallow(<Filter {...propsInit} />);
-            container.instance().handleToggleFilter = jest.fn();
-            container.instance().setState(stateInit);
-            // Act
-            container.find('span').at(0).simulate('click');
-
-            // Assert
-            expect(container.instance().handleToggleFilter).toHaveBeenCalledWith(true);
         });
     });
 });

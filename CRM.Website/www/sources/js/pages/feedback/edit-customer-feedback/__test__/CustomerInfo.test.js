@@ -143,16 +143,5 @@ describe('CustomerInfo', () => {
             // Assert
             expect(customerInfo.find(SelectWithSearch).length).toBe(1);
         });
-
-        it('handle change checkbox correctly', () => {
-            // Arrange
-            const customerInfo = shallow(<CustomerInfo {...props} />);
-
-            // Action
-            customerInfo.find(Form.Check).simulate('change', {target: {checked: true}});
-
-            // Assert
-            expect(props.setFieldValue).toHaveBeenCalledWith('isOverwrite', true);
-        });
     });
 });

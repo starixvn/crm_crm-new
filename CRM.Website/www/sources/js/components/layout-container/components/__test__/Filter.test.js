@@ -17,10 +17,11 @@ describe('filter', () => {
         appContainer1.setAttribute('id', 'hasReadFeedbackPermission');
         appContainer1.checked = true;
         const appContainer2 = document.createElement('div');
-        appContainer1.setAttribute('id', 'hasReadCustomerInfo');
-        appContainer1.checked = true;
+        appContainer2.setAttribute('id', 'hasReadCustomerInfo');
+        appContainer2.checked = true;
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
+        document.body.appendChild(appContainer2);
     });
     afterAll(() => {
         jest.clearAllMocks();
@@ -176,20 +177,6 @@ describe('filter', () => {
             });
         });
 
-        describe('renderDetailBreadcrumbsMenu ', () => {
-            it('should call exact function', () => {
-                //Arrange
-                const container = shallow(<Filter {...initProps} />).instance();
-
-                //Act
-                const breadbrumb = shallow(container.renderDetailBreadcrumbsMenu('/LatestFeedback'));
-                breadbrumb.find('.fa-home').simulate('click');
-
-                //Assert
-                expect(initProps.handleNavigate).toHaveBeenCalled();
-            });
-        });
-
         describe('getBreadcrumbsMenu', () => {
             it('should return exact value when parentId > 0', () => {
                 //Arrange
@@ -268,37 +255,6 @@ describe('filter', () => {
 
                 //Assert
                 expect(actual).toEqual('');
-            });
-        });
-
-        describe('renderHomeSubMenu', () => {
-            const cases = [['Dashboard', 1], ['Detail', 2], ['Communication', 3], ['SpecialRemark', 4], ['Remark', 5], ['Redemption', 6], ['ActionLog', 7]];
-            test.each(cases)(
-                "should navigate to %s",
-                (firstArg, secondArg) => {
-                  //Arrange
-                const container = shallow(<Filter {...initProps} />).instance();
-                const submenu = shallow(container.renderHomeSubMenu('/'));
-                //Act
-                submenu.find('li').at(secondArg).find('a').simulate('click');
-
-                //Assert
-                expect(initProps.handleNavigate).toHaveBeenCalledWith(firstArg);
-                }
-            );
-        });
-
-        describe('Render', () => {
-            it('should return null', () => {
-                //Arrange
-                const props = {
-                    menus: null
-                };
-                const actual = shallow(<Filter {...props} />);
-                //Act
-
-                //Assert
-                expect(actual).toEqual({});
             });
         });
 

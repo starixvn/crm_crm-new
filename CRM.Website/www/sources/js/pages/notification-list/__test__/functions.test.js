@@ -127,7 +127,7 @@ describe('function', () => {
 
             // Assert
             promise.then(() => {
-                expect(toast.success).toHaveBeenCalledWith(response.message);
+                expect(toast.success).toHaveBeenCalledWith("ResentSuccessfully");
             });
         });
         
@@ -150,7 +150,7 @@ describe('function', () => {
 
             // Assert
             promise.then(() => {
-                expect(toast.error).toHaveBeenCalledWith(response.message);
+                expect(toast.error).toHaveBeenCalledWith("message");
             });
         });
     });

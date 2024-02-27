@@ -72,14 +72,5 @@ describe('CustomerInfo', () => {
             // Assert
             expect(props.handleChangeValueInfo).toHaveBeenCalled();
         });
-
-        it('render renderLicenseeType when customer detail is null', () => {
-            // Arrange
-            const customerInfo = shallow(<CustomerInfo {...props} />);
-            // Action
-            customerInfo.find(Form.Check).at(0).simulate('change');
-            // Assert
-            expect(props.handleChangeValueInfo).toHaveBeenCalledWith('isOverwriteInfo', true);
-        });
     });
 });

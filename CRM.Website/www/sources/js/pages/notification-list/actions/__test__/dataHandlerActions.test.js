@@ -267,8 +267,11 @@ describe('dataHandlerActions', () => {
     it('should handle setRecipientOptions when fetch recipient options has been done', async () => {
         const searchText = 'searchText';
         const expectedParams = { recipientName: searchText, limit: 10 };
-        const response = { data: [ { name: 'name' } ] };
-        const options = response.data.map(item => {
+        const response = { data: {
+                item1: [ { name: 'name' } ] 
+            }
+        };
+        const options = response.data.item1.map(item => {
             return { value: item.name, label: item.name };
         });
 

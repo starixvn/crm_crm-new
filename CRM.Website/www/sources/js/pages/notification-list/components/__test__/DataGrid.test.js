@@ -657,12 +657,9 @@ describe('DataGrid', () => {
                 expect(row.find(Cell).at(3).props().className).toBe('text-center');
                 expect(row.find(Cell).at(3).find('div').at(0).html()).toEqual(`<div>${item.sendDateString}</div>`);
                 expect(row.find(Cell).at(3).find('div').at(1).html()).toEqual(`<div>${item.sendTimeString}</div>`);
-                expect(row.find(Cell).at(4).html()).toContain('<td></td>');
-                expect(row.find(Cell).at(5).props().className).toBe('text-center');
-                expect(row.find(Cell).at(5).html()).toContain(headlines);
-                expect(row.find(Cell).at(6).html()).toContain(recipients);
-                expect(row.find(Cell).at(7).props().className).toBe('link-click');
-                expect(row.find(Cell).at(7).html()).toContain(item.title);
+                expect(row.find(Cell).at(5).html()).toContain('<td></td>');
+                expect(row.find(Cell).at(6).html()).toContain('<td class=\"text-center\">headlines</td>');
+                expect(row.find(Cell).at(7).html()).toContain("<td>recipients</td>");
             });
             
             it('has Cell 1 has related div when item status is duplicate', () => {

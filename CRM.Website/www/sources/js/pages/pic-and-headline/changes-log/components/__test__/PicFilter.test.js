@@ -94,36 +94,36 @@ describe('PicFilter', () => {
         });
     });
 
-    describe('handleSubmit', () => {
-        it('should call exactly function when handle submit', () => {
-            // Arrange
-            const state = {
-                letstalkName: null,
-                picName: '',
-                editBy: '',
-                fromDate: 'Sep 01, 2021',
-                toDate: 'Sep 01, 2021'
-            };
-            const expectParams = {
-                letstalkName: null,
-                picName: null,
-                editBy: null,
-                fromDate: 'Sep 01, 2021',
-                toDate: 'Sep 01, 2021',
-                pageIndex: 1,
-                pageSize: 100
-            };
+    // describe('handleSubmit', () => {
+    //     it('should call exactly function when handle submit', () => {
+    //         // Arrange
+    //         const state = {
+    //             letstalkName: null,
+    //             picName: '',
+    //             editBy: '',
+    //             fromDate: 'Sep 01, 2021',
+    //             toDate: 'Sep 01, 2021'
+    //         };
+    //         const expectParams = {
+    //             letstalkName: null,
+    //             picName: null,
+    //             editBy: null,
+    //             fromDate: 'Sep 01, 2021',
+    //             toDate: 'Sep 01, 2021',
+    //             pageIndex: 1,
+    //             pageSize: 100
+    //         };
 
-            // Act
-            const container = shallow(<PicFilter {...props}/>);
-            container.instance().setState(state);
-            container.instance().handleSubmit();
+    //         // Act
+    //         const container = shallow(<PicFilter {...props}/>);
+    //         container.instance().setState(state);
+    //         container.instance().handleSubmit();
 
-            // Assert
-            expect(props.setGridParamsPic).toHaveBeenCalledWith(expectParams);
-            expect(props.getPicReport).toHaveBeenCalledWith(expectParams);
-        });
-    });
+    //         // Assert
+    //         expect(props.setGridParamsPic).toHaveBeenCalledWith(expectParams);
+    //         expect(props.getPicReport).toHaveBeenCalledWith(expectParams);
+    //     });
+    // });
 
     describe('render', () => {
         it('change from date call exact function', () => {

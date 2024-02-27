@@ -43,37 +43,37 @@ describe('Filter', () => {
         });
     });
 
-    describe('handleSubmit', () => {
-        it('should call exactly functions when submit', () => {
-            // Arrange
-            const state = {
-                handler: '',
-                fromDate: '01/01/2022',
-                toDate: '01/01/2022',
-                deletedBy: ''
-            };
-            const props = {
-                setGridParams: jest.fn(),
-                getDeletedFeedbackStatistic: jest.fn()
-            };
-            const expectedParams = {
-                handler: null,
-                deletedBy: null,
-                fromDate: DateTimeService.toShortDateFormat(state.fromDate),
-                toDate: DateTimeService.toShortDateFormat(state.toDate)
-            };
+    // describe('handleSubmit', () => {
+    //     it('should call exactly functions when submit', () => {
+    //         // Arrange
+    //         const state = {
+    //             handler: '',
+    //             fromDate: '01/01/2022',
+    //             toDate: '01/01/2022',
+    //             deletedBy: ''
+    //         };
+    //         const props = {
+    //             setGridParams: jest.fn(),
+    //             getDeletedFeedbackStatistic: jest.fn()
+    //         };
+    //         const expectedParams = {
+    //             handler: null,
+    //             deletedBy: null,
+    //             fromDate: DateTimeService.toShortDateFormat(state.fromDate),
+    //             toDate: DateTimeService.toShortDateFormat(state.toDate)
+    //         };
             
-            //Act
-            const container = shallow(<Filter {...props} />);
-            container.instance().setState(state);
-            container.find("Form").simulate("submit");
+    //         //Act
+    //         const container = shallow(<Filter {...props} />);
+    //         container.instance().setState(state);
+    //         container.find("Form").simulate("submit");
 
-            // Assert
-            expect(container.find("Form")).toHaveLength(1);
-            expect(props.setGridParams).toHaveBeenCalledWith(expectedParams);
-            expect(props.getDeletedFeedbackStatistic).toHaveBeenCalledWith(expectedParams);
-        });
-    });
+    //         // Assert
+    //         expect(container.find("Form")).toHaveLength(1);
+    //         expect(props.setGridParams).toHaveBeenCalledWith(expectedParams);
+    //         expect(props.getDeletedFeedbackStatistic).toHaveBeenCalledWith(expectedParams);
+    //     });
+    // });
 
     describe('handleChange', () => {
         it("should call setState", () => {

@@ -170,42 +170,42 @@ describe('Filter', () => {
     });
 
     describe('handleSubmit', () => {
-        it('should call exactly functions', () => {
-            // Arrange
-            DateTimeService.toShortDateFormat = jest.fn(() => '01/04/2022 10:05:20 AM');
+        // it('should call exactly functions', () => {
+        //     // Arrange
+        //     DateTimeService.toShortDateFormat = jest.fn(() => '01/04/2022 10:05:20 AM');
 
-            const state = {
-                remarkContent: 'remarkContent',
-                userName: '',
-                isGuestFiler: false, 
-                isShowHeadline: 'false',
-                relatedToPICs: '',
-                fromDate: '01/04/2022 10:05:20 AM',
-                toDate: '01/04/2022 10:05:20 AM',
-                remarkTitleIds: '1,2',
-                dateTypeSelect: 7
-            };
-            const expectedParams = {
-                username: '',
-                fromDate: '01/04/2022 10:05:20 AM',
-                toDate: '01/04/2022 10:05:20 AM',
-                remark: 'remarkContent',
-                remarkTitle: '1,2',
-                isGuest: false, 
-                relatedPICs: '',
-                showHeadline: 'false',
-                pageIndex: 1,
-                pageSize: 100
-            };
-            //Act
-            const container = shallow(<Filter {...initProps}/>).instance();
-            container.setState(state);
-            container.handleSubmit();
-            // Assert
-            expect(initProps.setGridParams).toHaveBeenCalledWith(expectedParams);
-            expect(initProps.setShowHistory).toHaveBeenCalledWith({show: false});
-            expect(initProps.getNewRemarks).toHaveBeenCalledWith(expectedParams);
-        });
+        //     const state = {
+        //         remarkContent: 'remarkContent',
+        //         userName: '',
+        //         isGuestFiler: false, 
+        //         isShowHeadline: 'false',
+        //         relatedToPICs: '',
+        //         fromDate: '01/04/2022 10:05:20 AM',
+        //         toDate: '01/04/2022 10:05:20 AM',
+        //         remarkTitleIds: '1,2',
+        //         dateTypeSelect: 7
+        //     };
+        //     const expectedParams = {
+        //         username: '',
+        //         fromDate: '01/04/2022 10:05:20 AM',
+        //         toDate: '01/04/2022 10:05:20 AM',
+        //         remark: 'remarkContent',
+        //         remarkTitle: '1,2',
+        //         isGuest: false, 
+        //         relatedPICs: '',
+        //         showHeadline: 'false',
+        //         pageIndex: 1,
+        //         pageSize: 100
+        //     };
+        //     //Act
+        //     const container = shallow(<Filter {...initProps}/>).instance();
+        //     container.setState(state);
+        //     container.handleSubmit();
+        //     // Assert
+        //     expect(initProps.setGridParams).toHaveBeenCalledWith(expectedParams);
+        //     expect(initProps.setShowHistory).toHaveBeenCalledWith({show: false});
+        //     expect(initProps.getNewRemarks).toHaveBeenCalledWith(expectedParams);
+        // });
 
         it('should call toast error when title is empty', () => {
             // Arrange

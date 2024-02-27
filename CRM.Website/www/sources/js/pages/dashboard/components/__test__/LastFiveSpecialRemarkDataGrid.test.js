@@ -40,7 +40,7 @@ describe('LastFiveSpecialRemarkDataGrid', () => {
                 getLastFiveSpecialRemarks: jest.fn()
             };
 
-            const expectedBody = [<Row key='new-remark-body' className="no-data" ><Cell className="text-center" colSpan={1}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+            const expectedBody = [<Row key='body-grid-remark' className="no-data" ><Cell className="text-center" colSpan={1}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
             const container = shallow(<LastFiveSpecialRemarkDataGrid {...props} />).instance();
 
             // Act

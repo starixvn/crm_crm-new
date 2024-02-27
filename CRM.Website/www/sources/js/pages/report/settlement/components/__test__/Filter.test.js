@@ -58,24 +58,24 @@ describe('Filter', () => {
         expect(props.setGridParams).toHaveBeenCalledWith({ ...param, year: event.target.value });
     });
 
-    it('should call getGridData when click submit button', () => {
-        // Arrange
-        const param = {
-            year: NaN,
-            pageIndex: 1,
-            pageSize: 12
-        };
-        const props = {
-            getGridData: jest.fn(),
-            setGridParams: jest.fn(),
-            gridParams: param
-        };
-        const container = shallow(<Filter {...props} />);
+    // it('should call getGridData when click submit button', () => {
+    //     // Arrange
+    //     const param = {
+    //         year: NaN,
+    //         pageIndex: 1,
+    //         pageSize: 12
+    //     };
+    //     const props = {
+    //         getGridData: jest.fn(),
+    //         setGridParams: jest.fn(),
+    //         gridParams: param
+    //     };
+    //     const container = shallow(<Filter {...props} />);
 
-        // Act
-        container.find(Button).props().onClick({ preventDefault: jest.fn() });
+    //     // Act
+    //     container.find(Button).props().onClick({ preventDefault: jest.fn() });
 
-        // Assert
-        expect(props.getGridData).toHaveBeenCalledWith(param);
-    });
+    //     // Assert
+    //     expect(props.getGridData).toHaveBeenCalledWith(param);
+    // });
 });

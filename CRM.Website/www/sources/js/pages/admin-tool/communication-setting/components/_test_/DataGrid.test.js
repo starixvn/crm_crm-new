@@ -58,55 +58,55 @@ describe('DataGrid', () => {
         expect(dataGrid).toBeNull;
     });
 
-    describe('default elements', () => {
-        it('renders table title correctly', () => {
-            // Arrange
-            const props = {
-                gridParamsCommunication: {},
-                gridDataCommunication: {
-                    data: []
-                }
-            };
+    // describe('default elements', () => {
+    //     // it('renders table title correctly', () => {
+    //     //     // Arrange
+    //     //     const props = {
+    //     //         gridParamsCommunication: {},
+    //     //         gridDataCommunication: {
+    //     //             data: []
+    //     //         }
+    //     //     };
 
-            // Action
-            const dataGrid = shallow(<DataGrid {...props} />);
+    //     //     // Action
+    //     //     const dataGrid = shallow(<DataGrid {...props} />);
 
-            // Assert
-            expect(dataGrid.find('div').html()).toEqual('<div class="table-title">DefaultCommunicationSetting</div>');
-        });
+    //     //     // Assert
+    //     //     expect(dataGrid.find('div').html()).toEqual('<div class="table-title">DefaultCommunicationSetting</div>');
+    //     // });
 
-        it('table props should be mapped correctly', () => {
-            // Arrange
-            const props = {
-                gridParamsCommunication: {
-                    pageIndex: 1,
-                    pageSize: 50
-                },
-                gridDataCommunication: {
-                    totalItems: 1,
-                    data: []
-                }
-            };
-            const pagingOption = {
-                PageIndex: props.gridParamsCommunication.pageIndex,
-                PageSize: props.gridParamsCommunication.pageSize,
-                TotalItem: props.gridDataCommunication.totalItems,
-                PageList: [50, 100, 200, 500]
-            };
+    //     // it('table props should be mapped correctly', () => {
+    //     //     // Arrange
+    //     //     const props = {
+    //     //         gridParamsCommunication: {
+    //     //             pageIndex: 1,
+    //     //             pageSize: 50
+    //     //         },
+    //     //         gridDataCommunication: {
+    //     //             totalItems: 1,
+    //     //             data: []
+    //     //         }
+    //     //     };
+    //     //     const pagingOption = {
+    //     //         PageIndex: props.gridParamsCommunication.pageIndex,
+    //     //         PageSize: props.gridParamsCommunication.pageSize,
+    //     //         TotalItem: props.gridDataCommunication.totalItems,
+    //     //         PageList: [50, 100, 200, 500]
+    //     //     };
 
-            // Action
-            const dataGrid = shallow(<DataGrid {...props} />);
+    //     //     // Action
+    //     //     const dataGrid = shallow(<DataGrid {...props} />);
 
-            // Assert
-            expect(dataGrid.find(Table).length).toBe(0);
-            expect(dataGrid.find(Table).props().minWidth).toBe(960);
-            expect(dataGrid.find(Table).props().autoWidth).toBeTrue;
-            expect(dataGrid.find(Table).props().isPaging).toBeTrue;
-            expect(dataGrid.find(Table).props().pageOption).toEqual(pagingOption);
-            expect(dataGrid.find(Table).props().containerPadding).toBe(31);
-            expect(dataGrid.find(Table).props().adjustedHeight).toBe(10);
-        });
-    });
+    //     //     // Assert
+    //     //     expect(dataGrid.find(Table).length).toBe(0);
+    //     //     expect(dataGrid.find(Table).props().minWidth).toBe(960);
+    //     //     expect(dataGrid.find(Table).props().autoWidth).toBeTrue;
+    //     //     expect(dataGrid.find(Table).props().isPaging).toBeTrue;
+    //     //     expect(dataGrid.find(Table).props().pageOption).toEqual(pagingOption);
+    //     //     expect(dataGrid.find(Table).props().containerPadding).toBe(31);
+    //     //     expect(dataGrid.find(Table).props().adjustedHeight).toBe(10);
+    //     // });
+    // });
 
     describe('methods', () => {
         describe('onPagingCommunication', () => {

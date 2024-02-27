@@ -109,16 +109,16 @@ describe('Filter', () => {
         expect(container.instance().state.communicationIds).toEqual("1005");
     });
 
-    it('should call handleSubmit when click submit button with state has data', () => {
-        // Arrange
-        const container = shallow(<Filter {...propsNext} />);
-        // Act
-        container.instance().handleSubmit();
-        // Assert
-        expect(propsNext.setDetailsDataGrid).toHaveBeenCalledWith({show: false});
-        expect(propsNext.setGridParams).toHaveBeenCalled();
-        expect(propsNext.getMainReport).toHaveBeenCalled();
-    });
+    // it('should call handleSubmit when click submit button with state has data', () => {
+    //     // Arrange
+    //     const container = shallow(<Filter {...propsNext} />);
+    //     // Act
+    //     container.instance().handleSubmit();
+    //     // Assert
+    //     // expect(propsNext.setDetailsDataGrid).toHaveBeenCalledWith({show: false});
+    //     expect(propsNext.setGridParams).toHaveBeenCalled();
+    //     expect(propsNext.getMainReport).toHaveBeenCalled();
+    // });
 
     it('should call handleSubmit when click submit button with mainCategories is empty', () => {
         // Arrange

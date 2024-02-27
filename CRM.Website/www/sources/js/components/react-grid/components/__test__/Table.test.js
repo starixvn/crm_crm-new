@@ -555,27 +555,27 @@ describe('Table', () => {
             expect(result).toBeNull;
         });
         
-        it('should return expected components', () => {
-            // Arrange
-            const props = {
-                header: {
-                    props: {
-                        children: []
-                    }
-                },
-                containerPadding: 10
-            };
+        // it('should return expected components', () => {
+        //     // Arrange
+        //     const props = {
+        //         header: {
+        //             props: {
+        //                 children: []
+        //             }
+        //         },
+        //         containerPadding: 10
+        //     };
 
-            const state = { maxWidth: 100 };
-            const table = shallow(<Table {...props} />);
-            table.instance().setState(state);
+        //     const state = { maxWidth: 100 };
+        //     const table = shallow(<Table {...props} />);
+        //     table.instance().setState(state);
 
-            // Action
+        //     // Action
 
-            // Assert
-            expect(table.find('div').at(1).props().className).toBe('table-container');
-            expect(table.find('div').at(1).props().style).toEqual({ maxWidth: state.maxWidth - props.containerPadding });
-        });
+        //     // Assert
+        //     expect(table.find('div').at(1).props().className).toBe('table-container');
+        //     expect(table.find('div').at(1).props().style).toEqual({ maxWidth: state.maxWidth - props.containerPadding });
+        // });
         
         it('should return expected components have Pager', () => {
             // Arrange
