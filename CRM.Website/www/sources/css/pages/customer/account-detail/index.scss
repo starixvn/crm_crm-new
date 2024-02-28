@@ -213,7 +213,7 @@
 
         .tab-content {
             border: 1px #d1d1d1 solid;
-            padding: 13px 4px 12px 12px;
+            padding: 12px;
 
             .selectwithsearchtree .dropdown-menu .tree {
                 max-height: 245px;
@@ -377,6 +377,7 @@
 
         .table {
             width: 100% !important;
+            table-layout: auto;
 
             .display-colSpan {
                 display: none;
@@ -466,6 +467,7 @@
         .header-content,
         .body-content {
             border-right: none;
+            width: 100% !important;
         }
 
         .body-content {
@@ -489,7 +491,7 @@
             margin-top: 12px;
 
             .tab-content {
-                padding: 8px 4px 8px 8px;
+                padding: 8px;
 
                 .custom-scrollbar {
                     max-height: 300px;
