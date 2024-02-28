@@ -637,6 +637,7 @@ export class HeadlineStaffsAndAuthority extends Component {
             data.splice(indexStaff, 1);
             this.setState({headlineStaffsAndAuthority: data});
         }
+        this.props.setErrors(null);
     }
 
     handleDelete = async indexStaff => {
