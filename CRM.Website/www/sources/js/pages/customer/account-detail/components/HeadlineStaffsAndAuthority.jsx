@@ -215,7 +215,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                 }
                 <div className={`${headlineStaffsAndAuthority.length < 3 && 'table-inTab'} headline-staff-authority`}>
                     <Table
-                        width={1490}
+                        width={document.getElementById('right-row-container').clientWidth - 60}
                         autoWidth={false}
                         header={this.buildHeader()}
                         body={this.buildBody()}

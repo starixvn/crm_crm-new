@@ -465,27 +465,55 @@ export class AppContainer extends Component {
     handleSubmitOtherCommunicationInfo = async () => {
         const errors = this.validateCommunicationInfo();
         if (errors === null) {
-            let { otherAccountCommunication } = this.state;
-            const params = {
-                custID: this.props.id,
-                otherCommunicationTools: otherAccountCommunication.map(acc => {
-                    return {
-                        communicationID: acc.communicationID,
-                        communicationValue: acc.communicationValue
-                    };
-                })
-            };
-            
-            Site.blockUI(); 
-            const url = Site.resolveClientUrl('AccountDetail/EditOtherAccCommunicationInfo');
-            await DataService.postDataAsync(url, params).then(response => {
-                if (response.data.isSuccessful) {
-                    toast.success(LangHelper.getResource('UpdateCommunicationInfoSuccessful'));
-                } else {
-                    toast.errors(response.data.find(x => !x.isSuccessful)[0].message);
-                }
-            }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+            await this.checkCustomerExistsOnCRM();
         }
+    }
+
+    editOtherAccountCommunicationInfo = async () => {
+        let { otherAccountCommunication } = this.state;
+        const params = {
+            custID: this.props.id,
+            otherCommunicationTools: otherAccountCommunication.map(acc => {
+                return {
+                    communicationID: acc.communicationID,
+                    communicationValue: acc.communicationValue
+                };
+            })
+        };
+
+        Site.blockUI();
+        const url = Site.resolveClientUrl('AccountDetail/EditOtherAccCommunicationInfo');
+        await DataService.postDataAsync(url, params).then(response => {
+            if (response.data.isSuccessful) {
+                toast.success(LangHelper.getResource('UpdateCommunicationInfoSuccessful'));
+            } else {
+                toast.errors(response.data.find(x => !x.isSuccessful)[0].message);
+            }
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+    }
+
+    checkCustomerExistsOnCRM = async () => {
+        const { customerInfo } = this.props;
+        Site.blockUI();
+        const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
+        await DataService.postDataAsync(url, { customerId: customerInfo.custId }).then(async response => {
+            if (response.data === 1) {
+                await this.editOtherAccountCommunicationInfo();
+            } else {
+                await this.updateNewCrmCustomer();
+            }
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+    }
+
+    updateNewCrmCustomer = async () => {
+        const values = this.state;
+        const { customerInfo } = this.props;
+        const params = ParamsSubmit(customerInfo.custId, values);
+        this.props.editCustomerInfoDetail(params).then(async () => {
+            if (this.props.editCustomerInfoDetailResult.isSuccessful) {
+                await this.editOtherAccountCommunicationInfo();
+            }
+        });
     }
 
     renderOtherPIC = values => {
@@ -685,7 +713,8 @@ const mapStateToProps = state => {
         setErrors,
         setActiveTab,
         activeTab,
-        showConfirmUnSaved } = state;
+        showConfirmUnSaved,
+        editCustomerInfoDetail } = state;
     return {
         allSettings,
         customerInfo,
@@ -695,7 +724,8 @@ const mapStateToProps = state => {
         setErrors,
         setActiveTab,
         activeTab,
-        showConfirmUnSaved
+        showConfirmUnSaved,
+        editCustomerInfoDetail
     };
 };
 
