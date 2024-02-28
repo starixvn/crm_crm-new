@@ -1,40 +1,38 @@
 import DateTimeService from '@jsroot/common/dateTimeService';
 import LangHelper from '@jsroot/common/langHelper';
 
-export const ValidateHeadlineStaffAndAuthority = values => {
+export const ValidateHeadlineStaffAndAuthority = (values, indexStaff) => {
     const errors = {};
     let headlineStaffsAndAuthority = values;
 
-    values.map((staff, indexStaff) => {
-        if (!staff.picName || staff.picName.trim().length === 0) {
-            errors.picName = LangHelper.getResource('NameRequired');
-            headlineStaffsAndAuthority[indexStaff].isErrorPicName = true;
+    if (!headlineStaffsAndAuthority[indexStaff].picName || headlineStaffsAndAuthority[indexStaff].picName.trim().length === 0) {
+        errors.picName = LangHelper.getResource('NameRequired');
+        headlineStaffsAndAuthority[indexStaff].isErrorPicName = true;
+    } else {
+        headlineStaffsAndAuthority[indexStaff].isErrorPicName = false;
+    }
+
+    if (!headlineStaffsAndAuthority[indexStaff].picRoleID) {
+        errors.role = LangHelper.getResource('RoleRequired');
+        headlineStaffsAndAuthority[indexStaff].isErrorPicRoleID = true;
+    } else {
+        headlineStaffsAndAuthority[indexStaff].isErrorPicRoleID = false;
+    }
+
+    headlineStaffsAndAuthority[indexStaff].communicationTools.map((staffCom, indexStaffCom) => {
+        if (!staffCom.picCommunicationID || !staffCom.picCommunicationValue) {
+            errors.communication = LangHelper.getResource('CommunicationRequired');
+            headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicCommunication = true;
         } else {
-            headlineStaffsAndAuthority[indexStaff].isErrorPicName = false;
+            headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicCommunication = false;
         }
 
-        if (!staff.picRoleID) {
-            errors.role = LangHelper.getResource('RoleRequired');
-            headlineStaffsAndAuthority[indexStaff].isErrorPicRoleID = true;
+        if (!staffCom.authorityID) {
+            errors.authority = LangHelper.getResource('AuthorityRequired');
+            headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicAuthorityID = true;
         } else {
-            headlineStaffsAndAuthority[indexStaff].isErrorPicRoleID = false;
+            headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicAuthorityID = false;
         }
-
-        staff.communicationTools.map((staffCom, indexStaffCom) => {
-            if (!staffCom.picCommunicationID || !staffCom.picCommunicationValue) {
-                errors.communication = LangHelper.getResource('CommunicationRequired');
-                headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicCommunication = true;
-            } else {
-                headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicCommunication = false;
-            }
-
-            if (!staffCom.authorityID) {
-                errors.authority = LangHelper.getResource('AuthorityRequired');
-                headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicAuthorityID = true;
-            } else {
-                headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicAuthorityID = false;
-            }
-        });
     });
     return { errors: errors , headlineStaffsAndAuthority: headlineStaffsAndAuthority };
 };

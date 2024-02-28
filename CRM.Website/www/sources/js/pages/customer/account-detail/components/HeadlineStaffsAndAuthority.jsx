@@ -103,8 +103,8 @@ export class HeadlineStaffsAndAuthority extends Component {
         return headlineStaffsAndAuthority;
     }  
 
-    handleSubmit = async () => {
-        const errors = this.validateHeadlineStaffAndAuthority();
+    handleSubmit = async indexStaff => {
+        const errors = this.validateHeadlineStaffAndAuthority(indexStaff);
         if (errors === null) {
             Site.blockUI();
             const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
@@ -164,8 +164,8 @@ export class HeadlineStaffsAndAuthority extends Component {
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 
-    validateHeadlineStaffAndAuthority = () => {
-        const { errors, headlineStaffsAndAuthority } = ValidateHeadlineStaffAndAuthority(this.state.headlineStaffsAndAuthority);
+    validateHeadlineStaffAndAuthority = indexStaff => {
+        const { errors, headlineStaffsAndAuthority } = ValidateHeadlineStaffAndAuthority(this.state.headlineStaffsAndAuthority, indexStaff);
         this.setState({
             headlineStaffsAndAuthority: headlineStaffsAndAuthority
         });
@@ -267,36 +267,33 @@ export class HeadlineStaffsAndAuthority extends Component {
     }
 
     handleAddNewRow = () => {
-        const errors = this.validateHeadlineStaffAndAuthority();
-        if (errors === null) {
-            let { headlineStaffsAndAuthority } = this.state;
-            headlineStaffsAndAuthority.push({
-                picID: 0,
-                picName: null,
-                picRoleID: 0,
-                picRoleName: null,
-                communicationTools: [{
-                    rowID: -1,
-                    picCommunicationID: 0,
-                    picCommunicationName: null,
-                    picCommunicationValue: null,
-                    authorityID: '',
-                    authority: '',
-                    remark: null,
-                    isErrorPicCommunication: false,
-                    isErrorPicAuthorityID: false
-                }],
-                isSyncFromPicTable: false,
-                isErrorPicName: false,
-                isErrorPicRoleID: false,
-                isEdit: true
-            });
-            this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        }
+        let { headlineStaffsAndAuthority } = this.state;
+        headlineStaffsAndAuthority.push({
+            picID: 0,
+            picName: null,
+            picRoleID: 0,
+            picRoleName: null,
+            communicationTools: [{
+                rowID: -1,
+                picCommunicationID: 0,
+                picCommunicationName: null,
+                picCommunicationValue: null,
+                authorityID: '',
+                authority: '',
+                remark: null,
+                isErrorPicCommunication: false,
+                isErrorPicAuthorityID: false
+            }],
+            isSyncFromPicTable: false,
+            isErrorPicName: false,
+            isErrorPicRoleID: false,
+            isEdit: true
+        });
+        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
     };
 
     handleAddTool = (indexStaff) => {
-        const errors = this.validateHeadlineStaffAndAuthority();
+        const errors = this.validateHeadlineStaffAndAuthority(indexStaff);
         if (errors === null) {
             let { headlineStaffsAndAuthority } = this.state;
             headlineStaffsAndAuthority[indexStaff].communicationTools.push({
@@ -486,7 +483,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                     </Cell>
                     <Cell rowSpan={staff.communicationTools.length}>
                         <div className='row-icon'>
-                            <div className='icon icon-save' title='Save' onClick={() => { this.handleSubmit(); }}></div>
+                            <div className='icon icon-save' title='Save' onClick={() => { this.handleSubmit(indexStaff); }}></div>
                             <div className='icon icon-cancel' title='Cancel' onClick={() => this.handleCancel(indexStaff)}></div>
                         </div>
                     </Cell>

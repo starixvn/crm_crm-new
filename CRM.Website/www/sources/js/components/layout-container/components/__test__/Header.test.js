@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Header from '../Header';
-import Site from '@jsroot/common/site';
 
 describe('Header', () => {
     beforeAll(() => {
@@ -28,6 +27,7 @@ describe('Header', () => {
         handleNavigateDashboard: jest.fn(),
         handleNavigate: jest.fn()
     }
+
     describe('isIgnoreMenu', () => {
         it('should return false', () => {
             // Arrange
@@ -43,6 +43,22 @@ describe('Header', () => {
             // Assert
             expect(actual).toEqual(false);
         });
+
+        it('should return false when url is empty', () => {
+            // Arrange
+            const itemMenu = { 
+                name: 'Cs Report', parent: null, displayOrder: 5, url: '', id: 122,
+                subMenus: []
+            };
+
+            // Act
+            const container = shallow(<Header {...props} />);
+            const actual = container.instance().isIgnoreMenu(itemMenu);
+
+            // Assert
+            expect(actual).toEqual(false);
+        });
+
 
         it('should return true', () => {
             // Arrange
@@ -60,6 +76,48 @@ describe('Header', () => {
 
             // Assert
             expect(actual).toEqual(true);
+        });
+    });
+
+    describe('renderListMenu', () => {
+        it('should return list menu when url is empty', () => {
+           // Arrange
+            const itemMenu = {
+                name: 'Report', displayOrder: 1, url: '', parent: { id: 122 }, id: 123,
+                subMenus : [
+                    { 
+                        name: 'Cs Report', parent: null, displayOrder: 5, url: '', id: 122,
+                        subMenus: [{name: 'Cxs Report', parent: null, displayOrder: 5, url: '/CxsReport', id: 133}] 
+                    }
+                ]
+            };
+
+            // Act
+            const container = shallow(<Header {...props}/>);
+            container.instance().renderListMenu(itemMenu);
+
+            // Assert
+            expect(container.find('Link').at(0).props().className).toBe('title ');
+        });
+
+        it('should return list menu when url is Dashboard', () => {
+            // Arrange
+             const itemMenu = {
+                 name: 'Report', displayOrder: 1, url: '/Dashboard', parent: { id: 122 }, id: 123,
+                 subMenus : [
+                     { 
+                         name: 'Cs Report', parent: null, displayOrder: 5, url: '', id: 122,
+                         subMenus: [{name: 'Cxs Report', parent: null, displayOrder: 5, url: '/CxsReport', id: 133}] 
+                     }
+                 ]
+             };
+ 
+             // Act
+             const container = shallow(<Header {...props}/>);
+             container.instance().renderListMenu(itemMenu);
+ 
+             // Assert
+            expect(container.find('Link').at(2).props().className).toBe('layer-first ');
         });
     });
 
