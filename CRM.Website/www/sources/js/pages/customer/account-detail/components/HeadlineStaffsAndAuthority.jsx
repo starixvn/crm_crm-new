@@ -106,16 +106,20 @@ export class HeadlineStaffsAndAuthority extends Component {
     handleSubmit = async indexStaff => {
         const errors = this.validateHeadlineStaffAndAuthority(indexStaff);
         if (errors === null) {
-            Site.blockUI();
-            const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
-            await DataService.postDataAsync(url, { customerId: this.props.customerInfo?.custId }).then(async response => {
-                if (response.data === 1) {
-                    await this.editHeadlineStaffAndAuthority();
-                } else {
-                    await this.updateNewCrmCustomer();
-                }
-            }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+            await this.checkCustomerExistsOnCRM();
         }
+    }
+
+    checkCustomerExistsOnCRM = async () => {
+        Site.blockUI();
+        const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
+        await DataService.postDataAsync(url, { customerId: this.props.customerInfo?.custId }).then(async response => {
+            if (response.data === 1) {
+                await this.editHeadlineStaffAndAuthority();
+            } else {
+                await this.updateNewCrmCustomer();
+            }
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 
     updateNewCrmCustomer = async () => {
@@ -635,17 +639,17 @@ export class HeadlineStaffsAndAuthority extends Component {
         }
     }
 
-    handleDelete = (indexStaff) => {
+    handleDelete = async indexStaff => {
         const data = [...this.state.headlineStaffsAndAuthority];
         data.splice(indexStaff, 1);
-        this.setState({
+        await this.setState({
             headlineStaffsAndAuthority: data,
             showConfirmDelete: {
                 show: false,
                 name: '',
                 indexStaff: -1
             }});
-        this.handleSubmit();
+        await this.checkCustomerExistsOnCRM();
     }
 
     renderRow = (item, indexStaff) => {
