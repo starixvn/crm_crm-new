@@ -25,6 +25,8 @@ export class AppContainer extends Component {
         super(props);
         const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
+            isShowAccountInfo: true,
+            isShowAccountantPIC: true,
             isHostOnCurrentCustomer: false,
             updateHeadlineInfoPolicy: null,
             otherAccountCommunication: null,
@@ -95,11 +97,6 @@ export class AppContainer extends Component {
             bankAddressState: '',
             bankAddressPostCode: ''
         };
-      }
-
-    componentDidUpdate() {
-        const demo = 1;
-        const demo2 = 1;
     }
 
     async componentDidMount() {
@@ -134,6 +131,18 @@ export class AppContainer extends Component {
         });
         document.title = LangHelper.getResource('CRMSystem');
     }
+
+    handleShowAccountInfo = () => {
+        this.setState({
+            isShowAccountInfo: !this.state.isShowAccountInfo
+        });
+    };
+
+    handleShowAccountantPIC = () => {
+        this.setState({
+            isShowAccountantPIC: !this.state.isShowAccountantPIC
+        });
+    };
 
     handleSubmitAccountInfo = () => {
         const values = this.state;
@@ -230,149 +239,152 @@ export class AppContainer extends Component {
 
         return (
             <Form className='group-account acc-info'>
-                <div className='group-title'>
+                <div className='group-title group-tab' onClick={this.handleShowAccountInfo}>
                     Account Info
                     {
                         values. isHostOnCurrentCustomer &&
                         <img onClick={this.handleSubmitAccountInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                     }
                 </div>
-                <div className='group-content'>
-                    <Form.Group>
-                        <Form.Label htmlFor="title" >
-                            {LangHelper.getResource('Title')}
-                        </Form.Label>
-                        <Form.Control as="select" size="sm" className="shadow-none" value={values.titleId}
-                            name="titleId" id="titleId" onChange={this.handleChange}
-                        >
-                            <option value="0"></option>
-                            {this.props.allSettings.titles.map(item => this.renderOptions(item.value, item.id))}
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label htmlFor="firstName" >
-                            {LangHelper.getResource('FirstName')}
-                        </Form.Label>
-                        <Form.Control type="text" name="firstName" id="firstName" autoComplete="off"
-                            onChange={this.handleChange} value={values.firstName} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label htmlFor="lastName" >
-                            {LangHelper.getResource('LastName')}
-                        </Form.Label>
-                        <Form.Control type="text" value={values.lastName}
-                            name="lastName" id="lastName" autoComplete="off" onChange={this.handleChange} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label htmlFor="birthDay" >
-                            {LangHelper.getResource('Birthday')}
-                        </Form.Label>
-                        <div className='react-datepicker-wrapper-container'>
-                            <DatePicker
-                                dropdownMode="select"
-                                showMonthDropdown
-                                useShortMonthInDropdown
-                                showYearDropdown
-                                selected={values.birthDay}
-                                maxDate={values.maxDate}
-                                onChange={value => this.handleChangeValue('birthDay', value)}
+                {
+                    values.isShowAccountInfo && 
+                    <div className='group-content'>
+                        <Form.Group>
+                            <Form.Label htmlFor="title" >
+                                {LangHelper.getResource('Title')}
+                            </Form.Label>
+                            <Form.Control as="select" size="sm" className="shadow-none" value={values.titleId}
+                                name="titleId" id="titleId" onChange={this.handleChange}
+                            >
+                                <option value="0"></option>
+                                {this.props.allSettings.titles.map(item => this.renderOptions(item.value, item.id))}
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="firstName" >
+                                {LangHelper.getResource('FirstName')}
+                            </Form.Label>
+                            <Form.Control type="text" name="firstName" id="firstName" autoComplete="off"
+                                onChange={this.handleChange} value={values.firstName} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="lastName" >
+                                {LangHelper.getResource('LastName')}
+                            </Form.Label>
+                            <Form.Control type="text" value={values.lastName}
+                                name="lastName" id="lastName" autoComplete="off" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="birthDay" >
+                                {LangHelper.getResource('Birthday')}
+                            </Form.Label>
+                            <div className='react-datepicker-wrapper-container'>
+                                <DatePicker
+                                    dropdownMode="select"
+                                    showMonthDropdown
+                                    useShortMonthInDropdown
+                                    showYearDropdown
+                                    selected={values.birthDay}
+                                    maxDate={values.maxDate}
+                                    onChange={value => this.handleChangeValue('birthDay', value)}
+                                />
+                            </div>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="passPortNo" >
+                                {LangHelper.getResource('PassportNo')}
+                            </Form.Label>
+                            <Form.Control type="text" value={values.passport}
+                                name="passport" id="passport" autoComplete="off" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="refCodes" >
+                                {LangHelper.getResource('RefCode')}
+                            </Form.Label>
+                            <Form.Control type="text" value={values.refCode2}
+                                id="refCode2" autoComplete="off" name="refCode2" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="languages" >
+                                {LangHelper.getResource('Languages')}
+                            </Form.Label>
+                            <MultipleSelect
+                                dataSource={languageSelected}
+                                keyField='languageId'
+                                valueField='name'
+                                isAllTextShown
+                                isNAOption
+                                onChange={(currentItem, selectedItemsKey) => {
+                                    this.handleChangeValue('languages', selectedItemsKey);
+                                }}
                             />
-                        </div>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label htmlFor="passPortNo" >
-                            {LangHelper.getResource('PassportNo')}
-                        </Form.Label>
-                        <Form.Control type="text" value={values.passport}
-                            name="passport" id="passport" autoComplete="off" onChange={this.handleChange} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label htmlFor="refCodes" >
-                            {LangHelper.getResource('RefCode')}
-                        </Form.Label>
-                        <Form.Control type="text" value={values.refCode2}
-                            id="refCode2" autoComplete="off" name="refCode2" onChange={this.handleChange} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label htmlFor="languages" >
-                            {LangHelper.getResource('Languages')}
-                        </Form.Label>
-                        <MultipleSelect
-                            dataSource={languageSelected}
-                            keyField='languageId'
-                            valueField='name'
-                            isAllTextShown
-                            isNAOption
-                            onChange={(currentItem, selectedItemsKey) => {
-                                this.handleChangeValue('languages', selectedItemsKey);
-                            }}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label htmlFor="site" >
-                            {LangHelper.getResource('Site')}
-                        </Form.Label>
-                        <SelectWithSearch
-                            className='basic-single'
-                            options={siteOptions}
-                            value={customerInfo.siteId}
-                            name={customerInfo.siteSetting.name}
-                            isHideNA={false}
-                            OnChangeValue={item => this.handleChangeValue('siteId', item.id)}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label htmlFor="secretCode" >
-                            {LangHelper.getResource('SecretCode')}
-                        </Form.Label>
-                        <Form.Control type="text" value={values.refCode1}
-                            name="refCode1" id="refCode1" autoComplete="off" onChange={this.handleChange} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label htmlFor="country" >
-                            {LangHelper.getResource('Country')}
-                        </Form.Label>
-                        <SearchableDropdown
-                            className='basic-single'
-                            onChange={this.handleChange}
-                            options={allSettings.countries.slice(1)}
-                            value={values.homeAddressCountryId}
-                            name="homeAddressCountryId"
-                            isHideNA={false}
-                            OnChangeValue={this.handleChangeCountry}
-                        />
-                    </Form.Group>
-                    {
-                        !customerInfo.isGroupHeadLine &&
-                        <>
-                            <Form.Group >
-                                <Form.Label htmlFor="licenseeType">
-                                    {LangHelper.getResource('LicenseeType')}
-                                </Form.Label>
-                                <Form.Control as="select" size="sm" className="shadow-none"
-                                    name="licenseeTypeId" id="licenseeTypeId" value={values.licenseeTypeId} onChange={this.handleChange}
-                                >
-                                    <option value='' hidden disabled />
-                                    {allSettings.licenseeTypes.map(item => this.renderOptions(item.name, item.id))}
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Check type="checkbox"
-                                label={LangHelper.getResource('VIP')}
-                                checked={values.isVip}
-                                name='isVip' id="isVip"
-                                disabled={!values.isHostOnCurrentCustomer}
-                                onChange={event => this.handleChangeCheck(event)}
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="site" >
+                                {LangHelper.getResource('Site')}
+                            </Form.Label>
+                            <SelectWithSearch
+                                className='basic-single'
+                                options={siteOptions}
+                                value={customerInfo.siteId}
+                                name={customerInfo.siteSetting.name}
+                                isHideNA={false}
+                                OnChangeValue={item => this.handleChangeValue('siteId', item.id)}
                             />
-                            <Form.Check type="checkbox"
-                                label={LangHelper.getResource('Ignore')}
-                                checked={values.isIgnored}
-                                name='isIgnored' id="isIgnored"
-                                disabled={!values. isHostOnCurrentCustomer}
-                                onChange={event => this.handleChangeCheck(event)}
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="secretCode" >
+                                {LangHelper.getResource('SecretCode')}
+                            </Form.Label>
+                            <Form.Control type="text" value={values.refCode1}
+                                name="refCode1" id="refCode1" autoComplete="off" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="country" >
+                                {LangHelper.getResource('Country')}
+                            </Form.Label>
+                            <SearchableDropdown
+                                className='basic-single'
+                                onChange={this.handleChange}
+                                options={allSettings.countries.slice(1)}
+                                value={values.homeAddressCountryId}
+                                name="homeAddressCountryId"
+                                isHideNA={false}
+                                OnChangeValue={this.handleChangeCountry}
                             />
-                        </>
-                    }
-                </div>
+                        </Form.Group>
+                        {
+                            !customerInfo.isGroupHeadLine &&
+                            <>
+                                <Form.Group >
+                                    <Form.Label htmlFor="licenseeType">
+                                        {LangHelper.getResource('LicenseeType')}
+                                    </Form.Label>
+                                    <Form.Control as="select" size="sm" className="shadow-none"
+                                        name="licenseeTypeId" id="licenseeTypeId" value={values.licenseeTypeId} onChange={this.handleChange}
+                                    >
+                                        <option value='' hidden disabled />
+                                        {allSettings.licenseeTypes.map(item => this.renderOptions(item.name, item.id))}
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Check type="checkbox"
+                                    label={LangHelper.getResource('VIP')}
+                                    checked={values.isVip}
+                                    name='isVip' id="isVip"
+                                    disabled={!values.isHostOnCurrentCustomer}
+                                    onChange={event => this.handleChangeCheck(event)}
+                                />
+                                <Form.Check type="checkbox"
+                                    label={LangHelper.getResource('Ignore')}
+                                    checked={values.isIgnored}
+                                    name='isIgnored' id="isIgnored"
+                                    disabled={!values.isHostOnCurrentCustomer}
+                                    onChange={event => this.handleChangeCheck(event)}
+                                />
+                            </>
+                        }
+                    </div>
+                }
             </Form>
         );
     }
@@ -381,43 +393,46 @@ export class AppContainer extends Component {
     renderAccountPIC = (values, canEditHeadline) => {
         return (
             <Form className='group-account'>
-                <div className='group-title'>
+                <div className='group-title group-tab' onClick={this.handleShowAccountantPIC}>
                     Accountant PIC
                     {
                         canEditHeadline &&
                         <img onClick={this.handleSubmitAccountPIC} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                     }
                 </div>
-                <div className='group-content'>
-                    <Form.Group>
-                        <Form.Label htmlFor="checker" >
-                            {LangHelper.getResource('Checker')}
-                        </Form.Label>
-                        <Form.Control type="text" size="sm" className="shadow-none" value={values.checker} disabled
-                            name="checker" id="checker" autoComplete="off" onChange={this.handleChange} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label htmlFor="introducedBy" >
-                            {LangHelper.getResource('Introduced by')}
-                        </Form.Label>
-                        <Form.Control type="text" size="sm" className="shadow-none" value={values.introducedBy} disabled={!canEditHeadline}
-                            name="introducedBy" id="introducedBy" autoComplete="off" onChange={this.handleChange} />
-                    </Form.Group>
-                    <Form.Check type="checkbox"
-                        label={LangHelper.getResource('VIP')}
-                        checked={values.isVip}
-                        name='isVip' id="isVip"
-                        disabled={!canEditHeadline}
-                        onChange={event => this.handleChangeCheck(event)}
-                    />
-                    <Form.Check type="checkbox"
-                        label={LangHelper.getResource('Ignore')}
-                        checked={values.isIgnored}
-                        name='isIgnored' id="isIgnored"
-                        disabled={!canEditHeadline}
-                        onChange={event => this.handleChangeCheck(event)}
-                    />
-                </div>
+                {
+                    values.isShowAccountantPIC && 
+                    <div className='group-content'>
+                        <Form.Group>
+                            <Form.Label htmlFor="checker" >
+                                {LangHelper.getResource('Checker')}
+                            </Form.Label>
+                            <Form.Control type="text" size="sm" className="shadow-none" value={values.checker} disabled
+                                name="checker" id="checker" autoComplete="off" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label htmlFor="introducedBy" >
+                                {LangHelper.getResource('Introduced by')}
+                            </Form.Label>
+                            <Form.Control type="text" size="sm" className="shadow-none" value={values.introducedBy} disabled={!canEditHeadline}
+                                name="introducedBy" id="introducedBy" autoComplete="off" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Check type="checkbox"
+                            label={LangHelper.getResource('VIP')}
+                            checked={values.isVip}
+                            name='isVip' id="isVip"
+                            disabled={!canEditHeadline}
+                            onChange={event => this.handleChangeCheck(event)}
+                        />
+                        <Form.Check type="checkbox"
+                            label={LangHelper.getResource('Ignore')}
+                            checked={values.isIgnored}
+                            name='isIgnored' id="isIgnored"
+                            disabled={!canEditHeadline}
+                            onChange={event => this.handleChangeCheck(event)}
+                        />
+                    </div>
+                }
             </Form>
         );
     }
@@ -551,7 +566,7 @@ export class AppContainer extends Component {
                         {
                             values.otherAccountCommunication?.map((picCommunicationTool, indexPicCommunicationTool) => {
                                 return <>
-                                    <Form.Group>
+                                    <Form.Group className="other-communication-tool">
                                         <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="CommunicationID" id="CommunicationID"
                                             style={{
                                                 width: `${picCommunicationTool.communicationID !== '' ? this.getWidth(picCommunicationTool, this.props.settingCommunicationTool) : 115}px`
@@ -563,7 +578,8 @@ export class AppContainer extends Component {
                                             {this.props.settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                                         </Form.Control>
                                         <div className='field-icon'>
-                                            <Form.Control type="text" className={picCommunicationTool.isError && 'invalid'}
+                                            <textarea className={`${picCommunicationTool.isError && 'invalid-other-communication-tool'} textarea-communication-tool`}
+                                                placeholder="Separated by ',' for multiple contact info" cdkTextareaAutosize
                                                 value={picCommunicationTool.communicationValue} autoComplete="off" onChange={event => {
                                                     this.handleChangeCommunication('communicationValue', event.target.value, indexPicCommunicationTool);
                                                 }} />

@@ -15,6 +15,37 @@
 }
 
 .customer-info-detail {
+    .other-communication-tool {
+        max-width: 300px !important;
+    }
+
+    .invalid-other-communication-tool {
+        border-color: red !important;
+    }
+
+    .textarea-communication-tool {
+        width: 300px;
+        border-radius: 3px;
+        border-color: #cecccd;
+        overflow: auto;
+        height: 26px;
+        min-height: 26px;
+        padding: 2px 6px;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+    }
+
+    .textarea-communication-tool:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: #80bdff;
+    }
+
     .authority-name {
         margin: unset;
     }
@@ -26,10 +57,13 @@
             border-bottom: none;
         }
 
+        .group-tab {
+            cursor: pointer;
+        }
+
         .group-title {
             padding: 6px;
             color: #0255a5;
-            border-bottom: 1px #b7b7b7 solid;
             background: #e5e5e5;
             display: flex;
             justify-content: space-between;
@@ -42,6 +76,7 @@
 
         .group-content {
             background: #f1f1f1;
+            border-top: 1px #b7b7b7 solid;
             padding: 12px 20px 12px 12px;
 
             .form-check {
