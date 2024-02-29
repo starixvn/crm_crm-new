@@ -215,7 +215,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                 }
                 <div className={`${headlineStaffsAndAuthority.length < 3 && 'table-inTab'} headline-staff-authority`}>
                     <Table
-                        width={document.getElementById('right-row-container').clientWidth - 60}
+                        width={1490}
                         autoWidth={false}
                         header={this.buildHeader()}
                         body={this.buildBody()}
@@ -594,7 +594,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         };
     }
 
-    handleClear = (indexStaff) => {
+    handleClear = async (indexStaff) => {
         const { headlineStaffsAndAuthority } = this.state;
         const originalStaffAndAuthority = this.getOriginalStaffAndAuthority(headlineStaffsAndAuthority[indexStaff]);
         headlineStaffsAndAuthority[indexStaff].communicationTools.map(item => {
@@ -602,7 +602,6 @@ export class HeadlineStaffsAndAuthority extends Component {
             item.authority = '';
             item.authorityID = '';
         });
-        headlineStaffsAndAuthority[indexStaff].isEdit = true;
         this.setState({
             headlineStaffsAndAuthority: headlineStaffsAndAuthority,
             originalStaffAndAuthority: originalStaffAndAuthority,
@@ -612,6 +611,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                 indexStaff: -1
             }
         });
+        await this.checkCustomerExistsOnCRM();
     }
 
     handleEdit = (indexStaff) => {

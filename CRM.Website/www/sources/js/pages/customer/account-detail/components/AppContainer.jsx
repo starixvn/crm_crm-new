@@ -97,6 +97,11 @@ export class AppContainer extends Component {
         };
       }
 
+    componentDidUpdate() {
+        const demo = 1;
+        const demo2 = 1;
+    }
+
     async componentDidMount() {
         this.props.setActiveTab({
             currentTab: 'headlineCommunicationInfo',
@@ -471,14 +476,23 @@ export class AppContainer extends Component {
 
     editOtherAccountCommunicationInfo = async () => {
         let { otherAccountCommunication } = this.state;
+        let picCommunicationTools = [];
+        otherAccountCommunication.map((picCom, indexCom) => {
+            const index = otherAccountCommunication.findIndex(item => item.communicationID === picCom.communicationID);
+            if (index >= 0 && index !== indexCom) {
+                const newValue = otherAccountCommunication[index].communicationValue.concat(', ', picCom.communicationValue);
+                picCommunicationTools[index].communicationValue = newValue;
+            } else {
+                const newPicCom = {
+                    communicationID: picCom.communicationID,
+                    communicationValue: picCom.communicationValue
+                };
+                picCommunicationTools.push({ ...newPicCom });
+            }
+        })
         const params = {
             custID: this.props.id,
-            otherCommunicationTools: otherAccountCommunication.map(acc => {
-                return {
-                    communicationID: acc.communicationID,
-                    communicationValue: acc.communicationValue
-                };
-            })
+            otherCommunicationTools: picCommunicationTools
         };
 
         Site.blockUI();
