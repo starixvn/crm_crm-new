@@ -17,11 +17,18 @@
 .customer-info-detail {
     .other-communication-tool {
         max-width: 300px !important;
-    }
-
+    }  
+   
     .invalid-other-communication-tool {
         border-color: red !important;
     }
+    
+    .multiple-select-options-container{
+        top: 24px;
+        width: 101%;
+        left: -1px;
+    }
+
 
     .textarea-communication-tool {
         width: 300px;
@@ -377,7 +384,7 @@
         .autocomplete-items-container {
             position: absolute;
             z-index: 9999;
-            width: 290px;
+            width: 295px;
 
             .autocomplete-items {
                 position: relative;
@@ -406,8 +413,11 @@
 
         .multiple-select-options-container {
             z-index: 1;
-            width: 148px;
-            left: -1px;
+
+            input{
+                border: none !important;
+                border-bottom: 1px solid rgb(204, 204, 204) !important;
+            }
         }
 
         .table {
@@ -489,6 +499,13 @@
 
                         .col-authority {
                             overflow: visible;
+
+                            .multiple-select-container {
+                                position: absolute;
+                                top: 4px;
+                                max-width: 96%;
+                                min-width: 96%;
+                            }
                         }
                     }
 
@@ -594,8 +611,11 @@
 
                 .multiple-select-options-container {
                     z-index: 1;
-                    width: 148px;
-                    left: -1px;
+
+                    input{
+                        border: none !important;
+                        border-bottom: 1px solid rgb(204, 204, 204) !important;
+                    }
                 }
 
                 .body-content {
