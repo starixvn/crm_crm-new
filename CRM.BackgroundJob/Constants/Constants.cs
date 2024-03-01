@@ -9,6 +9,8 @@
         public const int ExtentionNA = 2022;
         public const int CommunicationNA = 1005;
 
+        public const string SiteLabel777 = "777777";
+
         public const string Break = "<br />";
         public const string LineBreak = "<br /><br />";
         public const string ThousanPase = "#,##0";

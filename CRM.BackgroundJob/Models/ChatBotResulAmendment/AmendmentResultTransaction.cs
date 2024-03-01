@@ -20,6 +20,7 @@ namespace CRM.BackgroundJob.Models.ChatBotResulAmendment
         public int HomeId { get; set; }
         public int AwayId { get; set; }
         public int LeagueId { get; set; }
+        public int LeagueGroupID { get; set; }
         public int Type { get; set; }
     }
 }

@@ -142,7 +142,7 @@
             var stringBuilderEventData = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
             var stringBuilderMessage = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
 
-            const string XmlTemplate = "<r TicketEventId='{0}' ProductId='{1}' EventDate='{2}' " +
+            const string XmlTemplate = "<r TicketEventId='{0}' ProductId='{1}' LeagueGroupID='{2}' " +
                 "SubmitDate='{3}' EventType='{4}' ActualResult='{5}' WrongResult='{6}' MessageId='{7}' " +
                 "SportNameEN='{8}' SportNameSC='{9}' SportNameTH='{10}' SportNameYN='{11}' " +
                 "HomeNameEN='{12}' HomeNameSC='{13}' HomeNameTH='{14}' HomeNameYN='{15}' " +
@@ -178,7 +178,7 @@
                 var matchInfoYN = HttpUtility.HtmlEncode(commonFeedback.GetMatchCodeFormat(transaction.MatchCode, Language.vi_VN));
 
                 stringBuilderEventData.AppendFormat(XmlTemplate,
-                        transaction.TicketEventId, transaction.ProductId, transaction.EventDate,
+                        transaction.TicketEventId, transaction.ProductId, transaction.LeagueGroupID,
                         transaction.SubmitDate.ToString("yyyy-MM-dd H:mm:ss.fffffff"), transaction.EventType,
                         HttpUtility.HtmlEncode(transaction.ActualResult), HttpUtility.HtmlEncode(transaction.WrongResult),
                         transaction.MessageId, sportNameEN, sportNameSC, sportNameTH, sportNameYN,

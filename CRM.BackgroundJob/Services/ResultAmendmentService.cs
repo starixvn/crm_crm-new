@@ -564,6 +564,21 @@
             return stringBuilder.ToString();
         }
 
+        protected internal virtual string GetLeagueNameBySiteName(AmendmentAutoFeedbackInfor amendment, string languageType)
+        {
+            string leagueId = amendment.LeagueId.ToString();
+            string leagueGroupId = amendment.LeagueGroupId.ToString();
+
+            if (amendment.Site == Constants.SiteLabel777)
+            {
+                return commonFeedback.GetLeagueName(leagueId, leagueGroupId, languageType);
+            }
+            else
+            {
+                return commonFeedback.GetLeagueName(leagueId, languageType);
+            }
+        }
+
         protected internal virtual StringBuilder GetAmendmentSolutionTemplateEN(
            AmendmentAutoFeedbackInfor amendment,
            AmendmentSolutionTemplate amendmentSolTemplate,
@@ -572,7 +587,7 @@
             var stringBuilder = new StringBuilder();
             var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
             var sportName = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US);
-            var leagueName = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US);
+            var leagueName = GetLeagueNameBySiteName(amendment, Language.en_US);
             var homeName = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US);
             var awayName = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US);
             var matchCode = commonFeedback.GetMatchCode(amendment.MatchCode, Language.en_US);
@@ -651,12 +666,12 @@
             var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
             var Eventdate = amendment.Eventdate.ToString(DefaultValue.Formatddmm);
             var sportNameYN = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.vi_VN);
-            var leagueNameYN = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.vi_VN);
+            var leagueNameYN = GetLeagueNameBySiteName(amendment, Language.vi_VN);
             var homeNameYN = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.vi_VN);
             var awayNameYN = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.vi_VN);
             var matchCodeReplaceYN = commonFeedback.GetMatchCodeFormat(amendment.MatchCode, Language.vi_VN);
             var sportNameSC = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN);
-            var leagueNameSC = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN);
+            var leagueNameSC = GetLeagueNameBySiteName(amendment, Language.zh_CN);
             var homeNameSC = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.zh_CN);
             var awayNameSC = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.zh_CN);
             var matchCodeReplaceSC = commonFeedback.GetMatchCodeFormat(amendment.MatchCode, Language.zh_CN);
@@ -721,7 +736,7 @@
             var sportNameSC = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN);
             var homeNameSC = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.zh_CN);
             var awayNameSC = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.zh_CN);
-            var leagueNameSC = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN);
+            var leagueNameSC = GetLeagueNameBySiteName(amendment, Language.zh_CN);
             if (isVipCust)
             {
                 stringBuilder.Append(sportBook);
