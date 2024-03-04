@@ -484,7 +484,7 @@
                         stringBuilderTicket.Append(settledTicketsText);
                     }
                     stringBuilderTicket.Append(Constants.Break);
-                    stringBuilderTicket.Append(GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate));
+                    stringBuilderTicket.Append(GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate, feedbackInfo.Site));
                     countAppendTicket++;
                 }
                 else
@@ -507,12 +507,13 @@
         }
 
         protected internal virtual string GetVoidingSettledTicketDescriptionByProduct(AutoVoidingEventDetails eventDetail,
-            VoidingSettledTicketDescriptionTemplate ticketDescTemplate)
+            VoidingSettledTicketDescriptionTemplate ticketDescTemplate,
+            string site)
         {
             var stringBuilder = new StringBuilder();
             const string line = "-------------------------------------------------------- {0}";
             var sportName = commonFeedback.GetSportName(eventDetail.Sporttype.ToString(), Language.en_US);
-            var leagueName = commonFeedback.GetLeagueName(eventDetail.LeagueId.ToString(), Language.en_US);
+            var leagueName = commonFeedback.GetLeagueNameBySiteName(site, eventDetail.LeagueId, eventDetail.LeagueGroupId, Language.en_US);
             var homeName = commonFeedback.GetTeamName(eventDetail.HomeId.ToString(), Language.en_US);
             var awayName = commonFeedback.GetTeamName(eventDetail.AwayId.ToString(), Language.en_US);
 

@@ -920,7 +920,7 @@
             stringBuilder.Append(ticketDescTemplate.VirtualSports);
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate);
+            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate, "");
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
@@ -953,7 +953,7 @@
             stringBuilder.Append(ticketDescTemplate.VirtualSports181185);
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate);
+            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate, "");
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);
@@ -986,7 +986,7 @@
             stringBuilder.Append(ticketDescTemplate.NumberGames);
 
             // Act
-            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate);
+            var actual = service.Public_GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate, "");
 
             // Assert
             Assert.Equal(stringBuilder.ToString(), actual);

@@ -118,9 +118,9 @@
             return base.GetVoidingSettledTicketDescription(feedbackInfo, eventDetails);
         }
 
-        public string Public_GetVoidingSettledTicketDescriptionByProduct(AutoVoidingEventDetails eventDetail, VoidingSettledTicketDescriptionTemplate ticketDescTemplate)
+        public string Public_GetVoidingSettledTicketDescriptionByProduct(AutoVoidingEventDetails eventDetail, VoidingSettledTicketDescriptionTemplate ticketDescTemplate, string site)
         {
-            return base.GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate);
+            return base.GetVoidingSettledTicketDescriptionByProduct(eventDetail, ticketDescTemplate, site);
         }
 
         public string Public_GetDescriptionSportBook(AutoVoidingEventDetails eventDetail, string productName,

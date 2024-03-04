@@ -11,6 +11,7 @@ namespace CRM.BackgroundJob.Models.VoidingSettledTickets
         public short EventType { get; set; }
         public short Sporttype { get; set; }
         public int LeagueId { get; set; }
+        public int LeagueGroupId { get; set; }
         public string Leaguenametc { get; set; }
         public int HomeId { get; set; }
         public int AwayId { get; set; }
