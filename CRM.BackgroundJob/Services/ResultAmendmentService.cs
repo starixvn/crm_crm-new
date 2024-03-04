@@ -368,7 +368,7 @@
             var amendmentDescTemplate = commonFeedback.GetFeedbackTemplates<AmendmentDescriptionTemplate>(descTemplateXml);
             var productName = commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US);
             var sportName = commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US);
-            var leagueName = commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US);
+            var leagueName = GetLeagueNameBySiteName(amendment, Language.en_US);
             var homeName = commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US);
             var awayName = commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US);
 
