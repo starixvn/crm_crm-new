@@ -26,6 +26,8 @@
 
         string GetLeagueName(string leagueId, string leagueGroupId, string languageCode);
 
+        string GetLeagueNameBySiteName(string siteName, string leagueId, string leagueGroupId, string languageCode);
+
         string GetTeamName(string teamId, string languageCode);
 
         string GetBettypeName(string betTypeId, string languageCode);
@@ -108,6 +110,18 @@
         {
             var leagueName = remotingRefService.GetLeagueName(leagueId, leagueGroupId, languageCode, string.Empty);
             return leagueName;
+        }
+
+        public string GetLeagueNameBySiteName(string siteName ,string leagueId, string leagueGroupId, string languageCode)
+        {
+            if (siteName == Constants.SiteLabel777)
+            {
+                return GetLeagueName(leagueId, leagueGroupId, languageCode);
+            }
+            else
+            {
+                return GetLeagueName(leagueId, languageCode);
+            }
         }
 
         public string GetTeamName(string teamId, string languageCode)
