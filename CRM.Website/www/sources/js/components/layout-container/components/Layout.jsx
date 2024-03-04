@@ -49,6 +49,7 @@ export class Layout extends Component {
         setTimeout(this.handleCheckNewVersion, 60000);
         this.getMaxClientHeightLeft();
         window.addEventListener("resize", this.handleResize);
+        window.addEventListener("getCurrentCustomer", this.getCurrentCustomer);
     }
 
     async componentDidUpdate(prevProps, prevState) {
@@ -72,6 +73,7 @@ export class Layout extends Component {
 
     componentWillUnmount() {
         window.removeEventListener("resize", this.handleResize);
+        window.removeEventListener("getCurrentCustomer", this.getCurrentCustomer);
     }
 
     getMaxClientHeightLeft = () => {

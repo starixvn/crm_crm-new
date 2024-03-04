@@ -75,6 +75,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+            border-bottom: 1px #b7b7b7 solid;
 
       img {
         cursor: pointer;
@@ -83,7 +84,6 @@
 
     .group-content {
       background: #f1f1f1;
-      border-top: 1px #b7b7b7 solid;
       padding: 12px 20px 12px 12px;
 
       .form-check {

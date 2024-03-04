@@ -150,6 +150,7 @@ export class AppContainer extends Component {
         const params = ParamsSubmit(customerInfo.custId, values);
         this.props.editCustomerInfoDetail(params).then(() => {
             if (this.props.editCustomerInfoDetailResult.isSuccessful) {
+                window.dispatchEvent(new Event('getCurrentCustomer'));
                 toast.success(LangHelper.getResource('UpdateAccountInfoSuccessful'));
             } else {
                 toast.error(LangHelper.getResource(this.props.editCustomerInfoDetailResult.message));
@@ -163,6 +164,7 @@ export class AppContainer extends Component {
         const params = ParamsSubmit(customerInfo.custId, values);
         this.props.editCustomerInfoDetail(params).then(() => {
             if (this.props.editCustomerInfoDetailResult.isSuccessful) {
+                window.dispatchEvent(new Event('getCurrentCustomer'));
                 toast.success(LangHelper.getResource('UpdateAccountPicSuccessful'));
             } else {
                 toast.error(LangHelper.getResource(this.props.editCustomerInfoDetailResult.message));

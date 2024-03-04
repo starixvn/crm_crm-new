@@ -53,10 +53,6 @@ export class HeadlineCommunicationInfo extends Component {
                 }
             }
         }             
-
-        if (window.picID !== undefined) {
-            document.querySelector("#tab-headline-communicaion-info").scrollTo(0, document.querySelector(`#row-${window.picID}`).offsetTop - 437);
-        }
     }
 
     async componentDidMount() {
@@ -69,6 +65,15 @@ export class HeadlineCommunicationInfo extends Component {
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ headlineInfoPolicy: response });
         });
+        window.addEventListener("autoScroll", this.handleAutoScroll);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("autoScroll", this.handleAutoScroll);
+    }
+
+    handleAutoScroll() {
+        document.querySelector("#tab-headline-communicaion-info").scrollTo(0, document.querySelector(`#row-${window.picID}`).offsetTop - 437);
     }
 
     getHeadlineCommunicationInfo = customerInfo => {
@@ -201,6 +206,7 @@ export class HeadlineCommunicationInfo extends Component {
         const url = Site.resolveClientUrl('AccountDetail/EditPic');
         await DataService.postDataAsync(url, params).then(async response => {
             if (response.data.findIndex(x => !x.isSuccessful) === -1) {
+                window.dispatchEvent(new Event('getCurrentCustomer'));
                 toast.success(LangHelper.getResource('UpdateHeadlineCommunicationInfoSuccessful'));
                 await this.props.getCustomerById({ customerId: this.props.customerInfo.custId });
                 const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);

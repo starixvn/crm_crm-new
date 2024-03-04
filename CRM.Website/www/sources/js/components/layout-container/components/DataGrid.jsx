@@ -300,6 +300,7 @@ export default class DataGrid extends PureComponent {
     focusHeadlineCommunicationInfo = value => {
         window.picID = value;
         this.props.handleNavigate('AccountDetail');
+        window.dispatchEvent(new Event('autoScroll'));
     }
 
     renderAccountHeadlineInfo = values => {
