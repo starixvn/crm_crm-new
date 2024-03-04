@@ -636,7 +636,7 @@ export class AppContainer extends Component {
                             Company Service
                         </div>
                     </div>
-                    <div className='tab-content'>
+                    <div className={`tab-content ${(!values.isShowAccountInfo && values.isShowAccountantPIC) ? 'acc-info-only-hidden' : ''} ${(!values.isShowAccountInfo && !values.isShowAccountantPIC)? 'acc-info-hidden' : ''} ${!values.isShowAccountantPIC ? 'acc-PIC-hidden': ''}`}>
                         <div>
                             {
                                 activeTab.currentTab === 'headlineCommunicationInfo' &&
