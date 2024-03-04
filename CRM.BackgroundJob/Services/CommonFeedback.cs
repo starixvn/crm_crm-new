@@ -26,7 +26,7 @@
 
         string GetLeagueName(string leagueId, string leagueGroupId, string languageCode);
 
-        string GetLeagueNameBySiteName(string siteName, string leagueId, string leagueGroupId, string languageCode);
+        string GetLeagueNameBySiteName(string siteName, int leagueId, int leagueGroupId, string languageCode);
 
         string GetTeamName(string teamId, string languageCode);
 
@@ -112,15 +112,15 @@
             return leagueName;
         }
 
-        public string GetLeagueNameBySiteName(string siteName ,string leagueId, string leagueGroupId, string languageCode)
+        public string GetLeagueNameBySiteName(string siteName , int leagueId, int leagueGroupId, string languageCode)
         {
             if (siteName == Constants.SiteLabel777)
             {
-                return GetLeagueName(leagueId, leagueGroupId, languageCode);
+                return GetLeagueName(leagueId.ToString(), leagueGroupId.ToString(), languageCode);
             }
             else
             {
-                return GetLeagueName(leagueId, languageCode);
+                return GetLeagueName(leagueId.ToString(), languageCode);
             }
         }
 
