@@ -241,8 +241,10 @@ export class AppContainer extends Component {
 
         return (
             <Form className='group-account acc-info'>
-                <div className='group-title group-tab' onClick={this.handleShowAccountInfo}>
-                    Account Info
+                <div className='group-title group-tab'>
+                    <div className="group-title-tab" onClick={this.handleShowAccountInfo}>
+                        Account Info
+                    </div>
                     {
                         values. isHostOnCurrentCustomer &&
                         <img onClick={this.handleSubmitAccountInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
@@ -395,8 +397,10 @@ export class AppContainer extends Component {
     renderAccountPIC = (values, canEditHeadline) => {
         return (
             <Form className='group-account'>
-                <div className='group-title group-tab' onClick={this.handleShowAccountantPIC}>
-                    Accountant PIC
+                <div className='group-title group-tab'>
+                    <div className="group-title-tab" onClick={this.handleShowAccountantPIC}>
+                        Accountant PIC
+                    </div>
                     {
                         canEditHeadline &&
                         <img onClick={this.handleSubmitAccountPIC} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />

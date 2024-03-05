@@ -52,7 +52,11 @@ export class HeadlineCommunicationInfo extends Component {
                     this.props.setShowConfirmUnSaved(true);
                 }
             }
-        }             
+        }     
+
+        if (window.picID !== undefined) {
+            document.querySelector("#tab-headline-communicaion-info").scrollTo(0, document.querySelector(`#row-${window.picID}`).offsetTop - 437);
+        }
     }
 
     async componentDidMount() {
