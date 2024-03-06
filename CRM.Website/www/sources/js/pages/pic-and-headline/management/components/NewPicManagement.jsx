@@ -10,7 +10,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
-import { renderOption, validateFormik, getTemplateCommunicationTool } from '../common.functions';
+import { renderOption, validateFormik, getTemplateCommunicationTool, handleChangeCommunicationTool } from '../common.functions';
 
 export class NewPicManagement extends Component {
 
@@ -19,7 +19,7 @@ export class NewPicManagement extends Component {
         this.formik = React.createRef();
         this.state = {
             communicationTools: [
-                { type: '', value: '', unique: new Date().getTime() }
+                { type: '', value: '', unique: new Date().getTime(), channelName: '' }
             ],
             roles: [],
             showConfirmClose: false
@@ -84,6 +84,10 @@ export class NewPicManagement extends Component {
         const index = data.findIndex(c => c.unique === unique);
         data.splice(index, 1);
         this.setState({ communicationTools: data });
+        if (this.formik.values[`communication-${unique}`]) {
+            delete this.formik.values[`communication-${unique}`];
+            delete this.formik.errors[`communication-${unique}`];
+        }
     };
 
     handleSubmit = (values, { setSubmitting }) => {
@@ -130,7 +134,8 @@ export class NewPicManagement extends Component {
         values,
         errors,
         touched,
-        handleChange
+        handleChange,
+        setFieldValue
     }) => {
         const { communicationTools } = this.state;
         return communicationTools.map((item, index) => {
@@ -142,7 +147,7 @@ export class NewPicManagement extends Component {
                         <Form.Control as="select" size="sm" className="shadow-none"
                             isInvalid={isInvalid}
                             name={`communication-${item.unique}.type`} id={`communication-${item.unique}.type`}
-                            onChange={handleChange}
+                            onChange={event => handleChangeCommunicationTool(item.unique, event, this.props.setting.communicationTools, setFieldValue)}
                             value={values[`communication-${item.unique}.type`]}
                             defaultValue=""
                         >
@@ -294,7 +299,7 @@ export class NewPicManagement extends Component {
                             />
                         </Col>
                     </Form.Group>
-                    {this.renderCommunicationTool({ values, errors, touched, handleChange })}
+                    {this.renderCommunicationTool({ values, errors, touched, handleChange, setFieldValue })}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>

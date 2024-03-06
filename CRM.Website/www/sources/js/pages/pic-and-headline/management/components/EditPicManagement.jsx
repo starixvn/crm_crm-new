@@ -10,7 +10,7 @@ import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
-import { renderOption, validateFormik, getTemplateCommunicationTool } from '../common.functions';
+import { renderOption, validateFormik, getTemplateCommunicationTool, getChannelName, handleChangeCommunicationTool } from '../common.functions';
 
 export class EditPicManagement extends Component {
 
@@ -49,7 +49,6 @@ export class EditPicManagement extends Component {
     componentDidMount(){
         this.handleRolesOption(this.props.selectedPic.picType);
     }
-
 
     handleRolesOption = picTpe =>{
         this.props.getRolesByPic(picTpe).then(data =>{
@@ -91,7 +90,7 @@ export class EditPicManagement extends Component {
     handleAddRowCommunication = () => {
         const { communicationTools } = this.state;
         const temp = getTemplateCommunicationTool();
-        this.formik.values[`communication-${temp.unique}`] = { type: temp.type, value: temp.value };
+        this.formik.values[`communication-${temp.unique}`] = { type: temp.type, value: temp.value, channelName: '' };
         this.setState({ communicationTools: [...communicationTools, temp] });
     };
 
@@ -102,6 +101,7 @@ export class EditPicManagement extends Component {
         this.setState({ communicationTools: data });
         if (this.formik.values[`communication-${unique}`]) {
             delete this.formik.values[`communication-${unique}`];
+            delete this.formik.errors[`communication-${unique}`];
         }
     };
 
@@ -176,7 +176,8 @@ export class EditPicManagement extends Component {
         values,
         errors,
         touched,
-        handleChange
+        handleChange,
+        setFieldValue
     }) => {
         const { communicationTools } = this.state;
         return communicationTools.map((item, index) => {
@@ -189,7 +190,7 @@ export class EditPicManagement extends Component {
                             isInvalid={isInvalidCommunicationTools}
                             value={values[`communication-${item.unique}`].type}
                             name={`communication-${item.unique}.type`} id={`communication-${item.unique}.type`}
-                            onChange={handleChange}
+                            onChange={event => handleChangeCommunicationTool(item.unique, event, this.props.setting.communicationTools, setFieldValue)}
                         >
                             <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
                             {this.props.setting.communicationTools.map(com => renderOption(com, 'settingId', 'settingValue'))}
@@ -350,7 +351,7 @@ export class EditPicManagement extends Component {
                             />
                         </Col>
                     </Form.Group>
-                    {this.renderCommunicationTool({ values, errors, touched, handleChange })}
+                    {this.renderCommunicationTool({ values, errors, touched, handleChange, setFieldValue })}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -374,7 +375,8 @@ export class EditPicManagement extends Component {
         selectedPic.communicationTools.forEach((item, index) => {
             tempCommunication[`communication-${index}`] = {
                 type: item.settingId,
-                value: item.value
+                value: item.value,
+                channelName: getChannelName(this.props.setting.communicationTools, item.settingId)
             };
         });
         return {

@@ -11,7 +11,6 @@ export const renderOption = (item, key, label) => {
 
 export const validateFormik = (values) => {
     const errors = {};
-
     if (!values.picName || values.picName.trim().length === 0) {
         errors.picName = LangHelper.getResource('NameRequired');
     }
@@ -19,13 +18,19 @@ export const validateFormik = (values) => {
     if (!values.roleId) {
         errors.roleId = LangHelper.getResource('RoleRequired');
     }
-
     let validCommunication = false;
     for (let key in values) {
         if (key.includes('communication') && values[key]) {
             validCommunication = true;
             if (!values[key].type || !values[key].value) {
                 errors[key] = LangHelper.getResource('CommunicationMustHaveValue');
+            }
+            if (values[key].value) {
+                values[key].value.split(',').forEach(element => {
+                    if (element.length > 200) {
+                        errors[key] = LangHelper.formatString(LangHelper.getResource('CommunicationExceed200Characters'),values[key].channelName);
+                    }
+                });
             }
         }
     }
@@ -37,5 +42,16 @@ export const validateFormik = (values) => {
 };
 
 export const getTemplateCommunicationTool = () => {
-    return { type: '', value: '', unique: new Date().getTime() };
+    return { type: '', value: '', unique: new Date().getTime(), channelName: '' };
+};
+
+export const getChannelName = (settings, settingId) => {
+    let channelName = settings.find(item => item.settingId === parseInt(settingId, 10));
+    return channelName ? channelName.settingValue : '';
+};
+
+export const handleChangeCommunicationTool = (unique, event, settingCommunications ,setFieldValue) => {
+    const value = event.target.value;
+    setFieldValue(`communication-${unique}.type`, value);
+    setFieldValue(`communication-${unique}.channelName`, getChannelName(settingCommunications, value));
 };

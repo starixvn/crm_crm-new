@@ -74,6 +74,7 @@
     CommunicationLogDetail: 'Communication Log Detail',
     CommunicationInfo: 'Communication Info',
     CommunicationMustHaveValue: 'Communication must have value!',
+    CommunicationExceed200Characters: 'The {0} communication tool exceeds 200 characters!',
     CommunicationRequired: 'Communication tool is required!',
     CommunicationTool: 'Communication Tool',
     CommunicationToolRequired: 'CommunicationTool is required!',
