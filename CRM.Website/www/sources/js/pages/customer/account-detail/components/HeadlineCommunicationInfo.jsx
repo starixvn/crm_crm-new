@@ -56,9 +56,10 @@ export class HeadlineCommunicationInfo extends Component {
 
         if (window.picID !== undefined) {
             document.querySelector("#tab-headline-communicaion-info").scrollTo(0, document.querySelector(`#row-${window.picID}`).offsetTop - 437);
+            window.picID = undefined;
         }
     }
-
+    
     async componentDidMount() {
         await this.props.getCustomerById({ customerId: this.props.customerInfo?.custId });
         await this.props.getHeadlinePicRoles(HeadlinePicID);
@@ -78,6 +79,7 @@ export class HeadlineCommunicationInfo extends Component {
 
     handleAutoScroll() {
         document.querySelector("#tab-headline-communicaion-info").scrollTo(0, document.querySelector(`#row-${window.picID}`).offsetTop - 437);
+        window.picID = undefined;
     }
 
     getHeadlineCommunicationInfo = customerInfo => {

@@ -351,6 +351,11 @@ export default class DataGrid extends PureComponent {
         );
     };
 
+    handleNavigatePicManagement() {
+        window.headlineName = this.props.customerInfo.username;
+        this.props.handleNavigate('PicManagement');
+    }
+
     renderDetail = (isShowInactiveMsg, values) => {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
@@ -417,7 +422,7 @@ export default class DataGrid extends PureComponent {
                                 {
                                     hasHostPicManagementPermission && values.isGroupHeadLine &&
                                     <li>
-                                        <a onClick={() => this.props.handleNavigate('PicManagement')}>{LangHelper.getResource('PICManagement')}</a>
+                                        <a onClick={() => this.handleNavigatePicManagement()}>{LangHelper.getResource('PICManagement')}</a>
                                     </li>
                                 }
                             </ul>

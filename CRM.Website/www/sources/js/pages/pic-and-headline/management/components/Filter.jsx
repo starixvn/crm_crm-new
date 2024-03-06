@@ -62,6 +62,22 @@ export class Filter extends PureComponent {
         });
     }
 
+    async componentDidUpdate() {
+        if (window.headlineName !== undefined) {
+            await this.setState({
+                filter: {
+                    username: '',
+                    headlineName: window.headlineName,
+                    role: ''
+                }
+            });
+            window.headlineName = undefined;
+            const params = this.getParams();
+            this.props.setGridParams(params);
+            this.props.getGridData(params);
+        }
+    }
+
     handleOpenCreatePopup = () => {
         this.props.setCreatePicPopup({ show: true });
     };

@@ -593,7 +593,8 @@
                     logService.LogInformation("Service AutoFeedback AbnormalBets is shutdown.");
                     return;
                 }
-                var (voidedCollectionInfo, messageAbnormals, maxVoidingHistoryCollectionId) = await abnormalBetService.GetVoidedInfoAsync(systemSettingInfo.LastVoidingHistoryCollectionId, systemSettingInfo.BatchSize);
+                var (voidedCollectionInfo, messageAbnormals, maxVoidingHistoryCollectionId) = 
+                    await abnormalBetService.GetVoidedInfoAsync(systemSettingInfo.LastVoidingHistoryCollectionId, systemSettingInfo.BatchSize);
                 var messages = await abnormalBetService.GetMessageAbnormalBetAsync(messageAbnormals);
                 var (commandResult, command) = await abnormalBetService.ImportAbnormalBetsAsync(messages, voidedCollectionInfo, Environment, maxVoidingHistoryCollectionId);
                 if (commandResult.IsSuccessful)

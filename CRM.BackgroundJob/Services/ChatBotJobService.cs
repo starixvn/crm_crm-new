@@ -6,15 +6,12 @@
     using System.Threading.Tasks;
     using Fanex.CRM.BackgroundJob.Constants;
     using Fanex.CRM.BackgroundJob.Models;
-    using global::CRM.BackgroundJob.Criteria.ChatBot;
     using global::CRM.BackgroundJob.Models.AbnormalBet;
-    using global::CRM.BackgroundJob.Models.ChatBot;
     using global::CRM.BackgroundJob.Models.ChatBotCTO;
     using global::CRM.BackgroundJob.Models.ChatBotCWL;
     using global::CRM.BackgroundJob.Models.ChatBotProblemsAccount;
     using global::CRM.BackgroundJob.Models.ChatBotResulAmendment;
     using global::CRM.BackgroundJob.Services;
-    using global::CRM.Core.Extensions.XML;
     using global::CRM.Core.Models;
     using global::CRM.Core.Services;
     using Microsoft.Extensions.Configuration;

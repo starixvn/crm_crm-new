@@ -103,7 +103,7 @@ export class AppContainer extends Component {
         this.props.setActiveTab({
             currentTab: 'headlineCommunicationInfo',
             nextTab: null
-        })
+        });
         this.props.setErrors(null);
         await this.props.getAllSettings();
         await this.props.getSettingPicCommunicationTools();
@@ -520,6 +520,7 @@ export class AppContainer extends Component {
         const url = Site.resolveClientUrl('AccountDetail/EditOtherAccCommunicationInfo');
         await DataService.postDataAsync(url, params).then(response => {
             if (response.data.isSuccessful) {
+                window.dispatchEvent(new Event('getCurrentCustomer'));
                 toast.success(LangHelper.getResource('UpdateCommunicationInfoSuccessful'));
             } else {
                 toast.errors(response.data.find(x => !x.isSuccessful)[0].message);

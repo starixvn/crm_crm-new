@@ -14,7 +14,10 @@
     {
         Task<ValueTuple<IEnumerable<VoidedInfo>, IEnumerable<VoidingMessage>, int>> GetVoidedInfoAsync(int lastVoidingHistoryCollectionId, int batchSize);
         Task<IEnumerable<MessageAbnormelBet>> GetMessageAbnormalBetAsync(IEnumerable<VoidingMessage> messages);
-        Task<ValueTuple<CommandResult, ImportAbnormalBetCommand>> ImportAbnormalBetsAsync(IEnumerable<MessageAbnormelBet> messages, IEnumerable<VoidedInfo> voidedCollectionInfo, string environment, int maxVoidingHistoryCollectionId);
+        Task<ValueTuple<CommandResult, ImportAbnormalBetCommand>> ImportAbnormalBetsAsync(
+            IEnumerable<MessageAbnormelBet> messages, 
+            IEnumerable<VoidedInfo> voidedCollectionInfo, 
+            string environment, int maxVoidingHistoryCollectionId);
     }
 
     public class AbnormalBetService : IAbnormalBetService
@@ -46,7 +49,10 @@
             return await baseService.GetDataAsync<MessageAbnormelBet>(criteria);
         }
 
-        public async Task<ValueTuple<CommandResult, ImportAbnormalBetCommand>> ImportAbnormalBetsAsync(IEnumerable<MessageAbnormelBet> messages, IEnumerable<VoidedInfo> voidedCollectionInfo, string environment, int maxVoidingHistoryCollectionId)
+        public async Task<ValueTuple<CommandResult, ImportAbnormalBetCommand>> ImportAbnormalBetsAsync(
+            IEnumerable<MessageAbnormelBet> messages, 
+            IEnumerable<VoidedInfo> voidedCollectionInfo, 
+            string environment, int maxVoidingHistoryCollectionId)
         {
             var command = new ImportAbnormalBetCommand
             {
