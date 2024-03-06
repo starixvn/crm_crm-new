@@ -472,7 +472,7 @@ export class EditMultipleLogs extends Component {
 
     renderDropdownDetail = (errors, values, handleChange, touched, setFieldValue) => {
         const { settings, mainCategoryOptions, subCategoryOptions, productOptions, subProductOptions, betTypeOptions, sitesOptions } = this.state;
-        const { statuses, roles } = settings;
+        const { statuses, roles, countries } = settings;
         const { isCheck } = this.state;
         const siteOptions = changeSiteSetting(sitesOptions, 'childSites', 'childSites');
         return (
@@ -635,36 +635,6 @@ export class EditMultipleLogs extends Component {
                             checked={isCheck.role}
                         />
                     </Col>
-                    <Form.Label column sm="2" md="2" htmlFor="siteInfo" >
-                        {LangHelper.getResource('Site')}
-                    </Form.Label>
-                    <Col column sm="4" md="4" className="d-flex">
-                        <div className={`mr-2 select-width-sm ${this.isDisabledField(isCheck.site)}`}>
-                            <SelectWithSearch
-                                className='basic-single'
-                                options={siteOptions}
-                                value={values.siteInfo.id}
-                                name={values.siteInfo.name}
-                                OnChangeValue={value => setFieldValue('siteInfo', value)}
-                            />
-                        </div>
-                        <input type='checkbox'
-                            name='site'
-                            onChange={this.handleChangeCheckbox}
-                            checked={isCheck.site}
-                        />
-                    </Col>
-                </Form.Group>
-            </div>
-        );
-    };
-
-    renderSelectOptions = (values, handleChange) => {
-        const { countries, licenseeTypes } = this.state.settings;
-        const { isCheck } = this.state;
-        return (
-            <div>
-                <Form.Group as={Row}>
                     <Form.Label column sm="2" md="2" htmlFor="countryId">
                         {LangHelper.getResource('Country')}
                     </Form.Label>
@@ -681,6 +651,17 @@ export class EditMultipleLogs extends Component {
                             checked={isCheck.country}
                         />
                     </Col>
+                </Form.Group>
+            </div>
+        );
+    };
+
+    renderSelectOptions = (values, handleChange) => {
+        const { licenseeTypes } = this.state.settings;
+        const { isCheck } = this.state;
+        return (
+            <div>
+                <Form.Group as={Row}>
                     <Form.Label column sm="2" md="2" htmlFor="licenseeId">
                         {LangHelper.getResource('LicenseeType')}
                     </Form.Label>
@@ -695,6 +676,21 @@ export class EditMultipleLogs extends Component {
                             name='licensee'
                             onChange={this.handleChangeCheckbox}
                             checked={isCheck.licensee}
+                        />
+                    </Col>
+                    <Form.Label column sm="2" md="2" htmlFor="noInquiries">
+                        {LangHelper.getResource('NoOfInquiries')}
+                    </Form.Label>
+                    <Col sm="4" md="4" className="d-flex">
+                        <Form.Control size="sm" type="number" min={1} max={3200}
+                            value={values.noInquiries} id="noInquiries" name="noInquiries"
+                            className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(isCheck.inquiry)}`} autoComplete="off"
+                            onInput={validateNoOfInquiry} onChange={handleChange}
+                        />
+                        <input type='checkbox'
+                            name='inquiry'
+                            onChange={this.handleChangeCheckbox}
+                            checked={isCheck.inquiry}
                         />
                     </Col>
                 </Form.Group>
@@ -867,23 +863,6 @@ export class EditMultipleLogs extends Component {
                         </Form.Group>
                         {this.renderDropdownDetail(errors, values, handleChange, touched, setFieldValue)}
                         {this.renderSelectOptions(values, handleChange)}
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2" md="2" htmlFor="noInquiries">
-                                {LangHelper.getResource('NoOfInquiries')}
-                            </Form.Label>
-                            <Col sm="4" md="4" className="d-flex">
-                                <Form.Control size="sm" type="number" min={1} max={3200}
-                                    value={values.noInquiries} id="noInquiries" name="noInquiries"
-                                    className={`shadow-none select-width-sm mr-2 ${this.isDisabledField(isCheck.inquiry)}`} autoComplete="off"
-                                    onInput={validateNoOfInquiry} onChange={handleChange}
-                                />
-                                <input type='checkbox'
-                                    name='inquiry'
-                                    onChange={this.handleChangeCheckbox}
-                                    checked={isCheck.inquiry}
-                                />
-                            </Col>
-                        </Form.Group>
                         <Form.Group as={Row}>
                             <Form.Label column sm="2" md="2" htmlFor="subject" className="required">
                                 {LangHelper.getResource('Subject')}
