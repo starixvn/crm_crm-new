@@ -75,7 +75,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px #b7b7b7 solid;
 
             img {
                 cursor: pointer;
@@ -89,6 +88,7 @@
         .group-content {
             background: #f1f1f1;
             padding: 12px 20px 12px 12px;
+            border-top: 1px #b7b7b7 solid;
 
             .form-check {
                 padding-left: 0;
@@ -111,6 +111,11 @@
 
         .add-comm-tool {
             background: #f1f1f1;
+            border-top: 1px solid #b7b7b7;
+
+            .group-content{
+                border-top: none;
+            }
 
             .btn-add {
                 margin: 12px 12px 0 12px;
