@@ -9,7 +9,16 @@ export const renderOption = (item, key, label) => {
     );
 };
 
-export const validateFormik = (values) => {
+const getTotalValueByType = (values, targetType) => {
+    return Object.entries(values)
+        .filter(([key, value]) => value && value.type && parseInt(value.type, 10) === parseInt(targetType, 10))
+        .reduce((acc, [key, value]) => {
+            acc.push(value.value);
+            return acc;
+        }, []).toString();
+};
+
+export const validateFormik = values => {
     const errors = {};
     if (!values.picName || values.picName.trim().length === 0) {
         errors.picName = LangHelper.getResource('NameRequired');
@@ -25,12 +34,10 @@ export const validateFormik = (values) => {
             if (!values[key].type || !values[key].value) {
                 errors[key] = LangHelper.getResource('CommunicationMustHaveValue');
             }
-            if (values[key].value) {
-                values[key].value.split(',').forEach(element => {
-                    if (element.length > 200) {
-                        errors[key] = LangHelper.formatString(LangHelper.getResource('CommunicationExceed200Characters'),values[key].channelName);
-                    }
-                });
+            if (values[key].type && values[key].value) {
+                if (getTotalValueByType(values, values[key].type).length > 200) {
+                    errors[key] = LangHelper.formatString(LangHelper.getResource('CommunicationExceed200Characters'), values[key].channelName);
+                }
             }
         }
     }
