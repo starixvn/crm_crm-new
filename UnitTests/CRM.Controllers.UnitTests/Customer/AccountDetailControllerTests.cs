@@ -31,7 +31,6 @@
         private ICustomerService customerService;
         private ISettingService settingService;
         private IBaseService baseService;
-        private ICRMLogService logService;
         private IPermissionService permissionService;
 
         [Fact]
@@ -373,9 +372,8 @@
             settingService = Substitute.For<ISettingService>();
             napSession = Substitute.For<INapSession>();
             baseService = Substitute.For<IBaseService>();
-            logService = Substitute.For<ICRMLogService>();
             permissionService = Substitute.For<IPermissionService>();
-            var controller = new AccountDetailController(napSession, customerService, settingService, baseService, logService, permissionService);
+            var controller = new AccountDetailController(napSession, customerService, settingService, baseService, permissionService);
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
                 Connection =

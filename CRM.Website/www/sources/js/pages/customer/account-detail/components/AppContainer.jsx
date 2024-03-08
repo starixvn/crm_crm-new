@@ -240,13 +240,13 @@ export class AppContainer extends Component {
         const siteOptions = changeSiteSetting(this.props.allSettings.sites, 'childSites', 'childSites');
 
         return (
-            <Form className='group-account acc-info'>
+            <Form className={`group-account ${this.state.updateHeadlineInfoPolicy >= Policy.Read && 'acc-info'}`}>
                 <div className='group-title group-tab'>
                     <div className="group-title-tab" onClick={this.handleShowAccountInfo}>
                         Account Info
                     </div>
                     {
-                        values. isHostOnCurrentCustomer &&
+                        values.isHostOnCurrentCustomer &&
                         <img onClick={this.handleSubmitAccountInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                     }
                 </div>
@@ -625,41 +625,44 @@ export class AppContainer extends Component {
                     this.renderAccountInfo(values)
                 }
                 {
-                    (customerInfo.isGroupHeadLine && (updatePolicy === Policy.Read || canEditHeadline)) &&
+                    (updatePolicy === Policy.Read || canEditHeadline) &&
                     this.renderAccountPIC(values, canEditHeadline)
                 }
-                <div className='headline-info'>
-                    <div className="tab-title">
-                        <div className={`tab-child ${activeTab.currentTab === 'headlineCommunicationInfo' ? 'active' : ''}`}
-                            onClick={() => this.handleTabClick('headlineCommunicationInfo')}>
-                            Headline Communication Info
+                {
+                    updatePolicy >= Policy.Read &&
+                    <div className='headline-info'>
+                        <div className="tab-title">
+                            <div className={`tab-child ${activeTab.currentTab === 'headlineCommunicationInfo' ? 'active' : ''}`}
+                                onClick={() => this.handleTabClick('headlineCommunicationInfo')}>
+                                Headline Communication Info
+                            </div>
+                            <div className={`tab-child ${activeTab.currentTab === 'headlineStaffsAndAuthority' ? 'active' : ''}`}
+                                onClick={() => this.handleTabClick('headlineStaffsAndAuthority')}>
+                                Headline Staffs and Authority
+                            </div>
+                            <div className={`tab-child ${activeTab.currentTab === 'companyService' ? 'active' : ''}`}
+                                onClick={() => this.handleTabClick('companyService')}>
+                                Company Service
+                            </div>
                         </div>
-                        <div className={`tab-child ${activeTab.currentTab === 'headlineStaffsAndAuthority' ? 'active' : ''}`}
-                            onClick={() => this.handleTabClick('headlineStaffsAndAuthority')}>
-                            Headline Staffs and Authority
-                        </div>
-                        <div className={`tab-child ${activeTab.currentTab === 'companyService' ? 'active' : ''}`}
-                            onClick={() => this.handleTabClick('companyService')}>
-                            Company Service
+                        <div className={`tab-content ${(!values.isShowAccountInfo && values.isShowAccountantPIC) ? 'acc-info-only-hidden' : ''} ${(!values.isShowAccountInfo && !values.isShowAccountantPIC) ? 'acc-info-hidden' : ''} ${!values.isShowAccountantPIC ? 'acc-PIC-hidden' : ''}`}>
+                            <div>
+                                {
+                                    activeTab.currentTab === 'headlineCommunicationInfo' &&
+                                    <HeadlineCommunicationInfo />
+                                }
+                                {
+                                    activeTab.currentTab === 'headlineStaffsAndAuthority' &&
+                                    <HeadlineStaffsAndAuthority />
+                                }
+                                {
+                                    activeTab.currentTab === 'companyService' &&
+                                    <CompanyService />
+                                }
+                            </div>
                         </div>
                     </div>
-                    <div className={`tab-content ${(!values.isShowAccountInfo && values.isShowAccountantPIC) ? 'acc-info-only-hidden' : ''} ${(!values.isShowAccountInfo && !values.isShowAccountantPIC)? 'acc-info-hidden' : ''} ${!values.isShowAccountantPIC ? 'acc-PIC-hidden': ''}`}>
-                        <div>
-                            {
-                                activeTab.currentTab === 'headlineCommunicationInfo' &&
-                                <HeadlineCommunicationInfo />
-                            }
-                            {
-                                activeTab.currentTab === 'headlineStaffsAndAuthority' &&
-                                <HeadlineStaffsAndAuthority />
-                            }
-                            {
-                                activeTab.currentTab === 'companyService' &&
-                                <CompanyService />
-                            }
-                        </div>
-                    </div>
-                </div>
+                }
             </>);
     }
 

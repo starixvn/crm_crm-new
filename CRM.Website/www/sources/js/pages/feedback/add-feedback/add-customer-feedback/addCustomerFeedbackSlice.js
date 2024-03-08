@@ -42,7 +42,7 @@ export const {
     setFeedbackSubjectTemplates,
     setAddFeedback,
     setConfirmCreateGuestDialog,
-    resetState
+    resetState,
 } = actions;
 
 export default reducer;

@@ -257,7 +257,7 @@ export default class DataGrid extends PureComponent {
                     </Col>
                 </Form.Group>
                 {
-                    values.isGroupHeadLine && this.renderAccountHeadlineInfo(values)
+                    values.isGroupHeadLine && this.state.headlineInfoPolicy >= Policy.Read && this.renderAccountHeadlineInfo(values)
                 }
                 {
                     !values.isGroupHeadLine && this.renderOtherAccountInfo(values.otherAccountCommunicationInfos)
@@ -428,8 +428,7 @@ export default class DataGrid extends PureComponent {
                             </ul>
                             <ul className='list-unstyled list-menu pull-left list-menu-right'>
                                 {
-                                    (hasReadSitePermission && (this.state.headlineInfoPolicy >= Policy.Read
-                                        || (this.state.headlineInfoPolicy === 0 && !values.isGroupHeadLine))) &&
+                                    hasReadSitePermission &&
                                     <li>
                                         <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetail')}</a>
                                     </li>

@@ -12,8 +12,8 @@ const store = configureStore({
 import '@cssroot/pages/feedback/add-feedback/index.scss';
 
 export default class index extends React.Component{
-    render(){
-        return(
+    render() {
+        return (
             <Provider store={store}>
                 <div className='add-feedback'>
                     <AppContainer />

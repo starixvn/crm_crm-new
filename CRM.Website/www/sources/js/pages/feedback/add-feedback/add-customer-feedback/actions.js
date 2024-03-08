@@ -27,7 +27,7 @@ const getBalanceUpday = () => async dispatch => {
 
 const getCustomerDetail = param => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('CustomerInfoDetail/GetCustomerById');
+    const url = Site.resolveClientUrl('AccountDetail/GetCustomerById');
     return await DataService.postDataAsync(url, param).then(response => {
         dispatch(setCustomerDetail(response.data));
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);

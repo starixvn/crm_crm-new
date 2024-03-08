@@ -26,7 +26,6 @@
         private readonly ICustomerService customerService;
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
-        private readonly ICRMLogService logService;
         private readonly IPermissionService permissionService;
 
         public AccountDetailController(
@@ -34,14 +33,12 @@
             ICustomerService customerService,
             ISettingService settingService,
             IBaseService baseService,
-            ICRMLogService logService,
             IPermissionService permissionService)
         {
             this.napSession = napSession;
             this.customerService = customerService;
             this.settingService = settingService;
             this.baseService = baseService;
-            this.logService = logService;
             this.permissionService = permissionService;
         }
 
@@ -52,11 +49,7 @@
             var customerPermissionInfo = await customerService.GetSiteTypeByCustIdAsync(customerInfo.CustId);
             customerInfo.SitePermission = customerPermissionInfo.SitePermission;
             customerInfo.CustomerType = customerPermissionInfo.CustomerType;
-            var logMessage = new LogMessage("Get Customer Feedback Info:")
-                       .AddMessage(JsonConvert.SerializeObject(customerInfo, Formatting.Indented))
-                       .ToString();
 
-            logService.LogInformation(logMessage);
             return Json(customerInfo);
         }
 
