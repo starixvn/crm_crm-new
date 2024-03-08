@@ -55,7 +55,7 @@ describe('NewPicManagement', () => {
 
         const initialState = {
             communicationTools: [
-                { type: '', value: '', unique: new Date().getTime() }
+                { type: '', value: '', unique: new Date().getTime(), channelName: '' }
             ],
             roles: [],
             showConfirmClose: false
@@ -222,7 +222,7 @@ describe('NewPicManagement', () => {
             // Arrange
             const expected = [
                 { type: '', value: '', unique: 123456 },
-                { type: '', value: '', unique: 1466424490000 }
+                { type: '', value: '', unique: 1466424490000, channelName: '' }
             ];
             const props = {
                 setting: {
@@ -256,12 +256,20 @@ describe('NewPicManagement', () => {
             };
             const container = shallow(<NewPicManagement {...props} />);
             container.instance().state.communicationTools = communicationTools;
+            container.instance()['formik'] = {
+                values: {
+                    ['communication-111111']: {}
+                },
+                errors: {}
+            };
 
             // Act
             container.instance().handleRemoveRowCommunication(111111);
 
             // Assert
             expect(container.instance().state.communicationTools).toEqual([communicationTools[0]]);
+            expect(typeof container.instance().formik.values['communication-111111']).toEqual('undefined');
+            expect(typeof container.instance().formik.errors['communication-111111']).toEqual('undefined');
         });
         
 

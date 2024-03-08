@@ -56,7 +56,8 @@ describe('EditPicManagement', () => {
                 languages: [
                     { settingId: 1, settingValue: 'en' },
                     { settingId: 2, settingValue: 'vn' }
-                ]
+                ],
+                communicationTools: [{ settingId: 1, value: 'aa' }]
             },
             selectedPic: {
                 languages: [
@@ -244,7 +245,7 @@ describe('EditPicManagement', () => {
             // Arrange
             const expected = [
                 { type: '', value: '', unique: 123456 },
-                { type: '', value: '', unique: 1466424490000 }
+                { type: '', value: '', unique: 1466424490000, channelName: '' }
             ];
             const props = {
                 setting: {
@@ -258,7 +259,7 @@ describe('EditPicManagement', () => {
             };
             const container = shallow(<EditPicManagement {...props} />);
             container.instance().state.communicationTools = [expected[0]];
-            const valueCommunication = { type: expected[1].type, value: expected[1].value };
+            const valueCommunication = { type: expected[1].type, value: expected[1].value, channelName: '' };
             container.instance()['formik'] = {
                 values: {
                     ['communication-123456']: {}
@@ -295,7 +296,8 @@ describe('EditPicManagement', () => {
                 values: {
                     ['communication-123456']: {},
                     ['communication-111111']: {}
-                }
+                },
+                errors: {}
             };
 
 
@@ -305,6 +307,7 @@ describe('EditPicManagement', () => {
             // Assert
             expect(container.instance().state.communicationTools).toEqual([communicationTools[0]]);
             expect(typeof container.instance().formik.values['communication-111111']).toEqual('undefined');
+            expect(typeof container.instance().formik.errors['communication-111111']).toEqual('undefined');
         });
 
         it('getTemplateEdit return expected', () => {

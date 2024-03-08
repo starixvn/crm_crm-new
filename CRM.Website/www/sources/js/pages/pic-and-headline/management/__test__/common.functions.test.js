@@ -124,13 +124,55 @@ describe('common functions', () => {
     describe('getTemplateCommunicationTool', () => {
         it('should return expected', () => {
             // Arrange
-            const expected = { type: '', value: '', unique: 123456 };
+            const expected = { type: '', value: '', unique: 123456, channelName: '' };
 
             // Act
             const actual = commonFunc.getTemplateCommunicationTool();
 
             // Assert
             expect(actual).toEqual(expected);
+        });
+    });
+
+    describe('getChannelName', () => {
+        it('should find settingId', () => {
+            // Arrange
+            const settings = [{ settingId: 1000, settingValue: 'test' }];
+            const settingId = 1000;
+
+            // Act
+            const actual = commonFunc.getChannelName(settings, settingId);
+
+            // Assert
+            expect(actual).toEqual('test');
+        });
+
+        it('should not find settingId', () => {
+            // Arrange
+            const settings = [{ settingId: 1001, settingValue: 'test' }];
+            const settingId = 1000;
+
+            // Act
+            const actual = commonFunc.getChannelName(settings, settingId);
+
+            // Assert
+            expect(actual).toEqual('');
+        });
+    });
+
+    describe('handleChangeCommunicationTool', () => {
+        it('should call expected', () => {
+            // Arrange
+            const unique = '1111';
+            const event = { target: { value: 'test' } };
+            const settingCommunications = [{ settingId: 1001, settingValue: 'test' }];
+            const setFieldValue = jest.fn();
+
+            // Act
+            commonFunc.handleChangeCommunicationTool(unique, event, settingCommunications ,setFieldValue);
+
+            // Assert
+            expect(setFieldValue).toHaveBeenCalled();
         });
     });
 });
