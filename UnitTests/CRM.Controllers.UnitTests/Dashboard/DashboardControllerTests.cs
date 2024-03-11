@@ -25,7 +25,8 @@
         private INapSession napSession;
         private ISettingService settingService;
         private IDashboardService dashboardService;
-      
+        private IPermissionService permissionService;
+
 
         [Fact]
         public async Task GetCustomerRemarks_WhenCalled_ReturnAsExpectedResult()
@@ -138,7 +139,8 @@
             napSession = Substitute.For<INapSession>();
             settingService = Substitute.For<ISettingService>();
             dashboardService = Substitute.For<IDashboardService>();
-            return new DashboardController(napSession, settingService, dashboardService);
+            permissionService = Substitute.For<IPermissionService>();
+            return new DashboardController(napSession, settingService, dashboardService, permissionService);
         }
 
         #endregion Helpers

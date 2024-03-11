@@ -40,11 +40,11 @@
         {
             // Arrange
             var feedbacks = new List<CustomerFeedback>();
-            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>>();
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
             var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var criteria = new GetCustomerFeedbackByIdCriteria();
             var service = GetService();
-            baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomer, FeedbackSettingRelation>(
+            baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomerPermission, FeedbackSettingRelation>(
                 Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x)).Returns((feedbacks, relatedCustomers, settings));
 
             // Act
@@ -71,12 +71,12 @@
                     ResolutionDate = date, SolveDate = date, CreateDate = date
                 }
             };
-            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>>();
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
             var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var site = fixture.Create<SiteSetting>();
             var criteria = new GetCustomerFeedbackByIdCriteria();
             var service = GetService();
-            baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomer, FeedbackSettingRelation>(
+            baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomerPermission, FeedbackSettingRelation>(
                 Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x)).Returns((feedbacks, relatedCustomers, settings));
             settingService.GetSiteByIdAsync(1).Returns(site);
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
@@ -292,11 +292,11 @@
         {
             // Arrange
             var communicationLogInfos = new List<CommunicationLog>();
-            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>>();
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
             var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var criteria = new GetLogByFeedbackIdCriteria();
             var service = GetService();
-            baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomer, FeedbackSettingRelation>(
+            baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomerPermission, FeedbackSettingRelation>(
                 Arg.Do<GetLogByFeedbackIdCriteria>(x => criteria = x)).Returns((communicationLogInfos, relatedCustomers, settings));
 
             // Act
@@ -322,11 +322,11 @@
                     ResolutionDate = date, SolveDate = date
                 }
             };
-            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>>();
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
             var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var criteria = new GetLogByFeedbackIdCriteria();
             var service = GetService();
-            baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomer, FeedbackSettingRelation>(
+            baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomerPermission, FeedbackSettingRelation>(
                 Arg.Do<GetLogByFeedbackIdCriteria>(x => criteria = x)).Returns((communicationLogs, relatedCustomers, settings));
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
 

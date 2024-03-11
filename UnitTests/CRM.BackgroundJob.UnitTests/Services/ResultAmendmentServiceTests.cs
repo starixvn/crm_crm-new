@@ -999,6 +999,7 @@
                 IsVip = true,
                 Sporttype = 0,
                 LeagueId = 93816,
+                LeagueGroupId = 93816,
                 Leaguenametc = "Basketball",
                 HomeId = 714227,
                 Awayid = 0,
@@ -1017,7 +1018,7 @@
             stringBuilder.Append(Constants.Break);
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("Sportsbook");
             commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US).Returns("SportName");
-            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US).Returns("LeagueName");
+            commonFeedback.GetLeagueNameBySiteName(amendment.Site, amendment.LeagueId, amendment.LeagueGroupId, Language.en_US).Returns("LeagueName");
             commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns("HomeName");
             commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
             stringBuilder.Append("24-Feb-2021 SportName 07:59 AM LeagueName HomeName AwayName <br />");
@@ -1057,6 +1058,7 @@
                 IsVip = true,
                 Sporttype = 0,
                 LeagueId = 93816,
+                LeagueGroupId = 93816,
                 Leaguenametc = "Basketball",
                 HomeId = 714227,
                 Awayid = 0,
@@ -1075,7 +1077,7 @@
             stringBuilder.Append(Constants.Break);
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("Sportsbook");
             commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US).Returns("SportName");
-            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US).Returns("LeagueName");
+            commonFeedback.GetLeagueNameBySiteName(amendment.Site, amendment.LeagueId, amendment.LeagueGroupId, Language.en_US).Returns("LeagueName");
             commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns("HomeName");
             commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
             var outright = new StringBuilder("outright");
@@ -1230,6 +1232,7 @@
                 IsVip = true,
                 Sporttype = 0,
                 LeagueId = 93816,
+                LeagueGroupId = 19381,
                 Leaguenametc = "Basketball",
                 HomeId = 714227,
                 Awayid = 0,
@@ -1248,7 +1251,7 @@
             stringBuilder.Append(Constants.Break);
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns("Number Game");
             commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.en_US).Returns("SportName");
-            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.en_US).Returns("LeagueName");
+            commonFeedback.GetLeagueNameBySiteName(amendment.Site, amendment.LeagueId, amendment.LeagueGroupId, Language.en_US).Returns("LeagueName");
             commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.en_US).Returns("HomeName");
             commonFeedback.GetTeamName(amendment.Awayid.ToString(), Language.en_US).Returns("AwayName");
 
@@ -1583,6 +1586,7 @@
                 IsVip = false,
                 Sporttype = 161,
                 LeagueId = 93816,
+                LeagueGroupId = 93816,
                 Leaguenametc = "Basketball",
                 HomeId = 714227,
                 Awayid = 0,
@@ -1602,8 +1606,8 @@
 
             var messageContent = fixture.Create<IEnumerable<Message>>();
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns(productName);
-            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.vi_VN).Returns("leagueNameYN");
-            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN).Returns("leagueNameSC");
+            commonFeedback.GetLeagueNameBySiteName(amendment.Site, amendment.LeagueId, amendment.LeagueGroupId, Language.vi_VN).Returns("leagueNameYN");
+            commonFeedback.GetLeagueNameBySiteName(amendment.Site, amendment.LeagueId, amendment.LeagueGroupId, Language.zh_CN).Returns("leagueNameSC");
             commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.vi_VN).Returns("sportNameYN");
             commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN).Returns("sportNameSC");
 
@@ -1665,6 +1669,7 @@
                 IsVip = isVip,
                 Sporttype = 0,
                 LeagueId = 93816,
+                LeagueGroupId = 93816,
                 Leaguenametc = "Basketball",
                 HomeId = 714227,
                 Awayid = 0,
@@ -1690,8 +1695,8 @@
 
             var messageContent = fixture.Create<IEnumerable<Message>>();
             commonFeedback.GetProductName(amendment.ProductId.ToString(), Language.en_US).Returns(productName);
-            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.vi_VN).Returns("leagueNameYN");
-            commonFeedback.GetLeagueName(amendment.LeagueId.ToString(), Language.zh_CN).Returns("leagueNameSC");
+            commonFeedback.GetLeagueNameBySiteName(amendment.Site, amendment.LeagueId, amendment.LeagueGroupId, Language.vi_VN).Returns("leagueNameYN");
+            commonFeedback.GetLeagueNameBySiteName(amendment.Site, amendment.LeagueId, amendment.LeagueGroupId, Language.zh_CN).Returns("leagueNameSC");
             commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.vi_VN).Returns("sportNameYN");
             commonFeedback.GetSportName(amendment.Sporttype.ToString(), Language.zh_CN).Returns("sportNameSC");
             commonFeedback.GetTeamName(amendment.HomeId.ToString(), Language.vi_VN).Returns("homeNameYN");

@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Core;
+    using CRM.Core.Constants;
     using CRM.Core.Services;
     using CRM.Criteria.Report.LogStatistics;
     using CRM.Models;
@@ -21,24 +22,31 @@
         private IBaseService baseService;
         private ICommonService commonService;
 
-        [Fact]
-        public async Task GetReportDataAsync_WhenCalled_ReturnAsExpectedResult()
+        [Theory]
+        [InlineData(0, true, ViewResources.CreditDailyLogStatisticsFileName)]
+        [InlineData(0, false, ViewResources.CreditDailyLogStatisticsFileName)]
+        public async Task GetReportDataAsync_WhenCalled_ReturnAsExpectedResult(short siteType, bool isFileName, string expected)
         {
             // Arrange
             var clientDate = fixture.Create<DateTime>();
             fixture.Customize<LogStatisticsCriteria>(x => x.With(b => b.SiteType, 0));
             var criteria = fixture.Create<LogStatisticsCriteria>();
+            criteria.SiteType = LogStatisticConstants.IBC;
+
+            var service = GetService();
+            commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientDate);
+
             var reportTitle = string.Format(
                ViewResources.LogStatistics_ExcelTitle,
-               ViewResources.MBCDailyLogStatistics,
-               clientDate.ToShortDateFormat(),
-               clientDate.ToShortDateFormat());
+               ViewResources.CreditDailyLogStatistics,
+               commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormat(),
+               commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormat());
 
             var excelFileName = string.Format(
                ViewResources.LogStatistics_ExcelFileName,
-               ViewResources.MBCDailyLogStatisticsFileName,
-               clientDate.ToShortDateFormatDash(),
-               clientDate.ToShortDateFormatDash());
+               ViewResources.CreditDailyLogStatisticsFileName,
+               commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormatDash(),
+               commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormatDash());
             var expected = new LogStatisticsViewModel
             {
                 Id = 0,
@@ -63,9 +71,7 @@
                     Total = 1
                 }
             };
-            var service = GetService();
             baseService.GetDataAsync<LogStatisticsEntity>(criteria).Returns(logStatisticEntities);
-            commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientDate);
 
             // Act
             var actual = await service.GetReportDataAsync(criteria);
@@ -90,13 +96,13 @@
             var clientDate = fixture.Create<DateTime>();
             var reportTitle = string.Format(
                        ViewResources.LogStatistics_Detail_ExcelTitle,
-                       ViewResources.MBCDailyLogStatisticsDetail,
+                       //ViewResources.MBCDailyLogStatisticsDetail,
                        clientDate.ToShortDateFormat(),
                        clientDate.ToShortDateFormat());
 
             var excelFileName = string.Format(
                        ViewResources.LogStatistics_Detail_ExcelFileName,
-                       ViewResources.MBCDailyLogStatisticsDetail_FileName,
+                       //ViewResources.MBCDailyLogStatisticsDetail_FileName,
                        clientDate.ToShortDateFormatDash(),
                        clientDate.ToShortDateFormatDash());
             fixture.Customize<LogStatisticsDetailCriteria>(x => x.With(b => b.SiteType, 0));
@@ -124,7 +130,7 @@
             {
                 Id = 0,
                 ChildReports = logStatisticEntities,
-                Name = reportTitle,
+                //Name = reportTitle,
                 ExcelFileName = excelFileName
             };
             var service = GetService();

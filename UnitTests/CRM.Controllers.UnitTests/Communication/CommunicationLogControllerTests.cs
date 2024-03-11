@@ -96,6 +96,7 @@
             var command = fixture.Create<EditCommunicationLogCommand>();
             var controller = GetController();
             permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback).Returns(false);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.ReviewFeedback, Policy.Host).Returns(true);
 
             // Act
             var result = await controller.EditCommunicationLog(command);
@@ -123,7 +124,7 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
             var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
             Assert.Equal(1, commandResult.Code);
-            Assert.Equal("You don't have permission to update.", commandResult.Message);
+            Assert.Equal("You don't have permission to review feedback.", commandResult.Message);
         }
 
         [Fact]

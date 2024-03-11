@@ -301,7 +301,7 @@
             appSettings = Substitute.For<IOptionsSnapshot<AppSettings>>();
             appSettings.Value.Returns(new AppSettings { SingleSignOnExpiredTime = -1 });
 
-            return new AuthController(userService, napSession, securityService, groupService, napSettings, siteService, appSettings);
+            return new AuthController(userService, napSession, securityService, groupService, napSettings, appSettings);
         }
 
         #endregion helper

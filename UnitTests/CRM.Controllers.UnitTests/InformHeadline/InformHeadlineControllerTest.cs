@@ -197,7 +197,7 @@
             var controller = GetController();
             settingService.GetCurrencyAsync().Returns(currencies);
             settingService.GetStatusAsync(ViewTypeConstants.InformHeadline).Returns(productStatuses);
-            settingService.GetAllSitesWithGroupAsync().Returns(sites);
+            settingService.GetAllSitesWithGroupInformHeadlineAsync().Returns(sites);
             settingService.GetStations().Returns(stations);
             informHeadlineService.GetInformStatusesAsync().Returns(statuses);
 

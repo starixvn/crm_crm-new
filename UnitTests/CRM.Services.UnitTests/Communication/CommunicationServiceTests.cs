@@ -56,12 +56,12 @@
                     ResolutionDate = date, SolveDate = date
                 }
             };
-            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomer>>();
+            var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
             var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var site = fixture.Create<SiteSetting>();
             var criteria = new GetLogByFeedbackIdCriteria();
             var service = GetCommunicationService();
-            baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomer, FeedbackSettingRelation>(
+            baseService.FetchMultipleAsync<CommunicationLog, RelatedCustomerPermission, FeedbackSettingRelation>(
                 Arg.Do<GetLogByFeedbackIdCriteria>(x => criteria = x)).Returns((communicationLogs, relatedCustomers, settings));
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
             settingService.GetSiteByIdAsync(Arg.Any<int>()).Returns(site);

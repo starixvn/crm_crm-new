@@ -178,7 +178,8 @@
                     LeagueId = 1,
                     MatchCode = "1",
                     MatchId = 1,
-                    Type = 1
+                    Type = 1,
+                    LeagueGroupID = 1
                 }
             };
 
@@ -194,7 +195,7 @@
                "HomeNameEN='{12}' HomeNameSC='{13}' HomeNameTH='{14}' HomeNameYN='{15}' " +
                "AwayNameEN='{16}' AwayNameSC='{17}' AwayNameTH='{18}' AwayNameYN='{19}' " +
                "LeagueNameEN='{20}' LeagueNameSC='{21}' LeagueNameTH='{22}' LeagueNameYN='{23}' MatchCode='{24}' " +
-               "MatchInfoEN='{25}' MatchInfoSC='{26}' MatchInfoTH='{27}' MatchInfoYN='{28}' Type='{29}'/>";
+               "MatchInfoEN='{25}' MatchInfoSC='{26}' MatchInfoTH='{27}' MatchInfoYN='{28}' Type='{29}' LeagueGroupID='{30}'/>";
 
             var stringBuilderEventData = new StringBuilder(Constants.BeginRootTag.ToLowerInvariant());
 
@@ -230,7 +231,7 @@
                         "sportNameTH", "sportNameYN", "homeNameEN", "homeNameSC", "homeNameTH", "homeNameYN",
                         "awayNameEN", "awayNameSC", "awayNameTH", "awayNameYN", "leagueNameEN", "leagueNameSC",
                         "leagueNameTH", "leagueNameYN", transaction.MatchCode, "matchInfoEN", "matchInfoSC",
-                        "matchInfoTH", "matchInfoYN", transaction.Type
+                        "matchInfoTH", "matchInfoYN", transaction.Type, transaction.LeagueGroupID
                         );
 
             stringBuilderEventData.Append(Constants.EndRootTag.ToLowerInvariant());
@@ -245,7 +246,7 @@
 
             // Act
             var actual = await service.ImportChatBotAmendmentResultAsync(ticketEvents, transactions, messages, targetMessages, targetMessagesInfo, Constants.DefaultEnvironment, "Servername");
-
+            var t = stringBuilderEventData.ToString();
             // Assert
             Assert.Equal(valueTupe.Item1, actual.Item1);
             Assert.Equal(ticketEvents.ToXML("root").ToString(), criteria.TicketData);

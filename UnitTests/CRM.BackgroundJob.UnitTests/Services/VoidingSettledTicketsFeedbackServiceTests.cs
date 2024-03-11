@@ -879,7 +879,7 @@
             const string settledTicketsText = "<span style =\"font-weight:bold;\">Following events have voided settled tickets: </span>";
             stringBuilder.Append(settledTicketsText);
             stringBuilder.Append(Constants.Break);
-            service.Protected("GetVoidingSettledTicketDescriptionByProduct", Arg.Any<AutoVoidingEventDetails>(), ticketDescTemplate).Returns("test");
+            service.Protected("GetVoidingSettledTicketDescriptionByProduct", Arg.Any<AutoVoidingEventDetails>(), ticketDescTemplate, feedbackInfo.Site).Returns("test");
             stringBuilder.Append("test");
 
             // Act

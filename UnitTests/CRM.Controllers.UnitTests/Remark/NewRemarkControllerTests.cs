@@ -134,6 +134,7 @@
         {
             var fixture = new Fixture();
             var commandResult = fixture.Create<CommandResult>();
+            var cusInfo = fixture.Create<CustomerPermissionInfo>();
             var criteria = fixture.Create<CreateNewReamarkCommand>();
 
             var controller = GetController();
@@ -146,6 +147,8 @@
             };
 
             controller.ControllerContext.HttpContext = clientIP;
+            customerService.GetSiteTypeByCustIdAsync(criteria.CustID).Returns(cusInfo);
+            permissionService.IsHavingPermissionByPolicyAsync(cusInfo.SitePermission).Returns(true);
             remarkService.CreateNewAsync(Arg.Any<CreateNewReamarkCommand>()).Returns(commandResult);
 
             // Act
@@ -161,6 +164,7 @@
         {
             var fixture = new Fixture();
             var commandResult = fixture.Create<CommandResult>();
+            var cusInfo = fixture.Create<CustomerPermissionInfo>();
             var criteria = fixture.Create<EditNewRemarkCommand>();
 
             var controller = GetController();
@@ -173,6 +177,8 @@
             };
 
             controller.ControllerContext.HttpContext = clientIP;
+            customerService.GetSiteTypeByCustIdAsync(criteria.CustID).Returns(cusInfo);
+            permissionService.IsHavingPermissionByPolicyAsync(cusInfo.SitePermission).Returns(true);
             remarkService.EditNewAsync(Arg.Any<EditNewRemarkCommand>()).Returns(commandResult);
 
             // Act
