@@ -82,6 +82,9 @@
             var allSettings = fixture.Create<AllSetting>();
             var service = GetService();
             settingService.GetMainCategoryAsync(SettingConstants.Active).Returns(allSettings.Categories);
+            permissionService.IsHavingPermissionAsync(FunctionKey.Credit).Returns(true);
+            permissionService.IsHavingPermissionAsync(FunctionKey.Licensee).Returns(true);
+
             // Act
             var result = await service.AllSettings();
 

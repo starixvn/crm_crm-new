@@ -22,10 +22,8 @@
         private IBaseService baseService;
         private ICommonService commonService;
 
-        [Theory]
-        [InlineData(0, true, ViewResources.CreditDailyLogStatisticsFileName)]
-        [InlineData(0, false, ViewResources.CreditDailyLogStatisticsFileName)]
-        public async Task GetReportDataAsync_WhenCalled_ReturnAsExpectedResult(short siteType, bool isFileName, string expected)
+        [Fact]
+        public async Task GetReportDataAsync_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange
             var clientDate = fixture.Create<DateTime>();
@@ -94,19 +92,22 @@
         {
             // Arrange
             var clientDate = fixture.Create<DateTime>();
-            var reportTitle = string.Format(
-                       ViewResources.LogStatistics_Detail_ExcelTitle,
-                       //ViewResources.MBCDailyLogStatisticsDetail,
-                       clientDate.ToShortDateFormat(),
-                       clientDate.ToShortDateFormat());
-
-            var excelFileName = string.Format(
-                       ViewResources.LogStatistics_Detail_ExcelFileName,
-                       //ViewResources.MBCDailyLogStatisticsDetail_FileName,
-                       clientDate.ToShortDateFormatDash(),
-                       clientDate.ToShortDateFormatDash());
             fixture.Customize<LogStatisticsDetailCriteria>(x => x.With(b => b.SiteType, 0));
             var criteria = fixture.Create<LogStatisticsDetailCriteria>();
+            var service = GetService();
+            commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientDate);
+
+            var reportTitle = string.Format(
+               ViewResources.LogStatistics_Detail_ExcelTitle,
+               ViewResources.CreditDailyLogStatisticsDetail,
+               commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormat(),
+               commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormat());
+
+            var excelFileName = string.Format(
+               ViewResources.LogStatistics_Detail_ExcelFileName,
+                ViewResources.CreditDailyLogStatisticsDetail_FileName,
+               commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormatDash(),
+               commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormatDash());
             var logStatisticEntities = new List<StatisticsDetailbyDateModel>
             {
                 new StatisticsDetailbyDateModel
@@ -130,12 +131,10 @@
             {
                 Id = 0,
                 ChildReports = logStatisticEntities,
-                //Name = reportTitle,
+                Name = reportTitle,
                 ExcelFileName = excelFileName
             };
-            var service = GetService();
             baseService.GetDataAsync<StatisticsDetailbyDateModel>(criteria).Returns(logStatisticEntities);
-            commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientDate);
 
             // Act
             var actual = await service.GetReportDetailsAsync(criteria);
