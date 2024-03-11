@@ -4,7 +4,6 @@ const initialState ={
     balanceUpday: null,
     addFeedbackResult: null,
     feedbackSubjectTemplates: [],
-    customerDetail: null,
     confirmCreateGuestDialog: { show: false }
 };
 const addGuestFeedbackSlice = createSlice({
@@ -26,9 +25,6 @@ const addGuestFeedbackSlice = createSlice({
         },
         setConfirmCreateGuestDialog: (state, action) => {
             state.confirmCreateGuestDialog = action.payload;
-        },
-        setCustomerDetail: (state, action) => {
-            state.customerDetail = action.payload;
         }
     }
 });
@@ -42,8 +38,7 @@ export const {
     setFeedbackSubjectTemplates,
     setAddFeedback,
     setDuplicateFeedbackResult,
-    setConfirmCreateGuestDialog,
-    setCustomerDetail
+    setConfirmCreateGuestDialog
 } = actions;
 
 export default reducer;

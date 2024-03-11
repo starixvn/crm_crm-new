@@ -134,7 +134,10 @@ export const initCustomerInfo = customerDetail =>{
         zalo: customerDetail.bbm,
         isOverwriteInfo: false,
         siteId: customerDetail.siteId,
-        siteName: customerDetail.siteSetting.name
+        siteName: customerDetail.siteSetting.name,
+        headlineStaffInfoCommunications: customerDetail.headlineStaffInfoCommunications,
+        headlineStaffInfoPics: customerDetail.headlineStaffInfoPics,
+        otherAccountCommunicationInfos: customerDetail.otherAccountCommunicationInfos,
     };
 
     return initialValues;

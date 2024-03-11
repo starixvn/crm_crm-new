@@ -6,8 +6,7 @@ import {
     setFeedbackSubjectTemplates,
     setAddFeedback,
     setConfirmCreateGuestDialog,
-    resetState,
-    setCustomerDetail
+    resetState
 } from './addGuestFeedbackSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -51,14 +50,6 @@ const getTicketInfoByRef = refNo => async () => {
     return await DataService.getDataAsync(url, refNo).then(response => response.data).catch(Site.handleAxiosError);
 };
 
-const getCustomerDetail = param => async dispatch => {
-    Site.blockUI();
-    const url = Site.resolveClientUrl('AccountDetail/GetCustomerById');
-    return await DataService.postDataAsync(url, param).then(response => {
-        dispatch(setCustomerDetail(response.data));
-    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
-};
-
 export const ActionCreators = {
     setAllSettings,
     getAllSettings,
@@ -71,7 +62,5 @@ export const ActionCreators = {
     verifyUserName,
     setConfirmCreateGuestDialog,
     getTicketInfoByRef,
-    resetState,
-    setCustomerDetail,
-    getCustomerDetail
+    resetState
 };

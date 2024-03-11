@@ -10,7 +10,8 @@ export class CustomerInfo extends PureComponent{
     constructor(props) {
         super(props);
         this.state = {
-            isHostOnCurrentCustomer: false
+            isHostOnCurrentCustomer: false,
+            headlineStaffInfoCommunications: []
         };
     }
 
@@ -19,6 +20,39 @@ export class CustomerInfo extends PureComponent{
             this.setState({
                 isHostOnCurrentCustomer: response
             });
+        });
+        this.getHeadlineStaffInfoCommunications();
+        this.getOtherAccountCommunicationInfos();
+    }
+
+    getHeadlineStaffInfoCommunications() {
+        const headlineStaffInfoCommunications = [];
+        this.props.customerInfo.headlineStaffInfoCommunications?.map(item => {
+            headlineStaffInfoCommunications.push({
+                headlineID: item.headlineID,
+                picCommunicationId: item.picCommunicationId,
+                picCommunicationName: item.picCommunicationName,
+                picCommunicationValue: item.picCommunicationValue,
+                picID: item.picID
+            });
+        });
+        this.setState({
+            headlineStaffInfoCommunications: headlineStaffInfoCommunications
+        });
+    }
+
+    getOtherAccountCommunicationInfos() {
+        const otherAccountCommunicationInfos = [];
+        this.props.customerInfo.otherAccountCommunicationInfos?.map(item => {
+            otherAccountCommunicationInfos.push({
+                communiationName: item.communiationName,
+                communicationID: item.communicationID,
+                communicationValue: item.communicationValue,
+                custId: item.custId
+            });
+        });
+        this.setState({
+            otherAccountCommunicationInfos: otherAccountCommunicationInfos
         });
     }
 
@@ -43,52 +77,94 @@ export class CustomerInfo extends PureComponent{
     getHeadlineCommunicationInfo = customerInfo => {
         let headlineCommunicationInfo = [];
         customerInfo.headlineStaffInfoPics.map(pic => {
-            let languages = [];
-            let communicationTools = [];
-            customerInfo.headlineStaffInfoLanguages.map(language => {
-                if (language.picID === pic.picID) {
-                    languages.push(language.picLanguageID);
-                }
-            });
-            customerInfo.headlineStaffInfoCommunications.map(communication => {
+            let communicationTools = [];            
+            customerInfo.headlineStaffInfoCommunications.map((communication, indexCom) => {
                 if (communication.picID === pic.picID) {
                     communicationTools.push({
                         type: communication.picCommunicationId,
+                        name: communication.picCommunicationName,
                         value: communication.picCommunicationValue,
-                        isError: false
+                        index: indexCom
                     });
                 }
             });
             headlineCommunicationInfo.push({
-                country: pic.picCountryID,
-                language: languages.join(","),
                 picCommunicationTools: communicationTools,
                 picId: pic.picID,
-                picName: pic.picName,
-                picType: pic.picTypeID,
-                role: pic.picRoleID,
-                roleName: pic.picRoleName,
-                isNameError: false,
-                isRoleError: false
+                picName: pic.picName
             });
         });
         return headlineCommunicationInfo;
     }   
 
-    renderHeadlineAccountCommunication = (customerDetail) => {
-        //return <>
-        //    {
-        //        customerDetail.
-        //    }
-        //</>
+    handleChangeHeadlineStaffInfoCommunications = (value, index) => {
+        const headlineStaffInfoCommunications = this.state.headlineStaffInfoCommunications;
+        headlineStaffInfoCommunications[index].picCommunicationValue = value;
+        this.setState({ headlineStaffInfoCommunications: headlineStaffInfoCommunications })
+        return headlineStaffInfoCommunications;
     }
 
-    renderOtherAccountCommunication = (customerDetail) => {
+    handleChangeOtherAccountCommunicationInfos = (value, index) => {
+        const otherAccountCommunicationInfos = this.state.otherAccountCommunicationInfos;
+        otherAccountCommunicationInfos[index].communicationValue = value;
+        this.setState({ otherAccountCommunicationInfos: otherAccountCommunicationInfos })
+        return otherAccountCommunicationInfos;
+    }
 
+    renderHeadlineAccountCommunication = customerInfo => {
+        const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(customerInfo);
+        return <>
+            {
+                headlineCommunicationInfo.map(item => {
+                    return <>
+                        <p>{item.picName}</p>
+                        <div>
+                            {
+                                item.picCommunicationTools.map((itemCom, indexCom) => {
+                                    return <>
+                                        <Form.Group>
+                                            <Form.Label htmlFor="title">
+                                                {itemCom.name}
+                                            </Form.Label>
+                                            <Form.Control type="text" size="sm" value={itemCom.value} className="shadow-none" autoComplete="off"
+                                                onChange={event => {
+                                                    this.props.handleChangeValueInfo('headlineStaffInfoCommunications',
+                                                        this.handleChangeHeadlineStaffInfoCommunications(event.target.value, itemCom.index));
+                                                }}/>
+                                        </Form.Group>                                        
+                                    </>
+                                })
+                            }
+                        </div>
+                    </>
+                })
+            }
+        </>
+    }
+
+    renderOtherAccountCommunication = (customerInfo) => {
+        return <>
+            {
+                customerInfo.otherAccountCommunicationInfos.map((item, index) => {
+                    return <>
+                        <Form.Group>
+                            <Form.Label htmlFor="title">
+                                {item.communiationName}
+                            </Form.Label>
+                            <Form.Control type="text" size="sm" value={item.communicationValue} className="shadow-none" autoComplete="off"
+                                onChange={event => {
+                                    this.props.handleChangeValueInfo('otherAccountCommunicationInfos',
+                                        this.handleChangeOtherAccountCommunicationInfos(event.target.value, index));
+                                }}/>
+                        </Form.Group>
+                    </>
+                })
+            }
+        </>
     }
 
     render() {
-        const {customerInfo, handleChange, settings, renderOptions, customerDetail, handleChangeValueInfo} = this.props;
+        const { customerInfo, handleChange, settings, renderOptions, customerDetail, handleChangeValueInfo, isGuest } = this.props;
         const maxDate = new Date(DateTimeService.toShortDateFormat(DateTimeService.toClientDateTime(new Date())));
         const siteOptions = changeSiteSetting(settings.sites, 'childSites', 'childSites');
         const isAddGuestFb = customerInfo.siteId === undefined;
@@ -249,12 +325,16 @@ export class CustomerInfo extends PureComponent{
                     <hr />
                 </div>        
                 {
-                    customerDetail.isGroupHeadLine &&
-                    this.renderHeadlineAccountCommunication(customerDetail)
+                    !isGuest && customerDetail.isGroupHeadLine &&
+                    this.renderHeadlineAccountCommunication(customerInfo)
                 }
                 {
-                    !customerDetail.isGroupHeadLine &&
-                    this.renderOtherAccountCommunication(customerDetail)
+                    !isGuest && !customerDetail.isGroupHeadLine &&
+                    this.renderOtherAccountCommunication(customerInfo)
+                }
+                {
+                    isGuest && 
+                    <p>Add Guest Feedback</p>
                 }
             </div>
         );

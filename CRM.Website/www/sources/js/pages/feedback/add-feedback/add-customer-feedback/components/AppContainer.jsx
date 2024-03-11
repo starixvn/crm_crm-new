@@ -41,7 +41,7 @@ export class AppContainer extends Component {
 
     render() {
         const { currentCustomer, settings, balanceUpday, customerDetail, feedbackSubjectTemplates,
-                confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult, setFeedbackSubjectTemplates, getFeedbackSubjectTemplates
+            confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult, setFeedbackSubjectTemplates, getFeedbackSubjectTemplates
         } = this.props;
         if (settings === null || balanceUpday === null || customerDetail === null) {
             return null;
@@ -50,9 +50,9 @@ export class AppContainer extends Component {
             <CreateForm
                 settings={settings} balanceUpday={balanceUpday} customerDetail={customerDetail} feedbackSubjectTemplates={feedbackSubjectTemplates}
                 confirmCreateGuestDialog={confirmCreateGuestDialog} setConfirmCreateGuestDialog={this.props.setConfirmCreateGuestDialog} currentCustomer={currentCustomer}
-                addFeedbackResult={addFeedbackResult}  verifyUserName={this.props.verifyUserName} getTicketInfoByRef={this.props.getTicketInfoByRef}
+                addFeedbackResult={addFeedbackResult} verifyUserName={this.props.verifyUserName} getTicketInfoByRef={this.props.getTicketInfoByRef}
                 setAddFeedback={this.props.setAddFeedback} duplicateFeedbackResult={duplicateFeedbackResult} addFeedback={this.props.addFeedback}
-                getFeedbackSubjectTemplates={getFeedbackSubjectTemplates} setFeedbackSubjectTemplates={setFeedbackSubjectTemplates}
+                getFeedbackSubjectTemplates={getFeedbackSubjectTemplates} setFeedbackSubjectTemplates={setFeedbackSubjectTemplates} isGuest={false}
             />
         );
     }
@@ -62,9 +62,9 @@ const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispat
 
 const mapStateToProps = state => {
     const { settings, balanceUpday, customerDetail, feedbackSubjectTemplates,
-            confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult } = state;
+        confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult } = state;
     return { settings, balanceUpday, customerDetail, feedbackSubjectTemplates,
-            confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult };
+        confirmCreateGuestDialog, addFeedbackResult, duplicateFeedbackResult };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

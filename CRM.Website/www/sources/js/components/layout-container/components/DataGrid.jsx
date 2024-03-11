@@ -430,7 +430,7 @@ export default class DataGrid extends PureComponent {
                                 {
                                     hasReadSitePermission &&
                                     <li>
-                                        <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetail')}</a>
+                                        <a onClick={() => this.props.handleNavigate('AccountDetail')}>{LangHelper.getResource('AccountDetails')}</a>
                                     </li>
                                 }
                                 <li>
