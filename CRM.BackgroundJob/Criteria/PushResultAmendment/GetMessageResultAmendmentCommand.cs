@@ -2,7 +2,7 @@
 {
     using CRM.Core.Models;
 
-    public class GetPushResultAmendmentCommand : BaseNonQueryCommand
+    public class GetMessageResultAmendmentCommand : BaseNonQueryCommand
     {
         public int NotificationID { get; set; }
 

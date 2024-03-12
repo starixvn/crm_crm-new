@@ -1,5 +1,6 @@
 ﻿namespace CRM.BackgroundJob.Services
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using CRM.BackgroundJob.Criteria.PushResultAmendment;
     using CRM.BackgroundJob.Models.MessageNotificationCenter;
@@ -7,15 +8,15 @@
 
     public interface IPushNotificationResultAmendmentService
     {
-        Task<MncMessageTarget> GetPreparePushNotificationAsync();
+        Task<IEnumerable<MncMessageTarget>> GetPrepareNotificationAsync();
 
-        Task GetMessagePushResultAmendmentAsync(int notificationID, string jsNotification);
+        Task GetMessageResultAmendmentAsync(GetMessageResultAmendmentCommand command);
 
         Task EditPushNotificationResultAmendmentAsync(int notificationID, int messageID, string updType);
 
         Task EditPushMessageResultAmendmentAsync(int messageID, string updType);
 
-        Task InsertPushResultAmendmentAsync(string notificationIDs, string messageIDs);
+        Task InsertCompleteResultAmendmentAsync();
     }
 
     public class PushNotificationResultAmendmentService : IPushNotificationResultAmendmentService
@@ -27,19 +28,14 @@
             this.baseService = baseService;
         }
 
-        public async Task<MncMessageTarget> GetPreparePushNotificationAsync()
+        public async Task<IEnumerable<MncMessageTarget>> GetPrepareNotificationAsync()
         {
-            var criteria = new GetPreparePushNotificationCriteria();
-            return await baseService.GetDataEntityAsync<MncMessageTarget>(criteria);
+            var criteria = new GetPrepareNotiResultAmendmentCriteria();
+            return await baseService.GetDataAsync<MncMessageTarget>(criteria);
         }
 
-        public async Task GetMessagePushResultAmendmentAsync(int notificationID, string jsNotification)
+        public async Task GetMessageResultAmendmentAsync(GetMessageResultAmendmentCommand command)
         {
-            var command = new GetPushResultAmendmentCommand
-            {
-                NotificationID = notificationID,
-                JSNotification = jsNotification
-            };
             await baseService.ExecuteNonQueryAsync(command);
         }
 
@@ -64,13 +60,9 @@
             await baseService.ExecuteNonQueryAsync(command);
         }
 
-        public async Task InsertPushResultAmendmentAsync(string notificationIDs, string messageIDs)
+        public async Task InsertCompleteResultAmendmentAsync()
         {
-            var commmand = new InsertPushResultAmendmentCommand
-            {
-                NotificationIDs = notificationIDs,
-                MessageIDs = messageIDs
-            };
+            var commmand = new InsertCompleteResultAmendmentCommand();
             await baseService.ExecuteNonQueryAsync(commmand);
         }
     }

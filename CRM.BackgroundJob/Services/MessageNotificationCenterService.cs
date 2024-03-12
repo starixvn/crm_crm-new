@@ -6,6 +6,7 @@
     using Fanex.CRM.BackgroundJob.Constants;
     using CRM.Core.Services;
     using Microsoft.Extensions.Configuration;
+    using CRM.BackgroundJob.Criteria.PushResultAmendment;
 
     public interface IMessageNotificationCenterService
     {
@@ -106,9 +107,25 @@
         {
             try
             {
-                var mncMessage = await pushNotificationResultAmendmentService.GetPreparePushNotificationAsync();
-                var mncPushNotification = await pushNotificationResultAmendmentService.GetMessagePushResultAmendmentAsync(mncMessage.MNC_Msg, mncMessage.MNC_MsgTarget);
-                await pushNotificationResultAmendmentService.InsertPushResultAmendmentAsync(mncPushNotification.NotificationIDs, mncPushNotification.MessageIDs);
+                var mncNotifications = await pushNotificationResultAmendmentService.GetPrepareNotificationAsync();
+                if (!mncNotifications.Any())
+                {
+                    logService.LogInformation("Push Result Amendment Notification - Service is shutdown.");
+                    return;
+                }
+                foreach (var item in mncNotifications)
+                {
+                    var command = new GetMessageResultAmendmentCommand
+                    {
+                        NotificationID = item.NotificationID,
+                        JSNotification = item.JSNotification
+                    };
+                    await pushNotificationResultAmendmentService.GetMessageResultAmendmentAsync(command);
+
+                    await pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, "AfterInsMsg");
+                    await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti");
+                    await pushNotificationResultAmendmentService.InsertCompleteResultAmendmentAsync();
+                }
             }
             catch (Exception ex)
             {

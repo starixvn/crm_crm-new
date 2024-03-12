@@ -2,7 +2,7 @@
 {
     using Fanex.Data.Repository;
 
-    public class GetPreparePushNotificationCriteria : CriteriaBase
+    public class GetPrepareNotiResultAmendmentCriteria : CriteriaBase
     {
         public override string GetSettingKey() => "MNC_PushNotification_PrepareNoti";
 
