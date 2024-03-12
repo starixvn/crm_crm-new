@@ -153,5 +153,4 @@
         <Setting Key="MNC_PushNotification_MsgUpd" SpName="MNC_PushNotification_MsgUpd" DbName="DBMSG.bodb_Message.bodbAdminNet" />
         <Setting Key="MNC_PushNotification_Complete" SpName="MNC_PushNotification_Complete" DbName="DBCRM.MessageNotification.bodbAdminNet" />
     </Function>
->
 </Functions>
