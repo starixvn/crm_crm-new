@@ -23,7 +23,7 @@
         <Setting Key="Acc_CRM_GroupHeadlineVipSel" SpName="Acc_CRM_GroupHeadlineVipSel" DbName="DBEXT.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_SystemSettingMappingSel" SpName="Acc_CRM_SystemSettingMappingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_CustomerFeedbackIns" SpName="Acc_CRM_CustomerFeedbackIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_GuestFeedbackIns_Multiple" SpName="Acc_CRM_GuestFeedbackIns_Multiple_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_GuestFeedbackIns_Multiple" SpName="Acc_CRM_GuestFeedbackIns_Multiple" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AbnormalTicketsCheck" SpName="Acc_CRM_AbnormalTicketsCheck" DbName="DBTXN.bodb02.bodbAdminNet.ReadOnly" />
         <Setting Key="Acc_CRM_AbnormalAccount_GetUsernameList" SpName="Acc_CRM_AbnormalAccount_GetUsernameList" DbName="DBTXN.bodb02.bodbAdminNet.ReadOnly" />
         <Setting Key="Acc_CRM_AutoFB_SystemSetting_Sel" SpName="Acc_CRM_AutoFB_SystemSetting_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -58,12 +58,12 @@
         <Setting Key="Acc_CRM_Chatbot_ProblemAccounts_Import" SpName="Acc_CRM_Chatbot_ProblemAccounts_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="Chatbot Result Amendment">
-        <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Sel" SpName="Acc_CRM_Chatbot_ResultAmendment_Sel_xtest" DbName="DBEXT.bodb02.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Sel" SpName="Acc_CRM_Chatbot_ResultAmendment_Sel" DbName="DBEXT.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_Msg_Sel" SpName="Acc_CRM_Chatbot_Msg_Sel" DbName="DBMSG.bodb_Message.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_VoidingMsg_GetMessage" SpName="Acc_CRM_ChatBot_VoidingMsg_GetMessage" DbName="DBMSG.bodb_Message.bodbAdminNet" />
         <Setting Key="Acc_CRM_VoidingMsg_GetMessage" SpName="Acc_CRM_VoidingMsg_GetMessage" DbName="DBMSG.bodb_Message.bodbAdminNet" />
         <Setting Key="Acc_CRM_VodingMessage_Ins" SpName="Acc_CRM_VodingMessage_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Import" SpName="Acc_CRM_Chatbot_ResultAmendment_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_Chatbot_ResultAmendment_Import" SpName="Acc_CRM_Chatbot_ResultAmendment_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Chatbot_VodingMessage_Sel" SpName="Acc_CRM_Chatbot_VodingMessage_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_VodingMessage_Check" SpName="Acc_CRM_VodingMessage_Check" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_ChatBot_VodingMessage_GetSettledTickets" SpName="Acc_CRM_ChatBot_VodingMessage_GetSettledTickets" DbName="DBTXN.bodb02.bodbAdminNet" />
@@ -102,7 +102,7 @@
     <Function Name="Result Amendment">
         <Setting Key="Acc_CRM_AmendmentNoti_SystemSettingSel" SpName="Acc_CRM_AmendmentNoti_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AmendmentNotificationSel" SpName="Acc_CRM_AmendmentNotificationSel" DbName="DBEXT.bodb02.bodbAdminNet" />
-        <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoIns" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" SpName="Acc_CRM_AmendmentNoti_AutoFeedbackInfoUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
@@ -114,7 +114,7 @@
         <Setting Key="Acc_CRM_FailVoidingMessageSel" SpName="Acc_CRM_FailVoidingMessageSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_BatchUpd" SpName="Acc_CRM_VoidingAutoFeedbackInfo_BatchUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Ins" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Ins" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
-        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Sel" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Sel_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Sel" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Sel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_Voiding_SystemSettingSel" SpName="Acc_CRM_Voiding_SystemSettingSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AutoVoidingMessageSel" SpName="Acc_CRM_AutoVoidingMessageSel" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
         <Setting Key="Acc_CRM_AutoVoidingMessageUpd" SpName="Acc_CRM_AutoVoidingMessageUpd" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
@@ -132,11 +132,11 @@
     <Function Name="VoidBetID">
         <Setting Key="Acc_CRM_AutoFB_VoidByBetID_GetMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_GetMessage" DbName="DBMSG.bodb_Message.bodbAdminNet" />
         <Setting Key="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" DbName="DBACC.bodb02.bodbAdminNet" />
-        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_Import" SpName="Acc_CRM_AutoFB_VoidByBetID_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_Import" SpName="Acc_CRM_AutoFB_VoidByBetID_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
     <Function Name="AbnormalBet">
         <Setting Key="Acc_CRM_AutoFB_AbnormalBets_GetVoidedInfo" SpName="Acc_CRM_AutoFB_AbnormalBets_GetVoidedInfo" DbName="DBACC.bodb02.bodbAdminNet" />
         <Setting Key="Acc_CRM_AutoFB_AbnormalBets_GetMessage" SpName="Acc_CRM_AutoFB_AbnormalBets_GetMessage" DbName="DBMSG.bodb_Message.bodbAdminNet" />
-        <Setting Key="Acc_CRM_AutoFB_AbnormalBets_Import" SpName="Acc_CRM_AutoFB_AbnormalBets_Import_xtest" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
+        <Setting Key="Acc_CRM_AutoFB_AbnormalBets_Import" SpName="Acc_CRM_AutoFB_AbnormalBets_Import" DbName="DBCRM.bodb_CRM.bodbAdminNet" />
     </Function>
 </Functions>
