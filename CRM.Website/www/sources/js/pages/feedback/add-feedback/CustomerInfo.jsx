@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
@@ -11,15 +11,14 @@ export class CustomerInfo extends PureComponent{
         super(props);
         this.state = {
             isHostOnCurrentCustomer: false,
-            headlineStaffInfoCommunications: []
+            headlineStaffInfoCommunications: [],
+            guestCommunicationInfos: []
         };
     }
 
     componentDidMount() {
         checkHostPermissionOnCurrentCustomer().then(response => {
-            this.setState({
-                isHostOnCurrentCustomer: response
-            });
+            this.setState({isHostOnCurrentCustomer: response});
         });
         this.getHeadlineStaffInfoCommunications();
         this.getOtherAccountCommunicationInfos();
@@ -117,25 +116,32 @@ export class CustomerInfo extends PureComponent{
             {
                 headlineCommunicationInfo.map(item => {
                     return <>
-                        <p>{item.picName}</p>
-                        <div>
+                        <div className="separate">
+                            <hr />
+                        </div>
+                        <div className="bold">{item.picName}</div>
+                        <Form.Group as={Row} className="pt-2">
                             {
-                                item.picCommunicationTools.map((itemCom, indexCom) => {
+                                item.picCommunicationTools.map(itemCom => {
                                     return <>
-                                        <Form.Group>
-                                            <Form.Label htmlFor="title">
-                                                {itemCom.name}
-                                            </Form.Label>
-                                            <Form.Control type="text" size="sm" value={itemCom.value} className="shadow-none" autoComplete="off"
-                                                onChange={event => {
-                                                    this.props.handleChangeValueInfo('headlineStaffInfoCommunications',
-                                                        this.handleChangeHeadlineStaffInfoCommunications(event.target.value, itemCom.index));
-                                                }}/>
-                                        </Form.Group>                                        
+                                        <Col sm="4" md="4">
+                                            <Form.Group as={Row}>
+                                                <Form.Label column sm="4" md="4" htmlFor="title">
+                                                    {itemCom.name}
+                                                </Form.Label>
+                                                <Col sm="8" md="8">
+                                                    <Form.Control type="text" size="sm" value={itemCom.value} className="shadow-none" autoComplete="off"
+                                                        onChange={event => {
+                                                            this.props.handleChangeValueInfo('headlineStaffInfoCommunications',
+                                                                this.handleChangeHeadlineStaffInfoCommunications(event.target.value, itemCom.index));
+                                                        }} />
+                                                </Col>
+                                            </Form.Group>
+                                        </Col>
                                     </>
                                 })
                             }
-                        </div>
+                        </Form.Group>
                     </>
                 })
             }
@@ -144,22 +150,118 @@ export class CustomerInfo extends PureComponent{
 
     renderOtherAccountCommunication = (customerInfo) => {
         return <>
-            {
-                customerInfo.otherAccountCommunicationInfos.map((item, index) => {
-                    return <>
-                        <Form.Group>
-                            <Form.Label htmlFor="title">
-                                {item.communiationName}
-                            </Form.Label>
-                            <Form.Control type="text" size="sm" value={item.communicationValue} className="shadow-none" autoComplete="off"
-                                onChange={event => {
-                                    this.props.handleChangeValueInfo('otherAccountCommunicationInfos',
-                                        this.handleChangeOtherAccountCommunicationInfos(event.target.value, index));
-                                }}/>
+            <div className="separate">
+                <hr />
+            </div>
+            <Form.Group as={Row} className="pt-2">
+                {
+                    customerInfo.otherAccountCommunicationInfos.map((item, index) => {
+                        return <>
+                            <Col sm="4" md="4">
+                                <Form.Group as={Row}>
+                                    <Form.Label column sm="4" md="4" htmlFor="title">
+                                        {item.communiationName}
+                                    </Form.Label>
+                                    <Col sm="8" md="8">
+                                        <Form.Control type="text" size="sm" value={item.communicationValue} className="shadow-none" autoComplete="off"
+                                            onChange={event => {
+                                                this.props.handleChangeValueInfo('otherAccountCommunicationInfos',
+                                                    this.handleChangeOtherAccountCommunicationInfos(event.target.value, index));
+                                            }} />
+                                    </Col>
+                                </Form.Group>
+                            </Col>
+                        </>
+                    })
+                }
+            </Form.Group>
+        </>
+    }
+
+    getWidth = (picCommunicationTool, settingCommunicationTool) =>
+        (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.communicationID).settingValue.length) + 17;
+
+    renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
+
+    handleChangeGuestCommunicationInfo = (name, value, index) => {
+        let { guestCommunicationInfos } = this.state;
+        guestCommunicationInfos[index][name] = value;
+        this.setState({ guestCommunicationInfos: guestCommunicationInfos });
+        this.props.handleChangeValueInfo('guestCommunicationInfos', guestCommunicationInfos);
+    }
+
+    addNewGuestCommunicationTool = () => {
+        let { guestCommunicationInfos } = this.state;
+        guestCommunicationInfos.push({
+            communicationID: '',
+            value: '',
+        });
+        this.setState({ guestCommunicationInfos: guestCommunicationInfos });
+        this.props.handleChangeValueInfo('guestCommunicationInfos', guestCommunicationInfos);
+    }
+
+    deleteGuestCommunicationTool = (value, type) => {
+        const data = [...this.state.guestCommunicationInfos];
+        const index = data.findIndex(comTool => comTool.communicationID === type && comTool.communicationValue === value);
+        data.splice(index, 1);
+        this.setState({ guestCommunicationInfos: data });
+        this.props.handleChangeValueInfo('guestCommunicationInfos', data);
+    }
+
+    renderGuestCommunication () {
+        const { guestCommunicationInfos } = this.state;
+        const { settingCommunicationTool } = this.props;
+        return <>
+            <div className="separate">
+                <hr />
+            </div>
+            <div className="add-comm-tool">
+                <Button className='btn-add' variant="primary" size="sm" onClick={this.addNewGuestCommunicationTool}>
+                    {LangHelper.getResource('AddCommunicationTool')}
+                </Button>
+                <div>
+                    {
+                        guestCommunicationInfos.length !== 0 &&
+                        <Form.Group as={Row} className="pt-2">
+                            {
+                                guestCommunicationInfos.map((picCommunicationTool, index) => {
+                                    return <>
+                                        <Col sm="4" md="4">
+                                            <Form.Group as={Row}>
+                                                <div className="custom-label-communicationTool">
+                                                    <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="CommunicationID" id="CommunicationID"
+                                                        style={{
+                                                            width: `${picCommunicationTool.communicationID !== '' ? this.getWidth(picCommunicationTool, this.props.settingCommunicationTool) : 115}px`
+                                                        }}
+                                                        value={picCommunicationTool.communicationID} onChange={event => {
+                                                            this.handleChangeGuestCommunicationInfo('communicationID', parseInt(event.target.value, 10), index);
+                                                        }}>
+                                                        <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                                        {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                                    </Form.Control>
+                                                </div>
+                                                <Col sm="8" md="8" className="guest-communication-value">
+                                                    <Form.Control type="text" size="sm" value={picCommunicationTool.communicationValue} className="shadow-none" autoComplete="off"
+                                                        onChange={event => {
+                                                            this.handleChangeGuestCommunicationInfo('communicationValue', event.target.value, index);
+                                                        }} />
+                                                    <div onClick={() => { this.deleteGuestCommunicationTool(picCommunicationTool.communicationValue, picCommunicationTool.communicationID); }}
+                                                        className='icon icon-delete'>
+                                                    </div>
+                                                </Col>
+                                            </Form.Group>
+                                        </Col>
+                                    </>
+                                })
+                            }
                         </Form.Group>
-                    </>
-                })
-            }
+                    }
+                    {
+                        guestCommunicationInfos.length === 0 &&
+                        <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
+                    }
+                </div>
+            </div>
         </>
     }
 
@@ -320,10 +422,7 @@ export class CustomerInfo extends PureComponent{
                         </Col>
                         {this.renderLicenseeType(customerInfo, handleChange)}
                     </Form.Group>
-                }
-                <div className="separate">
-                    <hr />
-                </div>        
+                }                   
                 {
                     !isGuest && customerDetail.isGroupHeadLine &&
                     this.renderHeadlineAccountCommunication(customerInfo)
@@ -334,7 +433,7 @@ export class CustomerInfo extends PureComponent{
                 }
                 {
                     isGuest && 
-                    <p>Add Guest Feedback</p>
+                    this.renderGuestCommunication()
                 }
             </div>
         );

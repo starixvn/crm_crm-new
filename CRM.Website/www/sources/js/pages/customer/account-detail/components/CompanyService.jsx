@@ -68,18 +68,21 @@ export class CompanyService extends Component {
             if (!this.state.companyService || !initialValues) {
                 return null;
             }
+            this.handleComfirmChangeTab(activeTab, initialValues);            
+        }
+    }
 
-            if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'headlineStaffsAndAuthority') {
-                if (JSON.stringify(this.state.companyService).toString() === JSON.stringify(initialValues).toString() ||
-                    this.state.headlineInfoPolicy !== Policy.Host) {
-                    this.props.setShowConfirmUnSaved(false);
-                    this.props.setActiveTab({
-                        currentTab: activeTab.nextTab,
-                        nextTab: null
-                    });
-                } else {
-                    this.props.setShowConfirmUnSaved(true);
-                }
+    handleComfirmChangeTab(activeTab, initialValues) {
+        if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'headlineStaffsAndAuthority') {
+            if (JSON.stringify(this.state.companyService).toString() === JSON.stringify(initialValues).toString() ||
+                this.state.headlineInfoPolicy !== Policy.Host) {
+                this.props.setShowConfirmUnSaved(false);
+                this.props.setActiveTab({
+                    currentTab: activeTab.nextTab,
+                    nextTab: null
+                });
+            } else {
+                this.props.setShowConfirmUnSaved(true);
             }
         }
     }

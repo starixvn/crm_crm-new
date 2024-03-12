@@ -393,7 +393,6 @@ export class AppContainer extends Component {
         );
     }
 
-
     renderAccountPIC = (values, canEditHeadline) => {
         return (
             <Form className='group-account'>

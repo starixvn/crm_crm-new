@@ -24,6 +24,7 @@ export class AppContainer extends Component {
     componentDidMount() {
         this.props.getAllSettings();
         this.props.getBalanceUpday();
+        this.props.getSettingPicCommunicationTools();
         document.title = LangHelper.getResource('AddGuestFeedback');
     }
 
@@ -32,8 +33,9 @@ export class AppContainer extends Component {
      }
 
     render() {
-        const { settings, balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult, getFeedbackSubjectTemplates, setFeedbackSubjectTemplates } = this.props;
-        if (settings === null || balanceUpday === null ) {
+        const { settings, balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult,
+            getFeedbackSubjectTemplates, setFeedbackSubjectTemplates, settingCommunicationTool } = this.props;
+        if (settings === null || balanceUpday === null || settingCommunicationTool === null ) {
             return null;
         }
         return (
@@ -42,7 +44,7 @@ export class AppContainer extends Component {
                 confirmCreateGuestDialog={confirmCreateGuestDialog} addFeedbackResult={addFeedbackResult} verifyUserName={this.props.verifyUserName}
                 getTicketInfoByRef={this.props.getTicketInfoByRef} setAddFeedback={this.props.setAddFeedback} addFeedback={this.props.addFeedback}
                 setConfirmCreateGuestDialog={this.props.setConfirmCreateGuestDialog} getFeedbackSubjectTemplates={getFeedbackSubjectTemplates}
-                setFeedbackSubjectTemplates={setFeedbackSubjectTemplates} isGuest={true}
+                setFeedbackSubjectTemplates={setFeedbackSubjectTemplates} isGuest={true} settingCommunicationTool={settingCommunicationTool}
             />
         );
     }
@@ -51,9 +53,9 @@ export class AppContainer extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const { settings, balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult } = state;
+    const { settings, balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult, settingCommunicationTool } = state;
     return {
-        settings, balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult
+        settings, balanceUpday, feedbackSubjectTemplates, confirmCreateGuestDialog, addFeedbackResult, settingCommunicationTool
     };
 };
 

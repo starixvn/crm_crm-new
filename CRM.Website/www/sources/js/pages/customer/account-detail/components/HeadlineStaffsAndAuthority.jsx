@@ -52,17 +52,21 @@ export class HeadlineStaffsAndAuthority extends Component {
             if (!this.state.headlineStaffsAndAuthority || !initialValues) {
                 return null;
             }
-            if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'companyService') {
-                if (JSON.stringify(this.state.headlineStaffsAndAuthority).toString() === JSON.stringify(initialValues).toString() ||
-                    this.state.headlineInfoPolicy !== Policy.Host) {
-                    this.props.setShowConfirmUnSaved(false);
-                    this.props.setActiveTab({
-                        currentTab: activeTab.nextTab,
-                        nextTab: null
-                    });
-                } else {
-                    this.props.setShowConfirmUnSaved(true);
-                }
+            this.handleComfirmChangeTab(activeTab, initialValues);            
+        }
+    }
+
+    handleComfirmChangeTab(activeTab, initialValues) {
+        if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'companyService') {
+            if (JSON.stringify(this.state.headlineStaffsAndAuthority).toString() === JSON.stringify(initialValues).toString() ||
+                this.state.headlineInfoPolicy !== Policy.Host) {
+                this.props.setShowConfirmUnSaved(false);
+                this.props.setActiveTab({
+                    currentTab: activeTab.nextTab,
+                    nextTab: null
+                });
+            } else {
+                this.props.setShowConfirmUnSaved(true);
             }
         }
     }

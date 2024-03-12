@@ -4,6 +4,7 @@ const initialState ={
     balanceUpday: null,
     addFeedbackResult: null,
     feedbackSubjectTemplates: [],
+    settingCommunicationTool: null,
     confirmCreateGuestDialog: { show: false }
 };
 const addGuestFeedbackSlice = createSlice({
@@ -25,6 +26,9 @@ const addGuestFeedbackSlice = createSlice({
         },
         setConfirmCreateGuestDialog: (state, action) => {
             state.confirmCreateGuestDialog = action.payload;
+        },
+        setSettingCommunicationTool: (state, action) => {
+            state.settingCommunicationTool = action.payload;
         }
     }
 });
@@ -38,7 +42,8 @@ export const {
     setFeedbackSubjectTemplates,
     setAddFeedback,
     setDuplicateFeedbackResult,
-    setConfirmCreateGuestDialog
+    setConfirmCreateGuestDialog,
+    setSettingCommunicationTool
 } = actions;
 
 export default reducer;

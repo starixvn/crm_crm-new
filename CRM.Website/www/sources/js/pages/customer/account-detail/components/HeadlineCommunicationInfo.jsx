@@ -40,23 +40,27 @@ export class HeadlineCommunicationInfo extends Component {
             if (!this.state.headlineCommunicationInfo || !initialValues) {
                 return null;
             }
-            if (activeTab.nextTab === 'headlineStaffsAndAuthority' || activeTab.nextTab === 'companyService') {
-                if (JSON.stringify(this.state.headlineCommunicationInfo).toString() === JSON.stringify(initialValues).toString() ||
-                    this.state.headlineInfoPolicy !== Policy.Host) {
-                    this.props.setShowConfirmUnSaved(false);
-                    this.props.setActiveTab({
-                        currentTab: activeTab.nextTab,
-                        nextTab: null
-                    });
-                } else {
-                    this.props.setShowConfirmUnSaved(true);
-                }
-            }
+            this.handleComfirmChangeTab(activeTab, initialValues);            
         }     
 
         if (window.picID !== undefined) {
             document.querySelector("#tab-headline-communicaion-info").scrollTo(0, document.querySelector(`#row-${window.picID}`).offsetTop - 437);
             window.picID = undefined;
+        }
+    }
+
+    handleComfirmChangeTab(activeTab, initialValues) {
+        if (activeTab.nextTab === 'headlineStaffsAndAuthority' || activeTab.nextTab === 'companyService') {
+            if (JSON.stringify(this.state.headlineCommunicationInfo).toString() === JSON.stringify(initialValues).toString() ||
+                this.state.headlineInfoPolicy !== Policy.Host) {
+                this.props.setShowConfirmUnSaved(false);
+                this.props.setActiveTab({
+                    currentTab: activeTab.nextTab,
+                    nextTab: null
+                });
+            } else {
+                this.props.setShowConfirmUnSaved(true);
+            }
         }
     }
     

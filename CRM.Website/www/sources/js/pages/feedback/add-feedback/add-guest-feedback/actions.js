@@ -6,7 +6,8 @@ import {
     setFeedbackSubjectTemplates,
     setAddFeedback,
     setConfirmCreateGuestDialog,
-    resetState
+    resetState,
+    setSettingCommunicationTool
 } from './addGuestFeedbackSlice';
 
 const getAllSettings = () => async dispatch => {
@@ -50,6 +51,14 @@ const getTicketInfoByRef = refNo => async () => {
     return await DataService.getDataAsync(url, refNo).then(response => response.data).catch(Site.handleAxiosError);
 };
 
+const getSettingPicCommunicationTools = () => async dispatch => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('AccountDetail/GetSettingPicCommunicationTools');
+    await DataService.postDataAsync(url).then(response => {
+        dispatch(setSettingCommunicationTool(response.data));
+    }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+};
+
 export const ActionCreators = {
     setAllSettings,
     getAllSettings,
@@ -61,6 +70,8 @@ export const ActionCreators = {
     setAddFeedback,
     verifyUserName,
     setConfirmCreateGuestDialog,
+    setSettingCommunicationTool,
     getTicketInfoByRef,
-    resetState
+    resetState,
+    getSettingPicCommunicationTools
 };

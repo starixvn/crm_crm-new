@@ -53,6 +53,7 @@ export class AppContainer extends Component {
                 addFeedbackResult={addFeedbackResult} verifyUserName={this.props.verifyUserName} getTicketInfoByRef={this.props.getTicketInfoByRef}
                 setAddFeedback={this.props.setAddFeedback} duplicateFeedbackResult={duplicateFeedbackResult} addFeedback={this.props.addFeedback}
                 getFeedbackSubjectTemplates={getFeedbackSubjectTemplates} setFeedbackSubjectTemplates={setFeedbackSubjectTemplates} isGuest={false}
+                settingCommunicationTool={ null }
             />
         );
     }

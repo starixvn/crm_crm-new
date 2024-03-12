@@ -43,6 +43,59 @@
             }
         }
 
+        .bold {
+            font-weight: bold;
+        }
+
+        .add-comm-tool {
+            padding-bottom: 10px;
+
+            .guest-communication-value {
+                display: flex;
+            }
+
+            .btn-add {
+                margin: 12px 12px 12px 0px;
+            }
+
+            .no-data {
+                border-radius: 3px;
+                border: 1px #b7b7b7 solid;
+                padding: 9px 48px;
+                margin: auto;
+                width: fit-content;
+            }
+
+            .custom-label-communicationTool {
+                flex: 0 0 33.33333333%;
+                max-width: 33.33333333%;
+                padding-left: 15px;
+            }
+
+            .custom-select-communicationTool {
+                border: none;
+                background: url(/www/dist/css/images/icon/icon-dropdown.svg) no-repeat;
+                appearance: none;
+                background-position: right;
+            }
+
+            .icon-delete {
+                height: 16px;
+                width: 16px;
+                background: url("/www/dist/css/images/icon/icon-delete.svg");
+                background-repeat: no-repeat;
+                background-size: 16px 16px;
+                margin: auto;
+
+                &:hover {
+                    background: url("/www/dist/css/images/icon/icon-delete-hover.svg");
+                    background-repeat: no-repeat;
+                    background-size: 16px 16px;
+                    margin: auto;
+                }
+            }
+        }
+
         .code-country {
             margin-right: 1%;
             width: 19%;
