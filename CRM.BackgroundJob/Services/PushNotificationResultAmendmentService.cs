@@ -9,7 +9,11 @@
     {
         Task<MncMessageTarget> GetPreparePushNotificationAsync();
 
-        Task<MncNotification> GetMessagePushResultAmendmentAsync(string mnc_msg, string mnc_msgTarget);
+        Task GetMessagePushResultAmendmentAsync(int notificationID, string jsNotification);
+
+        Task EditPushNotificationResultAmendmentAsync(int notificationID, int messageID, string updType);
+
+        Task EditPushMessageResultAmendmentAsync(int messageID, string updType);
 
         Task InsertPushResultAmendmentAsync(string notificationIDs, string messageIDs);
     }
@@ -29,14 +33,35 @@
             return await baseService.GetDataEntityAsync<MncMessageTarget>(criteria);
         }
 
-        public async Task<MncNotification> GetMessagePushResultAmendmentAsync(string mnc_msg, string mnc_msgTarget)
+        public async Task GetMessagePushResultAmendmentAsync(int notificationID, string jsNotification)
         {
-            var criteria = new GetMessagePushResultAmendmentCriteria
+            var command = new GetPushResultAmendmentCommand
             {
-                MNC_Msg = mnc_msg,
-                MNC_MsgTarget = mnc_msgTarget
+                NotificationID = notificationID,
+                JSNotification = jsNotification
             };
-            return await baseService.GetDataEntityAsync<MncNotification>(criteria);
+            await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task EditPushNotificationResultAmendmentAsync(int notificationID, int messageID, string updType)
+        {
+            var command = new EditNotiResultAmendmentCommand
+            {
+                NotificationID = notificationID,
+                MessageID = messageID,
+                UpdType = updType
+            };
+            await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task EditPushMessageResultAmendmentAsync(int messageID, string updType)
+        {
+            var command = new EditMessageResultAmendmentCommand
+            {
+                MessageID = messageID,
+                UpdType = updType
+            };
+            await baseService.ExecuteNonQueryAsync(command);
         }
 
         public async Task InsertPushResultAmendmentAsync(string notificationIDs, string messageIDs)

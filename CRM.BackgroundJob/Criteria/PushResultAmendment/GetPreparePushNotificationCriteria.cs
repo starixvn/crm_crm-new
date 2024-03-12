@@ -4,7 +4,7 @@
 
     public class GetPreparePushNotificationCriteria : CriteriaBase
     {
-        public override string GetSettingKey() => "MNC_PreparePushNotification";
+        public override string GetSettingKey() => "MNC_PushNotification_PrepareNoti";
 
         public override bool IsValid() => true;
     }

@@ -2,8 +2,8 @@
 {
     public class MncMessageTarget
     {
-        public string MNC_Msg {  get; set; }
+        public int NotificationID {  get; set; }
 
-        public string MNC_MsgTarget { get; set; }
+        public string JSNotification { get; set; }
     }
 }

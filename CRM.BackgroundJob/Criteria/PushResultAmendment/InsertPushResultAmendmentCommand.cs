@@ -8,7 +8,7 @@
 
         public string MessageIDs { get; set; }
 
-        public override string GetSettingKey() => "MNC_CompletedPushNotification";
+        public override string GetSettingKey() => "MNC_PushNotification_Complete";
 
         public override bool IsValid() => true;
     }
