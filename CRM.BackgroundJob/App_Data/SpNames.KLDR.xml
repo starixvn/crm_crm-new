@@ -147,9 +147,11 @@
         <Setting Key="MNC_ResultAmendment_GenNotification" SpName="MNC_ResultAmendment_GenNotification" DbName="DBCRM.MessageNotification.bodbAdminNet" />
         <Setting Key="MNC_ResultAmendment_GetNotificationIDs" SpName="MNC_ResultAmendment_GetNotificationIDs" DbName="DBCRM.MessageNotification.bodbAdminNet" />
         <Setting Key="MNC_ResultAmendment_JSParseResult" SpName="MNC_ResultAmendment_JSParseResult" DbName="DBCRM.MessageNotification.bodbAdminNet" />
-        <Setting Key="MNC_PreparePushNotification" SpName="MNC_PreparePushNotification" DbName="DBCRM.MessageNotification.bodbAdminNet" />
-        <Setting Key="MNC_PushNotification" SpName="MNC_PushNotification" DbName="DBMSG.bodb_Message.bodbAdminNet" />
-        <Setting Key="MNC_CompletedPushNotification" SpName="MNC_CompletedPushNotification" DbName="DBCRM.MessageNotification.bodbAdminNet" />
+        <Setting Key="MNC_PushNotification_PrepareNoti" SpName="MNC_PushNotification_PrepareNoti" DbName="DBCRM.MessageNotification.bodbAdminNet" />
+        <Setting Key="MNC_PushNotification_MsgIns" SpName="MNC_PushNotification_MsgIns" DbName="DBMSG.bodb_Message.bodbAdminNet" />
+        <Setting Key="MNC_PushNotification_NotiUpd" SpName="MNC_PushNotification_NotiUpd" DbName="DBCRM.MessageNotification.bodbAdminNet" />
+        <Setting Key="MNC_PushNotification_MsgUpd" SpName="MNC_PushNotification_MsgUpd" DbName="DBMSG.bodb_Message.bodbAdminNet" />
+        <Setting Key="MNC_PushNotification_Complete" SpName="MNC_PushNotification_Complete" DbName="DBCRM.MessageNotification.bodbAdminNet" />
     </Function>
 >
 </Functions>
