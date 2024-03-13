@@ -111,7 +111,7 @@
                     command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
                     command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
                     command.IsCommunicationLog = false;
-                    command.CommunicationTools = XMLNewCommunicationTools(command);
+                    command.NewCommunicationTools = XMLNewCommunicationTools(command);
                     var result = await baseService.ExecuteNonQueryAsync(command);
                     var logMessage = new LogMessage("Add Customer Feedback Params:")
                        .AddMessage(JsonConvert.SerializeObject(command, Formatting.Indented))
@@ -137,17 +137,17 @@
         {
             if (command.IsHeadline)
             {
-                command.CommunicationTools = command.HeadlineStaffInfoCommunications.Any() ? 
+                command.NewCommunicationTools = command.HeadlineStaffInfoCommunications.Any() ? 
                     command.HeadlineStaffInfoCommunications.ToXML("ROOT").ToString() 
                     : string.Empty;
             }
             else
             {
-                command.CommunicationTools = command.OtherAccountCommunicationInfos.Any() ?
+                command.NewCommunicationTools = command.OtherAccountCommunicationInfos.Any() ?
                     command.OtherAccountCommunicationInfos.ToXML("ROOT").ToString()
                     : string.Empty;
             }
-            return command.CommunicationTools;
+            return command.NewCommunicationTools;
         }
 
         private async Task<CommandResult> CheckAddCustomerFeedbackPermission()

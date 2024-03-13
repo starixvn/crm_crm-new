@@ -1,6 +1,6 @@
-﻿namespace CRM.Models.Feedback
+﻿namespace CRM.Models.Feedback.AddCustomerFeedback
 {
-    public class CommunicationTool
+    public class NewCommunicationTool
     {
         public bool isHeadline { get; set; }
         public string PicInfo { get; set; }

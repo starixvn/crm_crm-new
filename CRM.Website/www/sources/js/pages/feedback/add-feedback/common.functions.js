@@ -191,7 +191,7 @@ export const getParams = (values, customerDetail, settings, state) =>{
         LanguageId: parseInt(values.languageId, 10),
         RefCode: customerInfo?.refCodes,
         SecretCode: customerInfo?.secretCode,
-        IsHeadline: customerDetail.isGroupHeadLine,
+        IsHeadline: customerDetail !== null ? customerDetail.isGroupHeadLine : false,
         IsVIP: customerDetail !== null ? customerDetail.isVIP : false,
         Passport: customerInfo.passportNo,
         SiteId: customerInfo.siteId !== null ? parseInt(customerInfo.siteId, 10) : null,
@@ -294,7 +294,7 @@ export const GetParamsNewUser = (custId, values) => {
 
 const getCommunicationToolAddFeedBack = (communicationTools, customerDetail) => {
     let newCommunicationTools = [];
-    communicationTools.map(item => {
+    communicationTools?.map(item => {
         newCommunicationTools.push({
             isHeadline: customerDetail.isGroupHeadLine,
             picInfo: getPicInfo(item, customerDetail),
@@ -307,7 +307,7 @@ const getCommunicationToolAddFeedBack = (communicationTools, customerDetail) => 
 
 const getCommunicationToolAddGuestFeedBack = communicationTools => {
     let newCommunicationTools = [];
-    communicationTools.map(item => {
+    communicationTools?.map(item => {
         newCommunicationTools.push({
             communicationID: item.picCommunicationId,
             communicationValue: item.picCommunicationValue
@@ -318,7 +318,7 @@ const getCommunicationToolAddGuestFeedBack = communicationTools => {
 
 const getPicInfo = (communicationTool, customerDetail) => {
     let picInfo = "";
-    customerDetail.headlineStaffInfoPics.map(pic => {
+    customerDetail.headlineStaffInfoPics?.map(pic => {
         if (pic.picID === communicationTool.picID) {
             picInfo = (`${pic.picName} (${pic.picRoleName})`);
         }

@@ -1,14 +1,13 @@
 ﻿namespace CRM.Criteria.Feedback.AddFeedback
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using CRM.Core.Constants;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
     using CRM.Models.Feedback;
     using Fanex.Data;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Models.Customer;
 
     public class AddGuestFeedbackCommand : BaseNonQueryCommand
     {
@@ -81,13 +80,9 @@
         public int CreatorId { get; set; }
 
         [SpParam(Ignored = true)]
-        public IEnumerable<Models.Feedback.CommunicationTool> HeadlineStaffInfoCommunications { get; set; }
-        [SpParam(Ignored = true)]
-        public IEnumerable<Models.Feedback.CommunicationTool> OtherAccountCommunicationInfos { get; set; }
-        [SpParam(Ignored = true)]
-        public IEnumerable<Models.Customer.CommunicationTool> GuestCommunicationInfos { get; set; }
+        public IEnumerable<Models.Feedback.AddGuestFeedback.NewCommunicationTool> GuestCommunicationInfos { get; set; }
 
-        public string CommunicationTools { get; set; }
+        public string NewCommunicationTools => GuestCommunicationInfos.Any() ? GuestCommunicationInfos.ToXML("ROOT").ToString() : string.Empty;
 
         public string Review { get; set; }
 

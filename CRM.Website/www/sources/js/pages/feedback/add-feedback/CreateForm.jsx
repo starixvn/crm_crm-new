@@ -779,10 +779,9 @@ export class CreateForm extends Component {
     };
 
     checkCustomerExistsOnCRM = async () => {
-        const { customerInfo } = this.props;
         Site.blockUI();
         const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
-        await DataService.postDataAsync(url, { customerId: customerInfo.custId }).then(async response => {
+        await DataService.postDataAsync(url, { customerId: this.props.customerDetail.custId }).then(async response => {
             if (response.data === 1) {
                 this.createFeedback();
             } else {
@@ -806,41 +805,41 @@ export class CreateForm extends Component {
     createFeedback = () => {
         const { params } = this.props.confirmCreateGuestDialog;
         this.formik.setSubmitting(true);
-        //this.props.addFeedback(params).then(() => {
-        //    this.setState({ checkDuplicateDialog: { show: false } });
-        //    this.props.setConfirmCreateGuestDialog({ show: false });
-        //    if (this.props.addFeedbackResult && this.props.addFeedbackResult.isSuccessful) {
-        //        const paramsCustomer = {
-        //            searchInfo: params.UserName,
-        //            isGuest: !this.props.currentCustomer ? true : this.props.currentCustomer.isGuest
-        //        };
-        //        const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
-        //        DataService.postDataAsync(url, paramsCustomer).then(response => {
-        //            if (!response || !response.data) {
-        //                return;
-        //            }
-        //            if(this.props.addFeedbackResult.isSuccessful){
-        //                const data = response.data;
-        //                console.log(data);
-        //                const currentCustomer = {
-        //                    custId: data.custId,
-        //                    isGuest: data.isGuest,
-        //                    username: data.username,
-        //                    isCreditSite: data.customerType === 1
-        //                };
-        //                const state = this.props.currentCustomer || currentCustomer;
-        //                setTimeout(() => {
-        //                    if((this.props.currentCustomer && params.IsOverWrite) || !this.props.currentCustomer){
-        //                        window.localStorage.setItem('updateLeftPanel', data.custId);
-        //                    }
-        //                    this.props.navigate(Site.resolveClientUrl('Dashboard'), {state: state});
-        //                }, 3000);
-        //            }
-        //        }).catch(Site.handleAxiosError);
-        //    }else{
-        //        this.formik.setSubmitting(false);
-        //    }
-        //}).catch(Site.handleAxiosError);
+        this.props.addFeedback(params).then(() => {
+            this.setState({ checkDuplicateDialog: { show: false } });
+            this.props.setConfirmCreateGuestDialog({ show: false });
+            if (this.props.addFeedbackResult && this.props.addFeedbackResult.isSuccessful) {
+                const paramsCustomer = {
+                    searchInfo: params.UserName,
+                    isGuest: !this.props.currentCustomer ? true : this.props.currentCustomer.isGuest
+                };
+                const url = Site.resolveClientUrl('CustomerInfo/GetCustomerInfo');
+                DataService.postDataAsync(url, paramsCustomer).then(response => {
+                    if (!response || !response.data) {
+                        return;
+                    }
+                    if(this.props.addFeedbackResult.isSuccessful){
+                        const data = response.data;
+                        console.log(data);
+                        const currentCustomer = {
+                            custId: data.custId,
+                            isGuest: data.isGuest,
+                            username: data.username,
+                            isCreditSite: data.customerType === 1
+                        };
+                        const state = this.props.currentCustomer || currentCustomer;
+                        setTimeout(() => {
+                            if((this.props.currentCustomer && params.IsOverWrite) || !this.props.currentCustomer){
+                                window.localStorage.setItem('updateLeftPanel', data.custId);
+                            }
+                            this.props.navigate(Site.resolveClientUrl('Dashboard'), {state: state});
+                        }, 3000);
+                    }
+                }).catch(Site.handleAxiosError);
+            }else{
+                this.formik.setSubmitting(false);
+            }
+        }).catch(Site.handleAxiosError);
     };
 
     render() {

@@ -104,9 +104,6 @@
             command.IP = ClientIP;
             command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
             command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
-            command.CommunicationTools = command.GuestCommunicationInfos.Any() ?
-                command.GuestCommunicationInfos.ToXML("ROOT").ToString()
-                : string.Empty;
             var result = await baseService.ExecuteNonQueryAsync(command);
             return Json(result);
         }
