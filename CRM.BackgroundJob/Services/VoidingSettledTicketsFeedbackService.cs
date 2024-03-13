@@ -559,11 +559,11 @@
                 stringBuilder.AppendFormat(ticketDescTemplate.Outright, eventDetail.Leaguenametc, kO_time, leagueName, homeName, Constants.Break);
             }
 
-            if ((productName == "Sportsbook" && eventDetail.EventType != EventType2) || productName == "Virtual Sports 2" || productName == "Virtual Sports 3")
+            if ((productName == "Sportsbook" && eventDetail.EventType != EventType2) || productName == "Virtual Sports 2" || productName == "Virtual Sports 3" || productName == "Virtual Sports 4")
             {
                 stringBuilder.AppendFormat(line, Constants.Break);
                 string league = leagueName;
-                if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase))
+                if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase) || productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase))
                 {
                     league = sportName;
                 }
