@@ -61,7 +61,7 @@
 }
 
 .crm-container{
-    margin: 0;
+    margin: 6px;
     padding: 0;
     width: 100%;
     position: absolute;
@@ -83,7 +83,7 @@
     #fix-header-menu{
         position: sticky;
         width: 100%;
-        top: 0;
+        top: 6px;
         z-index: 999;
 
         .header{
