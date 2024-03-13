@@ -240,7 +240,7 @@ export class AppContainer extends Component {
         const siteOptions = changeSiteSetting(this.props.allSettings.sites, 'childSites', 'childSites');
 
         return (
-            <Form className={`group-account ${this.state.updateHeadlineInfoPolicy >= Policy.Read || !this.props.customerInfo.isGroupHeadLine && 'acc-info'}`}>
+            <Form className={`group-account ${(this.state.updateHeadlineInfoPolicy >= Policy.Read || !this.props.customerInfo.isGroupHeadLine) && 'acc-info'}`}>
                 <div className='group-title group-tab'>
                     <div className="group-title-tab" onClick={this.handleShowAccountInfo}>
                         Account Info

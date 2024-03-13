@@ -183,49 +183,17 @@ export const getParams = (values, customerDetail, settings, state) =>{
 
     const params = {
         CustId: customerDetail !== null ? customerDetail.custId : null,
-        IsOverWrite: customerInfo.isOverwriteInfo,
         UserName: customerDetail !== null ? customerDetail.username : values.identityInformation,
         FirstName: customerInfo.firstName,
         lastName: customerInfo.lastName,
         TitleId: parseInt(customerInfo.title, 10),
         Birthday: customerInfo.birthday === '' ? null : DateTimeService.toShortDateTimeFormat(new Date(customerInfo.birthday)),
         LanguageId: parseInt(values.languageId, 10),
-        Phone: customerInfo.phoneNumber,
-        PhoneCountryCode: customerInfo.countryCode,
-        PhoneAreaCode: customerInfo.areaCode,
-        Phone2: customerInfo.phoneNumber2,
-        Phone2CountryCode: customerInfo.countryCode2,
-        Phone2AreaCode: customerInfo.areaCode2,
-        Phone3: customerInfo.phoneNumber3,
-        Phone3CountryCode: customerInfo.countryCode3,
-        Phone3AreaCode: customerInfo.areaCode3,
         RefCode: customerInfo?.refCodes,
         SecretCode: customerInfo?.secretCode,
+        IsHeadline: customerDetail.isGroupHeadLine,
         IsVIP: customerDetail !== null ? customerDetail.isVIP : false,
         Passport: customerInfo.passportNo,
-        MobilePhone: customerInfo.mobilePhoneNumber,
-        MobilePhoneCountryCode: customerInfo.mobileCountryCode,
-        MobilePhoneAreaCode: customerInfo.mobileAreaCode,
-        Fax: customerInfo.faxNumber,
-        FaxCountryCode: customerInfo.faxCountryCode,
-        FaxAreaCode: customerInfo.faxAreaCode,
-        Email: customerInfo.email,
-        Skype: customerInfo.skype,
-        MSN: customerInfo.telegram,
-        Pic1: customerInfo.pic1PhoneNumber,
-        Pic2: customerInfo.pic2PhoneNumber,
-        Pic3: customerInfo.pic3PhoneNumber,
-        Pic4: customerInfo.pic4PhoneNumber,
-        Pic1Name: customerInfo.pic1Name,
-        Pic2Name: customerInfo.pic2Name,
-        Pic3Name: customerInfo.pic3Name,
-        Pic4Name: customerInfo.pic4Name,
-        WeChat: customerInfo.weChat,
-        WhatsApp: customerInfo.whatApp,
-        Line: customerInfo.line,
-        Yahoo: customerInfo.letstalk,
-        QQ: customerInfo.qq,
-        BBM: customerInfo.zalo,
         SiteId: customerInfo.siteId !== null ? parseInt(customerInfo.siteId, 10) : null,
         LicenseeType: parseInt(customerInfo.licenseeType, 10),
         FeedbackDate: DateTimeService.toLongDateTimeFormat(values.feedbackDate),
@@ -246,10 +214,116 @@ export const getParams = (values, customerDetail, settings, state) =>{
         Description: content.description,
         Solution: content.solution,
         NoInquiries: values.noOfInquiries === '' ? 0 : values.noOfInquiries,
-        RelatedCustID: listOfCustomerValid.length > 0 ? listOfCustomerValid.map(x => x.custId).join(',') : null
+        RelatedCustID: listOfCustomerValid.length > 0 ? listOfCustomerValid.map(x => x.custId).join(',') : null,
+        HeadlineStaffInfoCommunications: getCommunicationToolAddFeedBack(customerInfo.headlineStaffInfoCommunications, customerDetail),
+        OtherAccountCommunicationInfos: getCommunicationToolAddFeedBack(customerInfo.otherAccountCommunicationInfos, customerDetail),
+        GuestCommunicationInfos: getCommunicationToolAddGuestFeedBack(customerInfo.guestCommunicationInfos)
     };
 
     return params;
+};
+
+export const GetParamsNewUser = (custId, values) => {
+    return {
+        customerId: custId,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        titleId: values.titleId,
+        birthDay: values.birthDay ? DateTimeService.toShortDateFormat(values.birthDay) : null,
+        languageId: values.languages.toString(),
+        phone: values.phone,
+        phoneCountryCode: values.phoneCountryCode,
+        phoneAreaCode: values.phoneAreaCode,
+        phone2: values.phone2,
+        phone2CountryCode: values.phone2CountryCode,
+        phone2AreaCode: values.phone2AreaCode,
+        phone3: values.phone3,
+        phone3CountryCode: values.phone3CountryCode,
+        phone3AreaCode: values.phone3AreaCode,
+        passport: values.passport,
+        mobilePhone: values.mobilePhoneNumber,
+        mobilePhoneCountryCode: values.mobileCountryCode,
+        mobilePhoneAreaCode: values.mobileAreaCode,
+        fax: values.faxNumber,
+        faxCountryCode: values.faxCountryCode,
+        faxAreaCode: values.faxAreaCode,
+        email: values.email,
+        skype: values.skype,
+        msn: values.telegram,
+        pic1: values.pic1PhoneNumber,
+        pic2: values.pic2PhoneNumber,
+        pic3: values.pic3PhoneNumber,
+        pic4: values.pic4PhoneNumber,
+        pic1Name: values.pic1Name,
+        pic2Name: values.pic2Name,
+        pic3Name: values.pic3Name,
+        pic4Name: values.pic4Name,
+        siteId: values.siteId,
+        bettingCode: values.refCode1,
+        refCode2: values.refCode2,
+        line1: values.homeAddressLine1,
+        line2: values.homeAddressLine2,
+        line3: values.homeAddressLine3,
+        city: values.homeAddressCity,
+        countryId: values.homeAddressCountryId,
+        postCode: values.homeAddressPostCode,
+        state: values.homeAddressState,
+        isVip: values.isVip,
+        ignored: values.isIgnored,
+        introducedBy: values.introducedBy,
+        bankHolderName: values.bankInfoHolderName,
+        bankName: values.bankInfoName,
+        bankAccountNumber: values.bankInfoAccNo,
+        bankSwiftCode: values.bankInfoSwiftCode,
+        bankLine1: values.bankAddressLine1,
+        bankLine2: values.bankAddressLine2,
+        bankLine3: values.bankAddressLine3,
+        bankCity: values.bankAddressCity,
+        bankCode: values.bankAddressPostCode,
+        bankState: values.bankAddressState,
+        bankCountryId: values.bankAddressCountryId,
+        licenseeType: values.licenseeTypeId,
+        whatsApp: values.whatsApp,
+        line: values.line,
+        weChat: values.weChat,
+        yahoo: values.letstalk,
+        qq: values.qq,
+        bbm: values.zalo
+    };
+};
+
+const getCommunicationToolAddFeedBack = (communicationTools, customerDetail) => {
+    let newCommunicationTools = [];
+    communicationTools.map(item => {
+        newCommunicationTools.push({
+            isHeadline: customerDetail.isGroupHeadLine,
+            picInfo: getPicInfo(item, customerDetail),
+            communicationID: item.picCommunicationId,
+            communicationValue: item.picCommunicationValue
+        });
+    });
+    return newCommunicationTools;
+};
+
+const getCommunicationToolAddGuestFeedBack = communicationTools => {
+    let newCommunicationTools = [];
+    communicationTools.map(item => {
+        newCommunicationTools.push({
+            communicationID: item.picCommunicationId,
+            communicationValue: item.picCommunicationValue
+        });
+    });
+    return newCommunicationTools;
+};
+
+const getPicInfo = (communicationTool, customerDetail) => {
+    let picInfo = "";
+    customerDetail.headlineStaffInfoPics.map(pic => {
+        if (pic.picID === communicationTool.picID) {
+            picInfo = (`${pic.picName} (${pic.picRoleName})`);
+        }
+    });
+    return picInfo;
 };
 
 const getDefaultLanguage = languages =>{

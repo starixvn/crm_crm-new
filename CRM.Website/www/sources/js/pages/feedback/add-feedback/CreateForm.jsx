@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import { validateFormik, initValues, initCustomerInfo, initValuesAddCustomerFb, getParams } from './common.functions';
+import { validateFormik, initValues, initCustomerInfo, initValuesAddCustomerFb, getParams, GetParamsNewUser } from './common.functions';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import {
     getSubCategories, getSubProducts, getBetTypes, generateTimeAndToolPrefix,
@@ -753,9 +753,9 @@ export class CreateForm extends Component {
             categories: params.Categories,
             startTime: params.FeedbackDate
         }).then(response => {
-            this.setState({ duplicateFeedbackId: response.data }, () => {
+            this.setState({ duplicateFeedbackId: response.data }, async () => {
                 if (response.data === 0) {
-                     this.createFeedback();
+                    await this.checkCustomerExistsOnCRM();
                 }else {
                     this.setState({ checkDuplicateDialog: { show: true } });
                 }
@@ -769,7 +769,7 @@ export class CreateForm extends Component {
         this.props.setConfirmCreateGuestDialog({ show: false });
     };
 
-    handleCreateFeedback = () => {
+    handleCreateFeedback = async () => {
         const { params } = this.props.confirmCreateGuestDialog;
         if (this.props.customerDetail !== null) {
             this.handleCheckDuplicateFeedback(params);
@@ -777,6 +777,31 @@ export class CreateForm extends Component {
             this.createFeedback();
         }
     };
+
+    checkCustomerExistsOnCRM = async () => {
+        const { customerInfo } = this.props;
+        Site.blockUI();
+        const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
+        await DataService.postDataAsync(url, { customerId: customerInfo.custId }).then(async response => {
+            if (response.data === 1) {
+                this.createFeedback();
+            } else {
+                await this.updateNewCrmCustomer();
+            }
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+    }
+
+    updateNewCrmCustomer = async () => {
+        const { customerDetail } = this.props;
+        const params = GetParamsNewUser(customerDetail.custId, customerDetail);
+        Site.blockUI();
+        const url = Site.resolveClientUrl('AccountDetail/EditCustomerInfoDetail');
+        await DataService.postDataAsync(url, params).then(async response => {
+            if (response.data.isSuccessful) {
+                this.createFeedback();
+            }
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+    }
 
     createFeedback = () => {
         const { params } = this.props.confirmCreateGuestDialog;

@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
+    using Core.Extensions.XML;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
@@ -109,6 +110,8 @@
                     command.IP = ClientIP;
                     command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
                     command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
+                    command.IsCommunicationLog = false;
+                    command.CommunicationTools = XMLNewCommunicationTools(command);
                     var result = await baseService.ExecuteNonQueryAsync(command);
                     var logMessage = new LogMessage("Add Customer Feedback Params:")
                        .AddMessage(JsonConvert.SerializeObject(command, Formatting.Indented))
@@ -128,6 +131,23 @@
                     Message = ex.Message
                 });
             }
+        }
+
+        private static string XMLNewCommunicationTools(AddCustomerFeedbackCommand command)
+        {
+            if (command.IsHeadline)
+            {
+                command.CommunicationTools = command.HeadlineStaffInfoCommunications.Any() ? 
+                    command.HeadlineStaffInfoCommunications.ToXML("ROOT").ToString() 
+                    : string.Empty;
+            }
+            else
+            {
+                command.CommunicationTools = command.OtherAccountCommunicationInfos.Any() ?
+                    command.OtherAccountCommunicationInfos.ToXML("ROOT").ToString()
+                    : string.Empty;
+            }
+            return command.CommunicationTools;
         }
 
         private async Task<CommandResult> CheckAddCustomerFeedbackPermission()
