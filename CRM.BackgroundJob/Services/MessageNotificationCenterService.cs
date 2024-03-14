@@ -110,7 +110,7 @@
                 var mncNotifications = await pushNotificationResultAmendmentService.GetPrepareNotificationAsync();
                 if (!mncNotifications.Any())
                 {
-                    logService.LogInformation("Push Result Amendment Notification - Service is shutdown.");
+                    await pushNotificationResultAmendmentService.InsertCompleteResultAmendmentAsync();
                     return;
                 }
                 foreach (var item in mncNotifications)
@@ -121,10 +121,8 @@
                         JSNotification = item.JSNotification
                     };
                     await pushNotificationResultAmendmentService.GetMessageResultAmendmentAsync(command);
-
                     await pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, "AfterInsMsg");
                     await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti");
-                    await pushNotificationResultAmendmentService.InsertCompleteResultAmendmentAsync();
                 }
             }
             catch (Exception ex)
