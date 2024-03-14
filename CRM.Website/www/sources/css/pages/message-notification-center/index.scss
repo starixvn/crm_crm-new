@@ -2,9 +2,9 @@
 
 .message-notification-center {
     .form-group{
-        .react-datepicker-wrapper-container, .status-match-date {
-            width: calc(100% - 0.5rem - 80px) !important;
-        }
+        // .react-datepicker-wrapper-container, .status-match-date {
+        //     width: calc(100% - 0.5rem - 80px) !important;
+        // }
 
         .react-datepicker-wrapper-container {
             .react-datepicker__input-container {
@@ -23,6 +23,25 @@
             .notification-id-input {
                 width: 45% !important;
             }
+        }
+    }
+
+    .user-filter {
+        display: flex;
+        cursor: pointer;
+
+        .user {
+            width: calc(100% - 135rem);
+            text-align: center;
+            padding: 3px;
+            border: 1px solid #b7b7b7;
+            border-bottom-width: 0px;
+            font-weight: bold;
+            background-color: #FFFFFF;
+        }
+
+        .locked-user {
+            background-color: #b8cce4 !important;
         }
     }
 }

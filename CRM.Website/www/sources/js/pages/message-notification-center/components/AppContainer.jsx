@@ -7,7 +7,7 @@ export class AppContainer extends Component {
         return (
             <Fragment>
                 <Filter />
-                <DataGrid/>
+                <DataGrid isHost={true}/>
             </Fragment>
         );
     }
