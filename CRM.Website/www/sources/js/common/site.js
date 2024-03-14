@@ -38,6 +38,7 @@ export default class Site {
                     url = 'error/PageNotFound';
                     break;
 
+                case 403:
                 case 405:
                     url = 'error/AccessDenied';
                     break;

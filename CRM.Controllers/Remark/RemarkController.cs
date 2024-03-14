@@ -13,13 +13,11 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
-    [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
     public class RemarkController : BaseController
     {
         private readonly INapSession napSession;
         private readonly IRemarkService remarkService;
-        private readonly IPermissionService permissionService;
         private readonly ICustomerService customerService;
 
         public RemarkController(
@@ -31,7 +29,6 @@
         {
             this.napSession = napSession;
             this.remarkService = remarkService;
-            this.permissionService = permissionService;
             this.customerService = customerService;
         }
 

@@ -4,6 +4,7 @@
     using System.Net;
     using System.Threading.Tasks;
     using CRM.Core.Filters;
+    using Fanex.Caching;
     using Fanex.Logging;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
@@ -14,6 +15,7 @@
     using Microsoft.AspNetCore.Mvc.Abstractions;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.AspNetCore.Routing;
+    using Microsoft.Extensions.Caching.Memory;
     using NSubstitute;
     using Xunit;
 
@@ -23,6 +25,7 @@
         public async Task OnAuthorizationAsync_NoPermission_ExpectedRedirectResult()
         {
             // Arrange
+            var cache = Substitute.For<IMemoryCache>();
             var userService = Substitute.For<IUserService>();
             var napSettings = Substitute.For<INapSettings>();
             var napSession = Substitute.For<INapSession>();
@@ -39,7 +42,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmPermissionAttribute(userService, napSettings, napSession, logger)
+            var filter = new CrmPermissionAttribute(userService, napSettings, napSession, cache, logger)
             {
                 Policy = Constant.Policy.Host
             };
@@ -56,6 +59,7 @@
         public async Task OnAuthorizationAsync_HavePermission_RequestSucceeded()
         {
             // Arrange
+            var cache = Substitute.For<IMemoryCache>();
             var userService = Substitute.For<IUserService>();
             var napSettings = Substitute.For<INapSettings>();
             var napSession = Substitute.For<INapSession>();
@@ -71,7 +75,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmPermissionAttribute(userService, napSettings, napSession, logger)
+            var filter = new CrmPermissionAttribute(userService, napSettings, napSession, cache, logger)
             {
                 Policy = Constant.Policy.Host
             };

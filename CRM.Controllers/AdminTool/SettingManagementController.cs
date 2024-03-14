@@ -1,7 +1,5 @@
 ﻿namespace CRM.Controllers.AdminTool
 {
-    using System;
-    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;

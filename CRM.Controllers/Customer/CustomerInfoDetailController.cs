@@ -14,8 +14,7 @@
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
-    [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
     public class CustomerInfoDetailController : BaseController
     {
         private readonly INapSession napSession;

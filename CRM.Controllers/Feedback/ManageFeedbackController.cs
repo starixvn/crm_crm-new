@@ -56,8 +56,7 @@
         }
 
         [HttpPost]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
         public async Task<ActionResult> SearchManageFeedback([FromBody] ManageFeedbackCriteria criteria)
         {
             criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
@@ -74,8 +73,7 @@
         }
 
         [HttpPost]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
         public async Task<IActionResult> ExportExcel([FromBody] ManageFeedbackCriteria criteria)
         {
             criteria.PageIndex = 0;
