@@ -10,7 +10,6 @@
     using CRM.Core.Filters;
     using CRM.Core.Services;
     using CRM.Criteria.PicAndHeadline;
-    using CRM.Criteria.Setting;
     using CRM.Models;
     using CRM.Models.PicAndHeadline;
     using CRM.Resources;
@@ -18,9 +17,8 @@
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
-    using Microsoft.AspNetCore.DataProtection.KeyManagement;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.PICAssignment, Policy = Policy.Read)]
     public class PicAssignmentController : BaseController

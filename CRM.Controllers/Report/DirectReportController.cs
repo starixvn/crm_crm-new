@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers.Report
 {
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Services;
@@ -8,10 +9,7 @@
     using CRM.Resources;
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
     public class DirectReportController : BaseController

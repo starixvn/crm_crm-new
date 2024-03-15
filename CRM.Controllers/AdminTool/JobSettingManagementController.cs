@@ -1,19 +1,17 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using CRM.Core.Constants;
-using CRM.Core.Filters;
-using CRM.Core.Models;
-using CRM.Core.Services;
-using CRM.Criteria.AdminTool.JobSettingManagement;
-using CRM.Models.AdminTool;
-using Fanex.NAP.Client.Configuration;
-using Fanex.NAP.Client.Helpers.Web;
-using Fanex.NAP.Client.Services;
-using Microsoft.AspNetCore.Mvc;
-using static Fanex.NAP.Core.Business.Constant;
-
-namespace CRM.Controllers.AdminTool
+﻿namespace CRM.Controllers.AdminTool
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+    using CRM.Core.Constants;
+    using CRM.Core.Filters;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using CRM.Criteria.AdminTool.JobSettingManagement;
+    using CRM.Models.AdminTool;
+    using Fanex.NAP.Client.Helpers.Web;
+    using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
+
     [CrmPermission(FunctionKey = FunctionKey.JobSettingManagement, Policy = Policy.Read)]
     public class JobSettingManagementController : BaseController
     {

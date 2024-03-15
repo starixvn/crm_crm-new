@@ -195,13 +195,13 @@
             var userLogin = new SignIn
             {
                 Username = "sa",
-                Password = Fanex.NAP.Client.Helpers.Common.Cryptography.CfsEnCode("1234")
+                Password = "1234"
             };
 
             var user = new User
             {
                 Username = "sa",
-                Password = Fanex.NAP.Client.Helpers.Common.Cryptography.CfsEnCode("1234"),
+                Password = "1234",
                 GroupId = 2
             };
 
@@ -223,14 +223,14 @@
             var userLogin = new SignIn
             {
                 Username = "sa",
-                Password = Fanex.NAP.Client.Helpers.Common.Cryptography.CfsEnCode("1234aa"),
+                Password = "1234aa",
                 ReturnUrl = "/Test"
             };
 
             var user = new User
             {
                 Username = "sa",
-                Password = Fanex.NAP.Client.Helpers.Common.Cryptography.CfsEnCode("1234aa"),
+                Password = "1234aa",
                 GroupId = 2
             };
             var siteLevel = new List<SiteLevel>

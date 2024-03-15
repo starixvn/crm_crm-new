@@ -18,7 +18,7 @@
     using CRM.ViewModels.ChatTypeMapping;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.ChatTypeMapping, Policy = Policy.Read)]
     public class ChatTypeMappingController : BaseController

@@ -1,28 +1,28 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using AutoFixture;
-using CRM.Core.Constants;
-using CRM.Core.Enumerables;
-using CRM.Core.Models;
-using CRM.Core.Services;
-using CRM.Criteria.Customer;
-using CRM.Models;
-using CRM.Models.Customer;
-using CRM.Models.Setting;
-using CRM.Resources;
-using CRM.Services;
-using CRM.Services.Customer;
-using Fanex.NAP.Client.Helpers.Web;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
-using Xunit;
-using static Fanex.NAP.Core.Business.Constant;
-
-namespace CRM.Controllers.UnitTests.Customer
+﻿namespace CRM.Controllers.UnitTests.Customer
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Threading.Tasks;
+    using AutoFixture;
+    using CRM.Core.Constants;
+    using CRM.Core.Enumerables;
+    using CRM.Core.Models;
+    using CRM.Core.Services;
+    using CRM.Criteria.Customer;
+    using CRM.Models;
+    using CRM.Models.Customer;
+    using CRM.Models.Setting;
+    using CRM.Resources;
+    using CRM.Services;
+    using CRM.Services.Customer;
+    using Fanex.NAP.Client.Helpers.Web;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using NSubstitute;
+    using Xunit;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
+
     public class CustomerInfoControllerTest : BaseController
     {
         private INapSession napSession;

@@ -6,7 +6,7 @@
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
     using ONEbook.UM.AspNetCore.Filters;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [ServiceFilter(typeof(CheckUMFilterAttribute))]
     [CrmAuthorize]

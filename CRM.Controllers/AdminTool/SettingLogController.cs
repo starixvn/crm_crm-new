@@ -1,6 +1,7 @@
 ﻿
 namespace CRM.Controllers.AdminTool
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
@@ -8,8 +9,7 @@ namespace CRM.Controllers.AdminTool
     using CRM.Services;
     using CRM.Services.ActionLog;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.SettingLog, Policy = Policy.Read)]
     public class SettingLogController : BaseController

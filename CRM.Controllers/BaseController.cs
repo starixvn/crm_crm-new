@@ -2,7 +2,6 @@
 {
     using System.Linq;
     using CRM.Core.Filters;
-    using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Mvc;
     using ONEbook.UM.AspNetCore.Filters;
 

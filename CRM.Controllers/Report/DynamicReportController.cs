@@ -12,7 +12,7 @@
     using CRM.Services.Report;
     using CRM.ViewModels.Feedback;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.DynamicReport, Policy = Policy.Read)]
     public class DynamicReportController : BaseController

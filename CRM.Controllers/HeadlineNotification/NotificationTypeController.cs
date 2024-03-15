@@ -8,7 +8,7 @@ namespace CRM.Controllers
     using CRM.Models.NotificationType;
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.NotificationType, Policy = Policy.Read)]
     public class NotificationTypeController : BaseController

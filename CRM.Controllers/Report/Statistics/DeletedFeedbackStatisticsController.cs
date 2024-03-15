@@ -12,7 +12,7 @@
     using CRM.Resources;
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     public class DeletedFeedbackStatisticsController : BaseController
     {

@@ -6,19 +6,15 @@
     using System.Threading.Tasks;
     using AutoFixture;
     using CRM.Controllers.AdminTool;
-    using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.AdminTool.JobSettingManagement;
     using CRM.Models.AdminTool;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class JobSettingManagementControllerTests
     {

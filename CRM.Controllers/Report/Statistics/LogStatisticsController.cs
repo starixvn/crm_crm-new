@@ -7,8 +7,9 @@
     using CRM.Criteria.Report.LogStatistics;
     using CRM.Services;
     using CRM.Services.Report;
-    using Fanex.NAP.Core.Business;
+    using Fanex.NAP.Client.Helpers.Business;
     using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     public class LogStatisticsController : BaseController
     {
@@ -43,7 +44,7 @@
         }
 
         [HttpPost]
-        [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Constant.Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.LogStatistics, Policy = Policy.Read)]
         public async Task<IActionResult> GetMainReport([FromBody] LogStatisticsCriteria criteria)
         {
             var licenseeType = (SitePermission)await permissionService.GetCurrentUserLicenseeTypeAsync();

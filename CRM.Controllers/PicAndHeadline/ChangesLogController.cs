@@ -8,7 +8,7 @@
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models.PicAndHeadline;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.ChangesLog, Policy = Policy.Read)]
     public class ChangesLogController : Controller

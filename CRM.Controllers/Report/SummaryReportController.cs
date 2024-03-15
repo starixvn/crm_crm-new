@@ -10,7 +10,7 @@
     using CRM.Services.Report.CategoriesSummaryReport;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.CategoriesSummaryReport, Policy = Policy.Read)]
     public class SummaryReportController : BaseController

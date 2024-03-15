@@ -7,7 +7,7 @@
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     public interface IPermissionService
     {

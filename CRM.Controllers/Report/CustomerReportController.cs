@@ -10,7 +10,7 @@
     using CRM.Services.Report;
     using CRM.ViewModels.Customer;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.CustomerReport, Policy = Policy.Read)]
     public class CustomerReportController : BaseController

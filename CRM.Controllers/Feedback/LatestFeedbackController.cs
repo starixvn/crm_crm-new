@@ -12,7 +12,7 @@
     using CRM.Services;
     using CRM.Services.Feedback;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Read)]
     public class LatestFeedbackController : BaseController

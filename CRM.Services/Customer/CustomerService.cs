@@ -10,7 +10,7 @@
     using CRM.Criteria.Customer;
     using CRM.Models.Customer;
     using Microsoft.Extensions.Configuration;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     public interface ICustomerService
     {

@@ -10,7 +10,7 @@
     using CRM.Services.Report;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [Route("Report/Settlement")]
     [Route("SettlementReport")]

@@ -10,11 +10,9 @@
     using CRM.Models.AdminTool.SettingLog;
     using CRM.Services;
     using CRM.ViewModels;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.SettingRelationManagement, Policy = Policy.Read)]
     public class SettingRelationController : BaseController

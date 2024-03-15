@@ -11,7 +11,7 @@
     using CRM.ViewModels;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.SettingManagement, Policy = Policy.Read)]
     public class SettingManagementController : BaseController

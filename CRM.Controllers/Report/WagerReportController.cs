@@ -1,5 +1,9 @@
 ﻿namespace CRM.Controllers.Report
 {
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Models;
@@ -10,11 +14,7 @@
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.DirectCustomerReport, Policy = Policy.Read)]
     public class WagerReportController : BaseController

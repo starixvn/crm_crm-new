@@ -9,7 +9,7 @@
     using CRM.Models.FeedbackSubject;
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     public class CommonController : BaseController
     {

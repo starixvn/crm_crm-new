@@ -11,7 +11,7 @@
     using CRM.Services;
     using CRM.Services.AdminTool;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     public class CategoryClassificationController : BaseController
     {

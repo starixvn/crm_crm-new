@@ -11,7 +11,7 @@
     using CRM.ViewModels.Feedback;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
     public class AddGuestFeedbackController : BaseController

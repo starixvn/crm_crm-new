@@ -9,7 +9,7 @@
     using CRM.Services;
     using CRM.Services.Customer;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.DefaultCommunicationSetting, Policy = Policy.Read)]
     public class CommunicationSettingController : BaseController

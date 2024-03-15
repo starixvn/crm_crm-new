@@ -13,7 +13,7 @@
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.Remarks, Policy = Policy.Read)]
     public class NewRemarkController : BaseController

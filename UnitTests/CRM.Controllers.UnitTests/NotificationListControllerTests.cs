@@ -16,7 +16,6 @@
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
 
     public class NotificationListControllerTests
     {

@@ -16,7 +16,7 @@
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     public class RemarkControllerTests
     {

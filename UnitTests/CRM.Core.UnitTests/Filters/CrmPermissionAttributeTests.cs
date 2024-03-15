@@ -4,12 +4,10 @@
     using System.Net;
     using System.Threading.Tasks;
     using CRM.Core.Filters;
-    using Fanex.Caching;
     using Fanex.Logging;
     using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
-    using Fanex.NAP.Core.Business;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -18,6 +16,7 @@
     using Microsoft.Extensions.Caching.Memory;
     using NSubstitute;
     using Xunit;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     public class CrmPermissionAttributeTests
     {
@@ -32,7 +31,7 @@
             var logger = Substitute.For<ILogger>();
             napSession.UserId.Returns(1);
 
-            userService.GetPermissionAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns((int)Constant.Policy.Read);
+            userService.GetPermissionAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns((int)Policy.Read);
 
             var context = new AuthorizationFilterContext(
                 new ActionContext
@@ -44,7 +43,7 @@
                 new List<IFilterMetadata>());
             var filter = new CrmPermissionAttribute(userService, napSettings, napSession, cache, logger)
             {
-                Policy = Constant.Policy.Host
+                Policy = Policy.Host
             };
 
             // Act
@@ -65,7 +64,7 @@
             var napSession = Substitute.For<INapSession>();
             var logger = Substitute.For<ILogger>();
 
-            userService.GetPermissionAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns((int)Constant.Policy.Host);
+            userService.GetPermissionAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns((int)Policy.Host);
 
             var context = new AuthorizationFilterContext(
                 new ActionContext
@@ -77,7 +76,7 @@
                 new List<IFilterMetadata>());
             var filter = new CrmPermissionAttribute(userService, napSettings, napSession, cache, logger)
             {
-                Policy = Constant.Policy.Host
+                Policy = Policy.Host
             };
 
             // Act

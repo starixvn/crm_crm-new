@@ -17,7 +17,7 @@
     using Fanex.NAP.Client.Helpers.Web;
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.InformHeadline, Policy = Policy.Read)]
     public class InformHeadlineController : BaseController

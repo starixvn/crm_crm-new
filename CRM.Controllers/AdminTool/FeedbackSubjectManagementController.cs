@@ -8,7 +8,7 @@
     using CRM.Models.FeedbackSubject;
     using CRM.Services;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [CrmPermission(FunctionKey = FunctionKey.FeedbackSubject, Policy = Policy.Read)]
     public class FeedbackSubjectManagementController : BaseController
