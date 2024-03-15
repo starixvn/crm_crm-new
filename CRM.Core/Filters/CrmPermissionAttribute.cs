@@ -1,7 +1,6 @@
 ﻿namespace CRM.Core.Filters
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -16,25 +15,25 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.Extensions.DependencyInjection;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class CrmPermissionAttribute : Attribute, IAsyncAuthorizationFilter
     {
-        private readonly IMemoryCache cache;
+        private IMemoryCache cache;
         private int cacheDuration;
         private readonly IUserService userService;
         private readonly INapSettings napSettings;
         private readonly INapSession napSession;
         private readonly ILogger logger;
 
-        public CrmPermissionAttribute() : this(null, null, null, null, null)
+        public CrmPermissionAttribute() : this(null, null, null, null)
         {
         }
 
-        public CrmPermissionAttribute(IUserService userService, INapSettings napSettings, INapSession napSession, IMemoryCache cache, ILogger logger)
+        public CrmPermissionAttribute(IUserService userService, INapSettings napSettings, INapSession napSession, ILogger logger)
         {
-            this.cache = cache ?? new MemoryCache(new MemoryCacheOptions { });
             this.userService = userService ?? new UserService();
             this.napSettings = napSettings ?? NapClientManager.NapSettings;
             this.napSession = napSession ?? NapClientManager.NapSession;
@@ -93,6 +92,7 @@
 
         private async Task HandleResponseFilter(AuthorizationFilterContext context)
         {
+            cache = context.HttpContext.RequestServices.GetRequiredService<IMemoryCache>();
             bool hasPermission = false;
             if (!string.IsNullOrWhiteSpace(FunctionKey))
             {
@@ -130,73 +130,28 @@
             IEnumerable<FunctionPolicy> permissions;
             if (PermissionCache)
             {
-                var cacheKey = string.Format("{0}_{1}_{2}_{3}", "CRMFunction",napSession.UserId, napSession.OnUserId, napSettings.SiteId);
-                //cache.TryGetValue(cacheKey, out permissions);
+                var cacheKey = string.Format("{0}_{1}_{2}_{3}", "CRMFunction", napSession.UserId, napSession.OnUserId, napSettings.SiteId);
+                permissions = cache.Get<IEnumerable<FunctionPolicy>>(cacheKey);
 
-                var cacheKey1 = "test1222";
-
-                string text = string.Empty;
-
-                cache.TryGetValue(cacheKey1, out text);
-                var x = cache.Get(cacheKey1);
-                if (text == null)
+                if (permissions == null)
                 {
-                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetPriority(CacheItemPriority.High).SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
-
-                    cache.Set(cacheKey1, "test12222323232323232323", cacheEntryOptions);
-                }
-                
-
-
-                //if (permissions == null)
-                //{
                     permissions = await userService.GetPermissionsAsync(napSession.UserId, napSettings.SiteId, string.Empty);
+                    cache.Set(cacheKey, permissions, new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(CacheDuration)
+                    });
+                }
 
-                    //cache.Set(cacheKey, permissions, new MemoryCacheEntryOptions
-                    //{
-                    //    AbsoluteExpiration = DateTimeOffset.UtcNow.AddMinutes(CacheDuration)
-                    //}); 
-
-                    //var x = cache.Get<IEnumerable<FunctionPolicy>>(cacheKey);
-                //}
+                var functioPolicy = permissions.FirstOrDefault(x => x.Key == functionKey);
+                policy = functioPolicy != null ? functioPolicy.Policy : 0;
             }
             else
             {
-                permissions = await userService.GetPermissionsAsync(napSession.UserId, napSettings.SiteId, string.Empty);
+                policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, functionKey);
             }
-            
-            var functioPolicy = permissions.FirstOrDefault(x => x.Key == functionKey);
-            policy = functioPolicy != null ? functioPolicy.Policy : 0;
 
             return policy;
         }
-
-        //private async Task<int> GetPermissionPolicy(string functionKey)
-        //{
-        //    int policy;
-        //    if (PermissionCache)
-        //    {
-        //        var cacheKey = string.Format("{0}_{1}_{2}", napSession.UserId,
-        //            napSettings.SiteId, functionKey);
-        //        var cachedPolicy = cache.Get(cacheKey);
-
-        //        if (cachedPolicy == null)
-        //        {
-        //            policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, functionKey);
-        //            cache.Set(cacheKey, policy, DateTimeOffset.Now.AddSeconds(CacheDuration));
-        //        }
-        //        else
-        //        {
-        //            policy = (int)cachedPolicy;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        policy = await userService.GetPermissionAsync(napSession.UserId, napSettings.SiteId, functionKey);
-        //    }
-
-        //    return policy;
-        //}
 
         private static bool IsAjaxRequest(HttpRequest request)
            => string.Equals(request.Query["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal) ||
