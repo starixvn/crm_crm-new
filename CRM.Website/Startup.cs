@@ -141,16 +141,15 @@
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseForwardedHeaders();
             if (env.IsDevelopment())
             {
-                app.UseMiddleware<ErrorHandler>();
-                app.UseForwardedHeaders();
                 app.UseDeveloperExceptionPage();
+                app.UseForwardedHeaders();
             }
             else
             {
                 app.UseMiddleware<ErrorHandler>();
+                app.UseForwardedHeaders();
                 app.UseHsts();
             }
 
@@ -214,7 +213,7 @@
 
         private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)
         {
-            var configRedix = new ConfigurationOptions
+            var configRedis = new ConfigurationOptions
             {
                 EndPoints =
                 {
@@ -224,10 +223,15 @@
                 DefaultDatabase = redisConfig.DefaultDatabase,
                 ConnectRetry = redisConfig.ConnectRetry
             };
-            var redis = ConnectionMultiplexer.Connect(configRedix);
-            services.AddDataProtection()
-                .PersistKeysToStackExchangeRedis(redis, redisConfig.ApplicationName + ":DataProtection:Keys")
-                .SetApplicationName(redisConfig.ApplicationName + ":DataProtection:Keys");
+            var redis = ConnectionMultiplexer.Connect(configRedis);
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.ConfigurationOptions = configRedis;
+                options.InstanceName = redisConfig.ApplicationName + ":Session:2";
+            })
+            .AddDataProtection()
+            .PersistKeysToStackExchangeRedis(redis, redisConfig.ApplicationName + ":DataProtection:Keys")
+            .SetApplicationName(redisConfig.ApplicationName + ":DataProtection:Keys");
         }
     }
 }
