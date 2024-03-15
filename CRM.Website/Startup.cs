@@ -125,7 +125,6 @@
 
             var redisConfig = Configuration.GetSection("RedisConfig").Get<RedisConfig>();
             ConfigDataProtection(services, redisConfig);
-            ConfigRedisCache(services, redisConfig);
 
             services.AddControllersWithViews(
                 mvcOption => mvcOption.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
@@ -228,23 +227,6 @@
             services.AddDataProtection()
                 .PersistKeysToStackExchangeRedis(redis, redisConfig.ApplicationName + ":DataProtection:Keys")
                 .SetApplicationName(redisConfig.ApplicationName + ":DataProtection:Keys");
-        }
-
-        private static void ConfigRedisCache(IServiceCollection services, RedisConfig redisConfig)
-        {
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.ConfigurationOptions = new ConfigurationOptions
-                {
-                    EndPoints =
-                    {
-                        { redisConfig.Server, redisConfig.Port }
-                    },
-                    Password = redisConfig.Password,
-                    DefaultDatabase = redisConfig.DefaultDatabase
-                };
-                options.InstanceName = redisConfig.ApplicationName + ":Session:2";
-            });
         }
     }
 }
