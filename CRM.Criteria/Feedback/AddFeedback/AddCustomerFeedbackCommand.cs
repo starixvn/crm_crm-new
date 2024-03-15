@@ -90,7 +90,6 @@
         public IEnumerable<Models.Feedback.AddCustomerFeedback.NewCommunicationTool> HeadlineStaffInfoCommunications { get; set; }
         [SpParam(Ignored = true)]
         public IEnumerable<Models.Feedback.AddCustomerFeedback.NewCommunicationTool> OtherAccountCommunicationInfos { get; set; }
-        [SpParam(Ignored = true)]
 
         public string NewCommunicationTools { get; set; }
 

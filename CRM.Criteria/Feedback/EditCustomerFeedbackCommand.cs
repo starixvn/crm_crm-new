@@ -7,67 +7,37 @@
     using CRM.Core.Models;
     using CRM.Models.Feedback;
     using Fanex.Data;
+    using Models.Feedback.AddCustomerFeedback;
 
     public class EditCustomerFeedbackCommand : BaseNonQueryCommand
     {
-        public int FeedbackId { get; set; }
-        public int TitleId { get; set; }
-        public int UserId { get; set; }
+        public int FeedbackID { get; set; }
+        public int TitleID { get; set; }
+        public int UserID { get; set; }
         public DateTime? Birthday { get; set; }
-        public int CountryId { get; set; }
-        public int ProvinceId { get; set; }
+        public int CountryID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int SiteId { get; set; }
+        public int SiteID { get; set; }
 
-        public string Phone { get; set; }
-        public string PhoneCountryCode { get; set; }
-        public string PhoneAreaCode { get; set; }
-
-        public string Phone2 { get; set; }
-        public string Phone2CountryCode { get; set; }
-        public string Phone2AreaCode { get; set; }
-
-        public string Phone3 { get; set; }
-        public string Phone3CountryCode { get; set; }
-        public string Phone3AreaCode { get; set; }
-
-        public string MobilePhone { get; set; }
-        public string MobilePhoneCountryCode { get; set; }
-        public string MobilePhoneAreaCode { get; set; }
-
-        public string Fax { get; set; }
-        public string FaxCountryCode { get; set; }
-        public string FaxAreaCode { get; set; }
-
-        public string Email { get; set; }
-        public string Skype { get; set; }
-        public string MSN { get; set; }
-        public string BBM { get; set; }
-        public string QQ { get; set; }
-        public string Yahoo { get; set; }
-        public string WeChat { get; set; }
-        public string Line { get; set; }
-        public string WhatsApp { get; set; }
-
-        public int LanguageId { get; set; }
+        public int LanguageID { get; set; }
 
         public string Subject { get; set; }
 
-        [SpParam(SqlParamName = "RelatedCustId")]
+        [SpParam(SqlParamName = "RelatedCustID")]
         public string RelatedCustomerIds { get; set; }
 
         public DateTime FeedbackDate { get; set; }
 
         public DateTime ResolutionDate { get; set; }
 
-        [SpParam(SqlParamName = "CommunicationId")]
+        [SpParam(SqlParamName = "CommunicationID")]
         public string CommunicationToolIds { get; set; }
 
-        [SpParam(SqlParamName = "StationId")]
+        [SpParam(SqlParamName = "StationID")]
         public string ExtensionIds { get; set; }
 
-        public int RoleId { get; set; }
+        public int RoleID { get; set; }
 
         [SpParam(Ignored = true)]
         public IEnumerable<ProductSubProductBettypeSetting> Products { get; set; } = new List<ProductSubProductBettypeSetting>();
@@ -81,9 +51,9 @@
         [SpParam(SqlParamName = "Category")]
         public string CategoryXml => Categories.Any() ? Categories.DistinctBy(x => new { x.MainCategoryId, x.SubCategoryId }).ToXML("ROOT").ToString() : string.Empty;
 
-        public int ResponseId { get; set; }
+        public int ResponseID { get; set; }
 
-        public int StatusId { get; set; }
+        public int StatusID { get; set; }
 
         public string Description { get; set; }
 
@@ -110,34 +80,25 @@
         [SpParam(SqlParamName = "LicenseeType")]
         public int LicenseeTypeId { get; set; }
 
-        public string Pic1Name { get; set; }
-        public string Pic1 { get; set; }
-
-        public string Pic2Name { get; set; }
-        public string Pic2 { get; set; }
-
-        public string Pic3Name { get; set; }
-        public string Pic3 { get; set; }
-
-        public string Pic4Name { get; set; }
-        public string Pic4 { get; set; }
-
-        public int CustId { get; set; }
+        public int CustID { get; set; }
 
         public string IP { get; set; }
-
-        public bool IsOverwrite { get; set; }
 
         public int? NoInquiries { get; set; }
 
         [SpParam(Ignored = true)]
         public bool IsDeletedFeedbackView { get; set; }
 
-        public override string GetSettingKey() => "Acc_CRM_FeedbackInfoUpd";
+        [SpParam(Ignored = true)]
+        public IEnumerable<NewCommunicationTool> CommunicationInfos { get; set; }
 
-        public override bool IsValid() => FeedbackId > 0
+        public string NewCommunicationTools => CommunicationInfos.Any() ? CommunicationInfos.ToXML("ROOT").ToString() : string.Empty;
+
+        public override string GetSettingKey() => "Acc_CRM_NewManualFeedback_FeedbackUpd";
+
+        public override bool IsValid() => FeedbackID > 0
             && !string.IsNullOrWhiteSpace(CommunicationToolIds)
-            && LanguageId > 0
+            && LanguageID > 0
             && Categories.Any();
     }
 }

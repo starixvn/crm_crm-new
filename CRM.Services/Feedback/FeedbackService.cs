@@ -16,6 +16,7 @@
     using CRM.Models.Customer;
     using CRM.Models.DeletedFeedback;
     using CRM.Models.Feedback;
+    using CRM.Models.Feedback.LatestFeedback;
     using CRM.Repositories;
     using CRM.Resources;
     using Fanex.Data.Repository;
@@ -68,8 +69,8 @@
             {
                 FeedbackId = feedbackId
             };
-            var (feedbackInfos, relatedCustomers, settingItems) = 
-                await baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomerPermission, FeedbackSettingRelation>(criteria);
+            var (feedbackInfos, latestFeedbackCommunicationTool, settingItems, relatedCustomers ) = 
+                await baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission >(criteria);
             CustomerFeedback feedback = null;
 
             if (feedbackInfos.Any())
@@ -81,6 +82,7 @@
                 feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
                 feedback.RelatedCustomers = relatedCustomers.OrderBy(x => x.Username);
                 feedback.Settings = settingItems.Where(x => !string.IsNullOrEmpty(x.SettingType)).ToList();
+                feedback.LatestFeedbackCommunicationTools = latestFeedbackCommunicationTool;
 
                 var siteSetting = await settingService.GetSiteByIdAsync(feedback.SiteId);
                 feedback.SiteSetting = new BaseSetting

@@ -116,7 +116,7 @@
             CommandResult commandResult = await CheckEditCustomerFeedbackPermission(command);
             if (commandResult.IsSuccessful)
             {
-                command.UserId = napSession.UserId;
+                command.UserID = napSession.UserId;
                 command.IP = ClientIP;
                 if (command.IsReviewed)
                 {
@@ -189,8 +189,8 @@
                 };
             }
 
-            var isChangedStatusFromDeleted = command.IsDeletedFeedbackView && command.StatusId != (int)Core.Enumerables.FeedbackStatus.Deleted;
-            var isChangedStatusToDeleted = !command.IsDeletedFeedbackView && command.StatusId == (int)Core.Enumerables.FeedbackStatus.Deleted;
+            var isChangedStatusFromDeleted = command.IsDeletedFeedbackView && command.StatusID != (int)Core.Enumerables.FeedbackStatus.Deleted;
+            var isChangedStatusToDeleted = !command.IsDeletedFeedbackView && command.StatusID == (int)Core.Enumerables.FeedbackStatus.Deleted;
             if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback)
                 && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
             {

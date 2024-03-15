@@ -44,7 +44,7 @@ export class CustomerInfo extends PureComponent{
         const otherAccountCommunicationInfos = [];
         this.props.customerInfo.otherAccountCommunicationInfos?.map(item => {
             otherAccountCommunicationInfos.push({
-                communiationName: item.communiationName,
+                communicationName: item.communiationName,
                 communicationID: item.communicationID,
                 communicationValue: item.communicationValue,
                 custId: item.custId
@@ -160,7 +160,7 @@ export class CustomerInfo extends PureComponent{
                             <Col sm="4" md="4">
                                 <Form.Group as={Row}>
                                     <Form.Label column sm="4" md="4" htmlFor="title">
-                                        {item.communiationName}
+                                        {item.communicationName}
                                     </Form.Label>
                                     <Col sm="8" md="8">
                                         <Form.Control type="text" size="sm" value={item.communicationValue} className="shadow-none" autoComplete="off"

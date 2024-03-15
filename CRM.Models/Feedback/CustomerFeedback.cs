@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using CRM.Models.Customer;
+    using LatestFeedback;
 
     public class CustomerFeedback : CustomerInfoDetails
     {
@@ -26,6 +27,7 @@
         public bool HasRelated { get; set; }
 
         public IEnumerable<RelatedCustomerPermission> RelatedCustomers { get; set; } = new List<RelatedCustomerPermission>();
+        public IEnumerable<LatestFeedbackCommunicationTool> LatestFeedbackCommunicationTools { get; set; }
 
         public string Subject { get; set; }
         public string Description { get; set; }
