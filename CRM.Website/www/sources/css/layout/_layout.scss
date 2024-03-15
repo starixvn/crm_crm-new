@@ -1,43 +1,53 @@
 .row-search {
     min-width: 1263px;
     display: flex;
-    height: 35px;
 
     #left-container {
-        background-color: #464d5d;
         margin: 0;
         padding: 0;
-        height: 35px;
         width: 19%;
+
+        .filter-search {
+            background: #EAEEF4;
+            border-radius: 5px;
+            border: 1px #B2B7BF solid;
+            margin: 6px 12px 6px 0;
+    
+            .btn-search {
+                margin: 5px;
+            }
+
+            .col {
+                padding: 0;
+            }
+        }
 
         .autocomplete-container {
             input {
-                background: none;
+                background: #EAEEF4;
                 border: none;
-                color: #FFF;
-                height: 35px;
-                line-height: 25px;
-                padding: 5px 0 5px 35px;
+                padding: 0;
                 width: 100%;
                 position: relative;
                 text-align: left;
                 text-decoration: none;
-                font-size: 10.5px;
 
-                &:focus {
-                    background-color: transparent;
-                    color: white;
+                &::placeholder{
+                    color: #333333;
+                    font-size: 13px;
                 }
             }
         }
 
         .checked-guest {
-            background-color: #464d5d;
-            color: #ebebeb;
-            padding-left: 0;
+            padding: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: #D3D9E3;
+            border-radius: 3px;
+            width: 76px;
+            margin: 4px;
 
             .form-check-input {
                 margin-top: 0;
@@ -50,30 +60,13 @@
             }
         }
 
-
-        .btn-search {
-            background: url('../../css/images/icon-search.png') 0 0 no-repeat;
-            cursor: pointer;
-            height: 16px;
-            vertical-align: middle;
-            width: 16px;
-            border: none;
-            position: absolute;
-            left: 25px;
-            top: 10px;
-        }
-
         .icon-clear {
-            background: unset;
-            color: white;
             cursor: pointer;
-            height: 16px;
             vertical-align: middle;
-            width: 16px;
             border: none;
             position: absolute;
-            right: 0px;
-            top: 10px;
+            right: 4px;
+            top: 6px;
         }
     }
 
@@ -81,12 +74,10 @@
         width: 81%;
         display: flex;
         align-items: center;
-        border-left: 1px solid #676767;
         justify-content: space-between;
-        background-color: #464d5d;
-        border-radius: 0;
-        height: 35px;
-        color: white;
+        background: #EAEEF4;
+        border-radius: 5px;
+        margin: 6px 0;
 
         #divSubMenu {
             .breadcrumbsMenu {
@@ -111,11 +102,6 @@
 
                 &:not(:last-child) {
                     background: url('../../css/images/br-arrow-ico.png') right 8px no-repeat;
-                }
-
-                &:last-child {
-                    background: none;
-                    color: #aaa9a9;
                 }
             }
 
@@ -143,20 +129,28 @@
             .list-inline {
                 padding-left: 0;
                 list-style: none;
+                color: #2B4E80;
+                font-size: 18px;
+                font-weight: 700;
+                text-transform: capitalize;
             }
         }
 
         .timezone {
-            padding-left: 20px;
-            padding-right: 10px;
-            color: #bbbbbb;
+            padding: 9px 8px;
+            color: #5E5E5E;
+
+            img {
+                padding-right: 4px;
+                position: relative;
+                top: -2px;
+            }
         }
     }
 
     .breadcrumb {
         background-color: #464d5d;
         border-radius: 0;
-        height: 35px;
         color: white;
         width: 81%;
         border-left: 1px solid #252525;

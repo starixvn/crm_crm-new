@@ -1,6 +1,7 @@
 ﻿.slide-bar {
     overflow-x: auto;
-    width: 19%;
+    max-width: 348px;
+    width: 100%;
 
     .col-md-9{
         padding: 0 !important;
@@ -18,38 +19,11 @@
     width: 100%;
 }
 
-#left-container {
-    .buttonSearch:hover, span:hover {
-        background-color: transparent;
-    }
-
-    .buttonSearch span:hover {
-        background-color: transparent;
-    }
-
-    .buttonSearch:active {
-        background-color: transparent;
-    }
-
-    .text-search {
-        background-color: #373e4e;
-        padding-right: 0;
-        display: flex;
-
-        input::placeholder {
-            color: white;
-            font-style: italic;
-        }
-    }
-}
-
 .modal-backdrop {
     z-index: 1050 !important
 }
 
 .left-form-customer {
-    background-color: #F1F1F1;
-
     .multiple-select-container,
     .selectwithsearchtree .btn,
     .form-control {
@@ -58,8 +32,6 @@
     }
 
     .group-empty {
-        margin: 12px;
-
         .no-data {
             background: #E7F3FF;
             border-radius: 4px;
@@ -84,18 +56,8 @@
         }
     }
 
-    .btn-primary {
-        font-weight: 700;
-        padding: 5px 16px;
-        box-shadow: 0px 2px 1px rgba(255, 255, 255, 0.25) inset;
-        border-radius: 3px;
-        border: 1px #3C5B9B solid;
-        height: auto;
-        line-height: normal;
-    }
-
     .upline-username {
-        color: #2f70b4;
+        color: #3873E9;
         cursor: pointer;
     }
 
@@ -129,19 +91,27 @@
 
     .item {
         margin: 0;
-        padding: 6px 12px;
+        padding: 5px 8px;
         display: grid;
         grid-template-columns: 28% auto auto;
         word-break: break-word;
         line-height: normal;
 
-        &.btn-submit {
-            padding-bottom: 12px;
+        &:first-child {
+            padding-top: 8px;
+        }
+
+        &.btn-submit{
+            padding: 12px 8px 8px;
         }
 
         &.field-info {
             grid-template-columns: 28% auto;
-            padding: 4px 12px 0;
+            padding: 4px 8px 0;
+
+            &.field-nickname{
+                padding: 6px 8px 3px;
+            }
 
             .col {
                 input, button {
@@ -189,14 +159,10 @@
             }
         }
 
-        &:first-child {
-            padding-top: 12px;
-        }
-
         &.current {
             background-color: #CDD6EA;
-            margin: 2px 0 4px;
-            padding: 3px 12px;
+            margin-top: 2px;
+            padding: 2px 8px;
         }
 
         &.status {
@@ -213,7 +179,7 @@
     }
 
     .text-right {
-        text-align: right;
+        color: #555555;
     }
 
     .tex-left {
@@ -272,11 +238,11 @@
         margin-bottom: 0;
 
         li {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             text-align: left;
 
             a {
-                color: #0255a5;
+                color: #3873E9;
                 cursor: pointer;
             }
 
@@ -285,50 +251,73 @@
                 color: #0255a5;
             }
         }
+
+        &:last-child li:last-child{
+            margin-bottom: 0;
+        }
     }
 
     .group-detail-link {
-        .title {
-            font-size: 14px;
-            font-weight: 400;
-            justify-content: space-between;
-            align-items: center;
-            background: #E4E4E4;
-            color: #333333;
-            padding: 5px 12px 4px;
-            margin: 0;
-            line-height: normal;
-        }
+        margin-top: 6px;
 
-        .detail-link-content {
-            padding: 10px 12px;
+        .group-content {
+            padding: 10px 12px 12px;
 
             .form-row-detail {
                 display: grid;
                 grid-template-columns: 50% 50%;
                 grid-column-gap: 6px;
                 margin: 0;
+                line-height: 18px;
 
                 &:not(:last-child) {
                     border-bottom: 1px #A6A6A6 dotted;
                 }
 
                 &:not(:first-child) {
-                    margin-top: 12px;
+                    margin-top: 10px;
+                }
+
+                &:last-child ul li:last-child{
+                    margin-bottom: 0;
                 }
             }
         }
     }
 
-    .form-account-info {
-        border-radius: 3px;
-        border: 1px #B7B7B7 solid;
-        margin: 0 12px 12px;
-        padding: 3px 4px;
+    .group-acc-info, .group-detail-link, .group-comm-tool {
+        border-radius: 5px;
+        border: 1px #CCCCCC solid;
+
+        .group-title {
+            color: #2B4E80;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: capitalize;
+            padding: 4px 9px 5px 11px;
+            background: #F3F3F3;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+
+            .fa {
+                color: #333333;
+            }
+        }
+
+        &:has(.group-content) .group-title{
+            border-bottom: 1px #CCCCCC solid;
+        }
+    }
+
+    .group-comm-tool {
+        margin-top: 6px;
 
         .custom-scrollbar {
-            padding: 9px 2px 9px 9px;
-            max-height: 386px;
+            margin: 8px 6px 8px 8px;
+            max-height: 372px;
             overflow-y: auto;
 
             &::-webkit-scrollbar-track {
@@ -364,7 +353,7 @@
 
         .account-item {
             &:not(:last-child) {
-                border-bottom: 1px #A6A6A6 dotted;
+                border-bottom: 1px #E4E4E4 solid;
             }
 
             &:not(:first-child) {

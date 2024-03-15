@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import moment from 'moment';
 import LangHelper from '@jsroot/common/langHelper';
+import Site from '@jsroot/common/site';
 
 export default class BreadcrumbTime extends Component {
     constructor(props) {
@@ -26,7 +27,7 @@ export default class BreadcrumbTime extends Component {
         return(
             <div sm="3" md="3">
                 <div className="pull-right timezone">
-                    <span className="fa fa-clock-o fa-lg pr-2" aria-hidden="true" />
+                    <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-clock.svg')} />
                     <span id="span-timezoneContainer">
                         {this.state.time + LangHelper.getResource('Gmt8')}
                     </span>

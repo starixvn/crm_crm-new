@@ -221,8 +221,9 @@ export default class Filter extends Component {
         return (
             <div className='row-search'>
                 <Form id="left-container" onSubmit={this.handleSubmit}>
-                    <Form.Group as={Row} className="align-items-center">
-                        <Col sm="9" md="9" className="text-search">
+                    <Form.Group as={Row} className="align-items-center filter-search">
+                        <img className="btn-search" onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-search.svg')} />
+                        <Col className="text-search">
                             <AutoComplete
                                 value={username}
                                 options={customerSuggestions}
@@ -230,18 +231,17 @@ export default class Filter extends Component {
                                 onChange={value => handleChangeSuggestion(value)}
                                 onInputChange={searchText => debounceUserNameInputChange(searchText)}
                             />
-                            <input type="button" className="btn-search" onClick={this.handleSubmit} />
                             {
                                 username != '' && username != null &&
                                 <i className="fa fa-times icon-clear" onClick={value => handleChangeSuggestion('')}></i>
                             }
                         </Col>
-                        <Col sm="3" md="3">
+                        <div>
                             <Form.Check className="checked-guest" type="checkbox" name="isGuest" label={LangHelper.getResource('Guest')}
                                 checked={isGuest}
                                 onChange={handleChange}
                             />
-                        </Col>
+                        </div>
                     </Form.Group>
                 </Form>
                 {this.renderRightContainer()}

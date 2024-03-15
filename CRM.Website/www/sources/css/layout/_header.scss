@@ -36,6 +36,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        // font-weight: 600;
     }
 
     .right-header ul {
@@ -133,22 +134,24 @@
             margin-left: 15px;
 
             .welcome {
-                padding: 0 10px;
+                padding: 0 16px 0 6px;
             }
 
             .username {
-                color: #ffcc33;
-                font-weight: bold;
+                color: #FF713A;
+                padding-left: 3px;
+                font-weight: 700;
             }
 
             .sign-out {
-                padding: 0 10px;
-                color: white;
+                padding: 0 8px 0 6px;
+                color: #C5D7FF;
             }
 
             .sign-out:hover {
                 color: #ffcc33;
                 cursor: pointer;
+                text-decoration: none;
             }
         }
     }

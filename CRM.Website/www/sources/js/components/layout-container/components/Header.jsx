@@ -89,9 +89,9 @@ export class Header extends PureComponent {
                         }
                     </ul>
                     <div className='item-end float-right'>
-                        <span className='fa fa-user fa-lg' />
+                        <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-user.svg')} />
                         <span className='welcome'>{LangHelper.getResource('Welcome')} <span className='username'>{window.currentUsername}</span></span>
-                        <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-logout.png')} />
+                        <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-logout.svg')} />
                         <a className='sign-out' onClick={() =>this.handleLogout()}>{LangHelper.getResource('SignOut')}</a>
                     </div>
                 </div>
