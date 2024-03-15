@@ -6,6 +6,7 @@
     using CRM.Controllers.Report.Statistics;
     using CRM.Core;
     using CRM.Core.Constants;
+    using CRM.Core.Services;
     using CRM.Criteria.Report;
     using CRM.Models.Report;
     using CRM.Models.Setting;

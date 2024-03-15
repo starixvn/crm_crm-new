@@ -3,7 +3,7 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
-    using CRM.Services;
+    using CRM.Core.Services;
     using Microsoft.AspNetCore.Mvc;
     using ONEbook.UM.AspNetCore.Filters;
     using static Fanex.NAP.Client.Helpers.Business.Constant;

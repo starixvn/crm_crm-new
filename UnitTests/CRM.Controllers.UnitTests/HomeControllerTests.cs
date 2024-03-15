@@ -1,7 +1,7 @@
 ﻿namespace CRM.Controllers.UnitTests
 {
     using System.Threading.Tasks;
-    using CRM.Services;
+    using CRM.Core.Services;
     using Microsoft.AspNetCore.Mvc;
     using NSubstitute;
     using Xunit;

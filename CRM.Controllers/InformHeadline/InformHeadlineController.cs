@@ -27,8 +27,7 @@
         private readonly ISettingService settingService;
         private readonly IExportExcelService excelService;
         private readonly IInformHeadlineService informHeadlineService;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
+        private readonly IPermissionService permissionService;
 
         public InformHeadlineController(
             INapSession napSession,
@@ -36,8 +35,7 @@
             ISettingService settingService,
             IExportExcelService excelService,
             IInformHeadlineService informHeadlineService,
-            INapSettings napSettings,
-            IUserService userService
+            IPermissionService permissionService
         )
         {
             this.napSession = napSession;
@@ -45,8 +43,7 @@
             this.settingService = settingService;
             this.excelService = excelService;
             this.informHeadlineService = informHeadlineService;
-            this.napSettings = napSettings;
-            this.userService = userService;
+            this.permissionService = permissionService;
         }
 
         public async Task<IActionResult> GetInforms()
@@ -55,13 +52,14 @@
             return Json(informs);
         }
 
-        public IActionResult GetPermissions()
+        public async Task<IActionResult> GetPermissions()
         {
+            var informHeadlineContactPolicy = await permissionService.GetPolicyPermissionAsync(FunctionKey.InformHeadlineContact);
             var permission = new GetPermissionInform
             {
-                ContactPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact),
-                SearchPolicy = userService.GetPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineSearch),
-                HasHostPermission = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.InformHeadlineContact, Policy.Host)
+                ContactPolicy = informHeadlineContactPolicy,
+                SearchPolicy = await permissionService.GetPolicyPermissionAsync(FunctionKey.InformHeadlineSearch),
+                HasHostPermission = informHeadlineContactPolicy == (int)Policy.Host
             };
             return Json(permission);
         }

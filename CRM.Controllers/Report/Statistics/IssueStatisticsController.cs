@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using CRM.Core;
 using CRM.Core.Constants;
+using CRM.Core.Services;
 using CRM.Criteria.Report;
 using CRM.Resources;
 using CRM.Services;

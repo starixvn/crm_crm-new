@@ -6,6 +6,7 @@
     using CRM.Controllers.Report;
     using CRM.Core.Constants;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Report.SettlementReport;
     using CRM.Models.Report.SettlementReport;
     using CRM.Services;

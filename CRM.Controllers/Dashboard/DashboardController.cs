@@ -4,6 +4,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Filters;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Dashboard;
     using CRM.Services;
     using CRM.Services.Dashboard;

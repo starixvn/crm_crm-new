@@ -30,10 +30,9 @@
         private ISettingService settingService;
         private IBaseService baseService;
         private INapSession napSession;
-        private INapSettings napSettings;
-        private IUserService userService;
         private IPicAssignmentService picAssignmentService;
         private IExportExcelService excelService;
+        private IPermissionService permissionService;
         private readonly IFixture fixture = new Fixture();
 
         [Fact]
@@ -423,16 +422,14 @@
             settingService = Substitute.For<ISettingService>();
             baseService = Substitute.For<IBaseService>();
             napSession = Substitute.For<INapSession>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
+            permissionService = Substitute.For<IPermissionService>();
             picAssignmentService = Substitute.For<IPicAssignmentService>();
             excelService = Substitute.For<IExportExcelService>();
             return new PicAssignmentController(
                 settingService,
                 baseService,
                 napSession,
-                napSettings,
-                userService,
+                permissionService,
                 picAssignmentService,
                 excelService);
         }

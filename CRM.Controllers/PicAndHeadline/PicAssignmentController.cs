@@ -14,9 +14,7 @@
     using CRM.Models.PicAndHeadline;
     using CRM.Resources;
     using CRM.Services;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Mvc;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
 
@@ -26,8 +24,7 @@
         private readonly ISettingService settingService;
         private readonly IBaseService baseService;
         private readonly INapSession napSession;
-        private readonly INapSettings napSettings;
-        private readonly IUserService userService;
+        private readonly IPermissionService permissionService;
         private readonly IPicAssignmentService picAssignmentService;
         private readonly IExportExcelService excelService;
 
@@ -35,16 +32,14 @@
             ISettingService settingService,
             IBaseService baseService,
             INapSession napSession,
-            INapSettings napSettings,
-            IUserService userService,
+            IPermissionService permissionService,
             IPicAssignmentService picAssignmentService,
             IExportExcelService excelService)
         {
             this.settingService = settingService;
             this.baseService = baseService;
             this.napSession = napSession;
-            this.napSettings = napSettings;
-            this.userService = userService;
+            this.permissionService = permissionService;
             this.picAssignmentService = picAssignmentService;
             this.excelService = excelService;
         }
@@ -198,7 +193,7 @@
                 .ThenBy(y => y.RoleId)
                 .ThenBy(y => y.PicName)
                 .ToList();
-            var isReadPicManagement = userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.PICManagement, Policy.Read);
+            var isReadPicManagement = await permissionService.IsHavingPermissionAsync(FunctionKey.PICManagement);
             var isRenderPicManagement = isReadPicManagement && picInfo.Item2.ToList().Count > 0;
             IEnumerable<PICAssignmentInfo> assignments = GeneratePicList(picInfo.Item1, criteria.PageIndex, criteria.PageSize);
             var communicationTools = await settingService.GetSettingAsync(SettingName.PicCommunicationTool, true);

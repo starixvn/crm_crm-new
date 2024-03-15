@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
+    using CRM.Core.Services;
     using CRM.Criteria.Feedback;
     using CRM.Models.Feedback;
     using CRM.Models.LatestFeedback;
@@ -37,7 +38,7 @@
         [HttpPost]
         public async Task<IActionResult> GetLatestFeedback([FromBody] GetLatestFeedbackCriteria criteria)
         {
-            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync(); ;
+            criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
             var feedbacksTask = feedbackService.GetLatestFeedbackAsync(criteria);
             var mainCategoriesTask = settingService.GetMainCategoryWithSubCategoryAsync();

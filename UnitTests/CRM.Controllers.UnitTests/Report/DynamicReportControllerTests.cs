@@ -6,6 +6,7 @@
     using AutoFixture;
     using CRM.Controllers.Report;
     using CRM.Core.Constants;
+    using CRM.Core.Services;
     using CRM.Criteria.Report.DynamicReport;
     using CRM.Models.Report.DynamicReport;
     using CRM.Models.Setting;

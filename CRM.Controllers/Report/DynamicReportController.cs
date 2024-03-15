@@ -6,6 +6,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
+    using CRM.Core.Services;
     using CRM.Criteria.Report.DynamicReport;
     using CRM.Resources;
     using CRM.Services;

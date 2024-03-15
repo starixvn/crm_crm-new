@@ -4,6 +4,7 @@
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;
+    using CRM.Core.Services;
     using CRM.Criteria.Report.LogStatistics;
     using CRM.Services;
     using CRM.Services.Report;

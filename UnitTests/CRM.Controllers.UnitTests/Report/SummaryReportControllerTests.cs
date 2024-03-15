@@ -7,6 +7,7 @@
     using CRM.Controllers.Report;
     using CRM.Core.Constants;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Report.CategoriesSummaryReport;
     using CRM.Models.Report.CategoriesSummaryReport;
     using CRM.Resources;

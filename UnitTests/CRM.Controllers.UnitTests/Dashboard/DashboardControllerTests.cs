@@ -6,6 +6,7 @@
     using AutoFixture;
     using CRM.Controllers.Dashboard;
     using CRM.Core.Models;
+    using CRM.Core.Services;
     using CRM.Criteria.Dashboard;
     using CRM.Models.CommunicationLogs;
     using CRM.Models.Dashboard;

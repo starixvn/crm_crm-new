@@ -5,15 +5,12 @@
     using System.Threading.Tasks;
     using CRM.Core.Filters;
     using Fanex.Logging;
-    using Fanex.NAP.Client.Configuration;
     using Fanex.NAP.Client.Helpers.Web;
-    using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Abstractions;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.AspNetCore.Routing;
-    using Microsoft.Extensions.Caching.Memory;
     using NSubstitute;
     using Xunit;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
@@ -24,13 +21,9 @@
         public async Task OnAuthorizationAsync_NoPermission_ExpectedRedirectResult()
         {
             // Arrange
-            var userService = Substitute.For<IUserService>();
-            var napSettings = Substitute.For<INapSettings>();
             var napSession = Substitute.For<INapSession>();
             var logger = Substitute.For<ILogger>();
             napSession.UserId.Returns(1);
-
-            userService.GetPermissionAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns((int)Policy.Read);
 
             var context = new AuthorizationFilterContext(
                 new ActionContext
@@ -40,7 +33,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmPermissionAttribute(userService, napSettings, napSession, logger)
+            var filter = new CrmPermissionAttribute(napSession, logger)
             {
                 Policy = Policy.Host
             };
@@ -57,12 +50,8 @@
         public async Task OnAuthorizationAsync_HavePermission_RequestSucceeded()
         {
             // Arrange
-            var userService = Substitute.For<IUserService>();
-            var napSettings = Substitute.For<INapSettings>();
             var napSession = Substitute.For<INapSession>();
             var logger = Substitute.For<ILogger>();
-
-            userService.GetPermissionAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns((int)Policy.Host);
 
             var context = new AuthorizationFilterContext(
                 new ActionContext
@@ -72,7 +61,7 @@
                     ActionDescriptor = new ActionDescriptor(),
                 },
                 new List<IFilterMetadata>());
-            var filter = new CrmPermissionAttribute(userService, napSettings, napSession, logger)
+            var filter = new CrmPermissionAttribute(napSession, logger)
             {
                 Policy = Policy.Host
             };

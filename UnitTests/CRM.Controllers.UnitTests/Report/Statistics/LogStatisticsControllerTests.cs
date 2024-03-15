@@ -6,6 +6,7 @@
     using AutoFixture;
     using CRM.Controllers.Report.Statistics;
     using CRM.Core.Constants;
+    using CRM.Core.Services;
     using CRM.Criteria.Report.LogStatistics;
     using CRM.Models.Report.LogStatistics;
     using CRM.Models.Setting;

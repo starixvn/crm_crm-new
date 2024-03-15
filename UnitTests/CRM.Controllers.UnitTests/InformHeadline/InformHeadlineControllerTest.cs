@@ -31,8 +31,7 @@
         private ISettingService settingService;
         private IExportExcelService excelService;
         private IInformHeadlineService informHeadlineService;
-        private INapSettings napSettings;
-        private IUserService userService;
+        private IPermissionService permissionService;
 
 
         [Fact]
@@ -419,9 +418,9 @@
             settingService = Substitute.For<ISettingService>();
             excelService = Substitute.For<IExportExcelService>();
             informHeadlineService = Substitute.For<IInformHeadlineService>();
-            napSettings = Substitute.For<INapSettings>();
-            userService = Substitute.For<IUserService>();
-            return new InformHeadlineController(napSession,baseService,settingService,excelService,informHeadlineService, napSettings, userService);
+            permissionService = Substitute.For<IPermissionService>();
+            
+            return new InformHeadlineController(napSession,baseService,settingService,excelService,informHeadlineService, permissionService);
         }
     }
 }
