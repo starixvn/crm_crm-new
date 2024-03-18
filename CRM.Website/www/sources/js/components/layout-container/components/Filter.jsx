@@ -236,12 +236,10 @@ export default class Filter extends Component {
                                 <i className="fa fa-times icon-clear" onClick={value => handleChangeSuggestion('')}></i>
                             }
                         </Col>
-                        <div>
-                            <Form.Check className="checked-guest" type="checkbox" name="isGuest" label={LangHelper.getResource('Guest')}
-                                checked={isGuest}
-                                onChange={handleChange}
-                            />
-                        </div>
+                        <Form.Check className="checked-guest" type="checkbox" name="isGuest" label={LangHelper.getResource('Guest')}
+                            checked={isGuest}
+                            onChange={handleChange}
+                        />
                     </Form.Group>
                 </Form>
                 {this.renderRightContainer()}

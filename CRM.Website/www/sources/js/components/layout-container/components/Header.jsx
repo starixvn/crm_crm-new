@@ -78,10 +78,10 @@ export class Header extends PureComponent {
                     <img src={Site.resolveClientUrl('www/dist/css/images/icon/logo-crm.png')}
                         onClick={() => this.props.handleNavigate('Dashboard')}
                     />
-                    <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" onClick={handleCollapseExpandLayout}/></span>
                 </div>
                 <div className='right-header'>
                     <ul>
+                        <span className='icon-bar'><i className="fa fa-bars" aria-hidden="true" onClick={handleCollapseExpandLayout}/></span>
                         {
                             menus.map((item, key) => (
                                 this.isIgnoreMenu(item) && this.renderListMenu(item, key)

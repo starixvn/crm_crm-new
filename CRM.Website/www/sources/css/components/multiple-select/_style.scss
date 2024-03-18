@@ -47,18 +47,9 @@ $sub-menu-border: 1px solid #b7b7b7;
             font-size: 13px;
         }
 
-        .caret {
-            display: inline-block;
-            width: 0;
-            height: 0;
-            margin-left: 2px;
-            vertical-align: middle;
-            border-top: 4px solid;
-            border-right: 4px solid transparent;
-            border-left: 4px solid transparent;
+        .fa-chevron-down{
             position: absolute;
-            right: 10px;
-            top: calc(50% - 3px);
+            right: 5px;
         }
 
         &[disabled] {

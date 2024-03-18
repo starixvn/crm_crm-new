@@ -72,6 +72,7 @@ export default class MultipleSelectLabel extends Component {
             >
                 <span className='text-display'>{this.selectedItemsString}</span>
                 <b className='caret' />
+                <i class="fa fa-chevron-down"></i>
             </button>
         );
     }

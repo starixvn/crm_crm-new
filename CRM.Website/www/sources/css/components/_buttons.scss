@@ -8,6 +8,7 @@
     font-weight: 700;
 
     &.btn-primary {
+        border: 0;
         &:hover {
             background-color: darken(#466ab6, 7.5%);
         }

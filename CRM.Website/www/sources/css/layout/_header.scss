@@ -7,14 +7,29 @@
 
     .left-header {
         // width: 19%;
-        display: flex;
-        align-items: center;
+        max-width: 360px;
+        width: 100%;
 
         img {
             height: 100%;
             cursor: pointer;
             margin: 9px 0 9px 10px;
         }
+    }
+
+    .right-header {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .right-header ul {
+        display: flex;
+        align-items: center;
+        list-style-type: none;
+        margin: 0;
+        padding-left: 0;
 
         .icon-bar {
             color: #FFF;
@@ -27,27 +42,11 @@
             height: 24px;
             width: 24px;
             text-align: center;
-            margin-left: 96px;
         }
-    }
-
-    .right-header {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        // font-weight: 600;
-    }
-
-    .right-header ul {
-        display: flex;
-        list-style-type: none;
-        margin: 0;
-        padding-left: 16px;
 
         > li {
             position: relative;
-            padding: 12px;
+            padding: 15px 16px;
             color: #FFF;
             cursor: pointer;
 

@@ -2,6 +2,9 @@
     overflow-x: auto;
     max-width: 348px;
     width: 100%;
+    min-height: calc( 100vh - 110px);
+    max-height: calc( 100vh - 110px) !important;
+    outline: none;
 
     .col-md-9{
         padding: 0 !important;
@@ -51,7 +54,7 @@
             margin-right: 4px;
 
             &.icon-boss {
-                margin-right: 7px;
+                margin-right: 6px;
             }
         }
     }
@@ -59,16 +62,6 @@
     .upline-username {
         color: #3873E9;
         cursor: pointer;
-    }
-
-    .fa-caret-down {
-        background: url(/www/dist/css/images/icon/icon-dropdown.svg) no-repeat;
-        width: 12px;
-        height: 6px;
-
-        &::before {
-            content: none;
-        }
     }
 
     .country-select li {
@@ -103,6 +96,10 @@
 
         &.btn-submit{
             padding: 12px 8px 8px;
+
+            .btn-primary{
+                padding: 5px 16px;
+            }
         }
 
         &.field-info {
@@ -139,14 +136,6 @@
 
             label {
                 margin-bottom: 0;
-            }
-
-            .caret {
-                border-top: 6px solid;
-                border-right: 6px solid transparent;
-                border-left: 6px solid transparent;
-                color: #676767;
-                right: 5px;
             }
 
             .multiple-select-label {
@@ -304,6 +293,7 @@
 
             .fa {
                 color: #333333;
+                font-size: 13px;
             }
         }
 
@@ -357,7 +347,7 @@
             }
 
             &:not(:first-child) {
-                padding-top: 8px;
+                padding-top: 6px;
             }
 
             .field-name {
