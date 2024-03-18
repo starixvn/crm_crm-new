@@ -37,11 +37,81 @@
             border: 1px solid #b7b7b7;
             border-bottom-width: 0px;
             font-weight: bold;
-            background-color: #FFFFFF;
+            background-color: $white;
         }
 
         .locked-user {
             background-color: #b8cce4 !important;
         }
+    }
+
+    .table-container {
+        .content-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+    
+            .toggle-icon {
+                padding-left: 15px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+        }
+
+        .status {
+            &-button {
+                width: 75px;
+                margin: auto;
+                display: block;
+                border-radius: 3px;
+                cursor: pointer;
+
+                font-size: 12px;
+                padding: 3px 0px;
+                height: 28px;
+                text-align: center;
+                border: 1px solid transparent;
+                font-weight: 400;
+                line-height: 1.5;
+            }
+
+            &-New {
+                background-color: $white;
+                border-color: $black;
+                color: $black;
+            }
+            &-Draft {
+                background-color: $grey-light;
+                border-color: $grey-light;
+                color: $black;
+            }
+            &-Cancelled {
+                background-color: $draft-color;
+                border-color: $draft-color;
+                color: $white;
+            }
+            &-Failed {
+                background-color: #c0504d;
+                border-color: #c0504d;
+                color: $white;
+            }
+            &-Sent {
+                background-color: #77933c;
+                border-color: #77933c;
+                color: $white;
+            }
+            &-Sending {
+                background-color: $duplicated-color;
+                border-color: $duplicated-color;
+                color: $white;
+            }
+        }
+    }
+}
+.fade.tooltip.bs-tooltip-bottom {
+    width: 260px !important;
+
+    .tooltip-inner {
+        max-width: 100% !important;
     }
 }
