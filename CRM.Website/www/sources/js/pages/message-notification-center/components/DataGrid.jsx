@@ -140,9 +140,6 @@ export default class DataGrid extends Component {
 
         // const { totalItems } = this.props.gridData;
         // const { pageIndex, pageSize } = this.props.gridParams;
-
-        console.log('this.panels', this.panels);
-
         const { isHost } = this.props;
 
         const pagingOption = {
@@ -154,7 +151,7 @@ export default class DataGrid extends Component {
         return (
             <>
                 <div className='d-flex table-title justify-content-between align-items-center'>
-                    <div>{LangHelper.getResource('NotificationList')}</div>
+                    <div>{LangHelper.getResource('MessageNotificationCenter')}</div>
                 </div>
                 <Table
                     minWidth={960}
