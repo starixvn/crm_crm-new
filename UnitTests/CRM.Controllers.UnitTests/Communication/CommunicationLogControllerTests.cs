@@ -10,6 +10,7 @@
     using CRM.Core.Models;
     using CRM.Core.Services;
     using CRM.Criteria.Communication;
+    using CRM.Criteria.Feedback.AddFeedback;
     using CRM.Models;
     using CRM.Models.CommunicationLogs;
     using CRM.Models.Setting;
@@ -269,7 +270,7 @@
         public async Task CreateCommunicationLog_WhenCalled_ReturnAsExpectedResult()
         {
             // Arrange
-            var command = fixture.Create<CreateCommunicationLogCommand>();
+            var command = fixture.Create<AddCustomerFeedbackCommand>();
             var commandResult = fixture.Create<CommandResult>();
             var clientIP = new DefaultHttpContext
             {

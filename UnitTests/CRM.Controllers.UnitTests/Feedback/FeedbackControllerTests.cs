@@ -297,7 +297,7 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
             var actual = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
             Assert.Equal(commandResult, actual);
-            Assert.Equal(napSession.UserId, command.UserId);
+            Assert.Equal(napSession.UserId, command.UserID);
             Assert.Equal("1.0.0.0", command.IP);
             Assert.Equal(napSession.UserId, command.ReviewerId);
             Assert.NotEmpty(command.Review);
@@ -329,7 +329,7 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
             var actual = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
             Assert.Equal(commandResult, actual);
-            Assert.Equal(napSession.UserId, command.UserId);
+            Assert.Equal(napSession.UserId, command.UserID);
             Assert.Equal("1.0.0.0", command.IP);
             Assert.Empty(command.Review);
         }

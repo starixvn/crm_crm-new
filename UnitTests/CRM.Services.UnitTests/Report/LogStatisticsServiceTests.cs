@@ -94,7 +94,6 @@
             var criteria = fixture.Create<LogStatisticsDetailCriteria>();
             var clientDate = fixture.Create<DateTime>();
             fixture.Customize<LogStatisticsDetailCriteria>(x => x.With(b => b.SiteType, 0));
-            var criteria = fixture.Create<LogStatisticsDetailCriteria>();
             var service = GetService();
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientDate);
 

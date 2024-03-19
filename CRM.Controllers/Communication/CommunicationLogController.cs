@@ -199,11 +199,11 @@
         public async Task<IActionResult> CreateCommunicationLog([FromBody] AddCustomerFeedbackCommand command)
         {
             command.UserId = napSession.UserId;
+            command.CreatorId = napSession.UserId;
             command.IP = ClientIP;
             command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
             command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
             command.IsCommunicationLog = true;
-            command.NewCommunicationTools = "true";
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
         }
