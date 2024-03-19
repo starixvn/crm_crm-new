@@ -44,7 +44,7 @@ export class CustomerInfo extends PureComponent{
         const otherAccountCommunicationInfos = [];
         this.props.customerInfo.otherAccountCommunicationInfos?.map(item => {
             otherAccountCommunicationInfos.push({
-                communicationName: item.communiationName,
+                communicationName: item.communicationName,
                 communicationID: item.communicationID,
                 communicationValue: item.communicationValue,
                 custId: item.custId

@@ -304,7 +304,7 @@ export default class DataGrid extends PureComponent {
                                     return <>
                                         <Form.Group>
                                             <Form.Label >
-                                                {value.communiationName}
+                                                {value.communicationName}
                                             </Form.Label>
                                             <Col>
                                                 {value.communicationValue}

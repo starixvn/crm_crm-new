@@ -10,6 +10,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.Communication;
     using CRM.Criteria.Customer;
+    using CRM.Criteria.Feedback.AddFeedback;
     using CRM.Models.Customer;
     using CRM.Resources;
     using CRM.Services;
@@ -195,12 +196,14 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
-        public async Task<IActionResult> CreateCommunicationLog([FromBody] CreateCommunicationLogCommand command)
+        public async Task<IActionResult> CreateCommunicationLog([FromBody] AddCustomerFeedbackCommand command)
         {
-            command.IP = ClientIP;
             command.UserId = napSession.UserId;
-            command.StartTime = commonService.ConvertToServerDateTime(command.StartTime);
-            command.EndTime = commonService.ConvertToServerDateTime(command.EndTime);
+            command.IP = ClientIP;
+            command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
+            command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
+            command.IsCommunicationLog = true;
+            command.NewCommunicationTools = "true";
             CommandResult commandResult = await baseService.ExecuteNonQueryAsync(command);
             return Json(commandResult);
         }

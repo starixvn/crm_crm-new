@@ -39,7 +39,7 @@ export class CompanyService extends Component {
                     companyServiceName: item.companyServiceName,
                     isOffered: item.isOffered,
                     communicationID: item.communicationID,
-                    communiationName: item.communiationName,
+                    communicationName: item.communicationName,
                     communicationValue: item.communicationValue,
                     isError: false,
                     isSuggest: false
@@ -59,7 +59,7 @@ export class CompanyService extends Component {
                     companyServiceName: item.companyServiceName,
                     isOffered: item.isOffered,
                     communicationID: item.communicationID,
-                    communiationName: item.communiationName,
+                    communicationName: item.communicationName,
                     communicationValue: item.communicationValue,
                     isError: false,
                     isSuggest: false

@@ -129,14 +129,13 @@ export default class Filter extends Component {
             return this.renderDetailBreadcrumbsMenu(title);
         } else if (selectPathAnnouncement) {
             const path = pathAnnouncement[selectPathAnnouncement];
-            return this.renderBreadcrumbsMenu(path, pathname);
+            return this.renderBreadcrumbsMenu(path);
         } else if (!currentMenu) {
-            return this.renderBreadcrumbsMenu([], pathname);
+            return this.renderBreadcrumbsMenu([]);
         } else if (pathname === '/') {
             return null;
         } else {
-            const breadcrumbsMenu = this.getBreadcrumbsMenu(currentMenu, menus);
-            return this.renderBreadcrumbsMenu(breadcrumbsMenu, pathname);
+            return this.renderDetailBreadcrumbsMenu(currentMenu.name);
         }
     };
 
@@ -148,23 +147,9 @@ export default class Filter extends Component {
         );
     };
 
-    getBreadcrumbsMenu = (currentMenu, menus) => {
-        let breadcrumbsMenu = [];
-        if (currentMenu.parentId > 0) {
-            const parentNames = this.recursiveFindParentName(menus, currentMenu.parentId);
-            breadcrumbsMenu = [...breadcrumbsMenu, ...parentNames, currentMenu.name];
-        } else {
-            breadcrumbsMenu = [...breadcrumbsMenu, currentMenu.name];
-        }
-        return breadcrumbsMenu;
-    };
-
-    renderIconHome = () => <li><span className="fa fa-home icon-home fa-lg" onClick={() => this.props.handleNavigate('Dashboard')} /></li>;
-
-    renderBreadcrumbsMenu = (breadcrumbsMenu, pathname) => {
+    renderBreadcrumbsMenu = breadcrumbsMenu => {
         return (
                 <ul className='breadcrumbsMenu sub-menu list-inline list-unstyled'>
-                {breadcrumbsMenu.length !== 0 && this.renderIconHome()}
                     {
                         breadcrumbsMenu.map((item, key) =>
                             <li key={key}>{item}</li>

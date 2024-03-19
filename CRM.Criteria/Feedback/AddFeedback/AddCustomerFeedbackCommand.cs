@@ -38,7 +38,7 @@
 
         public int RoleId { get; set; } = RoleIdConstants.CRMGuest;
 
-        public bool IsVip { get; set; }
+        public bool? IsVip { get; set; }
 
         public DateTime FeedbackDate { get; set; }
 
