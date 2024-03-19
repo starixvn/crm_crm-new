@@ -152,7 +152,9 @@ export default class Filter extends Component {
                 <ul className='breadcrumbsMenu sub-menu list-inline list-unstyled'>
                     {
                         breadcrumbsMenu.map((item, key) =>
-                            <li key={key}>{item}</li>
+                            <li key={key}>{item}
+                                <i class="fa fa-chevron-right"></i>
+                            </li>
                         )
                     }
                 </ul>
