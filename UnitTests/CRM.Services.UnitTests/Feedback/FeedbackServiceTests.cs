@@ -17,11 +17,10 @@
     using CRM.Models.Customer;
     using CRM.Models.DeletedFeedback;
     using CRM.Models.Feedback;
-    using CRM.Models.LatestFeedback;
+    using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.Setting;
     using CRM.Repositories;
     using CRM.Services.Feedback;
-    using Fanex.Data.Repository;
     using NSubstitute;
     using Xunit;
 
@@ -41,11 +40,13 @@
             // Arrange
             var feedbacks = new List<CustomerFeedback>();
             var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
+            var latestFeedbackCommunicationTools = fixture.Create<IEnumerable<LatestFeedbackCommunicationTool>>();
             var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var criteria = new GetCustomerFeedbackByIdCriteria();
             var service = GetService();
-            baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomerPermission, FeedbackSettingRelation>(
-                Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x)).Returns((feedbacks, relatedCustomers, settings));
+            baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(
+                Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x))
+                .Returns((feedbacks, latestFeedbackCommunicationTools, settings, relatedCustomers));
 
             // Act
             var actual = await service.GetCustomerFeedbackByIdAsync(1);
@@ -72,6 +73,7 @@
                 }
             };
             var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
+            var latestFeedbackCommunicationTools = fixture.Create<IEnumerable<LatestFeedbackCommunicationTool>>();
             var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var site = fixture.Create<SiteSetting>();
             var feedbackId = fixture.Create<int>();
@@ -80,8 +82,9 @@
                 FeedbackId = feedbackId
             };
             var service = GetService();
-            baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomerPermission, FeedbackSettingRelation>(
-                Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x)).Returns((feedbacks, relatedCustomers, settings));
+            baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(
+                Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x))
+                .Returns((feedbacks, latestFeedbackCommunicationTools, settings, relatedCustomers));
             settingService.GetSiteByIdAsync(1).Returns(site);
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
 

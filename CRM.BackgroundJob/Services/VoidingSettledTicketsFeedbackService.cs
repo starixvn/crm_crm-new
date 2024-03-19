@@ -35,7 +35,7 @@
 
         private readonly string descTemplateXml = "VoidingSettledTicketDescriptionTemplate.xml";
         private readonly string solTemplateXml = "VoidingSettledTicketSolutionTemplate.xml";
-        private readonly int[] MixParlayMatchIds = new int[] { 9, 29, 2799, 10449 };
+        private readonly int[] MixParlayMatchIds = { 9, 29, 2799, 10449 };
 
         private readonly int EventType2 = 2;
         private readonly int SportType180 = 180;
@@ -546,8 +546,12 @@
             return stringBuilder.ToString();
         }
 
+#pragma warning disable S1541
+#pragma warning disable S1067
         protected internal virtual string GetDescriptionSportBook(AutoVoidingEventDetails eventDetail, string productName,
           string kO_time, string leagueName, string homeName, string sportName, string awayName)
+#pragma warning restore S1541
+#pragma warning restore S1067
         {
             var stringBuilder = new StringBuilder();
             const string line = "-------------------------------------------------------- {0}";
@@ -559,16 +563,16 @@
                 stringBuilder.AppendFormat(ticketDescTemplate.Outright, eventDetail.Leaguenametc, kO_time, leagueName, homeName, Constants.Break);
             }
 
-            if ((productName == "Sportsbook" && eventDetail.EventType != EventType2) || productName == "Virtual Sports 2" || productName == "Virtual Sports 3" || productName == "Virtual Sports 4")
+            if ((productName != "Sportsbook" || eventDetail.EventType == EventType2) &&
+                productName != "Virtual Sports 2" && productName != "Virtual Sports 3" &&
+                productName != "Virtual Sports 4") return stringBuilder.ToString();
+            stringBuilder.AppendFormat(line, Constants.Break);
+            string league = leagueName;
+            if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase) || productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase))
             {
-                stringBuilder.AppendFormat(line, Constants.Break);
-                string league = leagueName;
-                if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase) || productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase))
-                {
-                    league = sportName;
-                }
-                stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, Constants.Break);
+                league = sportName;
             }
+            stringBuilder.AppendFormat(ticketDescTemplate.SportsbookVirtualSports2, EventdateGMT4Format, sportName, kO_time, league, homeName, awayName, Constants.Break);
 
             return stringBuilder.ToString();
         }

@@ -12,10 +12,8 @@
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
-    using Fanex.Logging.Extensions;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
-    using Newtonsoft.Json;
     using static Fanex.NAP.Core.Business.Constant;
 
     [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]

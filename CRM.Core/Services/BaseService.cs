@@ -26,7 +26,6 @@
         Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>>> FetchMultipleAsync<TFirst, TSecond>(ICriteria criteria);
 
         Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>> FetchMultipleAsync<TFirst, TSecond, TThird>(ICriteria criteria);
-        Task<ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFourth>>> FetchMultipleAsync<TFirst, TSecond, TThird, TFourth>(ICriteria criteria);
 
         Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command);
     }
@@ -150,16 +149,6 @@
             }
 
             return new ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>>(new List<TFirst>(), new List<TSecond>(), new List<TThird>());
-        }
-
-        public async Task<(IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFourth>)> FetchMultipleAsync<TFirst, TSecond, TThird, TFourth>(ICriteria criteria)
-        {
-            if (criteria != null && criteria.IsValid())
-            {
-                return await dynamicRepository.FetchMultipleAsync<TFirst, TSecond, TThird, TFourth>(criteria);
-            }
-
-            return new ValueTuple<IEnumerable<TFirst>, IEnumerable<TSecond>, IEnumerable<TThird>, IEnumerable<TFourth>>(new List<TFirst>(), new List<TSecond>(), new List<TThird>(), new List<TFourth>());
         }
 
         public async Task<CommandResult> ExecuteNonQueryAsync(INonQueryCommand command)

@@ -22,6 +22,7 @@
     using Fanex.NAP.Client.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Models.Feedback.AddCustomerFeedback;
     using NSubstitute;
     using Xunit;
     using static Fanex.NAP.Client.Helpers.Business.Constant;
@@ -249,7 +250,7 @@
             var jsonResult = Assert.IsType<JsonResult>(result);
             var commandResult = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
             Assert.Equal(1, commandResult.Code);
-            Assert.Equal("You don't have permission to delete feedback.", commandResult.Message);
+            Assert.Equal("You don't have permission to review feedback.", commandResult.Message);
         }
 
         [Fact]
@@ -276,7 +277,7 @@
         {
             // Arrange
             var commandResult = fixture.Create<CommandResult>();
-            var command = new EditCustomerFeedbackCommand { IsReviewed = true, Review = "review" };
+            var command = new EditCustomerFeedbackCommand { IsReviewed = true, Review = "review", CommunicationInfos = new NewCommunicationTool []{} };
             var controller = GetController();
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
@@ -308,7 +309,7 @@
         {
             // Arrange
             var commandResult = fixture.Create<CommandResult>();
-            var command = new EditCustomerFeedbackCommand { Review = "review" };
+            var command = new EditCustomerFeedbackCommand { Review = "review", CommunicationInfos = new NewCommunicationTool[] { } };
             var controller = GetController();
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {

@@ -2,7 +2,6 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
-    using Core.Extensions.XML;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
     using CRM.Core.Filters;

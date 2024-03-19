@@ -114,14 +114,7 @@
 
         public string GetLeagueNameBySiteName(string siteName , int leagueId, int leagueGroupId, string languageCode)
         {
-            if (siteName == Constants.SiteLabel777)
-            {
-                return GetLeagueName(leagueId.ToString(), leagueGroupId.ToString(), languageCode);
-            }
-            else
-            {
-                return GetLeagueName(leagueId.ToString(), languageCode);
-            }
+            return siteName == Constants.SiteLabel777 ? GetLeagueName(leagueId.ToString(), leagueGroupId.ToString(), languageCode) : GetLeagueName(leagueId.ToString(), languageCode);
         }
 
         public string GetTeamName(string teamId, string languageCode)

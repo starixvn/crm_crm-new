@@ -188,7 +188,7 @@ export const DetailMenu = [
     { id: 3, url: '/ManageFeedback', title: 'ManageFeedback' },
     { id: 4, url: '/Communication', title: 'CommunicationLog' },
     { id: 5, url: '/Dashboard', title: 'Home' },
-    { id: 6, url: '/AccountDetail', title: 'AccountDetail' },
+    { id: 6, url: '/AccountDetail', title: 'AccountDetails' },
     { id: 7, url: '/Remark', title: 'Remark' },
     { id: 8, url: '/ActionLog', title: 'ActivityLog' },
     { id: 9, url: '/Detail', title: 'CRMInfo' },

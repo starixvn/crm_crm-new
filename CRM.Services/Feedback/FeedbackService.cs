@@ -46,17 +46,20 @@
 
     public class FeedbackService : IFeedbackService
     {
+        private readonly IDynamicRepository dynamicRepository;
         private readonly IBaseService baseService;
         private readonly ISettingService settingService;
         private readonly ICommonService commonService;
         private readonly IFeedbackRepository feedbackRepository;
 
         public FeedbackService(
+            IDynamicRepository dynamicRepository,
             IBaseService baseService,
             ISettingService settingService,
             ICommonService commonService,
             IFeedbackRepository feedbackRepository)
         {
+            this.dynamicRepository = dynamicRepository;
             this.baseService = baseService;
             this.settingService = settingService;
             this.commonService = commonService;
@@ -70,7 +73,7 @@
                 FeedbackId = feedbackId
             };
             var (feedbackInfos, latestFeedbackCommunicationTool, settingItems, relatedCustomers ) = 
-                await baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission >(criteria);
+                await dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission >(criteria);
             CustomerFeedback feedback = null;
 
             if (feedbackInfos.Any())

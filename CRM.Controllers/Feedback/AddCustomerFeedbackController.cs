@@ -133,7 +133,9 @@
             }
         }
 
+#pragma warning disable S3240
         private static string XMLNewCommunicationTools(AddCustomerFeedbackCommand command)
+#pragma warning restore S3240
         {
             if (command.IsHeadline)
             {

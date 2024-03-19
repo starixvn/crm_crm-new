@@ -162,7 +162,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         const url = Site.resolveClientUrl('AccountDetail/EditHeadlineStaffsAndAuthority');
         await DataService.postDataAsync(url, params).then(async response => {
             if (response.data.isSuccessful) {
-                toast.success(LangHelper.getResource('UpdateHeadlineAndAuthoritySuccessfully'));
+                toast.success(LangHelper.getResource('UpdateHeadlineStaffsAndAuthoritySuccessfully'));
                 await this.props.getHeadlineStaffsAndAuthority({ headlineID: this.props.customerInfo.custId });
                 const headlineStaffsAndAuthority = this.getHeadlineStaffsAndAuthorityInfo(this.props.headlineStaffsAndAuthority);
                 this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });

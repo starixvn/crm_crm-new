@@ -11,7 +11,7 @@ namespace CRM.Criteria.Tests.Feedback.AddGuestFeedback
         {
             // Arrange
             var criteria = new AddGuestFeedbackCommand();
-            var expected = "Acc_CRM_GuestFeedbackIns";
+            var expected = "Acc_CRM_NewManualFeedback_FeedbackIns_Guest";
 
             // Act
             var actual = criteria.GetSettingKey();
