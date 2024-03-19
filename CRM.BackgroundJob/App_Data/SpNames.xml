@@ -28,7 +28,7 @@
         <Setting Key="Acc_CRM_AbnormalAccount_GetUsernameList" SpName="Acc_CRM_AbnormalAccount_GetUsernameList" DbName="DBTXN.bodb02.wsv_nap.ReadOnly" />
         <Setting Key="Acc_CRM_AutoFB_SystemSetting_Sel" SpName="Acc_CRM_AutoFB_SystemSetting_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_AutoFB_RefundSettledTickets_GetMessage" SpName="Acc_CRM_AutoFB_RefundSettledTickets_GetMessage" DbName="DBMSG.bodb_Message.wsv_nap" />
-        <Setting Key="Acc_CRM_AutoFB_RefundSettledTickets_Import" SpName="Acc_CRM_AutoFB_RefundSettledTickets_Import_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoFB_RefundSettledTickets_Import" SpName="Acc_CRM_AutoFB_RefundSettledTickets_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="Chatbot">
         <Setting Key="Acc_SiteDBConfigSel" SpName="Acc_SiteDBConfigSel" DbName="DBACC.bodb02.wsv_nap" />
@@ -113,12 +113,12 @@
     <Function Name="Voiding Settled Tickets">
         <Setting Key="Acc_CRM_FailVoidingMessageSel" SpName="Acc_CRM_FailVoidingMessageSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_BatchUpd" SpName="Acc_CRM_VoidingAutoFeedbackInfo_BatchUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Ins" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Ins_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Ins" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Ins" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_VoidingAutoFeedbackInfo_Sel" SpName="Acc_CRM_VoidingAutoFeedbackInfo_Sel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_Voiding_SystemSettingSel" SpName="Acc_CRM_Voiding_SystemSettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_AutoVoidingMessageSel" SpName="Acc_CRM_AutoVoidingMessageSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_AutoVoidingMessageUpd" SpName="Acc_CRM_AutoVoidingMessageUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
-        <Setting Key="Acc_CRM_AutoVoidingTicketSel" SpName="Acc_CRM_AutoVoidingTicketSel_xtest" DbName="DBACC.bodb02.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoVoidingTicketSel" SpName="Acc_CRM_AutoVoidingTicketSel" DbName="DBACC.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_AutoVoidingIssueType_Sel" SpName="Acc_CRM_AutoVoidingIssueType_Sel" DbName="DBACC.bodb02.wsv_nap" />
     </Function>
     <Function Name="ArchivingDA">
@@ -132,7 +132,7 @@
     <Function Name="VoidBetID">
         <Setting Key="Acc_CRM_AutoFB_VoidByBetID_GetMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_GetMessage" DbName="DBMSG.bodb_Message.wsv_nap" />
         <Setting Key="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" SpName="Acc_CRM_AutoFB_VoidByBetID_CleanMessage" DbName="DBACC.bodb02.wsv_nap" />
-        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_Import" SpName="Acc_CRM_AutoFB_VoidByBetID_Import_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_AutoFB_VoidByBetID_Import" SpName="Acc_CRM_AutoFB_VoidByBetID_Import" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>
     <Function Name="AbnormalBet">
         <Setting Key="Acc_CRM_AutoFB_AbnormalBets_GetVoidedInfo" SpName="Acc_CRM_AutoFB_AbnormalBets_GetVoidedInfo" DbName="DBACC.bodb02.wsv_nap" />
