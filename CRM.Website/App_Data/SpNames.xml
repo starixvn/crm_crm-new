@@ -211,12 +211,21 @@
             <Mapping DataField="danger2" ObjectProperty="ABTDangerLevel" />
             <Mapping DataField="danger3" ObjectProperty="OtherSportsDangerLevel" />
         </Setting>
+        <Setting Key="Acc_CRM_NewLeftPanel_CustomerSearch" SpName="Acc_CRM_NewLeftPanel_CustomerSearch" DbName="DBCRM.bodb_CRM.wsv_nap">
+            <Mapping DataField="Wire_BankName" ObjectProperty="BankName" />
+            <Mapping DataField="Wire_SwiftCode" ObjectProperty="BankSwiftCode" />
+            <Mapping DataField="Wire_AccountName" ObjectProperty="BankAccountName" />
+            <Mapping DataField="Wire_AccountNo" ObjectProperty="BankAccountNumber" />
+            <Mapping DataField="CustStatus" ObjectProperty="Status" />
+            <Mapping DataField="danger" ObjectProperty="OriginalDangerLevel" />
+            <Mapping DataField="danger2" ObjectProperty="ABTDangerLevel" />
+            <Mapping DataField="danger3" ObjectProperty="OtherSportsDangerLevel" />
+        </Setting>
         <Setting Key="Acc_CRM_CustomerCheckSiteType" SpName="Acc_CRM_CustomerCheckSiteType" DbName="DBCRM.bodb_CRM.wsv_nap">
             <Mapping DataField="SiteType" ObjectProperty="CustomerType" class="CustomerPermissionInfo" />
         </Setting>
         <Setting Key="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" SpName="Acc_CRM_NewLeftPanel_GetOtherAccountCommunicationInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" SpName="Acc_CRM_NewLeftPanel_GetHeadlineStaffInfo" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
-        <Setting Key="Acc_CRM_NewLeftPanel_CustomerSearch" SpName="Acc_CRM_NewLeftPanel_CustomerSearch" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_NewLeftPanel_CustomerSelUserSearch" SpName="Acc_CRM_NewLeftPanel_CustomerSelUserSearch" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" SpName="Acc_CRM_NewAccDetail_UpdHeadlineCompanyService" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
         <Setting Key="Acc_CRM_NewAccDetail_SyncHeadlineStaffAndAuthority" SpName="Acc_CRM_NewAccDetail_SyncHeadlineStaffAndAuthority" DbName="DBCRM.bodb_CRM.wsv_nap"></Setting>
