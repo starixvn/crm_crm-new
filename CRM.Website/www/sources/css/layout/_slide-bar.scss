@@ -34,6 +34,12 @@
         border-color: #CECCCD;
     }
 
+    .multiple-select-options-container {
+        width: 101%;
+        left: -1px;
+        top: 24px;
+    }
+
     .group-empty {
         .no-data {
             background: #E7F3FF;
@@ -99,6 +105,7 @@
 
             .btn-primary{
                 padding: 5px 16px;
+                height: 26px;
             }
         }
 
@@ -113,7 +120,7 @@
             .col {
                 input, button {
                     border-radius: 3px;
-                    padding: 3px 5px !important;
+                    padding: 1px 1px 1px 5px !important;
                     font-size: 13px;
                     font-weight: 400;
                     height: 24px;
@@ -121,6 +128,10 @@
 
                 .multiple-select-container {
                     border-radius: 3px;
+
+                    .text-display {
+                        max-width: 186px;
+                    }
                 }
             }
 
@@ -136,15 +147,6 @@
 
             label {
                 margin-bottom: 0;
-            }
-
-            .multiple-select-label {
-                height: auto !important;
-                min-height: 22px;
-
-                .text-display {
-                    padding-left: 0;
-                }
             }
         }
 
@@ -278,12 +280,15 @@
         border-radius: 5px;
         border: 1px #CCCCCC solid;
 
+        &:has(.group-content) .group-title .icon-dropdown{
+ 	    transform: rotate(0);
+        }
         .group-title {
             color: #2B4E80;
             font-size: 14px;
             font-weight: 700;
             text-transform: capitalize;
-            padding: 4px 9px 5px 11px;
+            padding: 4px 2px 5px 11px;
             background: #F3F3F3;
             border-radius: 5px;
             display: flex;
@@ -291,8 +296,10 @@
             align-items: center;
             cursor: pointer;
 
-            .fa {
-                color: #333333;
+            .icon-dropdown {
+                background: url(/www/dist/css/images/icon/icon-dropdown.svg) no-repeat;
+                width: 20px;
+                height: 20px;
             }
         }
 
@@ -308,10 +315,6 @@
             margin: 8px 6px 8px 8px;
             max-height: 372px;
             overflow-y: auto;
-
-            &::-webkit-scrollbar-track {
-                background-color: rgb(241, 241, 241);
-            }
 
             &::-webkit-scrollbar {
                 width: 8px;

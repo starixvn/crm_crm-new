@@ -114,9 +114,7 @@ export default class DataGrid extends PureComponent {
                 <div className='group-acc-info'>
                     <div className='group-title' onClick={() => this.setState(prevState => ({ isShowAccInfo: !prevState.isShowAccInfo }))}>
                         <span>Account info</span>
-                        {
-                            this.state.isShowAccInfo ? <i class="fa fa-chevron-down"></i> : <i class="fa fa-chevron-right"></i>
-                        }
+                        <span className='icon-dropdown'/>
                     </div>
                     {
                         this.state.isShowAccInfo ? (
@@ -291,9 +289,7 @@ export default class DataGrid extends PureComponent {
             <div className='group-comm-tool'>
                 <div className='group-title' onClick={() => this.setState(prevState => ({ isShowCommInfo: !prevState.isShowCommInfo }))}>
                     <span>Communication info</span>
-                    {
-                        this.state.isShowCommInfo ? <i class="fa fa-chevron-down"></i> : <i class="fa fa-chevron-right"></i>
-                    }
+                    <span className='icon-dropdown'/>
                 </div>
                 {
                 this.state.isShowCommInfo ? (
@@ -335,9 +331,7 @@ export default class DataGrid extends PureComponent {
             <div className='group-comm-tool'>
                 <div className='group-title' onClick={() => this.setState(prevState => ({ isShowCommInfo: !prevState.isShowCommInfo }))}>
                     <span>Communication info</span>
-                    {
-                        this.state.isShowCommInfo ? <i class="fa fa-chevron-down"></i> : <i class="fa fa-chevron-right"></i>
-                    }
+                    <span className='icon-dropdown'/>              
                 </div>
                 {
                 this.state.isShowCommInfo ? (
@@ -402,9 +396,8 @@ export default class DataGrid extends PureComponent {
                     onClick={() => this.setState(prevState => ({ isShowDetail: !prevState.isShowDetail }))}
                 >
                     {LangHelper.getResource('Detail')}
-                    {
-                        this.state.isShowDetail ? <i class="fa fa-chevron-down"></i> : <i class="fa fa-chevron-right"></i>
-                    }
+                    <span className='icon-dropdown'/>
+
                 </div>
                 {
                     this.state.isShowDetail &&

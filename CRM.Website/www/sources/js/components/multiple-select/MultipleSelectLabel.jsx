@@ -71,8 +71,7 @@ export default class MultipleSelectLabel extends Component {
                 onClick={this.props.onToggle}
             >
                 <span className='text-display'>{this.selectedItemsString}</span>
-                <b className='caret' />
-                <i class="fa fa-chevron-down"></i>
+                <span className='icon-dropdown'/>
             </button>
         );
     }

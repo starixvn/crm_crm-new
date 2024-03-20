@@ -28,8 +28,8 @@ $sub-menu-border: 1px solid #b7b7b7;
         color: #333;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         height: 24px;
-        padding: 6px 27px 6px 0;
         text-align: left;
         outline: none !important;
         cursor: pointer;
@@ -37,13 +37,13 @@ $sub-menu-border: 1px solid #b7b7b7;
         background-color: transparent;
         border: none;
         font-size: 0.875rem;
+        padding: 1px 1px 1px 5px;
 
         .text-display {
             text-overflow: ellipsis;
             display: inline-block;
             white-space: nowrap;
             overflow: hidden;
-            padding-left: 10px;
             font-size: 13px;
         }
 

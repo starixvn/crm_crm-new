@@ -133,7 +133,7 @@ export default class SelectWithSearch extends Component {
         return (
             <div className={'dropdown selectwithsearchtree ' + this.state.selectFormStatus} ref={this.wrapperRef}>
                 <button type="button" className="btn" onClick={this.toggleSelect}>
-                    <span className="pull-left">{`${this.state.selectedItem.name}`}</span><i className="fa fa-chevron-down pull-right" />
+                    <span className="pull-left">{`${this.state.selectedItem.name}`}</span><span className='icon-dropdown'/>
                 </button>
                 <ul className="dropdown-menu" style={{ "width": `${this.props.maxWidth}` }}>
                     <li>

@@ -243,7 +243,8 @@ export class AppContainer extends Component {
             <Form className={`group-account ${(this.state.updateHeadlineInfoPolicy >= Policy.Read || !this.props.customerInfo.isGroupHeadLine) && 'acc-info'}`}>
                 <div className='group-title group-tab'>
                     <div className="group-title-tab" onClick={this.handleShowAccountInfo}>
-                        Account Info
+                    <span className='icon-dropdown'/>
+                    <span >Account info</span>
                     </div>
                     {
                         values.isHostOnCurrentCustomer &&
@@ -398,6 +399,7 @@ export class AppContainer extends Component {
             <Form className='group-account'>
                 <div className='group-title group-tab'>
                     <div className="group-title-tab" onClick={this.handleShowAccountantPIC}>
+                    <span className='icon-dropdown'/>
                         Accountant PIC
                     </div>
                     {
