@@ -213,19 +213,10 @@
       }
 
       .custom-select-communicationTool {
-        // width: 100%;
         border: none;
-        // background: url(/www/dist/css/images/icon/icon-dropdown.svg) no-repeat;
-        // -webkit-appearance: none;
-        // -moz-appearance: none;
-        // appearance: none;
-        // background-position: right;
-
-        // &::before {
-        //     content: "\F078";
-        //     width: 12px;
-        //     height: 12px;
-        // }
+        padding: 0;
+        position: relative;
+        left: -4px;
       }
     }
   }

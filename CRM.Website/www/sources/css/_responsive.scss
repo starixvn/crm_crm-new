@@ -11,6 +11,22 @@
             padding: 8px 10px 9px !important;
         }
 
+        .row-search #left-container {
+            max-width: 248px;
+
+            .autocomplete-container {
+                input {
+                    &::placeholder {
+                        font-size: 10px !important;
+                    }
+                }
+            }
+        }
+
+        .slide-bar {
+            max-width: 260px;
+        }
+
         #left-row-container {
             .left-form-customer {
                 .list-menu {
@@ -40,18 +56,6 @@
                     }
                 }
             }
-            }
-
-            #left-container {
-                .autocomplete-container {
-                    input {
-                        &::placeholder {
-                            font-size: 10px !important;
-                        }
-
-                        padding: 5px 0 5px 30px !important;
-                    }
-                }
             }
 
             .multiple-select-container {
