@@ -58,7 +58,7 @@
             services.AddScoped<ILetstalkApiService, LetstalkApiService>();
             services.AddScoped<ITelegramApiService, TelegramApiService>();
             services.AddScoped<ISendAnnouncementService, SendAnnouncementService>();
-            services.AddScoped<IPermissionService, PermissionService>();
+            services.AddSingleton<IPermissionService, PermissionService>();
             services.AddScoped<ICategoryClassificationService, CategoryClassificationService>();
         }
     }
