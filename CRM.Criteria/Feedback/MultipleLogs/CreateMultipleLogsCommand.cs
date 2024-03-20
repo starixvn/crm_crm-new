@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using CRM.Core.Constants;
     using CRM.Core.Extensions.XML;
     using CRM.Core.Models;
     using CRM.Models;
@@ -14,7 +13,6 @@
 
     public class CreateMultipleLogsCommand : BaseNonQueryCommand
     {
-        public short UserRole { get; } = Constants.UserRole;
         public string Subject { get; set; }
         public int CreatorId { get; set; }
         public int UserId { get; set; }
@@ -102,13 +100,10 @@
         [SpParam(SqlParamName = "RelatedCustomers")]
         public string RelatedCustomerXml => RelatedCustomers.Any() ? RelatedCustomers.ToXML("ROOT").ToString() : string.Empty;
 
-        public bool IsManualMultiple { get; set; }
-
         public int LanguageId { get; set; }
-
         public string CountryName { get; set; }
 
-        public override string GetSettingKey() => "Acc_CRM_GuestFeedbackIns_Multiple";
+        public override string GetSettingKey() => "Acc_CRM_NewManualFeedback_FeedbackIns_Multiple";
 
         public override bool IsValid() => true;
     }
