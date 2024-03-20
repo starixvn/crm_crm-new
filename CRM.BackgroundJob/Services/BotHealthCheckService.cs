@@ -15,11 +15,15 @@
     {
         private readonly IChatBotSendMessageService chatBotSendMessageService;
         private readonly LetstalkHealthCheckSettings healthCheckSettings;
+        private readonly ICRMLogService logService;
 
-        public BotHealthCheckService(IChatBotSendMessageService chatBotSendMessageService, LetstalkHealthCheckSettings healthCheckSettings)
+        public BotHealthCheckService(IChatBotSendMessageService chatBotSendMessageService,
+            LetstalkHealthCheckSettings healthCheckSettings,
+            ICRMLogService logService)
         {
             this.chatBotSendMessageService = chatBotSendMessageService;
             this.healthCheckSettings = healthCheckSettings;
+            this.logService = logService;
         }
 
         public async Task LetstalkBotMonitorAsync()
@@ -33,7 +37,12 @@
                 Content = healthCheckSettings.Message
             };
 
-            await chatBotSendMessageService.SendSinglePlaintexMessageAsync(BotChannel.Letstalk, notificationMsg);
+            var sentResult = await chatBotSendMessageService.SendSinglePlaintexMessageAsync(BotChannel.Letstalk, notificationMsg);
+
+            if (sentResult is not null && !sentResult.IsSuccessful)
+            {
+                await logService.ErrorMessageAsync($"Letstalk service unhealthy, the result error: {sentResult.ErrorMessage}");
+            }
         }
     }
 }
