@@ -281,7 +281,7 @@
         border: 1px #CCCCCC solid;
 
         &:has(.group-content) .group-title .icon-dropdown{
- 	    transform: rotate(0);
+            transform: rotate(0);
         }
         .group-title {
             color: #2B4E80;
@@ -297,10 +297,9 @@
             cursor: pointer;
 
             .icon-dropdown {
-                background: url(/www/dist/css/images/icon/icon-dropdown.svg) no-repeat;
-                width: 20px;
-                height: 20px;
-            }
+                transform: rotate(-90deg);
+                transition: 0.2s;
+              }
         }
 
         &:has(.group-content) .group-title{
