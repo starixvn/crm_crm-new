@@ -9,7 +9,7 @@ import { Button, Form, Alert } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
-import { Policy, FunctionKey, FieldErrorHeadlineCommunicationInfo } from '@jsroot/common/constants';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
 import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
@@ -101,7 +101,7 @@ export class AppContainer extends Component {
 
     async componentDidMount() {
         this.props.setActiveTab({
-            currentTab: 'headlineCommunicationInfo',
+            currentTab: LangHelper.getResource('HeadlineCommunicationInfo'),
             nextTab: null
         });
         this.props.setErrors(null);
@@ -215,10 +215,8 @@ export class AppContainer extends Component {
                     <Alert variant='danger'>
                         <ul className='list-message-error'>
                             {
-                                FieldErrorHeadlineCommunicationInfo.map(field => {
-                                    if (errors[field]) {
-                                        return <li key={errors[field]}>{errors[field]}</li>;
-                                    }
+                                Object.keys(errors).map((key) => {
+                                    return <li key={errors[key]}>{errors[key]}</li>;
                                 })
                             }
                         </ul>
@@ -243,7 +241,7 @@ export class AppContainer extends Component {
             <Form className={`group-account ${(this.state.updateHeadlineInfoPolicy >= Policy.Read || !this.props.customerInfo.isGroupHeadLine) && 'acc-info'}`}>
                 <div className='group-title group-tab'>
                     <div className="group-title-tab" onClick={this.handleShowAccountInfo}>
-                        Account Info
+                        {LangHelper.getResource('AccountInfo')}
                     </div>
                     {
                         values.isHostOnCurrentCustomer &&
@@ -398,7 +396,7 @@ export class AppContainer extends Component {
             <Form className='group-account'>
                 <div className='group-title group-tab'>
                     <div className="group-title-tab" onClick={this.handleShowAccountantPIC}>
-                        Accountant PIC
+                        {LangHelper.getResource('AccountantPIC')}
                     </div>
                     {
                         canEditHeadline &&
@@ -443,7 +441,7 @@ export class AppContainer extends Component {
     }
 
     validateCommunicationInfo = () => {
-        const errors = {};
+        let errors = {};
         let { otherAccountCommunication } = this.state;
 
         this.state.otherAccountCommunication.map((pic, indexPic) => {
@@ -468,7 +466,8 @@ export class AppContainer extends Component {
         this.validateCommunicationInfo();
     }
 
-    getWidth = (picCommunicationTool, settingCommunicationTool) => (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.communicationID).settingValue.length) + 15;
+    getWidth = (picCommunicationTool, settingCommunicationTool) =>
+        (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.communicationID).settingValue.length) + 15;
 
     deleteCommunicationTool = (value, type) => {
         const data = [...this.state.otherAccountCommunication];
@@ -494,7 +493,7 @@ export class AppContainer extends Component {
         }
     }
 
-    editOtherAccountCommunicationInfo = async () => {
+    getPicCommunicationTools() {
         let { otherAccountCommunication } = this.state;
         let picCommunicationTools = [];
         otherAccountCommunication.map((picCom, indexCom) => {
@@ -502,7 +501,8 @@ export class AppContainer extends Component {
             if (index >= 0 && index !== indexCom) {
                 const newValue = otherAccountCommunication[index].communicationValue.concat(', ', picCom.communicationValue);
                 picCommunicationTools[index].communicationValue = newValue;
-            } else {
+            }
+            else {
                 const newPicCom = {
                     communicationID: picCom.communicationID,
                     communicationValue: picCom.communicationValue
@@ -510,9 +510,13 @@ export class AppContainer extends Component {
                 picCommunicationTools.push({ ...newPicCom });
             }
         })
+        return picCommunicationTools;
+    }
+
+    editOtherAccountCommunicationInfo = async () => {        
         const params = {
             custID: this.props.id,
-            otherCommunicationTools: picCommunicationTools
+            otherCommunicationTools: this.getPicCommunicationTools()
         };
 
         Site.blockUI();
@@ -555,7 +559,7 @@ export class AppContainer extends Component {
         return (
             <Form className='group-account'>                
                 <div className='group-title'>
-                    Communication Info
+                    {LangHelper.getResource('CommunicationInfo')}
                     {
                         values.isHostOnCurrentCustomer &&
                         <img onClick={this.handleSubmitOtherCommunicationInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
@@ -631,31 +635,32 @@ export class AppContainer extends Component {
                     updatePolicy >= Policy.Read &&
                     <div className='headline-info'>
                         <div className="tab-title">
-                            <div className={`tab-child ${activeTab.currentTab === 'headlineCommunicationInfo' ? 'active' : ''}`}
-                                onClick={() => this.handleTabClick('headlineCommunicationInfo')}>
-                                Headline Communication Info
+                            <div className={`tab-child ${activeTab.currentTab === LangHelper.getResource('HeadlineCommunicationInfo') ? 'active' : ''}`}
+                                onClick={() => this.handleTabClick(LangHelper.getResource('HeadlineCommunicationInfo'))}>
+                                {LangHelper.getResource('HeadlineCommunicationInfo')}
                             </div>
-                            <div className={`tab-child ${activeTab.currentTab === 'headlineStaffsAndAuthority' ? 'active' : ''}`}
-                                onClick={() => this.handleTabClick('headlineStaffsAndAuthority')}>
-                                Headline Staffs and Authority
+                            <div className={`tab-child ${activeTab.currentTab === LangHelper.getResource('HeadlineStaffsAndAuthority') ? 'active' : ''}`}
+                                    onClick={() => this.handleTabClick(LangHelper.getResource('HeadlineStaffsAndAuthority'))}>
+                                {LangHelper.getResource('HeadlineStaffsAndAuthority')}
                             </div>
-                            <div className={`tab-child ${activeTab.currentTab === 'companyService' ? 'active' : ''}`}
-                                onClick={() => this.handleTabClick('companyService')}>
-                                Company Service
+                            <div className={`tab-child ${activeTab.currentTab === LangHelper.getResource('CompanyService') ? 'active' : ''}`}
+                                    onClick={() => this.handleTabClick(LangHelper.getResource('CompanyService'))}>
+                                {LangHelper.getResource('CompanyService')}
                             </div>
                         </div>
-                        <div className={`tab-content ${(!values.isShowAccountInfo && values.isShowAccountantPIC) ? 'acc-info-only-hidden' : ''} ${(!values.isShowAccountInfo && !values.isShowAccountantPIC) ? 'acc-info-hidden' : ''} ${!values.isShowAccountantPIC ? 'acc-PIC-hidden' : ''}`}>
+                        <div className={`tab-content ${(!values.isShowAccountInfo && values.isShowAccountantPIC) ? 'acc-info-only-hidden' : ''} 
+                                        ${(!values.isShowAccountInfo && !values.isShowAccountantPIC) ? 'acc-info-hidden' : ''} ${!values.isShowAccountantPIC ? 'acc-PIC-hidden' : ''}`}>
                             <div>
                                 {
-                                    activeTab.currentTab === 'headlineCommunicationInfo' &&
+                                    activeTab.currentTab === LangHelper.getResource('HeadlineCommunicationInfo') &&
                                     <HeadlineCommunicationInfo />
                                 }
                                 {
-                                    activeTab.currentTab === 'headlineStaffsAndAuthority' &&
+                                    activeTab.currentTab === LangHelper.getResource('HeadlineStaffsAndAuthority') &&
                                     <HeadlineStaffsAndAuthority />
                                 }
                                 {
-                                    activeTab.currentTab === 'companyService' &&
+                                    activeTab.currentTab === LangHelper.getResource('CompanyService') &&
                                     <CompanyService />
                                 }
                             </div>
@@ -684,9 +689,7 @@ export class AppContainer extends Component {
 
     handleClosePopup = () => {
         const { activeTab } = this.props;
-        if (activeTab.nextTab === 'headlineCommunicationInfo' ||
-            activeTab.nextTab === 'headlineStaffsAndAuthority' ||
-            activeTab.nextTab === 'companyService') {
+        if (activeTab.nextTab != null) {
             this.props.setActiveTab({
                 currentTab: activeTab.nextTab,
                 nextTab: null
@@ -726,7 +729,6 @@ export class AppContainer extends Component {
                     showConfirmUnSaved &&
                     <ConfirmPopup
                         title={LangHelper.getResource('Confirmation')}
-                        className='pic-management-modal'
                         content={
                             <div>{LangHelper.getResource('ConfirmDirtyMessage')}</div>
                         }

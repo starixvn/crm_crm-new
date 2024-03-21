@@ -37,6 +37,52 @@ export const ValidateHeadlineStaffAndAuthority = (values, indexStaff) => {
     return { errors: errors , headlineStaffsAndAuthority: headlineStaffsAndAuthority };
 };
 
+export const ValidateHeadlineCommunicationInfo = (values) => {
+    const errors = {};
+    let headlineCommunicationInfo = values;
+
+    headlineCommunicationInfo.map((pic, indexPic) => {
+        if (!pic.picName || pic.picName.trim().length === 0) {
+            errors.picName = LangHelper.getResource('NameRequired');
+            headlineCommunicationInfo[indexPic].isNameError = true;
+        } else {
+            headlineCommunicationInfo[indexPic].isNameError = false;
+        }
+
+        if (!pic.role) {
+            errors.role = LangHelper.getResource('RoleRequired');
+            headlineCommunicationInfo[indexPic].isRoleError = true;
+        } else {
+            headlineCommunicationInfo[indexPic].isRoleError = false;
+        }
+
+        pic.picCommunicationTools.map((compic, indexCompic) => {
+            if (!compic.type || !compic.value) {
+                errors.communication = LangHelper.getResource('CommunicationRequired');
+                headlineCommunicationInfo[indexPic].picCommunicationTools[indexCompic].isError = true;
+            } else {
+                headlineCommunicationInfo[indexPic].picCommunicationTools[indexCompic].isError = false;
+            }
+        });
+    });
+    return { errors: errors, headlineCommunicationInfo: headlineCommunicationInfo };
+};
+
+export const ValidateCompanyService = values => {
+    const errors = {};
+    const companyService = values;
+
+    companyService.map((service, index) => {
+        if (service.isOffered && (service.communicationID === 0 || service.communicationValue === null || service.communicationValue === '')) {
+            errors.communication = LangHelper.getResource('CommunicationRequired');
+            companyService[index].isError = true;
+        } else {
+            companyService[index].isError = false;
+        }
+    });
+    return { errors: errors, companyService: companyService };
+};
+
 export const ParamsCustomerInfo = customerInfo => {
     return {
         titleId: customerInfo.titleId,

@@ -21,12 +21,14 @@
     using CRM.Models.Setting;
     using CRM.Repositories;
     using CRM.Services.Feedback;
+    using Fanex.Data.Repository;
     using NSubstitute;
     using Xunit;
 
     public class FeedbackServiceTests
     {
         private readonly IFixture fixture = new Fixture();
+        private IDynamicRepository dynamicRepository;
         private IBaseService baseService;
         private ISettingService settingService;
         private ICommonService commonService;
@@ -44,7 +46,7 @@
             var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var criteria = new GetCustomerFeedbackByIdCriteria();
             var service = GetService();
-            baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(
+            dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(
                 Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x))
                 .Returns((feedbacks, latestFeedbackCommunicationTools, settings, relatedCustomers));
 
@@ -82,7 +84,7 @@
                 FeedbackId = feedbackId
             };
             var service = GetService();
-            baseService.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(
+            dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(
                 Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x))
                 .Returns((feedbacks, latestFeedbackCommunicationTools, settings, relatedCustomers));
             settingService.GetSiteByIdAsync(1).Returns(site);
@@ -371,12 +373,13 @@
 
         private FeedbackService GetService()
         {
+            dynamicRepository = Substitute.For<IDynamicRepository>();
             baseService = Substitute.For<IBaseService>();
             settingService = Substitute.For<ISettingService>();
             commonService = Substitute.For<ICommonService>();
             feedbackRepository = Substitute.For<IFeedbackRepository>();
 
-            return new FeedbackService(baseService, settingService, commonService, feedbackRepository);
+            return new FeedbackService(dynamicRepository, baseService, settingService, commonService, feedbackRepository);
         }
 
         #endregion Helpers

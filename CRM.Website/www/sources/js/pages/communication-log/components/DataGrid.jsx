@@ -2,13 +2,11 @@ import React, { Fragment, Component } from 'react';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
-import { Button } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import { Policy, PAGING_SIZES } from '@jsroot/common/constants';
+import { PAGING_SIZES } from '@jsroot/common/constants';
 import { handleSort } from '@jsroot/common/shareScripts';
-import UnderlineButton from '@jsroot/common/underlineButton';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -62,29 +60,12 @@ export class DataGrid extends Component {
         this.props.setLogsByCustomerId({ data: gridDataSortAsc, mainCategories: gridData.mainCategories });
     };
 
-    handleGroupCategory = category => {
-        const groupCategory = category.reduce( (accumulator, currentValue) => {
-            const itemExist = accumulator.find(item => currentValue.mainCategoryId === item.mainCategoryId);
-            if (itemExist) {
-                itemExist.subCategoryId = [...itemExist.subCategoryId, currentValue.subCategoryId];
-            }else {
-                accumulator.push({mainCategoryId: currentValue.mainCategoryId, subCategoryId: [currentValue.subCategoryId]});
-            }
-            return accumulator;
-        },[]);
-        return groupCategory;
-    };
-
     handleEditNoOfInquiry = id => {
         this.props.setEditNoOfInquiryDialog({ show: true, feedbackId: id });
     };
 
     handleEditCommunicationLog = id => {
         this.props.setEditCommunicationDialog({ show: true, feedbackId: id });
-    };
-
-    handleCreate = () => {
-        this.props.setCreateCommunicationDialog({ show: true });
     };
 
     renderCategoryColumn = item => {
@@ -145,7 +126,6 @@ export class DataGrid extends Component {
 
     render() {
         const { gridData, gridParams } = this.props;
-        const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
 
         if (!gridData) {
             return null;
@@ -175,12 +155,6 @@ export class DataGrid extends Component {
                     containerPadding={0}
                     adjustedHeight={10}
                 />
-                {
-                    hasCreateFeedbackPermission &&
-                    <Button variant="primary" size="sm" className="mt-3" onClick={this.handleCreate}>
-                        <UnderlineButton.insertCaseButton />
-                    </Button>
-                }
             </Fragment>
         );
     }

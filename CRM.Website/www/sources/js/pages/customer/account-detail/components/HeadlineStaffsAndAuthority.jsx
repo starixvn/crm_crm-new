@@ -57,7 +57,8 @@ export class HeadlineStaffsAndAuthority extends Component {
     }
 
     handleComfirmChangeTab(activeTab, initialValues) {
-        if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'companyService') {
+        if (activeTab.nextTab === LangHelper.getResource('HeadlineCommunicationInfo')
+            || activeTab.nextTab === LangHelper.getResource('CompanyService')) {
             if (JSON.stringify(this.state.headlineStaffsAndAuthority).toString() === JSON.stringify(initialValues).toString() ||
                 this.state.headlineInfoPolicy !== Policy.Host) {
                 this.props.setShowConfirmUnSaved(false);
@@ -135,7 +136,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         });
     }
 
-    editHeadlineStaffAndAuthority = async () => {
+    getParamEdit() {
         let headlineStaffsAndAuthority = [];
         this.state.headlineStaffsAndAuthority.map(staff => {
             staff.communicationTools.map(staffCom => {
@@ -157,7 +158,11 @@ export class HeadlineStaffsAndAuthority extends Component {
             headlineID: this.props.customerInfo.custId,
             headlineStaffsAndAuthority: headlineStaffsAndAuthority
         };
+        return params;
+    }
 
+    editHeadlineStaffAndAuthority = async () => {
+        const params = this.getParamEdit();
         Site.blockUI();
         const url = Site.resolveClientUrl('AccountDetail/EditHeadlineStaffsAndAuthority');
         await DataService.postDataAsync(url, params).then(async response => {
@@ -234,7 +239,10 @@ export class HeadlineStaffsAndAuthority extends Component {
                         title={'Delete Headline Staffs and Authority'}
                         className='delete-confirm-modal'
                         content={
-                            <div>Are you sure you want to delete the <span className="bold">{showConfirmDelete.name}</span>?</div>
+                            <div>
+                                {LangHelper.getResource('ConfirmDeleteStaffAuthority')}
+                                <span className="bold">{showConfirmDelete.name}</span>?
+                            </div>
                         }
                         size='lg'
                         onSubmit={() => this.handleDelete(showConfirmDelete.indexStaff)}
@@ -255,7 +263,10 @@ export class HeadlineStaffsAndAuthority extends Component {
                         title={'Clear Headline Staffs and Authority'}
                         className='clear-confirm-modal'
                         content={
-                            <div>Are you sure you want to clear authority and remark of <span className="bold">{showConfirmClear.name}</span>?</div>
+                            <div>
+                                {LangHelper.getResource('ConfirmClearStaffAuthority')}
+                                <span className="bold">{showConfirmClear.name}</span>?
+                            </div>
                         }
                         size='lg'
                         onSubmit={() => this.handleClear(showConfirmClear.indexStaff)}

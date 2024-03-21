@@ -11,7 +11,7 @@ import AutoComplete from '@jsroot/components/AutoComplete';
 import { toast } from 'react-toastify';
 import { getPermission } from '@jsroot/common/shareScripts';
 import { Policy, FunctionKey } from '@jsroot/common/constants';
-import { ParamsSubmit } from '../common.functions';
+import { ValidateCompanyService, ParamsSubmit } from '../common.functions';
 
 export class CompanyService extends Component {    
     constructor(props) {
@@ -73,7 +73,8 @@ export class CompanyService extends Component {
     }
 
     handleComfirmChangeTab(activeTab, initialValues) {
-        if (activeTab.nextTab === 'headlineCommunicationInfo' || activeTab.nextTab === 'headlineStaffsAndAuthority') {
+        if (activeTab.nextTab === LangHelper.getResource('HeadlineCommunicationInfo')
+            || activeTab.nextTab === LangHelper.getResource('HeadlineStaffsAndAuthority')) {
             if (JSON.stringify(this.state.companyService).toString() === JSON.stringify(initialValues).toString() ||
                 this.state.headlineInfoPolicy !== Policy.Host) {
                 this.props.setShowConfirmUnSaved(false);
@@ -87,18 +88,8 @@ export class CompanyService extends Component {
         }
     }
 
-    validateCommunicationTool = () => {
-        const errors = {};
-        let { companyService } = this.state;
-
-        this.state.companyService.map((service, index) => {
-            if (service.isOffered && (service.communicationID === 0 || service.communicationValue === null)) {
-                errors.communication = LangHelper.getResource('CommunicationRequired');
-                companyService[index].isError = true;
-            } else {
-                companyService[index].isError = false;
-            }
-        });
+    validateCompanyService = () => {
+        const { errors, companyService } = ValidateCompanyService(this.state.companyService);
         this.setState({
             companyService: companyService
         });
@@ -133,7 +124,7 @@ export class CompanyService extends Component {
     }
 
     handleSubmit = async () => {
-        const errors = this.validateCommunicationTool();
+        const errors = this.validateCompanyService();
         if (errors === null) {
             Site.blockUI();
             const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
@@ -226,7 +217,7 @@ export class CompanyService extends Component {
                 <Cell>{item.companyServiceName}
                     {
                         this.state.headlineInfoPolicy === Policy.Host &&
-                        <img className='icon-copy' title='Copy offer and communication tool to all services'
+                        <img className='icon-copy' title={LangHelper.getResource('TitleCopyCompanyServices')}
                             src={Site.resolveClientUrl('www/dist/css/images/icon/icon-copy.svg')} alt="icon copy"
                             onClick={event => { this.handleCoppy(item); }} />
                     }

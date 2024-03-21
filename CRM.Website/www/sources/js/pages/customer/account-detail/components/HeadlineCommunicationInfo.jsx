@@ -12,7 +12,7 @@ import Site from '@jsroot/common/site';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import { toast } from 'react-toastify';
 import { getPermission } from '@jsroot/common/shareScripts';
-import { ParamsSubmit } from '../common.functions';
+import { ParamsSubmit, ValidateHeadlineCommunicationInfo } from '../common.functions';
 
 export class HeadlineCommunicationInfo extends Component {
     constructor(props) {
@@ -50,7 +50,8 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     handleComfirmChangeTab(activeTab, initialValues) {
-        if (activeTab.nextTab === 'headlineStaffsAndAuthority' || activeTab.nextTab === 'companyService') {
+        if (activeTab.nextTab === LangHelper.getResource('HeadlineStaffsAndAuthority')
+            || activeTab.nextTab === LangHelper.getResource('CompanyService')) {
             if (JSON.stringify(this.state.headlineCommunicationInfo).toString() === JSON.stringify(initialValues).toString() ||
                 this.state.headlineInfoPolicy !== Policy.Host) {
                 this.props.setShowConfirmUnSaved(false);
@@ -58,7 +59,8 @@ export class HeadlineCommunicationInfo extends Component {
                     currentTab: activeTab.nextTab,
                     nextTab: null
                 });
-            } else {
+            }
+            else {
                 this.props.setShowConfirmUnSaved(true);
             }
         }
@@ -101,7 +103,8 @@ export class HeadlineCommunicationInfo extends Component {
                     communicationTools.push({
                         type: communication.picCommunicationId,
                         value: communication.picCommunicationValue,
-                        isError: false
+                        isError: false,
+                        isNew: false
                     });
                 }
             });
@@ -137,11 +140,30 @@ export class HeadlineCommunicationInfo extends Component {
         this.validateCommunicationInfo();
     }
 
-    deleteCommunicationTool = (value, type, indexPic) => {
+    deleteCommunicationTool = (picCommunicationTool, indexPic) => {
         const data = [...this.state.headlineCommunicationInfo];
-        const index = data[indexPic].picCommunicationTools.findIndex(comTool => comTool.value === value && comTool.type === type);
+        const index = data[indexPic].picCommunicationTools.findIndex(comTool => comTool.value === picCommunicationTool.value && comTool.type === picCommunicationTool.type);
         data[indexPic].picCommunicationTools.splice(index, 1);
         this.setState({ headlineCommunicationInfo: data });
+    }
+
+    async checkCustomerExistsOnCRM() {
+        this.setState({
+            confirmSave: {
+                show: false,
+                data: []
+            }
+        });
+
+        Site.blockUI();
+        const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
+        await DataService.postDataAsync(url, { customerId: this.props.customerInfo?.custId }).then(async response => {
+            if (response.data === 1) {
+                await this.editHeadlineCommunicationPic();
+            } else {
+                await this.updateNewCrmCustomer();
+            }
+        }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
 
     handleSubmit = async () => {
@@ -149,22 +171,7 @@ export class HeadlineCommunicationInfo extends Component {
         if (errors === null) {
             let validResult = await this.validateEditPic();
             if (validResult.findIndex(x => x !== '') === -1) {
-                this.setState({
-                    confirmSave: {
-                        show: false,
-                        data: []
-                    }
-                });
-
-                Site.blockUI();
-                const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
-                await DataService.postDataAsync(url, {customerId: this.props.customerInfo?.custId}).then(async response => {
-                    if (response.data === 1) {
-                        await this.editHeadlineCommunicationPic();
-                    } else {
-                        await this.updateNewCrmCustomer();
-                    }
-                }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
+                this.checkCustomerExistsOnCRM();
             }
             else {
                 this.setState({
@@ -186,7 +193,7 @@ export class HeadlineCommunicationInfo extends Component {
         });
     }
 
-    editHeadlineCommunicationPic = async () => {
+    getParamEdit() {
         let { headlineCommunicationInfo } = this.state;
         const params = headlineCommunicationInfo.map(pic => {
             let picCommunicationTools = [];
@@ -199,7 +206,7 @@ export class HeadlineCommunicationInfo extends Component {
                     picCommunicationTools.push({ ...picCom });
                 }
             })
-           
+
             return {
                 country: pic.country,
                 language: pic.language,
@@ -211,7 +218,11 @@ export class HeadlineCommunicationInfo extends Component {
                 remark: ''
             };
         });
+        return params;
+    }
 
+    editHeadlineCommunicationPic = async () => {
+        const params = this.getParamEdit();
         Site.blockUI();
         const url = Site.resolveClientUrl('AccountDetail/EditPic');
         await DataService.postDataAsync(url, params).then(async response => {
@@ -244,34 +255,8 @@ export class HeadlineCommunicationInfo extends Component {
         return validResult;
     }
 
-    validateCommunicationInfo = () => {
-        const errors = {};
-        let { headlineCommunicationInfo } = this.state;
-
-        this.state.headlineCommunicationInfo.map((pic,indexPic) => {
-            if (!pic.picName || pic.picName.trim().length === 0) {
-                errors.picName = LangHelper.getResource('NameRequired');
-                headlineCommunicationInfo[indexPic].isNameError = true;
-            } else {
-                headlineCommunicationInfo[indexPic].isNameError = false;
-            }
-
-            if (!pic.role) {
-                errors.role = LangHelper.getResource('RoleRequired');
-                headlineCommunicationInfo[indexPic].isRoleError = true;
-            } else {
-                headlineCommunicationInfo[indexPic].isRoleError = false;
-            }
-
-            pic.picCommunicationTools.map((compic,indexCompic) => {
-                if (!compic.type || !compic.value) {
-                    errors.communication = LangHelper.getResource('CommunicationRequired');
-                    headlineCommunicationInfo[indexPic].picCommunicationTools[indexCompic].isError = true;
-                } else {
-                    headlineCommunicationInfo[indexPic].picCommunicationTools[indexCompic].isError = false;
-                }
-            });
-        });
+    validateCommunicationInfo = () => {   
+        const { errors, headlineCommunicationInfo } = ValidateHeadlineCommunicationInfo(this.state.headlineCommunicationInfo);
         this.setState({
             headlineCommunicationInfo: headlineCommunicationInfo
         });
@@ -286,7 +271,8 @@ export class HeadlineCommunicationInfo extends Component {
             headlineCommunicationInfo[indexPic].picCommunicationTools.push({
                 type: '',
                 value: '',
-                isError: false
+                isError: false,
+                isNew: true
             });
             this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
         }
@@ -392,7 +378,7 @@ export class HeadlineCommunicationInfo extends Component {
                                     }} />
                                     {
                                         this.state.headlineInfoPolicy === Policy.Host && pic.picCommunicationTools.length > 1 &&
-                                        <div title='Delete communication tool' onClick={() => { this.deleteCommunicationTool(picCommunicationTool.value, picCommunicationTool.type, indexPic); }}
+                                        <div title='Delete communication tool' onClick={() => { this.deleteCommunicationTool(picCommunicationTool, indexPic); }}
                                             className='icon icon-delete'>
                                         </div>
                                     }
@@ -425,6 +411,42 @@ export class HeadlineCommunicationInfo extends Component {
         this.setState({ confirmSave: { show: false, data: [] } });
     };
 
+    renderComfirmChatTypeMapping(settingCommunicationTool, headlineCommunicationInfo ) {
+        return <>
+            <div className="confirm-headline">{LangHelper.getResource('ConfirmContentHeadlineCommunicationInfo')}</div>
+            {
+                this.state.confirmSave.data.map((item, index) => {
+                    if (item !== '') {
+                        return (<>
+                            <div>
+                                <span>{`${headlineCommunicationInfo[index].picName} (${headlineCommunicationInfo[index].roleName}): `}</span>
+                                {
+                                    this.renderValueChatTypeMapping(settingCommunicationTool, headlineCommunicationInfo, index)
+                                }
+                            </div>
+                        </>);
+                    }
+                })
+            }
+        </>
+    }
+
+    renderValueChatTypeMapping(settingCommunicationTool, headlineCommunicationInfo, index) {
+        headlineCommunicationInfo[index].picCommunicationTools.map((comPic, indexPic) => {
+            let indexCom = settingCommunicationTool.findIndex(x => x.settingId === comPic.type &&
+                (x.settingValue === Letstalk || x.settingValue === Telegram));
+            if (indexCom !== -1) {
+                return (
+                    <>
+                        {indexPic !== 0 && <span>{', '}</span>}
+                        <span className="bold">{comPic.value}</span>
+                        <span>{` (${settingCommunicationTool[indexCom].settingValue})`}</span>
+                    </>
+                );
+            }
+        })
+    }
+
     render() {
         let { headlinePicRoles, accountingPicRoles, settingCommunicationTool, customerInfo } = this.props;
         let { headlineCommunicationInfo, headlineInfoPolicy } = this.state;
@@ -455,37 +477,7 @@ export class HeadlineCommunicationInfo extends Component {
                     <ConfirmPopup
                         className='confirm-headline-modal'
                         title={LangHelper.getResource('ConfirmHeadlineCommunicationInfo')}
-                        content={
-                            <>
-                                <div className="confirm-headline">{LangHelper.getResource('ConfirmContentHeadlineCommunicationInfo')}</div>
-                                {
-                                    this.state.confirmSave.data.map((item, index) => {
-                                        if (item !== '') {
-                                            return (<>
-                                                <div>
-                                                    <span>{`${headlineCommunicationInfo[index].picName} (${headlineCommunicationInfo[index].roleName}): `}</span>
-                                                    {
-                                                        headlineCommunicationInfo[index].picCommunicationTools.map((comPic, indexPic) => {
-                                                            let indexCom = settingCommunicationTool.findIndex(x => x.settingId === comPic.type &&
-                                                                (x.settingValue === Letstalk || x.settingValue === Telegram));
-                                                            if (indexCom !== -1) {
-                                                                return (
-                                                                    <>
-                                                                        {indexPic !== 0 && <span>{', '}</span>}
-                                                                        <span className="bold">{comPic.value}</span>
-                                                                        <span>{` (${settingCommunicationTool[indexCom].settingValue})`}</span>
-                                                                    </>
-                                                                );
-                                                            }
-                                                        })
-                                                    }
-                                                </div>
-                                            </>);
-                                        }
-                                    })
-                                }
-                            </>
-                        }
+                        content={this.renderComfirmChatTypeMapping(settingCommunicationTool, headlineCommunicationInfo)}
                         size='lg'
                         onSubmit={this.handleSubmitEditConfirm}
                         onClose={this.handleCloseEditConfirm}

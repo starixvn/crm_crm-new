@@ -18,7 +18,7 @@
         {
             // Arrange
             var command = new CreateMultipleLogsCommand();
-            var expected = "Acc_CRM_GuestFeedbackIns_Multiple";
+            var expected = "Acc_CRM_NewManualFeedback_FeedbackIns_Multiple";
 
             // Act
             var actual = command.GetSettingKey();
