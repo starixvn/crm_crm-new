@@ -238,9 +238,10 @@ export class AppContainer extends Component {
         const siteOptions = changeSiteSetting(this.props.allSettings.sites, 'childSites', 'childSites');
 
         return (
-            <Form className={`group-account ${(this.state.updateHeadlineInfoPolicy >= Policy.Read || !this.props.customerInfo.isGroupHeadLine) && 'acc-info'}`}>
+            <Form className={`group-account acc-first ${(this.state.updateHeadlineInfoPolicy >= Policy.Read || !this.props.customerInfo.isGroupHeadLine) ? 'acc-info' : 'only-acc-pic'}`}>
                 <div className='group-title group-tab'>
                     <div className="group-title-tab" onClick={this.handleShowAccountInfo}>
+                        <span className='icon-dropdown'/>
                         {LangHelper.getResource('AccountInfo')}
                     </div>
                     {
@@ -393,10 +394,11 @@ export class AppContainer extends Component {
 
     renderAccountPIC = (values, canEditHeadline) => {
         return (
-            <Form className='group-account'>
+            <Form className='group-account acc-second'>
                 <div className='group-title group-tab'>
                     <div className="group-title-tab" onClick={this.handleShowAccountantPIC}>
-                        {LangHelper.getResource('AccountantPIC')}
+                    	<span className='icon-dropdown'/>
+                    	{LangHelper.getResource('AccountantPIC')}
                     </div>
                     {
                         canEditHeadline &&
@@ -466,9 +468,7 @@ export class AppContainer extends Component {
         this.validateCommunicationInfo();
     }
 
-    getWidth = (picCommunicationTool, settingCommunicationTool) =>
-        (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.communicationID).settingValue.length) + 15;
-
+    getWidth = (picCommunicationTool, settingCommunicationTool) => (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.communicationID).settingValue.length) + 24;
     deleteCommunicationTool = (value, type) => {
         const data = [...this.state.otherAccountCommunication];
         const index = data.findIndex(comTool => comTool.communicationID === type && comTool.communicationValue === value);

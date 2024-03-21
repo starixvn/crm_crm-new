@@ -71,7 +71,7 @@
     }
 
     .right-container {
-        width: 81%;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -81,14 +81,12 @@
 
         #divSubMenu {
             .breadcrumbsMenu {
-                // margin: 0 12px;
 
                 .icon-home {
                     cursor: pointer;
                 }
 
                 li {
-                    // padding: 2px 23px 2px 11px;
                     float: left;
                     padding: 0 24px 0 12px;
 
@@ -96,18 +94,6 @@
                         position: relative;
                         right: -24px;
                     }
-                }
-            }
-
-            .sub-menu li {
-                // &:first-child {
-                //     padding: 1px 23px 2px 11px;
-                //     float: left;
-                //     background: url('../../css/images/br-arrow-ico.png') right 8px no-repeat;
-                // }
-
-                &:not(:last-child) {
-                    // background: url('../../css/images/br-arrow-ico.png') right 8px no-repeat;
                 }
             }
 

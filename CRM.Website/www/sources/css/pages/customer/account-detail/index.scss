@@ -64,8 +64,8 @@
       cursor: pointer;
     }
 
-    &:first-child {
-      border-radius: 5px 5px 0 0;
+    &.acc-first {
+      border-radius: 5px 5px 0 0 !important;
       border-bottom: none !important;
 
       .group-title {
@@ -73,8 +73,19 @@
       }
     }
 
-    &:nth-child(2) {
+    &.acc-second {
       border-radius: 0 0 5px 5px;
+      border-top: 1px #cccccc solid;
+
+    }
+
+    &.only-acc-pic {
+      border-radius: 5px !important;
+      border-bottom: 1px #cccccc solid !important;
+
+      .group-title {
+        border-radius: 5px !important;
+      }
     }
 
     &:has(.group-content) {
@@ -83,10 +94,7 @@
       .group-title {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-
-        &:first-child {
-          border-bottom: 1px #cccccc solid;
-        }
+        border-bottom: 1px #cccccc solid;
 
         .icon-dropdown {
           transform: rotate(0);
@@ -105,10 +113,6 @@
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
 
-      &:first-child {
-        border-bottom: none;
-      }
-
       .icon-dropdown {
         transform: rotate(-90deg);
         transition: 0.2s;
@@ -122,11 +126,12 @@
       .group-title-tab {
         width: 90%;
         display: flex;
+        text-transform: capitalize;
       }
     }
 
     .group-content {
-      padding: 12px 20px 12px 12px;
+      padding: 12px;
 
       .form-check {
         padding-left: 0;
@@ -175,6 +180,10 @@
       padding: 9px 48px;
       margin: auto;
     }
+  }
+
+   .acc-info .group-content {
+    padding-right: 200px;
   }
 
   .group-content {
@@ -641,7 +650,7 @@
     height: 26px;
   }
 
-  @media only screen and (max-width: 1366px) {
+  @media only screen and (max-width: 1600px) {
     .group-account .group-content,
     .group-item {
       column-gap: 32px;
@@ -686,7 +695,7 @@
         }
 
         .custom-scrollbar {
-          max-height: 162px;
+          max-height: 290px;
 
           &.custom-dropdown {
             overflow-y: auto;
@@ -705,6 +714,9 @@
 
     tbody {
       tr {
+        td {
+          word-wrap: break-word;
+        }
         &:nth-child(2n) {
           td {
             background: #fff !important;
@@ -761,7 +773,7 @@
       border-right: none;
 
       .fix-table {
-        max-height: 163px !important;
+        max-height: 290px !important;
         border: none;
 
         .header-content {
