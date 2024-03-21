@@ -3,8 +3,12 @@
     html {
         font-size: 12px !important;
 
-        .left-header img {
-            width: 50% !important;
+        .header .left-header {
+            max-width: 272px;
+
+            img {
+                width: 50% !important;
+            }
         }
 
         .row-search .right-container .sub-main-menu li {
@@ -12,12 +16,16 @@
         }
 
         .row-search #left-container {
-            max-width: 248px;
+            max-width: 272px;
+
+            .filter-search .btn-search {
+                margin: 3px;
+            }
 
             .autocomplete-container {
                 input {
                     &::placeholder {
-                        font-size: 10px !important;
+                        font-size: 11px !important;
                     }
                 }
             }

@@ -298,7 +298,7 @@ export class HeadlineCommunicationInfo extends Component {
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
     }
 
-    getWidth = (picCommunicationTool, settingCommunicationTool) => (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.type).settingValue.length) + 18;
+    getWidth = (picCommunicationTool, settingCommunicationTool) => (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.type).settingValue.length) + 24;
 
     renderInfo = (pic, indexPic) => {        
         let { allSettings, headlinePicRoles, accountingPicRoles, settingCommunicationTool } = this.props;

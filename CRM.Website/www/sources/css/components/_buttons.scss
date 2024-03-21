@@ -5,14 +5,18 @@
     border-radius: 3px;
     color: #fff;
     font-size: 12px;
-    font-weight: 700;
     padding: 2px 12px;
     height: 24px;
 
     &.btn-primary {
         border: 0;
+
         &:hover {
             background-color: darken(#466ab6, 7.5%);
+        }
+
+        &:disabled {
+            background: #2B4E80;
         }
     }
 
