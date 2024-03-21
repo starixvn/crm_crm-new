@@ -57,113 +57,184 @@
                 font-size: 16px;
             }
         }
+    }
 
-        .status {
-            &-button {
-                width: 75px;
-                margin: auto;
-                display: block;
-                border-radius: 3px;
-                cursor: pointer;
+    .status {
+        &-button {
+            width: 75px;
+            margin: auto;
+            display: block;
+            border-radius: 3px;
+            cursor: pointer;
 
-                font-size: 12px;
-                padding: 3px 0px;
-                height: 28px;
-                text-align: center;
-                border: 1px solid transparent;
-                font-weight: 400;
-                line-height: 1.5;
-            }
+            font-size: 12px;
+            padding: 3px 0px;
+            height: 28px;
+            text-align: center;
+            border: 1px solid transparent;
+            font-weight: 400;
+            line-height: 1.5;
+            box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
+        }
 
-            &-New {
-                background-color: $white;
-                border-color: $black;
-                color: $black;
-            }
-            &-Draft {
-                background-color: $grey-light;
-                border-color: $grey-light;
-                color: $black;
-            }
-            &-Cancelled {
-                background-color: $draft-color;
-                border-color: $draft-color;
-                color: $white;
-            }
-            &-Failed {
-                background-color: #c0504d;
-                border-color: #c0504d;
-                color: $white;
-            }
-            &-Sent {
-                background-color: #77933c;
-                border-color: #77933c;
-                color: $white;
-            }
-            &-Sending {
-                background-color: $duplicated-color;
-                border-color: $duplicated-color;
-                color: $white;
-            }
+        &-New {
+            background-color: $white;
+            border-color: $black;
+            color: $black;
+        }
+        &-Draft {
+            background-color: $grey-light;
+            border-color: $grey-light;
+            color: $black;
+        }
+        &-Cancelled {
+            background-color: $draft-color;
+            border-color: $draft-color;
+            color: $white;
+        }
+        &-Failed {
+            background-color: #c0504d;
+            border-color: #c0504d;
+            color: $white;
+        }
+        &-Sent {
+            background-color: #77933c;
+            border-color: #77933c;
+            color: $white;
+        }
+        &-Sending {
+            background-color: $duplicated-color;
+            border-color: $duplicated-color;
+            color: $white;
         }
     }
 
     .action-notification {
         width: 1000px;
         line-height: normal;
+        border: 1px solid #b7b7b7;
 
-        .info-notice {
-            display: flex;
-            padding: 6px 16px;
-        }
+        .action-content {
+            padding: 15px;
 
-        .group-item {
-            border-radius: 3px;
-            border: 1px solid #bbb;
-            background: #fff;
-            margin-bottom: 12px;
-
-            .group-header {
-                color: #333;
-                background: #c0cbe2;
+            .info-notice {
+                display: flex;
                 padding: 6px 16px;
-                font-weight: 700;
-                border-radius: 2px 2px 0px 0px;
-                border-bottom: 1px solid #bbb;
+                align-items: center;
             }
+    
+            .group-item {
+                border-radius: 3px;
+                border: 1px solid #bbb;
+                background: #fff;
+                margin-bottom: 12px;
+    
+                .group-header {
+                    color: #333;
+                    background: #c0cbe2;
+                    padding: 6px 16px;
+                    font-weight: 700;
+                    border-radius: 2px 2px 0px 0px;
+                    border-bottom: 1px solid #bbb;
+                }
+    
+                .group-content {
+                    padding: 8px 12px;
+    
+                    .content {
+                        .content-child {
+                            padding: 0 15px;
+    
+                            .child-item {
+                                padding: 4px 0;
+                            }
+                        }
+                    }
 
-            .group-content {
-                padding: 8px 12px;
-
-                .content {
-                    .content-child {
-                        padding: 0 15px;
-
-                        .child-item {
-                            padding: 4px 0;
+                    .nav-tabs {
+                        border: 0;
+              
+                        .nav-link {
+                            padding: 8px 0;
+                            width: 120px;
+                            margin-right: 12px;
+                            text-align: center;
+                            color: #333;
+              
+                            &.active {
+                                border-radius: 3px 3px 0px 0px;
+                                border: 1px solid #bbb;
+                                border-bottom: 0;
+                                color: #466ab6;
+                                font-weight: 700;
+                            }
+                
+                            &:hover,
+                            &:focus {
+                                border-radius: 3px 3px 0px 0px;
+                            }
                         }
                     }
                 }
+    
+                .content-item {
+                    display: flex;
+                }
+    
+                .form-group {
+                    width: 300px;
+                    margin: 0 0 8px 0;
+                    margin-right: 24px;
+                    flex-direction: column;
+                }
+    
+                .text-bold {
+                    font-weight: bold;
+                }
+    
+                .link-ticket {
+                    cursor: pointer;
+                    color: $link-color;
+                }
             }
 
-            .content-item {
-                display: flex;
+            .infoId {
+                width: 200px;
             }
 
-            .form-group {
-                width: 300px;
-                margin: 0 0 8px 0;
-                margin-right: 24px;
-                flex-direction: column;
-            }
+            .group-btn {
+                text-align: right;
 
-            .text-bold {
-                font-weight: bold;
-            }
+                button {
+                    &:not(:last-child) {
+                        margin-right: 16px;
+                    }
+                    border-radius: 3px;
+                    border: 1px solid;
+                    font-size: 12px;
+                    font-weight: 700;
+                    padding: 0 16px;
 
-            .link-ticket {
-                cursor: pointer;
-                color: $link-color;
+                    &.btn-cancel {
+                        background: #fff;
+                        color: #333;
+                        border-color: #8f8f8f;
+                        box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
+                    }
+
+                    &.btn-save {
+                        background: #ebeff6;
+                        color: #3c5b9b;
+                        border-color: #3c5b9b;
+                    }
+
+                    &.btn-send {
+                        background: #4e71bb;
+                        color: #fff;
+                        border-color: #3c5b9b;
+                        box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
+                    }
+                }
             }
         }
     }

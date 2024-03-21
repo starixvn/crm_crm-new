@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
-import { Button, Form, Row} from 'react-bootstrap';
+import { Col, Form, Row, Tabs, Tab, Button } from 'react-bootstrap';
+import CkEditor from '@jsroot/components/ckeditor/index';
 import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
@@ -16,7 +17,23 @@ import Site from '@jsroot/common/site';
 export default class ActionNotification extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            tab: 'English'
+        }
     }
+
+    handleChangeTab = selected =>{
+        this.setState({tab: selected});
+    };
+
+    handleSaveDraft = (x,y) => {
+
+    };
+
+    handleClose = () => {
+
+    };
 
     handleSubmit = () => {
 
@@ -38,67 +55,125 @@ export default class ActionNotification extends Component {
         const totalLicensee = [
             { name: 'Normal sites', data: 'lic1, lic2, lic3, lic4' }
         ];
+        const languages = [
+            {
+                settingId: 50000,
+                settingName: "NotificationTemplateLanguage",
+                settingValue: "English",
+                childSettings: [],
+                mapLabel: "English"
+            },
+            {
+                settingId: 50000,
+                settingName: "NotificationTemplateLanguage",
+                settingValue: "SC",
+                childSettings: [],
+                mapLabel: "SC"
+            },
+        ];
+        const content = {
+            English: "Content (English)",
+            SC: "",
+        };
         return (
             <Form noValidate onSubmit={this.handleSubmit}>
                 <div className="action-notification">
-                    <Form.Row bsPrefix='form-row'>
-                        <Form.Group className='info-notice'>
-                            <Form.Label>{LangHelper.getResource('NotificationID_MsgID')}</Form.Label>
-                            <div>1000</div>
-                        </Form.Group>
-                    </Form.Row>
-                    <Form.Row bsPrefix='form-row'>
-                        <Form.Group className='info-notice'>
-                            <Form.Label>{LangHelper.getResource('Status')}</Form.Label>
-                            <div>New</div>
-                        </Form.Group>
-                    </Form.Row>
-                    <div className="group-item">
-                        <div className="group-header">{LangHelper.getResource('EventInfo')}</div>
-                        <div className="group-content">
-                            <div className="content-item">
-                                <Form.Group as={Row}>
-                                    <Form.Label className='text-bold' htmlFor="eventDate">
-                                        {LangHelper.getResource('EventDateGMT4')}
-                                    </Form.Label>
-                                    <div>Dec 12, 2024</div>
-                                </Form.Group>
-                                <Form.Group as={Row}>
-                                    <Form.Label className='text-bold' htmlFor="eventName">
-                                        {LangHelper.getResource('EventName')}
-                                    </Form.Label>
-                                    <div>Team A -vs- Team B</div>
-                                </Form.Group>
+                    <div className='action-content'>
+                        <Form.Row bsPrefix='form-row'>
+                            <Form.Group className='info-notice'>
+                                <Form.Label className='infoId'>{LangHelper.getResource('NotificationID_MsgID')}</Form.Label>
+                                <div>1000</div>
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row bsPrefix='form-row'>
+                            <Form.Group className='info-notice'>
+                                <Form.Label className='infoId'>{LangHelper.getResource('Status')}</Form.Label>
+                                <div className='status-button status-New'>New</div>
+                            </Form.Group>
+                        </Form.Row>
+                        <div className="group-item">
+                            <div className="group-header">{LangHelper.getResource('EventInfo')}</div>
+                            <div className="group-content">
+                                <div className="content-item">
+                                    <Form.Group as={Row}>
+                                        <Form.Label className='text-bold' htmlFor="eventDate">
+                                            {LangHelper.getResource('EventDateGMT4')}
+                                        </Form.Label>
+                                        <div>Dec 12, 2024</div>
+                                    </Form.Group>
+                                    <Form.Group as={Row}>
+                                        <Form.Label className='text-bold' htmlFor="eventName">
+                                            {LangHelper.getResource('EventName')}
+                                        </Form.Label>
+                                        <div>Team A -vs- Team B</div>
+                                    </Form.Group>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="group-item">
-                        <div className="group-header">{LangHelper.getResource('Sites')}</div>
-                        <div className="group-content">
-                            <div className="content">
-                                <div className='content-parent'>
-                                    <span className='text-bold'>
-                                        {LangHelper.getResource('CreditTotalTickets')}
-                                    </span>
-                                    <span className='link-ticket'>500</span>
-                                </div>
-                                <div className='content-child'>
-                                    {
-                                        totalCredit.map((item, key) => this.renderSites(item, key))
-                                    }
-                                </div>
-                                <div className='content-parent'>
-                                    <span className='text-bold'>
-                                        {LangHelper.getResource('LicenseeTotalTickets')}
-                                    </span>
-                                    <span className='link-ticket'>400</span>
-                                </div>
-                                <div className='content-child'>
-                                    {
-                                        totalLicensee.map((item, key) => this.renderSites(item, key))
-                                    }
+                        <div className="group-item">
+                            <div className="group-header">{LangHelper.getResource('Sites')}</div>
+                            <div className="group-content">
+                                <div className="content">
+                                    <div className='content-parent'>
+                                        <span className='text-bold'>
+                                            {LangHelper.getResource('CreditTotalTickets')}
+                                        </span>
+                                        <span className='link-ticket'>500</span>
+                                    </div>
+                                    <div className='content-child'>
+                                        {
+                                            totalCredit.map((item, key) => this.renderSites(item, key))
+                                        }
+                                    </div>
+                                    <div className='content-parent'>
+                                        <span className='text-bold'>
+                                            {LangHelper.getResource('LicenseeTotalTickets')}
+                                        </span>
+                                        <span className='link-ticket'>400</span>
+                                    </div>
+                                    <div className='content-child'>
+                                        {
+                                            totalLicensee.map((item, key) => this.renderSites(item, key))
+                                        }
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        <div className="group-item">
+                            <div className="group-header">{LangHelper.getResource('Content')}</div>
+                            <div className="group-content">
+                                <Col sm={12} md={12}>
+                                    <Tabs
+                                        className='languages-text'
+                                        id="controlled-tab"
+                                        activeKey={this.state.tab}
+                                        onSelect={selected => this.handleChangeTab(selected)}
+                                    >
+                                        {
+                                            languages.map((language, key) =>
+                                                (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
+                                                    <CkEditor
+                                                        name={language.mapLabel}
+                                                        data={content[language.mapLabel]}
+                                                        username={window.currentUsername}
+                                                        // onChange={value => {
+                                                        //     setFieldValue(`content.${[language.mapLabel]}`, value);
+                                                        //     setFieldValue(`cloneContent.${[language.mapLabel]}`, value);
+                                                        // }}
+                                                        isRemoveToolbarForChatbot
+                                                    />
+                                                </Tab>)
+                                            )
+                                        }
+                                    </Tabs>               
+                                </Col>
+                            </div>
+                        </div>
+
+                        <div className="group-btn">
+                            <Button className="btn-cancel" variant="primary" size="sm" onClick={this.handleClose}>{LangHelper.getResource('Cancel')}</Button>
+                            <Button className="btn-save" variant="primary" size="md" onClick={event => this.handleSaveDraft(event, values)}>{LangHelper.getResource('Save as Draft')}</Button>
+                            <Button className="btn-send" type="submit" variant="primary" size="sm">{LangHelper.getResource('Push')}</Button>
                         </div>
                     </div>
                 </div>
