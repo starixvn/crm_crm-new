@@ -243,8 +243,7 @@ export class AppContainer extends Component {
             <Form className={`group-account ${(this.state.updateHeadlineInfoPolicy >= Policy.Read || !this.props.customerInfo.isGroupHeadLine) && 'acc-info'}`}>
                 <div className='group-title group-tab'>
                     <div className="group-title-tab" onClick={this.handleShowAccountInfo}>
-                    <span className='icon-dropdown'/>
-                    <span >Account info</span>
+                        Account Info
                     </div>
                     {
                         values.isHostOnCurrentCustomer &&
@@ -304,7 +303,7 @@ export class AppContainer extends Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label htmlFor="refCodes" >
-                                {LangHelper.getResource('RefCode')}
+                                {LangHelper.getResource('RefCodes')}
                             </Form.Label>
                             <Form.Control type="text" value={values.refCode2}
                                 id="refCode2" autoComplete="off" name="refCode2" onChange={this.handleChange} />
@@ -399,7 +398,6 @@ export class AppContainer extends Component {
             <Form className='group-account'>
                 <div className='group-title group-tab'>
                     <div className="group-title-tab" onClick={this.handleShowAccountantPIC}>
-                    <span className='icon-dropdown'/>
                         Accountant PIC
                     </div>
                     {

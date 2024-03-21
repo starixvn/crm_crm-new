@@ -59,9 +59,10 @@ export default class CustomerInfo extends PureComponent {
     }
 
     renderHeadlineCommunicationTools(latestFeedbackCommunicationTools) {
+        const communicationTools = this.getLatestFeedbackCommunicationTools(latestFeedbackCommunicationTools);
         return <>
             {
-                latestFeedbackCommunicationTools.map(item => {
+                communicationTools.map(item => {
                     return <>
                         <div className="separate">
                             <hr />
@@ -96,9 +97,12 @@ export default class CustomerInfo extends PureComponent {
 
     renderNoneHeadlineCommunicationTools(latestFeedbackCommunicationTools) {
         return <>
+            <div className="separate">
+                <hr />
+            </div>
             <Form.Group as={Row} className="pt-2">
                 {
-                    latestFeedbackCommunicationTools.map((item, index) => {
+                    latestFeedbackCommunicationTools.map(item => {
                         return <>
                             <Col sm="4" md="4">
                                 <Form.Group as={Row}>
@@ -118,7 +122,7 @@ export default class CustomerInfo extends PureComponent {
     }
 
     renderCommunicationTool() {
-        const latestFeedbackCommunicationTools = this.getLatestFeedbackCommunicationTools(this.state.latestFeedbackCommunicationTools);
+        const { latestFeedbackCommunicationTools } = this.state;
         if (latestFeedbackCommunicationTools.length < 1) {
             return null;
         }

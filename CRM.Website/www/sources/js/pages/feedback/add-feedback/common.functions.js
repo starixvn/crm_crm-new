@@ -215,8 +215,8 @@ export const getParams = (values, customerDetail, settings, state) =>{
         Solution: content.solution,
         NoInquiries: values.noOfInquiries === '' ? 0 : values.noOfInquiries,
         RelatedCustID: listOfCustomerValid.length > 0 ? listOfCustomerValid.map(x => x.custId).join(',') : null,
-        HeadlineStaffInfoCommunications: getCommunicationToolAddFeedBack(customerInfo.headlineStaffInfoCommunications, customerDetail),
-        OtherAccountCommunicationInfos: getCommunicationToolAddFeedBack(customerInfo.otherAccountCommunicationInfos, customerDetail),
+        HeadlineStaffInfoCommunications: getHeadlineCommunicationToolAddFeedBack(customerInfo.headlineStaffInfoCommunications, customerDetail),
+        OtherAccountCommunicationInfos: getNoneHeadlineCommunicationToolAddFeedBack(customerInfo.otherAccountCommunicationInfos, customerDetail),
         GuestCommunicationInfos: getCommunicationToolAddGuestFeedBack(customerInfo.guestCommunicationInfos)
     };
 
@@ -292,7 +292,7 @@ export const GetParamsNewUser = (custId, values) => {
     };
 };
 
-const getCommunicationToolAddFeedBack = (communicationTools, customerDetail) => {
+const getHeadlineCommunicationToolAddFeedBack = (communicationTools, customerDetail) => {
     let newCommunicationTools = [];
     communicationTools?.map(item => {
         newCommunicationTools.push({
@@ -300,6 +300,19 @@ const getCommunicationToolAddFeedBack = (communicationTools, customerDetail) => 
             picInfo: getPicInfo(item, customerDetail),
             communicationID: item.picCommunicationId,
             communicationValue: item.picCommunicationValue
+        });
+    });
+    return newCommunicationTools;
+};
+
+const getNoneHeadlineCommunicationToolAddFeedBack = (communicationTools, customerDetail) => {
+    let newCommunicationTools = [];
+    communicationTools?.map(item => {
+        newCommunicationTools.push({
+            isHeadline: customerDetail.isGroupHeadLine,
+            picInfo: getPicInfo(item, customerDetail),
+            communicationID: item.communicationID,
+            communicationValue: item.communicationValue
         });
     });
     return newCommunicationTools;
