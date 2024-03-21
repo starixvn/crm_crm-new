@@ -583,6 +583,10 @@
                 top: 4px;
                 max-width: 96%;
                 min-width: 96%;
+
+                .text-display {
+                  width: 190px;
+                }
               }
             }
           }
@@ -650,7 +654,7 @@
     height: 26px;
   }
 
-  @media only screen and (max-width: 1600px) {
+  @media only screen and (max-width: 1366px) {
     .group-account .group-content,
     .group-item {
       column-gap: 32px;
@@ -695,7 +699,7 @@
         }
 
         .custom-scrollbar {
-          max-height: 290px;
+          max-height: 162px;
 
           &.custom-dropdown {
             overflow-y: auto;
@@ -773,7 +777,7 @@
       border-right: none;
 
       .fix-table {
-        max-height: 290px !important;
+        max-height: 162px !important;
         border: none;
 
         .header-content {
@@ -848,6 +852,13 @@
     .btn-add {
       margin-top: 8px;
       padding: 3px 12px;
+    }
+  }
+
+
+  @media only screen and (max-width: 1366px) {
+    .headline-info .tab-content.acc-info-hidden .custom-scrollbar{
+      max-height: 162px !important;
     }
   }
 }
