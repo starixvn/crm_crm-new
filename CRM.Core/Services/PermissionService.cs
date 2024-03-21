@@ -57,7 +57,7 @@
 
                 if (permissions == null)
                 {
-                    permissions = await userService.GetPermissionsAsync(napSession.UserId, napSettings.SiteId, string.Empty);
+                    permissions = await userService.GetPermissionsAsync(napSession.UserId, napSettings.SiteId, string.Empty, napSettings.Environment);
                     memoryCache.Set(cacheKey, permissions, new MemoryCacheEntryOptions
                     {
                         AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(napSettings.CacheDuration)
@@ -108,7 +108,7 @@
 
             if (functions == null)
             {
-                functions = await userService.GetPermissionsAsync(napSession.UserId, napSettings.SiteId, FunctionKey.Credit);
+                functions = await userService.GetPermissionsAsync(napSession.UserId, napSettings.SiteId, FunctionKey.Credit, napSettings.Environment);
                 memoryCache.Set(cacheKey, functions, new MemoryCacheEntryOptions
                 {
                     AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(napSettings.CacheDuration)
