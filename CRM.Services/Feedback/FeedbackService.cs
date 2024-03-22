@@ -34,6 +34,7 @@
         Task<CustomerFeedback> GetCustomerFeedbackByIdAsync(int feedbackId);
 
         Task<CommandResult> EditCustomerFeedbackAsync(EditCustomerFeedbackCommand command);
+        Task<CommandResult> EditCustomerNewManualFeedbackAsync(EditCustomerNewManualFeedbackCommand command);
 
         Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(GetDeletedFeedbackParam param);
 
@@ -68,12 +69,15 @@
 
         public async Task<CustomerFeedback> GetCustomerFeedbackByIdAsync(int feedbackId)
         {
-            var criteria = new GetCustomerFeedbackByIdCriteria
-            {
-                FeedbackId = feedbackId
-            };
-            var (feedbackInfos, latestFeedbackCommunicationTool, settingItems, relatedCustomers ) = 
-                await dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission >(criteria);
+            var checkFeedbackIdIsNewCriteria = new CheckFeedbackIDIsNewCriteria() { FeedbackId = feedbackId };
+            var isCheckFeedbackIdIsNew = await dynamicRepository.GetAsync<bool>(checkFeedbackIdIsNewCriteria);
+            var criteriaOldFeedback = new GetCustomerFeedbackByIdCriteria { FeedbackId = feedbackId };
+            var criteriaNewFeedback = new GetCustomerNewManualFeedbackByIdCriteria() { FeedbackId = feedbackId };
+
+            var (feedbackInfos, latestFeedbackCommunicationTool, settingItems, relatedCustomers ) =
+                isCheckFeedbackIdIsNew ? await dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission >(criteriaNewFeedback) :
+                    await dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(criteriaOldFeedback);
+
             CustomerFeedback feedback = null;
 
             if (feedbackInfos.Any())
@@ -86,6 +90,7 @@
                 feedback.RelatedCustomers = relatedCustomers.OrderBy(x => x.Username);
                 feedback.Settings = settingItems.Where(x => !string.IsNullOrEmpty(x.SettingType)).ToList();
                 feedback.LatestFeedbackCommunicationTools = latestFeedbackCommunicationTool;
+                feedback.IsCheckFeedbackIdIsNew = isCheckFeedbackIdIsNew;
 
                 var siteSetting = await settingService.GetSiteByIdAsync(feedback.SiteId);
                 feedback.SiteSetting = new BaseSetting
@@ -138,6 +143,13 @@
         {
             command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
             command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
+            return await baseService.ExecuteNonQueryAsync(command);
+        }
+        
+        public async Task<CommandResult> EditCustomerNewManualFeedbackAsync(EditCustomerNewManualFeedbackCommand command)
+        {
+            command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
+            command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
             return await baseService.ExecuteNonQueryAsync(command);
         }
 

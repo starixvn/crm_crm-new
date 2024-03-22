@@ -101,22 +101,22 @@
                 LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync(),
                 SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync()
             };
-            IEnumerable<RelatedCustomerPermission> verifiedCustomers = await baseService.GetDataAsync<RelatedCustomerPermission>(criteria);
+            var verifiedCustomers = await baseService.GetDataAsync<RelatedCustomerPermission>(criteria);
             foreach (var cust in customers)
             {
                 var customer = verifiedCustomers.FirstOrDefault(x => x.CustId == cust.CustId);
-                cust.IsAuthorized = customer != null && customer.IsAuthorized;
+                cust.IsAuthorized = customer is { IsAuthorized: true };
             }
         }
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
-        public async Task<IActionResult> EditCustomerFeedback([FromBody] EditCustomerFeedbackCommand command)
+        public async Task<IActionResult> EditCustomerOldFeedback([FromBody] EditCustomerFeedbackCommand command)
         {
-            CommandResult commandResult = await CheckEditCustomerFeedbackPermission(command);
+            var commandResult = await CheckEditCustomerFeedbackPermission(command.UpdateReviewedMode, command.IsDeletedFeedbackView, command.StatusId);
             if (commandResult.IsSuccessful)
             {
-                command.UserID = napSession.UserId;
+                command.UserId = napSession.UserId;
                 command.IP = ClientIP;
                 if (command.IsReviewed)
                 {
@@ -132,6 +132,35 @@
                 var logMessage = new LogMessage("Update Feedback Params:")
                    .AddMessage(JsonConvert.SerializeObject(command, Formatting.Indented))
                    .ToString();
+                logService.LogInformation(logMessage);
+            }
+
+            return Json(commandResult);
+        }
+
+        [HttpPost]
+        [CrmPermission(FunctionKey = FunctionKey.CreateUpdateFeedback, Policy = Policy.Host)]
+        public async Task<IActionResult> EditCustomerNewManualFeedback([FromBody] EditCustomerNewManualFeedbackCommand command)
+        {
+            var commandResult = await CheckEditCustomerFeedbackPermission(command.UpdateReviewedMode,command.IsDeletedFeedbackView, command.StatusID);
+            if (commandResult.IsSuccessful)
+            {
+                command.UserID = napSession.UserId;
+                command.IP = ClientIP;
+                if (command.IsReviewed)
+                {
+                    command.ReviewerId = napSession.UserId;
+                }
+                else
+                {
+                    command.Review = string.Empty;
+                }
+
+                commandResult = await feedbackService.EditCustomerNewManualFeedbackAsync(command);
+
+                var logMessage = new LogMessage("Update Feedback Params:")
+                    .AddMessage(JsonConvert.SerializeObject(command, Formatting.Indented))
+                    .ToString();
                 logService.LogInformation(logMessage);
             }
 
@@ -163,7 +192,7 @@
         }
 
         #pragma warning disable S1541
-        private async Task<CommandResult> CheckEditCustomerFeedbackPermission(EditCustomerFeedbackCommand command)
+        private async Task<CommandResult> CheckEditCustomerFeedbackPermission(byte updateReviewedMode, bool isDeletedFeedbackView, int statusId)
         #pragma warning restore S1541
         {
             var commandResult = new CommandResult { Code = 0 };
@@ -180,7 +209,7 @@
                 };
             }
 
-            if ((command.UpdateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate && !isHostReviewFeedback))
+            if ((updateReviewedMode != (byte)ReviewFeedbackMode.NotUpdate && !isHostReviewFeedback))
             {
                 commandResult = new CommandResult
                 {
@@ -189,8 +218,8 @@
                 };
             }
 
-            var isChangedStatusFromDeleted = command.IsDeletedFeedbackView && command.StatusID != (int)Core.Enumerables.FeedbackStatus.Deleted;
-            var isChangedStatusToDeleted = !command.IsDeletedFeedbackView && command.StatusID == (int)Core.Enumerables.FeedbackStatus.Deleted;
+            var isChangedStatusFromDeleted = isDeletedFeedbackView && statusId != (int)Core.Enumerables.FeedbackStatus.Deleted;
+            var isChangedStatusToDeleted = !isDeletedFeedbackView && statusId == (int)Core.Enumerables.FeedbackStatus.Deleted;
             if (!await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CreateUpdateFeedback)
                 && (isChangedStatusFromDeleted || isChangedStatusToDeleted))
             {

@@ -43,6 +43,7 @@
 
         public string AutoField { get; set; }
         public int NoInquiries { get; set; }
+        public bool IsCheckFeedbackIdIsNew { get; set; }
 
         public IList<FeedbackSettingRelation> Settings { get; set; } = new List<FeedbackSettingRelation>();
     }
