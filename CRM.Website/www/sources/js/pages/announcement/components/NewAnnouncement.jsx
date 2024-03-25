@@ -477,6 +477,9 @@ export class NewAnnouncement extends Component {
                                 <ContentTab
                                     isValidContent={touched.content && errors.content || invalidContentMaxLength} content={values.content} setFieldValue={setFieldValue}
                                     languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab}
+                                    isChangeTemplate={isChangeTemplate} parameters={parameters} values={values} handleChangeParameter={this.handleChangeParameter}
+                                    setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles} invalidContentMaxLength={invalidContentMaxLength}
+                                    textInvalidContentMaxLength={textInvalidContentMaxLength}
                                 />
                             }
                             {

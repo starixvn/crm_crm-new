@@ -370,6 +370,12 @@
           }
         }
 
+        .tab-content {
+          border: 1px solid rgb(209, 209, 209);
+          border-radius: 0px 3px 3px 3px;
+          padding: 6px 6px;
+        }
+
         .ckeditor-container {
           .cke_chrome {
             border-radius: 0px 3px 3px 3px;
@@ -377,8 +383,8 @@
           }
 
           .cke_top {
-            margin-top: 6px;
-            border-width: 1px 0;
+            // margin-top: 6px;
+            // border-width: 1px 0;
             border-color: #d1d1d1;
             border-style: solid;
             background: #f2f2f2;

@@ -2,10 +2,14 @@ import React, { PureComponent } from 'react';
 import LangHelper from '@jsroot/common/langHelper';
 import { Col, Form, Row, Tabs, Tab } from 'react-bootstrap';
 import CkEditor from '@jsroot/components/ckeditor/index';
+import UploadFile from './UploadFile';
 
 export default class ContentTab extends PureComponent {
     render() {
-    const {languages, handleChangeTab, tab, isValidContent, content, setFieldValue, isReadOnly = false} = this.props;
+    const {
+        languages, handleChangeTab, tab, isValidContent, content, setFieldValue, isReadOnly = false, isChangeTemplate, parameters,
+        values, handleChangeParameter, setStateUploadFile, uploadedFiles, invalidContentMaxLength, textInvalidContentMaxLength
+    } = this.props;
     return (
         <Form.Group as={Row}>
             {
@@ -36,10 +40,41 @@ export default class ContentTab extends PureComponent {
                                     isRemoveToolbarForChatbot
                                     readOnly={isReadOnly}
                                 />
+                                {
+                                    isChangeTemplate && parameters &&
+                                    <Form.Group as={Row}>
+                                        <div style={{'margin-top': '8px'}} className='group-list'>
+                                            <div className='list-title'>Parameters</div>
+                                            <div className="list-info">
+                                                {
+                                                    parameters.map((param, index) => {
+                                                        const removeSpaceParam = param.replace(/\s+/g, "");
+                                                        return (
+                                                            <div key={index} className='d-flex box-param'>
+                                                                <div className='param pt-1'>{param}</div>
+                                                                <Form.Control as="textarea" value={values[removeSpaceParam] || ''}
+                                                                    name={removeSpaceParam} id={removeSpaceParam}
+                                                                    className="shadow-none form-input-param" autoComplete="off"
+                                                                    onChange={event => handleChangeParameter(event, param, parameters)}
+                                                                />
+                                                            </div>
+                                                        );
+                                                    })
+                                                }
+                                            </div>
+                                        </div>
+                                    </Form.Group>
+                                }
+                                <div style={{'margin-top': '8px'}} className="group-upload-file">
+                                    <UploadFile
+                                        setStateUploadFile={setStateUploadFile} uploadedFiles={uploadedFiles}
+                                        invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
+                                    />
+                                </div>
                             </Tab>)
                         )
                     }
-                </Tabs>               
+                </Tabs>
             </Col>
         </Form.Group>
     );
