@@ -11,8 +11,8 @@
     using CRM.Criteria.Customer;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Models.Customer;
+    using Fanex.NAP.Client.Helpers.Business;
     using Microsoft.Extensions.Configuration;
-    using static Fanex.NAP.Core.Business.Constant;
     using Constants = Core.Constants.Constants;
 
     public interface ICustomerService
@@ -261,7 +261,7 @@
 
             var isReadCredit = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Credit);
             var isReadLicensee = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Licensee);
-            var isHostOnCustomerInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CustomerInfo, Policy.Host);
+            var isHostOnCustomerInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.CustomerInfo, Constant.Policy.Host);
 
             if (custId < 0)
             {

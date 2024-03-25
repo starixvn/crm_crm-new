@@ -21,9 +21,9 @@
     using System.Linq;
     using Models.Setting;
     using CRM.Core.Models;
-    using static Fanex.NAP.Core.Business.Constant;
     using CRM.Criteria.PicAndHeadline;
     using CRM.Resources;
+    using Fanex.NAP.Client.Helpers.Business;
 
     public class AccountDetailControllerTest : BaseController
     {
@@ -106,7 +106,7 @@
             var command = fixture.Create<EditCustomerInfoDetailCommand>();
 
             customerService.HasHostPermissionOnCustIdAsync(command.CustomerId).Returns(true);
-            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Headlineinfo, Policy.Host).Returns(true);
+            permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Headlineinfo, Constant.Policy.Host).Returns(true);
             baseService.ExecuteNonQueryAsync(Arg.Any<EditCustomerInfoDetailCommand>()).Returns(expectedResult);
             //Act
             var result = await controller.EditCustomerInfoDetail(command);

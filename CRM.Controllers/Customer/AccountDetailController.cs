@@ -12,12 +12,12 @@
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
+    using Fanex.NAP.Client.Helpers.Business;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
-    using static Fanex.NAP.Core.Business.Constant;
 
-    [CrmMultiplePermission(FunctionKey = FunctionKey.Credit, Policy = Policy.Read)]
-    [CrmMultiplePermission(FunctionKey = FunctionKey.Licensee, Policy = Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.Credit, Policy = Constant.Policy.Read)]
+    [CrmPermission(FunctionKey = FunctionKey.Licensee, Policy = Constant.Policy.Read)]
     public class AccountDetailController : BaseController
     {
         private readonly INapSession napSession;
@@ -75,7 +75,7 @@
             {
                 command.UserId = napSession.UserId;
                 command.IP = ClientIP;
-                command.IsUpdateHeadlineInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Headlineinfo, Policy.Host);
+                command.IsUpdateHeadlineInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Headlineinfo, Constant.Policy.Host);
                 result = await baseService.ExecuteNonQueryAsync(command);
             }
             else
@@ -111,7 +111,7 @@
         }
 
         [HttpPost]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Constant.Policy.Host)]
         public async Task<IActionResult> EditPic([FromBody] IList<EditPicCriteria> criterias)
         {
             var commandResultList = new List<CommandResult>();
@@ -126,7 +126,7 @@
         }
 
         [HttpPost]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Constant.Policy.Host)]
         public async Task<IActionResult> ValidateEditPic([FromBody] IList<ValidateEditPicCriteria> criterias)
         {
             var resultlList = new List<string>();
@@ -138,14 +138,14 @@
             return Json(resultlList);
         }
 
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetHeadlineCompanyService([FromBody] GetHeadlineCompanyServiceCriteria criteria)
         {
             var result = await customerService.GetHeadlineCompanyServiceAsync(criteria);
             return Json(result);
         }
 
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Read)]
+        [CrmPermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Constant.Policy.Read)]
         public async Task<IActionResult> GetHeadlineStaffsAndAuthority([FromBody] GetHeadlineStaffAndAuthorityCriteria criteria)
         {
             _ = await customerService.SyncHeadlineStaffsAndAuthorityAsync(new SyncHeadlineStaffAndAuthorityCriteria
@@ -158,7 +158,7 @@
         }
 
         [HttpPost]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Constant.Policy.Host)]
         public async Task<IActionResult> EditHeadlineStaffsAndAuthority([FromBody] UpdateHeadlineStaffAndAuthorityCommand command)
         {
             command.UserID = napSession.UserId;
@@ -168,7 +168,7 @@
         }
 
         [HttpPost]
-        [CrmMultiplePermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Policy.Host)]
+        [CrmPermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Constant.Policy.Host)]
         public async Task<IActionResult> EditHeadlineCompanyService([FromBody] UpdateHeadlineCompanyServiceCommand command)
         {
             command.UserID = napSession.UserId;

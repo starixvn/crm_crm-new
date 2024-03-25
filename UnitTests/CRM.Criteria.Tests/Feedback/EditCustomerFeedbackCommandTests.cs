@@ -45,9 +45,9 @@
             var categories = fixture.Create<IEnumerable<CategorySubCategorySetting>>();
             var command = new EditCustomerFeedbackCommand
             {
-                FeedbackID = 1,
+                FeedbackId = 1,
                 CommunicationToolIds = "1,2",
-                LanguageID = 1,
+                LanguageId = 1,
                 Categories = categories
             };
 

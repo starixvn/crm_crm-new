@@ -244,7 +244,7 @@
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.CreateUpdateFeedback, Policy.Host).Returns(false);
 
             // Act
-            var result = await controller.EditCustomerFeedback(command);
+            var result = await controller.EditCustomerOldFeedback(command);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
@@ -263,7 +263,7 @@
             userService.IsHavingPermission(napSession.UserId, napSettings.SiteId, FunctionKey.ReviewFeedback, Policy.Host).Returns(false);
 
             // Act
-            var result = await controller.EditCustomerFeedback(command);
+            var result = await controller.EditCustomerOldFeedback(command);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
@@ -277,7 +277,7 @@
         {
             // Arrange
             var commandResult = fixture.Create<CommandResult>();
-            var command = new EditCustomerFeedbackCommand { IsReviewed = true, Review = "review", CommunicationInfos = new NewCommunicationTool []{} };
+            var command = new EditCustomerFeedbackCommand { IsReviewed = true, Review = "review" };
             var controller = GetController();
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
@@ -292,13 +292,13 @@
             feedbackService.EditCustomerFeedbackAsync(Arg.Do<EditCustomerFeedbackCommand>(x => command = x)).Returns(commandResult);
 
             // Act
-            var result = await controller.EditCustomerFeedback(command);
+            var result = await controller.EditCustomerOldFeedback(command);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
             var actual = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
             Assert.Equal(commandResult, actual);
-            Assert.Equal(napSession.UserId, command.UserID);
+            Assert.Equal(napSession.UserId, command.UserId);
             Assert.Equal("1.0.0.0", command.IP);
             Assert.Equal(napSession.UserId, command.ReviewerId);
             Assert.NotEmpty(command.Review);
@@ -309,7 +309,7 @@
         {
             // Arrange
             var commandResult = fixture.Create<CommandResult>();
-            var command = new EditCustomerFeedbackCommand { Review = "review", CommunicationInfos = new NewCommunicationTool[] { } };
+            var command = new EditCustomerFeedbackCommand { Review = "review" };
             var controller = GetController();
             controller.ControllerContext.HttpContext = new DefaultHttpContext
             {
@@ -324,13 +324,13 @@
             feedbackService.EditCustomerFeedbackAsync(Arg.Do<EditCustomerFeedbackCommand>(x => command = x)).Returns(commandResult);
 
             // Act
-            var result = await controller.EditCustomerFeedback(command);
+            var result = await controller.EditCustomerOldFeedback(command);
 
             // Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
             var actual = Assert.IsAssignableFrom<CommandResult>(jsonResult.Value);
             Assert.Equal(commandResult, actual);
-            Assert.Equal(napSession.UserId, command.UserID);
+            Assert.Equal(napSession.UserId, command.UserId);
             Assert.Equal("1.0.0.0", command.IP);
             Assert.Empty(command.Review);
         }
