@@ -322,8 +322,8 @@ const getCommunicationToolAddGuestFeedBack = communicationTools => {
     let newCommunicationTools = [];
     communicationTools?.map(item => {
         newCommunicationTools.push({
-            communicationID: item.picCommunicationId,
-            communicationValue: item.picCommunicationValue
+            communicationID: item.communicationID,
+            communicationValue: item.communicationValue
         });
     });
     return newCommunicationTools;

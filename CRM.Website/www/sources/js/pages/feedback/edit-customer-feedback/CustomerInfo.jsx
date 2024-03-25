@@ -101,7 +101,7 @@ export default class CustomerInfo extends PureComponent {
             </div>
             <Form.Group as={Row} className="pt-2">
                 {
-                    latestFeedbackCommunicationTools.map(item => {
+                    latestFeedbackCommunicationTools.map((item, index) => {
                         return <>
                             <Col sm="4" md="4">
                                 <Form.Group as={Row}>
@@ -109,7 +109,10 @@ export default class CustomerInfo extends PureComponent {
                                         {item.communicationName}
                                     </Form.Label>
                                     <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" value={item.communicationValue} className="shadow-none" autoComplete="off"/>
+                                        <Form.Control type="text" size="sm" value={item.communicationValue} className="shadow-none" autoComplete="off"
+                                            onChange={event => {
+                                                this.handleChangeCommunicationTools(event.target.value, index);
+                                            }}/>
                                     </Col>
                                 </Form.Group>
                             </Col>

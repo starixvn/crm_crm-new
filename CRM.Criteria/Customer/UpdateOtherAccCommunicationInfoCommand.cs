@@ -6,6 +6,7 @@ using CRM.Models.Customer;
 namespace CRM.Criteria.Customer
 {
     using Fanex.Data;
+    using Models.Feedback.AddGuestFeedback;
 
     public class UpdateOtherAccCommunicationInfoCommand : BaseNonQueryCommand
     {
@@ -14,8 +15,8 @@ namespace CRM.Criteria.Customer
         public string IP { get; set; }
 
         [SpParam(Ignored = true)]
-        public IEnumerable<CommunicationTool> OtherCommunicationTools { get; set; }
-        public string CommunicationTools => XMLIO.ToXML(OtherCommunicationTools, "ROOT").ToString();
+        public IEnumerable<NewCommunicationTool> OtherCommunicationTools { get; set; }
+        public string NewCommunicationTools => XMLIO.ToXML(OtherCommunicationTools, "ROOT").ToString();
 
         public override string GetSettingKey() => "Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo";
 
