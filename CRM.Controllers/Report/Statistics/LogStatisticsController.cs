@@ -1,5 +1,6 @@
 ﻿namespace CRM.Controllers.Report.Statistics
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;
@@ -98,6 +99,7 @@
             await Task.WhenAll(reportDetailsTask, mainCategoriesTask, communicationToolsTask, productsTask, subProductsTask, extensionTasks);
 
             var report = reportDetailsTask.Result.ChildReports;
+            var reportCommunicationTools = reportDetailsTask.Result.CommunicationTools;
             var mainCategories = mainCategoriesTask.Result;
             var communicationTools = communicationToolsTask.Result;
             var products = productsTask.Result;
@@ -107,6 +109,7 @@
             return Json(new
             {
                 report,
+                reportCommunicationTools,
                 mainCategories,
                 communicationTools,
                 products,

@@ -1,13 +1,16 @@
 ﻿namespace CRM.Services.Report
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using CRM.Core;
     using CRM.Core.Constants;
     using CRM.Core.Services;
     using CRM.Criteria.Report.LogStatistics;
     using CRM.Models;
+    using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.Report.LogStatistics;
     using CRM.Resources;
 
@@ -80,21 +83,44 @@
 
             criteria.FromDate = commonService.ConvertClientFromTimeToServerTime(criteria.FromDate);
             criteria.ToDate = commonService.ConvertClientToTimeToServerTime(criteria.ToDate);
-            var reportDetails = await baseService.GetDataAsync<StatisticsDetailbyDateModel>(criteria);
+            var (reportDetails, communicationTools) = 
+                await baseService.FetchMultipleAsync<StatisticsDetailbyDateModel, LatestFeedbackCommunicationTool>(criteria);
             foreach (var report in reportDetails)
             {
                 report.FeedbackDate = commonService.ConvertToClientDateTime(report.FeedbackDate);
                 report.ResolutionDate = commonService.ConvertToClientDateTime(report.ResolutionDate);
                 report.CreateDate = commonService.ConvertToClientDateTime(report.CreateDate);
+                report.NewContact = GetNewFeedbackCommunicationTool(communicationTools, report.FeedbackID);
             }
             var result = new StatisticsDetailReportByDateModel
             {
                 Id = criteria.SiteType,
                 Name = reportTitle,
                 ExcelFileName = excelFileName,
-                ChildReports = reportDetails
+                ChildReports = reportDetails,
+                CommunicationTools = communicationTools
             };
             return result;
+        }
+
+        private static string GetNewFeedbackCommunicationTool(IEnumerable<LatestFeedbackCommunicationTool> communicationTools, int feedbackID)
+        {
+            var contactInfo = new StringBuilder();
+            foreach (var communicationTool in from communicationTool in communicationTools
+                                              where communicationTool.FeedbackID.Equals(feedbackID)
+                                              select communicationTool)
+            {
+                if (!contactInfo.ToString().Contains(communicationTool.PicInfo))
+                {
+                    var picInfo = !contactInfo.Length.Equals(0) ? 
+                        $"<br/>{communicationTool.PicInfo}:" : $"{communicationTool.PicInfo}:";
+                    contactInfo.Append(picInfo);
+                }
+
+                contactInfo.Append($"<br/>{communicationTool.CommunicationName}: {communicationTool.CommunicationValue}");
+            }
+
+            return contactInfo.ToString();
         }
 
         private List<BaseModel> GetCommunicationColumns(

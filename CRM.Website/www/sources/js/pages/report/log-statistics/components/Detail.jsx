@@ -93,7 +93,14 @@ export class Detail extends Component {
                 <Cell className='text-center'>{communicationValue}</Cell>
                 <Cell className='text-center'>{stationValue}</Cell>
                 <Cell className='text-center'>{item.role}</Cell>
-                <Cell className='break-word' dangerouslySetInnerHTML={{ __html: item.contact }} />
+                {
+                    !item.isNewFeedback && 
+                    <Cell className='break-word' dangerouslySetInnerHTML={{ __html: item.contact }} />
+                }
+                {
+                    item.isNewFeedback &&
+                    <Cell className='break-word' dangerouslySetInnerHTML={{ __html: item.newContact }} />
+                }
                 <Cell className='text-center'>{productValue}</Cell>
                 <Cell className='text-center'>{subProductValue}</Cell>
                 <Cell className='text-center'>{item.countryName}</Cell>

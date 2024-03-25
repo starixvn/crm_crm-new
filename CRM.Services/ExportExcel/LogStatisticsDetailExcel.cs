@@ -1,6 +1,7 @@
 ﻿namespace CRM.Services.ExportExcel
 {
     using System.Collections.Generic;
+    using System.Drawing.Drawing2D;
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -68,7 +69,7 @@
                 return new object[] {
                     data.FeedbackDate.ToString("MMM dd, yyyy"), data.StartTime, data.EndTime,
                     data.DurationTime, data.UserName, data.SiteName, communicationValue, extensionValue,
-                    data.Role, RemoveHtmlTags(data.Contact), productValue == "N/A." ? "N/A" : productValue,
+                    data.Role, RemoveHtmlTags(data.IsNewFeedback ? data.NewContact : data.Contact), productValue == "N/A." ? "N/A" : productValue,
                     subproductValue == "N/A." ? "N/A" : subproductValue, data.CountryName,
                     mainCategoryValue, subCategoryValue, RemoveHtmlTags(data.RemarkText),
                     RemoveHtmlTags(data.Solution), data.NoInquiries, data.Status,

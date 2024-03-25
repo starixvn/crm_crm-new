@@ -109,6 +109,7 @@
             }
         }
 
+        public string NewContact { get; set; }
         public string Remark { get; set; }
 
         public string AutoField { get; set; }
@@ -142,6 +143,7 @@
         public int StationID { get; set; }
 
         public int NoInquiries { get; set; }
+        public bool IsNewFeedback { get; set; }
 
         private string GetResolvingTime()
         {

@@ -22,7 +22,7 @@
 
         public override string GetSettingKey()
         {
-            return "Acc_CRM_Rpt_DailyStatisticsDetail";
+            return "Acc_CRM_NewRpt_DailyStatisticsDetail";
         }
 
         public override bool IsValid()
