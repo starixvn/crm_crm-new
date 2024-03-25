@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Filter from './Filter';
 import DataGrid from './DataGrid';
 import ActionNotification from './ActionNotification';
+import AffectedTicket from './AffectedTicket';
 
 export class AppContainer extends Component {
     render() {
@@ -9,7 +10,8 @@ export class AppContainer extends Component {
             <Fragment>
                 <Filter />
                 {/* <DataGrid isHost={true}/> */}
-                <ActionNotification />
+                {/* <ActionNotification /> */}
+                <AffectedTicket isCredit/>
             </Fragment>
         );
     }
