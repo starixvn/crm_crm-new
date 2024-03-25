@@ -321,10 +321,12 @@ const getNoneHeadlineCommunicationToolAddFeedBack = (communicationTools, custome
 const getCommunicationToolAddGuestFeedBack = communicationTools => {
     let newCommunicationTools = [];
     communicationTools?.map(item => {
-        newCommunicationTools.push({
-            communicationID: item.communicationID,
-            communicationValue: item.communicationValue
-        });
+        if (item.communicationID && item.communicationValue) {
+            newCommunicationTools.push({
+                communicationID: item.communicationID,
+                communicationValue: item.communicationValue
+            });
+        }
     });
     return newCommunicationTools;
 };
