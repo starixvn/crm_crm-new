@@ -244,11 +244,8 @@ export class Layout extends Component {
     handleCheckCustomerInfo = response => {
         if (response?.data?.errCode > 0 && response?.data?.errMsg?.length > 0) {
             this.setState({ customerInfo: null });
-            this.setState({
-                showErrorConfirmPopup: true
-            });
+            this.setState({showErrorConfirmPopup: true});
         } else {
-            this.setState({ customerInfo: response.data });
             if (response?.data !== null) {
                 const isCreditSite = response.data.customerType === 1;
                 this.setState({ isCreditSite });
@@ -262,6 +259,8 @@ export class Layout extends Component {
                     });
                 }
             }
+            this.setState({ customerInfo: response.data });
+            this.setState({ showErrorConfirmPopup: false });
         }
     }
 
