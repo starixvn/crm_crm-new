@@ -1,9 +1,13 @@
 import LangHelper from '@jsroot/common/langHelper';
-import { getInvalidCategoryParams } from '@jsroot/common/shareScripts';
+import {
+    getInvalidCategoryParams,
+    getProductParams,
+    getCategoryParams,
+    sortAndReplaceRelatedCust,
+    getIdDefaultValueResponse
+} from '@jsroot/common/shareScripts';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import { getProductParams, getCategoryParams }from '@jsroot/common/shareScripts';
 import { DefaultLanguages } from '@jsroot/common/constants';
-import { sortAndReplaceRelatedCust, getIdDefaultValueResponse } from '@jsroot/common/shareScripts';
 import moment from 'moment';
 
 export const validateFormik = (values, customerDetail, settings, content) => {

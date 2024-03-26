@@ -708,7 +708,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                     item.communicationTools.map((value, index) => {
                         if (index !== 0) {
                             return (
-                                <Row key={`${item.rowID}-${item.picID}-${item.picName}-${value.picCommunicationID}`} className='row-staff-authority row-child'>
+                                <Row key={`${value.rowID}-${item.picID}-${item.picName}-${value.picCommunicationID}`} className='row-staff-authority row-child'>
                                     <Cell>{value.picCommunicationName}</Cell>
                                     <Cell>{value.picCommunicationValue}</Cell>
                                     <Cell>
