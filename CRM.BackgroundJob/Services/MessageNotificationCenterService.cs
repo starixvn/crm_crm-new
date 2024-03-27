@@ -57,7 +57,7 @@
                 }
                 foreach (var item in initSiteDbConfigs)
                 {
-                    var sessionResultHistory = await captureSettlementDataService.GetSessionByDateAsync(Environment, item.FDTime, item.SiteDBGroupID);
+                    var sessionResultHistory = await captureSettlementDataService.GetSessionByDateAsync(item.Environment, item.FDTime, item.SiteDBGroupID);
                     await captureSettlementDataService.InsertDataLoadAsync(sessionResultHistory.Environment, sessionResultHistory.JSSettlResultHist);
                 }
             }
