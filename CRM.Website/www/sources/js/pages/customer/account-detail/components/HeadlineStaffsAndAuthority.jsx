@@ -380,6 +380,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         const { headlineStaffsAndAuthority } = this.state;
         headlineStaffsAndAuthority[staffIndex][name] = value;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+        this.validateHeadlineStaffAndAuthority(staffIndex);
     }
 
     handleChangeRole = (value, staffIndex) => {
@@ -388,6 +389,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         headlineStaffsAndAuthority[staffIndex].picRoleID = value;
         headlineStaffsAndAuthority[staffIndex].picRoleName = comTool.settingValue;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+        this.validateHeadlineStaffAndAuthority(staffIndex);
     }
 
     handleChangeCommunicationID = (value, indexPicCommunicationTool, staffIndex) => {
@@ -396,6 +398,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool].picCommunicationID = value;
         headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool].picCommunicationName = comTool.settingValue;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+        this.validateHeadlineStaffAndAuthority(staffIndex);
     }
 
     handleChangeAuthorityID = (value, indexPicCommunicationTool, indexStaff) => {
@@ -404,12 +407,15 @@ export class HeadlineStaffsAndAuthority extends Component {
         headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authorityID = value;
         headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authority = authorityTool ? authorityTool.settingValue : '';
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+        this.validateHeadlineStaffAndAuthority(indexStaff);
+
     }
 
     handleChangeCommunicationValue = (name, value, indexPicCommunicationTool, staffIndex) => {
         const { headlineStaffsAndAuthority } = this.state;
         headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool][name] = value;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+        this.validateHeadlineStaffAndAuthority(staffIndex);
     }
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
@@ -439,7 +445,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                         !staff.isSyncFromPicTable &&
                         <>
                             <Cell rowSpan={staff.communicationTools.length}>
-                                <Form.Control type="text" name="" className={staff.communicationTools[0].isErrorPicCommunication && 'invalid'} onChange={event => {
+                                <Form.Control type="text" name="" className={staff.isErrorPicName && 'invalid'} onChange={event => {
                                     this.handleChangeValue('picName', event.target.value, indexStaff);
                                 }}
                                     value={staff.picName} autoComplete="off" />
