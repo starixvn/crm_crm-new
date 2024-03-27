@@ -1,9 +1,10 @@
 ﻿namespace CRM.BackgroundJob.Criteria.CaptureSettlementData
 {
     using System;
+    using CRM.Core.Models;
     using Fanex.Data.Repository;
 
-    public class GetSessionByDateCriteria : CriteriaBase
+    public class GetSessionByDateCriteria : CriteriaBase, CriteriaBaseSiteDb
     {
         public string Environment { get; set; }
 

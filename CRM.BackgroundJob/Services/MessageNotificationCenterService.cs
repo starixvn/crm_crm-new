@@ -57,8 +57,13 @@
                 }
                 foreach (var item in initSiteDbConfigs)
                 {
-                    var sessionResultHistory = await captureSettlementDataService.GetSessionByDateAsync(item.Environment, item.FDTime, item.SiteDBGroupID);
-                    await captureSettlementDataService.InsertDataLoadAsync(sessionResultHistory.Environment, sessionResultHistory.JSSettlResultHist);
+                    var sessionResultHistorys = await captureSettlementDataService.GetSessionByDateAsync(item);
+                    var sessionResultHistory = sessionResultHistorys.FirstOrDefault();
+
+                    if (sessionResultHistory != null)
+                    {
+                        await captureSettlementDataService.InsertDataLoadAsync(sessionResultHistory.Environment, sessionResultHistory.JSSettlResultHist);
+                    }
                 }
             }
             catch (Exception ex)

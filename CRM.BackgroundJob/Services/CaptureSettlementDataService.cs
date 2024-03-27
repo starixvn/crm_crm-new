@@ -12,7 +12,7 @@
     {
         Task<IEnumerable<SiteDbConfig>> GetInitialSiteDbConfigsAsync(string environment);
 
-        Task<SettlResultHistory> GetSessionByDateAsync(string environment, DateTime FDTime, int SiteDBGroupID);
+        Task<IEnumerable<SettlResultHistory>> GetSessionByDateAsync(SiteDbConfig siteDbConfig);
 
         Task InsertDataLoadAsync(string environment, string JSSettlResultHist);
     }
@@ -34,15 +34,15 @@
             return await baseService.GetSiteDbConfigAsync(criteria);
         }
 
-        public async Task<SettlResultHistory> GetSessionByDateAsync(string environment, DateTime FDTime, int SiteDBGroupID)
+        public async Task<IEnumerable<SettlResultHistory>> GetSessionByDateAsync(SiteDbConfig siteDbConfig)
         {
             var criteria = new GetSessionByDateCriteria
             {
-                Environment = environment,
-                FDTime = FDTime,
-                SiteDBGroupID = SiteDBGroupID
+                Environment = siteDbConfig.Environment,
+                FDTime = siteDbConfig.FDTime,
+                SiteDBGroupID = siteDbConfig.SiteDBGroupID
             };
-            return await baseService.GetDataEntityAsync<SettlResultHistory>(criteria);
+            return await baseService.GetDataByIpConfigAsync<SettlResultHistory>(siteDbConfig.AGIP, siteDbConfig.LinkedServerName, criteria);
         }
 
         public async Task InsertDataLoadAsync(string environment, string JSSettlResultHist)
