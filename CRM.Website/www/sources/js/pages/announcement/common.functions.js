@@ -80,10 +80,11 @@ export const getParams = (values, state) => {
             formData.append('fileStringRemove', oldFile);
         });
     }
+    console.log('state.uploadedFiles', state.uploadedFiles);
     state.uploadedFiles.forEach(file => {
         formData.append(typeof file === 'string' ? 'fileString' : 'formFile', file);
     });
-
+    console.log('content', content);
 
     let index = 0;
     for (const [key, value] of Object.entries(content)) {
@@ -110,9 +111,15 @@ export const getParams = (values, state) => {
         sendImmediately: isSendImmediately,
         status: values.status
     };
+    console.log('paramsparams', params);
     Object.keys(params).forEach(key => {
         formData.append(key, params[key]);
     });
+
+    const data = {};
+    formData.forEach((value, key) => (data[key] = value));
+    // Log the data.
+    console.log('data', data);
 
     return formData;
 };

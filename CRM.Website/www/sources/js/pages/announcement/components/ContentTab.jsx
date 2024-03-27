@@ -67,7 +67,7 @@ export default class ContentTab extends PureComponent {
                                 }
                                 <div style={{'margin-top': '8px'}} className="group-upload-file">
                                     <UploadFile
-                                        setStateUploadFile={setStateUploadFile} uploadedFiles={uploadedFiles}
+                                        setStateUploadFile={setStateUploadFile} uploadedFiles={uploadedFiles} languageKey={language.mapLabel}
                                         invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
                                     />
                                 </div>

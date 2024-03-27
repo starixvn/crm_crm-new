@@ -526,7 +526,7 @@
           }
         }
 
-        [data-rbd-droppable-context-id="0"] {
+        [data-rbd-droppable-context-id] {
           .form-group {
             &:not(:last-child) {
               margin-bottom: 6px;

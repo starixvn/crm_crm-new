@@ -134,9 +134,12 @@ export class NewAnnouncement extends Component {
 
     handleChangeTab = selected => {
         this.setState({ tab: selected });
+        //console.log('this.formik.values.content1', this.formik.values.content);
         this.formik.setFieldValue('cloneContent', this.formik.values.content);
         const replaceTab = selected.replace(/[^A-Z0-9]/ig, '');
         const content = this.formik.values.content[replaceTab];
+        //console.log('this.formik.values.content2', this.formik.values.content);
+        //console.log('content3', content);
         this.handleGetParameters(content);
     };
 
@@ -238,21 +241,20 @@ export class NewAnnouncement extends Component {
             setSubmitting(true);
             values.status = 'Planned';
             const param = getParams(values, this.state);
-    
-            this.props.validateAnnouncement(param).then(() => {
-                const contentConfirm = this.props.validateAnnouncementResult;
-                if (!contentConfirm?.code && contentConfirm.length > 0) {
-                    this.setState({confirmInsertDialog: { show: true, params: param, content: contentConfirm[0]}});
-                }
-                this.formik.setSubmitting(false);
-            });
+            console.log('this.state.languages', this.state.languages);
+            // this.props.validateAnnouncement(param).then(() => {
+            //     const contentConfirm = this.props.validateAnnouncementResult;
+            //     if (!contentConfirm?.code && contentConfirm.length > 0) {
+            //         this.setState({confirmInsertDialog: { show: true, params: param, content: contentConfirm[0]}});
+            //     }
+            //     this.formik.setSubmitting(false);
+            // });
         }
     };
 
     handleConfirmInsertDialog = async () =>{
         this.handleCloseConfirmInsertDialog();
         const formData = this.state.confirmInsertDialog.params;
-
         await this.props.createAnnouncement(formData).then(() => {
             if (this.props.createAnnouncementResult.isSuccessful) {
                 const {sendType} = this.formik.values;
@@ -507,12 +509,12 @@ export class NewAnnouncement extends Component {
                                     </div>
                                 </Form.Group>
                             }
-                            <div className="group-upload-file">
+                            {/* <div className="group-upload-file">
                                 <UploadFile
                                     setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
                                     invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
                                 />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="group-item">

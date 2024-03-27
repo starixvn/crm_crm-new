@@ -10,25 +10,46 @@ document.body.appendChild(portal);
 export default class UploadFile extends PureComponent {
     handleUploadFiles = files => {
         const uploaded = [...this.props.uploadedFiles];
-        files.some(file => {
-            const isNotExist = uploaded.findIndex((f) => (f.name || f) === file.name) === -1;
+        // files.some(file => {
+        //     const isNotExist = uploaded.findIndex((f) => (f.name || f) === file.name) === -1;
+        //     if (isNotExist) {
+        //         uploaded.push(file);
+        //     }
+        // });
+        console.log('uploaded0', uploaded);
+        const { languageKey } = this.props;
+        files.some((file, key) => {
+            const isNotExist = uploaded.findIndex((f) => ((f.name || f) === file.name && f.key === languageKey)) === -1;
             if (isNotExist) {
+                file.key = languageKey;
                 uploaded.push(file);
             }
         });
+        console.log('uploaded', uploaded);
         this.props.setStateUploadFile(uploaded);
     }
 
     handleFileEvent = e => {
         e.preventDefault();
         const chosenFiles = Array.prototype.slice.call(e.target.files);
-        this.handleUploadFiles(chosenFiles, null);
+        this.handleUploadFiles(chosenFiles);
     }
 
     handleRemoveFile = (event, fileName) => {
         event.stopPropagation();
-        const filterFiler = this.props.uploadedFiles.filter(x => (x.name || x) !== fileName);
-        this.props.setStateUploadFile(filterFiler, fileName);
+        const { uploadedFiles, languageKey, setStateUploadFile } = this.props;
+        console.log('uploadedFiles', uploadedFiles);
+        //const filterFiler = this.props.uploadedFiles.filter(x => ((x.name || x) !== fileName && x.key !== this.props.languageKey));
+        const fileToRemove = uploadedFiles.find(file => ((file.name || file) === fileName && file.key === languageKey));
+        console.log('fileToRemove', fileToRemove);
+        const filteredFiles = uploadedFiles.filter(file => (file.name !== fileToRemove.name || file.key !== fileToRemove.key));
+        console.log('filteredFiles', filteredFiles);
+        setStateUploadFile(filteredFiles, fileName);
+    }
+
+    getFilterUploadFiles = () => {
+        const { uploadedFiles, languageKey } = this.props;
+        return uploadedFiles.filter(item => item.key === languageKey);
     }
 
     onDragEnd = result =>{
@@ -37,7 +58,7 @@ export default class UploadFile extends PureComponent {
           }
       
         const uploadedFiles = this.reorder(
-            this.props.uploadedFiles,
+            this.getFilterUploadFiles(),
             result.source.index,
             result.destination.index
         );
@@ -83,17 +104,17 @@ export default class UploadFile extends PureComponent {
                 }
           </Form.Group>
         );
-      
+
         if (!usePortal) {
           return child;
         }
-      
+
         return ReactDOM.createPortal(child, portal);
     }
 
     render() {
-        const { uploadedFiles, invalidContentMaxLength,  textInvalidContentMaxLength} = this.props;
-        
+        const { invalidContentMaxLength,  textInvalidContentMaxLength } = this.props;
+        const filterUploadFiles = this.getFilterUploadFiles();
         return (
         <Fragment>
             <Form.Group as={Row} controlId="formFileMultiple">
@@ -102,11 +123,11 @@ export default class UploadFile extends PureComponent {
                         <span className='file-upload'>
                             <label htmlFor="file-btn" className="file-upload-label">
                             <span>Choose Files</span>
-                                <input id='file-btn' type='file' ref={this.props.imageInputRef} multiple onChange={this.handleFileEvent} />
+                                <input id='file-btn' type='file' multiple onChange={e => this.handleFileEvent(e)} />
                             </label>
                             {
-                                uploadedFiles.length > 0 ?
-                                    <span className='count-file pr-5'>{uploadedFiles.length} files</span>
+                                filterUploadFiles.length > 0 ?
+                                    <span className='count-file pr-5'>{filterUploadFiles.length} files</span>
                                 :   <span className='count-file pr-5'>No files chosen</span>
                             }
                             <span>Limit: </span>
@@ -128,7 +149,7 @@ export default class UploadFile extends PureComponent {
                                 {...droppableProvided.droppableProps}
                             >
                         {
-                            uploadedFiles.map((item, index) => (
+                            filterUploadFiles.map((item, index) => (
                                 <Draggable key={index} draggableId={`draggableId-${index}`} index={index}>
                                     {(draggableProvided, draggableSnapshot)  => (
                                         this.renderListPortalFile(draggableProvided, draggableSnapshot, item)
