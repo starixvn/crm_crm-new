@@ -15,9 +15,10 @@
     using Fanex.NAP.Client.Helpers.Business;
     using Fanex.NAP.Client.Helpers.Web;
     using Microsoft.AspNetCore.Mvc;
+    using static Fanex.NAP.Client.Helpers.Business.Constant;
 
-    [CrmPermission(FunctionKey = FunctionKey.Credit, Policy = Constant.Policy.Read)]
-    [CrmPermission(FunctionKey = FunctionKey.Licensee, Policy = Constant.Policy.Read)]
+    [CrmPermission(FunctionKey = $"{FunctionKey.Credit},{FunctionKey.Licensee}", Policy = Policy.Read)]
+
     public class AccountDetailController : BaseController
     {
         private readonly INapSession napSession;
@@ -53,7 +54,7 @@
 
         public async Task<IActionResult> GetAllSettings()
         {
-            short licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
+            var licenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
 
             var allSettings = new CreateCustomerInfoViewModel
             {

@@ -490,7 +490,7 @@ export class CreateCommunicationLog extends Component {
         Site.blockUI();
         const { params } = this.state.confirmCreateDialog;
         await DataService.postDataAsync(urlCheckDuplicate, {
-            customerId: params.CustomerId,
+            customerId: params.CustId,
             categories: params.Categories,
             startTime: params.FeedbackDate
         }).then(response => {
