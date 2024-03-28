@@ -70,20 +70,10 @@
         [HttpPost]
         public async Task<IActionResult> EditCustomerInfoDetail([FromBody] EditCustomerInfoDetailCommand command)
         {
-            var result = new CommandResult();
-            bool canEdit = await customerService.HasHostPermissionOnCustIdAsync(command.CustomerId);
-            if (canEdit)
-            {
-                command.UserId = napSession.UserId;
-                command.IP = ClientIP;
-                command.IsUpdateHeadlineInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Headlineinfo, Constant.Policy.Host);
-                result = await baseService.ExecuteNonQueryAsync(command);
-            }
-            else
-            {
-                result.Message = ViewResources.NoPermission;
-            }
-
+            command.UserId = napSession.UserId;
+            command.IP = ClientIP;
+            command.IsUpdateHeadlineInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Headlineinfo, Constant.Policy.Host);
+            var result = await baseService.ExecuteNonQueryAsync(command);
             return Json(result);
         }
 

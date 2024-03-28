@@ -20,6 +20,6 @@ namespace CRM.Criteria.Customer
 
         public override string GetSettingKey() => "Acc_CRM_NewAccDetail_UpdOtherAccCommunicationInfo";
 
-        public override bool IsValid() => CustID > 0 && UserID > 0 && !string.IsNullOrWhiteSpace(IP);
+        public override bool IsValid() => UserID > 0 && !string.IsNullOrWhiteSpace(IP);
     }
 }

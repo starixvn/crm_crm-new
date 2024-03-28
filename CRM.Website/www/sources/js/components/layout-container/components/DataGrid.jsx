@@ -389,7 +389,8 @@ export default class DataGrid extends PureComponent {
         const hasReadSitePermission = document.getElementById('hasReadSitePermission').checked;
         const hasHostPicManagementPermission = document.getElementById('hasHostPicManagementPermission').checked;
         const isReadRemark = this.state.remarksPolicy >= Policy.Read;
-
+        const hasReadLicenseePermission = document.getElementById('hasReadLicenseePermission').checked;
+        const hasReadCreditPermission = document.getElementById('hasReadCreditPermission').checked;
         return (
             <div className="group-detail-link">
                 <div className="group-title text-left btn-detail"
@@ -402,34 +403,42 @@ export default class DataGrid extends PureComponent {
                 {
                     this.state.isShowDetail &&
                     <div className='group-content'>
-                        <Form.Group className="row form-row-detail">
-                            <ul className='list-unstyled list-menu pull-left'>
-                                {
-                                    !isShowInactiveMsg && hasCreateFeedbackPermission &&
-                                    <li>
-                                        <a onClick={() => this.props.handleNavigate('AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
-                                    </li>
-                                }
-                                {
-                                    hasReadFeedbackPermission &&
-                                    <li>
-                                        <a onClick={() => this.props.handleNavigate('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
-                                    </li>
-                                }
-                            </ul>
+                        {
+                            ((!isShowInactiveMsg && hasCreateFeedbackPermission) ||
+                                hasReadFeedbackPermission || hasReadFeedbackPermission ||
+                                    ((hasReadLicenseePermission || hasReadCreditPermission) && hasReadFeedbackPermission)) &&
+                                <Form.Group className="row form-row-detail">
+                                    <ul className='list-unstyled list-menu pull-left'>
+                                        {
+                                            !isShowInactiveMsg && hasCreateFeedbackPermission &&
+                                            <li>
+                                                <a onClick={() => this.props.handleNavigate('AddFeedback')}>{LangHelper.getResource('AddFeedback')}</a>
+                                            </li>
+                                        }
+                                        {
+                                            hasReadFeedbackPermission &&
+                                            <li>
+                                                <a onClick={() => this.props.handleNavigate('ManageFeedback')}>{LangHelper.getResource('ManageFeedback')}</a>
+                                            </li>
+                                        }
+                                    </ul>
 
-                            <ul className='list-unstyled list-menu pull-left list-menu-right'>
-                                {
-                                    hasReadFeedbackPermission &&
-                                    <li>
-                                        <a onClick={() => this.props.handleNavigate('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
-                                    </li>
-                                }
-                                <li>
-                                    <a onClick={() => this.props.handleNavigate('Communication')}>{LangHelper.getResource('CommunicationLog')}</a>
-                                </li>
-                            </ul>
-                        </Form.Group>
+                                    <ul className='list-unstyled list-menu pull-left list-menu-right'>
+                                        {
+                                            hasReadFeedbackPermission &&
+                                            <li>
+                                                <a onClick={() => this.props.handleNavigate('LatestFeedback')}>{LangHelper.getResource('LatestFeedback')}</a>
+                                            </li>
+                                        }
+                                        {
+                                            (hasReadLicenseePermission || hasReadCreditPermission) && hasReadFeedbackPermission &&
+                                            <li>
+                                                <a onClick={() => this.props.handleNavigate('Communication')}>{LangHelper.getResource('CommunicationLog')}</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </Form.Group>
+                        }                        
                         <Form.Group className="row form-row-detail">
                             <ul className='list-unstyled list-menu pull-left'>
                                 <li>

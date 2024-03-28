@@ -464,7 +464,6 @@ export class CreateForm extends Component {
             languageId: values.isUseDefaultLanguage ? 0 : parseInt(values.languageId),
             countryName: values.isUseDefaultCountry ? '' : this.getCountryName(parseInt(values.countryId)),
             statusId: parseInt(values.statusId, 10),
-            //licenseeTypeId: values.licenseeTypeId,
             responseId: parseInt(values.responseId, 10),
             subject: values.subject,
             remark: values.remark,
@@ -479,12 +478,11 @@ export class CreateForm extends Component {
                 values.betTypeIds.length > 0 ? values.betTypeIds.split(',') : [],
                 this.props.settings),
             categories: getCategoryParams(values.mainCategoryIds.split(','), values.subCategoryIds.split(','), subCategories),
-            noInquiries: values.noInquiries,
+            noInquiries: values.noOfInquiries,
             mainCategoryIds: values.mainCategoryIds.split(',').map(item => parseInt(item, 10)).sort().join(','),
             subCategoryIds: values.subCategoryIds.split(',').map(item => parseInt(item, 10)).sort().join(','),
             isUseDefaultCommunicationTool: values.isUseDefaultCommunicationTool,
-            relatedCustomers: this.getRelatedCustomers(),
-            //isManualMultiple: true
+            relatedCustomers: this.getRelatedCustomers()
         };
 
         this.reVerifyInactiveSiteAndConfirm(usernames, params, setSubmitting, values);

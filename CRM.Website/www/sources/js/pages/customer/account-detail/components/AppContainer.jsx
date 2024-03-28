@@ -165,7 +165,7 @@ export class AppContainer extends Component {
         this.props.editCustomerInfoDetail(params).then(() => {
             if (this.props.editCustomerInfoDetailResult.isSuccessful) {
                 window.dispatchEvent(new Event('getCurrentCustomer'));
-                toast.success(LangHelper.getResource('UpdateAccountPicSuccessful'));
+                toast.success(LangHelper.getResource('UpdateAccountantPicSuccessful'));
             } else {
                 toast.error(LangHelper.getResource(this.props.editCustomerInfoDetailResult.message));
             }
@@ -526,7 +526,7 @@ export class AppContainer extends Component {
                 window.dispatchEvent(new Event('getCurrentCustomer'));
                 toast.success(LangHelper.getResource('UpdateCommunicationInfoSuccessful'));
             } else {
-                toast.errors(response.data.find(x => !x.isSuccessful)[0].message);
+                toast.error(response.data.message);
             }
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
@@ -596,7 +596,7 @@ export class AppContainer extends Component {
                                             {
                                                 values.isHostOnCurrentCustomer &&
                                                 <div onClick={() => { this.deleteCommunicationTool(picCommunicationTool.communicationValue, picCommunicationTool.communicationID); }}
-                                                    className='icon icon-delete'>
+                                                    className='icon icon-delete' title={LangHelper.getResource('DeleteCommunicationTool')}> 
                                                 </div>
                                             }
                                         </div>
