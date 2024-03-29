@@ -1,11 +1,9 @@
 ﻿.slide-bar {
-    overflow-x: auto;
-    max-width: 348px;
+    overflow: auto;
     width: 100%;
     min-height: calc( 100vh - 110px);
     max-height: calc( 100vh - 110px) !important;
     outline: none;
-    margin-right: 12px;
 
     .col-md-9{
         padding: 0 !important;
@@ -105,7 +103,7 @@
             padding: 12px 8px 8px;
 
             .btn-primary{
-                padding: 5px 16px;
+                padding: 4px 16px;
                 height: 26px;
                 font-weight: 700;
             }

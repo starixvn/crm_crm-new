@@ -79,3 +79,9 @@
     grid-template-columns: repeat($column,$columnfr);
     grid-gap: $gap;
 }
+
+@mixin Laptop {
+    @media screen and (max-width: 1366px) {
+        @content;
+    }
+}

@@ -1,3 +1,5 @@
+@import '../../../abstracts/mixins';
+
 .bold {
   font-weight: bold;
 }
@@ -162,7 +164,6 @@
       }
 
       .no-data {
-        background: #e5e5e5;
         border-radius: 3px;
         border: 1px #b7b7b7 solid;
         padding: 9px 48px;
@@ -229,6 +230,7 @@
         left: -4px;
         font-weight: 600;
         font-family: Open Sans, sans-serif;
+        color: #333333;
       }
     }
   }
@@ -253,7 +255,7 @@
     padding: 5px 16px;
     font-weight: 700;
     border-radius: 3px;
-    height: auto;
+    height: 26px;
     line-height: normal;
   }
 
@@ -654,7 +656,7 @@
     height: 26px;
   }
 
-  @media only screen and (max-width: 1366px) {
+  @include Laptop {
     .group-account .group-content,
     .group-item {
       column-gap: 32px;
@@ -680,21 +682,21 @@
         &.acc-info-only-hidden {
           .table-container,
           .custom-scrollbar {
-            max-height: 327px;
+            max-height: 326px !important;
           }
         }
 
         &.acc-PIC-hidden {
           .table-container,
           .custom-scrollbar {
-            max-height: 224px;
+            max-height: 223px;
           }
         }
 
         &.acc-info-hidden {
           .table-container,
           .custom-scrollbar {
-            max-height: 388px;
+            max-height: 387px;
           }
         }
 
@@ -762,7 +764,7 @@
     }
 
     .acc-info-only-hidden .fix-table-container .fix-table {
-      max-height: 328px !important;
+      max-height: 326px !important;
     }
 
     .acc-PIC-hidden .fix-table-container .fix-table {
@@ -770,7 +772,7 @@
     }
 
     .acc-info-hidden .fix-table-container .fix-table {
-      max-height: 389px !important;
+      max-height: 387px !important;
     }
 
     .fix-table-container {
@@ -852,13 +854,6 @@
     .btn-add {
       margin-top: 8px;
       padding: 3px 12px;
-    }
-  }
-
-
-  @media only screen and (max-width: 1366px) {
-    .headline-info .tab-content.acc-info-hidden .custom-scrollbar{
-      max-height: 162px !important;
     }
   }
 }

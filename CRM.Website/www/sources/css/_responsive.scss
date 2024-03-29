@@ -1,148 +1,142 @@
 @media only screen and (max-width: 1366px) {
-    html {
-        font-size: 12px !important;
+  html {
+    font-size: 12px !important;
 
-        .header .left-header {
-            max-width: 272px;
+    .header .left-header {
+      img {
+        width: 50% !important;
+      }
+    }
 
-            img {
-                width: 50% !important;
-            }
+    .row-search .right-container .sub-main-menu li {
+      padding: 8px 10px 9px !important;
+    }
+
+    .row-search #left-container {
+      .filter-search .btn-search {
+        margin: 3px;
+      }
+
+      .autocomplete-container {
+        input {
+          &::placeholder {
+            font-size: 11px !important;
+          }
+        }
+      }
+    }
+
+    #left-row-container {
+      .left-form-customer {
+        .list-menu {
+          padding-left: 1px;
+
+          li {
+            padding-right: 10px !important;
+          }
         }
 
-        .row-search .right-container .sub-main-menu li {
-            padding: 8px 10px 9px !important;
+        select {
+          padding: 0 2px !important;
         }
 
-        .row-search #left-container {
-            max-width: 272px;
-
-            .filter-search .btn-search {
-                margin: 3px;
-            }
-
-            .autocomplete-container {
-                input {
-                    &::placeholder {
-                        font-size: 11px !important;
-                    }
-                }
-            }
+        .item {
+          padding: 3px 4px;
+          margin: 0;
         }
 
-        .slide-bar {
-            max-width: 260px;
+        .form-group {
+          margin-bottom: 0.4rem !important;
         }
 
-        #left-row-container {
-            .left-form-customer {
-                .list-menu {
-                    padding-left: 1px;
-
-                    li {
-                        padding-right: 10px !important;
-                    }
-                }
-
-                select {
-                    padding: 0 2px !important;
-                }
-
-                .item {
-                    padding: 3px 4px;
-                    margin: 0;
-                }
-
-                .form-group {
-                    margin-bottom: 0.4rem !important;
-                }
-
-                .form-control-wrapper{
-                    .text-display{
-                        width: 130px;
-                    }
-                }
-            }
-            }
-
-            .multiple-select-container {
-                .text-display {
-                    padding-left: 5px;
-                    width: 180px;
-                }
-            }
-
-            .react-select-container {
-                height: 21px;
-
-                .css-1f3xvel-Input {
-                    margin: 0;
-                }
-            }
-
-            .checked-guest {
-                label {
-                    padding: 0 3px 0 0 !important;
-                }
-
-                .form-check-input {
-                    margin-right: 2px !important;
-                }
-            }
-
-            .form-check label {
-                padding-left: 5px;
-                padding-top: 2px;
-            }
-
-            .toggle-filter, .icon-toggle {
-                margin-top: 2px;
-                font-size: 9px !important;
-                width: 20px !important;
-            }
-
-            .react-datepicker-wrapper-container {
-                height: 20px !important;
-            }
-
-            .react-select__control {
-                height: 24px !important;
-            }
-
-            .form-filter {
-                padding: 0.6rem 1rem 0 !important;
-
-                .form-group, .form-group-button {
-                    margin-bottom: 0.6rem !important;
-                }
-            }
-
-            .new-remark {
-                #dateTypeSelect {
-                    width: 150px !important;
-                }
-            }
-
-            .deleted-feedback .form-filter {
-                .form-group {
-                    &:first-child {
-                        .col-form-label-username {
-                            width: 139px;
-                        }
-                    }
-                }
-            }
-
-            .report-customer .form-filter .w-auto .label-exclude {
-                width: 184px !important;
-            }
-
-            .change-logs {
-                .form-filter-pic {
-                    .form-group {
-                        width: 230px !important;
-                    }
-                }
-            }
+        .form-control-wrapper {
+          .text-display {
+            width: 130px;
+          }
         }
+      }
+    }
+
+    .multiple-select-container {
+      .text-display {
+        padding-left: 5px;
+        width: 180px;
+      }
+    }
+
+    .react-select-container {
+      height: 21px;
+
+      .css-1f3xvel-Input {
+        margin: 0;
+      }
+    }
+
+    .checked-guest {
+      label {
+        padding: 0 3px 0 0 !important;
+      }
+
+      .form-check-input {
+        margin-right: 2px !important;
+      }
+    }
+
+    .form-check label {
+      padding-left: 5px;
+      padding-top: 2px;
+    }
+
+    .toggle-filter,
+    .icon-toggle {
+      margin-top: 2px;
+      font-size: 9px !important;
+      width: 20px !important;
+    }
+
+    .react-datepicker-wrapper-container {
+      height: 20px !important;
+    }
+
+    .react-select__control {
+      height: 24px !important;
+    }
+
+    .form-filter {
+      padding: 0.6rem 1rem 0 !important;
+
+      .form-group,
+      .form-group-button {
+        margin-bottom: 0.6rem !important;
+      }
+    }
+
+    .new-remark {
+      #dateTypeSelect {
+        width: 150px !important;
+      }
+    }
+
+    .deleted-feedback .form-filter {
+      .form-group {
+        &:first-child {
+          .col-form-label-username {
+            width: 139px;
+          }
+        }
+      }
+    }
+
+    .report-customer .form-filter .w-auto .label-exclude {
+      width: 184px !important;
+    }
+
+    .change-logs {
+      .form-filter-pic {
+        .form-group {
+          width: 230px !important;
+        }
+      }
+    }
+  }
 }

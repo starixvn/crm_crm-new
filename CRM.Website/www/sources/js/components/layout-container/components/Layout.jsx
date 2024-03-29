@@ -297,7 +297,7 @@ export class Layout extends Component {
         const { settings, gridParams, isShowingLeftPanel, showErrorConfirmPopup } = this.state;
 
         return (
-            <div className="d-flex">
+            <>
                 <div style={{ maxHeight: `${this.state.maxHeightLeft}px` }} id={isShowingLeftPanel ? 'left-row-container' : 'left-row-hidden'} tabIndex="1" className="slide-bar">
                     {
                     isShowingLeftPanel && settings !== null &&
@@ -310,25 +310,25 @@ export class Layout extends Component {
                         />
                     }
                 </div>
-                <div id='right-row-container' tabIndex="2" style={{ width: isShowingLeftPanel ? '81%' : '100%'}} className='main-content'>
+                <div id='right-row-container' tabIndex="2" className='main-content'>
                     <div id='child-app-container'>
                         {this.props.children}
                     </div>
                 </div>
-            </div>
+            </>
         );
     };
 
     renderFullWidthContent = () => {
         return (
-            <div>
+            <>
                 <div id='left-row-container' style={{ width: 0 }} tabIndex="1" />
                 <div id='right-row-container' style={{ width: '100%' }} tabIndex="2" className='main-content'>
                     <div id='child-app-container'>
                         {this.props.children}
                     </div>
                 </div>
-            </div>
+            </>
         );
     };
 

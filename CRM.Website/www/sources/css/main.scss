@@ -94,6 +94,16 @@
     
     .row-content{
         min-width: 1263px;
+
+        .show-left-panel{
+            display: grid;
+            grid-template-columns: 348px calc(100% - 360px);
+            grid-gap: 12px;
+
+            @include Laptop {
+                grid-template-columns:260px calc(100% - 272px);
+            }
+        }
     }
 
     .search-breadbrumb{
@@ -101,11 +111,9 @@
     }
 }
 
-    
 .sweet-alert-modal-backdrop {
     z-index: 1050 !important;
 }
-
 
 #communication-tooltip-ref-ticket .tooltip-inner {
     white-space: pre-wrap !important;
