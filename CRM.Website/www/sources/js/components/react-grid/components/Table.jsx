@@ -45,7 +45,7 @@ class Table extends Component {
         adjustedHeight: 0,
         bodyHeight: 0,
         autoHeight: true,
-        containerPadding: 31,
+        containerPadding: 0,
         shouldResetScrollPosition: true,
         shouldUseMaxWidth: false
     };
@@ -293,7 +293,7 @@ class Table extends Component {
 
     render() {
         const { width, autoWidth, minWidth, header, body, footer, isPaging, pageOption, onPaging, containerPadding, shouldUseMaxWidth, isFixColumn } = this.props;
-        const maxWidth = this.state.maxWidth - containerPadding;
+        const maxWidth = this.state.maxWidth;
         const actualWidth = width - containerPadding;
         const newColumnLayout = this.handleNewLayOut(actualWidth);
 

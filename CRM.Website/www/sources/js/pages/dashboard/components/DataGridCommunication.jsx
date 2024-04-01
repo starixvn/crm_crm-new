@@ -249,7 +249,7 @@ export class DataGridCommunication extends Component {
                 <Cell className='text-center'>
                     {
                         hasCreateFeedbackPermission &&
-                        <Button style={{width: '70px'}} size="sm" onClick={() => this.handleShowCreateCommunication(item.feedbackId)}>Duplicate</Button>
+                        <Button size="sm" onClick={() => this.handleShowCreateCommunication(item.feedbackId)}>Duplicate</Button>
                     }
                 </Cell>
             </Row>
@@ -267,6 +267,7 @@ export class DataGridCommunication extends Component {
             <div className='d-flex table-title align-items-center justify-content-between'>
                 <span>{LangHelper.getResource('LastTenCommunicationLog')}</span>
             </div>
+
             <Table
                 minWidth={960}
                 width={document.getElementById('right-row-container').clientWidth}
