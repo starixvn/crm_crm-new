@@ -497,9 +497,9 @@ export class AppContainer extends Component {
         let { otherAccountCommunication } = this.state;
         let picCommunicationTools = [];
         otherAccountCommunication.map((picCom, indexCom) => {
-            const index = otherAccountCommunication.findIndex(item => item.communicationID === picCom.communicationID);
+            const index = picCommunicationTools.findIndex(item => item.communicationID === picCom.communicationID);
             if (index >= 0 && index !== indexCom) {
-                const newValue = otherAccountCommunication[index].communicationValue.concat(', ', picCom.communicationValue);
+                const newValue = picCommunicationTools[index].communicationValue.concat(', ', picCom.communicationValue);
                 picCommunicationTools[index].communicationValue = newValue;
             }
             else {
