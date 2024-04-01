@@ -74,9 +74,13 @@
             var criteriaOldFeedback = new GetCustomerFeedbackByIdCriteria { FeedbackId = feedbackId };
             var criteriaNewFeedback = new GetCustomerNewManualFeedbackByIdCriteria() { FeedbackId = feedbackId };
 
-            var (feedbackInfos, latestFeedbackCommunicationTool, settingItems, relatedCustomers ) =
-                isCheckFeedbackIdIsNew ? await dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission >(criteriaNewFeedback) :
-                    await dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(criteriaOldFeedback);
+            //var (feedbackInfos, latestFeedbackCommunicationTool, settingItems, relatedCustomers ) =
+            //    isCheckFeedbackIdIsNew ? await dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission >(criteriaNewFeedback) :
+            //        await dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(criteriaOldFeedback);
+
+            var (feedbackInfos, relatedCustomers, settingItems) =
+                await baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomerPermission, FeedbackSettingRelation>(criteriaOldFeedback);
+
 
             CustomerFeedback feedback = null;
 
@@ -89,7 +93,7 @@
                 feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
                 feedback.RelatedCustomers = relatedCustomers.OrderBy(x => x.Username);
                 feedback.Settings = settingItems.Where(x => !string.IsNullOrEmpty(x.SettingType)).ToList();
-                feedback.LatestFeedbackCommunicationTools = latestFeedbackCommunicationTool;
+                //feedback.LatestFeedbackCommunicationTools = latestFeedbackCommunicationTool;
                 feedback.IsCheckFeedbackIdIsNew = isCheckFeedbackIdIsNew;
 
                 var siteSetting = await settingService.GetSiteByIdAsync(feedback.SiteId);
