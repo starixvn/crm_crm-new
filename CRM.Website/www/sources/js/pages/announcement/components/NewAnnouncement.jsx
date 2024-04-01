@@ -484,7 +484,7 @@ export class NewAnnouncement extends Component {
                                     textInvalidContentMaxLength={textInvalidContentMaxLength}
                                 />
                             }
-                            {
+                            {/* {
                                 isChangeTemplate && parameters &&
                                 <Form.Group as={Row}>
                                     <div className='group-list'>
@@ -509,7 +509,7 @@ export class NewAnnouncement extends Component {
                                     </div>
                                 </Form.Group>
                             }
-                            {/* <div className="group-upload-file">
+                            <div className="group-upload-file">
                                 <UploadFile
                                     setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
                                     invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}

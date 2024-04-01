@@ -8,7 +8,7 @@ export default class ContentTab extends PureComponent {
     render() {
     const {
         languages, handleChangeTab, tab, isValidContent, content, setFieldValue, isReadOnly = false, isChangeTemplate, parameters,
-        values, handleChangeParameter, setStateUploadFile, uploadedFiles, invalidContentMaxLength, textInvalidContentMaxLength
+        values, handleChangeParameter, setStateUploadFile, uploadedFiles, invalidContentMaxLength, textInvalidContentMaxLength, actionParam
     } = this.props;
     return (
         <Form.Group as={Row}>
@@ -66,7 +66,7 @@ export default class ContentTab extends PureComponent {
                                     </Form.Group>
                                 }
                                 <div style={{'margin-top': '8px'}} className="group-upload-file">
-                                    <UploadFile
+                                    <UploadFile id={actionParam?.announcementId}
                                         setStateUploadFile={setStateUploadFile} uploadedFiles={uploadedFiles} languageKey={language.mapLabel}
                                         invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
                                     />

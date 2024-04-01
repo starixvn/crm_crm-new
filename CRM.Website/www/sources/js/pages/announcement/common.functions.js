@@ -70,29 +70,151 @@ export const validateFormik = (values, files, state) => {
     return errors;
 };
 
+// export const getParams = (values, state) => {
+//     const {notificationTemplateId, content, headlineType, sendDate, sendType} = values;
+//     const splitFiles = !values.oldFileName ? values.oldFileName : values.oldFileName?.split(',');
+//     const formData = new FormData();
+//     if(splitFiles){
+//         const oldFileRemove = splitFiles && splitFiles.filter(x => !state.uploadedFiles.find(file => typeof file === 'string' ? file === x : file.name === x));
+//         oldFileRemove.forEach(oldFile => {
+//             formData.append('fileStringRemove', oldFile);
+//         });
+//     }
+//     console.log('state.uploadedFiles', state.uploadedFiles);
+//     state.uploadedFiles.forEach(file => {
+//         formData.append(typeof file === 'string' ? 'fileString' : 'formFile', file);
+//     });
+//     console.log('content', content);
+
+//     let index = 0;
+//     for (const [key, value] of Object.entries(content)) {
+//         if(value && value.length > 0){
+//             const languageId = state.languages.filter(x => x.mapLabel === key)[0].settingId;
+//             if(languageId){
+//                 formData.append(`contents[${index}][languageId]`, languageId);
+//                 formData.append(`contents[${index}][value]`, value.replace( /\n/g, ''));
+//                 index++;
+//             }
+//         }
+//     }
+
+//     const isSendImmediately = sendType === 'Send immediately';
+
+//     const params = {
+//         notificationTemplateId: notificationTemplateId,
+//         headlineNameList: state.isHeadlineGroup.isUsername ? state.headlineGroups.join(',') : '',
+//         siteNameList: (!values.site || !state.isHeadlineGroup.isSiteType) ? '' : values.site,
+//         currencyList: (!values.currency || !state.isHeadlineGroup.isSiteType) ? '' : values.currency,
+//         headlineType: state.isHeadlineGroup.isSiteType ? headlineType : '',
+//         title: values.title,
+//         sendDate: isSendImmediately ? null : (sendType === 'Send At' ? DateTimeService.toLongDateTimeFormat(sendDate) : null),
+//         sendImmediately: isSendImmediately,
+//         status: values.status
+//     };
+//     console.log('paramsparams', params);
+//     Object.keys(params).forEach(key => {
+//         formData.append(key, params[key]);
+//     });
+
+//     const data = {};
+//     formData.forEach((value, key) => (data[key] = value));
+//     // Log the data.
+//     console.log('data', data);
+
+//     return formData;
+// };
+
+
+const getFileName = (uploadedFiles, languageKey) => {
+    const arrFileName = [];
+    uploadedFiles.forEach(item => {
+        if (item.key === languageKey) {
+            arrFileName.push(item.name);
+        }
+    });
+    return arrFileName.join(',');
+};
+
+const filterDuplicate = files => {
+    return files.reduce((acc, current) => {
+        const found = acc.find(item => item?.name === current?.name);
+        if (!found) {
+            acc.push(current);
+        }
+        return acc;
+    }, []);
+};
+
+const filterFormStringFiles = uploadedFiles => {
+    const formFiles = uploadedFiles.filter(item => item.type !== 'string');
+    const fileStrings = uploadedFiles.filter(item => item.type === 'string');
+
+    const filterFormFiles = filterDuplicate(formFiles);
+    const filterFileStrings = filterDuplicate(fileStrings);
+
+    if (filterFileStrings.length > 0) {
+        const filterFormFileByString = filterFormFiles.filter(item => !filterFileStrings.find(x => x.name === item.name))
+        return filterFileStrings.concat(filterFormFileByString);
+    }
+    else return filterFormFiles;
+};
+
+const getFileStringRemove = (oldFileName, uploadedFiles) => {
+    const fileStringRemove = [];
+    const oldFileRemoves = oldFileName;
+    if (oldFileRemoves.length > 0) {
+        oldFileRemoves.forEach(item => {
+            if (!uploadedFiles.find(element => element.name === item.name)) {
+                fileStringRemove.push(item);
+            }
+        })
+    }
+    return filterDuplicate(fileStringRemove);
+};
+
 export const getParams = (values, state) => {
     const {notificationTemplateId, content, headlineType, sendDate, sendType} = values;
-    const splitFiles = !values.oldFileName ? values.oldFileName : values.oldFileName?.split(',');
+    //const splitFiles = !values.oldFileName ? values.oldFileName : values.oldFileName?.split(',');
     const formData = new FormData();
-    if(splitFiles){
-        const oldFileRemove = splitFiles && splitFiles.filter(x => !state.uploadedFiles.find(file => typeof file === 'string' ? file === x : file.name === x));
-        oldFileRemove.forEach(oldFile => {
-            formData.append('fileStringRemove', oldFile);
+    // if(splitFiles){
+    //     const oldFileRemove = splitFiles && splitFiles.filter(x => !state.uploadedFiles.find(file => typeof file === 'string' ? file === x : file.name === x));
+    //     oldFileRemove.forEach(oldFile => {
+    //         formData.append('fileStringRemove', oldFile);
+    //     });
+    // }
+    const fileStringRemoves = getFileStringRemove(values.oldFileName, state.uploadedFiles);
+    if (fileStringRemoves.length > 0) {
+        fileStringRemoves.forEach(oldFile => {
+            formData.append('fileStringRemove', oldFile.name);
         });
     }
+
+    const data0 = {};
+    formData.forEach((value, key) => (data0[key] = value));
+    // Log the data.
+    console.log('data0', data0);
+
     console.log('state.uploadedFiles', state.uploadedFiles);
-    state.uploadedFiles.forEach(file => {
-        formData.append(typeof file === 'string' ? 'fileString' : 'formFile', file);
+    const filerDupFiles = filterFormStringFiles(state.uploadedFiles);
+    filerDupFiles.forEach(file => {
+        if (file.type === 'string') {
+            formData.append('fileString', file.name);
+        } else {
+            formData.append('formFile', file);
+        }
     });
     console.log('content', content);
 
     let index = 0;
     for (const [key, value] of Object.entries(content)) {
-        if(value && value.length > 0){
+        if((value && value.length > 0) || state.uploadedFiles.filter(item => item?.key === key).length > 0){
             const languageId = state.languages.filter(x => x.mapLabel === key)[0].settingId;
+            const fileNames = getFileName(state.uploadedFiles, key);
+
             if(languageId){
                 formData.append(`contents[${index}][languageId]`, languageId);
                 formData.append(`contents[${index}][value]`, value.replace( /\n/g, ''));
+                formData.append(`contents[${index}][fileName]`, fileNames);
                 index++;
             }
         }

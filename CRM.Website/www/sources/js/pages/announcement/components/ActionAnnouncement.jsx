@@ -94,6 +94,15 @@ export class ActionAnnouncement extends Component {
         this.setState({content: contentObj});
     };
 
+    getFileString = () => {
+        return [
+            { key: 'EN', name: 'thucung01.png', type: 'string' },
+            { key: 'EN', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
+            { key: 'ENSC', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
+            { key: 'ENSC', name: 'SamplePNGImage_5mbmb.png', type: 'string' }
+        ]
+    };
+
     getSettingOption = async announcement =>{
         await this.props.getSettings().then(() =>{
             const siteNameListId = [];
@@ -120,7 +129,8 @@ export class ActionAnnouncement extends Component {
                 siteOptions,
                 currencyOptions,
                 headlineGroups: announcement.siteNameList ? [] : (announcement.headlineNameList ? announcement.headlineNameList.split(',') : []),
-                uploadedFiles: !announcement.fileName ? [] : (announcement.fileName ? announcement.fileName.split(',') : []),
+                //uploadedFiles: !announcement.fileName ? [] : (announcement.fileName ? announcement.fileName.split(',') : []),
+                uploadedFiles: this.getFileString(),
                 isHeadlineGroup: {
                     isUsername: this.checkShowHeadlineGroup(announcement) ? false : (announcement.headlineNameList ? true : false),
                     isSiteType: this.checkShowHeadlineGroup(announcement) ? true : false
@@ -247,7 +257,7 @@ export class ActionAnnouncement extends Component {
     setStateUploadFile = (uploadedFiles, fileNameRemove) => {
         if(!fileNameRemove){
             uploadedFiles.forEach((file) => {
-                if(typeof file !== 'string'){
+                if(file.type !== 'string'){
                     const maximumHeightWidth = 2560;
                     const reader = new FileReader();
                     reader.readAsDataURL(file);
@@ -281,16 +291,66 @@ export class ActionAnnouncement extends Component {
         this.setState({uploadedFiles});
     };
 
+    // changeStringToFile = async () => {
+    //     const id = this.props.actionParam.announcementId;
+    //     const fileNames = this.state.data.fileName ? this.state.data.fileName.split(',') : [];
+    //     const maximumHeightWidth = 2560;
+    //     const urls = [];
+
+    //     if (fileNames.length > 0) {
+    //         fileNames.map(item => urls.push({
+    //             fileName: item,
+    //             url: Site.resolveClientUrl(`www/dist/images/announcement/${id}/${item}`)
+    //         }));
+
+    //         urls.forEach(async (item) => {
+    //             const response = await fetch(item.url);
+    //             const data = await response.blob();
+    //             const file = new File([data], item.fileName);
+
+    //             const image = new Image();
+    //             image.src = item.url;
+    //             image.onload = () => {
+    //                 const {
+    //                     height,
+    //                     width
+    //                 } = image;
+
+    //                 if (height > maximumHeightWidth || width > maximumHeightWidth) {
+    //                     this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, item.fileName]});
+    //                 }
+    //             }
+
+    //             if (!validFileExtension(file)) {
+    //                 this.setState(prevState => ({
+    //                     errorDrafts: {
+    //                         ...prevState.errorDrafts,
+    //                         invalidFileTypeDraft: [...prevState.errorDrafts.invalidFileTypeDraft, file]
+    //                     }
+    //                 }));
+    //             }
+    //             if (!validFileSize(file)) {
+    //                 this.setState(prevState => ({
+    //                     errorDrafts: {
+    //                         ...prevState.errorDrafts,
+    //                         invalidFileSizeDraft: [...prevState.errorDrafts.invalidFileSizeDraft, file]
+    //                     }
+    //                 }));
+    //             }
+    //         });
+    //     }
+    // };
+
     changeStringToFile = async () => {
         const id = this.props.actionParam.announcementId;
-        const fileNames = this.state.data.fileName ? this.state.data.fileName.split(',') : [];
+        const fileNames = this.getFileString();
         const maximumHeightWidth = 2560;
         const urls = [];
 
         if (fileNames.length > 0) {
             fileNames.map(item => urls.push({
-                fileName: item,
-                url: Site.resolveClientUrl(`www/dist/images/announcement/${id}/${item}`)
+                fileName: item.name,
+                url: Site.resolveClientUrl(`www/dist/images/announcement/${id}/${item.name}`)
             }));
 
             urls.forEach(async (item) => {
@@ -421,14 +481,14 @@ export class ActionAnnouncement extends Component {
             const params = getParams(values, this.state);
             const {announcementId, isEdit} = this.props.actionParam;
             params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
-    
-            this.props.validateAnnouncement(params).then(() => {
-                const contentConfirm = this.props.validateAnnouncementResult;
-                if (!contentConfirm?.code && contentConfirm.length > 0) {
-                    this.setState({confirmActionDialog: { show: true, params: params, content: contentConfirm[0]}});
-                }
-                this.formik.setSubmitting(false);
-            });
+
+            // this.props.validateAnnouncement(params).then(() => {
+            //     const contentConfirm = this.props.validateAnnouncementResult;
+            //     if (!contentConfirm?.code && contentConfirm.length > 0) {
+            //         this.setState({confirmActionDialog: { show: true, params: params, content: contentConfirm[0]}});
+            //     }
+            //     this.formik.setSubmitting(false);
+            // });
         }
     };
 
@@ -615,9 +675,12 @@ export class ActionAnnouncement extends Component {
                                 <ContentTab
                                     isValidContent={(touched.content && errors.content) || invalidContentMaxLength} content={values.content} setFieldValue={setFieldValue}
                                     languages={this.state.languages} tab={this.state.tab} handleChangeTab={this.handleChangeTab} 
+                                    isChangeTemplate={isChangeTemplate} parameters={parameters} values={values} handleChangeParameter={this.handleChangeParameter}
+                                    setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles} invalidContentMaxLength={invalidContentMaxLength}
+                                    textInvalidContentMaxLength={textInvalidContentMaxLength} actionParam={actionParam}
                                 />
                             }
-                            {
+                            {/* {
                                 isChangeTemplate && parameters &&
                                 <Form.Group as={Row}>
                                     <div className='group-list'>
@@ -647,7 +710,7 @@ export class ActionAnnouncement extends Component {
                                     setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
                                     invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
                                 />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="group-item">
@@ -810,18 +873,24 @@ export class ActionAnnouncement extends Component {
             imageFileType: '',
             imageFileSize: '',
             fileName: data.fileName,
-            oldFileName: data.fileName,
+            //oldFileName: data.fileName,
+            oldFileName: [
+                { key: 'EN', name: 'thucung01.png', type: 'string' },
+                { key: 'EN', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
+                { key: 'ENSC', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
+                { key: 'ENSC', name: 'SamplePNGImage_5mbmb.png', type: 'string' }
+            ],
             cloneContent: this.state.cloneContent,
             status: 'Planned'
         };
         const excludeOldImage = this.state.uploadedFiles.filter(x => !initialValues.oldFileName.includes(x));
-
+console.log('upload', this.state.uploadedFiles);
         return (
             <div>
                 <Formik
                     innerRef={p => (this.formik = p)}
                     initialValues={initialValues}
-                    validate={values => validateFormik(values, excludeOldImage, this.state)}
+                    //validate={values => validateFormik(values, excludeOldImage, this.state)}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}

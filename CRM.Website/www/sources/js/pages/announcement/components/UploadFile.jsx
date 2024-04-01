@@ -16,7 +16,6 @@ export default class UploadFile extends PureComponent {
         //         uploaded.push(file);
         //     }
         // });
-        console.log('uploaded0', uploaded);
         const { languageKey } = this.props;
         files.some((file, key) => {
             const isNotExist = uploaded.findIndex((f) => ((f.name || f) === file.name && f.key === languageKey)) === -1;
@@ -25,46 +24,42 @@ export default class UploadFile extends PureComponent {
                 uploaded.push(file);
             }
         });
-        console.log('uploaded', uploaded);
         this.props.setStateUploadFile(uploaded);
-    }
+    };
 
     handleFileEvent = e => {
         e.preventDefault();
         const chosenFiles = Array.prototype.slice.call(e.target.files);
         this.handleUploadFiles(chosenFiles);
-    }
+    };
 
     handleRemoveFile = (event, fileName) => {
         event.stopPropagation();
         const { uploadedFiles, languageKey, setStateUploadFile } = this.props;
-        console.log('uploadedFiles', uploadedFiles);
-        //const filterFiler = this.props.uploadedFiles.filter(x => ((x.name || x) !== fileName && x.key !== this.props.languageKey));
         const fileToRemove = uploadedFiles.find(file => ((file.name || file) === fileName && file.key === languageKey));
-        console.log('fileToRemove', fileToRemove);
         const filteredFiles = uploadedFiles.filter(file => (file.name !== fileToRemove.name || file.key !== fileToRemove.key));
-        console.log('filteredFiles', filteredFiles);
         setStateUploadFile(filteredFiles, fileName);
-    }
+    };
 
     getFilterUploadFiles = () => {
         const { uploadedFiles, languageKey } = this.props;
         return uploadedFiles.filter(item => item.key === languageKey);
-    }
+    };
 
-    onDragEnd = result =>{
+    onDragEnd = result => {
         if (!result.destination) {
             return;
-          }
-      
-        const uploadedFiles = this.reorder(
-            this.getFilterUploadFiles(),
-            result.source.index,
-            result.destination.index
-        );
-    
-        this.props.setStateUploadFile(uploadedFiles);
-    }
+        }
+        const { source, destination } = result;
+        const { uploadedFiles, languageKey } = this.props;
+        const filteredUploadedFiles = this.getFilterUploadFiles();
+        const reorderedFiles = this.reorder(filteredUploadedFiles, source.index, destination.index);
+
+        const otherFiles = uploadedFiles.filter(item => item.key !== languageKey);
+        otherFiles.push(...reorderedFiles);
+
+        this.props.setStateUploadFile(otherFiles);
+    };
 
     reorder = (list, startIndex, endIndex) => {
         const result = Array.from(list);
@@ -79,7 +74,7 @@ export default class UploadFile extends PureComponent {
                     Site.resolveClientUrl(`www/dist/images/announcement/${this.props.id}/${fileName}`) : 
                     URL.createObjectURL(fileName);
         window.open(url);
-    }
+    };
     
     renderListPortalFile = (provided, snapshot, item) =>{
         const usePortal = snapshot.isDragging;
@@ -110,7 +105,7 @@ export default class UploadFile extends PureComponent {
         }
 
         return ReactDOM.createPortal(child, portal);
-    }
+    };
 
     render() {
         const { invalidContentMaxLength,  textInvalidContentMaxLength } = this.props;
@@ -163,5 +158,5 @@ export default class UploadFile extends PureComponent {
                 </DragDropContext>
         </Fragment>
         );
-    }
+    };
 }
