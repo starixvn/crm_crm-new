@@ -112,7 +112,7 @@ export class AppContainer extends Component {
 
         const {
             custId, editRedemptionDialog, noOfInquiryDialog, editCommunicationDialog,
-            createCommunicationDialog, editCustomerVerifyDialog
+            createCommunicationDialog, editCustomerVerifyDialog, currentCustomer
         } = this.props;
         return (
             <>
@@ -156,6 +156,7 @@ export class AppContainer extends Component {
                         id={createCommunicationDialog.custId}
                         onClose={this.handleCloseCreateCmnDiaLog}
                         options={createCommunicationDialog.options}
+                        customerInfo={currentCustomer?.customerInfo}
                     />
                 }
                 {

@@ -154,7 +154,7 @@ export class CreateCommunicationLog extends Component {
             roleId: options ? options.roleId : customerInfo.roleId,
             licenseeTypeId: options ? options.licenseeTypeId : customerInfo.licenseeType,
             responseId: options ? options.responseId : getIdDefaultValueResponse(allSettings.responses),
-            isHeadline: customerInfo?.isHeadline,
+            isHeadline: customerInfo?.isGroupHeadLine,
             solution: '',
             remark: '',
             refCode: customerInfo?.refCode,

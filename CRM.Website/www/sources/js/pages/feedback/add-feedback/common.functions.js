@@ -332,7 +332,24 @@ const getCommunicationToolAddGuestFeedBack = communicationTools => {
             });
         }
     });
-    return newCommunicationTools;
+
+    let picCommunicationTools = [];
+    newCommunicationTools.map((picCom, indexCom) => {
+        const index = newCommunicationTools.findIndex(item => item.communicationID === picCom.communicationID);
+        if (index >= 0 && index !== indexCom) {
+            const newValue = newCommunicationTools[index].communicationValue.concat(', ', picCom.communicationValue);
+            picCommunicationTools[index].communicationValue = newValue;
+        }
+        else {
+            const newPicCom = {
+                communicationID: picCom.communicationID,
+                communicationValue: picCom.communicationValue
+            };
+            picCommunicationTools.push({ ...newPicCom });
+        }
+    })
+
+    return picCommunicationTools;
 };
 
 const getPicInfo = (communicationTool, customerDetail) => {

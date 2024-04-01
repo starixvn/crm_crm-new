@@ -27,7 +27,7 @@ export const ValidateHeadlineStaffAndAuthority = (values, indexStaff) => {
             headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicCommunication = false;
         }
 
-        if (!staffCom.authorityID) {
+        if (!staffCom.authorityID && !headlineStaffsAndAuthority[indexStaff].isSyncFromPicTable) {
             errors.authority = LangHelper.getResource('AuthorityRequired');
             headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicAuthorityID = true;
         } else {

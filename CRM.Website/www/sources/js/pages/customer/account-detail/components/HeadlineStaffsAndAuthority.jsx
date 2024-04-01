@@ -110,7 +110,7 @@ export class HeadlineStaffsAndAuthority extends Component {
 
     handleSubmit = async indexStaff => {
         const errors = this.validateHeadlineStaffAndAuthority(indexStaff);
-        if (errors === null) {
+        if (errors === null ) {
             await this.checkCustomerExistsOnCRM();
         }
     }

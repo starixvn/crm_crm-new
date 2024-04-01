@@ -233,7 +233,12 @@ export class HeadlineCommunicationInfo extends Component {
                 const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
                 this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
             } else {
-                toast.errors(response.data.find(x => !x.isSuccessful)[0].message);
+                let { headlineCommunicationInfo } = this.state;
+                response.data.map((item, index) => {
+                    headlineCommunicationInfo[index].isNameError = !item.isSuccessful;
+                })
+                this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+                toast.error(response.data.find(x => !x.isSuccessful).message);
             }
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }
