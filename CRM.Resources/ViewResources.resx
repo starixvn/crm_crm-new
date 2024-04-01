@@ -615,4 +615,25 @@
   <data name="NoReviewPermission" xml:space="preserve">
     <value>You don't have permission to review feedback.</value>
   </data>
+  <data name="HeadlineNotification" xml:space="preserve">
+    <value>Headline Notification</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="InformHeadlines" xml:space="preserve">
+    <value>Inform Headlines</value>
+  </data>
+  <data name="ManageHeadline" xml:space="preserve">
+    <value>Manage Headline</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="Remarks" xml:space="preserve">
+    <value>Remarks</value>
+  </data>
+  <data name="UAT" xml:space="preserve">
+    <value>UAT</value>
+  </data>
 </root>

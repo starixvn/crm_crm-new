@@ -655,6 +655,24 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Headline Notification.
+        /// </summary>
+        public static string HeadlineNotification {
+            get {
+                return ResourceManager.GetString("HeadlineNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inform Headlines.
         /// </summary>
         public static string InformHeadline {
@@ -678,6 +696,15 @@ namespace CRM.Resources {
         public static string InformHeadlineCase {
             get {
                 return ResourceManager.GetString("InformHeadlineCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inform Headlines.
+        /// </summary>
+        public static string InformHeadlines {
+            get {
+                return ResourceManager.GetString("InformHeadlines", resourceCulture);
             }
         }
         
@@ -916,6 +943,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage Headline.
+        /// </summary>
+        public static string ManageHeadline {
+            get {
+                return ResourceManager.GetString("ManageHeadline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Master.
         /// </summary>
         public static string Master {
@@ -1029,6 +1065,15 @@ namespace CRM.Resources {
         public static string NotificationList {
             get {
                 return ResourceManager.GetString("NotificationList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifications.
+        /// </summary>
+        public static string Notifications {
+            get {
+                return ResourceManager.GetString("Notifications", resourceCulture);
             }
         }
         
@@ -1200,6 +1245,15 @@ namespace CRM.Resources {
         public static string Remark {
             get {
                 return ResourceManager.GetString("Remark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remarks.
+        /// </summary>
+        public static string Remarks {
+            get {
+                return ResourceManager.GetString("Remarks", resourceCulture);
             }
         }
         
@@ -1425,6 +1479,15 @@ namespace CRM.Resources {
         public static string Total {
             get {
                 return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UAT.
+        /// </summary>
+        public static string UAT {
+            get {
+                return ResourceManager.GetString("UAT", resourceCulture);
             }
         }
         
