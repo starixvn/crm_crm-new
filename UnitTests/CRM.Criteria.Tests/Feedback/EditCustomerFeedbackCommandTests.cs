@@ -16,7 +16,7 @@
         {
             // Arrange
             var command = new EditCustomerFeedbackCommand();
-            var expected = "Acc_CRM_NewManualFeedback_FeedbackUpd";
+            var expected = "Acc_CRM_FeedbackInfoUpd";
 
             // Act
             var actual = command.GetSettingKey();

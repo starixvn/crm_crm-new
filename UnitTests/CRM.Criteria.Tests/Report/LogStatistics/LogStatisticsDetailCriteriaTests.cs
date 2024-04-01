@@ -11,7 +11,7 @@
         {
             // Arrange
             var criteria = new LogStatisticsDetailCriteria();
-            var expected = "Acc_CRM_Rpt_DailyStatisticsDetail";
+            var expected = "Acc_CRM_NewRpt_DailyStatisticsDetail";
 
             // Act
             var actual = criteria.GetSettingKey();

@@ -10,7 +10,7 @@
         {
             // Arrange
             var criteria = new GetCustomerFeedbackByIdCriteria();
-            var expected = "Acc_CRM_NewManualFeedback_FeedbackSelByID";
+            var expected = "Acc_CRM_FeedbackSelByID";
 
             // Act
             var actual = criteria.GetSettingKey();
