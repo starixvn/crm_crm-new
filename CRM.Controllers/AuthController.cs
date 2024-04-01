@@ -287,6 +287,11 @@
                     menu.Name = ViewResources.Notifications;
                 }
 
+                if (menu.Name == ViewResources.PICAndHeadline)
+                {
+                    menu.Name = ViewResources.ManageHeadline;
+                }
+
                 if ((menu.Name == ViewResources.Remarks || menu.Name == ViewResources.InformHeadlines) && manageHeadline != null)
                 {
                     menu.ParentId = manageHeadline.Id;

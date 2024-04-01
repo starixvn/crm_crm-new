@@ -1132,6 +1132,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PIC and Headline.
+        /// </summary>
+        public static string PICAndHeadline {
+            get {
+                return ResourceManager.GetString("PICAndHeadline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PIC Assignment.
         /// </summary>
         public static string PICAssignment {
