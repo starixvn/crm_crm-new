@@ -6,7 +6,9 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CRM.Models;
+    using CRM.Models.Customer;
     using CRM.Models.Feedback;
+    using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.Report.DeletedFeedbackStatistic;
     using CRM.Models.Report.FeedbackStatistic;
     using Fanex.Data;
@@ -17,6 +19,7 @@
         Task<IEnumerable<DeletedFeedback>> GetDeletedFeedbackAsync(ICriteria criteria);
         Task<IEnumerable<DeletedFeedbackStatistic>> GetDeletedFeedbackStatisticAsync(ICriteria criteria);
         Task<FeedbackStatisticInfo> GetFeedbackStatisticAsync(ICriteria criteria);
+        Task<CustomerFeedbackModel> GetCustomerFeedbackByIdAsync(ICriteria criteria);
     }
 
     public class FeedbackRepository : IFeedbackRepository
@@ -36,6 +39,25 @@
                     }
 
                     return feedbacks;
+                }
+            }
+        }
+
+        public async Task<CustomerFeedbackModel> GetCustomerFeedbackByIdAsync(ICriteria criteria)
+        {
+            using (var db = ObjectDbFactory.CreateInstance(criteria.GetSettingKey()))
+            {
+                using (IMultiResultReader multi = await db.QueryMultipleAsync(criteria))
+                {
+                    var customerFeedbackModel = new CustomerFeedbackModel
+                    {
+                        CustomerFeedback = multi.Read<CustomerFeedback>(),
+                        FeedbackCommunicationTool = multi.Read<LatestFeedbackCommunicationTool>(),
+                        FeedbackSettingRelation = multi.Read<FeedbackSettingRelation>(),
+                        RelatedCustomerPermission = multi.Read<RelatedCustomerPermission>()
+                    };
+
+                    return customerFeedbackModel;
                 }
             }
         }

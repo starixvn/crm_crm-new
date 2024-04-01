@@ -16,10 +16,10 @@
     using CRM.Models.Customer;
     using CRM.Models.DeletedFeedback;
     using CRM.Models.Feedback;
-    using CRM.Models.Feedback.LatestFeedback;
     using CRM.Repositories;
     using CRM.Resources;
     using Fanex.Data.Repository;
+    using Models.Feedback.LatestFeedback;
 
     public interface IFeedbackService
     {
@@ -74,26 +74,22 @@
             var criteriaOldFeedback = new GetCustomerFeedbackByIdCriteria { FeedbackId = feedbackId };
             var criteriaNewFeedback = new GetCustomerNewManualFeedbackByIdCriteria() { FeedbackId = feedbackId };
 
-            //var (feedbackInfos, latestFeedbackCommunicationTool, settingItems, relatedCustomers ) =
-            //    isCheckFeedbackIdIsNew ? await dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission >(criteriaNewFeedback) :
-            //        await dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(criteriaOldFeedback);
-
-            var (feedbackInfos, relatedCustomers, settingItems) =
-                await baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomerPermission, FeedbackSettingRelation>(criteriaOldFeedback);
-
+            var customerFeedbackModel =
+                isCheckFeedbackIdIsNew ? await feedbackRepository.GetCustomerFeedbackByIdAsync(criteriaNewFeedback) :
+                    await feedbackRepository.GetCustomerFeedbackByIdAsync(criteriaOldFeedback);
 
             CustomerFeedback feedback = null;
 
-            if (feedbackInfos.Any())
+            if (customerFeedbackModel.CustomerFeedback.Any())
             {
-                feedback = feedbackInfos.First();
+                feedback = customerFeedbackModel.CustomerFeedback.First();
                 feedback.FeedbackDate = commonService.ConvertToClientDateTime(feedback.FeedbackDate);
                 feedback.ResolutionDate = commonService.ConvertToClientDateTime(feedback.ResolutionDate);
                 feedback.SolveDate = commonService.ConvertToClientDateTime(feedback.SolveDate);
                 feedback.CreateDate = commonService.ConvertToClientDateTime(feedback.CreateDate);
-                feedback.RelatedCustomers = relatedCustomers.OrderBy(x => x.Username);
-                feedback.Settings = settingItems.Where(x => !string.IsNullOrEmpty(x.SettingType)).ToList();
-                //feedback.LatestFeedbackCommunicationTools = latestFeedbackCommunicationTool;
+                feedback.RelatedCustomers = customerFeedbackModel.RelatedCustomerPermission.OrderBy(x => x.Username);
+                feedback.Settings = customerFeedbackModel.FeedbackSettingRelation.Where(x => !string.IsNullOrEmpty(x.SettingType)).ToList();
+                feedback.LatestFeedbackCommunicationTools = customerFeedbackModel.FeedbackCommunicationTool;
                 feedback.IsCheckFeedbackIdIsNew = isCheckFeedbackIdIsNew;
 
                 var siteSetting = await settingService.GetSiteByIdAsync(feedback.SiteId);
