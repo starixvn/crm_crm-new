@@ -222,7 +222,7 @@ export class CustomerInfo extends PureComponent{
                 <div>
                     {
                         guestCommunicationInfos.length !== 0 &&
-                        <Form.Group as={Row} className="pt-2">
+                        <Form.Group as={Row}>
                             {
                                 guestCommunicationInfos.map((picCommunicationTool, index) => {
                                     return <>

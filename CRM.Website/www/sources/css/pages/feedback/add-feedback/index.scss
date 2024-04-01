@@ -39,7 +39,7 @@
             hr {
                 border-top-color: #b1b1b1;
                 height: 1px;
-                margin: 6px -15px;
+                margin: 6px -15px 0;
             }
         }
 
@@ -48,20 +48,20 @@
         }
 
         .add-comm-tool {
-            padding-bottom: 10px;
+            padding: 12px 0;
 
             .guest-communication-value {
                 display: flex;
             }
 
             .btn-add {
-                margin: 12px 12px 12px 0px;
+                margin-bottom: 12px;
             }
 
             .no-data {
                 border-radius: 3px;
                 border: 1px #b7b7b7 solid;
-                padding: 9px 48px;
+                padding: 4px 48px;
                 margin: auto;
                 width: fit-content;
             }
