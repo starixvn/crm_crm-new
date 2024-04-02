@@ -431,7 +431,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         });
         return (
             <>
-                <Row key={`${staff.communicationTools[0].rowID + indexStaff}`} className='row-add'>
+                <Row key={`${staff.communicationTools[0].rowID}-${staff.communicationTools[0].picCommunicationName}-${staff.communicationTools[0].picCommunicationValue}`} className="row-add">
                     {
                         staff.isSyncFromPicTable &&
                         <>
@@ -524,7 +524,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                         });
                         if (indexCom !== 0) {
                             return (
-                                <Row key={`${value.rowID + indexCom}`} class="row-add">
+                                <Row key={`${value.rowID}-${value.picCommunicationName}-${value.picCommunicationValue}`} className="row-add">
                                     {
                                         staff.isSyncFromPicTable &&
                                         <>
