@@ -19,6 +19,7 @@ export class HeadlineCommunicationInfo extends Component {
         super(props);
         this.state = {
             headlineCommunicationInfo: null,
+            isValidate: false,
             confirmSave: {
                 show: false,
                 data: []
@@ -127,17 +128,21 @@ export class HeadlineCommunicationInfo extends Component {
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
     handleChangeValue = (name, value, indexPic) => {
-        let { headlineCommunicationInfo } = this.state;
+        let { headlineCommunicationInfo, isValidate } = this.state;
         headlineCommunicationInfo[indexPic][name] = value;
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
-        this.validateCommunicationInfo();
+        if (isValidate) {
+            this.validateCommunicationInfo();
+        }
     }
 
     handleChangeCommunicationValue = (name, typeName, value, indexPic, indexPicCommunicationTool) => {
-        let { headlineCommunicationInfo } = this.state;
+        let { headlineCommunicationInfo, isValidate } = this.state;
         headlineCommunicationInfo[indexPic][name][indexPicCommunicationTool][typeName] = value;
         this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
-        this.validateCommunicationInfo();
+        if (isValidate) {
+            this.validateCommunicationInfo();
+        }
     }
 
     deleteCommunicationTool = (picCommunicationTool, indexPic) => {
@@ -182,6 +187,7 @@ export class HeadlineCommunicationInfo extends Component {
                 });
             }
         }
+        this.setState({isValidate: true});
     }
 
     updateNewCrmCustomer = async () => {
@@ -231,7 +237,7 @@ export class HeadlineCommunicationInfo extends Component {
                 toast.success(LangHelper.getResource('UpdateHeadlineCommunicationInfoSuccessful'));
                 await this.props.getCustomerById({ customerId: this.props.customerInfo.custId });
                 const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
-                this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+                this.setState({ headlineCommunicationInfo: headlineCommunicationInfo, isValidate: false });
             } else {
                 let { headlineCommunicationInfo } = this.state;
                 response.data.map((item, index) => {
@@ -270,17 +276,14 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     addNewCommunicationTool = indexPic => {
-        const error = this.validateCommunicationInfo();
-        if (!error) {
-            let { headlineCommunicationInfo } = this.state;
-            headlineCommunicationInfo[indexPic].picCommunicationTools.push({
-                type: '',
-                value: '',
-                isError: false,
-                isNew: true
-            });
-            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
-        }
+        let { headlineCommunicationInfo } = this.state;
+        headlineCommunicationInfo[indexPic].picCommunicationTools.push({
+            type: '',
+            value: '',
+            isError: false,
+            isNew: true
+        });
+        this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
     }
 
     handleChangeCountryValue = (item, indexPic) => {

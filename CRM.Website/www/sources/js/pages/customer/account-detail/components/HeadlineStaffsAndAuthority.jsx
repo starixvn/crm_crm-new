@@ -21,6 +21,7 @@ export class HeadlineStaffsAndAuthority extends Component {
             headlineStaffsAndAuthority: null,
             headlineInfoPolicy: null,
             originalStaffAndAuthority: null,
+            isValidate: false,
             showConfirmDelete: {
                 show: false,
                 name: '', 
@@ -113,6 +114,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         if (errors === null ) {
             await this.checkCustomerExistsOnCRM();
         }
+        this.setState({isValidate: true});
     }
 
     checkCustomerExistsOnCRM = async () => {
@@ -170,7 +172,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                 toast.success(LangHelper.getResource('UpdateHeadlineStaffsAndAuthoritySuccessfully'));
                 await this.props.getHeadlineStaffsAndAuthority({ headlineID: this.props.customerInfo.custId });
                 const headlineStaffsAndAuthority = this.getHeadlineStaffsAndAuthorityInfo(this.props.headlineStaffsAndAuthority);
-                this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+                this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority, isValidate: false });
             } else {
                 toast.errors(response.data.message);
             }
@@ -222,7 +224,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                         {LangHelper.getResource('Add')}
                     </Button>
                 }
-                <div className={`${headlineStaffsAndAuthority.length < 3 && 'table-inTab'} headline-staff-authority`}>
+                <div className={`${this.props.headlineStaffsAndAuthority.length < 8 && 'table-inTab'} headline-staff-authority`}>
                     <Table
                         width={1490}
                         autoWidth={false}
@@ -312,20 +314,17 @@ export class HeadlineStaffsAndAuthority extends Component {
     };
 
     handleAddTool = (indexStaff) => {
-        const errors = this.validateHeadlineStaffAndAuthority(indexStaff);
-        if (errors === null) {
-            let { headlineStaffsAndAuthority } = this.state;
-            headlineStaffsAndAuthority[indexStaff].communicationTools.push({
-                rowID: -1,
-                picCommunicationID: 0,
-                picCommunicationName: null,
-                picCommunicationValue: null,
-                authorityID: '',
-                authority: '',
-                remark: ''
-            });
-            this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        }
+        let { headlineStaffsAndAuthority } = this.state;
+        headlineStaffsAndAuthority[indexStaff].communicationTools.push({
+            rowID: -1,
+            picCommunicationID: 0,
+            picCommunicationName: null,
+            picCommunicationValue: null,
+            authorityID: '',
+            authority: '',
+            remark: ''
+        });
+        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
     };
 
     handleDeleteTool = (indexCom, indexStaff) => {
@@ -377,45 +376,54 @@ export class HeadlineStaffsAndAuthority extends Component {
     };   
 
     handleChangeValue = (name, value, staffIndex) => {
-        const { headlineStaffsAndAuthority } = this.state;
+        const { headlineStaffsAndAuthority, isValidate } = this.state;
         headlineStaffsAndAuthority[staffIndex][name] = value;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        this.validateHeadlineStaffAndAuthority(staffIndex);
+        if (isValidate) {
+            this.validateHeadlineStaffAndAuthority(staffIndex);
+        }
     }
 
     handleChangeRole = (value, staffIndex) => {
-        const { headlineStaffsAndAuthority } = this.state;
+        const { headlineStaffsAndAuthority, isValidate } = this.state;
         const comTool = this.props.settingPicRole.find(x => x.settingId === value);
         headlineStaffsAndAuthority[staffIndex].picRoleID = value;
         headlineStaffsAndAuthority[staffIndex].picRoleName = comTool.settingValue;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        this.validateHeadlineStaffAndAuthority(staffIndex);
+        if (isValidate) {
+            this.validateHeadlineStaffAndAuthority(staffIndex);
+        }
     }
 
     handleChangeCommunicationID = (value, indexPicCommunicationTool, staffIndex) => {
-        const { headlineStaffsAndAuthority } = this.state;
+        const { headlineStaffsAndAuthority, isValidate } = this.state;
         const comTool = this.props.settingCommunicationTool.find(x => x.settingId === value);
         headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool].picCommunicationID = value;
         headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool].picCommunicationName = comTool.settingValue;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        this.validateHeadlineStaffAndAuthority(staffIndex);
+        if (isValidate) {
+            this.validateHeadlineStaffAndAuthority(staffIndex);
+        }
     }
 
     handleChangeAuthorityID = (value, indexPicCommunicationTool, indexStaff) => {
-        const { headlineStaffsAndAuthority } = this.state;
+        const { headlineStaffsAndAuthority, isValidate } = this.state;
         const authorityTool = this.props.settingStaffAndAuthority.find(x => value.includes(x.settingId.toString()));
         headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authorityID = value;
         headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authority = authorityTool ? authorityTool.settingValue : '';
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        this.validateHeadlineStaffAndAuthority(indexStaff);
-
+        if (isValidate) {
+            this.validateHeadlineStaffAndAuthority(indexStaff);
+        }
     }
 
     handleChangeCommunicationValue = (name, value, indexPicCommunicationTool, staffIndex) => {
-        const { headlineStaffsAndAuthority } = this.state;
+        const { headlineStaffsAndAuthority, isValidate } = this.state;
         headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool][name] = value;
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
-        this.validateHeadlineStaffAndAuthority(staffIndex);
+        if (isValidate) {
+            this.validateHeadlineStaffAndAuthority(staffIndex);
+        }
     }
 
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
@@ -524,7 +532,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                         });
                         if (indexCom !== 0) {
                             return (
-                                <Row key={`${value.rowID}-${value.picCommunicationName}-${value.picCommunicationValue}`} className="row-add">
+                                <Row key={`${value.rowID + indexCom}-${value.picCommunicationName}-${value.picCommunicationValue}`} className="row-add">
                                     {
                                         staff.isSyncFromPicTable &&
                                         <>
@@ -658,6 +666,7 @@ export class HeadlineStaffsAndAuthority extends Component {
             data.splice(indexStaff, 1);
             this.setState({headlineStaffsAndAuthority: data});
         }
+        this.setState({ isValidate: false });
         this.props.setErrors(null);
     }
 
