@@ -48,14 +48,23 @@
         }
 
         .add-comm-tool {
-            padding: 12px 0;
+            padding: 12px 0 6px;
 
             .guest-communication-value {
                 display: flex;
+                padding: 0 12px;
+
+                input {
+                    max-width: 280px;
+                }
             }
 
             .btn-add {
                 margin-bottom: 12px;
+            }
+
+            .col-md-4 {
+                margin-bottom: 6px;
             }
 
             .no-data {
@@ -64,12 +73,13 @@
                 padding: 4px 48px;
                 margin: auto;
                 width: fit-content;
+                margin-bottom: 6px;
             }
 
             .custom-label-communicationTool {
                 flex: 0 0 33.33333333%;
                 max-width: 33.33333333%;
-                padding-left: 15px;
+                padding-left: 10px;
             }
 
             .custom-select-communicationTool {
@@ -85,13 +95,13 @@
                 background: url("/www/dist/css/images/icon/icon-delete.svg");
                 background-repeat: no-repeat;
                 background-size: 16px 16px;
-                margin: auto;
+                margin: auto 0 auto 8px;
 
                 &:hover {
                     background: url("/www/dist/css/images/icon/icon-delete-hover.svg");
                     background-repeat: no-repeat;
                     background-size: 16px 16px;
-                    margin: auto;
+                    margin: auto 0 auto 8px;
                 }
             }
         }
