@@ -680,12 +680,10 @@ export class CreateForm extends Component {
                     </div>
                 </div>
                 {this.renderCollapseSection(values, touched, errors, setFieldValue, handleChange)}
-                <Form.Group as={Row} className="mt-3">
-                    <Col>
-                        <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
-                            <UnderlineButton.saveButton />
-                        </Button>
-                    </Col>
+                <Form.Group className="mt-3">
+                    <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
+                        <UnderlineButton.saveButton />
+                    </Button>
                 </Form.Group>
             </Form>
         );
