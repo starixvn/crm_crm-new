@@ -66,6 +66,10 @@
       cursor: pointer;
     }
 
+    &.other-pic {
+      border-radius: 0 0 5px 5px;
+    }
+
     &.acc-first {
       border-radius: 5px 5px 0 0 !important;
       border-bottom: none !important;
@@ -183,8 +187,18 @@
     }
   }
 
-   .acc-info .group-content {
-    padding-right: 200px;
+  .acc-info .group-content {
+      display: grid;
+      grid-template-columns: repeat(5, 200px);
+
+      @include Laptop-Medium {
+        grid-template-columns: repeat(4, 200px);
+      }
+
+      .form-checkbox {
+        display: flex;
+        gap: 60px;
+      }
   }
 
   .group-content {
@@ -322,14 +336,30 @@
       &.acc-info-only-hidden {
         .table-container,
         .custom-scrollbar {
-          max-height: 566px !important; //287
+          max-height: 566px !important;
+
+          @include Laptop {
+            max-height: 325px !important;
+          }
+
+          @media screen and (min-width: 1367px) and (max-width: 1600px) {
+            max-height: 383px !important;
+          }
         }
       }
 
       &.acc-PIC-hidden {
         .table-container,
         .custom-scrollbar {
-          max-height: 506px; //184
+          max-height: 506px;
+
+          @include Laptop {
+            max-height: 222px !important;
+          }
+
+          @include Laptop-Medium {
+            max-height: 263px;
+          }
         }
       }
 
@@ -337,6 +367,14 @@
         .table-container,
         .custom-scrollbar {
           max-height: 639px;
+
+          @include Laptop {
+            max-height: 386px !important;
+          }
+
+          @include Laptop-Medium {
+            max-height: 456px;
+          }
         }
       }
 
@@ -344,6 +382,18 @@
         padding: 3px 8px 3px 0;
         max-height: 433px;
         overflow-y: auto;
+
+        @include Laptop {
+          max-height: 160px !important;
+
+          &.custom-dropdown {
+            overflow-y: auto;
+          }
+        }
+
+        @include Laptop-Medium {
+          max-height: 190px;
+        }
 
         &.custom-dropdown {
           overflow-y: visible;
@@ -678,35 +728,6 @@
 
       .tab-content {
         padding: 8px;
-
-        &.acc-info-only-hidden {
-          .table-container,
-          .custom-scrollbar {
-            max-height: 326px !important;
-          }
-        }
-
-        &.acc-PIC-hidden {
-          .table-container,
-          .custom-scrollbar {
-            max-height: 223px;
-          }
-        }
-
-        &.acc-info-hidden {
-          .table-container,
-          .custom-scrollbar {
-            max-height: 387px;
-          }
-        }
-
-        .custom-scrollbar {
-          max-height: 162px;
-
-          &.custom-dropdown {
-            overflow-y: auto;
-          }
-        }
       }
     }
 

@@ -1,4 +1,6 @@
 @import '../../abstracts/variables';
+@import '../../abstracts/mixins';
+
 .dashboard{
     .alert-boxer{
         width: 800px;
@@ -50,6 +52,13 @@
         /* Firefox */
         input[type=number] {
             -moz-appearance: textfield;
+        }
+    }
+
+    @include Laptop-Medium{
+        .communication-log-grid .btn{
+            padding: 2px 6px;
+    
         }
     }
 }

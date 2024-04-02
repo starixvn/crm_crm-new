@@ -370,20 +370,22 @@ export class AppContainer extends Component {
                                         {allSettings.licenseeTypes.map(item => this.renderOptions(item.name, item.id))}
                                     </Form.Control>
                                 </Form.Group>
-                                <Form.Check type="checkbox"
-                                    label={LangHelper.getResource('VIP')}
-                                    checked={values.isVip}
-                                    name='isVip' id="isVip"
-                                    disabled={!values.isHostOnCurrentCustomer}
-                                    onChange={event => this.handleChangeCheck(event)}
-                                />
-                                <Form.Check type="checkbox"
-                                    label={LangHelper.getResource('Ignore')}
-                                    checked={values.isIgnored}
-                                    name='isIgnored' id="isIgnored"
-                                    disabled={!values.isHostOnCurrentCustomer}
-                                    onChange={event => this.handleChangeCheck(event)}
-                                />
+                                <div className='form-checkbox'>
+                                    <Form.Check type="checkbox"
+                                        label={LangHelper.getResource('VIP')}
+                                        checked={values.isVip}
+                                        name='isVip' id="isVip"
+                                        disabled={!values.isHostOnCurrentCustomer}
+                                        onChange={event => this.handleChangeCheck(event)}
+                                    />
+                                    <Form.Check type="checkbox"
+                                        label={LangHelper.getResource('Ignore')}
+                                        checked={values.isIgnored}
+                                        name='isIgnored' id="isIgnored"
+                                        disabled={!values.isHostOnCurrentCustomer}
+                                        onChange={event => this.handleChangeCheck(event)}
+                                    />
+                                </div>
                             </>
                         }
                     </div>
@@ -557,7 +559,7 @@ export class AppContainer extends Component {
 
     renderOtherPIC = values => {
         return (
-            <Form className='group-account'>                
+            <Form className='group-account other-pic'>
                 <div className='group-title'>
                     {LangHelper.getResource('CommunicationInfo')}
                     {
