@@ -90,7 +90,8 @@ export class CustomerInfo extends PureComponent{
             headlineCommunicationInfo.push({
                 picCommunicationTools: communicationTools,
                 picId: pic.picID,
-                picName: pic.picName
+                picName: pic.picName,
+                picRoleName: pic.picRoleName
             });
         });
         return headlineCommunicationInfo;
@@ -119,7 +120,7 @@ export class CustomerInfo extends PureComponent{
                         <div className="separate">
                             <hr />
                         </div>
-                        <div className="bold">{item.picName}</div>
+                        <div className="bold">{`${item.picName} (${item.picRoleName})`}</div>
                         <Form.Group as={Row} className="pt-2">
                             {
                                 item.picCommunicationTools.map(itemCom => {
@@ -246,7 +247,7 @@ export class CustomerInfo extends PureComponent{
                                                             this.handleChangeGuestCommunicationInfo('communicationValue', event.target.value, index);
                                                         }} />
                                                     <div onClick={() => { this.deleteGuestCommunicationTool(picCommunicationTool.communicationValue, picCommunicationTool.communicationID); }}
-                                                        className='icon icon-delete'>
+                                                        className='icon icon-delete' title={LangHelper.getResource('DeleteCommunicationTool')}>
                                                     </div>
                                                 </Col>
                                             </Form.Group>
