@@ -255,11 +255,7 @@ export class CustomerInfo extends PureComponent{
                                 })
                             }
                         </Form.Group>
-                    }
-                    {
-                        guestCommunicationInfos.length === 0 &&
-                        <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
-                    }
+                    }                    
                 </div>
             </div>
         </>
