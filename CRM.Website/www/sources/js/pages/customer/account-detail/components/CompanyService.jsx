@@ -203,8 +203,8 @@ export class CompanyService extends Component {
     debounceInputChange = (searchText, communicationID) => {
         let suggestions = [];
         this.state.chatTypeMapping.map(x => {
-            if (x.communicationID === communicationID && x.communicationValue.includes(searchText)) {
-                suggestions.push(x.communicationValue);
+            if (x.communicationID === communicationID && x.displayName.includes(searchText)) {
+                suggestions.push(x.displayName);
             }
         })
         return suggestions;

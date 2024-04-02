@@ -5,6 +5,6 @@ namespace CRM.Models.Customer
         public int HeadlineID { get; set; }
         public int CommunicationID { get; set; }
         public string CommunicationName { get; set; }
-        public string CommunicationValue { get; set; }
+        public string DisplayName { get; set; }
     }
 }
