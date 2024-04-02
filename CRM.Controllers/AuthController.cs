@@ -277,7 +277,7 @@
 
         private static IEnumerable<MenuItem> GenerateMenuUAT(IEnumerable<MenuItem> menus)
         {
-            var manageHeadline = menus.FirstOrDefault(x => x.Name == ViewResources.ManageHeadline);
+            var manageHeadline = menus.FirstOrDefault(x => x.Name == ViewResources.PICAndHeadline);
             menus = menus.Where(x => x.Name != ViewResources.Home).ToList();
             foreach (var menu in menus)
             {
