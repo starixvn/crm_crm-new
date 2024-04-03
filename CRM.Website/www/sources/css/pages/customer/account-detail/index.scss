@@ -47,6 +47,10 @@
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid #ced4da;
+
+    &.invalid {
+      border-color: red;
+  }
   }
 
   .textarea-communication-tool:focus {
