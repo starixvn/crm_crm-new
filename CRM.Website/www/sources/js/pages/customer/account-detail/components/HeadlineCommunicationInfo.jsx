@@ -440,11 +440,12 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     renderValueChatTypeMapping(settingCommunicationTool, headlineCommunicationInfo, index) {
+        let chatTypeMapping = [];
         headlineCommunicationInfo[index].picCommunicationTools.map((comPic, indexPic) => {
             let indexCom = settingCommunicationTool.findIndex(x => x.settingId === comPic.type &&
                 (x.settingValue === Letstalk || x.settingValue === Telegram));
             if (indexCom !== -1) {
-                return (
+                chatTypeMapping.push(
                     <>
                         {indexPic !== 0 && <span>{', '}</span>}
                         <span className="bold">{comPic.value}</span>
@@ -453,6 +454,7 @@ export class HeadlineCommunicationInfo extends Component {
                 );
             }
         })
+        return chatTypeMapping;
     }
 
     render() {
