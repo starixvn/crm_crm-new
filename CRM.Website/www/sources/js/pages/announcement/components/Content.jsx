@@ -125,6 +125,18 @@ export class Content extends Component {
                                                 name={language.mapLabel}
                                                 dangerouslySetInnerHTML={{ __html: content[language.mapLabel] }}
                                             />
+                                            <div className={fileNames.length > 0 ? 'content-border pb-2' : ''}>
+                                                {
+                                                    fileNames.length > 0 && fileNames.map((image, key) =>(
+                                                        <div key={key} className='d-flex image-section'>
+                                                            <span className='fa fa-file-image-o mr-2  pt-1'/>
+                                                                <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image)}>
+                                                                    {image}
+                                                                </span>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
                                         </Tab>)
                                     )
                                 }

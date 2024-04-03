@@ -843,7 +843,7 @@ export class ActionAnnouncement extends Component {
             </Form>
         );
     };
- 
+
     handleCheckValidAllContent = content =>{
         for (const property in content) {
             const {invalidContentMaxLength} = checkInvalidMaxLengthContent(content, property);
@@ -872,7 +872,13 @@ export class ActionAnnouncement extends Component {
             sendDate: data.sendImmediately ? null : (data.sendDate ? new Date(data.sendDate) : null),
             imageFileType: '',
             imageFileSize: '',
-            fileName: data.fileName,
+            //fileName: data.fileName,
+            fileName: [
+                { key: 'EN', name: 'thucung01.png', type: 'string' },
+                { key: 'EN', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
+                { key: 'ENSC', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
+                { key: 'ENSC', name: 'SamplePNGImage_5mbmb.png', type: 'string' }
+            ],
             //oldFileName: data.fileName,
             oldFileName: [
                 { key: 'EN', name: 'thucung01.png', type: 'string' },
@@ -883,14 +889,16 @@ export class ActionAnnouncement extends Component {
             cloneContent: this.state.cloneContent,
             status: 'Planned'
         };
-        const excludeOldImage = this.state.uploadedFiles.filter(x => !initialValues.oldFileName.includes(x));
+        //const excludeOldImage = this.state.uploadedFiles.filter(x => !initialValues.oldFileName.includes(x));
+        const excludeOldImage = this.state.uploadedFiles.filter(x => x.type !== 'string');
 console.log('upload', this.state.uploadedFiles);
+
         return (
             <div>
                 <Formik
                     innerRef={p => (this.formik = p)}
                     initialValues={initialValues}
-                    //validate={values => validateFormik(values, excludeOldImage, this.state)}
+                    validate={values => validateFormik(values, excludeOldImage, this.state)}
                     onSubmit={this.handleSubmit}
                 >
                     {this.renderForm}

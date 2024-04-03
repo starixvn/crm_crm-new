@@ -44,7 +44,10 @@
         public string DisplayName { get; set; }
 
         public string RelatedNotificationIds { get; set; }
+
         public short ChannelId { get; set; }
+
+        public string FileName { get; set; }
 
         public string BotService => ChannelId == 1 ? "Letstalk" : "Telegram";
     }
