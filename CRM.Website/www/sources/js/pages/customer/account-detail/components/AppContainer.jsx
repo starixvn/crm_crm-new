@@ -21,8 +21,6 @@ export class AppContainer extends Component {
         super(props);
         const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
-            isShowAccountInfo: true,
-            isShowAccountantPIC: true,
             updateHeadlineInfoPolicy: null,
             isSubmitting: false,
             titleId: 0,
@@ -140,8 +138,7 @@ export class AppContainer extends Component {
 
 
     renderHeadlineAccount = () => {
-        const { allSettings, customerInfo, activeTab } = this.props;
-        const values = this.state;
+        const { allSettings, customerInfo, activeTab, isShowAccountInfo, isShowAccountantPIC } = this.props;
         const updatePolicy = this.state.updateHeadlineInfoPolicy;
         const canEditHeadline = updatePolicy === Policy.Host;
         if (!allSettings || !customerInfo) {
@@ -171,8 +168,8 @@ export class AppContainer extends Component {
                                 {LangHelper.getResource('CompanyService')}
                             </div>
                         </div>
-                        <div className={`tab-content ${(!values.isShowAccountInfo && values.isShowAccountantPIC) ? 'acc-info-only-hidden' : ''} 
-                                        ${(!values.isShowAccountInfo && !values.isShowAccountantPIC) ? 'acc-info-hidden' : ''} ${!values.isShowAccountantPIC ? 'acc-PIC-hidden' : ''}`}>
+                        <div className={`tab-content ${(!isShowAccountInfo && isShowAccountantPIC) ? 'acc-info-only-hidden' : ''} 
+                                        ${(!isShowAccountInfo && !isShowAccountantPIC) ? 'acc-info-hidden' : ''} ${!isShowAccountantPIC ? 'acc-PIC-hidden' : ''}`}>
                             <div>
                                 {
                                     activeTab.currentTab === LangHelper.getResource('HeadlineCommunicationInfo') &&
@@ -266,25 +263,23 @@ const mapStateToProps = state => {
     const {
         allSettings,
         customerInfo,
-        settingCommunicationTool,
         errors,
-        editCustomerInfoDetailResult,
         setErrors,
         setActiveTab,
         activeTab,
         showConfirmUnSaved,
-        editCustomerInfoDetail } = state;
+        isShowAccountInfo,
+        isShowAccountantPIC } = state;
     return {
         allSettings,
         customerInfo,
-        settingCommunicationTool,
         errors,
-        editCustomerInfoDetailResult,
         setErrors,
         setActiveTab,
         activeTab,
         showConfirmUnSaved,
-        editCustomerInfoDetail
+        isShowAccountInfo,
+        isShowAccountantPIC
     };
 };
 

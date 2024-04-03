@@ -20,7 +20,6 @@ export class AccountInfo extends Component {
         super(props);
         const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
-            isShowAccountInfo: true,
             isHostOnCurrentCustomer: false,
             updateHeadlineInfoPolicy: null,
             isSubmitting: false,
@@ -109,9 +108,7 @@ export class AccountInfo extends Component {
     }
 
     handleShowAccountInfo = () => {
-        this.setState({
-            isShowAccountInfo: !this.state.isShowAccountInfo
-        });
+        this.props.setShowAccountInfo(!this.props.isShowAccountInfo);
     };
 
     handleSubmitAccountInfo = () => {
@@ -157,7 +154,7 @@ export class AccountInfo extends Component {
     };    
 
     render() {
-        const { customerInfo, allSettings } = this.props;
+        const { customerInfo, allSettings, isShowAccountInfo  } = this.props;
         const values = this.state;
         const languageSelected = allSettings.languages.map(item => {
             return {
@@ -181,7 +178,7 @@ export class AccountInfo extends Component {
                     }
                 </div>
                 {
-                    values.isShowAccountInfo &&
+                    isShowAccountInfo &&
                     <div className='group-content'>
                         <Form.Group>
                             <Form.Label htmlFor="title" >
@@ -333,12 +330,17 @@ const mapStateToProps = state => {
         allSettings,
         customerInfo,
         editCustomerInfoDetailResult,
-        editCustomerInfoDetail } = state;
+        editCustomerInfoDetail,
+        isShowAccountInfo,
+        setShowAccountInfo
+    } = state;
     return {
         allSettings,
         customerInfo,
         editCustomerInfoDetailResult,
-        editCustomerInfoDetail
+        editCustomerInfoDetail,
+        isShowAccountInfo,
+        setShowAccountInfo
     };
 };
 

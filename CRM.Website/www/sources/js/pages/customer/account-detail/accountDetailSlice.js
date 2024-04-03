@@ -15,7 +15,9 @@ const initialState = {
     headlineStaffsAndAuthority: null,
     settingStaffAndAuthority: null,
     settingPicRole: null,
-    showConfirmUnSaved: false
+    showConfirmUnSaved: false,
+    isShowAccountInfo: true,
+    isShowAccountantPIC: true
 };
 const accountDetailSlice = createSlice({
     name: 'customerInfoDetail',
@@ -60,6 +62,12 @@ const accountDetailSlice = createSlice({
         },
         setShowConfirmUnSaved: (state, action) => {
             state.showConfirmUnSaved = action.payload;
+        },
+        setShowAccountInfo: (state, action) => {
+            state.isShowAccountInfo = action.payload;
+        },
+        setShowAccountantPIC: (state, action) => {
+            state.isShowAccountantPIC = action.payload;
         }
     }
 });
@@ -80,7 +88,9 @@ export const {
     setSettingStaffAndAuthority,
     setSettingPicRole,
     setActiveTab,
-    setShowConfirmUnSaved
+    setShowConfirmUnSaved,
+    setShowAccountInfo,
+    setShowAccountantPIC
 } = actions;
 
 export default reducer;

@@ -16,7 +16,6 @@ export class AccountantPIC extends Component {
         super(props);
         const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
-            isShowAccountantPIC: true,
             updateHeadlineInfoPolicy: null,
             isSubmitting: false,
             titleId: 0,
@@ -98,10 +97,8 @@ export class AccountantPIC extends Component {
         document.title = LangHelper.getResource('CRMSystem');
     }
 
-    handleShowAccountantPIC = () => {
-        this.setState({
-            isShowAccountantPIC: !this.state.isShowAccountantPIC
-        });
+    handleShowAccountantPIC = () => {        
+        this.props.setShowAccountantPIC(!this.props.isShowAccountantPIC);
     };
 
     handleSubmitAccountPIC = () => {
@@ -133,7 +130,7 @@ export class AccountantPIC extends Component {
     };    
 
     render() {
-        const { allSettings, customerInfo } = this.props;
+        const { allSettings, customerInfo, isShowAccountantPIC } = this.props;
         const values = this.state;
         const updatePolicy = this.state.updateHeadlineInfoPolicy;
         const canEditHeadline = updatePolicy === Policy.Host;
@@ -156,7 +153,7 @@ export class AccountantPIC extends Component {
                             }
                         </div>
                         {
-                            values.isShowAccountantPIC &&
+                            isShowAccountantPIC &&
                             <div className='group-content'>
                                 <Form.Group>
                                     <Form.Label htmlFor="checker" >
@@ -201,12 +198,16 @@ const mapStateToProps = state => {
         allSettings,
         customerInfo,
         editCustomerInfoDetailResult,
-        editCustomerInfoDetail } = state;
+        editCustomerInfoDetail,
+        isShowAccountantPIC,
+        setShowAccountantPIC } = state;
     return {
         allSettings,
         customerInfo,
         editCustomerInfoDetailResult,
-        editCustomerInfoDetail
+        editCustomerInfoDetail,
+        isShowAccountantPIC,
+        setShowAccountantPIC
     };
 };
 
