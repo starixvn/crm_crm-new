@@ -66,7 +66,7 @@
 
         byte[] ExportLogStatisticsReportDetail(StatisticsDetailReportByDateModel logStatisticsDetail,
             IEnumerable<Setting> mainCategories, IEnumerable<Setting> communicationTools, IEnumerable<Product> products,
-            IEnumerable<Product> subProducts, IEnumerable<SettingRelation> extensions);
+            IEnumerable<Product> subProducts, IEnumerable<SettingRelation> extensions, bool perReadHheadlineInfo);
 
         byte[] ExportIssueStatisticsReport(IssuesStatisticsReportInfo issueStatistics, string titleExcel);
 
@@ -200,13 +200,13 @@
 
         public byte[] ExportLogStatisticsReportDetail(StatisticsDetailReportByDateModel logStatisticsDetail,
             IEnumerable<Setting> mainCategories, IEnumerable<Setting> communicationTools, IEnumerable<Product> products,
-            IEnumerable<Product> subProducts, IEnumerable<SettingRelation> extensions)
+            IEnumerable<Product> subProducts, IEnumerable<SettingRelation> extensions, bool perReadHheadlineInfo)
         {
             const string ExcelTemplatePath = "ExcelTemplates/Log_Statistics_Detail.xlsx";
             var templatePath = Path.Combine(hostingEnvironment.ContentRootPath, ExcelTemplatePath);
 
             var excel = new LogStatisticsDetailExcel(templatePath, logStatisticsDetail, mainCategories,
-                communicationTools, products, subProducts, extensions);
+                communicationTools, products, subProducts, extensions, perReadHheadlineInfo);
             return excel.Export();
         }
 

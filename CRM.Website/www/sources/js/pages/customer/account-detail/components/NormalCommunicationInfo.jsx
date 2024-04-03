@@ -190,7 +190,7 @@ export class NormalCommunicationInfo extends Component {
 
     editOtherAccountCommunicationInfo = async () => {        
         const params = {
-            custID: this.props.id,
+            custID: this.props.customerInfo.custId,
             otherCommunicationTools: this.getPicCommunicationTools()
         };
 

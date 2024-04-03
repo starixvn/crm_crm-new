@@ -22,12 +22,13 @@
         private readonly IEnumerable<Product> products;
         private readonly IEnumerable<Product> subProducts;
         private readonly IEnumerable<SettingRelation> extensions;
+        private readonly bool perReadHheadlineInfo;
 
         public LogStatisticsDetailExcel(
             string templatePath, StatisticsDetailReportByDateModel logStatisticsDetail,
             IEnumerable<Setting> mainCategories, IEnumerable<Setting> communicationTools,
             IEnumerable<Product> products, IEnumerable<Product> subProducts,
-            IEnumerable<SettingRelation> extensions
+            IEnumerable<SettingRelation> extensions, bool perReadHheadlineInfo
             ) : base(templatePath, 0, logStatisticsDetail.Id == 0 ? "Credit_Detail" : "Licensee_Detail")
         {
             this.logStatisticsDetail = logStatisticsDetail;
@@ -36,6 +37,7 @@
             this.products = products;
             this.subProducts = subProducts;
             this.extensions = extensions;
+            this.perReadHheadlineInfo = perReadHheadlineInfo;
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -69,7 +71,7 @@
                 return new object[] {
                     data.FeedbackDate.ToString("MMM dd, yyyy"), data.StartTime, data.EndTime,
                     data.DurationTime, data.UserName, data.SiteName, communicationValue, extensionValue,
-                    data.Role, RemoveHtmlTags(data.IsNewFeedback ? data.NewContact : data.Contact), productValue == "N/A." ? "N/A" : productValue,
+                    data.Role, RemoveHtmlTags(data.IsNewFeedback  ? data.NewContact : data.Contact), productValue == "N/A." ? "N/A" : productValue,
                     subproductValue == "N/A." ? "N/A" : subproductValue, data.CountryName,
                     mainCategoryValue, subCategoryValue, RemoveHtmlTags(data.RemarkText),
                     RemoveHtmlTags(data.Solution), data.NoInquiries, data.Status,

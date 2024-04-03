@@ -3,18 +3,22 @@ import { Col, Form, Row, Collapse } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
-import { changeSiteSetting } from '@jsroot/common/shareScripts';
-
+import { changeSiteSetting, getPermission } from '@jsroot/common/shareScripts';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
 export default class CustomerInfo extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            latestFeedbackCommunicationTools: []
+            latestFeedbackCommunicationTools: [],
+            headlineInfoPolicy: null
         };
     }
 
     componentDidMount() {
         this.setState({ latestFeedbackCommunicationTools: this.props.fieldInput.latestFeedbackCommunicationTools });
+        getPermission(FunctionKey.HeadlineInfo, true).then(response => {
+            this.setState({ headlineInfoPolicy: response });
+        });
     }
 
     getLatestFeedbackCommunicationTools = newCommunicationTools => {
@@ -124,13 +128,13 @@ export default class CustomerInfo extends PureComponent {
     }
 
     renderNewCommunicationTool() {
-        const { latestFeedbackCommunicationTools } = this.state;
+        const { latestFeedbackCommunicationTools, headlineInfoPolicy } = this.state;
         if (latestFeedbackCommunicationTools.length < 1) {
             return null;
         }
         return <>
             {
-                latestFeedbackCommunicationTools[0].isHeadline &&
+                latestFeedbackCommunicationTools[0].isHeadline && headlineInfoPolicy >= Policy.Read &&
                 this.renderHeadlineCommunicationTools(latestFeedbackCommunicationTools)
             }
             {

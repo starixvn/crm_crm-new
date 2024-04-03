@@ -44,18 +44,24 @@
             var relatedCustomers = fixture.Create<IEnumerable<RelatedCustomerPermission>>();
             var latestFeedbackCommunicationTools = fixture.Create<IEnumerable<LatestFeedbackCommunicationTool>>();
             var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
-            var criteria = new GetCustomerFeedbackByIdCriteria();
+            var customerFeedbackModel = new CustomerFeedbackModel
+            {
+                CustomerFeedback = feedbacks,
+                FeedbackSettingRelation = settings,
+                FeedbackCommunicationTool = latestFeedbackCommunicationTools,
+                RelatedCustomerPermission = relatedCustomers
+            };
             var service = GetService();
-            dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(
-                Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x))
-                .Returns((feedbacks, latestFeedbackCommunicationTools, settings, relatedCustomers));
+
+            dynamicRepository.GetAsync<bool>(Arg.Any<CheckFeedbackIDIsNewCriteria>()).Returns(true);
+            feedbackRepository.GetCustomerFeedbackByIdAsync(Arg.Any<GetCustomerNewManualFeedbackByIdCriteria>()).Returns(customerFeedbackModel);
+            feedbackRepository.GetCustomerFeedbackByIdAsync(Arg.Any<GetCustomerFeedbackByIdCriteria>()).Returns(customerFeedbackModel);
 
             // Act
             var actual = await service.GetCustomerFeedbackByIdAsync(1);
 
             // Assert
             Assert.Null(actual);
-            Assert.Equal(1, criteria.FeedbackId);
             commonService.DidNotReceive().ConvertToClientDateTime(Arg.Any<DateTime>());
             await settingService.DidNotReceive().GetSiteByIdAsync(Arg.Any<int>());
         }
@@ -79,14 +85,19 @@
             var settings = fixture.Create<IEnumerable<FeedbackSettingRelation>>();
             var site = fixture.Create<SiteSetting>();
             var feedbackId = fixture.Create<int>();
-            var criteria = new GetCustomerFeedbackByIdCriteria
+            var customerFeedbackModel = new CustomerFeedbackModel
             {
-                FeedbackId = feedbackId
+                CustomerFeedback = feedbacks,
+                FeedbackSettingRelation = settings,
+                FeedbackCommunicationTool = latestFeedbackCommunicationTools,
+                RelatedCustomerPermission = relatedCustomers
             };
             var service = GetService();
-            dynamicRepository.FetchMultipleAsync<CustomerFeedback, LatestFeedbackCommunicationTool, FeedbackSettingRelation, RelatedCustomerPermission>(
-                Arg.Do<GetCustomerFeedbackByIdCriteria>(x => criteria = x))
-                .Returns((feedbacks, latestFeedbackCommunicationTools, settings, relatedCustomers));
+
+            dynamicRepository.GetAsync<bool>(Arg.Any<CheckFeedbackIDIsNewCriteria>()).Returns(true);
+            feedbackRepository.GetCustomerFeedbackByIdAsync(Arg.Any<GetCustomerNewManualFeedbackByIdCriteria>()).Returns(customerFeedbackModel);
+            feedbackRepository.GetCustomerFeedbackByIdAsync(Arg.Any<GetCustomerFeedbackByIdCriteria>()).Returns(customerFeedbackModel);
+
             settingService.GetSiteByIdAsync(1).Returns(site);
             commonService.ConvertToClientDateTime(Arg.Any<DateTime>()).Returns(clientdate);
 

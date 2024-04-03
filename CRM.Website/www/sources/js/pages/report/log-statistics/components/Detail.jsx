@@ -6,12 +6,22 @@ import { ActionCreators } from '../actions';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
-import { PAGING_SIZES } from '@jsroot/common/constants';
-
+import { PAGING_SIZES, Policy, FunctionKey } from '@jsroot/common/constants';
+import { getPermission } from '@jsroot/common/shareScripts';
 export class Detail extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            headlineInfoPolicy: null
+        };
     }
+
+    async componentDidMount() {
+        getPermission(FunctionKey.HeadlineInfo, true).then(response => {
+            this.setState({ headlineInfoPolicy: response });
+        });
+    }
+
     buildHeader = () => {
         return (
             <HeaderRow>
@@ -98,7 +108,7 @@ export class Detail extends Component {
                     <Cell className='break-word' dangerouslySetInnerHTML={{ __html: item.contact }} />
                 }
                 {
-                    item.isNewFeedback &&
+                    item.isNewFeedback && 
                     <Cell className='break-word' dangerouslySetInnerHTML={{ __html: item.newContact }} />
                 }
                 <Cell className='text-center'>{productValue}</Cell>

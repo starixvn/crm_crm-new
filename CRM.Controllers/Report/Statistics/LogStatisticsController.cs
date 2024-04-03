@@ -149,6 +149,7 @@
             criteria.PageSize = 0;
             criteria.LicenseeType = await permissionService.GetCurrentUserLicenseeTypeAsync();
             criteria.SitePermission = await permissionService.GetCurrentUserCreditPermissionsAsync();
+            var perReadHheadlineInfo = await permissionService.IsHavingPermissionByPolicyAsync(FunctionKey.Headlineinfo);
 
             var logStatisticsDetailTask = logStatisticsService.GetReportDetailsAsync(criteria);
             var mainCategoriesTask = settingService.GetAllMainSubCategoriesAsync();
@@ -167,7 +168,7 @@
             var extensions = extensionTasks.Result;
 
             var bytes = excelService.ExportLogStatisticsReportDetail(logStatisticsDetail, mainCategories, communicationTools
-                , products, subProducts, extensions);
+                , products, subProducts, extensions, perReadHheadlineInfo);
             return File(bytes, MimeType.XLSX, $"{logStatisticsDetail?.ExcelFileName}.xlsx");
         }
     }

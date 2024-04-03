@@ -4,12 +4,14 @@ import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import SelectWithSearch from '@jsroot/components/SelectWithSearch';
 import DateTimeService from '@jsroot/common/dateTimeService';
-import { changeSiteSetting, checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+import { changeSiteSetting, checkHostPermissionOnCurrentCustomer, getPermission } from '@jsroot/common/shareScripts';
+import { Policy, FunctionKey } from '@jsroot/common/constants';
 
 export class CustomerInfo extends PureComponent{
     constructor(props) {
         super(props);
         this.state = {
+            headlineInfoPolicy: null,
             isHostOnCurrentCustomer: false,
             headlineStaffInfoCommunications: [],
             guestCommunicationInfos: []
@@ -17,6 +19,9 @@ export class CustomerInfo extends PureComponent{
     }
 
     componentDidMount() {
+        getPermission(FunctionKey.HeadlineInfo, true).then(response => {
+            this.setState({ headlineInfoPolicy: response });
+        });
         checkHostPermissionOnCurrentCustomer().then(response => {
             this.setState({isHostOnCurrentCustomer: response});
         });
@@ -421,7 +426,7 @@ export class CustomerInfo extends PureComponent{
                     </Form.Group>
                 }                   
                 {
-                    !isGuest && customerDetail.isGroupHeadLine &&
+                    !isGuest && customerDetail.isGroupHeadLine && this.state.headlineInfoPolicy >= Policy.Read &&
                     this.renderHeadlineAccountCommunication(customerInfo)
                 }
                 {
