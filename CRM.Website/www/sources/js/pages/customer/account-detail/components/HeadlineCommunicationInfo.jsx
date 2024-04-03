@@ -380,7 +380,7 @@ export class HeadlineCommunicationInfo extends Component {
                                     {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                                 </Form.Control>
                                 <div className='field-icon comm-tool'>
-                                    <textarea type="text" className={picCommunicationTool.isError && 'invalid'}
+                                    <textarea type="text" className={`textarea-communication-tool ${picCommunicationTool.isError && 'invalid'}`}
                                         value={picCommunicationTool.value} autoComplete="off" onChange={event => {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
                                     }} />
