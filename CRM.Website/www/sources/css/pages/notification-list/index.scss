@@ -232,6 +232,24 @@
     .ann-content{
         word-break: break-word;
     }
+
+    .content-border {
+        padding: 12px;
+        border: 1px solid #bbb;
+        border-radius: 3px;
+        margin-bottom: 12px;
+
+        div {
+          padding-bottom: 5px;
+        }
+
+        .image-section {
+            cursor: pointer;
+            .text-color {
+              color: rgb(33, 123, 199);
+            }
+        }
+    }
 }
 
 .view-detail-remark {
