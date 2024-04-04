@@ -350,7 +350,7 @@ export class Filter extends PureComponent {
                                         <option value="false">{LangHelper.getResource('No')}</option>
                                     </Form.Control>
                                 </Form.Group>
-                                <Form.Group style={{width: '180px'}}>
+                                <Form.Group>
                                     <Button className='mr-2' variant='primary' size='sm' type='submit'>
                                         {LangHelper.getResource('Submit')}
                                     </Button>
