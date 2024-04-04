@@ -284,20 +284,20 @@ export class AccountInfo extends Component {
                                 OnChangeValue={this.handleChangeCountry}
                             />
                         </Form.Group>
+                        <Form.Group >
+                            <Form.Label htmlFor="licenseeType">
+                                {LangHelper.getResource('LicenseeType')}
+                            </Form.Label>
+                            <Form.Control as="select" size="sm" className="shadow-none"
+                                name="licenseeTypeId" id="licenseeTypeId" value={values.licenseeTypeId} onChange={this.handleChange}
+                            >
+                                <option value='' hidden disabled />
+                                {allSettings.licenseeTypes.map(item => this.renderOptions(item.name, item.id))}
+                            </Form.Control>
+                        </Form.Group>
                         {
                             !customerInfo.isGroupHeadLine &&
-                            <>
-                                <Form.Group >
-                                    <Form.Label htmlFor="licenseeType">
-                                        {LangHelper.getResource('LicenseeType')}
-                                    </Form.Label>
-                                    <Form.Control as="select" size="sm" className="shadow-none"
-                                        name="licenseeTypeId" id="licenseeTypeId" value={values.licenseeTypeId} onChange={this.handleChange}
-                                    >
-                                        <option value='' hidden disabled />
-                                        {allSettings.licenseeTypes.map(item => this.renderOptions(item.name, item.id))}
-                                    </Form.Control>
-                                </Form.Group>
+                            <>                                
                                 <div className='form-checkbox'>
                                     <Form.Check type="checkbox"
                                         label={LangHelper.getResource('VIP')}
