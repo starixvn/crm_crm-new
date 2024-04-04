@@ -127,6 +127,7 @@
             var command = fixture.Create<EditCustomerInfoDetailCommand>();
 
             customerService.HasHostPermissionOnCustIdAsync(command.CustomerId).Returns(false);
+            baseService.ExecuteNonQueryAsync(command).Returns(expectedResult);
             //Act
             var result = await controller.EditCustomerInfoDetail(command);
 
@@ -238,7 +239,7 @@
             //Arrange
             var controller = GetController();
             var fixture = new Fixture();
-            var criterias = fixture.Create<IList<ValidateEditPicCriteria>>();
+            var criterias = fixture.Create<IList<ValidateEditNewPicCriteria>>();
             var resultlValid = fixture.Create<string>();
 
             customerService.ValidateEditPicAsync(Arg.Any<ValidateEditPicCriteria>()).Returns(resultlValid);

@@ -32,7 +32,7 @@ export class HeadlineCommunicationInfo extends Component {
         if (nextProps.customerInfo?.custId !== this.props.customerInfo?.custId) {
             await this.props.getCustomerById({ customerId: this.props.customerInfo?.custId });
             const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
-            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
+            this.setState({ headlineCommunicationInfo: headlineCommunicationInfo});
         }
 
         if (this.props.activeTab != null) {
@@ -199,9 +199,21 @@ export class HeadlineCommunicationInfo extends Component {
         });
     }
 
-    getParamEdit() {
+    getPicChangeInformation() {
         let { headlineCommunicationInfo } = this.state;
-        const params = headlineCommunicationInfo.map(pic => {
+        const originalHeadlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
+        let headlineChangeCommunicationInfo = [];
+        headlineCommunicationInfo.map((item, index) => {
+            if (JSON.stringify(item).toString() !== JSON.stringify(originalHeadlineCommunicationInfo[index]).toString()) {
+                headlineChangeCommunicationInfo.push(item);
+            }
+        })
+        return headlineChangeCommunicationInfo
+    }
+
+    getParamEdit() {
+        const headlineChangeCommunicationInfo = this.getPicChangeInformation();
+        const params = headlineChangeCommunicationInfo.map(pic => {
             let picCommunicationTools = [];
             pic.picCommunicationTools.map((picCom, indexCom) => {
                 const index = pic.picCommunicationTools.findIndex(item => item.type === picCom.type);
@@ -237,7 +249,10 @@ export class HeadlineCommunicationInfo extends Component {
                 toast.success(LangHelper.getResource('UpdateHeadlineCommunicationInfoSuccessful'));
                 await this.props.getCustomerById({ customerId: this.props.customerInfo.custId });
                 const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);
-                this.setState({ headlineCommunicationInfo: headlineCommunicationInfo, isValidate: false });
+                this.setState({
+                    headlineCommunicationInfo: headlineCommunicationInfo,
+                    isValidate: false
+                });
             } else {
                 let { headlineCommunicationInfo } = this.state;
                 response.data.map((item, index) => {

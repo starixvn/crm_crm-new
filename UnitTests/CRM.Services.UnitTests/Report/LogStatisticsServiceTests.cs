@@ -10,6 +10,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.Report.LogStatistics;
     using CRM.Models;
+    using CRM.Models.Feedback.LatestFeedback;
     using CRM.Models.Report.LogStatistics;
     using CRM.Resources;
     using CRM.Services.Report;
@@ -108,6 +109,7 @@
                        GetLogStatisticDetailSiteTypeName(criteria.SiteType, true),
                commonService.ConvertToClientDateTime(criteria.FromDate).ToShortDateFormatDash(),
                commonService.ConvertToClientDateTime(criteria.ToDate).ToShortDateFormatDash());
+            var latestFeedbackCommunicationTool = fixture.Create<IEnumerable<LatestFeedbackCommunicationTool>>();
             var logStatisticEntities = new List<StatisticsDetailbyDateModel>
             {
                 new StatisticsDetailbyDateModel
@@ -134,7 +136,10 @@
                 Name = reportTitle,
                 ExcelFileName = excelFileName
             };
-            baseService.GetDataAsync<StatisticsDetailbyDateModel>(criteria).Returns(logStatisticEntities);
+
+            baseService.FetchMultipleAsync<StatisticsDetailbyDateModel, LatestFeedbackCommunicationTool>(criteria)
+                .Returns(new ValueTuple<IEnumerable<StatisticsDetailbyDateModel>, IEnumerable<LatestFeedbackCommunicationTool>>
+                    (logStatisticEntities, latestFeedbackCommunicationTool));
 
             // Act
             var actual = await service.GetReportDetailsAsync(criteria);
