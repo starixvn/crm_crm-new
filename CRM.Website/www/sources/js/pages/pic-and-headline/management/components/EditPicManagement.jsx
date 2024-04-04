@@ -333,7 +333,7 @@ export class EditPicManagement extends Component {
                                 value={values.countryId}
                                 onChange={handleChange}
                             >
-                                <option value={0} hidden disabled>{LangHelper.getResource('PleaseSelect')}</option>
+                                <option value={0}>{LangHelper.getResource('N/A')}</option>
                                 {countries.map(item => renderOption(item, 'id', 'name'))}
                             </Form.Control>
                         </Col>

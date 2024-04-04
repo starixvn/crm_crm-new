@@ -108,8 +108,10 @@ export class Detail extends Component {
                     <Cell className='break-word' dangerouslySetInnerHTML={{ __html: item.contact }} />
                 }
                 {
-                    item.isNewFeedback && 
-                    <Cell className='break-word' dangerouslySetInnerHTML={{ __html: item.newContact }} />
+                    (item.isNewFeedback &&
+                    (this.state.headlineInfoPolicy >= Policy.Read || !item.isHeadline)) ?
+                        <Cell className='break-word' dangerouslySetInnerHTML={{ __html: item.newContact }} /> :
+                        <Cell className='break-word' />
                 }
                 <Cell className='text-center'>{productValue}</Cell>
                 <Cell className='text-center'>{subProductValue}</Cell>

@@ -1,6 +1,7 @@
 ﻿namespace CRM.Controllers
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Filters;
@@ -8,6 +9,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Criteria.PicAndHeadline;
+    using CRM.Models.Customer;
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
@@ -117,13 +119,16 @@
 
         [HttpPost]
         [CrmPermission(FunctionKey = FunctionKey.Headlineinfo, Policy = Constant.Policy.Host)]
-        public async Task<IActionResult> ValidateEditPic([FromBody] IList<ValidateEditPicCriteria> criterias)
+        public async Task<IActionResult> ValidateEditPic([FromBody] IList<ValidateEditNewPicCriteria> criterias)
         {
-            var resultlList = new List<string>();
+            var resultlList = new List<IEnumerable<PicValidationInfo>>();
             foreach (var criteria in criterias)
             {
-                var result = await customerService.ValidateEditPicAsync(criteria);
-                resultlList.Add(result);
+                var result = await customerService.ValidateEditNewPicAsync(criteria);
+                if (result.Any(x => x.PicID != 0))
+                {
+                    resultlList.Add(result);
+                }
             }
             return Json(resultlList);
         }

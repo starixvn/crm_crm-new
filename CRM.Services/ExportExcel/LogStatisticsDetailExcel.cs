@@ -21,12 +21,13 @@
         private readonly IEnumerable<Product> products;
         private readonly IEnumerable<Product> subProducts;
         private readonly IEnumerable<SettingRelation> extensions;
+        private readonly bool perReadHeadlineInfo;
 
         public LogStatisticsDetailExcel(
             string templatePath, StatisticsDetailReportByDateModel logStatisticsDetail,
             IEnumerable<Setting> mainCategories, IEnumerable<Setting> communicationTools,
             IEnumerable<Product> products, IEnumerable<Product> subProducts,
-            IEnumerable<SettingRelation> extensions
+            IEnumerable<SettingRelation> extensions, bool perReadHeadlineInfo
             ) : base(templatePath, 0, logStatisticsDetail.Id == 0 ? "Credit_Detail" : "Licensee_Detail")
         {
             this.logStatisticsDetail = logStatisticsDetail;
@@ -35,6 +36,7 @@
             this.products = products;
             this.subProducts = subProducts;
             this.extensions = extensions;
+            this.perReadHeadlineInfo = perReadHeadlineInfo;
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)
@@ -68,7 +70,7 @@
                 return new object[] {
                     data.FeedbackDate.ToString("MMM dd, yyyy"), data.StartTime, data.EndTime,
                     data.DurationTime, data.UserName, data.SiteName, communicationValue, extensionValue,
-                    data.Role, RemoveHtmlTags(data.IsNewFeedback  ? data.NewContact : data.Contact), productValue == "N/A." ? "N/A" : productValue,
+                    data.Role, RemoveHtmlTags(data.IsNewFeedback  ? CheckPerNewHeadlineContact(data) : data.Contact), productValue == "N/A." ? "N/A" : productValue,
                     subproductValue == "N/A." ? "N/A" : subproductValue, data.CountryName,
                     mainCategoryValue, subCategoryValue, RemoveHtmlTags(data.RemarkText),
                     RemoveHtmlTags(data.Solution), data.NoInquiries, data.Status,
@@ -77,6 +79,9 @@
             });
             worksheet.Cells[RowStartBody, 1, RowStartBody, TotalColumns].LoadFromArrays(childReportOjb);
         }
+
+        private string CheckPerNewHeadlineContact(StatisticsDetailbyDateModel data) =>
+            (perReadHeadlineInfo || !data.IsHeadline) ? data.NewContact : string.Empty;
 
         protected internal override void ProcessUI(ExcelWorksheet worksheet)
         {

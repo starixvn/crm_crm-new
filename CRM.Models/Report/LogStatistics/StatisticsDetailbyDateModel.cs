@@ -110,6 +110,7 @@
         }
 
         public string NewContact { get; set; }
+        public bool IsHeadline { get; set; }
         public string Remark { get; set; }
 
         public string AutoField { get; set; }

@@ -175,7 +175,7 @@ export class HeadlineCommunicationInfo extends Component {
         const errors = this.validateCommunicationInfo();
         if (errors === null) {
             let validResult = await this.validateEditPic();
-            if (validResult.findIndex(x => x !== '') === -1) {
+            if (validResult.length === 0) {
                 this.checkCustomerExistsOnCRM();
             }
             else {
@@ -419,40 +419,32 @@ export class HeadlineCommunicationInfo extends Component {
         this.setState({ confirmSave: { show: false, data: [] } });
     };
 
-    renderComfirmChatTypeMapping(settingCommunicationTool, headlineCommunicationInfo ) {
+    renderComfirmChatTypeMapping() {
         return <>
             <div className="confirm-headline">{LangHelper.getResource('ConfirmContentHeadlineCommunicationInfo')}</div>
             {
-                this.state.confirmSave.data.map((item, index) => {
-                    if (item !== '') {
-                        return (<>
-                            <div>
-                                <span>{`${headlineCommunicationInfo[index].picName} (${headlineCommunicationInfo[index].roleName}): `}</span>
-                                {
-                                    this.renderValueChatTypeMapping(settingCommunicationTool, headlineCommunicationInfo, index)
-                                }
-                            </div>
-                        </>);
-                    }
+                this.state.confirmSave.data.map(item => {
+                    return (<>
+                        <div>
+                            <span>{`${item[0].picInfo}: `}</span>
+                            {
+                                this.renderValueChatTypeMapping(item)
+                            }
+                        </div>
+                    </>);
                 })
             }
         </>
     }
 
-    renderValueChatTypeMapping(settingCommunicationTool, headlineCommunicationInfo, index) {
+    renderValueChatTypeMapping(data) {
         let chatTypeMapping = [];
-        headlineCommunicationInfo[index].picCommunicationTools.map((comPic, indexPic) => {
-            let indexCom = settingCommunicationTool.findIndex(x => x.settingId === comPic.type &&
-                (x.settingValue === Letstalk || x.settingValue === Telegram));
-            if (indexCom !== -1) {
-                chatTypeMapping.push(
-                    <>
-                        {indexPic !== 0 && <span>{', '}</span>}
-                        <span className="bold">{comPic.value}</span>
-                        <span>{` (${settingCommunicationTool[indexCom].settingValue})`}</span>
-                    </>
-                );
-            }
+        data.map((comPic, indexPic) => {
+            chatTypeMapping.push(<>
+                {indexPic !== 0 && <span>{', '}</span>}
+                <span className="bold">{comPic.communicationValue}</span>
+                <span>{` (${comPic.communicationTool})`}</span>
+            </>);            
         })
         return chatTypeMapping;
     }
@@ -487,7 +479,7 @@ export class HeadlineCommunicationInfo extends Component {
                     <ConfirmPopup
                         className='confirm-headline-modal'
                         title={LangHelper.getResource('ConfirmHeadlineCommunicationInfo')}
-                        content={this.renderComfirmChatTypeMapping(settingCommunicationTool, headlineCommunicationInfo)}
+                        content={this.renderComfirmChatTypeMapping()}
                         size='lg'
                         onSubmit={this.handleSubmitEditConfirm}
                         onClose={this.handleCloseEditConfirm}

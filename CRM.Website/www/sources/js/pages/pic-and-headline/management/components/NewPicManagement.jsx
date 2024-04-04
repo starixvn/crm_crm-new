@@ -282,7 +282,7 @@ export class NewPicManagement extends Component {
                                 onChange={handleChange}
                                 value={values.countryId}
                             >
-                                <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                <option value={0}>{LangHelper.getResource('N/A')}</option>
                                 {countries.map(item => renderOption(item, 'id', 'name'))}
                             </Form.Control>
                         </Col>

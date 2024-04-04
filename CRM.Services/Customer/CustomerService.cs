@@ -33,6 +33,7 @@
 
         Task<bool> HasHostPermissionOnCustIdAsync(int custId);
         Task<string> ValidateEditPicAsync(ValidateEditPicCriteria criteria);
+        Task<IEnumerable<PicValidationInfo>> ValidateEditNewPicAsync(ValidateEditNewPicCriteria criteria);
         Task<CommandResult> EditPicAsync(EditPicCriteria criteria);
         Task<Tuple<IEnumerable<HeadlineCompanyService>, IEnumerable<HeadlineAccountCommunicationInfo>>> GetHeadlineCompanyServiceAsync(GetHeadlineCompanyServiceCriteria criteria);
         Task<IEnumerable<HeadlineStaffsAndAuthority>> GetHeadlineStaffsAndAuthorityAsync(GetHeadlineStaffAndAuthorityCriteria criteria);
@@ -86,6 +87,11 @@
         public async Task<string> ValidateEditPicAsync(ValidateEditPicCriteria criteria)
         {
             return await baseService.GetDataEntityAsync<string>(criteria);
+        }
+        
+        public async Task<IEnumerable<PicValidationInfo>> ValidateEditNewPicAsync(ValidateEditNewPicCriteria criteria)
+        {
+            return await baseService.GetDataAsync<PicValidationInfo>(criteria);
         }
 
         public async Task<CustomerInfoDetails> GetCustomerInfoAsync(GetCustomerInfoByUsernameCriteria criteria)
