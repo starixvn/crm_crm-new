@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using CRM.Core.Extensions.XML;
-using CRM.Core.Models;
-using CRM.Models.Customer;
-
-namespace CRM.Criteria.Customer
+﻿namespace CRM.Criteria.Customer
 {
+    using System.Collections.Generic;
+    using CRM.Core.Extensions.XML;
+    using CRM.Core.Models;
+    using CRM.Models.Customer;
     using Fanex.Data;
 
     public class UpdateHeadlineStaffAndAuthorityCommand : BaseNonQueryCommand

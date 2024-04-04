@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using CRM.Core.Extensions.XML;
-using CRM.Core.Models;
-using CRM.Models.Customer;
-
-namespace CRM.Criteria.Customer
+﻿namespace CRM.Criteria.Customer
 {
     using Fanex.Data;
     using Models.Feedback.AddGuestFeedback;
+    using System.Collections.Generic;
+    using CRM.Core.Extensions.XML;
+    using CRM.Core.Models;
 
     public class UpdateOtherAccCommunicationInfoCommand : BaseNonQueryCommand
     {

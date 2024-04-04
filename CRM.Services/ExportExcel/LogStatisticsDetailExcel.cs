@@ -1,7 +1,6 @@
 ﻿namespace CRM.Services.ExportExcel
 {
     using System.Collections.Generic;
-    using System.Drawing.Drawing2D;
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -22,13 +21,12 @@
         private readonly IEnumerable<Product> products;
         private readonly IEnumerable<Product> subProducts;
         private readonly IEnumerable<SettingRelation> extensions;
-        private readonly bool perReadHheadlineInfo;
 
         public LogStatisticsDetailExcel(
             string templatePath, StatisticsDetailReportByDateModel logStatisticsDetail,
             IEnumerable<Setting> mainCategories, IEnumerable<Setting> communicationTools,
             IEnumerable<Product> products, IEnumerable<Product> subProducts,
-            IEnumerable<SettingRelation> extensions, bool perReadHheadlineInfo
+            IEnumerable<SettingRelation> extensions
             ) : base(templatePath, 0, logStatisticsDetail.Id == 0 ? "Credit_Detail" : "Licensee_Detail")
         {
             this.logStatisticsDetail = logStatisticsDetail;
@@ -37,7 +35,6 @@
             this.products = products;
             this.subProducts = subProducts;
             this.extensions = extensions;
-            this.perReadHheadlineInfo = perReadHheadlineInfo;
         }
 
         protected internal override void RenderTitle(ExcelWorksheet templateWorksheet, ExcelWorksheet worksheet)

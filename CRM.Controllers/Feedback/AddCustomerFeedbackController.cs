@@ -111,7 +111,7 @@
                     command.FeedbackDate = commonService.ConvertToServerDateTime(command.FeedbackDate);
                     command.ResolutionDate = commonService.ConvertToServerDateTime(command.ResolutionDate);
                     command.IsCommunicationLog = false;
-                    command.NewCommunicationTools = XMLNewCommunicationTools(command);
+                    command.NewCommunicationTools = command.IsHeadline ? XMLNewHeadlineCommunicationTools(command) : XMLNewNormalCommunicationTools(command);
                     var result = await baseService.ExecuteNonQueryAsync(command);
                     var logMessage = new LogMessage("Add Customer Feedback Params:")
                        .AddMessage(JsonConvert.SerializeObject(command, Formatting.Indented))
@@ -133,24 +133,11 @@
             }
         }
 
-#pragma warning disable S3240
-        private static string XMLNewCommunicationTools(AddCustomerFeedbackCommand command)
-#pragma warning restore S3240
-        {
-            if (command.IsHeadline)
-            {
-                command.NewCommunicationTools = command.HeadlineStaffInfoCommunications.Any() ? 
-                    command.HeadlineStaffInfoCommunications.ToXML("ROOT").ToString() 
-                    : string.Empty;
-            }
-            else
-            {
-                command.NewCommunicationTools = command.OtherAccountCommunicationInfos.Any() ?
-                    command.OtherAccountCommunicationInfos.ToXML("ROOT").ToString()
-                    : string.Empty;
-            }
-            return command.NewCommunicationTools;
-        }
+        private static string XMLNewHeadlineCommunicationTools(AddCustomerFeedbackCommand command) => command.HeadlineStaffInfoCommunications.Any() ?
+            command.HeadlineStaffInfoCommunications.ToXML("ROOT").ToString() : string.Empty;
+
+        private static string XMLNewNormalCommunicationTools(AddCustomerFeedbackCommand command) => command.OtherAccountCommunicationInfos.Any() ?
+            command.OtherAccountCommunicationInfos.ToXML("ROOT").ToString() : string.Empty;
 
         private async Task<CommandResult> CheckAddCustomerFeedbackPermission()
         {

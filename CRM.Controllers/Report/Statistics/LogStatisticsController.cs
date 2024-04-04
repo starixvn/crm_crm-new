@@ -1,6 +1,5 @@
 ﻿namespace CRM.Controllers.Report.Statistics
 {
-    using System.Linq;
     using System.Threading.Tasks;
     using CRM.Core.Constants;
     using CRM.Core.Enumerables;

@@ -546,12 +546,10 @@
             return stringBuilder.ToString();
         }
 
-#pragma warning disable S1541
-#pragma warning disable S1067
+#pragma warning disable S1541, S1067, S121
         protected internal virtual string GetDescriptionSportBook(AutoVoidingEventDetails eventDetail, string productName,
           string kO_time, string leagueName, string homeName, string sportName, string awayName)
-#pragma warning restore S1541
-#pragma warning restore S1067
+#pragma warning restore S1541, S1067, S121
         {
             var stringBuilder = new StringBuilder();
             const string line = "-------------------------------------------------------- {0}";
@@ -568,7 +566,9 @@
                 productName != "Virtual Sports 4") return stringBuilder.ToString();
             stringBuilder.AppendFormat(line, Constants.Break);
             string league = leagueName;
-            if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase) || productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase))
+            if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) 
+                || productName.Equals("Virtual Sports 3", StringComparison.OrdinalIgnoreCase) 
+                || productName.Equals("Virtual Sports 4", StringComparison.OrdinalIgnoreCase))
             {
                 league = sportName;
             }

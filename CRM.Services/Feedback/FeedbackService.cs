@@ -19,7 +19,6 @@
     using CRM.Repositories;
     using CRM.Resources;
     using Fanex.Data.Repository;
-    using Models.Feedback.LatestFeedback;
 
     public interface IFeedbackService
     {
@@ -69,10 +68,10 @@
 
         public async Task<CustomerFeedback> GetCustomerFeedbackByIdAsync(int feedbackId)
         {
-            var checkFeedbackIdIsNewCriteria = new CheckFeedbackIDIsNewCriteria() { FeedbackId = feedbackId };
+            var checkFeedbackIdIsNewCriteria = new CheckFeedbackIDIsNewCriteria { FeedbackId = feedbackId };
             var isCheckFeedbackIdIsNew = await dynamicRepository.GetAsync<bool>(checkFeedbackIdIsNewCriteria);
             var criteriaOldFeedback = new GetCustomerFeedbackByIdCriteria { FeedbackId = feedbackId };
-            var criteriaNewFeedback = new GetCustomerNewManualFeedbackByIdCriteria() { FeedbackId = feedbackId };
+            var criteriaNewFeedback = new GetCustomerNewManualFeedbackByIdCriteria { FeedbackId = feedbackId };
 
             var customerFeedbackModel =
                 isCheckFeedbackIdIsNew ? await feedbackRepository.GetCustomerFeedbackByIdAsync(criteriaNewFeedback) :

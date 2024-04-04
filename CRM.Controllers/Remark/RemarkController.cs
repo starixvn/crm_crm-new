@@ -7,7 +7,6 @@
     using CRM.Core.Services;
     using CRM.Criteria.Remark;
     using CRM.Resources;
-    using CRM.Services;
     using CRM.Services.Customer;
     using CRM.Services.Remark;
     using Fanex.NAP.Client.Helpers.Web;

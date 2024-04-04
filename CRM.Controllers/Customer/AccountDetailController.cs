@@ -8,7 +8,6 @@
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Criteria.PicAndHeadline;
-    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.Customer;
     using CRM.ViewModels.Customer;
