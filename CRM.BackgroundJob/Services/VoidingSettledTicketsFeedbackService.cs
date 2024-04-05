@@ -561,9 +561,13 @@
                 stringBuilder.AppendFormat(ticketDescTemplate.Outright, eventDetail.Leaguenametc, kO_time, leagueName, homeName, Constants.Break);
             }
 
+#pragma warning disable S1067
+#pragma warning disable S121
             if ((productName != "Sportsbook" || eventDetail.EventType == EventType2) &&
                 productName != "Virtual Sports 2" && productName != "Virtual Sports 3" &&
                 productName != "Virtual Sports 4") return stringBuilder.ToString();
+#pragma warning restore S1067
+#pragma warning restore S121
             stringBuilder.AppendFormat(line, Constants.Break);
             string league = leagueName;
             if (productName.Equals("Virtual Sports 2", StringComparison.OrdinalIgnoreCase) 
