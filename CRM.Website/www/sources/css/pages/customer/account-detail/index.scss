@@ -18,6 +18,11 @@
 }
 
 .customer-info-detail {
+  .table > thead > tr > th {
+    background: #2B4E80;
+    color: #FFFFFF;
+  }
+
   .other-communication-tool {
     max-width: 300px !important;
   }
@@ -355,7 +360,7 @@
       &.acc-PIC-hidden {
         .table-container,
         .custom-scrollbar {
-          max-height: 506px;
+          max-height: 446px;
 
           @include Laptop {
             max-height: 222px !important;
@@ -384,7 +389,7 @@
 
       .custom-scrollbar {
         padding: 3px 8px 3px 0;
-        max-height: 433px;
+        max-height: 373px;
         overflow-y: auto;
 
         @include Laptop {
@@ -401,6 +406,10 @@
 
         &.custom-dropdown {
           overflow-y: visible;
+
+          @include Laptop-Medium {
+            overflow-y: auto;
+          }
         }
 
         &::-webkit-scrollbar {
@@ -508,7 +517,7 @@
 
   .company-service .table-container {
     max-width: 1022px !important;
-    max-height: 433px;
+    max-height: 373px;
 
     table tbody tr td {
       overflow: visible;
@@ -535,7 +544,8 @@
   }
 
   .table-container {
-    max-height: 433px;
+    max-height: 373px;
+    border-radius: 3px;
 
     .header-content {
       padding-right: 0;
@@ -710,7 +720,7 @@
     height: 26px;
   }
 
-  @include Laptop {
+  @include Laptop-Medium {
     .group-account .group-content,
     .group-item {
       column-gap: 32px;
@@ -793,7 +803,7 @@
     }
 
     .acc-PIC-hidden .fix-table-container .fix-table {
-      max-height: 225px !important;
+      max-height: 223px !important;
     }
 
     .acc-info-hidden .fix-table-container .fix-table {
@@ -804,8 +814,9 @@
       border-right: none;
 
       .fix-table {
-        max-height: 162px !important;
+        max-height: 161px !important;
         border: none;
+        border-radius: 3px;
 
         .header-content {
           border-left: 1px solid #b7b7b7;
