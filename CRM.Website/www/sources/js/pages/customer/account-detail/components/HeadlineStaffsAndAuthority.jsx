@@ -439,7 +439,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         });
         return (
             <>
-                <Row key={`${staff.communicationTools[0].rowID}-${staff.communicationTools[0].picCommunicationName}-${staff.communicationTools[0].picCommunicationValue}`} className="row-add">
+                <Row key={`${staff.communicationTools[0].rowID + indexStaff}-${staff.communicationTools[0].picCommunicationName}`} className="row-add">
                     {
                         staff.isSyncFromPicTable &&
                         <>
@@ -453,7 +453,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                         !staff.isSyncFromPicTable &&
                         <>
                             <Cell rowSpan={staff.communicationTools.length}>
-                                <Form.Control type="text" name="" className={staff.isErrorPicName && 'invalid'} onChange={event => {
+                                <Form.Control type="text" className={staff.isErrorPicName && 'invalid'} onChange={event => {
                                     this.handleChangeValue('picName', event.target.value, indexStaff);
                                 }}
                                     value={staff.picName} autoComplete="off" />
@@ -488,7 +488,8 @@ export class HeadlineStaffsAndAuthority extends Component {
                                 </div>
                             </Cell>
                             <Cell>
-                                <Form.Control type="text" name="" className={staff.communicationTools[0].isErrorPicCommunication && 'invalid'} onChange={event => {
+                                <Form.Control type="text" className={staff.communicationTools[0].isErrorPicCommunication && 'invalid'}
+                                    onChange={event => {
                                     this.handleChangeCommunicationValue('picCommunicationValue', event.target.value, 0, indexStaff);
                                 }}
                                     value={staff.communicationTools[0].picCommunicationValue} autoComplete="off" />
@@ -532,7 +533,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                         });
                         if (indexCom !== 0) {
                             return (
-                                <Row key={`${value.rowID + indexCom}-${value.picCommunicationName}-${value.picCommunicationValue}`} className="row-add">
+                                <Row key={`${value.rowID + indexCom}-${value.picCommunicationName}`} className="row-add">
                                     {
                                         staff.isSyncFromPicTable &&
                                         <>

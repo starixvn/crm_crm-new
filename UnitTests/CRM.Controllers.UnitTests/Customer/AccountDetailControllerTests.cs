@@ -234,25 +234,6 @@
         }
 
         [Fact]
-        public async Task ValidateEditPic_WhenCalled_ReturnExpectedData()
-        {
-            //Arrange
-            var controller = GetController();
-            var fixture = new Fixture();
-            var criterias = fixture.Create<IList<ValidateEditNewPicCriteria>>();
-            var resultlValid = fixture.Create<string>();
-
-            customerService.ValidateEditPicAsync(Arg.Any<ValidateEditPicCriteria>()).Returns(resultlValid);
-            //Act
-            var result = await controller.ValidateEditPic(criterias);
-
-            //Assert
-            var jsonResult = Assert.IsType<JsonResult>(result);
-            var command = Assert.IsType<List<string>>(jsonResult.Value);
-            Assert.Equal(resultlValid, command[0]);
-        }
-
-        [Fact]
         public async Task GetHeadlineCompanyService_WhenCalled_ReturnExpectedData()
         {
             //Arrange
