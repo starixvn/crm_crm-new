@@ -29,7 +29,6 @@
             // Arrange
             var criteria = new ValidateAnnouncementCommand
             {
-                Title = "title",
                 Contents = new List<Content> { new Content { LanguageId = 1 } }
             };
             // Act

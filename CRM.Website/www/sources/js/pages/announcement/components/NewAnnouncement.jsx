@@ -7,7 +7,6 @@ import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import UploadFile from './UploadFile';
 import ContentTab from './ContentTab';
 import Option from './Option';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
@@ -134,12 +133,9 @@ export class NewAnnouncement extends Component {
 
     handleChangeTab = selected => {
         this.setState({ tab: selected });
-        //console.log('this.formik.values.content1', this.formik.values.content);
         this.formik.setFieldValue('cloneContent', this.formik.values.content);
         const replaceTab = selected.replace(/[^A-Z0-9]/ig, '');
         const content = this.formik.values.content[replaceTab];
-        //console.log('this.formik.values.content2', this.formik.values.content);
-        //console.log('content3', content);
         this.handleGetParameters(content);
     };
 
@@ -241,14 +237,13 @@ export class NewAnnouncement extends Component {
             setSubmitting(true);
             values.status = 'Planned';
             const param = getParams(values, this.state);
-            console.log('this.state.languages', this.state.languages);
-            // this.props.validateAnnouncement(param).then(() => {
-            //     const contentConfirm = this.props.validateAnnouncementResult;
-            //     if (!contentConfirm?.code && contentConfirm.length > 0) {
-            //         this.setState({confirmInsertDialog: { show: true, params: param, content: contentConfirm[0]}});
-            //     }
-            //     this.formik.setSubmitting(false);
-            // });
+            this.props.validateAnnouncement(param).then(() => {
+                const contentConfirm = this.props.validateAnnouncementResult;
+                if (!contentConfirm?.code && contentConfirm.length > 0) {
+                    this.setState({confirmInsertDialog: { show: true, params: param, content: contentConfirm[0]}});
+                }
+                this.formik.setSubmitting(false);
+            });
         }
     };
 
@@ -484,37 +479,6 @@ export class NewAnnouncement extends Component {
                                     textInvalidContentMaxLength={textInvalidContentMaxLength}
                                 />
                             }
-                            {/* {
-                                isChangeTemplate && parameters &&
-                                <Form.Group as={Row}>
-                                    <div className='group-list'>
-                                        <div className='list-title'>Parameters</div>
-                                        <div className="list-info">
-                                            {
-                                                parameters.map((param, index) => {
-                                                    const removeSpaceParam = param.replace(/\s+/g, "");
-                                                    return (
-                                                        <div key={index} className='d-flex box-param'>
-                                                            <div className='param pt-1'>{param}</div>
-                                                            <Form.Control as="textarea" value={values[removeSpaceParam] || ''}
-                                                                name={removeSpaceParam} id={removeSpaceParam}
-                                                                className="shadow-none form-input-param" autoComplete="off"
-                                                                onChange={event => this.handleChangeParameter(event, param, parameters)}
-                                                            />
-                                                        </div>
-                                                    );
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                </Form.Group>
-                            }
-                            <div className="group-upload-file">
-                                <UploadFile
-                                    setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
-                                    invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
-                                />
-                            </div> */}
                         </div>
                     </div>
                     <div className="group-item">

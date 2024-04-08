@@ -54,9 +54,9 @@ namespace CRM.Services.HeadlineNotification
 
         public async Task<CommandResult> NewAnnouncementAsync(CreateAnnouncementCommand command)
         {
-            DateTime? notSendImmediately = command.SendDate != null ? commonService.ConvertToServerDateTime((DateTime)command.SendDate) : null;
-            command.SendDate = command.SendImmediately ? command.SendDate : notSendImmediately;
-            return await baseService.ExecuteNonQueryAsync(command);
+                DateTime? notSendImmediately = command.SendDate != null ? commonService.ConvertToServerDateTime((DateTime)command.SendDate) : null;
+                command.SendDate = command.SendImmediately ? command.SendDate : notSendImmediately;
+                return await baseService.ExecuteNonQueryAsync(command);
         }
 
         public async Task<CommandResult> EditAnnouncementAsync(EditAnnouncementCommand command)
@@ -99,18 +99,18 @@ namespace CRM.Services.HeadlineNotification
 
         public async Task<(IEnumerable<AnnouncementDetail> , CommandResult)> ValidateAnnouncementAsync(ValidateAnnouncementCommand command)
         {
-            command.SendDate = command.SendImmediately ? command.SendDate : commonService.ConvertToServerDateTime((DateTime)command.SendDate);
+            var sendDate = command.SendImmediately ? command.SendDate : commonService.ConvertToServerDateTime((DateTime)command.SendDate);
             IEnumerable<AnnouncementDetail> announcements = new List<AnnouncementDetail>();
             var commandResult = await baseService.ExecuteNonQueryAsync(command);
 
             if (commandResult.IsSuccessful)
             {
                 announcements = await baseService.GetDataAsync<AnnouncementDetail>(command);
-                if (command.SendDate != null)
+                if (sendDate != null)
                 {
                     foreach (var announcement in announcements)
                     {
-                        var convertSendDateToClient = commonService.ConvertToClientDateTime((DateTime)announcement.SendDate);
+                        var convertSendDateToClient = commonService.ConvertToClientDateTime((DateTime)sendDate);
                         announcement.SendDate = convertSendDateToClient;
                         announcement.SendDateString = convertSendDateToClient.ToString(FormatMMMddyyyy);
                         announcement.SendTimeString = convertSendDateToClient.ToString(Formathhmmsstt);

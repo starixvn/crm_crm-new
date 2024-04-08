@@ -11,10 +11,6 @@ export const validateFormik = (values, files, state) => {
         errors.title = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title'));
     }
 
-    if (!values.content.EN) {
-        errors.content = LangHelper.formatString(LangHelper.getResource('FieldRequired'), 'Content EN');
-    }
-
     const isInvalidContent = Object.entries(values.content).filter(([key, value]) => value && (value.includes('{') || value.includes('}'))).length > 0;
     if(isInvalidContent){
         errors.content = LangHelper.getResource('ContentLanguageError');
@@ -70,61 +66,6 @@ export const validateFormik = (values, files, state) => {
     return errors;
 };
 
-// export const getParams = (values, state) => {
-//     const {notificationTemplateId, content, headlineType, sendDate, sendType} = values;
-//     const splitFiles = !values.oldFileName ? values.oldFileName : values.oldFileName?.split(',');
-//     const formData = new FormData();
-//     if(splitFiles){
-//         const oldFileRemove = splitFiles && splitFiles.filter(x => !state.uploadedFiles.find(file => typeof file === 'string' ? file === x : file.name === x));
-//         oldFileRemove.forEach(oldFile => {
-//             formData.append('fileStringRemove', oldFile);
-//         });
-//     }
-//     console.log('state.uploadedFiles', state.uploadedFiles);
-//     state.uploadedFiles.forEach(file => {
-//         formData.append(typeof file === 'string' ? 'fileString' : 'formFile', file);
-//     });
-//     console.log('content', content);
-
-//     let index = 0;
-//     for (const [key, value] of Object.entries(content)) {
-//         if(value && value.length > 0){
-//             const languageId = state.languages.filter(x => x.mapLabel === key)[0].settingId;
-//             if(languageId){
-//                 formData.append(`contents[${index}][languageId]`, languageId);
-//                 formData.append(`contents[${index}][value]`, value.replace( /\n/g, ''));
-//                 index++;
-//             }
-//         }
-//     }
-
-//     const isSendImmediately = sendType === 'Send immediately';
-
-//     const params = {
-//         notificationTemplateId: notificationTemplateId,
-//         headlineNameList: state.isHeadlineGroup.isUsername ? state.headlineGroups.join(',') : '',
-//         siteNameList: (!values.site || !state.isHeadlineGroup.isSiteType) ? '' : values.site,
-//         currencyList: (!values.currency || !state.isHeadlineGroup.isSiteType) ? '' : values.currency,
-//         headlineType: state.isHeadlineGroup.isSiteType ? headlineType : '',
-//         title: values.title,
-//         sendDate: isSendImmediately ? null : (sendType === 'Send At' ? DateTimeService.toLongDateTimeFormat(sendDate) : null),
-//         sendImmediately: isSendImmediately,
-//         status: values.status
-//     };
-//     console.log('paramsparams', params);
-//     Object.keys(params).forEach(key => {
-//         formData.append(key, params[key]);
-//     });
-
-//     const data = {};
-//     formData.forEach((value, key) => (data[key] = value));
-//     // Log the data.
-//     console.log('data', data);
-
-//     return formData;
-// };
-
-
 const getFileName = (uploadedFiles, languageKey) => {
     const arrFileName = [];
     uploadedFiles.forEach(item => {
@@ -161,9 +102,8 @@ const filterFormStringFiles = uploadedFiles => {
 
 const getFileStringRemove = (oldFileName, uploadedFiles) => {
     const fileStringRemove = [];
-    const oldFileRemoves = oldFileName;
-    if (oldFileRemoves.length > 0) {
-        oldFileRemoves.forEach(item => {
+    if (oldFileName.length > 0) {
+        oldFileName.forEach(item => {
             if (!uploadedFiles.find(element => element.name === item.name)) {
                 fileStringRemove.push(item);
             }
@@ -182,11 +122,13 @@ export const getParams = (values, state) => {
     //         formData.append('fileStringRemove', oldFile);
     //     });
     // }
-    const fileStringRemoves = getFileStringRemove(values.oldFileName, state.uploadedFiles);
-    if (fileStringRemoves.length > 0) {
-        fileStringRemoves.forEach(oldFile => {
-            formData.append('fileStringRemove', oldFile.name);
-        });
+    if (values.oldFileName) {
+        const fileStringRemoves = getFileStringRemove(values.oldFileName, state.uploadedFiles);
+        if (fileStringRemoves.length > 0) {
+            fileStringRemoves.forEach(oldFile => {
+                formData.append('fileStringRemove', oldFile.name);
+            });
+        }
     }
 
     const data0 = {};
@@ -233,7 +175,7 @@ export const getParams = (values, state) => {
         sendImmediately: isSendImmediately,
         status: values.status
     };
-    console.log('paramsparams', params);
+
     Object.keys(params).forEach(key => {
         formData.append(key, params[key]);
     });
@@ -244,6 +186,24 @@ export const getParams = (values, state) => {
     console.log('data', data);
 
     return formData;
+};
+
+export const getFileString = contents => {
+    const fileStrings = [];
+    contents.forEach(item => {
+        if (item.fileName) {
+            const fileNames = item.fileName.split(',');
+            fileNames.forEach(file => {
+                const fileString = {
+                    key: item.languageCode.replace(/[^A-Z0-9]/ig, ''),
+                    name: file,
+                    type: 'string'
+                };
+                fileStrings.push(fileString);
+            });
+        }
+    });
+    return fileStrings;
 };
 
 export const renderOption = (key, value, label) => (<option key={key} value={value}>{label}</option>);

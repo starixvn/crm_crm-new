@@ -92,8 +92,6 @@
         [HttpPost]
         public async Task<IActionResult> SaveFilesAndCreate([FromForm] CreateAnnouncementCommand command)
         {
-            var fileName = getFileName(command.FormFile, command.FileString);
-            command.FileName = fileName;
             command.UserId = napSession.UserId;
             command.LoginIP = ClientIP;
             var commandResult = await announcementService.NewAnnouncementAsync(command);
@@ -130,8 +128,6 @@
         [HttpPost]
         public async Task<IActionResult> Edit([FromForm] EditAnnouncementCommand command)
         {
-            var fileName = getFileName(command.FormFile, command.FileString);
-            command.FileName = fileName;
             command.UserId = napSession.UserId;
             command.LoginIP = ClientIP;
             var commandResult = await announcementService.EditAnnouncementAsync(command);
@@ -219,20 +215,6 @@
             }
         }
 
-        private static string getFileName(IList<IFormFile> formFiles, IList<string> fileNames)
-        {
-            var formFilesJoin = string.Join(",", formFiles.Select(x => x.FileName));
-            var fileNameJoin = string.Join(',', fileNames.Select(x => x));
-            if (formFiles.Count > 0 && fileNames.Count > 0)
-            {
-                return fileNameJoin + "," + formFilesJoin;
-            }
-            else
-            {
-                return formFiles.Count > 0 ? formFilesJoin : fileNameJoin;
-            }
-        }
-
         private string getPathFile(string folder, string fileName = "")
         {
             return Path.Combine(hostingEnvironment.ContentRootPath, pathImages, folder, fileName);
@@ -254,8 +236,6 @@
         [HttpPost]
         public async Task<IActionResult> ValidateAnnouncement([FromForm] ValidateAnnouncementCommand command)
         {
-            var fileName = getFileName(command.FormFile, command.FileString);
-            command.FileName = fileName;
             var (announcements, commandResult) = await announcementService.ValidateAnnouncementAsync(command);
 
             return commandResult.IsSuccessful ? Json(announcements) : Json(commandResult);

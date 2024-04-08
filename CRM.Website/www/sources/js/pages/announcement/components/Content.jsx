@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import Site from '@jsroot/common/site';
 import {
-   mapLabelLanguage
+   mapLabelLanguage, getFileString
 } from '../common.functions';
 
 export class Content extends Component {
@@ -19,7 +19,8 @@ export class Content extends Component {
             content: '',
             announcement: null,
             currencies: '',
-            headlineType: ''
+            headlineType: '',
+            contentFiles: []
         };
     }
 
@@ -38,7 +39,8 @@ export class Content extends Component {
         await this.props.getAnnouncementById(id).then(response => {
             const {data, contents} = response.data;
             const announcement = data[0];
-            this.setState({announcement});
+            const contentFiles = getFileString(contents);
+            this.setState({ announcement, contentFiles });
             this.getContentByLanguage(contents);
             if(announcement.siteNameList.length > 0){
                 this.getSettingOption(announcement);
@@ -88,13 +90,17 @@ export class Content extends Component {
         window.open(url);
     }
 
+    getFileNames = mapLabel => {
+        const { contentFiles } = this.state;
+        return contentFiles.filter(item => item.key === mapLabel);
+    }
+
     render() {
-        const {announcement, languages, content, tab} = this.state;
+        const { announcement, languages, content, tab, contentFiles } = this.state;
         const isInValidOption = this.state.announcement?.siteNameList?.length > 0 && !this.props.settings;
         if(!this.state.announcement || !languages || !content || isInValidOption){
             return null;
         }
-        const fileNames = !announcement.fileName ? '' : announcement.fileName.split(',');
         const styleBold = {fontWeight:'bold'};
         return (
             <Modal show backdrop='static' keyboard={false} size='lg' centered
@@ -111,50 +117,45 @@ export class Content extends Component {
                     </div>
                     {
                         <div className='pb-2'>
-                            <Tabs
-                                className='languages-text'
-                                id="controlled-tab"
-                                activeKey={tab}
-                                onSelect={selected => this.handleChangeTab(selected)}
-                            >
-                                {
-                                    languages.map((language, key) =>
-                                        (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
-                                            <div
-                                                className='announcement-content'
-                                                name={language.mapLabel}
-                                                dangerouslySetInnerHTML={{ __html: content[language.mapLabel] }}
-                                            />
-                                            <div className={fileNames.length > 0 ? 'content-border pb-2' : ''}>
-                                                {
-                                                    fileNames.length > 0 && fileNames.map((image, key) =>(
-                                                        <div key={key} className='d-flex image-section'>
-                                                            <span className='fa fa-file-image-o mr-2  pt-1'/>
-                                                                <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image)}>
-                                                                    {image}
-                                                                </span>
+                            <div className="group-list white-br">
+                                <div className="list-title">{LangHelper.getResource('Contents')}</div>
+                                <div className="list-info">
+                                    <Tabs
+                                        className='languages-text'
+                                        id="controlled-tab"
+                                        activeKey={tab}
+                                        onSelect={selected => this.handleChangeTab(selected)}
+                                    >
+                                        {
+                                            languages.map((language, key) =>
+                                                (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
+                                                    <div className='announcement-content'>
+                                                        <div
+                                                            className='announcement-text'
+                                                            name={language.mapLabel}
+                                                            dangerouslySetInnerHTML={{ __html: content[language.mapLabel] }}
+                                                        />
+                                                        <div className={this.getFileNames(language.mapLabel).length > 0 ? 'content-border pb-2 cl-file' : ''}>
+                                                            {
+                                                                this.getFileNames(language.mapLabel).length > 0 && this.getFileNames(language.mapLabel).map((image, key) =>(
+                                                                    <div key={key} className='d-flex image-section'>
+                                                                        <span className='fa fa-file-image-o mr-2  pt-1'/>
+                                                                            <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image.name)}>
+                                                                                {image.name}
+                                                                            </span>
+                                                                    </div>
+                                                                ))
+                                                            }
                                                         </div>
-                                                    ))
-                                                }
-                                            </div>
-                                        </Tab>)
-                                    )
-                                }
-                            </Tabs>
+                                                    </div>
+                                                </Tab>)
+                                            )
+                                        }
+                                    </Tabs>
+                                </div>
+                            </div>
                         </div>
                     }
-                    <div className={fileNames.length > 0 ? 'content-border pb-2' : ''}>
-                        {
-                            fileNames.length > 0 && fileNames.map((image, key) =>(
-                                <div key={key} className='d-flex image-section'>
-                                    <span className='fa fa-file-image-o mr-2  pt-1'/>
-                                        <span className="mr-2 text-color " onClick={event => this.handlePreviewImage(event, image)}>
-                                            {image}
-                                        </span>
-                                </div>
-                            ))
-                        }
-                    </div>
                     <div>
                         {
                             !announcement.siteNameList ?

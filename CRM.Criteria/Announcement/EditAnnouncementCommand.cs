@@ -22,10 +22,8 @@ namespace CRM.Criteria.Announcement
         public string Title { get; set; }
         [SpParam(Ignored = true)]
         public IList<Content> Contents { get; set; } = new List<Content>();
-
         [SpParam(SqlParamName = "contents")]
         public string ContentXml => Contents.Any() ? Contents.ToXML("Contents").ToString() : string.Empty;
-        public string FileName { get; set; }
         public int UserId { get; set; }
         public int NotificationTemplateId { get; set; }
         public string HeadlineNameList { get; set; }

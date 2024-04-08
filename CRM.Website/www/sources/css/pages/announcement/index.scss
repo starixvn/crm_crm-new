@@ -155,6 +155,10 @@
         border: 1px solid #bbb;
         padding: 12px;
         line-height: 20px;
+
+        .announcement-text {
+          margin-bottom: 12px;
+        }
       }
 
       .image-section {
@@ -168,11 +172,14 @@
         padding: 12px;
         border: 1px solid #bbb;
         border-radius: 3px;
-        margin-bottom: 12px;
 
         div {
           padding-bottom: 5px;
         }
+      }
+
+      .cl-file {
+        background-color: #f5f5f5;
       }
 
       @include tab-language;
@@ -206,6 +213,10 @@
         background: #a6a6a6;
       }
     }
+  }
+
+  .white-br {
+    background-color: $white !important;
   }
 
   .group-list {

@@ -19,16 +19,14 @@
         public string SiteNameList { get; set; }
         public string CurrencyList { get; set; }
         public string HeadlineType { get; set; }
-        public string Title { get; set; }
         [SpParam(Ignored = true)]
         public IList<Content> Contents { get; set; } = new List<Content>();
-
         [SpParam(SqlParamName = "contents")]
         public string ContentXml => Contents.Any() ? Contents.ToXML("Contents").ToString() : string.Empty;
-        public string FileName { get; set; }
+        [SpParam(Ignored = true)]
         public DateTime? SendDate { get; set; }
+        [SpParam(Ignored = true)]
         public bool SendImmediately { get; set; }
-        public string Status { get; set; }
 
         public override string GetSettingKey() => "Acc_CRM_ChatBot_Announcement_Validation";
 

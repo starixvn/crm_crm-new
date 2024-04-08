@@ -30,7 +30,6 @@ namespace CRM.Criteria.Announcement
 
         [SpParam(SqlParamName = "contents")]
         public string ContentXml => Contents.Any() ? Contents.ToXML("Contents").ToString() : string.Empty;
-        public string FileName { get; set; }
         public DateTime? SendDate { get; set; }
         public bool SendImmediately { get; set; }
         public string Status { get; set; }

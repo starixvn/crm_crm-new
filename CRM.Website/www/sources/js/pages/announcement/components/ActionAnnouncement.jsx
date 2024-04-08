@@ -15,7 +15,7 @@ import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
     validateFormik, renderOption, mapLabelLanguage, setValueContent, getParams, checkInvalidMaxLengthContent,
-    validFileSize, validFileExtension, handleResetWhenBackPage, isDisableSubmit, getUsernames
+    validFileSize, validFileExtension, handleResetWhenBackPage, isDisableSubmit, getUsernames, getFileString
 } from '../common.functions';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import Site from '@jsroot/common/site';
@@ -26,6 +26,7 @@ export class ActionAnnouncement extends Component {
         this.headlineInputRef = React.createRef();
         this.state = {
             data: null,
+            contents: null,
             languages: null,
             content: null,
             uploadedFiles: [],
@@ -73,10 +74,10 @@ export class ActionAnnouncement extends Component {
         await this.props.getAnnouncementById(announcementId).then(response => {
             const {data, contents} = response.data;
             const announcement = data[0];
-            this.setState({data: announcement});
+            this.setState({ data: announcement, uploadedFiles: getFileString(contents), contents });
             this.getContentByLanguage(contents);
             this.getSettingOption(announcement);
-        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());    
+        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
     };
 
     getContentByLanguage = contents =>{
@@ -92,15 +93,6 @@ export class ActionAnnouncement extends Component {
             this.setState({cloneContent: contentObj});
         }
         this.setState({content: contentObj});
-    };
-
-    getFileString = () => {
-        return [
-            { key: 'EN', name: 'thucung01.png', type: 'string' },
-            { key: 'EN', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
-            { key: 'ENSC', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
-            { key: 'ENSC', name: 'SamplePNGImage_5mbmb.png', type: 'string' }
-        ]
     };
 
     getSettingOption = async announcement =>{
@@ -129,8 +121,6 @@ export class ActionAnnouncement extends Component {
                 siteOptions,
                 currencyOptions,
                 headlineGroups: announcement.siteNameList ? [] : (announcement.headlineNameList ? announcement.headlineNameList.split(',') : []),
-                //uploadedFiles: !announcement.fileName ? [] : (announcement.fileName ? announcement.fileName.split(',') : []),
-                uploadedFiles: this.getFileString(),
                 isHeadlineGroup: {
                     isUsername: this.checkShowHeadlineGroup(announcement) ? false : (announcement.headlineNameList ? true : false),
                     isSiteType: this.checkShowHeadlineGroup(announcement) ? true : false
@@ -291,64 +281,14 @@ export class ActionAnnouncement extends Component {
         this.setState({uploadedFiles});
     };
 
-    // changeStringToFile = async () => {
-    //     const id = this.props.actionParam.announcementId;
-    //     const fileNames = this.state.data.fileName ? this.state.data.fileName.split(',') : [];
-    //     const maximumHeightWidth = 2560;
-    //     const urls = [];
-
-    //     if (fileNames.length > 0) {
-    //         fileNames.map(item => urls.push({
-    //             fileName: item,
-    //             url: Site.resolveClientUrl(`www/dist/images/announcement/${id}/${item}`)
-    //         }));
-
-    //         urls.forEach(async (item) => {
-    //             const response = await fetch(item.url);
-    //             const data = await response.blob();
-    //             const file = new File([data], item.fileName);
-
-    //             const image = new Image();
-    //             image.src = item.url;
-    //             image.onload = () => {
-    //                 const {
-    //                     height,
-    //                     width
-    //                 } = image;
-
-    //                 if (height > maximumHeightWidth || width > maximumHeightWidth) {
-    //                     this.setState({invalidWidthHeight: [...this.state.invalidWidthHeight, item.fileName]});
-    //                 }
-    //             }
-
-    //             if (!validFileExtension(file)) {
-    //                 this.setState(prevState => ({
-    //                     errorDrafts: {
-    //                         ...prevState.errorDrafts,
-    //                         invalidFileTypeDraft: [...prevState.errorDrafts.invalidFileTypeDraft, file]
-    //                     }
-    //                 }));
-    //             }
-    //             if (!validFileSize(file)) {
-    //                 this.setState(prevState => ({
-    //                     errorDrafts: {
-    //                         ...prevState.errorDrafts,
-    //                         invalidFileSizeDraft: [...prevState.errorDrafts.invalidFileSizeDraft, file]
-    //                     }
-    //                 }));
-    //             }
-    //         });
-    //     }
-    // };
-
     changeStringToFile = async () => {
         const id = this.props.actionParam.announcementId;
-        const fileNames = this.getFileString();
+        const { uploadedFiles } = this.state;
         const maximumHeightWidth = 2560;
         const urls = [];
 
-        if (fileNames.length > 0) {
-            fileNames.map(item => urls.push({
+        if (uploadedFiles.length > 0) {
+            uploadedFiles.map(item => urls.push({
                 fileName: item.name,
                 url: Site.resolveClientUrl(`www/dist/images/announcement/${id}/${item.name}`)
             }));
@@ -482,13 +422,13 @@ export class ActionAnnouncement extends Component {
             const {announcementId, isEdit} = this.props.actionParam;
             params.append(isEdit ? 'announcementId' : 'cloneAnnouncementId', announcementId);
 
-            // this.props.validateAnnouncement(params).then(() => {
-            //     const contentConfirm = this.props.validateAnnouncementResult;
-            //     if (!contentConfirm?.code && contentConfirm.length > 0) {
-            //         this.setState({confirmActionDialog: { show: true, params: params, content: contentConfirm[0]}});
-            //     }
-            //     this.formik.setSubmitting(false);
-            // });
+            this.props.validateAnnouncement(params).then(() => {
+                const contentConfirm = this.props.validateAnnouncementResult;
+                if (!contentConfirm?.code && contentConfirm.length > 0) {
+                    this.setState({confirmActionDialog: { show: true, params: params, content: contentConfirm[0]}});
+                }
+                this.formik.setSubmitting(false);
+            });
         }
     };
 
@@ -680,37 +620,6 @@ export class ActionAnnouncement extends Component {
                                     textInvalidContentMaxLength={textInvalidContentMaxLength} actionParam={actionParam}
                                 />
                             }
-                            {/* {
-                                isChangeTemplate && parameters &&
-                                <Form.Group as={Row}>
-                                    <div className='group-list'>
-                                        <div className='list-title'>Parameters</div>
-                                        <div className="list-info">
-                                            {
-                                                parameters.map((param,index) =>{
-                                                    const removeSpaceParam = param.replace(/\s+/g, "");
-                                                    return (
-                                                        <div key={index} className='d-flex box-param'>
-                                                            <div className='param pt-1'>{param}</div>
-                                                            <Form.Control as="textarea"  value={values[removeSpaceParam] || ''}
-                                                                name={removeSpaceParam} id={removeSpaceParam}
-                                                                className="shadow-none form-input-param" autoComplete="off"
-                                                                onChange={event => this.handleChangeParameter(event, param, parameters)}
-                                                            />
-                                                        </div>
-                                                    );
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                </Form.Group>
-                            }
-                            <div className="group-upload-file">
-                                <UploadFile id={actionParam.announcementId}
-                                    setStateUploadFile={this.setStateUploadFile} uploadedFiles={uploadedFiles}
-                                    invalidContentMaxLength={invalidContentMaxLength} textInvalidContentMaxLength={textInvalidContentMaxLength}
-                                />
-                            </div> */}
                         </div>
                     </div>
                     <div className="group-item">
@@ -856,10 +765,11 @@ export class ActionAnnouncement extends Component {
 
     render() {
         const {settings, announcementTemplate} = this.props;
-        const {data} = this.state; 
+        const { data, contents } = this.state; 
         if(!data || !announcementTemplate || !this.state.languages || !settings || !this.state.content) {
             return null;
         }
+        const fileStrings = getFileString(contents);
         const initialValues = {
             notificationTemplate: data.notificationTemplateName,
             notificationTemplateId: data.notificationTemplateId,
@@ -872,26 +782,12 @@ export class ActionAnnouncement extends Component {
             sendDate: data.sendImmediately ? null : (data.sendDate ? new Date(data.sendDate) : null),
             imageFileType: '',
             imageFileSize: '',
-            //fileName: data.fileName,
-            fileName: [
-                { key: 'EN', name: 'thucung01.png', type: 'string' },
-                { key: 'EN', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
-                { key: 'ENSC', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
-                { key: 'ENSC', name: 'SamplePNGImage_5mbmb.png', type: 'string' }
-            ],
-            //oldFileName: data.fileName,
-            oldFileName: [
-                { key: 'EN', name: 'thucung01.png', type: 'string' },
-                { key: 'EN', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
-                { key: 'ENSC', name: 'SamplePNGImage_3mbmb.png', type: 'string' },
-                { key: 'ENSC', name: 'SamplePNGImage_5mbmb.png', type: 'string' }
-            ],
+            fileName: fileStrings,
+            oldFileName: fileStrings,
             cloneContent: this.state.cloneContent,
             status: 'Planned'
         };
-        //const excludeOldImage = this.state.uploadedFiles.filter(x => !initialValues.oldFileName.includes(x));
-        const excludeOldImage = this.state.uploadedFiles.filter(x => x.type !== 'string');
-console.log('upload', this.state.uploadedFiles);
+        const excludeOldImage = this.state.uploadedFiles.filter(item => item.type !== 'string');
 
         return (
             <div>

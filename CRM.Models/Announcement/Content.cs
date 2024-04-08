@@ -1,8 +1,8 @@
-﻿using System;
-using CRM.Core.Extensions.XML;
-
-namespace CRM.Models.Announcement
+﻿namespace CRM.Models.Announcement
 {
+    using System;
+    using CRM.Core.Extensions.XML;
+
     [Serializable]
     [XMLName("Content")]
     public class Content
@@ -11,5 +11,7 @@ namespace CRM.Models.Announcement
         public int LanguageId { get; set; }
         [XMLName("Value")]
         public string Value { get; set; }
+        [XMLName("FileName")]
+        public string FileName { get; set; }
     }
 }

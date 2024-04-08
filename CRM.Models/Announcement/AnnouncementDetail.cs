@@ -15,13 +15,9 @@ namespace CRM.Models.Announcement
         public DateTime? SendDate { get; set; }
         public string SendDateString { get; set; }
         public string SendTimeString { get; set; }
-        public string FileName { get; set; }
         public string DirectAccounts { get; set; }
-
-
         public string CurrencyList { get; set; }
         public string DirectAccountList { get; set; }
-
         public int Code { get; set; } = 1;
         public string Message { get; set; } = "Invalid data.";
         public bool IsSuccessful => Code == 0;

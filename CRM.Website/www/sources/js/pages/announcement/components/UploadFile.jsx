@@ -70,8 +70,8 @@ export default class UploadFile extends PureComponent {
 
     handlePreviewImage = (event, fileName) => {
         event.stopPropagation();
-        const url = typeof fileName === 'string' ? 
-                    Site.resolveClientUrl(`www/dist/images/announcement/${this.props.id}/${fileName}`) : 
+        const url = fileName.type === 'string' ?
+                    Site.resolveClientUrl(`www/dist/images/announcement/${this.props.id}/${fileName.name}`) : 
                     URL.createObjectURL(fileName);
         window.open(url);
     };
