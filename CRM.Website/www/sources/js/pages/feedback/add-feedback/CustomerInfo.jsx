@@ -136,7 +136,7 @@ export class CustomerInfo extends PureComponent{
                                                     {itemCom.name}
                                                 </Form.Label>
                                                 <Col sm="8" md="8">
-                                                    <Form.Control type="text" size="sm" value={itemCom.value} className="shadow-none" autoComplete="off"
+                                                    <Form.Control type="text" size="sm" maxLength="200" value={itemCom.value}  className="shadow-none" autoComplete="off"
                                                         onChange={event => {
                                                             this.props.handleChangeValueInfo('headlineStaffInfoCommunications',
                                                                 this.handleChangeHeadlineStaffInfoCommunications(event.target.value, itemCom.index));

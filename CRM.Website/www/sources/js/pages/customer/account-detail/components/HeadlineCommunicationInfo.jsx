@@ -173,6 +173,7 @@ export class HeadlineCommunicationInfo extends Component {
 
     handleSubmit = async () => {
         const errors = this.validateCommunicationInfo();
+        this.setState({isValidate: true});
         if (errors === null) {
             let validResult = await this.validateEditPic();
             if (validResult.length === 0) {
@@ -187,7 +188,6 @@ export class HeadlineCommunicationInfo extends Component {
                 });
             }
         }
-        this.setState({isValidate: true});
     }
 
     updateNewCrmCustomer = async () => {

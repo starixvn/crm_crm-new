@@ -4,7 +4,7 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Button, Form } from 'react-bootstrap';
 import LangHelper from '@jsroot/common/langHelper';
-import { ParamsCustomerInfo, ParamsSubmit } from '../common.functions';
+import { ParamsCustomerInfo, ParamsSubmit, ValidateNormalCommunicationInfo } from '../common.functions';
 import { toast } from 'react-toastify';
 import { checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
 import DateTimeService from '@jsroot/common/dateTimeService';
@@ -96,12 +96,11 @@ export class NormalCommunicationInfo extends Component {
                 isHostOnCurrentCustomer: response
             });
         });
-
-        const { customerInfo } = this.props;
-        const params = ParamsCustomerInfo(customerInfo);
+        await this.props.getCustomerById({ customerId: this.props.customerInfo.custId });
+        const params = ParamsCustomerInfo(this.props.customerInfo);
         this.setState(params);
         this.setState({
-            otherAccountCommunication: customerInfo.otherAccountCommunicationInfos?.map(x => {
+            otherAccountCommunication: this.props.customerInfo.otherAccountCommunicationInfos?.map(x => {
                 return {
                     communicationID: x.communicationID,
                     communicationValue: x.communicationValue,
@@ -115,17 +114,7 @@ export class NormalCommunicationInfo extends Component {
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
     validateCommunicationInfo = () => {
-        let errors = {};
-        let { otherAccountCommunication } = this.state;
-
-        this.state.otherAccountCommunication.map((pic, indexPic) => {
-            if (!pic.communicationID || !pic.communicationValue) {
-                errors.communication = LangHelper.getResource('CommunicationRequired');
-                otherAccountCommunication[indexPic].isError = true;
-            } else {
-                otherAccountCommunication[indexPic].isError = false;
-            }
-        });
+        const { errors, otherAccountCommunication } = ValidateNormalCommunicationInfo(this.state.otherAccountCommunication);
         this.setState({
             otherAccountCommunication: otherAccountCommunication
         });
@@ -162,10 +151,10 @@ export class NormalCommunicationInfo extends Component {
 
     handleSubmitOtherCommunicationInfo = async () => {
         const errors = this.validateCommunicationInfo();
+        this.setState({ isValidate: true });
         if (errors === null) {
             await this.checkCustomerExistsOnCRM();
         }
-        this.setState({ isValidate: true });
     }
 
     getPicCommunicationTools() {
@@ -198,9 +187,9 @@ export class NormalCommunicationInfo extends Component {
         const url = Site.resolveClientUrl('AccountDetail/EditOtherAccCommunicationInfo');
         await DataService.postDataAsync(url, params).then(response => {
             if (response.data.isSuccessful) {
+                this.setState({ isValidate: false });
                 window.dispatchEvent(new Event('getCurrentCustomer'));
                 toast.success(LangHelper.getResource('UpdateCommunicationInfoSuccessful'));
-                this.setState({ isValidate: false });
             } else {
                 toast.error(response.data.message);
             }

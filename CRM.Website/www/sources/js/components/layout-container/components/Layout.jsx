@@ -294,22 +294,26 @@ export class Layout extends Component {
     };
 
     renderLeftRightContent = customerInfo => {
-        const { settings, gridParams, isShowingLeftPanel, showErrorConfirmPopup } = this.state;
-
+        const { settings, gridParams, isShowingLeftPanel, showErrorConfirmPopup, username } = this.state;
         return (
             <>
-                <div style={{ maxHeight: `${this.state.maxHeightLeft}px` }} id={isShowingLeftPanel ? 'left-row-container' : 'left-row-hidden'} tabIndex="1" className="slide-bar">
-                    {
-                    isShowingLeftPanel && settings !== null &&
-                        <DataGrid
-                            customerInfo={customerInfo} settings={settings} gridParams={gridParams} setGridParams={this.setGridParams}
-                        handleSearchUplineInfo={this.handleSearchUplineInfo} getCustomerInfo={this.getCustomerInfo}
-                        showErrorConfirmPopup={showErrorConfirmPopup} handleNavigate={this.handleNavigate}
-                        isCreditSite={this.state.isCreditSite}
-                        handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup}
-                        />
-                    }
-                </div>
+                {
+                    
+                    <div style={{ maxHeight: `${this.state.maxHeightLeft}px` }}
+                        id={(isShowingLeftPanel && username !== null) ? 'left-row-container' : 'left-row-hidden'}
+                        tabIndex="1" className="slide-bar">
+                        {
+                            isShowingLeftPanel && username !== null && settings !== null &&
+                            <DataGrid
+                                customerInfo={customerInfo} settings={settings} gridParams={gridParams} setGridParams={this.setGridParams}
+                                handleSearchUplineInfo={this.handleSearchUplineInfo} getCustomerInfo={this.getCustomerInfo}
+                                showErrorConfirmPopup={showErrorConfirmPopup} handleNavigate={this.handleNavigate}
+                                isCreditSite={this.state.isCreditSite} searchInfo={username}
+                                handleCloseEditCustomerInfoPopup={this.handleCloseEditCustomerInfoPopup}
+                            />
+                        }
+                    </div>
+                }
                 <div id='right-row-container' tabIndex="2" className='main-content'>
                     <div id='child-app-container'>
                         {this.props.children}
@@ -358,9 +362,9 @@ export class Layout extends Component {
                 </div>
                 {
                     <div className='row-content'>
-                        <ResponsiveComponent isShowingLeftPanel={isShowingLeftPanel}>
+                        <ResponsiveComponent isShowingLeftPanel={isShowingLeftPanel} username={username}>
                             {
-                                isShowingLeftPanel ?
+                                (isShowingLeftPanel && username !== null) ?
                                     this.renderLeftRightContent(customerInfo) :
                                     this.renderFullWidthContent()
                             }

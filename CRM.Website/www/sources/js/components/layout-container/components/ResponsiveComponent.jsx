@@ -47,7 +47,7 @@ const ResponsiveComponent = (props) => {
   const className = getClassNameBaseOnWidth();
   return (
     <div className={className}>
-        <div className={props.isShowingLeftPanel ? 'show-left-panel' : ''}>{props.children}</div>
+          <div className={(props.isShowingLeftPanel && props.username !== null) ? 'show-left-panel' : ''}>{props.children}</div>
     </div>
     );
 };

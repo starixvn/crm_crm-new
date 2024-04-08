@@ -27,6 +27,13 @@ export const ValidateHeadlineStaffAndAuthority = (values, indexStaff) => {
             headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicCommunication = false;
         }
 
+        if (!staffCom.picCommunicationID || !staffCom.picCommunicationValue) {
+            errors.communication = LangHelper.getResource('CommunicationRequired');
+            headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicCommunication = true;
+        } else {
+            headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicCommunication = false;
+        }
+
         if (!staffCom.authorityID && !headlineStaffsAndAuthority[indexStaff].isSyncFromPicTable) {
             errors.authority = LangHelper.getResource('AuthorityRequired');
             headlineStaffsAndAuthority[indexStaff].communicationTools[indexStaffCom].isErrorPicAuthorityID = true;
@@ -35,6 +42,16 @@ export const ValidateHeadlineStaffAndAuthority = (values, indexStaff) => {
         }
     });
     return { errors: errors , headlineStaffsAndAuthority: headlineStaffsAndAuthority };
+};
+
+export const GetLengthCommunicationValue = (compic, indexCompic, communicationTools) => {
+    let value = compic.value;
+    communicationTools.map((item, index) => {
+        if (index !== indexCompic && compic.type === item.type) {
+            value += ',' + item.value;
+        }
+    })
+    return value.length;
 };
 
 export const ValidateHeadlineCommunicationInfo = (values) => {
@@ -63,10 +80,49 @@ export const ValidateHeadlineCommunicationInfo = (values) => {
             } else {
                 headlineCommunicationInfo[indexPic].picCommunicationTools[indexCompic].isError = false;
             }
+
+            const lengthValue = GetLengthCommunicationValue(compic, indexCompic, pic.picCommunicationTools);
+            if (compic.type && compic.value && lengthValue > 200) {
+                errors.maxLengthCommunicationValue = LangHelper.getResource('CommunicationExceedMaxLength');
+                headlineCommunicationInfo[indexPic].picCommunicationTools[indexCompic].isError = true;
+            }
         });
     });
     return { errors: errors, headlineCommunicationInfo: headlineCommunicationInfo };
 };
+
+export const ValidateNormalCommunicationInfo = (values) => {
+    let errors = {};
+    let otherAccountCommunication = values;
+
+    values.map((pic, indexPic) => {
+        if (!pic.communicationID || !pic.communicationValue) {
+            errors.communication = LangHelper.getResource('CommunicationRequired');
+            otherAccountCommunication[indexPic].isError = true;
+        } else {
+            otherAccountCommunication[indexPic].isError = false;
+        }
+
+        const lengthValue = GetLengthNormalCommunicationValue(pic, indexPic, otherAccountCommunication);
+        if (pic.communicationID && pic.communicationValue && lengthValue > 200) {
+            errors.maxLengthCommunicationValue = LangHelper.getResource('CommunicationExceedMaxLength');
+            otherAccountCommunication[indexPic].isError = true;
+        }
+
+    });
+
+    return { errors: errors, otherAccountCommunication: otherAccountCommunication };
+}
+
+export const GetLengthNormalCommunicationValue = (compic, indexCompic, communicationTools) => {
+    let value = compic.communicationValue;
+    communicationTools.map((item, index) => {
+        if (index !== indexCompic && compic.communicationID === item.communicationID) {
+            value += ',' + item.communicationValue;
+        }
+    })
+    return value.length;
+}
 
 export const ValidateCompanyService = values => {
     const errors = {};

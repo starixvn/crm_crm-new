@@ -110,7 +110,7 @@ export default class SelectWithSearch extends Component {
             selectFormStatus: '',
             selectedItem: item
         });
-        this.props.OnChangeValue(item);
+        this.props.OnChangeValue(item, this.props.index);
     };
 
     toggleCollapseExpanse = () => {
