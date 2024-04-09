@@ -22,32 +22,35 @@
         browsing experience. Thank you!
     </div>
 
-    <div class="center">
-        <div id="login-box">
+    <div id="login-box">
+        <div class="login-left">
+            <span class="welcome">Welcome to</span>
+            <img class="logo" src="/www/dist/css/images/login/login-logo.png">
+            <img class="login-security" src="/www/dist/css/images/login/login-security.png">
+        </div>
+        <div class="login-right">
             @if (!string.IsNullOrWhiteSpace(ViewBag.Message))
             {
                 <div id="msg">
                     <span id="inner-msg">@ViewBag.Message</span>
                 </div>
             }
-            <div class="header">
-                <div class="welcome">
+            <form action="@Url.Content("~/Auth/SignIn")" method="POST" id="frmLogin" name="frmLogin" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <input id="loginToken" name="loginToken" value="@ViewBag.LoginToken" type="hidden" />
+                <span class="header-text">Login to your account</span>
+                <div class="form-input">
+                    <span class="input-name">Account</span>
+                    <input type="text" id="username" name="username" autocomplete="off" required placeholder="Enter your username"/>
                 </div>
-                <div class="secure">
+                <div class="form-input">
+                    <span class="input-name">Password</span>
+                    <input type="password" id="password" name="password" required  placeholder="Enter your password"/>
                 </div>
-            </div>
-            <div class="auth">
-                <form action="@Url.Content("~/Auth/SignIn")" method="POST" id="frmLogin" name="frmLogin" autocomplete="off">
-                    @Html.AntiForgeryToken()
-                    <input id="loginToken" name="loginToken" value="@ViewBag.LoginToken" type="hidden" />
-                    <input type="text" id="username" name="username" autocomplete="off" required />
-                    <input type="password" id="password" name="password" required />
-                    <input type="submit" id="btnLogin" value="Sign in" />
-
-                    <div class="bestview">
-                    </div>
-                </form>
-            </div>
+                <input type="submit" id="btnLogin" value="Sign in" />
+                <div class="bestview">
+                </div>
+            </form>
         </div>
     </div>
     <script src="~/lib/CryptoJS.js" asp-append-version="true"></script>
