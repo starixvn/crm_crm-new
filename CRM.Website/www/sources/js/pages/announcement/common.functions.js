@@ -37,7 +37,6 @@ export const validateFormik = (values, files, state) => {
     }
 
     const invalidFileSize = files.filter(x => !validFileSize(x));
-
     if(invalidFileSize.length > 0 || errorDrafts?.invalidFileSizeDraft.length > 0){
         errorDrafts?.invalidFileSizeDraft.map(item => invalidFileSize.push(item));
         const newInvalidFileSize = [...new Set(invalidFileSize)];
@@ -114,14 +113,8 @@ const getFileStringRemove = (oldFileName, uploadedFiles) => {
 
 export const getParams = (values, state) => {
     const {notificationTemplateId, content, headlineType, sendDate, sendType} = values;
-    //const splitFiles = !values.oldFileName ? values.oldFileName : values.oldFileName?.split(',');
     const formData = new FormData();
-    // if(splitFiles){
-    //     const oldFileRemove = splitFiles && splitFiles.filter(x => !state.uploadedFiles.find(file => typeof file === 'string' ? file === x : file.name === x));
-    //     oldFileRemove.forEach(oldFile => {
-    //         formData.append('fileStringRemove', oldFile);
-    //     });
-    // }
+
     if (values.oldFileName) {
         const fileStringRemoves = getFileStringRemove(values.oldFileName, state.uploadedFiles);
         if (fileStringRemoves.length > 0) {
@@ -131,12 +124,6 @@ export const getParams = (values, state) => {
         }
     }
 
-    const data0 = {};
-    formData.forEach((value, key) => (data0[key] = value));
-    // Log the data.
-    console.log('data0', data0);
-
-    console.log('state.uploadedFiles', state.uploadedFiles);
     const filerDupFiles = filterFormStringFiles(state.uploadedFiles);
     filerDupFiles.forEach(file => {
         if (file.type === 'string') {
@@ -145,7 +132,6 @@ export const getParams = (values, state) => {
             formData.append('formFile', file);
         }
     });
-    console.log('content', content);
 
     let index = 0;
     for (const [key, value] of Object.entries(content)) {
@@ -179,11 +165,6 @@ export const getParams = (values, state) => {
     Object.keys(params).forEach(key => {
         formData.append(key, params[key]);
     });
-
-    const data = {};
-    formData.forEach((value, key) => (data[key] = value));
-    // Log the data.
-    console.log('data', data);
 
     return formData;
 };
@@ -275,10 +256,6 @@ export const handleResetWhenBackPage = (props) => {
     props.setValidateAnnouncement(null);
 };
 
-const isValidateContent = content => {
-    return content.EN || content.ENSC || content.SC || content.TH || content.YN;
-};
-
 const isValidSiteCurrencyHeadline = values => {
     const { site, currency, headlineType } = values;
     return site && currency && headlineType !== '';
@@ -297,12 +274,8 @@ const isValidSendType = (values, state) => {
     return isSendNow || (isSendAt && values.sendDate);
 };
 
-const isValidHeadlineContent = (values, state) => {
-    return isValidateContent(values.content) && isValidGroupHeadline(values, state);
-};
-
 export const isDisableSubmit = (values, state, isSubmitting) => {
-    if (!isSubmitting && values.title && isValidSendType(values, state) && isValidHeadlineContent(values, state)){
+    if (!isSubmitting && values.title && isValidSendType(values, state) && isValidGroupHeadline(values, state)){
         return false;
     }
     return true;

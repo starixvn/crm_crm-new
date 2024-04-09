@@ -10,15 +10,9 @@ document.body.appendChild(portal);
 export default class UploadFile extends PureComponent {
     handleUploadFiles = files => {
         const uploaded = [...this.props.uploadedFiles];
-        // files.some(file => {
-        //     const isNotExist = uploaded.findIndex((f) => (f.name || f) === file.name) === -1;
-        //     if (isNotExist) {
-        //         uploaded.push(file);
-        //     }
-        // });
         const { languageKey } = this.props;
         files.some((file, key) => {
-            const isNotExist = uploaded.findIndex((f) => ((f.name || f) === file.name && f.key === languageKey)) === -1;
+            const isNotExist = uploaded.findIndex(item => (item.name === file.name && item.key === languageKey)) === -1;
             if (isNotExist) {
                 file.key = languageKey;
                 uploaded.push(file);
@@ -36,7 +30,7 @@ export default class UploadFile extends PureComponent {
     handleRemoveFile = (event, fileName) => {
         event.stopPropagation();
         const { uploadedFiles, languageKey, setStateUploadFile } = this.props;
-        const fileToRemove = uploadedFiles.find(file => ((file.name || file) === fileName && file.key === languageKey));
+        const fileToRemove = uploadedFiles.find(file => (file.name === fileName && file.key === languageKey));
         const filteredFiles = uploadedFiles.filter(file => (file.name !== fileToRemove.name || file.key !== fileToRemove.key));
         setStateUploadFile(filteredFiles, fileName);
     };
@@ -54,7 +48,6 @@ export default class UploadFile extends PureComponent {
         const { uploadedFiles, languageKey } = this.props;
         const filteredUploadedFiles = this.getFilterUploadFiles();
         const reorderedFiles = this.reorder(filteredUploadedFiles, source.index, destination.index);
-
         const otherFiles = uploadedFiles.filter(item => item.key !== languageKey);
         otherFiles.push(...reorderedFiles);
 
@@ -92,7 +85,7 @@ export default class UploadFile extends PureComponent {
                         <span className="mr-2 text-color" onClick={event => this.handlePreviewImage(event, item)}>
                             {item.name || item}
                         </span>
-                        <span className="rounded-circle icon-delete" onClick={event => this.handleRemoveFile(event, (item.name || item))} >
+                        <span className="rounded-circle icon-delete" onClick={event => this.handleRemoveFile(event, item.name)} >
                             <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-delete.png')} />
                         </span>
                     </Col>

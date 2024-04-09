@@ -7,10 +7,8 @@ import { Formik } from 'formik';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import UploadFile from './UploadFile';
 import Option from './Option';
 import ContentTab from './ContentTab';
-import DateTimeService from '@jsroot/common/dateTimeService';
 import SweetModalDialog from '@jsroot/components/SweetModalDialog';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import {
