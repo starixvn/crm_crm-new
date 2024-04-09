@@ -174,7 +174,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                 const headlineStaffsAndAuthority = this.getHeadlineStaffsAndAuthorityInfo(this.props.headlineStaffsAndAuthority);
                 this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority, isValidate: false });
             } else {
-                toast.errors(response.data.message);
+                toast.error(response.data.message);
             }
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }

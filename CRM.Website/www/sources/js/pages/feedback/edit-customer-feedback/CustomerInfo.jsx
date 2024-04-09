@@ -81,7 +81,7 @@ export default class CustomerInfo extends PureComponent {
                                                     {itemCom.communicationName}
                                                 </Form.Label>
                                                 <Col sm="8" md="8">
-                                                    <Form.Control type="text" size="sm" value={itemCom.communicationValue} className="shadow-none" autoComplete="off"
+                                                    <Form.Control type="text" maxLength="200" size="sm" value={itemCom.communicationValue} className="shadow-none" autoComplete="off"
                                                         onChange={event => {
                                                             this.handleChangeCommunicationTools(event.target.value, itemCom.indexCom);
                                                         }}/>
@@ -113,7 +113,7 @@ export default class CustomerInfo extends PureComponent {
                                         {item.communicationName}
                                     </Form.Label>
                                     <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" value={item.communicationValue} className="shadow-none" autoComplete="off"
+                                        <Form.Control type="text" size="sm" maxLength="200" value={item.communicationValue} className="shadow-none" autoComplete="off"
                                             onChange={event => {
                                                 this.handleChangeCommunicationTools(event.target.value, index);
                                             }}/>

@@ -118,7 +118,7 @@ export class CompanyService extends Component {
                 await this.getHeadlineCompanyService();
                 toast.success(LangHelper.getResource('UpdateHeadlineCompanyServiceSuccessful'));
             } else {
-                toast.errors(response.data.message);
+                toast.error(response.data.message);
             }
         }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
     }

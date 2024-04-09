@@ -169,7 +169,7 @@ export class CustomerInfo extends PureComponent{
                                         {item.communicationName}
                                     </Form.Label>
                                     <Col sm="8" md="8">
-                                        <Form.Control type="text" size="sm" value={item.communicationValue} className="shadow-none" autoComplete="off"
+                                        <Form.Control type="text" size="sm" maxLength="200" value={item.communicationValue} className="shadow-none" autoComplete="off"
                                             onChange={event => {
                                                 this.props.handleChangeValueInfo('otherAccountCommunicationInfos',
                                                     this.handleChangeOtherAccountCommunicationInfos(event.target.value, index));
