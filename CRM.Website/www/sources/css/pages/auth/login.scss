@@ -108,12 +108,38 @@
                 }
 
                 #password {
+                    width: 300px;
                     background: url('../../../images/login/icon-password.png') no-repeat left center;
                     background-position-x: 12px;
 
                     &:focus {
                         background: url('../../../images/login/icon-password-active.png') no-repeat left center;
                         background-position-x: 12px;
+                    }
+
+                    &::-ms-reveal, &::-ms-clear {
+                        display: none;
+                    }
+                }
+
+                .field-password {
+                    position: relative;
+
+                    .field-icon {
+                        height: 16px;
+                        width: 16px;
+                        cursor: pointer;
+                        position: absolute;
+                        right: 12px;
+                        top: 16px;
+
+                        &.icon-eye-hidden {
+                            background: url('../../../images/login/icon-eye-hidden.png') no-repeat left center;
+                        }
+
+                        &.icon-eye-show {
+                            background: url('../../../images/login/icon-eye.png') no-repeat left center;
+                        }
                     }
                 }
             }
