@@ -87,12 +87,12 @@ export class AccountantPIC extends Component {
     }
 
     async componentDidMount() {
+        await this.props.getCustomerById({ customerId: this.props.customerInfo?.custId });
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ updateHeadlineInfoPolicy: response });
         });
 
-        const { customerInfo } = this.props;
-        const params = ParamsCustomerInfo(customerInfo);
+        const params = ParamsCustomerInfo(this.props.customerInfo);
         this.setState(params);
         document.title = LangHelper.getResource('CRMSystem');
     }
