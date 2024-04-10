@@ -24,6 +24,11 @@ export class HeadlineCommunicationInfo extends Component {
                 show: false,
                 data: []
             },
+            confirmDelete: {
+                show: false,
+                picCommunicationTool: null,
+                indexPic: 0
+            },
             headlineInfoPolicy: null
         };
     }
@@ -149,7 +154,14 @@ export class HeadlineCommunicationInfo extends Component {
         const data = [...this.state.headlineCommunicationInfo];
         const index = data[indexPic].picCommunicationTools.findIndex(comTool => comTool.value === picCommunicationTool.value && comTool.type === picCommunicationTool.type);
         data[indexPic].picCommunicationTools.splice(index, 1);
-        this.setState({ headlineCommunicationInfo: data });
+        this.setState({
+            headlineCommunicationInfo: data,
+            confirmDelete: {
+                show: false,
+                picCommunicationTool: null,
+                indexPic: 0
+            }
+        });
     }
 
     async checkCustomerExistsOnCRM() {
@@ -397,12 +409,22 @@ export class HeadlineCommunicationInfo extends Component {
                                 </Form.Control>
                                 <div className='field-icon comm-tool'>
                                     <textarea type="text" className={`textarea-communication-tool ${picCommunicationTool.isError && 'invalid'}`}
+                                        placeholder="Separated by ',' for multiple contact info"
                                         value={picCommunicationTool.value} autoComplete="off" onChange={event => {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
                                     }} />
                                     {
                                         this.state.headlineInfoPolicy === Policy.Host && pic.picCommunicationTools.length > 1 &&
-                                        <div title='Delete communication tool' onClick={() => { this.deleteCommunicationTool(picCommunicationTool, indexPic); }}
+                                        <div title='Delete communication tool'
+                                                onClick={() => {
+                                                    this.setState({
+                                                        confirmDelete: {
+                                                            show: true,
+                                                            picCommunicationTool: picCommunicationTool,
+                                                            indexPic: indexPic
+                                                        }
+                                                    });
+                                                }}
                                             className='icon icon-delete'>
                                         </div>
                                     }
@@ -453,6 +475,13 @@ export class HeadlineCommunicationInfo extends Component {
         </>
     }
 
+    renderComfirmDeleteCommunicationTool() {
+        const { confirmDelete } = this.state;
+        return <>
+            <div className="confirm-headline">Are you going to delete the <strong>{confirmDelete.picCommunicationTool.value}</strong> communication tool?</div>
+        </>
+    }
+
     renderValueChatTypeMapping(data) {
         let chatTypeMapping = [];
         data.map((comPic, indexPic) => {
@@ -499,6 +528,25 @@ export class HeadlineCommunicationInfo extends Component {
                         size='lg'
                         onSubmit={this.handleSubmitEditConfirm}
                         onClose={this.handleCloseEditConfirm}
+                    />
+                }
+                {
+                    this.state.confirmDelete.show &&
+                    <ConfirmPopup
+                        className='confirm-headline-modal'
+                        title={LangHelper.getResource('ConfirmDeleteCommunicationTool')}
+                        content={this.renderComfirmDeleteCommunicationTool()}
+                        size='lg'
+                        onSubmit={() => { this.deleteCommunicationTool(this.state.confirmDelete.picCommunicationTool, this.state.confirmDelete.indexPic); }}
+                        onClose={() => {
+                            this.setState({
+                                confirmDelete: {
+                                    show: false,
+                                    picCommunicationTool: null,
+                                    indexPic: 0
+                                }
+                            });
+                        }}
                     />
                 }
             </>

@@ -93,6 +93,7 @@
     ConfirmCustomerSearchGuest: 'There is no information. Do you want to search guest customer?',
     ConfirmContentHeadlineCommunicationInfo: 'The following Letstalk/Telegram ID are being used to send notifications personally. If you update it, the Personal Chat Mapping shall be deactivated. Would you like to proceed?',
     ConfirmHeadlineCommunicationInfo: 'Update Headline Communication Info',
+    ConfirmDeleteCommunicationTool: 'Delete communication tool',
     ConfirmIgnoreChanges: 'Confirm Ignore Changes',
     Content: 'Content',
     Country: 'Country',

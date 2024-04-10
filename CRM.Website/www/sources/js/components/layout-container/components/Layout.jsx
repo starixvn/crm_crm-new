@@ -295,6 +295,7 @@ export class Layout extends Component {
 
     renderLeftRightContent = customerInfo => {
         const { settings, gridParams, isShowingLeftPanel, showErrorConfirmPopup, username } = this.state;
+        window.dispatchEvent(new Event('resize'));
         return (
             <>
                 {
