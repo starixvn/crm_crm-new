@@ -63,8 +63,8 @@ export const validateFormik = (values, customerDetail, settings, content) => {
     return errors;
 };
 
-export const initValues = settings =>{
-    const { statuses, languages, responses  } = settings;
+export const initValues = (settings, customerInfo) =>{
+    const { statuses, languages, responses } = settings;
     const feedbackDate = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     const resolutionTime = new Date(DateTimeService.toShortDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
     resolutionTime.setMinutes(resolutionTime.getMinutes() + 1);
@@ -87,7 +87,8 @@ export const initValues = settings =>{
         subject: '',
         ticketRefInput: '',
         description: '',
-        solution: ''
+        solution: '',
+        guestCommunicationInfos: customerInfo.guestCommunicationInfos
     };
 
     return initialValues;

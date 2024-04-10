@@ -43,8 +43,8 @@ export class AppContainer extends Component {
 
     componentDidMount() {
         document.title = LangHelper.getResource('CRMSystem');
-        getPermission(FunctionKey.Remarks, true).then(response => {
-            this.setState({ remarksPolicy: response });
+        getPermission(FunctionKey.Remarks, true).then(async response => {
+            await this.setState({ remarksPolicy: response });
         });
     }
 
@@ -100,6 +100,10 @@ export class AppContainer extends Component {
     render() {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
+
+        if (!this.state.remarksPolicy) {
+            return null;
+        }
 
         if (!this.props.custId) {
             return (

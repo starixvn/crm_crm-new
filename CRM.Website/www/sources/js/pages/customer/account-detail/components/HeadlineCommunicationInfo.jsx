@@ -476,9 +476,10 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     renderComfirmDeleteCommunicationTool() {
-        const { confirmDelete } = this.state;
+        const { settingCommunicationTool } = this.props;
+        const communicationToolIndex = settingCommunicationTool.findIndex(x => x.settingId === this.state.confirmDelete.picCommunicationTool.type);
         return <>
-            <div className="confirm-headline">Are you going to delete the <strong>{confirmDelete.picCommunicationTool.value}</strong> communication tool?</div>
+            <div className="confirm-headline">Are you going to delete the <strong>{settingCommunicationTool[communicationToolIndex].settingValue}</strong> communication tool?</div>
         </>
     }
 

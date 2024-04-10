@@ -143,7 +143,7 @@ export class NormalCommunicationInfo extends Component {
         let { otherAccountCommunication } = this.state;
         otherAccountCommunication.push({
             communicationID: '',
-            value: '',
+            communicationValue: '',
             isError: false
         });
         this.setState({ otherAccountCommunication: otherAccountCommunication });

@@ -10,14 +10,14 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import WithNavigation from '@jsroot/components/WithNavigation';
 export class LastRemarkDataGrid extends Component {
-    componentDidMount() {
+    async componentDidMount() {
         const param = { custId: this.props.custId };
-        this.props.getLastRemark(param);
+        await this.props.getLastRemark(param);
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    async componentDidUpdate(prevProps, prevState) {
         if (this.props.custId !== prevProps.custId) {
-            this.props.getLastRemark({ custId: this.props.custId });
+            await this.props.getLastRemark({ custId: this.props.custId });
         }
     }
 
