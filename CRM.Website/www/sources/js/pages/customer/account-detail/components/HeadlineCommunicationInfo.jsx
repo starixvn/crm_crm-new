@@ -256,7 +256,8 @@ export class HeadlineCommunicationInfo extends Component {
             } else {
                 let { headlineCommunicationInfo } = this.state;
                 response.data.map((item, index) => {
-                    headlineCommunicationInfo[index].isNameError = !item.isSuccessful;
+                    const indexError = headlineCommunicationInfo.findIndex(x => params[index].picId === x.picId);
+                    headlineCommunicationInfo[indexError].isNameError = !item.isSuccessful;
                 })
                 this.setState({ headlineCommunicationInfo: headlineCommunicationInfo });
                 toast.error(response.data.find(x => !x.isSuccessful).message);
