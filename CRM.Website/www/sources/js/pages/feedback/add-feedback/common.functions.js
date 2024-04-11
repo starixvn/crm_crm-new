@@ -60,7 +60,7 @@ export const validateFormik = (values, customerDetail, settings, state) => {
         errors.solution = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Solution'));
     }
 
-    values.guestCommunicationInfos.map((comTool,indexTool) => {
+    values.guestCommunicationInfos?.map((comTool,indexTool) => {
         if (comTool.communicationID && comTool.communicationValue) {
             const lengthValue = GetLengthNormalCommunicationValue(comTool, indexTool, values.guestCommunicationInfos);
             if (lengthValue > 200) {

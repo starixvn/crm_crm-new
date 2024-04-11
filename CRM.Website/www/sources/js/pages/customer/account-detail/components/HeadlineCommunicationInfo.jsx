@@ -322,6 +322,21 @@ export class HeadlineCommunicationInfo extends Component {
 
     getWidth = (picCommunicationTool, settingCommunicationTool) => (8 * settingCommunicationTool.find(x => x.settingId === picCommunicationTool.type).settingValue.length) + 24;
 
+    handleConfirmDeleteCommunicationTool(picCommunicationTool, indexPicCommunicationTool) {
+        if (picCommunicationTool.isNew) {
+            this.deleteCommunicationTool(picCommunicationTool, indexPicCommunicationTool);
+        }
+        else {
+            this.setState({
+                confirmDelete: {
+                    show: true,
+                    picCommunicationTool: picCommunicationTool,
+                    indexPic: indexPicCommunicationTool
+                }
+            });
+        }
+    }
+
     renderInfo = (pic, indexPic) => {        
         let { allSettings, headlinePicRoles, accountingPicRoles, settingCommunicationTool } = this.props;
         const languageSelected = this.props.allSettings.languages.map(item => {
@@ -416,15 +431,7 @@ export class HeadlineCommunicationInfo extends Component {
                                     {
                                         this.state.headlineInfoPolicy === Policy.Host && pic.picCommunicationTools.length > 1 &&
                                         <div title='Delete communication tool'
-                                                onClick={() => {
-                                                    this.setState({
-                                                        confirmDelete: {
-                                                            show: true,
-                                                            picCommunicationTool: picCommunicationTool,
-                                                            indexPic: indexPic
-                                                        }
-                                                    });
-                                                }}
+                                                onClick={() => { this.handleConfirmDeleteCommunicationTool(picCommunicationTool, indexPic); }}
                                             className='icon icon-delete'>
                                         </div>
                                     }
