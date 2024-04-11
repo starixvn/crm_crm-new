@@ -46,8 +46,9 @@ describe('ContentTab', () => {
                     sendDateString: '2023-01-01',
                     siteNameList: ''
                 },
-                languages: [{settingId:50000, settingName: 'NotificationTemplateLanguage', settingValue: 'EN'}],
-                content: [{EN: 'test en'}]
+                languages: [{settingId:50000, settingName: 'NotificationTemplateLanguage', settingValue: 'EN', mapleLanguage: 'EN'}],
+                content: [{EN: 'test en'}],
+                contentFiles: ['EN']
             };
             const props = {
                 settings: {

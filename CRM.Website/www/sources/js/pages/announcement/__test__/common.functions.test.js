@@ -32,12 +32,20 @@ describe('common.functions', () => {
             const expected = {
                 //notificationTemplate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('NotificationTemplate')),
                 title: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Title')),
-                content: LangHelper.formatString(LangHelper.getResource('FieldRequired'), 'Content EN'),
                 sendDate: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SendTime')),
+                imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError'), 'test')
                 imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError')),
                 site: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site')),
                 currency: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency')),
             };
+            const state = {
+                invalidWidthHeight: ['test'],
+                isHeadlineGroup: { isSiteType: false },
+                errorDrafts: {
+                    invalidFileTypeDraft: [],
+                    invalidFileSizeDraft: []
+                }
+            }
             // Act
             const actual = commonFunc.validateFormik(values, [], state);
 
@@ -48,9 +56,9 @@ describe('common.functions', () => {
         it('should return exact errors', () => {
             // Arrange
             const file = [{
-                fileTypes: 'fileTypes',
+                type: 'fileTypes',
                 size: 100000000000000,
-                name: 'file1'
+                name: 'file1.test'
             }];
             const values = {
                 notificationTemplate: '1',
@@ -59,21 +67,27 @@ describe('common.functions', () => {
                     EN: '{test}'
                 },
                 sendType: '',
-                sendDate: null
+                sendDate: null,
+                site: null,
+                currency: null,
+                headlineType: ''
             };
             const state = {
-                invalidWidthHeight: 'test',
-                isHeadlineGroup: {
-                    isSiteType: true
+                invalidWidthHeight: ['test'],
+                isHeadlineGroup: { isSiteType: true },
+                errorDrafts: {
+                    invalidFileTypeDraft: ['draft'],
+                    invalidFileSizeDraft: ['draft']
                 }
             }
             const expected = {
                 content: LangHelper.getResource('ContentLanguageError'),
                 sendType: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SendTime')),
                 imageFileType: LangHelper.formatString(LangHelper.getResource('ImageFileTypeError'), 'file1'),
-                imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError'), 'file1'),
+                imageFileSize: LangHelper.formatString(LangHelper.getResource('ImageSizeError'), 'test'),
+                site: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site')),
                 currency: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Currency')),
-                site: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Site'))
+                headlineType: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('HeadlineType'))
             };
             // Act
             const actual = commonFunc.validateFormik(values, file, state);
@@ -88,22 +102,30 @@ describe('common.functions', () => {
             // Arrange
             const values = {
                 notificationTemplateId: 1,
-                content: { en: 'English content', fr: 'French content' },
+                content: { EN: 'English content', EC: 'French content' },
                 headlineType: 'Breaking News',
                 sendDate: new Date(),
                 sendType: 'Send At',
-                oldFileName: 'oldFile.txt',
+                oldFileName: [{ name: 'test0.png', key: 'EN', type: 'string' }],
                 title: 'Notification Title',
-                currency: 'USD',
-                site: 'ARM'
+                site: 'test',
+                currency: 'test',
+
             };
 
             const state = {
-                languages: [{ mapLabel: 'en', settingId: 1 }, { mapLabel: 'fr', settingId: 2 }],
-                uploadedFiles: ['newFile.txt'],
+                languages: [{ mapLabel: 'EN', settingId: 1 }, { mapLabel: 'EC', settingId: 2 }],
+                uploadedFiles: [
+                    { name: 'test.png', key: 'EN', type: 'string' },
+                    { name: 'newFile.png', key: 'EN', type: 'string' },
+                    { name: 'test.png', key: 'EC', type: 'file' },
+                ],
                 headlineGroups: ['World News'],
                 options: { site: 'Site1', currency: 'USD' },
-                isHeadlineGroup: { isUsername: true, isSiteType: true }
+                isHeadlineGroup: {
+                    isUsername: true,
+                    isSiteType: true
+                }
             };
 
             // Act
@@ -112,16 +134,18 @@ describe('common.functions', () => {
             //Assert
             expect(formData.get('notificationTemplateId')).toBe('1');
             expect(formData.get('headlineNameList')).toBe('World News');
-            expect(formData.get('siteNameList')).toBe('ARM');
-            expect(formData.get('currencyList')).toBe('USD');
+            expect(formData.get('siteNameList')).toBe('test');
+            expect(formData.get('currencyList')).toBe('test');
             expect(formData.get('headlineType')).toBe('Breaking News');
             expect(formData.get('title')).toBe('Notification Title');
             expect(formData.get('sendImmediately')).toBe("false");
-            expect(formData.get('fileString')).toBe('newFile.txt');
+            expect(formData.get('fileString')).toBe('test.png');
             expect(formData.get('contents[0][languageId]')).toBe('1');
             expect(formData.get('contents[0][value]')).toBe('English content');
+            expect(formData.get('contents[0][fileName]')).toBe('test.png,newFile.png');
             expect(formData.get('contents[1][languageId]')).toBe('2');
             expect(formData.get('contents[1][value]')).toBe('French content');
+            expect(formData.get('contents[1][fileName]')).toBe('test.png');
         });
     });
 
@@ -298,5 +322,228 @@ describe('common.functions', () => {
             expect(actual).toEqual('');
         });
     });
-});
 
+    describe('checkInvalidMaxLengthContent', () => {
+        it('should return invalidContentMaxLength as false if content or tab is missing', () => {
+            const result = commonFunc.checkInvalidMaxLengthContent(null, 'tab');
+            expect(result.invalidContentMaxLength).toBe(false);
+        
+            const result2 = commonFunc.checkInvalidMaxLengthContent('content', null);
+            expect(result2.invalidContentMaxLength).toBe(false);
+        
+            const result3 = commonFunc.checkInvalidMaxLengthContent(null, null);
+            expect(result3.invalidContentMaxLength).toBe(false);
+        });
+      
+        it('should return invalidContentMaxLength as false if content length is less than or equal to MAX_LENGTH_TELEGRAM', () => {
+            const content = {
+                tabName: 'This is a valid content without HTML tags',
+            };
+            const result = commonFunc.checkInvalidMaxLengthContent(content, 'tabName');
+            expect(result.invalidContentMaxLength).toBe(false);
+        });
+      
+        it('should return correct textInvalidContentMaxLength message', () => {
+            const longContent = {
+                tabName: 'This is a valid content with HTML tags <div>This is a long content exceeding the MAX_LENGTH_TELEGRAM</div>',
+            };
+            const result = commonFunc.checkInvalidMaxLengthContent(longContent, 'tabName');
+            expect(result.textInvalidContentMaxLength).toBe(`Max length ${longContent.tabName.replace('<div>','').replace('</div>', '').length}/${4096}`);
+        });
+      
+        it('should handle empty tab name properly', () => {
+            const content = {
+                '': 'This is content for an empty tab',
+            };
+            const result = commonFunc.checkInvalidMaxLengthContent(content, '');
+            expect(result.invalidContentMaxLength).toBe(false);
+        });
+      
+        it('should handle empty content properly', () => {
+            const result = commonFunc.checkInvalidMaxLengthContent({}, 'tabName');
+            expect(result.invalidContentMaxLength).toBe(false);
+        });
+    });
+
+    describe('getFileString', () => {
+        it('should return an empty array if contents is empty', () => {
+            const contents = [];
+            const result = commonFunc.getFileString(contents);
+            expect(result).toEqual([]);
+        });
+      
+        it('should return an empty array if none of the items in contents have a fileName', () => {
+            const contents = [
+                { languageCode: 'en', content: 'Content 1' },
+                { languageCode: 'fr', content: 'Content 2' },
+            ];
+            const result = commonFunc.getFileString(contents);
+            expect(result).toEqual([]);
+        });
+      
+        it('should return an array of file strings for each fileName in contents', () => {
+            const contents = [
+                { fileName: 'file1.txt,file2.txt', languageCode: 'en', content: 'Content 1' },
+                { fileName: 'file3.txt', languageCode: 'fr', content: 'Content 2' },
+            ];
+            const result = commonFunc.getFileString(contents);
+            expect(result).toEqual([
+                { key: 'en', name: 'file1.txt', type: 'string' },
+                { key: 'en', name: 'file2.txt', type: 'string' },
+                { key: 'fr', name: 'file3.txt', type: 'string' },
+            ]);
+        });
+      
+        it('should handle special characters in languageCode properly', () => {
+            const contents = [
+                { fileName: 'file1.txt', languageCode: 'en-US', content: 'Content 1' },
+                { fileName: 'file2.txt', languageCode: 'fr-CA', content: 'Content 2' },
+            ];
+            const result = commonFunc.getFileString(contents);
+            expect(result).toEqual([
+                { key: 'enUS', name: 'file1.txt', type: 'string' },
+                { key: 'frCA', name: 'file2.txt', type: 'string' },
+            ]);
+        });
+      
+        it('should handle empty fileName properly', () => {
+            const contents = [
+                { fileName: '', languageCode: 'en', content: 'Content 1' },
+                { fileName: '', languageCode: 'fr', content: 'Content 2' },
+            ];
+            const result = commonFunc.getFileString(contents);
+            expect(result).toEqual([]);
+        });
+    });
+
+    describe('renderOption', () => {
+        it('should render an option element with the provided key, value, and label', () => {
+            const key = '1';
+            const value = 'option-value';
+            const label = 'Option Label';
+            const option = commonFunc.renderOption(key, value, label);
+        
+            expect(option.props.value).toBe(value);
+            expect(option.props.children).toBe(label);
+        });
+    });
+
+    describe('validFileSize', () => {
+        it('should return true for a file with size less than 10MB', () => {
+            const file = { size: 9999 };
+            expect(commonFunc.validFileSize(file)).toBe(true);
+        });
+      
+        it('should return false for a file with size less than 10MB', () => {
+            const file = { size: 10485761 };
+            expect(commonFunc.validFileSize(file)).toBe(false);
+        });
+    });
+
+    describe('validFileType', () => {
+        it('should return true for valid image/jpeg file type', () => {
+          const file = { type: 'image/jpeg' };
+          expect(commonFunc.validFileType(file)).toBe(true);
+        });
+      
+        it('should return false for invalid file type', () => {
+          const file = { type: 'application/pdf' };
+          expect(commonFunc.validFileType(file)).toBe(false);
+        });
+    });
+
+    describe('validFileExtension function', () => {
+        it('should return true for valid file extension "jpeg"', () => {
+            const file = { name: 'image.jpeg' };
+            expect(commonFunc.validFileExtension(file)).toBe(true);
+        });
+
+        it('should return false for invalid file extension', () => {
+            const file = { name: 'image.pdf' };
+            expect(commonFunc.validFileExtension(file)).toBe(false);
+        });
+    });
+
+    describe('handleResetWhenBackPage', () => {
+        it('should reset all announcement states to null', () => {
+            const props = {
+                setCreateAnnouncement: jest.fn(),
+                setEditAnnouncement: jest.fn(),
+                setValidateAnnouncement: jest.fn(),
+            };
+        
+            commonFunc.handleResetWhenBackPage(props);
+        
+            expect(props.setCreateAnnouncement).toHaveBeenCalledWith(null);
+            expect(props.setEditAnnouncement).toHaveBeenCalledWith(null);
+            expect(props.setValidateAnnouncement).toHaveBeenCalledWith(null);
+        });
+    });
+
+    describe('isDisableSubmit', () => {
+        it('should return true for disableSubmit with have state', () => {
+            const isSubmitting = false;
+            const values = {
+                titles: 'test',
+
+            };
+            const state = {
+                isSendType: {
+                    isSendNow: true
+                },
+                isHeadlineGroup: [{ isUsername: true }],
+                headlineGroups: ['test']
+            };
+            expect(commonFunc.isDisableSubmit(values, state, isSubmitting)).toBe(true);
+        });
+
+        it('should return true for disableSubmit with have values', () => {
+            const isSubmitting = false;
+            const values = {
+                titles: 'test',
+                sendDate: '09/04'
+            };
+            const state = {
+                isSendType: {
+                    isSendNow: false,
+                    isSendAt: true
+                },
+                isHeadlineGroup: [{ isUsername: true }]
+            };
+            expect(commonFunc.isDisableSubmit(values, state, isSubmitting)).toBe(true);
+        });
+    });
+
+    describe('getUsernames', () => {
+        it('should return combined string if both headlineNameList and directAccountList are provided', () => {
+            const headlineNameList = 'John,Doe';
+            const directAccountList = 'user1,user2';
+        
+            const result = commonFunc.getUsernames(headlineNameList, directAccountList);
+        
+            expect(result).toBe(`${headlineNameList},${directAccountList}`);
+        });
+      
+        it('should return directAccountList if only directAccountList is provided', () => {
+            const directAccountList = 'user1,user2';
+        
+            const result = commonFunc.getUsernames(undefined, directAccountList);
+        
+            expect(result).toBe(directAccountList);
+        });
+      
+        it('should return headlineNameList if only headlineNameList is provided', () => {
+            const headlineNameList = 'John,Doe';
+        
+            const result = commonFunc.getUsernames(headlineNameList);
+        
+            expect(result).toBe(headlineNameList);
+        });
+      
+        it('should return an empty string if no arguments are provided', () => {
+            const result = commonFunc.getUsernames();
+        
+            expect(result).toBe('');
+        });
+    });
+});

@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import ContentTab from '../ContentTab';
 import LangHelper from '@jsroot/common/langHelper';
-import { Tabs } from 'react-bootstrap';
+import { Tabs, Form } from 'react-bootstrap';
 import CkEditor from '@jsroot/components/ckeditor/index';
 
 describe('ContentTab', () => {
@@ -23,7 +23,13 @@ describe('ContentTab', () => {
             tab: 'EN',
             isValidContent: false,
             content: {EN:'en'},
-            setFieldValue: jest.fn()
+            setFieldValue: jest.fn(),
+            isChangeTemplate: true,
+            parameters: ['EN'],
+            handleChangeParameter: jest.fn(),
+            values: {
+                EN: 'test'
+            }
         };
         it('should call exact function when select tab', () => {
             // Arrange
@@ -45,6 +51,17 @@ describe('ContentTab', () => {
 
             // Assert 
             expect(props.setFieldValue).toHaveBeenCalledTimes(2);
+        });
+
+        it('should call exact function when onchange form-input-param', () => {
+            // Arrange
+            const contentTab = shallow(<ContentTab {...props}/>);
+            
+            //Act
+            contentTab.find(Form.Control).at(0).simulate('change');
+
+            // Assert 
+            expect(props.handleChangeParameter).toHaveBeenCalled();
         });
     });
 }); 

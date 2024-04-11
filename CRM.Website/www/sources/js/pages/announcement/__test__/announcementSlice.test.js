@@ -14,7 +14,9 @@ import announcement, {
     setContentPopup,
     setViewDetailPopup,
     setAutoRefresh,
-    setIsRefresh
+    setIsRefresh,
+    setValidateAnnouncement,
+    setRedirectActionParams
 } from '../announcementSlice';
 
 import { AUTO_REFRESH_TIMES } from '@jsroot/common/constants';
@@ -233,6 +235,28 @@ describe('announcementSlice reducer', () => {
             })
         ).toEqual({
             autoRefresh : 90
+        });
+    });
+
+    it('should handle setValidateAnnouncement', () => {
+        expect(
+            announcement({}, {
+                type: setValidateAnnouncement.type,
+                payload : true
+            })
+        ).toEqual({
+            validateAnnouncementResult : true
+        });
+    });
+
+    it('should handle setRedirectActionParams', () => {
+        expect(
+            announcement({}, {
+                type: setRedirectActionParams.type,
+                payload : true
+            })
+        ).toEqual({
+            redirectActionParams : true
         });
     });
 });

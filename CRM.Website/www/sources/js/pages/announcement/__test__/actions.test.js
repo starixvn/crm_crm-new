@@ -9,7 +9,8 @@ import {
     setCreateAnnouncement,
     setEditAnnouncement,
     setAnnouncementTemplate,
-    setSettings
+    setSettings,
+    setValidateAnnouncement
 } from '../announcementSlice';
 
 const middlewares = [thunk];
@@ -177,6 +178,30 @@ describe('actionCreators', () => {
 
             // Assert
             expect(DataService.getDataAsync).toHaveBeenCalledWith('Announcement/Cancel?id=1&status=done');
+        });
+    });
+
+    describe('validateAnnouncement', () => {
+        it('should handle validateAnnouncement when fetching data have been done', async () => {
+            // Arrange
+            const expectedParams = {
+                announcementId: null,
+                fromDate: "Feb 16, 2023 12:00:00 AM",
+                pageIndex: 1,
+                pageSize: 100
+            };
+            const response ={ data: [{announcementId: 65014, notificationTemplateName: "Special Announcement s" }], totalItems : 300 };
+            const expectedActions = [{ type: setValidateAnnouncement.type, payload: response.data }];
+            const store = mockStore({});
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+
+            // Act
+            await store.dispatch(ActionCreators.validateAnnouncement(expectedParams));
+
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('Announcement/ValidateAnnouncement', expectedParams);
+            expect(store.getActions()).toEqual(expectedActions);
         });
     });
 });

@@ -818,17 +818,17 @@ describe('AppContainer', () => {
             }
         };
 
-        it('should call exact function when change parameter ', () => {
-            // Arrange
-            const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
-            newAnnouncement.handleChangeParameter = jest.fn();
-            newAnnouncement.setState(state);
-            // Act
-            const form = shallow(newAnnouncement.renderForm(formikProps));
-            form.find('.form-input-param').at(0).simulate('change');
-            // Assert
-            expect(newAnnouncement.handleChangeParameter).toHaveBeenCalled();
-        });
+        // it('should call exact function when change parameter ', () => {
+        //     // Arrange
+        //     const newAnnouncement = shallow(<NewAnnouncement {...props}/>, { disableLifecycleMethods: true }).instance();
+        //     newAnnouncement.handleChangeParameter = jest.fn();
+        //     newAnnouncement.setState(state);
+        //     // Act
+        //     const form = shallow(newAnnouncement.renderForm(formikProps));
+        //     form.find('.form-input-param').at(0).simulate('change');
+        //     // Assert
+        //     expect(newAnnouncement.handleChangeParameter).toHaveBeenCalled();
+        // });
 
         it('should call exact function when onblur input', () => {
             // Arrange

@@ -10,7 +10,8 @@ describe('component with redux', () => {
     const initialState = {
         announcementTemplate: {},
         createAnnouncementResult: {},
-        settings: {}
+        settings: {},
+        validateAnnouncementResult: {}
     };
 
     const store = mockStore(initialState);
@@ -32,6 +33,9 @@ describe('component with redux', () => {
         );
         expect(wrapper.props().children.props.settings).toEqual(
             initialState.settings
+        );
+        expect(wrapper.props().children.props.validateAnnouncementResult).toEqual(
+            initialState.validateAnnouncementResult
         );
     });
 });
