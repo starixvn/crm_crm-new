@@ -55,6 +55,12 @@
         }
     }
 
+    .table-last-five-remarks {
+        .body-content {
+            max-height: 350px !important;
+        }
+    }
+
     @include Laptop-Medium{
         .communication-log-grid .btn{
             padding: 2px 6px;
@@ -62,7 +68,6 @@
         }
     }
 }
-
 .customer-modal-dialog {
     .check-customer {
         display: flex;
