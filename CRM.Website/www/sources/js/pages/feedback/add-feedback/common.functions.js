@@ -10,7 +10,7 @@ import DateTimeService from '@jsroot/common/dateTimeService';
 import { DefaultLanguages } from '@jsroot/common/constants';
 import moment from 'moment';
 
-export const validateFormik = (values, customerDetail, settings, content) => {
+export const validateFormik = (values, customerDetail, settings, state) => {
     const errors = {};
     if (customerDetail === null && values.identityInformation ==='') {
         errors.identityInformation = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Identity'));
@@ -52,16 +52,40 @@ export const validateFormik = (values, customerDetail, settings, content) => {
         errors.subject = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Subject'));
     }
 
-    if (content.description === '') {
+    if (state.content.description === '') {
         errors.description = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Description'));
     }
 
-    if (content.solution === '') {
+    if (state.content.solution === '') {
         errors.solution = LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Solution'));
     }
 
+    values.guestCommunicationInfos.map((comTool,indexTool) => {
+        if (comTool.communicationID && comTool.communicationValue) {
+            const lengthValue = GetLengthNormalCommunicationValue(comTool, indexTool, values.guestCommunicationInfos);
+            if (lengthValue > 200) {
+                errors.guestCommunicationInfos = LangHelper.getResource('CommunicationExceedMaxLength');
+                comTool.isError = true;
+            }
+            else {
+                comTool.isError = false;
+            }
+        }
+    })
+
     return errors;
 };
+
+export const GetLengthNormalCommunicationValue = (compic, indexCompic, communicationTools) => {
+    let value = compic.communicationValue;
+    communicationTools.map((item, index) => {
+        if (item.communicationID && item.communicationValue &&
+            index !== indexCompic && compic.communicationID === item.communicationID) {
+            value += ',' + item.communicationValue;
+        }
+    })
+    return value.length;
+}
 
 export const initValues = (settings, customerInfo) =>{
     const { statuses, languages, responses } = settings;

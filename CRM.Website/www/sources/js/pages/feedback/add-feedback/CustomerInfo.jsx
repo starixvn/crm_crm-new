@@ -193,6 +193,7 @@ export class CustomerInfo extends PureComponent{
         let { guestCommunicationInfos } = this.state;
         guestCommunicationInfos[index][name] = value;
         this.setState({ guestCommunicationInfos: guestCommunicationInfos });
+        this.props.setFieldValue('guestCommunicationInfos', guestCommunicationInfos);
         this.props.handleChangeValueInfo('guestCommunicationInfos', guestCommunicationInfos);
     }
 
@@ -201,6 +202,7 @@ export class CustomerInfo extends PureComponent{
         guestCommunicationInfos.push({
             communicationID: '',
             value: '',
+            isError: false
         });
         this.setState({ guestCommunicationInfos: guestCommunicationInfos });
         this.props.handleChangeValueInfo('guestCommunicationInfos', guestCommunicationInfos);
@@ -212,11 +214,12 @@ export class CustomerInfo extends PureComponent{
         data.splice(index, 1);
         this.setState({ guestCommunicationInfos: data });
         this.props.handleChangeValueInfo('guestCommunicationInfos', data);
+        this.props.setFieldValue('guestCommunicationInfos', data);
     }
 
     renderGuestCommunication () {
         const { guestCommunicationInfos } = this.state;
-        const { settingCommunicationTool } = this.props;
+        const { settingCommunicationTool, touched, errors } = this.props;
         return <>
             <div className="separate">
                 <hr />
@@ -227,7 +230,7 @@ export class CustomerInfo extends PureComponent{
                 </Button>
                 <div>
                     {
-                        guestCommunicationInfos.length !== 0 &&
+                        guestCommunicationInfos.length !== 0 && 
                         <Form.Group as={Row}>
                             {
                                 guestCommunicationInfos.map((picCommunicationTool, index) => {
@@ -248,6 +251,7 @@ export class CustomerInfo extends PureComponent{
                                                 </div>
                                                 <Col sm="8" md="8" className="guest-communication-value">
                                                     <Form.Control type="text" size="sm" value={picCommunicationTool.communicationValue} className="shadow-none" autoComplete="off"
+                                                        isInvalid={picCommunicationTool.isError && touched.guestCommunicationInfos && errors.guestCommunicationInfos}
                                                         onChange={event => {
                                                             this.handleChangeGuestCommunicationInfo('communicationValue', event.target.value, index);
                                                         }} />

@@ -7,6 +7,7 @@ import LangHelper from '@jsroot/common/langHelper';
 import { ParamsCustomerInfo, ParamsSubmit, ValidateNormalCommunicationInfo } from '../common.functions';
 import { toast } from 'react-toastify';
 import { checkHostPermissionOnCurrentCustomer } from '@jsroot/common/shareScripts';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
@@ -16,6 +17,11 @@ export class NormalCommunicationInfo extends Component {
         super(props);
         const currentClientTime = new Date(DateTimeService.toLongDateTimeFormat(DateTimeService.toClientDateTime(new Date())));
         this.state = {
+            confirmDelete: {
+                show: false,
+                communicationValue: null,
+                communicationID: null
+            },
             isValidate: false,
             isShowAccountInfo: true,
             isShowAccountantPIC: true,
@@ -136,7 +142,14 @@ export class NormalCommunicationInfo extends Component {
         const data = [...this.state.otherAccountCommunication];
         const index = data.findIndex(comTool => comTool.communicationID === type && comTool.communicationValue === value);
         data.splice(index, 1);
-        this.setState({ otherAccountCommunication: data });
+        this.setState({
+            otherAccountCommunication: data,
+            confirmDelete: {
+                show: false,
+                communicationValue: null,
+                communicationID: null
+            }
+        });
     }
 
     addNewCommunicationTool = () => {
@@ -220,6 +233,14 @@ export class NormalCommunicationInfo extends Component {
         });
     }
 
+    renderComfirmDeleteCommunicationTool() {
+        const { settingCommunicationTool } = this.props;
+        const communicationToolIndex = settingCommunicationTool.findIndex(x => x.settingId === this.state.confirmDelete.communicationID);
+        return <>
+            <div className="confirm-headline">Are you going to delete the <strong>{settingCommunicationTool[communicationToolIndex].settingValue}</strong> communication tool?</div>
+        </>
+    }
+
     render() {
         const { customerInfo } = this.props;
         const values = this.state;
@@ -227,60 +248,89 @@ export class NormalCommunicationInfo extends Component {
             return null;
         }
         return (
-            <Form className='group-account other-pic'>
-                <div className='group-title'>
-                    {LangHelper.getResource('CommunicationInfo')}
-                    {
-                        values.isHostOnCurrentCustomer &&
-                        <img onClick={this.handleSubmitOtherCommunicationInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
-                    }
-                </div>
-                <div className='add-comm-tool'>
-                    {
-                        values.isHostOnCurrentCustomer &&
-                        <Button className='btn-add' variant="primary" size="sm" onClick={this.addNewCommunicationTool}>
-                            {LangHelper.getResource('AddCommunicationTool')}
-                        </Button>
-                    }
-                    <div className='group-content'>
+            <>
+                <Form className='group-account other-pic'>
+                    <div className='group-title'>
+                        {LangHelper.getResource('CommunicationInfo')}
                         {
-                            values.otherAccountCommunication?.map((picCommunicationTool, indexPicCommunicationTool) => {
-                                return <>
-                                    <Form.Group className="other-communication-tool">
-                                        <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="CommunicationID" id="CommunicationID"
-                                            style={{
-                                                width: `${picCommunicationTool.communicationID !== '' ? this.getWidth(picCommunicationTool, this.props.settingCommunicationTool) : 115}px`
-                                            }}
-                                            value={picCommunicationTool.communicationID} onChange={event => {
-                                                this.handleChangeCommunication('communicationID', parseInt(event.target.value, 10), indexPicCommunicationTool);
-                                            }}>
-                                            <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
-                                            {this.props.settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
-                                        </Form.Control>
-                                        <div className='field-icon'>
-                                            <textarea className={`${picCommunicationTool.isError && 'invalid-other-communication-tool'} textarea-communication-tool`}
-                                                placeholder="Separated by ',' for multiple contact info" cdkTextareaAutosize
-                                                value={picCommunicationTool.communicationValue} autoComplete="off" onChange={event => {
-                                                    this.handleChangeCommunication('communicationValue', event.target.value, indexPicCommunicationTool);
-                                                }} />
-                                            {
-                                                values.isHostOnCurrentCustomer &&
-                                                <div onClick={() => { this.deleteCommunicationTool(picCommunicationTool.communicationValue, picCommunicationTool.communicationID); }}
-                                                    className='icon icon-delete' title={LangHelper.getResource('DeleteCommunicationTool')}>
-                                                </div>
-                                            }
-                                        </div>
-                                    </Form.Group>
-                                </>
-                            })
-                        }
-                        {
-                            values.otherAccountCommunication?.length === 0 &&
-                            <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
+                            values.isHostOnCurrentCustomer &&
+                            <img onClick={this.handleSubmitOtherCommunicationInfo} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-save.svg')} />
                         }
                     </div>
-                </div>
-            </Form>
+                    <div className='add-comm-tool'>
+                        {
+                            values.isHostOnCurrentCustomer &&
+                            <Button className='btn-add' variant="primary" size="sm" onClick={this.addNewCommunicationTool}>
+                                {LangHelper.getResource('AddCommunicationTool')}
+                            </Button>
+                        }
+                        <div className='group-content'>
+                            {
+                                values.otherAccountCommunication?.map((picCommunicationTool, indexPicCommunicationTool) => {
+                                    return <>
+                                        <Form.Group className="other-communication-tool">
+                                            <Form.Control as="select" size="sm" className="shadow-none custom-select-communicationTool" name="CommunicationID" id="CommunicationID"
+                                                style={{
+                                                    width: `${picCommunicationTool.communicationID !== '' ? this.getWidth(picCommunicationTool, this.props.settingCommunicationTool) : 115}px`
+                                                }}
+                                                value={picCommunicationTool.communicationID} onChange={event => {
+                                                    this.handleChangeCommunication('communicationID', parseInt(event.target.value, 10), indexPicCommunicationTool);
+                                                }}>
+                                                <option value="" disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                                                {this.props.settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
+                                            </Form.Control>
+                                            <div className='field-icon'>
+                                                <textarea className={`${picCommunicationTool.isError && 'invalid-other-communication-tool'} textarea-communication-tool`}
+                                                    placeholder="Separated by ',' for multiple contact info" cdkTextareaAutosize
+                                                    value={picCommunicationTool.communicationValue} autoComplete="off" onChange={event => {
+                                                        this.handleChangeCommunication('communicationValue', event.target.value, indexPicCommunicationTool);
+                                                    }} />
+                                                {
+                                                    values.isHostOnCurrentCustomer &&
+                                                    <div onClick={() => {
+                                                            this.setState({
+                                                                confirmDelete: {
+                                                                    show: true,
+                                                                    communicationValue: picCommunicationTool.communicationValue,
+                                                                    communicationID: picCommunicationTool.communicationID
+                                                                }
+                                                            });
+                                                    }}
+                                                        className='icon icon-delete' title={LangHelper.getResource('DeleteCommunicationTool')}>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </Form.Group>
+                                    </>
+                                })
+                            }
+                            {
+                                values.otherAccountCommunication?.length === 0 &&
+                                <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
+                            }
+                        </div>
+                    </div>
+                </Form>
+                {
+                    values.confirmDelete.show &&
+                    <ConfirmPopup
+                        className='confirm-headline-modal'
+                        title={LangHelper.getResource('ConfirmDeleteCommunicationTool')}
+                        content={this.renderComfirmDeleteCommunicationTool()}
+                        size='lg'
+                        onSubmit={() => { this.deleteCommunicationTool(values.confirmDelete.communicationValue, values.confirmDelete.communicationID); }}
+                        onClose={() => {
+                            this.setState({
+                                confirmDelete: {
+                                    show: false,
+                                    communicationValue: null,
+                                    communicationID: null
+                                }
+                            });
+                        }}
+                    />
+                }
+            </>
         );
     }    
 }

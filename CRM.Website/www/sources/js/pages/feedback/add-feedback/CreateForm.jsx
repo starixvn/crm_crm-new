@@ -451,7 +451,7 @@ export class CreateForm extends Component {
         this.setState({ customerInfo: { ...this.state.customerInfo, [name]: value } });
     };
 
-    renderIdentityInformation = (values, errors, touched, handleChange) => {
+    renderIdentityInformation = (values, errors, touched, handleChange, setFieldValue) => {
         const { customerDetail } = this.props;
         const { isShowCustomerDetailOption } = this.state.collapse;
         const isCollapse = customerDetail === null ? !isShowCustomerDetailOption : isShowCustomerDetailOption;
@@ -496,6 +496,7 @@ export class CreateForm extends Component {
                                 customerDetail={customerDetail}
                                 settingCommunicationTool={this.props.settingCommunicationTool}
                                 customerInfo={this.state.customerInfo}
+                                errors={errors} touched={touched} setFieldValue={setFieldValue}
                                 handleChange={this.handleChangeCustomerInfo}
                                 handleChangeValueInfo={this.handleChangeValueInfo}
                                 settings={this.props.settings}
@@ -665,7 +666,7 @@ export class CreateForm extends Component {
                         message={this.props.addFeedbackResult.message || LangHelper.getResource('AddFeedbackSuccessfully')} />
                 }
                 {
-                    this.renderIdentityInformation(values, errors, touched, handleChange)
+                    this.renderIdentityInformation(values, errors, touched, handleChange, setFieldValue)
                 }
                 {
                     this.renderDetails(values, errors, touched, handleChange, setFieldValue)
@@ -852,7 +853,7 @@ export class CreateForm extends Component {
             <Formik
                 innerRef={el => this.formik = el}
                 initialValues={initialValues}
-                validate={values => validateFormik(values, customerDetail, settings, this.state.content)}
+                validate={values => validateFormik(values, customerDetail, settings, this.state)}
                 onSubmit={this.handleSubmit}
             >
                 {this.renderForm}
