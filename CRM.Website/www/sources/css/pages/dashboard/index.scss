@@ -58,6 +58,10 @@
     .table-last-five-remarks {
         .body-content {
             max-height: 350px !important;
+
+            @include Laptop-Medium{
+                max-height: 200px !important;
+            }
         }
     }
 

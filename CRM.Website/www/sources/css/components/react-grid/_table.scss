@@ -35,6 +35,10 @@ $bgTotal: $bgSummaryTotal;
                 color: #363636;
                 padding: 8px;
 
+                @include Laptop-Medium {
+                padding: 2px;
+                }
+
                 &:first-child {
                     border-left-color: $colorBorderTable;
                 }
