@@ -424,7 +424,7 @@ export class HeadlineCommunicationInfo extends Component {
                                 </Form.Control>
                                 <div className='field-icon comm-tool'>
                                     <textarea type="text" className={`textarea-communication-tool ${picCommunicationTool.isError && 'invalid'}`}
-                                        placeholder="Separated by ',' for multiple contact info"
+                                        placeholder={LangHelper.getResource('SeparatedByComma')}
                                         value={picCommunicationTool.value} autoComplete="off" onChange={event => {
                                         this.handleChangeCommunicationValue('picCommunicationTools', 'value', event.target.value, indexPic, indexPicCommunicationTool);
                                     }} />

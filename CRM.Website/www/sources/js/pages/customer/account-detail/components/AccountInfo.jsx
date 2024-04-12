@@ -296,7 +296,7 @@ export class AccountInfo extends Component {
                             </Form.Control>
                         </Form.Group>
                         {
-                            !customerInfo.isGroupHeadLine &&
+                            (!customerInfo.isGroupHeadLine && (customerInfo.isSuper || customerInfo.isDirectAccount || customerInfo.isGuest)) &&
                             <>                                
                                 <div className='form-checkbox'>
                                     <Form.Check type="checkbox"

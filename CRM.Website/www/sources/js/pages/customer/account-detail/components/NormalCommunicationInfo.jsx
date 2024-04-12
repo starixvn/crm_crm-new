@@ -110,7 +110,8 @@ export class NormalCommunicationInfo extends Component {
                 return {
                     communicationID: x.communicationID,
                     communicationValue: x.communicationValue,
-                    isError: false
+                    isError: false,
+                    isNew: false
                 }
             })
         });
@@ -152,12 +153,28 @@ export class NormalCommunicationInfo extends Component {
         });
     }
 
+    handleConfirmDeleteCommunicationTool(picCommunicationTool, indexPicCommunicationTool) {
+        if (picCommunicationTool.isNew) {
+            this.deleteCommunicationTool(picCommunicationTool.communicationValue, picCommunicationTool.communicationID);
+        }
+        else {
+            this.setState({
+                confirmDelete: {
+                    show: true,
+                    communicationValue: picCommunicationTool.communicationValue,
+                    communicationID: picCommunicationTool.communicationID
+                }
+            });
+        }
+    }
+
     addNewCommunicationTool = () => {
         let { otherAccountCommunication } = this.state;
         otherAccountCommunication.push({
             communicationID: '',
             communicationValue: '',
-            isError: false
+            isError: false,
+            isNew: true
         });
         this.setState({ otherAccountCommunication: otherAccountCommunication });
     }
@@ -198,11 +215,22 @@ export class NormalCommunicationInfo extends Component {
 
         Site.blockUI();
         const url = Site.resolveClientUrl('AccountDetail/EditOtherAccCommunicationInfo');
-        await DataService.postDataAsync(url, params).then(response => {
+        await DataService.postDataAsync(url, params).then(async response => {
             if (response.data.isSuccessful) {
                 this.setState({ isValidate: false });
                 window.dispatchEvent(new Event('getCurrentCustomer'));
                 toast.success(LangHelper.getResource('UpdateCommunicationInfoSuccessful'));
+                await this.props.getCustomerById({ customerId: this.props.customerInfo.custId });
+                this.setState({
+                    otherAccountCommunication: this.props.customerInfo.otherAccountCommunicationInfos?.map(x => {
+                        return {
+                            communicationID: x.communicationID,
+                            communicationValue: x.communicationValue,
+                            isError: false,
+                            isNew: false
+                        }
+                    })
+                });
             } else {
                 toast.error(response.data.message);
             }
@@ -281,21 +309,13 @@ export class NormalCommunicationInfo extends Component {
                                             </Form.Control>
                                             <div className='field-icon'>
                                                 <textarea className={`${picCommunicationTool.isError && 'invalid-other-communication-tool'} textarea-communication-tool`}
-                                                    placeholder="Separated by ',' for multiple contact info" cdkTextareaAutosize
+                                                    placeholder={LangHelper.getResource('SeparatedByComma')} cdkTextareaAutosize
                                                     value={picCommunicationTool.communicationValue} autoComplete="off" onChange={event => {
                                                         this.handleChangeCommunication('communicationValue', event.target.value, indexPicCommunicationTool);
                                                     }} />
                                                 {
                                                     values.isHostOnCurrentCustomer &&
-                                                    <div onClick={() => {
-                                                            this.setState({
-                                                                confirmDelete: {
-                                                                    show: true,
-                                                                    communicationValue: picCommunicationTool.communicationValue,
-                                                                    communicationID: picCommunicationTool.communicationID
-                                                                }
-                                                            });
-                                                    }}
+                                                    <div onClick={() => { this.handleConfirmDeleteCommunicationTool(picCommunicationTool, indexPicCommunicationTool); }}
                                                         className='icon icon-delete' title={LangHelper.getResource('DeleteCommunicationTool')}>
                                                     </div>
                                                 }
