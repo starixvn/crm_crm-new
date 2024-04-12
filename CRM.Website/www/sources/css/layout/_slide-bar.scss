@@ -1,8 +1,7 @@
 ﻿.slide-bar {
     overflow: auto;
     width: 100%;
-    min-height: calc( 100vh - 110px);
-    max-height: calc( 100vh - 110px) !important;
+    max-height: calc( 100vh - 104px) !important;
     outline: none;
 
     .col-md-9{
@@ -249,7 +248,7 @@
     }
 
     .group-detail-link {
-        margin-top: 6px;
+        margin: 6px 0 4px;
 
         .group-content {
             padding: 10px 12px 12px;

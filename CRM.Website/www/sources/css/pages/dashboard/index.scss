@@ -65,6 +65,12 @@
         }
     }
 
+    .communication-log-grid, .table-last-five-remarks {
+        .table-container {
+            overflow: hidden;
+        }
+    }
+
     @include Laptop-Medium{
         .communication-log-grid .btn{
             padding: 2px 6px;

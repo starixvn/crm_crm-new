@@ -201,11 +201,6 @@ class Table extends Component {
         if(document.body.clientWidth <= MIN_WIDTH_CONTAINER){
             document.getElementsByTagName('html')[0].style.overflow = null;
         }
-
-        const tables = document.getElementsByClassName("table-container");
-        if (tables.length >= 2 && this.props.width > rightRowContainer) {
-            this.setState({ maxWidth: this.props.width});
-        }
     };
 
     _handleMaxWidthCal(){
@@ -229,7 +224,7 @@ class Table extends Component {
     _calculateBodyHeight() {
         const windowHeight = window.innerHeight;
         const footerHeight = this.footerWrapper ? this.footerWrapper.offsetHeight : 0;
-        const tableContentHeight = windowHeight - (this.bodyWrapper.offsetTop + footerHeight + (this.props.isPaging ? 50 : 4)) - this.adjustedHeight;
+        const tableContentHeight = windowHeight - (this.bodyWrapper.offsetTop + footerHeight + (this.props.isPaging ? 50 : 0)) - this.adjustedHeight;
 
         return tableContentHeight;
     }
