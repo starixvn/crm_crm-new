@@ -1,11 +1,14 @@
-.row-search {
-    display: grid;
+.row-search-customer-info {
     grid-template-columns: 348px auto;
-    grid-gap: 12px;
 
     @include Laptop {
         grid-template-columns: 260px auto;
     }
+}
+
+.row-search {
+    display: grid;
+    grid-gap: 12px;
 
     #left-container {
         margin: 0;

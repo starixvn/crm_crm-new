@@ -197,36 +197,35 @@ export default class Filter extends Component {
     render() {
         const hasCustomerInfoPermission = document.getElementById('hasReadCustomerInfo').checked;
 
-        if (!hasCustomerInfoPermission) {
-            return null;
-        }
-
         const { username, customerSuggestions, isGuest, handleChange, debounceUserNameInputChange, handleChangeSuggestion} = this.props;
 
         return (
-            <div className='row-search'>
-                <Form id="left-container" onSubmit={this.handleSubmit}>
-                    <Form.Group as={Row} className="align-items-center filter-search">
-                        <img className="btn-search" onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-search.svg')} />
-                        <Col className="text-search">
-                            <AutoComplete
-                                value={username}
-                                options={customerSuggestions}
-                                placeholder='Phone or Username or Nickname'
-                                onChange={value => handleChangeSuggestion(value)}
-                                onInputChange={searchText => debounceUserNameInputChange(searchText)}
+            <div className={`row-search ${hasCustomerInfoPermission && 'row-search-customer-info'}`}>
+                {
+                    hasCustomerInfoPermission && 
+                    <Form id="left-container" onSubmit={this.handleSubmit}>
+                        <Form.Group as={Row} className="align-items-center filter-search">
+                            <img className="btn-search" onClick={this.handleSubmit} src={Site.resolveClientUrl('www/dist/css/images/icon/icon-search.svg')} />
+                            <Col className="text-search">
+                                <AutoComplete
+                                    value={username}
+                                    options={customerSuggestions}
+                                    placeholder='Phone or Username or Nickname'
+                                    onChange={value => handleChangeSuggestion(value)}
+                                    onInputChange={searchText => debounceUserNameInputChange(searchText)}
+                                />
+                                {
+                                    username != '' && username != null &&
+                                    <i className="fa fa-times icon-clear" onClick={value => handleChangeSuggestion('')}></i>
+                                }
+                            </Col>
+                            <Form.Check className="checked-guest" type="checkbox" name="isGuest" label={LangHelper.getResource('Guest')}
+                                checked={isGuest}
+                                onChange={handleChange}
                             />
-                            {
-                                username != '' && username != null &&
-                                <i className="fa fa-times icon-clear" onClick={value => handleChangeSuggestion('')}></i>
-                            }
-                        </Col>
-                        <Form.Check className="checked-guest" type="checkbox" name="isGuest" label={LangHelper.getResource('Guest')}
-                            checked={isGuest}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
-                </Form>
+                        </Form.Group>
+                    </Form>
+                }
                 {this.renderRightContainer()}
             </div>
         );
