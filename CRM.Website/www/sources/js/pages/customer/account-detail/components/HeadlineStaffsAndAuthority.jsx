@@ -288,7 +288,19 @@ export class HeadlineStaffsAndAuthority extends Component {
     }
 
     handleAddNewRow = () => {
-        let { headlineStaffsAndAuthority } = this.state;
+        let { headlineStaffsAndAuthority, originalStaffAndAuthority } = this.state;
+
+        headlineStaffsAndAuthority.map((item,index) => {
+            if (item.isEdit) {
+                if (originalStaffAndAuthority) {
+                    originalStaffAndAuthority.isEdit = false;
+                    headlineStaffsAndAuthority[index] = originalStaffAndAuthority;
+                } else {
+                    headlineStaffsAndAuthority.splice(index, 1);
+                }
+            }
+        })
+
         headlineStaffsAndAuthority.push({
             picID: 0,
             picName: null,
@@ -310,7 +322,7 @@ export class HeadlineStaffsAndAuthority extends Component {
             isErrorPicRoleID: false,
             isEdit: true
         });
-        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+        this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority, originalStaffAndAuthority: null });
     };
 
     handleAddTool = (indexStaff) => {
@@ -626,7 +638,6 @@ export class HeadlineStaffsAndAuthority extends Component {
 
     handleClear = async (indexStaff) => {
         const { headlineStaffsAndAuthority } = this.state;
-        const originalStaffAndAuthority = this.getOriginalStaffAndAuthority(headlineStaffsAndAuthority[indexStaff]);
         headlineStaffsAndAuthority[indexStaff].communicationTools.map(item => {
             item.remark = '';
             item.authority = '';
@@ -634,7 +645,6 @@ export class HeadlineStaffsAndAuthority extends Component {
         });
         this.setState({
             headlineStaffsAndAuthority: headlineStaffsAndAuthority,
-            originalStaffAndAuthority: originalStaffAndAuthority,
             showConfirmClear: {
                 show: false,
                 name: '',
@@ -661,7 +671,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         if (originalStaffAndAuthority) {
             originalStaffAndAuthority.isEdit = false;
             headlineStaffsAndAuthority[indexStaff] = originalStaffAndAuthority;
-            this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
+            this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority, originalStaffAndAuthority : null});
         } else {
             const data = [...this.state.headlineStaffsAndAuthority];
             data.splice(indexStaff, 1);

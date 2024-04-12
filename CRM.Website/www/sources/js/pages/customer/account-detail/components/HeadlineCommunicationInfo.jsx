@@ -230,7 +230,7 @@ export class HeadlineCommunicationInfo extends Component {
             pic.picCommunicationTools.map((picCom, indexCom) => {
                 const index = pic.picCommunicationTools.findIndex(item => item.type === picCom.type);
                 if (index >= 0 && index !== indexCom) {
-                    const newValue = pic.picCommunicationTools[index].value.concat(', ', picCom.value);
+                    const newValue = picCommunicationTools[index].value.concat(', ', picCom.value);
                     picCommunicationTools[index].value = newValue;
                 } else {
                     picCommunicationTools.push({ ...picCom });
