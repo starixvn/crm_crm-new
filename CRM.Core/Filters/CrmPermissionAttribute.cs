@@ -66,7 +66,7 @@
         {
             if (IsAjaxRequest(context.HttpContext.Request))
             {
-                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Result = new UnauthorizedResult();
             }
             else
             {
@@ -94,16 +94,7 @@
 
             if (!hasPermission)
             {
-                bool isAjaxRequest = IsAjaxRequest(context.HttpContext.Request);
-                if (isAjaxRequest)
-                {
-                    context.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    await context.HttpContext.Response.CompleteAsync();
-                }
-                else
-                {
-                    context.Result = new ForbidResult();
-                }
+                context.Result = new ForbidResult();
             }
         }
 

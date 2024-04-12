@@ -53,7 +53,7 @@
         {
             if (IsAjaxRequest(context.HttpContext.Request))
             {
-                context.Result = new UnauthorizedObjectResult("Unauthorized");
+                context.Result = new UnauthorizedResult();
             }
             else
             {
