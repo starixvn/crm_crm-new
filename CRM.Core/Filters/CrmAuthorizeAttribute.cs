@@ -53,7 +53,7 @@
         {
             if (IsAjaxRequest(context.HttpContext.Request))
             {
-                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Result = new UnauthorizedObjectResult("Unauthorized");
             }
             else
             {
