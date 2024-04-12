@@ -4,7 +4,7 @@
     max-height: calc( 100vh - 104px) !important;
     outline: none;
 
-    @include Laptop-Medium {
+    @include Laptop{
         max-height: calc( 100vh - 96px) !important;
     }
 
