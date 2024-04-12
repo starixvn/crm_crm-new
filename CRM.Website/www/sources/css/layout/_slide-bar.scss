@@ -4,6 +4,10 @@
     max-height: calc( 100vh - 104px) !important;
     outline: none;
 
+    @include Laptop-Medium {
+        max-height: calc( 100vh - 96px) !important;
+    }
+
     .col-md-9{
         padding: 0 !important;
     }
