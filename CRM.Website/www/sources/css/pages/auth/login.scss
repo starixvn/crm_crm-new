@@ -1,4 +1,6 @@
-﻿body {
+﻿@import '../../abstracts/mixins';
+
+body {
     font-family: 'Open Sans', sans-serif;
     background: #E8E8E8;
     margin: 0;
@@ -32,6 +34,10 @@
         border-radius: 10px;
         padding: 130px 56px;
 
+        @include Laptop-Medium {
+            padding: 65px 30px;
+        }
+
         .welcome{
             color: white;
             font-size: 28px;
@@ -53,6 +59,11 @@
         width: 360px;
         padding: 0 50px;
 
+        @include Laptop-Medium {
+            width: 300px;
+            padding: 0 25px;
+        }
+
         form {
             display: flex;
             flex-direction: column;
@@ -60,6 +71,11 @@
             width: 360px;
             position: absolute;
             top: 151px;
+
+            @include Laptop-Medium {
+                top: 100px;
+                width: 300px;
+            }
 
             .header-text {
                 color: #243E62;
@@ -83,6 +99,10 @@
                     font-size: 15px;
                     font-weight: 600;
                     font-family: 'Open Sans', sans-serif;
+
+                    @include Laptop-Medium {
+                        padding: 6px 6px 6px 40px;
+                    }
 
                     &::placeholder {
                         color: #7B7B7B;
@@ -120,6 +140,10 @@
 
                     &::-ms-reveal, &::-ms-clear {
                         display: none;
+                    }
+
+                    @include Laptop-Medium {
+                        width: 252px;
                     }
                 }
 
@@ -162,6 +186,10 @@
                 border: 0;
                 cursor: pointer;
 
+                @include Laptop-Medium {
+                    padding: 10px;
+                }
+
                 &:hover {
                     background-color: #3d71bb;
                 }
@@ -179,6 +207,10 @@
             height: 24px;
             top: 55px;
             position: relative;
+
+            @include Laptop-Medium {
+                top: 10px;
+            }
         }
     }
 }
