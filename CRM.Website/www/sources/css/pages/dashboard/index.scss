@@ -55,17 +55,32 @@
         }
     }
 
-    .table-last-five-remarks {
-        .body-content {
-            max-height: 350px !important;
+    .table-last-remarks .body-content, .table-last-five-remarks .table {
+        overflow: auto;
+        max-height: 350px !important;
+        display: block;
 
-            @include Laptop-Medium{
-                max-height: 200px !important;
-            }
+        @include Laptop-Medium{
+            max-height: 250px !important;
         }
     }
 
-    .communication-log-grid, .table-last-five-remarks {
+    .table-last-five-remarks .table {
+        border: 1px solid #b7b7b7;
+
+         tbody tr {
+
+            &:first-child td{
+                border-width: 0;
+            }
+
+            td {
+            border-width: 1px 0 0 0;
+            }
+         }
+    }
+
+    .communication-log-grid, .table-last-remarks {
         .table-container {
             overflow: hidden;
         }
