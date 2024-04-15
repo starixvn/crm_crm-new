@@ -57,22 +57,22 @@
 
     .table-last-remarks .body-content {
         overflow: auto;
-        max-height: 295px !important;
+        max-height: 260px !important;
         display: block;
 
         @include Laptop-Medium {
-            max-height: 195px !important;
+            max-height: 200px !important;
         }
     }
 
     .table-last-five-remarks .table {
         border: 1px solid #b7b7b7;
         overflow: auto;
-        max-height: 340px !important;
+        max-height: 310px !important;
         display: block;
 
         @include Laptop-Medium {
-            max-height: 240px !important;
+            max-height: 200px !important;
         }
 
         tbody tr {
