@@ -236,7 +236,7 @@ export class CompanyService extends Component {
                         value={item.communicationID} onChange={event => {
                             this.handleChangeValue('communicationID', parseInt(event.target.value, 10), indexService, false);
                         }}>
-                        <option value={0} disabled hidden>{LangHelper.getResource('PleaseSelect')}</option>
+                        <option value={0}>{LangHelper.getResource('N/A')}</option>
                         {settingCommunicationTool.map(item => this.renderOptions(item.settingValue, item.settingId))}
                     </Form.Control>
                 </Cell>
