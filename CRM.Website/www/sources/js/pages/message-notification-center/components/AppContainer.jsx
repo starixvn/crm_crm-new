@@ -9,9 +9,9 @@ export class AppContainer extends Component {
         return (
             <Fragment>
                 <Filter />
-                {/* <DataGrid isHost={true}/> */}
+                <DataGrid isHost={true}/>
                 {/* <ActionNotification /> */}
-                <AffectedTicket isCredit/>
+                {/* <AffectedTicket isCredit/> */}
             </Fragment>
         );
     }

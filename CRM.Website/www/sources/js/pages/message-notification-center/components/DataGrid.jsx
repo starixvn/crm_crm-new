@@ -25,7 +25,7 @@ export default class DataGrid extends Component {
         this.panels = [];
 
         this.data = [
-            { notificationId: 1, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: ' Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 ', statusId: 1, sender: '' },
+            { notificationId: 1, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: ' Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023', statusId: 1, sender: '' },
             { notificationId: 2, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund] ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund]ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund]', statusId: 2, sender: '' },
             { notificationId: 3, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'Created on Dec 12, 2023 Created on Dec 12, 2023', statusId: 3, sender: '' },
             { notificationId: 3, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'As of now, OST and CSD teams have to handle many steps to send notifications to our customers (members, SMA, licensees, headlines) when having a change result of events. Additionally, all customers will be received the notifications event they do play on the match. To keep thi', statusId: 4, sender: '' },
@@ -96,6 +96,31 @@ export default class DataGrid extends Component {
         )
     };
 
+    renderActionButton = status => {
+        switch (status) {
+            case 'New':
+                return (
+                    <>
+                        <div className='review-button'>{LangHelper.getResource('Review')}</div>
+                        <div className='cancel-button'>{LangHelper.getResource('Cancel')}</div>
+                    </>
+                );
+            case 'Failed':
+                return <div className='review-button'>{LangHelper.getResource('ResendFail')}</div>;
+            case 'Draft':
+                return (
+                    <>
+                        <div className='review-button'>{LangHelper.getResource('Edit')}</div>
+                        <div className='cancel-button'>{LangHelper.getResource('Cancel')}</div>
+                    </>
+                );
+            case 'Cancelled':
+                return <div className='review-button'>{LangHelper.getResource('Edit')}</div>;
+            default:
+                return null;
+        }
+    };
+
     renderRow = (item, index, isHost) => {
         const statusName = item.statusId ? this.state.statuses.find(data => data.id === item.statusId)?.status : '';
         return (
@@ -113,10 +138,10 @@ export default class DataGrid extends Component {
                 <Cell className='text-left'>
                     <div className='content-item'>
                         {
-                            item.content.length > 100 ?
+                            item.content.length > 200 ?
                             <Panel ref={panel => this.panels[index] = panel}>
                                 <PanelHeader>
-                                    <div className='split-content'>{item.content.slice(0, 100)}</div>
+                                    <div className='split-content'>{item.content.slice(0, 200)}</div>
                                 </PanelHeader>
                                 <div className='content'>{item.content}</div>
                             </Panel> :
@@ -127,8 +152,12 @@ export default class DataGrid extends Component {
                 <Cell className='text-left'>
                     <div className={`status-button status-${statusName}`}>{statusName}</div>
                 </Cell>
-                <Cell className='text-left'><div>{item.sender}</div></Cell>
-                <Cell className='text-left'><div>{'review'}</div></Cell>
+                <Cell className='text-left'>{item.sender}</Cell>
+                <Cell className='text-center'>
+                    <div className='action-button'>
+                        { this.renderActionButton(statusName) }
+                    </div>
+                </Cell>
             </Row>
         )
     };

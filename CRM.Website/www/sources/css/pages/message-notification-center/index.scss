@@ -26,6 +26,10 @@
         }
     }
 
+    .is-invalid {
+        border-color: #dc3545;
+    }
+
     .user-filter {
         display: flex;
         cursor: pointer;
@@ -65,8 +69,6 @@
             margin: auto;
             display: block;
             border-radius: 3px;
-            cursor: pointer;
-
             font-size: 12px;
             padding: 3px 0px;
             height: 28px;
@@ -74,7 +76,7 @@
             border: 1px solid transparent;
             font-weight: 400;
             line-height: 1.5;
-            box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
+            //box-shadow: 0px 2px 1px 0px rgba(255, 255, 255, 0.25) inset;
         }
 
         &-New {
@@ -83,18 +85,18 @@
             color: $black;
         }
         &-Draft {
-            background-color: $grey-light;
-            border-color: $grey-light;
+            background-color:#c1c1c1;
+            border-color: #c1c1c1;
             color: $black;
         }
         &-Cancelled {
-            background-color: $draft-color;
-            border-color: $draft-color;
+            background-color: #df750c;
+            border-color: #df750c;
             color: $white;
         }
         &-Failed {
-            background-color: #c0504d;
-            border-color: #c0504d;
+            background-color: #b73d39;
+            border-color: #b73d39;
             color: $white;
         }
         &-Sent {
@@ -103,9 +105,34 @@
             color: $white;
         }
         &-Sending {
-            background-color: $duplicated-color;
-            border-color: $duplicated-color;
+            background-color: #598ac7;
+            border-color: #598ac7;
             color: $white;
+        }
+    }
+
+    .action-button {
+        width: 100px;
+        margin: auto;
+        display: block;
+        font-size: 12px;
+        padding: 3px 0px;
+        text-align: center;
+
+        .review-button {
+            color: $white;
+            height: 28px;
+            cursor: pointer;
+            line-height: 2.2;
+            background-color: $sending-color
+        }
+
+        .cancel-button {
+            margin-top: 10px;
+            height: 28px;
+            cursor: pointer;
+            line-height: 2.2;
+            background-color: $grey-light
         }
     }
 
@@ -247,9 +274,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding-right: 5px;
+        border-right: 1px solid #b7b7b7;
 
         .affected-user {
             display: flex;
+            cursor: pointer;
 
             > div {
                 text-align: center;
