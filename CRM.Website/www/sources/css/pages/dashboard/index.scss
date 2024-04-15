@@ -1,8 +1,8 @@
 @import '../../abstracts/variables';
 @import '../../abstracts/mixins';
 
-.dashboard{
-    .alert-boxer{
+.dashboard {
+    .alert-boxer {
         width: 800px;
         background: #fff;
         border: solid 1px #b2c671;
@@ -11,38 +11,38 @@
         font-weight: 700;
         border-color: #db6955;
 
-        span{
+        span {
             color: #b40b0b;
         }
     }
-    
+
     .link-detail {
         cursor: pointer;
         color: $link-color !important;
-    
+
         &:hover {
             color: $draft-color !important;
         }
     }
-    
-    .pending{
+
+    .pending {
         background-color: #f0edc4;
     }
-    
-    .closed{
+
+    .closed {
         background-color: #ddd;
     }
-    
-    .react-datepicker-wrapper input{
+
+    .react-datepicker-wrapper input {
         width: 100% !important;
     }
-    
+
     #tooltip-ref-ticket [class$="inner"] {
         white-space: pre-wrap;
         min-width: 500px;
         text-align: left;
     }
-    
+
     .ref-ticket-input {
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -55,29 +55,36 @@
         }
     }
 
-    .table-last-remarks .body-content, .table-last-five-remarks .table {
+    .table-last-remarks .body-content {
         overflow: auto;
-        max-height: 350px !important;
+        max-height: 295px !important;
         display: block;
 
-        @include Laptop-Medium{
-            max-height: 250px !important;
+        @include Laptop-Medium {
+            max-height: 195px !important;
         }
     }
 
     .table-last-five-remarks .table {
         border: 1px solid #b7b7b7;
+        overflow: auto;
+        max-height: 340px !important;
+        display: block;
 
-         tbody tr {
+        @include Laptop-Medium {
+            max-height: 240px !important;
+        }
 
-            &:first-child td{
+        tbody tr {
+
+            &:first-child td {
                 border-width: 0;
             }
 
             td {
-            border-width: 1px 0 0 0;
+                border-width: 1px 0 0 0;
             }
-         }
+        }
     }
 
     .communication-log-grid, .table-last-remarks {
@@ -86,10 +93,9 @@
         }
     }
 
-    @include Laptop-Medium{
-        .communication-log-grid .btn{
+    @include Laptop-Medium {
+        .communication-log-grid .btn {
             padding: 2px 6px;
-    
         }
     }
 }
