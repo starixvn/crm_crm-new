@@ -4,8 +4,6 @@ import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import DateTimeService from '@jsroot/common/dateTimeService';
 import Site from '@jsroot/common/site';
 import WithNavigation from '@jsroot/components/WithNavigation';
@@ -24,12 +22,12 @@ export class LastRemarkDataGrid extends Component {
     buildHeader = () => {
         return (
             <HeaderRow>
-                <HeaderCell colWidth={8}>{LangHelper.getResource('ID')}</HeaderCell>
-                <HeaderCell colWidth={25}>{LangHelper.getResource('RemarkTitle')}</HeaderCell>
+                <HeaderCell colWidth={5}>{LangHelper.getResource('ID')}</HeaderCell>
+                <HeaderCell colWidth={15}>{LangHelper.getResource('RemarkTitle')}</HeaderCell>
                 <HeaderCell colWidth={45}>{LangHelper.getResource('RemarkContent')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('Creator')}</HeaderCell>
-                <HeaderCell colWidth={12}>{LangHelper.getResource('LoggedOn')}</HeaderCell>
+                <HeaderCell colWidth={8}>{LangHelper.getResource('CreatedDateGM8')}</HeaderCell>
+                <HeaderCell colWidth={8}>{LangHelper.getResource('Creator')}</HeaderCell>
+                <HeaderCell colWidth={10}>{LangHelper.getResource('LoggedOn')}</HeaderCell>
             </HeaderRow>
         );
     };
@@ -48,18 +46,9 @@ export class LastRemarkDataGrid extends Component {
             <Row key={index}>
                 <Cell className='text-center'>{item.remarkID}</Cell>
                 <Cell>{item.remarkName}</Cell>
-                <OverlayTrigger
-                    placement="auto"
-                    overlay={
-                        <Tooltip id="tooltip-remark-content">
-                            <span dangerouslySetInnerHTML={{ __html: item.remark.substring(0, 550) }} />
-                        </Tooltip>
-                    }
-                >
-                    <Cell className='remark-content'
-                        dangerouslySetInnerHTML={{ __html: item.remark }}
-                    />
-                </OverlayTrigger>
+                <Cell className='remark-content'
+                    dangerouslySetInnerHTML={{ __html: item.remark }}
+                />
                 <Cell className='text-center'>{DateTimeService.toLongDateTimeFormat(item.createdDate)}</Cell>
                 <Cell>{item.creator}</Cell>
                 <Cell>{userNameFormat}</Cell>
