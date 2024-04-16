@@ -359,7 +359,7 @@
       &.acc-PIC-hidden {
         .table-container,
         .custom-scrollbar {
-          max-height: 446px;
+          max-height: 425px;
 
           @include Laptop {
             max-height: 222px !important;
@@ -374,7 +374,7 @@
       &.acc-info-hidden {
         .table-container,
         .custom-scrollbar {
-          max-height: 639px;
+          max-height: 615px;
 
           @include Laptop {
             max-height: 386px !important;
@@ -388,7 +388,7 @@
 
       .custom-scrollbar {
         padding: 3px 8px 3px 0;
-        max-height: 373px;
+        max-height: 350px;
         overflow-y: auto;
 
         @include Laptop {
@@ -543,7 +543,7 @@
   }
 
   .table-container {
-    max-height: 373px;
+    max-height: 350px;
     border-radius: 3px;
 
     .header-content {
