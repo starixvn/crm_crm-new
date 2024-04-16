@@ -50,14 +50,14 @@ export class HeadlineCommunicationInfo extends Component {
         }     
 
         if (window.picID !== undefined) {
-            document.querySelector("#tab-headline-communicaion-info").scrollTo(0, document.querySelector(`#row-${window.picID}`).offsetTop - 437);
+            const topPic = document.querySelector(`#row-${window.picID}`).offsetTop - document.querySelector('#tab-headline-communication-info').offsetTop;
+            document.querySelector("#tab-headline-communication-info").scrollTo(0, topPic);
             window.picID = undefined;
         }
     }
 
     handleComfirmChangeTab(activeTab, initialValues) {
-        if (activeTab.nextTab === LangHelper.getResource('HeadlineStaffsAndAuthority')
-            || activeTab.nextTab === LangHelper.getResource('CompanyService')) {
+        if (activeTab.nextTab && activeTab.nextTab !== LangHelper.getResource('HeadlineCommunicationInfo')) {
             if (JSON.stringify(this.state.headlineCommunicationInfo).toString() === JSON.stringify(initialValues).toString() ||
                 this.state.headlineInfoPolicy !== Policy.Host) {
                 this.props.setShowConfirmUnSaved(false);
@@ -90,7 +90,8 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     handleAutoScroll() {
-        document.querySelector("#tab-headline-communicaion-info").scrollTo(0, document.querySelector(`#row-${window.picID}`).offsetTop - 437);
+        const topPic = document.querySelector(`#row-${window.picID}`).offsetTop - document.querySelector('#tab-headline-communication-info').offsetTop;
+        document.querySelector("#tab-headline-communication-info").scrollTo(0, topPic);
         window.picID = undefined;
     }
 
@@ -220,7 +221,7 @@ export class HeadlineCommunicationInfo extends Component {
                 headlineChangeCommunicationInfo.push(item);
             }
         })
-        return headlineChangeCommunicationInfo
+        return headlineChangeCommunicationInfo;
     }
 
     getParamEdit() {
@@ -295,12 +296,13 @@ export class HeadlineCommunicationInfo extends Component {
     }
 
     validateCommunicationInfo = () => {   
-        const { errors, headlineCommunicationInfo } = ValidateHeadlineCommunicationInfo(this.state.headlineCommunicationInfo);
+        let { errors, headlineCommunicationInfo } = ValidateHeadlineCommunicationInfo(this.state.headlineCommunicationInfo);
         this.setState({
             headlineCommunicationInfo: headlineCommunicationInfo
         });
-        this.props.setErrors(Object.keys(errors).length === 0 ? null : errors);
-        return Object.keys(errors).length === 0 ? null : errors;
+        errors = Object.keys(errors).length === 0 ? null : errors;
+        this.props.setErrors(errors);
+        return errors;
     }
 
     addNewCommunicationTool = indexPic => {
@@ -510,7 +512,7 @@ export class HeadlineCommunicationInfo extends Component {
         }
         return (
             <>
-                <div id="tab-headline-communicaion-info" className={`${customerInfo.headlineStaffInfoCommunications.length < 4 && 'custom-dropdown'} custom-scrollbar`}>
+                <div id="tab-headline-communication-info" className={`${customerInfo.headlineStaffInfoCommunications.length < 4 && 'custom-dropdown'} custom-scrollbar`}>
                     {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
                 </div>
                 {

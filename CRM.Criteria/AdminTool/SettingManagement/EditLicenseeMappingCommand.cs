@@ -10,10 +10,7 @@ namespace CRM.Criteria.AdminTool.SettingManagement
         public string SourceMapping { get; set; }
         public string LicenseeManager { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_SourceLicenseeMappingUpd";
-        }
+        public override string GetSettingKey() => "Acc_CRM_SourceLicenseeMappingUpd";
 
         public override bool IsValid() => SettingId > 0;
     }

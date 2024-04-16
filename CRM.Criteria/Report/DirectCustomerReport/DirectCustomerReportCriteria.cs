@@ -16,10 +16,7 @@
 
         public int PageSize { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_Crm_Rpt_DirectCustomerReport";
-        }
+        public override string GetSettingKey() => "Acc_Crm_Rpt_DirectCustomerReport";
 
         public override bool IsValid() => true;
     }

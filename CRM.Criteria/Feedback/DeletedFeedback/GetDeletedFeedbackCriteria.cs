@@ -26,10 +26,7 @@
 
         public short UserRole { get; } = Constants.UserRole;
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_FeedbackGetDeleted";
-        }
+        public override string GetSettingKey() => "Acc_CRM_FeedbackGetDeleted";
 
         public override bool IsValid() => FromDate <= ToDate;
     }

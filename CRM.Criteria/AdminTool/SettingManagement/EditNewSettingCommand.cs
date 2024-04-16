@@ -15,10 +15,7 @@
         public string SettingSource { get; set; }
 
         public string IP { get; set; }
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_SettingUpd";
-        }
+        public override string GetSettingKey() => "Acc_CRM_SettingUpd";
 
         public override bool IsValid() => SettingId > 0 && !string.IsNullOrEmpty(SettingName) && !string.IsNullOrEmpty(SettingValue);
     }

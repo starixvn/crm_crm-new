@@ -15,10 +15,7 @@
 
         public string CommunicationTools => XMLIO.ToXML(PicCommunicationTools, "ROOT").ToString();
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_PicUpdValidation";
-        }
+        public override string GetSettingKey() => "Acc_CRM_PicUpdValidation";
 
         public override bool IsValid() => PicId > 0;
     }

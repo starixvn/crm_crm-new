@@ -58,8 +58,7 @@ export class HeadlineStaffsAndAuthority extends Component {
     }
 
     handleComfirmChangeTab(activeTab, initialValues) {
-        if (activeTab.nextTab === LangHelper.getResource('HeadlineCommunicationInfo')
-            || activeTab.nextTab === LangHelper.getResource('CompanyService')) {
+        if (activeTab.nextTab && activeTab.nextTab !== LangHelper.getResource('HeadlineStaffsAndAuthority')) {
             if (JSON.stringify(this.state.headlineStaffsAndAuthority).toString() === JSON.stringify(initialValues).toString() ||
                 this.state.headlineInfoPolicy !== Policy.Host) {
                 this.props.setShowConfirmUnSaved(false);
@@ -180,12 +179,13 @@ export class HeadlineStaffsAndAuthority extends Component {
     }
 
     validateHeadlineStaffAndAuthority = indexStaff => {
-        const { errors, headlineStaffsAndAuthority } = ValidateHeadlineStaffAndAuthority(this.state.headlineStaffsAndAuthority, indexStaff);
+        let { errors, headlineStaffsAndAuthority } = ValidateHeadlineStaffAndAuthority(this.state.headlineStaffsAndAuthority, indexStaff);
         this.setState({
             headlineStaffsAndAuthority: headlineStaffsAndAuthority
         });
-        this.props.setErrors(Object.keys(errors).length === 0 ? null : errors);
-        return Object.keys(errors).length === 0 ? null : errors;
+        errors = Object.keys(errors).length === 0 ? null : errors;
+        this.props.setErrors(errors);
+        return errors;
     }
 
     handleShowConfirmDelete = (name, indexStaff) => {

@@ -11,11 +11,8 @@
         public int UserId { get; set; }
 
         public string LoginIP { get; set; }
-        
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_PICStatusUpd";
-        }
+
+        public override string GetSettingKey() => "Acc_CRM_PICStatusUpd";
 
         public override bool IsValid() => PicId > 0;
     }

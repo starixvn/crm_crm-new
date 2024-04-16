@@ -20,10 +20,7 @@
         [SpParam(Ignored = true)]
         public bool IsGetFullReport { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_NewRpt_DailyStatisticsDetail";
-        }
+        public override string GetSettingKey() => "Acc_CRM_NewRpt_DailyStatisticsDetail";
 
         public override bool IsValid()
         {

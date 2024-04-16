@@ -14,10 +14,7 @@
         public int PageSize { get; set; }
 
         public int TotalRows { get; set; }
-        public override string GetSettingKey()
-        {
-            return "Acc_Crm_Rpt_RedemptionStatisticsDetail";
-        }
+        public override string GetSettingKey() => "Acc_Crm_Rpt_RedemptionStatisticsDetail";
 
         public override bool IsValid()
         {

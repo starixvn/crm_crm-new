@@ -73,8 +73,7 @@ export class CompanyService extends Component {
     }
 
     handleComfirmChangeTab(activeTab, initialValues) {
-        if (activeTab.nextTab === LangHelper.getResource('HeadlineCommunicationInfo')
-            || activeTab.nextTab === LangHelper.getResource('HeadlineStaffsAndAuthority')) {
+        if (activeTab.nextTab && activeTab.nextTab !== LangHelper.getResource('CompanyService')) {
             if (JSON.stringify(this.state.companyService).toString() === JSON.stringify(initialValues).toString() ||
                 this.state.headlineInfoPolicy !== Policy.Host) {
                 this.props.setShowConfirmUnSaved(false);
@@ -89,12 +88,13 @@ export class CompanyService extends Component {
     }
 
     validateCompanyService = () => {
-        const { errors, companyService } = ValidateCompanyService(this.state.companyService);
+        let { errors, companyService } = ValidateCompanyService(this.state.companyService);
         this.setState({
             companyService: companyService
         });
-        this.props.setErrors(Object.keys(errors).length === 0 ? null : errors);
-        return Object.keys(errors).length === 0 ? null : errors;
+        errors = Object.keys(errors).length === 0 ? null : errors;
+        this.props.setErrors(errors);
+        return errors;
     }
 
     editHeadlineCompanyService = async () => {

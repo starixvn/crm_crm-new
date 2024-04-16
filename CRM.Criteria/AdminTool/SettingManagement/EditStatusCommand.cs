@@ -10,10 +10,7 @@
         public int SettingId { get; set; }
         public bool IsActive { get; set; }
         public string IP { get; set; }
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_SettingDel";
-        }
+        public override string GetSettingKey() => "Acc_CRM_SettingDel";
 
         public override bool IsValid() => true;
     }

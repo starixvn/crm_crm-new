@@ -9,10 +9,7 @@
         public int UserId { get; set; }
         public string IP { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_SourceSettingMappingUpd";
-        }
+        public override string GetSettingKey() => "Acc_CRM_SourceSettingMappingUpd";
 
         public override bool IsValid() => true;
     }

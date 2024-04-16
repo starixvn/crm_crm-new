@@ -12,10 +12,7 @@
 
         public string LoginIP { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_PicDefaultIns";
-        }
+        public override string GetSettingKey() => "Acc_CRM_PicDefaultIns";
 
         public override bool IsValid() => HeadlineId >= 0 &&
             !string.IsNullOrWhiteSpace(DefaultPicIDs);

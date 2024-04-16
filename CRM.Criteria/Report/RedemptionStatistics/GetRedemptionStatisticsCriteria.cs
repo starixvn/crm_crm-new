@@ -17,10 +17,7 @@
 
         public string StatusId { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_Crm_Rpt_RedemptionStatistics";
-        }
+        public override string GetSettingKey() => "Acc_Crm_Rpt_RedemptionStatistics";
 
         public override bool IsValid() => true;
     }

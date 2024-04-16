@@ -10,10 +10,7 @@
 
         public string LoginIP { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_PICAssignmentDel";
-        }
+        public override string GetSettingKey() => "Acc_CRM_PICAssignmentDel";
 
         public override bool IsValid() => !string.IsNullOrWhiteSpace(RemovedPICs);
     }

@@ -11,10 +11,7 @@
 
         public bool IsActive { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_SubjectTemplateDel";
-        }
+        public override string GetSettingKey() => "Acc_CRM_SubjectTemplateDel";
 
         public override bool IsValid() => true;
     }

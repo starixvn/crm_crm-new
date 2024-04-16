@@ -9,10 +9,7 @@
 
         public string Subject { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_SubjectTemplateIns";
-        }
+        public override string GetSettingKey() => "Acc_CRM_SubjectTemplateIns";
 
         public override bool IsValid() => true;
     }

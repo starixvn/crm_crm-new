@@ -31,10 +31,7 @@
 
         public string LoginIP { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_PicUpd";
-        }
+        public override string GetSettingKey() => "Acc_CRM_PicUpd";
 
         public override bool IsValid()
         {

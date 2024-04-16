@@ -121,12 +121,13 @@ export class NormalCommunicationInfo extends Component {
     renderOptions = (name, item) => <option key={item} value={item}>{name}</option>;
 
     validateCommunicationInfo = () => {
-        const { errors, otherAccountCommunication } = ValidateNormalCommunicationInfo(this.state.otherAccountCommunication);
+        let { errors, otherAccountCommunication } = ValidateNormalCommunicationInfo(this.state.otherAccountCommunication);
         this.setState({
             otherAccountCommunication: otherAccountCommunication
         });
-        this.props.setErrors(Object.keys(errors).length === 0 ? null : errors);
-        return Object.keys(errors).length === 0 ? null : errors;
+        errors = Object.keys(errors).length === 0 ? null : errors;
+        this.props.setErrors(errors);
+        return errors;
     }
 
     handleChangeCommunication = (name, value, indexPicCommunicationTool) => {

@@ -29,10 +29,7 @@
 
         public string CommunicationTools => XMLIO.ToXML(PicCommunicationTools, "ROOT").ToString();
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_PicIns";
-        }
+        public override string GetSettingKey() => "Acc_CRM_PicIns";
 
         public override bool IsValid()
         {

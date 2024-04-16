@@ -28,10 +28,7 @@
         [SpParam(Ignored = true)]
         public int PageSize { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_Rpt_FeedbackStatisticDetails";
-        }
+        public override string GetSettingKey() => "Acc_CRM_Rpt_FeedbackStatisticDetails";
 
         public override bool IsValid() => FromDate <= ToDate && (ToDate - FromDate).Days <= Constants.DaysOfYear;
     }

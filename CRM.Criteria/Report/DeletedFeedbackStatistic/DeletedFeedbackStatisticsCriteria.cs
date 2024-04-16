@@ -16,10 +16,7 @@
 
         public DateTime ToDate { get; set; }
 
-        public override string GetSettingKey()
-        {
-            return "Acc_CRM_Rpt_DeletedFeedbackStatistics";
-        }
+        public override string GetSettingKey() => "Acc_CRM_Rpt_DeletedFeedbackStatistics";
 
         public override bool IsValid()
         {
