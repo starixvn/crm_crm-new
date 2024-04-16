@@ -113,7 +113,7 @@ export default class DataGrid extends PureComponent {
                 <FormikErrorMessage touched={touched} errors={errors} fieldNames={Object.keys(values)} />
                 <div className='group-acc-info'>
                     <div className='group-title' onClick={() => this.setState(prevState => ({ isShowAccInfo: !prevState.isShowAccInfo }))}>
-                        <span>Account info</span>
+                        <span>{LangHelper.getResource('AccountInfo')}</span>
                         <span className='icon-dropdown'/>
                     </div>
                     {
@@ -153,7 +153,9 @@ export default class DataGrid extends PureComponent {
                                     <div className='show-icon'>
                                         {
                                             values.isGroupHeadLine &&
-                                            <img className='icon-boss' src={Site.resolveClientUrl('www/dist/css/images/icon/icon-acc-boss.svg')} title='Headline Account' alt='icon acc boss' />
+                                                <img className='icon-boss' src={Site.resolveClientUrl('www/dist/css/images/icon/icon-acc-boss.svg')}
+                                                    title={LangHelper.getResource('HeadlineAccount')}
+                                                    alt='icon acc boss' />
                                         }
                                         {
                                             values.isVIP &&
@@ -259,7 +261,8 @@ export default class DataGrid extends PureComponent {
                                 <Col>
                                     {
                                         this.state.isHostOnCurrentCustomer &&
-                                        <Button variant="primary" size="sm" type="submit" disabled={isSubmitting}>Update
+                                        <Button variant="primary" size="sm" type="submit" disabled={isSubmitting}>
+                                                {LangHelper.getResource('Update')}
                                         </Button>
                                     }
                                 </Col>
@@ -288,7 +291,7 @@ export default class DataGrid extends PureComponent {
         return (
             <div className='group-comm-tool'>
                 <div className='group-title' onClick={() => this.setState(prevState => ({ isShowCommInfo: !prevState.isShowCommInfo }))}>
-                    <span>Communication info</span>
+                    <span>{LangHelper.getResource('CommunicationInfo')}</span>
                     <span className='icon-dropdown'/>
                 </div>
                 {
@@ -330,7 +333,7 @@ export default class DataGrid extends PureComponent {
         return (
             <div className='group-comm-tool'>
                 <div className='group-title' onClick={() => this.setState(prevState => ({ isShowCommInfo: !prevState.isShowCommInfo }))}>
-                    <span>Communication info</span>
+                    <span>{LangHelper.getResource('CommunicationInfo')}</span>
                     <span className='icon-dropdown'/>              
                 </div>
                 {
@@ -562,16 +565,7 @@ export default class DataGrid extends PureComponent {
         </div>);
     };
 
-    render() {
-
-        if (!this.props.customerInfo && this.props.showErrorConfirmPopup) {
-            return this.renderEmptyData('AuthorizedSearchAccount');
-        }
-
-        if (!this.props.customerInfo && !this.props.showErrorConfirmPopup) {
-            return this.renderEmptyData('EmptyData');
-        }
-
+    getInitialValues() {
         const customerInfo = this.props.customerInfo;
         const initialValues = {
             custId: customerInfo.custId,
@@ -620,6 +614,19 @@ export default class DataGrid extends PureComponent {
             otherAccountCommunicationInfos: customerInfo.otherAccountCommunicationInfos,
             isVIP: customerInfo.isVIP
         };
+        return initialValues;
+    }
+
+    render() {
+        if (!this.props.customerInfo && this.props.showErrorConfirmPopup) {
+            return this.renderEmptyData('AuthorizedSearchAccount');
+        }
+
+        if (!this.props.customerInfo && !this.props.showErrorConfirmPopup) {
+            return this.renderEmptyData('EmptyData');
+        }
+        const initialValues = this.getInitialValues();
+        
         return (
             <Formik
                 enableReinitialize

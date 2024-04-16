@@ -50,6 +50,7 @@ export class Layout extends Component {
         this.getMaxClientHeightLeft();
         window.addEventListener("resize", this.handleResize);
         window.addEventListener("getCurrentCustomer", this.getCurrentCustomer);
+        window.dispatchEvent(new Event('resize'));
     }
 
     async componentDidUpdate(prevProps, prevState) {
@@ -176,14 +177,6 @@ export class Layout extends Component {
         this.setState({ gridParams });
     };
 
-    setUserName = username => {
-        this.setState({ username });
-    };
-
-    handleCloseErrorPopup = () => {
-        this.setState({ showErrorConfirmPopup: false });
-    };
-
     handleChangeSuggestion = value => {
         this.setState({
             username: value
@@ -295,7 +288,6 @@ export class Layout extends Component {
 
     renderLeftRightContent = customerInfo => {
         const { settings, gridParams, isShowingLeftPanel, showErrorConfirmPopup, username } = this.state;
-        window.dispatchEvent(new Event('resize'));
         return (
             <>
                 {
@@ -378,10 +370,10 @@ export class Layout extends Component {
                         title="Confirm Update Version"
                         contents={<div>New version has released, please press OK to get latest!</div>}
                         buttons={[
-                            <Button variant="primary" size="sm" onClick={() => window.location.reload(true)}>
+                            <Button key="btn_ok" variant="primary" size="sm" onClick={() => window.location.reload(true)}>
                                 {LangHelper.getResource('OK')}
                             </Button>,
-                            <Button variant="primary" size="sm" onClick={this.handleCloseConfirmNewVersion}>
+                            <Button key="btn_cancel" variant="primary" size="sm" onClick={this.handleCloseConfirmNewVersion}>
                                 {LangHelper.getResource('Cancel')}
                             </Button>
                         ]}

@@ -253,6 +253,7 @@
     GroupBy: 'Group By',
     Gmt8: ' GMT+8',
     Headline: 'Headline',
+    HeadlineAccount: 'Headline Account',
     HeadlineInfo: 'Headline Info',
     HeadlineType: 'Headline Type',
     Handler: 'Handler',

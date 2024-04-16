@@ -91,15 +91,10 @@ export class AccountantPIC extends Component {
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ updateHeadlineInfoPolicy: response });
         });
-
         const params = ParamsCustomerInfo(this.props.customerInfo);
         this.setState(params);
         document.title = LangHelper.getResource('CRMSystem');
     }
-
-    handleShowAccountantPIC = () => {        
-        this.props.setShowAccountantPIC(!this.props.isShowAccountantPIC);
-    };
 
     handleSubmitAccountPIC = () => {
         const values = this.state;
@@ -143,7 +138,7 @@ export class AccountantPIC extends Component {
                     (updatePolicy === Policy.Read || canEditHeadline) &&
                     <Form className='group-account acc-second'>
                         <div className='group-title group-tab'>
-                            <div className="group-title-tab" onClick={this.handleShowAccountantPIC}>
+                                <div className="group-title-tab" onClick={() => { this.props.setShowAccountantPIC(!this.props.isShowAccountantPIC); }}>
                                 <span className='icon-dropdown' />
                                 {LangHelper.getResource('AccountantPIC')}
                             </div>

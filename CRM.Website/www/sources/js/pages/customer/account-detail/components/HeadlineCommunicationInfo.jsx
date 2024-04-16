@@ -4,7 +4,7 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import LangHelper from '@jsroot/common/langHelper';
 import { Form, Button } from 'react-bootstrap';
-import { HeadlinePicID, AccountingPicID, Letstalk, Telegram, Policy, FunctionKey } from '@jsroot/common/constants';
+import { HeadlinePicID, AccountingPicID, Policy, FunctionKey } from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
 import DataService from '@jsroot/common/dataService';
@@ -516,7 +516,7 @@ export class HeadlineCommunicationInfo extends Component {
                 {
                     headlineInfoPolicy === Policy.Host && headlineCommunicationInfo.length > 0 &&
                     <div className='group-btn comm-info-btn'>
-                        <Button type="submit" className='btn-save' onClick={() => { this.handleSubmit(); }}>
+                        <Button type="submit" className='btn-save' onClick={this.handleSubmit}>
                             {LangHelper.getResource('Save')}
                         </Button>
                     </div>

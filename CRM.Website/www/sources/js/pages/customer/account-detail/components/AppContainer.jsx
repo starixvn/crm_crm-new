@@ -104,8 +104,7 @@ export class AppContainer extends Component {
             this.setState({ updateHeadlineInfoPolicy: response });
         });
 
-        const { customerInfo } = this.props;
-        const params = ParamsCustomerInfo(customerInfo);
+        const params = ParamsCustomerInfo(this.props.customerInfo);
         this.setState(params);
         document.title = LangHelper.getResource('CRMSystem');
     }
@@ -117,33 +116,10 @@ export class AppContainer extends Component {
         })
     };
 
-    renderErrors = errors => {
-        return (
-            <>
-                {
-                    errors &&
-                    <Alert variant='danger'>
-                        <ul className='list-message-error'>
-                            {
-                                Object.keys(errors).map((key) => {
-                                    return <li key={errors[key]}>{errors[key]}</li>;
-                                })
-                            }
-                        </ul>
-                    </Alert>
-                }
-            </>
-        );
-    }
-
-
     renderHeadlineAccount = () => {
-        const { allSettings, customerInfo, activeTab, isShowAccountInfo, isShowAccountantPIC } = this.props;
+        const { activeTab, isShowAccountInfo, isShowAccountantPIC } = this.props;
         const updatePolicy = this.state.updateHeadlineInfoPolicy;
         const canEditHeadline = updatePolicy === Policy.Host;
-        if (!allSettings || !customerInfo) {
-            return null;
-        }       
         return (
             <>                
                 <AccountInfo/>
@@ -190,18 +166,6 @@ export class AppContainer extends Component {
             </>);
     }
 
-    renderOtherAccount = () => {
-        const { allSettings, customerInfo } = this.props;
-        if (!allSettings || !customerInfo) {
-            return null;
-        }        
-        return (
-            <>
-                <AccountInfo/>
-                <NormalCommunicationInfo />
-            </>);
-    }
-
     handleClosePopup = () => {
         const { activeTab } = this.props;
         if (activeTab.nextTab != null) {
@@ -230,11 +194,23 @@ export class AppContainer extends Component {
         return (
             <>
                 {
-                    this.renderErrors(errors)
+                    errors &&
+                    <Alert variant='danger'>
+                        <ul className='list-message-error'>
+                            {
+                                Object.keys(errors).map((key) => {
+                                    return <li key={errors[key]}>{errors[key]}</li>;
+                                })
+                            }
+                        </ul>
+                    </Alert>
                 }
                 {
                     !customerInfo.isGroupHeadLine &&
-                    this.renderOtherAccount()
+                    <div>
+                        <AccountInfo />
+                        <NormalCommunicationInfo />
+                    </div>
                 }
                 {
                     customerInfo.isGroupHeadLine &&

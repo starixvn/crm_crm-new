@@ -101,15 +101,10 @@ export class AccountInfo extends Component {
                 isHostOnCurrentCustomer: response
             });
         });
-
         const params = ParamsCustomerInfo(this.props.customerInfo);
         this.setState(params);
         document.title = LangHelper.getResource('CRMSystem');
     }
-
-    handleShowAccountInfo = () => {
-        this.props.setShowAccountInfo(!this.props.isShowAccountInfo);
-    };
 
     handleSubmitAccountInfo = () => {
         const values = this.state;
@@ -168,7 +163,7 @@ export class AccountInfo extends Component {
         return (
             <Form className={`group-account acc-first ${(this.state.updateHeadlineInfoPolicy >= Policy.Read || !this.props.customerInfo.isGroupHeadLine) ? 'acc-info' : 'only-acc-pic'}`}>
                 <div className='group-title group-tab'>
-                    <div className="group-title-tab" onClick={this.handleShowAccountInfo}>
+                    <div className="group-title-tab" onClick={() => { this.props.setShowAccountInfo(!this.props.isShowAccountInfo); }}>
                         <span className='icon-dropdown' />
                         {LangHelper.getResource('AccountInfo')}
                     </div>
