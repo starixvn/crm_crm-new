@@ -176,6 +176,7 @@
             services.AddSingleton<ICaptureSettlementDataService, CaptureSettlementDataService>();
             services.AddSingleton<IGenerateResultAmendmentService, GenerateResultAmendmentService>();
             services.AddSingleton<IPushNotificationResultAmendmentService, PushNotificationResultAmendmentService>();
+            services.AddSingleton<IGenerateLapNotificationService, GenerateLapNotificationService>();
         }
 
         private static void AddWorker(IServiceCollection services)
@@ -205,6 +206,7 @@
             services.AddHostedService<MncCaptureSettlementDataWorker>();
             services.AddHostedService<MncGenerateResultAmendmentWorker>();
             services.AddHostedService<MncPushNotificationResultAmendmentWorker>();
+            services.AddHostedService<MncGenerateLapNotificationWorker>();
         }
 
         private static void ConfigDataProtection(IServiceCollection services, RedisConfig redisConfig)

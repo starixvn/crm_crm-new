@@ -25,5 +25,6 @@
         public const string CaptureSettlementData = "CaptureSettlementData";
         public const string GenerateResultAmendment = "GenerateResultAmendment";
         public const string PushNotificationResultAmendment = "PushNotificationResultAmendment";
+        public const string GenerateLapNotification = "GenerateLapNotification";
     }
 }

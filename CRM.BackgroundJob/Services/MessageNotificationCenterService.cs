@@ -15,6 +15,8 @@
         Task GenerateResultAmendmentAsync();
 
         Task PushNotificationResultAmendmentAsync();
+
+        Task GenerateLapNotificationAsync();
     }
 
     public class MessageNotificationCenterService : IMessageNotificationCenterService
@@ -24,6 +26,7 @@
         private readonly ICaptureSettlementDataService captureSettlementDataService;
         private readonly IGenerateResultAmendmentService generateResultAmendmentService;
         private readonly IPushNotificationResultAmendmentService pushNotificationResultAmendmentService;
+        private readonly IGenerateLapNotificationService generateLapNotificationService;
         private readonly string Environment;
 
         private const string DefaultEnvironment = Constants.DefaultEnvironment;
@@ -34,7 +37,8 @@
             ICommonFeedback commonFeedback,
             ICaptureSettlementDataService captureSettlementDataService,
             IGenerateResultAmendmentService generateResultAmendmentService,
-            IPushNotificationResultAmendmentService pushNotificationResultAmendmentService
+            IPushNotificationResultAmendmentService pushNotificationResultAmendmentService,
+            IGenerateLapNotificationService generateLapNotificationService
         )
         {
             this.logService = logService;
@@ -42,6 +46,7 @@
             this.captureSettlementDataService = captureSettlementDataService;
             this.generateResultAmendmentService = generateResultAmendmentService;
             this.pushNotificationResultAmendmentService = pushNotificationResultAmendmentService;
+            this.generateLapNotificationService = generateLapNotificationService;
             Environment = string.IsNullOrEmpty(configuration.GetValue<string>("SiteEnvironment")) ? DefaultEnvironment : configuration.GetValue<string>("SiteEnvironment");
         }
 
@@ -50,19 +55,17 @@
             try
             {
                 var initSiteDbConfigs = await captureSettlementDataService.GetInitialSiteDbConfigsAsync(Environment);
-                if (!initSiteDbConfigs.Any())
+                if (initSiteDbConfigs.Any())
                 {
-                    logService.LogInformation("Capture Settlement - Service is shutdown.");
-                    return;
-                }
-                foreach (var item in initSiteDbConfigs)
-                {
-                    var sessionResultHistorys = await captureSettlementDataService.GetSessionByDateAsync(item);
-                    var sessionResultHistory = sessionResultHistorys.FirstOrDefault();
-
-                    if (sessionResultHistory != null)
+                    foreach (var item in initSiteDbConfigs)
                     {
-                        await captureSettlementDataService.InsertDataLoadAsync(sessionResultHistory.Environment, sessionResultHistory.JSSettlResultHist);
+                        var sessionResultHistorys = await captureSettlementDataService.GetSessionByDateAsync(item);
+                        var sessionResultHistory = sessionResultHistorys.FirstOrDefault();
+
+                        if (sessionResultHistory != null)
+                        {
+                            await captureSettlementDataService.InsertDataLoadAsync(sessionResultHistory.Environment, sessionResultHistory.JSSettlResultHist);
+                        }
                     }
                 }
             }
@@ -89,18 +92,16 @@
             try
             {
                 var settlementGen = await generateResultAmendmentService.GetPrepareGenNotificationAsync(Environment);
-                if (!settlementGen.Any())
+                if (settlementGen.Any())
                 {
-                    logService.LogInformation("Generate Result Amendment Notification - Service is shutdown.");
-                    return;
+                    foreach (var item in settlementGen)
+                    {
+                        item.RefValueEN = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.en_US);
+                        item.RefValueCH = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_TW);
+                        item.RefValueCS = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_CN);
+                    }
+                    await generateResultAmendmentService.InsertGenResultAmendmentAsync(Environment, settlementGen);
                 }
-                foreach (var item in settlementGen)
-                {
-                    item.RefValueEN = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.en_US);
-                    item.RefValueCH = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_TW);
-                    item.RefValueCS = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_CN);
-                }
-                await generateResultAmendmentService.InsertGenResultAmendmentAsync(Environment, settlementGen);
             }
             catch (Exception ex)
             {
@@ -128,6 +129,28 @@
                     await pushNotificationResultAmendmentService.GetMessageResultAmendmentAsync(command);
                     await pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, "AfterInsMsg");
                     await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti");
+                }
+            }
+            catch (Exception ex)
+            {
+                await logService.ErrorAsync(ex);
+            }
+        }
+
+        public async Task GenerateLapNotificationAsync()
+        {
+            try
+            {
+                var settlementGenLap = await generateLapNotificationService.GetPrepareGenLapNotificationAsync();
+                if (settlementGenLap.Any())
+                {
+                    foreach (var item in settlementGenLap)
+                    {
+                        item.RefValueEN = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.en_US);
+                        item.RefValueCH = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_TW);
+                        item.RefValueCS = GetResourceRemotingRef(item.RefId1, item.RefId2, Language.zh_CN);
+                    }
+                    await generateLapNotificationService.InsertGenLapResultAmendmentAsync(settlementGenLap);
                 }
             }
             catch (Exception ex)
