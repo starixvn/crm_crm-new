@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import { ActionCreators } from '../actions';
 import { Button, Form } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
 import { statusOptionOST, statusOptionCSD } from '../common.functions';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
+import WithNavigation from '@jsroot/components/WithNavigation';
+import Site from '@jsroot/common/site';
 
-export default class Filter extends Component {
+export class Filter extends Component {
     constructor(props) {
         super(props);
         const yesterday = new Date();
@@ -43,13 +46,38 @@ export default class Filter extends Component {
         ];
     }
 
+    componentDidMount() {
+        if (this.props.isLoadGrid && this.props.filterParams) {
+            const filterParams = this.props.filterParams;
+            const statusList = filterParams.status.split(',');
+            const cloneStatus = JSON.parse(JSON.stringify(filterParams.isOstUser ? statusOptionOST : statusOptionCSD));
+            console.log('cloneStatus', cloneStatus);
+            console.log('statusOptionOST', statusOptionOST);
+            const statusOptions = cloneStatus.map(item => {
+                if (!statusList.includes(item.id)) {
+                    item.checked = false;
+                }
+                return item;
+            });
+            this.setState({
+                ...this.state,
+                announcementId: filterParams.announcementId,
+                fromDate: filterParams.fromDate ? new Date(filterParams.fromDate) : this.state.fromDate,
+                toDate: filterParams.toDate ? new Date(filterParams.toDate) : this.state.toDate,
+                title: filterParams.title,
+                status: filterParams.status,
+                statusOptions: statusOptions
+            });
+        }
+    };
+
     handleFilterChange = (name, value) => {
         this.setState(prevState => ({  
             filter: {
                 ...prevState.filter,
                 [name]: value
             }
-        }));
+        }), () => this.props.setGridParams(this.getParams()));
     };
 
     handleDateChange = (dates) => {
@@ -67,13 +95,13 @@ export default class Filter extends Component {
         this.setState(prevState => ({
             filter: {...prevState.filter, notificationId: null, fromNotificationId: null, toNotificationId: null},
             isCompareIdEqual: !prevState.isCompareIdEqual
-        }));
+        }), () => this.props.setGridParams(this.getParams()));
     };
 
     handleChangeStatus = (currentItem, selectedItemsKey) =>{
         this.setState({
             filter: {...this.state.filter, statuses: selectedItemsKey}
-        });
+        }, () => this.props.setGridParams(this.getParams()));
     };
 
     handleChangeTestData = () => {
@@ -82,7 +110,7 @@ export default class Filter extends Component {
                 ...prevState.filter,
                 isIncludeTestData: !prevState.filter.isIncludeTestData
             }
-        }));
+        }), () => this.props.setGridParams(this.getParams()));
     };
 
     eitherExitsFromToId = () => {
@@ -139,6 +167,7 @@ export default class Filter extends Component {
             status: this.isDisabledField() ? null : statuses,
             sender: this.isDisabledField() ? null : sender,
             isIncludeTestData: this.isDisabledField() ? null : isIncludeTestData,
+            isOstUser: this.state.isOstUser,
             pageIndex: this.props.gridParams.pageIndex,
             pageSize: this.props.gridParams.pageSize
         };
@@ -147,10 +176,17 @@ export default class Filter extends Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        this.isValidParams().errMsg.forEach(item => {
-            toast.error(item);
-            this.setState({ isValidNotification: true })
-        });
+        if (this.isValidParams.isValid) {
+            this.isValidParams().errMsg.forEach(item => {
+                toast.error(item);
+                this.setState({ isValidNotification: true });
+            });
+        } else {
+            const params = this.getParams();
+            this.props.setGridParams(params);
+            //this.props.getGridData(params);
+            console.log('params', params);
+        }
     };
 
     handleChangeUser = id => {
@@ -158,12 +194,12 @@ export default class Filter extends Component {
             filter: { ...this.state.filter, statuses: id === 0 ? statusOptionOST.map(x=> x.name).join(','): statusOptionCSD.map(x=> x.name).join(',')},
             statusOptions: id === 0 ? statusOptionOST : statusOptionCSD,
             isOstUser: id === 0
-        });
+        }, () => this.props.setGridParams(this.getParams()));
     };
 
     render() {
         console.log('state', this.state);
-        console.log('is', this.isDisabledField());
+        console.log('params', this.props.gridParams);
 
         const classIsInvalidFromTo = this.state.isValidNotification ? 'is-invalid' : '';
         return (
@@ -316,3 +352,14 @@ export default class Filter extends Component {
         )
     }
 };
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const { gridParams } = state;
+    return { gridParams };
+};
+
+const FilterNavigation = WithNavigation(Filter);
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterNavigation);

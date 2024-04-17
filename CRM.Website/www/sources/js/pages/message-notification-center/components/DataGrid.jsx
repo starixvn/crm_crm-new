@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
-import { Button } from 'react-bootstrap';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import Panel, { PanelHeader } from '@jsroot/components/panel/index';
+import WithNavigation from '@jsroot/components/WithNavigation';
+import Site from '@jsroot/common/site';
 
-export default class DataGrid extends Component {
+export class DataGrid extends Component {
     constructor(props) {
         super(props);
 
@@ -19,18 +23,23 @@ export default class DataGrid extends Component {
                 { id: 3, status: 'Cancelled'},
                 { id: 4, status: 'Failed'},
                 { id: 5, status: 'Sent'},
-                { id: 6, status: 'Sending'}
+                { id: 6, status: 'Sending'},
+                { id: 7, status: 'Active'},
+                { id: 8, status: 'Inactive'},
             ]
         };
         this.panels = [];
 
         this.data = [
-            { notificationId: 1, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: ' Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023', statusId: 1, sender: '' },
-            { notificationId: 2, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund] ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund]ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund]', statusId: 2, sender: '' },
-            { notificationId: 3, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'Created on Dec 12, 2023 Created on Dec 12, 2023', statusId: 3, sender: '' },
-            { notificationId: 3, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'As of now, OST and CSD teams have to handle many steps to send notifications to our customers (members, SMA, licensees, headlines) when having a change result of events. Additionally, all customers will be received the notifications event they do play on the match. To keep thi', statusId: 4, sender: '' },
-            { notificationId: 3, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'It will destroy the company reputation for a long term. As the result, we have a project to build a service/system that send the notifications to dedicated customers who are affected by the result', statusId: 5, sender: '' },
-            { notificationId: 3, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'OST team needs to review the messages on the first launching time to make sure the system work as expected. After that, we can configure the system to run automatically.', statusId: 6, sender: '' }
+            { notificationId: 1, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: ' Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023', statusId: 1, sender: '' },
+            { notificationId: 2, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund] ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund]ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund]', statusId: 2, sender: '' },
+            { notificationId: 3, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'Created on Dec 12, 2023 Created on Dec 12, 2023', statusId: 3, sender: '' },
+            { notificationId: 3, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'As of now, OST and CSD teams have to handle many steps to send notifications to our customers (members, SMA, licensees, headlines) when having a change result of events. Additionally, all customers will be received the notifications event they do play on the match. To keep thi', statusId: 4, sender: '' },
+            { notificationId: 3, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'It will destroy the company reputation for a long term. As the result, we have a project to build a service/system that send the notifications to dedicated customers who are affected by the result', statusId: 5, sender: '' },
+            { notificationId: 3, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'OST team needs to review the messages on the first launching time to make sure the system work as expected. After that, we can configure the system to run automatically.', statusId: 6, sender: '' },
+            { notificationId: 5, isOst: false, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: ' Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023', statusId: 1, sender: '' },
+            { notificationId: 6, isOst: false, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'OST team needs to review the messages on the first launching time to make sure the system work as expected. After that, we can configure the system to run automatically.', statusId: 7, sender: '' },
+            { notificationId: 7, isOst: false, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'OST team needs to review the messages on the first launching time to make sure the system work as expected. After that, we can configure the system to run automatically.', statusId: 8, sender: '' },
         ];
     }
 
@@ -76,9 +85,27 @@ export default class DataGrid extends Component {
 
     buildBody = isHost => {
         if (this.data.length > 0) {
-            return this.data.map((item, index) => this.renderRow(item, index, isHost));
+            const filterData = this.data.filter(item => item.isOst === this.props.gridParams.isOstUser);
+            return filterData.map((item, index) => this.renderRow(item, index, isHost));
         }
         //return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 4 : 3}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+    };
+
+    onPaging = (pageIndex, pageSize) => {
+        const params = { ...this.props.gridParams };
+        params.pageIndex = pageIndex;
+        params.pageSize = pageSize;
+        this.props.setGridParams(params);
+        this.props.getGridData({ ...params });
+    };
+
+    handleEdit = notificationId => {
+        const actionParam = {
+            notificationId: notificationId,
+            isEdit: true,
+            redirectParams: this.props.gridParams
+        };
+        this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter/Edit'), {state: actionParam});
     };
 
     renderTooltipComponent = (title, component) => {
@@ -96,26 +123,39 @@ export default class DataGrid extends Component {
         )
     };
 
-    renderActionButton = status => {
+    renderActionButtonOST = (status, notificationId) => {
         switch (status) {
             case 'New':
                 return (
                     <>
-                        <div className='review-button'>{LangHelper.getResource('Review')}</div>
-                        <div className='cancel-button'>{LangHelper.getResource('Cancel')}</div>
+                        <div className='review-button' onClick={() => this.handleReview(notificationId)}>{LangHelper.getResource('Review')}</div>
+                        <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
                     </>
                 );
             case 'Failed':
-                return <div className='review-button'>{LangHelper.getResource('ResendFail')}</div>;
+                return <div className='review-button' onClick={() => this.handleReview(notificationId)}>{LangHelper.getResource('ResendFail')}</div>;
             case 'Draft':
                 return (
                     <>
-                        <div className='review-button'>{LangHelper.getResource('Edit')}</div>
-                        <div className='cancel-button'>{LangHelper.getResource('Cancel')}</div>
+                        <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Edit')}</div>
+                        <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
                     </>
                 );
             case 'Cancelled':
-                return <div className='review-button'>{LangHelper.getResource('Edit')}</div>;
+                return <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Edit')}</div>;
+            default:
+                return null;
+        }
+    };
+
+    renderActionButtonCSD = (status, notificationId) => {
+        switch (status) {
+            case 'New':
+                return <div className='review-button' onClick={() => this.handleReview(notificationId)}>{LangHelper.getResource('Activate')}</div>;
+            case 'Active':
+                return <div className='review-button' onClick={() => this.handleReview(notificationId)}>{LangHelper.getResource('Deactivate')}</div>;
+            case 'Inactive':
+                return <div className='review-button' onClick={() => this.handleReview(notificationId)}>{LangHelper.getResource('Activate')}</div>;
             default:
                 return null;
         }
@@ -155,7 +195,9 @@ export default class DataGrid extends Component {
                 <Cell className='text-left'>{item.sender}</Cell>
                 <Cell className='text-center'>
                     <div className='action-button'>
-                        { this.renderActionButton(statusName) }
+                        {
+                            this.props.gridParams.isOstUser ? this.renderActionButtonOST(statusName, item.notificationId) : this.renderActionButtonCSD(statusName, item.notificationId)
+                        }
                     </div>
                 </Cell>
             </Row>
@@ -197,3 +239,21 @@ export default class DataGrid extends Component {
         );
     }
 };
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const {
+        gridParams,
+        gridData
+    } = state;
+
+    return {
+        gridParams,
+        gridData
+    };
+};
+
+const DataGridNavigation = WithNavigation(DataGrid);
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataGridNavigation);

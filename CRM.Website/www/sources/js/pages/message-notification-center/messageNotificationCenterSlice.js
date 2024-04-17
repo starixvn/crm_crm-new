@@ -1,6 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
-    gridParams: { pageIndex: 1, pageSize: 100 },
+    gridParams: {
+        isOstUser: true,
+        pageIndex: 1,
+        pageSize: 100
+    },
+    gridData: null,
+    redirectActionParams: null
 };
 
 const messageNotificationCenterSlice = createSlice({
@@ -9,6 +15,9 @@ const messageNotificationCenterSlice = createSlice({
     reducers: {
         setGridParams: (state, action) => {
             state.gridParams = action.payload;
+        },
+        setGridData: (state, action) => {
+            state.gridData = action.payload;
         }
     }
 });
@@ -16,7 +25,8 @@ const messageNotificationCenterSlice = createSlice({
 const { actions, reducer } = messageNotificationCenterSlice;
 
 export const {
-    setGridParams
+    setGridParams,
+    setGridData
 } = actions;
 
 export default reducer;

@@ -109,6 +109,16 @@
             border-color: #598ac7;
             color: $white;
         }
+        &-Active {
+            background-color: #77933c;
+            border-color: #77933c;
+            color: $white;
+        }
+        &-Inactive {
+            background-color: $white;
+            border-color: #77933c;
+            color: $black;
+        }
     }
 
     .action-button {
@@ -135,7 +145,9 @@
             background-color: $grey-light
         }
     }
+}
 
+.message-notification-center-action {
     .action-notification {
         width: 1000px;
         line-height: normal;
@@ -148,6 +160,10 @@
                 display: flex;
                 padding: 6px 16px;
                 align-items: center;
+
+                label {
+                    font-weight: 700;
+                }
             }
 
             .group-item {
@@ -315,6 +331,7 @@
         }
     }
 }
+
 .fade.tooltip.bs-tooltip-bottom {
     width: 260px !important;
 

@@ -14,7 +14,7 @@ import MultipleSelect from '@jsroot/components/multiple-select/index';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import Site from '@jsroot/common/site';
 
-export default class ActionNotification extends Component {
+export class ActionNotification extends Component {
     constructor(props) {
         super(props);
 
@@ -31,8 +31,16 @@ export default class ActionNotification extends Component {
 
     };
 
-    handleClose = () => {
+    getStateData = () => {
+        const stateData = {
+            isLoadGrid: true,
+            filterParams: this.props.actionParam?.redirectParams
+        };
+        return stateData;
+    };
 
+    handleClose = () => {
+        this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter'), { state: this.getStateData() });
     };
 
     handleSubmit = () => {
@@ -47,6 +55,8 @@ export default class ActionNotification extends Component {
     );
 
     render() {
+        console.log('this.props.actionParam', this.props.actionParam);
+
         const totalCredit = [
             { name: '789y', data: 'y789, y889' },
             { name: 'IBC', data: '776666B, IBCIndo' },
@@ -181,3 +191,14 @@ export default class ActionNotification extends Component {
         );
     }
 };
+
+const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
+
+const mapStateToProps = state => {
+    const {  } = state;
+    return {  };
+};
+
+const ActionNotificationNavigation = WithNavigation(ActionNotification);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActionNotificationNavigation);
