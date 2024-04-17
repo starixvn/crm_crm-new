@@ -165,6 +165,24 @@
         }
 
         [Fact]
+        public async Task ValidateEditNewPicAsync_WhenCall_ReturnExpectedData()
+        {
+            //Arrange
+            var fixture = new Fixture();
+            var expected = fixture.Create<IEnumerable<PicValidationInfo>>();
+            var service = GetCustomerService();
+            var criteria = fixture.Create<ValidateEditNewPicCriteria>();
+
+            baseService.GetDataAsync<PicValidationInfo>(criteria).Returns(expected);
+
+            //Act
+            var actual = await service.ValidateEditNewPicAsync(criteria);
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public async Task UpdateCustomerSuggestionAsync_WhenCall_ReturnExpectedData()
         {
             //Arrange
@@ -237,7 +255,25 @@
             //Assert
             Assert.Equal(expected, actual);
         }
-        
+
+        [Fact]
+        public async Task GetSiteTypeByCustIdAsync_WhenCall_ReturnExpectedData()
+        {
+            //Arrange
+            var fixture = new Fixture();
+            var service = GetCustomerService();
+            var custId = fixture.Create<int>();
+            var expected = fixture.Create<CustomerPermissionInfo>();
+
+            baseService.GetDataEntityAsync<CustomerPermissionInfo>(Arg.Any<GetSiteTypeByCustIdCriteria>()).Returns(expected);
+
+            //Act
+            var actual = await service.GetSiteTypeByCustIdAsync(custId);
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
         [Fact]
         public async Task SyncHeadlineStaffsAndAuthorityAsync_WhenCall_ReturnExpectedData()
         {

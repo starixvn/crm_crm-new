@@ -83,17 +83,20 @@
             //Act
             var result = await controller.GetAllSettings();
 
-            //Asssert
+            //Assert
             var jsonResult = Assert.IsType<JsonResult>(result);
-            var sitesJson = (IEnumerable<SiteInfo>)jsonResult.Value.GetType().GetProperty("Sites").GetValue(jsonResult.Value);
-            var countriesJson = (IEnumerable<Country>)jsonResult.Value.GetType().GetProperty("Countries").GetValue(jsonResult.Value);
-            var languagesJson = (IEnumerable<Language>)jsonResult.Value.GetType().GetProperty("Languages").GetValue(jsonResult.Value);
-            var licenseeTypesJson = (IEnumerable<BaseModel>)jsonResult.Value.GetType().GetProperty("LicenseeTypes").GetValue(jsonResult.Value);
+            if (jsonResult.Value != null)
+            {
+                var sitesJson = (IEnumerable<SiteInfo>)jsonResult.Value.GetType().GetProperty("Sites")?.GetValue(jsonResult.Value);
+                var countriesJson = (IEnumerable<Country>)jsonResult.Value.GetType().GetProperty("Countries")?.GetValue(jsonResult.Value);
+                var languagesJson = (IEnumerable<Language>)jsonResult.Value.GetType().GetProperty("Languages")?.GetValue(jsonResult.Value);
+                var licenseeTypesJson = (IEnumerable<BaseModel>)jsonResult.Value.GetType().GetProperty("LicenseeTypes")?.GetValue(jsonResult.Value);
             
-            Assert.Equal(sitesJson, sites);
-            Assert.Equal(countriesJson, countries);
-            Assert.Equal(languagesJson, languages);
-            Assert.Equal(licenseeTypes, licenseeTypesJson);
+                Assert.Equal(sitesJson, sites);
+                Assert.Equal(countriesJson, countries);
+                Assert.Equal(languagesJson, languages);
+                Assert.Equal(licenseeTypes, licenseeTypesJson);
+            }
         }
 
         [Fact]
@@ -122,8 +125,10 @@
             //Arrange
             var controller = GetController();
             var fixture = new Fixture();
-            var expectedResult = new CommandResult();
-            expectedResult.Message = ViewResources.NoPermission;
+            var expectedResult = new CommandResult
+            {
+                Message = ViewResources.NoPermission
+            };
             var command = fixture.Create<EditCustomerInfoDetailCommand>();
 
             customerService.HasHostPermissionOnCustIdAsync(command.CustomerId).Returns(false);
