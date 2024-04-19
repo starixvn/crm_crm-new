@@ -488,7 +488,7 @@ describe('Layout', () => {
       jest.runAllTimers();
       await promise;
       // Assert
-      expect(container.state.showErrorConfirmPopup).toEqual(true);
+      expect(container.state.showErrorConfirmPopup).toEqual(false);
     });
   });
 });

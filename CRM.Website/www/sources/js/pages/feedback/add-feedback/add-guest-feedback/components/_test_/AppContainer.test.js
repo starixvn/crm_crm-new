@@ -11,7 +11,8 @@ describe('AppContainer', () => {
     describe('componentWillUnmount', () => {
         it('should do reset store', () => {
             const props = {
-                resetState: jest.fn()
+                resetState: jest.fn(),
+                getSettingPicCommunicationTools: jest.fn()
             };
 
             const container = shallow(<AppContainer {...props} />);
@@ -29,7 +30,8 @@ describe('AppContainer', () => {
             // Arrange
             const props = { 
                 settings: [{settingType: 'Category',settingId: 0, subSettingId : 0}],
-                balanceUpday: new Date()
+                balanceUpday: new Date(),
+                getSettingPicCommunicationTools: jest.fn()
             };
             // Act
            const container = shallow(<AppContainer {...props}/>);
@@ -41,7 +43,8 @@ describe('AppContainer', () => {
         it('should return null', () => {
             // Arrange
             const props = {
-                settings : null
+                settings : null,
+                getSettingPicCommunicationTools: jest.fn()
             };
 
             // Act

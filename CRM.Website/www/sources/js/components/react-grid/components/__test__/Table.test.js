@@ -504,7 +504,7 @@ describe('Table', () => {
         const result = table.instance()._calculateBodyHeight();
 
         // Assert
-        expect(result).toEqual(688);
+        expect(result).toEqual(734);
     });
 
     it('_getUpdatedColumnLayout should return expected', () => {

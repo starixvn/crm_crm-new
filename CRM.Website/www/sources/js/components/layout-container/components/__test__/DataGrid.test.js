@@ -27,12 +27,20 @@ describe('DataGrid', () => {
         const appContainer3 = document.createElement('div');
         appContainer3.setAttribute('id', 'hasHostPicManagementPermission');
         appContainer3.checked = false;
+        const appContainer4 = document.createElement('div');
+        appContainer4.setAttribute('id', 'hasReadLicenseePermission');
+        appContainer4.checked = false;
+        const appContainer5 = document.createElement('div');
+        appContainer5.setAttribute('id', 'hasReadCreditPermission');
+        appContainer5.checked = false;
         const leftRowContainer = document.createElement('div');
         leftRowContainer.setAttribute('id', 'left-row-container');
         document.body.appendChild(appContainer);
         document.body.appendChild(appContainer1);
         document.body.appendChild(appContainer2);
         document.body.appendChild(appContainer3);
+        document.body.appendChild(appContainer4);
+        document.body.appendChild(appContainer5);
         document.body.appendChild(leftRowContainer);
     });
 
@@ -42,12 +50,16 @@ describe('DataGrid', () => {
         const appContainer1 = document.getElementById('hasReadFeedbackPermission');
         const appContainer2 = document.getElementById('hasReadSitePermission');
         const appContainer3 = document.getElementById('hasHostPicManagementPermission');
+        const appContainer4 = document.getElementById('hasReadLicenseePermission');
+        const appContainer5 = document.getElementById('hasReadCreditPermission');
         const leftRowContainer = document.getElementById('left-row-container');
-        if (appContainer || appContainer1 || appContainer2 || appContainer3 || leftRowContainer) {
+        if (appContainer || appContainer1 || appContainer2 || appContainer3 || appContainer4 || appContainer5 || leftRowContainer) {
             document.body.removeChild(appContainer);
             document.body.removeChild(appContainer1);
             document.body.removeChild(appContainer2);
             document.body.removeChild(appContainer3);
+            document.body.removeChild(appContainer4);
+            document.body.removeChild(appContainer5);
             document.body.removeChild(leftRowContainer);
         }
     });
@@ -382,6 +394,8 @@ describe('DataGrid', () => {
                     countryId: null,
                     headlineInfoPolicy: null,
                     isHostOnCurrentCustomer: false,
+                    isShowAccInfo: true,
+                    isShowCommInfo: true,
                     isShowDetail: true,
                     languages: [],
                     remarksPolicy: null,

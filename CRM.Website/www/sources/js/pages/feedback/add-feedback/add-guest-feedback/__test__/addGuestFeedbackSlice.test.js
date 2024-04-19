@@ -13,6 +13,7 @@ describe('addGuestFeedback reducer', () => {
             addFeedbackResult: null,
             balanceUpday: null,
             feedbackSubjectTemplates: [],
+            settingCommunicationTool: null,
             confirmCreateGuestDialog: { show: false }
         });
     });
