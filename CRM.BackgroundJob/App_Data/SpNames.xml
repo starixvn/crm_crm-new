@@ -125,7 +125,7 @@
         <Setting Key="Acc_CRM_Service_SystemSettingSel" SpName="Acc_CRM_Service_SystemSettingSel" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_ArchivedAccount_CheckStatus" SpName="Acc_CRM_ArchivedAccount_CheckStatus" DbName="DBACC.bodb02.wsv_nap" />
         <Setting Key="Acc_CRM_ArchivedAccount_GetListAccount" SpName="Acc_CRM_ArchivedAccount_GetListAccount" DbName="DBCUST.CustDB.wsv_nap" />
-        <Setting Key="Acc_CRM_ArchivedAccount_AutoFBInfoIns" SpName="Acc_CRM_ArchivedAccount_AutoFBInfoIns" DbName="DBCRM.bodb_CRM.wsv_nap" />
+        <Setting Key="Acc_CRM_ArchivedAccount_AutoFBInfoIns" SpName="Acc_CRM_ArchivedAccount_AutoFBInfoIns_xtest" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_ArchivedAccount_SyncData" SpName="Acc_CRM_ArchivedAccount_SyncData" DbName="DBCRM.bodb_CRM.wsv_nap" />
         <Setting Key="Acc_CRM_ArchivedAccount_AutoFBInfoUpd" SpName="Acc_CRM_ArchivedAccount_AutoFBInfoUpd" DbName="DBCRM.bodb_CRM.wsv_nap" />
     </Function>

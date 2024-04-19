@@ -18,5 +18,7 @@
         public string Description { get; set; }
         public string Environment { get; set; }
         public short ServiceID { get; set; }
+        public bool IsVip { get; set; }
+        public string SiteLabel { get; set; }
     }
 }

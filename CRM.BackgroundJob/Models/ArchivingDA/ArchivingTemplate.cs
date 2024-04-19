@@ -6,6 +6,7 @@
     public class ArchivingTemplate
     {
         public string SolutionENSC { get; set; }
+        public string SolutionENYN { get; set; }
         public string Description { get; set; }
     }
 }

@@ -9,6 +9,15 @@
         Thank you.{1}
         谢谢。
     </SolutionENSC>
+    <SolutionENYN>
+        Dear sir, Customer Support would like to inform that some of your Super/Master/Agents were closed due to inactivity in the past 3 months. If you wish them to continue their business, you can reopen these accounts, otherwise you can take back their Given Credit. 1 month after being closed, these accounts will be disabled, and you will not be able to recover the given credit from them, which will result in a shortage of your total credit.{1}
+        *Gentle reminder: Please note that disabled accounts will not be restored.{2}{1}
+        Kính gửi quý khách, Bộ phận Hỗ trợ Khách hàng muốn thông báo rằng một số tài khoản Super / Master / Agents của quý khách đã bị đóng do không hoạt động trong 3 tháng qua. Nếu quý khách muốn họ tiếp tục kinh doanh, quý khách có thể mở lại các tài khoản này, nếu không quý khách có thể lấy lại Hạn mức tín dụng của họ. Một tháng sau khi bị đóng, các tài khoản này sẽ bị vô hiệu hóa và quý khách sẽ không thể khôi phục khoản Hạn mức tín dụng đã cho các tài khoản đó, điều này sẽ dẫn đến việc thiếu hụt tổng tín dụng của quý khách.{1}
+        *Xin được nhắc nhở: Xin lưu ý rằng các tài khoản bị vô hiệu hóa sẽ không thể khôi phục.{1}
+        Affected/Người dùng bị ảnh hưởng: {0}{1}
+        Thank you!{1}
+        Xin cám ơn quý khách!
+    </SolutionENYN>
     <Description>
         Archiving Unused Credit Accounts - {0} - Stage 1 DONE {3}
         - Close Inactive S/M/A and Member account.{3}

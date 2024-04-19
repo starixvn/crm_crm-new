@@ -168,8 +168,10 @@ namespace CRM.BackgroundJob.Services
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(Constants.Break);
+            var isVipCust = archivingAutoFbInfo.SiteLabel == "789y" && archivingAutoFbInfo.IsVip;
             var template = commonFeedback.GetFeedbackTemplates<ArchivingTemplate>(templateXml);
-            stringBuilder.AppendFormat(template.SolutionENSC, archivingAutoFbInfo.AffectedName, Constants.LineBreak, Constants.Break);
+            var templateYNSC = isVipCust ? template.SolutionENYN : template.SolutionENSC;
+            stringBuilder.AppendFormat(templateYNSC, archivingAutoFbInfo.AffectedName, Constants.LineBreak, Constants.Break);
             return stringBuilder.ToString();
         }
 

@@ -270,7 +270,8 @@
             {
                 var categoryNameEN = commonFeedback.GetCategogyName(categoryProblemAccount.Key.ToString(), Language.en_US);
                 var categoryNameYNSC = commonFeedback.GetCategogyName(categoryProblemAccount.Key.ToString(), languageContent);
-                var distinctUserName = categoryProblemAccount.GroupBy(x => x.UserName).Select(group => group.First()).ToList();
+                var distinctUserName = categoryProblemAccount.GroupBy(x => x.UserName)
+                    .Select(group => group.First()).ToList();
                 var listUserNames = string.Join(", ", distinctUserName.Select(x => x.UserName));
                 stringBuilderContent.AppendFormat(templateContent, categoryNameEN, categoryNameYNSC, listUserNames);
                 stringBuilderContent.Append(Constants.Break);
