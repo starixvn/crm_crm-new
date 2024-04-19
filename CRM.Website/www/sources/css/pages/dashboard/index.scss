@@ -69,7 +69,6 @@
         border: 1px solid #b7b7b7;
         overflow: auto;
         max-height: 330px !important;
-        display: block;
 
         @include Laptop-Medium {
             max-height: 200px !important;
