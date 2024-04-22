@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 const initialState = {
     gridParams: {
         isOstUser: true,
         pageIndex: 1,
         pageSize: 100
     },
-    gridData: null,
-    redirectActionParams: null
+    gridData: null
 };
 
 const messageNotificationCenterSlice = createSlice({

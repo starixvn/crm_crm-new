@@ -195,8 +195,8 @@ export class ActionNotification extends Component {
 const mapDispatchToProps = dispatch => bindActionCreators(ActionCreators, dispatch);
 
 const mapStateToProps = state => {
-    const {  } = state;
-    return {  };
+    const { gridParams } = state;
+    return { gridParams };
 };
 
 const ActionNotificationNavigation = WithNavigation(ActionNotification);

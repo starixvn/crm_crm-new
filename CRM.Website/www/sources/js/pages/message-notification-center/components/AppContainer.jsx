@@ -7,6 +7,7 @@ import DataGrid from './DataGrid';
 import ActionNotification from './ActionNotification';
 import AffectedTicket from './AffectedTicket';
 import DateTimeService from '@jsroot/common/dateTimeService';
+import { isEitherExitsFromToId, isFromIdOverToId } from '../common.functions';
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -17,17 +18,22 @@ export class AppContainer extends Component {
     }
 
     componentDidMount() {
-        if (this.props.isLoadGrid) {
-            if (this.props.filterParams) {
-                const filterParams = this.props.filterParams;               
+        const { isLoadGrid, filterParams } = this.props;
+        if (isLoadGrid) {
+            if (!isEitherExitsFromToId(filterParams) && !isFromIdOverToId(filterParams)) {
+                console.log('container true', filterParams);
 
-                console.log('filterParams container', filterParams);
+                this.props.getGridData(filterParams);
             } else {
-                this.props.getGridData(this.props.gridParams);
+                console.log('container fali', filterParams);
             }
             window.history.replaceState(null, '');
         }
     };
+
+    // componentWillUnmount(){
+    //     this.props.setGridData(null);
+    // }
 
     render() {
         console.log('this.props.isLoadGrid', this.props.isLoadGrid);
@@ -36,7 +42,6 @@ export class AppContainer extends Component {
             <Fragment>
                 <Filter isLoadGrid={this.props.isLoadGrid} filterParams={this.props.filterParams}/>
                 <DataGrid isHost={true}/>
-                {/* <ActionNotification /> */}
                 {/* <AffectedTicket isCredit/> */}
             </Fragment>
         );

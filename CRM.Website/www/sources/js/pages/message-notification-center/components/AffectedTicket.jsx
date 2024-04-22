@@ -99,7 +99,7 @@ export default class AffectedTicket extends Component {
                     </div>
                     <div
                         className={`${!isCredit ? 'locked-user': ''}`}
-                        style={{'border-left-width': '0px'}}
+                        style={{'borderLeftWidth': '0px'}}
                         onClick={this.handleChangeTab}
                     >
                         {LangHelper.getResource('Licensee')}

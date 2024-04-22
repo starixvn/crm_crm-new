@@ -7,7 +7,7 @@ import { Button, Form } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import LangHelper from '@jsroot/common/langHelper';
 import DatePicker from '@jsroot/components/date-picker/index';
-import { statusOptionOST, statusOptionCSD } from '../common.functions';
+import { statusOptionOST, statusOptionCSD, isEitherExitsFromToId, isFromIdOverToId } from '../common.functions';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import Site from '@jsroot/common/site';
@@ -22,8 +22,8 @@ export class Filter extends Component {
 
         this.state = {
             filter: {
-                fromDate: fromDate,
-                toDate: toDate,
+                fromDate,
+                toDate,
                 matchId: null,
                 notificationId: null,
                 fromNotificationId: null,
@@ -39,7 +39,7 @@ export class Filter extends Component {
             isCompareIdEqual : true,
             isValidNotification: false
         }
-
+        this.maxDate = toDate;
         this.notificationTypes = [
             { id: 0, name: 'Equal' },
             { id: 1, name: 'From/To' }
@@ -49,24 +49,33 @@ export class Filter extends Component {
     componentDidMount() {
         if (this.props.isLoadGrid && this.props.filterParams) {
             const filterParams = this.props.filterParams;
-            const statusList = filterParams.status.split(',');
+            const statusList = filterParams.statuses?.split(',');
             const cloneStatus = JSON.parse(JSON.stringify(filterParams.isOstUser ? statusOptionOST : statusOptionCSD));
-            console.log('cloneStatus', cloneStatus);
-            console.log('statusOptionOST', statusOptionOST);
             const statusOptions = cloneStatus.map(item => {
-                if (!statusList.includes(item.id)) {
+                if (statusList && !statusList.includes(item.id)) {
                     item.checked = false;
                 }
                 return item;
             });
             this.setState({
                 ...this.state,
-                announcementId: filterParams.announcementId,
-                fromDate: filterParams.fromDate ? new Date(filterParams.fromDate) : this.state.fromDate,
-                toDate: filterParams.toDate ? new Date(filterParams.toDate) : this.state.toDate,
-                title: filterParams.title,
-                status: filterParams.status,
-                statusOptions: statusOptions
+                statusOptions,
+                isOstUser: filterParams.isOstUser,
+                isCompareIdEqual: filterParams.isCompareIdEqual,
+                filter: {
+                    ...this.state.filter,
+                    fromDate: filterParams.fromDate ? new Date(filterParams.fromDate) : this.state.filter.fromDate,
+                    toDate: filterParams.toDate ? new Date(filterParams.toDate) : this.state.filter.toDate,
+                    matchId: filterParams.matchId,
+                    notificationId: filterParams.notificationId,
+                    fromNotificationId: filterParams.fromNotificationId,
+                    toNotificationId: filterParams.toNotificationId,
+                    messageId: filterParams.messageId,
+                    content: filterParams.content,
+                    statuses: filterParams.statuses ?? this.state.filter.statuses,
+                    sender: filterParams.sender,
+                    isIncludeTestData: filterParams.isIncludeTestData ?? this.state.isIncludeTestData
+                }
             });
         }
     };
@@ -83,6 +92,7 @@ export class Filter extends Component {
     handleDateChange = (dates) => {
         const [start, end] = dates;
         console.log('start', start);
+        console.log('end', end);
         this.handleFilterChange('fromDate', start);
         this.handleFilterChange('toDate', end);
     };
@@ -113,26 +123,18 @@ export class Filter extends Component {
         }), () => this.props.setGridParams(this.getParams()));
     };
 
-    eitherExitsFromToId = () => {
-        const { filter } = this.state;
-        const { fromNotificationId, toNotificationId } = filter;
-
-        return (fromNotificationId && !toNotificationId) || (!fromNotificationId && toNotificationId);
-    };
-
     isValidParams = () => {
         const errMsg = [];
         let isValid = true;
         const { filter, isCompareIdEqual } = this.state;
-        const { fromNotificationId, toNotificationId } = filter;
 
         if (!isCompareIdEqual) {
-            if (this.eitherExitsFromToId()) {
+            if (isEitherExitsFromToId(filter)) {
                 isValid = false;
                 errMsg.push(LangHelper.getResource('Please input the both From and To of Notification ID'));
             }
 
-            if (fromNotificationId && toNotificationId && parseInt(fromNotificationId, 10) > parseInt(toNotificationId, 10)) {
+            if (isFromIdOverToId(filter)) {
                 isValid = false;
                 errMsg.push(LangHelper.getResource('The To value cannot be greater than From value'));
             }
@@ -154,20 +156,17 @@ export class Filter extends Component {
     getParams = () => {
         const { fromDate, toDate, matchId, notificationId, fromNotificationId, toNotificationId,
             messageId, content, statuses, sender, isIncludeTestData } = this.state.filter;
-        
+        const { isCompareIdEqual, isOstUser } = this.state;
+
+console.log('isOstUser', isOstUser);
         return {
-            fromDate: this.isDisabledField() ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
-            toDate: this.isDisabledField() ? null : DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
-            matchId: this.isDisabledField() ? null : matchId,
-            notificationId: notificationId,
-            fromNotificationId: fromNotificationId,
-            toNotificationId: toNotificationId,
-            messageId: this.isDisabledField() ? null : messageId,
-            content: this.isDisabledField() ? null : content,
-            status: this.isDisabledField() ? null : statuses,
-            sender: this.isDisabledField() ? null : sender,
-            isIncludeTestData: this.isDisabledField() ? null : isIncludeTestData,
-            isOstUser: this.state.isOstUser,
+            fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
+            toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
+            matchId, messageId, content, statuses, sender,
+            isIncludeTestData, isOstUser, isCompareIdEqual,
+            notificationId: isCompareIdEqual ? notificationId : null,
+            fromNotificationId: !isCompareIdEqual ? fromNotificationId : null,
+            toNotificationId: !isCompareIdEqual ? toNotificationId : null,
             pageIndex: this.props.gridParams.pageIndex,
             pageSize: this.props.gridParams.pageSize
         };
@@ -176,7 +175,8 @@ export class Filter extends Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        if (this.isValidParams.isValid) {
+        console.log('this.isValidParams', this.isValidParams());
+        if (!this.isValidParams().isValid) {
             this.isValidParams().errMsg.forEach(item => {
                 toast.error(item);
                 this.setState({ isValidNotification: true });
@@ -198,8 +198,8 @@ export class Filter extends Component {
     };
 
     render() {
-        console.log('state', this.state);
-        console.log('params', this.props.gridParams);
+        // console.log('state', this.state);
+        // console.log('params', this.props.gridParams);
 
         const classIsInvalidFromTo = this.state.isValidNotification ? 'is-invalid' : '';
         return (
@@ -213,7 +213,7 @@ export class Filter extends Component {
                     </div>
                     <div
                         className={`user ${!this.state.isOstUser ? 'locked-user': ''}`}
-                        style={{'border-left-width': '0px'}}
+                        style={{'borderLeftWidth': '0px'}}
                         onClick={() => this.handleChangeUser(1)}
                     >
                         {LangHelper.getResource('LicenseeCSD')}
@@ -233,7 +233,7 @@ export class Filter extends Component {
                                     onChangeDate={dates => this.handleDateChange(dates)}
                                     startDate={this.state.filter.fromDate}
                                     endDate={this.state.filter.toDate}
-                                    maxDate={this.state.maxDate}
+                                    maxDate={this.maxDate}
                                     disabled={this.isDisabledField()}
                                     maxDateRange={31}
                                     selectsRange

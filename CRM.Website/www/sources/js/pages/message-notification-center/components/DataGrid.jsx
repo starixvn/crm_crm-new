@@ -128,12 +128,12 @@ export class DataGrid extends Component {
             case 'New':
                 return (
                     <>
-                        <div className='review-button' onClick={() => this.handleReview(notificationId)}>{LangHelper.getResource('Review')}</div>
+                        <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Review')}</div>
                         <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
                     </>
                 );
             case 'Failed':
-                return <div className='review-button' onClick={() => this.handleReview(notificationId)}>{LangHelper.getResource('ResendFail')}</div>;
+                return <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('ResendFail')}</div>;
             case 'Draft':
                 return (
                     <>
@@ -151,11 +151,11 @@ export class DataGrid extends Component {
     renderActionButtonCSD = (status, notificationId) => {
         switch (status) {
             case 'New':
-                return <div className='review-button' onClick={() => this.handleReview(notificationId)}>{LangHelper.getResource('Activate')}</div>;
+                return <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Activate')}</div>;
             case 'Active':
-                return <div className='review-button' onClick={() => this.handleReview(notificationId)}>{LangHelper.getResource('Deactivate')}</div>;
+                return <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Deactivate')}</div>;
             case 'Inactive':
-                return <div className='review-button' onClick={() => this.handleReview(notificationId)}>{LangHelper.getResource('Activate')}</div>;
+                return <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Activate')}</div>;
             default:
                 return null;
         }
