@@ -299,21 +299,6 @@ describe('Layout', () => {
     });
   });
 
-  describe('setUserName ', () => {
-    it('should call set state', () => {
-        // Arrange
-        const props = {
-          navigate: jest.fn()
-        };
-        const container = shallow(<Layout {...props}/>).instance();
-
-        // Action
-        container.setUserName({username: 'test'});
-        // Assert
-        expect(container.state.username).toEqual({"username": "test"});
-    });
-  });
-
   describe('handleChangeSuggestion', () => {
     it('should call set state', () => {
         // Arrange

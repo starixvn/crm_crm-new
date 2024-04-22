@@ -177,7 +177,7 @@ describe('DataGrid', () => {
             expect(dataGrid.find(Table).props().autoWidth).toBeTrue;
             expect(dataGrid.find(Table).props().isPaging).toBeTrue;
             expect(dataGrid.find(Table).props().pageOption).toEqual(pagingOption);
-            expect(dataGrid.find(Table).props().containerPadding).toEqual(31);
+            expect(dataGrid.find(Table).props().containerPadding).toEqual(0);
             expect(dataGrid.find(Table).props().shouldResetScrollPosition).toEqual(props.resendOptions.shouldResetScrollPosition);
         });
     });

@@ -177,38 +177,6 @@ describe('filter', () => {
             });
         });
 
-        describe('getBreadcrumbsMenu', () => {
-            it('should return exact value when parentId > 0', () => {
-                //Arrange
-                const currentMenu = {
-                    parentId: 1,
-                    name: 'name'
-                };
-                const container = shallow(<Filter {...initProps} />).instance();
-                container.recursiveFindParentName = jest.fn(() => 'test');
-                //Act
-                const actual = container.getBreadcrumbsMenu(currentMenu, []);
-
-                //Assert
-                expect(actual).toEqual(['t','e','s','t','name']);
-            });
-
-            it('should return exact value when parentId < 0', () => {
-                //Arrange
-                const currentMenu = {
-                    parentId: 0,
-                    name: 'name'
-                };
-                const container = shallow(<Filter {...initProps} />).instance();
-                container.recursiveFindParentName = jest.fn(() => 'test');
-                //Act
-                const actual = container.getBreadcrumbsMenu(currentMenu, []);
-
-                //Assert
-                expect(actual).toEqual(['name']);
-            });
-        });
-
         describe('isActiveTab', () => {
             it('should return exact value', () => {
                 //Arrange

@@ -320,11 +320,16 @@ describe('DataGrid', () => {
             hasHostPicManagementPermission.setAttribute('id', 'hasHostPicManagementPermission');
             hasHostPicManagementPermission.checked = true;
 
+            const hasReadLicenseePermission = document.createElement('div');
+            hasReadLicenseePermission.setAttribute('id', 'hasReadLicenseePermission');
+            hasReadLicenseePermission.checked = true;
+
             document.body.appendChild(leftRowContainer);
             document.body.appendChild(hasCreateFeedbackPermission);
             document.body.appendChild(hasReadFeedbackPermission);
             document.body.appendChild(hasReadSitePermission);
             document.body.appendChild(hasHostPicManagementPermission);
+            document.body.appendChild(hasReadLicenseePermission);
 
             const container = shallow(<DataGrid {...props} />);
             const form = shallow(container.instance().renderForm(param));
@@ -438,7 +443,7 @@ describe('DataGrid', () => {
                 expect( container.instance().state.isShowDetail).toEqual(true);
             });
 
-            const cases = [['AddFeedback', 0], ['ManageFeedback', 1], ['LatestFeedback', 2], ['Communication', 3]];
+            const cases = [['AddFeedback', 0], ['ManageFeedback', 1], ['LatestFeedback', 2], ['Dashboard', 3]];
             test.each(cases)(
                 "should navigate to %s",
                 (firstArg, secondArg) => {

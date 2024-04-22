@@ -128,10 +128,13 @@ describe('common functions', () => {
         it('initialValues correctly', () => {
             // Arrange
             const expected = {...values};
+            const customer = {
+                guestCommunicationInfos: null
+            };
             expected.identityInformation = '';
             DateTimeService.toShortDateTimeFormat = jest.fn(() => '2021-01-01');
             // Act
-            const initialValues = commonFuncs.initValues(props.settings);
+            const initialValues = commonFuncs.initValues(props.settings, customer);
             // Assert
             expect(initialValues).toEqual(expected);
         });
