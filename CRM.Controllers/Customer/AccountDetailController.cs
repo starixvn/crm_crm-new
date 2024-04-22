@@ -168,7 +168,7 @@
         {
             command.UserID = napSession.UserId;
             command.IP = ClientIP;
-            var result = await customerService.EditHeadlineCompanyServiceAsync(command);                     
+            var result = await customerService.EditHeadlineCompanyServiceAsync(command);
             return Json(result);
         }
 

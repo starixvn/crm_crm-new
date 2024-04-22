@@ -55,6 +55,22 @@ export class HeadlineStaffsAndAuthority extends Component {
             }
             this.handleComfirmChangeTab(activeTab, initialValues);            
         }
+        if (document.querySelector(".body-content") != null) {
+            const maxHeightBodyTableShowFull = 350;
+            const maxHeightBodyTableHideInfo = 553;
+            const maxHeightBodyTableHidePic = 433;
+            const maxHeightBodyTableHideFull = 626;
+            const { isShowAccountInfo, isShowAccountantPIC } = this.props;
+            document.querySelector(".headline-staff-authority").classList.remove("table-inTab");
+            const heightBody = document.querySelector(".body-content").offsetHeight;
+            if ((isShowAccountInfo && isShowAccountantPIC && heightBody < maxHeightBodyTableShowFull) ||
+                (!isShowAccountInfo && isShowAccountantPIC && heightBody < maxHeightBodyTableHideInfo) ||
+                (isShowAccountInfo && !isShowAccountantPIC && heightBody < maxHeightBodyTableHidePic) ||
+                (!isShowAccountInfo && !isShowAccountantPIC && heightBody < maxHeightBodyTableHideFull))
+            {
+                document.querySelector(".headline-staff-authority").classList.add("table-inTab");
+            }
+        }
     }
 
     handleComfirmChangeTab(activeTab, initialValues) {
@@ -224,7 +240,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                         {LangHelper.getResource('Add')}
                     </Button>
                 }
-                <div className={`${this.props.headlineStaffsAndAuthority.length < 8 && 'table-inTab'} headline-staff-authority`}>
+                <div className={`headline-staff-authority`}>
                     <Table
                         width={1490}
                         autoWidth={false}
@@ -771,7 +787,9 @@ const mapStateToProps = state => {
         settingCommunicationTool,
         setActiveTab,
         activeTab,
-        setShowConfirmUnSaved
+        setShowConfirmUnSaved,
+        isShowAccountInfo,
+        isShowAccountantPIC
     } = state;
     return {
         allSettings,
@@ -785,7 +803,9 @@ const mapStateToProps = state => {
         settingCommunicationTool,
         setActiveTab,
         activeTab,
-        setShowConfirmUnSaved
+        setShowConfirmUnSaved,
+        isShowAccountInfo,
+        isShowAccountantPIC
     };
 };
 
