@@ -77,7 +77,7 @@ export class HeadlineStaffsAndAuthority extends Component {
         value.map(staff => {
             let communicationTools = [];
             value.map(com => {
-                if (staff.picName === com.picName) {
+                if (staff.picName === com.picName && staff.isSyncFromPicTable === com.isSyncFromPicTable) {
                     communicationTools.push({
                         rowID: com.rowID,
                         picCommunicationID: com.picCommunicationID,
@@ -91,7 +91,7 @@ export class HeadlineStaffsAndAuthority extends Component {
                     });
                 }
             });
-            if (headlineStaffsAndAuthority.findIndex(x => x.picName === staff.picName) === -1) {
+            if (headlineStaffsAndAuthority.findIndex(x => x.picName === staff.picName && staff.isSyncFromPicTable === x.isSyncFromPicTable) === -1) {
                 headlineStaffsAndAuthority.push({                    
                     picID: staff.picID,
                     picName: staff.picName,

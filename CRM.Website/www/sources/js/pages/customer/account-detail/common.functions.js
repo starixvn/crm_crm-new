@@ -48,7 +48,7 @@ export const GetLengthCommunicationValue = (compic, indexCompic, communicationTo
     let value = compic.value;
     communicationTools.map((item, index) => {
         if (index !== indexCompic && compic.type === item.type) {
-            value += ',' + item.value;
+            value += `,${item.value}`;
         }
     })
     return value.length;
@@ -118,7 +118,7 @@ export const GetLengthNormalCommunicationValue = (compic, indexCompic, communica
     let value = compic.communicationValue;
     communicationTools.map((item, index) => {
         if (index !== indexCompic && compic.communicationID === item.communicationID) {
-            value += ',' + item.communicationValue;
+            value += `,${item.communicationValue}`;
         }
     })
     return value.length;
