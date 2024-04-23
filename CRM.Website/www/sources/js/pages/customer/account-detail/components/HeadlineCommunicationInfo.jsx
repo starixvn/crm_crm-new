@@ -54,6 +54,22 @@ export class HeadlineCommunicationInfo extends Component {
             document.querySelector("#tab-headline-communication-info").scrollTo(0, topPic);
             window.picID = undefined;
         }
+
+        if (document.querySelector("#tab-headline-communication-info") != null) {
+            const maxHeightBodyTableShowFull = 350;
+            const maxHeightBodyTableHideInfo = 553;
+            const maxHeightBodyTableHidePic = 433;
+            const maxHeightBodyTableHideFull = 626;
+            const { isShowAccountInfo, isShowAccountantPIC } = this.props;
+            document.querySelector("#tab-headline-communication-info").classList.remove("custom-dropdown");
+            const heightBody = document.querySelector("#tab-headline-communication-info").offsetHeight;
+            if ((isShowAccountInfo && isShowAccountantPIC && heightBody < maxHeightBodyTableShowFull) ||
+                (!isShowAccountInfo && isShowAccountantPIC && heightBody < maxHeightBodyTableHideInfo) ||
+                (isShowAccountInfo && !isShowAccountantPIC && heightBody < maxHeightBodyTableHidePic) ||
+                (!isShowAccountInfo && !isShowAccountantPIC && heightBody < maxHeightBodyTableHideFull)) {
+                document.querySelector("#tab-headline-communication-info").classList.add("custom-dropdown");
+            }
+        }
     }
 
     handleComfirmChangeTab(activeTab, initialValues) {
@@ -512,7 +528,7 @@ export class HeadlineCommunicationInfo extends Component {
         }
         return (
             <>
-                <div id="tab-headline-communication-info" className={`${customerInfo.headlineStaffInfoCommunications.length < 5 && 'custom-dropdown'} custom-scrollbar`}>
+                <div id="tab-headline-communication-info" className={`custom-scrollbar`}>
                     {headlineCommunicationInfo.map((item, index) => this.renderInfo(item, index))}
                 </div>
                 {
@@ -580,7 +596,9 @@ const mapStateToProps = state => {
         setActiveTab,
         activeTab,
         setShowConfirmUnSaved,
-        editCustomerInfoDetail
+        editCustomerInfoDetail,
+        isShowAccountInfo,
+        isShowAccountantPIC
     } = state;
     return {
         allSettings,
@@ -595,7 +613,9 @@ const mapStateToProps = state => {
         setActiveTab,
         activeTab,
         setShowConfirmUnSaved,
-        editCustomerInfoDetail
+        editCustomerInfoDetail,
+        isShowAccountInfo,
+        isShowAccountantPIC
     };
 };
 
