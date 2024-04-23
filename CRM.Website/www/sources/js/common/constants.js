@@ -222,3 +222,8 @@ export const BotServiceType = {
 export const FieldErrorHeadlineCommunicationInfo = ['picName', 'role', 'communication', 'authority'];
 export const Letstalk = 'Letstalk';
 export const Telegram = 'Telegram';
+
+export const MaxHeightBodyTableHeadlineAccountShowFull = 350;
+export const MaxHeightBodyTableHeadlineAccountHideInfo = 553;
+export const MaxHeightBodyTableHeadlineAccountHidePic = 433;
+export const MaxHeightBodyTableHeadlineAccountHideFull = 626;

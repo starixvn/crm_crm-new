@@ -8,7 +8,14 @@ import { Table, HeaderRow, HeaderCell, Cell, Row } from '@jsroot/components/reac
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import { getPermission } from '@jsroot/common/shareScripts';
-import { FunctionKey, Policy } from '@jsroot/common/constants';
+import {
+    FunctionKey,
+    Policy,
+    MaxHeightBodyTableHeadlineAccountShowFull,
+    MaxHeightBodyTableHeadlineAccountHideInfo,
+    MaxHeightBodyTableHeadlineAccountHidePic,
+    MaxHeightBodyTableHeadlineAccountHideFull
+} from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import { ValidateHeadlineStaffAndAuthority, ParamsSubmit } from '../common.functions';
 import { toast } from 'react-toastify';
@@ -56,20 +63,19 @@ export class HeadlineStaffsAndAuthority extends Component {
             this.handleComfirmChangeTab(activeTab, initialValues);            
         }
         if (document.querySelector(".body-content") != null) {
-            const maxHeightBodyTableShowFull = 350;
-            const maxHeightBodyTableHideInfo = 553;
-            const maxHeightBodyTableHidePic = 433;
-            const maxHeightBodyTableHideFull = 626;
-            const { isShowAccountInfo, isShowAccountantPIC } = this.props;
-            document.querySelector(".headline-staff-authority").classList.remove("table-inTab");
-            const heightBody = document.querySelector(".body-content").offsetHeight;
-            if ((isShowAccountInfo && isShowAccountantPIC && heightBody < maxHeightBodyTableShowFull) ||
-                (!isShowAccountInfo && isShowAccountantPIC && heightBody < maxHeightBodyTableHideInfo) ||
-                (isShowAccountInfo && !isShowAccountantPIC && heightBody < maxHeightBodyTableHidePic) ||
-                (!isShowAccountInfo && !isShowAccountantPIC && heightBody < maxHeightBodyTableHideFull))
-            {
-                document.querySelector(".headline-staff-authority").classList.add("table-inTab");
-            }
+            this.handleCustomDropdownTable();
+        }
+    }
+
+    handleCustomDropdownTable() {
+        const { isShowAccountInfo, isShowAccountantPIC } = this.props;
+        document.querySelector(".headline-staff-authority").classList.remove("table-inTab");
+        const heightBody = document.querySelector(".body-content").offsetHeight;
+        if ((isShowAccountInfo && isShowAccountantPIC && heightBody < MaxHeightBodyTableHeadlineAccountShowFull) ||
+            (!isShowAccountInfo && isShowAccountantPIC && heightBody < MaxHeightBodyTableHeadlineAccountHideInfo) ||
+            (isShowAccountInfo && !isShowAccountantPIC && heightBody < MaxHeightBodyTableHeadlineAccountHidePic) ||
+            (!isShowAccountInfo && !isShowAccountantPIC && heightBody < MaxHeightBodyTableHeadlineAccountHideFull)) {
+            document.querySelector(".headline-staff-authority").classList.add("table-inTab");
         }
     }
 

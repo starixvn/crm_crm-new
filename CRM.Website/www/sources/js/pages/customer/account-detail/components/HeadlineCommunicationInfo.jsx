@@ -4,7 +4,16 @@ import { ActionCreators } from '../actions';
 import { bindActionCreators } from 'redux';
 import LangHelper from '@jsroot/common/langHelper';
 import { Form, Button } from 'react-bootstrap';
-import { HeadlinePicID, AccountingPicID, Policy, FunctionKey } from '@jsroot/common/constants';
+import {
+    HeadlinePicID,
+    AccountingPicID,
+    Policy,
+    FunctionKey,
+    MaxHeightBodyTableHeadlineAccountShowFull,
+    MaxHeightBodyTableHeadlineAccountHideInfo,
+    MaxHeightBodyTableHeadlineAccountHidePic,
+    MaxHeightBodyTableHeadlineAccountHideFull
+} from '@jsroot/common/constants';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 import SearchableDropdown from '@jsroot/components/SearchableDropdown';
 import DataService from '@jsroot/common/dataService';
@@ -50,25 +59,23 @@ export class HeadlineCommunicationInfo extends Component {
         }     
 
         if (window.picID !== undefined) {
-            const topPic = document.querySelector(`#row-${window.picID}`).offsetTop - document.querySelector('#tab-headline-communication-info').offsetTop;
-            document.querySelector("#tab-headline-communication-info").scrollTo(0, topPic);
-            window.picID = undefined;
+            this.handleAutoScroll();
         }
 
         if (document.querySelector("#tab-headline-communication-info") != null) {
-            const maxHeightBodyTableShowFull = 350;
-            const maxHeightBodyTableHideInfo = 553;
-            const maxHeightBodyTableHidePic = 433;
-            const maxHeightBodyTableHideFull = 626;
-            const { isShowAccountInfo, isShowAccountantPIC } = this.props;
-            document.querySelector("#tab-headline-communication-info").classList.remove("custom-dropdown");
-            const heightBody = document.querySelector("#tab-headline-communication-info").offsetHeight;
-            if ((isShowAccountInfo && isShowAccountantPIC && heightBody < maxHeightBodyTableShowFull) ||
-                (!isShowAccountInfo && isShowAccountantPIC && heightBody < maxHeightBodyTableHideInfo) ||
-                (isShowAccountInfo && !isShowAccountantPIC && heightBody < maxHeightBodyTableHidePic) ||
-                (!isShowAccountInfo && !isShowAccountantPIC && heightBody < maxHeightBodyTableHideFull)) {
-                document.querySelector("#tab-headline-communication-info").classList.add("custom-dropdown");
-            }
+            this.handleCustomDropdownTable();            
+        }
+    }
+
+    handleCustomDropdownTable() {
+        const { isShowAccountInfo, isShowAccountantPIC } = this.props;
+        document.querySelector("#tab-headline-communication-info").classList.remove("custom-dropdown");
+        const heightBody = document.querySelector("#tab-headline-communication-info").offsetHeight;
+        if ((isShowAccountInfo && isShowAccountantPIC && heightBody < MaxHeightBodyTableHeadlineAccountShowFull) ||
+            (!isShowAccountInfo && isShowAccountantPIC && heightBody < MaxHeightBodyTableHeadlineAccountHideInfo) ||
+            (isShowAccountInfo && !isShowAccountantPIC && heightBody < MaxHeightBodyTableHeadlineAccountHidePic) ||
+            (!isShowAccountInfo && !isShowAccountantPIC && heightBody < MaxHeightBodyTableHeadlineAccountHideFull)) {
+            document.querySelector("#tab-headline-communication-info").classList.add("custom-dropdown");
         }
     }
 

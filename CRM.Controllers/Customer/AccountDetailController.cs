@@ -9,6 +9,7 @@
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Criteria.PicAndHeadline;
+    using CRM.Models;
     using CRM.Models.Customer;
     using CRM.Services;
     using CRM.Services.Customer;
@@ -146,7 +147,8 @@
             _ = await customerService.SyncHeadlineStaffsAndAuthorityAsync(new SyncHeadlineStaffAndAuthorityCriteria
             {
                 UserID = napSession.UserId,
-                IP = ClientIP
+                IP = ClientIP,
+                HeadlineID = criteria.HeadlineID
             });
             var result = await customerService.GetHeadlineStaffsAndAuthorityAsync(criteria);
             return Json(result);
