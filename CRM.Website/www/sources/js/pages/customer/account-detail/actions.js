@@ -92,7 +92,7 @@ const getHeadlineStaffsAndAuthority = params => async dispatch => {
     }).then(() => Site.unblockUI()).catch(Site.handleAxiosError);
 };
 
-const getStaffAndAuthority = params => async dispatch => {
+const getSettingStaffAndAuthority = params => async dispatch => {
     Site.blockUI();
     const url = Site.resolveClientUrl('AccountDetail/GetSettingStaffAndAuthority');
     await DataService.postDataAsync(url, params).then(response => {
@@ -111,7 +111,7 @@ export const ActionCreators = {
     getAccountingPicRoles,
     getHeadlineCompanyService,
     getHeadlineStaffsAndAuthority,
-    getStaffAndAuthority,
+    getSettingStaffAndAuthority,
     getSettingPicRole,
     setActiveTab,
     setShowConfirmUnSaved,

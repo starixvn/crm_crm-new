@@ -44,7 +44,7 @@ export class HeadlineStaffsAndAuthority extends Component {
 
     async componentDidMount() {
         await this.props.getHeadlineStaffsAndAuthority({ headlineID: this.props.customerInfo.custId });
-        await this.props.getStaffAndAuthority();
+        await this.props.getSettingStaffAndAuthority();
         await this.props.getSettingPicRole();
         const headlineStaffsAndAuthority = this.getHeadlineStaffsAndAuthorityInfo(this.props.headlineStaffsAndAuthority);
         this.setState({ headlineStaffsAndAuthority: headlineStaffsAndAuthority });
@@ -786,7 +786,7 @@ const mapStateToProps = state => {
         customerInfo,
         headlineStaffsAndAuthority,
         getHeadlineStaffsAndAuthority,
-        getStaffAndAuthority,
+        getSettingStaffAndAuthority,
         settingStaffAndAuthority,
         getSettingPicRole,
         settingPicRole,
@@ -802,7 +802,7 @@ const mapStateToProps = state => {
         customerInfo,
         headlineStaffsAndAuthority,
         getHeadlineStaffsAndAuthority,
-        getStaffAndAuthority,
+        getSettingStaffAndAuthority,
         settingStaffAndAuthority,
         getSettingPicRole,
         settingPicRole,

@@ -129,4 +129,99 @@ describe('actionCreators', () => {
             expect(store.getActions()).toEqual(expectedActions);
         });
     });
+
+    describe('getHeadlinePicRoles', () => {
+        it('should handle getHeadlinePicRoles when fetching data have been done', async () => {
+            // Arrange
+            const response = { data: { settingValue: 'test' } };
+            const expectedParams = 1;
+            const expectedActions = [{ type: setHeadlinePicRoles.type, payload: response.data }];
+            const store = mockStore({ getHeadlinePicRoles: '' });
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+    
+            // Act
+            await store.dispatch(ActionCreators.getHeadlinePicRoles(expectedParams));
+    
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('AccountDetail/GetRolesByPic?id=1');
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
+    describe('getAccountingPicRoles', () => {
+        it('should handle getAccountingPicRoles when fetching data have been done', async () => {
+            // Arrange
+            const response = { data: { settingValue: 'test' } };
+            const expectedParams = 1;
+            const expectedActions = [{ type: setAccountingPicRoles.type, payload: response.data }];
+            const store = mockStore({ getAccountingPicRoles: '' });
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+    
+            // Act
+            await store.dispatch(ActionCreators.getAccountingPicRoles(expectedParams));
+    
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('AccountDetail/GetRolesByPic?id=1');
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
+    describe('getHeadlineCompanyService', () => {
+        it('should handle getHeadlineCompanyService when fetching data have been done', async () => {
+            // Arrange
+            const response = { data: { name: 'test' } };
+            const expectedParams = { headlineID: 1 };
+            const expectedActions = [{ type: setHeadlineCompanyService.type, payload: response.data }];
+            const store = mockStore({ getHeadlineCompanyService: '' });
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+    
+            // Act
+            await store.dispatch(ActionCreators.getHeadlineCompanyService(expectedParams));
+    
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('AccountDetail/GetHeadlineCompanyService', expectedParams);
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
+    describe('getHeadlineStaffsAndAuthority', () => {
+        it('should handle getHeadlineStaffsAndAuthority when fetching data have been done', async () => {
+            // Arrange
+            const response = { data: { name: 'test' } };
+            const expectedParams = { headlineID: 1 };
+            const expectedActions = [{ type: setHeadlineStaffsAndAuthority.type, payload: response.data }];
+            const store = mockStore({ getHeadlineStaffsAndAuthority: '' });
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+    
+            // Act
+            await store.dispatch(ActionCreators.getHeadlineStaffsAndAuthority(expectedParams));
+    
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('AccountDetail/GetHeadlineStaffsAndAuthority', expectedParams);
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+
+    describe('getSettingStaffAndAuthority', () => {
+        it('should handle getSettingStaffAndAuthority when fetching data have been done', async () => {
+            // Arrange
+            const response = { data: { name: 'test' } };
+            const expectedParams = { headlineID: 1 };
+            const expectedActions = [{ type: setSettingStaffAndAuthority.type, payload: response.data }];
+            const store = mockStore({ getSettingStaffAndAuthority: '' });
+            const promise = Promise.resolve(response);
+            DataService.postDataAsync = jest.fn(() => promise);
+    
+            // Act
+            await store.dispatch(ActionCreators.getSettingStaffAndAuthority(expectedParams));
+    
+            // Assert
+            expect(DataService.postDataAsync).toHaveBeenCalledWith('AccountDetail/GetSettingStaffAndAuthority', expectedParams);
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
 });
