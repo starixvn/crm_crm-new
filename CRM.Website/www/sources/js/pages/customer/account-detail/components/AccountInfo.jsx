@@ -92,7 +92,7 @@ export class AccountInfo extends Component {
     }
 
     async componentDidMount() {
-        await this.props.getCustomerById({ customerId: this.props.customerInfo?.custId });
+        await this.props.getCustomerById({ customerId: this.props.customerId });
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ updateHeadlineInfoPolicy: response });
         });

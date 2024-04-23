@@ -122,10 +122,10 @@ export class AppContainer extends Component {
         const canEditHeadline = updatePolicy === Policy.Host;
         return (
             <>                
-                <AccountInfo/>
+                <AccountInfo customerId={this.props.id} />
                 {
                     (updatePolicy === Policy.Read || canEditHeadline) &&
-                    <AccountantPIC/>
+                    <AccountantPIC customerId={this.props.id} />
                 }
                 {
                     updatePolicy >= Policy.Read &&
@@ -208,8 +208,8 @@ export class AppContainer extends Component {
                 {
                     !customerInfo.isGroupHeadLine &&
                     <div>
-                        <AccountInfo />
-                        <NormalCommunicationInfo />
+                        <AccountInfo customerId={this.props.id} />
+                        <NormalCommunicationInfo customerId={this.props.id } />
                     </div>
                 }
                 {

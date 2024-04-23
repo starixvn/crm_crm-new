@@ -102,7 +102,7 @@ export class NormalCommunicationInfo extends Component {
                 isHostOnCurrentCustomer: response
             });
         });
-        await this.props.getCustomerById({ customerId: this.props.customerInfo.custId });
+        await this.props.getCustomerById({ customerId: this.props.customerId });
         const params = ParamsCustomerInfo(this.props.customerInfo);
         this.setState(params);
         this.setState({
