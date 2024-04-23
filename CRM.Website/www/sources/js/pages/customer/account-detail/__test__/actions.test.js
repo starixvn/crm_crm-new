@@ -4,22 +4,16 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import { ActionCreators } from '../actions';
 import {
-    resetState,
     setCustomerById,
     setAllSettings,
     setEditCustomerInfoDetail,
     setHeadlinePicRoles,
     setAccountingPicRoles,
     setSettingCommunicationTool,
-    setErrors,
     setHeadlineCompanyService,
     setHeadlineStaffsAndAuthority,
     setSettingStaffAndAuthority,
-    setSettingPicRole,
-    setActiveTab,
-    setShowConfirmUnSaved,
-    setShowAccountInfo,
-    setShowAccountantPIC
+    setSettingPicRole
 } from '../accountDetailSlice'
 
 const middlewares = [thunk];

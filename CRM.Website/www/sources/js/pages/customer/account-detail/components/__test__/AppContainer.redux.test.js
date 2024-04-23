@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../../actions';
 
-
 describe('connect', () => {
     let mapStateToProps, mapDispatchToProps;
     const connectMock = jest.fn();
