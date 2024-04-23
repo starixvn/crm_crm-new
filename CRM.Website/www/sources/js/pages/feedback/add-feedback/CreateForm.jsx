@@ -782,7 +782,7 @@ export class CreateForm extends Component {
     checkCustomerExistsOnCRM = async () => {
         Site.blockUI();
         const url = Site.resolveClientUrl('AccountDetail/CheckCustomerExistsOnCRM');
-        await DataService.postDataAsync(url, { customerId: this.props.customerDetail.custId }).then(async response => {
+        await DataService.postDataAsync(url, { customerId: this.props.customerDetail?.custId }).then(async response => {
             if (response.data === 1) {
                 this.createFeedback();
             } else {
@@ -821,7 +821,6 @@ export class CreateForm extends Component {
                     }
                     if(this.props.addFeedbackResult.isSuccessful){
                         const data = response.data;
-                        console.log(data);
                         const currentCustomer = {
                             custId: data.custId,
                             isGuest: data.isGuest,

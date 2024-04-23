@@ -21,6 +21,7 @@ describe('CreateForm', () => {
         LangHelper.getResource = jest.fn(key => key);
         const hasReadSitePermission = document.createElement('div');
         hasReadSitePermission.setAttribute('id', 'hasReadSitePermission');
+        hasReadSitePermission.checked = true;
         document.body.appendChild(hasReadSitePermission);
     });
 
@@ -1216,25 +1217,23 @@ describe('CreateForm', () => {
 
     describe('handleSubmit', () => {
         it('should call exact function', () => {
-        // Arrange
-        const state = {
-            listOfCustomerValid: [{val: 1}]
-        };
-        const values = ["test"];
-        const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
-        createForm.setState(newState);
-        createForm.handleReVerifyInactiveAndConfirm = jest.fn();
-        createForm.setState(state);
-        createForm.formik = {
-            setSubmitting: jest.fn()
-        };
+            // Arrange
+            const state = {
+                listOfCustomerValid: [{val: 1}]
+            };
+            const values = ["test"];
+            const createForm = shallow(<CreateForm {...props}/>, { disableLifecycleMethods: true }).instance();
+            createForm.setState(newState);
+            createForm.handleReVerifyInactiveAndConfirm = jest.fn();
+            createForm.setState(state);
+            createForm.formik = {
+                setSubmitting: jest.fn()
+            };
+            // Act
+            createForm.handleSubmit(values);
 
-        // Act
-        createForm.handleSubmit(values);
-
-
-        // Assert
-         expect(createForm.handleReVerifyInactiveAndConfirm).toHaveBeenCalledWith(values, "1");
+            // Assert
+            expect(createForm.handleReVerifyInactiveAndConfirm).toHaveBeenCalledWith(values, "1");
         });
 
         it('should call exact function if do not have any valid customer', () => {
@@ -1516,7 +1515,7 @@ describe('CreateForm', () => {
             createForm.formik = {
                 setSubmitting: jest.fn()
             };
-            createForm.createFeedback = jest.fn();
+            createForm.checkCustomerExistsOnCRM = jest.fn();
 
             // Act
             createForm.handleCheckDuplicateFeedback({});
@@ -1524,7 +1523,7 @@ describe('CreateForm', () => {
             
 
             // Assert
-            expect(createForm.createFeedback).toHaveBeenCalled();
+            expect(createForm.checkCustomerExistsOnCRM).toHaveBeenCalled();
         });
 
         it('should call exact function when duplicate', async () => {
