@@ -26,7 +26,7 @@
 
         public async Task<IEnumerable<SettlementRemotingRefInfo>> GetPrepareGenLapNotificationAsync()
         {
-            var criteria = new GetPrepareGenNotificationCriteria();
+            var criteria = new GetPrepareGenLapNotificationCriteria();
             return await baseService.GetDataAsync<SettlementRemotingRefInfo>(criteria);
         }
 
