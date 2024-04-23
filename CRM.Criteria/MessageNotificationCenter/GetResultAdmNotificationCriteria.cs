@@ -23,7 +23,9 @@
 
         public string Status { get; set; }
 
-        public bool? IncludeTes { get; set; }
+        public string Sender { get; set; }
+
+        public bool? IncludeTest { get; set; }
 
         public int PageIndex { get; set; }
 

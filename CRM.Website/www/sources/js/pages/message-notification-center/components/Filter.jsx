@@ -158,7 +158,6 @@ export class Filter extends Component {
             messageId, content, statuses, sender, isIncludeTestData } = this.state.filter;
         const { isCompareIdEqual, isOstUser } = this.state;
 
-console.log('isOstUser', isOstUser);
         return {
             fromDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(fromDate)),
             toDate: DateTimeService.toLongDateTimeFormat(DateTimeService.startOfDay(toDate)),
@@ -175,7 +174,6 @@ console.log('isOstUser', isOstUser);
     handleSubmit = event => {
         event.preventDefault();
 
-        console.log('this.isValidParams', this.isValidParams());
         if (!this.isValidParams().isValid) {
             this.isValidParams().errMsg.forEach(item => {
                 toast.error(item);
@@ -183,9 +181,9 @@ console.log('isOstUser', isOstUser);
             });
         } else {
             const params = this.getParams();
-            this.props.setGridParams(params);
-            //this.props.getGridData(params);
             console.log('params', params);
+            this.props.setGridParams(params);
+            this.props.getGridData(params);
         }
     };
 

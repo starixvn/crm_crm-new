@@ -2,19 +2,34 @@ import Site from '@jsroot/common/site';
 import DataService from '@jsroot/common/dataService';
 import {
     setGridParams,
-    setGridData
+    setGridData,
+    setEditAdmNotification
 } from './messageNotificationCenterSlice';
 
 const getGridData = params => async dispatch => {
     Site.blockUI();
-    const url = Site.resolveClientUrl('MessageNotificationCenter/GetMessageNotification');
+    const url = Site.resolveClientUrl('MessageNotificationCenter/GetResultAdmNotification');
     await DataService.postDataAsync(url, params).then(response => {
         dispatch(setGridData(response.data));
     }).then(() => Site.unblockUI());
 };
 
+const getAdmNotificationById =  id => async () => {
+    const url = Site.resolveClientUrl(`MessageNotificationCenter/GetResultAdmNotificationById/${id}`);
+    return await DataService.getDataAsync(url).then(response => response);
+};
+
+const editAdmNotification = data => async dispatch => {
+    const url = Site.resolveClientUrl('MessageNotificationCenter/EditResultAdmNotification');
+    await DataService.postDataAsync(url, data).then(response => {
+        dispatch(setEditAdmNotification(response.data));
+    });
+};
+
 export const ActionCreators = {
     setGridParams,
     setGridData,
-    getGridData
+    getGridData,
+    getAdmNotificationById,
+    editAdmNotification
 };

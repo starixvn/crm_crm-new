@@ -1,0 +1,17 @@
+﻿namespace CRM.Models.MessageNotificationCenter
+{
+    public class EditResultAdmNotification
+    {
+        public int NotiID { get; set; }
+
+        public string NewStatus { get; set; }
+
+        public string NewContentEN { get; set; }
+
+        public string NewContentCH { get; set; }
+
+        public string NewContentCS { get; set; }
+
+        public int UpdaterID { get; set; }
+    }
+}

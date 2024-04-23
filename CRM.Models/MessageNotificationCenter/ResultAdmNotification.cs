@@ -1,0 +1,17 @@
+﻿namespace CRM.Models.MessageNotificationCenter
+{
+    using System;
+
+    public class ResultAdmNotification : ResultAdmNotificationDetail
+    {
+        public int SessionID { get; set; }
+
+        public DateTime? CreatedTime { get; set; }
+
+        public DateTime? SendDate { get; set; }
+
+        public string Subject { get; set; }
+
+        public string Sender { get; set; }
+    }
+}

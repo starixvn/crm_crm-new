@@ -6,7 +6,8 @@ const initialState = {
         pageIndex: 1,
         pageSize: 100
     },
-    gridData: null
+    gridData: null,
+    editAdmNotificationResult: null
 };
 
 const messageNotificationCenterSlice = createSlice({
@@ -18,6 +19,9 @@ const messageNotificationCenterSlice = createSlice({
         },
         setGridData: (state, action) => {
             state.gridData = action.payload;
+        },
+        setEditAdmNotification: (state, action) => {
+            state.editAdmNotificationResult = action.payload;
         }
     }
 });
@@ -26,7 +30,8 @@ const { actions, reducer } = messageNotificationCenterSlice;
 
 export const {
     setGridParams,
-    setGridData
+    setGridData,
+    setEditAdmNotification
 } = actions;
 
 export default reducer;
