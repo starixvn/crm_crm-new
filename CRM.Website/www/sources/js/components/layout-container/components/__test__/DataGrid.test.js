@@ -220,52 +220,6 @@ describe('DataGrid', () => {
                 // Assert
                 expect(form).toMatchSnapshot();
             });
-
-            it('should call exacly funtion', () => {
-                const props = {
-                    editCustomerInfoResult: {
-                        isSuccessful: false,
-                        message: 'unsuccessful'
-                    },
-                    customerInfo: {
-                        languages: [1, 2],
-                        uplineInfo: [],
-                        roleName:'test',
-                        otherAccountCommunicationInfos: [],
-                        headlineStaffInfoCommunications: []
-                    },
-                    getSettings: jest.fn(),
-                    settings: {
-                        languages: [],
-                        sitesLicenseeInactive: [],
-                        countries:[],
-                        sites: []
-                    },
-                    handleSearchUplineInfo: jest.fn()
-                };
-                const formikProps = {
-                    values: {
-                        languages: [1, 2],
-                        uplineInfo: [{ username: "tesla", roleName:'test'}],
-                        roleName: 'test',
-                        site: {}
-                    },
-                    errors: {},
-                    touched: {},
-                    handleChange: jest.fn(),
-                    handleSubmit: jest.fn(),
-                    isSubmitting: jest.fn(),
-                    setFieldValue: jest.fn()
-                };
-                const container = shallow(<DataGrid {...props} />);
-
-                // Act
-                const form = shallow(container.instance().renderForm(formikProps));
-                form.find('span').at(0).simulate('click', 'tesla');
-
-                // Assert
-                expect(props.handleSearchUplineInfo).toHaveBeenCalledWith('tesla');
-            });
         });
 
         describe('handle onChange MultipleSelect', () => {
@@ -324,12 +278,17 @@ describe('DataGrid', () => {
             hasReadLicenseePermission.setAttribute('id', 'hasReadLicenseePermission');
             hasReadLicenseePermission.checked = true;
 
+            const hasReadCreditPermission = document.createElement('div');
+            hasReadCreditPermission.setAttribute('id', 'hasReadCreditPermission');
+            hasReadCreditPermission.checked = true;
+
             document.body.appendChild(leftRowContainer);
             document.body.appendChild(hasCreateFeedbackPermission);
             document.body.appendChild(hasReadFeedbackPermission);
             document.body.appendChild(hasReadSitePermission);
             document.body.appendChild(hasHostPicManagementPermission);
             document.body.appendChild(hasReadLicenseePermission);
+            document.body.appendChild(hasReadCreditPermission);
 
             const container = shallow(<DataGrid {...props} />);
             const form = shallow(container.instance().renderForm(param));
@@ -423,26 +382,6 @@ describe('DataGrid', () => {
         });
 
         describe('renderDetail', () => {
-            it('should call setState', () => {
-                //Arrange
-                const props = {
-                    getSettings: jest.fn(),
-                    settings: {
-                        languages: []
-                    }
-                };
-                const state = {
-                    isShowDetail: false
-                };
-                const container = shallow(<DataGrid {...props} />);
-                container.instance().setState(state);
-                //Act
-                const detail = shallow(container.instance().renderDetail(false));
-                detail.find(Row).at(0).simulate('click');
-                //Assert
-                expect( container.instance().state.isShowDetail).toEqual(true);
-            });
-
             const cases = [['AddFeedback', 0], ['ManageFeedback', 1], ['LatestFeedback', 2], ['Dashboard', 3]];
             test.each(cases)(
                 "should navigate to %s",

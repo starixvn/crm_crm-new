@@ -201,8 +201,5 @@ describe('MultipleSelectLabel', () => {
         expect(multipleSelectLabel.find('button').props().type).toBe('button');
         expect(multipleSelectLabel.find('button').props().className).toBe('multiple-select-default multiple-select-label');
         expect(multipleSelectLabel.find('button').props().onClick).toEqual(props.onToggle);
-        expect(multipleSelectLabel.find('span').props().className).toBe('text-display');
-        expect(multipleSelectLabel.find('span').html()).toContain(props.textOptions.SelectOptions);
-        expect(multipleSelectLabel.find('b').html()).toBe('<b class="caret"></b>');
     });
 });

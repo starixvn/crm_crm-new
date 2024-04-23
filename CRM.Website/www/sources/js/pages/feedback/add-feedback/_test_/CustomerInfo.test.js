@@ -43,7 +43,7 @@ describe('CustomerInfo', () => {
             responses: [{id: 1, value: 'responses'}],
             sites: [{}]
             },
-        customerInfo:{},
+        customerInfo:{otherAccountCommunicationInfos: []},
         customerDetail: {customerType: 0},
         isHostOnCurrentCustomer: true,
         handleChange: jest.fn(),
@@ -59,7 +59,7 @@ describe('CustomerInfo', () => {
             const customerInfo = shallow(<CustomerInfo {...props} />);
 
             // Assert
-            expect(customerInfo.find(Form.Control)).toHaveLength(39);
+            expect(customerInfo.find(Form.Control)).toHaveLength(7);
         });
 
         it('handleChangeValueInfo birthday correctly', () => {

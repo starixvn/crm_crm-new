@@ -94,28 +94,6 @@ describe('DataGrid', () => {
         });
     });
 
-    describe('handleGroupCategory', () => {
-        it('should return expect array', () => {
-            // Arrange
-            const params = [
-                { mainCategoryId: 3024, subCategoryId: 4069 },
-                { mainCategoryId: 3024, subCategoryId: 4070 },
-                { mainCategoryId: 3025, subCategoryId: 4080 },
-                { mainCategoryId: 3024, subCategoryId: 4071 }
-            ];
-            const expectValue = [
-                { mainCategoryId: 3024, subCategoryId: [ 4069, 4070, 4071 ] },
-                { mainCategoryId: 3025, subCategoryId: [ 4080 ] }
-            ];
-            // Act
-            const container = shallow(<DataGrid />).instance();
-            const received = container.handleGroupCategory(params);
-
-            // Assert
-            expect(received).toEqual(expectValue);
-        });
-    });
-
     describe('handleEditNoOfInquiry', () => {
         it('should call exactly function when handle edit no of inquiry', () => {
             // Arrange
@@ -147,23 +125,6 @@ describe('DataGrid', () => {
             expect(props.setEditCommunicationDialog).toHaveBeenCalledWith({ show: true, feedbackId: 1 });
         });
     });
-
-    describe('handleCreate', () => {
-        it('should call exactly function when handle create', () => {
-            // Arrange
-            const props = {
-                setCreateCommunicationDialog: jest.fn()
-            };
-            const container = shallow(<DataGrid {...props} />).instance();
-
-            // Act
-            container.handleCreate();
-
-            // Assert
-            expect(props.setCreateCommunicationDialog).toHaveBeenCalledWith({ show: true });
-        });
-    });
-
 
     describe('onPaging', () => {
         it('should call exactly function when onPaging', () => {

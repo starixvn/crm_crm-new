@@ -1599,13 +1599,13 @@ describe('CreateCommunicationLog', () => {
                 allSettings: initData.settings,
                 duplicateFeedbackId: 21357
             });
-            container.handleCreateLog = jest.fn();
+            container.checkCustomerExistsOnCRM = jest.fn();
             container.handleCloseCheckDuplicateDialog = jest.fn();
 
             container.setState(state);
             const expectedContents = <div>{`This customer has a similar log with running number ${21357}. Do you want to create this log?`}</div>;
             const expectedButton = [
-                <Button variant="primary" size="sm" onClick={container.handleCreateLog}>
+                <Button variant="primary" size="sm" onClick={container.checkCustomerExistsOnCRM}>
                     {LangHelper.getResource('OK')}
                 </Button>,
                 <Button variant="primary" size="sm" onClick={container.handleCloseCheckDuplicateDialog}>

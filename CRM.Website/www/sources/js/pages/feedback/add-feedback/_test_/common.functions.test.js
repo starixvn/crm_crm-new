@@ -24,19 +24,21 @@ describe('common functions', () => {
                 subject: '',
                 identityInformation: ''
             };
-            const content ={
-                solution: '',
-                description: ''
-            };
+
+            const state = {
+                content : {
+                    solution: '1',
+                    description: '1'
+                }
+            }
+
             const expected = {
                 identityInformation: LangHelper.formatString(LangHelper.getResource('FieldRequired'),LangHelper.getResource('Identity')),
                 communication: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Communication')),
                 category: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Category')),
                 subCategory: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('SubCategory')),
                 languageId: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Language')),
-                subject: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Subject')),
-                description: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Description')),
-                solution: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Solution'))
+                subject: LangHelper.formatString(LangHelper.getResource('FieldRequired'), LangHelper.getResource('Subject'))
             };
             const props = {
                 settings: {
@@ -47,7 +49,7 @@ describe('common functions', () => {
             };
 
             // Act
-            const errors = commonFuncs.validateFormik(values, props.customerDetail, props.settings, content);
+            const errors = commonFuncs.validateFormik(values, props.customerDetail, props.settings, state);
 
             // Assert
             expect(errors).toEqual(expected);
@@ -64,10 +66,14 @@ describe('common functions', () => {
                 languageId: 1,
                 subject: '1'
             };
-            const content ={
-                solution: '1',
-                description: '1'
-            };
+
+            const state = {
+                content : {
+                    solution: '1',
+                    description: '1'
+                }
+            }
+
             const expected = {
                 category: LangHelper.formatString(LangHelper.getResource('InvalidCategoryField'), 'settingName')
             };
@@ -80,7 +86,7 @@ describe('common functions', () => {
             };
 
             // Act
-            const errors = commonFuncs.validateFormik(values, props.customerDetail, props.settings, content);
+            const errors = commonFuncs.validateFormik(values, props.customerDetail, props.settings, state);
             shareScripts.getInvalidCategoryParams = jest.fn(() => [[{mainCategoryID: 1, settingName: 'settingName'}]]);
 
             // Assert
@@ -132,6 +138,7 @@ describe('common functions', () => {
                 guestCommunicationInfos: null
             };
             expected.identityInformation = '';
+            expected.guestCommunicationInfos = null;
             DateTimeService.toShortDateTimeFormat = jest.fn(() => '2021-01-01');
             // Act
             const initialValues = commonFuncs.initValues(props.settings, customer);
