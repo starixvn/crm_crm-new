@@ -9,7 +9,6 @@
     using CRM.Core.Services;
     using CRM.Criteria.Customer;
     using CRM.Criteria.PicAndHeadline;
-    using CRM.Models;
     using CRM.Models.Customer;
     using CRM.Services;
     using CRM.Services.Customer;

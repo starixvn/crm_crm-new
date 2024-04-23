@@ -20,13 +20,14 @@
         }
 
         [Theory]
-        [InlineData(1,"Test")]
-        public void IsValid_WhenCalled_ReturnTrue(int userID, string iP)
+        [InlineData(1, 1,"Test")]
+        public void IsValid_WhenCalled_ReturnTrue(int userID, int headlineID, string iP)
         {
             // Arrange
             var command = new SyncHeadlineStaffAndAuthorityCriteria
             {
                 UserID = userID,
+                HeadlineID = headlineID,
                 IP = iP
             };
 
