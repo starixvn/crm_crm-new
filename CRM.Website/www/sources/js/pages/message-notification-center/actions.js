@@ -26,10 +26,16 @@ const editAdmNotification = data => async dispatch => {
     });
 };
 
+const editAdmStatus = params => async () => {
+    const url = Site.resolveClientUrl('MessageNotificationCenter/EditAdmStatus');
+    return await DataService.postDataAsync(url, params).then(response => response.data);
+};
+
 export const ActionCreators = {
     setGridParams,
     setGridData,
     getGridData,
     getAdmNotificationById,
-    editAdmNotification
+    editAdmNotification,
+    editAdmStatus
 };

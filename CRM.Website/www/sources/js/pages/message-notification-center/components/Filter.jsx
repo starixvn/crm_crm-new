@@ -196,9 +196,6 @@ export class Filter extends Component {
     };
 
     render() {
-        // console.log('state', this.state);
-        // console.log('params', this.props.gridParams);
-
         const classIsInvalidFromTo = this.state.isValidNotification ? 'is-invalid' : '';
         return (
             <>

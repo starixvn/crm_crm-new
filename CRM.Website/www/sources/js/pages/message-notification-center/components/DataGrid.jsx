@@ -10,6 +10,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import Panel, { PanelHeader } from '@jsroot/components/panel/index';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import Site from '@jsroot/common/site';
+import { toast } from 'react-toastify';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -26,7 +27,10 @@ export class DataGrid extends Component {
                 { id: 6, status: 'Sending'},
                 { id: 7, status: 'Active'},
                 { id: 8, status: 'Inactive'},
-            ]
+            ],
+            cancelPopup: { show: false, notificationId: null },
+            resendFailPopup: { show: false, notificationId: null },
+            deactivatePopup: { show: false, notificationId: null },
         };
         this.panels = [];
 
@@ -99,13 +103,60 @@ export class DataGrid extends Component {
         this.props.getGridData({ ...params });
     };
 
-    handleEdit = notificationId => {
+    getParamStatus = (notificationId, status) => ({
+        notificationId,
+        newStatus: status
+    });
+
+    handleAction = (notificationId, isOstUser) => {
         const actionParam = {
             notificationId: notificationId,
-            isEdit: true,
+            isOstUser: isOstUser,
             redirectParams: this.props.gridParams
         };
-        this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter/Edit'), {state: actionParam});
+        this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter/Action'), {state: actionParam});
+    };
+
+    handleCancel = notificationId => {
+        this.setState({ cancelPopup: { show: true, notificationId: notificationId } });
+    };
+
+    handleCancelConfirm = async (notificationId, status) => {
+        const params = this.getParamStatus(notificationId, status);
+        await this.props.editAdmStatus(params).then(response => {
+            this.handleClosePopup();
+            if(response.isSuccessful) {
+                toast.success(LangHelper.getResource('Update notification status successfully!'));
+                this.props.getGridData(this.props.gridParams);
+            }else{
+                toast.error(response.message);
+            }
+        });
+    };
+
+    handleClosePopup = () => {
+        this.setState({
+            cancelPopup: { show: false, notificationId: null },
+            resendFailPopup: { show: false, notificationId: null },
+            deactivatePopup: { show: false, notificationId: null }
+        });
+    };
+
+    handleResendFail = () => {
+
+    };
+
+    handleDeactivate = async (notificationId, status) => {
+        const params = this.getParamStatus(notificationId, status);
+        await this.props.editAdmStatus(params).then(response => {
+            this.handleClosePopup();
+            if(response.isSuccessful) {
+                toast.success(LangHelper.getResource('Update notification status successfully!'));
+                this.props.getGridData(this.props.gridParams);
+            }else{
+                toast.error(response.message);
+            }
+        });
     };
 
     renderTooltipComponent = (title, component) => {
@@ -128,21 +179,21 @@ export class DataGrid extends Component {
             case 'New':
                 return (
                     <>
-                        <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Review')}</div>
+                        <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Review')}</div>
                         <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
                     </>
                 );
             case 'Failed':
-                return <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('ResendFail')}</div>;
+                return <div className='review-button' onClick={() => this.handleResendFail(notificationId)}>{LangHelper.getResource('ResendFail')}</div>;
             case 'Draft':
                 return (
                     <>
-                        <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Edit')}</div>
+                        <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>
                         <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
                     </>
                 );
             case 'Cancelled':
-                return <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Edit')}</div>;
+                return <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>;
             default:
                 return null;
         }
@@ -151,14 +202,50 @@ export class DataGrid extends Component {
     renderActionButtonCSD = (status, notificationId) => {
         switch (status) {
             case 'New':
-                return <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Activate')}</div>;
+                return <div className='review-button' onClick={() => this.handleAction(notificationId, false)}>{LangHelper.getResource('Activate')}</div>;
             case 'Active':
-                return <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Deactivate')}</div>;
+                return <div className='review-button' onClick={() => this.handleDeactivate(notificationId)}>{LangHelper.getResource('Deactivate')}</div>;
             case 'Inactive':
-                return <div className='review-button' onClick={() => this.handleEdit(notificationId)}>{LangHelper.getResource('Activate')}</div>;
+                return <div className='review-button' onClick={() => this.handleAction(notificationId, false)}>{LangHelper.getResource('Activate')}</div>;
             default:
                 return null;
         }
+    };
+
+    getTitleConfirmByStatus = status => {
+        if (status === 'Cancelled') {
+            return 
+        }
+    };
+
+    renderConfirmPopup = () => {
+        const popups = [
+            { data: this.state.cancelPopup, status: 'cancel', handler: this.handleCancelConfirm },
+            { data: this.state.resendFailPopup, status: 'resend', handler: this.handleResendConfirm },
+            { data: this.state.deactivatePopup, status: 'deactivate', handler: this.handleDeactivateConfirm }
+        ];
+        const activePopup = popups.find(popup => popup.data.show);
+        const { data, status, handler } = activePopup;
+        const onSubmit = handler(data.notificationId);
+
+        if (!activePopup) {
+            return null;
+        }
+
+        return (
+            <ConfirmPopup
+                size='lg'
+                className='confirmNotification'
+                title={LangHelper.getResource('Confirmation')}
+                content={
+                    <div>
+                        Are you sure you want to {status} the notification: <strong>{data.notificationId}</strong>?
+                    </div>
+                }
+                onSubmit={() => onSubmit()}
+                onClose={this.handleClosePopup}
+            />
+        );
     };
 
     renderRow = (item, index, isHost) => {
@@ -212,6 +299,7 @@ export class DataGrid extends Component {
         // const { totalItems } = this.props.gridData;
         // const { pageIndex, pageSize } = this.props.gridParams;
         const { isHost } = this.props;
+        const { cancelPopup, resendFailPopup, deactivatePopup } = this.state;
 
         const pagingOption = {
             PageIndex: 1,
@@ -235,6 +323,10 @@ export class DataGrid extends Component {
                     onPaging={this.onPaging}
                     adjustedHeight={10}
                 />
+                {
+                    (cancelPopup.show || resendFailPopup.show || deactivatePopup.show) &&
+                    this.renderConfirmPopup()
+                }
             </>
         );
     }

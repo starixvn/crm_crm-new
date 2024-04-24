@@ -118,11 +118,7 @@ const MenuRouteArray = [
     { url: 'Announcement/NewAnnouncement', component: NewAnnouncementComponent },
     { url: 'Announcement/EditAnnouncement', component: EditAnnouncementComponent },
     { url: 'Announcement/CloneAnnouncement', component: CloneAnnouncementComponent },
-    { url: 'MessageNotificationCenter/Edit', component: ActionMessageNotificationComponent },
-    { url: 'MessageNotificationCenter/Review', component: ActionMessageNotificationComponent },
-    { url: 'MessageNotificationCenter/ResendFail', component: ActionMessageNotificationComponent },
-    { url: 'MessageNotificationCenter/Activate', component: ActionMessageNotificationComponent },
-    { url: 'MessageNotificationCenter/Deactivate', component: ActionMessageNotificationComponent }
+    { url: 'MessageNotificationCenter/Action', component: ActionMessageNotificationComponent },
 ];
 
 export default class Index extends PureComponent {

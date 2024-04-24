@@ -1,5 +1,3 @@
-import DateTimeService from '@jsroot/common/dateTimeService';
-
 export const statusOptionOST = [
     {id: 'New', name: 'New', checked: true},
     {id: 'Sent', name: 'Sent', checked: true},

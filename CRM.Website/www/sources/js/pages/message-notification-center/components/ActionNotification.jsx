@@ -19,9 +19,55 @@ export class ActionNotification extends Component {
         super(props);
 
         this.state = {
-            tab: 'English'
+            tab: 'English',
+            data: null,
+            sites: null,
+            confirmActionDialog: { show: false, params: null, content: null },
+            content: {
+                content_en: null,
+                content_cs: null,
+                content_ch: null
+            }
         }
+
+        this.languages = [
+            {
+                name: "English",
+                mapLabel: "content_en"
+            },
+            {
+                name: "Simplified Chinese",
+                mapLabel: "content_cs"
+            },
+            {
+                name: "Traditional Chinese",
+                mapLabel: "content_ch"
+            }
+        ]
     }
+
+    componentDidMount() {
+        this.props.getAdmNotificationById();
+    };
+
+    getAdmNotificationDetail = async () =>{
+        const { notificationId } = this.props.actionParam;
+        Site.blockUI();
+        await this.props.getAdmNotificationById(notificationId).then(response => {
+            const { notificationDetails, sites } = response.data;
+            const notificationDetail = notificationDetails[0];
+            this.setState({data: notificationDetail, sites});
+            this.getContentByLanguage(notificationDetail);
+        }).catch(Site.handleAxiosError).then(() => Site.unblockUI());    
+    };
+
+    getContentByLanguage = notification => {
+        const content = {...this.state.content};
+        content.content_en = notification.content_en;
+        content.content_cs = notification.content_cs;
+        content.content_ch = notification.content_ch;
+        this.setState({content});
+    };
 
     handleChangeTab = selected =>{
         this.setState({tab: selected});
@@ -55,6 +101,8 @@ export class ActionNotification extends Component {
     );
 
     render() {
+        const { content } = this.state;
+
         console.log('this.props.actionParam', this.props.actionParam);
 
         const totalCredit = [
@@ -65,26 +113,6 @@ export class ActionNotification extends Component {
         const totalLicensee = [
             { name: 'Normal sites', data: 'lic1, lic2, lic3, lic4' }
         ];
-        const languages = [
-            {
-                settingId: 50000,
-                settingName: "NotificationTemplateLanguage",
-                settingValue: "English",
-                childSettings: [],
-                mapLabel: "English"
-            },
-            {
-                settingId: 50000,
-                settingName: "NotificationTemplateLanguage",
-                settingValue: "SC",
-                childSettings: [],
-                mapLabel: "SC"
-            },
-        ];
-        const content = {
-            English: "Content (English)",
-            SC: "",
-        };
         return (
             <Form noValidate onSubmit={this.handleSubmit}>
                 <div className="action-notification">
@@ -151,7 +179,7 @@ export class ActionNotification extends Component {
                         </div>
                         <div className="group-item">
                             <div className="group-header">{LangHelper.getResource('Content')}</div>
-                            <div className="group-content">
+                            <div className="group-language">
                                 <Col sm={12} md={12}>
                                     <Tabs
                                         className='languages-text'
@@ -160,10 +188,10 @@ export class ActionNotification extends Component {
                                         onSelect={selected => this.handleChangeTab(selected)}
                                     >
                                         {
-                                            languages.map((language, key) =>
-                                                (<Tab key={key} eventKey={language.settingValue} title={language.settingValue}>
+                                            this.languages.map((language, key) =>
+                                                (<Tab key={key} eventKey={language.name} title={language.name}>
                                                     <CkEditor
-                                                        name={language.mapLabel}
+                                                        name={language.name}
                                                         data={content[language.mapLabel]}
                                                         username={window.currentUsername}
                                                         // onChange={value => {

@@ -182,7 +182,11 @@
                 }
 
                 .group-content {
-                    padding: 8px 12px;
+                    padding: 8px 25px;
+
+                    .content-item {
+                        display: flex;
+                    }
     
                     .content {
                         .content-child {
@@ -193,13 +197,17 @@
                             }
                         }
                     }
+                }
+
+                .group-language {
+                    padding: 20px 10px;
 
                     .nav-tabs {
                         border: 0;
               
                         .nav-link {
                             padding: 8px 0;
-                            width: 120px;
+                            width: 140px;
                             margin-right: 12px;
                             text-align: center;
                             color: #333;
@@ -211,17 +219,27 @@
                                 color: #466ab6;
                                 font-weight: 700;
                             }
-                
+
                             &:hover,
                             &:focus {
                                 border-radius: 3px 3px 0px 0px;
                             }
                         }
                     }
-                }
 
-                .content-item {
-                    display: flex;
+                    .ckeditor-container {
+                        .cke_chrome {
+                            border-radius: 0px 3px 3px 3px;
+                        }
+
+                        .cke_top {
+                            margin-top: 6px;
+                            border-width: 1px 0;
+                            border-color: #d1d1d1;
+                            border-style: solid;
+                            background: #f2f2f2;
+                        }
+                    }
                 }
 
                 .form-group {
