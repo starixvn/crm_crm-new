@@ -23,8 +23,9 @@
     color: #FFFFFF;
   }
 
-  .other-communication-tool {
-    max-width: 300px !important;
+  .other-communication-tool-grid {
+    display: grid !important;
+    grid-template-columns: repeat(5, 200px);
   }
 
   .invalid-other-communication-tool {

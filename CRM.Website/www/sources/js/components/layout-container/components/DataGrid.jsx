@@ -127,7 +127,7 @@ export default class DataGrid extends PureComponent {
                                                 <Col className="text-left group-label">
                                                     {value.roleName}
                                                 </Col>
-                                                <Col className="text-left">
+                                                <Col className="text-left group-label">
                                                     {
                                                         value.username === 'Unassigned'
                                                             ? value.username
@@ -146,7 +146,7 @@ export default class DataGrid extends PureComponent {
                                 <Col className="text-left group-label">
                                     {values.roleName}
                                 </Col>
-                                <Col className="text-left">
+                                <Col className="text-left group-label">
                                     {values.username}
                                 </Col>
                                 <Col className="status text-right group-icon-acc">
@@ -361,7 +361,7 @@ export default class DataGrid extends PureComponent {
                                                 {LangHelper.getResource('Name')}
                                             </Form.Label>
                                             <Col className='field-name'>
-                                                <a style={{ cursor: 'pointer' }}
+                                                <a style={{ cursor: 'pointer' }} className="group-label"
                                                     onClick={() => this.state.headlineInfoPolicy && this.focusHeadlineCommunicationInfo(pic.picID)}>
                                                     {pic.picName + ' (' + pic.picRoleName + ')'}
                                                 </a>

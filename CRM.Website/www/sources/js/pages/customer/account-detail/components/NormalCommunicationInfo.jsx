@@ -293,7 +293,7 @@ export class NormalCommunicationInfo extends Component {
                                 {LangHelper.getResource('AddCommunicationTool')}
                             </Button>
                         }
-                        <div className='group-content'>
+                        <div className='group-content other-communication-tool-grid'>
                             {
                                 values.otherAccountCommunication?.map((picCommunicationTool, indexPicCommunicationTool) => {
                                     return <>

@@ -308,7 +308,7 @@
         }
 
         .group-label {
-            font-weight: 700 !important;
+            font-weight: 600 !important;
         }
 
         &:has(.group-content) .group-title {
@@ -337,7 +337,7 @@
         .form-group {
             display: grid;
             grid-template-columns: 25% 75%;
-            margin-bottom: 6px;
+            margin-bottom: unset;
             line-height: 1.2;
             word-break: break-word;
 
@@ -352,7 +352,7 @@
 
         .account-item {
             .linear-gradient-tool {
-                margin: 7px 0;
+                margin: 0 0 6px 0;
                 height: 1px;
                 background-image: linear-gradient(90deg, #B0B0B0, #B0B0B0 75%, transparent 75%, transparent 100%);
                 background-size: 10px 1px;
@@ -368,7 +368,7 @@
             }
 
             &:not(:first-child) {
-                padding-top: 6px;
+                padding-top: 8px;
             }
 
             .field-name {
