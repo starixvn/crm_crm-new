@@ -318,7 +318,7 @@ export default class DataGrid extends PureComponent {
                                             </Col>
                                         </Form.Group>
                                         {
-                                            index !== values.length &&
+                                            index !== (values.length - 1) &&
                                             <div className="linear-gradient-tool"></div>
                                         }
                                     </>
