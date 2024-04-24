@@ -26,19 +26,19 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
 
-    .login-left{
+    .login-left {
         display: flex;
         flex-direction: column;
         align-items: center;
         background: linear-gradient(72deg, #1D3557 0%, #395783 100%);
         border-radius: 10px;
-        padding: 130px 56px;
+        padding: 87px 29px;
 
         @include Laptop-Medium {
             padding: 65px 30px;
         }
 
-        .welcome{
+        .welcome {
             color: white;
             font-size: 28px;
             font-weight: 600;
@@ -50,36 +50,35 @@ body {
         }
 
         .login-security {
-            height: 200px;
-            width: 200px;
+            height: 180px;
+            width: 180px;
         }
     }
 
     .login-right {
-        width: 360px;
-        padding: 0 50px;
+        width: 346px;
 
         @include Laptop-Medium {
-            width: 300px;
-            padding: 0 25px;
+            width: 286px;
+            padding: 0 10px;
         }
 
         form {
             display: flex;
             flex-direction: column;
             gap: 24px;
-            width: 360px;
+            width: 346px;
             position: absolute;
-            top: 151px;
+            top: 98px;
 
             @include Laptop-Medium {
                 top: 100px;
-                width: 300px;
+                width: 286px;
             }
 
             .header-text {
                 color: #243E62;
-                font-size: 28px;
+                font-size: 24px;
                 font-weight: 600;
                 word-wrap: break-word
             }
@@ -99,6 +98,7 @@ body {
                     font-size: 15px;
                     font-weight: 600;
                     font-family: 'Open Sans', sans-serif;
+                    width: 286px;
 
                     @include Laptop-Medium {
                         padding: 6px 6px 6px 40px;
@@ -116,34 +116,13 @@ body {
                         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
                         border-color: #00A3FF;
                     }
-                } 
-
-                #username {
-                    background: url('../../../images/login/icon-user.png') no-repeat left center;
-                    background-position-x: 12px;
-
-                    &:focus {
-                        background: url('../../../images/login/icon-user-active.png') no-repeat left center;
-                        background-position-x: 12px;
-                    }
-                }
-
-                #password {
-                    width: 300px;
-                    background: url('../../../images/login/icon-password.png') no-repeat left center;
-                    background-position-x: 12px;
-
-                    &:focus {
-                        background: url('../../../images/login/icon-password-active.png') no-repeat left center;
-                        background-position-x: 12px;
-                    }
 
                     &::-ms-reveal, &::-ms-clear {
                         display: none;
                     }
 
                     @include Laptop-Medium {
-                        width: 252px;
+                        width: 238px;
                     }
                 }
 
@@ -165,6 +144,26 @@ body {
                         &.icon-eye-show {
                             background: url('../../../images/login/icon-eye.png') no-repeat left center;
                         }
+                    }
+
+                    .icon-password {
+                        height: 24px;
+                        width: 24px;
+                        cursor: pointer;
+                        position: absolute;
+                        left: 12px;
+                        top: 15px;
+                        background: url('../../../images/login/icon-password-active.png') no-repeat left center;
+                    }
+
+                    .icon-user {
+                        height: 24px;
+                        width: 24px;
+                        cursor: pointer;
+                        position: absolute;
+                        left: 12px;
+                        top: 15px;
+                        background: url('../../../images/login/icon-user-active.png') no-repeat left center;
                     }
                 }
             }
@@ -197,7 +196,7 @@ body {
         }
 
         #msg {
-            padding: 12px 12px  12px 42px;
+            padding: 12px 12px 12px 42px;
             box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.10);
             border-radius: 4px;
             border: 2px #E2B6B6 solid;
@@ -205,8 +204,8 @@ body {
             background-position-x: 12px;
             color: #333333;
             height: 24px;
-            top: 55px;
             position: relative;
+            line-height: 24px;
 
             @include Laptop-Medium {
                 top: 10px;

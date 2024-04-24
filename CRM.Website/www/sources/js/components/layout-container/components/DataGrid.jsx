@@ -124,7 +124,7 @@ export default class DataGrid extends PureComponent {
                                     values.uplineInfo.map((value, index) => {
                                         return (
                                             <Row className="item " key={index}>
-                                                <Col className="text-left">
+                                                <Col className="text-left group-label">
                                                     {value.roleName}
                                                 </Col>
                                                 <Col className="text-left">
@@ -143,7 +143,7 @@ export default class DataGrid extends PureComponent {
                                 }
                             </Form.Group>
                             <Form.Group className="row item current ">
-                                <Col className="text-left">
+                                <Col className="text-left group-label">
                                     {values.roleName}
                                 </Col>
                                 <Col className="text-left">
@@ -165,8 +165,8 @@ export default class DataGrid extends PureComponent {
                                     {values.status}
                                 </Col>
                             </Form.Group>
-                            <Form.Group className="row item field-info">
-                                <Form.Label column htmlFor="name" >
+                                <Form.Group className="row item field-info">
+                                <Form.Label className="group-label" column htmlFor="name" >
                                     {LangHelper.getResource('Site')}
                                 </Form.Label>
                                 <Col >
@@ -191,7 +191,7 @@ export default class DataGrid extends PureComponent {
                                 </Form.Group>
                             }
                             <Form.Group className="row item field-info country-select">
-                                <Form.Label column htmlFor="name" >
+                                <Form.Label className="group-label" column htmlFor="name" >
                                     {LangHelper.getResource('Country')}
                                 </Form.Label>
                                 <Col>
@@ -208,7 +208,7 @@ export default class DataGrid extends PureComponent {
                             </Form.Group>
 
                             <Form.Group className="row item field-info">
-                                <Form.Label column htmlFor="name" >
+                                <Form.Label className="group-label" column htmlFor="name" >
                                     {LangHelper.getResource('FirstName')}
                                 </Form.Label>
                                 <Col>
@@ -218,7 +218,7 @@ export default class DataGrid extends PureComponent {
                                 </Col>
                             </Form.Group>
                             <Form.Group className="row item field-info">
-                                <Form.Label column htmlFor="lastName" >
+                                <Form.Label className="group-label" column htmlFor="lastName" >
                                     {LangHelper.getResource('LastName')}
                                 </Form.Label>
                                 <Col>
@@ -228,17 +228,17 @@ export default class DataGrid extends PureComponent {
                                 </Col>
                             </Form.Group>
                             <Form.Group className="row item field-info field-nickname">
-                                <Form.Label column htmlFor="nickname" >
+                                <Form.Label className="group-label" column htmlFor="nickname" >
                                     {LangHelper.getResource('Nickname')}
                                 </Form.Label>
                                 <Col>
-                                    <Form.Label size="sm" className="">
+                                    <Form.Label className="group-label" size="sm" className="">
                                         {values.nickname}
                                     </Form.Label>
                                 </Col>
                             </Form.Group>
                             <Form.Group className="row item field-info">
-                                <Form.Label column htmlFor="name" >
+                                <Form.Label className="group-label" column htmlFor="name" >
                                     {LangHelper.getResource('Language')}
                                 </Form.Label>
                                 <Col className="form-control-wrapper form-control-language">
@@ -284,6 +284,14 @@ export default class DataGrid extends PureComponent {
         );
     };
 
+    renderValueCommunicationTool(communicationTools) {
+        const listCommunicationTool = [];
+        communicationTools.map(item => {
+            listCommunicationTool.push(<p>{item}</p>)
+        })
+        return listCommunicationTool;
+    }
+
     renderOtherAccountInfo = values => {
         if (values === undefined || values.length === 0) {
             return null;
@@ -299,16 +307,20 @@ export default class DataGrid extends PureComponent {
                     <div className='custom-scrollbar group-content'>
                         <div className='account-item'>
                             {
-                                values.map(value => {
+                                values.map((value, index) => {
                                     return <>
                                         <Form.Group>
-                                            <Form.Label >
+                                            <Form.Label className="group-label" >
                                                 {value.communicationName}
                                             </Form.Label>
                                             <Col>
-                                                {value.communicationValue}
+                                                {this.renderValueCommunicationTool(value.communicationValue.split(','))}
                                             </Col>
                                         </Form.Group>
+                                        {
+                                            index !== values.length &&
+                                            <div className="linear-gradient-tool"></div>
+                                        }
                                     </>
                                 })
                             }
@@ -341,10 +353,11 @@ export default class DataGrid extends PureComponent {
                     <div className='custom-scrollbar group-content'>
                         {
                             values.headlineStaffInfoPics.map(pic => {
+                                const picComunicationTools = values.headlineStaffInfoCommunications.filter(x => x.picID === pic.picID);
                                 return (
                                     <div className='account-item' key={pic.picID}>
-                                        <Form.Group>
-                                            <Form.Label htmlFor="name" >
+                                        <Form.Group className="communication-item">
+                                            <Form.Label className="group-label" htmlFor="name" >
                                                 {LangHelper.getResource('Name')}
                                             </Form.Label>
                                             <Col className='field-name'>
@@ -354,20 +367,23 @@ export default class DataGrid extends PureComponent {
                                                 </a>
                                             </Col>
                                         </Form.Group>
+                                        <div className="linear-gradient-tool"></div>
                                         {
-                                            values.headlineStaffInfoCommunications.map(value => {
-                                                if (value.picID === pic.picID) {
-                                                    return <>
-                                                        <Form.Group>
-                                                            <Form.Label >
-                                                                {value.picCommunicationName}
-                                                            </Form.Label>
-                                                            <Col>
-                                                                {value.picCommunicationValue}
-                                                            </Col>
-                                                        </Form.Group>
-                                                    </>
-                                                }
+                                            picComunicationTools.map((value, index) => {
+                                                return <>
+                                                    <Form.Group >
+                                                        <Form.Label className="group-label" >
+                                                            {value.picCommunicationName}
+                                                        </Form.Label>
+                                                        <Col>
+                                                            {this.renderValueCommunicationTool(value.picCommunicationValue.split(','))}
+                                                        </Col>
+                                                    </Form.Group>
+                                                    {
+                                                        index !== (picComunicationTools.length - 1) &&
+                                                        <div className="linear-gradient-tool"></div>
+                                                    }
+                                                </>
                                             })
                                         }
                                     </div>

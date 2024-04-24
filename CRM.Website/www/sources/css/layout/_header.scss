@@ -29,6 +29,7 @@
     }
 
     .right-header ul {
+        border-radius: var(--Border-radius-1, 5px) var(--Border-radius-1, 5px) 0px 0px;
         display: flex;
         align-items: center;
         list-style-type: none;
@@ -73,12 +74,13 @@
             }
 
             .menu-sub {
+                border-radius: 0px 0px var(--Border-radius-1, 5px) var(--Border-radius-1, 5px);
                 position: absolute;
                 left: 0;
                 width: 215px;
                 z-index: 999;
                 margin-top: 10px;
-                background-color: #39496d;
+                background-color: #14243B;
                 display: none;
                 visibility: hidden;
 
@@ -106,7 +108,11 @@
                 }
 
                 .layer-first:hover {
-                    background-color: #9faac6;
+                    background-color: rgba(255, 255, 255, 0.15);
+
+                    a.title {
+                        color: #FF713A;
+                    }
 
                     .layer-second {
                         display: block;
@@ -117,11 +123,13 @@
         }
 
         > li:hover {
-            background-color: #39496d;
+            background-color: #14243B;
+            padding: 6px 20px 15px 10px;
+            align-items: center;
 
             .menu-title {
                 .title {
-                    color: #ffcc33;
+                    color: #FF713A;
                 }
             }
 

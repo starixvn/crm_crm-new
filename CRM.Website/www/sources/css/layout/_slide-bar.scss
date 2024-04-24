@@ -102,10 +102,10 @@
             padding-top: 8px;
         }
 
-        &.btn-submit{
+        &.btn-submit {
             padding: 12px 8px 8px;
 
-            .btn-primary{
+            .btn-primary {
                 padding: 4px 16px;
                 height: 26px;
                 font-weight: 700;
@@ -116,7 +116,7 @@
             grid-template-columns: 28% auto;
             padding: 4px 8px 0;
 
-            &.field-nickname{
+            &.field-nickname {
                 padding: 6px 8px 3px;
             }
 
@@ -246,7 +246,7 @@
             }
         }
 
-        &:last-child li:last-child{
+        &:last-child li:last-child {
             margin-bottom: 0;
         }
     }
@@ -272,7 +272,7 @@
                     margin-top: 10px;
                 }
 
-                &:last-child ul li:last-child{
+                &:last-child ul li:last-child {
                     margin-bottom: 0;
                 }
             }
@@ -283,9 +283,10 @@
         border-radius: 5px;
         border: 1px #CCCCCC solid;
 
-        &:has(.group-content) .group-title .icon-dropdown{
+        &:has(.group-content) .group-title .icon-dropdown {
             transform: rotate(0);
         }
+
         .group-title {
             font-family: 'Open Sans', sans-serif;
             color: #2B4E80;
@@ -303,10 +304,14 @@
             .icon-dropdown {
                 transform: rotate(-90deg);
                 transition: 0.2s;
-              }
+            }
         }
 
-        &:has(.group-content) .group-title{
+        .group-label {
+            font-weight: 700 !important;
+        }
+
+        &:has(.group-content) .group-title {
             border-bottom: 1px #CCCCCC solid;
         }
     }
@@ -338,7 +343,6 @@
 
             .form-label {
                 padding: 0;
-                margin: 0;
             }
 
             .col {
@@ -347,8 +351,20 @@
         }
 
         .account-item {
+            .linear-gradient-tool {
+                margin: 7px 0;
+                height: 1px;
+                background-image: linear-gradient(90deg, #B0B0B0, #B0B0B0 75%, transparent 75%, transparent 100%);
+                background-size: 10px 1px;
+                border: none;
+            }
+
+            p {
+                margin-bottom: 5px;
+            }
+
             &:not(:last-child) {
-                border-bottom: 1px #E4E4E4 solid;
+                border-bottom: 1px #9E9E9E solid;
             }
 
             &:not(:first-child) {
@@ -359,7 +375,7 @@
                 color: #0255A5;
             }
 
-            .pointer{
+            .pointer {
                 cursor: pointer;
             }
         }
