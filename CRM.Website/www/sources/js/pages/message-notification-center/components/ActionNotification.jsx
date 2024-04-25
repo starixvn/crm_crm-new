@@ -47,7 +47,7 @@ export class ActionNotification extends Component {
     }
 
     componentDidMount() {
-        this.props.getAdmNotificationById();
+        this.getAdmNotificationDetail();
     };
 
     getAdmNotificationDetail = async () =>{

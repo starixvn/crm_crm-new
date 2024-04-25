@@ -181,7 +181,6 @@ export class Filter extends Component {
             });
         } else {
             const params = this.getParams();
-            console.log('params', params);
             this.props.setGridParams(params);
             this.props.getGridData(params);
         }

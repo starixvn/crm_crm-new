@@ -145,6 +145,20 @@
             background-color: $grey-light
         }
     }
+
+    .text-bold {
+        font-weight: bold;
+        line-height: 2rem;
+    }
+    .text-it {
+        font-style: italic;
+        font-weight: 600;
+        color: #8f8f8f;
+        line-height: 2rem;
+    }
+    .text-padding-bottom {
+        padding-bottom: 5px;
+    }
 }
 
 .message-notification-center-action {

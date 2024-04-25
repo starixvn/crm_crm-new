@@ -11,11 +11,13 @@
 
     public interface IMessageNotificationCenterService
     {
-        Task<(IEnumerable<ResultAdmNotification> notifications, IEnumerable<ResultAdmSite> allSite)> GetResulAdmNotificationAsync(GetResultAdmNotification param);
+        Task<(IEnumerable<ResultAdmNotification> notifications, IEnumerable<ResultAdmSite> allSite)> GetResultAdmNotificationAsync(GetResultAdmNotification param);
 
-        Task<(IEnumerable<ResultAdmNotificationDetail> notificationDetails, IEnumerable<ResultAdmSite> sites)> GetResulAdmNotificationByIdAsync(int notiId);
+        Task<(IEnumerable<ResultAdmNotificationDetail> notificationDetails, IEnumerable<ResultAdmSite> sites)> GetResultAdmNotificationByIdAsync(int notiId);
 
-        Task<CommandResult> EditResulAdmNotificationAsync(EditResultAdmNotification param);
+        Task<CommandResult> EditResultAdmNotificationAsync(EditResultAdmNotification param);
+
+        Task<CommandResult> EditResultAdmStatusAsync(EditResultAdmNotiStatus param);
     }
 
     public class MessageNotificationCenterService : IMessageNotificationCenterService
@@ -32,7 +34,7 @@
             this.baseService = baseService;
         }
 
-        public async Task<(IEnumerable<ResultAdmNotification> notifications, IEnumerable<ResultAdmSite> allSite)> GetResulAdmNotificationAsync(GetResultAdmNotification param)
+        public async Task<(IEnumerable<ResultAdmNotification> notifications, IEnumerable<ResultAdmSite> allSite)> GetResultAdmNotificationAsync(GetResultAdmNotification param)
         {
             var criteria = new GetResultAdmNotificationCriteria
             {
@@ -55,7 +57,7 @@
             return (notifications, allSite);
         }
 
-        public async Task<(IEnumerable<ResultAdmNotificationDetail> notificationDetails, IEnumerable<ResultAdmSite> sites)> GetResulAdmNotificationByIdAsync(int notiId)
+        public async Task<(IEnumerable<ResultAdmNotificationDetail> notificationDetails, IEnumerable<ResultAdmSite> sites)> GetResultAdmNotificationByIdAsync(int notiId)
         {
             var criteria = new GetResultAdmNotiByIdCriteria
             {
@@ -65,7 +67,7 @@
             return (notificationDetails, sites);
         }
 
-        public async Task<CommandResult> EditResulAdmNotificationAsync(EditResultAdmNotification param)
+        public async Task<CommandResult> EditResultAdmNotificationAsync(EditResultAdmNotification param)
         {
             var command = new EditResultAdmNotificationCommand
             {
@@ -75,6 +77,17 @@
                 NewContentEN = param.NewContentEN,
                 NewContentCH = param.NewContentCH,
                 NewContentCS = param.NewContentCS
+            };
+            return await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task<CommandResult> EditResultAdmStatusAsync(EditResultAdmNotiStatus param)
+        {
+            var command = new EditResultAdmNotiStatusCommand
+            {
+                NotiID = param.NotificationId,
+                NewStatus = param.NewStatus,
+                UpdaterID = napSession.UserId
             };
             return await baseService.ExecuteNonQueryAsync(command);
         }

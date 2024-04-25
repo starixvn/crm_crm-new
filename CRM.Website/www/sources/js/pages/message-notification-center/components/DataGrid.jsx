@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
+import DateTimeService from '@jsroot/common/dateTimeService';
 import { Table, HeaderRow, HeaderCell, Row, Cell } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
@@ -9,6 +10,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import Panel, { PanelHeader } from '@jsroot/components/panel/index';
 import WithNavigation from '@jsroot/components/WithNavigation';
+import ConfirmPopup from '@jsroot/components/ConfirmPopup';
 import Site from '@jsroot/common/site';
 import { toast } from 'react-toastify';
 
@@ -88,11 +90,10 @@ export class DataGrid extends Component {
     );
 
     buildBody = isHost => {
-        if (this.data.length > 0) {
-            const filterData = this.data.filter(item => item.isOst === this.props.gridParams.isOstUser);
-            return filterData.map((item, index) => this.renderRow(item, index, isHost));
+        if (this.props.gridData.data.length > 0) {
+            return this.props.gridData.data.map((item, index) => this.renderRow(item, index, isHost));
         }
-        //return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 4 : 3}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
+        return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={isHost ? 7 : 6}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
     onPaging = (pageIndex, pageSize) => {
@@ -103,35 +104,14 @@ export class DataGrid extends Component {
         this.props.getGridData({ ...params });
     };
 
-    getParamStatus = (notificationId, status) => ({
-        notificationId,
-        newStatus: status
-    });
-
     handleAction = (notificationId, isOstUser) => {
         const actionParam = {
             notificationId: notificationId,
             isOstUser: isOstUser,
             redirectParams: this.props.gridParams
         };
+        console.log('actionParam', actionParam);
         this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter/Action'), {state: actionParam});
-    };
-
-    handleCancel = notificationId => {
-        this.setState({ cancelPopup: { show: true, notificationId: notificationId } });
-    };
-
-    handleCancelConfirm = async (notificationId, status) => {
-        const params = this.getParamStatus(notificationId, status);
-        await this.props.editAdmStatus(params).then(response => {
-            this.handleClosePopup();
-            if(response.isSuccessful) {
-                toast.success(LangHelper.getResource('Update notification status successfully!'));
-                this.props.getGridData(this.props.gridParams);
-            }else{
-                toast.error(response.message);
-            }
-        });
     };
 
     handleClosePopup = () => {
@@ -142,21 +122,54 @@ export class DataGrid extends Component {
         });
     };
 
-    handleResendFail = () => {
+    getParamStatus = (notificationId, status) => ({
+        notificationId,
+        newStatus: status
+    });
 
+    handleCancel = notificationId => {
+        this.setState({ cancelPopup: { show: true, notificationId: notificationId } });
     };
 
-    handleDeactivate = async (notificationId, status) => {
-        const params = this.getParamStatus(notificationId, status);
-        await this.props.editAdmStatus(params).then(response => {
-            this.handleClosePopup();
-            if(response.isSuccessful) {
-                toast.success(LangHelper.getResource('Update notification status successfully!'));
-                this.props.getGridData(this.props.gridParams);
-            }else{
-                toast.error(response.message);
-            }
-        });
+    handleCancelConfirm = async notificationId => {
+        console.log('handleCancelConfirm');
+        const params = this.getParamStatus(notificationId, 'cancelled');
+        // await this.props.editAdmStatus(params).then(response => {
+        //     this.handleClosePopup();
+        //     if (response.isSuccessful) {
+        //         toast.success(LangHelper.getResource('Update notification status successfully!'));
+        //         this.props.getGridData(this.props.gridParams);
+        //     } else {
+        //         toast.error(response.message);
+        //     }
+        // });
+    };
+
+    handleResendFail = notificationId => {
+        this.setState({ resendFailPopup: { show: true, notificationId: notificationId } });
+    };
+
+    handleResendConfirm = () => {
+        console.log('Re-send');
+        toast.error('Re-send the sites which were sent failed (inserted failed in DBMSG)');
+    };
+
+    handleDeactivate = notificationId => {
+        this.setState({ deactivatePopup: { show: true, notificationId: notificationId } });
+    };
+
+    handleDeactivateConfirm = async notificationId => {
+        console.log('handleDeactivateConfirm');
+        const params = this.getParamStatus(notificationId, 'inactive');
+        // await this.props.editAdmStatus(params).then(response => {
+        //     this.handleClosePopup();
+        //     if(response.isSuccessful) {
+        //         toast.success(LangHelper.getResource('Update notification status successfully!'));
+        //         this.props.getGridData(this.props.gridParams);
+        //     }else{
+        //         toast.error(response.message);
+        //     }
+        // });
     };
 
     renderTooltipComponent = (title, component) => {
@@ -175,6 +188,7 @@ export class DataGrid extends Component {
     };
 
     renderActionButtonOST = (status, notificationId) => {
+        console.log('notificationId, ', notificationId);
         switch (status) {
             case 'New':
                 return (
@@ -184,7 +198,7 @@ export class DataGrid extends Component {
                     </>
                 );
             case 'Failed':
-                return <div className='review-button' onClick={() => this.handleResendFail(notificationId)}>{LangHelper.getResource('ResendFail')}</div>;
+                return <div className='review-button' onClick={() => this.handleResendFail()}>{LangHelper.getResource('ResendFail')}</div>;
             case 'Draft':
                 return (
                     <>
@@ -212,21 +226,14 @@ export class DataGrid extends Component {
         }
     };
 
-    getTitleConfirmByStatus = status => {
-        if (status === 'Cancelled') {
-            return 
-        }
-    };
-
     renderConfirmPopup = () => {
         const popups = [
-            { data: this.state.cancelPopup, status: 'cancel', handler: this.handleCancelConfirm },
-            { data: this.state.resendFailPopup, status: 'resend', handler: this.handleResendConfirm },
-            { data: this.state.deactivatePopup, status: 'deactivate', handler: this.handleDeactivateConfirm }
+            { data: this.state.cancelPopup, status: 'cancel', handler: 'handleCancelConfirm' },
+            { data: this.state.resendFailPopup, status: 'resend', handler: 'handleResendConfirm' },
+            { data: this.state.deactivatePopup, status: 'deactivate', handler: 'handleDeactivateConfirm' }
         ];
         const activePopup = popups.find(popup => popup.data.show);
         const { data, status, handler } = activePopup;
-        const onSubmit = handler(data.notificationId);
 
         if (!activePopup) {
             return null;
@@ -242,48 +249,139 @@ export class DataGrid extends Component {
                         Are you sure you want to {status} the notification: <strong>{data.notificationId}</strong>?
                     </div>
                 }
-                onSubmit={() => onSubmit()}
+                onSubmit={() => this[handler](data.notificationId)}
                 onClose={this.handleClosePopup}
             />
         );
     };
 
-    renderRow = (item, index, isHost) => {
-        const statusName = item.statusId ? this.state.statuses.find(data => data.id === item.statusId)?.status : '';
+    filterAndSortSites = (sites, siteType) => {
+        return sites
+            .filter(item => item.siteType === siteType)
+            .sort((x, y) => x.siteGroupOrd - y.siteGroupOrd);
+    };
+
+    renderSiteSection = (sites, title) => {
+        if (sites.length === 0) {
+            return null;
+        }
         return (
-            <Row key={item.notificationId+'-'+index}>
+            <div>
+                <div className='text-bold'>{title}</div>
+                {sites.map(item => (
+                    <div key={item.siteGroup} className='text-padding-bottom'>
+                        {item.siteGroup}: {item.siteNames}
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
+    renderMapSite = id => {
+        const { allSite } = this.props.gridData;
+        const sites = allSite.filter(item => item.notificationID === id);
+        const creditSites = this.filterAndSortSites(sites, 'Credit');
+        const licenseeSites = this.filterAndSortSites(sites, 'Licensee');
+
+        return (
+            <div>
+                {this.renderSiteSection(creditSites, 'Credit')}
+                {this.renderSiteSection(licenseeSites, 'Licensee')}
+            </div>
+        );
+    };
+
+    renderCollapseContent = item => {
+        return (
+            <div>
+                <div className='text-it'>Created on {DateTimeService.toLongDateTimeFormat(item.createdTime)}</div>
+                <div className='text-bold'>{item.subject}</div>
+            </div>
+        );
+    };
+
+    renderLine = () => (
+        <div>-----------------------------------------------------------------------------------------------------</div>
+    );
+
+    renderMapContent = item => {
+        return (
+            <div>
+                <div className='text-it'>Created on {DateTimeService.toLongDateTimeFormat(item.createdTime)}</div>
+                <div className='text-bold'>{item.subject}</div>
+                {
+                    item.content_en &&
+                    <>
+                        {this.renderLine()}
+                        <div className='text-bold'>English</div>
+                        <div className='text-padding-bottom'>{item.content_en}</div>
+                    </>
+                }
+                {
+                    item.content_cs &&
+                    <>
+                        {this.renderLine()}
+                        <div className='text-bold'>Simplified Chinese</div>
+                        <div className='text-padding-bottom'>{item.content_cs}</div>
+                    </>
+                }
+                {
+                    item.content_ch &&
+                    <>
+                        {this.renderLine()}
+                        <div className='text-bold'>Traditional Chinese</div>
+                        <div className='text-padding-bottom'>{item.content_ch}</div>
+                    </>
+                }
+            </div>
+        );
+    };
+
+    renderRow = (item, index, isHost) => {
+        const isExistContent = item.content_en || item.content_cs || item.content_ch;
+        console.log('item', item);
+        console.log('réndmsdasd', this.renderMapContent(item));
+        return (
+            <Row key={item.notificationID+'-'+index}>
                 <Cell className='text-center'>
-                    <div>{item.notificationId}</div>
+                    <div>{item.notificationID}</div>
                     {
-                        this.renderTooltipComponent('Copy SessionID: 6697e964e-7dd8-4e41-13435d',
+                        this.renderTooltipComponent(`Copy SessionID: ${item.sessionID}`,
                             <span style={{cursor: 'pointer'}} className="fa fa-info"/>
                         )
                     }
                 </Cell>
-                <Cell className='text-left'><div>{item.eventInfo}</div></Cell>
-                <Cell className='text-left'><div>{item.sites}</div></Cell>
+                <Cell className='text-left'>
+                    <div>{DateTimeService.toShortDateFormat(item.eventDate)}</div>
+                    <div>{item.eventName}</div>
+                </Cell>
+                <Cell className='text-left'>
+                    {this.renderMapSite(item.notificationID)}
+                </Cell>
                 <Cell className='text-left'>
                     <div className='content-item'>
                         {
-                            item.content.length > 200 ?
+                            isExistContent &&
                             <Panel ref={panel => this.panels[index] = panel}>
                                 <PanelHeader>
-                                    <div className='split-content'>{item.content.slice(0, 200)}</div>
+                                    <div className='split-content'>{this.renderCollapseContent(item)}</div>
                                 </PanelHeader>
-                                <div className='content'>{item.content}</div>
-                            </Panel> :
-                            item.content
+                                <div className='content'>{this.renderMapContent(item)}</div>
+                            </Panel>
                         }
                     </div>
                 </Cell>
                 <Cell className='text-left'>
-                    <div className={`status-button status-${statusName}`}>{statusName}</div>
+                    <div className={`status-button status-${item.status}`}>{item.status}</div>
                 </Cell>
-                <Cell className='text-left'>{item.sender}</Cell>
+                <Cell className='text-left'>
+                    <div>{item.sender}</div>
+                    <div>{item.sendDate}</div>
+                </Cell>
                 <Cell className='text-center'>
                     <div className='action-button'>
                         {
-                            this.props.gridParams.isOstUser ? this.renderActionButtonOST(statusName, item.notificationId) : this.renderActionButtonCSD(statusName, item.notificationId)
+                            this.props.gridParams.isOstUser ? this.renderActionButtonOST(item.status, item.notificationID) : this.renderActionButtonCSD(item.status, item.notificationID)
                         }
                     </div>
                 </Cell>
@@ -292,21 +390,20 @@ export class DataGrid extends Component {
     };
 
     render() {
-        // if (!this.props.gridData || !this.props.gridData.data) {
-        //     return null;
-        // }
-
-        // const { totalItems } = this.props.gridData;
-        // const { pageIndex, pageSize } = this.props.gridParams;
+        if (!this.props.gridData || !this.props.gridData.data) {
+            return null;
+        }
+        const { totalItems } = this.props.gridData;
+        const { pageIndex, pageSize } = this.props.gridParams;
         const { isHost } = this.props;
         const { cancelPopup, resendFailPopup, deactivatePopup } = this.state;
-
         const pagingOption = {
-            PageIndex: 1,
-            PageSize: 100,
-            TotalItem: 2,
+            PageIndex: pageIndex,
+            PageSize: pageSize,
+            TotalItem: totalItems,
             PageList: PAGING_SIZES
         };
+
         return (
             <>
                 <div className='d-flex table-title justify-content-between align-items-center'>

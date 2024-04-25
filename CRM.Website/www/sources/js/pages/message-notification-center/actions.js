@@ -27,7 +27,7 @@ const editAdmNotification = data => async dispatch => {
 };
 
 const editAdmStatus = params => async () => {
-    const url = Site.resolveClientUrl('MessageNotificationCenter/EditAdmStatus');
+    const url = Site.resolveClientUrl('MessageNotificationCenter/EditResultAdmStatus');
     return await DataService.postDataAsync(url, params).then(response => response.data);
 };
 

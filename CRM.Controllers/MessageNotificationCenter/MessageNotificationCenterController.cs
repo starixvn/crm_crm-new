@@ -24,20 +24,27 @@
         [HttpPost]
         public async Task<IActionResult> GetResultAdmNotification([FromBody] GetResultAdmNotification param)
         {
-            var (notifications, allSite) = await messageNotificationCenterService.GetResulAdmNotificationAsync(param);
-            return Json(new { totalItems = param.TotalRows, notifications, allSite });
+            var (notifications, allSite) = await messageNotificationCenterService.GetResultAdmNotificationAsync(param);
+            return Json(new { totalItems = param.TotalRows, data = notifications, allSite });
         }
 
         public async Task<IActionResult> GetResultAdmNotificationById(int id)
         {
-            var (notificationDetails, sites) = await messageNotificationCenterService.GetResulAdmNotificationByIdAsync(id);
-            return Json(notificationDetails, sites);
+            var (notificationDetails, sites) = await messageNotificationCenterService.GetResultAdmNotificationByIdAsync(id);
+            return Json(new { notificationDetails, sites });
         }
 
         [HttpPost]
         public async Task<IActionResult> EditResultAdmNotification([FromBody] EditResultAdmNotification param)
         {
-            CommandResult commandResult = await messageNotificationCenterService.EditResulAdmNotificationAsync(param);
+            CommandResult commandResult = await messageNotificationCenterService.EditResultAdmNotificationAsync(param);
+            return Json(commandResult);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditResultAdmStatus([FromBody] EditResultAdmNotiStatus param)
+        {
+            CommandResult commandResult = await messageNotificationCenterService.EditResultAdmStatusAsync(param);
             return Json(commandResult);
         }
     }
