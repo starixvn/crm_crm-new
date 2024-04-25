@@ -117,18 +117,21 @@
                 if (!mncNotifications.Any())
                 {
                     await pushNotificationResultAmendmentService.InsertCompleteResultAmendmentAsync();
-                    return;
                 }
-                foreach (var item in mncNotifications)
+                else
                 {
-                    var command = new GetMessageResultAmendmentCommand
+                    foreach (var item in mncNotifications)
                     {
-                        NotificationID = item.NotificationID,
-                        JSNotification = item.JSNotification
-                    };
-                    await pushNotificationResultAmendmentService.GetMessageResultAmendmentAsync(command);
-                    await pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, "AfterInsMsg");
-                    await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti");
+                        var command = new GetMessageResultAmendmentCommand
+                        {
+                            NotificationID = item.NotificationID,
+                            JSNotification = item.JSNotification
+                        };
+                        await pushNotificationResultAmendmentService.GetMessageResultAmendmentAsync(command);
+                        await pushNotificationResultAmendmentService.EditPushNotificationResultAmendmentAsync(item.NotificationID, command.MessageID, "AfterInsMsg");
+                        await pushNotificationResultAmendmentService.EditPushMessageResultAmendmentAsync(command.MessageID, "AfterUpdNoti");
+                    }
+                    await pushNotificationResultAmendmentService.InsertCompleteResultAmendmentAsync();
                 }
             }
             catch (Exception ex)
