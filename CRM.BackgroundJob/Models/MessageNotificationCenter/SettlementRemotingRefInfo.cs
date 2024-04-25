@@ -4,6 +4,8 @@
     {
         public string SettlementLogIDs { get; set; }
 
+        public string NotificationIDs { get; set; }
+
         public string GroupName { get; set; }
 
         public string RefId1 { get; set; }
