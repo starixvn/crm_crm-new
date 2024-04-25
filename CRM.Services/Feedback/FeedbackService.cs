@@ -70,12 +70,11 @@
         {
             var checkFeedbackIdIsNewCriteria = new CheckFeedbackIDIsNewCriteria { FeedbackId = feedbackId };
             var isCheckFeedbackIdIsNew = await dynamicRepository.GetAsync<bool>(checkFeedbackIdIsNewCriteria);
-            var criteriaOldFeedback = new GetCustomerFeedbackByIdCriteria { FeedbackId = feedbackId };
             var criteriaNewFeedback = new GetCustomerNewManualFeedbackByIdCriteria { FeedbackId = feedbackId };
 
             var customerFeedbackModel =
                 isCheckFeedbackIdIsNew ? await feedbackRepository.GetCustomerFeedbackByIdAsync(criteriaNewFeedback) :
-                    await feedbackRepository.GetCustomerFeedbackByIdAsync(criteriaOldFeedback);
+                    await GetCustomerOldFeedbackByIdAsync(feedbackId);
 
             CustomerFeedback feedback = null;
 
@@ -262,6 +261,19 @@
         public async Task<int> CheckFeedbackDuplicationAsync(CheckFeedbackDuplicationCriteria criteria)
         {
             return await baseService.GetDataEntityAsync<int>(criteria);
+        }
+
+        private async Task<CustomerFeedbackModel> GetCustomerOldFeedbackByIdAsync(int feedbackId)
+        {
+            var criteriaOldFeedback = new GetCustomerFeedbackByIdCriteria { FeedbackId = feedbackId };
+            var (feedbackInfos, relatedCustomers, settingItems) =
+                await baseService.FetchMultipleAsync<CustomerFeedback, RelatedCustomerPermission, FeedbackSettingRelation>(criteriaOldFeedback);
+            return new CustomerFeedbackModel
+            {
+                CustomerFeedback = feedbackInfos,
+                RelatedCustomerPermission = relatedCustomers,
+                FeedbackSettingRelation = settingItems
+            };
         }
     }
 }
