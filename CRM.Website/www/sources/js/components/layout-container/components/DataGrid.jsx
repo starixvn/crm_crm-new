@@ -361,10 +361,10 @@ export default class DataGrid extends PureComponent {
                                                 {LangHelper.getResource('Name')}
                                             </Form.Label>
                                             <Col className='field-name'>
-                                                <a style={{ cursor: 'pointer' }} className="group-label"
+                                                <span style={{ cursor: 'pointer' }} className="group-label"
                                                     onClick={() => this.state.headlineInfoPolicy && this.focusHeadlineCommunicationInfo(pic.picID)}>
-                                                    {pic.picName + ' (' + pic.picRoleName + ')'}
-                                                </a>
+                                                    {`${pic.picName} (${pic.picRoleName})`}
+                                                </span>
                                             </Col>
                                         </Form.Group>
                                         <div className="linear-gradient-tool"></div>

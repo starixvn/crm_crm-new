@@ -234,6 +234,7 @@
         li {
             margin-bottom: 10px;
             text-align: left;
+            font-family: 'Open Sans', sans-serif;
 
             a {
                 color: #3873E9;
@@ -309,6 +310,7 @@
 
         .group-label {
             font-weight: 600 !important;
+            font-family: 'Open Sans', sans-serif;
         }
 
         &:has(.group-content) .group-title {
@@ -361,6 +363,7 @@
 
             p {
                 margin-bottom: 5px;
+                font-family: 'Open Sans', sans-serif;
             }
 
             &:not(:last-child) {
