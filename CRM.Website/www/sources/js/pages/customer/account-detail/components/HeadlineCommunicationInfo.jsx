@@ -96,7 +96,6 @@ export class HeadlineCommunicationInfo extends Component {
     }
     
     async componentDidMount() {
-        await this.props.getCustomerById({ customerId: this.props.customerInfo?.custId });
         await this.props.getHeadlinePicRoles(HeadlinePicID);
         await this.props.getAccountingPicRoles(AccountingPicID);
         const headlineCommunicationInfo = this.getHeadlineCommunicationInfo(this.props.customerInfo);

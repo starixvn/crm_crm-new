@@ -92,7 +92,6 @@ export class AccountInfo extends Component {
     }
 
     async componentDidMount() {
-        await this.props.getCustomerById({ customerId: this.props.customerId });
         getPermission(FunctionKey.HeadlineInfo, true).then(response => {
             this.setState({ updateHeadlineInfoPolicy: response });
         });
@@ -106,13 +105,21 @@ export class AccountInfo extends Component {
         document.title = LangHelper.getResource('CRMSystem');
     }
 
+    async componentDidUpdate(nextProps, nextState) {
+        if (JSON.stringify(nextProps.customerInfo).toString() !== JSON.stringify(this.props.customerInfo).toString()) {
+            const params = ParamsCustomerInfo(this.props.customerInfo);
+            this.setState(params);
+        }
+    }
+
     handleSubmitAccountInfo = () => {
         const values = this.state;
         const { customerInfo } = this.props;
         const params = ParamsSubmit(customerInfo.custId, values);
-        this.props.editCustomerInfoDetail(params).then(() => {
+        this.props.editCustomerInfoDetail(params).then(async () => {
             if (this.props.editCustomerInfoDetailResult.isSuccessful) {
                 window.dispatchEvent(new Event('getCurrentCustomer'));
+                await this.props.getCustomerById({ customerId: this.props.customerId });
                 toast.success(LangHelper.getResource('UpdateAccountInfoSuccessful'));
             } else {
                 toast.error(LangHelper.getResource(this.props.editCustomerInfoDetailResult.message));

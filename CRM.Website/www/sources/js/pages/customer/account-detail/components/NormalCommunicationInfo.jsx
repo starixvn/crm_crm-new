@@ -325,11 +325,13 @@ export class NormalCommunicationInfo extends Component {
                                     </>
                                 })
                             }
-                            {
-                                values.otherAccountCommunication?.length === 0 &&
-                                <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
-                            }
                         </div>
+                        {
+                            values.otherAccountCommunication?.length === 0 &&
+                            <div className="group-content">
+                                <div className='no-data'>{LangHelper.getResource('ThereIsNoData')}</div>
+                            </div>
+                        }
                     </div>
                 </Form>
                 {
