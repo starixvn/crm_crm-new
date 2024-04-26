@@ -146,24 +146,28 @@ body {
                         }
                     }
 
-                    .icon-password {
+                    .icon-password, .icon-user {
                         height: 24px;
                         width: 24px;
                         cursor: pointer;
                         position: absolute;
                         left: 12px;
                         top: 15px;
+                    }
+
+                    .icon-password {
                         background: url('../../../images/login/icon-password-active.png') no-repeat left center;
                     }
 
                     .icon-user {
-                        height: 24px;
-                        width: 24px;
-                        cursor: pointer;
-                        position: absolute;
-                        left: 12px;
-                        top: 15px;
                         background: url('../../../images/login/icon-user-active.png') no-repeat left center;
+                    }
+
+                    @include Laptop {
+                        .icon-password, .icon-user {
+                            left: 7px;
+                            top: 7px;
+                        }
                     }
                 }
             }
