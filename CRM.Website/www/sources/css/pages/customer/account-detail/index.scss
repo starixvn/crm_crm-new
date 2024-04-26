@@ -26,6 +26,10 @@
     .other-communication-tool-grid {
         display: grid !important;
         grid-template-columns: repeat(5, 200px);
+
+        @include Laptop {
+            grid-template-columns: repeat(4, 200px);
+        }
     }
 
     .invalid-other-communication-tool {
