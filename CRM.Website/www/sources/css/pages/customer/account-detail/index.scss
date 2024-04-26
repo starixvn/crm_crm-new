@@ -352,7 +352,7 @@
                     max-height: 566px !important;
 
                     @include Laptop {
-                        max-height: 325px !important;
+                        max-height: 280px !important;
                     }
 
                     @media screen and (min-width: 1367px) and (max-width: 1600px) {
@@ -367,7 +367,7 @@
                     max-height: 446px;
 
                     @include Laptop {
-                        max-height: 222px !important;
+                        max-height: 180px !important;
                     }
 
                     @include Laptop-Medium {
@@ -382,7 +382,7 @@
                     max-height: 639px;
 
                     @include Laptop {
-                        max-height: 386px !important;
+                        max-height: 345px !important;
                     }
 
                     @include Laptop-Medium {
@@ -397,7 +397,7 @@
                 overflow-y: auto;
 
                 @include Laptop {
-                    max-height: 160px !important;
+                    max-height: 120px !important;
 
                     &.custom-dropdown {
                         overflow-y: auto;
@@ -804,22 +804,22 @@
         }
 
         .acc-info-only-hidden .fix-table-container .fix-table {
-            max-height: 326px !important;
+            max-height: 285px !important;
         }
 
         .acc-PIC-hidden .fix-table-container .fix-table {
-            max-height: 223px !important;
+            max-height: 180px !important;
         }
 
         .acc-info-hidden .fix-table-container .fix-table {
-            max-height: 387px !important;
+            max-height: 345px !important;
         }
 
         .fix-table-container {
             border-right: none;
 
             .fix-table {
-                max-height: 161px !important;
+                max-height: 120px !important;
                 border: none;
                 border-radius: 3px;
 
