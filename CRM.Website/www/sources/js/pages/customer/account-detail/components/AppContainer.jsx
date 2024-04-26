@@ -163,7 +163,7 @@ export class AppContainer extends Component {
                         </div>
                     </div>
                 }
-            </>);
+        </>);
     }
 
     handleClosePopup = () => {

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../../actions';
 
-describe('connect', () => {
+describe('connect ', () => {
     let mapStateToProps, mapDispatchToProps;
     const connectMock = jest.fn();
 
@@ -21,16 +21,58 @@ describe('connect', () => {
         jest.clearAllMocks();
     });
 
+    it('props should be mapped correctly', () => {
+        // Arrange
+        const expected = {
+            activeTab: {
+                currentTab: null,
+                nextTab: null
+            },
+            customerInfo: null,
+            allSettings: null,
+            errors: null,
+            showConfirmUnSaved: false,
+            isShowAccountInfo: true,
+            isShowAccountantPIC: true,
+        };
+        const state = {
+            activeTab: {
+                currentTab: null,
+                nextTab: null
+            },
+            customerInfo: null,
+            headlinePicRoles: null,
+            accountingPicRoles: null,
+            settingCommunicationTool: null,
+            allSettings: null,
+            editCustomerInfoDetailResult: '',
+            errors: null,
+            headlineCompanyService: null,
+            headlineStaffsAndAuthority: null,
+            settingStaffAndAuthority: null,
+            settingPicRole: null,
+            showConfirmUnSaved: false,
+            isShowAccountInfo: true,
+            isShowAccountantPIC: true
+        };
+
+        // Act
+        const actual = mapStateToProps(state);
+
+        // Assert
+        expect(actual).toEqual(expected);
+    });
+
     it('bindActionCreators should be called with correct parameter', () => {
         // Arrange
         const mockBindAction = jest.fn();
-        bindActionCreators.mockImplementation(mockBindAction);
+        bindActionCreators.mockImplementationOnce(mockBindAction);
         const dispatch = {};
 
         // Act
         mapDispatchToProps(dispatch);
 
-        //Assert
+        // Assert
         expect(mockBindAction).toHaveBeenCalledWith(ActionCreators, dispatch);
     });
 });
