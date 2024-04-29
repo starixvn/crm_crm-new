@@ -271,33 +271,7 @@
         private async Task<List<MenuItem>> GetMenuAsync(int userId)
         {
             var menus = await userService.GetMenuItemAsync(userId, napSettings.SiteId, napSettings.Environment, true);
-            menus = napSettings.Environment == ViewResources.UAT ? GenerateMenuUAT(menus) : menus;
             return menus.ToList();
-        }
-
-        private static IEnumerable<MenuItem> GenerateMenuUAT(IEnumerable<MenuItem> menus)
-        {
-            var manageHeadline = menus.FirstOrDefault(x => x.Name == ViewResources.PICAndHeadline);
-            menus = menus.Where(x => x.Name != ViewResources.Home).ToList();
-            foreach (var menu in menus)
-            {
-                if (menu.Name == ViewResources.HeadlineNotification)
-                {
-                    menu.Name = ViewResources.Notifications;
-                }
-
-                if (menu.Name == ViewResources.PICAndHeadline)
-                {
-                    menu.Name = ViewResources.ManageHeadline;
-                }
-
-                if ((menu.Name == ViewResources.Remarks || menu.Name == ViewResources.InformHeadlines) && manageHeadline != null)
-                {
-                    menu.ParentId = manageHeadline.Id;
-                    menu.ParentName = manageHeadline.Name;
-                }
-            }
-            return menus;
         }
 
         private async Task<bool> IsValidTime(string time)
