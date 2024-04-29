@@ -19,6 +19,7 @@ describe('AppContainer', () => {
         getSettingPicCommunicationTools: jest.fn(),
         getCustomerById: jest.fn()           
     };
+    
     describe('componentDidMount', () => {
         it('should call required actions and set state correctly', async () => {
             // Arrange
