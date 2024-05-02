@@ -231,7 +231,11 @@ export class ActionNotification extends Component {
                     </div>
                 </Form>
                 {
-                    affectedTicketPopup.show && <AffectedTicket isCredit={affectedTicketPopup.isCredit} siteTickets={affectedTicketPopup.siteTickets}/>
+                    affectedTicketPopup.show &&
+                    <AffectedTicket
+                        isCredit={affectedTicketPopup.isCredit}
+                        siteTickets={affectedTicketPopup.siteTickets}
+                    />
                 }
             </>
         );

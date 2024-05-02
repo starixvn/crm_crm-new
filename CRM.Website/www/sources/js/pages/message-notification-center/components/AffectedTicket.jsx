@@ -16,17 +16,24 @@ export default class AffectedTicket extends Component {
 
         this.state = {
             isCredit: this.props.isCredit,
-            siteOptions: [
-                {id: 1, name: '77777', checked: true},
-                {id: 2, name: '434', checked: true}
-            ],
-            siteTickets: this.props.siteTickets
+            siteOptions: this.getSiteOptions(this.props.isCredit, this.props.siteTickets)
         };
+    };
+
+    getSiteOptions = (isCredit, siteTickets) => {
+        const siteType = isCredit ? 'Credit' : 'Licensee';
+        const siteByFilter = siteTickets.filter(item => item.siteType === siteType);
+        return siteByFilter.map((item, index) => ({
+            id: index + 1,
+            name: item.siteName,
+            checked: true
+        }));
     };
 
     handleChangeTab = () => {
         this.setState(prevState => ({
-            isCredit: !prevState.isCredit
+            isCredit: !prevState.isCredit,
+            siteOptions: this.getSiteOptions(!prevState.isCredit, this.props.siteTickets)
         }));
     };
 
@@ -153,7 +160,7 @@ export default class AffectedTicket extends Component {
             return null;
         }
         console.log('siteTickets', this.props.siteTickets);
-        console.log('state siteTickets', this.state.siteTickets);
+
         return (
             <Modal show className="affected-ticket-modal" dialogAs={DraggableModalDialog}
                 backdrop="static" keyboard={false} size="lg" centered
