@@ -47,5 +47,11 @@
             CommandResult commandResult = await messageNotificationCenterService.EditResultAdmStatusAsync(param);
             return Json(commandResult);
         }
+
+        public async Task<IActionResult> GetSiteTicketsById(int id)
+        {
+            var siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(id);
+            return Json(siteTickets);
+        }
     }
 }

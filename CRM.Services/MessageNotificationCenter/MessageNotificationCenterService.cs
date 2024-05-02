@@ -18,6 +18,8 @@
         Task<CommandResult> EditResultAdmNotificationAsync(EditResultAdmNotification param);
 
         Task<CommandResult> EditResultAdmStatusAsync(EditResultAdmNotiStatus param);
+
+        Task<IEnumerable<AdmSiteTicket>> GetSiteTicketsByIdAsync(int notiId);
     }
 
     public class MessageNotificationCenterService : IMessageNotificationCenterService
@@ -90,6 +92,15 @@
                 UpdaterID = napSession.UserId
             };
             return await baseService.ExecuteNonQueryAsync(command);
+        }
+
+        public async Task<IEnumerable<AdmSiteTicket>> GetSiteTicketsByIdAsync(int notiId)
+        {
+            var criteria = new GetSiteTicketByIdCriteria
+            {
+                NotiID = notiId
+            };
+            return await baseService.GetDataAsync<AdmSiteTicket>(criteria);
         }
     }
 }

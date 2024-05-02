@@ -150,14 +150,45 @@
         font-weight: bold;
         line-height: 2rem;
     }
+
     .text-it {
         font-style: italic;
         font-weight: 600;
         color: #8f8f8f;
         line-height: 2rem;
     }
+
     .text-padding-bottom {
         padding-bottom: 5px;
+    }
+
+    .text-line {
+        line-height: 1.5;
+    }
+
+    .text-session {
+        padding-bottom: 5px;
+        cursor: pointer;
+        color: #598ac7;
+
+        .show-icon {
+            visibility: hidden;
+            display: none;
+        }
+    }
+
+    .text-session:hover .show-icon{
+        visibility: visible !important;
+        display: block;
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .split-content {
+        width: 494px;
     }
 }
 
@@ -178,6 +209,10 @@
                 label {
                     font-weight: 700;
                 }
+            }
+
+            .text-line {
+                line-height: 1.8;
             }
 
             .group-item {
@@ -313,9 +348,15 @@
             }
         }
     }
+}
+
+.affected-ticket-modal {
+    .modal-content {
+        width: 766px;
+    }
 
     .affected {
-        width: 700px;
+        width: 740px;
     }
 
     .affected-filter {
@@ -360,6 +401,11 @@
 
         .site-table {
             padding-left: 20px;
+            padding-bottom: 20px;
+        }
+
+        .body-content {
+            max-height: 400px !important;
         }
     }
 }

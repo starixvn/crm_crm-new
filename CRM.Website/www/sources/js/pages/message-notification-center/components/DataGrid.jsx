@@ -11,8 +11,8 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import Panel, { PanelHeader } from '@jsroot/components/panel/index';
 import WithNavigation from '@jsroot/components/WithNavigation';
 import ConfirmPopup from '@jsroot/components/ConfirmPopup';
+import { filterAndSortSites } from '../common.functions';
 import Site from '@jsroot/common/site';
-import { toast } from 'react-toastify';
 
 export class DataGrid extends Component {
     constructor(props) {
@@ -20,33 +20,11 @@ export class DataGrid extends Component {
 
         this.state = {
             expandPanels: false,
-            statuses: [
-                { id: 1, status: 'New'},
-                { id: 2, status: 'Draft'},
-                { id: 3, status: 'Cancelled'},
-                { id: 4, status: 'Failed'},
-                { id: 5, status: 'Sent'},
-                { id: 6, status: 'Sending'},
-                { id: 7, status: 'Active'},
-                { id: 8, status: 'Inactive'},
-            ],
             cancelPopup: { show: false, notificationId: null },
             resendFailPopup: { show: false, notificationId: null },
             deactivatePopup: { show: false, notificationId: null },
         };
         this.panels = [];
-
-        this.data = [
-            { notificationId: 1, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: ' Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023', statusId: 1, sender: '' },
-            { notificationId: 2, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund] ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund]ReCalculation time: Oct 27, 2023 09:13:18 AM [Home Over 11 Runs OE; Refund | Home Over 10 Runs; Refund]', statusId: 2, sender: '' },
-            { notificationId: 3, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'Created on Dec 12, 2023 Created on Dec 12, 2023', statusId: 3, sender: '' },
-            { notificationId: 3, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'As of now, OST and CSD teams have to handle many steps to send notifications to our customers (members, SMA, licensees, headlines) when having a change result of events. Additionally, all customers will be received the notifications event they do play on the match. To keep thi', statusId: 4, sender: '' },
-            { notificationId: 3, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'It will destroy the company reputation for a long term. As the result, we have a project to build a service/system that send the notifications to dedicated customers who are affected by the result', statusId: 5, sender: '' },
-            { notificationId: 3, isOst: true, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'OST team needs to review the messages on the first launching time to make sure the system work as expected. After that, we can configure the system to run automatically.', statusId: 6, sender: '' },
-            { notificationId: 5, isOst: false, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: ' Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 3 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023 Created on Dec 12, 2023', statusId: 1, sender: '' },
-            { notificationId: 6, isOst: false, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'OST team needs to review the messages on the first launching time to make sure the system work as expected. After that, we can configure the system to run automatically.', statusId: 7, sender: '' },
-            { notificationId: 7, isOst: false, eventInfo: 'Dec 12, 2023', sites: 'Credit', content: 'OST team needs to review the messages on the first launching time to make sure the system work as expected. After that, we can configure the system to run automatically.', statusId: 8, sender: '' },
-        ];
     }
 
     handleToggleRow = id => {
@@ -67,7 +45,7 @@ export class DataGrid extends Component {
 
     toggleExpandPanels = () => {
         this.setState(prevState => ({ expandPanels: !prevState.expandPanels }), () => {
-            if (this.data.length) {
+            if (this.props.gridData.data.length) {
                 this.panels.filter(x => x && (x.state.isOpen !== this.state.expandPanels)).forEach(panel => {
                     panel.set(this.state.expandPanels);
                 });
@@ -150,8 +128,17 @@ export class DataGrid extends Component {
     };
 
     handleResendConfirm = () => {
-        console.log('Re-send');
-        toast.error('Re-send the sites which were sent failed (inserted failed in DBMSG)');
+        console.log('handleResendConfirm');
+        const params = this.getParamStatus(notificationId, 'sending');
+        // await this.props.editAdmStatus(params).then(response => {
+        //     this.handleClosePopup();
+        //     if (response.isSuccessful) {
+        //         toast.success(LangHelper.getResource('Update notification status successfully!'));
+        //         this.props.getGridData(this.props.gridParams);
+        //     } else {
+        //         toast.error(response.message);
+        //     }
+        // });
     };
 
     handleDeactivate = notificationId => {
@@ -188,29 +175,35 @@ export class DataGrid extends Component {
     };
 
     renderActionButtonOST = (status, notificationId) => {
-        console.log('notificationId, ', notificationId);
-        switch (status) {
-            case 'New':
-                return (
-                    <>
-                        <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Review')}</div>
-                        <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
-                    </>
-                );
-            case 'Failed':
-                return <div className='review-button' onClick={() => this.handleResendFail()}>{LangHelper.getResource('ResendFail')}</div>;
-            case 'Draft':
-                return (
-                    <>
-                        <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>
-                        <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
-                    </>
-                );
-            case 'Cancelled':
-                return <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>;
-            default:
-                return null;
-        }
+        return (
+            <>
+                <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Review')}</div>
+                <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
+            </>
+        );
+        
+        // switch (status) {
+        //     case 'New':
+        //         return (
+        //             <>
+        //                 <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Review')}</div>
+        //                 <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
+        //             </>
+        //         );
+        //     case 'Failed':
+        //         return <div className='review-button' onClick={() => this.handleResendFail()}>{LangHelper.getResource('ResendFail')}</div>;
+        //     case 'Draft':
+        //         return (
+        //             <>
+        //                 <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>
+        //                 <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
+        //             </>
+        //         );
+        //     case 'Cancelled':
+        //         return <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>;
+        //     default:
+        //         return null;
+        // }
     };
 
     renderActionButtonCSD = (status, notificationId) => {
@@ -255,12 +248,6 @@ export class DataGrid extends Component {
         );
     };
 
-    filterAndSortSites = (sites, siteType) => {
-        return sites
-            .filter(item => item.siteType === siteType)
-            .sort((x, y) => x.siteGroupOrd - y.siteGroupOrd);
-    };
-
     renderSiteSection = (sites, title) => {
         if (sites.length === 0) {
             return null;
@@ -280,8 +267,8 @@ export class DataGrid extends Component {
     renderMapSite = id => {
         const { allSite } = this.props.gridData;
         const sites = allSite.filter(item => item.notificationID === id);
-        const creditSites = this.filterAndSortSites(sites, 'Credit');
-        const licenseeSites = this.filterAndSortSites(sites, 'Licensee');
+        const creditSites = filterAndSortSites(sites, 'Credit');
+        const licenseeSites = filterAndSortSites(sites, 'Licensee');
 
         return (
             <div>
@@ -300,39 +287,33 @@ export class DataGrid extends Component {
         );
     };
 
-    renderLine = () => (
+    horizontalLine = () => (
         <div>-----------------------------------------------------------------------------------------------------</div>
     );
 
-    renderMapContent = item => {
+    contentBlock = (title, content) => (
+        <>
+            {this.horizontalLine()}
+            <div className='text-bold'>{title}</div>
+            <div className='text-padding-bottom text-line' dangerouslySetInnerHTML={{ __html: content }} />
+        </>
+    );
+
+
+    renderMapOstContent = item => {
+        const languages = [
+            { code: 'en', title: 'English' },
+            { code: 'cs', title: 'Simplified Chinese' },
+            { code: 'ch', title: 'Traditional Chinese' }
+        ];
+
         return (
             <div>
                 <div className='text-it'>Created on {DateTimeService.toLongDateTimeFormat(item.createdTime)}</div>
                 <div className='text-bold'>{item.subject}</div>
-                {
-                    item.content_en &&
-                    <>
-                        {this.renderLine()}
-                        <div className='text-bold'>English</div>
-                        <div className='text-padding-bottom'>{item.content_en}</div>
-                    </>
-                }
-                {
-                    item.content_cs &&
-                    <>
-                        {this.renderLine()}
-                        <div className='text-bold'>Simplified Chinese</div>
-                        <div className='text-padding-bottom'>{item.content_cs}</div>
-                    </>
-                }
-                {
-                    item.content_ch &&
-                    <>
-                        {this.renderLine()}
-                        <div className='text-bold'>Traditional Chinese</div>
-                        <div className='text-padding-bottom'>{item.content_ch}</div>
-                    </>
-                }
+                {languages.map(({ code, title }) => 
+                    item[`content_${code}`] && this.contentBlock(title, item[`content_${code}`])
+                )}
             </div>
         );
     };
@@ -340,19 +321,29 @@ export class DataGrid extends Component {
     renderRow = (item, index, isHost) => {
         const isExistContent = item.content_en || item.content_cs || item.content_ch;
         console.log('item', item);
-        console.log('réndmsdasd', this.renderMapContent(item));
+
         return (
             <Row key={item.notificationID+'-'+index}>
-                <Cell className='text-center'>
-                    <div>{item.notificationID}</div>
-                    {
-                        this.renderTooltipComponent(`Copy SessionID: ${item.sessionID}`,
-                            <span style={{cursor: 'pointer'}} className="fa fa-info"/>
-                        )
-                    }
+                <Cell className='text-center icon-info'>
+                    <div className='text-session'>
+                        {item.notificationID}
+                        {
+                            item.sessionID &&
+                            (
+                                <div className='show-icon'>
+                                    {
+                                        this.renderTooltipComponent(`Copy SessionID: ${item.sessionID}`,
+                                            <img src={Site.resolveClientUrl('www/dist/css/images/icon/icon-info.png')} />
+                                        )
+                                    }
+                                </div>
+                            )
+                        }
+                    </div>
+                    <div>{item.messageID && `(Msg: ${item.messageID})`}</div>
                 </Cell>
                 <Cell className='text-left'>
-                    <div>{DateTimeService.toShortDateFormat(item.eventDate)}</div>
+                    <div className='text-padding-bottom'>{item.eventDate && DateTimeService.toShortDateFormat(item.eventDate)}</div>
                     <div>{item.eventName}</div>
                 </Cell>
                 <Cell className='text-left'>
@@ -366,7 +357,7 @@ export class DataGrid extends Component {
                                 <PanelHeader>
                                     <div className='split-content'>{this.renderCollapseContent(item)}</div>
                                 </PanelHeader>
-                                <div className='content'>{this.renderMapContent(item)}</div>
+                                <div className='content'>{this.renderMapOstContent(item)}</div>
                             </Panel>
                         }
                     </div>
@@ -375,8 +366,8 @@ export class DataGrid extends Component {
                     <div className={`status-button status-${item.status}`}>{item.status}</div>
                 </Cell>
                 <Cell className='text-left'>
-                    <div>{item.sender}</div>
-                    <div>{item.sendDate}</div>
+                    <div className='text-padding-bottom'>{item.sender}</div>
+                    <div>{item.sendDate && DateTimeService.toLongDateTimeFormat(item.sendDate)}</div>
                 </Cell>
                 <Cell className='text-center'>
                     <div className='action-button'>

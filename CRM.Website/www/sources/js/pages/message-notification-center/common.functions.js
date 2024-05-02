@@ -21,3 +21,9 @@ export const isFromIdOverToId = filter => {
     const { fromNotificationId, toNotificationId } = filter;
     return fromNotificationId && toNotificationId && parseInt(fromNotificationId, 10) > parseInt(toNotificationId, 10);
 };
+
+export const filterAndSortSites = (sites, siteType) => {
+    return sites
+        .filter(item => item.siteType === siteType)
+        .sort((x, y) => x.siteGroupOrd - y.siteGroupOrd);
+};

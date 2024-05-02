@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Table, HeaderRow, HeaderCell, Row, Cell, Tabs, Tab } from '@jsroot/components/react-grid/index';
 import LangHelper from '@jsroot/common/langHelper';
 import { PAGING_SIZES } from '@jsroot/common/constants';
-import { Button, Form } from 'react-bootstrap';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import Panel, { PanelHeader } from '@jsroot/components/panel/index';
+import { Button, Form, Modal } from 'react-bootstrap';
+import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import ExcelIcon from '@jsroot/components/ExcelIcon';
 import MultipleSelect from '@jsroot/components/multiple-select/index';
 
@@ -18,19 +19,9 @@ export default class AffectedTicket extends Component {
             siteOptions: [
                 {id: 1, name: '77777', checked: true},
                 {id: 2, name: '434', checked: true}
-            ]
+            ],
+            siteTickets: this.props.siteTickets
         };
-
-        this.data = [
-            { siteName: '77777', betId: 1000, username: 'user', headline: 'headline777' },
-            { siteName: '77777', betId: 1000, username: 'user', headline: 'headline777' },
-            { siteName: '77777', betId: 1000, username: 'user', headline: 'headline777' },
-            { siteName: '77777', betId: 1000, username: 'user', headline: 'headline777' },
-            { siteName: '77777', betId: 1000, username: 'user', headline: 'headline777' },
-            { siteName: '77777', betId: 1000, username: 'user', headline: 'headline777' },
-            { siteName: '77777', betId: 1000, username: 'user', headline: 'headline777' },
-            { siteName: '77777', betId: 1000, username: 'user', headline: 'headline777' },
-        ];
     };
 
     handleChangeTab = () => {
@@ -47,6 +38,12 @@ export default class AffectedTicket extends Component {
 
     };
 
+    getData = isCredit => {
+        const { siteTickets } = this.props;
+        const siteType = isCredit ? 'Credit' : 'Licensee';
+        return siteTickets.filter(item => item.siteType === siteType);
+    };
+
     renderInfoBySystem = isCredit => {
         const usernameColumn = isCredit ? 'Username' : 'ExternalID';
         const headlineColumn = isCredit ? 'Headline' : 'SystemID';
@@ -61,7 +58,7 @@ export default class AffectedTicket extends Component {
             <HeaderRow>
                 <HeaderCell colWidth={5}>{LangHelper.getResource('#')}</HeaderCell>
                 <HeaderCell colWidth={20}>{LangHelper.getResource('Site')}</HeaderCell>
-                <HeaderCell colWidth={15}>{LangHelper.getResource('BetID')}</HeaderCell>
+                <HeaderCell colWidth={30}>{LangHelper.getResource('BetID')}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource(usernameColumn)}</HeaderCell>
                 <HeaderCell colWidth={30}>{LangHelper.getResource(headlineColumn)}</HeaderCell>
             </HeaderRow>
@@ -69,21 +66,26 @@ export default class AffectedTicket extends Component {
     };
 
     buildBody = () => {
-        if (this.data.length > 0) {
-            return this.data.map((item, index) => this.renderRow(item, index));
+        const data = this.getData(this.state.isCredit);
+        if (data.length > 0) {
+            return data.map((item, index) => this.renderRow(item, index));
         }
     };
 
     renderRow = (item, index) => {
+        const { isCredit } = this.state;
+        const firstElement = isCredit ? item.username : item.extInfo;
+        const secondElement = isCredit ? item.extInfo : item.username;
+
         return (
             <Row key={index}>
                 <Cell className='text-center'><div>{index + 1}</div></Cell>
                 <Cell className='text-left'><div>{item.siteName}</div></Cell>
-                <Cell className='text-center'><div>{item.betId}</div></Cell>
-                <Cell className='text-left'><div>{item.username}</div></Cell>
-                <Cell className='text-left'><div>{item.headline}</div></Cell>
+                <Cell className='text-center'><div>{item.transID}</div></Cell>
+                <Cell className='text-left'><div>{firstElement}</div></Cell>
+                <Cell className='text-left'><div>{secondElement}</div></Cell>
             </Row>
-        )
+        );
     };
 
     renderTab = () => {
@@ -106,7 +108,7 @@ export default class AffectedTicket extends Component {
                     </div>
                 </div>
                 {
-                    this.data.length > 0 &&
+                    this.props.siteTickets.length > 0 &&
                     <ExcelIcon
                         handleExportExcel={this.handleExport}
                     />
@@ -133,7 +135,7 @@ export default class AffectedTicket extends Component {
                 </div>
                 <div className='site-table'>
                     <Table
-                        width={660}
+                        width={700}
                         autoWidth={false}
                         header={this.buildHeader(this.state.isCredit)}
                         body={this.buildBody()}
@@ -146,14 +148,32 @@ export default class AffectedTicket extends Component {
     };
 
     render() {
+        const { siteTickets } = this.props;
+        if (!siteTickets) {
+            return null;
+        }
+        console.log('siteTickets', this.props.siteTickets);
+        console.log('state siteTickets', this.state.siteTickets);
         return (
-            <div className='affected'>
-                <div className='d-flex table-title justify-content-between align-items-center'>
-                    <div>{LangHelper.getResource('AffectedTickets')}</div>
-                </div>
-                { this.renderTab() }
-                { this.renderSite() }
-            </div>
+            <Modal show className="affected-ticket-modal" dialogAs={DraggableModalDialog}
+                backdrop="static" keyboard={false} size="lg" centered
+                onHide={() => this.hide()}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title as="div">{LangHelper.getResource('AffectedTickets')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className='affected'>
+                        { this.renderTab() }
+                        { this.renderSite() }
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button type="submit" variant="primary" size="sm" onClick={this.props.onClose}>
+                        {LangHelper.getResource('close')}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         )
     }
 };

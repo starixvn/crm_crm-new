@@ -31,11 +31,17 @@ const editAdmStatus = params => async () => {
     return await DataService.postDataAsync(url, params).then(response => response.data);
 };
 
+const getSiteTicketsById =  id => async () => {
+    const url = Site.resolveClientUrl(`MessageNotificationCenter/GetSiteTicketsById/${id}`);
+    return await DataService.getDataAsync(url).then(response => response);
+};
+
 export const ActionCreators = {
     setGridParams,
     setGridData,
     getGridData,
     getAdmNotificationById,
     editAdmNotification,
-    editAdmStatus
+    editAdmStatus,
+    getSiteTicketsById
 };
