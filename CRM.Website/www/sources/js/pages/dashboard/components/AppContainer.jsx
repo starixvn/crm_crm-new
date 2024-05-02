@@ -101,10 +101,6 @@ export class AppContainer extends Component {
         const hasCreateFeedbackPermission = document.getElementById('hasCreateFeedbackPermission').checked;
         const hasReadFeedbackPermission = document.getElementById('hasReadFeedbackPermission').checked;
 
-        if (!this.state.remarksPolicy) {
-            return null;
-        }
-
         if (!this.props.custId) {
             return (
                 <div className='alert-boxer'>
