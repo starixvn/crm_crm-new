@@ -191,7 +191,7 @@ export class Filter extends Component {
             filter: { ...this.state.filter, statuses: id === 0 ? statusOptionOST.map(x=> x.name).join(','): statusOptionCSD.map(x=> x.name).join(',')},
             statusOptions: id === 0 ? statusOptionOST : statusOptionCSD,
             isOstUser: id === 0
-        }, () => this.props.setGridParams(this.getParams()));
+        });
     };
 
     render() {

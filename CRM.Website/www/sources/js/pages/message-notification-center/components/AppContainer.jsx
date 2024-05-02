@@ -42,7 +42,6 @@ export class AppContainer extends Component {
             <Fragment>
                 <Filter isLoadGrid={this.props.isLoadGrid} filterParams={this.props.filterParams}/>
                 <DataGrid isHost={true}/>
-                {/* <AffectedTicket isCredit/> */}
             </Fragment>
         );
     }

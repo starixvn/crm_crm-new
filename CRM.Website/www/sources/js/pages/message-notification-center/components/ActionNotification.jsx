@@ -89,6 +89,7 @@ export class ActionNotification extends Component {
     };
 
     handleClose = () => {
+        console.log('clcocococococose');
         this.props.navigate(Site.resolveClientUrl('MessageNotificationCenter'), { state: this.getStateData() });
     };
 
@@ -131,10 +132,19 @@ export class ActionNotification extends Component {
 
         return (
             <div>
-                {this.renderSiteSection(creditSites, LangHelper.getResource('CreditTotalTickets'), creditSites[0].ticketCnt)}
-                {this.renderSiteSection(licenseeSites, LangHelper.getResource('LicenseeTotalTickets'), creditSites[0].ticketCnt)}
+                {this.renderSiteSection(creditSites, LangHelper.getResource('CreditTotalTickets'), creditSites[0]?.ticketCnt)}
+                {this.renderSiteSection(licenseeSites, LangHelper.getResource('LicenseeTotalTickets'), licenseeSites[0]?.ticketCnt)}
             </div>
         );
+    };
+
+    handleChangeContent = (mapLabel, value) => {
+        this.setState(prevState => ({
+            content: {
+                ...prevState.content,
+                [mapLabel]: value
+            }
+        }));
     };
 
     render() {
@@ -142,8 +152,7 @@ export class ActionNotification extends Component {
         if(!data) {
             return null;
         }
-        console.log('affectedTicketPopup.show', affectedTicketPopup.show);
-        console.log('affectedTicketPopup.siteTickets', affectedTicketPopup.siteTickets);
+        console.log('content', this.state.content);
 
         return (
             <>
@@ -208,16 +217,13 @@ export class ActionNotification extends Component {
                                                             name={language.name}
                                                             data={content[language.mapLabel]}
                                                             username={window.currentUsername}
-                                                            // onChange={value => {
-                                                            //     setFieldValue(`content.${[language.mapLabel]}`, value);
-                                                            //     setFieldValue(`cloneContent.${[language.mapLabel]}`, value);
-                                                            // }}
+                                                            onChange={value => this.handleChangeContent(language.mapLabel, value)}
                                                             isRemoveToolbarForChatbot
                                                         />
                                                     </Tab>)
                                                 )
                                             }
-                                        </Tabs>               
+                                        </Tabs>
                                     </Col>
                                 </div>
                             </div>

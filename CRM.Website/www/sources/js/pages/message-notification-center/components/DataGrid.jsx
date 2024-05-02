@@ -175,35 +175,28 @@ export class DataGrid extends Component {
     };
 
     renderActionButtonOST = (status, notificationId) => {
-        return (
-            <>
-                <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Review')}</div>
-                <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
-            </>
-        );
-        
-        // switch (status) {
-        //     case 'New':
-        //         return (
-        //             <>
-        //                 <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Review')}</div>
-        //                 <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
-        //             </>
-        //         );
-        //     case 'Failed':
-        //         return <div className='review-button' onClick={() => this.handleResendFail()}>{LangHelper.getResource('ResendFail')}</div>;
-        //     case 'Draft':
-        //         return (
-        //             <>
-        //                 <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>
-        //                 <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
-        //             </>
-        //         );
-        //     case 'Cancelled':
-        //         return <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>;
-        //     default:
-        //         return null;
-        // }
+        switch (status) {
+            case 'New':
+                return (
+                    <>
+                        <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Review')}</div>
+                        <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
+                    </>
+                );
+            case 'Failed':
+                return <div className='review-button' onClick={() => this.handleResendFail()}>{LangHelper.getResource('ResendFail')}</div>;
+            case 'Draft':
+                return (
+                    <>
+                        <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>
+                        <div className='cancel-button' onClick={() => this.handleCancel(notificationId)}>{LangHelper.getResource('Cancel')}</div>
+                    </>
+                );
+            case 'Cancelled':
+                return <div className='review-button' onClick={() => this.handleAction(notificationId, true)}>{LangHelper.getResource('Edit')}</div>;
+            default:
+                return null;
+        }
     };
 
     renderActionButtonCSD = (status, notificationId) => {
@@ -340,10 +333,10 @@ export class DataGrid extends Component {
                             )
                         }
                     </div>
-                    <div>{item.messageID && `(Msg: ${item.messageID})`}</div>
+                    <div>{item.messageID ? `(Msg: ${item.messageID})` : null}</div>
                 </Cell>
                 <Cell className='text-left'>
-                    <div className='text-padding-bottom'>{item.eventDate && DateTimeService.toShortDateFormat(item.eventDate)}</div>
+                    <div className='text-padding-bottom'>{item.eventDate ? DateTimeService.toShortDateFormat(item.eventDate) : null}</div>
                     <div>{item.eventName}</div>
                 </Cell>
                 <Cell className='text-left'>
