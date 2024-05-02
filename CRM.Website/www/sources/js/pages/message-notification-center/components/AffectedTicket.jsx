@@ -23,8 +23,8 @@ export default class AffectedTicket extends Component {
     getSiteOptions = (isCredit, siteTickets) => {
         const siteType = isCredit ? 'Credit' : 'Licensee';
         const siteByFilter = siteTickets.filter(item => item.siteType === siteType);
-        return siteByFilter.map((item, index) => ({
-            id: index + 1,
+        return siteByFilter.map(item => ({
+            id: item.siteName,
             name: item.siteName,
             checked: true
         }));
@@ -37,8 +37,8 @@ export default class AffectedTicket extends Component {
         }));
     };
 
-    handleChangeSite = () => {
-
+    handleChangeSite = (currentItem, selectedItemsKey) => {
+        console.log('selectedItemsKey', selectedItemsKey);
     };
 
     handleExport = () => {
@@ -136,7 +136,7 @@ export default class AffectedTicket extends Component {
                             valueField='name'
                             maxDisplayItemCount={2}
                             isAllTextShown
-                            onChange={() => this.handleChangeSite()}
+                            onChange={this.handleChangeSite}
                         />
                     </div>
                 </div>
