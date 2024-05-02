@@ -16,37 +16,52 @@ export default class AffectedTicket extends Component {
 
         this.state = {
             isCredit: this.props.isCredit,
-            siteOptions: this.getSiteOptions(this.props.isCredit, this.props.siteTickets)
+            siteOptions: this.getSiteOptions(this.props.isCredit, this.props.siteTickets),
+            siteTickets: this.props.siteTickets
         };
     };
 
     getSiteOptions = (isCredit, siteTickets) => {
         const siteType = isCredit ? 'Credit' : 'Licensee';
-        const siteByFilter = siteTickets.filter(item => item.siteType === siteType);
-        return siteByFilter.map(item => ({
-            id: item.siteName,
-            name: item.siteName,
-            checked: true
-        }));
+        const uniqueSiteNames = {};
+
+        return siteTickets.reduce((acc, item) => {
+            if (item.siteType === siteType && !uniqueSiteNames[item.siteName]) {
+                uniqueSiteNames[item.siteName] = true;
+                acc.push({
+                    id: item.siteName,
+                    name: item.siteName,
+                    checked: true
+                });
+            }
+            return acc;
+        }, []);
     };
 
     handleChangeTab = () => {
         this.setState(prevState => ({
             isCredit: !prevState.isCredit,
-            siteOptions: this.getSiteOptions(!prevState.isCredit, this.props.siteTickets)
+            siteOptions: this.getSiteOptions(!prevState.isCredit, this.props.siteTickets),
+            siteTickets: this.props.siteTickets
         }));
     };
 
     handleChangeSite = (currentItem, selectedItemsKey) => {
         console.log('selectedItemsKey', selectedItemsKey);
+        const siteNames = selectedItemsKey.split(',');
+        const siteType = this.state.isCredit ? 'Credit' : 'Licensee';
+        const siteByFilter = this.props.siteTickets.filter(item => item.siteType === siteType && siteNames.includes(item.siteName));
+        this.setState({ siteTickets: siteByFilter });
     };
 
     handleExport = () => {
+        const params = {
 
+        }
     };
 
     getData = isCredit => {
-        const { siteTickets } = this.props;
+        const { siteTickets } = this.state;
         const siteType = isCredit ? 'Credit' : 'Licensee';
         return siteTickets.filter(item => item.siteType === siteType);
     };
@@ -74,9 +89,11 @@ export default class AffectedTicket extends Component {
 
     buildBody = () => {
         const data = this.getData(this.state.isCredit);
+        console.log('dataaa', data);
         if (data.length > 0) {
             return data.map((item, index) => this.renderRow(item, index));
         }
+        return [<Row key={`body${1}`} className="no-data" ><Cell className='text-center' colSpan={5}>{LangHelper.getResource('ThereIsNoData')}</Cell></Row>];
     };
 
     renderRow = (item, index) => {
@@ -155,11 +172,11 @@ export default class AffectedTicket extends Component {
     };
 
     render() {
-        const { siteTickets } = this.props;
+        const { siteTickets } = this.state;
         if (!siteTickets) {
             return null;
         }
-        console.log('siteTickets', this.props.siteTickets);
+        console.log('siteTickets', this.state.siteTickets);
 
         return (
             <Modal show className="affected-ticket-modal" dialogAs={DraggableModalDialog}

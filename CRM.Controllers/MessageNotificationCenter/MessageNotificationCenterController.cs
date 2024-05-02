@@ -1,8 +1,11 @@
 ﻿namespace CRM.Controllers.MessageNotificationCenter
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Models.MessageNotificationCenter;
+    using CRM.Resources;
     using CRM.Services;
     using CRM.Services.MessageNotificationCenter;
     using Microsoft.AspNetCore.Mvc;
@@ -53,5 +56,14 @@
             var siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(id);
             return Json(siteTickets);
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> ExportExcel([FromBody] ExcelSiteTicket param)
+        //{
+        //    IEnumerable<AdmSiteTicket> siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(param.NotificationId);
+        //    var bytes = excelService.ExportInformHeadline(siteTickets);
+        //    string reportName = ViewResources.InformHeadline_Title;
+        //    return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+        //}
     }
 }

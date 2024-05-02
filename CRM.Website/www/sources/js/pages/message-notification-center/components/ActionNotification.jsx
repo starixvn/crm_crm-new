@@ -147,6 +147,10 @@ export class ActionNotification extends Component {
         }));
     };
 
+    handleClosePopup = () => {
+        this.setState({affectedTicketPopup: { show: false, isCredit: true, siteTickets: null }});
+    }
+
     render() {
         const { data, content, affectedTicketPopup } = this.state;
         if(!data) {
@@ -241,6 +245,7 @@ export class ActionNotification extends Component {
                     <AffectedTicket
                         isCredit={affectedTicketPopup.isCredit}
                         siteTickets={affectedTicketPopup.siteTickets}
+                        onClose={this.handleClosePopup}
                     />
                 }
             </>

@@ -36,6 +36,15 @@ const getSiteTicketsById =  id => async () => {
     return await DataService.getDataAsync(url).then(response => response);
 };
 
+const exportExcel = params => async () => {
+    Site.blockUI();
+    const url = Site.resolveClientUrl('MessageNotificationCenter/ExportExcel');
+    await DataService.getFileAsync(url, params).then(response => {
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split(";")[0];
+        Site.downloadFile(response.data, fileName);
+    }).then(() => Site.unblockUI());
+};
+
 export const ActionCreators = {
     setGridParams,
     setGridData,
@@ -43,5 +52,6 @@ export const ActionCreators = {
     getAdmNotificationById,
     editAdmNotification,
     editAdmStatus,
-    getSiteTicketsById
+    getSiteTicketsById,
+    exportExcel
 };
