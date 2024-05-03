@@ -151,40 +151,44 @@
                 IsSuccessful = true,
                 ErrMsg = string.Empty
             }).ToList();
-            try
+            
+            if (!string.IsNullOrWhiteSpace(notification.Content))
             {
-                var pushResults = await letstalkService(notification.BotId).PushPersonalAsync(notification.ConversationIds,
-                new OutgoingMessage
+                try
                 {
-                    MessageType = NotificationMessageType.Html,
-                    Text = notification.Content
-                });
-                WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
-                    string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
-
-                if (pushResults.IsSuccess)
-                {
-                    if (pushResults.FailList is not null && pushResults.FailList.Count > 0)
+                    var pushResults = await letstalkService(notification.BotId).PushPersonalAsync(notification.ConversationIds,
+                    new OutgoingMessage
                     {
-                        HandleFailedList(pushResults.FailList, sendResult);
+                        MessageType = NotificationMessageType.Html,
+                        Text = notification.Content
+                    });
+                    WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                        string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
+
+                    if (pushResults.IsSuccess)
+                    {
+                        if (pushResults.FailList is not null && pushResults.FailList.Count > 0)
+                        {
+                            HandleFailedList(pushResults.FailList, sendResult);
+                        }
+
+                        if (pushResults.BlockList is not null && pushResults.BlockList.Count > 0)
+                        {
+                            HandlleBlockList(pushResults.BlockList, sendResult);
+                        }
                     }
-
-                    if (pushResults.BlockList is not null && pushResults.BlockList.Count > 0)
+                    else
                     {
-                        HandlleBlockList(pushResults.BlockList, sendResult);
+                        SetFailedResultWithErrMsg(sendResult);
                     }
                 }
-                else
+                catch (Exception exception)
                 {
                     SetFailedResultWithErrMsg(sendResult);
+                    WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                        string.Join(",", notification.ConversationIds), false, exception.Message);
+                    await logService.ErrorAsync(exception);
                 }
-            }
-            catch (Exception exception)
-            {
-                SetFailedResultWithErrMsg(sendResult);
-                WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
-                    string.Join(",", notification.ConversationIds), false, exception.Message);
-                await logService.ErrorAsync(exception);
             }
 
             var successList = sendResult.Where(i => i.IsSuccessful).Select(x => x.ConversationId).ToList();
@@ -375,34 +379,37 @@
                 ErrMsg = string.Empty
             }).ToList();
 
-            try
+            if (!string.IsNullOrWhiteSpace(notification.Content))
             {
-                var pushResults = await letstalkService(notification.BotId).PushRoomAsync(notification.ConversationIds,
-                new OutgoingMessage
+                try
                 {
-                    MessageType = NotificationMessageType.Html,
-                    Text = notification.Content
-                });
-                WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
-                    string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
-                if (pushResults.IsSuccess)
-                {
-                    if (pushResults.FailList is not null && pushResults.FailList.Count > 0)
+                    var pushResults = await letstalkService(notification.BotId).PushRoomAsync(notification.ConversationIds,
+                    new OutgoingMessage
                     {
-                        HandleFailedList(pushResults.FailList, sendResult);
+                        MessageType = NotificationMessageType.Html,
+                        Text = notification.Content
+                    });
+                    WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                        string.Join(",", notification.ConversationIds), pushResults.IsSuccess, JsonConvert.SerializeObject(pushResults));
+                    if (pushResults.IsSuccess)
+                    {
+                        if (pushResults.FailList is not null && pushResults.FailList.Count > 0)
+                        {
+                            HandleFailedList(pushResults.FailList, sendResult);
+                        }
+                    }
+                    else
+                    {
+                        SetFailedResultWithErrMsg(sendResult);
                     }
                 }
-                else
+                catch (Exception exception)
                 {
                     SetFailedResultWithErrMsg(sendResult);
+                    WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
+                        string.Join(",", notification.ConversationIds), false, exception.Message);
+                    await logService.ErrorAsync(exception);
                 }
-            }
-            catch (Exception exception)
-            {
-                SetFailedResultWithErrMsg(sendResult);
-                WriteLogMessage(notification.AnnouncementId, notification.BotId, notification.Content,
-                    string.Join(",", notification.ConversationIds), false, exception.Message);
-                await logService.ErrorAsync(exception);
             }
 
             var successList = sendResult.Where(i => i.IsSuccessful).Select(x => x.ConversationId).ToList();

@@ -258,16 +258,30 @@
 
         private async Task<SendNotificationResult> SendFormattedTextAndImageTelegramService(AnnouncementNotification announcementNotification)
         {
-            var result = await SendFormattedTextAsync(announcementNotification);
+            var result = new SendNotificationResult
+            {
+                AnnouncementId = announcementNotification.AnnouncementId,
+                ConversationId = announcementNotification.ConversationId  
+            };
 
-            if (result.IsSuccessful && announcementNotification.Images is not null && announcementNotification.Images.Count > 0)
+            if (!string.IsNullOrWhiteSpace(announcementNotification.Content))
+            {
+                result = await SendFormattedTextAsync(announcementNotification);
+            }
+
+            await SendImagesIfAny(announcementNotification, result);
+            return result;
+        }
+
+        private async Task SendImagesIfAny(AnnouncementNotification announcementNotification, SendNotificationResult result)
+        {
+            if (announcementNotification.Images?.Count > 0)
             {
                 foreach (var image in announcementNotification.Images)
                 {
                     await SendImageTelegramService(announcementNotification, image, result);
                 }
             }
-            return result;
         }
 
         private async Task<SendNotificationResult> SendFormattedTextAsync(AnnouncementNotification announcementNotification)
