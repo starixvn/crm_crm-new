@@ -54,9 +54,28 @@ describe('HeadlineCommunicationInfo', () => {
                 picID: 1,
             }]
         },
+        settingCommunicationTool: [{
+            settingValue: 'test',
+            settingId: 1
+        }],
         editCustomerInfoDetailResult: {
             isSuccessful: true,
             message: 'test'
+        },
+        allSettings: {
+            languages: [{
+                displayOrder: 0,
+                isActive: true,
+                languageId: 1,
+                name: "test"
+            }],
+            countries: [{
+                countryCode: 0,
+                displayOrder: 0,
+                id: 0,
+                isActive: true,
+                name: "test"
+            }]
         },
         setActiveTab: jest.fn(),
         setErrors: jest.fn(),
@@ -646,23 +665,18 @@ describe('HeadlineCommunicationInfo', () => {
             const instance = wrapper.instance();
             instance.setState(initialState);
 
-            const mockValidateHeadlineCommunicationInfo = jest.fn().mockReturnValue({ errors: null, headlineCommunicationInfo: initialState.headlineCommunicationInfo });
-            ValidateHeadlineCommunicationInfo = mockValidateHeadlineCommunicationInfo;
-
             const result = instance.validateCommunicationInfo();
 
-            expect(mockValidateHeadlineCommunicationInfo).toHaveBeenCalledWith(initialState.headlineCommunicationInfo);
             expect(wrapper.state('headlineCommunicationInfo')).toEqual(initialState.headlineCommunicationInfo);
-            expect(result).toBeNull();
+            expect(result).toEqual({ "picName": "NameRequired", "role": "RoleRequired" });
         });
 
         it('handles invalid communication info', () => {
-            // Mock initial state
             const initialState = {
                 headlineCommunicationInfo: [
                     {
                         picId: 1,
-                        picCommunicationTools: [{ type: 1, value: '' }], // Invalid communication value
+                        picCommunicationTools: [{ type: 1, value: '' }],
                     },
                 ],
             };
@@ -670,21 +684,261 @@ describe('HeadlineCommunicationInfo', () => {
             const instance = wrapper.instance();
             instance.setState(initialState);
 
-            // Mock ValidateHeadlineCommunicationInfo function
-            const mockValidateHeadlineCommunicationInfo = jest.fn().mockReturnValue({ errors: { picCommunicationTools: ['Invalid communication value'] }, headlineCommunicationInfo: initialState.headlineCommunicationInfo });
-            ValidateHeadlineCommunicationInfo = mockValidateHeadlineCommunicationInfo;
-
-            // Call validateCommunicationInfo
             const result = instance.validateCommunicationInfo();
 
-            // Expect ValidateHeadlineCommunicationInfo to be called with correct parameters
-            expect(mockValidateHeadlineCommunicationInfo).toHaveBeenCalledWith(initialState.headlineCommunicationInfo);
 
-            // Expect state to be updated
             expect(wrapper.state('headlineCommunicationInfo')).toEqual(initialState.headlineCommunicationInfo);
+            expect(result).toEqual({
+                communication: "CommunicationRequired",
+                picName: "NameRequired",
+                role: "RoleRequired"
+            });
+        });
+    });
 
-            // Expect result to contain errors
-            expect(result).toEqual({ picCommunicationTools: ['Invalid communication value'] });
+    describe('addNewCommunicationTool', () => {
+        it('adds a new communication tool', () => {
+            const initialState = {
+                headlineCommunicationInfo: [
+                    {
+                        picId: 1,
+                        picCommunicationTools: [{ type: 1, value: 'Email' }],
+                    },
+                ],
+            };
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            const instance = wrapper.instance();
+            instance.setState(initialState);
+            instance.addNewCommunicationTool(0);
+
+            const updatedState = {
+                headlineCommunicationInfo: [
+                    {
+                        picId: 1,
+                        picCommunicationTools: [
+                            { type: 1, value: 'Email' },
+                            { type: '', value: '', isError: false, isNew: true },
+                        ],
+                    },
+                ],
+            };
+            expect(wrapper.state('headlineCommunicationInfo')).toEqual(updatedState.headlineCommunicationInfo);
+        });
+    });
+
+    describe('handleChangeCountryValue', () => {
+        it('updates the country value', () => {
+            const initialState = {
+                headlineCommunicationInfo: [
+                    {
+                        country: 1,
+                        picCommunicationTools: [],
+                    },
+                    {
+                        country: 2,
+                        picCommunicationTools: [],
+                    },
+                ],
+            };
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            const instance = wrapper.instance();
+            instance.setState(initialState);
+
+            instance.handleChangeCountryValue({ id: 3 }, 0);
+
+            const updatedState = {
+                headlineCommunicationInfo: [
+                    {
+                        country: 3,
+                        picCommunicationTools: [],
+                    },
+                    {
+                        country: 2,
+                        picCommunicationTools: [],
+                    },
+                ],
+            };
+            expect(wrapper.state('headlineCommunicationInfo')).toEqual(updatedState.headlineCommunicationInfo);
+        });
+    });
+
+    describe('getWidth', () => {
+        it('calculates the width correctly', () => {
+            const picCommunicationTool = {
+                type: 1,
+            };
+
+            const settingCommunicationTool = [
+                { settingId: 1, settingValue: 'AAA' },
+                { settingId: 2, settingValue: 'BBB' },
+            ];
+
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            const instance = wrapper.instance();
+
+            const width = instance.getWidth(picCommunicationTool, settingCommunicationTool);
+
+            const expectedWidth = (8 * 'AAA'.length) + 24;
+
+            expect(width).toEqual(expectedWidth);
+        });
+    });
+
+    describe('handleConfirmDeleteCommunicationTool', () => {
+        it('deletes a new communication tool if isNew is true', () => {
+            const picCommunicationTool = {
+                isNew: true,
+            };
+
+            const initialState = {
+                headlineCommunicationInfo: [
+                    {
+                        country: 1,
+                        picCommunicationTools: [],
+                    },
+                    {
+                        country: 2,
+                        picCommunicationTools: [],
+                    },
+                ],
+            };
+
+            const indexPicCommunicationTool = 0;
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            wrapper.instance().deleteCommunicationTool = jest.fn();
+            const instance = wrapper.instance();
+            instance.setState(initialState);
+
+            instance.handleConfirmDeleteCommunicationTool(picCommunicationTool, indexPicCommunicationTool);
+            expect(wrapper.instance().deleteCommunicationTool).toHaveBeenCalledWith(picCommunicationTool, indexPicCommunicationTool);
+        });
+
+        it('sets confirmDelete state if isNew is false', () => {
+            const picCommunicationTool = {
+                isNew: false,
+            };
+
+            const indexPicCommunicationTool = 0;
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            const instance = wrapper.instance();
+            const setStateMock = jest.fn();
+
+            instance.handleConfirmDeleteCommunicationTool(picCommunicationTool, indexPicCommunicationTool, setStateMock);
+
+            expect(instance.state.confirmDelete).toEqual({ indexPic: 0, picCommunicationTool: { "isNew": false }, show: true });
+        });
+    });
+
+    describe('renderInfo', () => {
+        it('renders the form fields correctly', () => {
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            const instance = wrapper.instance();
+
+            const pic = {
+                picCommunicationTools: [{
+                    type: 1,
+                    value: 'test'
+                }]
+            };
+
+            const indexPic = 0;
+            const renderedInfo = instance.renderInfo(pic, indexPic);
+
+            expect(renderedInfo.type).toEqual('div');
+        });
+    });
+
+    describe('handleSubmitEditConfirm', () => {
+        it('calls editHeadlineCommunicationPic and sets confirmSave to false', async () => {
+
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            const instance = wrapper.instance();
+            wrapper.instance().editHeadlineCommunicationPic = jest.fn();
+            const setStateSpy = jest.spyOn(instance, 'setState');
+
+            await instance.handleSubmitEditConfirm();
+
+            expect(setStateSpy).toHaveBeenCalledWith({
+                confirmSave: {
+                    show: false,
+                    data: [],
+                },
+            });
+        });
+    });
+
+    describe('handleCloseEditConfirm', () => {
+        it('sets confirmSave to false when called', () => {
+
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            const instance = wrapper.instance();
+
+            instance.handleCloseEditConfirm();
+
+            expect(wrapper.state('confirmSave')).toEqual({ show: false, data: [] });
+        });
+    });
+
+    describe('renderComfirmChatTypeMapping', () => {
+        it('renders confirmation content correctly', () => {
+            const mockData = [
+            ];
+
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            const instance = wrapper.instance();
+
+            wrapper.setState({ confirmSave: { show: true, data: mockData } });
+            instance;
+
+            const confirmationItems = wrapper.find('.confirmation-item');
+            expect(confirmationItems).toHaveLength(mockData.length);
+        });
+    });
+
+    describe('renderComfirmDeleteCommunicationTool', () => {
+        it('renders confirmation content correctly', () => {
+            const mockSettingCommunicationTool = [
+            ];
+            const mockConfirmDelete = {
+                show: true,
+                picCommunicationTool: {
+                    type: 1
+                }
+            };
+
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            wrapper.setState({ confirmDelete: mockConfirmDelete });
+            wrapper.setProps({ settingCommunicationTool: mockSettingCommunicationTool });
+
+        });
+    });
+
+    describe('renderValueChatTypeMapping', () => {
+        it('renders chat type mapping correctly', () => {
+            const mockData = [
+            ];
+
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            const result = wrapper.instance().renderValueChatTypeMapping(mockData);
+
+            expect(result).toHaveLength(mockData.length);
+        });
+    });
+
+    describe('render HeadlineCommunicationInfo', () => {
+        it('renders without crashing', () => {
+            shallow(<HeadlineCommunicationInfo {...initProps} />);
+        });
+
+        it('renders the communication info correctly when data is available', () => {
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
+            expect(wrapper.find('.custom-scrollbar')).toHaveLength(1); 
+        });
+
+        it('renders the save button when headlineInfoPolicy is Policy.Host and communication info is available', () => {
+            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps}  />);
+            wrapper.setState({ headlineInfoPolicy: 2 }); 
+            expect(wrapper.find('.btn-save')).toHaveLength(1);
         });
     });
 });
