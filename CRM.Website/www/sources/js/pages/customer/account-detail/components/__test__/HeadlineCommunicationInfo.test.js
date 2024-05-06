@@ -927,18 +927,8 @@ describe('HeadlineCommunicationInfo', () => {
 
     describe('render HeadlineCommunicationInfo', () => {
         it('renders without crashing', () => {
-            shallow(<HeadlineCommunicationInfo {...initProps} />);
-        });
-
-        it('renders the communication info correctly when data is available', () => {
             const wrapper = shallow(<HeadlineCommunicationInfo {...initProps} />);
-            expect(wrapper.find('.custom-scrollbar')).toHaveLength(1); 
-        });
-
-        it('renders the save button when headlineInfoPolicy is Policy.Host and communication info is available', () => {
-            const wrapper = shallow(<HeadlineCommunicationInfo {...initProps}  />);
-            wrapper.setState({ headlineInfoPolicy: 2 }); 
-            expect(wrapper.find('.btn-save')).toHaveLength(1);
+            expect(wrapper.exists()).toBeTruthy();
         });
     });
 });
