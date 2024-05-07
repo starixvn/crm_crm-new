@@ -292,7 +292,7 @@
                 i.Content,
                 i.BotId,
                 i.ChatTypeId,
-                _ = string.Join(",", i.Images)
+                _ = (i.Images != null && i.Images.Any()) ? string.Join(",", i.Images) : null
             }).Select(item =>
             {
                 return new NotificationGroupContent
