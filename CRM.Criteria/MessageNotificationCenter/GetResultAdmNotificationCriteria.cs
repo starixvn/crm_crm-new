@@ -5,9 +5,9 @@
 
     public class GetResultAdmNotificationCriteria : CriteriaBase
     {
-        public DateTime? FCreatedDate { get; set; }
+        public DateTime? FCreatedDateGMT8 { get; set; }
 
-        public DateTime? TCreatedDate { get; set; }
+        public DateTime? TCreatedDateGMT8 { get; set; }
 
         public int NotiType { get; set; }
 

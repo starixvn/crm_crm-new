@@ -6,7 +6,7 @@
 
         public string SiteName { get; set; }
 
-        public long TransID { get; set; }
+        public string TransID { get; set; }
 
         public string Username { get; set; }
 

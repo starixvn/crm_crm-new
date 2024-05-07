@@ -56,8 +56,11 @@ export default class AffectedTicket extends Component {
 
     handleExport = () => {
         const params = {
-
+            notificationId: this.props.notificationId,
+            eventDate: this.props.eventDate,
+            eventName: this.props.eventName
         }
+        this.props.exportExcel(params);
     };
 
     getData = isCredit => {
@@ -176,7 +179,7 @@ export default class AffectedTicket extends Component {
         if (!siteTickets) {
             return null;
         }
-        console.log('siteTickets', this.state.siteTickets);
+        console.log('this.props.siteTickets', this.props.siteTickets);
 
         return (
             <Modal show className="affected-ticket-modal" dialogAs={DraggableModalDialog}

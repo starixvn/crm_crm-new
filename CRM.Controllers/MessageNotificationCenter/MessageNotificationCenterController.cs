@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using CRM.Core;
     using CRM.Core.Constants;
     using CRM.Core.Models;
     using CRM.Models.MessageNotificationCenter;
@@ -57,13 +58,14 @@
             return Json(siteTickets);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> ExportExcel([FromBody] ExcelSiteTicket param)
-        //{
-        //    IEnumerable<AdmSiteTicket> siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(param.NotificationId);
-        //    var bytes = excelService.ExportInformHeadline(siteTickets);
-        //    string reportName = ViewResources.InformHeadline_Title;
-        //    return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
-        //}
+        [HttpPost]
+        public async Task<IActionResult> ExportExcel([FromBody] ExcelSiteTicket param)
+        {
+            IEnumerable<AdmSiteTicket> siteTickets = await messageNotificationCenterService.GetSiteTicketsByIdAsync(param.NotificationId);
+            var eventDate = param.EventDate.ToShortDateFormatDash();
+            var bytes = excelService.ExportSiteTicket(siteTickets, eventDate, param.EventName);
+            string reportName = string.Format(ViewResources.MncAffectedTicketFileName, eventDate);
+            return File(bytes, MimeType.XLSX, $"{reportName}.xlsx");
+        }
     }
 }

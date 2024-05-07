@@ -40,8 +40,8 @@
         {
             var criteria = new GetResultAdmNotificationCriteria
             {
-                FCreatedDate = param.FromDate,
-                TCreatedDate = param.ToDate,
+                FCreatedDateGMT8 = param.FromDate,
+                TCreatedDateGMT8 = param.ToDate,
                 NotiType = param.IsOstUser ? UserAmendment.OST : UserAmendment.CSD,
                 FNotiID = param.NotificationId ??  param.FromNotificationId,
                 TNotiID = param.NotificationId ?? param.ToNotificationId,

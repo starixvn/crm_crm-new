@@ -979,6 +979,15 @@ namespace CRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message_Notification_Center_Affected_Tickets_{0}.
+        /// </summary>
+        public static string MncAffectedTicketFileName {
+            get {
+                return ResourceManager.GetString("MncAffectedTicketFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mobile.
         /// </summary>
         public static string Mobile {

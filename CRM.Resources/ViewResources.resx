@@ -639,4 +639,7 @@
   <data name="PICAndHeadline" xml:space="preserve">
     <value>PIC and Headline</value>
   </data>
+  <data name="MncAffectedTicketFileName" xml:space="preserve">
+    <value>Message_Notification_Center_Affected_Tickets_{0}</value>
+  </data>
 </root>

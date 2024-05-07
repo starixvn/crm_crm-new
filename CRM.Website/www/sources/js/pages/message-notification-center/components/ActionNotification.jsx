@@ -102,7 +102,7 @@ export class ActionNotification extends Component {
         Site.blockUI();
         await this.props.getSiteTicketsById(notificationId).then(response => {
             const siteTickets = response.data;
-            console.log('siteTickets', siteTickets);
+            console.log('siteTicketsssssssssssssssss', siteTickets);
             console.log('siteType', siteType);
             this.setState({ affectedTicketPopup: { show: true, isCredit: siteType === 'Credit', siteTickets }})
         }).catch(Site.handleAxiosError).then(() => Site.unblockUI());
@@ -183,7 +183,7 @@ export class ActionNotification extends Component {
                                             <Form.Label className='text-bold' htmlFor="eventDate">
                                                 {LangHelper.getResource('EventDateGMT4')}
                                             </Form.Label>
-                                            <div>{DateTimeService.toShortDateFormat(data.eventDate)}</div>
+                                            <div>{data.eventDate ? DateTimeService.toShortDateFormat(data.eventDate) : null}</div>
                                         </Form.Group>
                                         <Form.Group as={Row}>
                                             <Form.Label className='text-bold' htmlFor="eventName">
@@ -243,6 +243,10 @@ export class ActionNotification extends Component {
                 {
                     affectedTicketPopup.show &&
                     <AffectedTicket
+                        notificationId={data.notificationID}
+                        eventDate={data.eventDate}
+                        eventName={data.eventName}
+                        exportExcel={this.props.exportExcel}
                         isCredit={affectedTicketPopup.isCredit}
                         siteTickets={affectedTicketPopup.siteTickets}
                         onClose={this.handleClosePopup}
