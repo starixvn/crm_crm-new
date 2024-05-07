@@ -92,7 +92,7 @@ export class NewNotificationTemplate extends Component {
                                 <Form.Group key={`language${item.settingId}`} as={Row}>
                                     <Form.Label column sm="4" md="3"
                                         className={item.settingValue === 'EN' ? 'required' : ''} htmlFor={'language_' + item.settingId}
-                                    >s
+                                    >
                                         {LangHelper.getResource('Content')} ({item.settingValue})
                                     </Form.Label>
                                     <Col sm="8" md="9">
