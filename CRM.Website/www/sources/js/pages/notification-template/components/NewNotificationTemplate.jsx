@@ -9,7 +9,7 @@ import DraggableModalDialog from '@jsroot/components/DraggableModalDialog';
 import FormikErrorMessage from '@jsroot/components/FormikErrorMessage';
 import ResponseMessage from '@jsroot/components/ResponseMessage';
 import LangHelper from '@jsroot/common/langHelper';
-import { renderNotificationTypeOption, validateFormik } from '../common.functions';
+import { renderNotificationTypeOption, validateFormik, requiredForUpAnnouncement } from '../common.functions';
 
 export class NewNotificationTemplate extends Component {
     static propTypes = {
@@ -91,7 +91,8 @@ export class NewNotificationTemplate extends Component {
                             return (
                                 <Form.Group key={`language${item.settingId}`} as={Row}>
                                     <Form.Label column sm="4" md="3"
-                                        className={item.settingValue === 'EN' ? 'required' : ''} htmlFor={'language_' + item.settingId}
+                                        className={requiredForUpAnnouncement(this.props.notificationTypes, values.notificationTypeId, item.settingValue)}
+                                        htmlFor={'language_' + item.settingId}
                                     >
                                         {LangHelper.getResource('Content')} ({item.settingValue})
                                     </Form.Label>

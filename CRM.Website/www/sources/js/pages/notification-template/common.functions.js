@@ -56,3 +56,11 @@ export const validateFormik = (values, languages = [], notificationTypes) => {
 
     return errors;
 };
+
+export const requiredForUpAnnouncement = (notificationTypes, notificationTypeId, settingValue) => {
+    const typeName = notificationTypes.find(item => item.notificationTypeId === parseInt(notificationTypeId, 10))?.notificationTypeName;
+    if (typeName === 'Upload Announcement') {
+        return settingValue === 'EN' ? 'required' : '';
+    }
+    return 'required';
+};
