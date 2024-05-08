@@ -40,7 +40,7 @@ export class ViewDetail extends Component {
             <Cell>{data.displayName}</Cell>
             <Cell>{functions.getHeadlines(data.headlines)}</Cell>
             <Cell>{functions.getRecipients(data.recipients)}</Cell>
-            <Cell className='error-color'>{data.reason}</Cell>
+            <Cell className='error-color' dangerouslySetInnerHTML={{ __html: data.reason }}></Cell>
         </Row>];
 
     editNotificationList = notificationId =>

@@ -40,7 +40,29 @@
         public async Task ScanSendAndUpateAnnouncementNotification()
         {
             var notifications = await GetAnnouncementNotificationAsync();
+            var (emptyNotifications, actionableNotifications) = PartitionNotifications(notifications);
 
+            await ProcessEmptyNotifications(emptyNotifications);
+            await ProcessActionableNotifications(actionableNotifications);
+        }
+
+        private (IEnumerable<AnnouncementNotification> empty, IEnumerable<AnnouncementNotification> actionable) PartitionNotifications(IEnumerable<AnnouncementNotification> notifications)
+        {
+            var empty = notifications.Where(n => string.IsNullOrWhiteSpace(n.Content) && string.IsNullOrWhiteSpace(n.FileName));
+            var actionable = notifications.Except(empty).ToList();
+            return (empty, actionable);
+        }
+
+        private async Task ProcessEmptyNotifications(IEnumerable<AnnouncementNotification> emptyNotifications)
+        {
+            if (emptyNotifications.Any())
+            {
+                await UpdateEmptyContentFileName(emptyNotifications);
+            }
+        }
+
+        private async Task ProcessActionableNotifications(IEnumerable<AnnouncementNotification> notifications)
+        {
             if (notifications.Any())
             {
                 await UpdateBotRemovedGroup(notifications.Where(n => n.ChatTypeId == ChatType.Group && n.BotId <= 0));
@@ -202,6 +224,29 @@
         }
 
         #endregion Update Bot Removed Groups
+
+        #region Update status with content and fileName is empty
+
+        private async Task UpdateEmptyContentFileName(IEnumerable<AnnouncementNotification> notifications)
+        {
+            if (notifications.Any())
+            {
+                var updateStatusResult = new List<AnnouncementNotificationUpdateResult>();
+                foreach (var item in notifications)
+                {
+                    updateStatusResult.Add(new AnnouncementNotificationUpdateResult
+                    {
+                        NotificationId = item.NotificationId,
+                        ConversationGroupId = item.ConversationGroupId,
+                        Status = "Error",
+                        ErrMsg = ErrorMessages.EmptyContentFileNameAnn
+                    });
+                }
+                await UpdateRecipientStatus(updateStatusResult);
+            }
+        }
+
+        #endregion Update status with content and fileName is null
 
         private async Task UpdateRecipientStatus(IEnumerable<AnnouncementNotificationUpdateResult> sentResults)
         {
