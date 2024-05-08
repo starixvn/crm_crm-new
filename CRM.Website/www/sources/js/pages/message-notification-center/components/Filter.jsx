@@ -248,7 +248,7 @@ export class Filter extends Component {
                         <Form.Group style={{width: '375px'}}>
                             <Form.Label>{LangHelper.getResource('NotificationID')}</Form.Label>
                             <div className='form-control-wrapper d-flex align-items-center notification-id-container'>
-                                <Form.Control as="select" size="sm" className="shadow-none notification-id-input" name='notification'
+                                <Form.Control as="select" size="sm" className="shadow-none notification-id-select" name='notification'
                                     value={this.state.isCompareIdEqual ? this.notificationTypes[0].id : this.notificationTypes[1].id}
                                     onChange={this.handleChangeNotificationType}
                                 >
@@ -296,7 +296,7 @@ export class Filter extends Component {
                     <Form.Row bsPrefix='form-row'>
                         <Form.Group style={{width: '350px'}}>
                             <Form.Label style={{width: '180px'}}>{LangHelper.getResource('Content')}</Form.Label>
-                            <Form.Control as='input' type='text' size='sm' className='shadow-none' name='content'
+                            <Form.Control as='input' type='text' size='sm' className='shadow-none content' name='content'
                                 value={this.state.filter.content}
                                 disabled={this.isDisabledField()}
                                 autoComplete='off'

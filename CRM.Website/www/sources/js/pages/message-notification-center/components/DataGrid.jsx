@@ -57,12 +57,12 @@ export class DataGrid extends Component {
         <HeaderRow>
             <HeaderCell colWidth={15}>{LangHelper.getResource('NotificationID')}</HeaderCell>
             <HeaderCell colWidth={20}>{LangHelper.getResource('Event Info')}</HeaderCell>
-            <HeaderCell colWidth={35}>{LangHelper.getResource('Sites')}</HeaderCell>
-            <HeaderCell colWidth={50}>{LangHelper.getResource('Content')}</HeaderCell>
-            <HeaderCell colWidth={15}>{LangHelper.getResource('status')}</HeaderCell>
+            <HeaderCell colWidth={30}>{LangHelper.getResource('Sites')}</HeaderCell>
+            <HeaderCell colWidth={60}>{LangHelper.getResource('Content')}</HeaderCell>
+            <HeaderCell colWidth={10}>{LangHelper.getResource('status')}</HeaderCell>
             <HeaderCell colWidth={20}>{LangHelper.getResource('Sender/SendDate')}</HeaderCell>
             {
-                isHost && <HeaderCell colWidth={20}>{LangHelper.getResource('Action')}</HeaderCell>
+                isHost && <HeaderCell colWidth={15}>{LangHelper.getResource('Action')}</HeaderCell>
             }
         </HeaderRow>
     );
@@ -287,7 +287,7 @@ export class DataGrid extends Component {
     };
 
     horizontalLine = () => (
-        <div>-----------------------------------------------------------------------------------------------------</div>
+        <div>------------------------------------------------------------------------------------------------------------------------------</div>
     );
 
     contentBlock = (title, content) => (
