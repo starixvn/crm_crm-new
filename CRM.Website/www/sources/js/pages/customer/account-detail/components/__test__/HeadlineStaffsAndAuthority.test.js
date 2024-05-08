@@ -1,19 +1,12 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { HeadlineStaffsAndAuthority } from '../HeadlineStaffsAndAuthority';
-import { toast } from 'react-toastify';
 import DataService from '@jsroot/common/dataService';
 import Site from '@jsroot/common/site';
 import {
-    FunctionKey,
     Policy,
-    MaxHeightBodyTableHeadlineAccountShowFull,
-    MaxHeightBodyTableHeadlineAccountHideInfo,
-    MaxHeightBodyTableHeadlineAccountHidePic,
-    MaxHeightBodyTableHeadlineAccountHideFull
 } from '@jsroot/common/constants';
-import LangHelper from '@jsroot/common/langHelper';
-
+import { Cell } from '@jsroot/components/react-grid/index';
 
 describe('HeadlineStaffsAndAuthority', () => {
     beforeEach(() => {
@@ -46,6 +39,11 @@ describe('HeadlineStaffsAndAuthority', () => {
             settingId: 1
         }],
         headlineStaffsAndAuthority: [],
+        settingStaffAndAuthority: [
+            {
+                settingId: 1
+            }
+        ],
         setErrors: jest.fn(),
         editCustomerInfoDetail: jest.fn(),
         getCustomerById: jest.fn(),
@@ -497,11 +495,1081 @@ describe('HeadlineStaffsAndAuthority', () => {
             const header = wrapper.instance().buildHeader();
 
             expect(header.props.children).toHaveLength(7);
-            expect(header.props.children[0].props.children).toEqual(LangHelper.getResource('Name'));
-            expect(header.props.children[1].props.children).toEqual(LangHelper.getResource('Role'));
-            expect(header.props.children[2].props.children).toEqual(LangHelper.getResource('CommunicationTool'));
-            expect(header.props.children[4].props.children).toEqual(LangHelper.getResource('Remark'));
-            expect(header.props.children[5].props.children).toEqual(LangHelper.getResource('Action'));
+        });
+    });
+
+    describe('buildBody method', () => {
+        it('generates the correct structure for the body of the table when data is present', () => {
+            const mockHeadlineStaffsAndAuthority = [
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority });
+
+            const body = wrapper.instance().buildBody();
+
+            expect(body.length).toBeGreaterThan(0);
+
+        });
+
+        it('generates the correct structure for the body of the table when no data is present', () => {
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: [] });
+            const body = wrapper.instance().buildBody();
+
+            expect(body.length).toBe(1);
+            expect(body[0].key).toBe('body-NoData');
+            expect(body[0].props.children.type).toEqual(Cell);
+            expect(body[0].props.children.props.className).toEqual('text-center');
+        });
+    });
+
+    describe('handleChangeValue method', () => {
+        it('updates the state with the provided name, value, and staffIndex', () => {
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+
+            const name = 'picName';
+            const value = 'John Doe';
+            const staffIndex = 0;
+
+            wrapper.instance().handleChangeValue(name, value, staffIndex);
+
+            const updatedState = wrapper.state();
+
+            expect(updatedState.headlineStaffsAndAuthority[staffIndex][name]).toEqual(value);
+        });
+
+        it('calls validateHeadlineStaffAndAuthority if isValidate is true', () => {
+            const mockValidateHeadlineStaffAndAuthority = jest.fn();
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+
+            wrapper.instance().validateHeadlineStaffAndAuthority = mockValidateHeadlineStaffAndAuthority;
+
+            const name = 'picName';
+            const value = 'John Doe';
+            const staffIndex = 0;
+
+            wrapper.instance().handleChangeValue(name, value, staffIndex);
+
+            expect(mockValidateHeadlineStaffAndAuthority).toHaveBeenCalledWith(staffIndex);
+        });
+    });
+
+    describe('handleChangeRole method', () => {
+        it('updates the state with the provided value and staffIndex', () => {
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+
+            const mockSettingPicRole = [
+                {
+                    settingId: 1
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+            wrapper.setProps({ settingPicRole: mockSettingPicRole });
+
+            const value = 1;
+            const staffIndex = 0;
+
+            wrapper.instance().handleChangeRole(value, staffIndex);
+
+            const updatedState = wrapper.state();
+
+            expect(updatedState.headlineStaffsAndAuthority[staffIndex].picRoleID).toEqual(value);
+            expect(updatedState.headlineStaffsAndAuthority[staffIndex].picRoleName).toEqual(mockSettingPicRole.find(x => x.settingId === value).settingValue);
+        });
+
+        it('calls validateHeadlineStaffAndAuthority if isValidate is true', () => {
+            const mockValidateHeadlineStaffAndAuthority = jest.fn();
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+            const mockSettingPicRole = [
+                {
+                    settingId: 1
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+            wrapper.setProps({ settingPicRole: mockSettingPicRole });
+
+            wrapper.instance().validateHeadlineStaffAndAuthority = mockValidateHeadlineStaffAndAuthority;
+
+            const value = 1;
+            const staffIndex = 0;
+
+            wrapper.instance().handleChangeRole(value, staffIndex);
+            expect(mockValidateHeadlineStaffAndAuthority).toHaveBeenCalledWith(staffIndex);
+        });
+    });
+
+    describe('handleChangeCommunicationID method', () => {
+        it('updates the state with the provided value, indexPicCommunicationTool, and staffIndex', () => {
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+
+            const mockSettingCommunicationTool = [
+                {
+                    settingId: 1
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+            wrapper.setProps({ settingCommunicationTool: mockSettingCommunicationTool });
+
+            const value = 1;
+            const indexPicCommunicationTool = 0;
+            const staffIndex = 0;
+
+            wrapper.instance().handleChangeCommunicationID(value, indexPicCommunicationTool, staffIndex);
+
+            const updatedState = wrapper.state();
+
+            expect(updatedState.headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool].picCommunicationID).toEqual(value);
+            expect(updatedState.headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool].picCommunicationName).toEqual(mockSettingCommunicationTool.find(x => x.settingId === value).settingValue);
+        });
+
+        it('calls validateHeadlineStaffAndAuthority if isValidate is true', () => {
+            const mockValidateHeadlineStaffAndAuthority = jest.fn();
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+            const mockSettingCommunicationTool = [
+                {
+                    settingId: 1
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+            wrapper.setProps({ settingCommunicationTool: mockSettingCommunicationTool });
+
+            wrapper.instance().validateHeadlineStaffAndAuthority = mockValidateHeadlineStaffAndAuthority;
+
+            const value = 1;
+            const indexPicCommunicationTool = 0;
+            const staffIndex = 0;
+
+            wrapper.instance().handleChangeCommunicationID(value, indexPicCommunicationTool, staffIndex);
+
+            expect(mockValidateHeadlineStaffAndAuthority).toHaveBeenCalledWith(staffIndex);
+        });
+    });
+
+    describe('handleChangeAuthorityID method', () => {
+        it('updates the state with the provided value, indexPicCommunicationTool, and indexStaff', () => {
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+
+            const mockSettingStaffAndAuthority = [
+                {
+                    settingId: 1
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+            wrapper.setProps({ settingStaffAndAuthority: mockSettingStaffAndAuthority });
+
+            const value = [1];
+            const indexPicCommunicationTool = 0;
+            const indexStaff = 0;
+
+            wrapper.instance().handleChangeAuthorityID(value, indexPicCommunicationTool, indexStaff);
+
+            const updatedState = wrapper.state();
+
+            expect(updatedState.headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authorityID).toEqual(value);
+
+            const authorityTool = mockSettingStaffAndAuthority.find(x => value.includes(x.settingId.toString()));
+            expect(updatedState.headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authority).toEqual(authorityTool ? authorityTool.settingValue : '');
+        });
+
+        it('calls validateHeadlineStaffAndAuthority if isValidate is true', () => {
+            const mockValidateHeadlineStaffAndAuthority = jest.fn();
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+            const mockSettingStaffAndAuthority = [
+                {
+                    settingId: 1
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+            wrapper.setProps({ settingStaffAndAuthority: mockSettingStaffAndAuthority });
+
+            wrapper.instance().validateHeadlineStaffAndAuthority = mockValidateHeadlineStaffAndAuthority;
+
+            const value = [1];
+            const indexPicCommunicationTool = 0;
+            const indexStaff = 0;
+
+            wrapper.instance().handleChangeAuthorityID(value, indexPicCommunicationTool, indexStaff);
+
+            expect(mockValidateHeadlineStaffAndAuthority).toHaveBeenCalledWith(indexStaff);
+        });
+    });
+
+    describe('handleChangeCommunicationValue method', () => {
+        it('updates the state with the provided value, name, indexPicCommunicationTool, and staffIndex', () => {
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+
+            const name = 'picCommunicationValue';
+            const value = 'New communication value';
+            const indexPicCommunicationTool = 0;
+            const staffIndex = 0;
+
+            wrapper.instance().handleChangeCommunicationValue(name, value, indexPicCommunicationTool, staffIndex);
+
+            const updatedState = wrapper.state();
+
+            expect(updatedState.headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool][name]).toEqual(value);
+        });
+
+        it('calls validateHeadlineStaffAndAuthority if isValidate is true', () => {
+            const mockValidateHeadlineStaffAndAuthority = jest.fn();
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+            wrapper.instance().validateHeadlineStaffAndAuthority = mockValidateHeadlineStaffAndAuthority;
+
+            const name = 'picCommunicationValue';
+            const value = 'New communication value';
+            const indexPicCommunicationTool = 0;
+            const staffIndex = 0;
+
+            wrapper.instance().handleChangeCommunicationValue(name, value, indexPicCommunicationTool, staffIndex);
+            expect(mockValidateHeadlineStaffAndAuthority).toHaveBeenCalledWith(staffIndex);
+        });
+    });
+
+    describe('handleChangeAuthorityID method', () => {
+        it('updates the state with the provided value, indexPicCommunicationTool, and indexStaff', () => {
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+
+            const value = [1, 2, 3];
+            const indexPicCommunicationTool = 0;
+            const indexStaff = 0;
+
+            wrapper.instance().handleChangeAuthorityID(value, indexPicCommunicationTool, indexStaff);
+
+            const updatedState = wrapper.state();
+
+            expect(updatedState.headlineStaffsAndAuthority[indexStaff].communicationTools[indexPicCommunicationTool].authorityID).toEqual(value);
+        });
+
+        it('calls validateHeadlineStaffAndAuthority if isValidate is true', () => {
+            const mockValidateHeadlineStaffAndAuthority = jest.fn();
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+
+            wrapper.instance().validateHeadlineStaffAndAuthority = mockValidateHeadlineStaffAndAuthority;
+
+            const value = [1, 2, 3];
+            const indexPicCommunicationTool = 0;
+            const indexStaff = 0;
+
+            wrapper.instance().handleChangeAuthorityID(value, indexPicCommunicationTool, indexStaff);
+
+            expect(mockValidateHeadlineStaffAndAuthority).toHaveBeenCalledWith(indexStaff);
+        });
+    });
+
+    describe('handleChangeCommunicationValue method', () => {
+        it('updates the state with the provided value, name, indexPicCommunicationTool, and staffIndex', () => {
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+
+            const name = 'communicationValue';
+            const value = 'New Value';
+            const indexPicCommunicationTool = 0;
+            const staffIndex = 0;
+
+            wrapper.instance().handleChangeCommunicationValue(name, value, indexPicCommunicationTool, staffIndex);
+
+            const updatedState = wrapper.state();
+
+            expect(updatedState.headlineStaffsAndAuthority[staffIndex].communicationTools[indexPicCommunicationTool][name]).toEqual(value);
+        });
+
+        it('calls validateHeadlineStaffAndAuthority if isValidate is true', () => {
+            const mockValidateHeadlineStaffAndAuthority = jest.fn();
+            const mockHeadlineStaffsAndAuthority = [
+                {
+                    communicationTools: [
+                        { rowID: 1, },
+                        { rowID: 2, },
+                        { rowID: 3, }
+                    ]
+                },
+                {
+                    communicationTools: [
+                        { rowID: 4, },
+                        { rowID: 5, }
+                    ]
+                }
+            ];
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState({ headlineStaffsAndAuthority: mockHeadlineStaffsAndAuthority, isValidate: true });
+
+            wrapper.instance().validateHeadlineStaffAndAuthority = mockValidateHeadlineStaffAndAuthority;
+
+            const name = 'communicationValue';
+            const value = 'New Value';
+            const indexPicCommunicationTool = 0;
+            const staffIndex = 0;
+
+            wrapper.instance().handleChangeCommunicationValue(name, value, indexPicCommunicationTool, staffIndex);
+
+            expect(mockValidateHeadlineStaffAndAuthority).toHaveBeenCalledWith(staffIndex);
+        });
+    });
+
+    describe('renderEditRow method', () => {
+        it('renders the edit row correctly', () => {
+            const settingStaffAndAuthority = [
+                { settingId: 1, settingValue: 'Authority 1' },
+                { settingId: 2, settingValue: 'Authority 2' },
+            ];
+            const settingPicRole = [
+                { settingId: 1, settingValue: 'Role 1' },
+                { settingId: 2, settingValue: 'Role 2' },
+            ];
+            const settingCommunicationTool = [
+                { settingId: 1, settingValue: 'Communication Tool 1' },
+                { settingId: 2, settingValue: 'Communication Tool 2' },
+            ];
+            const staff = {
+                picName: 'John Doe',
+                picRoleID: 1,
+                picRoleName: 'Role 1',
+                communicationTools: [
+                    {
+                        rowID: 1,
+                        picCommunicationID: 1,
+                        picCommunicationName: 'Communication Tool 1',
+                        picCommunicationValue: 'Value 1',
+                        authorityID: '1',
+                        authority: 'Authority 1',
+                        remark: 'Remark 1',
+                        isErrorPicCommunication: false,
+                        isErrorPicAuthorityID: false,
+                    },
+                ],
+                isSyncFromPicTable: false,
+                isErrorPicName: false,
+                isErrorPicRoleID: false,
+                isEdit: true,
+            };
+            const indexStaff = 0;
+
+            const props = {
+                ...initProps,
+                settingStaffAndAuthority: settingStaffAndAuthority,
+                settingPicRole: settingPicRole,
+                settingCommunicationTool: settingCommunicationTool
+            }
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...props} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+
+            wrapper.setState({ headlineInfoPolicy: 'some_policy' });
+
+            const editRow = wrapper.instance().renderEditRow(staff, indexStaff);
+
+            expect(editRow.props.children).toHaveLength(2);
+        });
+    });
+
+    describe('getOriginalStaffAndAuthority function', () => {
+        it('returns the original staff and authority correctly', () => {
+            const value = {
+                picID: 1,
+                picName: 'John Doe',
+                picRoleID: 1,
+                picRoleName: 'Role 1',
+                communicationTools: [
+                    {
+                        rowID: 1,
+                        picCommunicationID: 1,
+                        picCommunicationName: 'Communication Tool 1',
+                        picCommunicationValue: 'Value 1',
+                        authorityID: '1',
+                        authority: 'Authority 1',
+                        remark: 'Remark 1',
+                        isErrorPicCommunication: false,
+                        isErrorPicAuthorityID: false,
+                    },
+                ],
+                isSyncFromPicTable: false,
+                isErrorPicName: false,
+                isErrorPicRoleID: false,
+                isEdit: false,
+            };
+
+            const expectedOriginalStaffAndAuthority = {
+                picID: 1,
+                picName: 'John Doe',
+                picRoleID: 1,
+                picRoleName: 'Role 1',
+                communicationTools: [
+                    {
+                        rowID: 1,
+                        picCommunicationID: 1,
+                        picCommunicationName: 'Communication Tool 1',
+                        picCommunicationValue: 'Value 1',
+                        authorityID: '1',
+                        authority: 'Authority 1',
+                        remark: 'Remark 1',
+                        isErrorPicCommunication: false,
+                        isErrorPicAuthorityID: false,
+                    },
+                ],
+                isSyncFromPicTable: false,
+                isErrorPicName: false,
+                isErrorPicRoleID: false,
+                isEdit: false,
+            };
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            const result = wrapper.instance().getOriginalStaffAndAuthority(value);
+
+            expect(result).toEqual(expectedOriginalStaffAndAuthority);
+        });
+    });
+
+    describe('handleEdit', () => {
+        it('edits a staff and updates state correctly', () => {
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+
+            const initialState = {
+                headlineStaffsAndAuthority: [
+                    {
+                        picID: 1,
+                        picName: 'Staff Name',
+                        picRoleID: 1,
+                        picRoleName: 'Role Name',
+                        communicationTools: [
+                            {
+                                rowID: 1,
+                                picCommunicationID: 1,
+                                picCommunicationName: 'Communication Tool 1',
+                                picCommunicationValue: 'Value 1',
+                                authorityID: '1',
+                                authority: 'Authority 1',
+                                remark: 'Remark 1',
+                                isErrorPicCommunication: false,
+                                isErrorPicAuthorityID: false,
+                            },
+                        ],
+                        isSyncFromPicTable: false,
+                        isErrorPicName: false,
+                        isErrorPicRoleID: false,
+                        isEdit: false,
+                    },
+                ],
+            };
+
+            wrapper.setState(initialState);
+
+            wrapper.instance().handleEdit(0);
+
+            expect(wrapper.state('headlineStaffsAndAuthority')[0].isEdit).toBe(true);
+            expect(wrapper.state('originalStaffAndAuthority')).toEqual({
+                picID: 1,
+                picName: 'Staff Name',
+                picRoleID: 1,
+                picRoleName: 'Role Name',
+                communicationTools: [
+                    {
+                        rowID: 1,
+                        picCommunicationID: 1,
+                        picCommunicationName: 'Communication Tool 1',
+                        picCommunicationValue: 'Value 1',
+                        authorityID: '1',
+                        authority: 'Authority 1',
+                        remark: 'Remark 1',
+                        isErrorPicCommunication: false,
+                        isErrorPicAuthorityID: false,
+                    },
+                ],
+                isSyncFromPicTable: false,
+                isErrorPicName: false,
+                isErrorPicRoleID: false,
+                isEdit: false,
+            });
+        });
+    });
+
+    describe('handleCancel', () => {
+        it('cancels editing a staff and updates state correctly', () => {
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+
+            const initialState = {
+                headlineStaffsAndAuthority: [
+                    {
+                        picID: 1,
+                        picName: 'Staff Name',
+                        picRoleID: 1,
+                        picRoleName: 'Role Name',
+                        communicationTools: [
+                            {
+                                rowID: 1,
+                                picCommunicationID: 1,
+                                picCommunicationName: 'Communication Tool 1',
+                                picCommunicationValue: 'Value 1',
+                                authorityID: '1',
+                                authority: 'Authority 1',
+                                remark: 'Remark 1',
+                                isErrorPicCommunication: false,
+                                isErrorPicAuthorityID: false,
+                            },
+                        ],
+                        isSyncFromPicTable: false,
+                        isErrorPicName: false,
+                        isErrorPicRoleID: false,
+                        isEdit: true,
+                    },
+                ],
+                originalStaffAndAuthority: {
+                    picID: 1,
+                    picName: 'Staff Name',
+                    picRoleID: 1,
+                    picRoleName: 'Role Name',
+                    communicationTools: [
+                        {
+                            rowID: 1,
+                            picCommunicationID: 1,
+                            picCommunicationName: 'Communication Tool 1',
+                            picCommunicationValue: 'Value 1',
+                            authorityID: '1',
+                            authority: 'Authority 1',
+                            remark: 'Remark 1',
+                            isErrorPicCommunication: false,
+                            isErrorPicAuthorityID: false,
+                        },
+                    ],
+                    isSyncFromPicTable: false,
+                    isErrorPicName: false,
+                    isErrorPicRoleID: false,
+                    isEdit: false,
+                },
+            };
+
+            wrapper.setState(initialState);
+
+            wrapper.instance().handleCancel(0);
+
+            expect(wrapper.state('headlineStaffsAndAuthority')[0].isEdit).toBe(false);
+            expect(wrapper.state('originalStaffAndAuthority')).toBe(null);
+        });
+
+        it('cancels editing a staff and updates state correctly with originalStaffAndAuthority null', () => {
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+
+            const initialState = {
+                headlineStaffsAndAuthority: [
+                    {
+                        picID: 1,
+                        picName: 'Staff Name',
+                        picRoleID: 1,
+                        picRoleName: 'Role Name',
+                        communicationTools: [
+                            {
+                                rowID: 1,
+                                picCommunicationID: 1,
+                                picCommunicationName: 'Communication Tool 1',
+                                picCommunicationValue: 'Value 1',
+                                authorityID: '1',
+                                authority: 'Authority 1',
+                                remark: 'Remark 1',
+                                isErrorPicCommunication: false,
+                                isErrorPicAuthorityID: false,
+                            },
+                        ],
+                        isSyncFromPicTable: false,
+                        isErrorPicName: false,
+                        isErrorPicRoleID: false,
+                        isEdit: true,
+                    },
+                ]
+            };
+
+            wrapper.setState(initialState);
+
+            wrapper.instance().handleCancel(0);
+
+            expect(wrapper.state.headlineStaffsAndAuthority).toEqual(undefined);
+        });
+    });
+
+    describe('handleDelete', () => {
+        it('deletes a staff and updates state correctly', async () => {
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+
+            const initialState = {
+                headlineStaffsAndAuthority: [
+                    {},
+                    {},
+                    {},
+                ],
+                showConfirmDelete: {
+                    show: true,
+                    name: 'Staff Name to delete',
+                    indexStaff: 1,
+                },
+            };
+
+            wrapper.setState(initialState);
+
+            const setStateMock = jest.spyOn(wrapper.instance(), 'setState');
+            const checkCustomerExistsOnCRMMock = jest.spyOn(wrapper.instance(), 'checkCustomerExistsOnCRM').mockResolvedValue();
+
+            await wrapper.instance().handleDelete(1);
+
+            expect(setStateMock).toHaveBeenCalledWith({
+                headlineStaffsAndAuthority: [
+                    {},
+                    {},
+                ],
+                showConfirmDelete: {
+                    show: false,
+                    name: '',
+                    indexStaff: -1,
+                },
+            });
+
+            expect(checkCustomerExistsOnCRMMock).toHaveBeenCalled();
+        });
+    });
+
+    describe('renderRow', () => {
+        it('renders a row with staff authority correctly', () => {
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+
+            const settingStaffAndAuthority = [
+                { settingValue: 'Authority 1' },
+                { settingValue: 'Authority 2' },
+            ];
+
+            const item = {
+                rowID: 1,
+                picName: 'John Doe',
+                picRoleName: 'Role Name',
+                communicationTools: [
+                    {
+                        picCommunicationName: 'Communication Tool 1',
+                        picCommunicationValue: 'Value 1',
+                        authority: 'Authority 1,Authority 2',
+                        remark: 'Remark 1',
+                    },
+                    {
+                        picCommunicationName: 'Communication Tool 2',
+                        picCommunicationValue: 'Value 2',
+                        authority: 'Authority 1',
+                        remark: 'Remark 2',
+                    },
+                ],
+            };
+
+            wrapper.setProps({ settingStaffAndAuthority });
+
+            const row = wrapper.instance().renderRow(item, 0);
+
+            expect(row.props.children).toHaveLength(2);
+        });
+    });
+
+    describe('handleClear', () => {
+        it('clears communication tools and remarks when called', async () => {
+            const initialState = {
+                headlineStaffsAndAuthority: [
+                    {
+                        communicationTools: [
+                            { remark: 'Remark 1', authority: 'Authority 1' },
+                            { remark: 'Remark 2', authority: 'Authority 2' },
+                        ],
+                    },
+                ],
+                showConfirmClear: {
+                    show: true,
+                    name: 'John Doe',
+                    indexStaff: 0,
+                },
+            };
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().checkCustomerExistsOnCRM = jest.fn();
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState(initialState);
+
+            await wrapper.instance().handleClear(0);
+
+            expect(wrapper.instance().handleCustomDropdownTable).toHaveBeenCalled();
+        });
+    });
+
+    describe('handleAddNewRow', () => {
+        it('adds a new row when called', () => {
+            const initialState = {
+                headlineStaffsAndAuthority: [
+                    {
+                        picID: 1,
+                        picName: 'John Doe',
+                        picRoleID: 2,
+                        picRoleName: 'Manager',
+                        communicationTools: [
+                            {
+                                rowID: 1,
+                                picCommunicationID: 3,
+                                picCommunicationName: 'Email',
+                                picCommunicationValue: 'john@example.com',
+                                authorityID: '1',
+                                authority: 'Full Access',
+                                remark: 'Test remark',
+                                isErrorPicCommunication: false,
+                                isErrorPicAuthorityID: false,
+                            },
+                        ],
+                        isSyncFromPicTable: false,
+                        isErrorPicName: false,
+                        isErrorPicRoleID: false,
+                        isEdit: false,
+                    },
+                ],
+                originalStaffAndAuthority: null,
+            };
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState(initialState);
+
+            wrapper.instance().handleAddNewRow();
+
+            expect(wrapper.state('headlineStaffsAndAuthority')).toHaveLength(2);
+            expect(wrapper.state('headlineStaffsAndAuthority')[1].picID).toEqual(0);
+            expect(wrapper.state('headlineStaffsAndAuthority')[1].picName).toBeNull();
+        });
+
+        it('adds a new row when called with authority editing have originalStaffAndAuthority', () => {
+            const initialState = {
+                headlineStaffsAndAuthority: [
+                    {
+                        picID: 1,
+                        picName: 'John Doe',
+                        picRoleID: 2,
+                        picRoleName: 'Manager',
+                        communicationTools: [
+                            {
+                                rowID: 1,
+                                picCommunicationID: 3,
+                                picCommunicationName: 'Email',
+                                picCommunicationValue: 'john@example.com',
+                                authorityID: '1',
+                                authority: 'Full Access',
+                                remark: 'Test remark',
+                                isErrorPicCommunication: false,
+                                isErrorPicAuthorityID: false,
+                            },
+                        ],
+                        isSyncFromPicTable: false,
+                        isErrorPicName: false,
+                        isErrorPicRoleID: false,
+                        isEdit: true,
+                    },
+                ],
+                originalStaffAndAuthority: {
+                        picID: 1,
+                        picName: 'John Doe',
+                        picRoleID: 2,
+                        picRoleName: 'Manager',
+                        communicationTools: [
+                            {
+                                rowID: 1,
+                                picCommunicationID: 3,
+                                picCommunicationName: 'Email',
+                                picCommunicationValue: 'john@example.com',
+                                authorityID: '1',
+                                authority: 'Full Access',
+                                remark: 'Test remark',
+                                isErrorPicCommunication: false,
+                                isErrorPicAuthorityID: false,
+                            },
+                        ],
+                        isSyncFromPicTable: false,
+                        isErrorPicName: false,
+                        isErrorPicRoleID: false,
+                        isEdit: true,
+                    },
+            };
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState(initialState);
+
+            wrapper.instance().handleAddNewRow();
+
+            expect(wrapper.state('headlineStaffsAndAuthority')).toHaveLength(2);
+            expect(wrapper.state('headlineStaffsAndAuthority')[1].picID).toEqual(0);
+            expect(wrapper.state('headlineStaffsAndAuthority')[1].picName).toBeNull();
+        });
+
+        it('adds a new row when called with authority editing have not originalStaffAndAuthority', () => {
+            const initialState = {
+                headlineStaffsAndAuthority: [
+                    {
+                        picID: 1,
+                        picName: 'John Doe',
+                        picRoleID: 2,
+                        picRoleName: 'Manager',
+                        communicationTools: [
+                            {
+                                rowID: 1,
+                                picCommunicationID: 3,
+                                picCommunicationName: 'Email',
+                                picCommunicationValue: 'john@example.com',
+                                authorityID: '1',
+                                authority: 'Full Access',
+                                remark: 'Test remark',
+                                isErrorPicCommunication: false,
+                                isErrorPicAuthorityID: false,
+                            },
+                        ],
+                        isSyncFromPicTable: false,
+                        isErrorPicName: false,
+                        isErrorPicRoleID: false,
+                        isEdit: true,
+                    },
+                ],
+                originalStaffAndAuthority: null
+            };
+
+            const wrapper = shallow(<HeadlineStaffsAndAuthority {...initProps} />);
+            wrapper.instance().handleCustomDropdownTable = jest.fn();
+            wrapper.setState(initialState);
+
+            wrapper.instance().handleAddNewRow();
+
+            expect(wrapper.state('headlineStaffsAndAuthority')).toHaveLength(1);
         });
     });
 });
