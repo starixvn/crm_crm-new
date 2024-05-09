@@ -445,7 +445,7 @@ export class NewAnnouncement extends Component {
                         <div className="group-header">{LangHelper.getResource('Announcement')}</div>
                         <div className="group-content">
                             <div className="content-item item-announcement">
-                                <Form.Group as={Row}>
+                                <Form.Group as={Row} className='template'>
                                     <Form.Label htmlFor="notificationTemplate">
                                         {LangHelper.getResource('Template')}
                                     </Form.Label>
@@ -458,7 +458,7 @@ export class NewAnnouncement extends Component {
                                         {this.props.announcementTemplate.notificationTemplates.map((value, key) => renderOption(key, value.notificationTemplateId, value.notificationTemplateName))}
                                     </Form.Control>
                                 </Form.Group>
-                                <Form.Group as={Row}>
+                                <Form.Group as={Row} className='title-textbox'>
                                     <Form.Label className="required" htmlFor="title">
                                         {LangHelper.getResource('Title')}
                                     </Form.Label>
